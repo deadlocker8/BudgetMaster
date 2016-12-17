@@ -26,12 +26,14 @@ public class NewPaymentController
 	private PaymentController paymentController;
 	private Image icon = new Image("de/deadlocker8/budgetmaster/resources/icon.png");
 	private final ResourceBundle bundle = ResourceBundle.getBundle("de/deadlocker8/budgetmaster/main/", Locale.GERMANY);
+	private boolean payment;
 
-	public void init(Stage stage, Controller controller, PaymentController paymentController)
+	public void init(Stage stage, Controller controller, PaymentController paymentController, boolean payment)
 	{
 		this.stage = stage;
 		this.controller = controller;
 		this.paymentController = paymentController;
+		this.payment = payment;
 	}
 	
 	public void save()

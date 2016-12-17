@@ -69,32 +69,19 @@ public class PaymentController
 		// DEBUG
 		listView.getItems().add(new Payment(false, 50.23, LocalDate.now(), new Category("Auto", Color.RED), "Tanken", RepeatingType.NONE, 0));
 		listView.getItems().add(new Payment(true, 50.23, LocalDate.now(), new Category("Einkommen", Color.YELLOW), "Einkommen", RepeatingType.NONE, 0));	
-	}
-
+	}	
+	
 	public void newIncome()
 	{
-		try
-		{
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/NewIncomeGUI.fxml"));
-			Parent root = (Parent)fxmlLoader.load();
-			Stage newStage = new Stage();
-			newStage.initOwner((controller.getStage()));
-			newStage.initModality(Modality.APPLICATION_MODAL);
-			newStage.setTitle("Neue Einnahme");
-			newStage.setScene(new Scene(root));
-			newStage.getIcons().add(icon);
-			newStage.setResizable(false);
-			NewIncomeController newController = fxmlLoader.getController();
-			newController.init(newStage, controller, this);
-			newStage.show();
-		}
-		catch(IOException e)
-		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
-		}
+		payment(false);
+	}
+	
+	public void newPayment()
+	{
+		payment(true);
 	}
 
-	public void newPayment()
+	public void payment(boolean payment)
 	{
 		try
 		{
@@ -103,12 +90,19 @@ public class PaymentController
 			Stage newStage = new Stage();
 			newStage.initOwner(controller.getStage());
 			newStage.initModality(Modality.APPLICATION_MODAL);
-			newStage.setTitle("Neuer Ausgabe");
+			if(payment)
+			{
+				newStage.setTitle("Neue Ausgabe");
+			}
+			else
+			{
+				newStage.setTitle("Neue Einnahme");
+			}
 			newStage.setScene(new Scene(root));
 			newStage.getIcons().add(icon);
 			newStage.setResizable(false);
 			NewPaymentController newController = fxmlLoader.getController();
-			newController.init(newStage, controller, this);
+			newController.init(newStage, controller, this, payment);
 			newStage.show();
 		}
 		catch(IOException e)
