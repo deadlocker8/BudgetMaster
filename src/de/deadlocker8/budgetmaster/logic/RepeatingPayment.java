@@ -10,7 +10,8 @@ public class RepeatingPayment extends Payment
 	public RepeatingPayment(double amount, LocalDate date, Category category, String note, RepeatingType repeatingType, int repeatingPeriod)
 	{
 		super(amount, date, category, note);
-		// TODO Auto-generated constructor stub
+		this.repeatingType = repeatingType;
+		this.repeatingPeriod = repeatingPeriod;		
 	}
 
 	public RepeatingType getRepeatingType()
