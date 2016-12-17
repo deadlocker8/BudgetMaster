@@ -48,6 +48,12 @@ public class Controller
 			PaymentController paymentController = fxmlLoader.getController();
 			paymentController.init(this);
 			tabPayments.setContent(nodeTabPayment);
+			
+			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/CategoryTab.fxml"));
+			Parent nodeTabCategory = (Parent)fxmlLoader.load();
+			CategoryController categoryController = fxmlLoader.getController();
+			categoryController.init(this);
+			tabCategories.setContent(nodeTabCategory);
 		}
 		catch(IOException e)
 		{

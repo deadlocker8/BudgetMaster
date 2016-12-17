@@ -6,10 +6,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import de.deadlocker8.budgetmaster.logic.Category;
-import de.deadlocker8.budgetmaster.logic.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmaster.logic.RepeatingType;
-import de.deadlocker8.budgetmaster.ui.cells.CategoryBudgetCell;
 import de.deadlocker8.budgetmaster.ui.cells.PaymentCell;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -18,8 +16,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -71,8 +67,8 @@ public class PaymentController
 		});
 
 		// DEBUG
-		listView.getItems().add(new Payment(false, 50.23, LocalDate.now(), new Category("Auto", Color.GREEN), "Tanken", RepeatingType.NONE, 0));
-		listView.getItems().add(new Payment(true, 50.23, LocalDate.now(), new Category("Einkommen", Color.GREEN), "Einkommen", RepeatingType.NONE, 0));	
+		listView.getItems().add(new Payment(false, 50.23, LocalDate.now(), new Category("Auto", Color.RED), "Tanken", RepeatingType.NONE, 0));
+		listView.getItems().add(new Payment(true, 50.23, LocalDate.now(), new Category("Einkommen", Color.YELLOW), "Einkommen", RepeatingType.NONE, 0));	
 	}
 
 	public void newIncome()
@@ -119,17 +115,5 @@ public class PaymentController
 		{
 			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
 		}
-	}
-
-	public void about()
-	{
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Über " + bundle.getString("app.name"));
-		alert.setHeaderText(bundle.getString("app.name"));
-		alert.setContentText("Version:     " + bundle.getString("version.name") + "\r\nDatum:      " + bundle.getString("version.date") + "\r\nAutor:        Robert Goldmann\r\n");
-		Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
-		dialogStage.getIcons().add(icon);
-		dialogStage.centerOnScreen();
-		alert.showAndWait();
 	}
 }
