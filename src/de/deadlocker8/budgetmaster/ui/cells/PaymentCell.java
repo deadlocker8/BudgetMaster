@@ -7,6 +7,7 @@ import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
@@ -50,7 +51,7 @@ public class PaymentCell extends ListCell<Payment>
 			HBox.setHgrow(r, Priority.ALWAYS);
 			
 			Label labelBudget = new Label(String.valueOf(format.format(item.getAmount())).replace(".", ",") + " €");
-			labelBudget.setPrefHeight(HEIGHT);
+			labelBudget.setPrefHeight(HEIGHT);		
 			labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #212121");
 			labelBudget.setAlignment(Pos.CENTER);
 			labelBudget.getStyleClass().add("greylabel");
@@ -60,14 +61,20 @@ public class PaymentCell extends ListCell<Payment>
 			FontIcon icon;			
 			
 			if(item.isIncome())
-			{
+			{			
+				labelBudget.setText("+" + labelBudget.getText());
+				
 				icon = new FontIcon(FontIconType.DOWNLOAD);
 				icon.setColor(Color.web("#247A2D"));
 			}
 			else
 			{
+				labelBudget.setText("-" + labelBudget.getText());
+				labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #CC0000");
+				
 				icon = new FontIcon(FontIconType.UPLOAD);
 				icon.setColor(Color.web("#CC0000"));
+				
 			}			
 			
 			icon.setSize(20);			
@@ -79,7 +86,17 @@ public class PaymentCell extends ListCell<Payment>
 			labelIcon.setAlignment(Pos.CENTER);
 			labelIcon.getStyleClass().add("greylabel");
 			hbox.getChildren().add(labelIcon);
-			HBox.setMargin(labelIcon, new Insets(0, 0, 0, 25));	
+			HBox.setMargin(labelIcon, new Insets(0, 0, 0, 25));
+			
+			Button buttonDelete = new Button();
+			FontIcon iconDelete = new FontIcon(FontIconType.TRASH);
+			iconDelete.setSize(16);
+			buttonDelete.setGraphic(iconDelete);
+			buttonDelete.setPrefHeight(HEIGHT);					
+			buttonDelete.getStyleClass().add("greylabel");
+			buttonDelete.setStyle("-fx-background-color: transparent");
+			hbox.getChildren().add(buttonDelete);
+			HBox.setMargin(buttonDelete, new Insets(0, 0, 0, 25));	
 			
 			setPadding(new Insets(10));
 			setStyle("-fx-background: transparent; -fx-border-color: #333333");

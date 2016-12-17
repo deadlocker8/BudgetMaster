@@ -64,7 +64,7 @@ public class CategoryCell extends ListCell<Category>
 			buttonDelete.getStyleClass().add("greylabel");
 			buttonDelete.setStyle("-fx-background-color: transparent");
 			hbox.getChildren().add(buttonDelete);
-			HBox.setMargin(buttonDelete, new Insets(0, 0, 0, 25));	
+			HBox.setMargin(buttonDelete, new Insets(0, 0, 0, 5));	
 			
 			setPadding(new Insets(10));
 			setStyle("-fx-background: transparent; -fx-border-color: #333333");
