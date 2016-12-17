@@ -3,18 +3,34 @@ package de.deadlocker8.budgetmaster.logic;
 import java.time.LocalDate;
 
 public class Payment
-{
+{	
+	private boolean income;
 	private double amount;
 	private LocalDate date;
 	private Category category;
-	private String note;	
+	private String name;	
+	private RepeatingType repeatingType;	
+	private int repeatingPeriod;	
 	
-	public Payment(double amount, LocalDate date, Category category, String note)
+	public Payment(boolean income, double amount, LocalDate date, Category category, String name, RepeatingType repeatingType, int repeatingPeriod)
 	{		
+		this.income = income;
 		this.amount = amount;
 		this.date = date;
 		this.category = category;
-		this.note = note;
+		this.name = name;
+		this.repeatingType = repeatingType;
+		this.repeatingPeriod = repeatingPeriod;
+	}
+
+	public boolean isIncome()
+	{
+		return income;
+	}
+	
+	public void setIncome(boolean income)
+	{
+		this.income = income;
 	}
 
 	public double getAmount()
@@ -47,19 +63,39 @@ public class Payment
 		this.category = category;
 	}
 
-	public String getNote()
+	public String getName()
 	{
-		return note;
+		return name;
 	}
 
-	public void setNote(String note)
+	public void setName(String name)
 	{
-		this.note = note;
+		this.name = name;
+	}	
+
+	public RepeatingType getRepeatingType()
+	{
+		return repeatingType;
+	}
+
+	public void setRepeatingType(RepeatingType repeatingType)
+	{
+		this.repeatingType = repeatingType;
+	}
+
+	public int getRepeatingPeriod()
+	{
+		return repeatingPeriod;
+	}
+
+	public void setRepeatingPeriod(int repeatingPeriod)
+	{
+		this.repeatingPeriod = repeatingPeriod;
 	}
 
 	@Override
 	public String toString()
 	{
-		return "Payment [amount=" + amount + ", date=" + date + ", category=" + category + ", note=" + note + "]";
+		return "Payment [income=" + income + ", amount=" + amount + ", date=" + date + ", category=" + category + ", name=" + name + ", repeatingType=" + repeatingType + ", repeatingPeriod=" + repeatingPeriod + "]";
 	}
 }

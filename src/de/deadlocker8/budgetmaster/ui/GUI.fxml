@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.deadlocker8.budgetmaster.ui.Controller" />
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.deadlocker8.budgetmaster.ui.Controller">
+   <children>
+      <VBox alignment="TOP_CENTER" layoutY="24.0" prefHeight="562.0" prefWidth="772.0" spacing="15.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="14.0">
+         <children>
+            <HBox alignment="CENTER" prefWidth="772.0" spacing="15.0">
+               <children>
+                  <Button fx:id="buttonLeft" mnemonicParsing="false" text="&lt;" />
+                  <Label fx:id="labelMonth" text="Dezember 2016">
+                     <font>
+                        <Font name="System Bold" size="25.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="buttonRight" mnemonicParsing="false" text="&gt;" />
+               </children>
+            </HBox>
+            <TabPane prefHeight="200.0" prefWidth="403.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+              <tabs>
+                <Tab fx:id="tabHome" closable="false" text="Startseite" />
+                  <Tab fx:id="tabPayments" closable="false" text="Buchungen" />
+                  <Tab fx:id="tabCategories" closable="false" text="Kategorien" />
+                  <Tab fx:id="tabCharts" closable="false" text="Diagramme" />
+              </tabs>
+            </TabPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
