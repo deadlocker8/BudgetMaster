@@ -4,6 +4,7 @@ import javafx.scene.paint.Color;
 
 public class Category
 {
+	private int ID;
 	private String name;
 	private Color color;
 	
@@ -11,6 +12,18 @@ public class Category
 	{
 		this.name = name;
 		this.color = color;
+	}
+	
+	public Category(int ID, String name, Color color)
+	{
+		this.ID = ID;
+		this.name =name;
+		this.color = color;
+	}
+
+	public int getID()
+	{
+		return ID;
 	}
 
 	public String getName()
@@ -36,6 +49,6 @@ public class Category
 	@Override
 	public String toString()
 	{
-		return "Category [name=" + name + ", color=" + color + "]";
+		return "Category [ID=" + ID + ", name=" + name + ", color=" + color + "]";
 	}
 }
