@@ -14,11 +14,13 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
 
 public class HomeController
 {
+	@FXML private AnchorPane anchorPaneMain;
 	@FXML private Label labelBudget;
 	@FXML private Label labelStartBudget;
 	@FXML private ProgressBar progressBar;
@@ -31,8 +33,6 @@ public class HomeController
 	public void init(Controller controller)
 	{
 		this.controller = controller;
-
-		listView.setFixedCellSize(60.0);
 		listView.setCellFactory(new Callback<ListView<CategoryBudget>, ListCell<CategoryBudget>>()
 		{
 			@Override
@@ -56,6 +56,12 @@ public class HomeController
 				});
 			}
 		});
+		
+		//apply theme
+		anchorPaneMain.setStyle("-fx-background-color: #333333;");
+		labelBudget.setStyle("-fx-text-fill: " + bundle.getString("color.text"));
+		labelStartBudget.setStyle("-fx-text-fill: " + bundle.getString("color.text"));
+		listView.setStyle("-fx-background-color: #6F6F6F;");
 
 		// DEBUG
 		listView.getItems().add(new CategoryBudget("Auto", Color.RED, 79.56));

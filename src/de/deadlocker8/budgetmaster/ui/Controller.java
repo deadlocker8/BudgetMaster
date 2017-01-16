@@ -10,7 +10,9 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import logger.LogLevel;
 import logger.Logger;
@@ -18,9 +20,11 @@ import tools.AlertGenerator;
 
 public class Controller
 {
+	@FXML private AnchorPane anchorPaneMain;
 	@FXML private Label labelMonth;
 	@FXML private Button buttonLeft;
 	@FXML private Button buttonRight;
+	@FXML private TabPane tabPane;
 	@FXML private Tab tabHome;
 	@FXML private Tab tabPayments;
 	@FXML private Tab tabCategories;
@@ -59,6 +63,12 @@ public class Controller
 			//ERRORHANDLING
 			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
 		}
+		
+		//apply theme
+		anchorPaneMain.setStyle("-fx-background-color: #101214;");
+		labelMonth.setStyle("-fx-text-fill: " + bundle.getString("color.text"));		
+		buttonLeft.setStyle("-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 3; -fx-border-radius: 0; -fx-text-fill: " + bundle.getString("color.text") +"; -fx-font-weight: bold;");
+		buttonRight.setStyle("-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 3; -fx-border-radius: 0; -fx-text-fill: " + bundle.getString("color.text") + "; -fx-font-weight: bold;");
 	}
 	
 	public Stage getStage()

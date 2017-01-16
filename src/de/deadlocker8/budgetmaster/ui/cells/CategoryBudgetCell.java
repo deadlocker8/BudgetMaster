@@ -23,7 +23,7 @@ public class CategoryBudgetCell extends ListCell<CategoryBudget>
 		super.updateItem(item, empty);
 
 		if(!empty)
-		{
+		{			
 			HBox hbox = new HBox();
 
 			Label labelCircle = new Label(item.getName().substring(0, 1).toUpperCase());
@@ -36,7 +36,7 @@ public class CategoryBudgetCell extends ListCell<CategoryBudget>
 
 			Label labelName = new Label(item.getName());
 			labelName.setPrefHeight(HEIGHT);
-			labelName.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #212121");
+			labelName.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #FFFFFF");
 			labelName.setAlignment(Pos.CENTER);
 			labelName.getStyleClass().add("greylabel");
 			hbox.getChildren().add(labelName);
@@ -48,15 +48,16 @@ public class CategoryBudgetCell extends ListCell<CategoryBudget>
 
 			Label labelBudget = new Label(String.valueOf(format.format(item.getBudget())).replace(".", ",") + " €");
 			labelBudget.setPrefHeight(HEIGHT);
-			labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #212121");
+			labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #FFFFFF;");
 			labelBudget.setAlignment(Pos.CENTER);
 			labelBudget.getStyleClass().add("greylabel");
 			hbox.getChildren().add(labelBudget);
-			HBox.setMargin(labelBudget, new Insets(0, 0, 0, 20));
-		
-			setPadding(new Insets(10));
-			setStyle("-fx-background: transparent; -fx-border-color: #333333");
-			setGraphic(hbox);
+			HBox.setMargin(labelBudget, new Insets(0, 0, 0, 20));			
+			
+			hbox.setPadding(new Insets(10));
+			setStyle("-fx-background: transparent; -fx-border-color: #EDEDED; -fx-border-width: 0 0 1 0");
+			setGraphic(hbox);	
+			setAlignment(Pos.CENTER);
 		}
 		else
 		{
