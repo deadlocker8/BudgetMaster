@@ -36,6 +36,8 @@ public class Controller
 	private Image icon = new Image("de/deadlocker8/budgetmaster/resources/icon.png");
 	private final ResourceBundle bundle = ResourceBundle.getBundle("de/deadlocker8/budgetmaster/main/", Locale.GERMANY);
 
+	//TODO tab blue selection border is too small
+	
 	public void init(Stage stage)
 	{
 		this.stage = stage;
