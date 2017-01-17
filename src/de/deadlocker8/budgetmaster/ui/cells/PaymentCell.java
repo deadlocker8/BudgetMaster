@@ -1,6 +1,10 @@
 package de.deadlocker8.budgetmaster.ui.cells;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import de.deadlocker8.budgetmaster.logic.Payment;
 import fontAwesome.FontIcon;
@@ -19,7 +23,7 @@ import tools.ConvertTo;
 public class PaymentCell extends ListCell<Payment>
 {		
 	private final double HEIGHT = 40.0;
-	private final DecimalFormat format = new DecimalFormat("#.00");
+	private final DecimalFormat numberFormat = new DecimalFormat("#.00");
 	
 	@Override
 	protected void updateItem(Payment item, boolean empty)
@@ -30,6 +34,30 @@ public class PaymentCell extends ListCell<Payment>
 		{		
 			HBox hbox = new HBox();
 			
+			String dateString = item.getDate();
+			DateFormat format = new SimpleDateFormat("yyyy-MM-dd");			
+			try
+			{
+				Date date = format.parse(dateString);
+				DateFormat finalFormat = new SimpleDateFormat("dd.MM.yy");		
+				dateString = finalFormat.format(date);
+			}
+			catch(ParseException e)
+			{
+				e.printStackTrace();
+			}			
+			Label labelDate = new Label(dateString);
+			labelDate.setPrefHeight(HEIGHT);
+			labelDate.setAlignment(Pos.CENTER);
+			labelDate.getStyleClass().add("greylabel");
+			labelDate.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #212121");
+			hbox.getChildren().add(labelDate);
+			HBox.setMargin(labelDate, new Insets(0, 20, 0, 0));
+			
+
+			//TODO add icon repeating
+			
+			
 			Label labelCircle = new Label(item.getCategory().getName().substring(0, 1).toUpperCase());
 			labelCircle.setPrefWidth(HEIGHT);
 			labelCircle.setPrefHeight(HEIGHT);
@@ -37,9 +65,6 @@ public class PaymentCell extends ListCell<Payment>
 			labelCircle.getStyleClass().add("greylabel");
 			labelCircle.setStyle("-fx-background-color: " + ConvertTo.toRGBHex(item.getCategory().getColor()) + "; -fx-background-radius: 50%; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 20;");
 			hbox.getChildren().add(labelCircle);
-			
-			//TODO add icon repeating
-			//TODO add label date
 			
 			Label labelName = new Label(item.getName());
 			labelName.setPrefHeight(HEIGHT);
@@ -53,7 +78,7 @@ public class PaymentCell extends ListCell<Payment>
 			hbox.getChildren().add(r);
 			HBox.setHgrow(r, Priority.ALWAYS);
 			
-			Label labelBudget = new Label(String.valueOf(format.format(item.getAmount())).replace(".", ",") + " €");
+			Label labelBudget = new Label(String.valueOf(numberFormat.format(item.getAmount())).replace(".", ",") + " €");
 			labelBudget.setPrefHeight(HEIGHT);		
 			labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #212121");
 			labelBudget.setAlignment(Pos.CENTER);
