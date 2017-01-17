@@ -2,11 +2,11 @@ package de.deadlocker8.budgetmaster.ui;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmaster.ui.cells.PaymentCell;
+import fontAwesome.FontIcon;
+import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -18,7 +18,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -37,15 +36,12 @@ public class PaymentController
 	@FXML private Button buttonNewIncome;
 	@FXML private Button buttonNewPayment;
 
-	private Controller controller;
-	private Image icon = new Image("de/deadlocker8/budgetmaster/resources/icon.png");
-	private final ResourceBundle bundle = ResourceBundle.getBundle("de/deadlocker8/budgetmaster/main/", Locale.GERMANY);
+	private Controller controller;	
 
 	public void init(Controller controller)
 	{
 		this.controller = controller;
-
-		listView.setFixedCellSize(60.0);
+		
 		listView.setCellFactory(new Callback<ListView<Payment>, ListCell<Payment>>()
 		{
 			@Override
@@ -70,14 +66,23 @@ public class PaymentController
 			}
 		});
 		
+		FontIcon iconIncome = new FontIcon(FontIconType.DOWNLOAD);
+		iconIncome.setSize(18);
+		iconIncome.setStyle("-fx-text-fill: white");
+		buttonNewIncome.setGraphic(iconIncome);
+		FontIcon iconPayment = new FontIcon(FontIconType.UPLOAD);
+		iconPayment.setSize(18);
+		iconPayment.setStyle("-fx-text-fill: white");
+		buttonNewPayment.setGraphic(iconPayment);
+		
 		//apply theme
-		anchorPaneMain.setStyle("-fx-background-color: #333333;");		
-		labelIncome.setStyle("-fx-text-fill: " + bundle.getString("color.text"));
-		labelIncomes.setStyle("-fx-text-fill: " + bundle.getString("color.text"));
-		labelPayment.setStyle("-fx-text-fill: " + bundle.getString("color.text"));
-		labelPayments.setStyle("-fx-text-fill: " + bundle.getString("color.text"));
-		buttonNewIncome.setStyle("-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 3; -fx-border-radius: 0; -fx-text-fill: " + bundle.getString("color.text") +"; -fx-font-weight: bold;");
-		buttonNewPayment.setStyle("-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 3; -fx-border-radius: 0; -fx-text-fill: " + bundle.getString("color.text") + "; -fx-font-weight: bold;");
+		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");		
+		labelIncome.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
+		labelIncomes.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
+		labelPayment.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
+		labelPayments.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
+		buttonNewIncome.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
+		buttonNewPayment.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
 
 		// DEBUG
 		listView.getItems().add(new Payment(-1, false, 50.23, LocalDate.now().toString(), 0, "Tanken", 0, null, 0));
@@ -112,7 +117,7 @@ public class PaymentController
 				newStage.setTitle("Neue Einnahme");
 			}
 			newStage.setScene(new Scene(root));
-			newStage.getIcons().add(icon);
+			newStage.getIcons().add(controller.getIcon());
 			newStage.setResizable(false);
 			NewPaymentController newController = fxmlLoader.getController();
 			newController.init(newStage, controller, this, payment);

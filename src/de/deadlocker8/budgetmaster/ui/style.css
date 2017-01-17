@@ -5,41 +5,41 @@
 .tab-header-background {
     -fx-background-color: transparent;
 }
-
-tab-pane .tab-header-area .tab-header-background {
-    -fx-opacity: 0;
-}
-
-.tab-pane
-{
-    -fx-tab-min-width:90px;
+.tab-pane{
+    -fx-tab-min-width: 90px;
 }
 
 .tab{
     -fx-background-insets: 0 1 0 1,0,0;
 }
-.tab-pane .tab
-{
-    -fx-background-color: #e6e6e6;
-
-}
-
-.tab-pane .tab:selected
-{
-    -fx-background-color: #333333;
+.tab-pane .tab{	
+    -fx-font-weight: bold;
+    -fx-background-color: #A5A5A5;
 }
 
 .tab .tab-label { 
-    -fx-alignment: CENTER;
-    -fx-text-fill: #212121;
+    -fx-alignment: CENTER;   
     -fx-font-size: 12px;
     -fx-font-weight: bold;
 }
-
-.tab:selected .tab-label { 
-    -fx-alignment: CENTER;
-    -fx-text-fill: #EDEDED;
+.tab-pane .tab:selected
+{
+    -fx-background-color: #F4F4F4;
 }
+ 
+.tab:selected .tab-label { 
+    -fx-alignment: CENTER;     
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab { 
+    -fx-background-radius: 0, 0, 0;
+}
+
+.tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
+    -fx-border-radius: 0, 0;
+}
+
+
 
 .progress-bar {
     -fx-indeterminate-bar-length: 60;
@@ -56,7 +56,7 @@ tab-pane .tab-header-area .tab-header-background {
 }
 
 .progress-bar > .track {  
-    -fx-background-color: #EAEAEA;     
+    -fx-background-color: #CCCCCC;     
     -fx-background-insets: 0, 0 0 0 0, 0 0 0 0;
     -fx-background-radius: 0, 0, 0;
 }

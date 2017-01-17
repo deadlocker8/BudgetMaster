@@ -1,8 +1,5 @@
 package de.deadlocker8.budgetmaster.ui;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-
 import de.deadlocker8.budgetmaster.logic.CategoryBudget;
 import de.deadlocker8.budgetmaster.ui.cells.CategoryBudgetCell;
 import javafx.application.Platform;
@@ -13,7 +10,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
@@ -27,8 +23,6 @@ public class HomeController
 	@FXML private ListView<CategoryBudget> listView;	
 
 	private Controller controller;
-	private Image icon = new Image("de/deadlocker8/budgetmaster/resources/icon.png");
-	private final ResourceBundle bundle = ResourceBundle.getBundle("de/deadlocker8/budgetmaster/main/", Locale.GERMANY);
 
 	public void init(Controller controller)
 	{
@@ -55,14 +49,8 @@ public class HomeController
 					}
 				});
 			}
-		});
-		
-		//apply theme
-		anchorPaneMain.setStyle("-fx-background-color: #333333;");
-		labelBudget.setStyle("-fx-text-fill: " + bundle.getString("color.text"));
-		labelStartBudget.setStyle("-fx-text-fill: " + bundle.getString("color.text"));
-		listView.setStyle("-fx-background-color: #6F6F6F;");
-
+		});		
+		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");
 		// DEBUG
 		listView.getItems().add(new CategoryBudget("Auto", Color.RED, 79.56));
 		listView.getItems().add(new CategoryBudget("Wohnung", Color.GREEN, 245.));

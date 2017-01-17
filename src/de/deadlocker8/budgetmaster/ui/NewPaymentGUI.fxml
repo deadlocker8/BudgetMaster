@@ -91,12 +91,12 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="30.0" prefWidth="465.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#cancel" text="Abbrechen">
+                  <Button fx:id="buttonCancel" mnemonicParsing="false" onAction="#cancel" text=" Abbrechen">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#save" text="Speichern">
+                  <Button fx:id="buttonSave" mnemonicParsing="false" onAction="#save" text=" Speichern">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
