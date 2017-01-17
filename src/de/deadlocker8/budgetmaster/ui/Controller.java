@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import fontAwesome.FontIcon;
+import fontAwesome.FontIconType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -57,6 +59,12 @@ public class Controller
 			CategoryController categoryController = fxmlLoader.getController();
 			categoryController.init(this);
 			tabCategories.setContent(nodeTabCategory);
+			
+			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/ChartTab.fxml"));
+			Parent nodeTabChart = (Parent)fxmlLoader.load();
+			ChartController chartController = fxmlLoader.getController();
+			chartController.init(this);
+			tabCharts.setContent(nodeTabChart);
 		}
 		catch(IOException e)
 		{
@@ -64,11 +72,19 @@ public class Controller
 			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
 		}
 		
+		FontIcon iconPrevious = new FontIcon(FontIconType.CHEVRON_LEFT);
+		iconPrevious.setSize(20);
+		buttonLeft.setGraphic(iconPrevious);
+		FontIcon iconNext = new FontIcon(FontIconType.CHEVRON_RIGHT);
+		iconNext.setSize(20);
+		buttonRight.setGraphic(iconNext);
+		
+		
 		//apply theme
-		anchorPaneMain.setStyle("-fx-background-color: #101214;");
+		anchorPaneMain.setStyle("-fx-background-color: #DDDDDD");
 		labelMonth.setStyle("-fx-text-fill: " + bundle.getString("color.text"));		
-		buttonLeft.setStyle("-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 3; -fx-border-radius: 0; -fx-text-fill: " + bundle.getString("color.text") +"; -fx-font-weight: bold;");
-		buttonRight.setStyle("-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 3; -fx-border-radius: 0; -fx-text-fill: " + bundle.getString("color.text") + "; -fx-font-weight: bold;");
+		buttonLeft.setStyle("-fx-background-color: transparent;");
+		buttonRight.setStyle("-fx-background-color: transparent;");
 	}
 	
 	public Stage getStage()

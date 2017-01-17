@@ -55,14 +55,8 @@ public class HomeController
 					}
 				});
 			}
-		});
-		
-		//apply theme
-		anchorPaneMain.setStyle("-fx-background-color: #333333;");
-		labelBudget.setStyle("-fx-text-fill: " + bundle.getString("color.text"));
-		labelStartBudget.setStyle("-fx-text-fill: " + bundle.getString("color.text"));
-		listView.setStyle("-fx-background-color: #6F6F6F;");
-
+		});		
+		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");
 		// DEBUG
 		listView.getItems().add(new CategoryBudget("Auto", Color.RED, 79.56));
 		listView.getItems().add(new CategoryBudget("Wohnung", Color.GREEN, 245.));

@@ -5,21 +5,31 @@ import java.time.LocalDate;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import com.sun.javafx.geom.BaseBounds;
+import com.sun.javafx.geom.transform.BaseTransform;
+import com.sun.javafx.scene.BoundsAccessor;
+
 import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmaster.logic.RepeatingType;
 import de.deadlocker8.budgetmaster.ui.cells.PaymentCell;
+import fontAwesome.FontIcon;
+import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.Shadow;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -47,8 +57,7 @@ public class PaymentController
 	public void init(Controller controller)
 	{
 		this.controller = controller;
-
-		listView.setFixedCellSize(60.0);
+		
 		listView.setCellFactory(new Callback<ListView<Payment>, ListCell<Payment>>()
 		{
 			@Override
@@ -73,14 +82,23 @@ public class PaymentController
 			}
 		});
 		
+		FontIcon iconIncome = new FontIcon(FontIconType.MONEY);
+		iconIncome.setSize(20);
+		iconIncome.setStyle("-fx-text-fill: white");
+		buttonNewIncome.setGraphic(iconIncome);
+		FontIcon iconPayment = new FontIcon(FontIconType.SHOPPING_CART);
+		iconPayment.setSize(20);
+		iconPayment.setStyle("-fx-text-fill: white");
+		buttonNewPayment.setGraphic(iconPayment);
+		
 		//apply theme
-		anchorPaneMain.setStyle("-fx-background-color: #333333;");		
+		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");		
 		labelIncome.setStyle("-fx-text-fill: " + bundle.getString("color.text"));
 		labelIncomes.setStyle("-fx-text-fill: " + bundle.getString("color.text"));
 		labelPayment.setStyle("-fx-text-fill: " + bundle.getString("color.text"));
 		labelPayments.setStyle("-fx-text-fill: " + bundle.getString("color.text"));
-		buttonNewIncome.setStyle("-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 3; -fx-border-radius: 0; -fx-text-fill: " + bundle.getString("color.text") +"; -fx-font-weight: bold;");
-		buttonNewPayment.setStyle("-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 3; -fx-border-radius: 0; -fx-text-fill: " + bundle.getString("color.text") + "; -fx-font-weight: bold;");
+		buttonNewIncome.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
+		buttonNewPayment.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
 
 		// DEBUG
 		listView.getItems().add(new Payment(false, 50.23, LocalDate.now(), new Category("Auto", Color.RED), "Tanken", RepeatingType.NONE, 0));

@@ -98,9 +98,10 @@ public class PaymentCell extends ListCell<Payment>
 			hbox.getChildren().add(buttonDelete);
 			HBox.setMargin(buttonDelete, new Insets(0, 0, 0, 25));	
 			
-			setPadding(new Insets(10));
-			setStyle("-fx-background: transparent; -fx-border-color: #333333");
+			hbox.setPadding(new Insets(10));
+			setStyle("-fx-background: transparent; -fx-border-color: #545454; -fx-border-width: 0 0 1 0");
 			setGraphic(hbox);	
+			setAlignment(Pos.CENTER);			
 		}
 		else
 		{

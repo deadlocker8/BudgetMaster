@@ -5,21 +5,24 @@ import java.util.ResourceBundle;
 
 import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmaster.ui.cells.CategoryCell;
+import fontAwesome.FontIcon;
+import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
 
 public class CategoryController
 {	
-	@FXML private Label labelIncomes;
-	@FXML private Label labelPayments;
+	@FXML private AnchorPane anchorPaneMain;
+	@FXML private Button buttonCategory;
 	@FXML private ListView<Category> listView;
 
 	private Controller controller;
@@ -29,8 +32,7 @@ public class CategoryController
 	public void init(Controller controller)
 	{
 		this.controller = controller;
-
-		listView.setFixedCellSize(60.0);
+		
 		listView.setCellFactory(new Callback<ListView<Category>, ListCell<Category>>()
 		{
 			@Override
@@ -54,7 +56,16 @@ public class CategoryController
 				});
 			}
 		});
-
+		
+		FontIcon iconCategory = new FontIcon(FontIconType.PLUS);
+		iconCategory.setSize(20);
+		iconCategory.setStyle("-fx-text-fill: white");
+		buttonCategory.setGraphic(iconCategory);		
+		
+		//apply theme
+		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");				
+		buttonCategory.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
+		
 		// DEBUG
 		listView.getItems().add(new Category("Auto", Color.RED));
 		listView.getItems().add(new Category("Wohnung", Color.GREEN));	
