@@ -38,6 +38,9 @@ public class PaymentCell extends ListCell<Payment>
 			labelCircle.setStyle("-fx-background-color: " + ConvertTo.toRGBHex(item.getCategory().getColor()) + "; -fx-background-radius: 50%; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 20;");
 			hbox.getChildren().add(labelCircle);
 			
+			//TODO add icon repeating
+			//TODO add label date
+			
 			Label labelName = new Label(item.getName());
 			labelName.setPrefHeight(HEIGHT);
 			labelName.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #212121");

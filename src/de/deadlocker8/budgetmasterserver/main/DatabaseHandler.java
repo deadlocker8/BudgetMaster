@@ -169,6 +169,7 @@ public class DatabaseHandler
 		return results;
 	}
 	
+	//TODO incomplete --> not only payments with same year and month but repeating payments
 	public ArrayList<Payment> getPayments(int year, int month)
 	{
 		Statement stmt = null;
