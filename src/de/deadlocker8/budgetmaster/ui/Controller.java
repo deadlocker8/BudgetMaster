@@ -92,6 +92,16 @@ public class Controller
 		return stage;
 	}
 
+	public Image getIcon()
+	{
+		return icon;
+	}
+
+	public ResourceBundle getBundle()
+	{
+		return bundle;
+	}
+
 	public void about()
 	{
 		AlertGenerator.showAboutAlert(bundle.getString("app.name"), bundle.getString("version.name"), bundle.getString("version.code"), bundle.getString("version.date"), bundle.getString("author"), icon, stage, null, false);	

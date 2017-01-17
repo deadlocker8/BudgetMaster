@@ -1,8 +1,5 @@
 package de.deadlocker8.budgetmaster.ui;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-
 import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmaster.ui.cells.CategoryCell;
 import fontAwesome.FontIcon;
@@ -14,7 +11,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
@@ -25,9 +21,7 @@ public class CategoryController
 	@FXML private Button buttonCategory;
 	@FXML private ListView<Category> listView;
 
-	private Controller controller;
-	private Image icon = new Image("de/deadlocker8/budgetmaster/resources/icon.png");
-	private final ResourceBundle bundle = ResourceBundle.getBundle("de/deadlocker8/budgetmaster/main/", Locale.GERMANY);
+	private Controller controller;	
 
 	public void init(Controller controller)
 	{
@@ -58,7 +52,7 @@ public class CategoryController
 		});
 		
 		FontIcon iconCategory = new FontIcon(FontIconType.PLUS);
-		iconCategory.setSize(20);
+		iconCategory.setSize(18);
 		iconCategory.setStyle("-fx-text-fill: white");
 		buttonCategory.setGraphic(iconCategory);		
 		
