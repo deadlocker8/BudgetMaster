@@ -1,28 +1,37 @@
 package de.deadlocker8.budgetmaster.logic;
 
-import java.time.LocalDate;
+import javafx.scene.paint.Color;
 
 public class Payment
 {	
+	private int ID;
 	private boolean income;
 	private double amount;
-	private LocalDate date;
-	private Category category;
+	private String date;
+	private int categoryID;
 	private String name;	
-	private RepeatingType repeatingType;	
-	private int repeatingPeriod;	
-	
-	public Payment(boolean income, double amount, LocalDate date, Category category, String name, RepeatingType repeatingType, int repeatingPeriod)
+	private int repeatInterval;
+	private String repeatEndDate;
+	private int repeatMonthDay;
+
+	public Payment(int ID, boolean income, double amount, String date, int categoryID, String name, int repeatInterval, String repeatEndDate, int repeatMonthDay)
 	{		
+		this.ID = ID;
 		this.income = income;
 		this.amount = amount;
 		this.date = date;
-		this.category = category;
+		this.categoryID = categoryID;
 		this.name = name;
-		this.repeatingType = repeatingType;
-		this.repeatingPeriod = repeatingPeriod;
+		this.repeatInterval = repeatInterval;
+		this.repeatEndDate = repeatEndDate;
+		this.repeatMonthDay = repeatMonthDay;
 	}
 
+	public int getID()
+	{
+		return ID;
+	}
+	
 	public boolean isIncome()
 	{
 		return income;
@@ -43,24 +52,38 @@ public class Payment
 		this.amount = amount;
 	}
 
-	public LocalDate getDate()
+	public String getDate()
 	{
 		return date;
 	}
 
-	public void setDate(LocalDate date)
+	public void setDate(String date)
 	{
 		this.date = date;
 	}
 
-	public Category getCategory()
+	public int getCategoryID()
 	{
-		return category;
+		return categoryID;
 	}
 
-	public void setCategory(Category category)
+	public void setCategoryID(int categoryID)
 	{
-		this.category = category;
+		this.categoryID = categoryID;
+	}
+	
+	public Category getCategory()
+	{
+		//TODO call DatabaseHandler and get Category for categoryID
+		//DEBUG
+		if(categoryID == 0)
+		{
+			return new Category("Auto", Color.RED);	
+		}
+		else
+		{
+			return new Category("Einkommen", Color.DARKBLUE);	
+		}
 	}
 
 	public String getName()
@@ -71,31 +94,41 @@ public class Payment
 	public void setName(String name)
 	{
 		this.name = name;
-	}	
-
-	public RepeatingType getRepeatingType()
-	{
-		return repeatingType;
 	}
 
-	public void setRepeatingType(RepeatingType repeatingType)
+	public int getRepeatInterval()
 	{
-		this.repeatingType = repeatingType;
+		return repeatInterval;
 	}
 
-	public int getRepeatingPeriod()
+	public void setRepeatInterval(int repeatInterval)
 	{
-		return repeatingPeriod;
+		this.repeatInterval = repeatInterval;
 	}
 
-	public void setRepeatingPeriod(int repeatingPeriod)
+	public String getRepeatEndDate()
 	{
-		this.repeatingPeriod = repeatingPeriod;
+		return repeatEndDate;
+	}
+
+	public void setRepeatEndDate(String repeatEndDate)
+	{
+		this.repeatEndDate = repeatEndDate;
+	}
+
+	public int getRepeatMonthDay()
+	{
+		return repeatMonthDay;
+	}
+
+	public void setRepeatMonthDay(int repeatMonthDay)
+	{
+		this.repeatMonthDay = repeatMonthDay;
 	}
 
 	@Override
 	public String toString()
 	{
-		return "Payment [income=" + income + ", amount=" + amount + ", date=" + date + ", category=" + category + ", name=" + name + ", repeatingType=" + repeatingType + ", repeatingPeriod=" + repeatingPeriod + "]";
+		return "Payment [ID=" + ID + ", income=" + income + ", amount=" + amount + ", date=" + date + ", categoryID=" + categoryID + ", name=" + name + ", repeatInterval=" + repeatInterval + ", repeatEndDate=" + repeatEndDate + ", repeatMonthDay=" + repeatMonthDay + "]";
 	}
 }

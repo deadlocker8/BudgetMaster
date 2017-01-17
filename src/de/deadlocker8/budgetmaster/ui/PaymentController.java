@@ -5,9 +5,7 @@ import java.time.LocalDate;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmaster.logic.Payment;
-import de.deadlocker8.budgetmaster.logic.RepeatingType;
 import de.deadlocker8.budgetmaster.ui.cells.PaymentCell;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -22,7 +20,6 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -83,8 +80,8 @@ public class PaymentController
 		buttonNewPayment.setStyle("-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 3; -fx-border-radius: 0; -fx-text-fill: " + bundle.getString("color.text") + "; -fx-font-weight: bold;");
 
 		// DEBUG
-		listView.getItems().add(new Payment(false, 50.23, LocalDate.now(), new Category("Auto", Color.RED), "Tanken", RepeatingType.NONE, 0));
-		listView.getItems().add(new Payment(true, 50.23, LocalDate.now(), new Category("Einkommen", Color.YELLOW), "Einkommen", RepeatingType.NONE, 0));	
+		listView.getItems().add(new Payment(-1, false, 50.23, LocalDate.now().toString(), 0, "Tanken", 0, null, 0));
+		listView.getItems().add(new Payment(-1, true, 14.99, LocalDate.now().toString(), 1, "Spotify", 0, null, 0));
 	}	
 	
 	public void newIncome()

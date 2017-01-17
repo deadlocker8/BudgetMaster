@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmaster.logic.CategoryBudget;
+import de.deadlocker8.budgetmaster.logic.Payment;
 import javafx.scene.paint.Color;
 import logger.LogLevel;
 import logger.Logger;
@@ -145,6 +146,57 @@ public class DatabaseHandler
 				int amount = rs.getInt("amount");
 				
 				results.add(new CategoryBudget(name, Color.web(color), amount / 100.0));
+			}				
+		}
+		catch(SQLException e)
+		{
+			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+
+		return results;
+	}
+	
+	public ArrayList<Payment> getPayments(int year, int month)
+	{
+		Statement stmt = null;
+		String query = "SELECT * FROM Payment, PaymentType WHERE Payment.PaymentTypeID = PaymentType.ID AND YEAR(Date) = " + year + " AND MONTH(Date) = " + month + " ORDER BY Payment.Date;";
+		
+		ArrayList<Payment> results = new ArrayList<>();
+		try
+		{
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next())
+			{	
+				int ID = rs.getInt("ID");
+				String paymentType = rs.getString("Description"); 				
+				boolean income = true;
+				if(paymentType.equals("-"))
+				{
+					income = false;
+				}
+				String name = rs.getString("Name");			
+				int amount = rs.getInt("amount");
+				String date = rs.getString("Date");
+				int categoryID = rs.getInt("CategoryID");
+				int repeatInterval = rs.getInt("RepeatInterval");
+				String repeatEndDate = rs.getString("RepeatEndDate");
+				int repeatMonthDay = rs.getInt("RepeatMonthDay");				
+				results.add(new Payment(ID, income, amount, date, categoryID, name, repeatInterval, repeatEndDate, repeatMonthDay));
 			}				
 		}
 		catch(SQLException e)
