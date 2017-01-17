@@ -1,6 +1,8 @@
 package de.deadlocker8.budgetmasterserver.server;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 
@@ -14,7 +16,7 @@ public class Server
 	{
 		HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
 		server.createContext("/", new MyHandler());
-		server.setExecutor(null); // creates a default executor
+		server.setExecutor(null);
 		server.start();
 	}
 
@@ -22,7 +24,35 @@ public class Server
 	{
 		public void handle(HttpExchange t) throws IOException
 		{
-			String response = "Welcome Real's HowTo test page";
+			switch(t.getRequestMethod())
+			{
+				case "GET":
+					System.out.println("GET");
+					break;
+
+				case "PUT":
+					System.out.println("PUT");
+					InputStreamReader isr = new InputStreamReader(t.getRequestBody(), "utf-8");
+					BufferedReader br = new BufferedReader(isr);
+
+					int b;
+					StringBuilder buf = new StringBuilder(512);
+					while((b = br.read()) != -1)
+					{
+						buf.append((char)b);
+					}
+
+					br.close();
+					isr.close();
+					System.out.println(buf);
+					break;
+
+				default:
+					System.out.println("unrecognized: " + t.getRequestMethod());
+					break;
+			}
+
+			String response = "Test Page";
 			t.sendResponseHeaders(200, response.length());
 			OutputStream os = t.getResponseBody();
 			os.write(response.getBytes());
