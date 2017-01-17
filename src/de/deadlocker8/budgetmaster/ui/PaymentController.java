@@ -69,11 +69,11 @@ public class PaymentController
 			}
 		});
 		
-		FontIcon iconIncome = new FontIcon(FontIconType.MONEY);
+		FontIcon iconIncome = new FontIcon(FontIconType.DOWNLOAD);
 		iconIncome.setSize(18);
 		iconIncome.setStyle("-fx-text-fill: white");
 		buttonNewIncome.setGraphic(iconIncome);
-		FontIcon iconPayment = new FontIcon(FontIconType.SHOPPING_CART);
+		FontIcon iconPayment = new FontIcon(FontIconType.UPLOAD);
 		iconPayment.setSize(18);
 		iconPayment.setStyle("-fx-text-fill: white");
 		buttonNewPayment.setGraphic(iconPayment);
