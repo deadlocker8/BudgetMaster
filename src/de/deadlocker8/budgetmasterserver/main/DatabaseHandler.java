@@ -131,7 +131,7 @@ public class DatabaseHandler
 	public ArrayList<CategoryBudget> getCategoryBudget(int year, int month)
 	{
 		Statement stmt = null;
-		String query = "SELECT Category.Name, Category.Color, SUM(Payment.Amount) as amount FROM Payment, Category WHERE Payment.CategoryID = Category.ID AND YEAR(Date) = " + year + " AND MONTH(Date) = " + month + " GROUP BY Payment.CategoryID ORDER BY SUM(Payment.Amount);";
+		String query = "SELECT Category.Name, Category.Color, SUM(Payment.Amount) as amount FROM Payment Category WHERE Payment.CategoryID = Category.ID AND YEAR(Date) = " + year + " AND MONTH(Date) = " + month + " GROUP BY Payment.CategoryID ORDER BY SUM(Payment.Amount);";
 		
 		ArrayList<CategoryBudget> results = new ArrayList<>();
 		try
