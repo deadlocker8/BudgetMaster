@@ -51,12 +51,26 @@ public class PaymentCell extends ListCell<Payment>
 			labelDate.setAlignment(Pos.CENTER);
 			labelDate.getStyleClass().add("greylabel");
 			labelDate.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #212121");
-			hbox.getChildren().add(labelDate);
-			HBox.setMargin(labelDate, new Insets(0, 20, 0, 0));
-			
+			hbox.getChildren().add(labelDate);		
 
-			//TODO add icon repeating
-			
+			FontIcon iconRepeating = new FontIcon(FontIconType.CALENDAR);
+			iconRepeating.setSize(20);
+			if(item.isRepeating())
+			{
+				iconRepeating.setColor(Color.web("#212121"));
+			}
+			else
+			{
+				iconRepeating.setColor(Color.TRANSPARENT);
+			}			
+			Label labelRepeating = new Label();
+			labelRepeating.setGraphic(iconRepeating);
+			labelRepeating.setPrefHeight(HEIGHT);				
+			labelRepeating.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #212121");			
+			labelRepeating.setAlignment(Pos.CENTER);
+			labelRepeating.getStyleClass().add("greylabel");
+			hbox.getChildren().add(labelRepeating);
+			HBox.setMargin(labelRepeating, new Insets(0, 30, 0, 15));
 			
 			Label labelCircle = new Label(item.getCategory().getName().substring(0, 1).toUpperCase());
 			labelCircle.setPrefWidth(HEIGHT);
@@ -101,8 +115,7 @@ public class PaymentCell extends ListCell<Payment>
 				labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #CC0000");
 				
 				icon = new FontIcon(FontIconType.UPLOAD);
-				icon.setColor(Color.web("#CC0000"));
-				
+				icon.setColor(Color.web("#CC0000"));				
 			}			
 			
 			icon.setSize(20);			

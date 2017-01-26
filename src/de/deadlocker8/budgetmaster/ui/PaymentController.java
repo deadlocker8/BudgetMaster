@@ -86,7 +86,7 @@ public class PaymentController
 
 		// DEBUG
 		listView.getItems().add(new Payment(-1, false, 50.23, LocalDate.now().toString(), 0, "Tanken", 0, null, 0));
-		listView.getItems().add(new Payment(-1, true, 14.99, LocalDate.now().toString(), 1, "Spotify", 0, null, 0));
+		listView.getItems().add(new Payment(-1, true, 14.99, LocalDate.now().toString(), 1, "Spotify", 0, null, 15));
 	}	
 	
 	public void newIncome()

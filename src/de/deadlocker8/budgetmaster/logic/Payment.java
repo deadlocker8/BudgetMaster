@@ -125,6 +125,21 @@ public class Payment
 	{
 		this.repeatMonthDay = repeatMonthDay;
 	}
+	
+	public boolean isRepeating()
+	{
+		if(repeatInterval != 0)
+		{
+			return true;
+		}
+		 
+		if(repeatMonthDay != 0)
+		{
+			return true;
+		}
+		
+		return false;
+	}
 
 	@Override
 	public String toString()
