@@ -47,7 +47,8 @@ public class SettingsController
 				settings.setSecret(secret);
 				controller.setSettings(settings);
 			}
-			Utils.saveSettings(controller.getSettings());			
+			Utils.saveSettings(controller.getSettings());	
+			controller.showNotification("Erfolgreich gespeichert");
 		}
 		else
 		{

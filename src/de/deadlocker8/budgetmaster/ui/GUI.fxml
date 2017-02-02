@@ -6,6 +6,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -24,15 +25,20 @@
                   <Button fx:id="buttonRight" mnemonicParsing="false" />
                </children>
             </HBox>
-            <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="403.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
-              <tabs>
-                <Tab fx:id="tabHome" closable="false" text="Startseite" />
-                  <Tab fx:id="tabPayments" closable="false" text="Buchungen" />
-                  <Tab fx:id="tabCategories" closable="false" text="Kategorien" />
-                  <Tab fx:id="tabCharts" closable="false" text="Diagramme" />
-                  <Tab fx:id="tabSettings" closable="false" text="Einstellungen" />
-              </tabs>
-            </TabPane>
+            <StackPane alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
+               <children>
+                  <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="403.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                      <Tab fx:id="tabHome" closable="false" text="Startseite" />
+                        <Tab fx:id="tabPayments" closable="false" text="Buchungen" />
+                        <Tab fx:id="tabCategories" closable="false" text="Kategorien" />
+                        <Tab fx:id="tabCharts" closable="false" text="Diagramme" />
+                        <Tab fx:id="tabSettings" closable="false" text="Einstellungen" />
+                    </tabs>
+                  </TabPane>
+                  <Label fx:id="labelNotification" alignment="CENTER" maxWidth="1.7976931348623157E308" />
+               </children>
+            </StackPane>
          </children>
       </VBox>
    </children>
