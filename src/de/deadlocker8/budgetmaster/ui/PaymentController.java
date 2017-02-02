@@ -26,7 +26,7 @@ import logger.LogLevel;
 import logger.Logger;
 
 public class PaymentController
-{	
+{
 	@FXML private AnchorPane anchorPaneMain;
 	@FXML private Label labelIncome;
 	@FXML private Label labelIncomes;
@@ -36,12 +36,12 @@ public class PaymentController
 	@FXML private Button buttonNewIncome;
 	@FXML private Button buttonNewPayment;
 
-	private Controller controller;	
+	private Controller controller;
 
 	public void init(Controller controller)
 	{
 		this.controller = controller;
-		
+
 		listView.setCellFactory(new Callback<ListView<Payment>, ListCell<Payment>>()
 		{
 			@Override
@@ -65,7 +65,7 @@ public class PaymentController
 				});
 			}
 		});
-		
+
 		FontIcon iconIncome = new FontIcon(FontIconType.DOWNLOAD);
 		iconIncome.setSize(18);
 		iconIncome.setStyle("-fx-text-fill: white");
@@ -74,9 +74,9 @@ public class PaymentController
 		iconPayment.setSize(18);
 		iconPayment.setStyle("-fx-text-fill: white");
 		buttonNewPayment.setGraphic(iconPayment);
-		
-		//apply theme
-		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");		
+
+		// apply theme
+		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");
 		labelIncome.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
 		labelIncomes.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
 		labelPayment.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
@@ -87,13 +87,13 @@ public class PaymentController
 		// DEBUG
 		listView.getItems().add(new Payment(-1, false, 50.23, LocalDate.now().toString(), 0, "Tanken", 0, null, 0));
 		listView.getItems().add(new Payment(-1, true, 14.99, LocalDate.now().toString(), 1, "Spotify", 0, null, 15));
-	}	
-	
+	}
+
 	public void newIncome()
 	{
 		payment(false);
 	}
-	
+
 	public void newPayment()
 	{
 		payment(true);

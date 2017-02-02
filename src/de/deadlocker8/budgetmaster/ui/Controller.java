@@ -4,8 +4,13 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import de.deadlocker8.budgetmaster.logic.Settings;
+import de.deadlocker8.budgetmaster.logic.Utils;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -36,10 +42,22 @@ public class Controller
 	private Stage stage;
 	private Image icon = new Image("de/deadlocker8/budgetmaster/resources/icon.png");
 	private final ResourceBundle bundle = ResourceBundle.getBundle("de/deadlocker8/budgetmaster/main/", Locale.GERMANY);
+	private Settings settings;	
 	
 	public void init(Stage stage)
 	{
 		this.stage = stage;
+		
+		settings = Utils.loadSettings();
+		
+		if(settings == null)
+		{			
+			//TODO dont't load other tabs!
+			Platform.runLater(()->{
+				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Bitte gibt zuerst dein Server Passwort ein!", icon, stage, null, false);
+				tabPane.getSelectionModel().select(tabSettings);
+			});
+		}
 		
 		try
 		{			
@@ -77,7 +95,7 @@ public class Controller
 		{
 			//ERRORHANDLING
 			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
-		}
+		}			
 		
 		FontIcon iconPrevious = new FontIcon(FontIconType.CHEVRON_LEFT);
 		iconPrevious.setSize(20);
@@ -85,7 +103,7 @@ public class Controller
 		FontIcon iconNext = new FontIcon(FontIconType.CHEVRON_RIGHT);
 		iconNext.setSize(20);
 		buttonRight.setGraphic(iconNext);
-		
+				
 		
 		//apply theme
 		anchorPaneMain.setStyle("-fx-background-color: #DDDDDD");
@@ -107,8 +125,18 @@ public class Controller
 	public ResourceBundle getBundle()
 	{
 		return bundle;
+	}	
+
+	public Settings getSettings()
+	{
+		return settings;
 	}
 
+	public void setSettings(Settings settings)
+	{
+		this.settings = settings;
+	}
+	
 	public void about()
 	{
 		AlertGenerator.showAboutAlert(bundle.getString("app.name"), bundle.getString("version.name"), bundle.getString("version.code"), bundle.getString("version.date"), bundle.getString("author"), icon, stage, null, false);	
