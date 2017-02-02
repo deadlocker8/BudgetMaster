@@ -14,6 +14,7 @@ import com.google.gson.GsonBuilder;
 import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmasterserver.main.DatabaseHandler;
 import de.deadlocker8.budgetmasterserver.main.Settings;
+import de.deadlocker8.budgetmasterserver.main.Utils;
 import spark.Spark;
 import spark.route.RouteOverview;
 
@@ -38,21 +39,9 @@ public class SparkServer
 			}		
 		}
 		
-		String settingsJSON;
-		Settings settings;
-		try
-		{
-			settingsJSON = new String(Files.readAllBytes(Paths.get("settings.properties")));				
-			settings = gson.fromJson(settingsJSON, Settings.class);	
-		}
-		catch(IOException e)
-		{
-			//ERRORHANDLING
-			e.printStackTrace();
-			return;
-		}
+		Settings settings = Utils.loadSettings();
 		
-		port(settings.getPort());
+		port(settings.getServerPort());
 		//TODO HTTPS
 		//secure("", "", null, null);	
 		
@@ -60,7 +49,7 @@ public class SparkServer
 			
 			String clientSecret = request.queryMap("secret").value();
 		
-			if(clientSecret == null || !clientSecret.equals(settings.getSecret()))			
+			if(clientSecret == null || !clientSecret.equals(settings.getServerSecret()))			
 			{
 				halt(401, "Unauthorized");
 			}
@@ -68,7 +57,7 @@ public class SparkServer
 
 		get("/hello", (req, res) -> {
 
-			DatabaseHandler handler = new DatabaseHandler();			
+			DatabaseHandler handler = new DatabaseHandler(settings);			
 			ArrayList<Category> categories = handler.getCategories();
 			System.out.println(req.queryMap("id").doubleValue());
 

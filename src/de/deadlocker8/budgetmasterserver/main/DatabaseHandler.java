@@ -16,20 +16,16 @@ import logger.LogLevel;
 import logger.Logger;
 
 public class DatabaseHandler
-{
-	private final String URL = "jdbc:mysql://localhost:3306/";
-	private final String DB_NAME = "budgetmaster";
-	private final String USERNAME = "root";
-	private final String PASSWORD = "";
+{	
 	private Connection connection;
 	
 	//DEBUG String query = "SELECT * FROM Payment WHERE YEAR(Date) = " + year + " AND MONTH(Date) = " + month + ";";
 
-	public DatabaseHandler()
-	{
+	public DatabaseHandler(Settings settings)
+	{	
 		try
 		{
-			this.connection = DriverManager.getConnection(URL + DB_NAME, USERNAME, PASSWORD);
+			this.connection = DriverManager.getConnection(settings.getDatabaseUrl() + settings.getDatabaseName(), settings.getDatabaseUsername(), settings.getDatabasePassword());
 		}
 		catch(SQLException e)
 		{
