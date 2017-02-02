@@ -1,6 +1,9 @@
 package de.deadlocker8.budgetmasterserver.server;
 
-import static spark.Spark.*;
+import static spark.Spark.before;
+import static spark.Spark.get;
+import static spark.Spark.halt;
+import static spark.Spark.port;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -15,7 +18,6 @@ import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmasterserver.main.DatabaseHandler;
 import de.deadlocker8.budgetmasterserver.main.Settings;
 import de.deadlocker8.budgetmasterserver.main.Utils;
-import spark.Spark;
 import spark.route.RouteOverview;
 
 public class SparkServer
