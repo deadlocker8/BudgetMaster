@@ -30,6 +30,7 @@
                   <Tab fx:id="tabPayments" closable="false" text="Buchungen" />
                   <Tab fx:id="tabCategories" closable="false" text="Kategorien" />
                   <Tab fx:id="tabCharts" closable="false" text="Diagramme" />
+                  <Tab fx:id="tabSettings" closable="false" text="Einstellungen" />
               </tabs>
             </TabPane>
          </children>

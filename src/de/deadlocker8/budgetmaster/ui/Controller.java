@@ -31,6 +31,7 @@ public class Controller
 	@FXML private Tab tabPayments;
 	@FXML private Tab tabCategories;
 	@FXML private Tab tabCharts;
+	@FXML private Tab tabSettings;
 
 	private Stage stage;
 	private Image icon = new Image("de/deadlocker8/budgetmaster/resources/icon.png");
@@ -65,6 +66,12 @@ public class Controller
 			ChartController chartController = fxmlLoader.getController();
 			chartController.init(this);
 			tabCharts.setContent(nodeTabChart);
+			
+			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/SettingsTab.fxml"));
+			Parent nodeTabSettings = (Parent)fxmlLoader.load();
+			SettingsController settingsController = fxmlLoader.getController();
+			settingsController.init(this);
+			tabSettings.setContent(nodeTabSettings);
 		}
 		catch(IOException e)
 		{
