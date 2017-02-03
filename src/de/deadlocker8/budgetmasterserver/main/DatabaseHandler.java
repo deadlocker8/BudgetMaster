@@ -241,13 +241,7 @@ public class DatabaseHandler
 
 			while(rs.next())
 			{
-				int resultID = rs.getInt("ID");
-				String paymentType = rs.getString("Description");
-				boolean income = true;
-				if(paymentType.equals("-"))
-				{
-					income = false;
-				}				
+				int resultID = rs.getInt("ID");				
 				String name = rs.getString("Name");
 				int amount = rs.getInt("amount");
 				String date = rs.getString("Date");
@@ -264,7 +258,7 @@ public class DatabaseHandler
 					date = dateTime.toString(formatter);					
 				}
 				
-				return new Payment(resultID, income, amount, date, categoryID, name, repeatInterval, repeatEndDate, repeatMonthDay);
+				return new Payment(resultID, amount, date, categoryID, name, repeatInterval, repeatEndDate, repeatMonthDay);
 			}
 		}
 		catch(SQLException e)
@@ -330,6 +324,12 @@ public class DatabaseHandler
 	public ArrayList<Payment> getPayments(int year, int month)
 	{
 		ArrayList<Payment> payments = new ArrayList<>();
+		
+		//add rest from previous months
+		int restAmount = getRest(year, month);
+		Payment paymentRest = new Payment(-1, restAmount, year + "-" + month + "-01", 1, "Übertrag", 0, null, 0);		
+		payments.add(paymentRest);		
+		
 		ArrayList<Integer> IDs = getPaymentIDs(year, month);
 		for(int currentID : IDs)
 		{
@@ -339,7 +339,7 @@ public class DatabaseHandler
 				payments.add(currentPayment);
 			}
 		}
-
+		
 		return payments;
 	}
 }
