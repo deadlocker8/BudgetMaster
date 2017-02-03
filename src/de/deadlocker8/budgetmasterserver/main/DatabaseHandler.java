@@ -23,8 +23,6 @@ public class DatabaseHandler
 {
 	private Connection connection;
 
-	// DEBUG String query = "SELECT * FROM Payment WHERE YEAR(Date) = " + year + " AND MONTH(Date) = " + month + ";";
-
 	public DatabaseHandler(Settings settings)
 	{
 		try
