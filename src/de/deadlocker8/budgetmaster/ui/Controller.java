@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import de.deadlocker8.budgetmaster.logic.Settings;
 import de.deadlocker8.budgetmaster.logic.Utils;
 import fontAwesome.FontIcon;
@@ -11,16 +15,14 @@ import fontAwesome.FontIconType;
 import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -46,12 +48,15 @@ public class Controller
 	private Stage stage;
 	private Image icon = new Image("de/deadlocker8/budgetmaster/resources/icon.png");
 	private final ResourceBundle bundle = ResourceBundle.getBundle("de/deadlocker8/budgetmaster/main/", Locale.GERMANY);
-	private Settings settings;
+	private Settings settings;	
+	private DateTime currentDate;
 
 	public void init(Stage stage)
 	{
 		this.stage = stage;
-
+		currentDate = DateTime.now();		
+		labelMonth.setText(currentDate.toString("MMMM yyyy"));
+		
 		settings = Utils.loadSettings();
 
 		if(settings == null)
@@ -160,6 +165,20 @@ public class Controller
 	    seqT.setOnFinished((a)->{
 	    	labelNotification.setStyle("-fx-text-fill: #FFFFFF; -fx-font-size: 16; -fx-font-weight: bold; -fx-background-color: transparent;");	    	
 	    });
+	}
+	
+	public void previousMonth()
+	{
+		currentDate = currentDate.minusMonths(1);
+		labelMonth.setText(currentDate.toString("MMMM yyyy"));
+		//TODO reload tab content
+	}
+	
+	public void nextMonth()
+	{
+		currentDate = currentDate.plusMonths(1);
+		labelMonth.setText(currentDate.toString("MMMM yyyy"));
+		//TODO reload tab content
 	}
 
 	public void about()

@@ -16,13 +16,13 @@
          <children>
             <HBox alignment="CENTER" prefWidth="772.0" spacing="15.0">
                <children>
-                  <Button fx:id="buttonLeft" mnemonicParsing="false" />
+                  <Button fx:id="buttonLeft" mnemonicParsing="false" onAction="#previousMonth" />
                   <Label fx:id="labelMonth" text="Dezember 2016">
                      <font>
                         <Font name="System Bold" size="25.0" />
                      </font>
                   </Label>
-                  <Button fx:id="buttonRight" mnemonicParsing="false" />
+                  <Button fx:id="buttonRight" mnemonicParsing="false" onAction="#nextMonth" />
                </children>
             </HBox>
             <StackPane alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
