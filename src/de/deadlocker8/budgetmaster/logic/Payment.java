@@ -5,7 +5,6 @@ import javafx.scene.paint.Color;
 public class Payment
 {	
 	private int ID;
-	private boolean income;
 	private double amount;
 	private String date;
 	private int categoryID;
@@ -14,10 +13,9 @@ public class Payment
 	private String repeatEndDate;
 	private int repeatMonthDay;
 
-	public Payment(int ID, boolean income, double amount, String date, int categoryID, String name, int repeatInterval, String repeatEndDate, int repeatMonthDay)
+	public Payment(int ID, double amount, String date, int categoryID, String name, int repeatInterval, String repeatEndDate, int repeatMonthDay)
 	{		
-		this.ID = ID;
-		this.income = income;
+		this.ID = ID;		
 		this.amount = amount;
 		this.date = date;
 		this.categoryID = categoryID;
@@ -34,14 +32,9 @@ public class Payment
 	
 	public boolean isIncome()
 	{
-		return income;
+		return amount > 0;
 	}
 	
-	public void setIncome(boolean income)
-	{
-		this.income = income;
-	}
-
 	public double getAmount()
 	{
 		return amount;
@@ -144,6 +137,6 @@ public class Payment
 	@Override
 	public String toString()
 	{
-		return "Payment [ID=" + ID + ", income=" + income + ", amount=" + amount + ", date=" + date + ", categoryID=" + categoryID + ", name=" + name + ", repeatInterval=" + repeatInterval + ", repeatEndDate=" + repeatEndDate + ", repeatMonthDay=" + repeatMonthDay + "]";
+		return "Payment [ID=" + ID + ", amount=" + amount + ", date=" + date + ", categoryID=" + categoryID + ", name=" + name + ", repeatInterval=" + repeatInterval + ", repeatEndDate=" + repeatEndDate + ", repeatMonthDay=" + repeatMonthDay + "]";
 	}
 }

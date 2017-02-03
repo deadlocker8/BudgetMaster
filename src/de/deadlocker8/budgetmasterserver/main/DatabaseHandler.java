@@ -183,13 +183,7 @@ public class DatabaseHandler
 
 			while(rs.next())
 			{	
-				int ID = rs.getInt("ID");
-				String paymentType = rs.getString("Description"); 				
-				boolean income = true;
-				if(paymentType.equals("-"))
-				{
-					income = false;
-				}
+				int ID = rs.getInt("ID");				
 				String name = rs.getString("Name");			
 				int amount = rs.getInt("amount");
 				String date = rs.getString("Date");
@@ -197,7 +191,7 @@ public class DatabaseHandler
 				int repeatInterval = rs.getInt("RepeatInterval");
 				String repeatEndDate = rs.getString("RepeatEndDate");
 				int repeatMonthDay = rs.getInt("RepeatMonthDay");				
-				results.add(new Payment(ID, income, amount, date, categoryID, name, repeatInterval, repeatEndDate, repeatMonthDay));
+				results.add(new Payment(ID, amount, date, categoryID, name, repeatInterval, repeatEndDate, repeatMonthDay));
 			}				
 		}
 		catch(SQLException e)

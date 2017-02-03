@@ -112,7 +112,7 @@ public class PaymentCell extends ListCell<Payment>
 			}
 			else
 			{
-				labelBudget.setText("-" + labelBudget.getText());
+				labelBudget.setText(labelBudget.getText());
 				labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #CC0000");
 				
 				icon = new FontIcon(FontIconType.UPLOAD);
