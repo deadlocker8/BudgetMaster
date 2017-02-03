@@ -13,22 +13,31 @@
    <children>
       <VBox alignment="TOP_CENTER" layoutY="24.0" prefHeight="562.0" prefWidth="772.0" spacing="25.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="25.0">
          <children>
-            <HBox prefHeight="25.0" prefWidth="679.0">
+            <HBox prefHeight="70.0">
                <children>
-                  <VBox alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="158.0">
+                  <VBox alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="158.0" spacing="20.0">
                      <children>
-                        <Label fx:id="labelSecret" prefHeight="25.0" text="Server Passwort:">
+                        <Label fx:id="labelURL" prefHeight="25.0" text="Server URL:">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
                            <VBox.margin>
-                              <Insets right="25.0" />
+                              <Insets />
                            </VBox.margin>
                         </Label>
+                        <Label fx:id="labelSecret" prefHeight="25.0" text="Server Passwort:">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
                      </children>
+                     <HBox.margin>
+                        <Insets right="25.0" />
+                     </HBox.margin>
                   </VBox>
-                  <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                  <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="20.0" HBox.hgrow="ALWAYS">
                      <children>
+                        <TextField fx:id="textFieldURL" />
                         <TextField fx:id="textFieldSecret" />
                      </children>
                   </VBox>
@@ -41,7 +50,7 @@
             </Button>
          </children>
          <padding>
-            <Insets right="200.0" />
+            <Insets right="50.0" />
          </padding></VBox>
    </children>
 </AnchorPane>

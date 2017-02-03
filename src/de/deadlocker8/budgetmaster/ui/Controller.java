@@ -58,7 +58,7 @@ public class Controller
 		{
 			// TODO dont't load other tabs!
 			Platform.runLater(() -> {
-				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Bitte gibt zuerst dein Server Passwort ein!", icon, stage, null, false);
+				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Bitte gibt zuerst deine Serverdaten ein!", icon, stage, null, false);
 				tabPane.getSelectionModel().select(tabSettings);
 			});
 		}

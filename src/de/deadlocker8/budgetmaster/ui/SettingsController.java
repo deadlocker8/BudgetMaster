@@ -13,6 +13,8 @@ import tools.AlertGenerator;
 public class SettingsController
 {
 	@FXML private AnchorPane anchorPaneMain;
+	@FXML private TextField textFieldURL;
+	@FXML private Label labelURL;
 	@FXML private TextField textFieldSecret;
 	@FXML private Label labelSecret;
 	@FXML private Button buttonSave;
@@ -24,35 +26,48 @@ public class SettingsController
 		this.controller = controller;
 		if(controller.getSettings() != null)
 		{
+			textFieldURL.setText(controller.getSettings().getUrl());
 			textFieldSecret.setText(controller.getSettings().getSecret());
 		}
 		
 		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");
 		labelSecret.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
+		labelURL.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
 		buttonSave.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");	
+		textFieldURL.setPromptText("z.B. http://yourdomain.de");
 	}
 	
 	public void save()
 	{
+		String url = textFieldURL.getText().trim();
 		String secret = textFieldSecret.getText().trim();
-		if(secret != null && !secret.equals(""))
+		if(url != null && !url.equals(""))
 		{
-			if(controller.getSettings() != null)
+			if(secret != null && !secret.equals(""))
 			{
-				controller.getSettings().setSecret(secret);				
+				if(controller.getSettings() != null)
+				{
+					controller.getSettings().setUrl(url);
+					controller.getSettings().setSecret(secret);				
+				}
+				else
+				{
+					Settings settings = new Settings();
+					settings.setUrl(url);
+					settings.setSecret(secret);
+					controller.setSettings(settings);
+				}
+				Utils.saveSettings(controller.getSettings());	
+				controller.showNotification("Erfolgreich gespeichert");
 			}
 			else
 			{
-				Settings settings = new Settings();
-				settings.setSecret(secret);
-				controller.setSettings(settings);
+				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Server Passwortfel darf nicht leer sein!", controller.getIcon(), controller.getStage(), null, false);
 			}
-			Utils.saveSettings(controller.getSettings());	
-			controller.showNotification("Erfolgreich gespeichert");
 		}
 		else
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Server Passwortfel darf nicht leer sein!", controller.getIcon(), controller.getStage(), null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Feld für die Server URL darf nicht leer sein!", controller.getIcon(), controller.getStage(), null, false);
 		}
 	}
 }
