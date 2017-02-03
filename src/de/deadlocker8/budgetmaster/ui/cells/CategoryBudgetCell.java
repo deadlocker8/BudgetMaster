@@ -31,7 +31,8 @@ public class CategoryBudgetCell extends ListCell<CategoryBudget>
 			labelCircle.setPrefHeight(HEIGHT);
 			labelCircle.setAlignment(Pos.CENTER);
 			labelCircle.getStyleClass().add("greylabel");
-			labelCircle.setStyle("-fx-background-color: " + ConvertTo.toRGBHex(item.getColor()) + "; -fx-background-radius: 50%; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 20;");
+			String textColor = ConvertTo.toRGBHex(ConvertTo.getAppropriateTextColor(item.getColor()));
+			labelCircle.setStyle("-fx-background-color: " + ConvertTo.toRGBHex(item.getColor()) + "; -fx-background-radius: 50%; -fx-text-fill: " + textColor + "; -fx-font-weight: bold; -fx-font-size: 20;");
 			hbox.getChildren().add(labelCircle);
 
 			Label labelName = new Label(item.getName());
