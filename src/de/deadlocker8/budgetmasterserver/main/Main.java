@@ -8,6 +8,6 @@ public class Main
 		DatabaseHandler handler = new DatabaseHandler(settings);
 		//handler.listTables();
 //		System.out.println(handler.getCategoryBudget(2017, 1));
-		System.out.println(handler.getPayments(2017, 1));
+		System.out.println(handler.getRestForAllPreviousMonths(2017,10));
 	}
 }

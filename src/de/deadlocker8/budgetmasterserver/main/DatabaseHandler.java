@@ -22,6 +22,7 @@ import logger.Logger;
 public class DatabaseHandler
 {
 	private Connection connection;
+	private final DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");		
 
 	public DatabaseHandler(Settings settings)
 	{
@@ -52,19 +53,20 @@ public class DatabaseHandler
 			throw new IllegalStateException("Cannot connect the database!", e);
 		}
 	}
-
-	public ArrayList<String> getPaymentTypes()
+	
+	public DateTime getFirstPaymentDate()
 	{
 		Statement stmt = null;
-		String query = "SELECT Description FROM PaymentType";
-		ArrayList<String> results = new ArrayList<>();
+		String query = "SELECT MIN(Date) as \"min\" FROM Payment";		
+		DateTime dateTime = null;
 		try
 		{
 			stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
+			
 			while(rs.next())
-			{
-				results.add(rs.getString("Description"));
+			{								
+				dateTime = formatter.parseDateTime(rs.getString("min"));
 			}
 		}
 		catch(SQLException e)
@@ -85,7 +87,66 @@ public class DatabaseHandler
 			}
 		}
 
-		return results;
+		return dateTime;	
+	}
+	
+	public int getRestForAllPreviousMonths(int year, int month)
+	{
+		DateTime firstDate = getFirstPaymentDate();		
+		
+		int startYear = firstDate.getYear();
+		int startMonth = firstDate.getMonthOfYear();
+		int totalRest = 0;
+		
+		while(startYear < year || startMonth < month)
+		{			
+			totalRest += getRest(startYear, startMonth);			
+			
+			startMonth++;
+			if(startMonth > 12)
+			{
+				startMonth = 1;
+				startYear++;
+			}			
+		}		
+		return totalRest;
+	}
+	
+	public int getRest(int year, int month)
+	{
+		Statement stmt = null;
+		String query = "SELECT SUM(q.amount) as \"rest\" FROM(SELECT Payment.amount as \"amount\" FROM Payment WHERE (YEAR(Date) = " + year + " AND MONTH(Date) = " + month + " OR RepeatMonthDay != 0 OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NULL OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NOT NULL AND DATEDIFF(RepeatEndDate, NOW()) > 0) GROUP BY Payment.ID ORDER BY Payment.Date) q";
+		
+		int result = 0;
+		try
+		{
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next())
+			{
+				result = rs.getInt("rest");				
+			}
+		}
+		catch(SQLException e)
+		{
+			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+
+		return result;
 	}
 
 	public ArrayList<Category> getCategories()
@@ -172,7 +233,7 @@ public class DatabaseHandler
 	public Payment getPayment(int ID, int year, int month)
 	{
 		Statement stmt = null;
-		String query = "SELECT * FROM Payment, PaymentType WHERE Payment.PaymentTypeID = PaymentType.ID AND Payment.ID= " + ID;
+		String query = "SELECT * FROM Payment WHERE Payment.ID= " + ID;
 		try
 		{
 			stmt = connection.createStatement();
@@ -196,8 +257,7 @@ public class DatabaseHandler
 				String repeatEndDate = rs.getString("RepeatEndDate");				
 				int repeatMonthDay = rs.getInt("RepeatMonthDay");
 				if(repeatInterval != 0 || repeatMonthDay != 0)
-				{					
-					DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");						
+				{								
 					DateTime dateTime = formatter.parseDateTime(date);
 					dateTime = dateTime.year().setCopy(year);
 					dateTime = dateTime.monthOfYear().setCopy(month);
@@ -231,7 +291,7 @@ public class DatabaseHandler
 	public ArrayList<Integer> getPaymentIDs(int year, int month)
 	{
 		Statement stmt = null;
-		String query = "SELECT Payment.ID as ID FROM Payment, PaymentType WHERE Payment.PaymentTypeID = PaymentType.ID AND (YEAR(Date) = " + year + " AND MONTH(Date) = " + month
+		String query = "SELECT Payment.ID as ID FROM Payment WHERE (YEAR(Date) = " + year + " AND MONTH(Date) = " + month
 				+ " OR RepeatMonthDay != 0 OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NULL OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NOT NULL AND DATEDIFF(RepeatEndDate, NOW()) > 0) GROUP BY Payment.ID ORDER BY Payment.Date;";
 
 		ArrayList<Integer> results = new ArrayList<>();
