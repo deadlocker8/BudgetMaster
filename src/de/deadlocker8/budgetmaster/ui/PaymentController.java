@@ -10,6 +10,7 @@ import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -47,7 +49,20 @@ public class PaymentController
 			@Override
 			public ListCell<Payment> call(ListView<Payment> param)
 			{
-				return new PaymentCell();
+				PaymentCell cell = new PaymentCell();
+				cell.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>()
+				{
+					@Override
+					public void handle(MouseEvent event)
+					{
+						if(event.getClickCount() == 2)
+						{							
+							PaymentCell c = (PaymentCell)event.getSource();						
+							payment(!c.getItem().isIncome(), true);								
+						}
+					}
+				});
+				return cell;
 			}
 		});
 
@@ -91,15 +106,15 @@ public class PaymentController
 
 	public void newIncome()
 	{
-		payment(false);
+		payment(false, false);
 	}
 
 	public void newPayment()
 	{
-		payment(true);
+		payment(true, false);
 	}
 
-	public void payment(boolean payment)
+	public void payment(boolean payment, boolean edit)
 	{
 		try
 		{
@@ -107,15 +122,20 @@ public class PaymentController
 			Parent root = (Parent)fxmlLoader.load();
 			Stage newStage = new Stage();
 			newStage.initOwner(controller.getStage());
-			newStage.initModality(Modality.APPLICATION_MODAL);
-			if(payment)
+			newStage.initModality(Modality.APPLICATION_MODAL);			
+			String titlePart;		
+			
+			titlePart = payment ? "Ausgabe" : "Einnahme";			
+			
+			if(edit)
 			{
-				newStage.setTitle("Neue Ausgabe");
+				newStage.setTitle(titlePart + " bearbeiten");
 			}
 			else
 			{
-				newStage.setTitle("Neue Einnahme");
+				newStage.setTitle("Neue " + titlePart);
 			}
+			
 			newStage.setScene(new Scene(root));
 			newStage.getIcons().add(controller.getIcon());
 			newStage.setResizable(false);
