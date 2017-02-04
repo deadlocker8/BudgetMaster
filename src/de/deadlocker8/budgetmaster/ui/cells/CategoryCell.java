@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.ui.cells;
 
 import de.deadlocker8.budgetmaster.logic.Category;
+import de.deadlocker8.budgetmaster.ui.CategoryController;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.geometry.Insets;
@@ -16,7 +17,14 @@ import tools.ConvertTo;
 public class CategoryCell extends ListCell<Category>
 {		
 	private final double HEIGHT = 40.0;
+	private CategoryController categoryController;	
 	
+	public CategoryCell(CategoryController categoryController)
+	{
+		super();
+		this.categoryController = categoryController;
+	}
+
 	@Override
 	protected void updateItem(Category item, boolean empty)
 	{
@@ -54,6 +62,9 @@ public class CategoryCell extends ListCell<Category>
 			buttonEdit.setPrefHeight(HEIGHT);					
 			buttonEdit.getStyleClass().add("greylabel");
 			buttonEdit.setStyle("-fx-background-color: transparent");
+			buttonEdit.setOnAction((e)->{
+				categoryController.newCategory(true, item);
+			});
 			hbox.getChildren().add(buttonEdit);
 			HBox.setMargin(buttonEdit, new Insets(0, 0, 0, 25));
 			

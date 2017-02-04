@@ -63,3 +63,19 @@
     -fx-background-insets: 0, 0 0 0 0, 0 0 0 0;
     -fx-background-radius: 0, 0, 0;
 }
+
+
+.color-view-item {
+  -fx-stroke: black;
+  -fx-stroke-width: 2;
+  -fx-arc-height: 7.5;
+  -fx-arc-width: 7.5;
+  }
+  
+  .color-view-item:hover {
+  -fx-stroke: DARKRED;
+  }
+  
+  .color-view-item:pressed {
+  -fx-stroke: RED;
+  }

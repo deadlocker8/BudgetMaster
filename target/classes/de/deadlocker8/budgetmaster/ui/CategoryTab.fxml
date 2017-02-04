@@ -11,7 +11,7 @@
    <children>
       <VBox alignment="TOP_CENTER" layoutY="24.0" prefHeight="562.0" prefWidth="772.0" spacing="25.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="25.0">
          <children>
-            <Button fx:id="buttonCategory" mnemonicParsing="false" onAction="#newCategory" text=" Neue Kategorie">
+            <Button fx:id="buttonCategory" mnemonicParsing="false" onAction="#createNewCategory" text=" Neue Kategorie">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
