@@ -8,6 +8,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmaster.logic.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.Payment;
@@ -17,19 +21,14 @@ import logger.Logger;
 
 public class DatabaseHandler
 {
-	private final String URL = "jdbc:mysql://localhost:3306/";
-	private final String DB_NAME = "budgetmaster";
-	private final String USERNAME = "root";
-	private final String PASSWORD = "";
 	private Connection connection;
-	
-	//DEBUG String query = "SELECT * FROM Payment WHERE YEAR(Date) = " + year + " AND MONTH(Date) = " + month + ";";
+	private final DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");		
 
-	public DatabaseHandler()
+	public DatabaseHandler(Settings settings)
 	{
 		try
 		{
-			this.connection = DriverManager.getConnection(URL + DB_NAME, USERNAME, PASSWORD);
+			this.connection = DriverManager.getConnection(settings.getDatabaseUrl() + settings.getDatabaseName(), settings.getDatabaseUsername(), settings.getDatabasePassword());
 		}
 		catch(SQLException e)
 		{
@@ -37,6 +36,7 @@ public class DatabaseHandler
 		}
 	}
 
+	// DEBUG
 	public void listTables()
 	{
 		try
@@ -53,19 +53,20 @@ public class DatabaseHandler
 			throw new IllegalStateException("Cannot connect the database!", e);
 		}
 	}
-
-	public ArrayList<String> getPaymentTypes()
+	
+	public DateTime getFirstPaymentDate()
 	{
 		Statement stmt = null;
-		String query = "SELECT Description FROM PaymentType";
-		ArrayList<String> results = new ArrayList<>();
+		String query = "SELECT MIN(Date) as \"min\" FROM Payment";		
+		DateTime dateTime = null;
 		try
 		{
 			stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
+			
 			while(rs.next())
-			{
-				results.add(rs.getString("Description"));
+			{								
+				dateTime = formatter.parseDateTime(rs.getString("min"));
 			}
 		}
 		catch(SQLException e)
@@ -86,7 +87,66 @@ public class DatabaseHandler
 			}
 		}
 
-		return results;
+		return dateTime;	
+	}
+	
+	public int getRestForAllPreviousMonths(int year, int month)
+	{
+		DateTime firstDate = getFirstPaymentDate();		
+		
+		int startYear = firstDate.getYear();
+		int startMonth = firstDate.getMonthOfYear();
+		int totalRest = 0;
+		
+		while(startYear < year || startMonth < month)
+		{			
+			totalRest += getRest(startYear, startMonth);			
+			
+			startMonth++;
+			if(startMonth > 12)
+			{
+				startMonth = 1;
+				startYear++;
+			}			
+		}		
+		return totalRest;
+	}
+	
+	public int getRest(int year, int month)
+	{
+		Statement stmt = null;
+		String query = "SELECT SUM(q.amount) as \"rest\" FROM(SELECT Payment.amount as \"amount\" FROM Payment WHERE (YEAR(Date) = " + year + " AND MONTH(Date) = " + month + " OR RepeatMonthDay != 0 OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NULL OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NOT NULL AND DATEDIFF(RepeatEndDate, NOW()) > 0) GROUP BY Payment.ID ORDER BY Payment.Date) q";
+		
+		int result = 0;
+		try
+		{
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next())
+			{
+				result = rs.getInt("rest");				
+			}
+		}
+		catch(SQLException e)
+		{
+			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+
+		return result;
 	}
 
 	public ArrayList<Category> getCategories()
@@ -129,10 +189,11 @@ public class DatabaseHandler
 	}
 
 	public ArrayList<CategoryBudget> getCategoryBudget(int year, int month)
-	{
+	{	
 		Statement stmt = null;
-		String query = "SELECT Category.Name, Category.Color, SUM(Payment.Amount) as amount FROM Payment Category WHERE Payment.CategoryID = Category.ID AND YEAR(Date) = " + year + " AND MONTH(Date) = " + month + " GROUP BY Payment.CategoryID ORDER BY SUM(Payment.Amount);";
-		
+		String query = "SELECT q.cat_name AS \"Name\", q.cat_col AS \"Color\", SUM(q.amoun) AS \"Amount\" FROM (SELECT Payment.CategoryID as \"cat_ID\", Category.Name as \"cat_name\", Category.Color as \"cat_col\", Payment.Amount AS \"amoun\" FROM Payment, Category WHERE Payment.CategoryID = Category.ID AND (YEAR(Date) = "
+				+ year + " AND MONTH(Date) = " + month
+				+ " OR RepeatMonthDay != 0 OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NULL OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NOT NULL AND DATEDIFF(RepeatEndDate, NOW()) > 0)GROUP BY Payment.ID) as q GROUP BY q.cat_ID ORDER BY SUM(q.amoun) DESC";
 		ArrayList<CategoryBudget> results = new ArrayList<>();
 		try
 		{
@@ -140,13 +201,13 @@ public class DatabaseHandler
 			ResultSet rs = stmt.executeQuery(query);
 
 			while(rs.next())
-			{	
+			{
 				String name = rs.getString("Name");
-				String color = rs.getString("color");
-				int amount = rs.getInt("amount");
-				
+				String color = rs.getString("Color");
+				int amount = rs.getInt("Amount");
+
 				results.add(new CategoryBudget(name, Color.web(color), amount / 100.0));
-			}				
+			}
 		}
 		catch(SQLException e)
 		{
@@ -168,31 +229,76 @@ public class DatabaseHandler
 
 		return results;
 	}
-	
-	//TODO incomplete --> not only payments with same year and month but repeating payments
-	public ArrayList<Payment> getPayments(int year, int month)
+
+	public Payment getPayment(int ID, int year, int month)
 	{
 		Statement stmt = null;
-		String query = "SELECT * FROM Payment, PaymentType WHERE Payment.PaymentTypeID = PaymentType.ID AND YEAR(Date) = " + year + " AND MONTH(Date) = " + month + " ORDER BY Payment.Date;";
-		
-		ArrayList<Payment> results = new ArrayList<>();
+		String query = "SELECT * FROM Payment WHERE Payment.ID= " + ID;
 		try
 		{
 			stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 
 			while(rs.next())
-			{	
-				int ID = rs.getInt("ID");				
-				String name = rs.getString("Name");			
+			{
+				int resultID = rs.getInt("ID");				
+				String name = rs.getString("Name");
 				int amount = rs.getInt("amount");
 				String date = rs.getString("Date");
 				int categoryID = rs.getInt("CategoryID");
-				int repeatInterval = rs.getInt("RepeatInterval");
-				String repeatEndDate = rs.getString("RepeatEndDate");
-				int repeatMonthDay = rs.getInt("RepeatMonthDay");				
-				results.add(new Payment(ID, amount, date, categoryID, name, repeatInterval, repeatEndDate, repeatMonthDay));
-			}				
+				
+				int repeatInterval = rs.getInt("RepeatInterval");				
+				String repeatEndDate = rs.getString("RepeatEndDate");				
+				int repeatMonthDay = rs.getInt("RepeatMonthDay");
+				if(repeatInterval != 0 || repeatMonthDay != 0)
+				{								
+					DateTime dateTime = formatter.parseDateTime(date);
+					dateTime = dateTime.year().setCopy(year);
+					dateTime = dateTime.monthOfYear().setCopy(month);
+					date = dateTime.toString(formatter);					
+				}
+				
+				return new Payment(resultID, amount, date, categoryID, name, repeatInterval, repeatEndDate, repeatMonthDay);
+			}
+		}
+		catch(SQLException e)
+		{
+			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+
+		return null;
+	}
+
+	public ArrayList<Integer> getPaymentIDs(int year, int month)
+	{
+		Statement stmt = null;
+		String query = "SELECT Payment.ID as ID FROM Payment WHERE (YEAR(Date) = " + year + " AND MONTH(Date) = " + month
+				+ " OR RepeatMonthDay != 0 OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NULL OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NOT NULL AND DATEDIFF(RepeatEndDate, NOW()) > 0) GROUP BY Payment.ID ORDER BY Payment.Date;";
+
+		ArrayList<Integer> results = new ArrayList<>();
+		try
+		{
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next())
+			{
+				int ID = rs.getInt("ID");
+				results.add(ID);
+			}
 		}
 		catch(SQLException e)
 		{
@@ -213,5 +319,27 @@ public class DatabaseHandler
 		}
 
 		return results;
+	}
+
+	public ArrayList<Payment> getPayments(int year, int month)
+	{
+		ArrayList<Payment> payments = new ArrayList<>();
+		
+		//add rest from previous months
+		int restAmount = getRest(year, month);
+		Payment paymentRest = new Payment(-1, restAmount, year + "-" + month + "-01", 1, "Übertrag", 0, null, 0);		
+		payments.add(paymentRest);		
+		
+		ArrayList<Integer> IDs = getPaymentIDs(year, month);
+		for(int currentID : IDs)
+		{
+			Payment currentPayment = getPayment(currentID, year, month);
+			if(currentPayment != null)
+			{
+				payments.add(currentPayment);
+			}
+		}
+		
+		return payments;
 	}
 }
