@@ -1,21 +1,24 @@
 package de.deadlocker8.budgetmaster.ui;
 
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
+import javafx.scene.Node;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
+import tools.ConvertTo;
 
 public class ColorView extends GridPane
 {
-	public ColorView(Color startColor, ArrayList<Color> colors, NewCategoryController controller)
+	private Node lastSelectedNode;
+	
+	public ColorView(Color startColor, ArrayList<Color> colors, NewCategoryController controller, Consumer<Color> finish)
 	{		
 		colors.add(Color.TRANSPARENT);
 
@@ -28,7 +31,6 @@ public class ColorView extends GridPane
 
 		setVgap(5);
 		setHgap(5);
-
 		setPadding(new Insets(5));
 
 		int index = 0;
@@ -42,12 +44,40 @@ public class ColorView extends GridPane
 
 					if(color == Color.TRANSPARENT)
 					{	
-						//TODO --> PoOver closes when colorpicker custom picker opens
+						StackPane stackPane = new StackPane();				
+						
 						ColorPicker picker = new ColorPicker();	
 						picker.setPrefHeight(40);
 						picker.setPrefWidth(40);
 						picker.setMaxWidth(40);
-						add(picker, x, y);
+						updateColorPickerCSS(picker, false, Color.TRANSPARENT);
+						stackPane.getChildren().add(picker);					
+						
+						if(!colors.contains(startColor))
+						{
+							picker.setValue(startColor);
+							updateColorPickerCSS(picker, true, startColor);
+						}
+						
+						FontIcon icon = new FontIcon(FontIconType.PLUS);
+						icon.setSize(20);			
+						icon.setStyle("-fx-text-fill: " + ConvertTo.toRGBHex(ConvertTo.getAppropriateTextColor(picker.getValue())));
+						stackPane.getChildren().add(icon);						
+
+						picker.valueProperty().addListener((observable, oldValue, newValue)->{
+							updateColorPickerCSS(picker, true, newValue);
+							if(lastSelectedNode instanceof Rectangle)
+							{
+								((Rectangle)lastSelectedNode).getStrokeDashArray().clear();
+							}
+							lastSelectedNode = picker;
+							icon.setStyle("-fx-text-fill: " + ConvertTo.toRGBHex(ConvertTo.getAppropriateTextColor(newValue)));
+							finish.accept(newValue);
+						});						
+						
+						icon.setOnMouseClicked((e)-> picker.show());
+						
+						add(stackPane, x, y);
 					}
 					else
 					{
@@ -55,7 +85,18 @@ public class ColorView extends GridPane
 
 						// EventHandler
 						rectangle.setOnMouseReleased(event -> {
-							controller.setColor(color);
+							if(lastSelectedNode instanceof Rectangle)
+							{
+								((Rectangle)lastSelectedNode).getStrokeDashArray().clear();
+							}
+							else
+							{
+								updateColorPickerCSS(lastSelectedNode, false, ((ColorPicker)lastSelectedNode).getValue());
+							}
+							rectangle.getStrokeDashArray().add(3.0);
+							lastSelectedNode = rectangle;
+							
+							finish.accept(color);
 						});
 
 						add(rectangle, x, y);
@@ -73,10 +114,22 @@ public class ColorView extends GridPane
 
 		// dotted border
 		if(color == startColor)
-		{
-			rectangle.getStrokeDashArray().addAll(3.0);
+		{			
+			lastSelectedNode = rectangle;
+			rectangle.getStrokeDashArray().add(3.0);
 		}
 
 		return rectangle;
+	}
+	
+	private void updateColorPickerCSS(Node colorPicker, boolean dashed, Color backgroundColor)
+	{
+		String css = "-fx-background-radius: 4; -fx-border-width: 1.8; -fx-border-color: black; -fx-border-radius: 4; -fx-background-color: " + ConvertTo.toRGBHex(backgroundColor) + ";";
+		if(dashed)
+		{
+			css += " -fx-border-style: dashed;";
+		}
+		
+		colorPicker.setStyle(css);
 	}
 }

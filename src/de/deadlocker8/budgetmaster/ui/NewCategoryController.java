@@ -52,7 +52,7 @@ public class NewCategoryController
 		buttonSave.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
 		buttonColor.setStyle("-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 5;");
 
-		//DEBUG
+		// DEBUG
 		ArrayList<Color> colors = new ArrayList<>();
 		colors.add(Color.BLUE);
 		colors.add(Color.LIGHTGREEN);
@@ -62,17 +62,21 @@ public class NewCategoryController
 		colors.add(Color.PINK);
 		colors.add(Color.BEIGE);
 		colors.add(Color.BROWN);
-		colors.add(Color.AQUAMARINE);		
-	
+		colors.add(Color.AQUAMARINE);
 
 		buttonColor.setOnMouseClicked((e) -> {
-			colorChooser = new PopOver();
-			colorChooser.setContentNode(colorView);
-			colorChooser.setDetachable(false);		
-			colorChooser.setCornerRadius(5);
-			colorChooser.setArrowLocation(ArrowLocation.LEFT_CENTER);
-			colorChooser.setOnHiding(event -> colorChooser = null);
-			colorChooser.show(buttonColor);
+
+			if(colorChooser == null || !colorChooser.isShowing())
+			{
+				colorChooser = new PopOver();
+				colorChooser.setContentNode(colorView);
+				colorChooser.setDetachable(false);
+				colorChooser.setAutoHide(false);				
+				colorChooser.setCornerRadius(5);
+				colorChooser.setArrowLocation(ArrowLocation.LEFT_CENTER);
+				colorChooser.setOnHiding(event -> colorChooser = null);			
+				colorChooser.show(buttonColor);				
+			}
 		});
 
 		stage.setOnCloseRequest(event -> {
@@ -81,20 +85,24 @@ public class NewCategoryController
 				colorChooser.hide(Duration.millis(0));
 			}
 		});
-		
+
 		if(edit)
 		{
 			textFieldName.setText(category.getName());
-			colorView = new ColorView(category.getColor(), colors, this);		
+			colorView = new ColorView(category.getColor(), colors, this, (finishColor) -> {
+				setColor(finishColor);
+			});
 			setColor(category.getColor());
 		}
 		else
 		{
-			colorView = new ColorView(colors.get(0), colors, this);		
+			colorView = new ColorView(colors.get(0), colors, this, (finishColor) -> {
+				setColor(finishColor);
+			});
 		}
 	}
-	
-	public void setColor(Color color)
+
+	private void setColor(Color color)
 	{
 		this.color = color;
 		buttonColor.setStyle("-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 5; -fx-background-color: " + ConvertTo.toRGBHex(color));

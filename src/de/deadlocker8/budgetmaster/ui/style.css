@@ -79,3 +79,11 @@
   .color-view-item:pressed {
   -fx-stroke: RED;
   }
+  
+  .picker-color-rect {
+  -fx-opacity: 0;
+  }
+  
+  .color-picker .arrow-button{
+  -fx-opacity: 0;
+  }

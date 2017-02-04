@@ -72,7 +72,7 @@ public class CategoryController
 
 		//DEBUG
 		listView.getItems().add(new Category("Auto", Color.RED));
-		listView.getItems().add(new Category("Wohnung", Color.GREEN));
+		listView.getItems().add(new Category("Wohnung", Color.DARKGOLDENROD));
 	}
 	
 	public void createNewCategory()
