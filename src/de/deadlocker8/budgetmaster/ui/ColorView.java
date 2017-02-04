@@ -16,8 +16,7 @@ import javafx.stage.Stage;
 public class ColorView extends GridPane
 {
 	public ColorView(Color startColor, ArrayList<Color> colors, NewCategoryController controller)
-	{
-		System.out.println(startColor);
+	{		
 		colors.add(Color.TRANSPARENT);
 
 		double size = Math.sqrt(colors.size());
@@ -42,37 +41,12 @@ public class ColorView extends GridPane
 					Color color = colors.get(index++);
 
 					if(color == Color.TRANSPARENT)
-					{
-						StackPane stackPane = new StackPane();						
-
-						Rectangle rectangle;
-						if(colors.contains(startColor))
-						{
-							rectangle = createRectangle(startColor, color);
-						}
-						else
-						{
-							rectangle = createRectangle(startColor, startColor);
-						}
-						stackPane.getChildren().add(rectangle);
-						
-						FontIcon icon = new FontIcon(FontIconType.PLUS);
-						icon.setSize(20);
-						stackPane.getChildren().add(icon);
-						
-						stackPane.getChildren().add(createRectangle(startColor, Color.TRANSPARENT));
-
-						// EventHandler
-						stackPane.setOnMouseReleased(event -> {
-							// TODO
-							ColorPicker picker = new ColorPicker();
-							Stage stage = new Stage();
-							stage.setScene(new Scene(picker));
-							stage.show();
-							picker.show();
-						});
-
-						add(stackPane, x, y);
+					{								
+						ColorPicker picker = new ColorPicker();	
+						picker.setPrefHeight(40);
+						picker.setPrefWidth(40);
+						picker.setMaxWidth(40);
+						add(picker, x, y);
 					}
 					else
 					{
