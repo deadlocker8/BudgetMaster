@@ -31,8 +31,8 @@ public class Main extends Application
 			((Controller)loader.getController()).init(stage);
 
 			stage.setResizable(true);
-			stage.setMinHeight(550);
-			stage.setMinWidth(550);
+			stage.setMinHeight(600);
+			stage.setMinWidth(600);
 			stage.getIcons().add(new Image("/de/deadlocker8/budgetmaster/resources/icon.png"));
 			stage.setTitle(bundle.getString("app.name"));
 			stage.setScene(scene);

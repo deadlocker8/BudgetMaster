@@ -17,7 +17,7 @@
             <HBox alignment="CENTER" prefWidth="772.0" spacing="15.0">
                <children>
                   <Button fx:id="buttonLeft" mnemonicParsing="false" onAction="#previousMonth" />
-                  <Label fx:id="labelMonth" text="Dezember 2016">
+                  <Label fx:id="labelMonth" alignment="CENTER" prefHeight="36.0" prefWidth="196.0" text="Dezember 2016">
                      <font>
                         <Font name="System Bold" size="25.0" />
                      </font>

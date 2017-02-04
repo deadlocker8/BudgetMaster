@@ -28,8 +28,9 @@ public class ServerConnection
 		httpCon.setDoOutput(true);
 		httpCon.setRequestMethod("GET");		
 		
-		Type listType = new TypeToken<ArrayList<Category>>(){}.getType();
 		String result = Read.getStringFromInputStream(httpCon.getInputStream());
+		//required by GSON
+		Type listType = new TypeToken<ArrayList<Category>>(){}.getType();		
 		return gson.fromJson(result, listType);		
 	}	
 }
