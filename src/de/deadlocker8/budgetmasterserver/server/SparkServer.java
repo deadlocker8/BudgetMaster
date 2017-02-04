@@ -1,9 +1,6 @@
 package de.deadlocker8.budgetmasterserver.server;
 
-import static spark.Spark.before;
-import static spark.Spark.get;
-import static spark.Spark.halt;
-import static spark.Spark.port;
+import static spark.Spark.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -43,9 +40,8 @@ public class SparkServer
 		
 		Settings settings = Utils.loadSettings();
 		
-		port(settings.getServerPort());
-		//TODO HTTPS
-		//secure("", "", null, null);	
+		port(settings.getServerPort());	
+		secure("certs/keystore.jks", "geheim", null, null);	
 		
 		before((request, response) -> {
 			

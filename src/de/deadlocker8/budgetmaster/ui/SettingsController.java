@@ -34,7 +34,7 @@ public class SettingsController
 		labelSecret.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
 		labelURL.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
 		buttonSave.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");	
-		textFieldURL.setPromptText("z.B. http://yourdomain.de");
+		textFieldURL.setPromptText("z.B. https://yourdomain.de");
 	}
 	
 	public void save()
