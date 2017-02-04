@@ -41,7 +41,8 @@ public class ColorView extends GridPane
 					Color color = colors.get(index++);
 
 					if(color == Color.TRANSPARENT)
-					{								
+					{	
+						//TODO --> PoOver closes when colorpicker custom picker opens
 						ColorPicker picker = new ColorPicker();	
 						picker.setPrefHeight(40);
 						picker.setPrefWidth(40);
