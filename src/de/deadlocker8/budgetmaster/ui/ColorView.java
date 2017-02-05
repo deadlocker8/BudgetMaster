@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -95,6 +96,7 @@ public class ColorView extends GridPane
 								stage.setResizable(false);	
 								stage.initModality(Modality.APPLICATION_MODAL);
 								stage.setScene(scene);
+								stage.getIcons().add(new Image("/de/deadlocker8/budgetmaster/resources/icon.png"));
 								stage.show();
 							}
 							catch(Exception e)

@@ -37,7 +37,7 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Button fx:id="buttonColor" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="30.0" prefWidth="246.0">
+                  <Button fx:id="buttonColor" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="30.0">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>

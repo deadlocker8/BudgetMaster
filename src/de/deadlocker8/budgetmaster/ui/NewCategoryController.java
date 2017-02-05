@@ -51,6 +51,8 @@ public class NewCategoryController
 		buttonCancel.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
 		buttonSave.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
 		buttonColor.setStyle("-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 5;");
+		
+		buttonColor.prefWidthProperty().bind(textFieldName.widthProperty());
 
 		// DEBUG
 		ArrayList<Color> colors = new ArrayList<>();

@@ -78,7 +78,7 @@
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="textFieldHex" prefHeight="30.0" prefWidth="77.0" text="#FFFFFF">
+                        <TextField fx:id="textFieldHex" prefHeight="30.0" prefWidth="89.0" text="#FFFFFF">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
