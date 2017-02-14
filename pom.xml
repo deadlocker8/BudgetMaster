@@ -47,5 +47,15 @@
   	  <artifactId>controlsfx</artifactId>
    	 <version>8.40.12</version>
 	</dependency>
+	<dependency>
+    	<groupId>mysql</groupId>
+    	<artifactId>mysql-connector-java</artifactId>
+    	<version>6.0.5</version>
+	</dependency>
+	<dependency>
+    	<groupId>joda-time</groupId>
+    	<artifactId>joda-time</artifactId>
+    	<version>2.9.7</version>
+	</dependency>
   </dependencies>
 </project>
