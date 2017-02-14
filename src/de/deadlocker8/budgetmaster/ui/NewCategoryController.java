@@ -73,7 +73,7 @@ public class NewCategoryController
 				colorChooser = new PopOver();
 				colorChooser.setContentNode(colorView);
 				colorChooser.setDetachable(false);
-				colorChooser.setAutoHide(false);				
+				colorChooser.setAutoHide(true);				
 				colorChooser.setCornerRadius(5);
 				colorChooser.setArrowLocation(ArrowLocation.LEFT_CENTER);
 				colorChooser.setOnHiding(event -> colorChooser = null);			
