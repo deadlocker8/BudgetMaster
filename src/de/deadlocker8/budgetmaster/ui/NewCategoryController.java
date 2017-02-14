@@ -56,16 +56,35 @@ public class NewCategoryController
 
 		// DEBUG
 		ArrayList<Color> colors = new ArrayList<>();
-		colors.add(Color.BLUE);
-		colors.add(Color.LIGHTGREEN);
-		colors.add(Color.RED);
-		colors.add(Color.YELLOW);
-		colors.add(Color.LIGHTCORAL);
-		colors.add(Color.PINK);
-		colors.add(Color.BEIGE);
-		colors.add(Color.BROWN);
-		colors.add(Color.AQUAMARINE);
-
+		colors.add(Color.web("#ecf0f1"));
+		colors.add(Color.web("#CCCCCC"));	
+		colors.add(Color.web("#888888"));
+		colors.add(Color.web("#333333"));
+		colors.add(Color.web("#000000"));
+		
+		colors.add(Color.web("#00FF00"));
+		colors.add(Color.web("#64dd17"));		
+		colors.add(Color.web("#27ae60"));		
+		colors.add(Color.web("#1b5e20"));
+		colors.add(Color.web("#00FFFF"));
+				
+		colors.add(Color.web("#8FC6EA"));		
+		colors.add(Color.web("#2980b9"));		
+		colors.add(Color.web("#0d47a1"));
+		colors.add(Color.web("#0000FF"));
+		colors.add(Color.web("#9b59b6"));
+		
+		colors.add(Color.web("#B200FF"));		
+		colors.add(Color.web("#FF00DC"));	
+		colors.add(Color.web("#ffff00"));			
+		colors.add(Color.web("#e67e22"));
+		colors.add(Color.web("#FF7F00"));	
+		
+		colors.add(Color.web("#EB6C5F"));		
+		colors.add(Color.web("#c0392b"));
+		colors.add(Color.web("#FF0000"));
+		colors.add(Color.web("#7F3300"));
+		
 		buttonColor.setOnMouseClicked((e) -> {
 
 			if(colorChooser == null || !colorChooser.isShowing())
