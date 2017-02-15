@@ -53,37 +53,24 @@ public class NewCategoryController
 		buttonColor.setStyle("-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 5;");
 		
 		buttonColor.prefWidthProperty().bind(textFieldName.widthProperty());
-
-		// DEBUG
-		ArrayList<Color> colors = new ArrayList<>();
+		
+		ArrayList<Color> colors = new ArrayList<>();		
+		//grey (light to dark)
 		colors.add(Color.web("#ecf0f1"));
 		colors.add(Color.web("#CCCCCC"));	
-		colors.add(Color.web("#888888"));
-		colors.add(Color.web("#333333"));
-		colors.add(Color.web("#000000"));
-		
-		colors.add(Color.web("#00FF00"));
-		colors.add(Color.web("#64dd17"));		
-		colors.add(Color.web("#27ae60"));		
-		colors.add(Color.web("#1b5e20"));
-		colors.add(Color.web("#00FFFF"));
-				
-		colors.add(Color.web("#8FC6EA"));		
-		colors.add(Color.web("#2980b9"));		
-		colors.add(Color.web("#0d47a1"));
-		colors.add(Color.web("#0000FF"));
-		colors.add(Color.web("#9b59b6"));
-		
-		colors.add(Color.web("#B200FF"));		
-		colors.add(Color.web("#FF00DC"));	
-		colors.add(Color.web("#ffff00"));			
-		colors.add(Color.web("#e67e22"));
-		colors.add(Color.web("#FF7F00"));	
-		
-		colors.add(Color.web("#EB6C5F"));		
-		colors.add(Color.web("#c0392b"));
-		colors.add(Color.web("#FF0000"));
-		colors.add(Color.web("#7F3300"));
+		colors.add(Color.web("#888888"));		
+		colors.add(Color.web("#333333"));				
+		colors.add(Color.rgb(255, 204, 0));		//yellow
+		colors.add(Color.rgb(255, 149, 0)); 	//orange
+		colors.add(Color.rgb(255, 59, 48));		//red
+		colors.add(Color.rgb(169, 3, 41));		//darkred	
+		colors.add(Color.rgb(255, 81, 151));	//pink
+		colors.add(Color.rgb(155, 89, 182));	//purple
+		colors.add(Color.rgb(88, 86, 214));		//darkpurple
+		colors.add(Color.rgb(0, 122, 250));		//blue		
+		colors.add(Color.rgb(90, 200, 250));	//lightblue
+		colors.add(Color.rgb(76, 217, 100));	//lightgreen
+		colors.add(Color.rgb(46, 124, 43));		//darkgreen
 		
 		buttonColor.setOnMouseClicked((e) -> {
 
@@ -120,6 +107,7 @@ public class NewCategoryController
 			colorView = new ColorView(colors.get(0), colors, this, (finishColor) -> {
 				setColor(finishColor);
 			});
+			setColor(colors.get(0));
 		}
 	}
 
