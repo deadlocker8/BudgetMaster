@@ -24,14 +24,15 @@ public class DatabaseHandler
 	private Connection connection;
 	private final DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 
-	public DatabaseHandler(Settings settings)
+	public DatabaseHandler(Settings settings) throws IllegalStateException
 	{
 		try
 		{
-			this.connection = DriverManager.getConnection(settings.getDatabaseUrl() + settings.getDatabaseName(), settings.getDatabaseUsername(), settings.getDatabasePassword());
+			this.connection = DriverManager.getConnection(settings.getDatabaseUrl() + settings.getDatabaseName() + "?useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin", settings.getDatabaseUsername(), settings.getDatabasePassword());
 		}
-		catch(SQLException e)
-		{
+		catch(Exception e)
+		{		
+			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
 			throw new IllegalStateException("Cannot connect the database!", e);
 		}
 	}
@@ -153,7 +154,7 @@ public class DatabaseHandler
 	public ArrayList<Category> getCategories()
 	{
 		Statement stmt = null;
-		String query = "SELECT * FROM Category";
+		String query = "SELECT * FROM Category ORDER BY Category.ID";
 		ArrayList<Category> results = new ArrayList<>();
 		try
 		{
@@ -162,7 +163,7 @@ public class DatabaseHandler
 			while(rs.next())
 			{
 				int id = rs.getInt("ID");
-				String name = rs.getString("Name");
+				String name = rs.getString("Name");				
 				String color = rs.getString("Color");
 
 				results.add(new Category(id, name, Color.web(color)));

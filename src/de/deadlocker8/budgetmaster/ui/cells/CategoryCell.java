@@ -64,7 +64,7 @@ public class CategoryCell extends ListCell<Category>
 			buttonEdit.setStyle("-fx-background-color: transparent");
 			buttonEdit.setOnAction((e)->{
 				categoryController.newCategory(true, item);
-			});
+			});		
 			hbox.getChildren().add(buttonEdit);
 			HBox.setMargin(buttonEdit, new Insets(0, 0, 0, 25));
 			
@@ -75,8 +75,12 @@ public class CategoryCell extends ListCell<Category>
 			buttonDelete.setPrefHeight(HEIGHT);					
 			buttonDelete.getStyleClass().add("greylabel");
 			buttonDelete.setStyle("-fx-background-color: transparent");
-			hbox.getChildren().add(buttonDelete);
-			HBox.setMargin(buttonDelete, new Insets(0, 0, 0, 5));	
+			//don't allow category "Übertrag" to be deleted
+			if(item.getID() != 1)
+			{
+				hbox.getChildren().add(buttonDelete);
+				HBox.setMargin(buttonDelete, new Insets(0, 0, 0, 5));	
+			}
 			
 			hbox.setPadding(new Insets(10));
 			setStyle("-fx-background: transparent; -fx-border-color: #545454; -fx-border-width: 0 0 1 0");

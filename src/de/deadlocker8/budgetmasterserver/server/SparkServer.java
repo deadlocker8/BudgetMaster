@@ -41,7 +41,9 @@ public class SparkServer
 		Settings settings = Utils.loadSettings();
 		
 		port(settings.getServerPort());	
+		//DEBUG
 		secure("certs/keystore.jks", "geheim", null, null);	
+		RouteOverview.enableRouteOverview();
 		
 		before((request, response) -> {
 			
@@ -57,10 +59,18 @@ public class SparkServer
 		 * Category
 		 */
 		get("/category", (req, res) -> {
-			DatabaseHandler handler = new DatabaseHandler(settings);			
-			ArrayList<Category> categories = handler.getCategories();			
+			try
+			{
+				DatabaseHandler handler = new DatabaseHandler(settings);			
+				ArrayList<Category> categories = handler.getCategories();			
 
-			return gson.toJson(categories);
+				return gson.toJson(categories);
+			}
+			catch(IllegalStateException e)
+			{
+				halt(500, "Internal Server Error");
+			}	
+			return null;
 		});
 		
 		/*

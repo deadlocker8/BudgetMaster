@@ -1,7 +1,6 @@
 package de.deadlocker8.budgetmaster.logic;
 
 import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -54,11 +53,18 @@ public class ServerConnection
 		URL url = new URL(settings.getUrl() + "/category?secret=" + settings.getSecret());
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setDoOutput(true);
-		httpsCon.setRequestMethod("GET");		
+		httpsCon.setRequestMethod("GET");	
 		
-		String result = Read.getStringFromInputStream(httpsCon.getInputStream());
-		//required by GSON
-		Type listType = new TypeToken<ArrayList<Category>>(){}.getType();		
-		return gson.fromJson(result, listType);		
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			String result = Read.getStringFromInputStream(httpsCon.getInputStream());
+			//required by GSON
+			Type listType = new TypeToken<ArrayList<Category>>(){}.getType();		
+			return gson.fromJson(result, listType);		
+		}
+		else
+		{
+			return null;
+		}
 	}	
 }

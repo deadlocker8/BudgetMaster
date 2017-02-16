@@ -5,8 +5,6 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import de.deadlocker8.budgetmaster.logic.Settings;
 import de.deadlocker8.budgetmaster.logic.Utils;
