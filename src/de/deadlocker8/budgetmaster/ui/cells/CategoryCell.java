@@ -1,17 +1,22 @@
 package de.deadlocker8.budgetmaster.ui.cells;
 
+import java.util.Optional;
+
 import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmaster.ui.CategoryController;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.stage.Stage;
 import tools.ConvertTo;
 
 public class CategoryCell extends ListCell<Category>
@@ -75,6 +80,21 @@ public class CategoryCell extends ListCell<Category>
 			buttonDelete.setPrefHeight(HEIGHT);					
 			buttonDelete.getStyleClass().add("greylabel");
 			buttonDelete.setStyle("-fx-background-color: transparent");
+			buttonDelete.setOnAction((event)->{
+				 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                 alert.setTitle("Kategorie löschen");
+                 alert.setHeaderText("");
+                 alert.setContentText("Möchtest du diese Kategorie wirklich unwiderruflich löschen?");
+                 Stage dialogStage = (Stage) alert.getDialogPane().getScene().getWindow();
+                 dialogStage.getIcons().add(categoryController.getController().getIcon());
+                 dialogStage.centerOnScreen();
+
+                 Optional<ButtonType> result = alert.showAndWait();
+                 if (result.get() == ButtonType.OK)
+                 {
+                	 categoryController.deleteCategory(item.getID());
+                 }				
+			});
 			//don't allow category "Übertrag" to be deleted
 			if(item.getID() != 1)
 			{
@@ -91,6 +111,7 @@ public class CategoryCell extends ListCell<Category>
 		{
 			setStyle("-fx-background: transparent");
 			setText(null);
+			setGraphic(null);
 		}
 	}
 }

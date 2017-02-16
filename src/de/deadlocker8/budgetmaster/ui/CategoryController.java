@@ -79,15 +79,21 @@ public class CategoryController
 		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");
 		buttonCategory.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
 
+		refreshListView();
+	}
+	
+	private void refreshListView()
+	{		
+		listView.getItems().clear();
 		try
 		{
 			ServerConnection connection = new ServerConnection(controller.getSettings());
 			ArrayList<Category> categories = connection.getCategories();
 			if(categories != null)
-			{
+			{				
 				//remove category NONE (not editable)
-				categories.remove(0);
-				listView.getItems().addAll(categories);
+				categories.remove(0);				
+				listView.getItems().setAll(categories);
 			}			
 		}
 		catch(Exception e)
@@ -134,5 +140,27 @@ public class CategoryController
 		{
 			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
 		}
+	}
+	
+	public void deleteCategory(int ID)
+	{		
+		try
+		{
+			ServerConnection connection = new ServerConnection(controller.getSettings());
+			connection.deleteCategory(ID);
+			refreshListView();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			Platform.runLater(()->{
+				AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Beim Herstellen der Verbindung zum Server ist ein Fehler aufgetreten. Bitte überprüfe deine Einstellungen und ob der Server läuft.", controller.getIcon(), controller.getStage(), null, false);
+			});
+		}
+	}
+	
+	public Controller getController()
+	{
+		return controller;
 	}
 }

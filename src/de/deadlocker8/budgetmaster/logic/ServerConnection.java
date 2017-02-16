@@ -1,5 +1,8 @@
 package de.deadlocker8.budgetmaster.logic;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.security.cert.X509Certificate;
@@ -24,7 +27,7 @@ public class ServerConnection
 	{
 		this.settings = settings;
 		this.gson = new Gson();
-		
+
 		TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager()
 		{
 			public java.security.cert.X509Certificate[] getAcceptedIssuers()
@@ -47,24 +50,37 @@ public class ServerConnection
 		HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
 		HttpsURLConnection.setDefaultHostnameVerifier((hostname, sslSession) -> hostname.equals("localhost"));
 	}
-	
+
 	public ArrayList<Category> getCategories() throws Exception
 	{
 		URL url = new URL(settings.getUrl() + "/category?secret=" + settings.getSecret());
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setDoOutput(true);
-		httpsCon.setRequestMethod("GET");	
-		
+		httpsCon.setRequestMethod("GET");
+
 		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
 		{
 			String result = Read.getStringFromInputStream(httpsCon.getInputStream());
-			//required by GSON
-			Type listType = new TypeToken<ArrayList<Category>>(){}.getType();		
-			return gson.fromJson(result, listType);		
+			// required by GSON
+			Type listType = new TypeToken<ArrayList<Category>>()
+			{
+			}.getType();
+			return gson.fromJson(result, listType);
 		}
 		else
 		{
 			return null;
 		}
-	}	
+	}
+
+	public void deleteCategory(int ID) throws Exception
+	{
+		URL url = new URL(settings.getUrl() + "/category?secret=" + settings.getSecret() + "&id=" + ID);
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setRequestMethod("DELETE");
+		httpsCon.setDoInput(true);
+		InputStream stream = httpsCon.getInputStream();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		reader.close();
+	}
 }
