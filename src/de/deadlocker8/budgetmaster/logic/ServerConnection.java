@@ -134,4 +134,33 @@ public class ServerConnection
 			return null;
 		}
 	}
+	
+	/*
+	 * Payment
+	 */
+	
+	public void addPayment(Payment payment) throws Exception
+	{
+		//TODO add payment
+//		URL url = new URL(settings.getUrl() + "/category?secret=" + settings.getSecret() + "&name=" + category.getName() + "&color=" + ConvertTo.toRGBHexWithoutOpacity(category.getColor()).replace("#", ""));
+//		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+//		httpsCon.setRequestMethod("POST");
+//		httpsCon.setDoInput(true);
+//		InputStream stream = httpsCon.getInputStream();
+//		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+//		reader.close();
+	}
+	
+	public void updatePayment(Payment payment, Payment oldPayment) throws Exception
+	{
+		//TODO update payment
+		//TODO handle changing of repeating type
+//		URL url = new URL(settings.getUrl() + "/category?secret=" + settings.getSecret() + "&id=" + category.getID() + "&name=" + category.getName() + "&color=" + ConvertTo.toRGBHexWithoutOpacity(category.getColor()).replace("#", ""));
+//		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+//		httpsCon.setRequestMethod("PUT");
+//		httpsCon.setDoInput(true);
+//		InputStream stream = httpsCon.getInputStream();
+//		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+//		reader.close();
+	}
 }

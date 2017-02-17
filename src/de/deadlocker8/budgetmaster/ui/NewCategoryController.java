@@ -147,7 +147,6 @@ public class NewCategoryController
 			}
 			catch(Exception e)
 			{
-				e.printStackTrace();
 				controller.showConnectionErrorAlert();
 			}			
 		}
@@ -161,8 +160,7 @@ public class NewCategoryController
 				connection.addCategory(newCategory);
 			}
 			catch(Exception e)
-			{
-				e.printStackTrace();
+			{				
 				controller.showConnectionErrorAlert();
 			}	
 		}

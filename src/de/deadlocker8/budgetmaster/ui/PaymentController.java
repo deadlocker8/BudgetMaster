@@ -1,7 +1,6 @@
 package de.deadlocker8.budgetmaster.ui;
 
 import java.io.IOException;
-import java.time.LocalDate;
 
 import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmaster.ui.cells.PaymentCell;
@@ -58,7 +57,7 @@ public class PaymentController implements Refreshable
 						if(event.getClickCount() == 2)
 						{							
 							PaymentCell c = (PaymentCell)event.getSource();						
-							payment(!c.getItem().isIncome(), true);								
+							payment(!c.getItem().isIncome(), true, c.getItem());								
 						}
 					}
 				});
@@ -100,21 +99,21 @@ public class PaymentController implements Refreshable
 		buttonNewPayment.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
 
 		// DEBUG
-		listView.getItems().add(new Payment(-1, -50.23, LocalDate.now().toString(), 0, "Tanken", 0, null, 0));
-		listView.getItems().add(new Payment(-1, -14.99, LocalDate.now().toString(), 1, "Spotify", 0, null, 15));
+//		listView.getItems().add(new Payment(-1, -50.23, LocalDate.now().toString(), 0, "Tanken", 0, null, 0));
+//		listView.getItems().add(new Payment(-1, -14.99, LocalDate.now().toString(), 1, "Spotify", 0, null, 15));
 	}
 	
 	public void newIncome()
 	{
-		payment(false, false);
+		payment(false, false, null);
 	}
 
 	public void newPayment()
 	{
-		payment(true, false);
+		payment(true, false, null);
 	}
 
-	public void payment(boolean payment, boolean edit)
+	public void payment(boolean isPayment, boolean edit, Payment payment)
 	{
 		try
 		{
@@ -125,7 +124,7 @@ public class PaymentController implements Refreshable
 			newStage.initModality(Modality.APPLICATION_MODAL);			
 			String titlePart;		
 			
-			titlePart = payment ? "Ausgabe" : "Einnahme";			
+			titlePart = isPayment ? "Ausgabe" : "Einnahme";			
 			
 			if(edit)
 			{
@@ -140,7 +139,7 @@ public class PaymentController implements Refreshable
 			newStage.getIcons().add(controller.getIcon());
 			newStage.setResizable(false);
 			NewPaymentController newController = fxmlLoader.getController();
-			newController.init(newStage, controller, this, payment, edit);
+			newController.init(newStage, controller, this, isPayment, edit, payment);
 			newStage.show();
 		}
 		catch(IOException e)
