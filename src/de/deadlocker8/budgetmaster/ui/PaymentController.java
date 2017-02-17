@@ -140,7 +140,7 @@ public class PaymentController implements Refreshable
 			newStage.getIcons().add(controller.getIcon());
 			newStage.setResizable(false);
 			NewPaymentController newController = fxmlLoader.getController();
-			newController.init(newStage, controller, this, payment);
+			newController.init(newStage, controller, this, payment, edit);
 			newStage.show();
 		}
 		catch(IOException e)
