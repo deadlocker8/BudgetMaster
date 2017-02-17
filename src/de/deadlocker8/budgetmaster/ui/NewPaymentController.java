@@ -18,14 +18,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import tools.AlertGenerator;
 import tools.ConvertTo;
 
@@ -73,13 +70,9 @@ public class NewPaymentController
 		SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, 0);
 		spinnerRepeatingPeriod.setValueFactory(valueFactory);
 		
-		comboBoxRepeatingDay.setCellFactory(new Callback<ListView<Integer>, ListCell<Integer>>()
+		comboBoxRepeatingDay.setCellFactory((view)->
 		{
-			@Override
-			public ListCell<Integer> call(ListView<Integer> param)
-			{
-				return new RepeatingDayCell();
-			}
+			return new RepeatingDayCell();			
 		});
 		ArrayList<Integer> days = new ArrayList<>();
 		for(int i = 0; i <= 31; i++)
@@ -88,13 +81,9 @@ public class NewPaymentController
 		}
 		comboBoxRepeatingDay.getItems().addAll(days);
 
-		comboBoxCategory.setCellFactory(new Callback<ListView<Category>, ListCell<Category>>()
-		{
-			@Override
-			public ListCell<Category> call(ListView<Category> param)
-			{
-				return new SmallCategoryCell();
-			}
+		comboBoxCategory.setCellFactory((view)->
+		{			
+			return new SmallCategoryCell();			
 		});
 		comboBoxCategory.setButtonCell(new ButtonCategoryCell(Color.WHITE));
 		comboBoxCategory.setStyle("-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 5;");
@@ -119,8 +108,9 @@ public class NewPaymentController
 		}
 		catch(Exception e)
 		{
-			// ERRORHANDLING
-			e.printStackTrace();
+			controller.showConnectionErrorAlert();
+			stage.close();
+			return;
 		}
 
 		if(edit)
