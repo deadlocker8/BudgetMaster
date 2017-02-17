@@ -1,6 +1,9 @@
 package de.deadlocker8.budgetmaster.ui;
 
+import java.util.ArrayList;
+
 import de.deadlocker8.budgetmaster.logic.CategoryBudget;
+import de.deadlocker8.budgetmaster.logic.ServerConnection;
 import de.deadlocker8.budgetmaster.ui.cells.CategoryBudgetCell;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -11,10 +14,9 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.util.Callback;
 
-public class HomeController
+public class HomeController implements Refreshable
 {
 	@FXML private AnchorPane anchorPaneMain;
 	@FXML private Label labelBudget;
@@ -52,9 +54,35 @@ public class HomeController
 			}
 		});
 		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");
-		// DEBUG
-		listView.getItems().add(new CategoryBudget("Auto", Color.RED, 79.56));
-		listView.getItems().add(new CategoryBudget("Wohnung", Color.GREEN, 245.));
+		
+		Label labelPlaceholder = new Label("Keine Daten verfügbar");
+		labelPlaceholder.setStyle("-fx-font-size: 16");
+		listView.setPlaceholder(labelPlaceholder);
+		
+		refreshListView();
+	}
+	
+	private void refreshListView()
+	{		
+		listView.getItems().clear();
+		try
+		{
+			ServerConnection connection = new ServerConnection(controller.getSettings());
+			ArrayList<CategoryBudget> categoryBudgets = connection.getCategoryBudgets(controller.getCurrentDate().getYear(), controller.getCurrentDate().getMonthOfYear());
+			if(categoryBudgets != null)
+			{				
+				listView.getItems().setAll(categoryBudgets);
+			}			
+		}
+		catch(Exception e)
+		{
+			controller.showConnectionErrorAlert();
+		}
+	}
 
+	@Override
+	public void refresh()
+	{
+		refreshListView();		
 	}
 }

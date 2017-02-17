@@ -27,7 +27,7 @@ import javafx.util.Callback;
 import logger.LogLevel;
 import logger.Logger;
 
-public class PaymentController
+public class PaymentController implements Refreshable
 {
 	@FXML private AnchorPane anchorPaneMain;
 	@FXML private Label labelIncome;
@@ -147,5 +147,12 @@ public class PaymentController
 		{
 			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
 		}
+	}
+
+	@Override
+	public void refresh()
+	{
+		//TODO Auto-generated method stub
+		
 	}
 }

@@ -55,7 +55,6 @@ public class ServerConnection
 	/*
 	 * Category	 
 	 */
-
 	public ArrayList<Category> getCategories() throws Exception
 	{
 		URL url = new URL(settings.getUrl() + "/category?secret=" + settings.getSecret());
@@ -109,5 +108,30 @@ public class ServerConnection
 		InputStream stream = httpsCon.getInputStream();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 		reader.close();
+	}
+	
+	/*
+	 * CategoryBudget
+	 */
+	public ArrayList<CategoryBudget> getCategoryBudgets(int year, int month) throws Exception
+	{
+		URL url = new URL(settings.getUrl() + "/categorybudget?secret=" + settings.getSecret() + "&year=" + year + "&month=" + month);
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setDoOutput(true);
+		httpsCon.setRequestMethod("GET");
+
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			String result = Read.getStringFromInputStream(httpsCon.getInputStream());
+			// required by GSON
+			Type listType = new TypeToken<ArrayList<CategoryBudget>>()
+			{
+			}.getType();
+			return gson.fromJson(result, listType);
+		}
+		else
+		{
+			return null;
+		}
 	}
 }

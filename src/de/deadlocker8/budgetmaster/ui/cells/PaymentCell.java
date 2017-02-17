@@ -149,6 +149,7 @@ public class PaymentCell extends ListCell<Payment>
 		{
 			setStyle("-fx-background: transparent");
 			setText(null);
+			setGraphic(null);
 		}
 	}
 }

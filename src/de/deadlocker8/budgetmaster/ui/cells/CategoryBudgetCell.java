@@ -64,6 +64,7 @@ public class CategoryBudgetCell extends ListCell<CategoryBudget>
 		{
 			setStyle("-fx-background: transparent");
 			setText(null);
+			setGraphic(null);
 		}
 	}
 }

@@ -42,12 +42,18 @@ public class Controller
 	@FXML private Tab tabCharts;
 	@FXML private Tab tabSettings;
 	@FXML private Label labelNotification;
+	
+	private HomeController homeController;
+	private PaymentController paymentController;
+	private CategoryController categoryController;
+	private ChartController chartController;
+	private SettingsController settingsController;
 
 	private Stage stage;
 	private Image icon = new Image("de/deadlocker8/budgetmaster/resources/icon.png");
 	private final ResourceBundle bundle = ResourceBundle.getBundle("de/deadlocker8/budgetmaster/main/", Locale.GERMANY);
 	private Settings settings;	
-	private DateTime currentDate;
+	private DateTime currentDate;	
 
 	public void init(Stage stage)
 	{
@@ -70,31 +76,31 @@ public class Controller
 		{
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/HomeTab.fxml"));
 			Parent nodeTabHome = (Parent)fxmlLoader.load();
-			HomeController newController = fxmlLoader.getController();
-			newController.init(this);
-			tabHome.setContent(nodeTabHome);
+			homeController = fxmlLoader.getController();
+			homeController.init(this);
+			tabHome.setContent(nodeTabHome);			
 
 			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/PaymentTab.fxml"));
 			Parent nodeTabPayment = (Parent)fxmlLoader.load();
-			PaymentController paymentController = fxmlLoader.getController();
+			paymentController = fxmlLoader.getController();
 			paymentController.init(this);
 			tabPayments.setContent(nodeTabPayment);
 
 			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/CategoryTab.fxml"));
 			Parent nodeTabCategory = (Parent)fxmlLoader.load();
-			CategoryController categoryController = fxmlLoader.getController();
+			categoryController = fxmlLoader.getController();
 			categoryController.init(this);
 			tabCategories.setContent(nodeTabCategory);
 
 			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/ChartTab.fxml"));
 			Parent nodeTabChart = (Parent)fxmlLoader.load();
-			ChartController chartController = fxmlLoader.getController();
+			chartController = fxmlLoader.getController();
 			chartController.init(this);
 			tabCharts.setContent(nodeTabChart);
 
 			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/SettingsTab.fxml"));
 			Parent nodeTabSettings = (Parent)fxmlLoader.load();
-			SettingsController settingsController = fxmlLoader.getController();
+			settingsController = fxmlLoader.getController();
 			settingsController.init(this);
 			tabSettings.setContent(nodeTabSettings);
 		}
@@ -169,14 +175,21 @@ public class Controller
 	{
 		currentDate = currentDate.minusMonths(1);
 		labelMonth.setText(currentDate.toString("MMMM yyyy"));
-		//TODO reload tab content
+		
+		refreshAllDateBasedTabs();
 	}
 	
 	public void nextMonth()
 	{
 		currentDate = currentDate.plusMonths(1);
 		labelMonth.setText(currentDate.toString("MMMM yyyy"));
-		//TODO reload tab content
+		
+		refreshAllDateBasedTabs();
+	}
+	
+	public DateTime getCurrentDate()
+	{
+		return currentDate;
 	}
 	
 	public void showConnectionErrorAlert()
@@ -184,6 +197,13 @@ public class Controller
 		Platform.runLater(()->{
 			AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Beim Herstellen der Verbindung zum Server ist ein Fehler aufgetreten. Bitte überprüfe deine Einstellungen und ob der Server läuft.", icon, stage, null, false);
 		});
+	}
+	
+	private void refreshAllDateBasedTabs()
+	{
+		homeController.refresh();
+		paymentController.refresh();
+		chartController.refresh();
 	}
 
 	public void about()
