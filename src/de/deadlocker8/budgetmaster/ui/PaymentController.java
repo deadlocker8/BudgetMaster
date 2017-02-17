@@ -99,8 +99,9 @@ public class PaymentController implements Refreshable
 		buttonNewPayment.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
 
 		// DEBUG
-//		listView.getItems().add(new Payment(-1, -50.23, LocalDate.now().toString(), 0, "Tanken", 0, null, 0));
-//		listView.getItems().add(new Payment(-1, -14.99, LocalDate.now().toString(), 1, "Spotify", 0, null, 15));
+		listView.getItems().add(new Payment(-1, 2150.49, "2017-08-01", 2, "Gehalt", 0, null, 1));
+		listView.getItems().add(new Payment(-1, -14.99, "2017-08-15", 2, "Spotify", 0, null, 15));
+		listView.getItems().add(new Payment(-1, -38.87, "2017-08-18", 3, "Tanken", 0, null, 0));
 	}
 	
 	public void newIncome()

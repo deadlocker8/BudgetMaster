@@ -159,7 +159,8 @@ public class NewPaymentController
 		int repeatingDay = 0;
 		if(checkBoxRepeat.isSelected())
 		{
-			repeatingInterval = spinnerRepeatingPeriod.getValue();		
+			repeatingInterval = spinnerRepeatingPeriod.getValue();	
+			repeatingDay = comboBoxRepeatingDay.getValue();
 			
 			if(repeatingInterval != 0 && repeatingDay != 0)
 			{

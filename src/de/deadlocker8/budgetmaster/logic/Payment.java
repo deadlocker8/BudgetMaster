@@ -69,7 +69,7 @@ public class Payment
 	{
 		//TODO call DatabaseHandler and get Category for categoryID
 		//DEBUG
-		if(categoryID == 0)
+		if(categoryID == 3)
 		{
 			return new Category("Auto", Color.RED);	
 		}

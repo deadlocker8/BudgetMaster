@@ -91,6 +91,14 @@
                            </font>
                         </Label>
                         <Spinner fx:id="spinnerRepeatingPeriod" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
+                        <Label prefHeight="25.0" prefWidth="36.0" text="Tage">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                        </Label>
                      </children>
                   </HBox>
                   <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="29.0" text="oder">

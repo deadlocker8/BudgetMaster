@@ -95,40 +95,21 @@ public class PaymentCell extends ListCell<Payment>
 			
 			Label labelBudget = new Label(String.valueOf(numberFormat.format(item.getAmount())).replace(".", ",") + " €");
 			labelBudget.setPrefHeight(HEIGHT);		
-			labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #212121");
+			labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #247A2D");
 			labelBudget.setAlignment(Pos.CENTER);
 			labelBudget.getStyleClass().add("greylabel");
 			hbox.getChildren().add(labelBudget);
 			HBox.setMargin(labelBudget, new Insets(0, 0, 0, 20));	
-			
-			FontIcon icon;			
-			
+						
 			if(item.isIncome())
 			{			
-				labelBudget.setText("+" + labelBudget.getText());
-				
-				icon = new FontIcon(FontIconType.DOWNLOAD);
-				icon.setColor(Color.web("#247A2D"));
+				labelBudget.setText("+" + labelBudget.getText());				
 			}
 			else
 			{
 				labelBudget.setText(labelBudget.getText());
-				labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #CC0000");
-				
-				icon = new FontIcon(FontIconType.UPLOAD);
-				icon.setColor(Color.web("#CC0000"));				
-			}			
-			
-			icon.setSize(20);			
-			
-			Label labelIcon = new Label();
-			labelIcon.setGraphic(icon);
-			labelIcon.setPrefHeight(HEIGHT);
-			labelIcon.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #212121");
-			labelIcon.setAlignment(Pos.CENTER);
-			labelIcon.getStyleClass().add("greylabel");
-			hbox.getChildren().add(labelIcon);
-			HBox.setMargin(labelIcon, new Insets(0, 0, 0, 25));
+				labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #CC0000");	
+			}	
 			
 			Button buttonDelete = new Button();
 			FontIcon iconDelete = new FontIcon(FontIconType.TRASH);
