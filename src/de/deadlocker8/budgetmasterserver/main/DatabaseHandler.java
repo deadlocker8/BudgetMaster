@@ -18,6 +18,7 @@ import de.deadlocker8.budgetmaster.logic.Payment;
 import javafx.scene.paint.Color;
 import logger.LogLevel;
 import logger.Logger;
+import tools.ConvertTo;
 
 public class DatabaseHandler
 {
@@ -380,4 +381,68 @@ public class DatabaseHandler
 			}
 		}
 	}
+	
+	/*
+	 * ADD
+	 */
+	public void addCategory(String name, Color color)
+	{
+		Statement stmt = null;
+		String query = "INSERT INTO Category (Name, Color) VALUES('" + name + "' , '" + ConvertTo.toRGBHexWithoutOpacity(color) +"');";		
+		try
+		{			
+			stmt = connection.createStatement();
+			stmt.execute(query);				
+		}
+		catch(SQLException e)
+		{		
+			e.printStackTrace();
+			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+	}
+	
+	/*
+	 * UPDATE
+	 */
+	public void updateCategory(int ID, String name, Color color)
+	{
+		Statement stmt = null;
+		String query = "UPDATE Category SET name='" + name + "' , color='" + ConvertTo.toRGBHexWithoutOpacity(color) +"' WHERE ID = " + ID + ";";		
+		try
+		{			
+			stmt = connection.createStatement();
+			stmt.execute(query);				
+		}
+		catch(SQLException e)
+		{		
+			e.printStackTrace();
+			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+	}	
 }

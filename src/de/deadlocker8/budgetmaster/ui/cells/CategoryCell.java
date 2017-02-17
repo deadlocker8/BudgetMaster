@@ -96,7 +96,7 @@ public class CategoryCell extends ListCell<Category>
                  }				
 			});
 			//don't allow category "Übertrag" to be deleted
-			if(item.getID() != 1)
+			if(item.getID() != 2)
 			{
 				hbox.getChildren().add(buttonDelete);
 				HBox.setMargin(buttonDelete, new Insets(0, 0, 0, 5));	

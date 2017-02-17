@@ -178,6 +178,13 @@ public class Controller
 		labelMonth.setText(currentDate.toString("MMMM yyyy"));
 		//TODO reload tab content
 	}
+	
+	public void showConnectionErrorAlert()
+	{
+		Platform.runLater(()->{
+			AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Beim Herstellen der Verbindung zum Server ist ein Fehler aufgetreten. Bitte überprüfe deine Einstellungen und ob der Server läuft.", icon, stage, null, false);
+		});
+	}
 
 	public void about()
 	{

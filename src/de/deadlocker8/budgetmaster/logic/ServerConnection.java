@@ -16,6 +16,7 @@ import javax.net.ssl.X509TrustManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import tools.ConvertTo;
 import tools.Read;
 
 public class ServerConnection
@@ -50,6 +51,10 @@ public class ServerConnection
 		HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
 		HttpsURLConnection.setDefaultHostnameVerifier((hostname, sslSession) -> hostname.equals("localhost"));
 	}
+	
+	/*
+	 * Category	 
+	 */
 
 	public ArrayList<Category> getCategories() throws Exception
 	{
@@ -71,6 +76,28 @@ public class ServerConnection
 		{
 			return null;
 		}
+	}
+	
+	public void addCategory(Category category) throws Exception
+	{
+		URL url = new URL(settings.getUrl() + "/category?secret=" + settings.getSecret() + "&name=" + category.getName() + "&color=" + ConvertTo.toRGBHexWithoutOpacity(category.getColor()).replace("#", ""));
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setRequestMethod("POST");
+		httpsCon.setDoInput(true);
+		InputStream stream = httpsCon.getInputStream();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		reader.close();
+	}
+	
+	public void updateCategory(Category category) throws Exception
+	{
+		URL url = new URL(settings.getUrl() + "/category?secret=" + settings.getSecret() + "&id=" + category.getID() + "&name=" + category.getName() + "&color=" + ConvertTo.toRGBHexWithoutOpacity(category.getColor()).replace("#", ""));
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setRequestMethod("PUT");
+		httpsCon.setDoInput(true);
+		InputStream stream = httpsCon.getInputStream();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		reader.close();
 	}
 
 	public void deleteCategory(int ID) throws Exception

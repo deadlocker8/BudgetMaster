@@ -6,14 +6,17 @@ import org.controlsfx.control.PopOver;
 import org.controlsfx.control.PopOver.ArrowLocation;
 
 import de.deadlocker8.budgetmaster.logic.Category;
+import de.deadlocker8.budgetmaster.logic.ServerConnection;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import tools.AlertGenerator;
 import tools.ConvertTo;
 
 public class NewCategoryController
@@ -30,6 +33,7 @@ public class NewCategoryController
 	private Color color;
 	private PopOver colorChooser;
 	private ColorView colorView;
+	private Category category;
 
 	public void init(Stage stage, Controller controller, CategoryController categoryController, boolean edit, Category category)
 	{
@@ -38,6 +42,7 @@ public class NewCategoryController
 		this.categoryController = categoryController;
 		this.edit = edit;
 		this.color = null;
+		this.category = category;
 
 		FontIcon iconCancel = new FontIcon(FontIconType.TIMES);
 		iconCancel.setSize(17);
@@ -123,7 +128,47 @@ public class NewCategoryController
 
 	public void save()
 	{
-
+		String name = textFieldName.getText();
+		if(name == null || name.equals(""))
+		{
+			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Feld für den Namen darf nicht leer sein.", controller.getIcon(), controller.getStage(), null, false);
+			return;
+		}
+		
+		if(edit)
+		{
+			category.setName(name);
+			category.setColor(color);
+			ServerConnection connection;
+			try
+			{
+				connection = new ServerConnection(controller.getSettings());
+				connection.updateCategory(category);
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+				controller.showConnectionErrorAlert();
+			}			
+		}
+		else
+		{			
+			Category newCategory = new Category(name, color);		
+			ServerConnection connection;
+			try
+			{
+				connection = new ServerConnection(controller.getSettings());
+				connection.addCategory(newCategory);
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+				controller.showConnectionErrorAlert();
+			}	
+		}
+		
+		stage.close();
+		categoryController.refreshListView();
 	}
 
 	public void cancel()

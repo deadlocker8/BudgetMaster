@@ -15,12 +15,13 @@ import de.deadlocker8.budgetmaster.logic.*;
 import de.deadlocker8.budgetmasterserver.main.DatabaseHandler;
 import de.deadlocker8.budgetmasterserver.main.Settings;
 import de.deadlocker8.budgetmasterserver.main.Utils;
+import javafx.scene.paint.Color;
 import spark.route.RouteOverview;
 
 public class SparkServer
 {
 	private static Gson gson;
-	
+
 	public static void main(String[] args) throws URISyntaxException
 	{		
 		gson = new GsonBuilder().setPrettyPrinting().create();
@@ -71,6 +72,68 @@ public class SparkServer
 				halt(500, "Internal Server Error");
 			}	
 			return null;
+		});
+		
+		post("/category", (req, res) -> {			
+			if(!req.queryParams().contains("name") || !req.queryParams().contains("color"))
+			{
+				halt(400, "Bad Request");
+			}	
+							
+			try
+			{
+				DatabaseHandler handler = new DatabaseHandler(settings);
+				handler.addCategory(req.queryMap("name").value(), Color.web("#" + req.queryMap("color").value()));			
+
+				return "";
+			}
+			catch(IllegalStateException ex)
+			{				
+				halt(500, "Internal Server Error");
+			}
+			catch(Exception e)
+			{				
+				halt(400, "Bad Request");
+			}
+			
+			return "";
+		});
+		
+		put("/category", (req, res) -> {			
+			if(!req.queryParams().contains("id") ||!req.queryParams().contains("name") || !req.queryParams().contains("color"))
+			{
+				halt(400, "Bad Request");
+			}	
+			
+			int id = -1;		
+			
+			try
+			{				
+				id = Integer.parseInt(req.queryMap("id").value());
+				
+				if(id < 0)
+				{
+					halt(400, "Bad Request");
+				}
+				
+				try
+				{
+					DatabaseHandler handler = new DatabaseHandler(settings);
+					handler.updateCategory(id, req.queryMap("name").value(), Color.web("#" + req.queryMap("color").value()));			
+
+					return "";
+				}
+				catch(IllegalStateException ex)
+				{				
+					halt(500, "Internal Server Error");
+				}
+			}		
+			catch(Exception e)
+			{
+				halt(400, "Bad Request");
+			}
+			
+			return "";
 		});
 				
 		delete("/category", (req, res) -> {			

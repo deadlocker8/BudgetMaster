@@ -82,7 +82,7 @@ public class CategoryController
 		refreshListView();
 	}
 	
-	private void refreshListView()
+	public void refreshListView()
 	{		
 		listView.getItems().clear();
 		try
@@ -98,9 +98,7 @@ public class CategoryController
 		}
 		catch(Exception e)
 		{
-			Platform.runLater(()->{
-				AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Beim Herstellen der Verbindung zum Server ist ein Fehler aufgetreten. Bitte überprüfe deine Einstellungen und ob der Server läuft.", controller.getIcon(), controller.getStage(), null, false);
-			});
+			controller.showConnectionErrorAlert();
 		}
 	}
 	
