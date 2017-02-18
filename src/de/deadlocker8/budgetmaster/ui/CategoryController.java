@@ -86,13 +86,16 @@ public class CategoryController implements Refreshable
 	{		
 		listView.getItems().clear();
 		
-		ArrayList<Category> categories = controller.getCategoryHandler().getCategories();
-		if(categories != null)
-		{				
-			//remove category NONE (not editable)
-			categories.remove(0);				
-			listView.getItems().setAll(categories);
-		}		
+		if(controller.getCategoryHandler() != null)
+		{
+			ArrayList<Category> categories = controller.getCategoryHandler().getCategories();	
+			if(categories != null && categories.size() > 0)
+			{				
+				//remove category NONE (not editable)
+				categories.remove(0);				
+				listView.getItems().setAll(categories);
+			}	
+		}
 	}
 	
 	public void createNewCategory()
@@ -158,7 +161,6 @@ public class CategoryController implements Refreshable
 	@Override
 	public void refresh()
 	{
-		controller.updateCategoryHandler();
-		refreshListView();		
+		refreshListView();
 	}
 }

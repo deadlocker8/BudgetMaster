@@ -10,7 +10,11 @@ public class CategoryHandler
 
 	public CategoryHandler(ArrayList<Category> categories)
 	{
-		this.categories = categories;
+		this.categories = new ArrayList<>();
+		if(categories != null)
+		{
+			this.categories.addAll(categories);
+		}
 	}
 
 	public ArrayList<Category> getCategories()

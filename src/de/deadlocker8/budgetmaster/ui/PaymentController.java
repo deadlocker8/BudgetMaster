@@ -5,7 +5,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.Payment;
-import de.deadlocker8.budgetmaster.logic.ServerConnection;
 import de.deadlocker8.budgetmaster.ui.cells.PaymentCell;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
@@ -153,19 +152,12 @@ public class PaymentController implements Refreshable
 	private void refreshListView()
 	{		
 		listView.getItems().clear();
-		try
-		{
-			ServerConnection connection = new ServerConnection(controller.getSettings());
-			ArrayList<Payment> payments = connection.getPayments(controller.getCurrentDate().getYear(), controller.getCurrentDate().getMonthOfYear());
-			if(payments != null)
-			{				
-				listView.getItems().setAll(payments);
-			}			
-		}
-		catch(Exception e)
-		{
-			controller.showConnectionErrorAlert();
-		}
+		
+		ArrayList<Payment> payments = controller.getPayments();
+		if(payments != null)
+		{				
+			listView.getItems().setAll(payments);
+		}		
 	}
 	
 	private void refreshCounter()
@@ -188,6 +180,11 @@ public class PaymentController implements Refreshable
 		
 		labelIncomes.setText(String.valueOf(numberFormat.format(counterIncome/100.0).replace(".", ",")) + " €");
 		labelPayments.setText(String.valueOf(numberFormat.format(counterPayment/100.0).replace(".", ",")) + " €");
+	}
+
+	public Controller getController()
+	{
+		return controller;
 	}
 
 	@Override

@@ -166,7 +166,7 @@ public class NewCategoryController
 		}
 		
 		stage.close();
-		categoryController.refreshListView();
+		categoryController.getController().refresh();
 	}
 
 	public void cancel()

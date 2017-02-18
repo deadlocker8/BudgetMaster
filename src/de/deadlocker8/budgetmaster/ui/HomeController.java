@@ -3,7 +3,6 @@ package de.deadlocker8.budgetmaster.ui;
 import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.CategoryBudget;
-import de.deadlocker8.budgetmaster.logic.ServerConnection;
 import de.deadlocker8.budgetmaster.ui.cells.CategoryBudgetCell;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -65,19 +64,12 @@ public class HomeController implements Refreshable
 	private void refreshListView()
 	{		
 		listView.getItems().clear();
-		try
-		{
-			ServerConnection connection = new ServerConnection(controller.getSettings());
-			ArrayList<CategoryBudget> categoryBudgets = connection.getCategoryBudgets(controller.getCurrentDate().getYear(), controller.getCurrentDate().getMonthOfYear());
-			if(categoryBudgets != null)
-			{				
-				listView.getItems().setAll(categoryBudgets);
-			}			
-		}
-		catch(Exception e)
-		{
-			controller.showConnectionErrorAlert();
-		}
+	
+		ArrayList<CategoryBudget> categoryBudgets = controller.getCategoryBudgets();
+		if(categoryBudgets != null)
+		{				
+			listView.getItems().setAll(categoryBudgets);
+		}		
 	}
 
 	@Override

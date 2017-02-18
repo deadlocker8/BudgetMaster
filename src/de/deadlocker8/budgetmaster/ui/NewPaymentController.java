@@ -177,7 +177,7 @@ public class NewPaymentController
 		}
 
 		int amount = 0;
-		amount = (int)(Double.parseDouble(amountText) * 100);
+		amount = (int)(Double.parseDouble(amountText.replace(",", ".")) * 100);
 		if(isPayment)
 		{
 			amount = -amount;
@@ -233,7 +233,7 @@ public class NewPaymentController
 		}
 
 		stage.close();
-		paymentController.refresh();
+		paymentController.getController().refresh();
 	}
 
 	public void cancel()
