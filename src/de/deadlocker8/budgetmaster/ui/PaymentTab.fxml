@@ -34,12 +34,12 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="16.0" prefWidth="772.0">
                <children>
-                  <Label fx:id="labelIncome" text="Einnahmen:">
+                  <Label fx:id="labelIncome" prefHeight="27.0" text="Einnahmen:">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label fx:id="labelIncomes" text="0,00 €">
+                  <Label fx:id="labelIncomes" maxWidth="1.7976931348623157E308" prefHeight="27.0" text="0,00 €">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -47,13 +47,13 @@
                         <Insets left="25.0" />
                      </HBox.margin>
                   </Label>
-                  <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="labelPayment" text="Ausgaben:">
+                  <Region prefHeight="27.0" HBox.hgrow="ALWAYS" />
+                  <Label fx:id="labelPayment" prefHeight="27.0" text="Ausgaben:">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label fx:id="labelPayments" text="0,00 €">
+                  <Label fx:id="labelPayments" maxWidth="1.7976931348623157E308" prefHeight="27.0" text="0,00 €">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>

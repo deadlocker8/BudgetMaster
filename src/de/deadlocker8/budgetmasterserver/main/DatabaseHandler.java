@@ -199,7 +199,9 @@ public class DatabaseHandler
 	{
 		String date = String.valueOf(year) + "-" + String.format("%02d", month) + "-";
 		Statement stmt = null;
-		String query = "SELECT q.cat_name AS \"Name\", q.cat_col AS \"Color\", SUM(q.amoun) AS \"Amount\" FROM (SELECT Payment.CategoryID as \"cat_ID\", Category.Name as \"cat_name\", Category.Color as \"cat_col\", Payment.Amount AS \"amoun\" FROM Payment, Category WHERE Payment.CategoryID = Category.ID AND (YEAR(Date) = " + year + " AND  MONTH(Date) = " + month + " AND RepeatMonthDay = 0 OR RepeatMonthDay != 0 AND CONCAT('" + date + "', RepeatMonthDay) >= Date AND RepeatEndDate IS NULL OR RepeatMonthDay != 0 AND CONCAT('" + date + "', RepeatMonthDay) >= Date AND CONCAT('" + date + "', RepeatMonthDay) <= RepeatEndDate OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NULL OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NOT NULL AND DATEDIFF(RepeatEndDate, NOW()) > 0)GROUP BY Payment.ID) as q GROUP BY q.cat_ID ORDER BY SUM(q.amoun) DESC";
+		String query = "SELECT q.cat_name AS \"Name\", q.cat_col AS \"Color\", SUM(q.amoun) AS \"Amount\" FROM (SELECT Payment.CategoryID as \"cat_ID\", Category.Name as \"cat_name\", Category.Color as \"cat_col\", Payment.Amount AS \"amoun\" FROM Payment, Category WHERE Payment.CategoryID = Category.ID AND (YEAR(Date) = "
+				+ year + " AND  MONTH(Date) = " + month + " AND RepeatMonthDay = 0 OR RepeatMonthDay != 0 AND CONCAT('" + date + "', RepeatMonthDay) >= Date AND RepeatEndDate IS NULL OR RepeatMonthDay != 0 AND CONCAT('" + date + "', RepeatMonthDay) >= Date AND CONCAT('" + date
+				+ "', RepeatMonthDay) <= RepeatEndDate OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NULL OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NOT NULL AND DATEDIFF(RepeatEndDate, NOW()) > 0)GROUP BY Payment.ID) as q GROUP BY q.cat_ID ORDER BY SUM(q.amoun) DESC";
 		ArrayList<CategoryBudget> results = new ArrayList<>();
 		try
 		{
@@ -212,7 +214,7 @@ public class DatabaseHandler
 				String color = rs.getString("Color");
 				int amount = rs.getInt("Amount");
 
-				results.add(new CategoryBudget(name, Color.web(color), amount / 100.0));
+				results.add(new CategoryBudget(name, Color.web(color), amount));
 			}
 		}
 		catch(SQLException e)
@@ -264,7 +266,7 @@ public class DatabaseHandler
 					date = dateTime.toString(formatter);
 				}
 
-				return new Payment(resultID, amount / 100.0, date, categoryID, name, repeatInterval, repeatEndDate, repeatMonthDay);
+				return new Payment(resultID, amount, date, categoryID, name, repeatInterval, repeatEndDate, repeatMonthDay);
 			}
 		}
 		catch(SQLException e)
@@ -292,8 +294,9 @@ public class DatabaseHandler
 	{
 		String date = String.valueOf(year) + "-" + String.format("%02d", month) + "-";
 		Statement stmt = null;
-		String query = "SELECT Payment.ID as ID FROM Payment WHERE (YEAR(Date) = " + year + " AND  MONTH(Date) = " + month
-				+ " AND RepeatMonthDay = 0 OR RepeatMonthDay != 0 AND CONCAT('" + date + "', RepeatMonthDay) >= Date AND RepeatEndDate IS NULL OR RepeatMonthDay != 0 AND CONCAT('" + date + "', RepeatMonthDay) >= Date AND CONCAT('" + date + "', RepeatMonthDay) <= RepeatEndDate OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NULL OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NOT NULL AND DATEDIFF(RepeatEndDate, NOW()) > 0) GROUP BY Payment.ID ORDER BY Payment.Date";
+		String query = "SELECT Payment.ID as ID FROM Payment WHERE (YEAR(Date) = " + year + " AND  MONTH(Date) = " + month + " AND RepeatMonthDay = 0 OR RepeatMonthDay != 0 AND CONCAT('" + date + "', RepeatMonthDay) >= Date AND RepeatEndDate IS NULL OR RepeatMonthDay != 0 AND CONCAT('" + date
+				+ "', RepeatMonthDay) >= Date AND CONCAT('" + date
+				+ "', RepeatMonthDay) <= RepeatEndDate OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NULL OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NOT NULL AND DATEDIFF(RepeatEndDate, NOW()) > 0) GROUP BY Payment.ID ORDER BY Payment.Date";
 
 		ArrayList<Integer> results = new ArrayList<>();
 		try
@@ -308,7 +311,7 @@ public class DatabaseHandler
 			}
 		}
 		catch(SQLException e)
-		{			
+		{
 			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
 		}
 		finally
@@ -334,7 +337,7 @@ public class DatabaseHandler
 
 		// add rest from previous months
 		int restAmount = getRest(year, month);
-		Payment paymentRest = new Payment(-1, restAmount / 100.0, year + "-" + month + "-01", 1, "Übertrag", 0, null, 0);
+		Payment paymentRest = new Payment(-1, restAmount, year + "-" + month + "-01", 1, "Übertrag", 0, null, 0);
 		payments.add(paymentRest);
 
 		ArrayList<Integer> IDs = getPaymentIDs(year, month);
@@ -395,7 +398,45 @@ public class DatabaseHandler
 			stmt.execute(query);
 		}
 		catch(SQLException e)
-		{		
+		{
+			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+	}
+
+	public void addPayment(int amount, String date, int categoryID, String name, int repeatInterval, String repeatEndDate, int repeatMonthDay)
+	{
+		Statement stmt = null;
+		String query;		
+		if(repeatEndDate.equals("A") || repeatEndDate == null)
+		{
+			
+			query = "INSERT INTO Payment (Amount, Date, CategoryID, Name, RepeatInterval, RepeatEndDate, RepeatMonthDay) VALUES('" + amount + "' , '" + date + "' , '" + categoryID + "' , '" + name + "' , '" + repeatInterval + "' , NULL , '" + repeatMonthDay + "');";
+		}
+		else
+		{
+			query = "INSERT INTO Payment (Amount, Date, CategoryID, Name, RepeatInterval, RepeatEndDate, RepeatMonthDay) VALUES('" + amount + "' , '" + date + "' , '" + categoryID + "' , '" + name + "' , '" + repeatInterval + "' , '" + repeatEndDate + "' , '" + repeatMonthDay + "');";
+		}
+		
+		try
+		{
+			stmt = connection.createStatement();
+			stmt.execute(query);
+		}
+		catch(SQLException e)
+		{
 			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
 		}
 		finally

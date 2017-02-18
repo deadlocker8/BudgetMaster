@@ -51,13 +51,13 @@ public class ServerConnection
 		HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
 		HttpsURLConnection.setDefaultHostnameVerifier((hostname, sslSession) -> hostname.equals("localhost"));
 	}
-	
+
 	/*
-	 * Category	 
+	 * Category
 	 */
 	public ArrayList<Category> getCategories() throws Exception
 	{
-		URL url = new URL(settings.getUrl() + "/category?secret=" + settings.getSecret());
+		URL url = new URL(settings.getUrl() + "/category?secret=" + Helpers.getURLEncodedString(settings.getSecret()));
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setDoOutput(true);
 		httpsCon.setRequestMethod("GET");
@@ -76,10 +76,10 @@ public class ServerConnection
 			return null;
 		}
 	}
-	
+
 	public void addCategory(Category category) throws Exception
 	{
-		URL url = new URL(settings.getUrl() + "/category?secret=" + settings.getSecret() + "&name=" + category.getName() + "&color=" + ConvertTo.toRGBHexWithoutOpacity(category.getColor()).replace("#", ""));
+		URL url = new URL(settings.getUrl() + "/category?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&name=" + Helpers.getURLEncodedString(category.getName()) + "&color=" + ConvertTo.toRGBHexWithoutOpacity(category.getColor()).replace("#", ""));
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setRequestMethod("POST");
 		httpsCon.setDoInput(true);
@@ -87,10 +87,10 @@ public class ServerConnection
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 		reader.close();
 	}
-	
+
 	public void updateCategory(Category category) throws Exception
 	{
-		URL url = new URL(settings.getUrl() + "/category?secret=" + settings.getSecret() + "&id=" + category.getID() + "&name=" + category.getName() + "&color=" + ConvertTo.toRGBHexWithoutOpacity(category.getColor()).replace("#", ""));
+		URL url = new URL(settings.getUrl() + "/category?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&id=" + category.getID() + "&name=" + Helpers.getURLEncodedString(category.getName()) + "&color=" + ConvertTo.toRGBHexWithoutOpacity(category.getColor()).replace("#", ""));
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setRequestMethod("PUT");
 		httpsCon.setDoInput(true);
@@ -101,7 +101,7 @@ public class ServerConnection
 
 	public void deleteCategory(int ID) throws Exception
 	{
-		URL url = new URL(settings.getUrl() + "/category?secret=" + settings.getSecret() + "&id=" + ID);
+		URL url = new URL(settings.getUrl() + "/category?secret=" +Helpers.getURLEncodedString( settings.getSecret()) + "&id=" + ID);
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setRequestMethod("DELETE");
 		httpsCon.setDoInput(true);
@@ -109,13 +109,13 @@ public class ServerConnection
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 		reader.close();
 	}
-	
+
 	/*
 	 * CategoryBudget
 	 */
 	public ArrayList<CategoryBudget> getCategoryBudgets(int year, int month) throws Exception
 	{
-		URL url = new URL(settings.getUrl() + "/categorybudget?secret=" + settings.getSecret() + "&year=" + year + "&month=" + month);
+		URL url = new URL(settings.getUrl() + "/categorybudget?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&year=" + year + "&month=" + month);
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setDoOutput(true);
 		httpsCon.setRequestMethod("GET");
@@ -134,13 +134,13 @@ public class ServerConnection
 			return null;
 		}
 	}
-	
+
 	/*
 	 * Payment
 	 */
 	public ArrayList<Payment> getPayments(int year, int month) throws Exception
 	{
-		URL url = new URL(settings.getUrl() + "/payment?secret=" + settings.getSecret() + "&year=" + year + "&month=" + month);
+		URL url = new URL(settings.getUrl() + "/payment?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&year=" + year + "&month=" + month);
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setDoOutput(true);
 		httpsCon.setRequestMethod("GET");
@@ -159,29 +159,35 @@ public class ServerConnection
 			return null;
 		}
 	}
-	
+
 	public void addPayment(Payment payment) throws Exception
 	{
-		//TODO add payment
-//		URL url = new URL(settings.getUrl() + "/category?secret=" + settings.getSecret() + "&name=" + category.getName() + "&color=" + ConvertTo.toRGBHexWithoutOpacity(category.getColor()).replace("#", ""));
-//		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
-//		httpsCon.setRequestMethod("POST");
-//		httpsCon.setDoInput(true);
-//		InputStream stream = httpsCon.getInputStream();
-//		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-//		reader.close();
+		String repeatEndDate = payment.getRepeatEndDate();
+		if(repeatEndDate == null || repeatEndDate.equals(""))
+		{
+			repeatEndDate = "A";
+		}
+			
+		URL url = new URL(settings.getUrl() + "/payment?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&amount=" + payment.getAmount() + "&date=" + payment.getDate() + "&categoryID=" + payment.getCategoryID() + "&name=" + Helpers.getURLEncodedString(payment.getName()) + "&repeatInterval=" + payment.getRepeatInterval() + "&repeatEndDate="
+				+ repeatEndDate + "&repeatMonthDay=" + payment.getRepeatMonthDay());
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setRequestMethod("POST");
+		httpsCon.setDoInput(true);
+		InputStream stream = httpsCon.getInputStream();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		reader.close();
 	}
-	
+
 	public void updatePayment(Payment payment, Payment oldPayment) throws Exception
 	{
-		//TODO update payment
-		//TODO handle changing of repeating type
-//		URL url = new URL(settings.getUrl() + "/category?secret=" + settings.getSecret() + "&id=" + category.getID() + "&name=" + category.getName() + "&color=" + ConvertTo.toRGBHexWithoutOpacity(category.getColor()).replace("#", ""));
-//		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
-//		httpsCon.setRequestMethod("PUT");
-//		httpsCon.setDoInput(true);
-//		InputStream stream = httpsCon.getInputStream();
-//		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-//		reader.close();
+		// TODO update payment
+		// TODO handle changing of repeating type
+		// URL url = new URL(settings.getUrl() + "/payment?secret=" + settings.getSecret() + "&id=" + category.getID() + "&name=" + category.getName() + "&color=" + ConvertTo.toRGBHexWithoutOpacity(category.getColor()).replace("#", ""));
+		// HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		// httpsCon.setRequestMethod("PUT");
+		// httpsCon.setDoInput(true);
+		// InputStream stream = httpsCon.getInputStream();
+		// BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		// reader.close();
 	}
 }

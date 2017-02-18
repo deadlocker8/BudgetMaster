@@ -163,7 +163,7 @@ public class NewPaymentController
 		}
 		
 		int amount = 0;
-		amount = (int)(Double.parseDouble(amountText) * 100);
+		amount = (int)(Double.parseDouble(amountText) * 100);		
 		if(isPayment)
 		{
 			amount = -amount;
@@ -200,18 +200,19 @@ public class NewPaymentController
 		else
 		{
 			Payment newPayment = new Payment(-1, amount, getDateString(date), comboBoxCategory.getValue().getID(), name, repeatingInterval, getDateString(datePickerEnddate.getValue()), repeatingDay);
-			
 			try
 			{
 				ServerConnection connection = new ServerConnection(controller.getSettings());
 				connection.addPayment(newPayment);
 			}
 			catch(Exception e)
-			{				
+			{	
+				e.printStackTrace();
 				controller.showConnectionErrorAlert();
 			}
 		}	
 		
+		stage.close();
 		paymentController.refresh();
 	}
 

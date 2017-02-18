@@ -186,8 +186,8 @@ public class PaymentController implements Refreshable
 			}
 		}
 		
-		labelIncomes.setText(String.valueOf(numberFormat.format(counterIncome).replace(".", ",")) + " €");
-		labelPayments.setText(String.valueOf(numberFormat.format(counterPayment).replace(".", ",")) + " €");
+		labelIncomes.setText(String.valueOf(numberFormat.format(counterIncome/100.0).replace(".", ",")) + " €");
+		labelPayments.setText(String.valueOf(numberFormat.format(counterPayment/100.0).replace(".", ",")) + " €");
 	}
 
 	@Override

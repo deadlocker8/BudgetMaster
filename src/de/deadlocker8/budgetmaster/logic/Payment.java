@@ -5,7 +5,7 @@ import javafx.scene.paint.Color;
 public class Payment
 {	
 	private int ID;
-	private double amount;
+	private int amount;
 	private String date;
 	private int categoryID;
 	private String name;	
@@ -13,7 +13,7 @@ public class Payment
 	private String repeatEndDate;
 	private int repeatMonthDay;
 
-	public Payment(int ID, double amount, String date, int categoryID, String name, int repeatInterval, String repeatEndDate, int repeatMonthDay)
+	public Payment(int ID, int amount, String date, int categoryID, String name, int repeatInterval, String repeatEndDate, int repeatMonthDay)
 	{		
 		this.ID = ID;		
 		this.amount = amount;
@@ -35,12 +35,12 @@ public class Payment
 		return amount > 0;
 	}
 	
-	public double getAmount()
+	public int getAmount()
 	{
 		return amount;
 	}
 
-	public void setAmount(double amount)
+	public void setAmount(int amount)
 	{
 		this.amount = amount;
 	}
