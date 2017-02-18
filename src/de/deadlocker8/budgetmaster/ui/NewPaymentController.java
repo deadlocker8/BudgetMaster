@@ -17,6 +17,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -38,7 +39,7 @@ public class NewPaymentController
 	@FXML private ComboBox<Category> comboBoxCategory;
 	@FXML private DatePicker datePicker;
 	@FXML private DatePicker datePickerEnddate;
-	@FXML private Spinner<Integer> spinnerRepeatingPeriod;	
+	@FXML private Spinner<Integer> spinnerRepeatingPeriod;
 	@FXML private ComboBox<Integer> comboBoxRepeatingDay;
 	@FXML private CheckBox checkBoxRepeat;
 	@FXML private RadioButton radioButtonPeriod;
@@ -75,10 +76,9 @@ public class NewPaymentController
 
 		SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, 0);
 		spinnerRepeatingPeriod.setValueFactory(valueFactory);
-		
-		comboBoxRepeatingDay.setCellFactory((view)->
-		{
-			return new RepeatingDayCell();			
+
+		comboBoxRepeatingDay.setCellFactory((view) -> {
+			return new RepeatingDayCell();
 		});
 		ArrayList<Integer> days = new ArrayList<>();
 		for(int i = 0; i <= 31; i++)
@@ -87,9 +87,8 @@ public class NewPaymentController
 		}
 		comboBoxRepeatingDay.getItems().addAll(days);
 
-		comboBoxCategory.setCellFactory((view)->
-		{			
-			return new SmallCategoryCell();			
+		comboBoxCategory.setCellFactory((view) -> {
+			return new SmallCategoryCell();
 		});
 		comboBoxCategory.setButtonCell(new ButtonCategoryCell(Color.WHITE));
 		comboBoxCategory.setStyle("-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 5;");
@@ -118,12 +117,27 @@ public class NewPaymentController
 			stage.close();
 			return;
 		}
-		
-		final ToggleGroup toggleGroup = new ToggleGroup();		
+
+		final ToggleGroup toggleGroup = new ToggleGroup();
 		radioButtonPeriod.setToggleGroup(toggleGroup);
 		radioButtonDay.setToggleGroup(toggleGroup);
-		radioButtonPeriod.selectedProperty().addListener((listener, oldValue, newValue)->{
+		radioButtonPeriod.selectedProperty().addListener((listener, oldValue, newValue) -> {
 			toggleRadioButtonPeriod(newValue);
+		});
+
+		datePickerEnddate.setDayCellFactory((p) -> new DateCell()
+		{
+			@Override
+			public void updateItem(LocalDate ld, boolean bln)
+			{
+				super.updateItem(ld, bln);
+
+				if(datePicker.getValue() != null && ld.isBefore(datePicker.getValue()))
+				{
+					setDisable(true);
+					setStyle("-fx-background-color: #ffc0cb;");
+				}
+			}
 		});
 
 		if(edit)
@@ -135,41 +149,41 @@ public class NewPaymentController
 			comboBoxCategory.getSelectionModel().select(0);
 			checkBoxRepeat.setSelected(false);
 			radioButtonPeriod.setSelected(true);
-			toggleRepeatingArea(false);			
+			toggleRepeatingArea(false);
 		}
 	}
 
 	public void save()
-	{		
+	{
 		String name = textFieldName.getText();
 		if(name == null || name.equals(""))
 		{
 			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Feld für den Namen darf nicht leer sein.", controller.getIcon(), controller.getStage(), null, false);
 			return;
 		}
-		
+
 		String amountText = textFieldAmount.getText();
 		if(!amountText.matches("^-?\\d+(,\\d+)*(\\.\\d+(e\\d+)?)?$"))
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Gib eine gültige Zahl für den Betrag ein." , controller.getIcon(), controller.getStage(), null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Gib eine gültige Zahl für den Betrag ein.", controller.getIcon(), controller.getStage(), null, false);
 			return;
 		}
-		
+
 		LocalDate date = datePicker.getValue();
 		if(date == null)
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Bitte wähle ein Datum aus." , controller.getIcon(), controller.getStage(), null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Bitte wähle ein Datum aus.", controller.getIcon(), controller.getStage(), null, false);
 			return;
 		}
-		
+
 		int amount = 0;
-		amount = (int)(Double.parseDouble(amountText) * 100);		
+		amount = (int)(Double.parseDouble(amountText) * 100);
 		if(isPayment)
 		{
 			amount = -amount;
 		}
-		
-		int repeatingInterval = 0;					
+
+		int repeatingInterval = 0;
 		int repeatingDay = 0;
 		if(checkBoxRepeat.isSelected())
 		{
@@ -181,19 +195,25 @@ public class NewPaymentController
 			{
 				repeatingDay = comboBoxRepeatingDay.getValue();
 			}
-		}		
-		
+
+			if(datePickerEnddate.getValue() != null && datePickerEnddate.getValue().isBefore(date))
+			{
+				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Enddatum darf zeitlich nicht vor dem Datum der Zahlung liegen.", controller.getIcon(), controller.getStage(), null, false);
+				return;
+			}
+		}
+
 		if(edit)
 		{
 			Payment newPayment = new Payment(payment.getID(), amount, getDateString(date), comboBoxCategory.getValue().getID(), name, repeatingInterval, getDateString(datePickerEnddate.getValue()), repeatingDay);
-			
+
 			try
 			{
 				ServerConnection connection = new ServerConnection(controller.getSettings());
-				connection.updatePayment(newPayment, payment );
+				connection.updatePayment(newPayment, payment);
 			}
 			catch(Exception e)
-			{				
+			{
 				controller.showConnectionErrorAlert();
 			}
 		}
@@ -206,12 +226,12 @@ public class NewPaymentController
 				connection.addPayment(newPayment);
 			}
 			catch(Exception e)
-			{	
+			{
 				e.printStackTrace();
 				controller.showConnectionErrorAlert();
 			}
-		}	
-		
+		}
+
 		stage.close();
 		paymentController.refresh();
 	}
@@ -223,7 +243,7 @@ public class NewPaymentController
 
 	private void toggleRepeatingArea(boolean selected)
 	{
-		spinnerRepeatingPeriod.setDisable(!selected);		
+		spinnerRepeatingPeriod.setDisable(!selected);
 		comboBoxRepeatingDay.setDisable(!selected);
 		datePickerEnddate.setDisable(!selected);
 		radioButtonPeriod.setDisable(!selected);
@@ -232,18 +252,18 @@ public class NewPaymentController
 		labelText2.setDisable(!selected);
 		labelText3.setDisable(!selected);
 	}
-	
+
 	private void toggleRadioButtonPeriod(boolean selected)
 	{
-		spinnerRepeatingPeriod.setDisable(!selected);	
+		spinnerRepeatingPeriod.setDisable(!selected);
 		labelText1.setDisable(!selected);
-		labelText2.setDisable(!selected);		
-		comboBoxRepeatingDay.setDisable(selected);	
-		labelText3.setDisable(selected);		
+		labelText2.setDisable(!selected);
+		comboBoxRepeatingDay.setDisable(selected);
+		labelText3.setDisable(selected);
 	}
-	
+
 	private String getDateString(LocalDate date)
-	{		
+	{
 		if(date == null)
 		{
 			return "";
