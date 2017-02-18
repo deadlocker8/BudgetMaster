@@ -87,12 +87,12 @@ public class PaymentCell extends ListCell<Payment>
 			hbox.getChildren().add(labelRepeating);
 			HBox.setMargin(labelRepeating, new Insets(0, 30, 0, 15));
 
-			String categoryName = category.getName();
-			if(item.getName().equals("NONE"))
+			String categoryName = category.getName();			
+			if(categoryName.equals("NONE"))
 			{
 				categoryName = "Keine Kategorie";
 			}
-
+			
 			Label labelCircle = new Label(categoryName.substring(0, 1).toUpperCase());
 			labelCircle.setPrefWidth(HEIGHT);
 			labelCircle.setPrefHeight(HEIGHT);

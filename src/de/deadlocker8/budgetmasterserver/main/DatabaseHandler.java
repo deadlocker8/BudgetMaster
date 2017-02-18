@@ -335,7 +335,7 @@ public class DatabaseHandler
 		Statement stmt = null;
 		String query = "SELECT Payment.ID as ID FROM Payment WHERE (YEAR(Date) = " + year + " AND  MONTH(Date) = " + month + " AND RepeatMonthDay = 0 OR RepeatMonthDay != 0 AND CONCAT('" + date + "', RepeatMonthDay) >= Date AND RepeatEndDate IS NULL OR RepeatMonthDay != 0 AND CONCAT('" + date
 				+ "', RepeatMonthDay) >= Date AND CONCAT('" + date
-				+ "', RepeatMonthDay) <= RepeatEndDate OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NULL OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NOT NULL AND DATEDIFF(RepeatEndDate, NOW()) > 0) GROUP BY Payment.ID ORDER BY Payment.Date";
+				+ "', RepeatMonthDay) <= RepeatEndDate OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NULL OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NOT NULL AND DATEDIFF(RepeatEndDate, NOW()) > 0) GROUP BY Payment.ID ORDER BY Payment.Date DESC";
 
 		ArrayList<Integer> results = new ArrayList<>();
 		try
