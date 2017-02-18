@@ -487,6 +487,7 @@ public class DatabaseHandler
 	{
 		Statement stmt = null;
 		String query;		
+		//A is placeholder for empty repeatEndDate
 		if(repeatEndDate.equals("A") || repeatEndDate == null)
 		{
 			

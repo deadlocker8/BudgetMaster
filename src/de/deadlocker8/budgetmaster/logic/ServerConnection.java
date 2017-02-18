@@ -188,6 +188,7 @@ public class ServerConnection
 		String repeatEndDate = payment.getRepeatEndDate();
 		if(repeatEndDate == null || repeatEndDate.equals(""))
 		{
+			//A is placeholder for empty repeatEndDate
 			repeatEndDate = "A";
 		}
 
