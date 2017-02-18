@@ -16,6 +16,8 @@ import de.deadlocker8.budgetmasterserver.main.DatabaseHandler;
 import de.deadlocker8.budgetmasterserver.main.Settings;
 import de.deadlocker8.budgetmasterserver.main.Utils;
 import javafx.scene.paint.Color;
+import logger.LogLevel;
+import logger.Logger;
 import spark.route.RouteOverview;
 
 public class SparkServer
@@ -24,6 +26,9 @@ public class SparkServer
 
 	public static void main(String[] args) throws URISyntaxException
 	{		
+		//DEBUG
+		Logger.setLevel(LogLevel.ALL);
+		
 		gson = new GsonBuilder().setPrettyPrinting().create();
 		
 		if (!Files.exists(Paths.get("settings.properties")))
