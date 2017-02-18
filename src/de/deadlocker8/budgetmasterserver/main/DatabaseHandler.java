@@ -194,6 +194,45 @@ public class DatabaseHandler
 
 		return results;
 	}
+	
+	public Category getCategory(int ID)
+	{
+		Statement stmt = null;
+		String query = "SELECT * FROM Category WHERE Category.ID = " + ID;	
+		Category result = null;
+		try
+		{
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);			
+			while(rs.next())
+			{
+				int id = rs.getInt("ID");
+				String name = rs.getString("Name");
+				String color = rs.getString("Color");
+
+				result = new Category(id, name, Color.web(color));
+			}
+		}
+		catch(SQLException e)
+		{
+			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+
+		return result;
+	}
 
 	public ArrayList<CategoryBudget> getCategoryBudget(int year, int month)
 	{

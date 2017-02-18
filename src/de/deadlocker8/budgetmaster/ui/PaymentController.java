@@ -52,7 +52,7 @@ public class PaymentController implements Refreshable
 			@Override
 			public ListCell<Payment> call(ListView<Payment> param)
 			{
-				PaymentCell cell = new PaymentCell();
+				PaymentCell cell = new PaymentCell(controller.getCategoryHandler());
 				cell.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>()
 				{
 					@Override

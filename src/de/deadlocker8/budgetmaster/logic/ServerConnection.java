@@ -76,6 +76,29 @@ public class ServerConnection
 			return null;
 		}
 	}
+	
+	/*
+	 * Category
+	 */
+	public Category getCategory(int ID) throws Exception
+	{
+		URL url = new URL(settings.getUrl() + "/category/single?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&id=" + ID);
+		System.out.println(url);
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setDoOutput(true);
+		httpsCon.setRequestMethod("GET");
+
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			String result = Read.getStringFromInputStream(httpsCon.getInputStream());		
+			System.out.println(result);
+			return gson.fromJson(result, Category.class);
+		}
+		else
+		{
+			return null;
+		}
+	}
 
 	public void addCategory(Category category) throws Exception
 	{

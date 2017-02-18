@@ -29,7 +29,7 @@ import logger.LogLevel;
 import logger.Logger;
 import tools.AlertGenerator;
 
-public class CategoryController
+public class CategoryController implements Refreshable
 {
 	@FXML private AnchorPane anchorPaneMain;
 	@FXML private Button buttonCategory;
@@ -85,21 +85,14 @@ public class CategoryController
 	public void refreshListView()
 	{		
 		listView.getItems().clear();
-		try
-		{
-			ServerConnection connection = new ServerConnection(controller.getSettings());
-			ArrayList<Category> categories = connection.getCategories();
-			if(categories != null)
-			{				
-				//remove category NONE (not editable)
-				categories.remove(0);				
-				listView.getItems().setAll(categories);
-			}			
-		}
-		catch(Exception e)
-		{
-			controller.showConnectionErrorAlert();
-		}
+		
+		ArrayList<Category> categories = controller.getCategoryHandler().getCategories();
+		if(categories != null)
+		{				
+			//remove category NONE (not editable)
+			categories.remove(0);				
+			listView.getItems().setAll(categories);
+		}		
 	}
 	
 	public void createNewCategory()
@@ -160,5 +153,12 @@ public class CategoryController
 	public Controller getController()
 	{
 		return controller;
+	}
+
+	@Override
+	public void refresh()
+	{
+		controller.updateCategoryHandler();
+		refreshListView();		
 	}
 }

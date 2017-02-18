@@ -1,7 +1,5 @@
 package de.deadlocker8.budgetmaster.logic;
 
-import javafx.scene.paint.Color;
-
 public class Payment
 {	
 	private int ID;
@@ -63,20 +61,6 @@ public class Payment
 	public void setCategoryID(int categoryID)
 	{
 		this.categoryID = categoryID;
-	}
-	
-	public Category getCategory()
-	{
-		//TODO call DatabaseHandler and get Category for categoryID
-		//DEBUG
-		if(categoryID == 3)
-		{
-			return new Category("Auto", Color.RED);	
-		}
-		else
-		{
-			return new Category("Einkommen", Color.DARKBLUE);	
-		}
 	}
 
 	public String getName()

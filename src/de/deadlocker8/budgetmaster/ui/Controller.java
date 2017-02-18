@@ -6,6 +6,8 @@ import java.util.ResourceBundle;
 
 import org.joda.time.DateTime;
 
+import de.deadlocker8.budgetmaster.logic.CategoryHandler;
+import de.deadlocker8.budgetmaster.logic.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.Settings;
 import de.deadlocker8.budgetmaster.logic.Utils;
 import fontAwesome.FontIcon;
@@ -53,7 +55,8 @@ public class Controller
 	private Image icon = new Image("de/deadlocker8/budgetmaster/resources/icon.png");
 	private final ResourceBundle bundle = ResourceBundle.getBundle("de/deadlocker8/budgetmaster/main/", Locale.GERMANY);
 	private Settings settings;	
-	private DateTime currentDate;	
+	private DateTime currentDate;
+	private CategoryHandler categoryHandler;
 
 	public void init(Stage stage)
 	{
@@ -71,6 +74,8 @@ public class Controller
 				tabPane.getSelectionModel().select(tabSettings);
 			});
 		}
+		
+		updateCategoryHandler();
 
 		try
 		{
@@ -106,7 +111,7 @@ public class Controller
 		}
 		catch(IOException e)
 		{
-			// ERRORHANDLING
+			//ERRORHANDLING
 			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
 		}
 
@@ -117,7 +122,7 @@ public class Controller
 		iconNext.setSize(20);
 		buttonRight.setGraphic(iconNext);
 
-		// apply theme
+		//apply theme
 		anchorPaneMain.setStyle("-fx-background-color: #DDDDDD");
 		labelMonth.setStyle("-fx-text-fill: " + bundle.getString("color.text"));
 		labelNotification.setStyle("-fx-text-fill: #FFFFFF; -fx-font-size: 16; -fx-font-weight: bold; -fx-background-color: transparent;");
@@ -204,6 +209,24 @@ public class Controller
 		homeController.refresh();
 		paymentController.refresh();
 		chartController.refresh();
+	}
+	
+	public void updateCategoryHandler()
+	{		
+		try
+		{
+			ServerConnection connection = new ServerConnection(settings);
+			categoryHandler = new CategoryHandler(connection.getCategories());
+		}
+		catch(Exception e)
+		{
+			showConnectionErrorAlert();
+		}		
+	}
+	
+	public CategoryHandler getCategoryHandler()
+	{
+		return categoryHandler;
 	}
 
 	public void about()

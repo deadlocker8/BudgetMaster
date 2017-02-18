@@ -79,6 +79,43 @@ public class SparkServer
 			return null;
 		});
 		
+		get("/category/single", (req, res) -> {			
+			if(!req.queryParams().contains("id"))
+			{				
+				halt(400, "Bad Request");
+			}	
+			
+			int id = -1;		
+			
+			try
+			{				
+				id = Integer.parseInt(req.queryMap("id").value());
+				
+				if(id < 0)
+				{					
+					halt(400, "Bad Request");
+				}
+			
+				try
+				{
+					DatabaseHandler handler = new DatabaseHandler(settings);			
+					Category categeory = handler.getCategory(id);				
+	
+					return gson.toJson(categeory);
+				}
+				catch(IllegalStateException e)
+				{
+					e.printStackTrace();
+					halt(500, "Internal Server Error");
+				}	
+			}
+			catch(Exception e)
+			{				
+				halt(400, "Bad Request");
+			}
+			return null;
+		});
+		
 		post("/category", (req, res) -> {			
 			if(!req.queryParams().contains("name") || !req.queryParams().contains("color"))
 			{
@@ -302,8 +339,5 @@ public class SparkServer
 			
 			return "";
 		});
-
-		// DEBUG
-		RouteOverview.enableRouteOverview();
 	}
 }
