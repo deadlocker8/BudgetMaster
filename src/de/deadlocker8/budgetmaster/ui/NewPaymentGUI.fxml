@@ -6,6 +6,8 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="356.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.deadlocker8.budgetmaster.ui.NewPaymentController">
+<AnchorPane prefHeight="356.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.deadlocker8.budgetmaster.ui.NewPaymentController">
    <children>
       <VBox prefHeight="273.0" prefWidth="465.0" spacing="25.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
          <children>
@@ -71,7 +73,7 @@
                   <DatePicker fx:id="datePicker" maxWidth="1.7976931348623157E308" prefHeight="29.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
-            <VBox spacing="25.0">
+            <VBox spacing="20.0">
                <children>
                   <HBox alignment="CENTER">
                      <children>
@@ -83,37 +85,55 @@
                         </Label>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="465.0">
+                  <HBox alignment="TOP_CENTER" prefWidth="422.0">
                      <children>
-                        <Label prefHeight="29.0" prefWidth="125.0" text="Alle">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                        </Label>
-                        <Spinner fx:id="spinnerRepeatingPeriod" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-                        <Label prefHeight="25.0" prefWidth="36.0" text="Tage">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets left="20.0" />
-                           </HBox.margin>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="29.0" text="oder">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Label>
-                  <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="465.0">
-                     <children>
-                        <Label prefHeight="29.0" prefWidth="125.0" text="jeden Monat am:">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                        </Label>
-                        <ComboBox fx:id="comboBoxRepeatingDay" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="217.0" HBox.hgrow="ALWAYS" />
+                        <VBox alignment="TOP_CENTER" spacing="5.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <RadioButton fx:id="radioButtonPeriod" mnemonicParsing="false">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </RadioButton>
+                              <Label fx:id="labelText1" prefHeight="25.0" prefWidth="40.0" text="Alle">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Spinner fx:id="spinnerRepeatingPeriod" maxWidth="1.7976931348623157E308" />
+                              <Label fx:id="labelText2" prefHeight="25.0" prefWidth="36.0" text="Tage">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="15.0" right="15.0" />
+                           </padding>
+                        </VBox>
+                        <Separator orientation="VERTICAL" prefHeight="200.0" />
+                        <VBox alignment="TOP_CENTER" spacing="5.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <RadioButton fx:id="radioButtonDay" mnemonicParsing="false">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </RadioButton>
+                              <Label fx:id="labelText3" prefHeight="29.0" prefWidth="125.0" text="jeden Monat am:">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <ComboBox fx:id="comboBoxRepeatingDay" maxWidth="1.7976931348623157E308" prefHeight="25.0" />
+                              <Label prefHeight="25.0" prefWidth="36.0">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="15.0" right="15.0" />
+                           </padding>
+                        </VBox>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="465.0">

@@ -18,9 +18,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import tools.AlertGenerator;
@@ -38,6 +41,9 @@ public class NewPaymentController
 	@FXML private Spinner<Integer> spinnerRepeatingPeriod;	
 	@FXML private ComboBox<Integer> comboBoxRepeatingDay;
 	@FXML private CheckBox checkBoxRepeat;
+	@FXML private RadioButton radioButtonPeriod;
+	@FXML private RadioButton radioButtonDay;
+	@FXML private Label labelText1, labelText2, labelText3;
 
 	private Stage stage;
 	private Controller controller;
@@ -112,6 +118,13 @@ public class NewPaymentController
 			stage.close();
 			return;
 		}
+		
+		final ToggleGroup toggleGroup = new ToggleGroup();		
+		radioButtonPeriod.setToggleGroup(toggleGroup);
+		radioButtonDay.setToggleGroup(toggleGroup);
+		radioButtonPeriod.selectedProperty().addListener((listener, oldValue, newValue)->{
+			toggleRadioButtonPeriod(newValue);
+		});
 
 		if(edit)
 		{
@@ -121,7 +134,8 @@ public class NewPaymentController
 		{
 			comboBoxCategory.getSelectionModel().select(0);
 			checkBoxRepeat.setSelected(false);
-			toggleRepeatingArea(false);
+			radioButtonPeriod.setSelected(true);
+			toggleRepeatingArea(false);			
 		}
 	}
 
@@ -159,14 +173,14 @@ public class NewPaymentController
 		int repeatingDay = 0;
 		if(checkBoxRepeat.isSelected())
 		{
-			repeatingInterval = spinnerRepeatingPeriod.getValue();	
-			repeatingDay = comboBoxRepeatingDay.getValue();
-			
-			if(repeatingInterval != 0 && repeatingDay != 0)
+			if(radioButtonPeriod.isSelected())
 			{
-				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Es kann nur eine von beiden Wiederholungsarten verwendet werden." , controller.getIcon(), controller.getStage(), null, false);
-				return;
-			}			
+				repeatingInterval = spinnerRepeatingPeriod.getValue();
+			}
+			else
+			{
+				repeatingDay = comboBoxRepeatingDay.getValue();
+			}
 		}		
 		
 		if(edit)
@@ -211,6 +225,20 @@ public class NewPaymentController
 		spinnerRepeatingPeriod.setDisable(!selected);		
 		comboBoxRepeatingDay.setDisable(!selected);
 		datePickerEnddate.setDisable(!selected);
+		radioButtonPeriod.setDisable(!selected);
+		radioButtonDay.setDisable(!selected);
+		labelText1.setDisable(!selected);
+		labelText2.setDisable(!selected);
+		labelText3.setDisable(!selected);
+	}
+	
+	private void toggleRadioButtonPeriod(boolean selected)
+	{
+		spinnerRepeatingPeriod.setDisable(!selected);	
+		labelText1.setDisable(!selected);
+		labelText2.setDisable(!selected);		
+		comboBoxRepeatingDay.setDisable(selected);	
+		labelText3.setDisable(selected);		
 	}
 	
 	private String getDateString(LocalDate date)
