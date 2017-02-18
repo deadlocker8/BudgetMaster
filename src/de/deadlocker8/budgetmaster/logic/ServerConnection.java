@@ -138,6 +138,27 @@ public class ServerConnection
 	/*
 	 * Payment
 	 */
+	public ArrayList<Payment> getPayments(int year, int month) throws Exception
+	{
+		URL url = new URL(settings.getUrl() + "/payment?secret=" + settings.getSecret() + "&year=" + year + "&month=" + month);
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setDoOutput(true);
+		httpsCon.setRequestMethod("GET");
+
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			String result = Read.getStringFromInputStream(httpsCon.getInputStream());
+			// required by GSON
+			Type listType = new TypeToken<ArrayList<Payment>>()
+			{
+			}.getType();
+			return gson.fromJson(result, listType);
+		}
+		else
+		{
+			return null;
+		}
+	}
 	
 	public void addPayment(Payment payment) throws Exception
 	{

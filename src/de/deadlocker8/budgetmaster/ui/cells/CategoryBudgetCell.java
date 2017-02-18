@@ -15,7 +15,7 @@ import tools.ConvertTo;
 public class CategoryBudgetCell extends ListCell<CategoryBudget>
 {
 	private final double HEIGHT = 40.0;
-	private final DecimalFormat format = new DecimalFormat("#.00");
+	private final DecimalFormat format = new DecimalFormat("0.00");
 
 	@Override
 	protected void updateItem(CategoryBudget item, boolean empty)

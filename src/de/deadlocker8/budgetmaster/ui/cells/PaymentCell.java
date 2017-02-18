@@ -23,7 +23,7 @@ import tools.ConvertTo;
 public class PaymentCell extends ListCell<Payment>
 {		
 	private final double HEIGHT = 40.0;
-	private final DecimalFormat numberFormat = new DecimalFormat("#.00");
+	private final DecimalFormat numberFormat = new DecimalFormat("0.00");
 	
 	@Override
 	protected void updateItem(Payment item, boolean empty)

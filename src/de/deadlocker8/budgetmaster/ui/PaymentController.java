@@ -1,8 +1,11 @@
 package de.deadlocker8.budgetmaster.ui;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.Payment;
+import de.deadlocker8.budgetmaster.logic.ServerConnection;
 import de.deadlocker8.budgetmaster.ui.cells.PaymentCell;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
@@ -38,6 +41,7 @@ public class PaymentController implements Refreshable
 	@FXML private Button buttonNewPayment;
 
 	private Controller controller;
+	private final DecimalFormat numberFormat = new DecimalFormat("0.00");
 
 	public void init(Controller controller)
 	{
@@ -98,10 +102,7 @@ public class PaymentController implements Refreshable
 		buttonNewIncome.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
 		buttonNewPayment.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
 
-		// DEBUG
-		listView.getItems().add(new Payment(-1, 2150.49, "2017-08-01", 2, "Gehalt", 0, null, 1));
-		listView.getItems().add(new Payment(-1, -14.99, "2017-08-15", 2, "Spotify", 0, null, 15));
-		listView.getItems().add(new Payment(-1, -38.87, "2017-08-18", 3, "Tanken", 0, null, 0));
+		refresh();
 	}
 	
 	public void newIncome()
@@ -148,11 +149,51 @@ public class PaymentController implements Refreshable
 			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
 		}
 	}
+	
+	private void refreshListView()
+	{		
+		listView.getItems().clear();
+		try
+		{
+			ServerConnection connection = new ServerConnection(controller.getSettings());
+			ArrayList<Payment> payments = connection.getPayments(controller.getCurrentDate().getYear(), controller.getCurrentDate().getMonthOfYear());
+			if(payments != null)
+			{				
+				listView.getItems().setAll(payments);
+			}			
+		}
+		catch(Exception e)
+		{
+			controller.showConnectionErrorAlert();
+		}
+	}
+	
+	private void refreshCounter()
+	{
+		ArrayList<Payment> payments = new ArrayList<>(listView.getItems());
+		double counterIncome = 0;
+		double counterPayment = 0;
+		for(Payment currentPayment : payments)
+		{
+			double amount = currentPayment.getAmount();
+			if(amount > 0)
+			{
+				counterIncome += amount;
+			}
+			else
+			{
+				counterPayment += amount;
+			}
+		}
+		
+		labelIncomes.setText(String.valueOf(numberFormat.format(counterIncome).replace(".", ",")) + " €");
+		labelPayments.setText(String.valueOf(numberFormat.format(counterPayment).replace(".", ",")) + " €");
+	}
 
 	@Override
 	public void refresh()
 	{
-		//TODO Auto-generated method stub
-		
+		refreshListView();	
+		refreshCounter();
 	}
 }

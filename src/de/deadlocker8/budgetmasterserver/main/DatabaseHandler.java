@@ -265,7 +265,7 @@ public class DatabaseHandler
 					date = dateTime.toString(formatter);
 				}
 
-				return new Payment(resultID, amount, date, categoryID, name, repeatInterval, repeatEndDate, repeatMonthDay);
+				return new Payment(resultID, amount/100.0, date, categoryID, name, repeatInterval, repeatEndDate, repeatMonthDay);
 			}
 		}
 		catch(SQLException e)
@@ -334,7 +334,7 @@ public class DatabaseHandler
 
 		// add rest from previous months
 		int restAmount = getRest(year, month);
-		Payment paymentRest = new Payment(-1, restAmount, year + "-" + month + "-01", 1, "Übertrag", 0, null, 0);
+		Payment paymentRest = new Payment(-1, restAmount/100.0, year + "-" + month + "-01", 1, "Übertrag", 0, null, 0);
 		payments.add(paymentRest);
 
 		ArrayList<Integer> IDs = getPaymentIDs(year, month);
