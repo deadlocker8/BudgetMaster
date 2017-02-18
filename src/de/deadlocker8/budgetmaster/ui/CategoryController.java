@@ -16,7 +16,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -27,7 +26,6 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import logger.LogLevel;
 import logger.Logger;
-import tools.AlertGenerator;
 
 public class CategoryController implements Refreshable
 {
@@ -142,14 +140,12 @@ public class CategoryController implements Refreshable
 		{
 			ServerConnection connection = new ServerConnection(controller.getSettings());
 			connection.deleteCategory(ID);
-			refreshListView();
+			controller.refresh();
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			Platform.runLater(()->{
-				AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Beim Herstellen der Verbindung zum Server ist ein Fehler aufgetreten. Bitte überprüfe deine Einstellungen und ob der Server läuft.", controller.getIcon(), controller.getStage(), null, false);
-			});
+			controller.showConnectionErrorAlert();
 		}
 	}
 	

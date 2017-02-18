@@ -5,33 +5,37 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
 
 import de.deadlocker8.budgetmaster.logic.Category;
-import de.deadlocker8.budgetmaster.logic.CategoryHandler;
 import de.deadlocker8.budgetmaster.logic.Payment;
+import de.deadlocker8.budgetmaster.ui.PaymentController;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import tools.ConvertTo;
 
 public class PaymentCell extends ListCell<Payment>
 {
 	private final double HEIGHT = 40.0;
 	private final DecimalFormat numberFormat = new DecimalFormat("0.00");
-	private CategoryHandler categoryHandler;
+	private PaymentController paymentController;
 
-	public PaymentCell(CategoryHandler categoryHandler)
+	public PaymentCell(PaymentController paymentController)
 	{
-		super();
-		this.categoryHandler = categoryHandler;
+		super();		
+		this.paymentController = paymentController;
 	}
 
 	@Override
@@ -41,7 +45,7 @@ public class PaymentCell extends ListCell<Payment>
 
 		if(!empty)
 		{
-			Category category = categoryHandler.getCategory(item.getCategoryID());
+			Category category = paymentController.getController().getCategoryHandler().getCategory(item.getCategoryID());
 
 			HBox hbox = new HBox();
 
@@ -135,8 +139,28 @@ public class PaymentCell extends ListCell<Payment>
 			buttonDelete.setPrefHeight(HEIGHT);
 			buttonDelete.getStyleClass().add("greylabel");
 			buttonDelete.setStyle("-fx-background-color: transparent");
+			buttonDelete.setOnAction((event) -> {
+				Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+				alert.setTitle("Zahlung löschen");
+				alert.setHeaderText("");
+				alert.setContentText("Möchtest du diesen Eintrag wirklich unwiderruflich löschen?");
+				Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
+				dialogStage.getIcons().add(paymentController.getController().getIcon());
+				dialogStage.centerOnScreen();
+
+				Optional<ButtonType> result = alert.showAndWait();
+				if(result.get() == ButtonType.OK)
+				{
+					paymentController.deletePayment(item);
+				}
+			});
 			hbox.getChildren().add(buttonDelete);
 			HBox.setMargin(buttonDelete, new Insets(0, 0, 0, 25));
+			//don't allow "Übertrag" to be deleted			
+			if(item.getID() == -1)
+			{
+				buttonDelete.setVisible(false);
+			}			
 
 			hbox.setPadding(new Insets(10));
 			setStyle("-fx-background: transparent; -fx-border-color: #545454; -fx-border-width: 0 0 1 0");

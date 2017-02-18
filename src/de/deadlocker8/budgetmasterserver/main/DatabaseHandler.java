@@ -423,6 +423,34 @@ public class DatabaseHandler
 			}
 		}
 	}
+	
+	public void deletePayment(int ID)
+	{
+		Statement stmt = null;
+		String query = "DELETE FROM Payment WHERE Payment.ID = " + ID;
+		try
+		{
+			stmt = connection.createStatement();
+			stmt.execute(query);
+		}
+		catch(SQLException e)
+		{
+			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+	}
 
 	/*
 	 * ADD
