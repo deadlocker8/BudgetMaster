@@ -17,12 +17,17 @@ public class ButtonCategoryCell extends ListCell<Category>
 	{
 		super();
 		this.color = color;
-	}	
+	}
 	
+	public void setColor(Color color)
+	{
+		this.color = color;
+	}
+
 	@Override
 	protected void updateItem(Category item, boolean empty)
 	{
-		super.updateItem(item, empty);
+		super.updateItem(item, empty);		
 
 		if(!empty)
 		{		
@@ -31,21 +36,21 @@ public class ButtonCategoryCell extends ListCell<Category>
 			if(item.getID() == 1)
 			{
 				item.setName("Keine Kategorie");
-			}
-			
+			}			
+		
 			Label labelName = new Label(item.getName());
 			labelName.setStyle("-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: " + ConvertTo.toRGBHex(ConvertTo.getAppropriateTextColor(color)));
-			labelName.setAlignment(Pos.CENTER);
-			labelName.getStyleClass().add("greylabel");
+			labelName.setAlignment(Pos.CENTER);			
 			hbox.getChildren().add(labelName);
 				
 			hbox.setPadding(new Insets(0));
 			setStyle("-fx-background: transparent;");
 			setGraphic(hbox);	
+			setText(null);
 			setAlignment(Pos.CENTER);
 		}
 		else
-		{
+		{		
 			setStyle("-fx-background: transparent");
 			setText(null);
 			setGraphic(null);

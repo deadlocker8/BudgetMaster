@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.logic;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.DecimalFormat;
 
 public class Helpers
 {
@@ -16,4 +17,6 @@ public class Helpers
 			return input;
 		}
 	}
+	
+	public static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("0.00");
 }

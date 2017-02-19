@@ -1,12 +1,12 @@
 package de.deadlocker8.budgetmaster.ui;
 
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import org.joda.time.DateTime;
 
 import de.deadlocker8.budgetmaster.logic.Budget;
+import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmaster.ui.cells.PaymentCell;
 import fontAwesome.FontIcon;
@@ -43,8 +43,7 @@ public class PaymentController implements Refreshable
 	@FXML private Button buttonNewPayment;
 
 	private Controller controller;
-	private final DecimalFormat numberFormat = new DecimalFormat("0.00");
-
+	
 	public void init(Controller controller)
 	{
 		this.controller = controller;
@@ -167,8 +166,8 @@ public class PaymentController implements Refreshable
 	private void refreshCounter()
 	{
 		Budget budget = new Budget(listView.getItems());			
-		labelIncomes.setText(String.valueOf(numberFormat.format(budget.getIncomeSum()).replace(".", ",")) + " €");
-		labelPayments.setText(String.valueOf(numberFormat.format(budget.getPaymentSum()).replace(".", ",")) + " €");
+		labelIncomes.setText(String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getIncomeSum()).replace(".", ",")) + " €");
+		labelPayments.setText(String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getPaymentSum()).replace(".", ",")) + " €");
 	}
 	
 	//TODO

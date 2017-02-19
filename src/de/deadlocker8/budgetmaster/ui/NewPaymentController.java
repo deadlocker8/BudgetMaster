@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.Category;
+import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
@@ -57,6 +58,7 @@ public class NewPaymentController
 	private boolean isPayment;
 	private boolean edit;
 	private Payment payment;
+	private ButtonCategoryCell buttonCategoryCell;
 
 	public void init(Stage stage, Controller controller, PaymentController paymentController, boolean isPayment, boolean edit, Payment payment)
 	{
@@ -98,15 +100,16 @@ public class NewPaymentController
 			days.add(i);
 		}
 		comboBoxRepeatingDay.getItems().addAll(days);
-
+		
 		comboBoxCategory.setCellFactory((view) -> {
 			return new SmallCategoryCell();
 		});
-		comboBoxCategory.setButtonCell(new ButtonCategoryCell(Color.WHITE));
+		buttonCategoryCell = new ButtonCategoryCell(Color.WHITE);
+		comboBoxCategory.setButtonCell(buttonCategoryCell);
 		comboBoxCategory.setStyle("-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 5;");
-		comboBoxCategory.valueProperty().addListener((listener, oldValue, newValue) -> {
+		comboBoxCategory.valueProperty().addListener((listener, oldValue, newValue) -> {		
 			comboBoxCategory.setStyle("-fx-background-color: " + ConvertTo.toRGBHex(newValue.getColor()) + "; -fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 5;");
-			comboBoxCategory.setButtonCell(new ButtonCategoryCell(newValue.getColor()));
+			buttonCategoryCell.setColor(newValue.getColor());
 		});
 
 		checkBoxRepeat.selectedProperty().addListener((listener, oldValue, newValue) -> {
@@ -154,7 +157,41 @@ public class NewPaymentController
 
 		if(edit)
 		{
-			// TODO prefill
+			textFieldName.setText(payment.getName());
+			textFieldAmount.setText(Helpers.NUMBER_FORMAT.format(Math.abs(payment.getAmount()/100.0)).replace(".", ","));		
+			comboBoxCategory.setValue(controller.getCategoryHandler().getCategory(payment.getCategoryID()));
+			datePicker.setValue(LocalDate.parse(payment.getDate()));
+			
+			if(payment instanceof RepeatingPaymentEntry)
+			{
+				RepeatingPaymentEntry currentPayment = (RepeatingPaymentEntry)payment;
+				//repeates every x days
+				if(currentPayment.getRepeatInterval() != 0)
+				{					
+					checkBoxRepeat.setSelected(false);
+					radioButtonPeriod.setSelected(true);
+					toggleRepeatingArea(true);
+					spinnerRepeatingPeriod.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, currentPayment.getRepeatInterval()));
+				}
+				//repeat every month on day x
+				else
+				{
+					checkBoxRepeat.setSelected(false);
+					radioButtonDay.setSelected(true);
+					toggleRepeatingArea(true);
+					comboBoxRepeatingDay.getSelectionModel().select(currentPayment.getRepeatMonthDay());
+				}
+				if(currentPayment.getRepeatEndDate() != null)
+				{
+					datePickerEnddate.setValue(LocalDate.parse(currentPayment.getRepeatEndDate()));
+				}
+			}	
+			else
+			{				
+				checkBoxRepeat.setSelected(false);
+				radioButtonPeriod.setSelected(true);
+				toggleRepeatingArea(false);
+			}
 		}
 		else
 		{

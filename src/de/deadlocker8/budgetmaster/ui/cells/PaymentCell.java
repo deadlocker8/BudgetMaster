@@ -1,13 +1,13 @@
 package de.deadlocker8.budgetmaster.ui.cells;
 
 import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
 import de.deadlocker8.budgetmaster.logic.Category;
+import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmaster.ui.PaymentController;
@@ -29,8 +29,7 @@ import tools.ConvertTo;
 
 public class PaymentCell extends ListCell<Payment>
 {
-	private final double HEIGHT = 40.0;
-	private final DecimalFormat numberFormat = new DecimalFormat("0.00");
+	private final double HEIGHT = 40.0;	
 	private PaymentController paymentController;
 
 	public PaymentCell(PaymentController paymentController)
@@ -115,7 +114,7 @@ public class PaymentCell extends ListCell<Payment>
 			hbox.getChildren().add(r);
 			HBox.setHgrow(r, Priority.ALWAYS);
 
-			Label labelBudget = new Label(String.valueOf(numberFormat.format(item.getAmount() / 100.0)).replace(".", ",") + " €");
+			Label labelBudget = new Label(String.valueOf(Helpers.NUMBER_FORMAT.format(item.getAmount() / 100.0)).replace(".", ",") + " €");
 			labelBudget.setPrefHeight(HEIGHT);
 			labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #247A2D");
 			labelBudget.setAlignment(Pos.CENTER);

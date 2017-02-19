@@ -7,17 +7,17 @@ public class Category
 	private int ID;
 	private String name;
 	private Color color;
-	
+
 	public Category(String name, Color color)
 	{
 		this.name = name;
 		this.color = color;
 	}
-	
+
 	public Category(int ID, String name, Color color)
 	{
 		this.ID = ID;
-		this.name =name;
+		this.name = name;
 		this.color = color;
 	}
 
@@ -50,5 +50,20 @@ public class Category
 	public String toString()
 	{
 		return "Category [ID=" + ID + ", name=" + name + ", color=" + color + "]";
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(this == obj)
+			return true;
+		if(obj == null)
+			return false;
+		if(getClass() != obj.getClass())
+			return false;
+		Category other = (Category)obj;
+		if(ID != other.ID)
+			return false;
+		return true;
 	}
 }
