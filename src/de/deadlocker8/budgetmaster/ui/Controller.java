@@ -254,7 +254,7 @@ public class Controller implements Refreshable
 	{
 		AlertGenerator.showAboutAlert(bundle.getString("app.name"), bundle.getString("version.name"), bundle.getString("version.code"), bundle.getString("version.date"), bundle.getString("author"), icon, stage, null, false);
 	}
-
+	
 	@Override
 	public void refresh()
 	{
@@ -281,6 +281,6 @@ public class Controller implements Refreshable
 			showConnectionErrorAlert();
 		}
 
-		refreshAllTabs();
+		refreshAllTabs();		
 	}
 }

@@ -1,7 +1,11 @@
 package de.deadlocker8.budgetmaster.ui;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import org.joda.time.DateTime;
+
+import de.deadlocker8.budgetmaster.logic.Budget;
 import de.deadlocker8.budgetmaster.logic.CategoryBudget;
 import de.deadlocker8.budgetmaster.ui.cells.CategoryBudgetCell;
 import javafx.application.Platform;
@@ -23,6 +27,7 @@ public class HomeController implements Refreshable
 	@FXML private ProgressBar progressBar;
 	@FXML private ListView<CategoryBudget> listView;
 
+	private final DecimalFormat numberFormat = new DecimalFormat("0.00");
 	private Controller controller;
 
 	public void init(Controller controller)
@@ -54,11 +59,7 @@ public class HomeController implements Refreshable
 		});
 		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");
 		
-		Label labelPlaceholder = new Label("Keine Daten verfügbar");
-		labelPlaceholder.setStyle("-fx-font-size: 16");
-		listView.setPlaceholder(labelPlaceholder);
-		
-		refreshListView();
+		refresh();
 	}
 	
 	private void refreshListView()
@@ -71,10 +72,41 @@ public class HomeController implements Refreshable
 			listView.getItems().setAll(categoryBudgets);
 		}		
 	}
+	
+	private void refreshCounter()
+	{
+		if(controller.getPayments() != null)
+		{
+			Budget budget = new Budget(controller.getPayments());	
+			double remaining = budget.getIncomeSum() + budget.getPaymentSum();
+			labelBudget.setText(String.valueOf(numberFormat.format(remaining).replace(".", ",")) + " €");
+			labelStartBudget.setText("von " + String.valueOf(numberFormat.format(budget.getIncomeSum()).replace(".", ",")) + " € verbleibend");
+			
+			double factor = remaining / budget.getIncomeSum();
+			if(factor < 0)
+			{
+				factor = 0;
+			}
+			progressBar.setProgress(factor);
+		}
+	}
 
 	@Override
 	public void refresh()
 	{
-		refreshListView();		
+		refreshListView();	
+		refreshCounter();
+		
+		Label labelPlaceholder;
+		if(controller.getCurrentDate().isAfter(DateTime.now()))
+		{
+			labelPlaceholder = new Label("Datum liegt in der Zukunft");			
+		}
+		else
+		{
+			labelPlaceholder = new Label("Keine Daten verfügbar");			
+		}
+		labelPlaceholder.setStyle("-fx-font-size: 16");
+		listView.setPlaceholder(labelPlaceholder);
 	}
 }

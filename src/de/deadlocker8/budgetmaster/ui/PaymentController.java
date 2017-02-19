@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import org.joda.time.DateTime;
+
+import de.deadlocker8.budgetmaster.logic.Budget;
 import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmaster.ui.cells.PaymentCell;
 import fontAwesome.FontIcon;
@@ -163,24 +166,9 @@ public class PaymentController implements Refreshable
 	
 	private void refreshCounter()
 	{
-		ArrayList<Payment> payments = new ArrayList<>(listView.getItems());
-		double counterIncome = 0;
-		double counterPayment = 0;
-		for(Payment currentPayment : payments)
-		{
-			double amount = currentPayment.getAmount();
-			if(amount > 0)
-			{
-				counterIncome += amount;
-			}
-			else
-			{
-				counterPayment += amount;
-			}
-		}
-		
-		labelIncomes.setText(String.valueOf(numberFormat.format(counterIncome/100.0).replace(".", ",")) + " €");
-		labelPayments.setText(String.valueOf(numberFormat.format(counterPayment/100.0).replace(".", ",")) + " €");
+		Budget budget = new Budget(listView.getItems());			
+		labelIncomes.setText(String.valueOf(numberFormat.format(budget.getIncomeSum()).replace(".", ",")) + " €");
+		labelPayments.setText(String.valueOf(numberFormat.format(budget.getPaymentSum()).replace(".", ",")) + " €");
 	}
 	
 	//TODO
@@ -209,5 +197,17 @@ public class PaymentController implements Refreshable
 	{
 		refreshListView();	
 		refreshCounter();
+		
+		Label labelPlaceholder;
+		if(controller.getCurrentDate().isAfter(DateTime.now()))
+		{
+			labelPlaceholder = new Label("Datum liegt in der Zukunft");			
+		}
+		else
+		{
+			labelPlaceholder = new Label("Keine Daten verfügbar");			
+		}
+		labelPlaceholder.setStyle("-fx-font-size: 16");
+		listView.setPlaceholder(labelPlaceholder);
 	}
 }
