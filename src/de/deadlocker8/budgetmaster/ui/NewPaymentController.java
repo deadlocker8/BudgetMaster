@@ -243,8 +243,24 @@ public class NewPaymentController
 
 	private void toggleRepeatingArea(boolean selected)
 	{
-		spinnerRepeatingPeriod.setDisable(!selected);
-		comboBoxRepeatingDay.setDisable(!selected);
+		if(selected)
+		{
+			if(radioButtonPeriod.isSelected())
+			{
+				spinnerRepeatingPeriod.setDisable(false);
+				comboBoxRepeatingDay.setDisable(true);
+			}
+			else
+			{
+				spinnerRepeatingPeriod.setDisable(true);
+				comboBoxRepeatingDay.setDisable(false);
+			}
+		}
+		else
+		{
+			spinnerRepeatingPeriod.setDisable(!selected);
+			comboBoxRepeatingDay.setDisable(!selected);
+		}
 		datePickerEnddate.setDisable(!selected);
 		radioButtonPeriod.setDisable(!selected);
 		radioButtonDay.setDisable(!selected);
