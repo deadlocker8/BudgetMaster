@@ -166,8 +166,8 @@ public class PaymentController implements Refreshable
 	private void refreshCounter()
 	{
 		Budget budget = new Budget(listView.getItems());			
-		labelIncomes.setText(String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getIncomeSum()).replace(".", ",")) + " €");
-		labelPayments.setText(String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getPaymentSum()).replace(".", ",")) + " €");
+		labelIncomes.setText(String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getIncomeSum()).replace(".", ",")) + " â‚¬");
+		labelPayments.setText(String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getPaymentSum()).replace(".", ",")) + " â‚¬");
 	}
 	
 	//TODO
@@ -204,7 +204,7 @@ public class PaymentController implements Refreshable
 		}
 		else
 		{
-			labelPlaceholder = new Label("Keine Daten verfügbar");			
+			labelPlaceholder = new Label("Keine Daten verfÃ¼gbar");			
 		}
 		labelPlaceholder.setStyle("-fx-font-size: 16");
 		listView.setPlaceholder(labelPlaceholder);

@@ -215,7 +215,7 @@ public class Controller implements Refreshable
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Fehler");
 				alert.setHeaderText("");
-				alert.setContentText("Beim Herstellen der Verbindung zum Server ist ein Fehler aufgetreten. Bitte überprüfe deine Einstellungen und ob der Server läuft.");
+				alert.setContentText("Beim Herstellen der Verbindung zum Server ist ein Fehler aufgetreten. Bitte Ã¼berprÃ¼fe deine Einstellungen und ob der Server lÃ¤uft.");
 				Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
 				dialogStage.getIcons().add(icon);
 				dialogStage.initOwner(stage);

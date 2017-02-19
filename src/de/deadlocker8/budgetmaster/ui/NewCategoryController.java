@@ -131,7 +131,7 @@ public class NewCategoryController
 		String name = textFieldName.getText();
 		if(name == null || name.equals(""))
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Feld für den Namen darf nicht leer sein.", controller.getIcon(), controller.getStage(), null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Feld fÃ¼r den Namen darf nicht leer sein.", controller.getIcon(), controller.getStage(), null, false);
 			return;
 		}
 		

@@ -114,7 +114,7 @@ public class PaymentCell extends ListCell<Payment>
 			hbox.getChildren().add(r);
 			HBox.setHgrow(r, Priority.ALWAYS);
 
-			Label labelBudget = new Label(String.valueOf(Helpers.NUMBER_FORMAT.format(item.getAmount() / 100.0)).replace(".", ",") + " €");
+			Label labelBudget = new Label(String.valueOf(Helpers.NUMBER_FORMAT.format(item.getAmount() / 100.0)).replace(".", ",") + " â‚¬");
 			labelBudget.setPrefHeight(HEIGHT);
 			labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #247A2D");
 			labelBudget.setAlignment(Pos.CENTER);
@@ -142,9 +142,9 @@ public class PaymentCell extends ListCell<Payment>
 			//TODO advanced deleting alert for repeating payments
 			buttonDelete.setOnAction((event) -> {
 				Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-				alert.setTitle("Zahlung löschen");
+				alert.setTitle("Zahlung lÃ¶schen");
 				alert.setHeaderText("");
-				alert.setContentText("Möchtest du diesen Eintrag wirklich unwiderruflich löschen?");
+				alert.setContentText("MÃ¶chtest du diesen Eintrag wirklich unwiderruflich lÃ¶schen?");
 				Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
 				dialogStage.getIcons().add(paymentController.getController().getIcon());
 				dialogStage.centerOnScreen();
@@ -157,7 +157,7 @@ public class PaymentCell extends ListCell<Payment>
 			});
 			hbox.getChildren().add(buttonDelete);
 			HBox.setMargin(buttonDelete, new Insets(0, 0, 0, 25));
-			//don't allow "Übertrag" to be deleted			
+			//don't allow "Ãœbertrag" to be deleted			
 			if(item.getID() == -1)
 			{
 				buttonDelete.setVisible(false);

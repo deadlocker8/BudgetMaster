@@ -51,7 +51,7 @@ public class CategoryBudgetCell extends ListCell<CategoryBudget>
 			hbox.getChildren().add(r);
 			HBox.setHgrow(r, Priority.ALWAYS);
 
-			Label labelBudget = new Label(String.valueOf(Helpers.NUMBER_FORMAT.format(item.getBudget() / 100.0)).replace(".", ",") + " €");
+			Label labelBudget = new Label(String.valueOf(Helpers.NUMBER_FORMAT.format(item.getBudget() / 100.0)).replace(".", ",") + " â‚¬");
 			labelBudget.setPrefHeight(HEIGHT);
 			labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #212121;");
 			labelBudget.setAlignment(Pos.CENTER);

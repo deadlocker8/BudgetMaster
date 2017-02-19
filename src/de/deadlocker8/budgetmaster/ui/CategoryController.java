@@ -64,7 +64,7 @@ public class CategoryController implements Refreshable
 			}
 		});
 		
-		Label labelPlaceholder = new Label("Keine Kategorien verfügbar");
+		Label labelPlaceholder = new Label("Keine Kategorien verfÃ¼gbar");
 		labelPlaceholder.setStyle("-fx-font-size: 16");
 		listView.setPlaceholder(labelPlaceholder);
 

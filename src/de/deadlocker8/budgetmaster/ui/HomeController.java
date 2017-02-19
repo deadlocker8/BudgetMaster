@@ -78,8 +78,8 @@ public class HomeController implements Refreshable
 		{
 			Budget budget = new Budget(controller.getPayments());	
 			double remaining = budget.getIncomeSum() + budget.getPaymentSum();
-			labelBudget.setText(String.valueOf(Helpers.NUMBER_FORMAT.format(remaining).replace(".", ",")) + " €");
-			labelStartBudget.setText("von " + String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getIncomeSum()).replace(".", ",")) + " € verbleibend");
+			labelBudget.setText(String.valueOf(Helpers.NUMBER_FORMAT.format(remaining).replace(".", ",")) + " â‚¬");
+			labelStartBudget.setText("von " + String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getIncomeSum()).replace(".", ",")) + " â‚¬ verbleibend");
 			
 			double factor = remaining / budget.getIncomeSum();
 			if(factor < 0)
@@ -103,7 +103,7 @@ public class HomeController implements Refreshable
 		}
 		else
 		{
-			labelPlaceholder = new Label("Keine Daten verfügbar");			
+			labelPlaceholder = new Label("Keine Daten verfÃ¼gbar");			
 		}
 		labelPlaceholder.setStyle("-fx-font-size: 16");
 		listView.setPlaceholder(labelPlaceholder);

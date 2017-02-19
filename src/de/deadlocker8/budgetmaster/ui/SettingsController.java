@@ -67,7 +67,7 @@ public class SettingsController
 		}
 		else
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Feld für die Server URL darf nicht leer sein!", controller.getIcon(), controller.getStage(), null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Feld fÃ¼r die Server URL darf nicht leer sein!", controller.getIcon(), controller.getStage(), null, false);
 		}
 	}
 }

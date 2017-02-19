@@ -82,9 +82,9 @@ public class CategoryCell extends ListCell<Category>
 			buttonDelete.setStyle("-fx-background-color: transparent");
 			buttonDelete.setOnAction((event)->{
 				 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                 alert.setTitle("Kategorie löschen");
+                 alert.setTitle("Kategorie lÃ¶schen");
                  alert.setHeaderText("");
-                 alert.setContentText("Möchtest du diese Kategorie wirklich unwiderruflich löschen?");
+                 alert.setContentText("MÃ¶chtest du diese Kategorie wirklich unwiderruflich lÃ¶schen?");
                  Stage dialogStage = (Stage) alert.getDialogPane().getScene().getWindow();
                  dialogStage.getIcons().add(categoryController.getController().getIcon());
                  dialogStage.centerOnScreen();
@@ -95,7 +95,7 @@ public class CategoryCell extends ListCell<Category>
                 	 categoryController.deleteCategory(item.getID());
                  }				
 			});
-			//don't allow category "Übertrag" to be deleted
+			//don't allow category "Ãœbertrag" to be deleted
 			if(item.getID() != 2)
 			{
 				hbox.getChildren().add(buttonDelete);

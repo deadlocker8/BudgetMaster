@@ -207,21 +207,21 @@ public class NewPaymentController
 		String name = textFieldName.getText();
 		if(name == null || name.equals(""))
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Feld für den Namen darf nicht leer sein.", controller.getIcon(), controller.getStage(), null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Feld fÃ¼r den Namen darf nicht leer sein.", controller.getIcon(), controller.getStage(), null, false);
 			return;
 		}
 
 		String amountText = textFieldAmount.getText();
 		if(!amountText.matches("^-?\\d+(,\\d+)*(\\.\\d+(e\\d+)?)?$"))
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Gib eine gültige Zahl für den Betrag ein.", controller.getIcon(), controller.getStage(), null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Gib eine gÃ¼ltige Zahl fÃ¼r den Betrag ein.", controller.getIcon(), controller.getStage(), null, false);
 			return;
 		}
 
 		LocalDate date = datePicker.getValue();
 		if(date == null)
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Bitte wähle ein Datum aus.", controller.getIcon(), controller.getStage(), null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Bitte wÃ¤hle ein Datum aus.", controller.getIcon(), controller.getStage(), null, false);
 			return;
 		}
 
@@ -247,7 +247,7 @@ public class NewPaymentController
 
 			if(repeatingInterval == 0 && repeatingDay == 0)
 			{
-				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Wenn Wiederholung aktiviert ist dürfen nicht beide Eingabefelder 0 sein.\n(Zur Deaktivierung der Wiederholung einfach die Checkbox enthaken)", controller.getIcon(), controller.getStage(), null, false);
+				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Wenn Wiederholung aktiviert ist dÃ¼rfen nicht beide Eingabefelder 0 sein.\n(Zur Deaktivierung der Wiederholung einfach die Checkbox enthaken)", controller.getIcon(), controller.getStage(), null, false);
 				return;
 			}
 
