@@ -11,7 +11,6 @@ import org.joda.time.DateTime;
 
 import de.deadlocker8.budgetmaster.logic.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.CategoryHandler;
-import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmaster.logic.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.Settings;

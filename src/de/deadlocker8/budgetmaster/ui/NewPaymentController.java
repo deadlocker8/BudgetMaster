@@ -81,6 +81,13 @@ public class NewPaymentController
 
 		SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, 0);
 		spinnerRepeatingPeriod.setValueFactory(valueFactory);
+		spinnerRepeatingPeriod.setEditable(true);
+		spinnerRepeatingPeriod.focusedProperty().addListener((observable, oldValue, newValue) -> {
+			if(!newValue)
+			{
+				spinnerRepeatingPeriod.increment(0); // won't change value, but will commit editor
+			}
+		});
 
 		comboBoxRepeatingDay.setCellFactory((view) -> {
 			return new RepeatingDayCell();
@@ -201,6 +208,12 @@ public class NewPaymentController
 				repeatingDay = comboBoxRepeatingDay.getValue();
 			}
 
+			if(repeatingInterval == 0 && repeatingDay == 0)
+			{
+				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Wenn Wiederholung aktiviert ist dürfen nicht beide Eingabefelder 0 sein.\n(Zur Deaktivierung der Wiederholung einfach die Checkbox enthaken)", controller.getIcon(), controller.getStage(), null, false);
+				return;
+			}
+
 			if(datePickerEnddate.getValue() != null && datePickerEnddate.getValue().isBefore(date))
 			{
 				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Enddatum darf zeitlich nicht vor dem Datum der Zahlung liegen.", controller.getIcon(), controller.getStage(), null, false);
@@ -209,7 +222,8 @@ public class NewPaymentController
 
 			if(edit)
 			{
-				RepeatingPaymentEntry newPayment = new RepeatingPaymentEntry(payment.getID(), ((RepeatingPaymentEntry)payment).getRepeatingPaymentID(), getDateString(date), amount, comboBoxCategory.getValue().getID(), name, repeatingInterval, getDateString(datePickerEnddate.getValue()), repeatingDay);
+				RepeatingPaymentEntry newPayment = new RepeatingPaymentEntry(payment.getID(), ((RepeatingPaymentEntry)payment).getRepeatingPaymentID(), getDateString(date), amount, comboBoxCategory.getValue().getID(), name, repeatingInterval, getDateString(datePickerEnddate.getValue()),
+						repeatingDay);
 				try
 				{
 					ServerConnection connection = new ServerConnection(controller.getSettings());
