@@ -99,7 +99,7 @@
                                     <Font name="System Bold" size="14.0" />
                                  </font>
                               </Label>
-                              <Spinner fx:id="spinnerRepeatingPeriod" maxWidth="1.7976931348623157E308" />
+                              <Spinner fx:id="spinnerRepeatingPeriod" prefHeight="25.0" prefWidth="90.0" />
                               <Label fx:id="labelText2" prefHeight="25.0" prefWidth="36.0" text="Tage">
                                  <font>
                                     <Font name="System Bold" size="14.0" />
@@ -123,7 +123,7 @@
                                     <Font name="System Bold" size="14.0" />
                                  </font>
                               </Label>
-                              <ComboBox fx:id="comboBoxRepeatingDay" maxWidth="1.7976931348623157E308" prefHeight="25.0" />
+                              <ComboBox fx:id="comboBoxRepeatingDay" prefHeight="25.0" prefWidth="90.0" />
                               <Label prefHeight="25.0" prefWidth="36.0">
                                  <font>
                                     <Font name="System Bold" size="14.0" />
