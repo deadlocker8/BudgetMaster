@@ -5,7 +5,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.Category;
+import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.Payment;
+import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
+import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmaster.logic.ServerConnection;
 import de.deadlocker8.budgetmaster.ui.cells.ButtonCategoryCell;
 import de.deadlocker8.budgetmaster.ui.cells.RepeatingDayCell;
@@ -27,6 +30,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import logger.LogLevel;
+import logger.Logger;
 import tools.AlertGenerator;
 import tools.ConvertTo;
 
@@ -201,34 +206,65 @@ public class NewPaymentController
 				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Enddatum darf zeitlich nicht vor dem Datum der Zahlung liegen.", controller.getIcon(), controller.getStage(), null, false);
 				return;
 			}
-		}
 
-		if(edit)
-		{
-			Payment newPayment = new Payment(payment.getID(), amount, getDateString(date), comboBoxCategory.getValue().getID(), name, repeatingInterval, getDateString(datePickerEnddate.getValue()), repeatingDay);
-
-			try
+			if(edit)
 			{
-				ServerConnection connection = new ServerConnection(controller.getSettings());
-				connection.updatePayment(newPayment, payment);
+				RepeatingPaymentEntry newPayment = new RepeatingPaymentEntry(payment.getID(), ((RepeatingPaymentEntry)payment).getRepeatingPaymentID(), getDateString(date), amount, comboBoxCategory.getValue().getID(), name, repeatingInterval, getDateString(datePickerEnddate.getValue()), repeatingDay);
+				try
+				{
+					ServerConnection connection = new ServerConnection(controller.getSettings());
+					connection.updateRepeatingPayment(newPayment, payment);
+				}
+				catch(Exception e)
+				{
+					Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+					controller.showConnectionErrorAlert();
+				}
 			}
-			catch(Exception e)
+			else
 			{
-				controller.showConnectionErrorAlert();
+				RepeatingPayment newPayment = new RepeatingPayment(-1, amount, getDateString(date), comboBoxCategory.getValue().getID(), name, repeatingInterval, getDateString(datePickerEnddate.getValue()), repeatingDay);
+				try
+				{
+					ServerConnection connection = new ServerConnection(controller.getSettings());
+					connection.addRepeatingPayment(newPayment);
+				}
+				catch(Exception e)
+				{
+					Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+					controller.showConnectionErrorAlert();
+				}
 			}
 		}
 		else
 		{
-			Payment newPayment = new Payment(-1, amount, getDateString(date), comboBoxCategory.getValue().getID(), name, repeatingInterval, getDateString(datePickerEnddate.getValue()), repeatingDay);
-			try
+			if(edit)
 			{
-				ServerConnection connection = new ServerConnection(controller.getSettings());
-				connection.addPayment(newPayment);
+				NormalPayment newPayment = new NormalPayment(payment.getID(), amount, getDateString(date), comboBoxCategory.getValue().getID(), name);
+				try
+				{
+					ServerConnection connection = new ServerConnection(controller.getSettings());
+					connection.updateNormalPayment(newPayment, payment);
+				}
+				catch(Exception e)
+				{
+					Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+					controller.showConnectionErrorAlert();
+				}
 			}
-			catch(Exception e)
+			else
 			{
-				e.printStackTrace();
-				controller.showConnectionErrorAlert();
+				NormalPayment newPayment = new NormalPayment(-1, amount, getDateString(date), comboBoxCategory.getValue().getID(), name);
+				try
+				{
+					ServerConnection connection = new ServerConnection(controller.getSettings());
+					connection.addNormalPayment(newPayment);
+				}
+				catch(Exception e)
+				{
+					Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+					controller.showConnectionErrorAlert();
+				}
 			}
 		}
 

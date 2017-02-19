@@ -283,9 +283,51 @@ public class SparkServer
 				
 				try
 				{
-					DatabaseHandler handler = new DatabaseHandler(settings);			
-					ArrayList<Payment> payments = handler.getPayments(year, month);			
-
+					DatabaseHandler handler = new DatabaseHandler(settings);		
+					ArrayList<NormalPayment> payments = new ArrayList<>();				
+					payments.addAll(handler.getPayments(year, month));	
+					
+					return gson.toJson(payments);
+				}
+				catch(IllegalStateException ex)
+				{
+					halt(500, "Internal Server Error");
+				}
+			}
+			catch(Exception e)
+			{
+				halt(400, "Bad Request");
+			}
+			
+			return null;
+		});
+		
+		get("/repeatingpayment", (req, res) -> {
+			
+			if(!req.queryParams().contains("year") || !req.queryParams().contains("month"))
+			{
+				halt(400, "Bad Request");
+			}
+			
+			int year = 0;
+			int month = 0;
+			
+			try
+			{				
+				year = Integer.parseInt(req.queryMap("year").value());
+				month = Integer.parseInt(req.queryMap("month").value());
+				
+				if(year < 0 || month < 1 || month > 12)
+				{
+					halt(400, "Bad Request");
+				}
+				
+				try
+				{
+					DatabaseHandler handler = new DatabaseHandler(settings);		
+					ArrayList<RepeatingPaymentEntry> payments = new ArrayList<>();				
+					payments.addAll(handler.getRepeatingPayments(year, month));	
+					
 					return gson.toJson(payments);
 				}
 				catch(IllegalStateException ex)
@@ -302,6 +344,41 @@ public class SparkServer
 		});
 		
 		post("/payment", (req, res) -> {			
+			if(!req.queryParams().contains("amount") || !req.queryParams().contains("date") || !req.queryParams().contains("categoryID") || !req.queryParams().contains("name"))
+			{				
+				halt(400, "Bad Request");
+			}	
+				
+			int amount = 0;
+			int categoryID = 0;			
+			
+			try
+			{				
+				amount = Integer.parseInt(req.queryMap("amount").value());
+				categoryID = Integer.parseInt(req.queryMap("categoryID").value());				
+				
+				try
+				{
+					DatabaseHandler handler = new DatabaseHandler(settings);
+					handler.addNormalPayment(amount, req.queryMap("date").value(), categoryID, req.queryMap("name").value());			
+	
+					return "";
+				}
+				catch(IllegalStateException ex)
+				{				
+					halt(500, "Internal Server Error");
+				}
+			}
+			catch(Exception e)
+			{			
+				e.printStackTrace();
+				halt(400, "Bad Request");
+			}
+			
+			return "";
+		});
+		
+		post("/repeatingpayment", (req, res) -> {			
 			if(!req.queryParams().contains("amount") || !req.queryParams().contains("date") || !req.queryParams().contains("categoryID") || !req.queryParams().contains("name") || !req.queryParams().contains("repeatInterval") || !req.queryParams().contains("repeatEndDate") || !req.queryParams().contains("repeatMonthDay"))
 			{				
 				halt(400, "Bad Request");
@@ -322,7 +399,7 @@ public class SparkServer
 				try
 				{
 					DatabaseHandler handler = new DatabaseHandler(settings);
-					handler.addPayment(amount, req.queryMap("date").value(), categoryID, req.queryMap("name").value(), repeatInterval, req.queryMap("repeatEndDate").value(), repeatMonthDay);			
+					handler.addRepeatingPayment(amount, req.queryMap("date").value(), categoryID, req.queryMap("name").value(), repeatInterval, req.queryMap("repeatEndDate").value(), repeatMonthDay);			
 	
 					return "";
 				}

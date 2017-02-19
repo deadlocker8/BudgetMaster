@@ -83,7 +83,6 @@ public class ServerConnection
 	public Category getCategory(int ID) throws Exception
 	{
 		URL url = new URL(settings.getUrl() + "/category/single?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&id=" + ID);
-		System.out.println(url);
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setDoOutput(true);
 		httpsCon.setRequestMethod("GET");
@@ -136,6 +135,7 @@ public class ServerConnection
 	/*
 	 * CategoryBudget
 	 */
+	@Deprecated
 	public ArrayList<CategoryBudget> getCategoryBudgets(int year, int month) throws Exception
 	{
 		URL url = new URL(settings.getUrl() + "/categorybudget?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&year=" + year + "&month=" + month);
@@ -161,7 +161,7 @@ public class ServerConnection
 	/*
 	 * Payment
 	 */
-	public ArrayList<Payment> getPayments(int year, int month) throws Exception
+	public ArrayList<NormalPayment> getPayments(int year, int month) throws Exception
 	{
 		URL url = new URL(settings.getUrl() + "/payment?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&year=" + year + "&month=" + month);
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
@@ -172,7 +172,7 @@ public class ServerConnection
 		{
 			String result = Read.getStringFromInputStream(httpsCon.getInputStream());
 			// required by GSON
-			Type listType = new TypeToken<ArrayList<Payment>>()
+			Type listType = new TypeToken<ArrayList<NormalPayment>>()
 			{
 			}.getType();
 			return gson.fromJson(result, listType);
@@ -183,17 +183,31 @@ public class ServerConnection
 		}
 	}
 
-	public void addPayment(Payment payment) throws Exception
+	public ArrayList<RepeatingPaymentEntry> getRepeatingPayments(int year, int month) throws Exception
 	{
-		String repeatEndDate = payment.getRepeatEndDate();
-		if(repeatEndDate == null || repeatEndDate.equals(""))
-		{
-			//A is placeholder for empty repeatEndDate
-			repeatEndDate = "A";
-		}
+		URL url = new URL(settings.getUrl() + "/repeatingpayment?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&year=" + year + "&month=" + month);
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setDoOutput(true);
+		httpsCon.setRequestMethod("GET");
 
-		URL url = new URL(settings.getUrl() + "/payment?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&amount=" + payment.getAmount() + "&date=" + payment.getDate() + "&categoryID=" + payment.getCategoryID() + "&name=" + Helpers.getURLEncodedString(payment.getName())
-				+ "&repeatInterval=" + payment.getRepeatInterval() + "&repeatEndDate=" + repeatEndDate + "&repeatMonthDay=" + payment.getRepeatMonthDay());
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			String result = Read.getStringFromInputStream(httpsCon.getInputStream());
+			// required by GSON
+			Type listType = new TypeToken<ArrayList<RepeatingPaymentEntry>>()
+			{
+			}.getType();
+			return gson.fromJson(result, listType);
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	public void addNormalPayment(NormalPayment payment) throws Exception
+	{
+		URL url = new URL(settings.getUrl() + "/payment?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&amount=" + payment.getAmount() + "&date=" + payment.getDate() + "&categoryID=" + payment.getCategoryID() + "&name=" + Helpers.getURLEncodedString(payment.getName()));
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setRequestMethod("POST");
 		httpsCon.setDoInput(true);
@@ -202,10 +216,9 @@ public class ServerConnection
 		reader.close();
 	}
 
-	public void updatePayment(Payment payment, Payment oldPayment) throws Exception
+	public void updateNormalPayment(NormalPayment payment, Payment oldPayment) throws Exception
 	{
 		// TODO update payment
-		// TODO handle changing of repeating type
 		// URL url = new URL(settings.getUrl() + "/payment?secret=" + settings.getSecret() + "&id=" + category.getID() + "&name=" + category.getName() + "&color=" + ConvertTo.toRGBHexWithoutOpacity(category.getColor()).replace("#", ""));
 		// HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		// httpsCon.setRequestMethod("PUT");
@@ -215,23 +228,48 @@ public class ServerConnection
 		// reader.close();
 	}
 
-	public void deletePayment(Payment payment) throws Exception
+	public void addRepeatingPayment(RepeatingPayment payment) throws Exception
+	{
+		String repeatEndDate = payment.getRepeatEndDate();
+		if(repeatEndDate == null || repeatEndDate.equals(""))
+		{
+			// A is placeholder for empty repeatEndDate
+			repeatEndDate = "A";
+		}
+
+		URL url = new URL(settings.getUrl() + "/repeatingpayment?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&amount=" + payment.getAmount() + "&date=" + payment.getDate() + "&categoryID=" + payment.getCategoryID() + "&name=" + Helpers.getURLEncodedString(payment.getName())
+				+ "&repeatInterval=" + payment.getRepeatInterval() + "&repeatEndDate=" + repeatEndDate + "&repeatMonthDay=" + payment.getRepeatMonthDay());
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setRequestMethod("POST");
+		httpsCon.setDoInput(true);
+		InputStream stream = httpsCon.getInputStream();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		reader.close();
+	}
+
+	public void updateRepeatingPayment(RepeatingPaymentEntry payment, Payment oldPayment) throws Exception
+	{
+
+	}
+
+	@Deprecated
+	public void deletePayment(NormalPayment payment) throws Exception
 	{
 		// TODO handle repeating payments
 
-		if(payment.isRepeating())
-		{
-
-		}
-		else
-		{
-			URL url = new URL(settings.getUrl() + "/payment?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&id=" + payment.getID());
-			HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
-			httpsCon.setRequestMethod("DELETE");
-			httpsCon.setDoInput(true);
-			InputStream stream = httpsCon.getInputStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-			reader.close();
-		}
+		// if(payment.isRepeating())
+		// {
+		//
+		// }
+		// else
+		// {
+		// URL url = new URL(settings.getUrl() + "/payment?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&id=" + payment.getID());
+		// HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		// httpsCon.setRequestMethod("DELETE");
+		// httpsCon.setDoInput(true);
+		// InputStream stream = httpsCon.getInputStream();
+		// BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		// reader.close();
+		// }
 	}
 }

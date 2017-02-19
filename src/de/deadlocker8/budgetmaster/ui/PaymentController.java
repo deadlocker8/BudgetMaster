@@ -5,7 +5,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.Payment;
-import de.deadlocker8.budgetmaster.logic.ServerConnection;
 import de.deadlocker8.budgetmaster.ui.cells.PaymentCell;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
@@ -184,19 +183,20 @@ public class PaymentController implements Refreshable
 		labelPayments.setText(String.valueOf(numberFormat.format(counterPayment/100.0).replace(".", ",")) + " €");
 	}
 	
+	//TODO
 	public void deletePayment(Payment payment)
 	{		
-		try
-		{
-			ServerConnection connection = new ServerConnection(controller.getSettings());
-			connection.deletePayment(payment);
-			controller.refresh();
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			controller.showConnectionErrorAlert();
-		}
+//		try
+//		{
+//			ServerConnection connection = new ServerConnection(controller.getSettings());
+//			connection.deletePayment(payment);
+//			controller.refresh();
+//		}
+//		catch(Exception e)
+//		{
+//			e.printStackTrace();
+//			controller.showConnectionErrorAlert();
+//		}
 	}
 
 	public Controller getController()

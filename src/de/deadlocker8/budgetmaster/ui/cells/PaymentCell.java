@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmaster.logic.Payment;
+import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmaster.ui.PaymentController;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
@@ -70,7 +71,7 @@ public class PaymentCell extends ListCell<Payment>
 
 			FontIcon iconRepeating = new FontIcon(FontIconType.CALENDAR);
 			iconRepeating.setSize(20);
-			if(item.isRepeating())
+			if(item instanceof RepeatingPaymentEntry)
 			{
 				iconRepeating.setColor(Color.web("#212121"));
 			}
