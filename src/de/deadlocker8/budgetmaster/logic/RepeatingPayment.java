@@ -49,4 +49,18 @@ public class RepeatingPayment extends Payment
 	{
 		return "RepeatingPayment [ID=" + super.getID() + ", amount=" + super.getAmount() + ", date=" + super.getDate() + ", categoryID=" + super.getCategoryID() + ", name=" + super.getName() + ", repeatInterval=" + repeatInterval + ", repeatEndDate=" + repeatEndDate + ", repeatMonthDay=" + repeatMonthDay + "]";
 	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(obj instanceof LatestRepeatingPayment)
+		{
+			return super.getID() == ((LatestRepeatingPayment)obj).getRepeatingPaymentID();
+		}
+		else if(obj instanceof RepeatingPayment)
+		{
+			return super.getID() == ((RepeatingPayment)obj).getID();
+		}
+		return super.equals(obj);
+	}
 }

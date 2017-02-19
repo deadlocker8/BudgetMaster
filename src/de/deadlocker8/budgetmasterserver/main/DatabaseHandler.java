@@ -14,6 +14,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmaster.logic.CategoryBudget;
+import de.deadlocker8.budgetmaster.logic.LatestRepeatingPayment;
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
@@ -372,7 +373,7 @@ public class DatabaseHandler
 	public ArrayList<RepeatingPaymentEntry> getRepeatingPayments(int year, int month)
 	{
 		Statement stmt = null;
-		String query = "SELECT repeating_entry.ID, repeating_entry.RepeatingPaymentID, repeating_entry.Date, repeating_payment.Name, repeating_payment.CategoryID, repeating_payment.Amount, repeating_payment.RepeatInterval, repeating_payment.RepeatEndDate, repeating_payment.RepeatMonthDay FROM repeating_entry, repeating_payment WHERE repeating_payment.ID = (SELECT RepeatingPaymentID FROM repeating_entry WHERE YEAR(Date) = " + year + " AND MONTH(Date) = " + month + ")";
+		String query = "SELECT repeating_entry.ID, repeating_entry.RepeatingPaymentID, repeating_entry.Date, repeating_payment.Name, repeating_payment.CategoryID, repeating_payment.Amount, repeating_payment.RepeatInterval, repeating_payment.RepeatEndDate, repeating_payment.RepeatMonthDay FROM repeating_entry, repeating_payment WHERE repeating_entry.RepeatingPaymentID = repeating_payment.ID AND YEAR(repeating_entry.Date) = " + year + " AND MONTH(repeating_entry.Date) = " + month;
 
 		ArrayList<RepeatingPaymentEntry> results = new ArrayList<>();
 		try
@@ -439,6 +440,47 @@ public class DatabaseHandler
 				int repeatMonthDay = rs.getInt("RepeatMonthDay");			
 
 				results.add(new RepeatingPayment(resultID, amount, date, categoryID, name, repeatInterval, repeatEndDate, repeatMonthDay));
+			}
+		}
+		catch(SQLException e)
+		{
+			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+
+		return results;
+	}
+	
+	public ArrayList<LatestRepeatingPayment> getLatestRepeatingPaymentEntries()
+	{
+		Statement stmt = null;
+		String query = "SELECT ID, RepeatingPaymentID, MAX(Date) as 'LastDate' FROM repeating_entry GROUP BY RepeatingPaymentID";
+
+		ArrayList<LatestRepeatingPayment> results = new ArrayList<>();
+		try
+		{
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next())
+			{
+				int resultID = rs.getInt("ID");
+				int repeatingPaymentID = rs.getInt("repeatingPaymentID");				
+				String date = rs.getString("LastDate");
+			
+				results.add(new LatestRepeatingPayment(resultID, repeatingPaymentID, date));
 			}
 		}
 		catch(SQLException e)
@@ -596,6 +638,35 @@ public class DatabaseHandler
 			query = "INSERT INTO repeating_payment (Amount, Date, CategoryID, Name, RepeatInterval, RepeatEndDate, RepeatMonthDay) VALUES('" + amount + "' , '" + date + "' , '" + categoryID + "' , '" + name + "' , '" + repeatInterval + "' , '" + repeatEndDate + "' , '" + repeatMonthDay + "');";
 		}
 		
+		try
+		{
+			stmt = connection.createStatement();
+			stmt.execute(query);
+		}
+		catch(SQLException e)
+		{
+			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+	}
+	
+	public void addRepeatingPaymentEntry(int repeatingPaymentID, String date)
+	{
+		Statement stmt = null;
+		String query;		
+		query = "INSERT INTO repeating_entry (RepeatingPaymentID, Date) VALUES('" +  repeatingPaymentID + "' , '" + date + "');";
 		try
 		{
 			stmt = connection.createStatement();
