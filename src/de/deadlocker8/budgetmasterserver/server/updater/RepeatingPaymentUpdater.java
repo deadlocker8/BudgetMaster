@@ -9,24 +9,22 @@ import org.joda.time.Months;
 import de.deadlocker8.budgetmaster.logic.LatestRepeatingPayment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
 import de.deadlocker8.budgetmasterserver.main.DatabaseHandler;
-import de.deadlocker8.budgetmasterserver.main.Settings;
 import logger.LogLevel;
 import logger.Logger;
 
 public class RepeatingPaymentUpdater
 {
-	private Settings settings;
+	private DatabaseHandler handler;
 	
-	public RepeatingPaymentUpdater(Settings settings)
+	public RepeatingPaymentUpdater(DatabaseHandler handler)
 	{
-		this.settings = settings;
+		this.handler = handler;
 	}
 
 	public void updateRepeatingPayments()
 	{
 		try
-		{
-			DatabaseHandler handler = new DatabaseHandler(settings);			
+		{						
 			ArrayList<RepeatingPayment> repeatingPayments = handler.getAllRepeatingPayments();				
 			ArrayList<LatestRepeatingPayment> latest = handler.getLatestRepeatingPaymentEntries();;
 			

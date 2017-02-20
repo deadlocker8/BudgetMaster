@@ -6,22 +6,20 @@ import java.util.ArrayList;
 
 import com.google.gson.Gson;
 
-import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmaster.logic.CategoryBudget;
 import de.deadlocker8.budgetmasterserver.main.DatabaseHandler;
-import de.deadlocker8.budgetmasterserver.main.Settings;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
 public class CategoryBudgetGet implements Route
 {
-	private Settings settings;
+	private DatabaseHandler handler;
 	private Gson gson;
 
-	public CategoryBudgetGet(Settings settings, Gson gson)
+	public CategoryBudgetGet(DatabaseHandler handler, Gson gson)
 	{
-		this.settings = settings;
+		this.handler = handler;
 		this.gson = gson;
 	}
 
@@ -47,8 +45,7 @@ public class CategoryBudgetGet implements Route
 			}
 			
 			try
-			{
-				DatabaseHandler handler = new DatabaseHandler(settings);			
+			{					
 				ArrayList<CategoryBudget> categories = handler.getCategoryBudget(year, month);			
 
 				return gson.toJson(categories);

@@ -3,7 +3,6 @@ package de.deadlocker8.budgetmasterserver.server.category;
 import static spark.Spark.halt;
 
 import de.deadlocker8.budgetmasterserver.main.DatabaseHandler;
-import de.deadlocker8.budgetmasterserver.main.Settings;
 import javafx.scene.paint.Color;
 import spark.Request;
 import spark.Response;
@@ -11,11 +10,11 @@ import spark.Route;
 
 public class CategoryAdd implements Route
 {
-	private Settings settings;
+	private DatabaseHandler handler;
 	
-	public CategoryAdd(Settings settings)
+	public CategoryAdd( DatabaseHandler handler)
 	{	
-		this.settings = settings;
+		this.handler = handler;
 	}
 
 	@Override
@@ -27,8 +26,7 @@ public class CategoryAdd implements Route
 		}	
 						
 		try
-		{
-			DatabaseHandler handler = new DatabaseHandler(settings);
+		{			
 			handler.addCategory(req.queryMap("name").value(), Color.web("#" + req.queryMap("color").value()));			
 
 			return "";

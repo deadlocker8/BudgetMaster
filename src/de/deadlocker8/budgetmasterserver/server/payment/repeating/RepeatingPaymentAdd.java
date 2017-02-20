@@ -3,18 +3,17 @@ package de.deadlocker8.budgetmasterserver.server.payment.repeating;
 import static spark.Spark.halt;
 
 import de.deadlocker8.budgetmasterserver.main.DatabaseHandler;
-import de.deadlocker8.budgetmasterserver.main.Settings;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
 public class RepeatingPaymentAdd implements Route
 {
-	private Settings settings;
+	private DatabaseHandler handler;
 	
-	public RepeatingPaymentAdd(Settings settings)
-	{	
-		this.settings = settings;
+	public RepeatingPaymentAdd(DatabaseHandler handler)
+	{		
+		this.handler = handler;
 	}
 
 	@Override
@@ -38,8 +37,7 @@ public class RepeatingPaymentAdd implements Route
 			repeatMonthDay = Integer.parseInt(req.queryMap("repeatMonthDay").value());
 			
 			try
-			{
-				DatabaseHandler handler = new DatabaseHandler(settings);
+			{				
 				handler.addRepeatingPayment(amount, req.queryMap("date").value(), categoryID, req.queryMap("name").value(), repeatInterval, req.queryMap("repeatEndDate").value(), repeatMonthDay);			
 
 				return "";

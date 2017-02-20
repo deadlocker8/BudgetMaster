@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import de.deadlocker8.budgetmasterserver.main.DatabaseHandler;
 import de.deadlocker8.budgetmasterserver.main.Settings;
 import de.deadlocker8.budgetmasterserver.main.Utils;
 import de.deadlocker8.budgetmasterserver.server.category.CategoryAdd;
@@ -36,6 +37,7 @@ public class SparkServer
 {
 	private static Settings settings;
 	private static Gson gson;
+	private static DatabaseHandler handler;
 
 	public static void main(String[] args) throws URISyntaxException
 	{
@@ -63,6 +65,8 @@ public class SparkServer
 		// DEBUG
 		secure("certs/keystore.jks", "geheim", null, null);
 		RouteOverview.enableRouteOverview();
+		
+		handler = new DatabaseHandler(settings);
 
 		before((request, response) -> {
 
@@ -73,34 +77,34 @@ public class SparkServer
 				halt(401, "Unauthorized");
 			}
 
-			new RepeatingPaymentUpdater(settings).updateRepeatingPayments();
+			new RepeatingPaymentUpdater(handler).updateRepeatingPayments();
 		});
 
 		// Category
-		get("/category", new CategoryGetAll(settings, gson));
-		get("/category/single", new CategoryGet(settings, gson));
-		post("/category", new CategoryAdd(settings));
-		put("/category", new CategoryUpdate(settings));
-		delete("/category", new CategoryDelete(settings));
+		get("/category", new CategoryGetAll(handler, gson));
+		get("/category/single", new CategoryGet(handler, gson));
+		post("/category", new CategoryAdd(handler));
+		put("/category", new CategoryUpdate(handler));
+		delete("/category", new CategoryDelete(handler));
 
 		// CategoryBudget
-		get("/categorybudget", new CategoryBudgetGet(settings, gson));
+		get("/categorybudget", new CategoryBudgetGet(handler, gson));
 
 		// Payment
 		// Normal
-		get("/payment", new PaymentGet(settings, gson));
-		post("/payment", new PaymentAdd(settings));
-		put("/payment", new PaymentUpdate(settings));
-		delete("/payment", new PaymentDelete(settings));
+		get("/payment", new PaymentGet(handler, gson));
+		post("/payment", new PaymentAdd(handler));
+		put("/payment", new PaymentUpdate(handler));
+		delete("/payment", new PaymentDelete(handler));
 
 		// Repeating
-		get("/repeatingpayment/single", new RepeatingPaymentGet(settings, gson));
-		get("/repeatingpayment", new RepeatingPaymentGetAll(settings, gson));
-		post("/repeatingpayment", new RepeatingPaymentAdd(settings));
-		delete("/repeatingpayment", new RepeatingPaymentDelete(settings));
+		get("/repeatingpayment/single", new RepeatingPaymentGet(handler, gson));
+		get("/repeatingpayment", new RepeatingPaymentGetAll(handler, gson));
+		post("/repeatingpayment", new RepeatingPaymentAdd(handler));
+		delete("/repeatingpayment", new RepeatingPaymentDelete(handler));
 
 		after((request, response) -> {
-			new RepeatingPaymentUpdater(settings).updateRepeatingPayments();
+			new RepeatingPaymentUpdater(handler).updateRepeatingPayments();
 		});
 		
 		Spark.exception(Exception.class, (exception, request, response) -> {

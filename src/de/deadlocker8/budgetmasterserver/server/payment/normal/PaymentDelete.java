@@ -3,18 +3,17 @@ package de.deadlocker8.budgetmasterserver.server.payment.normal;
 import static spark.Spark.halt;
 
 import de.deadlocker8.budgetmasterserver.main.DatabaseHandler;
-import de.deadlocker8.budgetmasterserver.main.Settings;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
 public class PaymentDelete implements Route
 {
-	private Settings settings;
+	private DatabaseHandler handler;
 	
-	public PaymentDelete(Settings settings)
-	{	
-		this.settings = settings;
+	public PaymentDelete(DatabaseHandler handler)
+	{		
+		this.handler = handler;
 	}
 
 	@Override
@@ -37,8 +36,7 @@ public class PaymentDelete implements Route
 			}
 			
 			try
-			{
-				DatabaseHandler handler = new DatabaseHandler(settings);			
+			{						
 				handler.deletePayment(id);			
 
 				return "";

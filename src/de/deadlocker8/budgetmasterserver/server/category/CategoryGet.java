@@ -6,19 +6,18 @@ import com.google.gson.Gson;
 
 import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmasterserver.main.DatabaseHandler;
-import de.deadlocker8.budgetmasterserver.main.Settings;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
 public class CategoryGet implements Route
 {
-	private Settings settings;
+	private DatabaseHandler handler;
 	private Gson gson;
 
-	public CategoryGet(Settings settings, Gson gson)
+	public CategoryGet(DatabaseHandler handler, Gson gson)
 	{
-		this.settings = settings;
+		this.handler = handler;
 		this.gson = gson;
 	}
 
@@ -43,7 +42,6 @@ public class CategoryGet implements Route
 
 			try
 			{
-				DatabaseHandler handler = new DatabaseHandler(settings);
 				Category categeory = handler.getCategory(id);
 
 				return gson.toJson(categeory);

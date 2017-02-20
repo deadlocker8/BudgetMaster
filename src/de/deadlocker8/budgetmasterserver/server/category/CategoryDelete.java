@@ -3,18 +3,17 @@ package de.deadlocker8.budgetmasterserver.server.category;
 import static spark.Spark.halt;
 
 import de.deadlocker8.budgetmasterserver.main.DatabaseHandler;
-import de.deadlocker8.budgetmasterserver.main.Settings;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
 public class CategoryDelete implements Route
 {
-	private Settings settings;
+	private DatabaseHandler handler;
 	
-	public CategoryDelete(Settings settings)
+	public CategoryDelete(DatabaseHandler handler)
 	{	
-		this.settings = settings;
+		this.handler = handler;
 	}
 
 	@Override
@@ -37,8 +36,7 @@ public class CategoryDelete implements Route
 			}
 			
 			try
-			{
-				DatabaseHandler handler = new DatabaseHandler(settings);			
+			{							
 				handler.deleteCategory(id);			
 
 				return "";

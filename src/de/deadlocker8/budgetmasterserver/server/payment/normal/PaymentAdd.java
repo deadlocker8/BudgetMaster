@@ -3,18 +3,17 @@ package de.deadlocker8.budgetmasterserver.server.payment.normal;
 import static spark.Spark.halt;
 
 import de.deadlocker8.budgetmasterserver.main.DatabaseHandler;
-import de.deadlocker8.budgetmasterserver.main.Settings;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
 public class PaymentAdd implements Route
 {
-	private Settings settings;
+	private DatabaseHandler handler;
 	
-	public PaymentAdd(Settings settings)
+	public PaymentAdd(DatabaseHandler handler)
 	{	
-		this.settings = settings;
+		this.handler = handler;
 	}
 
 	@Override
@@ -34,8 +33,7 @@ public class PaymentAdd implements Route
 			categoryID = Integer.parseInt(req.queryMap("categoryID").value());				
 			
 			try
-			{
-				DatabaseHandler handler = new DatabaseHandler(settings);
+			{			
 				handler.addNormalPayment(amount, req.queryMap("date").value(), categoryID, req.queryMap("name").value());			
 
 				return "";

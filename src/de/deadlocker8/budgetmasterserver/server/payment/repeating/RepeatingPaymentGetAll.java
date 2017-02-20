@@ -8,22 +8,21 @@ import com.google.gson.Gson;
 
 import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmasterserver.main.DatabaseHandler;
-import de.deadlocker8.budgetmasterserver.main.Settings;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
 public class RepeatingPaymentGetAll implements Route
 {
-	private Settings settings;
+	private DatabaseHandler handler;
 	private Gson gson;
 
-	public RepeatingPaymentGetAll(Settings settings, Gson gson)
-	{
-		this.settings = settings;
+	public RepeatingPaymentGetAll(DatabaseHandler handler, Gson gson)
+	{		
+		this.handler = handler;
 		this.gson = gson;
 	}
-
+	
 	@Override
 	public Object handle(Request req, Response res) throws Exception
 	{
@@ -46,8 +45,7 @@ public class RepeatingPaymentGetAll implements Route
 			}
 			
 			try
-			{
-				DatabaseHandler handler = new DatabaseHandler(settings);		
+			{					
 				ArrayList<RepeatingPaymentEntry> payments = new ArrayList<>();				
 				payments.addAll(handler.getRepeatingPayments(year, month));	
 				

@@ -8,19 +8,18 @@ import com.google.gson.Gson;
 
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmasterserver.main.DatabaseHandler;
-import de.deadlocker8.budgetmasterserver.main.Settings;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
 public class PaymentGet implements Route
 {
-	private Settings settings;
+	private DatabaseHandler handler;
 	private Gson gson;
 
-	public PaymentGet(Settings settings, Gson gson)
+	public PaymentGet(DatabaseHandler handler, Gson gson)
 	{
-		this.settings = settings;
+		this.handler = handler;
 		this.gson = gson;
 	}
 
@@ -46,8 +45,7 @@ public class PaymentGet implements Route
 			}
 			
 			try
-			{
-				DatabaseHandler handler = new DatabaseHandler(settings);		
+			{				
 				ArrayList<NormalPayment> payments = new ArrayList<>();				
 				payments.addAll(handler.getPayments(year, month));	
 				
