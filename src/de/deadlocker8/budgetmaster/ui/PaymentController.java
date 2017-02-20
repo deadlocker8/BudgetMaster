@@ -7,7 +7,11 @@ import org.joda.time.DateTime;
 
 import de.deadlocker8.budgetmaster.logic.Budget;
 import de.deadlocker8.budgetmaster.logic.Helpers;
+import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.Payment;
+import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
+import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
+import de.deadlocker8.budgetmaster.logic.ServerConnection;
 import de.deadlocker8.budgetmaster.ui.cells.PaymentCell;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
@@ -43,7 +47,7 @@ public class PaymentController implements Refreshable
 	@FXML private Button buttonNewPayment;
 
 	private Controller controller;
-	
+
 	public void init(Controller controller)
 	{
 		this.controller = controller;
@@ -61,9 +65,9 @@ public class PaymentController implements Refreshable
 					public void handle(MouseEvent event)
 					{
 						if(event.getClickCount() == 2)
-						{							
-							PaymentCell c = (PaymentCell)event.getSource();						
-							payment(!c.getItem().isIncome(), true, c.getItem());								
+						{
+							PaymentCell c = (PaymentCell)event.getSource();
+							payment(!c.getItem().isIncome(), true, c.getItem());
 						}
 					}
 				});
@@ -106,7 +110,7 @@ public class PaymentController implements Refreshable
 
 		refresh();
 	}
-	
+
 	public void newIncome()
 	{
 		payment(false, false, null);
@@ -125,11 +129,11 @@ public class PaymentController implements Refreshable
 			Parent root = (Parent)fxmlLoader.load();
 			Stage newStage = new Stage();
 			newStage.initOwner(controller.getStage());
-			newStage.initModality(Modality.APPLICATION_MODAL);			
-			String titlePart;		
-			
-			titlePart = isPayment ? "Ausgabe" : "Einnahme";			
-			
+			newStage.initModality(Modality.APPLICATION_MODAL);
+			String titlePart;
+
+			titlePart = isPayment ? "Ausgabe" : "Einnahme";
+
 			if(edit)
 			{
 				newStage.setTitle(titlePart + " bearbeiten");
@@ -138,7 +142,7 @@ public class PaymentController implements Refreshable
 			{
 				newStage.setTitle("Neue " + titlePart);
 			}
-			
+
 			newStage.setScene(new Scene(root));
 			newStage.getIcons().add(controller.getIcon());
 			newStage.setResizable(false);
@@ -151,39 +155,72 @@ public class PaymentController implements Refreshable
 			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
 		}
 	}
-	
+
 	private void refreshListView()
-	{		
+	{
 		listView.getItems().clear();
-		
+
 		ArrayList<Payment> payments = controller.getPayments();
 		if(payments != null)
-		{				
+		{
 			listView.getItems().setAll(payments);
-		}		
+		}
 	}
-	
+
 	private void refreshCounter()
 	{
-		Budget budget = new Budget(listView.getItems());			
+		Budget budget = new Budget(listView.getItems());
 		labelIncomes.setText(String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getIncomeSum()).replace(".", ",")) + " €");
 		labelPayments.setText(String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getPaymentSum()).replace(".", ",")) + " €");
 	}
-	
-	//TODO
-	public void deletePayment(Payment payment)
+
+	public void deleteNormalPayment(NormalPayment payment)
+	{
+		try
+		{
+			ServerConnection connection = new ServerConnection(controller.getSettings());
+			connection.deleteNormalPayment(payment);
+			controller.refresh();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			controller.showConnectionErrorAlert();
+		}
+	}
+
+	public void deleteRepeatingPayment(RepeatingPaymentEntry payment)
+	{
+		try
+		{
+			ServerConnection connection = new ServerConnection(controller.getSettings());
+			connection.deleteRepeatingPayment(payment);
+			controller.refresh();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			controller.showConnectionErrorAlert();
+		}
+	}
+
+	public void deleteFuturePayments(RepeatingPaymentEntry payment)
 	{		
-//		try
-//		{
-//			ServerConnection connection = new ServerConnection(controller.getSettings());
-//			connection.deletePayment(payment);
-//			controller.refresh();
-//		}
-//		catch(Exception e)
-//		{
-//			e.printStackTrace();
-//			controller.showConnectionErrorAlert();
-//		}
+		try
+		{
+			ServerConnection connection = new ServerConnection(controller.getSettings());	
+			RepeatingPayment oldRepeatingPayment = connection.getRepeatingPayment(payment.getRepeatingPaymentID());			
+			RepeatingPayment newRepeatingPayment = new RepeatingPayment(payment.getID(), payment.getAmount(), oldRepeatingPayment.getDate(), payment.getCategoryID(), payment.getName(), payment.getRepeatInterval(), payment.getDate(), payment.getRepeatMonthDay());
+			connection.deleteRepeatingPayment(payment);
+			connection.addRepeatingPayment(newRepeatingPayment);
+		
+			controller.refresh();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			controller.showConnectionErrorAlert();
+		}
 	}
 
 	public Controller getController()
@@ -194,17 +231,17 @@ public class PaymentController implements Refreshable
 	@Override
 	public void refresh()
 	{
-		refreshListView();	
+		refreshListView();
 		refreshCounter();
-		
+
 		Label labelPlaceholder;
 		if(controller.getCurrentDate().isAfter(DateTime.now()))
 		{
-			labelPlaceholder = new Label("Datum liegt in der Zukunft");			
+			labelPlaceholder = new Label("Datum liegt in der Zukunft");
 		}
 		else
 		{
-			labelPlaceholder = new Label("Keine Daten verfügbar");			
+			labelPlaceholder = new Label("Keine Daten verfügbar");
 		}
 		labelPlaceholder.setStyle("-fx-font-size: 16");
 		listView.setPlaceholder(labelPlaceholder);

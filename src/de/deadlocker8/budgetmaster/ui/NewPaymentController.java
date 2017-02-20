@@ -1,7 +1,6 @@
 package de.deadlocker8.budgetmaster.ui;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.Category;
@@ -259,7 +258,7 @@ public class NewPaymentController
 
 			if(edit)
 			{
-				RepeatingPaymentEntry newPayment = new RepeatingPaymentEntry(payment.getID(), ((RepeatingPaymentEntry)payment).getRepeatingPaymentID(), getDateString(date), amount, comboBoxCategory.getValue().getID(), name, repeatingInterval, getDateString(datePickerEnddate.getValue()),
+				RepeatingPaymentEntry newPayment = new RepeatingPaymentEntry(payment.getID(), ((RepeatingPaymentEntry)payment).getRepeatingPaymentID(), Helpers.getDateString(date), amount, comboBoxCategory.getValue().getID(), name, repeatingInterval, Helpers.getDateString(datePickerEnddate.getValue()),
 						repeatingDay);
 				try
 				{
@@ -274,7 +273,7 @@ public class NewPaymentController
 			}
 			else
 			{
-				RepeatingPayment newPayment = new RepeatingPayment(-1, amount, getDateString(date), comboBoxCategory.getValue().getID(), name, repeatingInterval, getDateString(datePickerEnddate.getValue()), repeatingDay);
+				RepeatingPayment newPayment = new RepeatingPayment(-1, amount, Helpers.getDateString(date), comboBoxCategory.getValue().getID(), name, repeatingInterval,Helpers.getDateString(datePickerEnddate.getValue()), repeatingDay);
 				try
 				{
 					ServerConnection connection = new ServerConnection(controller.getSettings());
@@ -291,7 +290,7 @@ public class NewPaymentController
 		{
 			if(edit)
 			{
-				NormalPayment newPayment = new NormalPayment(payment.getID(), amount, getDateString(date), comboBoxCategory.getValue().getID(), name);
+				NormalPayment newPayment = new NormalPayment(payment.getID(), amount, Helpers.getDateString(date), comboBoxCategory.getValue().getID(), name);
 				try
 				{
 					ServerConnection connection = new ServerConnection(controller.getSettings());
@@ -305,7 +304,7 @@ public class NewPaymentController
 			}
 			else
 			{
-				NormalPayment newPayment = new NormalPayment(-1, amount, getDateString(date), comboBoxCategory.getValue().getID(), name);
+				NormalPayment newPayment = new NormalPayment(-1, amount, Helpers.getDateString(date), comboBoxCategory.getValue().getID(), name);
 				try
 				{
 					ServerConnection connection = new ServerConnection(controller.getSettings());
@@ -365,13 +364,5 @@ public class NewPaymentController
 		labelText3.setDisable(selected);
 	}
 
-	private String getDateString(LocalDate date)
-	{
-		if(date == null)
-		{
-			return "";
-		}
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		return date.format(formatter);
-	}
+	
 }

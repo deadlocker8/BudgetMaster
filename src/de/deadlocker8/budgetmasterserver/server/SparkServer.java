@@ -1,13 +1,6 @@
 package de.deadlocker8.budgetmasterserver.server;
 
-import static spark.Spark.before;
-import static spark.Spark.delete;
-import static spark.Spark.get;
-import static spark.Spark.halt;
-import static spark.Spark.port;
-import static spark.Spark.post;
-import static spark.Spark.put;
-import static spark.Spark.secure;
+import static spark.Spark.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -29,7 +22,9 @@ import de.deadlocker8.budgetmasterserver.server.payment.normal.PaymentAdd;
 import de.deadlocker8.budgetmasterserver.server.payment.normal.PaymentDelete;
 import de.deadlocker8.budgetmasterserver.server.payment.normal.PaymentGet;
 import de.deadlocker8.budgetmasterserver.server.payment.repeating.RepeatingPaymentAdd;
+import de.deadlocker8.budgetmasterserver.server.payment.repeating.RepeatingPaymentDelete;
 import de.deadlocker8.budgetmasterserver.server.payment.repeating.RepeatingPaymentGet;
+import de.deadlocker8.budgetmasterserver.server.payment.repeating.RepeatingPaymentGetAll;
 import de.deadlocker8.budgetmasterserver.server.updater.RepeatingPaymentUpdater;
 import logger.LogLevel;
 import logger.Logger;
@@ -42,13 +37,13 @@ public class SparkServer
 	private static Gson gson;
 
 	public static void main(String[] args) throws URISyntaxException
-	{		
-		//DEBUG
+	{
+		// DEBUG
 		Logger.setLevel(LogLevel.ALL);
-		
+
 		gson = new GsonBuilder().setPrettyPrinting().create();
-		
-		if (!Files.exists(Paths.get("settings.properties")))
+
+		if(!Files.exists(Paths.get("settings.properties")))
 		{
 			try
 			{
@@ -56,48 +51,57 @@ public class SparkServer
 			}
 			catch(IOException e)
 			{
-				//ERRORHANDLING
+				// ERRORHANDLING
 				e.printStackTrace();
-			}		
+			}
 		}
-		
+
 		settings = Utils.loadSettings();
-		
-		port(settings.getServerPort());	
-		//DEBUG
-		secure("certs/keystore.jks", "geheim", null, null);	
+
+		port(settings.getServerPort());
+		// DEBUG
+		secure("certs/keystore.jks", "geheim", null, null);
 		RouteOverview.enableRouteOverview();
-		
+
 		before((request, response) -> {
-			
+
 			String clientSecret = request.queryMap("secret").value();
-		
-			if(clientSecret == null || !clientSecret.equals(settings.getServerSecret()))			
+
+			if(clientSecret == null || !clientSecret.equals(settings.getServerSecret()))
 			{
 				halt(401, "Unauthorized");
 			}
-			
-			new RepeatingPaymentUpdater(settings).updateRepeatingPayments();			
+
+			new RepeatingPaymentUpdater(settings).updateRepeatingPayments();
 		});
 
-		//Category		 
-		get("/category", new CategoryGetAll(settings, gson));		
-		get("/category/single",new CategoryGet(settings, gson));		
-		post("/category", new CategoryAdd(settings));		
-		put("/category", new CategoryUpdate(settings));				
+		// Category
+		get("/category", new CategoryGetAll(settings, gson));
+		get("/category/single", new CategoryGet(settings, gson));
+		post("/category", new CategoryAdd(settings));
+		put("/category", new CategoryUpdate(settings));
 		delete("/category", new CategoryDelete(settings));
-		
-		//CategoryBudget		
+
+		// CategoryBudget
 		get("/categorybudget", new CategoryBudgetGet(settings, gson));
-		
-		//Payment
-		get("/payment", new PaymentGet(settings, gson));		
-		get("/repeatingpayment", new RepeatingPaymentGet(settings, gson));		
-		post("/payment", new PaymentAdd(settings));		
-		post("/repeatingpayment", new RepeatingPaymentAdd(settings));		
+
+		// Payment
+		// Normal
+		get("/payment", new PaymentGet(settings, gson));
+		post("/payment", new PaymentAdd(settings));
 		delete("/payment", new PaymentDelete(settings));
+
+		// Repeating
+		get("/repeatingpayment/single", new RepeatingPaymentGet(settings, gson));
+		get("/repeatingpayment", new RepeatingPaymentGetAll(settings, gson));
+		post("/repeatingpayment", new RepeatingPaymentAdd(settings));
+		delete("/repeatingpayment", new RepeatingPaymentDelete(settings));
+
+		after((request, response) -> {
+			new RepeatingPaymentUpdater(settings).updateRepeatingPayments();
+		});
 		
-		Spark.exception(Exception.class, (exception, request, response)->{
+		Spark.exception(Exception.class, (exception, request, response) -> {
 			exception.printStackTrace();
 		});
 	}

@@ -417,10 +417,10 @@ public class DatabaseHandler
 		return results;
 	}
 	
-	public ArrayList<RepeatingPayment> getAllRunningRepeatingPayments()
+	public ArrayList<RepeatingPayment> getAllRepeatingPayments()
 	{		
 		Statement stmt = null;
-		String query = "SELECT * FROM repeating_payment WHERE RepeatEndDate IS NULL OR RepeatEndDate IS NOT NULL AND DATEDIFF(NOW(), RepeatEndDate) <= 0";
+		String query = "SELECT * FROM repeating_payment;";
 
 		ArrayList<RepeatingPayment> results = new ArrayList<>();
 		try
@@ -503,6 +503,50 @@ public class DatabaseHandler
 
 		return results;
 	}
+	
+	public RepeatingPayment getRepeatingPayment(int ID)
+	{
+		Statement stmt = null;
+		String query = "SELECT * FROM repeating_payment WHERE ID = " + ID;	
+		RepeatingPayment result = null;
+		try
+		{
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);			
+			while(rs.next())
+			{
+				int id = rs.getInt("ID");				
+				int amount = rs.getInt("amount");
+				String date = rs.getString("Date");
+				int categoryID = rs.getInt("CategoryID");
+				String name = rs.getString("Name");
+				int repeatInterval = rs.getInt("repeatInterval");
+				String repeatEndDate = rs.getString("repeatEndDate");
+				int repeatMonthDay = rs.getInt("repeatMonthDay");
+
+				result = new RepeatingPayment(id, amount, date, categoryID, name, repeatInterval, repeatEndDate, repeatMonthDay);
+			}
+		}
+		catch(SQLException e)
+		{
+			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+
+		return result;
+	}
 
 	/*
 	 * DELETE
@@ -535,11 +579,38 @@ public class DatabaseHandler
 		}
 	}
 	
-	@Deprecated
 	public void deletePayment(int ID)
 	{
 		Statement stmt = null;
 		String query = "DELETE FROM Payment WHERE Payment.ID = " + ID;
+		try
+		{
+			stmt = connection.createStatement();
+			stmt.execute(query);
+		}
+		catch(SQLException e)
+		{
+			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+	}
+	
+	public void deleteRepeatingPayment(int ID)
+	{
+		Statement stmt = null;
+		String query = "DELETE FROM repeating_payment WHERE repeating_payment.ID = " + ID;
 		try
 		{
 			stmt = connection.createStatement();

@@ -2,24 +2,19 @@ package de.deadlocker8.budgetmasterserver.server.payment.repeating;
 
 import static spark.Spark.halt;
 
-import com.google.gson.Gson;
-
-import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
 import de.deadlocker8.budgetmasterserver.main.DatabaseHandler;
 import de.deadlocker8.budgetmasterserver.main.Settings;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
-public class RepeatingPaymentGet implements Route
+public class RepeatingPaymentDelete implements Route
 {
 	private Settings settings;
-	private Gson gson;
-
-	public RepeatingPaymentGet(Settings settings, Gson gson)
-	{
+	
+	public RepeatingPaymentDelete(Settings settings)
+	{	
 		this.settings = settings;
-		this.gson = gson;
 	}
 
 	@Override
@@ -44,9 +39,9 @@ public class RepeatingPaymentGet implements Route
 			try
 			{
 				DatabaseHandler handler = new DatabaseHandler(settings);			
-				RepeatingPayment payment = handler.getRepeatingPayment(id);			
+				handler.deleteRepeatingPayment(id);			
 
-				return gson.toJson(payment);
+				return "";
 			}
 			catch(IllegalStateException ex)
 			{

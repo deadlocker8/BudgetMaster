@@ -27,13 +27,17 @@ public class RepeatingPaymentUpdater
 		try
 		{
 			DatabaseHandler handler = new DatabaseHandler(settings);			
-			ArrayList<RepeatingPayment> repeatingPayments = handler.getAllRunningRepeatingPayments();				
+			ArrayList<RepeatingPayment> repeatingPayments = handler.getAllRepeatingPayments();				
 			ArrayList<LatestRepeatingPayment> latest = handler.getLatestRepeatingPaymentEntries();;
 			
 			for(RepeatingPayment currentPayment : repeatingPayments)
 			{
 				int index = latest.indexOf(currentPayment);	
-				DateTime now = DateTime.now();				
+				DateTime now = DateTime.now();			
+				if(currentPayment.getRepeatEndDate() != null)
+				{
+					now = DateTime.parse(currentPayment.getRepeatEndDate());
+				}
 				ArrayList<DateTime> correctDates = getCorrectRepeatingDates(currentPayment, now);				
 				if(index != -1)
 				{

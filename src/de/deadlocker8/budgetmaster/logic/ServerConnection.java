@@ -204,6 +204,24 @@ public class ServerConnection
 			return null;
 		}
 	}
+	
+	public RepeatingPayment getRepeatingPayment(int ID) throws Exception
+	{
+		URL url = new URL(settings.getUrl() + "/repeatingpayment/single?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&id=" + ID);
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setDoOutput(true);
+		httpsCon.setRequestMethod("GET");
+
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			String result = Read.getStringFromInputStream(httpsCon.getInputStream());		
+			return gson.fromJson(result, RepeatingPayment.class);
+		}
+		else
+		{
+			return null;
+		}
+	}
 
 	public void addNormalPayment(NormalPayment payment) throws Exception
 	{
@@ -252,24 +270,25 @@ public class ServerConnection
 
 	}
 
-	@Deprecated
-	public void deletePayment(NormalPayment payment) throws Exception
+	public void deleteNormalPayment(NormalPayment payment) throws Exception
 	{
-		// TODO handle repeating payments
-
-		// if(payment.isRepeating())
-		// {
-		//
-		// }
-		// else
-		// {
-		// URL url = new URL(settings.getUrl() + "/payment?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&id=" + payment.getID());
-		// HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
-		// httpsCon.setRequestMethod("DELETE");
-		// httpsCon.setDoInput(true);
-		// InputStream stream = httpsCon.getInputStream();
-		// BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		// reader.close();
-		// }
+		URL url = new URL(settings.getUrl() + "/payment?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&id=" + payment.getID());
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setRequestMethod("DELETE");
+		httpsCon.setDoInput(true);
+		InputStream stream = httpsCon.getInputStream();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		reader.close();
+	}
+	
+	public void deleteRepeatingPayment(RepeatingPaymentEntry payment) throws Exception
+	{
+		URL url = new URL(settings.getUrl() + "/repeatingpayment?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&id=" + payment.getRepeatingPaymentID());
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setRequestMethod("DELETE");
+		httpsCon.setDoInput(true);
+		InputStream stream = httpsCon.getInputStream();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		reader.close();
 	}
 }

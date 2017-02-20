@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmaster.logic.Helpers;
+import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmaster.ui.PaymentController;
@@ -17,6 +18,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -29,12 +31,12 @@ import tools.ConvertTo;
 
 public class PaymentCell extends ListCell<Payment>
 {
-	private final double HEIGHT = 40.0;	
+	private final double HEIGHT = 40.0;
 	private PaymentController paymentController;
 
 	public PaymentCell(PaymentController paymentController)
 	{
-		super();		
+		super();
 		this.paymentController = paymentController;
 	}
 
@@ -87,12 +89,12 @@ public class PaymentCell extends ListCell<Payment>
 			hbox.getChildren().add(labelRepeating);
 			HBox.setMargin(labelRepeating, new Insets(0, 30, 0, 15));
 
-			String categoryName = category.getName();			
+			String categoryName = category.getName();
 			if(categoryName.equals("NONE"))
 			{
 				categoryName = "Keine Kategorie";
 			}
-			
+
 			Label labelCircle = new Label(categoryName.substring(0, 1).toUpperCase());
 			labelCircle.setPrefWidth(HEIGHT);
 			labelCircle.setPrefHeight(HEIGHT);
@@ -139,35 +141,55 @@ public class PaymentCell extends ListCell<Payment>
 			buttonDelete.setPrefHeight(HEIGHT);
 			buttonDelete.getStyleClass().add("greylabel");
 			buttonDelete.setStyle("-fx-background-color: transparent");
-			//TODO advanced deleting alert for repeating payments
+			// TODO advanced deleting alert for repeating payments
 			buttonDelete.setOnAction((event) -> {
 				Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 				alert.setTitle("Zahlung löschen");
 				alert.setHeaderText("");
-				alert.setContentText("Möchtest du diesen Eintrag wirklich unwiderruflich löschen?");
+				alert.setContentText("Es handelt sich um eine wiederkehrende Zahlung. Wie soll gelöscht werden?");
 				Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
 				dialogStage.getIcons().add(paymentController.getController().getIcon());
 				dialogStage.centerOnScreen();
 
-				Optional<ButtonType> result = alert.showAndWait();
-				if(result.get() == ButtonType.OK)
+				if(item instanceof RepeatingPaymentEntry)
 				{
-					paymentController.deletePayment(item);
+					ButtonType buttonTypeOne = new ButtonType("Komplett löschen");
+					ButtonType buttonTypeTwo = new ButtonType("Alle zukünftigen Löschen");				
+					ButtonType buttonTypeCancel = new ButtonType("Abbrechen", ButtonData.CANCEL_CLOSE);
+
+					alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
+
+					Optional<ButtonType> result = alert.showAndWait();
+					if(result.get() == buttonTypeOne)
+					{
+						paymentController.deleteRepeatingPayment((RepeatingPaymentEntry)item);
+					}
+					else if(result.get() == buttonTypeTwo)
+					{
+						paymentController.deleteFuturePayments((RepeatingPaymentEntry)item);
+					}
+				}
+				else
+				{
+					Optional<ButtonType> result = alert.showAndWait();
+					if(result.get() == ButtonType.OK)
+					{
+						paymentController.deleteNormalPayment((NormalPayment)item);
+					}
 				}
 			});
 			hbox.getChildren().add(buttonDelete);
 			HBox.setMargin(buttonDelete, new Insets(0, 0, 0, 25));
-			//don't allow "Übertrag" to be deleted			
+			// don't allow "Übertrag" to be deleted
 			if(item.getID() == -1)
 			{
 				buttonDelete.setVisible(false);
-			}			
+			}
 
 			hbox.setPadding(new Insets(10));
 			setStyle("-fx-background: transparent; -fx-border-color: #545454; -fx-border-width: 0 0 1 0");
 			setGraphic(hbox);
 			setAlignment(Pos.CENTER);
-
 		}
 		else
 		{
