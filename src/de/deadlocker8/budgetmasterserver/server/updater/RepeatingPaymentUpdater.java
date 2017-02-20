@@ -36,7 +36,11 @@ public class RepeatingPaymentUpdater
 				DateTime now = DateTime.now();			
 				if(currentPayment.getRepeatEndDate() != null)
 				{
-					now = DateTime.parse(currentPayment.getRepeatEndDate());
+					DateTime endDate = DateTime.parse(currentPayment.getRepeatEndDate());
+					if(endDate.isBefore(now))
+					{
+						now = endDate;
+					}
 				}
 				ArrayList<DateTime> correctDates = getCorrectRepeatingDates(currentPayment, now);				
 				if(index != -1)

@@ -791,5 +791,33 @@ public class DatabaseHandler
 				}
 			}
 		}
+	}	
+	
+	public void updateNormalPayment(int ID, int amount, String date, int categoryID, String name)
+	{
+		Statement stmt = null;
+		String query = "UPDATE Payment SET amount = '" + amount + "', date='" + date + "', categoryID='" + categoryID + "', name='" + name + "' WHERE ID = " + ID + ";";
+		try
+		{
+			stmt = connection.createStatement();
+			stmt.execute(query);
+		}
+		catch(SQLException e)
+		{
+			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
 	}
 }

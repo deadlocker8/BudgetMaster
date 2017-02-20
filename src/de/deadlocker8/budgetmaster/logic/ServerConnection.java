@@ -76,10 +76,7 @@ public class ServerConnection
 			return null;
 		}
 	}
-
-	/*
-	 * Category
-	 */
+	
 	public Category getCategory(int ID) throws Exception
 	{
 		URL url = new URL(settings.getUrl() + "/category/single?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&id=" + ID);
@@ -234,16 +231,15 @@ public class ServerConnection
 		reader.close();
 	}
 
-	public void updateNormalPayment(NormalPayment payment, Payment oldPayment) throws Exception
+	public void updateNormalPayment(NormalPayment payment) throws Exception
 	{
-		// TODO update payment
-		// URL url = new URL(settings.getUrl() + "/payment?secret=" + settings.getSecret() + "&id=" + category.getID() + "&name=" + category.getName() + "&color=" + ConvertTo.toRGBHexWithoutOpacity(category.getColor()).replace("#", ""));
-		// HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
-		// httpsCon.setRequestMethod("PUT");
-		// httpsCon.setDoInput(true);
-		// InputStream stream = httpsCon.getInputStream();
-		// BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		// reader.close();
+		 URL url = new URL(settings.getUrl() + "/payment?secret=" + settings.getSecret() + "&id=" + payment.getID() + "&amount=" + payment.getAmount() + "&date=" + payment.getDate() + "&categoryID=" + payment.getCategoryID() + "&name=" + Helpers.getURLEncodedString(payment.getName()));
+		 HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		 httpsCon.setRequestMethod("PUT");
+		 httpsCon.setDoInput(true);
+		 InputStream stream = httpsCon.getInputStream();
+		 BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		 reader.close();
 	}
 
 	public void addRepeatingPayment(RepeatingPayment payment) throws Exception
@@ -263,11 +259,6 @@ public class ServerConnection
 		InputStream stream = httpsCon.getInputStream();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 		reader.close();
-	}
-
-	public void updateRepeatingPayment(RepeatingPaymentEntry payment, Payment oldPayment) throws Exception
-	{
-
 	}
 
 	public void deleteNormalPayment(NormalPayment payment) throws Exception

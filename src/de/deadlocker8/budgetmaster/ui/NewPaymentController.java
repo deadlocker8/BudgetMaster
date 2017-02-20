@@ -156,6 +156,7 @@ public class NewPaymentController
 
 		if(edit)
 		{
+			//prefill
 			textFieldName.setText(payment.getName());
 			textFieldAmount.setText(Helpers.NUMBER_FORMAT.format(Math.abs(payment.getAmount()/100.0)).replace(".", ","));		
 			comboBoxCategory.setValue(controller.getCategoryHandler().getCategory(payment.getCategoryID()));
@@ -167,7 +168,7 @@ public class NewPaymentController
 				//repeates every x days
 				if(currentPayment.getRepeatInterval() != 0)
 				{					
-					checkBoxRepeat.setSelected(false);
+					checkBoxRepeat.setSelected(true);
 					radioButtonPeriod.setSelected(true);
 					toggleRepeatingArea(true);
 					spinnerRepeatingPeriod.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, currentPayment.getRepeatInterval()));
@@ -175,7 +176,7 @@ public class NewPaymentController
 				//repeat every month on day x
 				else
 				{
-					checkBoxRepeat.setSelected(false);
+					checkBoxRepeat.setSelected(true);
 					radioButtonDay.setSelected(true);
 					toggleRepeatingArea(true);
 					comboBoxRepeatingDay.getSelectionModel().select(currentPayment.getRepeatMonthDay());
@@ -257,13 +258,21 @@ public class NewPaymentController
 			}
 
 			if(edit)
-			{
-				RepeatingPaymentEntry newPayment = new RepeatingPaymentEntry(payment.getID(), ((RepeatingPaymentEntry)payment).getRepeatingPaymentID(), Helpers.getDateString(date), amount, comboBoxCategory.getValue().getID(), name, repeatingInterval, Helpers.getDateString(datePickerEnddate.getValue()),
-						repeatingDay);
+			{				
 				try
-				{
+				{		
+					RepeatingPayment newPayment = new RepeatingPayment(-1, amount, Helpers.getDateString(date), comboBoxCategory.getValue().getID(), name, repeatingInterval, Helpers.getDateString(datePickerEnddate.getValue()), repeatingDay);
+							
 					ServerConnection connection = new ServerConnection(controller.getSettings());
-					connection.updateRepeatingPayment(newPayment, payment);
+					if(payment instanceof NormalPayment)
+					{
+						connection.deleteNormalPayment((NormalPayment)payment);
+					}
+					else
+					{	
+						connection.deleteRepeatingPayment((RepeatingPaymentEntry)payment);						
+					}	
+					connection.addRepeatingPayment(newPayment);
 				}
 				catch(Exception e)
 				{
@@ -294,7 +303,16 @@ public class NewPaymentController
 				try
 				{
 					ServerConnection connection = new ServerConnection(controller.getSettings());
-					connection.updateNormalPayment(newPayment, payment);
+					if(payment instanceof RepeatingPaymentEntry)
+					{
+						//if old one was repeating it should be deleted
+						connection.deleteRepeatingPayment((RepeatingPaymentEntry)payment);
+						connection.addNormalPayment(newPayment);
+					}
+					else
+					{
+						connection.updateNormalPayment(newPayment);
+					}					
 				}
 				catch(Exception e)
 				{

@@ -21,6 +21,7 @@ import de.deadlocker8.budgetmasterserver.server.categorybudget.CategoryBudgetGet
 import de.deadlocker8.budgetmasterserver.server.payment.normal.PaymentAdd;
 import de.deadlocker8.budgetmasterserver.server.payment.normal.PaymentDelete;
 import de.deadlocker8.budgetmasterserver.server.payment.normal.PaymentGet;
+import de.deadlocker8.budgetmasterserver.server.payment.normal.PaymentUpdate;
 import de.deadlocker8.budgetmasterserver.server.payment.repeating.RepeatingPaymentAdd;
 import de.deadlocker8.budgetmasterserver.server.payment.repeating.RepeatingPaymentDelete;
 import de.deadlocker8.budgetmasterserver.server.payment.repeating.RepeatingPaymentGet;
@@ -89,6 +90,7 @@ public class SparkServer
 		// Normal
 		get("/payment", new PaymentGet(settings, gson));
 		post("/payment", new PaymentAdd(settings));
+		put("/payment", new PaymentUpdate(settings));
 		delete("/payment", new PaymentDelete(settings));
 
 		// Repeating
