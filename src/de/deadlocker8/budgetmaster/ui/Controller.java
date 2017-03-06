@@ -33,7 +33,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import logger.LogLevel;
 import logger.Logger;
 import tools.AlertGenerator;
 
@@ -119,7 +118,7 @@ public class Controller implements Refreshable
 		catch(IOException e)
 		{
 			// ERRORHANDLING
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 
 		FontIcon iconPrevious = new FontIcon(FontIconType.CHEVRON_LEFT);

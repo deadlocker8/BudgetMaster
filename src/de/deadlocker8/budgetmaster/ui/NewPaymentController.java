@@ -30,7 +30,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import logger.LogLevel;
 import logger.Logger;
 import tools.AlertGenerator;
 import tools.ConvertTo;
@@ -276,7 +275,7 @@ public class NewPaymentController
 				}
 				catch(Exception e)
 				{
-					Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+					Logger.error(e);
 					controller.showConnectionErrorAlert();
 				}
 			}
@@ -290,7 +289,7 @@ public class NewPaymentController
 				}
 				catch(Exception e)
 				{
-					Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+					Logger.error(e);
 					controller.showConnectionErrorAlert();
 				}
 			}
@@ -316,7 +315,7 @@ public class NewPaymentController
 				}
 				catch(Exception e)
 				{
-					Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+					Logger.error(e);
 					controller.showConnectionErrorAlert();
 				}
 			}
@@ -330,7 +329,7 @@ public class NewPaymentController
 				}
 				catch(Exception e)
 				{
-					Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+					Logger.error(e);
 					controller.showConnectionErrorAlert();
 				}
 			}

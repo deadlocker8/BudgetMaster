@@ -9,7 +9,6 @@ import org.joda.time.Months;
 import de.deadlocker8.budgetmaster.logic.LatestRepeatingPayment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
 import de.deadlocker8.budgetmasterserver.main.DatabaseHandler;
-import logger.LogLevel;
 import logger.Logger;
 
 public class RepeatingPaymentUpdater
@@ -68,7 +67,7 @@ public class RepeatingPaymentUpdater
 		}
 		catch(IllegalStateException ex)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(ex));
+			Logger.error(ex);
 		}
 	}
 	

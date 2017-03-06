@@ -101,7 +101,7 @@ public class ColorView extends GridPane
 							}
 							catch(Exception e)
 							{
-								Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+								Logger.error(e);
 							}
 						});
 						

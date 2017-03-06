@@ -32,7 +32,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import logger.LogLevel;
 import logger.Logger;
 
 public class PaymentController implements Refreshable
@@ -152,7 +151,7 @@ public class PaymentController implements Refreshable
 		}
 		catch(IOException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 	}
 

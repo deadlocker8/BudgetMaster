@@ -19,7 +19,6 @@ import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
 import javafx.scene.paint.Color;
-import logger.LogLevel;
 import logger.Logger;
 import tools.ConvertTo;
 
@@ -36,7 +35,7 @@ public class DatabaseHandler
 		}
 		catch(Exception e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 			throw new IllegalStateException("Cannot connect the database!", e);
 		}
 	}
@@ -81,7 +80,7 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 		finally
 		{
@@ -143,7 +142,7 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 		finally
 		{
@@ -182,7 +181,7 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 		finally
 		{
@@ -221,7 +220,7 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 		finally
 		{
@@ -265,7 +264,7 @@ public class DatabaseHandler
 //		}
 //		catch(SQLException e)
 //		{
-//			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+//			Logger.error(e);
 //		}
 //		finally
 //		{
@@ -308,7 +307,7 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 		finally
 		{
@@ -351,7 +350,7 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 		finally
 		{
@@ -398,7 +397,7 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 		finally
 		{
@@ -444,7 +443,7 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 		finally
 		{
@@ -485,7 +484,7 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 		finally
 		{
@@ -529,7 +528,7 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 		finally
 		{
@@ -562,7 +561,7 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 		finally
 		{
@@ -590,7 +589,7 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 		finally
 		{
@@ -618,7 +617,7 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 		finally
 		{
@@ -649,7 +648,7 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 		finally
 		{
@@ -677,7 +676,7 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 		finally
 		{
@@ -716,7 +715,7 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 		finally
 		{
@@ -745,7 +744,7 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 		finally
 		{
@@ -776,7 +775,7 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 		finally
 		{
@@ -804,7 +803,7 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 		finally
 		{
