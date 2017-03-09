@@ -140,8 +140,7 @@ public class PaymentCell extends ListCell<Payment>
 			buttonDelete.setGraphic(iconDelete);
 			buttonDelete.setPrefHeight(HEIGHT);
 			buttonDelete.getStyleClass().add("greylabel");
-			buttonDelete.setStyle("-fx-background-color: transparent");
-			// TODO advanced deleting alert for repeating payments
+			buttonDelete.setStyle("-fx-background-color: transparent");			
 			buttonDelete.setOnAction((event) -> {
 				Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 				alert.setTitle("Zahlung löschen");

@@ -1,7 +1,6 @@
 package de.deadlocker8.budgetmasterserver.main;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,24 +35,6 @@ public class DatabaseHandler
 		catch(Exception e)
 		{
 			Logger.error(e);
-			throw new IllegalStateException("Cannot connect the database!", e);
-		}
-	}
-
-	// DEBUG
-	public void listTables()
-	{
-		try
-		{
-			DatabaseMetaData md = connection.getMetaData();
-			ResultSet rs = md.getTables(null, null, "%", null);
-			while(rs.next())
-			{
-				System.out.println(rs.getString(3));
-			}
-		}
-		catch(SQLException e)
-		{
 			throw new IllegalStateException("Cannot connect the database!", e);
 		}
 	}
@@ -284,7 +265,7 @@ public class DatabaseHandler
 		return null;
 	}
 
-	public NormalPayment getPayments(int ID, int year, int month)
+	public NormalPayment getPayment(int ID)
 	{
 		//TODO query
 		Statement stmt = null;
