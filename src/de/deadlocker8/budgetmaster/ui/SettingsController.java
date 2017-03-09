@@ -6,7 +6,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import tools.AlertGenerator;
 
@@ -18,6 +20,8 @@ public class SettingsController
 	@FXML private TextField textFieldSecret;
 	@FXML private Label labelSecret;
 	@FXML private Button buttonSave;
+	@FXML private RadioButton radioButtonRestActivated;
+	@FXML private RadioButton radioButtonRestDeactivated;
 
 	private Controller controller;
 
@@ -28,6 +32,14 @@ public class SettingsController
 		{
 			textFieldURL.setText(controller.getSettings().getUrl());
 			textFieldSecret.setText(controller.getSettings().getSecret());
+			if(controller.getSettings().isRestActivated())
+			{
+				radioButtonRestActivated.setSelected(true);
+			}
+			else
+			{
+				radioButtonRestDeactivated.setSelected(true);
+			}
 		}
 		
 		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");
@@ -35,6 +47,10 @@ public class SettingsController
 		labelURL.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
 		buttonSave.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");	
 		textFieldURL.setPromptText("z.B. https://yourdomain.de");
+		
+		ToggleGroup toggleGroup = new ToggleGroup();
+		radioButtonRestActivated.setToggleGroup(toggleGroup);
+		radioButtonRestDeactivated.setToggleGroup(toggleGroup);
 	}
 	
 	public void save()
@@ -48,13 +64,15 @@ public class SettingsController
 				if(controller.getSettings() != null)
 				{
 					controller.getSettings().setUrl(url);
-					controller.getSettings().setSecret(secret);				
+					controller.getSettings().setSecret(secret);		
+					controller.getSettings().setRestActivated(radioButtonRestActivated.isSelected());
 				}
 				else
 				{
 					Settings settings = new Settings();
 					settings.setUrl(url);
 					settings.setSecret(secret);
+					settings.setRestActivated(radioButtonRestActivated.isSelected());
 					controller.setSettings(settings);
 				}
 				Utils.saveSettings(controller.getSettings());	

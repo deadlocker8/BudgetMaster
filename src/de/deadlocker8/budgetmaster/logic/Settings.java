@@ -4,6 +4,7 @@ public class Settings
 {
 	private String url;
 	private String secret;
+	private boolean restActivated;
 	
 	public Settings()
 	{
@@ -28,5 +29,15 @@ public class Settings
 	public void setSecret(String secret)
 	{
 		this.secret = secret;
+	}
+
+	public boolean isRestActivated()
+	{
+		return restActivated;
+	}
+
+	public void setRestActivated(boolean restActivated)
+	{
+		this.restActivated = restActivated;
 	}
 }
