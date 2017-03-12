@@ -1,7 +1,16 @@
 package de.deadlocker8.budgetmasterserver.server;
 
-import static spark.Spark.*;
+import static spark.Spark.after;
+import static spark.Spark.before;
+import static spark.Spark.delete;
+import static spark.Spark.get;
+import static spark.Spark.halt;
+import static spark.Spark.port;
+import static spark.Spark.post;
+import static spark.Spark.put;
+import static spark.Spark.secure;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -40,10 +49,13 @@ public class SparkServer
 	private static Gson gson;
 	private static DatabaseHandler handler;
 
+	// DEBUG move main method to extra file and start SparkServer from there
 	public static void main(String[] args) throws URISyntaxException
-	{
-		// DEBUG
+	{		
 		Logger.setLevel(LogLevel.ALL);
+		File logFile = new File(Paths.get(SparkServer.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().toFile() + "/error.log");	
+		Logger.enableFileOutput(logFile);
+		Logger.info("Initialized SparkServer");
 
 		gson = new GsonBuilder().setPrettyPrinting().create();
 
