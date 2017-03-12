@@ -1,5 +1,7 @@
 package de.deadlocker8.budgetmaster.ui;
 
+import java.io.IOException;
+
 import de.deadlocker8.budgetmaster.logic.Settings;
 import de.deadlocker8.budgetmaster.logic.Utils;
 import javafx.fxml.FXML;
@@ -10,6 +12,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
+import logger.Logger;
 import tools.AlertGenerator;
 
 public class SettingsController
@@ -75,13 +78,22 @@ public class SettingsController
 					settings.setRestActivated(radioButtonRestActivated.isSelected());
 					controller.setSettings(settings);
 				}
-				Utils.saveSettings(controller.getSettings());	
+				
+				try
+				{
+					Utils.saveSettings(controller.getSettings());
+				}
+				catch(IOException e)
+				{
+					Logger.error(e);
+					AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Beim Speichern der Einstellungen ist ein Fehler aufgetreten", controller.getIcon(), controller.getStage(), null, false);
+				}	
 				controller.refresh();
 				controller.showNotification("Erfolgreich gespeichert");
 			}
 			else
 			{
-				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Server Passwortfel darf nicht leer sein!", controller.getIcon(), controller.getStage(), null, false);
+				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Server Passwortfeld darf nicht leer sein!", controller.getIcon(), controller.getStage(), null, false);
 			}
 		}
 		else

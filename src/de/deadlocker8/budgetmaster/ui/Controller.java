@@ -119,8 +119,10 @@ public class Controller implements Refreshable
 		}
 		catch(IOException e)
 		{
-			// ERRORHANDLING
 			Logger.error(e);
+			Platform.runLater(() -> {
+				AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Beim Erstellen der Benutzeroberfläche ist ein Fehler aufgetreten", icon, stage, null, false);
+			});			
 		}
 
 		FontIcon iconPrevious = new FontIcon(FontIconType.CHEVRON_LEFT);

@@ -10,18 +10,11 @@ import static spark.Spark.post;
 import static spark.Spark.put;
 import static spark.Spark.secure;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import de.deadlocker8.budgetmasterserver.main.DatabaseHandler;
 import de.deadlocker8.budgetmasterserver.main.Settings;
-import de.deadlocker8.budgetmasterserver.main.Utils;
 import de.deadlocker8.budgetmasterserver.server.category.CategoryAdd;
 import de.deadlocker8.budgetmasterserver.server.category.CategoryDelete;
 import de.deadlocker8.budgetmasterserver.server.category.CategoryGet;
@@ -37,43 +30,23 @@ import de.deadlocker8.budgetmasterserver.server.payment.repeating.RepeatingPayme
 import de.deadlocker8.budgetmasterserver.server.payment.repeating.RepeatingPaymentGetAll;
 import de.deadlocker8.budgetmasterserver.server.rest.RestGet;
 import de.deadlocker8.budgetmasterserver.server.updater.RepeatingPaymentUpdater;
-import logger.LogLevel;
 import logger.Logger;
 import spark.Spark;
 import spark.route.RouteOverview;
 
 public class SparkServer
-{
-	private static Settings settings;
-	private static Gson gson;
-	private static DatabaseHandler handler;
-
-	// DEBUG move main method to extra file and start SparkServer from there
-	public static void main(String[] args) throws URISyntaxException
-	{		
-		Logger.setLevel(LogLevel.ALL);
-		File logFile = new File(Paths.get(SparkServer.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().toFile() + "/error.log");	
-		Logger.enableFileOutput(logFile);
+{	
+	private Gson gson;
+	private DatabaseHandler handler;
+	
+	public SparkServer(Settings settings)
+	{				
 		Logger.info("Initialized SparkServer");
 
 		gson = new GsonBuilder().setPrettyPrinting().create();
-
-		if(!Files.exists(Paths.get("settings.properties")))
-		{
-			try
-			{
-				Files.copy(SparkServer.class.getClassLoader().getResourceAsStream("de/deadlocker8/budgetmasterserver/resources/settings.properties"), Paths.get("settings.properties"));
-			}
-			catch(IOException e)
-			{
-				// ERRORHANDLING
-				e.printStackTrace();
-			}
-		}
-
-		settings = Utils.loadSettings();
-
+		
 		port(settings.getServerPort());
+		
 		// DEBUG
 		secure("certs/keystore.jks", "geheim", null, null);
 		RouteOverview.enableRouteOverview();
@@ -120,6 +93,7 @@ public class SparkServer
 		});
 		
 		Spark.exception(Exception.class, (exception, request, response) -> {
+			Logger.error(exception);
 			exception.printStackTrace();
 		});
 	}

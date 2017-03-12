@@ -33,19 +33,11 @@ public class Utils
 		}
 	}
 	
-	public static void saveSettings(Settings settings)
-	{
-		try
-		{
-			Gson gson = new Gson();
-			String jsonString = gson.toJson(settings);
-			
-			Files.write(Paths.get(PathUtils.getOSindependentPath() + bundle.getString("folder")  + "/settings.json"), jsonString.getBytes());				
-		}
-		catch(IOException e)
-		{
-			//ERRORHANDLING
-			e.printStackTrace();			
-		}
+	public static void saveSettings(Settings settings) throws IOException
+	{		
+		Gson gson = new Gson();
+		String jsonString = gson.toJson(settings);
+		
+		Files.write(Paths.get(PathUtils.getOSindependentPath() + bundle.getString("folder")  + "/settings.json"), jsonString.getBytes());	
 	}
 }
