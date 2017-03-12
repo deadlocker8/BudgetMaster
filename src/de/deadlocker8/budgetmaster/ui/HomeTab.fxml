@@ -23,9 +23,17 @@
                </font>
             </Label>
             <ProgressBar fx:id="progressBar" prefHeight="18.0" prefWidth="380.0" progress="0.68" />
-            <ListView fx:id="listView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+            <Label text="Verbrauch nach Kategorien">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
                <VBox.margin>
                   <Insets top="25.0" />
+               </VBox.margin>
+            </Label>
+            <ListView fx:id="listView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+               <VBox.margin>
+                  <Insets />
                </VBox.margin>
             </ListView>
          </children>

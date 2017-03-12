@@ -12,7 +12,6 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import de.deadlocker8.budgetmaster.logic.Category;
-import de.deadlocker8.budgetmaster.logic.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.LatestRepeatingPayment;
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.Payment;
@@ -245,55 +244,9 @@ public class DatabaseHandler
 
 		return result;
 	}
-
-	@Deprecated
-	public ArrayList<CategoryBudget> getCategoryBudget(int year, int month)
-	{
-//		String date = String.valueOf(year) + "-" + String.format("%02d", month) + "-";
-//		Statement stmt = null;
-//		String query = "SELECT q.cat_name AS \"Name\", q.cat_col AS \"Color\", SUM(q.amoun) AS \"Amount\" FROM (SELECT Payment.CategoryID as \"cat_ID\", Category.Name as \"cat_name\", Category.Color as \"cat_col\", Payment.Amount AS \"amoun\" FROM Payment, Category WHERE Payment.CategoryID = Category.ID AND (YEAR(Date) = "
-//				+ year + " AND  MONTH(Date) = " + month + " AND RepeatMonthDay = 0 OR RepeatMonthDay != 0 AND CONCAT('" + date + "', RepeatMonthDay) >= Date AND RepeatEndDate IS NULL OR RepeatMonthDay != 0 AND CONCAT('" + date + "', RepeatMonthDay) >= Date AND CONCAT('" + date
-//				+ "', RepeatMonthDay) <= RepeatEndDate OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NULL OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NOT NULL AND DATEDIFF(RepeatEndDate, NOW()) > 0)GROUP BY Payment.ID) as q GROUP BY q.cat_ID ORDER BY SUM(q.amoun) DESC";
-//		ArrayList<CategoryBudget> results = new ArrayList<>();
-//		try
-//		{
-//			stmt = connection.createStatement();
-//			ResultSet rs = stmt.executeQuery(query);
-//
-//			while(rs.next())
-//			{
-//				String name = rs.getString("Name");
-//				String color = rs.getString("Color");
-//				int amount = rs.getInt("Amount");
-//
-//				results.add(new CategoryBudget(name, Color.web(color), amount));
-//			}
-//		}
-//		catch(SQLException e)
-//		{
-//			Logger.error(e);
-//		}
-//		finally
-//		{
-//			if(stmt != null)
-//			{
-//				try
-//				{
-//					stmt.close();
-//				}
-//				catch(SQLException e)
-//				{
-//				}
-//			}
-//		}
-//
-//		return results;
-		return null;
-	}
-
+	
 	public NormalPayment getPayment(int ID)
 	{
-		//TODO query
 		Statement stmt = null;
 		String query = "SELECT * FROM Payment WHERE Payment.ID= " + ID;
 		try

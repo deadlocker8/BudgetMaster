@@ -11,6 +11,7 @@ import org.joda.time.DateTime;
 
 import de.deadlocker8.budgetmaster.logic.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.CategoryHandler;
+import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmaster.logic.ServerConnection;
@@ -260,8 +261,7 @@ public class Controller implements Refreshable
 	{
 		try
 		{
-			ServerConnection connection = new ServerConnection(settings);
-			categoryBudgets = connection.getCategoryBudgets(currentDate.getYear(), currentDate.getMonthOfYear());		
+			ServerConnection connection = new ServerConnection(settings);			
 			
 			payments = new ArrayList<>();
 			payments.addAll(connection.getPayments(currentDate.getYear(), currentDate.getMonthOfYear()));
@@ -278,9 +278,11 @@ public class Controller implements Refreshable
 				int rest = connection.getRestForAllPreviousMonths(currentDate.getYear(), currentDate.getMonthOfYear());
 				//categoryID 2 = Rest
 				payments.add(new NormalPayment(-1, rest, currentDate.withDayOfMonth(1).toString("yyyy-MM-dd"), 2, "Übertrag"));				
-			}	
+			}
 			
 			categoryHandler = new CategoryHandler(connection.getCategories());
+			
+			categoryBudgets = Helpers.getCategoryBudgets(categoryHandler, payments);		
 		}
 		catch(Exception e)
 		{
