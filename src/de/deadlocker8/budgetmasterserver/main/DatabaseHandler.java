@@ -15,6 +15,7 @@ import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmaster.logic.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.LatestRepeatingPayment;
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
+import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
 import javafx.scene.paint.Color;
@@ -42,9 +43,7 @@ public class DatabaseHandler
 	/*
 	 * GET
 	 */
-
-	@Deprecated
-	public DateTime getFirstPaymentDate()
+	public DateTime getFirstNormalPaymentDate()
 	{
 		Statement stmt = null;
 		String query = "SELECT MIN(Date) as \"min\" FROM Payment";
@@ -79,38 +78,12 @@ public class DatabaseHandler
 
 		return dateTime;
 	}
-
-	@Deprecated
-	public int getRestForAllPreviousMonths(int year, int month)
-	{
-		DateTime firstDate = getFirstPaymentDate();
-
-		int startYear = firstDate.getYear();
-		int startMonth = firstDate.getMonthOfYear();
-		int totalRest = 0;
-
-		while(startYear < year || startMonth < month)
-		{
-			totalRest += getRest(startYear, startMonth);
-
-			startMonth++;
-			if(startMonth > 12)
-			{
-				startMonth = 1;
-				startYear++;
-			}
-		}
-		return totalRest;
-	}
-
-	@Deprecated
-	public int getRest(int year, int month)
+	
+	public DateTime getFirstRepeatingPaymentDate()
 	{
 		Statement stmt = null;
-		String query = "SELECT SUM(q.amount) as \"rest\" FROM(SELECT Payment.amount as \"amount\" FROM Payment WHERE (YEAR(Date) = " + year + " AND MONTH(Date) = " + month
-				+ " OR RepeatMonthDay != 0 OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NULL OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NOT NULL AND DATEDIFF(RepeatEndDate, NOW()) > 0) GROUP BY Payment.ID ORDER BY Payment.Date) q";
-
-		int result = 0;
+		String query = "SELECT MIN(Date) as \"min\" FROM repeating_payment";
+		DateTime dateTime = null;
 		try
 		{
 			stmt = connection.createStatement();
@@ -118,7 +91,7 @@ public class DatabaseHandler
 
 			while(rs.next())
 			{
-				result = rs.getInt("rest");
+				dateTime = formatter.parseDateTime(rs.getString("min"));
 			}
 		}
 		catch(SQLException e)
@@ -139,7 +112,60 @@ public class DatabaseHandler
 			}
 		}
 
-		return result;
+		return dateTime;
+	}
+
+	public int getRestForAllPreviousMonths(int year, int month)
+	{		
+		DateTime firstNormalPaymentDate = getFirstNormalPaymentDate();
+		DateTime firstRepeatingPaymentDate = getFirstRepeatingPaymentDate();
+		
+		DateTime firstDate = firstNormalPaymentDate;
+		if(firstRepeatingPaymentDate.isBefore(firstNormalPaymentDate))
+		{
+			firstDate = firstRepeatingPaymentDate;
+		}
+		
+		DateTimeFormatter formatter = DateTimeFormat.forPattern("MM.yyyy");
+		String dateString = String.valueOf(month) + "." + year;
+		DateTime currentDate = formatter.parseDateTime(dateString);//	
+	
+		if(firstDate.isAfter(currentDate))
+		{
+			return 0;
+		}
+
+		int startYear = firstDate.getYear();
+		int startMonth = firstDate.getMonthOfYear();
+		int totalRest = 0;
+		
+		while(startYear < year || startMonth < month)
+		{
+			totalRest += getRest(startYear, startMonth);			
+
+			startMonth++;
+			if(startMonth > 12)
+			{
+				startMonth = 1;
+				startYear++;
+			}
+		}
+		return totalRest;
+	}
+
+	public int getRest(int year, int month)
+	{
+		ArrayList<Payment> payments = new ArrayList<>();
+		payments.addAll(getPayments(year, month));
+		payments.addAll(getRepeatingPayments(year, month));
+		
+		int rest = 0;
+		for(Payment currentPayment : payments)
+		{
+			rest += currentPayment.getAmount();
+		}
+		
+		return rest;
 	}
 
 	public ArrayList<Category> getCategories()

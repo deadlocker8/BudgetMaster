@@ -282,4 +282,25 @@ public class ServerConnection
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 		reader.close();
 	}
+	
+	/*
+	 * REST
+	 */
+	public int getRestForAllPreviousMonths(int year, int month) throws Exception
+	{
+		URL url = new URL(settings.getUrl() + "/rest?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&year=" + year + "&month=" + month);
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setDoOutput(true);
+		httpsCon.setRequestMethod("GET");
+
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			String result = Read.getStringFromInputStream(httpsCon.getInputStream());		
+			return gson.fromJson(result, Integer.class);
+		}
+		else
+		{
+			return 0;
+		}
+	}
 }

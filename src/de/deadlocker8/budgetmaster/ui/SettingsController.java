@@ -76,6 +76,7 @@ public class SettingsController
 					controller.setSettings(settings);
 				}
 				Utils.saveSettings(controller.getSettings());	
+				controller.refresh();
 				controller.showNotification("Erfolgreich gespeichert");
 			}
 			else

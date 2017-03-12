@@ -27,6 +27,7 @@ import de.deadlocker8.budgetmasterserver.server.payment.repeating.RepeatingPayme
 import de.deadlocker8.budgetmasterserver.server.payment.repeating.RepeatingPaymentDelete;
 import de.deadlocker8.budgetmasterserver.server.payment.repeating.RepeatingPaymentGet;
 import de.deadlocker8.budgetmasterserver.server.payment.repeating.RepeatingPaymentGetAll;
+import de.deadlocker8.budgetmasterserver.server.rest.RestGet;
 import de.deadlocker8.budgetmasterserver.server.updater.RepeatingPaymentUpdater;
 import logger.LogLevel;
 import logger.Logger;
@@ -102,6 +103,9 @@ public class SparkServer
 		get("/repeatingpayment", new RepeatingPaymentGetAll(handler, gson));
 		post("/repeatingpayment", new RepeatingPaymentAdd(handler));
 		delete("/repeatingpayment", new RepeatingPaymentDelete(handler));
+		
+		// Rest
+		get("/rest", new RestGet(handler, gson));
 
 		after((request, response) -> {
 			new RepeatingPaymentUpdater(handler).updateRepeatingPayments();

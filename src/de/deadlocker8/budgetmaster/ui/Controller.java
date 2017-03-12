@@ -11,6 +11,7 @@ import org.joda.time.DateTime;
 
 import de.deadlocker8.budgetmaster.logic.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.CategoryHandler;
+import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmaster.logic.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.Settings;
@@ -260,9 +261,9 @@ public class Controller implements Refreshable
 		try
 		{
 			ServerConnection connection = new ServerConnection(settings);
-			categoryBudgets = connection.getCategoryBudgets(currentDate.getYear(), currentDate.getMonthOfYear());
+			categoryBudgets = connection.getCategoryBudgets(currentDate.getYear(), currentDate.getMonthOfYear());		
+			
 			payments = new ArrayList<>();
-			//TODO add rest if enabled by user
 			payments.addAll(connection.getPayments(currentDate.getYear(), currentDate.getMonthOfYear()));
 			payments.addAll(connection.getRepeatingPayments(currentDate.getYear(), currentDate.getMonthOfYear()));			
 			Collections.sort(payments, new Comparator<Payment>() {
@@ -271,7 +272,14 @@ public class Controller implements Refreshable
 		        {
 		            return  payment2.getDate().compareTo(payment1.getDate());
 		        }
-		    });
+		    });		
+			if(settings.isRestActivated())
+			{
+				int rest = connection.getRestForAllPreviousMonths(currentDate.getYear(), currentDate.getMonthOfYear());
+				//categoryID 2 = Rest
+				payments.add(new NormalPayment(-1, rest, currentDate.withDayOfMonth(1).toString("yyyy-MM-dd"), 2, "Übertrag"));				
+			}	
+			
 			categoryHandler = new CategoryHandler(connection.getCategories());
 		}
 		catch(Exception e)
