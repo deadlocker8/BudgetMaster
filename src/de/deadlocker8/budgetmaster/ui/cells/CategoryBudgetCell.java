@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.ui.cells;
 
 import de.deadlocker8.budgetmaster.logic.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.Helpers;
+import de.deadlocker8.budgetmaster.ui.HomeController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -14,6 +15,13 @@ import tools.ConvertTo;
 public class CategoryBudgetCell extends ListCell<CategoryBudget>
 {
 	private final double HEIGHT = 40.0;	
+	private HomeController homeController;
+	
+	public CategoryBudgetCell(HomeController homeController)
+	{
+		super();
+		this.homeController = homeController;
+	}		
 
 	@Override
 	protected void updateItem(CategoryBudget item, boolean empty)
@@ -51,7 +59,7 @@ public class CategoryBudgetCell extends ListCell<CategoryBudget>
 			hbox.getChildren().add(r);
 			HBox.setHgrow(r, Priority.ALWAYS);
 
-			Label labelBudget = new Label(String.valueOf(Helpers.NUMBER_FORMAT.format(item.getBudget() / 100.0)).replace(".", ",") + " €");
+			Label labelBudget = new Label(String.valueOf(Helpers.NUMBER_FORMAT.format(item.getBudget() / 100.0)).replace(".", ",") + " " + homeController.getController().getSettings().getCurrency());
 			labelBudget.setPrefHeight(HEIGHT);
 			labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #212121;");
 			labelBudget.setAlignment(Pos.CENTER);

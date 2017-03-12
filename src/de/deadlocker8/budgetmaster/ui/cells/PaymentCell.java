@@ -116,7 +116,7 @@ public class PaymentCell extends ListCell<Payment>
 			hbox.getChildren().add(r);
 			HBox.setHgrow(r, Priority.ALWAYS);
 
-			Label labelBudget = new Label(String.valueOf(Helpers.NUMBER_FORMAT.format(item.getAmount() / 100.0)).replace(".", ",") + " €");
+			Label labelBudget = new Label(String.valueOf(Helpers.NUMBER_FORMAT.format(item.getAmount() / 100.0)).replace(".", ",") + " " + paymentController.getController().getSettings().getCurrency());
 			labelBudget.setPrefHeight(HEIGHT);
 			labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #247A2D");
 			labelBudget.setAlignment(Pos.CENTER);

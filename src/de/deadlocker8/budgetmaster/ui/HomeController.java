@@ -33,12 +33,13 @@ public class HomeController implements Refreshable
 	{
 		this.controller = controller;
 
+		HomeController thisController = this;
 		listView.setCellFactory(new Callback<ListView<CategoryBudget>, ListCell<CategoryBudget>>()
 		{
 			@Override
 			public ListCell<CategoryBudget> call(ListView<CategoryBudget> param)
 			{
-				return new CategoryBudgetCell();
+				return new CategoryBudgetCell(thisController);
 			}
 		});
 
@@ -78,8 +79,8 @@ public class HomeController implements Refreshable
 		{
 			Budget budget = new Budget(controller.getPayments());	
 			double remaining = budget.getIncomeSum() + budget.getPaymentSum();
-			labelBudget.setText(String.valueOf(Helpers.NUMBER_FORMAT.format(remaining).replace(".", ",")) + " €");
-			labelStartBudget.setText("von " + String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getIncomeSum()).replace(".", ",")) + " € verbleibend");
+			labelBudget.setText(String.valueOf(Helpers.NUMBER_FORMAT.format(remaining).replace(".", ",")) + " " + controller.getSettings().getCurrency());
+			labelStartBudget.setText("von " + String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getIncomeSum()).replace(".", ",")) + " " + controller.getSettings().getCurrency() + " verbleibend");
 			
 			double factor = remaining / budget.getIncomeSum();
 			if(factor < 0)
@@ -88,6 +89,11 @@ public class HomeController implements Refreshable
 			}
 			progressBar.setProgress(factor);
 		}
+	}
+	
+	public Controller getController()
+	{
+		return controller;
 	}
 
 	@Override

@@ -169,8 +169,8 @@ public class PaymentController implements Refreshable
 	private void refreshCounter()
 	{
 		Budget budget = new Budget(listView.getItems());
-		labelIncomes.setText(String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getIncomeSum()).replace(".", ",")) + " €");
-		labelPayments.setText(String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getPaymentSum()).replace(".", ",")) + " €");
+		labelIncomes.setText(String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getIncomeSum()).replace(".", ",")) + " " + controller.getSettings().getCurrency());
+		labelPayments.setText(String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getPaymentSum()).replace(".", ",")) + " " + controller.getSettings().getCurrency());
 	}
 
 	public void deleteNormalPayment(NormalPayment payment)

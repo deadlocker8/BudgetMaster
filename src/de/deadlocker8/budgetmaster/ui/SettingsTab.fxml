@@ -31,7 +31,12 @@
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="labelSecret1" prefHeight="25.0" text="Übertrag:">
+                        <Label fx:id="labelCurrency" prefHeight="25.0" text="Währung:">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="labelSecret11" prefHeight="25.0" text="Übertrag:">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
@@ -45,6 +50,7 @@
                      <children>
                         <TextField fx:id="textFieldURL" />
                         <TextField fx:id="textFieldSecret" />
+                        <TextField fx:id="textFieldCurrency" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <RadioButton fx:id="radioButtonRestActivated" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="aktiviert">
