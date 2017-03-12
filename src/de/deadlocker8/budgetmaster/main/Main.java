@@ -58,6 +58,10 @@ public class Main extends Application
 		{
 			Logger.setLevel(LogLevel.ERROR);			
 		}
+		
+		PathUtils.checkFolder(new File(PathUtils.getOSindependentPath() + bundle.getString("folder")));
+		File logFile = new File(PathUtils.getOSindependentPath() + bundle.getString("folder") + "/error.log");				
+		Logger.enableFileOutput(logFile);
 	
 		Logger.appInfo(bundle.getString("app.name"), bundle.getString("version.name"), bundle.getString("version.code"), bundle.getString("version.date"));
 		
