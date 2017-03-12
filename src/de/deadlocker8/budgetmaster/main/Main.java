@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.main;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -13,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import logger.LogLevel;
 import logger.Logger;
+import tools.PathUtils;
 
 public class Main extends Application
 {
@@ -54,7 +56,7 @@ public class Main extends Application
 		}
 		else
 		{
-			Logger.setLevel(LogLevel.ERROR);
+			Logger.setLevel(LogLevel.ERROR);			
 		}
 	
 		Logger.appInfo(bundle.getString("app.name"), bundle.getString("version.name"), bundle.getString("version.code"), bundle.getString("version.date"));
