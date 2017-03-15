@@ -11,7 +11,6 @@ import org.joda.time.DateTime;
 
 import de.deadlocker8.budgetmaster.logic.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.CategoryHandler;
-import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmaster.logic.ServerConnection;
@@ -284,7 +283,7 @@ public class Controller implements Refreshable
 			
 			categoryHandler = new CategoryHandler(connection.getCategories());
 			
-			categoryBudgets = Helpers.getCategoryBudgets(categoryHandler, payments);		
+			categoryBudgets = connection.getCategoryBudgets(currentDate.getYear(), currentDate.getMonthOfYear());		
 		}
 		catch(Exception e)
 		{

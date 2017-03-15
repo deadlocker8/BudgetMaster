@@ -22,6 +22,7 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -102,7 +103,11 @@ public class PaymentCell extends ListCell<Payment>
 			labelCircle.getStyleClass().add("greylabel");
 			String textColor = ConvertTo.toRGBHex(ConvertTo.getAppropriateTextColor(category.getColor()));
 			labelCircle.setStyle("-fx-background-color: " + ConvertTo.toRGBHex(category.getColor()) + "; -fx-background-radius: 50%; -fx-text-fill: " + textColor + "; -fx-font-weight: bold; -fx-font-size: 20;");
+			Tooltip tooltip = new Tooltip(categoryName);
+			tooltip.setStyle("-fx-font-size: 14");
+			labelCircle.setTooltip(tooltip);
 			hbox.getChildren().add(labelCircle);
+			
 
 			Label labelName = new Label(item.getName());
 			labelName.setPrefHeight(HEIGHT);
