@@ -109,6 +109,8 @@ public class Controller implements Refreshable
 			chartController = fxmlLoader.getController();
 			chartController.init(this);
 			tabCharts.setContent(nodeTabChart);
+			//TODO
+			tabCharts.setDisable(true);
 
 			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/SettingsTab.fxml"));
 			Parent nodeTabSettings = (Parent)fxmlLoader.load();
@@ -287,6 +289,7 @@ public class Controller implements Refreshable
 		}
 		catch(Exception e)
 		{
+			Logger.error(e);
 			categoryHandler = new CategoryHandler(null);			
 			showConnectionErrorAlert();
 		}

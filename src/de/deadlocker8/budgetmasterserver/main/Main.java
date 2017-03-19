@@ -41,6 +41,7 @@ public class Main
 		try
 		{
 			settings = Utils.loadSettings();
+			System.out.println(settings);
 			new SparkServer(settings);
 		}
 		catch(IOException e)

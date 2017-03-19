@@ -20,7 +20,7 @@ public class DatabaseCreator
 		this.settings = settings;
 		Logger.info("Checking tables...");
 		createTables(getExistingTables());	
-		Logger.info("Successfully initialized database");
+		Logger.info("Checking tables [DONE]");
 	}
 
 	private ArrayList<String> getExistingTables()

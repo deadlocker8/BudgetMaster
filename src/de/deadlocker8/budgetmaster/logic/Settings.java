@@ -51,4 +51,10 @@ public class Settings
 	{
 		this.restActivated = restActivated;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "Settings [url=" + url + ", secret=" + secret + ", currency=" + currency + ", restActivated=" + restActivated + "]";
+	}
 }
