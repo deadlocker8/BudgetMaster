@@ -10,6 +10,8 @@ import static spark.Spark.post;
 import static spark.Spark.put;
 import static spark.Spark.secure;
 
+import java.io.File;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -48,8 +50,18 @@ public class SparkServer
 		
 		port(settings.getServerPort());
 		
-		// DEBUG
-		secure("certs/keystore.jks", "geheim", null, null);
+		try
+		{
+			File keystoreFile = new File(settings.getKeystorePath());		
+			secure(keystoreFile.getAbsolutePath(), settings.getKeystorePassword(), null, null);						
+		}
+		catch(Exception e)
+		{
+			Logger.error(e);
+			Logger.info("CANCELED server initialization");
+			return;
+		}		
+		
 		RouteOverview.enableRouteOverview();
 		
 		handler = new DatabaseHandler(settings);
