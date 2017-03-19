@@ -2,10 +2,10 @@ package de.deadlocker8.budgetmasterserver.main;
 
 public class Settings
 {
-	private String databaseUrl = "jdbc:mysql://localhost:3306/";
-	private String databaseName = "budgetmaster";
-	private String databaseUsername = "root";
-	private String databasePassword = "";
+	private String databaseUrl;
+	private String databaseName;
+	private String databaseUsername;
+	private String databasePassword;
 	private int serverPort;	
 	private String serverSecret;
 	
