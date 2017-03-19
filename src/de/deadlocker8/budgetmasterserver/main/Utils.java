@@ -14,7 +14,7 @@ public class Utils
 		Settings settings;
 		
 		Gson gson = new Gson();
-		settingsJSON = new String(Files.readAllBytes(Paths.get("settings.properties")));				
+		settingsJSON = new String(Files.readAllBytes(Paths.get("settings.properties")));		
 		settings = gson.fromJson(settingsJSON, Settings.class);	
 		return settings;		
 	}

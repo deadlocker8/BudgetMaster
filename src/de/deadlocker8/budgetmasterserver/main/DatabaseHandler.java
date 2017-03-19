@@ -31,6 +31,7 @@ public class DatabaseHandler
 		try
 		{
 			this.connection = DriverManager.getConnection(settings.getDatabaseUrl() + settings.getDatabaseName() + "?useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin", settings.getDatabaseUsername(), settings.getDatabasePassword());
+			new DatabaseCreator(connection, settings);
 		}
 		catch(Exception e)
 		{

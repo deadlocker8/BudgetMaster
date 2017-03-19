@@ -43,4 +43,10 @@ public class Settings
 	{
 		return serverSecret;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "Settings [databaseUrl=" + databaseUrl + ", databaseName=" + databaseName + ", databaseUsername=" + databaseUsername + ", databasePassword=" + databasePassword + ", serverPort=" + serverPort + ", serverSecret=" + serverSecret + "]";
+	}	
 }
