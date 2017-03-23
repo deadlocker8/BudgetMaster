@@ -37,4 +37,10 @@ public class Budget
 	{
 		return paymentSum;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "Budget [incomeSum=" + incomeSum + ", paymentSum=" + paymentSum + "]";
+	}
 }
