@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import de.deadlocker8.budgetmasterserver.server.SparkServer;
 import logger.LogLevel;
@@ -12,9 +14,12 @@ import logger.Logger;
 
 public class Main
 {
+	private static ResourceBundle bundle = ResourceBundle.getBundle("de/deadlocker8/budgetmasterserver/main/", Locale.GERMANY);
+
 	public static void main(String[] args)
 	{
 		Logger.setLevel(LogLevel.ALL);		
+		Logger.appInfo(bundle.getString("app.name"), bundle.getString("version.name"), bundle.getString("version.code"), bundle.getString("version.date"));
 		try
 		{
 			File logFile = new File(Paths.get(SparkServer.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().toFile() + "/error.log");
