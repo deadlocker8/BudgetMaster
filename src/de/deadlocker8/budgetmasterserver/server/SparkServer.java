@@ -1,380 +1,116 @@
 package de.deadlocker8.budgetmasterserver.server;
 
-import static spark.Spark.*;
+import static spark.Spark.after;
+import static spark.Spark.before;
+import static spark.Spark.delete;
+import static spark.Spark.get;
+import static spark.Spark.halt;
+import static spark.Spark.port;
+import static spark.Spark.post;
+import static spark.Spark.put;
+import static spark.Spark.secure;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.io.File;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import de.deadlocker8.budgetmaster.logic.*;
 import de.deadlocker8.budgetmasterserver.main.DatabaseHandler;
 import de.deadlocker8.budgetmasterserver.main.Settings;
-import de.deadlocker8.budgetmasterserver.main.Utils;
-import javafx.scene.paint.Color;
-import logger.LogLevel;
+import de.deadlocker8.budgetmasterserver.server.category.CategoryAdd;
+import de.deadlocker8.budgetmasterserver.server.category.CategoryDelete;
+import de.deadlocker8.budgetmasterserver.server.category.CategoryGet;
+import de.deadlocker8.budgetmasterserver.server.category.CategoryGetAll;
+import de.deadlocker8.budgetmasterserver.server.category.CategoryUpdate;
+import de.deadlocker8.budgetmasterserver.server.categorybudget.CategoryBudgetGet;
+import de.deadlocker8.budgetmasterserver.server.payment.normal.PaymentAdd;
+import de.deadlocker8.budgetmasterserver.server.payment.normal.PaymentDelete;
+import de.deadlocker8.budgetmasterserver.server.payment.normal.PaymentGet;
+import de.deadlocker8.budgetmasterserver.server.payment.normal.PaymentUpdate;
+import de.deadlocker8.budgetmasterserver.server.payment.repeating.RepeatingPaymentAdd;
+import de.deadlocker8.budgetmasterserver.server.payment.repeating.RepeatingPaymentDelete;
+import de.deadlocker8.budgetmasterserver.server.payment.repeating.RepeatingPaymentGet;
+import de.deadlocker8.budgetmasterserver.server.payment.repeating.RepeatingPaymentGetAll;
+import de.deadlocker8.budgetmasterserver.server.rest.RestGet;
+import de.deadlocker8.budgetmasterserver.server.updater.RepeatingPaymentUpdater;
 import logger.Logger;
+import spark.Spark;
 import spark.route.RouteOverview;
 
 public class SparkServer
-{
-	private static Gson gson;
+{	
+	private Gson gson;
+	private DatabaseHandler handler;
+	
+	public SparkServer(Settings settings)
+	{				
+		Logger.info("Initialized SparkServer");
 
-	public static void main(String[] args) throws URISyntaxException
-	{		
-		//DEBUG
-		Logger.setLevel(LogLevel.ALL);
-		
 		gson = new GsonBuilder().setPrettyPrinting().create();
 		
-		if (!Files.exists(Paths.get("settings.properties")))
+		port(settings.getServerPort());
+		
+		try
 		{
-			try
-			{
-				Files.copy(SparkServer.class.getClassLoader().getResourceAsStream("de/deadlocker8/budgetmasterserver/resources/settings.properties"), Paths.get("settings.properties"));
-			}
-			catch(IOException e)
-			{
-				//ERRORHANDLING
-				e.printStackTrace();
-			}		
+			File keystoreFile = new File(settings.getKeystorePath());		
+			secure(keystoreFile.getAbsolutePath(), settings.getKeystorePassword(), null, null);						
 		}
+		catch(Exception e)
+		{
+			Logger.error(e);
+			Logger.info("CANCELED server initialization");
+			return;
+		}		
 		
-		Settings settings = Utils.loadSettings();
-		
-		port(settings.getServerPort());	
-		//DEBUG
-		secure("certs/keystore.jks", "geheim", null, null);	
 		RouteOverview.enableRouteOverview();
 		
+		handler = new DatabaseHandler(settings);
+
 		before((request, response) -> {
-			
+
 			String clientSecret = request.queryMap("secret").value();
-		
-			if(clientSecret == null || !clientSecret.equals(settings.getServerSecret()))			
+
+			if(clientSecret == null || !clientSecret.equals(settings.getServerSecret()))
 			{
 				halt(401, "Unauthorized");
 			}
+
+			new RepeatingPaymentUpdater(handler).updateRepeatingPayments();
 		});
 
-		/*
-		 * Category
-		 */
-		get("/category", (req, res) -> {
-			try
-			{
-				DatabaseHandler handler = new DatabaseHandler(settings);			
-				ArrayList<Category> categories = handler.getCategories();			
+		// Category
+		get("/category", new CategoryGetAll(handler, gson));
+		get("/category/single", new CategoryGet(handler, gson));
+		post("/category", new CategoryAdd(handler));
+		put("/category", new CategoryUpdate(handler));
+		delete("/category", new CategoryDelete(handler));
 
-				return gson.toJson(categories);
-			}
-			catch(IllegalStateException e)
-			{
-				halt(500, "Internal Server Error");
-			}	
-			return null;
+		// Payment
+		// Normal
+		get("/payment", new PaymentGet(handler, gson));
+		post("/payment", new PaymentAdd(handler));
+		put("/payment", new PaymentUpdate(handler));
+		delete("/payment", new PaymentDelete(handler));
+
+		// Repeating
+		get("/repeatingpayment/single", new RepeatingPaymentGet(handler, gson));
+		get("/repeatingpayment", new RepeatingPaymentGetAll(handler, gson));
+		post("/repeatingpayment", new RepeatingPaymentAdd(handler));
+		delete("/repeatingpayment", new RepeatingPaymentDelete(handler));
+		
+		// CategoryBudget
+		get("/categorybudget", new CategoryBudgetGet(handler, gson));
+		
+		// Rest
+		get("/rest", new RestGet(handler, gson));
+
+		after((request, response) -> {
+			new RepeatingPaymentUpdater(handler).updateRepeatingPayments();
 		});
 		
-		get("/category/single", (req, res) -> {			
-			if(!req.queryParams().contains("id"))
-			{				
-				halt(400, "Bad Request");
-			}	
-			
-			int id = -1;		
-			
-			try
-			{				
-				id = Integer.parseInt(req.queryMap("id").value());
-				
-				if(id < 0)
-				{					
-					halt(400, "Bad Request");
-				}
-			
-				try
-				{
-					DatabaseHandler handler = new DatabaseHandler(settings);			
-					Category categeory = handler.getCategory(id);				
-	
-					return gson.toJson(categeory);
-				}
-				catch(IllegalStateException e)
-				{
-					e.printStackTrace();
-					halt(500, "Internal Server Error");
-				}	
-			}
-			catch(Exception e)
-			{				
-				halt(400, "Bad Request");
-			}
-			return null;
-		});
-		
-		post("/category", (req, res) -> {			
-			if(!req.queryParams().contains("name") || !req.queryParams().contains("color"))
-			{
-				halt(400, "Bad Request");
-			}	
-							
-			try
-			{
-				DatabaseHandler handler = new DatabaseHandler(settings);
-				handler.addCategory(req.queryMap("name").value(), Color.web("#" + req.queryMap("color").value()));			
-
-				return "";
-			}
-			catch(IllegalStateException ex)
-			{				
-				halt(500, "Internal Server Error");
-			}
-			catch(Exception e)
-			{				
-				halt(400, "Bad Request");
-			}
-			
-			return "";
-		});
-		
-		put("/category", (req, res) -> {			
-			if(!req.queryParams().contains("id") ||!req.queryParams().contains("name") || !req.queryParams().contains("color"))
-			{
-				halt(400, "Bad Request");
-			}	
-			
-			int id = -1;		
-			
-			try
-			{				
-				id = Integer.parseInt(req.queryMap("id").value());
-				
-				if(id < 0)
-				{
-					halt(400, "Bad Request");
-				}
-				
-				try
-				{
-					DatabaseHandler handler = new DatabaseHandler(settings);
-					handler.updateCategory(id, req.queryMap("name").value(), Color.web("#" + req.queryMap("color").value()));			
-
-					return "";
-				}
-				catch(IllegalStateException ex)
-				{				
-					halt(500, "Internal Server Error");
-				}
-			}		
-			catch(Exception e)
-			{
-				halt(400, "Bad Request");
-			}
-			
-			return "";
-		});
-				
-		delete("/category", (req, res) -> {			
-			if(!req.queryParams().contains("id"))
-			{
-				halt(400, "Bad Request");
-			}			
-			
-			int id = -1;		
-			
-			try
-			{				
-				id = Integer.parseInt(req.queryMap("id").value());
-				
-				if(id < 0)
-				{
-					halt(400, "Bad Request");
-				}
-				
-				try
-				{
-					DatabaseHandler handler = new DatabaseHandler(settings);			
-					handler.deleteCategory(id);			
-
-					return "";
-				}
-				catch(IllegalStateException ex)
-				{
-					halt(500, "Internal Server Error");
-				}
-			}
-			catch(Exception e)
-			{
-				halt(400, "Bad Request");
-			}
-			
-			return "";
-		});
-		
-		/*
-		 * CategoryBudget
-		 */
-		get("/categorybudget", (req, res) -> {
-			
-			if(!req.queryParams().contains("year") || !req.queryParams().contains("month"))
-			{
-				halt(400, "Bad Request");
-			}
-			
-			int year = 0;
-			int month = 0;
-			
-			try
-			{				
-				year = Integer.parseInt(req.queryMap("year").value());
-				month = Integer.parseInt(req.queryMap("month").value());
-				
-				if(year < 0 || month < 1 || month > 12)
-				{
-					halt(400, "Bad Request");
-				}
-				
-				try
-				{
-					DatabaseHandler handler = new DatabaseHandler(settings);			
-					ArrayList<CategoryBudget> categories = handler.getCategoryBudget(year, month);			
-
-					return gson.toJson(categories);
-				}
-				catch(IllegalStateException ex)
-				{
-					halt(500, "Internal Server Error");
-				}
-			}
-			catch(Exception e)
-			{
-				halt(400, "Bad Request");
-			}
-			
-			return null;
-		});
-		
-		/*
-		 * Payment
-		 */
-		get("/payment", (req, res) -> {
-			
-			if(!req.queryParams().contains("year") || !req.queryParams().contains("month"))
-			{
-				halt(400, "Bad Request");
-			}
-			
-			int year = 0;
-			int month = 0;
-			
-			try
-			{				
-				year = Integer.parseInt(req.queryMap("year").value());
-				month = Integer.parseInt(req.queryMap("month").value());
-				
-				if(year < 0 || month < 1 || month > 12)
-				{
-					halt(400, "Bad Request");
-				}
-				
-				try
-				{
-					DatabaseHandler handler = new DatabaseHandler(settings);			
-					ArrayList<Payment> payments = handler.getPayments(year, month);			
-
-					return gson.toJson(payments);
-				}
-				catch(IllegalStateException ex)
-				{
-					halt(500, "Internal Server Error");
-				}
-			}
-			catch(Exception e)
-			{
-				halt(400, "Bad Request");
-			}
-			
-			return null;
-		});
-		
-		post("/payment", (req, res) -> {			
-			if(!req.queryParams().contains("amount") || !req.queryParams().contains("date") || !req.queryParams().contains("categoryID") || !req.queryParams().contains("name") || !req.queryParams().contains("repeatInterval") || !req.queryParams().contains("repeatEndDate") || !req.queryParams().contains("repeatMonthDay"))
-			{				
-				halt(400, "Bad Request");
-			}	
-				
-			int amount = 0;
-			int categoryID = 0;
-			int repeatInterval = 0;
-			int repeatMonthDay = 0;
-			
-			try
-			{				
-				amount = Integer.parseInt(req.queryMap("amount").value());
-				categoryID = Integer.parseInt(req.queryMap("categoryID").value());
-				repeatInterval = Integer.parseInt(req.queryMap("repeatInterval").value());
-				repeatMonthDay = Integer.parseInt(req.queryMap("repeatMonthDay").value());
-				
-				try
-				{
-					DatabaseHandler handler = new DatabaseHandler(settings);
-					handler.addPayment(amount, req.queryMap("date").value(), categoryID, req.queryMap("name").value(), repeatInterval, req.queryMap("repeatEndDate").value(), repeatMonthDay);			
-	
-					return "";
-				}
-				catch(IllegalStateException ex)
-				{				
-					halt(500, "Internal Server Error");
-				}
-			}
-			catch(Exception e)
-			{			
-				e.printStackTrace();
-				halt(400, "Bad Request");
-			}
-			
-			return "";
-		});
-		
-		delete("/payment", (req, res) -> {			
-			if(!req.queryParams().contains("id"))
-			{
-				halt(400, "Bad Request");
-			}			
-			
-			int id = -1;		
-			
-			try
-			{				
-				id = Integer.parseInt(req.queryMap("id").value());
-				
-				if(id < 0)
-				{
-					halt(400, "Bad Request");
-				}
-				
-				try
-				{
-					DatabaseHandler handler = new DatabaseHandler(settings);			
-					handler.deletePayment(id);			
-
-					return "";
-				}
-				catch(IllegalStateException ex)
-				{
-					halt(500, "Internal Server Error");
-				}
-			}
-			catch(Exception e)
-			{
-				halt(400, "Bad Request");
-			}
-			
-			return "";
+		Spark.exception(Exception.class, (exception, request, response) -> {
+			Logger.error(exception);
+			exception.printStackTrace();
 		});
 	}
 }

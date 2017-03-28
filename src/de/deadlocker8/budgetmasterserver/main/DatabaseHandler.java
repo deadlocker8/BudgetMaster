@@ -1,7 +1,6 @@
 package de.deadlocker8.budgetmasterserver.main;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,10 +12,12 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import de.deadlocker8.budgetmaster.logic.Category;
-import de.deadlocker8.budgetmaster.logic.CategoryBudget;
+import de.deadlocker8.budgetmaster.logic.LatestRepeatingPayment;
+import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.Payment;
+import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
+import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
 import javafx.scene.paint.Color;
-import logger.LogLevel;
 import logger.Logger;
 import tools.ConvertTo;
 
@@ -30,28 +31,12 @@ public class DatabaseHandler
 		try
 		{
 			this.connection = DriverManager.getConnection(settings.getDatabaseUrl() + settings.getDatabaseName() + "?useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin", settings.getDatabaseUsername(), settings.getDatabasePassword());
+			new DatabaseCreator(connection, settings);
+			Logger.info("Successfully initialized database (" + settings.getDatabaseUrl() + settings.getDatabaseName() + ")");
 		}
 		catch(Exception e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
-			throw new IllegalStateException("Cannot connect the database!", e);
-		}
-	}
-
-	// DEBUG
-	public void listTables()
-	{
-		try
-		{
-			DatabaseMetaData md = connection.getMetaData();
-			ResultSet rs = md.getTables(null, null, "%", null);
-			while(rs.next())
-			{
-				System.out.println(rs.getString(3));
-			}
-		}
-		catch(SQLException e)
-		{
+			Logger.error(e);
 			throw new IllegalStateException("Cannot connect the database!", e);
 		}
 	}
@@ -59,11 +44,10 @@ public class DatabaseHandler
 	/*
 	 * GET
 	 */
-
-	public DateTime getFirstPaymentDate()
+	public DateTime getFirstNormalPaymentDate()
 	{
 		Statement stmt = null;
-		String query = "SELECT MIN(Date) as \"min\" FROM Payment";
+		String query = "SELECT MIN(Date) as \"min\" FROM payment";
 		DateTime dateTime = null;
 		try
 		{
@@ -77,7 +61,43 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+
+		return dateTime;
+	}
+	
+	public DateTime getFirstRepeatingPaymentDate()
+	{
+		Statement stmt = null;
+		String query = "SELECT MIN(Date) as \"min\" FROM repeating_payment";
+		DateTime dateTime = null;
+		try
+		{
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next())
+			{
+				dateTime = formatter.parseDateTime(rs.getString("min"));
+			}
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
 		}
 		finally
 		{
@@ -97,16 +117,32 @@ public class DatabaseHandler
 	}
 
 	public int getRestForAllPreviousMonths(int year, int month)
-	{
-		DateTime firstDate = getFirstPaymentDate();
+	{		
+		DateTime firstNormalPaymentDate = getFirstNormalPaymentDate();
+		DateTime firstRepeatingPaymentDate = getFirstRepeatingPaymentDate();
+		
+		DateTime firstDate = firstNormalPaymentDate;
+		if(firstRepeatingPaymentDate.isBefore(firstNormalPaymentDate))
+		{
+			firstDate = firstRepeatingPaymentDate;
+		}
+		
+		DateTimeFormatter formatter = DateTimeFormat.forPattern("MM.yyyy");
+		String dateString = String.valueOf(month) + "." + year;
+		DateTime currentDate = formatter.parseDateTime(dateString);//	
+	
+		if(firstDate.isAfter(currentDate))
+		{
+			return 0;
+		}
 
 		int startYear = firstDate.getYear();
 		int startMonth = firstDate.getMonthOfYear();
 		int totalRest = 0;
-
+		
 		while(startYear < year || startMonth < month)
 		{
-			totalRest += getRest(startYear, startMonth);
+			totalRest += getRest(startYear, startMonth);			
 
 			startMonth++;
 			if(startMonth > 12)
@@ -120,46 +156,23 @@ public class DatabaseHandler
 
 	public int getRest(int year, int month)
 	{
-		Statement stmt = null;
-		String query = "SELECT SUM(q.amount) as \"rest\" FROM(SELECT Payment.amount as \"amount\" FROM Payment WHERE (YEAR(Date) = " + year + " AND MONTH(Date) = " + month
-				+ " OR RepeatMonthDay != 0 OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NULL OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NOT NULL AND DATEDIFF(RepeatEndDate, NOW()) > 0) GROUP BY Payment.ID ORDER BY Payment.Date) q";
-
-		int result = 0;
-		try
+		ArrayList<Payment> payments = new ArrayList<>();
+		payments.addAll(getPayments(year, month));
+		payments.addAll(getRepeatingPayments(year, month));
+		
+		int rest = 0;
+		for(Payment currentPayment : payments)
 		{
-			stmt = connection.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-
-			while(rs.next())
-			{
-				result = rs.getInt("rest");
-			}
+			rest += currentPayment.getAmount();
 		}
-		catch(SQLException e)
-		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
-		}
-		finally
-		{
-			if(stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch(SQLException e)
-				{
-				}
-			}
-		}
-
-		return result;
+		
+		return rest;
 	}
 
 	public ArrayList<Category> getCategories()
 	{
 		Statement stmt = null;
-		String query = "SELECT * FROM Category ORDER BY Category.ID";
+		String query = "SELECT * FROM category ORDER BY category.ID";
 		ArrayList<Category> results = new ArrayList<>();
 		try
 		{
@@ -176,7 +189,7 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 		finally
 		{
@@ -198,7 +211,7 @@ public class DatabaseHandler
 	public Category getCategory(int ID)
 	{
 		Statement stmt = null;
-		String query = "SELECT * FROM Category WHERE Category.ID = " + ID;	
+		String query = "SELECT * FROM category WHERE category.ID = " + ID;	
 		Category result = null;
 		try
 		{
@@ -215,7 +228,7 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 		finally
 		{
@@ -233,54 +246,11 @@ public class DatabaseHandler
 
 		return result;
 	}
-
-	public ArrayList<CategoryBudget> getCategoryBudget(int year, int month)
-	{
-		String date = String.valueOf(year) + "-" + String.format("%02d", month) + "-";
-		Statement stmt = null;
-		String query = "SELECT q.cat_name AS \"Name\", q.cat_col AS \"Color\", SUM(q.amoun) AS \"Amount\" FROM (SELECT Payment.CategoryID as \"cat_ID\", Category.Name as \"cat_name\", Category.Color as \"cat_col\", Payment.Amount AS \"amoun\" FROM Payment, Category WHERE Payment.CategoryID = Category.ID AND (YEAR(Date) = "
-				+ year + " AND  MONTH(Date) = " + month + " AND RepeatMonthDay = 0 OR RepeatMonthDay != 0 AND CONCAT('" + date + "', RepeatMonthDay) >= Date AND RepeatEndDate IS NULL OR RepeatMonthDay != 0 AND CONCAT('" + date + "', RepeatMonthDay) >= Date AND CONCAT('" + date
-				+ "', RepeatMonthDay) <= RepeatEndDate OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NULL OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NOT NULL AND DATEDIFF(RepeatEndDate, NOW()) > 0)GROUP BY Payment.ID) as q GROUP BY q.cat_ID ORDER BY SUM(q.amoun) DESC";
-		ArrayList<CategoryBudget> results = new ArrayList<>();
-		try
-		{
-			stmt = connection.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-
-			while(rs.next())
-			{
-				String name = rs.getString("Name");
-				String color = rs.getString("Color");
-				int amount = rs.getInt("Amount");
-
-				results.add(new CategoryBudget(name, Color.web(color), amount));
-			}
-		}
-		catch(SQLException e)
-		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
-		}
-		finally
-		{
-			if(stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch(SQLException e)
-				{
-				}
-			}
-		}
-
-		return results;
-	}
-
-	public Payment getPayment(int ID, int year, int month)
+	
+	public NormalPayment getPayment(int ID)
 	{
 		Statement stmt = null;
-		String query = "SELECT * FROM Payment WHERE Payment.ID= " + ID;
+		String query = "SELECT * FROM payment WHERE payment.ID= " + ID;
 		try
 		{
 			stmt = connection.createStatement();
@@ -294,23 +264,12 @@ public class DatabaseHandler
 				String date = rs.getString("Date");
 				int categoryID = rs.getInt("CategoryID");
 
-				int repeatInterval = rs.getInt("RepeatInterval");
-				String repeatEndDate = rs.getString("RepeatEndDate");
-				int repeatMonthDay = rs.getInt("RepeatMonthDay");
-				if(repeatInterval != 0 || repeatMonthDay != 0)
-				{
-					DateTime dateTime = formatter.parseDateTime(date);
-					dateTime = dateTime.year().setCopy(year);
-					dateTime = dateTime.monthOfYear().setCopy(month);
-					date = dateTime.toString(formatter);
-				}
-
-				return new Payment(resultID, amount, date, categoryID, name, repeatInterval, repeatEndDate, repeatMonthDay);
+				return new NormalPayment(resultID, amount, date, categoryID, name);
 			}
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 		finally
 		{
@@ -329,15 +288,12 @@ public class DatabaseHandler
 		return null;
 	}
 
-	public ArrayList<Integer> getPaymentIDs(int year, int month)
+	public ArrayList<NormalPayment> getPayments(int year, int month)
 	{
-		String date = String.valueOf(year) + "-" + String.format("%02d", month) + "-";
 		Statement stmt = null;
-		String query = "SELECT Payment.ID as ID FROM Payment WHERE (YEAR(Date) = " + year + " AND  MONTH(Date) = " + month + " AND RepeatMonthDay = 0 OR RepeatMonthDay != 0 AND CONCAT('" + date + "', RepeatMonthDay) >= Date AND RepeatEndDate IS NULL OR RepeatMonthDay != 0 AND CONCAT('" + date
-				+ "', RepeatMonthDay) >= Date AND CONCAT('" + date
-				+ "', RepeatMonthDay) <= RepeatEndDate OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NULL OR RepeatInterval != 0 AND DATEDIFF(NOW(), Date ) % RepeatInterval = 0 AND RepeatEndDate IS NOT NULL AND DATEDIFF(RepeatEndDate, NOW()) > 0) GROUP BY Payment.ID ORDER BY Payment.Date DESC";
+		String query = "SELECT * FROM payment WHERE YEAR(Date) = " + year + " AND  MONTH(Date) = " + month;
 
-		ArrayList<Integer> results = new ArrayList<>();
+		ArrayList<NormalPayment> results = new ArrayList<>();
 		try
 		{
 			stmt = connection.createStatement();
@@ -345,13 +301,18 @@ public class DatabaseHandler
 
 			while(rs.next())
 			{
-				int ID = rs.getInt("ID");
-				results.add(ID);
+				int resultID = rs.getInt("ID");				
+				String name = rs.getString("Name");
+				int amount = rs.getInt("amount");
+				String date = rs.getString("Date");				
+				int categoryID = rs.getInt("CategoryID");
+			
+				results.add(new NormalPayment(resultID, amount, date, categoryID, name));
 			}
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 		finally
 		{
@@ -370,36 +331,191 @@ public class DatabaseHandler
 		return results;
 	}
 
-	public ArrayList<Payment> getPayments(int year, int month)
+	public ArrayList<RepeatingPaymentEntry> getRepeatingPayments(int year, int month)
 	{
-		ArrayList<Payment> payments = new ArrayList<>();
+		Statement stmt = null;
+		String query = "SELECT repeating_entry.ID, repeating_entry.RepeatingPaymentID, repeating_entry.Date, repeating_payment.Name, repeating_payment.CategoryID, repeating_payment.Amount, repeating_payment.RepeatInterval, repeating_payment.RepeatEndDate, repeating_payment.RepeatMonthDay FROM repeating_entry, repeating_payment WHERE repeating_entry.RepeatingPaymentID = repeating_payment.ID AND YEAR(repeating_entry.Date) = " + year + " AND MONTH(repeating_entry.Date) = " + month;
 
-		// add rest from previous months
-		int restAmount = getRest(year, month);
-		Payment paymentRest = new Payment(-1, restAmount, year + "-" + month + "-01", 1, "Übertrag", 0, null, 0);
-		payments.add(paymentRest);
-
-		ArrayList<Integer> IDs = getPaymentIDs(year, month);
-		for(int currentID : IDs)
+		ArrayList<RepeatingPaymentEntry> results = new ArrayList<>();
+		try
 		{
-			Payment currentPayment = getPayment(currentID, year, month);
-			if(currentPayment != null)
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next())
 			{
-				payments.add(currentPayment);
+				int resultID = rs.getInt("ID");
+				int repeatingPaymentID = rs.getInt("repeatingPaymentID");				
+				String name = rs.getString("Name");
+				int amount = rs.getInt("amount");
+				String date = rs.getString("Date");				
+				int categoryID = rs.getInt("CategoryID");
+				int repeatInterval = rs.getInt("RepeatInterval");
+				String repeatEndDate = rs.getString("RepeatEndDate");
+				int repeatMonthDay = rs.getInt("RepeatMonthDay");		
+			
+				results.add(new RepeatingPaymentEntry(resultID, repeatingPaymentID, date, amount, categoryID, name, repeatInterval, repeatEndDate, repeatMonthDay));
+			}
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
 			}
 		}
 
-		return payments;
+		return results;
+	}
+	
+	public ArrayList<RepeatingPayment> getAllRepeatingPayments()
+	{		
+		Statement stmt = null;
+		String query = "SELECT * FROM repeating_payment;";
+
+		ArrayList<RepeatingPayment> results = new ArrayList<>();
+		try
+		{
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next())
+			{
+				int resultID = rs.getInt("ID");				
+				String name = rs.getString("Name");
+				int amount = rs.getInt("amount");
+				String date = rs.getString("Date");				
+				int categoryID = rs.getInt("CategoryID");
+				int repeatInterval = rs.getInt("RepeatInterval");
+				String repeatEndDate = rs.getString("RepeatEndDate");
+				int repeatMonthDay = rs.getInt("RepeatMonthDay");			
+
+				results.add(new RepeatingPayment(resultID, amount, date, categoryID, name, repeatInterval, repeatEndDate, repeatMonthDay));
+			}
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+
+		return results;
+	}
+	
+	public ArrayList<LatestRepeatingPayment> getLatestRepeatingPaymentEntries()
+	{
+		Statement stmt = null;
+		String query = "SELECT ID, RepeatingPaymentID, MAX(Date) as 'LastDate' FROM repeating_entry GROUP BY RepeatingPaymentID";
+
+		ArrayList<LatestRepeatingPayment> results = new ArrayList<>();
+		try
+		{
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next())
+			{
+				int resultID = rs.getInt("ID");
+				int repeatingPaymentID = rs.getInt("repeatingPaymentID");				
+				String date = rs.getString("LastDate");
+			
+				results.add(new LatestRepeatingPayment(resultID, repeatingPaymentID, date));
+			}
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+
+		return results;
+	}
+	
+	public RepeatingPayment getRepeatingPayment(int ID)
+	{
+		Statement stmt = null;
+		String query = "SELECT * FROM repeating_payment WHERE ID = " + ID;	
+		RepeatingPayment result = null;
+		try
+		{
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);			
+			while(rs.next())
+			{
+				int id = rs.getInt("ID");				
+				int amount = rs.getInt("amount");
+				String date = rs.getString("Date");
+				int categoryID = rs.getInt("CategoryID");
+				String name = rs.getString("Name");
+				int repeatInterval = rs.getInt("repeatInterval");
+				String repeatEndDate = rs.getString("repeatEndDate");
+				int repeatMonthDay = rs.getInt("repeatMonthDay");
+
+				result = new RepeatingPayment(id, amount, date, categoryID, name, repeatInterval, repeatEndDate, repeatMonthDay);
+			}
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+
+		return result;
 	}
 
 	/*
 	 * DELETE
 	 */
-
 	public void deleteCategory(int ID)
 	{
 		Statement stmt = null;
-		String query = "DELETE FROM Category WHERE Category.ID = " + ID;
+		String query = "DELETE FROM category WHERE category.ID = " + ID;
 		try
 		{
 			stmt = connection.createStatement();
@@ -407,7 +523,7 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 		finally
 		{
@@ -427,7 +543,7 @@ public class DatabaseHandler
 	public void deletePayment(int ID)
 	{
 		Statement stmt = null;
-		String query = "DELETE FROM Payment WHERE Payment.ID = " + ID;
+		String query = "DELETE FROM payment WHERE payment.ID = " + ID;
 		try
 		{
 			stmt = connection.createStatement();
@@ -435,7 +551,35 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+	}
+	
+	public void deleteRepeatingPayment(int ID)
+	{
+		Statement stmt = null;
+		String query = "DELETE FROM repeating_payment WHERE repeating_payment.ID = " + ID;
+		try
+		{
+			stmt = connection.createStatement();
+			stmt.execute(query);
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
 		}
 		finally
 		{
@@ -458,7 +602,7 @@ public class DatabaseHandler
 	public void addCategory(String name, Color color)
 	{
 		Statement stmt = null;
-		String query = "INSERT INTO Category (Name, Color) VALUES('" + name + "' , '" + ConvertTo.toRGBHexWithoutOpacity(color) + "');";
+		String query = "INSERT INTO category (Name, Color) VALUES('" + name + "' , '" + ConvertTo.toRGBHexWithoutOpacity(color) + "');";
 		try
 		{
 			stmt = connection.createStatement();
@@ -466,7 +610,7 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 		finally
 		{
@@ -483,7 +627,35 @@ public class DatabaseHandler
 		}
 	}
 
-	public void addPayment(int amount, String date, int categoryID, String name, int repeatInterval, String repeatEndDate, int repeatMonthDay)
+	public void addNormalPayment(int amount, String date, int categoryID, String name)
+	{
+		Statement stmt = null;
+		String query = "INSERT INTO payment (Amount, Date, CategoryID, Name) VALUES('" + amount + "' , '" + date + "' , '" + categoryID + "' , '" + name + "');";
+		try
+		{
+			stmt = connection.createStatement();
+			stmt.execute(query);
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+	}
+	
+	public void addRepeatingPayment(int amount, String date, int categoryID, String name, int repeatInterval, String repeatEndDate, int repeatMonthDay)
 	{
 		Statement stmt = null;
 		String query;		
@@ -491,11 +663,11 @@ public class DatabaseHandler
 		if(repeatEndDate.equals("A") || repeatEndDate == null)
 		{
 			
-			query = "INSERT INTO Payment (Amount, Date, CategoryID, Name, RepeatInterval, RepeatEndDate, RepeatMonthDay) VALUES('" + amount + "' , '" + date + "' , '" + categoryID + "' , '" + name + "' , '" + repeatInterval + "' , NULL , '" + repeatMonthDay + "');";
+			query = "INSERT INTO repeating_payment (Amount, Date, CategoryID, Name, RepeatInterval, RepeatEndDate, RepeatMonthDay) VALUES('" + amount + "' , '" + date + "' , '" + categoryID + "' , '" + name + "' , '" + repeatInterval + "' , NULL , '" + repeatMonthDay + "');";
 		}
 		else
 		{
-			query = "INSERT INTO Payment (Amount, Date, CategoryID, Name, RepeatInterval, RepeatEndDate, RepeatMonthDay) VALUES('" + amount + "' , '" + date + "' , '" + categoryID + "' , '" + name + "' , '" + repeatInterval + "' , '" + repeatEndDate + "' , '" + repeatMonthDay + "');";
+			query = "INSERT INTO repeating_payment (Amount, Date, CategoryID, Name, RepeatInterval, RepeatEndDate, RepeatMonthDay) VALUES('" + amount + "' , '" + date + "' , '" + categoryID + "' , '" + name + "' , '" + repeatInterval + "' , '" + repeatEndDate + "' , '" + repeatMonthDay + "');";
 		}
 		
 		try
@@ -505,7 +677,36 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+	}
+	
+	public void addRepeatingPaymentEntry(int repeatingPaymentID, String date)
+	{
+		Statement stmt = null;
+		String query;		
+		query = "INSERT INTO repeating_entry (RepeatingPaymentID, Date) VALUES('" +  repeatingPaymentID + "' , '" + date + "');";
+		try
+		{
+			stmt = connection.createStatement();
+			stmt.execute(query);
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
 		}
 		finally
 		{
@@ -528,7 +729,7 @@ public class DatabaseHandler
 	public void updateCategory(int ID, String name, Color color)
 	{
 		Statement stmt = null;
-		String query = "UPDATE Category SET name='" + name + "' , color='" + ConvertTo.toRGBHexWithoutOpacity(color) + "' WHERE ID = " + ID + ";";
+		String query = "UPDATE category SET name='" + name + "' , color='" + ConvertTo.toRGBHexWithoutOpacity(color) + "' WHERE ID = " + ID + ";";
 		try
 		{
 			stmt = connection.createStatement();
@@ -536,7 +737,35 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+	}	
+	
+	public void updateNormalPayment(int ID, int amount, String date, int categoryID, String name)
+	{
+		Statement stmt = null;
+		String query = "UPDATE payment SET amount = '" + amount + "', date='" + date + "', categoryID='" + categoryID + "', name='" + name + "' WHERE ID = " + ID + ";";
+		try
+		{
+			stmt = connection.createStatement();
+			stmt.execute(query);
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
 		}
 		finally
 		{

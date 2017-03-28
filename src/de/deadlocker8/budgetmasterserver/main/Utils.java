@@ -8,22 +8,14 @@ import com.google.gson.Gson;
 
 public class Utils
 {
-	public static Settings loadSettings()
+	public static Settings loadSettings() throws IOException
 	{
 		String settingsJSON;
 		Settings settings;
-		try
-		{
-			Gson gson = new Gson();
-			settingsJSON = new String(Files.readAllBytes(Paths.get("settings.properties")));				
-			settings = gson.fromJson(settingsJSON, Settings.class);	
-			return settings;
-		}
-		catch(IOException e)
-		{
-			//ERRORHANDLING
-			e.printStackTrace();
-			return null;
-		}
+		
+		Gson gson = new Gson();
+		settingsJSON = new String(Files.readAllBytes(Paths.get("settings.json")));		
+		settings = gson.fromJson(settingsJSON, Settings.class);	
+		return settings;		
 	}
 }

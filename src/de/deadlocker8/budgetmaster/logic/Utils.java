@@ -2,6 +2,9 @@ package de.deadlocker8.budgetmaster.logic;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Locale;
@@ -17,14 +20,14 @@ public class Utils
 	
 	public static Settings loadSettings()
 	{
-		String settingsJSON;
 		Settings settings;
 		try
 		{
 			Gson gson = new Gson();
 			PathUtils.checkFolder(new File(PathUtils.getOSindependentPath() + bundle.getString("folder")));
-			settingsJSON = new String(Files.readAllBytes(Paths.get(PathUtils.getOSindependentPath() + bundle.getString("folder") + "/settings.json")));				
-			settings = gson.fromJson(settingsJSON, Settings.class);	
+			Reader reader = Files.newBufferedReader(Paths.get(PathUtils.getOSindependentPath() + bundle.getString("folder") + "/settings.json"), Charset.forName("UTF-8"));
+			settings = gson.fromJson(reader, Settings.class);	
+			reader.close();
 			return settings;
 		}
 		catch(IOException e)
@@ -33,19 +36,13 @@ public class Utils
 		}
 	}
 	
-	public static void saveSettings(Settings settings)
-	{
-		try
-		{
-			Gson gson = new Gson();
-			String jsonString = gson.toJson(settings);
-			
-			Files.write(Paths.get(PathUtils.getOSindependentPath() + bundle.getString("folder")  + "/settings.json"), jsonString.getBytes());				
-		}
-		catch(IOException e)
-		{
-			//ERRORHANDLING
-			e.printStackTrace();			
-		}
+	public static void saveSettings(Settings settings) throws IOException
+	{		
+		Gson gson = new Gson();
+		String jsonString = gson.toJson(settings);
+		
+		Writer writer = Files.newBufferedWriter(Paths.get(PathUtils.getOSindependentPath() + bundle.getString("folder")  + "/settings.json"), Charset.forName("UTF-8"));
+		writer.write(jsonString);
+		writer.close();
 	}
 }

@@ -2,6 +2,8 @@ package de.deadlocker8.budgetmaster.ui;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -9,6 +11,7 @@ import org.joda.time.DateTime;
 
 import de.deadlocker8.budgetmaster.logic.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.CategoryHandler;
+import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmaster.logic.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.Settings;
@@ -31,7 +34,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import logger.LogLevel;
 import logger.Logger;
 import tools.AlertGenerator;
 
@@ -74,14 +76,6 @@ public class Controller implements Refreshable
 
 		settings = Utils.loadSettings();
 
-		if(settings == null)
-		{			
-			Platform.runLater(() -> {
-				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Bitte gibt zuerst deine Serverdaten ein!", icon, stage, null, false);
-				tabPane.getSelectionModel().select(tabSettings);
-			});
-		}
-		
 		try
 		{
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/HomeTab.fxml"));
@@ -107,6 +101,8 @@ public class Controller implements Refreshable
 			chartController = fxmlLoader.getController();
 			chartController.init(this);
 			tabCharts.setContent(nodeTabChart);
+			//TODO
+			tabCharts.setDisable(true);
 
 			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/SettingsTab.fxml"));
 			Parent nodeTabSettings = (Parent)fxmlLoader.load();
@@ -116,8 +112,10 @@ public class Controller implements Refreshable
 		}
 		catch(IOException e)
 		{
-			// ERRORHANDLING
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
+			Platform.runLater(() -> {
+				AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Beim Erstellen der BenutzeroberflÃ¤che ist ein Fehler aufgetreten", icon, stage, null, false);
+			});			
 		}
 
 		FontIcon iconPrevious = new FontIcon(FontIconType.CHEVRON_LEFT);
@@ -134,7 +132,17 @@ public class Controller implements Refreshable
 		buttonLeft.setStyle("-fx-background-color: transparent;");
 		buttonRight.setStyle("-fx-background-color: transparent;");
 		
-		refresh();
+		if(settings == null)
+		{			
+			Platform.runLater(() -> {
+				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Bitte gibt zuerst deine Serverdaten ein!", icon, stage, null, false);
+				tabPane.getSelectionModel().select(tabSettings);
+			});
+		}
+		else
+		{
+			refresh();
+		}
 	}
 
 	public Stage getStage()
@@ -213,7 +221,7 @@ public class Controller implements Refreshable
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Fehler");
 				alert.setHeaderText("");
-				alert.setContentText("Beim Herstellen der Verbindung zum Server ist ein Fehler aufgetreten. Bitte überprüfe deine Einstellungen und ob der Server läuft.");
+				alert.setContentText("Beim Herstellen der Verbindung zum Server ist ein Fehler aufgetreten. Bitte Ã¼berprÃ¼fe deine Einstellungen und ob der Server lÃ¤uft.");
 				Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
 				dialogStage.getIcons().add(icon);
 				dialogStage.initOwner(stage);
@@ -252,23 +260,42 @@ public class Controller implements Refreshable
 	{
 		AlertGenerator.showAboutAlert(bundle.getString("app.name"), bundle.getString("version.name"), bundle.getString("version.code"), bundle.getString("version.date"), bundle.getString("author"), icon, stage, null, false);
 	}
-
+	
 	@Override
 	public void refresh()
 	{
 		try
 		{
-			ServerConnection connection = new ServerConnection(settings);
-			categoryBudgets = connection.getCategoryBudgets(currentDate.getYear(), currentDate.getMonthOfYear());
-			payments = connection.getPayments(currentDate.getYear(), currentDate.getMonthOfYear());
+			ServerConnection connection = new ServerConnection(settings);			
+			
+			payments = new ArrayList<>();
+			payments.addAll(connection.getPayments(currentDate.getYear(), currentDate.getMonthOfYear()));
+			payments.addAll(connection.getRepeatingPayments(currentDate.getYear(), currentDate.getMonthOfYear()));			
+			Collections.sort(payments, new Comparator<Payment>() {
+		        @Override
+		        public int compare(Payment payment1, Payment payment2)
+		        {
+		            return  payment2.getDate().compareTo(payment1.getDate());
+		        }
+		    });		
+			if(settings.isRestActivated())
+			{
+				int rest = connection.getRestForAllPreviousMonths(currentDate.getYear(), currentDate.getMonthOfYear());
+				//categoryID 2 = Rest
+				payments.add(new NormalPayment(-1, rest, currentDate.withDayOfMonth(1).toString("yyyy-MM-dd"), 2, "Ãœbertrag"));				
+			}
+			
 			categoryHandler = new CategoryHandler(connection.getCategories());
+			
+			categoryBudgets = connection.getCategoryBudgets(currentDate.getYear(), currentDate.getMonthOfYear());		
 		}
 		catch(Exception e)
 		{
+			Logger.error(e);
 			categoryHandler = new CategoryHandler(null);			
 			showConnectionErrorAlert();
 		}
 
-		refreshAllTabs();
+		refreshAllTabs();		
 	}
 }

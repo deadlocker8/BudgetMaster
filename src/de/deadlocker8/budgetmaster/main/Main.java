@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.main;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -13,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import logger.LogLevel;
 import logger.Logger;
+import tools.PathUtils;
 
 public class Main extends Application
 {
@@ -26,7 +28,7 @@ public class Main extends Application
 			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("de/deadlocker8/budgetmaster/ui/GUI.fxml"));
 			Parent root = (Parent)loader.load();
 
-			Scene scene = new Scene(root, 600, 600);			
+			Scene scene = new Scene(root, 600, 650);			
 
 			((Controller)loader.getController()).init(stage);
 
@@ -41,7 +43,7 @@ public class Main extends Application
 		}
 		catch(Exception e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 	}
 
@@ -50,15 +52,20 @@ public class Main extends Application
 		if(Arrays.asList(args).contains("debug"))
 		{
 			Logger.setLevel(LogLevel.ALL);
-			Logger.log(LogLevel.INFO, "Running in Debug Mode");
+			Logger.info("Running in Debug Mode");
 		}
 		else
 		{
-			Logger.setLevel(LogLevel.ERROR);
+			Logger.setLevel(LogLevel.ERROR);			
 		}
+		
+		PathUtils.checkFolder(new File(PathUtils.getOSindependentPath() + bundle.getString("folder")));
+		File logFile = new File(PathUtils.getOSindependentPath() + bundle.getString("folder") + "/error.log");				
+		Logger.enableFileOutput(logFile);
 	
-		Logger.log(LogLevel.INFO, bundle.getString("app.name") + " - v" + bundle.getString("version.name") + " - (versioncode: " + bundle.getString("version.code") + ") from " + bundle.getString("version.date"));
-
+		Logger.appInfo(bundle.getString("app.name"), bundle.getString("version.name"), bundle.getString("version.code"), bundle.getString("version.date"));
+		
 		launch(args);
 	}
+	
 }

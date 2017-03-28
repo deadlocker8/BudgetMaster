@@ -32,6 +32,6 @@ public class CategoryHandler
 			}
 		}
 		
-		return new Category(0, "NONE", Color.web("#FFFFFF"));
+		return new Category(1, "NONE", Color.web("#FFFFFF"));
 	}
 }

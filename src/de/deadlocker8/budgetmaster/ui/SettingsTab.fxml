@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -30,6 +31,16 @@
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
+                        <Label fx:id="labelCurrency" prefHeight="25.0" text="Währung:">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="labelSecret11" prefHeight="25.0" text="Übertrag:">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
                      </children>
                      <HBox.margin>
                         <Insets right="25.0" />
@@ -39,6 +50,24 @@
                      <children>
                         <TextField fx:id="textFieldURL" />
                         <TextField fx:id="textFieldSecret" />
+                        <TextField fx:id="textFieldCurrency" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <RadioButton fx:id="radioButtonRestActivated" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="aktiviert">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets right="30.0" />
+                                 </HBox.margin>
+                              </RadioButton>
+                              <RadioButton fx:id="radioButtonRestDeactivated" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="deaktiviert" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </RadioButton>
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
                </children>

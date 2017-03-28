@@ -1,10 +1,16 @@
 package de.deadlocker8.budgetmaster.ui;
 
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import org.joda.time.DateTime;
+
+import de.deadlocker8.budgetmaster.logic.Budget;
+import de.deadlocker8.budgetmaster.logic.Helpers;
+import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.Payment;
+import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
+import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmaster.logic.ServerConnection;
 import de.deadlocker8.budgetmaster.ui.cells.PaymentCell;
 import fontAwesome.FontIcon;
@@ -26,7 +32,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import logger.LogLevel;
 import logger.Logger;
 
 public class PaymentController implements Refreshable
@@ -41,7 +46,6 @@ public class PaymentController implements Refreshable
 	@FXML private Button buttonNewPayment;
 
 	private Controller controller;
-	private final DecimalFormat numberFormat = new DecimalFormat("0.00");
 
 	public void init(Controller controller)
 	{
@@ -60,9 +64,13 @@ public class PaymentController implements Refreshable
 					public void handle(MouseEvent event)
 					{
 						if(event.getClickCount() == 2)
-						{							
-							PaymentCell c = (PaymentCell)event.getSource();						
-							payment(!c.getItem().isIncome(), true, c.getItem());								
+						{
+							PaymentCell c = (PaymentCell)event.getSource();
+							// don't allow editing of payment "rest"
+							if(c.getItem().getCategoryID() != 2)
+							{
+								payment(!c.getItem().isIncome(), true, c.getItem());
+							}
 						}
 					}
 				});
@@ -105,7 +113,7 @@ public class PaymentController implements Refreshable
 
 		refresh();
 	}
-	
+
 	public void newIncome()
 	{
 		payment(false, false, null);
@@ -124,11 +132,11 @@ public class PaymentController implements Refreshable
 			Parent root = (Parent)fxmlLoader.load();
 			Stage newStage = new Stage();
 			newStage.initOwner(controller.getStage());
-			newStage.initModality(Modality.APPLICATION_MODAL);			
-			String titlePart;		
-			
-			titlePart = isPayment ? "Ausgabe" : "Einnahme";			
-			
+			newStage.initModality(Modality.APPLICATION_MODAL);
+			String titlePart;
+
+			titlePart = isPayment ? "Ausgabe" : "Einnahme";
+
 			if(edit)
 			{
 				newStage.setTitle(titlePart + " bearbeiten");
@@ -137,7 +145,7 @@ public class PaymentController implements Refreshable
 			{
 				newStage.setTitle("Neue " + titlePart);
 			}
-			
+
 			newStage.setScene(new Scene(root));
 			newStage.getIcons().add(controller.getIcon());
 			newStage.setResizable(false);
@@ -147,49 +155,73 @@ public class PaymentController implements Refreshable
 		}
 		catch(IOException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 	}
-	
+
 	private void refreshListView()
-	{		
+	{
 		listView.getItems().clear();
-		
+
 		ArrayList<Payment> payments = controller.getPayments();
 		if(payments != null)
-		{				
+		{
 			listView.getItems().setAll(payments);
-		}		
+		}
 	}
-	
+
 	private void refreshCounter()
 	{
-		ArrayList<Payment> payments = new ArrayList<>(listView.getItems());
-		double counterIncome = 0;
-		double counterPayment = 0;
-		for(Payment currentPayment : payments)
+		Budget budget = new Budget(listView.getItems());
+		String currency = "‚Ç¨";
+		if(controller.getSettings() != null)
 		{
-			double amount = currentPayment.getAmount();
-			if(amount > 0)
-			{
-				counterIncome += amount;
-			}
-			else
-			{
-				counterPayment += amount;
-			}
+			currency = controller.getSettings().getCurrency();
 		}
-		
-		labelIncomes.setText(String.valueOf(numberFormat.format(counterIncome/100.0).replace(".", ",")) + " Ä");
-		labelPayments.setText(String.valueOf(numberFormat.format(counterPayment/100.0).replace(".", ",")) + " Ä");
+		labelIncomes.setText(String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getIncomeSum()).replace(".", ",")) + " " + currency);
+		labelPayments.setText(String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getPaymentSum()).replace(".", ",")) + " " + currency);
 	}
-	
-	public void deletePayment(Payment payment)
-	{		
+
+	public void deleteNormalPayment(NormalPayment payment)
+	{
 		try
 		{
 			ServerConnection connection = new ServerConnection(controller.getSettings());
-			connection.deletePayment(payment);
+			connection.deleteNormalPayment(payment);
+			controller.refresh();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			controller.showConnectionErrorAlert();
+		}
+	}
+
+	public void deleteRepeatingPayment(RepeatingPaymentEntry payment)
+	{
+		try
+		{
+			ServerConnection connection = new ServerConnection(controller.getSettings());
+			connection.deleteRepeatingPayment(payment);
+			controller.refresh();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			controller.showConnectionErrorAlert();
+		}
+	}
+
+	public void deleteFuturePayments(RepeatingPaymentEntry payment)
+	{
+		try
+		{
+			ServerConnection connection = new ServerConnection(controller.getSettings());
+			RepeatingPayment oldRepeatingPayment = connection.getRepeatingPayment(payment.getRepeatingPaymentID());
+			RepeatingPayment newRepeatingPayment = new RepeatingPayment(payment.getID(), payment.getAmount(), oldRepeatingPayment.getDate(), payment.getCategoryID(), payment.getName(), payment.getRepeatInterval(), payment.getDate(), payment.getRepeatMonthDay());
+			connection.deleteRepeatingPayment(payment);
+			connection.addRepeatingPayment(newRepeatingPayment);
+
 			controller.refresh();
 		}
 		catch(Exception e)
@@ -207,7 +239,19 @@ public class PaymentController implements Refreshable
 	@Override
 	public void refresh()
 	{
-		refreshListView();	
+		refreshListView();
 		refreshCounter();
+
+		Label labelPlaceholder;
+		if(controller.getCurrentDate().isAfter(DateTime.now()))
+		{
+			labelPlaceholder = new Label("Datum liegt in der Zukunft");
+		}
+		else
+		{
+			labelPlaceholder = new Label("Keine Daten verf√ºgbar");
+		}
+		labelPlaceholder.setStyle("-fx-font-size: 16");
+		listView.setPlaceholder(labelPlaceholder);
 	}
 }

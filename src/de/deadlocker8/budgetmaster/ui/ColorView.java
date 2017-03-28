@@ -18,7 +18,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import logger.LogLevel;
 import logger.Logger;
 import tools.ConvertTo;
 
@@ -101,7 +100,7 @@ public class ColorView extends GridPane
 							}
 							catch(Exception e)
 							{
-								Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+								Logger.error(e);
 							}
 						});
 						

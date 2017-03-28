@@ -1,11 +1,14 @@
 package de.deadlocker8.budgetmaster.ui;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.Category;
+import de.deadlocker8.budgetmaster.logic.Helpers;
+import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.Payment;
+import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
+import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmaster.logic.ServerConnection;
 import de.deadlocker8.budgetmaster.ui.cells.ButtonCategoryCell;
 import de.deadlocker8.budgetmaster.ui.cells.RepeatingDayCell;
@@ -27,6 +30,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import logger.Logger;
 import tools.AlertGenerator;
 import tools.ConvertTo;
 
@@ -52,6 +56,7 @@ public class NewPaymentController
 	private boolean isPayment;
 	private boolean edit;
 	private Payment payment;
+	private ButtonCategoryCell buttonCategoryCell;
 
 	public void init(Stage stage, Controller controller, PaymentController paymentController, boolean isPayment, boolean edit, Payment payment)
 	{
@@ -76,6 +81,13 @@ public class NewPaymentController
 
 		SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, 0);
 		spinnerRepeatingPeriod.setValueFactory(valueFactory);
+		spinnerRepeatingPeriod.setEditable(true);
+		spinnerRepeatingPeriod.focusedProperty().addListener((observable, oldValue, newValue) -> {
+			if(!newValue)
+			{
+				spinnerRepeatingPeriod.increment(0); // won't change value, but will commit editor
+			}
+		});
 
 		comboBoxRepeatingDay.setCellFactory((view) -> {
 			return new RepeatingDayCell();
@@ -86,15 +98,16 @@ public class NewPaymentController
 			days.add(i);
 		}
 		comboBoxRepeatingDay.getItems().addAll(days);
-
+		
 		comboBoxCategory.setCellFactory((view) -> {
 			return new SmallCategoryCell();
 		});
-		comboBoxCategory.setButtonCell(new ButtonCategoryCell(Color.WHITE));
+		buttonCategoryCell = new ButtonCategoryCell(Color.WHITE);
+		comboBoxCategory.setButtonCell(buttonCategoryCell);
 		comboBoxCategory.setStyle("-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 5;");
-		comboBoxCategory.valueProperty().addListener((listener, oldValue, newValue) -> {
+		comboBoxCategory.valueProperty().addListener((listener, oldValue, newValue) -> {		
 			comboBoxCategory.setStyle("-fx-background-color: " + ConvertTo.toRGBHex(newValue.getColor()) + "; -fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 5;");
-			comboBoxCategory.setButtonCell(new ButtonCategoryCell(newValue.getColor()));
+			buttonCategoryCell.setColor(newValue.getColor());
 		});
 
 		checkBoxRepeat.selectedProperty().addListener((listener, oldValue, newValue) -> {
@@ -142,7 +155,42 @@ public class NewPaymentController
 
 		if(edit)
 		{
-			// TODO prefill
+			//prefill
+			textFieldName.setText(payment.getName());
+			textFieldAmount.setText(Helpers.NUMBER_FORMAT.format(Math.abs(payment.getAmount()/100.0)).replace(".", ","));		
+			comboBoxCategory.setValue(controller.getCategoryHandler().getCategory(payment.getCategoryID()));
+			datePicker.setValue(LocalDate.parse(payment.getDate()));
+			
+			if(payment instanceof RepeatingPaymentEntry)
+			{
+				RepeatingPaymentEntry currentPayment = (RepeatingPaymentEntry)payment;
+				//repeates every x days
+				if(currentPayment.getRepeatInterval() != 0)
+				{					
+					checkBoxRepeat.setSelected(true);
+					radioButtonPeriod.setSelected(true);
+					toggleRepeatingArea(true);
+					spinnerRepeatingPeriod.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, currentPayment.getRepeatInterval()));
+				}
+				//repeat every month on day x
+				else
+				{
+					checkBoxRepeat.setSelected(true);
+					radioButtonDay.setSelected(true);
+					toggleRepeatingArea(true);
+					comboBoxRepeatingDay.getSelectionModel().select(currentPayment.getRepeatMonthDay());
+				}
+				if(currentPayment.getRepeatEndDate() != null)
+				{
+					datePickerEnddate.setValue(LocalDate.parse(currentPayment.getRepeatEndDate()));
+				}
+			}	
+			else
+			{				
+				checkBoxRepeat.setSelected(false);
+				radioButtonPeriod.setSelected(true);
+				toggleRepeatingArea(false);
+			}
 		}
 		else
 		{
@@ -158,21 +206,21 @@ public class NewPaymentController
 		String name = textFieldName.getText();
 		if(name == null || name.equals(""))
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Feld für den Namen darf nicht leer sein.", controller.getIcon(), controller.getStage(), null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Feld fÃ¼r den Namen darf nicht leer sein.", controller.getIcon(), controller.getStage(), null, false);
 			return;
 		}
 
 		String amountText = textFieldAmount.getText();
 		if(!amountText.matches("^-?\\d+(,\\d+)*(\\.\\d+(e\\d+)?)?$"))
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Gib eine gültige Zahl für den Betrag ein.", controller.getIcon(), controller.getStage(), null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Gib eine gÃ¼ltige Zahl fÃ¼r den Betrag ein.", controller.getIcon(), controller.getStage(), null, false);
 			return;
 		}
 
 		LocalDate date = datePicker.getValue();
 		if(date == null)
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Bitte wähle ein Datum aus.", controller.getIcon(), controller.getStage(), null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Bitte wÃ¤hle ein Datum aus.", controller.getIcon(), controller.getStage(), null, false);
 			return;
 		}
 
@@ -196,39 +244,94 @@ public class NewPaymentController
 				repeatingDay = comboBoxRepeatingDay.getValue();
 			}
 
+			if(repeatingInterval == 0 && repeatingDay == 0)
+			{
+				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Wenn Wiederholung aktiviert ist dÃ¼rfen nicht beide Eingabefelder 0 sein.\n(Zur Deaktivierung der Wiederholung einfach die Checkbox enthaken)", controller.getIcon(), controller.getStage(), null, false);
+				return;
+			}
+
 			if(datePickerEnddate.getValue() != null && datePickerEnddate.getValue().isBefore(date))
 			{
 				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Enddatum darf zeitlich nicht vor dem Datum der Zahlung liegen.", controller.getIcon(), controller.getStage(), null, false);
 				return;
 			}
-		}
 
-		if(edit)
-		{
-			Payment newPayment = new Payment(payment.getID(), amount, getDateString(date), comboBoxCategory.getValue().getID(), name, repeatingInterval, getDateString(datePickerEnddate.getValue()), repeatingDay);
-
-			try
-			{
-				ServerConnection connection = new ServerConnection(controller.getSettings());
-				connection.updatePayment(newPayment, payment);
+			if(edit)
+			{				
+				try
+				{		
+					RepeatingPayment newPayment = new RepeatingPayment(-1, amount, Helpers.getDateString(date), comboBoxCategory.getValue().getID(), name, repeatingInterval, Helpers.getDateString(datePickerEnddate.getValue()), repeatingDay);
+							
+					ServerConnection connection = new ServerConnection(controller.getSettings());
+					if(payment instanceof NormalPayment)
+					{
+						connection.deleteNormalPayment((NormalPayment)payment);
+					}
+					else
+					{	
+						connection.deleteRepeatingPayment((RepeatingPaymentEntry)payment);						
+					}	
+					connection.addRepeatingPayment(newPayment);
+				}
+				catch(Exception e)
+				{
+					Logger.error(e);
+					controller.showConnectionErrorAlert();
+				}
 			}
-			catch(Exception e)
+			else
 			{
-				controller.showConnectionErrorAlert();
+				RepeatingPayment newPayment = new RepeatingPayment(-1, amount, Helpers.getDateString(date), comboBoxCategory.getValue().getID(), name, repeatingInterval,Helpers.getDateString(datePickerEnddate.getValue()), repeatingDay);
+				try
+				{
+					ServerConnection connection = new ServerConnection(controller.getSettings());
+					connection.addRepeatingPayment(newPayment);
+				}
+				catch(Exception e)
+				{
+					Logger.error(e);
+					controller.showConnectionErrorAlert();
+				}
 			}
 		}
 		else
 		{
-			Payment newPayment = new Payment(-1, amount, getDateString(date), comboBoxCategory.getValue().getID(), name, repeatingInterval, getDateString(datePickerEnddate.getValue()), repeatingDay);
-			try
+			if(edit)
 			{
-				ServerConnection connection = new ServerConnection(controller.getSettings());
-				connection.addPayment(newPayment);
+				NormalPayment newPayment = new NormalPayment(payment.getID(), amount, Helpers.getDateString(date), comboBoxCategory.getValue().getID(), name);
+				try
+				{
+					ServerConnection connection = new ServerConnection(controller.getSettings());
+					if(payment instanceof RepeatingPaymentEntry)
+					{
+						//if old one was repeating it should be deleted
+						connection.deleteRepeatingPayment((RepeatingPaymentEntry)payment);
+						connection.addNormalPayment(newPayment);
+					}
+					else
+					{
+						connection.updateNormalPayment(newPayment);
+					}					
+				}
+				catch(Exception e)
+				{
+					Logger.error(e);
+					controller.showConnectionErrorAlert();
+				}
 			}
-			catch(Exception e)
+			else
 			{
-				e.printStackTrace();
-				controller.showConnectionErrorAlert();
+				NormalPayment newPayment = new NormalPayment(-1, amount, Helpers.getDateString(date), comboBoxCategory.getValue().getID(), name);
+				try
+				{
+					ServerConnection connection = new ServerConnection(controller.getSettings());
+					connection.addNormalPayment(newPayment);
+				}
+				catch(Exception e)
+				{
+					Logger.error(e);
+					controller.showConnectionErrorAlert();
+				}
 			}
 		}
 
@@ -278,13 +381,5 @@ public class NewPaymentController
 		labelText3.setDisable(selected);
 	}
 
-	private String getDateString(LocalDate date)
-	{
-		if(date == null)
-		{
-			return "";
-		}
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		return date.format(formatter);
-	}
+	
 }

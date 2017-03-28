@@ -24,7 +24,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import logger.LogLevel;
 import logger.Logger;
 
 public class CategoryController implements Refreshable
@@ -64,7 +63,7 @@ public class CategoryController implements Refreshable
 			}
 		});
 		
-		Label labelPlaceholder = new Label("Keine Kategorien verfügbar");
+		Label labelPlaceholder = new Label("Keine Kategorien verfÃ¼gbar");
 		labelPlaceholder.setStyle("-fx-font-size: 16");
 		listView.setPlaceholder(labelPlaceholder);
 
@@ -130,7 +129,7 @@ public class CategoryController implements Refreshable
 		}
 		catch(IOException e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 	}
 	
