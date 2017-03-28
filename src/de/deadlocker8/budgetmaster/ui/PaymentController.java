@@ -66,7 +66,11 @@ public class PaymentController implements Refreshable
 						if(event.getClickCount() == 2)
 						{
 							PaymentCell c = (PaymentCell)event.getSource();
-							payment(!c.getItem().isIncome(), true, c.getItem());
+							//don't allow editing of payment "rest"
+							if(c.getItem().getCategoryID() != 2)
+							{
+								payment(!c.getItem().isIncome(), true, c.getItem());
+							}
 						}
 					}
 				});
