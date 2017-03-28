@@ -76,14 +76,6 @@ public class Controller implements Refreshable
 
 		settings = Utils.loadSettings();
 
-		if(settings == null)
-		{			
-			Platform.runLater(() -> {
-				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Bitte gibt zuerst deine Serverdaten ein!", icon, stage, null, false);
-				tabPane.getSelectionModel().select(tabSettings);
-			});
-		}
-		
 		try
 		{
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/HomeTab.fxml"));
@@ -140,7 +132,17 @@ public class Controller implements Refreshable
 		buttonLeft.setStyle("-fx-background-color: transparent;");
 		buttonRight.setStyle("-fx-background-color: transparent;");
 		
-		refresh();
+		if(settings == null)
+		{			
+			Platform.runLater(() -> {
+				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Bitte gibt zuerst deine Serverdaten ein!", icon, stage, null, false);
+				tabPane.getSelectionModel().select(tabSettings);
+			});
+		}
+		else
+		{
+			refresh();
+		}
 	}
 
 	public Stage getStage()

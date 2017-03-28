@@ -66,7 +66,7 @@ public class PaymentController implements Refreshable
 						if(event.getClickCount() == 2)
 						{
 							PaymentCell c = (PaymentCell)event.getSource();
-							//don't allow editing of payment "rest"
+							// don't allow editing of payment "rest"
 							if(c.getItem().getCategoryID() != 2)
 							{
 								payment(!c.getItem().isIncome(), true, c.getItem());
@@ -173,8 +173,13 @@ public class PaymentController implements Refreshable
 	private void refreshCounter()
 	{
 		Budget budget = new Budget(listView.getItems());
-		labelIncomes.setText(String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getIncomeSum()).replace(".", ",")) + " " + controller.getSettings().getCurrency());
-		labelPayments.setText(String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getPaymentSum()).replace(".", ",")) + " " + controller.getSettings().getCurrency());
+		String currency = "€";
+		if(controller.getSettings() != null)
+		{
+			currency = controller.getSettings().getCurrency();
+		}
+		labelIncomes.setText(String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getIncomeSum()).replace(".", ",")) + " " + currency);
+		labelPayments.setText(String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getPaymentSum()).replace(".", ",")) + " " + currency);
 	}
 
 	public void deleteNormalPayment(NormalPayment payment)
@@ -208,15 +213,15 @@ public class PaymentController implements Refreshable
 	}
 
 	public void deleteFuturePayments(RepeatingPaymentEntry payment)
-	{		
+	{
 		try
 		{
-			ServerConnection connection = new ServerConnection(controller.getSettings());	
-			RepeatingPayment oldRepeatingPayment = connection.getRepeatingPayment(payment.getRepeatingPaymentID());			
+			ServerConnection connection = new ServerConnection(controller.getSettings());
+			RepeatingPayment oldRepeatingPayment = connection.getRepeatingPayment(payment.getRepeatingPaymentID());
 			RepeatingPayment newRepeatingPayment = new RepeatingPayment(payment.getID(), payment.getAmount(), oldRepeatingPayment.getDate(), payment.getCategoryID(), payment.getName(), payment.getRepeatInterval(), payment.getDate(), payment.getRepeatMonthDay());
 			connection.deleteRepeatingPayment(payment);
 			connection.addRepeatingPayment(newRepeatingPayment);
-		
+
 			controller.refresh();
 		}
 		catch(Exception e)

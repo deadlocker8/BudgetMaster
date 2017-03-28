@@ -12,12 +12,12 @@
    <children>
       <VBox alignment="TOP_CENTER" layoutY="24.0" prefHeight="562.0" prefWidth="772.0" spacing="15.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
          <children>
-            <Label fx:id="labelBudget" text="372,56 €">
+            <Label fx:id="labelBudget" text="0,00 €">
                <font>
                   <Font name="System Bold" size="55.0" />
                </font>
             </Label>
-            <Label fx:id="labelStartBudget" text="von 560,00 € verbleibend">
+            <Label fx:id="labelStartBudget" text="von 0,00 € verbleibend">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
