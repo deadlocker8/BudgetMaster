@@ -47,7 +47,7 @@ public class DatabaseHandler
 	public DateTime getFirstNormalPaymentDate()
 	{
 		Statement stmt = null;
-		String query = "SELECT MIN(Date) as \"min\" FROM Payment";
+		String query = "SELECT MIN(Date) as \"min\" FROM payment";
 		DateTime dateTime = null;
 		try
 		{
@@ -172,7 +172,7 @@ public class DatabaseHandler
 	public ArrayList<Category> getCategories()
 	{
 		Statement stmt = null;
-		String query = "SELECT * FROM Category ORDER BY Category.ID";
+		String query = "SELECT * FROM category ORDER BY category.ID";
 		ArrayList<Category> results = new ArrayList<>();
 		try
 		{
@@ -211,7 +211,7 @@ public class DatabaseHandler
 	public Category getCategory(int ID)
 	{
 		Statement stmt = null;
-		String query = "SELECT * FROM Category WHERE Category.ID = " + ID;	
+		String query = "SELECT * FROM category WHERE category.ID = " + ID;	
 		Category result = null;
 		try
 		{
@@ -250,7 +250,7 @@ public class DatabaseHandler
 	public NormalPayment getPayment(int ID)
 	{
 		Statement stmt = null;
-		String query = "SELECT * FROM Payment WHERE Payment.ID= " + ID;
+		String query = "SELECT * FROM payment WHERE payment.ID= " + ID;
 		try
 		{
 			stmt = connection.createStatement();
@@ -291,7 +291,7 @@ public class DatabaseHandler
 	public ArrayList<NormalPayment> getPayments(int year, int month)
 	{
 		Statement stmt = null;
-		String query = "SELECT * FROM Payment WHERE YEAR(Date) = " + year + " AND  MONTH(Date) = " + month;
+		String query = "SELECT * FROM payment WHERE YEAR(Date) = " + year + " AND  MONTH(Date) = " + month;
 
 		ArrayList<NormalPayment> results = new ArrayList<>();
 		try
@@ -515,7 +515,7 @@ public class DatabaseHandler
 	public void deleteCategory(int ID)
 	{
 		Statement stmt = null;
-		String query = "DELETE FROM Category WHERE Category.ID = " + ID;
+		String query = "DELETE FROM category WHERE category.ID = " + ID;
 		try
 		{
 			stmt = connection.createStatement();
@@ -543,7 +543,7 @@ public class DatabaseHandler
 	public void deletePayment(int ID)
 	{
 		Statement stmt = null;
-		String query = "DELETE FROM Payment WHERE Payment.ID = " + ID;
+		String query = "DELETE FROM payment WHERE payment.ID = " + ID;
 		try
 		{
 			stmt = connection.createStatement();
@@ -602,7 +602,7 @@ public class DatabaseHandler
 	public void addCategory(String name, Color color)
 	{
 		Statement stmt = null;
-		String query = "INSERT INTO Category (Name, Color) VALUES('" + name + "' , '" + ConvertTo.toRGBHexWithoutOpacity(color) + "');";
+		String query = "INSERT INTO category (Name, Color) VALUES('" + name + "' , '" + ConvertTo.toRGBHexWithoutOpacity(color) + "');";
 		try
 		{
 			stmt = connection.createStatement();
@@ -630,7 +630,7 @@ public class DatabaseHandler
 	public void addNormalPayment(int amount, String date, int categoryID, String name)
 	{
 		Statement stmt = null;
-		String query = "INSERT INTO Payment (Amount, Date, CategoryID, Name) VALUES('" + amount + "' , '" + date + "' , '" + categoryID + "' , '" + name + "');";
+		String query = "INSERT INTO payment (Amount, Date, CategoryID, Name) VALUES('" + amount + "' , '" + date + "' , '" + categoryID + "' , '" + name + "');";
 		try
 		{
 			stmt = connection.createStatement();
@@ -729,7 +729,7 @@ public class DatabaseHandler
 	public void updateCategory(int ID, String name, Color color)
 	{
 		Statement stmt = null;
-		String query = "UPDATE Category SET name='" + name + "' , color='" + ConvertTo.toRGBHexWithoutOpacity(color) + "' WHERE ID = " + ID + ";";
+		String query = "UPDATE category SET name='" + name + "' , color='" + ConvertTo.toRGBHexWithoutOpacity(color) + "' WHERE ID = " + ID + ";";
 		try
 		{
 			stmt = connection.createStatement();
@@ -757,7 +757,7 @@ public class DatabaseHandler
 	public void updateNormalPayment(int ID, int amount, String date, int categoryID, String name)
 	{
 		Statement stmt = null;
-		String query = "UPDATE Payment SET amount = '" + amount + "', date='" + date + "', categoryID='" + categoryID + "', name='" + name + "' WHERE ID = " + ID + ";";
+		String query = "UPDATE payment SET amount = '" + amount + "', date='" + date + "', categoryID='" + categoryID + "', name='" + name + "' WHERE ID = " + ID + ";";
 		try
 		{
 			stmt = connection.createStatement();
