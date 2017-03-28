@@ -25,11 +25,11 @@ public class Main
 			Logger.error(e1);
 		}		
 		
-		if(!Files.exists(Paths.get("settings.properties")))
+		if(!Files.exists(Paths.get("settings.json")))
 		{
 			try
 			{
-				Files.copy(SparkServer.class.getClassLoader().getResourceAsStream("de/deadlocker8/budgetmasterserver/resources/settings.properties"), Paths.get("settings.properties"));
+				Files.copy(SparkServer.class.getClassLoader().getResourceAsStream("de/deadlocker8/budgetmasterserver/resources/settings.json"), Paths.get("settings.json"));
 			}
 			catch(IOException e)
 			{

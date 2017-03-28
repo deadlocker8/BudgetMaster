@@ -6,5 +6,5 @@
 	"serverPort": 9000,
 	"serverSecret": "geheim",
 	"keystorePath": "",
-	"keystorePassword": ""
+	"keystorePassword": "geheim"
 }
