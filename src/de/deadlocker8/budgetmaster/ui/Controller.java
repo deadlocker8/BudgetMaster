@@ -43,6 +43,7 @@ public class Controller implements Refreshable
 	@FXML private Label labelMonth;
 	@FXML private Button buttonLeft;
 	@FXML private Button buttonRight;
+	@FXML private Button buttonToday;
 	@FXML private TabPane tabPane;
 	@FXML private Tab tabHome;
 	@FXML private Tab tabPayments;
@@ -124,6 +125,9 @@ public class Controller implements Refreshable
 		FontIcon iconNext = new FontIcon(FontIconType.CHEVRON_RIGHT);
 		iconNext.setSize(20);
 		buttonRight.setGraphic(iconNext);
+		FontIcon iconToday = new FontIcon(FontIconType.CALENDAR_ALT);
+		iconToday.setSize(20);
+		buttonToday.setGraphic(iconToday);
 
 		// apply theme
 		anchorPaneMain.setStyle("-fx-background-color: #DDDDDD");
@@ -131,6 +135,7 @@ public class Controller implements Refreshable
 		labelNotification.setStyle("-fx-text-fill: #FFFFFF; -fx-font-size: 16; -fx-font-weight: bold; -fx-background-color: transparent;");
 		buttonLeft.setStyle("-fx-background-color: transparent;");
 		buttonRight.setStyle("-fx-background-color: transparent;");
+		buttonToday.setStyle("-fx-background-color: transparent;");
 		
 		if(settings == null)
 		{			
@@ -202,6 +207,14 @@ public class Controller implements Refreshable
 	public void nextMonth()
 	{
 		currentDate = currentDate.plusMonths(1);
+		labelMonth.setText(currentDate.toString("MMMM yyyy"));
+
+		refresh();
+	}
+	
+	public void today()
+	{
+		currentDate = DateTime.now();
 		labelMonth.setText(currentDate.toString("MMMM yyyy"));
 
 		refresh();
