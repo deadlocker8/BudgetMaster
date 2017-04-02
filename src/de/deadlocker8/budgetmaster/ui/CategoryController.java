@@ -12,6 +12,7 @@ import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -44,7 +46,23 @@ public class CategoryController implements Refreshable
 			@Override
 			public ListCell<Category> call(ListView<Category> param)
 			{
-				return new CategoryCell(thisController);
+				CategoryCell cell = new  CategoryCell(thisController);
+				cell.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>()
+				{
+					@Override
+					public void handle(MouseEvent event)
+					{
+						if(event.getClickCount() == 2)
+						{							
+							// don't allow editing of category "none"
+							if(cell.getItem().getID() != 1)
+							{
+								newCategory(true, cell.getItem());
+							}
+						}
+					}
+				});
+				return cell;
 			}
 		});
 
