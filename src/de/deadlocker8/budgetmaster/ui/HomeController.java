@@ -80,6 +80,10 @@ public class HomeController implements Refreshable
 			Budget budget = new Budget(controller.getPayments());	
 			double remaining = budget.getIncomeSum() + budget.getPaymentSum();
 			labelBudget.setText(String.valueOf(Helpers.NUMBER_FORMAT.format(remaining).replace(".", ",")) + " " + controller.getSettings().getCurrency());
+			if(remaining <= 0)
+			{
+				labelBudget.setStyle("-fx-text-fill: #CC0000");
+			}
 			labelStartBudget.setText("von " + String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getIncomeSum()).replace(".", ",")) + " " + controller.getSettings().getCurrency() + " verbleibend");
 			
 			double factor = remaining / budget.getIncomeSum();
