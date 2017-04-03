@@ -81,7 +81,7 @@ public class NewPaymentController
 		buttonCancel.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
 		buttonSave.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
 
-		SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, 0);
+		SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 0);
 		spinnerRepeatingPeriod.setValueFactory(valueFactory);
 		spinnerRepeatingPeriod.setEditable(true);
 		spinnerRepeatingPeriod.focusedProperty().addListener((observable, oldValue, newValue) -> {
@@ -95,7 +95,7 @@ public class NewPaymentController
 			return new RepeatingDayCell();
 		});
 		ArrayList<Integer> days = new ArrayList<>();
-		for(int i = 0; i <= 31; i++)
+		for(int i = 1; i <= 31; i++)
 		{
 			days.add(i);
 		}
