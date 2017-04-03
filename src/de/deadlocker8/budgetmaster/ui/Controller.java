@@ -295,7 +295,7 @@ public class Controller implements Refreshable
 			{
 				int rest = connection.getRestForAllPreviousMonths(currentDate.getYear(), currentDate.getMonthOfYear());
 				//categoryID 2 = Rest
-				payments.add(new NormalPayment(-1, rest, currentDate.withDayOfMonth(1).toString("yyyy-MM-dd"), 2, "Übertrag"));				
+				payments.add(new NormalPayment(-1, rest, currentDate.withDayOfMonth(1).toString("yyyy-MM-dd"), 2, "Übertrag", ""));				
 			}
 			
 			categoryHandler = new CategoryHandler(connection.getCategories());

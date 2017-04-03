@@ -112,7 +112,8 @@ public class DatabaseCreator
 					 "`Name` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'payment name (description)'," +
 					 "`CategoryID` int(11) DEFAULT NULL COMMENT 'category ID'," +
 					 "`Amount` int(11) DEFAULT NULL COMMENT 'amount in cents'," +
-					 "`Date` date DEFAULT NULL COMMENT 'payment date'" +
+					 "`Date` date DEFAULT NULL COMMENT 'payment date',"	 +
+					 "`Description` varchar(150) DEFAULT NULL COMMENT 'optional description'" +
 					 ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";			
 		String query2 = "ALTER TABLE `payment` ADD PRIMARY KEY (`ID`);";		
 		String query3 = "ALTER TABLE `payment` MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID';";	
@@ -193,6 +194,7 @@ public class DatabaseCreator
 					  "`CategoryID` int(11) DEFAULT NULL COMMENT 'category ID'," +
 					  "`Amount` int(11) DEFAULT NULL COMMENT 'amount in cents'," +
 					  "`Date` date DEFAULT NULL COMMENT 'payment date'," +
+					  "`Description` varchar(150) DEFAULT NULL COMMENT 'optional description'," +
 					  "`RepeatInterval` int(11) DEFAULT NULL COMMENT 'repeat interval in days'," +
 					  "`RepeatEndDate` date DEFAULT NULL COMMENT 'repeat end date'," +
 					  "`RepeatMonthDay` int(11) DEFAULT NULL COMMENT 'day in month on which payment repeats'" +

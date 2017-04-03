@@ -87,7 +87,6 @@ public class ServerConnection
 		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
 		{
 			String result = Read.getStringFromInputStream(httpsCon.getInputStream());
-			System.out.println(result);
 			return gson.fromJson(result, Category.class);
 		}
 		else
@@ -196,7 +195,12 @@ public class ServerConnection
 
 	public void addNormalPayment(NormalPayment payment) throws Exception
 	{
-		URL url = new URL(settings.getUrl() + "/payment?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&amount=" + payment.getAmount() + "&date=" + payment.getDate() + "&categoryID=" + payment.getCategoryID() + "&name=" + Helpers.getURLEncodedString(payment.getName()));
+		URL url = new URL(settings.getUrl() + "/payment?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + 
+				"&amount=" + payment.getAmount() + 
+				"&date=" + payment.getDate() + 
+				"&categoryID=" + payment.getCategoryID() + 
+				"&name=" + Helpers.getURLEncodedString(payment.getName()) + 
+				"&description=" + Helpers.getURLEncodedString(payment.getDescription()));
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setRequestMethod("POST");
 		httpsCon.setDoInput(true);
@@ -207,7 +211,13 @@ public class ServerConnection
 
 	public void updateNormalPayment(NormalPayment payment) throws Exception
 	{
-		 URL url = new URL(settings.getUrl() + "/payment?secret=" + settings.getSecret() + "&id=" + payment.getID() + "&amount=" + payment.getAmount() + "&date=" + payment.getDate() + "&categoryID=" + payment.getCategoryID() + "&name=" + Helpers.getURLEncodedString(payment.getName()));
+		 URL url = new URL(settings.getUrl() + "/payment?secret=" + settings.getSecret() + 
+				 "&id=" + payment.getID() + 
+				 "&amount=" + payment.getAmount() + 
+				 "&date=" + payment.getDate() +
+				 "&categoryID=" + payment.getCategoryID() + 
+				 "&name=" + Helpers.getURLEncodedString(payment.getName()) +
+				 "&description=" + Helpers.getURLEncodedString(payment.getDescription()));
 		 HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		 httpsCon.setRequestMethod("PUT");
 		 httpsCon.setDoInput(true);
@@ -225,8 +235,15 @@ public class ServerConnection
 			repeatEndDate = "A";
 		}
 
-		URL url = new URL(settings.getUrl() + "/repeatingpayment?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&amount=" + payment.getAmount() + "&date=" + payment.getDate() + "&categoryID=" + payment.getCategoryID() + "&name=" + Helpers.getURLEncodedString(payment.getName())
-				+ "&repeatInterval=" + payment.getRepeatInterval() + "&repeatEndDate=" + repeatEndDate + "&repeatMonthDay=" + payment.getRepeatMonthDay());
+		URL url = new URL(settings.getUrl() + "/repeatingpayment?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + 
+				"&amount=" + payment.getAmount() + 
+				"&date=" + payment.getDate() + 
+				"&categoryID=" + payment.getCategoryID() + 
+				"&name=" + Helpers.getURLEncodedString(payment.getName()) + 
+				"&repeatInterval=" + payment.getRepeatInterval() +
+				"&repeatEndDate=" + repeatEndDate + 
+				"&repeatMonthDay=" + payment.getRepeatMonthDay() +
+				"&description=" + Helpers.getURLEncodedString(payment.getDescription()));				
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setRequestMethod("POST");
 		httpsCon.setDoInput(true);

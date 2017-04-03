@@ -217,7 +217,7 @@ public class PaymentController implements Refreshable
 		{
 			ServerConnection connection = new ServerConnection(controller.getSettings());
 			RepeatingPayment oldRepeatingPayment = connection.getRepeatingPayment(payment.getRepeatingPaymentID());
-			RepeatingPayment newRepeatingPayment = new RepeatingPayment(payment.getID(), payment.getAmount(), oldRepeatingPayment.getDate(), payment.getCategoryID(), payment.getName(), payment.getRepeatInterval(), payment.getDate(), payment.getRepeatMonthDay());
+			RepeatingPayment newRepeatingPayment = new RepeatingPayment(payment.getID(), payment.getAmount(), oldRepeatingPayment.getDate(), payment.getCategoryID(), payment.getName(), payment.getDescription(), payment.getRepeatInterval(), payment.getDate(), payment.getRepeatMonthDay());
 			connection.deleteRepeatingPayment(payment);
 			connection.addRepeatingPayment(newRepeatingPayment);
 

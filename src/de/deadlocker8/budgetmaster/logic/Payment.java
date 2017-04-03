@@ -7,14 +7,16 @@ public abstract class Payment
 	private String date;
 	private int categoryID;
 	private String name;
+	private String description;
 	
-	public Payment(int ID, int amount, String date, int categoryID, String name)
+	public Payment(int ID, int amount, String date, int categoryID, String name, String description)
 	{		
 		this.ID = ID;
 		this.amount = amount;
 		this.date = date;
 		this.categoryID = categoryID;
 		this.name = name;
+		this.description = description;
 	}
 
 	public int getID()
@@ -67,6 +69,16 @@ public abstract class Payment
 		this.name = name;
 	}
 	
+	public String getDescription()
+	{
+		return description;
+	}
+
+	public void setDescription(String description)
+	{
+		this.description = description;
+	}
+
 	public boolean isIncome()
 	{
 		return amount > 0;

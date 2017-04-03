@@ -263,8 +263,9 @@ public class DatabaseHandler
 				int amount = rs.getInt("amount");
 				String date = rs.getString("Date");
 				int categoryID = rs.getInt("CategoryID");
+				String description = rs.getString("Description");
 
-				return new NormalPayment(resultID, amount, date, categoryID, name);
+				return new NormalPayment(resultID, amount, date, categoryID, name, description);
 			}
 		}
 		catch(SQLException e)
@@ -306,8 +307,9 @@ public class DatabaseHandler
 				int amount = rs.getInt("amount");
 				String date = rs.getString("Date");				
 				int categoryID = rs.getInt("CategoryID");
+				String description = rs.getString("Description");
 			
-				results.add(new NormalPayment(resultID, amount, date, categoryID, name));
+				results.add(new NormalPayment(resultID, amount, date, categoryID, name, description));
 			}
 		}
 		catch(SQLException e)
@@ -334,7 +336,7 @@ public class DatabaseHandler
 	public ArrayList<RepeatingPaymentEntry> getRepeatingPayments(int year, int month)
 	{
 		Statement stmt = null;
-		String query = "SELECT repeating_entry.ID, repeating_entry.RepeatingPaymentID, repeating_entry.Date, repeating_payment.Name, repeating_payment.CategoryID, repeating_payment.Amount, repeating_payment.RepeatInterval, repeating_payment.RepeatEndDate, repeating_payment.RepeatMonthDay FROM repeating_entry, repeating_payment WHERE repeating_entry.RepeatingPaymentID = repeating_payment.ID AND YEAR(repeating_entry.Date) = " + year + " AND MONTH(repeating_entry.Date) = " + month;
+		String query = "SELECT repeating_entry.ID, repeating_entry.RepeatingPaymentID, repeating_entry.Date, repeating_payment.Name, repeating_payment.CategoryID, repeating_payment.Amount, repeating_payment.RepeatInterval, repeating_payment.RepeatEndDate, repeating_payment.RepeatMonthDay, repeating_payment.Description FROM repeating_entry, repeating_payment WHERE repeating_entry.RepeatingPaymentID = repeating_payment.ID AND YEAR(repeating_entry.Date) = " + year + " AND MONTH(repeating_entry.Date) = " + month;
 
 		ArrayList<RepeatingPaymentEntry> results = new ArrayList<>();
 		try
@@ -347,6 +349,7 @@ public class DatabaseHandler
 				int resultID = rs.getInt("ID");
 				int repeatingPaymentID = rs.getInt("repeatingPaymentID");				
 				String name = rs.getString("Name");
+				String description = rs.getString("Description");
 				int amount = rs.getInt("amount");
 				String date = rs.getString("Date");				
 				int categoryID = rs.getInt("CategoryID");
@@ -354,7 +357,7 @@ public class DatabaseHandler
 				String repeatEndDate = rs.getString("RepeatEndDate");
 				int repeatMonthDay = rs.getInt("RepeatMonthDay");		
 			
-				results.add(new RepeatingPaymentEntry(resultID, repeatingPaymentID, date, amount, categoryID, name, repeatInterval, repeatEndDate, repeatMonthDay));
+				results.add(new RepeatingPaymentEntry(resultID, repeatingPaymentID, date, amount, categoryID, name, description,repeatInterval, repeatEndDate, repeatMonthDay));
 			}
 		}
 		catch(SQLException e)
@@ -394,13 +397,14 @@ public class DatabaseHandler
 				int resultID = rs.getInt("ID");				
 				String name = rs.getString("Name");
 				int amount = rs.getInt("amount");
-				String date = rs.getString("Date");				
+				String date = rs.getString("Date");		
+				String description = rs.getString("Description");
 				int categoryID = rs.getInt("CategoryID");
 				int repeatInterval = rs.getInt("RepeatInterval");
 				String repeatEndDate = rs.getString("RepeatEndDate");
 				int repeatMonthDay = rs.getInt("RepeatMonthDay");			
 
-				results.add(new RepeatingPayment(resultID, amount, date, categoryID, name, repeatInterval, repeatEndDate, repeatMonthDay));
+				results.add(new RepeatingPayment(resultID, amount, date, categoryID, name, description, repeatInterval, repeatEndDate, repeatMonthDay));
 			}
 		}
 		catch(SQLException e)
@@ -481,11 +485,12 @@ public class DatabaseHandler
 				String date = rs.getString("Date");
 				int categoryID = rs.getInt("CategoryID");
 				String name = rs.getString("Name");
+				String description = rs.getString("Description");
 				int repeatInterval = rs.getInt("repeatInterval");
 				String repeatEndDate = rs.getString("repeatEndDate");
 				int repeatMonthDay = rs.getInt("repeatMonthDay");
 
-				result = new RepeatingPayment(id, amount, date, categoryID, name, repeatInterval, repeatEndDate, repeatMonthDay);
+				result = new RepeatingPayment(id, amount, date, categoryID, name, description, repeatInterval, repeatEndDate, repeatMonthDay);
 			}
 		}
 		catch(SQLException e)
@@ -627,10 +632,10 @@ public class DatabaseHandler
 		}
 	}
 
-	public void addNormalPayment(int amount, String date, int categoryID, String name)
+	public void addNormalPayment(int amount, String date, int categoryID, String name, String description)
 	{
 		Statement stmt = null;
-		String query = "INSERT INTO payment (Amount, Date, CategoryID, Name) VALUES('" + amount + "' , '" + date + "' , '" + categoryID + "' , '" + name + "');";
+		String query = "INSERT INTO payment (Amount, Date, CategoryID, Name, Description) VALUES('" + amount + "' , '" + date + "' , '" + categoryID + "' , '" + name + "' , '" + description + "');";
 		try
 		{
 			stmt = connection.createStatement();
@@ -655,19 +660,18 @@ public class DatabaseHandler
 		}
 	}
 	
-	public void addRepeatingPayment(int amount, String date, int categoryID, String name, int repeatInterval, String repeatEndDate, int repeatMonthDay)
+	public void addRepeatingPayment(int amount, String date, int categoryID, String name, String description, int repeatInterval, String repeatEndDate, int repeatMonthDay)
 	{
 		Statement stmt = null;
 		String query;		
 		//A is placeholder for empty repeatEndDate
 		if(repeatEndDate.equals("A") || repeatEndDate == null)
-		{
-			
-			query = "INSERT INTO repeating_payment (Amount, Date, CategoryID, Name, RepeatInterval, RepeatEndDate, RepeatMonthDay) VALUES('" + amount + "' , '" + date + "' , '" + categoryID + "' , '" + name + "' , '" + repeatInterval + "' , NULL , '" + repeatMonthDay + "');";
+		{			
+			query = "INSERT INTO repeating_payment (Amount, Date, CategoryID, Name, RepeatInterval, RepeatEndDate, RepeatMonthDay, Description) VALUES('" + amount + "' , '" + date + "' , '" + categoryID + "' , '" + name + "' , '" + repeatInterval + "' , NULL , '" + repeatMonthDay + "' , '" + description + "');";
 		}
 		else
 		{
-			query = "INSERT INTO repeating_payment (Amount, Date, CategoryID, Name, RepeatInterval, RepeatEndDate, RepeatMonthDay) VALUES('" + amount + "' , '" + date + "' , '" + categoryID + "' , '" + name + "' , '" + repeatInterval + "' , '" + repeatEndDate + "' , '" + repeatMonthDay + "');";
+			query = "INSERT INTO repeating_payment (Amount, Date, CategoryID, Name, RepeatInterval, RepeatEndDate, RepeatMonthDay, Description) VALUES('" + amount + "' , '" + date + "' , '" + categoryID + "' , '" + name + "' , '" + repeatInterval + "' , '" + repeatEndDate + "' , '" + repeatMonthDay + "' , '" + description + "');";
 		}
 		
 		try
@@ -754,10 +758,10 @@ public class DatabaseHandler
 		}
 	}	
 	
-	public void updateNormalPayment(int ID, int amount, String date, int categoryID, String name)
+	public void updateNormalPayment(int ID, int amount, String date, int categoryID, String name, String description)
 	{
 		Statement stmt = null;
-		String query = "UPDATE payment SET amount = '" + amount + "', date='" + date + "', categoryID='" + categoryID + "', name='" + name + "' WHERE ID = " + ID + ";";
+		String query = "UPDATE payment SET amount = '" + amount + "', date='" + date + "', categoryID='" + categoryID + "', name='" + name + "', description='" + description + "' WHERE ID = " + ID + ";";
 		try
 		{
 			stmt = connection.createStatement();

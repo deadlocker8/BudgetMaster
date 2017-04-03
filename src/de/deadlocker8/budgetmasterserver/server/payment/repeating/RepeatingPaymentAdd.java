@@ -19,7 +19,14 @@ public class RepeatingPaymentAdd implements Route
 	@Override
 	public Object handle(Request req, Response res) throws Exception
 	{
-		if(!req.queryParams().contains("amount") || !req.queryParams().contains("date") || !req.queryParams().contains("categoryID") || !req.queryParams().contains("name") || !req.queryParams().contains("repeatInterval") || !req.queryParams().contains("repeatEndDate") || !req.queryParams().contains("repeatMonthDay"))
+		if(!req.queryParams().contains("amount") ||
+			!req.queryParams().contains("date") || 
+			!req.queryParams().contains("categoryID") || 
+			!req.queryParams().contains("name") || 
+			!req.queryParams().contains("repeatInterval") || 
+			!req.queryParams().contains("repeatEndDate") || 
+			!req.queryParams().contains("repeatMonthDay") || 
+			!req.queryParams().contains("description"))
 		{				
 			halt(400, "Bad Request");
 		}	
@@ -38,7 +45,14 @@ public class RepeatingPaymentAdd implements Route
 			
 			try
 			{				
-				handler.addRepeatingPayment(amount, req.queryMap("date").value(), categoryID, req.queryMap("name").value(), repeatInterval, req.queryMap("repeatEndDate").value(), repeatMonthDay);			
+				handler.addRepeatingPayment(amount, 
+											req.queryMap("date").value(), 
+											categoryID, 
+											req.queryMap("name").value(), 
+											req.queryMap("description").value(), 
+											repeatInterval, 
+											req.queryMap("repeatEndDate").value(), 
+											repeatMonthDay);			
 
 				return "";
 			}

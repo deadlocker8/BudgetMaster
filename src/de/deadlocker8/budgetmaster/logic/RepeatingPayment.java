@@ -6,9 +6,9 @@ public class RepeatingPayment extends Payment
 	private String repeatEndDate;
 	private int repeatMonthDay;
 
-	public RepeatingPayment(int ID, int amount, String date, int categoryID, String name, int repeatInterval, String repeatEndDate, int repeatMonthDay)
+	public RepeatingPayment(int ID, int amount, String date, int categoryID, String name, String description, int repeatInterval, String repeatEndDate, int repeatMonthDay)
 	{
-		super(ID, amount, date, categoryID, name);
+		super(ID, amount, date, categoryID, name, description);
 		this.repeatInterval = repeatInterval;
 		this.repeatEndDate = repeatEndDate;
 		this.repeatMonthDay = repeatMonthDay;
@@ -47,7 +47,7 @@ public class RepeatingPayment extends Payment
 	@Override
 	public String toString()
 	{
-		return "RepeatingPayment [ID=" + super.getID() + ", amount=" + super.getAmount() + ", date=" + super.getDate() + ", categoryID=" + super.getCategoryID() + ", name=" + super.getName() + ", repeatInterval=" + repeatInterval + ", repeatEndDate=" + repeatEndDate + ", repeatMonthDay=" + repeatMonthDay + "]";
+		return "RepeatingPayment [ID=" + super.getID() + ", amount=" + super.getAmount() + ", date=" + super.getDate() + ", categoryID=" + super.getCategoryID() + ", name=" + super.getName() + ", description=" + super.getDescription() + ", repeatInterval=" + repeatInterval + ", repeatEndDate=" + repeatEndDate + ", repeatMonthDay=" + repeatMonthDay + "]";
 	}
 	
 	@Override

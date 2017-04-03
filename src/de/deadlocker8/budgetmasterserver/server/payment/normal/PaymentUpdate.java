@@ -19,7 +19,12 @@ public class PaymentUpdate implements Route
 	@Override
 	public Object handle(Request req, Response res) throws Exception
 	{
-		if(!req.queryParams().contains("id") ||!req.queryParams().contains("amount") || !req.queryParams().contains("date") || !req.queryParams().contains("categoryID") || !req.queryParams().contains("name"))
+		if(!req.queryParams().contains("id") ||
+			!req.queryParams().contains("amount") || 
+			!req.queryParams().contains("date") || 
+			!req.queryParams().contains("categoryID") || 
+			!req.queryParams().contains("name") || 
+			!req.queryParams().contains("description"))
 		{
 			halt(400, "Bad Request");
 		}	
@@ -41,7 +46,12 @@ public class PaymentUpdate implements Route
 			
 			try
 			{				
-				handler.updateNormalPayment(id, amount, req.queryMap("date").value(), categoryID, req.queryMap("name").value());			
+				handler.updateNormalPayment(id, 
+											amount, 
+											req.queryMap("date").value(), 
+											categoryID, 
+											req.queryMap("name").value(), 
+											req.queryMap("description").value());			
 
 				return "";
 			}

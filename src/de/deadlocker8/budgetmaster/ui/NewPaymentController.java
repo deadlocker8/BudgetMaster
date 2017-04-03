@@ -26,6 +26,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.paint.Color;
@@ -49,6 +50,7 @@ public class NewPaymentController
 	@FXML private RadioButton radioButtonPeriod;
 	@FXML private RadioButton radioButtonDay;
 	@FXML private Label labelText1, labelText2, labelText3;
+	@FXML private TextArea textArea;
 
 	private Stage stage;
 	private Controller controller;
@@ -121,7 +123,14 @@ public class NewPaymentController
 			ArrayList<Category> categories = connection.getCategories();
 			if(categories != null)
 			{
-				comboBoxCategory.getItems().addAll(categories);
+				for(Category currentCategory : categories)
+				{
+					if(currentCategory.getID() != 2)
+					{
+						comboBoxCategory.getItems().add(currentCategory);
+					}
+				}
+					
 			}
 		}
 		catch(Exception e)
@@ -160,6 +169,7 @@ public class NewPaymentController
 			textFieldAmount.setText(Helpers.NUMBER_FORMAT.format(Math.abs(payment.getAmount()/100.0)).replace(".", ","));		
 			comboBoxCategory.setValue(controller.getCategoryHandler().getCategory(payment.getCategoryID()));
 			datePicker.setValue(LocalDate.parse(payment.getDate()));
+			textArea.setText(payment.getDescription());
 			
 			if(payment instanceof RepeatingPaymentEntry)
 			{
@@ -230,6 +240,13 @@ public class NewPaymentController
 		{
 			amount = -amount;
 		}
+		
+		String description = textArea.getText();
+		if(description.length() > 150)
+		{
+			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Die Notiz darf maximal 150 Zeichen lang sein.", controller.getIcon(), controller.getStage(), null, false);
+			return;
+		}
 
 		int repeatingInterval = 0;
 		int repeatingDay = 0;
@@ -254,13 +271,13 @@ public class NewPaymentController
 			{
 				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Enddatum darf zeitlich nicht vor dem Datum der Zahlung liegen.", controller.getIcon(), controller.getStage(), null, false);
 				return;
-			}
+			}			
 
 			if(edit)
 			{				
 				try
 				{		
-					RepeatingPayment newPayment = new RepeatingPayment(-1, amount, Helpers.getDateString(date), comboBoxCategory.getValue().getID(), name, repeatingInterval, Helpers.getDateString(datePickerEnddate.getValue()), repeatingDay);
+					RepeatingPayment newPayment = new RepeatingPayment(-1, amount, Helpers.getDateString(date), comboBoxCategory.getValue().getID(), name, description, repeatingInterval, Helpers.getDateString(datePickerEnddate.getValue()), repeatingDay);
 							
 					ServerConnection connection = new ServerConnection(controller.getSettings());
 					if(payment instanceof NormalPayment)
@@ -281,7 +298,7 @@ public class NewPaymentController
 			}
 			else
 			{
-				RepeatingPayment newPayment = new RepeatingPayment(-1, amount, Helpers.getDateString(date), comboBoxCategory.getValue().getID(), name, repeatingInterval,Helpers.getDateString(datePickerEnddate.getValue()), repeatingDay);
+				RepeatingPayment newPayment = new RepeatingPayment(-1, amount, Helpers.getDateString(date), comboBoxCategory.getValue().getID(), name, description, repeatingInterval,Helpers.getDateString(datePickerEnddate.getValue()), repeatingDay);
 				try
 				{
 					ServerConnection connection = new ServerConnection(controller.getSettings());
@@ -298,7 +315,7 @@ public class NewPaymentController
 		{
 			if(edit)
 			{
-				NormalPayment newPayment = new NormalPayment(payment.getID(), amount, Helpers.getDateString(date), comboBoxCategory.getValue().getID(), name);
+				NormalPayment newPayment = new NormalPayment(payment.getID(), amount, Helpers.getDateString(date), comboBoxCategory.getValue().getID(), name, description);
 				try
 				{
 					ServerConnection connection = new ServerConnection(controller.getSettings());
@@ -321,7 +338,7 @@ public class NewPaymentController
 			}
 			else
 			{
-				NormalPayment newPayment = new NormalPayment(-1, amount, Helpers.getDateString(date), comboBoxCategory.getValue().getID(), name);
+				NormalPayment newPayment = new NormalPayment(-1, amount, Helpers.getDateString(date), comboBoxCategory.getValue().getID(), name, description);
 				try
 				{
 					ServerConnection connection = new ServerConnection(controller.getSettings());
@@ -380,6 +397,4 @@ public class NewPaymentController
 		comboBoxRepeatingDay.setDisable(selected);
 		labelText3.setDisable(selected);
 	}
-
-	
 }
