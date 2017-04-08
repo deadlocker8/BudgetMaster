@@ -250,10 +250,17 @@ public class NewPaymentController
 		}
 		
 		String description = textArea.getText();
-		if(description.length() > 150)
+		if(description != null)
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Die Notiz darf maximal 150 Zeichen lang sein.", controller.getIcon(), controller.getStage(), null, false);
-			return;
+			if(description.length() > 150)
+			{
+				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Die Notiz darf maximal 150 Zeichen lang sein.", controller.getIcon(), controller.getStage(), null, false);
+				return;
+			}
+		}
+		else
+		{
+			description = "";
 		}
 
 		int repeatingInterval = 0;
