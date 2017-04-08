@@ -1,7 +1,9 @@
 # BudgetMaster
 Manage your monthly budget easily with BudgetMaster
 
-### Screenshots
+## [Installation Instructions](https://github.com/deadlocker8/BudgetMaster/wiki/Server-Installation)
+
+## Screenshots
 
 ![normal](https://cloud.githubusercontent.com/assets/16324894/24829626/caaf2d56-1c75-11e7-8fdd-393e35c5a00d.png)
 
