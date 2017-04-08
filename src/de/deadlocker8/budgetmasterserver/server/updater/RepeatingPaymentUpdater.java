@@ -20,17 +20,16 @@ public class RepeatingPaymentUpdater
 		this.handler = handler;
 	}
 
-	public void updateRepeatingPayments()
+	public void updateRepeatingPayments(DateTime now)
 	{
 		try
 		{						
 			ArrayList<RepeatingPayment> repeatingPayments = handler.getAllRepeatingPayments();				
-			ArrayList<LatestRepeatingPayment> latest = handler.getLatestRepeatingPaymentEntries();;
+			ArrayList<LatestRepeatingPayment> latest = handler.getLatestRepeatingPaymentEntries();
 			
 			for(RepeatingPayment currentPayment : repeatingPayments)
 			{
-				int index = latest.indexOf(currentPayment);	
-				DateTime now = DateTime.now();			
+				int index = latest.indexOf(currentPayment);					
 				if(currentPayment.getRepeatEndDate() != null)
 				{
 					DateTime endDate = DateTime.parse(currentPayment.getRepeatEndDate());
@@ -79,8 +78,8 @@ public class RepeatingPaymentUpdater
 		//repeat every x days
 		if(payment.getRepeatInterval() != 0)
 		{			
-			int numberOfDays = Days.daysBetween(startDate, now).getDays();
-			int occurrences = numberOfDays % payment.getRepeatInterval();
+			int numberOfDays = Days.daysBetween(startDate, now).getDays();			
+			int occurrences = numberOfDays / payment.getRepeatInterval();				
 			for(int i = 0; i <= occurrences + 1; i++)
 			{
 				dates.add(startDate.plusDays(i * payment.getRepeatInterval()));
@@ -95,7 +94,6 @@ public class RepeatingPaymentUpdater
 				dates.add(startDate.plusMonths(i));
 			}				
 		}
-		
 		return dates;
 	}
 }

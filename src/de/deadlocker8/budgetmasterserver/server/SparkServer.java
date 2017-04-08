@@ -12,6 +12,8 @@ import static spark.Spark.secure;
 
 import java.io.File;
 
+import org.joda.time.DateTime;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -75,7 +77,7 @@ public class SparkServer
 				halt(401, "Unauthorized");
 			}
 
-			new RepeatingPaymentUpdater(handler).updateRepeatingPayments();
+			new RepeatingPaymentUpdater(handler).updateRepeatingPayments(DateTime.now());
 		});
 
 		// Category
@@ -105,7 +107,7 @@ public class SparkServer
 		get("/rest", new RestGet(handler, gson));
 
 		after((request, response) -> {
-			new RepeatingPaymentUpdater(handler).updateRepeatingPayments();
+			new RepeatingPaymentUpdater(handler).updateRepeatingPayments(DateTime.now());
 		});
 		
 		Spark.exception(Exception.class, (exception, request, response) -> {

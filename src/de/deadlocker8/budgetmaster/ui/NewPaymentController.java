@@ -3,6 +3,8 @@ package de.deadlocker8.budgetmaster.ui;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import org.joda.time.DateTime;
+
 import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
@@ -15,6 +17,7 @@ import de.deadlocker8.budgetmaster.ui.cells.RepeatingDayCell;
 import de.deadlocker8.budgetmaster.ui.cells.SmallCategoryCell;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -161,7 +164,11 @@ public class NewPaymentController
 				}
 			}
 		});
-
+		//preselect correct month and year
+		DateTime currentDate = controller.getCurrentDate();
+		datePicker.setValue(LocalDate.now().withYear(currentDate.getYear()).withMonth(currentDate.getMonthOfYear()).withDayOfMonth(currentDate.getDayOfMonth()));
+		Platform.runLater(()->{datePicker.getEditor().clear();});
+		
 		if(edit)
 		{
 			//prefill

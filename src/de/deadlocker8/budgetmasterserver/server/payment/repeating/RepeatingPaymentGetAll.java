@@ -4,10 +4,13 @@ import static spark.Spark.halt;
 
 import java.util.ArrayList;
 
+import org.joda.time.DateTime;
+
 import com.google.gson.Gson;
 
 import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmasterserver.main.DatabaseHandler;
+import de.deadlocker8.budgetmasterserver.server.updater.RepeatingPaymentUpdater;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -43,6 +46,15 @@ public class RepeatingPaymentGetAll implements Route
 			{
 				halt(400, "Bad Request");
 			}
+			
+			//refresh repeating entries
+			DateTime date = DateTime.now().withYear(year).withMonthOfYear(month);
+			date = date.dayOfMonth().withMaximumValue();
+			if(date.isBefore(DateTime.now()))
+			{
+				date = DateTime.now().dayOfMonth().withMaximumValue();
+			}
+			new RepeatingPaymentUpdater(handler).updateRepeatingPayments(date);
 			
 			try
 			{					
