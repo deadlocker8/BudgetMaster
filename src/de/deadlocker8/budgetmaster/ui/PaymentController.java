@@ -160,7 +160,7 @@ public class PaymentController implements Refreshable
 	{
 		listView.getItems().clear();
 
-		ArrayList<Payment> payments = controller.getPayments();
+		ArrayList<Payment> payments = controller.getPaymentHandler().getPayments();
 		if(payments != null)
 		{
 			listView.getItems().setAll(payments);
