@@ -164,10 +164,6 @@ public class NewPaymentController
 				}
 			}
 		});
-		//preselect correct month and year
-		DateTime currentDate = controller.getCurrentDate();
-		datePicker.setValue(LocalDate.now().withYear(currentDate.getYear()).withMonth(currentDate.getMonthOfYear()).withDayOfMonth(currentDate.getDayOfMonth()));
-		Platform.runLater(()->{datePicker.getEditor().clear();});
 		
 		if(edit)
 		{
@@ -214,7 +210,12 @@ public class NewPaymentController
 			comboBoxCategory.getSelectionModel().select(0);
 			checkBoxRepeat.setSelected(false);
 			radioButtonPeriod.setSelected(true);
-			toggleRepeatingArea(false);
+			toggleRepeatingArea(false);			
+
+			//preselect correct month and year
+			DateTime currentDate = controller.getCurrentDate();
+			datePicker.setValue(LocalDate.now().withYear(currentDate.getYear()).withMonth(currentDate.getMonthOfYear()).withDayOfMonth(currentDate.getDayOfMonth()));
+			Platform.runLater(()->{datePicker.getEditor().clear();});
 		}
 	}
 

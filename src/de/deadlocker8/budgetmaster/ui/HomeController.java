@@ -2,8 +2,6 @@ package de.deadlocker8.budgetmaster.ui;
 
 import java.util.ArrayList;
 
-import org.joda.time.DateTime;
-
 import de.deadlocker8.budgetmaster.logic.Budget;
 import de.deadlocker8.budgetmaster.logic.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.Helpers;
@@ -84,6 +82,10 @@ public class HomeController implements Refreshable
 			{
 				labelBudget.setStyle("-fx-text-fill: #CC0000");
 			}
+			else
+			{
+				labelBudget.setStyle("-fx-text-fill: #000000");
+			}
 			labelStartBudget.setText("von " + String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getIncomeSum()).replace(".", ",")) + " " + controller.getSettings().getCurrency() + " verbleibend");
 			
 			double factor = remaining / budget.getIncomeSum();
@@ -106,15 +108,7 @@ public class HomeController implements Refreshable
 		refreshListView();	
 		refreshCounter();
 		
-		Label labelPlaceholder;
-		if(controller.getCurrentDate().isAfter(DateTime.now()))
-		{
-			labelPlaceholder = new Label("Datum liegt in der Zukunft");			
-		}
-		else
-		{
-			labelPlaceholder = new Label("Keine Daten verfügbar");			
-		}
+		Label labelPlaceholder = new Label("Keine Daten verfügbar");			
 		labelPlaceholder.setStyle("-fx-font-size: 16");
 		listView.setPlaceholder(labelPlaceholder);
 	}
