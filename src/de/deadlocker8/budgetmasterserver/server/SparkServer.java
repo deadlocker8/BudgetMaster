@@ -54,7 +54,12 @@ public class SparkServer
 		
 		try
 		{
-			File keystoreFile = new File(settings.getKeystorePath());		
+			String filePath = settings.getKeystorePath();
+			if(filePath.equals(""))
+			{
+				throw new Exception("empty string is no valid keystorePath");
+			}
+			File keystoreFile = new File(filePath);		
 			secure(keystoreFile.getAbsolutePath(), settings.getKeystorePassword(), null, null);						
 		}
 		catch(Exception e)
@@ -112,7 +117,6 @@ public class SparkServer
 		
 		Spark.exception(Exception.class, (exception, request, response) -> {
 			Logger.error(exception);
-			exception.printStackTrace();
 		});
 	}
 }
