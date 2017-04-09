@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.Budget;
+import de.deadlocker8.budgetmaster.logic.FilterSettings;
 import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.Payment;
@@ -39,8 +40,10 @@ public class PaymentController implements Refreshable
 	@FXML private Label labelIncomes;
 	@FXML private Label labelPayment;
 	@FXML private Label labelPayments;
+	@FXML private Label labelFilterActive;
 	@FXML private ListView<Payment> listView;
 	@FXML private Button buttonNewIncome;
+	@FXML private Button buttonFilter;
 	@FXML private Button buttonNewPayment;
 
 	private Controller controller;
@@ -94,10 +97,19 @@ public class PaymentController implements Refreshable
 		iconIncome.setSize(18);
 		iconIncome.setStyle("-fx-text-fill: white");
 		buttonNewIncome.setGraphic(iconIncome);
+		FontIcon iconFilter = new FontIcon(FontIconType.FILTER);
+		iconFilter.setSize(18);
+		iconFilter.setStyle("-fx-text-fill: white");
+		buttonFilter.setGraphic(iconFilter);
 		FontIcon iconPayment = new FontIcon(FontIconType.UPLOAD);
 		iconPayment.setSize(18);
 		iconPayment.setStyle("-fx-text-fill: white");
 		buttonNewPayment.setGraphic(iconPayment);
+		
+		FontIcon iconWarning = new FontIcon(FontIconType.WARNING);
+		iconWarning.setSize(13);
+		iconWarning.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
+		labelFilterActive.setGraphic(iconWarning);
 
 		// apply theme
 		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");
@@ -105,7 +117,9 @@ public class PaymentController implements Refreshable
 		labelIncomes.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
 		labelPayment.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
 		labelPayments.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
+		labelFilterActive.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
 		buttonNewIncome.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
+		buttonFilter.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
 		buttonNewPayment.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
 
 		refresh();
@@ -185,7 +199,7 @@ public class PaymentController implements Refreshable
 		{
 			ServerConnection connection = new ServerConnection(controller.getSettings());
 			connection.deleteNormalPayment(payment);
-			controller.refresh();
+			controller.refresh(controller.getFilterSettings());
 		}
 		catch(Exception e)
 		{
@@ -200,7 +214,7 @@ public class PaymentController implements Refreshable
 		{
 			ServerConnection connection = new ServerConnection(controller.getSettings());
 			connection.deleteRepeatingPayment(payment);
-			controller.refresh();
+			controller.refresh(controller.getFilterSettings());
 		}
 		catch(Exception e)
 		{
@@ -219,12 +233,35 @@ public class PaymentController implements Refreshable
 			connection.deleteRepeatingPayment(payment);
 			connection.addRepeatingPayment(newRepeatingPayment);
 
-			controller.refresh();
+			controller.refresh(controller.getFilterSettings());
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 			controller.showConnectionErrorAlert();
+		}
+	}
+	
+	public void filter()
+	{
+		try
+		{
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/FilterGUI.fxml"));
+			Parent root = (Parent)fxmlLoader.load();
+			Stage newStage = new Stage();
+			newStage.initOwner(controller.getStage());
+			newStage.initModality(Modality.APPLICATION_MODAL);	
+			newStage.setTitle("Filter");
+			newStage.setScene(new Scene(root));
+			newStage.getIcons().add(controller.getIcon());
+			newStage.setResizable(false);
+			FilterController newController = fxmlLoader.getController();			
+			newController.init(newStage, controller, this, controller.getFilterSettings());
+			newStage.show();
+		}
+		catch(IOException e)
+		{
+			Logger.error(e);
 		}
 	}
 
@@ -238,6 +275,15 @@ public class PaymentController implements Refreshable
 	{
 		refreshListView();
 		refreshCounter();
+		
+		if(controller.getFilterSettings().equals(new FilterSettings()))
+		{
+			labelFilterActive.setVisible(false);
+		}
+		else
+		{
+			labelFilterActive.setVisible(true);
+		}
 
 		Label labelPlaceholder = new Label("Keine Daten verfügbar");		
 		labelPlaceholder.setStyle("-fx-font-size: 16");

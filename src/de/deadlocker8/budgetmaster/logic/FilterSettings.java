@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 public class FilterSettings
 {
-	private boolean isIncomeAllowed; 
-	private boolean isPaymentAllowed; 
+	private boolean isIncomeAllowed;
+	private boolean isPaymentAllowed;
 	private boolean isNoRepeatingAllowed;
 	private boolean isMonthlyRepeatingAllowed;
 	private boolean isRepeatingEveryXDaysAllowed;
 	private ArrayList<Integer> allowedCategoryIDs;
 	private String name;
-	
+
 	public FilterSettings(boolean isIncomeAllowed, boolean isPaymentAllowed, boolean isNoRepeatingAllowed, boolean isMonthlyRepeatingAllowed, boolean isRepeatingEveryXDaysAllowed, ArrayList<Integer> allowedCategoryIDs, String name)
 	{
 		this.isIncomeAllowed = isIncomeAllowed;
@@ -22,7 +22,7 @@ public class FilterSettings
 		this.allowedCategoryIDs = allowedCategoryIDs;
 		this.name = name;
 	}
-	
+
 	public FilterSettings()
 	{
 		this.isIncomeAllowed = true;
@@ -103,10 +103,72 @@ public class FilterSettings
 	{
 		this.name = name;
 	}
-	
+
 	public String toString()
 	{
 		return "FilterSettings [isIncomeAllowed=" + isIncomeAllowed + ", isPaymentAllowed=" + isPaymentAllowed + ", isNoRepeatingAllowed=" + isNoRepeatingAllowed + ", isMonthlyRepeatingAllowed=" + isMonthlyRepeatingAllowed + ", isRepeatingEveryXDaysAllowed=" + isRepeatingEveryXDaysAllowed
 				+ ", allowedCategoryIDs=" + allowedCategoryIDs + ", name=" + name + "]";
+	}
+
+	public boolean equals(Object other)
+	{
+		if(other == null) return false;
+		if(other == this) return true;
+		if(!(other instanceof FilterSettings)) return false;
+		FilterSettings otherSettings = (FilterSettings)other;
+		if(isIncomeAllowed == otherSettings.isIncomeAllowed() &&
+			isPaymentAllowed == otherSettings.isPaymentAllowed &&
+			isNoRepeatingAllowed == otherSettings.isNoRepeatingAllowed &&
+			isMonthlyRepeatingAllowed == otherSettings.isMonthlyRepeatingAllowed &&
+			isRepeatingEveryXDaysAllowed == otherSettings.isRepeatingEveryXDaysAllowed)
+		{			
+			if(name == null)
+			{
+				if(otherSettings.getName() != null)
+				{					
+					return false;
+				}
+			}
+			else 
+			{				
+				if(otherSettings.getName() == null) 
+				{
+					return false;
+				}	
+				else 
+				{
+					if(!name.equals(otherSettings.getName()))	return false;
+				}
+			}
+			
+			
+			if(allowedCategoryIDs == null)
+			{
+				if(otherSettings.getAllowedCategoryIDs() != null)
+				{
+					return false;				
+				}
+				else
+				{
+					return true;
+				}
+			}
+			else 
+			{
+				if(otherSettings.getAllowedCategoryIDs() == null)
+				{
+					return false;
+				}
+				else
+				{					
+					if(allowedCategoryIDs.equals(otherSettings.getAllowedCategoryIDs())) 
+					{
+						return true;		
+					}
+				}				
+			}				
+		}			
+			
+		return false;
 	}
 }

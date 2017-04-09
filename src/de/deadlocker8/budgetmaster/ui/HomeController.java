@@ -84,7 +84,7 @@ public class HomeController implements Refreshable
 			}
 			else
 			{
-				labelBudget.setStyle("-fx-text-fill: #000000");
+				labelBudget.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
 			}
 			labelStartBudget.setText("von " + String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getIncomeSum()).replace(".", ",")) + " " + controller.getSettings().getCurrency() + " verbleibend");
 			

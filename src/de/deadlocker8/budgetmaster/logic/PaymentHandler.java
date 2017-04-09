@@ -36,23 +36,50 @@ public class PaymentHandler
 	}
 	
 	private ArrayList<Payment> filterByRepeating(FilterSettings filterSettings, ArrayList<Payment> paymentsList)
-	{
+	{		
 		if(filterSettings.isNoRepeatingAllowed() && filterSettings.isMonthlyRepeatingAllowed() && filterSettings.isRepeatingEveryXDaysAllowed())
 		{				
-			return payments;
+			return paymentsList;
 		}
 		
 		ArrayList<Payment> filteredPayments = new ArrayList<>();
 		for(Payment currentPayment : paymentsList)
-		{
-			//TODO
+		{			
+			//NormalPayment or rest
+			if(currentPayment instanceof NormalPayment || currentPayment.getID() == -1)
+			{						
+				if(filterSettings.isNoRepeatingAllowed())
+				{
+					filteredPayments.add(currentPayment);
+				}
+			}
+			//RepeatingPayment
+			else			
+			{
+				RepeatingPaymentEntry repeatingPayment = (RepeatingPaymentEntry)currentPayment;
+				if((repeatingPayment.getRepeatInterval() != 0 && filterSettings.isRepeatingEveryXDaysAllowed()) ||
+					(repeatingPayment.getRepeatMonthDay() != 0 && filterSettings.isMonthlyRepeatingAllowed()))
+				{
+					filteredPayments.add(currentPayment);
+				}
+			}
 		}
 		
-		return new ArrayList<>();		
+		return filteredPayments;		
 	}
 	
 	private ArrayList<Payment> filterByCategory(FilterSettings filterSettings, ArrayList<Payment> paymentsList)
-	{
+	{		
+		if(filterSettings.getAllowedCategoryIDs() == null)			
+		{
+			return paymentsList;
+		}
+		
+		if(filterSettings.getAllowedCategoryIDs().size() == 0)
+		{
+			return new ArrayList<>();
+		}
+		
 		ArrayList<Payment> filteredPayments = new ArrayList<>();
 		for(Payment currentPayment : paymentsList)
 		{
@@ -75,7 +102,7 @@ public class PaymentHandler
 		ArrayList<Payment> filteredPayments = new ArrayList<>();
 		for(Payment currentPayment : paymentsList)
 		{
-			if(currentPayment.getName().contains(filterSettings.getName()))
+			if(currentPayment.getName().toLowerCase().contains(filterSettings.getName().toLowerCase()))
 			{
 				filteredPayments.add(currentPayment);
 			}
@@ -111,6 +138,7 @@ public class PaymentHandler
 	{
 		ArrayList<Payment> filteredPayments = filterByType(filterSettings, payments);
 		filteredPayments = filterByType(filterSettings, filteredPayments);
+		filteredPayments = filterByRepeating(filterSettings, filteredPayments);
 		filteredPayments = filterByCategory(filterSettings, filteredPayments);
 		filteredPayments = filterByName(filterSettings, filteredPayments);
 		

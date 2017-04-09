@@ -4,13 +4,14 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.deadlocker8.budgetmaster.ui.NewPaymentController">
+<AnchorPane prefHeight="600.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.deadlocker8.budgetmaster.ui.FilterController">
    <children>
       <VBox prefHeight="273.0" prefWidth="465.0" spacing="25.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
          <children>
@@ -66,14 +67,18 @@
                   </CheckBox>
                </children>
             </VBox>
-            <VBox prefHeight="33.0" prefWidth="422.0" spacing="10.0">
+            <VBox prefHeight="150.0" prefWidth="422.0" spacing="10.0">
                <children>
                   <Label text="Kategorien">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <VBox fx:id="vboxCategories" prefHeight="200.0" prefWidth="100.0" />
+                  <ScrollPane prefHeight="93.0" prefWidth="422.0" VBox.vgrow="ALWAYS">
+                     <content>
+                        <VBox fx:id="vboxCategories" spacing="5.0" />
+                     </content>
+                  </ScrollPane>
                </children>
             </VBox>
             <VBox prefHeight="33.0" prefWidth="422.0" VBox.vgrow="ALWAYS">
@@ -92,6 +97,14 @@
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
+                  </Button>
+                  <Button fx:id="buttonReset" mnemonicParsing="false" onAction="#reset" text="Zurücksetzen">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="25.0" />
+                     </HBox.margin>
                   </Button>
                   <Button fx:id="buttonFilter" mnemonicParsing="false" onAction="#filter" text="Filtern">
                      <font>
