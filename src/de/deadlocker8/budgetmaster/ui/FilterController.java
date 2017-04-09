@@ -24,8 +24,10 @@ public class FilterController
 	@FXML private VBox vboxCategories;
 	@FXML private TextField textFieldSearch;
 	@FXML private Button buttonCancel;
-	@FXML private Button buttonReset;	
-	@FXML private Button buttonFilter;	
+	@FXML private Button buttonReset;
+	@FXML private Button buttonFilter;
+	@FXML private Button buttonCategoryAll;
+	@FXML private Button buttonCategoryNone;
 
 	private Stage stage;
 	private Controller controller;
@@ -47,15 +49,17 @@ public class FilterController
 		iconReset.setSize(17);
 		iconReset.setStyle("-fx-text-fill: white");
 		buttonReset.setGraphic(iconReset);
-		FontIcon iconSave = new FontIcon(FontIconType.SAVE);
+		FontIcon iconSave = new FontIcon(FontIconType.FILTER);
 		iconSave.setSize(17);
 		iconSave.setStyle("-fx-text-fill: white");
 		buttonFilter.setGraphic(iconSave);
-		
+
 		buttonCancel.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
 		buttonReset.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
-		buttonFilter.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");		
-		
+		buttonFilter.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
+		buttonCategoryAll.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13;");
+		buttonCategoryNone.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13;");
+
 		for(Category currentCategory : controller.getCategoryHandler().getCategories())
 		{
 			CheckBox newCheckBox = new CheckBox();
@@ -64,10 +68,10 @@ public class FilterController
 			newCheckBox.setStyle("-fx-font-size: 14;");
 			vboxCategories.getChildren().add(newCheckBox);
 		}
-		
+
 		preselect();
 	}
-	
+
 	private void preselect()
 	{
 		checkBoxIncome.setSelected(filterSetttings.isIncomeAllowed());
@@ -75,18 +79,18 @@ public class FilterController
 		checkBoxNoRepeating.setSelected(filterSetttings.isNoRepeatingAllowed());
 		checkBoxMonthlyRepeating.setSelected(filterSetttings.isMonthlyRepeatingAllowed());
 		checkBoxRepeatEveryXDays.setSelected(filterSetttings.isRepeatingEveryXDaysAllowed());
-		
+
 		ArrayList<Integer> allowedCategoryIDs = filterSetttings.getAllowedCategoryIDs();
-		
+
 		for(Node node : vboxCategories.getChildren())
 		{
 			CheckBox currentCheckBox = (CheckBox)node;
-			if(allowedCategoryIDs == null || allowedCategoryIDs.contains(currentCheckBox.getUserData()))				
+			if(allowedCategoryIDs == null || allowedCategoryIDs.contains(currentCheckBox.getUserData()))
 			{
 				currentCheckBox.setSelected(true);
 			}
 		}
-		
+
 		textFieldSearch.setText(filterSetttings.getName());
 	}
 
@@ -94,50 +98,44 @@ public class FilterController
 	{
 		boolean isIncomeAllowed = checkBoxIncome.isSelected();
 		boolean isPaymentAllowed = checkBoxPayment.isSelected();
-		
+
 		boolean isNoRepeatingAllowed = checkBoxNoRepeating.isSelected();
 		boolean isMonthlyRepeatingAllowed = checkBoxMonthlyRepeating.isSelected();
 		boolean isRepeatingEveryXDaysAllowed = checkBoxRepeatEveryXDays.isSelected();
-		
-		ArrayList<Integer> allowedCategoryIDs = new ArrayList<>(); 
+
+		ArrayList<Integer> allowedCategoryIDs = new ArrayList<>();
 		for(Node node : vboxCategories.getChildren())
 		{
 			CheckBox currentCheckBox = (CheckBox)node;
-			if(currentCheckBox.isSelected())				
+			if(currentCheckBox.isSelected())
 			{
 				allowedCategoryIDs.add((int)currentCheckBox.getUserData());
 			}
 		}
-		
+
 		if(allowedCategoryIDs.size() == controller.getCategoryHandler().getCategories().size())
 		{
 			allowedCategoryIDs = null;
 		}
-		
+
 		String name = textFieldSearch.getText();
-		if(name.equals(""))
+		if(name != null && name.equals(""))
 		{
 			name = null;
 		}
-		
-		//get new unfiltered list from server
+
+		// get new unfiltered list from server
 		controller.refresh(new FilterSettings());
-		
-		FilterSettings newFilterSettings = new FilterSettings(isIncomeAllowed, 
-															isPaymentAllowed, 
-															isNoRepeatingAllowed,
-															isMonthlyRepeatingAllowed, 
-															isRepeatingEveryXDaysAllowed, 
-															allowedCategoryIDs, 
-															name);
-		
+
+		FilterSettings newFilterSettings = new FilterSettings(isIncomeAllowed, isPaymentAllowed, isNoRepeatingAllowed, isMonthlyRepeatingAllowed, isRepeatingEveryXDaysAllowed, allowedCategoryIDs, name);
+
 		controller.setFilterSettings(newFilterSettings);
 		controller.getPaymentHandler().filter(newFilterSettings);
-		
+
 		stage.close();
-		paymentController.getController().refreshAllTabs();		
+		paymentController.getController().refreshAllTabs();
 	}
-	
+
 	public void reset()
 	{
 		filterSetttings = new FilterSettings();
@@ -149,5 +147,21 @@ public class FilterController
 	public void cancel()
 	{
 		stage.close();
+	}	
+
+	public void enableAllCategories()
+	{
+		for(Node node : vboxCategories.getChildren())
+		{
+			((CheckBox)node).setSelected(true);
+		}
+	}
+	
+	public void disableAllCategories()
+	{
+		for(Node node : vboxCategories.getChildren())
+		{
+			((CheckBox)node).setSelected(false);
+		}
 	}
 }
