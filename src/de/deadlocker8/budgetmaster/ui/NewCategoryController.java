@@ -166,7 +166,7 @@ public class NewCategoryController
 		}
 		
 		stage.close();
-		categoryController.getController().refresh();
+		categoryController.getController().refresh(controller.getFilterSettings());
 	}
 
 	public void cancel()

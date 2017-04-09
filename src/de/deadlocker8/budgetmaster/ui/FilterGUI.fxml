@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.deadlocker8.budgetmaster.ui.FilterController">
+   <children>
+      <VBox prefHeight="273.0" prefWidth="465.0" spacing="25.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+         <children>
+            <Label text="Filtern nach:">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <VBox prefHeight="15.0" prefWidth="422.0" spacing="10.0">
+               <children>
+                  <Label text="Art">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <HBox prefHeight="10.0" prefWidth="422.0" spacing="25.0">
+                     <children>
+                        <CheckBox fx:id="checkBoxIncome" mnemonicParsing="false" text="Einnahme">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </CheckBox>
+                        <CheckBox fx:id="checkBoxPayment" mnemonicParsing="false" text="Ausgabe">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </CheckBox>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox prefHeight="33.0" prefWidth="422.0" spacing="10.0">
+               <children>
+                  <Label text="Wiederholung">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <CheckBox fx:id="checkBoxNoRepeating" mnemonicParsing="false" text="keine Wiederholung">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </CheckBox>
+                  <CheckBox fx:id="checkBoxMonthlyRepeating" mnemonicParsing="false" text="jeden x-ten eines Monats">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </CheckBox>
+                  <CheckBox fx:id="checkBoxRepeatEveryXDays" mnemonicParsing="false" text="alle X Tage">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </CheckBox>
+               </children>
+            </VBox>
+            <VBox prefHeight="150.0" prefWidth="422.0" spacing="10.0">
+               <children>
+                  <Label text="Kategorien">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <ScrollPane prefHeight="93.0" prefWidth="422.0" VBox.vgrow="ALWAYS">
+                     <content>
+                        <VBox fx:id="vboxCategories" spacing="5.0" />
+                     </content>
+                  </ScrollPane>
+               </children>
+            </VBox>
+            <VBox prefHeight="33.0" prefWidth="422.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Label text="Name">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="textFieldSearch" />
+               </children>
+            </VBox>
+            <HBox alignment="CENTER" prefHeight="30.0" prefWidth="465.0" spacing="10.0">
+               <children>
+                  <Button fx:id="buttonCancel" mnemonicParsing="false" onAction="#cancel" text="Abbrechen">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="buttonReset" mnemonicParsing="false" onAction="#reset" text="Zurücksetzen">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="25.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="buttonFilter" mnemonicParsing="false" onAction="#filter" text="Filtern">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="25.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

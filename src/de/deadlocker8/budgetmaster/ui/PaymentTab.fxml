@@ -22,6 +22,21 @@
                      </font>
                   </Button>
                   <Region HBox.hgrow="ALWAYS" />
+                  <VBox alignment="CENTER" spacing="10.0">
+                     <children>
+                        <Button fx:id="buttonFilter" mnemonicParsing="false" onAction="#filter" text="Filter">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Button>
+                        <Label fx:id="labelFilterActive" text="Filter aktiv">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <Region HBox.hgrow="ALWAYS" />
                   <Button fx:id="buttonNewPayment" mnemonicParsing="false" onAction="#newPayment" text=" Neue Ausgabe">
                      <font>
                         <Font name="System Bold" size="14.0" />

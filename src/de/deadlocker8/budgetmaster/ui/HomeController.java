@@ -73,9 +73,9 @@ public class HomeController implements Refreshable
 	
 	private void refreshCounter()
 	{
-		if(controller.getPayments() != null)
+		if(controller.getPaymentHandler().getPayments() != null)
 		{
-			Budget budget = new Budget(controller.getPayments());	
+			Budget budget = new Budget(controller.getPaymentHandler().getPayments());	
 			double remaining = budget.getIncomeSum() + budget.getPaymentSum();
 			labelBudget.setText(String.valueOf(Helpers.NUMBER_FORMAT.format(remaining).replace(".", ",")) + " " + controller.getSettings().getCurrency());
 			if(remaining <= 0)
@@ -84,7 +84,7 @@ public class HomeController implements Refreshable
 			}
 			else
 			{
-				labelBudget.setStyle("-fx-text-fill: #000000");
+				labelBudget.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
 			}
 			labelStartBudget.setText("von " + String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getIncomeSum()).replace(".", ",")) + " " + controller.getSettings().getCurrency() + " verbleibend");
 			
