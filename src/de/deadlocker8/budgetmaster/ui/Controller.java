@@ -2,8 +2,6 @@ package de.deadlocker8.budgetmaster.ui;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -11,8 +9,9 @@ import org.joda.time.DateTime;
 
 import de.deadlocker8.budgetmaster.logic.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.CategoryHandler;
+import de.deadlocker8.budgetmaster.logic.FilterSettings;
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
-import de.deadlocker8.budgetmaster.logic.Payment;
+import de.deadlocker8.budgetmaster.logic.PaymentHandler;
 import de.deadlocker8.budgetmaster.logic.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.Settings;
 import de.deadlocker8.budgetmaster.logic.Utils;
@@ -37,7 +36,7 @@ import javafx.util.Duration;
 import logger.Logger;
 import tools.AlertGenerator;
 
-public class Controller implements Refreshable
+public class Controller
 {
 	@FXML private AnchorPane anchorPaneMain;
 	@FXML private Label labelMonth;
@@ -64,8 +63,9 @@ public class Controller implements Refreshable
 	private Settings settings;
 	private DateTime currentDate;
 	private ArrayList<CategoryBudget> categoryBudgets;
-	private ArrayList<Payment> payments;
+	private PaymentHandler paymentHandler;
 	private CategoryHandler categoryHandler;
+	private FilterSettings filterSettings;
 
 	private boolean alertIsShowing = false;
 
@@ -74,6 +74,9 @@ public class Controller implements Refreshable
 		this.stage = stage;
 		currentDate = DateTime.now();
 		labelMonth.setText(currentDate.toString("MMMM yyyy"));
+		
+		filterSettings = new FilterSettings();
+		paymentHandler = new PaymentHandler();
 
 		settings = Utils.loadSettings();
 
@@ -146,7 +149,7 @@ public class Controller implements Refreshable
 		}
 		else
 		{
-			refresh();
+			refresh(filterSettings);
 		}
 	}
 
@@ -201,7 +204,7 @@ public class Controller implements Refreshable
 		currentDate = currentDate.minusMonths(1);
 		labelMonth.setText(currentDate.toString("MMMM yyyy"));
 
-		refresh();
+		refresh(filterSettings);
 	}
 
 	public void nextMonth()
@@ -209,7 +212,7 @@ public class Controller implements Refreshable
 		currentDate = currentDate.plusMonths(1);
 		labelMonth.setText(currentDate.toString("MMMM yyyy"));
 
-		refresh();
+		refresh(filterSettings);
 	}
 	
 	public void today()
@@ -217,7 +220,7 @@ public class Controller implements Refreshable
 		currentDate = DateTime.now();
 		labelMonth.setText(currentDate.toString("MMMM yyyy"));
 
-		refresh();
+		refresh(filterSettings);
 	}
 
 	public DateTime getCurrentDate()
@@ -246,7 +249,7 @@ public class Controller implements Refreshable
 		}
 	}
 
-	private void refreshAllTabs()
+	public void refreshAllTabs()
 	{
 		homeController.refresh();
 		paymentController.refresh();
@@ -259,9 +262,9 @@ public class Controller implements Refreshable
 		return categoryBudgets;
 	}
 
-	public ArrayList<Payment> getPayments()
+	public PaymentHandler getPaymentHandler()
 	{
-		return payments;
+		return paymentHandler;
 	}
 
 	public CategoryHandler getCategoryHandler()
@@ -269,38 +272,42 @@ public class Controller implements Refreshable
 		return categoryHandler;
 	}
 
+	public FilterSettings getFilterSettings()
+	{
+		return filterSettings;
+	}
+
+	public void setFilterSettings(FilterSettings filterSettings)
+	{
+		this.filterSettings = filterSettings;
+	}
+
 	public void about()
 	{
 		AlertGenerator.showAboutAlert(bundle.getString("app.name"), bundle.getString("version.name"), bundle.getString("version.code"), bundle.getString("version.date"), bundle.getString("author"), icon, stage, null, false);
-	}
+	}	
 	
-	@Override
-	public void refresh()
+	public void refresh(FilterSettings newFilterSettings)
 	{
 		try
 		{
 			ServerConnection connection = new ServerConnection(settings);			
 			
-			payments = new ArrayList<>();
-			payments.addAll(connection.getPayments(currentDate.getYear(), currentDate.getMonthOfYear()));
-			payments.addAll(connection.getRepeatingPayments(currentDate.getYear(), currentDate.getMonthOfYear()));			
-			Collections.sort(payments, new Comparator<Payment>() {
-		        @Override
-		        public int compare(Payment payment1, Payment payment2)
-		        {
-		            return  payment2.getDate().compareTo(payment1.getDate());
-		        }
-		    });		
+			paymentHandler = new PaymentHandler();
+			paymentHandler.getPayments().addAll(connection.getPayments(currentDate.getYear(), currentDate.getMonthOfYear()));
+			paymentHandler.getPayments().addAll(connection.getRepeatingPayments(currentDate.getYear(), currentDate.getMonthOfYear()));			
+			paymentHandler.sort();
 			if(settings.isRestActivated())
 			{
 				int rest = connection.getRestForAllPreviousMonths(currentDate.getYear(), currentDate.getMonthOfYear());
 				//categoryID 2 = Rest
-				payments.add(new NormalPayment(-1, rest, currentDate.withDayOfMonth(1).toString("yyyy-MM-dd"), 2, "Übertrag", ""));				
+				paymentHandler.getPayments().add(new NormalPayment(-1, rest, currentDate.withDayOfMonth(1).toString("yyyy-MM-dd"), 2, "Übertrag", ""));				
 			}
 			
 			categoryHandler = new CategoryHandler(connection.getCategories());
 			
-			categoryBudgets = connection.getCategoryBudgets(currentDate.getYear(), currentDate.getMonthOfYear());		
+			categoryBudgets = connection.getCategoryBudgets(currentDate.getYear(), currentDate.getMonthOfYear());	
+			paymentHandler.filter(newFilterSettings);
 		}
 		catch(Exception e)
 		{

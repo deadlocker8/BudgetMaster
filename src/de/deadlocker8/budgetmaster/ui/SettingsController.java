@@ -98,7 +98,7 @@ public class SettingsController
 						Logger.error(e);
 						AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Beim Speichern der Einstellungen ist ein Fehler aufgetreten", controller.getIcon(), controller.getStage(), null, false);
 					}	
-					controller.refresh();
+					controller.refresh(controller.getFilterSettings());
 					controller.showNotification("Erfolgreich gespeichert");
 				}
 				else

@@ -10,6 +10,6 @@ public class NormalPayment extends Payment
 	@Override
 	public String toString()
 	{
-		return "Payment [ID=" + super.getID() + ", amount=" + super.getAmount() + ", date=" + super.getDate() + ", categoryID=" + super.getCategoryID() + ", name=" + super.getName() + ", description=" + super.getDescription() + "]";
+		return "NormalPayment [ID=" + super.getID() + ", amount=" + super.getAmount() + ", date=" + super.getDate() + ", categoryID=" + super.getCategoryID() + ", name=" + super.getName() + ", description=" + super.getDescription() + "]";
 	}
 }

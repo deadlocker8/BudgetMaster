@@ -368,7 +368,7 @@ public class NewPaymentController
 		}
 
 		stage.close();
-		paymentController.getController().refresh();
+		paymentController.getController().refresh(controller.getFilterSettings());
 	}
 
 	public void cancel()

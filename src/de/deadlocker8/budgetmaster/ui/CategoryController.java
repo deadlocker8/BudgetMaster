@@ -157,7 +157,7 @@ public class CategoryController implements Refreshable
 		{
 			ServerConnection connection = new ServerConnection(controller.getSettings());
 			connection.deleteCategory(ID);
-			controller.refresh();
+			controller.refresh(controller.getFilterSettings());
 		}
 		catch(Exception e)
 		{
