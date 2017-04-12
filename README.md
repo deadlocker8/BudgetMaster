@@ -9,7 +9,9 @@ Manage your monthly budget easily with BudgetMaster
 
 ![overbudget](https://cloud.githubusercontent.com/assets/16324894/24829628/d5c61254-1c75-11e7-8d36-52686b4ae119.png)
 
-![buchungen](https://cloud.githubusercontent.com/assets/16324894/24829631/d873c99c-1c75-11e7-9a11-08a3d05cfadb.png)
+![buchungen](https://cloud.githubusercontent.com/assets/16324894/24970863/2edd88de-1fb6-11e7-81c4-b854406b1d5e.png)
+
+![filter](https://cloud.githubusercontent.com/assets/16324894/24970882/3cbca750-1fb6-11e7-8c28-e8604f581dff.png)
 
 ![bearbeiten](https://cloud.githubusercontent.com/assets/16324894/24829629/d84628c0-1c75-11e7-90f3-c5cba28ac5d5.png)
 
