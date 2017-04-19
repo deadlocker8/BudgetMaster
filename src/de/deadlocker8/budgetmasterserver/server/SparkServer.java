@@ -113,7 +113,7 @@ public class SparkServer
 		get("/rest", new RestGet(handler, gson));
 		
 		//charts
-		get("/charts/categoryInOutSumForMonth", new CategoryInOutSumForMonth(handler, gson));
+		get("/charts/categoryInOutSum", new CategoryInOutSumForMonth(handler, gson));
 				
 
 		after((request, response) -> {

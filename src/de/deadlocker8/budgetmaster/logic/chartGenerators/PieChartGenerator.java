@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmaster.logic.chartGenerators;
 import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.CategoryInOutSum;
+import de.deadlocker8.budgetmaster.logic.Helpers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -19,12 +20,14 @@ public class PieChartGenerator
     private String title;
     private ArrayList<CategoryInOutSum> categoryInOutSums;
     private boolean useBudgetIN;
+    private String currency;
 
-    public PieChartGenerator(String title, ArrayList<CategoryInOutSum> categoryInOutSums, boolean useBudgetIN)
+    public PieChartGenerator(String title, ArrayList<CategoryInOutSum> categoryInOutSums, boolean useBudgetIN, String currency)
     {
         this.title = title;
         this.categoryInOutSums = categoryInOutSums;
         this.useBudgetIN = useBudgetIN;
+        this.currency = currency;
     }
 
     /**
@@ -40,11 +43,11 @@ public class PieChartGenerator
         	String label = String.valueOf(currentItem.getName()); 
         	if(useBudgetIN)
         	{
-        		data.add(new PieChart.Data(label, currentItem.getBudgetIN()/10.0));
+        		data.add(new PieChart.Data(label, currentItem.getBudgetIN()/100.0));
         	}
         	else
         	{
-        		data.add(new PieChart.Data(label, -currentItem.getBudgetOUT()/10.0));
+        		data.add(new PieChart.Data(label, -currentItem.getBudgetOUT()/100.0));
         	}
         }
         
@@ -74,7 +77,7 @@ public class PieChartGenerator
             String percent = String.valueOf(percentage);
             percent = percent.substring(0, percent.indexOf(".") + 2);
 
-            tooltip.setText(percent + " %");
+            tooltip.setText(percent + " %\n" + Helpers.NUMBER_FORMAT.format(pieValue).replace(".", ",") + currency);
             Tooltip.install(tool.getNode(), tooltip);
             Node node = tool.getNode();
             node.setOnMouseEntered(new EventHandler<MouseEvent>()

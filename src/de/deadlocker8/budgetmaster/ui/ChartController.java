@@ -19,19 +19,20 @@ public class ChartController implements Refreshable
 	{
 		this.controller = controller;
 
-		//TODO design, chart chooser
+		//TODO design, chart chooser		
 		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");
 	}
 
 	@Override
 	public void refresh()
 	{
-		//TODO example
+		//TODO example	
+		//TODO date range chooser
 		try
 		{
 			ServerConnection connection = new ServerConnection(controller.getSettings());
-			ArrayList<CategoryInOutSum> sums = connection.getCategoryInOutSumForMonth(controller.getCurrentDate().getYear(), controller.getCurrentDate().getMonthOfYear());
-			PieChartGenerator generator = new PieChartGenerator("Einnahmen nach Kategorien", sums, false);
+			ArrayList<CategoryInOutSum> sums = connection.getCategoryInOutSumForMonth(controller.getCurrentDate().withDayOfMonth(1), controller.getCurrentDate().dayOfMonth().withMaximumValue());
+			PieChartGenerator generator = new PieChartGenerator("Einnahmen nach Kategorien", sums, false, controller.getSettings().getCurrency());
 			anchorPaneMain.getChildren().add(generator.generate());		
 		}
 		catch(Exception e)

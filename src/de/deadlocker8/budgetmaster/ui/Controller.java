@@ -306,8 +306,6 @@ public class Controller
 			
 			categoryBudgets = connection.getCategoryBudgets(currentDate.getYear(), currentDate.getMonthOfYear());	
 			paymentHandler.filter(newFilterSettings);
-			
-			System.out.println(connection.getCategoryInOutSumForMonth(currentDate.getYear(), currentDate.getMonthOfYear()));
 		}
 		catch(Exception e)
 		{

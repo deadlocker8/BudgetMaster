@@ -332,11 +332,103 @@ public class DatabaseHandler
 
 		return results;
 	}
+	
+	public ArrayList<NormalPayment> getPaymentsBetween(String startDate, String endDate)
+	{	
+		Statement stmt = null;
+		String query = "SELECT * FROM payment WHERE DATE(Date) BETWEEN '" + startDate + "' AND '" + endDate + "';";
+
+		ArrayList<NormalPayment> results = new ArrayList<>();
+		try
+		{
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next())
+			{
+				int resultID = rs.getInt("ID");				
+				String name = rs.getString("Name");
+				int amount = rs.getInt("amount");
+				String date = rs.getString("Date");				
+				int categoryID = rs.getInt("CategoryID");
+				String description = rs.getString("Description");
+			
+				results.add(new NormalPayment(resultID, amount, date, categoryID, name, description));
+			}
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+
+		return results;
+	}
 
 	public ArrayList<RepeatingPaymentEntry> getRepeatingPayments(int year, int month)
 	{
 		Statement stmt = null;
 		String query = "SELECT repeating_entry.ID, repeating_entry.RepeatingPaymentID, repeating_entry.Date, repeating_payment.Name, repeating_payment.CategoryID, repeating_payment.Amount, repeating_payment.RepeatInterval, repeating_payment.RepeatEndDate, repeating_payment.RepeatMonthDay, repeating_payment.Description FROM repeating_entry, repeating_payment WHERE repeating_entry.RepeatingPaymentID = repeating_payment.ID AND YEAR(repeating_entry.Date) = " + year + " AND MONTH(repeating_entry.Date) = " + month;
+
+		ArrayList<RepeatingPaymentEntry> results = new ArrayList<>();
+		try
+		{
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next())
+			{
+				int resultID = rs.getInt("ID");
+				int repeatingPaymentID = rs.getInt("repeatingPaymentID");				
+				String name = rs.getString("Name");
+				String description = rs.getString("Description");
+				int amount = rs.getInt("amount");
+				String date = rs.getString("Date");				
+				int categoryID = rs.getInt("CategoryID");
+				int repeatInterval = rs.getInt("RepeatInterval");
+				String repeatEndDate = rs.getString("RepeatEndDate");
+				int repeatMonthDay = rs.getInt("RepeatMonthDay");		
+			
+				results.add(new RepeatingPaymentEntry(resultID, repeatingPaymentID, date, amount, categoryID, name, description,repeatInterval, repeatEndDate, repeatMonthDay));
+			}
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+
+		return results;
+	}
+	
+	public ArrayList<RepeatingPaymentEntry> getRepeatingPaymentsBetween(String startDate, String endDate)
+	{
+		Statement stmt = null;
+		String query = "SELECT repeating_entry.ID, repeating_entry.RepeatingPaymentID, repeating_entry.Date, repeating_payment.Name, repeating_payment.CategoryID, repeating_payment.Amount, repeating_payment.RepeatInterval, repeating_payment.RepeatEndDate, repeating_payment.RepeatMonthDay, repeating_payment.Description FROM repeating_entry, repeating_payment WHERE repeating_entry.RepeatingPaymentID = repeating_payment.ID AND DATE(repeating_entry.Date) BETWEEN '" + startDate + "' AND '" + endDate + "';";
 
 		ArrayList<RepeatingPaymentEntry> results = new ArrayList<>();
 		try

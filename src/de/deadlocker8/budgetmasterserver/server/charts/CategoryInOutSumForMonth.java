@@ -28,64 +28,46 @@ public class CategoryInOutSumForMonth implements Route
 	@Override
 	public Object handle(Request req, Response res) throws Exception
 	{
-		if(!req.queryParams().contains("year") || !req.queryParams().contains("month"))
+		if(!req.queryParams().contains("startDate") || !req.queryParams().contains("endDate"))
 		{
 			halt(400, "Bad Request");
-		}
-		
-		int year = 0;
-		int month = 0;
-		
+		}		
+	
 		try
-		{				
-			year = Integer.parseInt(req.queryMap("year").value());
-			month = Integer.parseInt(req.queryMap("month").value());
+		{	
+			ArrayList<Payment> payments = new ArrayList<>();
+			payments.addAll(handler.getPaymentsBetween(req.queryMap("startDate").value(), req.queryMap("endDate").value()));
+			payments.addAll(handler.getRepeatingPaymentsBetween(req.queryMap("startDate").value(), req.queryMap("endDate").value()));	
 			
-			if(year < 0 || month < 1 || month > 12)
-			{
-				halt(400, "Bad Request");
-			}
+			ArrayList<CategoryInOutSum> inOutSums = new ArrayList<>();
 			
-			try
-			{	
-				ArrayList<Payment> payments = new ArrayList<>();
-				payments.addAll(handler.getPayments(year, month));
-				payments.addAll(handler.getRepeatingPayments(year, month));			
-			
-				ArrayList<CategoryInOutSum> inOutSums = new ArrayList<>();
-				
-				for(Category currentCategory : handler.getCategories())
+			for(Category currentCategory : handler.getCategories())
+			{					
+				inOutSums.add(new CategoryInOutSum(currentCategory.getID(), currentCategory.getName(), currentCategory.getColor(), 0, 0));
+				CategoryInOutSum currentInOutSum = inOutSums.get(inOutSums.size() - 1);
+				for(Payment currentPayment : payments)
 				{					
-					inOutSums.add(new CategoryInOutSum(currentCategory.getID(), currentCategory.getName(), currentCategory.getColor(), 0, 0));
-					CategoryInOutSum currentInOutSum = inOutSums.get(inOutSums.size() - 1);
-					for(Payment currentPayment : payments)
-					{					
-						if(currentCategory.getID() == currentPayment.getCategoryID())
+					if(currentCategory.getID() == currentPayment.getCategoryID())
+					{
+						int amount = currentPayment.getAmount();
+						if(amount > 0)
 						{
-							int amount = currentPayment.getAmount();
-							if(amount > 0)
-							{
-								currentInOutSum.setBudgetIN(currentInOutSum.getBudgetIN() + amount);
-							}
-							else
-							{
-								currentInOutSum.setBudgetOUT(currentInOutSum.getBudgetOUT() + amount);
-							}
-						}						
-					}
+							currentInOutSum.setBudgetIN(currentInOutSum.getBudgetIN() + amount);
+						}
+						else
+						{
+							currentInOutSum.setBudgetOUT(currentInOutSum.getBudgetOUT() + amount);
+						}
+					}						
 				}
+			}
 				
-				return gson.toJson(inOutSums);
-			}
-			catch(IllegalStateException ex)
-			{
-				halt(500, "Internal Server Error");
-			}
+			return gson.toJson(inOutSums);
 		}
-		catch(Exception e)
+		catch(IllegalStateException ex)
 		{
-			halt(400, "Bad Request");
-		}
+			halt(500, "Internal Server Error");
+		}		
 		
 		return null;
 	}

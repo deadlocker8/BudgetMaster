@@ -13,6 +13,8 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import org.joda.time.DateTime;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -323,9 +325,11 @@ public class ServerConnection
 	/*
 	 * CHARTS
 	 */
-	public ArrayList<CategoryInOutSum> getCategoryInOutSumForMonth(int year, int month) throws Exception
+	public ArrayList<CategoryInOutSum> getCategoryInOutSumForMonth(DateTime startDate, DateTime endDate) throws Exception
 	{
-		URL url = new URL(settings.getUrl() + "/charts/categoryInOutSumForMonth?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&year=" + year + "&month=" + month);
+		URL url = new URL(settings.getUrl() + "/charts/categoryInOutSum?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + 
+				"&startDate=" + startDate.toString("yyyy-MM-dd") + 
+				"&endDate=" + endDate.toString("yyyy-MM-dd"));
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setDoOutput(true);
 		httpsCon.setRequestMethod("GET");
