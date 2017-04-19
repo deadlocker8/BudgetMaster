@@ -104,9 +104,7 @@ public class Controller
 			Parent nodeTabChart = (Parent)fxmlLoader.load();
 			chartController = fxmlLoader.getController();
 			chartController.init(this);
-			tabCharts.setContent(nodeTabChart);
-			//TODO
-			tabCharts.setDisable(true);
+			tabCharts.setContent(nodeTabChart);			
 
 			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/SettingsTab.fxml"));
 			Parent nodeTabSettings = (Parent)fxmlLoader.load();
@@ -308,6 +306,8 @@ public class Controller
 			
 			categoryBudgets = connection.getCategoryBudgets(currentDate.getYear(), currentDate.getMonthOfYear());	
 			paymentHandler.filter(newFilterSettings);
+			
+			System.out.println(connection.getCategoryInOutSumForMonth(currentDate.getYear(), currentDate.getMonthOfYear()));
 		}
 		catch(Exception e)
 		{

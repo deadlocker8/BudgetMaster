@@ -319,4 +319,29 @@ public class ServerConnection
 			return 0;
 		}
 	}
+	
+	/*
+	 * CHARTS
+	 */
+	public ArrayList<CategoryInOutSum> getCategoryInOutSumForMonth(int year, int month) throws Exception
+	{
+		URL url = new URL(settings.getUrl() + "/charts/categoryInOutSumForMonth?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&year=" + year + "&month=" + month);
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setDoOutput(true);
+		httpsCon.setRequestMethod("GET");
+
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			String result = Read.getStringFromInputStream(httpsCon.getInputStream());
+			// required by GSON
+			Type listType = new TypeToken<ArrayList<CategoryInOutSum>>()
+			{
+			}.getType();
+			return gson.fromJson(result, listType);
+		}
+		else
+		{
+			return null;
+		}
+	}
 }

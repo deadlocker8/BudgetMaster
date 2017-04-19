@@ -1,28 +1,25 @@
-package de.deadlocker8.budgetmasterserver.server.categorybudget;
+package de.deadlocker8.budgetmasterserver.server.charts;
 
 import static spark.Spark.halt;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
 
 import com.google.gson.Gson;
 
 import de.deadlocker8.budgetmaster.logic.Category;
-import de.deadlocker8.budgetmaster.logic.CategoryBudget;
+import de.deadlocker8.budgetmaster.logic.CategoryInOutSum;
 import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmasterserver.main.DatabaseHandler;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
-public class CategoryBudgetGet implements Route
+public class CategoryInOutSumForMonth implements Route
 {
 	private DatabaseHandler handler;
 	private Gson gson;
 
-	public CategoryBudgetGet(DatabaseHandler handler, Gson gson)
+	public CategoryInOutSumForMonth(DatabaseHandler handler, Gson gson)
 	{
 		this.handler = handler;
 		this.gson = gson;
@@ -55,40 +52,30 @@ public class CategoryBudgetGet implements Route
 				payments.addAll(handler.getPayments(year, month));
 				payments.addAll(handler.getRepeatingPayments(year, month));			
 			
-				ArrayList<CategoryBudget> budgets = new ArrayList<>();
+				ArrayList<CategoryInOutSum> inOutSums = new ArrayList<>();
 				
 				for(Category currentCategory : handler.getCategories())
-				{
-					budgets.add(new CategoryBudget(currentCategory.getName(), currentCategory.getColor(), 0));
-					CategoryBudget currentBudget = budgets.get(budgets.size() - 1);
+				{					
+					inOutSums.add(new CategoryInOutSum(currentCategory.getID(), currentCategory.getName(), currentCategory.getColor(), 0, 0));
+					CategoryInOutSum currentInOutSum = inOutSums.get(inOutSums.size() - 1);
 					for(Payment currentPayment : payments)
 					{					
 						if(currentCategory.getID() == currentPayment.getCategoryID())
 						{
-							currentBudget.setBudget(currentBudget.getBudget() + currentPayment.getAmount());
+							int amount = currentPayment.getAmount();
+							if(amount > 0)
+							{
+								currentInOutSum.setBudgetIN(currentInOutSum.getBudgetIN() + amount);
+							}
+							else
+							{
+								currentInOutSum.setBudgetOUT(currentInOutSum.getBudgetOUT() + amount);
+							}
 						}						
 					}
 				}
 				
-				//filter empty categories
-				Iterator<CategoryBudget> iterator = budgets.iterator();
-				while(iterator.hasNext())
-				{		
-					if(iterator.next().getBudget() == 0)
-					{
-						iterator.remove();
-					}
-				}
-				
-				Collections.sort(budgets, new Comparator<CategoryBudget>() {
-			        @Override
-			        public int compare(CategoryBudget budget1, CategoryBudget budget2)
-			        {
-			            return  Double.compare(budget1.getBudget(), budget2.getBudget());
-			        }
-			    });		
-				
-				return gson.toJson(budgets);
+				return gson.toJson(inOutSums);
 			}
 			catch(IllegalStateException ex)
 			{
