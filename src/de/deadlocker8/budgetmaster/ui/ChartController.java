@@ -28,6 +28,7 @@ public class ChartController implements Refreshable
 	{
 		//TODO example	
 		//TODO date range chooser
+		//TODO check wether starDate and EndDate are included and are working correctly
 		try
 		{
 			ServerConnection connection = new ServerConnection(controller.getSettings());
