@@ -48,7 +48,7 @@ public class Main
 			settings = Utils.loadSettings();
 			new SparkServer(settings);
 		}
-		catch(IOException e)
+		catch(IOException | URISyntaxException e)
 		{
 			Logger.error(e);
 		}
