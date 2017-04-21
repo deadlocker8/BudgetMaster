@@ -162,7 +162,7 @@ public class CategoryController implements Refreshable
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			controller.showConnectionErrorAlert();
+			controller.showConnectionErrorAlert(e.getMessage());
 		}
 	}
 	

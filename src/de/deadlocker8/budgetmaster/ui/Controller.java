@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.ui;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -228,7 +229,7 @@ public class Controller
 		return currentDate;
 	}
 
-	public void showConnectionErrorAlert()
+	public void showConnectionErrorAlert(String errorMessage)
 	{
 		if(!alertIsShowing)
 		{
@@ -237,7 +238,8 @@ public class Controller
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Fehler");
 				alert.setHeaderText("");
-				alert.setContentText("Beim Herstellen der Verbindung zum Server ist ein Fehler aufgetreten. Bitte überprüfe deine Einstellungen und ob der Server läuft.");
+				alert.setContentText("Beim Herstellen der Verbindung zum Server ist ein Fehler aufgetreten. Bitte überprüfe deine Einstellungen und ob der Server läuft.\n\n"
+						+ "Fehlerdetails:\n" + errorMessage);
 				Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
 				dialogStage.getIcons().add(icon);
 				dialogStage.initOwner(stage);
@@ -313,7 +315,7 @@ public class Controller
 		{
 			Logger.error(e);
 			categoryHandler = new CategoryHandler(null);			
-			showConnectionErrorAlert();
+			showConnectionErrorAlert(e.getMessage());
 		}
 
 		refreshAllTabs();		

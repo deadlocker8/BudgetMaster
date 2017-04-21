@@ -204,7 +204,7 @@ public class PaymentController implements Refreshable
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			controller.showConnectionErrorAlert();
+			controller.showConnectionErrorAlert(e.getMessage());
 		}
 	}
 
@@ -219,7 +219,7 @@ public class PaymentController implements Refreshable
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			controller.showConnectionErrorAlert();
+			controller.showConnectionErrorAlert(e.getMessage());
 		}
 	}
 
@@ -238,7 +238,7 @@ public class PaymentController implements Refreshable
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			controller.showConnectionErrorAlert();
+			controller.showConnectionErrorAlert(e.getMessage());
 		}
 	}
 	

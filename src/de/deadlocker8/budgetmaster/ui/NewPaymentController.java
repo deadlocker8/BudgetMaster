@@ -138,7 +138,7 @@ public class NewPaymentController
 		}
 		catch(Exception e)
 		{
-			controller.showConnectionErrorAlert();
+			controller.showConnectionErrorAlert(e.getMessage());
 			stage.close();
 			return;
 		}
@@ -308,7 +308,7 @@ public class NewPaymentController
 				catch(Exception e)
 				{
 					Logger.error(e);
-					controller.showConnectionErrorAlert();
+					controller.showConnectionErrorAlert(e.getMessage());
 				}
 			}
 			else
@@ -322,7 +322,7 @@ public class NewPaymentController
 				catch(Exception e)
 				{
 					Logger.error(e);
-					controller.showConnectionErrorAlert();
+					controller.showConnectionErrorAlert(e.getMessage());
 				}
 			}
 		}
@@ -348,7 +348,7 @@ public class NewPaymentController
 				catch(Exception e)
 				{
 					Logger.error(e);
-					controller.showConnectionErrorAlert();
+					controller.showConnectionErrorAlert(e.getMessage());
 				}
 			}
 			else
@@ -362,7 +362,7 @@ public class NewPaymentController
 				catch(Exception e)
 				{
 					Logger.error(e);
-					controller.showConnectionErrorAlert();
+					controller.showConnectionErrorAlert(e.getMessage());
 				}
 			}
 		}

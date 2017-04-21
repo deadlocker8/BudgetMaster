@@ -48,8 +48,10 @@ public class ServerConnection
 		// Install the all-trusting trust manager
 		SSLContext sc = SSLContext.getInstance("SSL");
 		sc.init(null, trustAllCerts, new java.security.SecureRandom());
-		HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-		HttpsURLConnection.setDefaultHostnameVerifier((hostname, sslSession) -> hostname.equals("localhost"));
+		HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());		
+		
+		//check whitelist
+		HttpsURLConnection.setDefaultHostnameVerifier((hostname, sslSession)->settings.getTrustedHosts().contains(hostname));		
 	}
 
 	/*

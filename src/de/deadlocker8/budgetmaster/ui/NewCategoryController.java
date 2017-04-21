@@ -147,7 +147,7 @@ public class NewCategoryController
 			}
 			catch(Exception e)
 			{
-				controller.showConnectionErrorAlert();
+				controller.showConnectionErrorAlert(e.getMessage());
 			}			
 		}
 		else
@@ -161,7 +161,7 @@ public class NewCategoryController
 			}
 			catch(Exception e)
 			{				
-				controller.showConnectionErrorAlert();
+				controller.showConnectionErrorAlert(e.getMessage());
 			}	
 		}
 		
