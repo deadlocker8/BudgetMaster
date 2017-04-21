@@ -16,7 +16,7 @@ public class Utils
 		
 		Gson gson = new Gson();
 		
-		settingsJSON = new String(Files.readAllBytes(Paths.get(Settings.class.getProtectionDomain().getCodeSource().getLocation().toURI()).resolve("settings.json")));		
+		settingsJSON = new String(Files.readAllBytes(Paths.get(Settings.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().resolve("settings.json")));		
 		settings = gson.fromJson(settingsJSON, Settings.class);	
 		return settings;		
 	}

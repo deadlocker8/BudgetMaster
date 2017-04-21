@@ -33,8 +33,8 @@ public class Main
 		
 		try
 		{
-			Path settingsPath = Paths.get(Settings.class.getProtectionDomain().getCodeSource().getLocation().toURI()).resolve("settings.json");
-
+			Path settingsPath = Paths.get(Settings.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().resolve("settings.json");
+			
 			if(!Files.exists(settingsPath))
 			{
 				try

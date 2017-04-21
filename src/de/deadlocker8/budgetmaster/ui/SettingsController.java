@@ -69,12 +69,19 @@ public class SettingsController
 	private void setTextAreaTrustedHosts(ArrayList<String> trustedHosts)
 	{
 		StringBuilder trustedHostsString = new StringBuilder();
-		for(String currentHost : trustedHosts)
+		if(trustedHosts != null)
 		{
-			trustedHostsString.append(currentHost);
-			trustedHostsString.append("\n");
+			for(String currentHost : trustedHosts)
+			{
+				trustedHostsString.append(currentHost);
+				trustedHostsString.append("\n");
+			}
+			textAreaTrustedHosts.setText(trustedHostsString.toString());
 		}
-		textAreaTrustedHosts.setText(trustedHostsString.toString());
+		else
+		{
+			textAreaTrustedHosts.setText("");
+		}
 	}
 	
 	public void save()
