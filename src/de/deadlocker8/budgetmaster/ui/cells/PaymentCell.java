@@ -150,17 +150,17 @@ public class PaymentCell extends ListCell<Payment>
 				Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 				alert.setTitle("Zahlung löschen");
 				alert.setHeaderText("");
-				alert.setContentText("Diese Zahlung wirklich unwiederruflich löschen?");
+				alert.setContentText("Diese Zahlung wirklich unwiderruflich löschen?");
 				Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
 				dialogStage.getIcons().add(paymentController.getController().getIcon());
 				dialogStage.centerOnScreen();
 
 				if(item instanceof RepeatingPaymentEntry)
 				{
-					alert.setContentText("Es handelt sich um eine wiederkehrende Zahlung. Wie soll gelöscht werden?");
+					alert.setContentText("Es handelt sich um eine wiederkehrende Zahlung. Welche Zahlungen sollen gelöscht werden?");
 					
-					ButtonType buttonTypeOne = new ButtonType("Komplett löschen");
-					ButtonType buttonTypeTwo = new ButtonType("Alle zukünftigen Löschen");				
+					ButtonType buttonTypeOne = new ButtonType("Alle");
+					ButtonType buttonTypeTwo = new ButtonType("Alle zukünftigen");				
 					ButtonType buttonTypeCancel = new ButtonType("Abbrechen", ButtonData.CANCEL_CLOSE);
 
 					alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
