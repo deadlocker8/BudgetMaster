@@ -56,7 +56,15 @@ public class DatabaseHandler
 
 			while(rs.next())
 			{
-				dateTime = formatter.parseDateTime(rs.getString("min"));
+				String min = rs.getString("min");
+				if(min == null)
+				{
+					dateTime = null;
+				}
+				else
+				{
+					dateTime = formatter.parseDateTime(rs.getString("min"));
+				}
 			}
 		}
 		catch(SQLException e)
@@ -92,7 +100,15 @@ public class DatabaseHandler
 
 			while(rs.next())
 			{
-				dateTime = formatter.parseDateTime(rs.getString("min"));
+				String min = rs.getString("min");
+				if(min == null)
+				{
+					dateTime = null;
+				}
+				else
+				{
+					dateTime = formatter.parseDateTime(rs.getString("min"));
+				}
 			}
 		}
 		catch(SQLException e)
@@ -118,18 +134,26 @@ public class DatabaseHandler
 
 	public int getRestForAllPreviousMonths(int year, int month)
 	{		
+		DateTimeFormatter formatter = DateTimeFormat.forPattern("MM.yyyy");
+		String dateString = String.valueOf(month) + "." + year;
+		DateTime currentDate = formatter.parseDateTime(dateString);		
+		
 		DateTime firstNormalPaymentDate = getFirstNormalPaymentDate();
+		if(firstNormalPaymentDate == null)
+		{
+			firstNormalPaymentDate = currentDate;
+		}
 		DateTime firstRepeatingPaymentDate = getFirstRepeatingPaymentDate();
+		if(firstRepeatingPaymentDate == null)
+		{
+			firstRepeatingPaymentDate = currentDate;
+		}
 		
 		DateTime firstDate = firstNormalPaymentDate;
 		if(firstRepeatingPaymentDate.isBefore(firstNormalPaymentDate))
 		{
 			firstDate = firstRepeatingPaymentDate;
-		}
-		
-		DateTimeFormatter formatter = DateTimeFormat.forPattern("MM.yyyy");
-		String dateString = String.valueOf(month) + "." + year;
-		DateTime currentDate = formatter.parseDateTime(dateString);//	
+		}	
 	
 		if(firstDate.isAfter(currentDate))
 		{
