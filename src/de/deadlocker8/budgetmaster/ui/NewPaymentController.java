@@ -17,7 +17,6 @@ import de.deadlocker8.budgetmaster.ui.cells.RepeatingDayCell;
 import de.deadlocker8.budgetmaster.ui.cells.SmallCategoryCell;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -213,9 +212,18 @@ public class NewPaymentController
 			toggleRepeatingArea(false);			
 
 			//preselect correct month and year
-			DateTime currentDate = controller.getCurrentDate();
-			datePicker.setValue(LocalDate.now().withYear(currentDate.getYear()).withMonth(currentDate.getMonthOfYear()).withDayOfMonth(currentDate.getDayOfMonth()));
-			Platform.runLater(()->{datePicker.getEditor().clear();});
+			DateTime currentDate = controller.getCurrentDate();		
+			if(DateTime.now().getDayOfMonth() > currentDate.dayOfMonth().withMaximumValue().getDayOfMonth())
+			{
+				currentDate = currentDate.dayOfMonth().withMaximumValue();				
+			}		
+			
+			LocalDate currentLocalDate = LocalDate.now().withYear(currentDate.getYear())
+			.withMonth(currentDate.getMonthOfYear())
+			.withDayOfMonth(currentDate.getDayOfMonth());
+			datePicker.setValue(currentLocalDate);
+			datePicker.setEditable(false);			
+			//Platform.runLater(()->{datePicker.getEditor().clear();});
 		}
 	}
 
