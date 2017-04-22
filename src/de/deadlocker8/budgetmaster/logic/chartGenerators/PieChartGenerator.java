@@ -1,6 +1,8 @@
 package de.deadlocker8.budgetmaster.logic.chartGenerators;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Set;
 
 import de.deadlocker8.budgetmaster.logic.CategoryInOutSum;
 import de.deadlocker8.budgetmaster.logic.Helpers;
@@ -10,6 +12,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import tools.ConvertTo;
@@ -36,11 +39,16 @@ public class PieChartGenerator
      */
     public PieChart generate()
     {
-        ArrayList<PieChart.Data> data = new ArrayList<>();      
-
+        ArrayList<PieChart.Data> data = new ArrayList<>();
+        
         for(CategoryInOutSum currentItem : categoryInOutSums)
         {        	
-        	String label = String.valueOf(currentItem.getName()); 
+        	String label = currentItem.getName(); 
+        	if(label.equals("NONE"))
+        	{
+        		label = "Keine Kategorie";
+        	}
+        	
         	if(useBudgetIN)
         	{
         		data.add(new PieChart.Data(label, currentItem.getBudgetIN()/100.0));
@@ -62,15 +70,31 @@ public class PieChartGenerator
             Tooltip tooltip = new Tooltip();
 
             double total = 0;
-            for(int i = 0; i<chart.getData().size(); i++)
+            for(int i = 0; i < chart.getData().size(); i++)
             {
             	PieChart.Data currentData = chart.getData().get(i);
                 total += currentData.getPieValue();
                 String currentColor = ConvertTo.toRGBHexWithoutOpacity(categoryInOutSums.get(i).getColor());
                 currentData.getNode().setStyle("-fx-pie-color: " + currentColor + ";");
-                
-                //TODO color legend
-            }
+            }    
+            
+            //style legend item according to color
+    		Set<Node> nodes = chart.lookupAll(".chart-legend-item");
+    		if(nodes.size() > 0)
+    		{        	
+    			Iterator<Node> iterator = nodes.iterator();
+    			int counter = 0;
+    			while(iterator.hasNext())
+    			{
+        			Node node = iterator.next();	        			
+        			if(node instanceof Label)
+        			{
+        				Label labelLegendItem = (Label)node;        				
+        				labelLegendItem.getGraphic().setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(categoryInOutSums.get(counter).getColor()) + ";");
+        			}
+        			counter++;
+    			}
+    		}
 
             double pieValue = tool.getPieValue();
             double percentage = (pieValue / total) * 100;
