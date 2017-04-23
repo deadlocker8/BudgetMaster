@@ -26,6 +26,7 @@ import de.deadlocker8.budgetmasterserver.server.category.CategoryGetAll;
 import de.deadlocker8.budgetmasterserver.server.category.CategoryUpdate;
 import de.deadlocker8.budgetmasterserver.server.categorybudget.CategoryBudgetGet;
 import de.deadlocker8.budgetmasterserver.server.charts.CategoryInOutSumForMonth;
+import de.deadlocker8.budgetmasterserver.server.charts.MonthInOutSum;
 import de.deadlocker8.budgetmasterserver.server.payment.normal.PaymentAdd;
 import de.deadlocker8.budgetmasterserver.server.payment.normal.PaymentDelete;
 import de.deadlocker8.budgetmasterserver.server.payment.normal.PaymentGet;
@@ -114,6 +115,7 @@ public class SparkServer
 		
 		//charts
 		get("/charts/categoryInOutSum", new CategoryInOutSumForMonth(handler, gson));
+		get("/charts/monthInOutSum", new MonthInOutSum(handler, gson));
 				
 
 		after((request, response) -> {

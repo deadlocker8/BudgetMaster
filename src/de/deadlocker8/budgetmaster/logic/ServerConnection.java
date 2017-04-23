@@ -348,4 +348,28 @@ public class ServerConnection
 			return null;
 		}
 	}
+	
+	public ArrayList<MonthInOutSum> getMonthInOutSum(DateTime startDate, DateTime endDate) throws Exception
+	{
+		URL url = new URL(settings.getUrl() + "/charts/monthInOutSum?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + 
+				"&startDate=" + startDate.toString("yyyy-MM-dd") + 
+				"&endDate=" + endDate.toString("yyyy-MM-dd"));	
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setDoOutput(true);
+		httpsCon.setRequestMethod("GET");
+
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			String result = Read.getStringFromInputStream(httpsCon.getInputStream());
+			// required by GSON
+			Type listType = new TypeToken<ArrayList<MonthInOutSum>>()
+			{
+			}.getType();
+			return gson.fromJson(result, listType);
+		}
+		else
+		{
+			return null;
+		}
+	}
 }

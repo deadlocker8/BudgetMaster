@@ -6,11 +6,14 @@ import java.util.ArrayList;
 import org.joda.time.DateTime;
 
 import de.deadlocker8.budgetmaster.logic.CategoryInOutSum;
+import de.deadlocker8.budgetmaster.logic.MonthInOutSum;
 import de.deadlocker8.budgetmaster.logic.ServerConnection;
+import de.deadlocker8.budgetmaster.logic.chartGenerators.BarChartGenerator;
 import de.deadlocker8.budgetmaster.logic.chartGenerators.PieChartGenerator;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
@@ -84,8 +87,35 @@ public class ChartController implements Refreshable
 			hboxChartCategories.getChildren().add(generator.generate());
 			generator = new PieChartGenerator("Ausgaben nach Kategorien", sums, false, controller.getSettings().getCurrency());
 			hboxChartCategories.getChildren().add(generator.generate());
+		}
+		catch(Exception e)
+		{
+			Logger.error(e);
+			//TODO
+			//controller.showConnectionErrorAlert(e.getMessage());
+		}
+	}
+	
+	public void chartMonthShow()
+	{
+		//DEBUG get date from comboboxes
+		DateTime startDate = controller.getCurrentDate().withMonthOfYear(1);
+		DateTime endDate =  controller.getCurrentDate().withMonthOfYear(12);	
+		
+		try
+		{
+			ServerConnection connection = new ServerConnection(controller.getSettings());
+			//DEBUG
+			ArrayList<MonthInOutSum> sums = connection.getMonthInOutSum(startDate, endDate);
 
-			accordion.setExpandedPane(accordion.getPanes().get(0));
+			anchorPaneChartMonth.getChildren().clear();
+			BarChartGenerator generator = new BarChartGenerator(sums, controller.getSettings().getCurrency());
+			BarChart<String, Number> chartMonth = generator.generate();
+			anchorPaneChartMonth.getChildren().add(chartMonth);
+			AnchorPane.setTopAnchor(chartMonth, 0.0);
+			AnchorPane.setRightAnchor(chartMonth, 0.0);
+			AnchorPane.setBottomAnchor(chartMonth, 0.0);
+			AnchorPane.setLeftAnchor(chartMonth, 0.0);
 		}
 		catch(Exception e)
 		{
@@ -106,5 +136,10 @@ public class ChartController implements Refreshable
 		datePickerEnd.setValue(endDate);
 		
 		chartCategoriesShow();
+		
+		//chart month
+		chartMonthShow();
+		
+		accordion.setExpandedPane(accordion.getPanes().get(0));
 	}
 }
