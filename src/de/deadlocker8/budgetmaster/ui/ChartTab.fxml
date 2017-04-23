@@ -118,6 +118,58 @@
                   </VBox>
                </content>
           </TitledPane>
+            <TitledPane animated="false" text="Einnahmen/Ausgaben pro Monat Verlauf">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <content>
+                  <VBox spacing="20.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="8.0" prefWidth="750.0">
+                           <children>
+                              <HBox alignment="CENTER_RIGHT" spacing="10.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label text="Von:">
+                                       <font>
+                                          <Font name="System Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <ComboBox prefHeight="25.0" prefWidth="100.0" />
+                                    <ComboBox prefWidth="70.0" />
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets right="15.0" />
+                                 </HBox.margin>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label text="Bis:">
+                                       <font>
+                                          <Font name="System Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <ComboBox prefWidth="100.0" />
+                                    <ComboBox prefWidth="70.0" />
+                                    <Button fx:id="buttonChartCategoriesShow11" mnemonicParsing="false" onAction="#chartCategoriesShow">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets left="15.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets left="15.0" />
+                                 </HBox.margin>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <AnchorPane fx:id="anchorPaneLineChart" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                     </children>
+                  </VBox>
+               </content>
+            </TitledPane>
         </panes>
       </Accordion>
    </children>

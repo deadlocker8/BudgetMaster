@@ -9,11 +9,13 @@ import de.deadlocker8.budgetmaster.logic.CategoryInOutSum;
 import de.deadlocker8.budgetmaster.logic.MonthInOutSum;
 import de.deadlocker8.budgetmaster.logic.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.chartGenerators.BarChartGenerator;
+import de.deadlocker8.budgetmaster.logic.chartGenerators.LineChartGenerator;
 import de.deadlocker8.budgetmaster.logic.chartGenerators.PieChartGenerator;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.LineChart;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
@@ -32,6 +34,7 @@ public class ChartController implements Refreshable
 	@FXML private HBox hboxChartCategories;
 	@FXML private DatePicker datePickerEnd;
 	@FXML private AnchorPane anchorPaneChartMonth;
+	@FXML private AnchorPane anchorPaneLineChart;
 	@FXML private Button buttonChartCategoriesShow;
 
 	private Controller controller;
@@ -124,6 +127,35 @@ public class ChartController implements Refreshable
 			//controller.showConnectionErrorAlert(e.getMessage());
 		}
 	}
+	
+	public void chartLineChartShow()
+	{
+		//DEBUG get date from comboboxes
+		DateTime startDate = controller.getCurrentDate().withMonthOfYear(1);
+		DateTime endDate =  controller.getCurrentDate().withMonthOfYear(12);	
+		
+		try
+		{
+			ServerConnection connection = new ServerConnection(controller.getSettings());
+			//DEBUG
+			ArrayList<MonthInOutSum> sums = connection.getMonthInOutSum(startDate, endDate);
+
+			anchorPaneLineChart.getChildren().clear();
+			LineChartGenerator generator = new LineChartGenerator(sums, controller.getSettings().getCurrency());
+			LineChart<String, Number> chartMonth = generator.generate();
+			anchorPaneLineChart.getChildren().add(chartMonth);
+			AnchorPane.setTopAnchor(chartMonth, 0.0);
+			AnchorPane.setRightAnchor(chartMonth, 0.0);
+			AnchorPane.setBottomAnchor(chartMonth, 0.0);
+			AnchorPane.setLeftAnchor(chartMonth, 0.0);
+		}
+		catch(Exception e)
+		{
+			Logger.error(e);
+			//TODO
+			//controller.showConnectionErrorAlert(e.getMessage());
+		}
+	}
 
 	@Override
 	public void refresh()
@@ -139,6 +171,10 @@ public class ChartController implements Refreshable
 		
 		//chart month
 		chartMonthShow();
+		
+		chartLineChartShow();
+		
+		//TODO combine bar und line chart (radio buttons)
 		
 		accordion.setExpandedPane(accordion.getPanes().get(0));
 	}
