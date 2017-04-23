@@ -624,6 +624,46 @@ public class DatabaseHandler
 			}
 		}
 	}
+	
+	public void deleteDatabase()
+	{
+		Statement stmt = null;
+		String tableCategory = "DROP TABLE IF EXISTS category;";
+		String tablePayment = "DROP TABLE IF EXISTS payment;";
+		String tableRepeatingPayment = "DROP TABLE IF EXISTS repeating_payment;";
+		String tableRepeatingEntry= "DROP TABLE IF EXISTS repeating_entry;";
+		try
+		{
+			stmt = connection.createStatement();
+			stmt.execute("SET FOREIGN_KEY_CHECKS = 0;");
+			stmt.execute(tableCategory);
+			Logger.info("Deleted table: category");
+			stmt.execute(tablePayment);
+			Logger.info("Deleted table: payment");
+			stmt.execute(tableRepeatingPayment);
+			Logger.info("Deleted table: repeating_payment");
+			stmt.execute(tableRepeatingEntry);
+			Logger.info("Deleted table: repeating_entry");
+			stmt.execute("SET FOREIGN_KEY_CHECKS = 1;");
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+	}
 
 	/*
 	 * ADD

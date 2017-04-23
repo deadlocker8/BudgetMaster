@@ -1,7 +1,6 @@
 package de.deadlocker8.budgetmaster.ui;
 
 import java.io.IOException;
-import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;

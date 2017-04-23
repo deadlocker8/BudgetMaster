@@ -25,6 +25,7 @@ import de.deadlocker8.budgetmasterserver.server.category.CategoryGet;
 import de.deadlocker8.budgetmasterserver.server.category.CategoryGetAll;
 import de.deadlocker8.budgetmasterserver.server.category.CategoryUpdate;
 import de.deadlocker8.budgetmasterserver.server.categorybudget.CategoryBudgetGet;
+import de.deadlocker8.budgetmasterserver.server.database.DatabaseDelete;
 import de.deadlocker8.budgetmasterserver.server.payment.normal.PaymentAdd;
 import de.deadlocker8.budgetmasterserver.server.payment.normal.PaymentDelete;
 import de.deadlocker8.budgetmasterserver.server.payment.normal.PaymentGet;
@@ -110,6 +111,9 @@ public class SparkServer
 		
 		// Rest
 		get("/rest", new RestGet(handler, gson));
+		
+		// Database
+		delete("/database", new DatabaseDelete(handler, settings));
 
 		after((request, response) -> {
 			new RepeatingPaymentUpdater(handler).updateRepeatingPayments(DateTime.now());

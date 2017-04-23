@@ -321,4 +321,18 @@ public class ServerConnection
 			return 0;
 		}
 	}
+	
+	/*
+	 * DATABASE
+	 */	
+	public void deleteDatabase() throws Exception
+	{
+		URL url = new URL(settings.getUrl() + "/database?secret=" + Helpers.getURLEncodedString(settings.getSecret()));
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setRequestMethod("DELETE");
+		httpsCon.setDoInput(true);
+		InputStream stream = httpsCon.getInputStream();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		reader.close();
+	}
 }
