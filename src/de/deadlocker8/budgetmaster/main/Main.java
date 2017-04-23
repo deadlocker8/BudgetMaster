@@ -1,7 +1,6 @@
 package de.deadlocker8.budgetmaster.main;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -12,14 +11,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import logger.LogLevel;
+import logger.FileOutputMode;
 import logger.Logger;
 import tools.PathUtils;
 
 public class Main extends Application
 {
 	public static ResourceBundle bundle = ResourceBundle.getBundle("de/deadlocker8/budgetmaster/main/", Locale.GERMANY);
-	
+
 	@Override
 	public void start(Stage stage)
 	{
@@ -28,7 +27,7 @@ public class Main extends Application
 			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("de/deadlocker8/budgetmaster/ui/GUI.fxml"));
 			Parent root = (Parent)loader.load();
 
-			Scene scene = new Scene(root, 600, 650);			
+			Scene scene = new Scene(root, 600, 650);
 
 			((Controller)loader.getController()).init(stage);
 
@@ -47,25 +46,22 @@ public class Main extends Application
 		}
 	}
 
+	@Override
+	public void init() throws Exception
+	{
+		Parameters params = getParameters();
+		String logLevelParam = params.getNamed().get("loglevel");
+		Logger.setLevel(logLevelParam);
+		
+		File logFolder = new File(PathUtils.getOSindependentPath() + bundle.getString("folder"));
+		PathUtils.checkFolder(logFolder);
+		Logger.enableFileOutput(logFolder, System.out, System.err, FileOutputMode.COMBINED);
+
+		Logger.appInfo(bundle.getString("app.name"), bundle.getString("version.name"), bundle.getString("version.code"), bundle.getString("version.date"));
+	}
+
 	public static void main(String[] args)
 	{
-		if(Arrays.asList(args).contains("debug"))
-		{
-			Logger.setLevel(LogLevel.ALL);
-			Logger.info("Running in Debug Mode");
-		}
-		else
-		{
-			Logger.setLevel(LogLevel.ERROR);			
-		}
-		
-		PathUtils.checkFolder(new File(PathUtils.getOSindependentPath() + bundle.getString("folder")));
-		File logFile = new File(PathUtils.getOSindependentPath() + bundle.getString("folder") + "/error.log");				
-		Logger.enableFileOutput(logFile);
-	
-		Logger.appInfo(bundle.getString("app.name"), bundle.getString("version.name"), bundle.getString("version.code"), bundle.getString("version.date"));
-		
 		launch(args);
 	}
-	
 }
