@@ -229,7 +229,7 @@ public class Controller
 	}
 
 	public void showConnectionErrorAlert(String errorMessage)
-	{
+	{		
 		if(!alertIsShowing)
 		{
 			Platform.runLater(() -> {
@@ -250,10 +250,8 @@ public class Controller
 				Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
 				dialogStage.getIcons().add(icon);
 				dialogStage.initOwner(stage);
-				dialogStage.setOnCloseRequest((event) -> {
-					alertIsShowing = false;
-				});
 				alert.showAndWait();
+				alertIsShowing = false;
 			});
 		}
 	}

@@ -54,7 +54,7 @@ public class SettingsController
 		if(controller.getSettings() != null)
 		{
 			textFieldURL.setText(controller.getSettings().getUrl());
-			textFieldSecret.setText(controller.getSettings().getSecret());
+			textFieldSecret.setText("******");
 			textFieldCurrency.setText(controller.getSettings().getCurrency());
 			if(controller.getSettings().isRestActivated())
 			{
@@ -153,6 +153,9 @@ public class SettingsController
 						Logger.error(e);
 						AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Beim Speichern der Einstellungen ist ein Fehler aufgetreten", controller.getIcon(), controller.getStage(), null, false);
 					}
+					
+					textFieldSecret.setText("******");
+					
 					controller.refresh(controller.getFilterSettings());
 					controller.showNotification("Erfolgreich gespeichert");
 				}
