@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.Settings;
 import de.deadlocker8.budgetmaster.logic.Utils;
@@ -27,6 +28,7 @@ import logger.Logger;
 import tools.AlertGenerator;
 import tools.BASE58Type;
 import tools.ConvertTo;
+import tools.HashUtils;
 import tools.RandomCreations;
 import tools.Worker;
 
@@ -128,7 +130,7 @@ public class SettingsController
 					if(controller.getSettings() != null)
 					{
 						controller.getSettings().setUrl(url);
-						controller.getSettings().setSecret(secret);
+						controller.getSettings().setSecret(HashUtils.hash(secret, Helpers.SALT));
 						controller.getSettings().setCurrency(currency);
 						controller.getSettings().setRestActivated(radioButtonRestActivated.isSelected());
 						controller.getSettings().setTrustedHosts(trustedHosts);
@@ -137,7 +139,7 @@ public class SettingsController
 					{
 						Settings settings = new Settings();
 						settings.setUrl(url);
-						settings.setSecret(secret);
+						settings.setSecret(HashUtils.hash(secret, Helpers.SALT));
 						settings.setCurrency(currency);
 						settings.setRestActivated(radioButtonRestActivated.isSelected());
 						settings.setTrustedHosts(trustedHosts);
