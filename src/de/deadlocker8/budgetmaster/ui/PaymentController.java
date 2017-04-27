@@ -74,6 +74,7 @@ public class PaymentController implements Refreshable
 						}
 					}
 				});
+				cell.prefWidthProperty().bind(listView.widthProperty().subtract(2));
 				return cell;
 			}
 		});
