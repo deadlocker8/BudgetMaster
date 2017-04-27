@@ -107,6 +107,7 @@ public class NewPaymentController
 		comboBoxCategory.setCellFactory((view) -> {
 			return new SmallCategoryCell();
 		});
+		comboBoxRepeatingDay.setValue(1);
 		buttonCategoryCell = new ButtonCategoryCell(Color.WHITE);
 		comboBoxCategory.setButtonCell(buttonCategoryCell);
 		comboBoxCategory.setStyle("-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 5;");
