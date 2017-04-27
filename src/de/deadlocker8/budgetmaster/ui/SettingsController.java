@@ -108,73 +108,73 @@ public class SettingsController
 		String url = textFieldURL.getText().trim();
 		String secret = textFieldSecret.getText().trim();
 		String currency = textFieldCurrency.getText().trim();
-		if(url != null && !url.equals(""))
+		if(url == null || url.equals(""))
 		{
-			if(secret != null && !secret.equals(""))
-			{
-				if(currency != null && !currency.equals(""))
-				{
-					ArrayList<String> trustedHosts = new ArrayList<>();
-					String trustedHostText = textAreaTrustedHosts.getText();
-					String[] trustedHostsArray = trustedHostText.split("\n");
-					for(String currentHost : trustedHostsArray)
-					{
-						currentHost = currentHost.trim();
-						if(!currentHost.equals(""))
-						{
-							trustedHosts.add(currentHost);
-						}
-					}
-					setTextAreaTrustedHosts(trustedHosts);
+			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Feld für die Server URL darf nicht leer sein!", controller.getIcon(), controller.getStage(), null, false);
+			return;
+		}
 
-					if(controller.getSettings() != null)
-					{
-						controller.getSettings().setUrl(url);
-						controller.getSettings().setSecret(HashUtils.hash(secret, Helpers.SALT));
-						controller.getSettings().setCurrency(currency);
-						controller.getSettings().setRestActivated(radioButtonRestActivated.isSelected());
-						controller.getSettings().setTrustedHosts(trustedHosts);
-					}
-					else
-					{
-						Settings settings = new Settings();
-						settings.setUrl(url);
-						settings.setSecret(HashUtils.hash(secret, Helpers.SALT));
-						settings.setCurrency(currency);
-						settings.setRestActivated(radioButtonRestActivated.isSelected());
-						settings.setTrustedHosts(trustedHosts);
-						controller.setSettings(settings);
-					}
+		if(secret == null || secret.equals(""))
+		{
+			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Server Passwortfeld darf nicht leer sein!", controller.getIcon(), controller.getStage(), null, false);
+			return;
+		}
 
-					try
-					{
-						Utils.saveSettings(controller.getSettings());
-					}
-					catch(IOException e)
-					{
-						Logger.error(e);
-						AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Beim Speichern der Einstellungen ist ein Fehler aufgetreten", controller.getIcon(), controller.getStage(), null, false);
-					}
-					
-					textFieldSecret.setText("******");
-					
-					controller.refresh(controller.getFilterSettings());
-					controller.showNotification("Erfolgreich gespeichert");
-				}
-				else
-				{
-					AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Bitte gib deine gewünschte Währung ein!", controller.getIcon(), controller.getStage(), null, false);
-				}
-			}
-			else
+		if(currency == null || currency.equals(""))
+		{
+			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Bitte gib deine gewünschte Währung ein!", controller.getIcon(), controller.getStage(), null, false);
+			return;
+		}	
+		
+		ArrayList<String> trustedHosts = new ArrayList<>();
+		String trustedHostText = textAreaTrustedHosts.getText();
+		String[] trustedHostsArray = trustedHostText.split("\n");
+		for(String currentHost : trustedHostsArray)
+		{
+			currentHost = currentHost.trim();
+			if(!currentHost.equals(""))
 			{
-				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Server Passwortfeld darf nicht leer sein!", controller.getIcon(), controller.getStage(), null, false);
+				trustedHosts.add(currentHost);
 			}
+		}
+		setTextAreaTrustedHosts(trustedHosts);
+
+		if(controller.getSettings() != null)
+		{			
+			if(!secret.equals("******"))
+			{
+				controller.getSettings().setSecret(HashUtils.hash(secret, Helpers.SALT));
+			}		
+			controller.getSettings().setUrl(url);			
+			controller.getSettings().setCurrency(currency);
+			controller.getSettings().setRestActivated(radioButtonRestActivated.isSelected());
+			controller.getSettings().setTrustedHosts(trustedHosts);
 		}
 		else
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Feld für die Server URL darf nicht leer sein!", controller.getIcon(), controller.getStage(), null, false);
+			Settings settings = new Settings();
+			settings.setUrl(url);
+			settings.setSecret(HashUtils.hash(secret, Helpers.SALT));
+			settings.setCurrency(currency);
+			settings.setRestActivated(radioButtonRestActivated.isSelected());
+			settings.setTrustedHosts(trustedHosts);
+			controller.setSettings(settings);
 		}
+
+		try
+		{
+			Utils.saveSettings(controller.getSettings());
+		}
+		catch(IOException e)
+		{
+			Logger.error(e);
+			AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Beim Speichern der Einstellungen ist ein Fehler aufgetreten", controller.getIcon(), controller.getStage(), null, false);
+		}
+
+		textFieldSecret.setText("******");
+
+		controller.refresh(controller.getFilterSettings());
+		controller.showNotification("Erfolgreich gespeichert");
 	}
 
 	public void backupDB()
@@ -199,14 +199,14 @@ public class SettingsController
 		{
 			if(result.get().equals(verificationCode))
 			{
-				Stage modalStage = showModal("Vorgang läuft", "Die Datenbank wird gelöscht, bitte warten...");		
-				
+				Stage modalStage = showModal("Vorgang läuft", "Die Datenbank wird gelöscht, bitte warten...");
+
 				Worker.runLater(() -> {
 					try
 					{
 						ServerConnection connection = new ServerConnection(controller.getSettings());
 						connection.deleteDatabase();
-						Platform.runLater(() -> {								
+						Platform.runLater(() -> {
 							if(modalStage != null)
 							{
 								modalStage.close();
@@ -216,7 +216,7 @@ public class SettingsController
 					catch(Exception e)
 					{
 						Logger.error(e);
-						Platform.runLater(() -> {							
+						Platform.runLater(() -> {
 							controller.showConnectionErrorAlert(e.getMessage());
 						});
 					}
@@ -229,7 +229,7 @@ public class SettingsController
 			}
 		}
 	}
-	
+
 	private Stage showModal(String title, String message)
 	{
 		try
@@ -238,7 +238,7 @@ public class SettingsController
 			Parent root = (Parent)fxmlLoader.load();
 			Stage newStage = new Stage();
 			newStage.initOwner(controller.getStage());
-			newStage.initModality(Modality.APPLICATION_MODAL);			
+			newStage.initModality(Modality.APPLICATION_MODAL);
 			newStage.setTitle(title);
 			newStage.setScene(new Scene(root));
 			newStage.getIcons().add(controller.getIcon());
@@ -246,7 +246,7 @@ public class SettingsController
 			ModalController newController = fxmlLoader.getController();
 			newController.init(newStage, message);
 			newStage.show();
-			
+
 			return newStage;
 		}
 		catch(IOException e)

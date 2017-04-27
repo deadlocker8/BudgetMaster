@@ -144,6 +144,7 @@ public class Controller
 		{			
 			Platform.runLater(() -> {
 				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Bitte gibt zuerst deine Serverdaten ein!", icon, stage, null, false);
+				toggleAllTabsExceptSettings(true);
 				tabPane.getSelectionModel().select(tabSettings);
 			});
 		}
@@ -233,6 +234,9 @@ public class Controller
 		if(!alertIsShowing)
 		{
 			Platform.runLater(() -> {
+				toggleAllTabsExceptSettings(true);
+				tabPane.getSelectionModel().select(tabSettings);	
+				
 				alertIsShowing = true;
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Fehler");
@@ -288,6 +292,14 @@ public class Controller
 	{
 		this.filterSettings = filterSettings;
 	}
+	
+	public void toggleAllTabsExceptSettings(boolean disable)
+	{
+		tabHome.setDisable(disable);
+		tabPayments.setDisable(disable);
+		tabCategories.setDisable(disable);
+		tabCharts.setDisable(disable);	
+	}
 
 	public void about()
 	{
@@ -315,11 +327,13 @@ public class Controller
 			
 			categoryBudgets = connection.getCategoryBudgets(currentDate.getYear(), currentDate.getMonthOfYear());	
 			paymentHandler.filter(newFilterSettings);
+			
+			toggleAllTabsExceptSettings(false);
 		}
 		catch(Exception e)
 		{
 			Logger.error(e);
-			categoryHandler = new CategoryHandler(null);			
+			categoryHandler = new CategoryHandler(null);					
 			showConnectionErrorAlert(e.getMessage());
 		}
 
