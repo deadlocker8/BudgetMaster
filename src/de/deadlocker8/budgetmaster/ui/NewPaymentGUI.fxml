@@ -22,11 +22,20 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="465.0">
                <children>
-                  <Label prefHeight="29.0" prefWidth="125.0" text="Name:">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Label>
+                  <VBox>
+                     <children>
+                        <Label prefHeight="29.0" prefWidth="125.0" text="Name:">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="29.0" prefWidth="125.0" text="(max. 150 Zeichen)">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
                   <TextField fx:id="textFieldName" prefHeight="29.0" HBox.hgrow="ALWAYS">
                      <font>
                         <Font size="13.0" />

@@ -227,6 +227,12 @@ public class NewPaymentController
 			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Feld für den Namen darf nicht leer sein.", controller.getIcon(), controller.getStage(), null, false);
 			return;
 		}
+		
+		if(name.length() > 150)
+		{
+			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Der Name darf maximal 150 Zeichen lang sein.", controller.getIcon(), controller.getStage(), null, false);
+			return;
+		}
 
 		String amountText = textFieldAmount.getText();
 		if(!amountText.matches("^-?\\d+(,\\d+)*(\\.\\d+(e\\d+)?)?$"))

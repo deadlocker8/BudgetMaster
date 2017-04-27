@@ -135,6 +135,12 @@ public class NewCategoryController
 			return;
 		}
 		
+		if(name.length() > 45)
+		{
+			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Der Name darf maximal 45 Zeichen lang sein.", controller.getIcon(), controller.getStage(), null, false);
+			return;
+		}
+		
 		if(edit)
 		{
 			category.setName(name);
