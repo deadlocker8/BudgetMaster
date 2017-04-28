@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -73,43 +74,53 @@
                <content>
                   <VBox spacing="20.0">
                      <children>
-                        <HBox alignment="CENTER" prefHeight="8.0" prefWidth="750.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="8.0" prefWidth="750.0" spacing="50.0">
                            <children>
-                              <HBox alignment="CENTER_RIGHT" spacing="10.0" HBox.hgrow="ALWAYS">
+                              <VBox spacing="15.0">
                                  <children>
-                                    <Label text="Von:">
-                                       <font>
-                                          <Font name="System Bold" size="16.0" />
-                                       </font>
-                                    </Label>
-                                    <ComboBox prefHeight="25.0" prefWidth="100.0" />
-                                    <ComboBox prefWidth="70.0" />
+                                    <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                                       <children>
+                                          <Label prefHeight="25.0" prefWidth="45.0" text="Von:">
+                                             <font>
+                                                <Font name="System Bold" size="16.0" />
+                                             </font>
+                                          </Label>
+                                          <ComboBox fx:id="comboBoxStartMonth" prefHeight="25.0" prefWidth="110.0" />
+                                          <ComboBox fx:id="comboBoxStartYear" prefWidth="70.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                       <children>
+                                          <Label prefWidth="45.0" text="Bis:">
+                                             <font>
+                                                <Font name="System Bold" size="16.0" />
+                                             </font>
+                                          </Label>
+                                          <ComboBox fx:id="comboBoxEndMonth" prefWidth="110.0" />
+                                          <ComboBox fx:id="comboBoxEndYear" prefWidth="70.0" />
+                                       </children>
+                                    </HBox>
                                  </children>
-                                 <HBox.margin>
-                                    <Insets right="15.0" />
-                                 </HBox.margin>
-                              </HBox>
-                              <HBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                              </VBox>
+                              <HBox alignment="CENTER_LEFT" spacing="15.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label text="Bis:">
+                                    <RadioButton fx:id="radioButtonBars" mnemonicParsing="false" text="Balken">
                                        <font>
-                                          <Font name="System Bold" size="16.0" />
-                                       </font>
-                                    </Label>
-                                    <ComboBox prefWidth="100.0" />
-                                    <ComboBox prefWidth="70.0" />
-                                    <Button fx:id="buttonChartCategoriesShow1" mnemonicParsing="false" onAction="#chartCategoriesShow">
+                                          <Font size="14.0" />
+                                       </font></RadioButton>
+                                    <RadioButton fx:id="radioButtonLines" mnemonicParsing="false" text="Linien">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font></RadioButton>
+                                    <Button fx:id="buttonChartMonthShow" mnemonicParsing="false" onAction="#chartMonthShow">
                                        <font>
                                           <Font name="System Bold" size="12.0" />
                                        </font>
                                        <HBox.margin>
-                                          <Insets left="15.0" />
+                                          <Insets left="10.0" />
                                        </HBox.margin>
                                     </Button>
                                  </children>
-                                 <HBox.margin>
-                                    <Insets left="15.0" />
-                                 </HBox.margin>
                               </HBox>
                            </children>
                         </HBox>
@@ -118,58 +129,6 @@
                   </VBox>
                </content>
           </TitledPane>
-            <TitledPane animated="false" text="Einnahmen/Ausgaben pro Monat Verlauf">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-               <content>
-                  <VBox spacing="20.0">
-                     <children>
-                        <HBox alignment="CENTER" prefHeight="8.0" prefWidth="750.0">
-                           <children>
-                              <HBox alignment="CENTER_RIGHT" spacing="10.0" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Label text="Von:">
-                                       <font>
-                                          <Font name="System Bold" size="16.0" />
-                                       </font>
-                                    </Label>
-                                    <ComboBox prefHeight="25.0" prefWidth="100.0" />
-                                    <ComboBox prefWidth="70.0" />
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets right="15.0" />
-                                 </HBox.margin>
-                              </HBox>
-                              <HBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Label text="Bis:">
-                                       <font>
-                                          <Font name="System Bold" size="16.0" />
-                                       </font>
-                                    </Label>
-                                    <ComboBox prefWidth="100.0" />
-                                    <ComboBox prefWidth="70.0" />
-                                    <Button fx:id="buttonChartCategoriesShow11" mnemonicParsing="false" onAction="#chartCategoriesShow">
-                                       <font>
-                                          <Font name="System Bold" size="12.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets left="15.0" />
-                                       </HBox.margin>
-                                    </Button>
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets left="15.0" />
-                                 </HBox.margin>
-                              </HBox>
-                           </children>
-                        </HBox>
-                        <AnchorPane fx:id="anchorPaneLineChart" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                     </children>
-                  </VBox>
-               </content>
-            </TitledPane>
         </panes>
       </Accordion>
    </children>
