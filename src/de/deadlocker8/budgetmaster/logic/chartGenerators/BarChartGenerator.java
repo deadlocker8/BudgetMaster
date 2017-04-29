@@ -42,7 +42,7 @@ public class BarChartGenerator
 
 		for(MonthInOutSum currentItem : monthInOutSums)
 		{
-			String label = currentItem.getDate().toString("MMMM");
+			String label = currentItem.getDate().toString("MMMM YY");
 
 			seriesIN.getData().add(new XYChart.Data<String, Number>(label, currentItem.getBudgetIN()/100.0));
 			seriesOUT.getData().add(new XYChart.Data<String, Number>(label, currentItem.getBudgetOUT()/100.0));
