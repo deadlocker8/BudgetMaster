@@ -1,6 +1,8 @@
 package de.deadlocker8.budgetmaster.logic.chartGenerators;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Set;
 
 import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.MonthInOutSum;
@@ -11,6 +13,7 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 
@@ -82,6 +85,43 @@ public class BarChartGenerator
 				});
 			}
 		});
+		
+		// style bar for incomes
+		for(Node n : generatedChart.lookupAll(".default-color0.chart-bar"))
+		{
+			n.setStyle("-fx-bar-fill: " + Helpers.COLOR_INCOME + ";");
+		}		
+		
+		// style bar for payments
+		for(Node n : generatedChart.lookupAll(".default-color1.chart-bar"))
+		{
+			n.setStyle("-fx-bar-fill: " + Helpers.COLOR_PAYMENT + ";");
+		}
+		
+		 //style legend item according to color
+		Set<Node> nodes = generatedChart.lookupAll(".chart-legend-item");
+		if(nodes.size() > 0)
+		{        	
+			Iterator<Node> iterator = nodes.iterator();
+			int counter = 0;
+			while(iterator.hasNext())
+			{
+    			Node node = iterator.next();	        			
+    			if(node instanceof Label)
+    			{
+    				Label labelLegendItem = (Label)node;     
+    				if(counter == 0)
+    				{
+    					labelLegendItem.getGraphic().setStyle("-fx-background-color: " + Helpers.COLOR_INCOME + ";");
+    				}
+    				else
+    				{
+    					labelLegendItem.getGraphic().setStyle("-fx-background-color: " + Helpers.COLOR_PAYMENT + ";");
+    				}
+    			}
+    			counter++;
+			}
+		}
 
 		return generatedChart;
 	}

@@ -1,6 +1,8 @@
 package de.deadlocker8.budgetmaster.logic.chartGenerators;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Set;
 
 import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.MonthInOutSum;
@@ -11,6 +13,7 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 
@@ -29,7 +32,7 @@ public class LineChartGenerator
 	public LineChart<String, Number> generate()
 	{
 		final CategoryAxis xAxis = new CategoryAxis();
-        final NumberAxis yAxis = new NumberAxis();
+		final NumberAxis yAxis = new NumberAxis();
 		final LineChart<String, Number> generatedChart = new LineChart<>(xAxis, yAxis);
 		generatedChart.setTitle(null);
 
@@ -45,15 +48,15 @@ public class LineChartGenerator
 		{
 			String label = currentItem.getDate().toString("MMMM YY");
 
-			seriesIN.getData().add(new XYChart.Data<String, Number>(label, currentItem.getBudgetIN()/100.0));
-			seriesOUT.getData().add(new XYChart.Data<String, Number>(label, currentItem.getBudgetOUT()/100.0));
+			seriesIN.getData().add(new XYChart.Data<String, Number>(label, currentItem.getBudgetIN() / 100.0));
+			seriesOUT.getData().add(new XYChart.Data<String, Number>(label, currentItem.getBudgetOUT() / 100.0));
 		}
 
 		generatedChart.getData().add(seriesIN);
 		generatedChart.getData().add(seriesOUT);
 
 		generatedChart.setLegendVisible(true);
-		
+
 		// add tooltip to every segment
 		generatedChart.getData().stream().forEach(tool -> {
 			for(XYChart.Data<String, Number> data : tool.getData())
@@ -82,8 +85,57 @@ public class LineChartGenerator
 				});
 			}
 		});
+
+		// style line for incomes
+		for(Node n : generatedChart.lookupAll(".default-color0.chart-series-line"))
+		{
+			n.setStyle("-fx-stroke: " + Helpers.COLOR_INCOME + ";");
+		}
 		
-		//TODO color income green and payments red
+		// style line dots for incomes
+		for(Node n : generatedChart.lookupAll(".default-color0.chart-line-symbol"))
+		{
+			n.setStyle("-fx-background-color: " + Helpers.COLOR_INCOME + ", white;");
+		}
+
+		// style line for payments
+		for(Node n : generatedChart.lookupAll(".default-color1.chart-series-line"))
+		{
+			n.setStyle("-fx-stroke: " + Helpers.COLOR_PAYMENT + ";");
+		}
+		
+		// style line dots for payments
+		for(Node n : generatedChart.lookupAll(".default-color1.chart-line-symbol"))
+		{
+			n.setStyle("-fx-background-color: " + Helpers.COLOR_PAYMENT + ", white;");
+		}
+
+		// style legend item according to color
+		Set<Node> nodes = generatedChart.lookupAll(".chart-legend-item");
+		if(nodes.size() > 0)
+		{
+			Iterator<Node> iterator = nodes.iterator();
+			int counter = 0;
+			while(iterator.hasNext())
+			{
+				Node node = iterator.next();
+				if(node instanceof Label)
+				{
+					Label labelLegendItem = (Label)node;
+					if(counter == 0)
+					{
+						labelLegendItem.getGraphic().setStyle("-fx-background-color: " + Helpers.COLOR_INCOME + ";");
+					}
+					else
+					{
+						labelLegendItem.getGraphic().setStyle("-fx-background-color: " + Helpers.COLOR_PAYMENT + ";");
+					}
+				}
+				counter++;
+			}
+		}
+
+		// TODO color income green and payments red
 
 		return generatedChart;
 	}

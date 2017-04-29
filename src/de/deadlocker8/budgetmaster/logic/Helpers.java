@@ -10,6 +10,8 @@ import java.util.ArrayList;
 public class Helpers
 {
 	public static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("0.00");
+	public static final String COLOR_INCOME = "#22BAD9";
+	public static final String COLOR_PAYMENT = "#F2612D";
 
 	public static String getURLEncodedString(String input)
 	{
