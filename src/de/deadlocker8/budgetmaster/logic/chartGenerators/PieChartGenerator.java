@@ -17,7 +17,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import tools.ConvertTo;
 
-
+@Deprecated
 public class PieChartGenerator
 {
     private String title;
@@ -32,11 +32,7 @@ public class PieChartGenerator
         this.useBudgetIN = useBudgetIN;
         this.currency = currency;
     }
-
-    /**
-     * generates a new pie chart
-     * @return PieChart chart
-     */
+  
     public PieChart generate()
     {
         ArrayList<PieChart.Data> data = new ArrayList<>();

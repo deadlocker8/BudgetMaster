@@ -59,7 +59,13 @@
                               </HBox>
                            </children>
                         </HBox>
-                        <HBox fx:id="hboxChartCategories" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                        <VBox fx:id="vboxChartCategories" VBox.vgrow="ALWAYS">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <padding>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                           </padding></VBox>
                      </children>
                   </VBox>
                </content>
