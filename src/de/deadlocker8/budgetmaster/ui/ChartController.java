@@ -112,6 +112,8 @@ public class ChartController implements Refreshable
 		radioButtonBars.setToggleGroup(toggleGroup);
 		radioButtonBars.setSelected(true);
 		radioButtonLines.setToggleGroup(toggleGroup);
+		
+		accordion.setExpandedPane(accordion.getPanes().get(0));
 	}
 
 	public void chartCategoriesShow()
@@ -226,9 +228,5 @@ public class ChartController implements Refreshable
 
 		// chart month
 		chartMonthShow();
-
-		// TODO combine bar und line chart (radio buttons)
-
-		accordion.setExpandedPane(accordion.getPanes().get(0));
 	}
 }

@@ -45,9 +45,7 @@ public class CategoriesChartGenerator
 		for(CategoryInOutSum currentItem : categoryInOutSums)
 		{
 			Label currentPart = new Label();
-			//TODO maybe use gradient
-			currentPart.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(currentItem.getColor()));			
-//			currentPart.setStyle("-fx-background-color: linear-gradient(to bottom right, " + ConvertTo.toRGBHexWithoutOpacity(currentItem.getColor()) + ", " + ConvertTo.toRGBHexWithoutOpacity(currentItem.getColor().darker()) + ")");
+			currentPart.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(currentItem.getColor()));
 			currentPart.prefHeightProperty().bind(chart.heightProperty());
 			chart.getChildren().add(currentPart);
 
