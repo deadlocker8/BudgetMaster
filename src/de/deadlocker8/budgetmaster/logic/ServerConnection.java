@@ -335,4 +335,21 @@ public class ServerConnection
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 		reader.close();
 	}
+	
+	public String exportDatabase() throws Exception
+	{
+		URL url = new URL(settings.getUrl() + "/database?secret=" + Helpers.getURLEncodedString(settings.getSecret()));
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setDoOutput(true);
+		httpsCon.setRequestMethod("GET");
+
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			return Read.getStringFromInputStream(httpsCon.getInputStream());				
+		}
+		else
+		{
+			return null;
+		}
+	}
 }

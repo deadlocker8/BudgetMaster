@@ -310,7 +310,7 @@ public class Controller
 	{
 		try
 		{
-			ServerConnection connection = new ServerConnection(settings);			
+			ServerConnection connection = new ServerConnection(settings);
 			
 			paymentHandler = new PaymentHandler();
 			paymentHandler.getPayments().addAll(connection.getPayments(currentDate.getYear(), currentDate.getMonthOfYear()));

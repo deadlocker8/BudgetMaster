@@ -12,6 +12,7 @@ import java.util.ResourceBundle;
 
 import com.google.gson.Gson;
 
+import de.deadlocker8.budgetmasterserver.main.Database;
 import tools.PathUtils;
 
 public class Utils
@@ -43,6 +44,31 @@ public class Utils
 		
 		Writer writer = Files.newBufferedWriter(Paths.get(PathUtils.getOSindependentPath() + bundle.getString("folder")  + "/settings.json"), Charset.forName("UTF-8"));
 		writer.write(jsonString);
+		writer.close();
+	}
+	
+	public static Database loadDatabaseJSON(File file)
+	{
+		Database database;
+		try
+		{
+			Gson gson = new Gson();
+			PathUtils.checkFolder(file.getParentFile());
+			Reader reader = Files.newBufferedReader(Paths.get(file.getAbsolutePath()), Charset.forName("UTF-8"));
+			database = gson.fromJson(reader, Database.class);	
+			reader.close();
+			return database;
+		}
+		catch(IOException e)
+		{
+			return null;
+		}
+	}
+	
+	public static void saveDatabaseJSON(File file, String databaseJSON) throws IOException
+	{		
+		Writer writer = Files.newBufferedWriter(Paths.get(file.getAbsolutePath()), Charset.forName("UTF-8"));
+		writer.write(databaseJSON);
 		writer.close();
 	}
 }

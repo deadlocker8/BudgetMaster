@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.ui;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -22,6 +23,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import logger.Logger;
@@ -124,8 +126,8 @@ public class SettingsController
 		{
 			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Bitte gib deine gewünschte Währung ein!", controller.getIcon(), controller.getStage(), null, false);
 			return;
-		}	
-		
+		}
+
 		ArrayList<String> trustedHosts = new ArrayList<>();
 		String trustedHostText = textAreaTrustedHosts.getText();
 		String[] trustedHostsArray = trustedHostText.split("\n");
@@ -140,12 +142,12 @@ public class SettingsController
 		setTextAreaTrustedHosts(trustedHosts);
 
 		if(controller.getSettings() != null)
-		{			
+		{
 			if(!secret.equals("******"))
 			{
 				controller.getSettings().setSecret(HashUtils.hash(secret, Helpers.SALT));
-			}		
-			controller.getSettings().setUrl(url);			
+			}
+			controller.getSettings().setUrl(url);
 			controller.getSettings().setCurrency(currency);
 			controller.getSettings().setRestActivated(radioButtonRestActivated.isSelected());
 			controller.getSettings().setTrustedHosts(trustedHosts);
@@ -179,7 +181,39 @@ public class SettingsController
 
 	public void backupDB()
 	{
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Datenbank exportieren");
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON (*.json)", "*.json");
+		fileChooser.getExtensionFilters().add(extFilter);
+		File file = fileChooser.showSaveDialog(controller.getStage());
+		if(file != null)
+		{
+			Stage modalStage = showModal("Vorgang läuft", "Die Datenbank wird exportiert, bitte warten...");
 
+			Worker.runLater(() -> {
+				try
+				{
+					ServerConnection connection = new ServerConnection(controller.getSettings());				
+					String databaseJSON = connection.exportDatabase();
+					Utils.saveDatabaseJSON(file, databaseJSON);
+					
+					Platform.runLater(() -> {
+						if(modalStage != null)
+						{
+							modalStage.close();
+						}
+						AlertGenerator.showAlert(AlertType.INFORMATION, "Erfolgreich exportiert", "", "Die Datenbank wurder erfolgreich exportiert.", controller.getIcon(), controller.getStage(), null, false);
+					});
+				}
+				catch(Exception e)
+				{
+					Logger.error(e);
+					Platform.runLater(() -> {
+						controller.showConnectionErrorAlert(e.getMessage());
+					});
+				}
+			});
+		}
 	}
 
 	public void deleteDB()
