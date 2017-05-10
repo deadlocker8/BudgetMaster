@@ -9,13 +9,17 @@ import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.Settings;
 import de.deadlocker8.budgetmaster.logic.Utils;
+import de.deadlocker8.budgetmasterserver.main.Database;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
@@ -44,7 +48,8 @@ public class SettingsController
 	@FXML private TextField textFieldCurrency;
 	@FXML private Label labelCurrency;
 	@FXML private Button buttonSave;
-	@FXML private Button buttonBackupDB;
+	@FXML private Button buttonExportDB;
+	@FXML private Button buttonImportDB;
 	@FXML private Button buttonDeleteDB;
 	@FXML private RadioButton radioButtonRestActivated;
 	@FXML private RadioButton radioButtonRestDeactivated;
@@ -76,8 +81,9 @@ public class SettingsController
 		labelURL.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
 		labelCurrency.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
 		buttonSave.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
-		buttonBackupDB.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
-		buttonDeleteDB.setStyle("-fx-background-color: #FF5047; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
+		buttonExportDB.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
+		buttonImportDB.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
+		buttonDeleteDB.setStyle("-fx-background-color: #FF5047; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
 		textFieldURL.setPromptText("z.B. https://yourdomain.de");
 		textFieldCurrency.setPromptText("z.B. €, CHF, $");
 		textAreaTrustedHosts.setPromptText("z.B. localhost");
@@ -179,7 +185,7 @@ public class SettingsController
 		controller.showNotification("Erfolgreich gespeichert");
 	}
 
-	public void backupDB()
+	public void exportDB()
 	{
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Datenbank exportieren");
@@ -193,10 +199,10 @@ public class SettingsController
 			Worker.runLater(() -> {
 				try
 				{
-					ServerConnection connection = new ServerConnection(controller.getSettings());				
+					ServerConnection connection = new ServerConnection(controller.getSettings());
 					String databaseJSON = connection.exportDatabase();
 					Utils.saveDatabaseJSON(file, databaseJSON);
-					
+
 					Platform.runLater(() -> {
 						if(modalStage != null)
 						{
@@ -215,8 +221,92 @@ public class SettingsController
 			});
 		}
 	}
+	
+	private void importDatabase()
+	{
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Datenbank importieren");
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON (*.json)", "*.json");
+		fileChooser.getExtensionFilters().add(extFilter);
+		File file = fileChooser.showOpenDialog(controller.getStage());
+		if(file != null)
+		{
+			Database database;
+			try
+			{
+				database = Utils.loadDatabaseJSON(file);
+				if(database.getCategories() == null || database.getNormalPayments() == null || database.getRepeatingPayments() == null)
+				{
+					AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Die angegebene Datei enthält kein gültiges BudgetMaster-Datenformat und kann daher nicht importiert werden.", controller.getIcon(), controller.getStage(), null, false);
+					return;
+				}
+			}
+			catch(IOException e1)
+			{
+				Logger.error(e1);
+				AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Beim Einlesen der Datei ist ein Fehler aufgetreten.", controller.getIcon(), controller.getStage(), null, false);
+				return;
+			}
 
+			Stage modalStage = showModal("Vorgang läuft", "Die Datenbank wird importiert, bitte warten...");
+
+			Worker.runLater(() -> {
+				try
+				{
+					ServerConnection connection = new ServerConnection(controller.getSettings());
+					connection.importDatabase(database);
+
+					Platform.runLater(() -> {
+						if(modalStage != null)
+						{
+							modalStage.close();
+						}
+						AlertGenerator.showAlert(AlertType.INFORMATION, "Erfolgreich exportiert", "", "Die Datenbank wurder erfolgreich importiert.", controller.getIcon(), controller.getStage(), null, false);
+					});
+				}
+				catch(Exception e)
+				{
+					Logger.error(e);
+					Platform.runLater(() -> {
+						controller.showConnectionErrorAlert(e.getMessage());
+					});
+				}
+			});
+		}
+	}
+
+	public void importDB()
+	{
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Datenbank importieren");
+		alert.setHeaderText("");		
+		alert.setContentText("Soll die Datenbank vor dem Importieren gelöscht werden?");
+		Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
+		dialogStage.getIcons().add(controller.getIcon());
+		dialogStage.initOwner(controller.getStage());
+
+		ButtonType buttonTypeDelete = new ButtonType("Ja, Datenbank löschen");
+		ButtonType buttonTypeAppend = new ButtonType("Nein, Daten hinzufügen");
+		ButtonType buttonTypeCancel = new ButtonType("Abbrechen", ButtonData.CANCEL_CLOSE);
+
+		alert.getButtonTypes().setAll(buttonTypeDelete, buttonTypeAppend, buttonTypeCancel);
+		Optional<ButtonType> result = alert.showAndWait();
+		if(result.get() == buttonTypeDelete)
+		{
+			deleteDatabase(true);
+		}	
+		else if(result.get() == buttonTypeAppend)
+		{	
+			importDatabase();
+		}
+	}
+	
 	public void deleteDB()
+	{
+		deleteDatabase(false);
+	}
+
+	public void deleteDatabase(boolean importPending)
 	{
 		String verificationCode = ConvertTo.toBase58(RandomCreations.generateRandomMixedCaseString(4, true), true, BASE58Type.UPPER);
 
@@ -244,6 +334,10 @@ public class SettingsController
 							if(modalStage != null)
 							{
 								modalStage.close();
+								if(importPending)
+								{
+									importDatabase();
+								}
 							}
 						});
 					}

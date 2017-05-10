@@ -67,6 +67,14 @@
                               <Insets top="35.0" />
                            </VBox.margin>
                         </Label>
+                        <Label fx:id="labelSecret11121" alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="-Infinity" prefWidth="158.0" textAlignment="RIGHT" wrapText="true">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                        </Label>
                         <Region prefHeight="19.0" prefWidth="158.0" VBox.vgrow="ALWAYS" />
                      </children>
                      <HBox.margin>
@@ -95,13 +103,18 @@
                               </RadioButton>
                            </children>
                         </HBox>
-                        <TextArea fx:id="textAreaTrustedHosts" prefWidth="539.0" VBox.vgrow="ALWAYS">
+                        <TextArea fx:id="textAreaTrustedHosts" minHeight="110.0" prefHeight="148.0" prefWidth="539.0" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin></TextArea>
                         <HBox alignment="CENTER_LEFT" prefHeight="11.0" prefWidth="539.0" spacing="30.0">
                            <children>
-                              <Button fx:id="buttonBackupDB" mnemonicParsing="false" onAction="#backupDB" text="Backup">
+                              <Button fx:id="buttonExportDB" mnemonicParsing="false" onAction="#exportDB" text="Exportieren">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="buttonImportDB" mnemonicParsing="false" onAction="#importDB" text="Importieren">
                                  <font>
                                     <Font name="System Bold" size="14.0" />
                                  </font>
@@ -112,17 +125,23 @@
                                  </font>
                               </Button>
                            </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
                         </HBox>
-                        <Region prefHeight="19.0" prefWidth="158.0" VBox.vgrow="ALWAYS" />
+                        <Button fx:id="buttonSave" mnemonicParsing="false" onAction="#save" text="Speichern">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                        </Button>
+                        <Region prefWidth="158.0" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                </children>
             </HBox>
-            <Button fx:id="buttonSave" mnemonicParsing="false" onAction="#save" text="Speichern">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Button>
          </children>
          <padding>
             <Insets right="50.0" />

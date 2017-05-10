@@ -27,13 +27,13 @@ public class Main extends Application
 			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("de/deadlocker8/budgetmaster/ui/GUI.fxml"));
 			Parent root = (Parent)loader.load();
 
-			Scene scene = new Scene(root, 600, 650);
+			Scene scene = new Scene(root, 610, 650);
 
 			((Controller)loader.getController()).init(stage);
 
 			stage.setResizable(true);
-			stage.setMinHeight(600);
-			stage.setMinWidth(600);
+			stage.setMinHeight(650);
+			stage.setMinWidth(610);
 			stage.getIcons().add(new Image("/de/deadlocker8/budgetmaster/resources/icon.png"));
 			stage.setTitle(bundle.getString("app.name"));
 			stage.setScene(scene);
