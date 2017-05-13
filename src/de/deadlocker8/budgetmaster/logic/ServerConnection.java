@@ -76,7 +76,7 @@ public class ServerConnection
 		}
 		else
 		{
-			return null;
+			return new ArrayList<>();
 		}
 	}
 
@@ -104,9 +104,16 @@ public class ServerConnection
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setRequestMethod("POST");
 		httpsCon.setDoInput(true);
-		InputStream stream = httpsCon.getInputStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		reader.close();
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			InputStream stream = httpsCon.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			reader.close();
+		}
+		else
+		{
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+		}		
 	}
 
 	public void updateCategory(Category category) throws Exception
@@ -115,9 +122,16 @@ public class ServerConnection
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setRequestMethod("PUT");
 		httpsCon.setDoInput(true);
-		InputStream stream = httpsCon.getInputStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		reader.close();
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			InputStream stream = httpsCon.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			reader.close();
+		}
+		else
+		{
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+		}	
 	}
 
 	public void deleteCategory(int ID) throws Exception
@@ -126,9 +140,16 @@ public class ServerConnection
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setRequestMethod("DELETE");
 		httpsCon.setDoInput(true);
-		InputStream stream = httpsCon.getInputStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		reader.close();
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			InputStream stream = httpsCon.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			reader.close();
+		}
+		else
+		{
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+		}
 	}
 
 	/*
@@ -140,7 +161,7 @@ public class ServerConnection
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setDoOutput(true);
 		httpsCon.setRequestMethod("GET");
-
+			
 		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
 		{
 			String result = Read.getStringFromInputStream(httpsCon.getInputStream());
@@ -152,7 +173,7 @@ public class ServerConnection
 		}
 		else
 		{
-			return null;
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
 		}
 	}
 
@@ -174,7 +195,7 @@ public class ServerConnection
 		}
 		else
 		{
-			return null;
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
 		}
 	}
 
@@ -192,7 +213,7 @@ public class ServerConnection
 		}
 		else
 		{
-			return null;
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
 		}
 	}
 
@@ -203,9 +224,16 @@ public class ServerConnection
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setRequestMethod("POST");
 		httpsCon.setDoInput(true);
-		InputStream stream = httpsCon.getInputStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		reader.close();
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			InputStream stream = httpsCon.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			reader.close();
+		}
+		else
+		{
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+		}
 	}
 
 	public void updateNormalPayment(NormalPayment payment) throws Exception
@@ -215,9 +243,16 @@ public class ServerConnection
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setRequestMethod("PUT");
 		httpsCon.setDoInput(true);
-		InputStream stream = httpsCon.getInputStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		reader.close();
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			InputStream stream = httpsCon.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			reader.close();
+		}
+		else
+		{
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+		}
 	}
 
 	public void addRepeatingPayment(RepeatingPayment payment) throws Exception
@@ -234,9 +269,16 @@ public class ServerConnection
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setRequestMethod("POST");
 		httpsCon.setDoInput(true);
-		InputStream stream = httpsCon.getInputStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		reader.close();
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			InputStream stream = httpsCon.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			reader.close();
+		}
+		else
+		{
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+		}
 	}
 
 	public void deleteNormalPayment(NormalPayment payment) throws Exception
@@ -245,9 +287,16 @@ public class ServerConnection
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setRequestMethod("DELETE");
 		httpsCon.setDoInput(true);
-		InputStream stream = httpsCon.getInputStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		reader.close();
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			InputStream stream = httpsCon.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			reader.close();
+		}
+		else
+		{
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+		}
 	}
 
 	public void deleteRepeatingPayment(RepeatingPaymentEntry payment) throws Exception
@@ -256,9 +305,16 @@ public class ServerConnection
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setRequestMethod("DELETE");
 		httpsCon.setDoInput(true);
-		InputStream stream = httpsCon.getInputStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		reader.close();
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			InputStream stream = httpsCon.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			reader.close();
+		}
+		else
+		{
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+		}
 	}
 
 	/*
@@ -282,7 +338,7 @@ public class ServerConnection
 		}
 		else
 		{
-			return null;
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
 		}
 	}
 
@@ -303,7 +359,7 @@ public class ServerConnection
 		}
 		else
 		{
-			return 0;
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
 		}
 	}
 
@@ -316,9 +372,16 @@ public class ServerConnection
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setRequestMethod("DELETE");
 		httpsCon.setDoInput(true);
-		InputStream stream = httpsCon.getInputStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		reader.close();
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			InputStream stream = httpsCon.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			reader.close();
+		}
+		else
+		{
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+		}		
 	}
 
 	public String exportDatabase() throws Exception
@@ -334,7 +397,7 @@ public class ServerConnection
 		}
 		else
 		{
-			return null;
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
 		}
 	}
 
@@ -346,9 +409,16 @@ public class ServerConnection
 //		URL url = new URL(settings.getUrl() + "/database?secret=" + Helpers.getURLEncodedString(settings.getSecret()));
 //		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 //		httpsCon.setRequestMethod("POST");
-//		httpsCon.setDoInput(true);		
-//		InputStream stream = httpsCon.getInputStream();
-//		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-//		reader.close();
+//		httpsCon.setDoInput(true);	
+//		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+//		{
+//			InputStream stream = httpsCon.getInputStream();
+//			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+//			reader.close();
+//		}
+//		else
+//		{
+//			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+//		}
 	}
 }

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.Budget;
+import de.deadlocker8.budgetmaster.logic.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.FilterSettings;
 import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
@@ -205,7 +206,7 @@ public class PaymentController implements Refreshable
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			controller.showConnectionErrorAlert(e.getMessage());
+			controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 		}
 	}
 
@@ -220,7 +221,7 @@ public class PaymentController implements Refreshable
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			controller.showConnectionErrorAlert(e.getMessage());
+			controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 		}
 	}
 
@@ -239,7 +240,7 @@ public class PaymentController implements Refreshable
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			controller.showConnectionErrorAlert(e.getMessage());
+			controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 		}
 	}
 	

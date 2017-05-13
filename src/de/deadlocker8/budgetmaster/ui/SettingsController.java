@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import de.deadlocker8.budgetmaster.logic.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.Settings;
@@ -215,7 +216,11 @@ public class SettingsController
 				{
 					Logger.error(e);
 					Platform.runLater(() -> {
-						controller.showConnectionErrorAlert(e.getMessage());
+						if(modalStage != null)
+						{
+							modalStage.close();
+						}
+						controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));						
 					});
 				}
 			});
@@ -268,7 +273,11 @@ public class SettingsController
 				{
 					Logger.error(e);
 					Platform.runLater(() -> {
-						controller.showConnectionErrorAlert(e.getMessage());
+						if(modalStage != null)
+						{
+							modalStage.close();
+						}
+						controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 					});
 				}
 			});
@@ -345,7 +354,11 @@ public class SettingsController
 					{
 						Logger.error(e);
 						Platform.runLater(() -> {
-							controller.showConnectionErrorAlert(e.getMessage());
+							if(modalStage != null)
+							{
+								modalStage.close();
+							}
+							controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 						});
 					}
 				});

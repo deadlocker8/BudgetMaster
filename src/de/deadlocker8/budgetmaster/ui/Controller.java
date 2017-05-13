@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 
 import de.deadlocker8.budgetmaster.logic.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.CategoryHandler;
+import de.deadlocker8.budgetmaster.logic.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.FilterSettings;
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.PaymentHandler;
@@ -333,8 +334,8 @@ public class Controller
 		catch(Exception e)
 		{
 			Logger.error(e);
-			categoryHandler = new CategoryHandler(null);					
-			showConnectionErrorAlert(e.getMessage());
+			categoryHandler = new CategoryHandler(null);	
+			showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 		}
 
 		refreshAllTabs();		

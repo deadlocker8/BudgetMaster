@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.joda.time.DateTime;
 
 import de.deadlocker8.budgetmaster.logic.Category;
+import de.deadlocker8.budgetmaster.logic.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.Payment;
@@ -139,7 +140,7 @@ public class NewPaymentController
 		}
 		catch(Exception e)
 		{
-			controller.showConnectionErrorAlert(e.getMessage());
+			controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 			stage.close();
 			return;
 		}
@@ -315,7 +316,7 @@ public class NewPaymentController
 				catch(Exception e)
 				{
 					Logger.error(e);
-					controller.showConnectionErrorAlert(e.getMessage());
+					controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 				}
 			}
 			else

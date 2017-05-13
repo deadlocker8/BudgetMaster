@@ -6,6 +6,7 @@ import org.controlsfx.control.PopOver;
 import org.controlsfx.control.PopOver.ArrowLocation;
 
 import de.deadlocker8.budgetmaster.logic.Category;
+import de.deadlocker8.budgetmaster.logic.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.ServerConnection;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
@@ -153,7 +154,7 @@ public class NewCategoryController
 			}
 			catch(Exception e)
 			{
-				controller.showConnectionErrorAlert(e.getMessage());
+				controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 			}			
 		}
 		else
