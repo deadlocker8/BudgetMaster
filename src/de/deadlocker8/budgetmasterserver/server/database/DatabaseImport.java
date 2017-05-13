@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 import com.google.gson.Gson;
 
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
+import de.deadlocker8.budgetmasterserver.main.Database;
 import de.deadlocker8.budgetmasterserver.main.DatabaseHandler;
 import de.deadlocker8.budgetmasterserver.main.DatabaseImporter;
 import de.deadlocker8.budgetmasterserver.main.Settings;
@@ -22,11 +23,13 @@ public class DatabaseImport implements Route
 {
     private DatabaseHandler handler;
     private Settings settings;
+    private Gson gson;
 
-    public DatabaseImport(DatabaseHandler handler, Settings settings)
+    public DatabaseImport(DatabaseHandler handler, Settings settings, Gson gson)
 	{
 	    this.handler = handler;
 		this.settings = settings;
+		this.gson = gson;
 	}
 
     @Override
@@ -37,21 +40,27 @@ public class DatabaseImport implements Route
             halt(400, "Bad Request");
         }
 	    //TODO json input?
+	    String databaseJSON = "";
+	    
 	    
 	    try
 	    {
 	        boolean delete = Boolean.parseBoolean(req.queryMap("delete").value());  
+	       
+	        
 //TODO
 //    		try
-//    		{	
+//    		{		        
+//	        	Database database = gson.fromJson(databaseJSON, Database.class);
+	        
 //    		    if(delete)
-//                {
+//              {
 //                    handler.deleteDatabase();
 //                    handler = new DatabaseHandler(settings); 
-//                }
+//              }
 //    		    
-//    		    DatabaseImporter importer = new DatabaseImporter(settings);	  
-//    		    importer.importDatabase();		    
+//    		    DatabaseImporter importer = new DatabaseImporter(handler);	  
+//    		    importer.importDatabase(database);		    
 //    			return "";
 //    		}
 //    		catch(Exception e)

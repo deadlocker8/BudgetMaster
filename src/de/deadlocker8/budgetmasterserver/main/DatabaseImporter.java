@@ -1,44 +1,48 @@
 package de.deadlocker8.budgetmasterserver.main;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.util.ArrayList;
 
-import logger.Logger;
+import de.deadlocker8.budgetmaster.logic.Category;
+import de.deadlocker8.budgetmaster.logic.NormalPayment;
+import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
 
 public class DatabaseImporter
 {
-	private Connection connection;
+	private DatabaseHandler handler;
 	
-	public DatabaseImporter(Settings settings) throws IllegalStateException
+	public DatabaseImporter(DatabaseHandler handler) throws IllegalStateException
     {
-        try
-        {
-            this.connection = DriverManager.getConnection(settings.getDatabaseUrl() + settings.getDatabaseName() + "?useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin", settings.getDatabaseUsername(), settings.getDatabasePassword());
-        }
-        catch(Exception e)
-        {
-            Logger.error(e);
-            throw new IllegalStateException("Cannot connect the database!", e);
-        }
+        this.handler = handler;
     }
 	
 	public void importDatabase(Database database)
-	{
-	   
+	{		
+		importCategories(database.getCategories());
+		importNormalPayments(database.getNormalPayments());
+		importRepeatingPayments(database.getRepeatingPayments());
 	}
 	
-	private void importCategories()
+	private void importCategories(ArrayList<Category> categories)
 	{	   
-        //TODO
+        for(Category currentCategory : categories)
+        {
+        	handler.importCategory(currentCategory);
+        }
 	}
 	
-	private void importNormalPayments()
+	private void importNormalPayments(ArrayList<NormalPayment> normalPayments)
     {      
-        //TODO
+		for(NormalPayment currentPayment : normalPayments)
+        {
+        	handler.importNormalPayment(currentPayment);
+        }
     }
 	
-	private void importRepeatingPayments()
+	private void importRepeatingPayments(ArrayList<RepeatingPayment> repeatingPayments)
     {      
-        //TODO
+		for(RepeatingPayment currentPayment : repeatingPayments)
+        {
+        	handler.importRepeatingPayment(currentPayment);
+        }
     }
 }
