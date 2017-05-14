@@ -8,6 +8,8 @@ import org.joda.time.DateTime;
 
 import com.google.gson.Gson;
 
+import de.deadlocker8.budgetmaster.logic.Category;
+import de.deadlocker8.budgetmaster.logic.CategoryInOutSum;
 import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmasterserver.main.DatabaseHandler;
 import spark.Request;
@@ -44,24 +46,32 @@ public class MonthInOutSum implements Route
 			{
 				ArrayList<Payment> currentMonthPayments = new ArrayList<>();
 				currentMonthPayments.addAll(handler.getPayments(startDate.getYear(), startDate.getMonthOfYear()));
-				currentMonthPayments.addAll(handler.getRepeatingPayments(startDate.getYear(), startDate.getMonthOfYear()));				
+				currentMonthPayments.addAll(handler.getRepeatingPayments(startDate.getYear(), startDate.getMonthOfYear()));		
 				
-				int sumIN = 0;
-				int sumOUT = 0;						
-						
-				for(Payment currentPayment : currentMonthPayments)
-				{
-					if(currentPayment.getAmount() > 0)
-					{
-						sumIN += currentPayment.getAmount();
-					}
-					else
-					{
-						sumOUT += -currentPayment.getAmount();
+				ArrayList<CategoryInOutSum> sums = new ArrayList<>();
+				
+				for(Category currentCategory : handler.getCategories())
+				{					
+					sums.add(new CategoryInOutSum(currentCategory.getID(), currentCategory.getName(), currentCategory.getColor(), 0, 0));
+					CategoryInOutSum currentInOutSum = sums.get(sums.size() - 1);
+					for(Payment currentPayment : currentMonthPayments)
+					{					
+						if(currentCategory.getID() == currentPayment.getCategoryID())
+						{
+							int amount = currentPayment.getAmount();
+							if(amount > 0)
+							{
+								currentInOutSum.setBudgetIN(currentInOutSum.getBudgetIN() + amount);
+							}
+							else
+							{
+								currentInOutSum.setBudgetOUT(currentInOutSum.getBudgetOUT() + amount);
+							}
+						}						
 					}
 				}
 				
-				monthInOutSums.add(new de.deadlocker8.budgetmaster.logic.MonthInOutSum(startDate.getMonthOfYear(), startDate.getYear(), sumIN, sumOUT));				
+				monthInOutSums.add(new de.deadlocker8.budgetmaster.logic.MonthInOutSum(startDate.getMonthOfYear(), startDate.getYear(), sums));				
 				
 				startDate = startDate.plusMonths(1);
 			}	

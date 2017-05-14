@@ -17,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 
+@Deprecated
 public class BarChartGenerator
 {
 	private ArrayList<MonthInOutSum> monthInOutSums;

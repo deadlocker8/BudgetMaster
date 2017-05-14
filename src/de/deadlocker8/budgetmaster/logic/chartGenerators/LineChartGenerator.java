@@ -17,7 +17,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 
-//TODO ?
 public class LineChartGenerator
 {
 	private ArrayList<MonthInOutSum> monthInOutSums;
@@ -49,7 +48,7 @@ public class LineChartGenerator
 			String label = currentItem.getDate().toString("MMMM YY");
 
 			seriesIN.getData().add(new XYChart.Data<String, Number>(label, currentItem.getBudgetIN() / 100.0));
-			seriesOUT.getData().add(new XYChart.Data<String, Number>(label, currentItem.getBudgetOUT() / 100.0));
+			seriesOUT.getData().add(new XYChart.Data<String, Number>(label, -currentItem.getBudgetOUT() / 100.0));
 		}
 
 		generatedChart.getData().add(seriesIN);
@@ -134,8 +133,6 @@ public class LineChartGenerator
 				counter++;
 			}
 		}
-
-		// TODO color income green and payments red
 
 		return generatedChart;
 	}

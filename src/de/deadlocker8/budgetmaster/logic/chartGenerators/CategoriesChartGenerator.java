@@ -29,17 +29,17 @@ public class CategoriesChartGenerator
 		this.useBudgetIN = useBudgetIN;
 		this.currency = currency;
 		this.total = getTotal(categoryInOutSums, useBudgetIN);
-	}
+	}	
 
 	public VBox generate()
 	{
-		VBox chartWithLegend = new VBox();
+		VBox generatedChart = new VBox();
 		HBox chart = new HBox();
 		chart.setMinHeight(30);
 
 		Label labelTitle = new Label(title);
 		labelTitle.setStyle("-fx-font-size: 16; -fx-font-weight: bold;");
-		chartWithLegend.getChildren().add(labelTitle);
+		generatedChart.getChildren().add(labelTitle);
 		VBox.setMargin(labelTitle, new Insets(0, 0, 10, 0));
 
 		for(CategoryInOutSum currentItem : categoryInOutSums)
@@ -68,9 +68,9 @@ public class CategoriesChartGenerator
 			currentPart.setTooltip(tooltip);
 		}
 
-		chartWithLegend.getChildren().add(chart);
+		generatedChart.getChildren().add(chart);
 
-		return chartWithLegend;
+		return generatedChart;
 	}
 
 	public GridPane generateLegend()

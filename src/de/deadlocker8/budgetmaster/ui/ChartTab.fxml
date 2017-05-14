@@ -130,7 +130,7 @@
                               </HBox>
                            </children>
                         </HBox>
-                        <AnchorPane fx:id="anchorPaneChartMonth" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                        <VBox fx:id="vboxChartMonth" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                </content>

@@ -1,27 +1,22 @@
 package de.deadlocker8.budgetmaster.logic;
 
+import java.util.ArrayList;
+
 import org.joda.time.DateTime;
 
 public class MonthInOutSum
 {
 	private int month;
 	private int year;
-	private int budgetIN;
-	private int budgetOUT;
+	private ArrayList<CategoryInOutSum> sums;
 	
-	public MonthInOutSum(int month, int year, int budgetIN, int budgetOUT)
+	public MonthInOutSum(int month, int year, ArrayList<CategoryInOutSum> sums)
 	{
 		this.month = month;
 		this.year = year;
-		this.budgetIN = budgetIN;
-		this.budgetOUT = budgetOUT;
+		this.sums = sums;
 	}
-	
-	public DateTime getDate()
-	{
-		return DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(1);
-	}
-	
+
 	public int getMonth()
 	{
 		return month;
@@ -32,29 +27,41 @@ public class MonthInOutSum
 		return year;
 	}
 
+	public ArrayList<CategoryInOutSum> getSums()
+	{
+		return sums;
+	}
+	
+	public DateTime getDate()
+	{
+		return DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(1);
+	}
+	
 	public int getBudgetIN()
 	{
-		return budgetIN;
+		int budget = 0;
+		for(CategoryInOutSum currentCategorySum : sums)
+		{
+			budget += currentCategorySum.getBudgetIN();
+		}
+			
+		return budget;
 	}
-
-	public void setBudgetIN(int budgetIN)
-	{
-		this.budgetIN = budgetIN;
-	}
-
+	
 	public int getBudgetOUT()
 	{
-		return budgetOUT;
-	}
-
-	public void setBudgetOUT(int budgetOUT)
-	{
-		this.budgetOUT = budgetOUT;
+		int budget = 0;
+		for(CategoryInOutSum currentCategorySum : sums)
+		{
+			budget += currentCategorySum.getBudgetOUT();
+		}
+			
+		return budget;
 	}
 
 	@Override
 	public String toString()
 	{
-		return "MonthInOutSum [month=" + month + ", year=" + year + ", budgetIN=" + budgetIN + ", budgetOUT=" + budgetOUT + "]";
+		return "MonthInOutSum [month=" + month + ", year=" + year + ", sums=" + sums + "]";
 	}
 }

@@ -10,14 +10,14 @@ import de.deadlocker8.budgetmaster.logic.CategoryInOutSum;
 import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.MonthInOutSum;
 import de.deadlocker8.budgetmaster.logic.ServerConnection;
-import de.deadlocker8.budgetmaster.logic.chartGenerators.BarChartGenerator;
 import de.deadlocker8.budgetmaster.logic.chartGenerators.CategoriesChartGenerator;
 import de.deadlocker8.budgetmaster.logic.chartGenerators.LineChartGenerator;
+import de.deadlocker8.budgetmaster.logic.chartGenerators.MonthChartGenerator;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.chart.BarChart;
+import javafx.geometry.Insets;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Alert.AlertType;
@@ -26,8 +26,12 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -43,7 +47,7 @@ public class ChartController implements Refreshable
 	@FXML private DatePicker datePickerStart;
 	@FXML private VBox vboxChartCategories;
 	@FXML private DatePicker datePickerEnd;
-	@FXML private AnchorPane anchorPaneChartMonth;
+	@FXML private VBox vboxChartMonth;
 	@FXML private Button buttonChartCategoriesShow;
 	@FXML private ComboBox<String> comboBoxStartMonth;
 	@FXML private ComboBox<String> comboBoxStartYear;
@@ -62,13 +66,13 @@ public class ChartController implements Refreshable
 		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");
 		vboxChartCategories.setStyle("-fx-background-color: #F4F4F4;");
 		vboxChartCategories.setSpacing(20);
-		anchorPaneChartMonth.setStyle("-fx-background-color: #F4F4F4;");
+		vboxChartMonth.setStyle("-fx-background-color: #F4F4F4;");
 		FontIcon iconShow = new FontIcon(FontIconType.CHECK);
 		iconShow.setSize(16);
 		iconShow.setColor(Color.WHITE);
 		buttonChartCategoriesShow.setStyle("-fx-background-color: #2E79B9;");
 		buttonChartCategoriesShow.setGraphic(iconShow);
-
+		
 		FontIcon iconShow2 = new FontIcon(FontIconType.CHECK);
 		iconShow2.setSize(16);
 		iconShow2.setColor(Color.WHITE);
@@ -114,6 +118,7 @@ public class ChartController implements Refreshable
 		radioButtonLines.setToggleGroup(toggleGroup);
 		
 		accordion.setExpandedPane(accordion.getPanes().get(0));
+		vboxChartMonth.setSpacing(15);
 	}
 
 	public void chartCategoriesShow()
@@ -149,7 +154,7 @@ public class ChartController implements Refreshable
 
 	public void chartMonthShow()
 	{
-		anchorPaneChartMonth.getChildren().clear();
+		vboxChartMonth.getChildren().clear();
 		
 		String startMonth = comboBoxStartMonth.getValue();
 		String startYear = comboBoxStartYear.getValue();
@@ -169,49 +174,42 @@ public class ChartController implements Refreshable
 		}
 		
 		try
-		{
+		{			
 			ServerConnection connection = new ServerConnection(controller.getSettings());
 			ArrayList<MonthInOutSum> sums = connection.getMonthInOutSum(startDate, endDate);
+		
+			vboxChartMonth.getChildren().clear();
 			
 			if(radioButtonBars.isSelected())
 			{
-				chartMonthBarShow(sums);
+				ScrollPane scrollPane = new ScrollPane();				
+				scrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
+				scrollPane.setFocusTraversable(false);
+				scrollPane.setStyle("-fx-background-color: transparent; -fx-background-insets: 0; -fx-border-color: transparent; -fx-border-width: 0; -fx-border-insets: 0;");
+				scrollPane.setPadding(new Insets(0, 0, 10, 0));
+				
+				MonthChartGenerator generator = new MonthChartGenerator(sums, controller.getSettings().getCurrency());
+				HBox generatedChart = generator.generate();
+				scrollPane.setContent(generatedChart);				
+				generatedChart.prefHeightProperty().bind(scrollPane.heightProperty().subtract(30));
+				vboxChartMonth.getChildren().add(scrollPane);
+				VBox.setVgrow(scrollPane, Priority.ALWAYS);
+				vboxChartMonth.getChildren().add(generator.generateLegend());
 			}
 			else
-			{
-				chartMonthLineShow(sums);
-			}		
+			{				
+				LineChartGenerator generator = new LineChartGenerator(sums, controller.getSettings().getCurrency());
+				LineChart<String, Number> chartMonth = generator.generate();
+				vboxChartMonth.getChildren().add(chartMonth);	
+				VBox.setVgrow(chartMonth, Priority.ALWAYS);
+			}
 		}
 		catch(Exception e)
 		{
 			Logger.error(e);
-			//TODO
-			//controller.showConnectionErrorAlert(e.getMessage());
+			// TODO
+			// controller.showConnectionErrorAlert(e.getMessage());
 		}
-	}
-
-	public void chartMonthBarShow(ArrayList<MonthInOutSum> sums)
-	{		
-		
-		BarChartGenerator generator = new BarChartGenerator(sums, controller.getSettings().getCurrency());
-		BarChart<String, Number> chartMonth = generator.generate();
-		anchorPaneChartMonth.getChildren().add(chartMonth);
-		AnchorPane.setTopAnchor(chartMonth, 0.0);
-		AnchorPane.setRightAnchor(chartMonth, 0.0);
-		AnchorPane.setBottomAnchor(chartMonth, 0.0);
-		AnchorPane.setLeftAnchor(chartMonth, 0.0);		
-	}
-
-	public void chartMonthLineShow(ArrayList<MonthInOutSum> sums)
-	{	
-		anchorPaneChartMonth.getChildren().clear();
-		LineChartGenerator generator = new LineChartGenerator(sums, controller.getSettings().getCurrency());
-		LineChart<String, Number> chartMonth = generator.generate();
-		anchorPaneChartMonth.getChildren().add(chartMonth);
-		AnchorPane.setTopAnchor(chartMonth, 0.0);
-		AnchorPane.setRightAnchor(chartMonth, 0.0);
-		AnchorPane.setBottomAnchor(chartMonth, 0.0);
-		AnchorPane.setLeftAnchor(chartMonth, 0.0);
 	}
 
 	@Override
