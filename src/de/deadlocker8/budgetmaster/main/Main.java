@@ -18,7 +18,7 @@ import tools.PathUtils;
 public class Main extends Application
 {
 	public static ResourceBundle bundle = ResourceBundle.getBundle("de/deadlocker8/budgetmaster/main/", Locale.GERMANY);
-	
+
 	@Override
 	public void start(Stage stage)
 	{
@@ -27,13 +27,13 @@ public class Main extends Application
 			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("de/deadlocker8/budgetmaster/ui/GUI.fxml"));
 			Parent root = (Parent)loader.load();
 
-			Scene scene = new Scene(root, 650, 650);			
+			Scene scene = new Scene(root, 650, 650);	
 
 			((Controller)loader.getController()).init(stage);
 
 			stage.setResizable(true);
-			stage.setMinHeight(600);
-			stage.setMinWidth(600);
+			stage.setMinHeight(650);
+			stage.setMinWidth(610);
 			stage.getIcons().add(new Image("/de/deadlocker8/budgetmaster/resources/icon.png"));
 			stage.setTitle(bundle.getString("app.name"));
 			stage.setScene(scene);
@@ -45,23 +45,23 @@ public class Main extends Application
 			Logger.error(e);
 		}
 	}
-	
+
 	@Override
 	public void init() throws Exception
-	{	
+	{
 		Parameters params = getParameters();
-		String logLevelParam = params.getNamed().get("loglevel");		
-		Logger.setLevel(logLevelParam);	
+		String logLevelParam = params.getNamed().get("loglevel");
+		Logger.setLevel(logLevelParam);
 		
-		File logFolder = new File(PathUtils.getOSindependentPath() + bundle.getString("folder"));		
+		File logFolder = new File(PathUtils.getOSindependentPath() + bundle.getString("folder"));
 		PathUtils.checkFolder(logFolder);
 		Logger.enableFileOutput(logFolder, System.out, System.err, FileOutputMode.COMBINED);
-		
-		Logger.appInfo(bundle.getString("app.name"), bundle.getString("version.name"), bundle.getString("version.code"), bundle.getString("version.date"));		
+
+		Logger.appInfo(bundle.getString("app.name"), bundle.getString("version.name"), bundle.getString("version.code"), bundle.getString("version.date"));
 	}
 
 	public static void main(String[] args)
-	{				
+	{
 		launch(args);
-	}	
+	}
 }

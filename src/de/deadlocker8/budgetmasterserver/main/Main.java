@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -24,36 +25,44 @@ public class Main
 		Logger.appInfo(bundle.getString("app.name"), bundle.getString("version.name"), bundle.getString("version.code"), bundle.getString("version.date"));
 		try
 		{
-			File logFolder = Paths.get(SparkServer.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().toFile();				
-			PathUtils.checkFolder(logFolder);
+			File logFolder = Paths.get(SparkServer.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().toFile();
 			Logger.enableFileOutput(logFolder, System.out, System.err, FileOutputMode.COMBINED);
 		}
 		catch(URISyntaxException e1)
 		{
 			Logger.error(e1);
-		}		
+		}	
 		
-		if(!Files.exists(Paths.get("settings.json")))
+		try
 		{
+			Path settingsPath = Paths.get(Settings.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().resolve("settings.json");
+			
+			if(!Files.exists(settingsPath))
+			{
+				try
+				{
+					Files.copy(SparkServer.class.getClassLoader().getResourceAsStream("de/deadlocker8/budgetmasterserver/resources/settings.json"), settingsPath);
+				}
+				catch(IOException e)
+				{
+					Logger.error(e);
+				}
+			}
+
+			Settings settings;
 			try
 			{
-				Files.copy(SparkServer.class.getClassLoader().getResourceAsStream("de/deadlocker8/budgetmasterserver/resources/settings.json"), Paths.get("settings.json"));
+				settings = Utils.loadSettings();
+				new SparkServer(settings);
 			}
-			catch(IOException e)
+			catch(IOException | URISyntaxException e)
 			{
 				Logger.error(e);
 			}
 		}
-
-		Settings settings;
-		try
-		{
-			settings = Utils.loadSettings();
-			new SparkServer(settings);
-		}
-		catch(IOException e)
-		{
-			Logger.error(e);
-		}
+		catch(URISyntaxException e1)
+		{			
+			Logger.error(e1);			
+		}		
 	}
 }

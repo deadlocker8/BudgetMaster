@@ -6,6 +6,7 @@ import org.controlsfx.control.PopOver;
 import org.controlsfx.control.PopOver.ArrowLocation;
 
 import de.deadlocker8.budgetmaster.logic.Category;
+import de.deadlocker8.budgetmaster.logic.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.ServerConnection;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
@@ -135,6 +136,12 @@ public class NewCategoryController
 			return;
 		}
 		
+		if(name.length() > 45)
+		{
+			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Der Name darf maximal 45 Zeichen lang sein.", controller.getIcon(), controller.getStage(), null, false);
+			return;
+		}
+		
 		if(edit)
 		{
 			category.setName(name);
@@ -147,7 +154,7 @@ public class NewCategoryController
 			}
 			catch(Exception e)
 			{
-				controller.showConnectionErrorAlert();
+				controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 			}			
 		}
 		else
@@ -161,7 +168,7 @@ public class NewCategoryController
 			}
 			catch(Exception e)
 			{				
-				controller.showConnectionErrorAlert();
+				controller.showConnectionErrorAlert(e.getMessage());
 			}	
 		}
 		

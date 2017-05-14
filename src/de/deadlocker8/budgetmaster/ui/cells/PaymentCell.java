@@ -69,6 +69,7 @@ public class PaymentCell extends ListCell<Payment>
 			labelDate.setAlignment(Pos.CENTER);
 			labelDate.getStyleClass().add("greylabel");
 			labelDate.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #212121");
+			labelDate.setMinWidth(75);
 			hbox.getChildren().add(labelDate);
 
 			FontIcon iconRepeating = new FontIcon(FontIconType.CALENDAR);
@@ -88,7 +89,7 @@ public class PaymentCell extends ListCell<Payment>
 			labelRepeating.setAlignment(Pos.CENTER);
 			labelRepeating.getStyleClass().add("greylabel");
 			hbox.getChildren().add(labelRepeating);
-			HBox.setMargin(labelRepeating, new Insets(0, 30, 0, 15));
+			HBox.setMargin(labelRepeating, new Insets(0, 20, 0, 15));
 
 			String categoryName = category.getName();
 			if(categoryName.equals("NONE"))
@@ -97,8 +98,8 @@ public class PaymentCell extends ListCell<Payment>
 			}
 
 			Label labelCircle = new Label(categoryName.substring(0, 1).toUpperCase());
-			labelCircle.setPrefWidth(HEIGHT);
-			labelCircle.setPrefHeight(HEIGHT);
+			labelCircle.setMinWidth(HEIGHT);
+			labelCircle.setMinHeight(HEIGHT);
 			labelCircle.setAlignment(Pos.CENTER);
 			labelCircle.getStyleClass().add("greylabel");
 			String textColor = ConvertTo.toRGBHex(ConvertTo.getAppropriateTextColor(category.getColor()));
@@ -106,14 +107,13 @@ public class PaymentCell extends ListCell<Payment>
 			Tooltip tooltip = new Tooltip(categoryName);
 			tooltip.setStyle("-fx-font-size: 14");
 			labelCircle.setTooltip(tooltip);
-			hbox.getChildren().add(labelCircle);
-			
+			hbox.getChildren().add(labelCircle);			
 
 			Label labelName = new Label(item.getName());
 			labelName.setPrefHeight(HEIGHT);
 			labelName.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #212121");
 			labelName.setAlignment(Pos.CENTER);
-			labelName.getStyleClass().add("greylabel");
+			labelName.getStyleClass().add("greylabel");			
 			hbox.getChildren().add(labelName);
 			HBox.setMargin(labelName, new Insets(0, 0, 0, 20));
 
@@ -126,6 +126,7 @@ public class PaymentCell extends ListCell<Payment>
 			labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #247A2D");
 			labelBudget.setAlignment(Pos.CENTER);
 			labelBudget.getStyleClass().add("greylabel");
+			labelBudget.setMinWidth(90);
 			hbox.getChildren().add(labelBudget);
 			HBox.setMargin(labelBudget, new Insets(0, 0, 0, 20));
 
@@ -185,14 +186,14 @@ public class PaymentCell extends ListCell<Payment>
 				}
 			});
 			hbox.getChildren().add(buttonDelete);
-			HBox.setMargin(buttonDelete, new Insets(0, 0, 0, 25));
+			HBox.setMargin(buttonDelete, new Insets(0, 0, 0, 10));
 			// don't allow "Übertrag" to be deleted
 			if(item.getID() == -1)
 			{
 				buttonDelete.setVisible(false);
 			}
 
-			hbox.setPadding(new Insets(10));
+			hbox.setPadding(new Insets(10, 8, 10, 5));
 			setStyle("-fx-background: transparent; -fx-border-color: #545454; -fx-border-width: 0 0 1 0");
 			setGraphic(hbox);
 			setAlignment(Pos.CENTER);

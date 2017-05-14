@@ -109,7 +109,7 @@ public class DatabaseCreator
 		Statement stmt = null;
 		String query = "CREATE TABLE `payment` (" +
 					 "`ID` int(11) NOT NULL COMMENT 'ID'," +
-					 "`Name` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'payment name (description)'," +
+					 "`Name` varchar(150) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'payment name (description)'," +
 					 "`CategoryID` int(11) DEFAULT NULL COMMENT 'category ID'," +
 					 "`Amount` int(11) DEFAULT NULL COMMENT 'amount in cents'," +
 					 "`Date` date DEFAULT NULL COMMENT 'payment date',"	 +
@@ -190,7 +190,7 @@ public class DatabaseCreator
 		Statement stmt = null;
 		String query = "CREATE TABLE `repeating_payment` (" +
 					  "`ID` int(11) NOT NULL COMMENT 'ID'," +
-					  "`Name` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'payment name (description)'," +
+					  "`Name` varchar(150) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'payment name (description)'," +
 					  "`CategoryID` int(11) DEFAULT NULL COMMENT 'category ID'," +
 					  "`Amount` int(11) DEFAULT NULL COMMENT 'amount in cents'," +
 					  "`Date` date DEFAULT NULL COMMENT 'payment date'," +

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.joda.time.DateTime;
 
 import de.deadlocker8.budgetmaster.logic.Category;
+import de.deadlocker8.budgetmaster.logic.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.Payment;
@@ -106,6 +107,7 @@ public class NewPaymentController
 		comboBoxCategory.setCellFactory((view) -> {
 			return new SmallCategoryCell();
 		});
+		comboBoxRepeatingDay.setValue(1);
 		buttonCategoryCell = new ButtonCategoryCell(Color.WHITE);
 		comboBoxCategory.setButtonCell(buttonCategoryCell);
 		comboBoxCategory.setStyle("-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 5;");
@@ -137,7 +139,7 @@ public class NewPaymentController
 		}
 		catch(Exception e)
 		{
-			controller.showConnectionErrorAlert();
+			controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 			stage.close();
 			return;
 		}
@@ -235,6 +237,12 @@ public class NewPaymentController
 			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Feld für den Namen darf nicht leer sein.", controller.getIcon(), controller.getStage(), null, false);
 			return;
 		}
+		
+		if(name.length() > 150)
+		{
+			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Der Name darf maximal 150 Zeichen lang sein.", controller.getIcon(), controller.getStage(), null, false);
+			return;
+		}
 
 		String amountText = textFieldAmount.getText();
 		if(!amountText.matches("^-?\\d+(,\\d+)*(\\.\\d+(e\\d+)?)?$"))
@@ -316,7 +324,7 @@ public class NewPaymentController
 				catch(Exception e)
 				{
 					Logger.error(e);
-					controller.showConnectionErrorAlert();
+					controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 				}
 			}
 			else
@@ -330,7 +338,7 @@ public class NewPaymentController
 				catch(Exception e)
 				{
 					Logger.error(e);
-					controller.showConnectionErrorAlert();
+					controller.showConnectionErrorAlert(e.getMessage());
 				}
 			}
 		}
@@ -356,7 +364,7 @@ public class NewPaymentController
 				catch(Exception e)
 				{
 					Logger.error(e);
-					controller.showConnectionErrorAlert();
+					controller.showConnectionErrorAlert(e.getMessage());
 				}
 			}
 			else
@@ -370,7 +378,7 @@ public class NewPaymentController
 				catch(Exception e)
 				{
 					Logger.error(e);
-					controller.showConnectionErrorAlert();
+					controller.showConnectionErrorAlert(e.getMessage());
 				}
 			}
 		}

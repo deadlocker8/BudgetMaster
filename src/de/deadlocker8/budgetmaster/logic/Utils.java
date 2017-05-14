@@ -12,6 +12,7 @@ import java.util.ResourceBundle;
 
 import com.google.gson.Gson;
 
+import de.deadlocker8.budgetmasterserver.main.Database;
 import tools.PathUtils;
 
 public class Utils
@@ -23,8 +24,7 @@ public class Utils
 		Settings settings;
 		try
 		{
-			Gson gson = new Gson();
-			PathUtils.checkFolder(new File(PathUtils.getOSindependentPath() + bundle.getString("folder")));
+			Gson gson = new Gson();			
 			Reader reader = Files.newBufferedReader(Paths.get(PathUtils.getOSindependentPath() + bundle.getString("folder") + "/settings.json"), Charset.forName("UTF-8"));
 			settings = gson.fromJson(reader, Settings.class);	
 			reader.close();
@@ -40,9 +40,25 @@ public class Utils
 	{		
 		Gson gson = new Gson();
 		String jsonString = gson.toJson(settings);
-		
+		PathUtils.checkFolder(new File(PathUtils.getOSindependentPath() + bundle.getString("folder")));
 		Writer writer = Files.newBufferedWriter(Paths.get(PathUtils.getOSindependentPath() + bundle.getString("folder")  + "/settings.json"), Charset.forName("UTF-8"));
 		writer.write(jsonString);
+		writer.close();
+	}
+	
+	public static Database loadDatabaseJSON(File file) throws IOException
+	{	
+		Gson gson = new Gson();
+		Reader reader = Files.newBufferedReader(Paths.get(file.getAbsolutePath()), Charset.forName("UTF-8"));		
+		Database database = gson.fromJson(reader, Database.class);	
+		reader.close();
+		return database;		
+	}
+	
+	public static void saveDatabaseJSON(File file, String databaseJSON) throws IOException
+	{		
+		Writer writer = Files.newBufferedWriter(Paths.get(file.getAbsolutePath()), Charset.forName("UTF-8"));
+		writer.write(databaseJSON);
 		writer.close();
 	}
 }

@@ -17,6 +17,7 @@ import org.joda.time.DateTime;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmasterserver.main.DatabaseHandler;
 import de.deadlocker8.budgetmasterserver.main.Settings;
 import de.deadlocker8.budgetmasterserver.server.category.CategoryAdd;
@@ -27,6 +28,9 @@ import de.deadlocker8.budgetmasterserver.server.category.CategoryUpdate;
 import de.deadlocker8.budgetmasterserver.server.categorybudget.CategoryBudgetGet;
 import de.deadlocker8.budgetmasterserver.server.charts.CategoryInOutSumForMonth;
 import de.deadlocker8.budgetmasterserver.server.charts.MonthInOutSum;
+import de.deadlocker8.budgetmasterserver.server.database.DatabaseDelete;
+import de.deadlocker8.budgetmasterserver.server.database.DatabaseExport;
+import de.deadlocker8.budgetmasterserver.server.database.DatabaseImport;
 import de.deadlocker8.budgetmasterserver.server.payment.normal.PaymentAdd;
 import de.deadlocker8.budgetmasterserver.server.payment.normal.PaymentDelete;
 import de.deadlocker8.budgetmasterserver.server.payment.normal.PaymentGet;
@@ -40,6 +44,7 @@ import de.deadlocker8.budgetmasterserver.server.updater.RepeatingPaymentUpdater;
 import logger.Logger;
 import spark.Spark;
 import spark.route.RouteOverview;
+import tools.HashUtils;
 
 public class SparkServer
 {	
@@ -79,7 +84,7 @@ public class SparkServer
 
 			String clientSecret = request.queryMap("secret").value();
 
-			if(clientSecret == null || !clientSecret.equals(settings.getServerSecret()))
+			if(clientSecret == null || !clientSecret.equals(HashUtils.hash(settings.getServerSecret(), Helpers.SALT)))
 			{
 				halt(401, "Unauthorized");
 			}
@@ -111,12 +116,16 @@ public class SparkServer
 		get("/categorybudget", new CategoryBudgetGet(handler, gson));
 		
 		// Rest
-		get("/rest", new RestGet(handler, gson));
-		
+		get("/rest", new RestGet(handler, gson));		
+
 		//charts
 		get("/charts/categoryInOutSum", new CategoryInOutSumForMonth(handler, gson));
 		get("/charts/monthInOutSum", new MonthInOutSum(handler, gson));
-				
+
+		// Database
+		get("/database", new DatabaseExport(settings, gson));
+		post("/database", new DatabaseImport(handler, gson));
+		delete("/database", new DatabaseDelete(handler, settings));
 
 		after((request, response) -> {
 			new RepeatingPaymentUpdater(handler).updateRepeatingPayments(DateTime.now());

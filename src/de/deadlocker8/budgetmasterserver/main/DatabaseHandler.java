@@ -56,7 +56,15 @@ public class DatabaseHandler
 
 			while(rs.next())
 			{
-				dateTime = formatter.parseDateTime(rs.getString("min"));
+				String min = rs.getString("min");
+				if(min == null)
+				{
+					dateTime = null;
+				}
+				else
+				{
+					dateTime = formatter.parseDateTime(rs.getString("min"));
+				}
 			}
 		}
 		catch(SQLException e)
@@ -79,7 +87,7 @@ public class DatabaseHandler
 
 		return dateTime;
 	}
-	
+
 	public DateTime getFirstRepeatingPaymentDate()
 	{
 		Statement stmt = null;
@@ -92,7 +100,15 @@ public class DatabaseHandler
 
 			while(rs.next())
 			{
-				dateTime = formatter.parseDateTime(rs.getString("min"));
+				String min = rs.getString("min");
+				if(min == null)
+				{
+					dateTime = null;
+				}
+				else
+				{
+					dateTime = formatter.parseDateTime(rs.getString("min"));
+				}
 			}
 		}
 		catch(SQLException e)
@@ -117,20 +133,28 @@ public class DatabaseHandler
 	}
 
 	public int getRestForAllPreviousMonths(int year, int month)
-	{		
+	{
+		DateTimeFormatter formatter = DateTimeFormat.forPattern("MM.yyyy");
+		String dateString = String.valueOf(month) + "." + year;
+		DateTime currentDate = formatter.parseDateTime(dateString);
+
 		DateTime firstNormalPaymentDate = getFirstNormalPaymentDate();
+		if(firstNormalPaymentDate == null)
+		{
+			firstNormalPaymentDate = currentDate;
+		}
 		DateTime firstRepeatingPaymentDate = getFirstRepeatingPaymentDate();
-		
+		if(firstRepeatingPaymentDate == null)
+		{
+			firstRepeatingPaymentDate = currentDate;
+		}
+
 		DateTime firstDate = firstNormalPaymentDate;
 		if(firstRepeatingPaymentDate.isBefore(firstNormalPaymentDate))
 		{
 			firstDate = firstRepeatingPaymentDate;
 		}
-		
-		DateTimeFormatter formatter = DateTimeFormat.forPattern("MM.yyyy");
-		String dateString = String.valueOf(month) + "." + year;
-		DateTime currentDate = formatter.parseDateTime(dateString);//	
-	
+
 		if(firstDate.isAfter(currentDate))
 		{
 			return 0;
@@ -139,10 +163,10 @@ public class DatabaseHandler
 		int startYear = firstDate.getYear();
 		int startMonth = firstDate.getMonthOfYear();
 		int totalRest = 0;
-		
+
 		while(startYear < year || startMonth < month)
 		{
-			totalRest += getRest(startYear, startMonth);			
+			totalRest += getRest(startYear, startMonth);
 
 			startMonth++;
 			if(startMonth > 12)
@@ -159,13 +183,13 @@ public class DatabaseHandler
 		ArrayList<Payment> payments = new ArrayList<>();
 		payments.addAll(getPayments(year, month));
 		payments.addAll(getRepeatingPayments(year, month));
-		
+
 		int rest = 0;
 		for(Payment currentPayment : payments)
 		{
 			rest += currentPayment.getAmount();
 		}
-		
+
 		return rest;
 	}
 
@@ -207,16 +231,16 @@ public class DatabaseHandler
 
 		return results;
 	}
-	
+
 	public Category getCategory(int ID)
 	{
 		Statement stmt = null;
-		String query = "SELECT * FROM category WHERE category.ID = " + ID;	
+		String query = "SELECT * FROM category WHERE category.ID = " + ID;
 		Category result = null;
 		try
 		{
 			stmt = connection.createStatement();
-			ResultSet rs = stmt.executeQuery(query);			
+			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next())
 			{
 				int id = rs.getInt("ID");
@@ -246,7 +270,7 @@ public class DatabaseHandler
 
 		return result;
 	}
-	
+
 	public NormalPayment getPayment(int ID)
 	{
 		Statement stmt = null;
@@ -302,13 +326,13 @@ public class DatabaseHandler
 
 			while(rs.next())
 			{
-				int resultID = rs.getInt("ID");				
+				int resultID = rs.getInt("ID");
 				String name = rs.getString("Name");
 				int amount = rs.getInt("amount");
-				String date = rs.getString("Date");				
+				String date = rs.getString("Date");
 				int categoryID = rs.getInt("CategoryID");
 				String description = rs.getString("Description");
-			
+
 				results.add(new NormalPayment(resultID, amount, date, categoryID, name, description));
 			}
 		}
@@ -380,7 +404,8 @@ public class DatabaseHandler
 	public ArrayList<RepeatingPaymentEntry> getRepeatingPayments(int year, int month)
 	{
 		Statement stmt = null;
-		String query = "SELECT repeating_entry.ID, repeating_entry.RepeatingPaymentID, repeating_entry.Date, repeating_payment.Name, repeating_payment.CategoryID, repeating_payment.Amount, repeating_payment.RepeatInterval, repeating_payment.RepeatEndDate, repeating_payment.RepeatMonthDay, repeating_payment.Description FROM repeating_entry, repeating_payment WHERE repeating_entry.RepeatingPaymentID = repeating_payment.ID AND YEAR(repeating_entry.Date) = " + year + " AND MONTH(repeating_entry.Date) = " + month;
+		String query = "SELECT repeating_entry.ID, repeating_entry.RepeatingPaymentID, repeating_entry.Date, repeating_payment.Name, repeating_payment.CategoryID, repeating_payment.Amount, repeating_payment.RepeatInterval, repeating_payment.RepeatEndDate, repeating_payment.RepeatMonthDay, repeating_payment.Description FROM repeating_entry, repeating_payment WHERE repeating_entry.RepeatingPaymentID = repeating_payment.ID AND YEAR(repeating_entry.Date) = "
+				+ year + " AND MONTH(repeating_entry.Date) = " + month;
 
 		ArrayList<RepeatingPaymentEntry> results = new ArrayList<>();
 		try
@@ -391,17 +416,17 @@ public class DatabaseHandler
 			while(rs.next())
 			{
 				int resultID = rs.getInt("ID");
-				int repeatingPaymentID = rs.getInt("repeatingPaymentID");				
+				int repeatingPaymentID = rs.getInt("repeatingPaymentID");
 				String name = rs.getString("Name");
 				String description = rs.getString("Description");
 				int amount = rs.getInt("amount");
-				String date = rs.getString("Date");				
+				String date = rs.getString("Date");
 				int categoryID = rs.getInt("CategoryID");
 				int repeatInterval = rs.getInt("RepeatInterval");
 				String repeatEndDate = rs.getString("RepeatEndDate");
-				int repeatMonthDay = rs.getInt("RepeatMonthDay");		
-			
-				results.add(new RepeatingPaymentEntry(resultID, repeatingPaymentID, date, amount, categoryID, name, description,repeatInterval, repeatEndDate, repeatMonthDay));
+				int repeatMonthDay = rs.getInt("RepeatMonthDay");
+
+				results.add(new RepeatingPaymentEntry(resultID, repeatingPaymentID, date, amount, categoryID, name, description, repeatInterval, repeatEndDate, repeatMonthDay));
 			}
 		}
 		catch(SQLException e)
@@ -472,9 +497,9 @@ public class DatabaseHandler
 
 		return results;
 	}
-	
+
 	public ArrayList<RepeatingPayment> getAllRepeatingPayments()
-	{		
+	{
 		Statement stmt = null;
 		String query = "SELECT * FROM repeating_payment;";
 
@@ -486,15 +511,15 @@ public class DatabaseHandler
 
 			while(rs.next())
 			{
-				int resultID = rs.getInt("ID");				
+				int resultID = rs.getInt("ID");
 				String name = rs.getString("Name");
 				int amount = rs.getInt("amount");
-				String date = rs.getString("Date");		
+				String date = rs.getString("Date");
 				String description = rs.getString("Description");
 				int categoryID = rs.getInt("CategoryID");
 				int repeatInterval = rs.getInt("RepeatInterval");
 				String repeatEndDate = rs.getString("RepeatEndDate");
-				int repeatMonthDay = rs.getInt("RepeatMonthDay");			
+				int repeatMonthDay = rs.getInt("RepeatMonthDay");
 
 				results.add(new RepeatingPayment(resultID, amount, date, categoryID, name, description, repeatInterval, repeatEndDate, repeatMonthDay));
 			}
@@ -519,7 +544,7 @@ public class DatabaseHandler
 
 		return results;
 	}
-	
+
 	public ArrayList<LatestRepeatingPayment> getLatestRepeatingPaymentEntries()
 	{
 		Statement stmt = null;
@@ -534,9 +559,9 @@ public class DatabaseHandler
 			while(rs.next())
 			{
 				int resultID = rs.getInt("ID");
-				int repeatingPaymentID = rs.getInt("repeatingPaymentID");				
+				int repeatingPaymentID = rs.getInt("repeatingPaymentID");
 				String date = rs.getString("LastDate");
-			
+
 				results.add(new LatestRepeatingPayment(resultID, repeatingPaymentID, date));
 			}
 		}
@@ -560,19 +585,19 @@ public class DatabaseHandler
 
 		return results;
 	}
-	
+
 	public RepeatingPayment getRepeatingPayment(int ID)
 	{
 		Statement stmt = null;
-		String query = "SELECT * FROM repeating_payment WHERE ID = " + ID;	
+		String query = "SELECT * FROM repeating_payment WHERE ID = " + ID;
 		RepeatingPayment result = null;
 		try
 		{
 			stmt = connection.createStatement();
-			ResultSet rs = stmt.executeQuery(query);			
+			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next())
 			{
-				int id = rs.getInt("ID");				
+				int id = rs.getInt("ID");
 				int amount = rs.getInt("amount");
 				String date = rs.getString("Date");
 				int categoryID = rs.getInt("CategoryID");
@@ -636,7 +661,7 @@ public class DatabaseHandler
 			}
 		}
 	}
-	
+
 	public void deletePayment(int ID)
 	{
 		Statement stmt = null;
@@ -664,7 +689,7 @@ public class DatabaseHandler
 			}
 		}
 	}
-	
+
 	public void deleteRepeatingPayment(int ID)
 	{
 		Statement stmt = null;
@@ -673,6 +698,46 @@ public class DatabaseHandler
 		{
 			stmt = connection.createStatement();
 			stmt.execute(query);
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+	}
+
+	public void deleteDatabase()
+	{
+		Statement stmt = null;
+		String tableCategory = "DROP TABLE IF EXISTS category;";
+		String tablePayment = "DROP TABLE IF EXISTS payment;";
+		String tableRepeatingPayment = "DROP TABLE IF EXISTS repeating_payment;";
+		String tableRepeatingEntry = "DROP TABLE IF EXISTS repeating_entry;";
+		try
+		{
+			stmt = connection.createStatement();
+			stmt.execute("SET FOREIGN_KEY_CHECKS = 0;");
+			stmt.execute(tableCategory);
+			Logger.info("Deleted table: category");
+			stmt.execute(tablePayment);
+			Logger.info("Deleted table: payment");
+			stmt.execute(tableRepeatingPayment);
+			Logger.info("Deleted table: repeating_payment");
+			stmt.execute(tableRepeatingEntry);
+			Logger.info("Deleted table: repeating_entry");
+			stmt.execute("SET FOREIGN_KEY_CHECKS = 1;");
 		}
 		catch(SQLException e)
 		{
@@ -724,6 +789,35 @@ public class DatabaseHandler
 		}
 	}
 
+	public void importCategory(Category category)
+	{
+		Statement stmt = null;
+		String query = "INSERT INTO category (ID, Name, Color) VALUES('" + category.getID() + "', '" + category.getName() + "' , '" + ConvertTo.toRGBHexWithoutOpacity(category.getColor()) + "') ON DUPLICATE KEY UPDATE Name='" + category.getName() + "', Color='"
+				+ ConvertTo.toRGBHexWithoutOpacity(category.getColor()) + "';";
+		try
+		{
+			stmt = connection.createStatement();
+			stmt.execute(query);
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+	}
+
 	public void addNormalPayment(int amount, String date, int categoryID, String name, String description)
 	{
 		Statement stmt = null;
@@ -751,21 +845,17 @@ public class DatabaseHandler
 			}
 		}
 	}
-	
-	public void addRepeatingPayment(int amount, String date, int categoryID, String name, String description, int repeatInterval, String repeatEndDate, int repeatMonthDay)
+
+	public void importNormalPayment(NormalPayment payment)
 	{
-		Statement stmt = null;
-		String query;		
-		//A is placeholder for empty repeatEndDate
-		if(repeatEndDate.equals("A") || repeatEndDate == null)
-		{			
-			query = "INSERT INTO repeating_payment (Amount, Date, CategoryID, Name, RepeatInterval, RepeatEndDate, RepeatMonthDay, Description) VALUES('" + amount + "' , '" + date + "' , '" + categoryID + "' , '" + name + "' , '" + repeatInterval + "' , NULL , '" + repeatMonthDay + "' , '" + description + "');";
-		}
-		else
+		if(payment.getDescription() == null)
 		{
-			query = "INSERT INTO repeating_payment (Amount, Date, CategoryID, Name, RepeatInterval, RepeatEndDate, RepeatMonthDay, Description) VALUES('" + amount + "' , '" + date + "' , '" + categoryID + "' , '" + name + "' , '" + repeatInterval + "' , '" + repeatEndDate + "' , '" + repeatMonthDay + "' , '" + description + "');";
+			payment.setDescription("");
 		}
-		
+
+		Statement stmt = null;
+		String query = "INSERT INTO payment (ID, Amount, Date, CategoryID, Name, Description) VALUES('" + payment.getID() + "', '" + payment.getAmount() + "' , '" + payment.getDate() + "' , '" + payment.getCategoryID() + "' , '" + payment.getName() + "' , '" + payment.getDescription() + "')"
+				+ "ON DUPLICATE KEY UPDATE Amount='" + payment.getAmount() + "', Date='" + payment.getDate() + "', CategoryID='" + payment.getCategoryID() + "', Name='" + payment.getName() + "', Description='" + payment.getDescription() + "';";
 		try
 		{
 			stmt = connection.createStatement();
@@ -789,12 +879,100 @@ public class DatabaseHandler
 			}
 		}
 	}
-	
+
+	public void addRepeatingPayment(int amount, String date, int categoryID, String name, String description, int repeatInterval, String repeatEndDate, int repeatMonthDay)
+	{
+		Statement stmt = null;
+		String query;
+		String correctRepeatEndDate = repeatEndDate;
+		if(correctRepeatEndDate == null || correctRepeatEndDate.equals("A"))
+		{
+			correctRepeatEndDate = "NULL";
+		}
+		else
+		{
+			correctRepeatEndDate = "'" + correctRepeatEndDate + "'";
+		}
+
+		query = "INSERT INTO repeating_payment (Amount, Date, CategoryID, Name, RepeatInterval, RepeatEndDate, RepeatMonthDay, Description) VALUES('" + amount + "' , '" + date + "' , '" + categoryID + "' , '" + name + "' , '" + repeatInterval + "' , " + correctRepeatEndDate + " , '" + repeatMonthDay
+				+ "' , '" + description + "');";
+
+		try
+		{
+			stmt = connection.createStatement();
+			stmt.execute(query);
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+	}
+
+	public void importRepeatingPayment(RepeatingPayment payment)
+	{
+		Statement stmt = null;
+		String query;
+		// A is placeholder for empty repeatEndDate
+		String repeatEndDate = payment.getRepeatEndDate();
+		if(repeatEndDate == null || repeatEndDate.equals("A"))
+		{
+			repeatEndDate = "NULL";
+		}
+		else
+		{
+			repeatEndDate = "'" + repeatEndDate + "'";
+		}
+
+		if(payment.getDescription() == null)
+		{
+			payment.setDescription("");
+		}
+
+		query = "INSERT INTO repeating_payment (ID, Amount, Date, CategoryID, Name, RepeatInterval, RepeatEndDate, RepeatMonthDay, Description) VALUES('" + payment.getID() + "', '" + payment.getAmount() + "' , '" + payment.getDate() + "' , '" + payment.getCategoryID() + "' , '" + payment.getName()
+				+ "' , '" + payment.getRepeatInterval() + "' ," + repeatEndDate + ", '" + payment.getRepeatMonthDay() + "' , '" + payment.getDescription() + "')" + " ON DUPLICATE KEY UPDATE " + "Amount='" + payment.getAmount() + "', Date='" + payment.getDate() + "', CategoryID='"
+				+ payment.getCategoryID() + "', Name='" + payment.getName() + "', RepeatInterval='" + payment.getRepeatInterval() + "', RepeatEndDate=" + repeatEndDate + ", RepeatMonthDay='" + payment.getRepeatMonthDay() + "', Description='" + payment.getDescription() + "';";
+		try
+		{
+			stmt = connection.createStatement();
+			stmt.execute(query);
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+	}
+
 	public void addRepeatingPaymentEntry(int repeatingPaymentID, String date)
 	{
 		Statement stmt = null;
-		String query;		
-		query = "INSERT INTO repeating_entry (RepeatingPaymentID, Date) VALUES('" +  repeatingPaymentID + "' , '" + date + "');";
+		String query;
+		query = "INSERT INTO repeating_entry (RepeatingPaymentID, Date) VALUES('" + repeatingPaymentID + "' , '" + date + "');";
 		try
 		{
 			stmt = connection.createStatement();
@@ -848,8 +1026,8 @@ public class DatabaseHandler
 				}
 			}
 		}
-	}	
-	
+	}
+
 	public void updateNormalPayment(int ID, int amount, String date, int categoryID, String name, String description)
 	{
 		Statement stmt = null;

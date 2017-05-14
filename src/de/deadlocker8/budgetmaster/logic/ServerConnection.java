@@ -18,6 +18,7 @@ import org.joda.time.DateTime;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import de.deadlocker8.budgetmasterserver.main.Database;
 import tools.ConvertTo;
 import tools.Read;
 
@@ -51,7 +52,9 @@ public class ServerConnection
 		SSLContext sc = SSLContext.getInstance("SSL");
 		sc.init(null, trustAllCerts, new java.security.SecureRandom());
 		HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-		HttpsURLConnection.setDefaultHostnameVerifier((hostname, sslSession) -> hostname.equals("localhost"));
+
+		// check whitelist
+		HttpsURLConnection.setDefaultHostnameVerifier((hostname, sslSession) -> settings.getTrustedHosts().contains(hostname));
 	}
 
 	/*
@@ -75,10 +78,10 @@ public class ServerConnection
 		}
 		else
 		{
-			return null;
+			return new ArrayList<>();
 		}
 	}
-	
+
 	public Category getCategory(int ID) throws Exception
 	{
 		URL url = new URL(settings.getUrl() + "/category/single?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&id=" + ID);
@@ -103,9 +106,16 @@ public class ServerConnection
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setRequestMethod("POST");
 		httpsCon.setDoInput(true);
-		InputStream stream = httpsCon.getInputStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		reader.close();
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			InputStream stream = httpsCon.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			reader.close();
+		}
+		else
+		{
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+		}		
 	}
 
 	public void updateCategory(Category category) throws Exception
@@ -114,9 +124,16 @@ public class ServerConnection
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setRequestMethod("PUT");
 		httpsCon.setDoInput(true);
-		InputStream stream = httpsCon.getInputStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		reader.close();
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			InputStream stream = httpsCon.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			reader.close();
+		}
+		else
+		{
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+		}	
 	}
 
 	public void deleteCategory(int ID) throws Exception
@@ -125,11 +142,18 @@ public class ServerConnection
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setRequestMethod("DELETE");
 		httpsCon.setDoInput(true);
-		InputStream stream = httpsCon.getInputStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		reader.close();
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			InputStream stream = httpsCon.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			reader.close();
+		}
+		else
+		{
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+		}
 	}
-	
+
 	/*
 	 * Payment
 	 */
@@ -139,7 +163,7 @@ public class ServerConnection
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setDoOutput(true);
 		httpsCon.setRequestMethod("GET");
-
+			
 		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
 		{
 			String result = Read.getStringFromInputStream(httpsCon.getInputStream());
@@ -151,7 +175,7 @@ public class ServerConnection
 		}
 		else
 		{
-			return null;
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
 		}
 	}
 
@@ -173,10 +197,10 @@ public class ServerConnection
 		}
 		else
 		{
-			return null;
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
 		}
 	}
-	
+
 	public RepeatingPayment getRepeatingPayment(int ID) throws Exception
 	{
 		URL url = new URL(settings.getUrl() + "/repeatingpayment/single?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&id=" + ID);
@@ -186,46 +210,51 @@ public class ServerConnection
 
 		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
 		{
-			String result = Read.getStringFromInputStream(httpsCon.getInputStream());		
+			String result = Read.getStringFromInputStream(httpsCon.getInputStream());
 			return gson.fromJson(result, RepeatingPayment.class);
 		}
 		else
 		{
-			return null;
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
 		}
 	}
 
 	public void addNormalPayment(NormalPayment payment) throws Exception
 	{
-		URL url = new URL(settings.getUrl() + "/payment?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + 
-				"&amount=" + payment.getAmount() + 
-				"&date=" + payment.getDate() + 
-				"&categoryID=" + payment.getCategoryID() + 
-				"&name=" + Helpers.getURLEncodedString(payment.getName()) + 
-				"&description=" + Helpers.getURLEncodedString(payment.getDescription()));
+		URL url = new URL(settings.getUrl() + "/payment?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&amount=" + payment.getAmount() + "&date=" + payment.getDate() + "&categoryID=" + payment.getCategoryID() + "&name=" + Helpers.getURLEncodedString(payment.getName())
+				+ "&description=" + Helpers.getURLEncodedString(payment.getDescription()));
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setRequestMethod("POST");
 		httpsCon.setDoInput(true);
-		InputStream stream = httpsCon.getInputStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		reader.close();
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			InputStream stream = httpsCon.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			reader.close();
+		}
+		else
+		{
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+		}
 	}
 
 	public void updateNormalPayment(NormalPayment payment) throws Exception
 	{
-		 URL url = new URL(settings.getUrl() + "/payment?secret=" + settings.getSecret() + 
-				 "&id=" + payment.getID() + 
-				 "&amount=" + payment.getAmount() + 
-				 "&date=" + payment.getDate() +
-				 "&categoryID=" + payment.getCategoryID() + 
-				 "&name=" + Helpers.getURLEncodedString(payment.getName()) +
-				 "&description=" + Helpers.getURLEncodedString(payment.getDescription()));
-		 HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
-		 httpsCon.setRequestMethod("PUT");
-		 httpsCon.setDoInput(true);
-		 InputStream stream = httpsCon.getInputStream();
-		 BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		 reader.close();
+		URL url = new URL(settings.getUrl() + "/payment?secret=" + settings.getSecret() + "&id=" + payment.getID() + "&amount=" + payment.getAmount() + "&date=" + payment.getDate() + "&categoryID=" + payment.getCategoryID() + "&name=" + Helpers.getURLEncodedString(payment.getName())
+				+ "&description=" + Helpers.getURLEncodedString(payment.getDescription()));
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setRequestMethod("PUT");
+		httpsCon.setDoInput(true);
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			InputStream stream = httpsCon.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			reader.close();
+		}
+		else
+		{
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+		}
 	}
 
 	public void addRepeatingPayment(RepeatingPayment payment) throws Exception
@@ -237,21 +266,21 @@ public class ServerConnection
 			repeatEndDate = "A";
 		}
 
-		URL url = new URL(settings.getUrl() + "/repeatingpayment?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + 
-				"&amount=" + payment.getAmount() + 
-				"&date=" + payment.getDate() + 
-				"&categoryID=" + payment.getCategoryID() + 
-				"&name=" + Helpers.getURLEncodedString(payment.getName()) + 
-				"&repeatInterval=" + payment.getRepeatInterval() +
-				"&repeatEndDate=" + repeatEndDate + 
-				"&repeatMonthDay=" + payment.getRepeatMonthDay() +
-				"&description=" + Helpers.getURLEncodedString(payment.getDescription()));				
+		URL url = new URL(settings.getUrl() + "/repeatingpayment?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&amount=" + payment.getAmount() + "&date=" + payment.getDate() + "&categoryID=" + payment.getCategoryID() + "&name=" + Helpers.getURLEncodedString(payment.getName())
+				+ "&repeatInterval=" + payment.getRepeatInterval() + "&repeatEndDate=" + repeatEndDate + "&repeatMonthDay=" + payment.getRepeatMonthDay() + "&description=" + Helpers.getURLEncodedString(payment.getDescription()));
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setRequestMethod("POST");
 		httpsCon.setDoInput(true);
-		InputStream stream = httpsCon.getInputStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		reader.close();
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			InputStream stream = httpsCon.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			reader.close();
+		}
+		else
+		{
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+		}
 	}
 
 	public void deleteNormalPayment(NormalPayment payment) throws Exception
@@ -260,22 +289,36 @@ public class ServerConnection
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setRequestMethod("DELETE");
 		httpsCon.setDoInput(true);
-		InputStream stream = httpsCon.getInputStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		reader.close();
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			InputStream stream = httpsCon.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			reader.close();
+		}
+		else
+		{
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+		}
 	}
-	
+
 	public void deleteRepeatingPayment(RepeatingPaymentEntry payment) throws Exception
 	{
 		URL url = new URL(settings.getUrl() + "/repeatingpayment?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&id=" + payment.getRepeatingPaymentID());
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setRequestMethod("DELETE");
 		httpsCon.setDoInput(true);
-		InputStream stream = httpsCon.getInputStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		reader.close();
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			InputStream stream = httpsCon.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			reader.close();
+		}
+		else
+		{
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+		}
 	}
-	
+
 	/*
 	 * CATEGORYBUDGET
 	 */
@@ -297,10 +340,10 @@ public class ServerConnection
 		}
 		else
 		{
-			return null;
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
 		}
 	}
-	
+
 	/*
 	 * REST
 	 */
@@ -313,13 +356,72 @@ public class ServerConnection
 
 		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
 		{
-			String result = Read.getStringFromInputStream(httpsCon.getInputStream());		
+			String result = Read.getStringFromInputStream(httpsCon.getInputStream());
 			return gson.fromJson(result, Integer.class);
 		}
 		else
 		{
-			return 0;
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
 		}
+	}
+
+	/*
+	 * DATABASE
+	 */
+	public void deleteDatabase() throws Exception
+	{
+		URL url = new URL(settings.getUrl() + "/database?secret=" + Helpers.getURLEncodedString(settings.getSecret()));
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setRequestMethod("DELETE");
+		httpsCon.setDoInput(true);
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			InputStream stream = httpsCon.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			reader.close();
+		}
+		else
+		{
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+		}		
+	}
+
+	public String exportDatabase() throws Exception
+	{
+		URL url = new URL(settings.getUrl() + "/database?secret=" + Helpers.getURLEncodedString(settings.getSecret()));
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setDoOutput(true);
+		httpsCon.setRequestMethod("GET");
+
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			return Read.getStringFromInputStream(httpsCon.getInputStream());
+		}
+		else
+		{
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+		}
+	}
+
+	public void importDatabase(Database database) throws Exception
+	{
+		//TODO
+//		String databaseJSON = new Gson().toJson(database);
+//		
+//		URL url = new URL(settings.getUrl() + "/database?secret=" + Helpers.getURLEncodedString(settings.getSecret()));
+//		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+//		httpsCon.setRequestMethod("POST");
+//		httpsCon.setDoInput(true);	
+//		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+//		{
+//			InputStream stream = httpsCon.getInputStream();
+//			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+//			reader.close();
+//		}
+//		else
+//		{
+//			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+//		}
 	}
 	
 	/*
