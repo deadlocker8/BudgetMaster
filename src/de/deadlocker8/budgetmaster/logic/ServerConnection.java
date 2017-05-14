@@ -13,6 +13,8 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import org.joda.time.DateTime;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -420,5 +422,56 @@ public class ServerConnection
 //		{
 //			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
 //		}
+	}
+	
+	/*
+	 * CHARTS
+	 */
+	public ArrayList<CategoryInOutSum> getCategoryInOutSumForMonth(DateTime startDate, DateTime endDate) throws Exception
+	{
+		URL url = new URL(settings.getUrl() + "/charts/categoryInOutSum?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + 
+				"&startDate=" + startDate.toString("yyyy-MM-dd") + 
+				"&endDate=" + endDate.toString("yyyy-MM-dd"));
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setDoOutput(true);
+		httpsCon.setRequestMethod("GET");
+
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			String result = Read.getStringFromInputStream(httpsCon.getInputStream());
+			// required by GSON
+			Type listType = new TypeToken<ArrayList<CategoryInOutSum>>()
+			{
+			}.getType();
+			return gson.fromJson(result, listType);
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	public ArrayList<MonthInOutSum> getMonthInOutSum(DateTime startDate, DateTime endDate) throws Exception
+	{
+		URL url = new URL(settings.getUrl() + "/charts/monthInOutSum?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + 
+				"&startDate=" + startDate.toString("yyyy-MM-dd") + 
+				"&endDate=" + endDate.toString("yyyy-MM-dd"));	
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setDoOutput(true);
+		httpsCon.setRequestMethod("GET");
+
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			String result = Read.getStringFromInputStream(httpsCon.getInputStream());
+			// required by GSON
+			Type listType = new TypeToken<ArrayList<MonthInOutSum>>()
+			{
+			}.getType();
+			return gson.fromJson(result, listType);
+		}
+		else
+		{
+			return null;
+		}
 	}
 }

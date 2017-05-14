@@ -54,14 +54,7 @@ public class CategoryBudgetGet implements Route
 				ArrayList<Payment> payments = new ArrayList<>();
 				payments.addAll(handler.getPayments(year, month));
 				payments.addAll(handler.getRepeatingPayments(year, month));			
-				Collections.sort(payments, new Comparator<Payment>() {
-			        @Override
-			        public int compare(Payment payment1, Payment payment2)
-			        {
-			            return  payment2.getDate().compareTo(payment1.getDate());
-			        }
-			    });	
-				
+			
 				ArrayList<CategoryBudget> budgets = new ArrayList<>();
 				
 				for(Category currentCategory : handler.getCategories())

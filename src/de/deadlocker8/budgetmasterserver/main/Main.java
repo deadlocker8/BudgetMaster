@@ -13,6 +13,7 @@ import de.deadlocker8.budgetmasterserver.server.SparkServer;
 import logger.FileOutputMode;
 import logger.LogLevel;
 import logger.Logger;
+import tools.PathUtils;
 
 public class Main
 {
@@ -24,7 +25,7 @@ public class Main
 		Logger.appInfo(bundle.getString("app.name"), bundle.getString("version.name"), bundle.getString("version.code"), bundle.getString("version.date"));
 		try
 		{
-			File logFolder = Paths.get(SparkServer.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().toFile();				
+			File logFolder = Paths.get(SparkServer.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().toFile();
 			Logger.enableFileOutput(logFolder, System.out, System.err, FileOutputMode.COMBINED);
 		}
 		catch(URISyntaxException e1)
@@ -62,7 +63,6 @@ public class Main
 		catch(URISyntaxException e1)
 		{			
 			Logger.error(e1);			
-		}
-		
+		}		
 	}
 }
