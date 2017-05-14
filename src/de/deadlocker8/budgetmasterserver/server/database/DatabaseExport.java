@@ -36,6 +36,6 @@ public class DatabaseExport implements Route
 			halt(500, "Internal Server Error");
 		}		
 		
-		return null;
+		return "";
 	}
 }

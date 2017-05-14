@@ -118,7 +118,7 @@ public class SparkServer
 		
 		// Database
 		get("/database", new DatabaseExport(settings, gson));
-		put("/database", new DatabaseImport(handler, settings, gson));
+		post("/database", new DatabaseImport(handler, gson));
 		delete("/database", new DatabaseDelete(handler, settings));
 
 		after((request, response) -> {

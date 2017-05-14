@@ -34,6 +34,6 @@ public class DatabaseDelete implements Route
 			halt(500, "Internal Server Error");
 		}
 		
-		return "EIMER";
+		return "";
 	}
 }
