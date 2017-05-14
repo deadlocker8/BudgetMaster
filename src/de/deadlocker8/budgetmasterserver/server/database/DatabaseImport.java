@@ -26,7 +26,7 @@ public class DatabaseImport implements Route
 	@Override
 	public Object handle(Request req, Response res) throws Exception
 	{	
-		String databaseJSON = req.body();
+		String databaseJSON = req.body();		
 		
 		try
 		{

@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmaster.logic;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.security.cert.X509Certificate;
@@ -405,23 +406,30 @@ public class ServerConnection
 
 	public void importDatabase(Database database) throws Exception
 	{
-		//TODO
-//		String databaseJSON = new Gson().toJson(database);
-//		
-//		URL url = new URL(settings.getUrl() + "/database?secret=" + Helpers.getURLEncodedString(settings.getSecret()));
-//		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
-//		httpsCon.setRequestMethod("POST");
-//		httpsCon.setDoInput(true);	
-//		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
-//		{
-//			InputStream stream = httpsCon.getInputStream();
-//			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-//			reader.close();
-//		}
-//		else
-//		{
-//			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
-//		}
+		String databaseJSON = new Gson().toJson(database);
+		
+		URL url = new URL(settings.getUrl() + "/database?secret=" + Helpers.getURLEncodedString(settings.getSecret()));
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setRequestMethod("POST");
+		httpsCon.setRequestProperty("Content-Type", "application/json");
+		httpsCon.setRequestProperty("Accept", "application/json");		
+		httpsCon.setDoInput(true);
+		httpsCon.setDoOutput(true);
+		PrintWriter writer = new PrintWriter(httpsCon.getOutputStream());
+		writer.write(databaseJSON);
+		writer.flush();
+		writer.close();
+		
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			InputStream stream = httpsCon.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			reader.close();
+		}
+		else
+		{
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+		}
 	}
 	
 	/*
