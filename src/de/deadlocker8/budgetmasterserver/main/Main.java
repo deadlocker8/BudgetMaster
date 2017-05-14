@@ -13,7 +13,6 @@ import de.deadlocker8.budgetmasterserver.server.SparkServer;
 import logger.FileOutputMode;
 import logger.LogLevel;
 import logger.Logger;
-import tools.PathUtils;
 
 public class Main
 {
