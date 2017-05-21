@@ -25,10 +25,17 @@ public class CategoriesChartGenerator
 	public CategoriesChartGenerator(String title, ArrayList<CategoryInOutSum> categoryInOutSums, boolean useBudgetIN, String currency)
 	{
 		this.title = title;
-		this.categoryInOutSums = categoryInOutSums;
+		if(categoryInOutSums == null)
+		{
+			this.categoryInOutSums = new ArrayList<>();
+		}
+		else
+		{
+			this.categoryInOutSums = categoryInOutSums;
+		}		
 		this.useBudgetIN = useBudgetIN;
 		this.currency = currency;
-		this.total = getTotal(categoryInOutSums, useBudgetIN);
+		this.total = getTotal(this.categoryInOutSums, useBudgetIN);
 	}	
 
 	public VBox generate()
@@ -64,7 +71,7 @@ public class CategoriesChartGenerator
 			currentPart.prefWidthProperty().bind(chart.widthProperty().multiply(percentage));
 
 			Tooltip tooltip = new Tooltip();
-			tooltip.setText(Helpers.NUMBER_FORMAT.format(percentage*100) + " %\n" + Helpers.NUMBER_FORMAT.format(value).replace(".", ",") + currency);//
+			tooltip.setText(currentItem.getName() + "\n" + Helpers.NUMBER_FORMAT.format(percentage*100) + " %\n" + Helpers.NUMBER_FORMAT.format(value).replace(".", ",") + currency);//
 			currentPart.setTooltip(tooltip);
 		}
 
@@ -75,6 +82,18 @@ public class CategoriesChartGenerator
 
 	public GridPane generateLegend()
 	{
+		GridPane legend = new GridPane();
+		legend.setPadding(new Insets(10));
+		legend.setHgap(20);
+		legend.setVgap(10);
+		legend.setAlignment(Pos.CENTER);
+		legend.setStyle("-fx-background-color: #EEEEEE; -fx-border-color: #212121; -fx-border-width: 1; -fx-border-radius: 5;");
+
+		if(categoryInOutSums.size() == 0)
+		{
+			return legend;
+		}	
+		
 		ArrayList<HBox> legendItems = new ArrayList<>();
 		for(CategoryInOutSum currentItem : categoryInOutSums)
 		{
@@ -87,13 +106,7 @@ public class CategoriesChartGenerator
 		}
 
 		int legendWidth = (int)Math.ceil(Math.sqrt(legendItems.size()));
-		GridPane legend = new GridPane();
-		legend.setPadding(new Insets(10));
-		legend.setHgap(20);
-		legend.setVgap(10);
-		legend.setAlignment(Pos.CENTER);
-		legend.setStyle("-fx-background-color: #EEEEEE; -fx-border-color: #212121; -fx-border-width: 1; -fx-border-radius: 5;");
-
+		
 		for(int i = 0; i < legendItems.size(); i++)
 		{
 			int columnIndex = i % legendWidth;
@@ -123,7 +136,7 @@ public class CategoriesChartGenerator
 	}
 
 	private double getTotal(ArrayList<CategoryInOutSum> categoryInOutSums, boolean useBudgetIN)
-	{
+	{		
 		double total = 0;
 		for(CategoryInOutSum currentItem : categoryInOutSums)
 		{

@@ -7,8 +7,13 @@ public class ExceptionHandler
 		if(e instanceof ServerConnectionException)
 		{
 			return handleServerConnectionException(e);
-		}		
+		}			
 		
+		if(e.getMessage() == null)
+		{
+			return "Unbekannter Fehler (" + e.getClass() + ")";
+		}
+				
 		if(e.getMessage().contains("Connection refused"))
 		{
 			return "Server nicht erreichbar.";

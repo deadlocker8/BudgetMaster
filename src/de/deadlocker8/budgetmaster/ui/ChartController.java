@@ -7,6 +7,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
 import de.deadlocker8.budgetmaster.logic.CategoryInOutSum;
+import de.deadlocker8.budgetmaster.logic.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.MonthInOutSum;
 import de.deadlocker8.budgetmaster.logic.ServerConnection;
@@ -146,8 +147,7 @@ public class ChartController implements Refreshable
 		catch(Exception e)
 		{
 			Logger.error(e);
-			// TODO
-			// controller.showConnectionErrorAlert(e.getMessage());
+			controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 		}
 	}
 
@@ -206,8 +206,7 @@ public class ChartController implements Refreshable
 		catch(Exception e)
 		{
 			Logger.error(e);
-			// TODO
-			// controller.showConnectionErrorAlert(e.getMessage());
+			controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 		}
 	}
 

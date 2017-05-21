@@ -26,7 +26,14 @@ public class MonthChartGenerator
 
 	public MonthChartGenerator(ArrayList<MonthInOutSum> monthInOutSums, String currency)
 	{
-		this.monthInOutSums = monthInOutSums;		
+		if(monthInOutSums == null)
+		{
+			this.monthInOutSums = new ArrayList<>();
+		}
+		else
+		{
+			this.monthInOutSums = monthInOutSums;
+		}
 		this.currency = currency;
 	}
 
@@ -37,7 +44,7 @@ public class MonthChartGenerator
 		generatedChart.setSpacing(25);
 
 		double total = getMaximum(monthInOutSums);
-
+			
 		for(MonthInOutSum currentMonthSum : monthInOutSums)
 		{
 			VBox chartPart = new VBox();
@@ -115,6 +122,18 @@ public class MonthChartGenerator
 
 	public GridPane generateLegend()
 	{
+		GridPane legend = new GridPane();
+		legend.setPadding(new Insets(10));
+		legend.setHgap(20);
+		legend.setVgap(10);
+		legend.setAlignment(Pos.CENTER);
+		legend.setStyle("-fx-background-color: #EEEEEE; -fx-border-color: #212121; -fx-border-width: 1; -fx-border-radius: 5;");
+		
+		if(monthInOutSums.size() == 0)
+		{
+			return legend;
+		}		
+		
 		ArrayList<HBox> legendItems = new ArrayList<>();
 		for(CategoryInOutSum currentItem : monthInOutSums.get(0).getSums())
 		{
@@ -126,13 +145,7 @@ public class MonthChartGenerator
 			legendItems.add(getLegendItem(label, currentItem.getColor()));
 		}
 
-		int legendWidth = (int)Math.ceil(Math.sqrt(legendItems.size()));
-		GridPane legend = new GridPane();
-		legend.setPadding(new Insets(10));
-		legend.setHgap(20);
-		legend.setVgap(10);
-		legend.setAlignment(Pos.CENTER);
-		legend.setStyle("-fx-background-color: #EEEEEE; -fx-border-color: #212121; -fx-border-width: 1; -fx-border-radius: 5;");
+		int legendWidth = (int)Math.ceil(Math.sqrt(legendItems.size()));		
 
 		for(int i = 0; i < legendItems.size(); i++)
 		{
@@ -180,7 +193,7 @@ public class MonthChartGenerator
 	}
 
 	private double getMaximum(ArrayList<MonthInOutSum> monthInOutSums)
-	{
+	{		
 		double maximum = 0;
 		for(MonthInOutSum currentItem : monthInOutSums)
 		{

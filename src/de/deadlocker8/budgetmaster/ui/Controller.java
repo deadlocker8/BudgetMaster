@@ -232,6 +232,7 @@ public class Controller
 	{		
 		if(!alertIsShowing)
 		{
+			alertIsShowing = true;
 			Platform.runLater(() -> {
 				toggleAllTabsExceptSettings(true);
 				tabPane.getSelectionModel().select(tabSettings);	
@@ -242,11 +243,11 @@ public class Controller
 				alert.setHeaderText("");
 				if(errorMessage == null)
 				{
-					alert.setContentText("Beim Herstellen der Verbindung zum Server ist ein Fehler aufgetreten. Bitte überprüfe deine Einstellungen und ob der Server läuft.");
+					alert.setContentText("Beim Herstellen der Verbindung zum Server ist ein Fehler aufgetreten. Bitte überprüfe deine Einstellungen.");
 				}
 				else
 				{
-					alert.setContentText("Beim Herstellen der Verbindung zum Server ist ein Fehler aufgetreten. Bitte überprüfe deine Einstellungen und ob der Server läuft.\n\n"
+					alert.setContentText("Beim Herstellen der Verbindung zum Server ist ein Fehler aufgetreten. Bitte überprüfe deine Einstellungen.\n\n"
 							+ "Fehlerdetails:\n" + errorMessage);
 				}
 				
