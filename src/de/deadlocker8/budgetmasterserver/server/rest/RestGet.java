@@ -4,7 +4,7 @@ import static spark.Spark.halt;
 
 import com.google.gson.Gson;
 
-import de.deadlocker8.budgetmasterserver.main.DatabaseHandler;
+import de.deadlocker8.budgetmasterserver.logic.DatabaseHandler;
 import spark.Request;
 import spark.Response;
 import spark.Route;

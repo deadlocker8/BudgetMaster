@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.Category;
+import de.deadlocker8.budgetmaster.logic.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.ServerConnection;
 import de.deadlocker8.budgetmaster.ui.cells.CategoryCell;
 import fontAwesome.FontIcon;
@@ -161,8 +162,8 @@ public class CategoryController implements Refreshable
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
-			controller.showConnectionErrorAlert();
+			Logger.error(e);
+			controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 		}
 	}
 	

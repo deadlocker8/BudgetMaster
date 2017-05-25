@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 
 import de.deadlocker8.budgetmaster.logic.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.CategoryHandler;
+import de.deadlocker8.budgetmaster.logic.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.FilterSettings;
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.PaymentHandler;
@@ -104,9 +105,7 @@ public class Controller
 			Parent nodeTabChart = (Parent)fxmlLoader.load();
 			chartController = fxmlLoader.getController();
 			chartController.init(this);
-			tabCharts.setContent(nodeTabChart);
-			//TODO
-			tabCharts.setDisable(true);
+			tabCharts.setContent(nodeTabChart);			
 
 			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/SettingsTab.fxml"));
 			Parent nodeTabSettings = (Parent)fxmlLoader.load();
@@ -144,6 +143,7 @@ public class Controller
 		{			
 			Platform.runLater(() -> {
 				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Bitte gibt zuerst deine Serverdaten ein!", icon, stage, null, false);
+				toggleAllTabsExceptSettings(true);
 				tabPane.getSelectionModel().select(tabSettings);
 			});
 		}
@@ -228,23 +228,34 @@ public class Controller
 		return currentDate;
 	}
 
-	public void showConnectionErrorAlert()
-	{
+	public void showConnectionErrorAlert(String errorMessage)
+	{		
 		if(!alertIsShowing)
 		{
+			alertIsShowing = true;
 			Platform.runLater(() -> {
+				toggleAllTabsExceptSettings(true);
+				tabPane.getSelectionModel().select(tabSettings);	
+				
 				alertIsShowing = true;
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Fehler");
 				alert.setHeaderText("");
-				alert.setContentText("Beim Herstellen der Verbindung zum Server ist ein Fehler aufgetreten. Bitte überprüfe deine Einstellungen und ob der Server läuft.");
+				if(errorMessage == null)
+				{
+					alert.setContentText("Beim Herstellen der Verbindung zum Server ist ein Fehler aufgetreten. Bitte überprüfe deine Einstellungen.");
+				}
+				else
+				{
+					alert.setContentText("Beim Herstellen der Verbindung zum Server ist ein Fehler aufgetreten. Bitte überprüfe deine Einstellungen.\n\n"
+							+ "Fehlerdetails:\n" + errorMessage);
+				}
+				
 				Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
 				dialogStage.getIcons().add(icon);
 				dialogStage.initOwner(stage);
-				dialogStage.setOnCloseRequest((event) -> {
-					alertIsShowing = false;
-				});
 				alert.showAndWait();
+				alertIsShowing = false;
 			});
 		}
 	}
@@ -281,6 +292,14 @@ public class Controller
 	{
 		this.filterSettings = filterSettings;
 	}
+	
+	public void toggleAllTabsExceptSettings(boolean disable)
+	{
+		tabHome.setDisable(disable);
+		tabPayments.setDisable(disable);
+		tabCategories.setDisable(disable);
+		tabCharts.setDisable(disable);	
+	}
 
 	public void about()
 	{
@@ -291,7 +310,7 @@ public class Controller
 	{
 		try
 		{
-			ServerConnection connection = new ServerConnection(settings);			
+			ServerConnection connection = new ServerConnection(settings);
 			
 			paymentHandler = new PaymentHandler();
 			paymentHandler.getPayments().addAll(connection.getPayments(currentDate.getYear(), currentDate.getMonthOfYear()));
@@ -308,12 +327,14 @@ public class Controller
 			
 			categoryBudgets = connection.getCategoryBudgets(currentDate.getYear(), currentDate.getMonthOfYear());	
 			paymentHandler.filter(newFilterSettings);
+			
+			toggleAllTabsExceptSettings(false);
 		}
 		catch(Exception e)
 		{
 			Logger.error(e);
-			categoryHandler = new CategoryHandler(null);			
-			showConnectionErrorAlert();
+			categoryHandler = new CategoryHandler(null);	
+			showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 		}
 
 		refreshAllTabs();		

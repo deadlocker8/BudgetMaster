@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.joda.time.DateTime;
 
 import de.deadlocker8.budgetmaster.logic.Category;
+import de.deadlocker8.budgetmaster.logic.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.Payment;
@@ -17,7 +18,6 @@ import de.deadlocker8.budgetmaster.ui.cells.RepeatingDayCell;
 import de.deadlocker8.budgetmaster.ui.cells.SmallCategoryCell;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -107,6 +107,7 @@ public class NewPaymentController
 		comboBoxCategory.setCellFactory((view) -> {
 			return new SmallCategoryCell();
 		});
+		comboBoxRepeatingDay.setValue(1);
 		buttonCategoryCell = new ButtonCategoryCell(Color.WHITE);
 		comboBoxCategory.setButtonCell(buttonCategoryCell);
 		comboBoxCategory.setStyle("-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 5;");
@@ -138,7 +139,7 @@ public class NewPaymentController
 		}
 		catch(Exception e)
 		{
-			controller.showConnectionErrorAlert();
+			controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 			stage.close();
 			return;
 		}
@@ -213,9 +214,18 @@ public class NewPaymentController
 			toggleRepeatingArea(false);			
 
 			//preselect correct month and year
-			DateTime currentDate = controller.getCurrentDate();
-			datePicker.setValue(LocalDate.now().withYear(currentDate.getYear()).withMonth(currentDate.getMonthOfYear()).withDayOfMonth(currentDate.getDayOfMonth()));
-			Platform.runLater(()->{datePicker.getEditor().clear();});
+			DateTime currentDate = controller.getCurrentDate();		
+			if(DateTime.now().getDayOfMonth() > currentDate.dayOfMonth().withMaximumValue().getDayOfMonth())
+			{
+				currentDate = currentDate.dayOfMonth().withMaximumValue();				
+			}		
+			
+			LocalDate currentLocalDate = LocalDate.now().withYear(currentDate.getYear())
+			.withMonth(currentDate.getMonthOfYear())
+			.withDayOfMonth(currentDate.getDayOfMonth());
+			datePicker.setValue(currentLocalDate);
+			datePicker.setEditable(false);			
+			//Platform.runLater(()->{datePicker.getEditor().clear();});
 		}
 	}
 
@@ -225,6 +235,12 @@ public class NewPaymentController
 		if(name == null || name.equals(""))
 		{
 			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Feld für den Namen darf nicht leer sein.", controller.getIcon(), controller.getStage(), null, false);
+			return;
+		}
+		
+		if(name.length() > 150)
+		{
+			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Der Name darf maximal 150 Zeichen lang sein.", controller.getIcon(), controller.getStage(), null, false);
 			return;
 		}
 
@@ -308,7 +324,7 @@ public class NewPaymentController
 				catch(Exception e)
 				{
 					Logger.error(e);
-					controller.showConnectionErrorAlert();
+					controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 				}
 			}
 			else
@@ -322,7 +338,7 @@ public class NewPaymentController
 				catch(Exception e)
 				{
 					Logger.error(e);
-					controller.showConnectionErrorAlert();
+					controller.showConnectionErrorAlert(e.getMessage());
 				}
 			}
 		}
@@ -348,7 +364,7 @@ public class NewPaymentController
 				catch(Exception e)
 				{
 					Logger.error(e);
-					controller.showConnectionErrorAlert();
+					controller.showConnectionErrorAlert(e.getMessage());
 				}
 			}
 			else
@@ -362,7 +378,7 @@ public class NewPaymentController
 				catch(Exception e)
 				{
 					Logger.error(e);
-					controller.showConnectionErrorAlert();
+					controller.showConnectionErrorAlert(e.getMessage());
 				}
 			}
 		}
