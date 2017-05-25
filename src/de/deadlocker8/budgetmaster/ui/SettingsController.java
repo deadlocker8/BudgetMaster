@@ -10,7 +10,7 @@ import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.Settings;
 import de.deadlocker8.budgetmaster.logic.Utils;
-import de.deadlocker8.budgetmasterserver.main.Database;
+import de.deadlocker8.budgetmasterserver.logic.Database;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

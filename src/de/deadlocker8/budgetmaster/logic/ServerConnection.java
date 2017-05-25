@@ -19,7 +19,7 @@ import org.joda.time.DateTime;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import de.deadlocker8.budgetmasterserver.main.Database;
+import de.deadlocker8.budgetmasterserver.logic.Database;
 import tools.ConvertTo;
 import tools.Read;
 

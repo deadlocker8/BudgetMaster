@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
 
 import com.google.gson.Gson;
 
-import de.deadlocker8.budgetmasterserver.main.Database;
+import de.deadlocker8.budgetmasterserver.logic.Database;
 import tools.PathUtils;
 
 public class Utils

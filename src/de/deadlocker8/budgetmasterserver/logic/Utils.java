@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmasterserver.main;
+package de.deadlocker8.budgetmasterserver.logic;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

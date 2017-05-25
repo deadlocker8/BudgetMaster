@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmasterserver.main;
+package de.deadlocker8.budgetmasterserver.logic;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

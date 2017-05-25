@@ -18,8 +18,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import de.deadlocker8.budgetmaster.logic.Helpers;
-import de.deadlocker8.budgetmasterserver.main.DatabaseHandler;
-import de.deadlocker8.budgetmasterserver.main.Settings;
+import de.deadlocker8.budgetmasterserver.logic.DatabaseHandler;
+import de.deadlocker8.budgetmasterserver.logic.Settings;
 import de.deadlocker8.budgetmasterserver.server.category.CategoryAdd;
 import de.deadlocker8.budgetmasterserver.server.category.CategoryDelete;
 import de.deadlocker8.budgetmasterserver.server.category.CategoryGet;
