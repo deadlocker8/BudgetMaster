@@ -5,16 +5,22 @@ Manage your monthly budget easily with BudgetMaster
 
 ## Screenshots
 
-![normal](https://cloud.githubusercontent.com/assets/16324894/24829626/caaf2d56-1c75-11e7-8fdd-393e35c5a00d.png)
+![normal](https://cloud.githubusercontent.com/assets/16324894/26446136/23de4910-4143-11e7-917f-8a807deed895.png)
 
-![overbudget](https://cloud.githubusercontent.com/assets/16324894/24829628/d5c61254-1c75-11e7-8d36-52686b4ae119.png)
+![overbudget](https://cloud.githubusercontent.com/assets/16324894/26446137/24d7140a-4143-11e7-8c01-e8e0627096df.png)
 
-![buchungen](https://cloud.githubusercontent.com/assets/16324894/24970863/2edd88de-1fb6-11e7-81c4-b854406b1d5e.png)
+![buchungen](https://cloud.githubusercontent.com/assets/16324894/26446125/1c946716-4143-11e7-80d1-50a9ac54cf80.png)
 
 ![filter](https://cloud.githubusercontent.com/assets/16324894/24970882/3cbca750-1fb6-11e7-8c28-e8604f581dff.png)
 
-![bearbeiten](https://cloud.githubusercontent.com/assets/16324894/24829629/d84628c0-1c75-11e7-90f3-c5cba28ac5d5.png)
+![bearbeiten](https://cloud.githubusercontent.com/assets/16324894/26446122/1b802612-4143-11e7-81df-656494f6d34f.png)
 
-![kategorien](https://cloud.githubusercontent.com/assets/16324894/24829632/d8740fd8-1c75-11e7-9803-c837cdf47fc3.png)
+![kategorien](https://cloud.githubusercontent.com/assets/16324894/26446134/230701b2-4143-11e7-91dc-fc5dde4b87dd.png)
 
-![einstellungen](https://cloud.githubusercontent.com/assets/16324894/24829630/d8737672-1c75-11e7-9998-3e1e7cede0fc.png)
+![diagramme_1](https://cloud.githubusercontent.com/assets/16324894/26446127/1d8e9dbc-4143-11e7-8282-8a9f16e975fe.png)
+
+![diagramme_2](https://cloud.githubusercontent.com/assets/16324894/26446128/1eeaf4e4-4143-11e7-9cd8-77faad0ef951.png)
+
+![diagramme_3](https://cloud.githubusercontent.com/assets/16324894/26446129/1fe15abe-4143-11e7-8268-1f627dfcb90a.png)
+
+![einstellungen](https://cloud.githubusercontent.com/assets/16324894/26446131/20fecd3c-4143-11e7-9f4d-d4cfd1d66cd8.png)
