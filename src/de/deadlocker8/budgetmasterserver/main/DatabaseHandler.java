@@ -40,10 +40,51 @@ public class DatabaseHandler
 			throw new IllegalStateException("Cannot connect the database!", e);
 		}
 	}
+	
+	private void closeConnection(Statement statement)
+	{
+		if(statement != null)
+		{
+			try
+			{
+				statement.close();
+			}
+			catch(SQLException e)
+			{
+			}
+		}
+	}
 
 	/*
 	 * GET
 	 */
+	public int getLastInsertID()
+	{
+		Statement stmt = null;
+		String query = "SELECT LAST_INSERT_ID();";
+		int lastInsertID = 0;
+		try
+		{
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next())
+			{
+				lastInsertID = rs.getInt("LAST_INSERT_ID()");				
+			}
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+		finally
+		{
+			closeConnection(stmt);
+		}
+
+		return lastInsertID;
+	}
+	
 	public DateTime getFirstNormalPaymentDate()
 	{
 		Statement stmt = null;
@@ -73,16 +114,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			if(stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch(SQLException e)
-				{
-				}
-			}
+			closeConnection(stmt);
 		}
 
 		return dateTime;
@@ -117,16 +149,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			if(stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch(SQLException e)
-				{
-				}
-			}
+			closeConnection(stmt);
 		}
 
 		return dateTime;
@@ -217,16 +240,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			if(stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch(SQLException e)
-				{
-				}
-			}
+			closeConnection(stmt);
 		}
 
 		return results;
@@ -256,19 +270,69 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			if(stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch(SQLException e)
-				{
-				}
-			}
+			closeConnection(stmt);
 		}
 
 		return result;
+	}
+	
+	public Category getCategory(String name, Color color)
+	{
+		Statement stmt = null;
+		String query = "SELECT * FROM category WHERE category.name = \"" + name + "\" AND category.color = \"" + ConvertTo.toRGBHexWithoutOpacity(color) + "\";";
+		Category result = null;
+		try
+		{
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next())
+			{
+				int id = rs.getInt("ID");
+				String categoryName = rs.getString("Name");
+				String categoryColor = rs.getString("Color");
+
+				result = new Category(id, categoryName, Color.web(categoryColor));
+			}
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+		finally
+		{
+			closeConnection(stmt);
+		}
+
+		return result;
+	}
+	
+	public boolean categoryExists(int ID)
+	{
+		Statement stmt = null;
+		String query = "SELECT COUNT(ID) as \"count\" FROM category WHERE category.ID = " + ID;
+		boolean exists = false;
+		try
+		{
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next())
+			{
+				if(rs.getInt("count") > 0)
+				{
+					exists = true;
+				}
+			}
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+		finally
+		{
+			closeConnection(stmt);
+		}
+
+		return exists;
 	}
 
 	public NormalPayment getPayment(int ID)
@@ -298,16 +362,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			if(stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch(SQLException e)
-				{
-				}
-			}
+			closeConnection(stmt);
 		}
 
 		return null;
@@ -342,16 +397,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			if(stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch(SQLException e)
-				{
-				}
-			}
+			closeConnection(stmt);
 		}
 
 		return results;
@@ -386,16 +432,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			if(stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch(SQLException e)
-				{
-				}
-			}
+			closeConnection(stmt);
 		}
 
 		return results;
@@ -435,16 +472,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			if(stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch(SQLException e)
-				{
-				}
-			}
+			closeConnection(stmt);
 		}
 
 		return results;
@@ -483,16 +511,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			if(stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch(SQLException e)
-				{
-				}
-			}
+			closeConnection(stmt);
 		}
 
 		return results;
@@ -530,16 +549,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			if(stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch(SQLException e)
-				{
-				}
-			}
+			closeConnection(stmt);
 		}
 
 		return results;
@@ -571,16 +581,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			if(stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch(SQLException e)
-				{
-				}
-			}
+			closeConnection(stmt);
 		}
 
 		return results;
@@ -616,16 +617,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			if(stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch(SQLException e)
-				{
-				}
-			}
+			closeConnection(stmt);
 		}
 
 		return result;
@@ -649,16 +641,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			if(stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch(SQLException e)
-				{
-				}
-			}
+			closeConnection(stmt);
 		}
 	}
 
@@ -677,16 +660,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			if(stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch(SQLException e)
-				{
-				}
-			}
+			closeConnection(stmt);
 		}
 	}
 
@@ -705,16 +679,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			if(stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch(SQLException e)
-				{
-				}
-			}
+			closeConnection(stmt);
 		}
 	}
 
@@ -745,16 +710,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			if(stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch(SQLException e)
-				{
-				}
-			}
+			closeConnection(stmt);
 		}
 	}
 
@@ -776,24 +732,14 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			if(stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch(SQLException e)
-				{
-				}
-			}
+			closeConnection(stmt);
 		}
 	}
 
 	public void importCategory(Category category)
 	{
 		Statement stmt = null;
-		String query = "INSERT INTO category (ID, Name, Color) VALUES('" + category.getID() + "', '" + category.getName() + "' , '" + ConvertTo.toRGBHexWithoutOpacity(category.getColor()) + "') ON DUPLICATE KEY UPDATE Name='" + category.getName() + "', Color='"
-				+ ConvertTo.toRGBHexWithoutOpacity(category.getColor()) + "';";
+		String query = "INSERT INTO category (ID, Name, Color) VALUES('" + category.getID() + "', '" + category.getName() + "' , '" + ConvertTo.toRGBHexWithoutOpacity(category.getColor()) + "');";
 		try
 		{
 			stmt = connection.createStatement();
@@ -805,16 +751,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			if(stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch(SQLException e)
-				{
-				}
-			}
+			closeConnection(stmt);
 		}
 	}
 
@@ -833,50 +770,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			if(stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch(SQLException e)
-				{
-				}
-			}
-		}
-	}
-
-	public void importNormalPayment(NormalPayment payment)
-	{
-		if(payment.getDescription() == null)
-		{
-			payment.setDescription("");
-		}
-
-		Statement stmt = null;
-		String query = "INSERT INTO payment (ID, Amount, Date, CategoryID, Name, Description) VALUES('" + payment.getID() + "', '" + payment.getAmount() + "' , '" + payment.getDate() + "' , '" + payment.getCategoryID() + "' , '" + payment.getName() + "' , '" + payment.getDescription() + "')"
-				+ "ON DUPLICATE KEY UPDATE Amount='" + payment.getAmount() + "', Date='" + payment.getDate() + "', CategoryID='" + payment.getCategoryID() + "', Name='" + payment.getName() + "', Description='" + payment.getDescription() + "';";
-		try
-		{
-			stmt = connection.createStatement();
-			stmt.execute(query);
-		}
-		catch(SQLException e)
-		{
-			Logger.error(e);
-		}
-		finally
-		{
-			if(stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch(SQLException e)
-				{
-				}
-			}
+			closeConnection(stmt);
 		}
 	}
 
@@ -908,66 +802,10 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			if(stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch(SQLException e)
-				{
-				}
-			}
+			closeConnection(stmt);
 		}
 	}
-
-	public void importRepeatingPayment(RepeatingPayment payment)
-	{
-		Statement stmt = null;
-		String query;
-		// A is placeholder for empty repeatEndDate
-		String repeatEndDate = payment.getRepeatEndDate();
-		if(repeatEndDate == null || repeatEndDate.equals("A"))
-		{
-			repeatEndDate = "NULL";
-		}
-		else
-		{
-			repeatEndDate = "'" + repeatEndDate + "'";
-		}
-
-		if(payment.getDescription() == null)
-		{
-			payment.setDescription("");
-		}
-
-		query = "INSERT INTO repeating_payment (ID, Amount, Date, CategoryID, Name, RepeatInterval, RepeatEndDate, RepeatMonthDay, Description) VALUES('" + payment.getID() + "', '" + payment.getAmount() + "' , '" + payment.getDate() + "' , '" + payment.getCategoryID() + "' , '" + payment.getName()
-				+ "' , '" + payment.getRepeatInterval() + "' ," + repeatEndDate + ", '" + payment.getRepeatMonthDay() + "' , '" + payment.getDescription() + "')" + " ON DUPLICATE KEY UPDATE " + "Amount='" + payment.getAmount() + "', Date='" + payment.getDate() + "', CategoryID='"
-				+ payment.getCategoryID() + "', Name='" + payment.getName() + "', RepeatInterval='" + payment.getRepeatInterval() + "', RepeatEndDate=" + repeatEndDate + ", RepeatMonthDay='" + payment.getRepeatMonthDay() + "', Description='" + payment.getDescription() + "';";
-		try
-		{
-			stmt = connection.createStatement();
-			stmt.execute(query);
-		}
-		catch(SQLException e)
-		{
-			Logger.error(e);
-		}
-		finally
-		{
-			if(stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch(SQLException e)
-				{
-				}
-			}
-		}
-	}
-
+	
 	public void addRepeatingPaymentEntry(int repeatingPaymentID, String date)
 	{
 		Statement stmt = null;
@@ -984,16 +822,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			if(stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch(SQLException e)
-				{
-				}
-			}
+			closeConnection(stmt);
 		}
 	}
 
@@ -1015,16 +844,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			if(stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch(SQLException e)
-				{
-				}
-			}
+			closeConnection(stmt);
 		}
 	}
 
@@ -1043,16 +863,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			if(stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch(SQLException e)
-				{
-				}
-			}
+			closeConnection(stmt);
 		}
 	}
 }
