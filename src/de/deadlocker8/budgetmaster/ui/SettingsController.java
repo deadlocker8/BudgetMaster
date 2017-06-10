@@ -209,7 +209,7 @@ public class SettingsController
 						{
 							modalStage.close();
 						}
-						AlertGenerator.showAlert(AlertType.INFORMATION, "Erfolgreich exportiert", "", "Die Datenbank wurder erfolgreich exportiert.", controller.getIcon(), controller.getStage(), null, false);
+						AlertGenerator.showAlert(AlertType.INFORMATION, "Erfolgreich exportiert", "", "Die Datenbank wurde erfolgreich exportiert.", controller.getIcon(), controller.getStage(), null, false);
 					});
 				}
 				catch(Exception e)
