@@ -1,5 +1,7 @@
 package de.deadlocker8.budgetmaster.logic;
 
+import java.net.UnknownHostException;
+
 public class ExceptionHandler
 {
 	public static String getMessageForException(Exception e)
@@ -8,6 +10,11 @@ public class ExceptionHandler
 		{
 			return handleServerConnectionException(e);
 		}			
+		
+		if(e instanceof UnknownHostException)
+		{
+			return "Es konnte keine Verbindung mit dem Internet hergestellt werden.";
+		}
 		
 		if(e.getMessage() == null)
 		{
