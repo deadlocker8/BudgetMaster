@@ -42,6 +42,8 @@ import tools.Worker;
 public class SettingsController
 {
 	@FXML private AnchorPane anchorPaneMain;
+	@FXML private Label labelClientSecret;
+	@FXML private TextField textFieldClientSecret;
 	@FXML private TextField textFieldURL;
 	@FXML private Label labelURL;
 	@FXML private TextField textFieldSecret;
@@ -61,7 +63,10 @@ public class SettingsController
 	public void init(Controller controller)
 	{
 		this.controller = controller;
-		if(controller.getSettings() != null)
+		
+		textFieldClientSecret.setText("******");
+		
+		if(controller.getSettings().isComplete())
 		{
 			textFieldURL.setText(controller.getSettings().getUrl());
 			textFieldSecret.setText("******");
@@ -78,6 +83,7 @@ public class SettingsController
 		}
 
 		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");
+		labelClientSecret.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
 		labelSecret.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
 		labelURL.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
 		labelCurrency.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
@@ -114,9 +120,17 @@ public class SettingsController
 
 	public void save()
 	{
+		String clientSecret = textFieldClientSecret.getText().trim();
 		String url = textFieldURL.getText().trim();
 		String secret = textFieldSecret.getText().trim();
 		String currency = textFieldCurrency.getText().trim();
+		
+		if(clientSecret == null || clientSecret.equals(""))
+		{
+			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Feld für das Client Passwort darf nicht leer sein!", controller.getIcon(), controller.getStage(), null, false);
+			return;
+		}
+		
 		if(url == null || url.equals(""))
 		{
 			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Feld für die Server URL darf nicht leer sein!", controller.getIcon(), controller.getStage(), null, false);
@@ -148,8 +162,13 @@ public class SettingsController
 		}
 		setTextAreaTrustedHosts(trustedHosts);
 
-		if(controller.getSettings() != null)
+		if(controller.getSettings().isComplete())
 		{
+			if(!clientSecret.equals("******"))
+			{
+				controller.getSettings().setClientSecret(HashUtils.hash(clientSecret, Helpers.SALT));
+			}
+			
 			if(!secret.equals("******"))
 			{
 				controller.getSettings().setSecret(HashUtils.hash(secret, Helpers.SALT));
@@ -162,6 +181,7 @@ public class SettingsController
 		else
 		{
 			Settings settings = new Settings();
+			settings.setClientSecret(HashUtils.hash(clientSecret, Helpers.SALT));
 			settings.setUrl(url);
 			settings.setSecret(HashUtils.hash(secret, Helpers.SALT));
 			settings.setCurrency(currency);
@@ -180,6 +200,7 @@ public class SettingsController
 			AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Beim Speichern der Einstellungen ist ein Fehler aufgetreten", controller.getIcon(), controller.getStage(), null, false);
 		}
 
+		textFieldClientSecret.setText("******");
 		textFieldSecret.setText("******");
 
 		controller.refresh(controller.getFilterSettings());

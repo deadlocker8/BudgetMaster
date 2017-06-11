@@ -2,7 +2,6 @@ package de.deadlocker8.budgetmaster.ui;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.joda.time.DateTime;
@@ -15,7 +14,6 @@ import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.PaymentHandler;
 import de.deadlocker8.budgetmaster.logic.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.Settings;
-import de.deadlocker8.budgetmaster.logic.Utils;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.animation.FadeTransition;
@@ -60,7 +58,7 @@ public class Controller
 
 	private Stage stage;
 	private Image icon = new Image("de/deadlocker8/budgetmaster/resources/icon.png");
-	private final ResourceBundle bundle = ResourceBundle.getBundle("de/deadlocker8/budgetmaster/main/", Locale.GERMANY);
+	private ResourceBundle bundle;
 	private Settings settings;
 	private DateTime currentDate;
 	private ArrayList<CategoryBudget> categoryBudgets;
@@ -70,16 +68,17 @@ public class Controller
 
 	private boolean alertIsShowing = false;
 
-	public void init(Stage stage)
+	public void init(Stage stage, ResourceBundle bundle, Settings settings)
 	{
 		this.stage = stage;
+		this.bundle = bundle;
+		this.settings = settings;
+		
 		currentDate = DateTime.now();
 		labelMonth.setText(currentDate.toString("MMMM yyyy"));
 		
 		filterSettings = new FilterSettings();
 		paymentHandler = new PaymentHandler();
-
-		settings = Utils.loadSettings();
 
 		try
 		{
@@ -137,12 +136,12 @@ public class Controller
 		labelNotification.setStyle("-fx-text-fill: #FFFFFF; -fx-font-size: 16; -fx-font-weight: bold; -fx-background-color: transparent;");
 		buttonLeft.setStyle("-fx-background-color: transparent;");
 		buttonRight.setStyle("-fx-background-color: transparent;");
-		buttonToday.setStyle("-fx-background-color: transparent;");
+		buttonToday.setStyle("-fx-background-color: transparent;");		
 		
-		if(settings == null)
+		if(!settings.isComplete())
 		{			
 			Platform.runLater(() -> {
-				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Bitte gibt zuerst deine Serverdaten ein!", icon, stage, null, false);
+				AlertGenerator.showAlert(AlertType.INFORMATION, "Hinweis", "", "Vor der ersten Benutzung musst du deine Serverdaten eingeben.", icon, stage, null, false);
 				toggleAllTabsExceptSettings(true);
 				tabPane.getSelectionModel().select(tabSettings);
 			});

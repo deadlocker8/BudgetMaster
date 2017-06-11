@@ -20,6 +20,11 @@
                <children>
                   <VBox alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="158.0" spacing="20.0">
                      <children>
+                        <Label fx:id="labelClientSecret" prefHeight="25.0" text="Client Passwort:">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
                         <Label fx:id="labelURL" prefHeight="25.0" text="Server URL:">
                            <font>
                               <Font name="System Bold" size="16.0" />
@@ -83,6 +88,7 @@
                   </VBox>
                   <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="20.0" HBox.hgrow="ALWAYS">
                      <children>
+                        <TextField fx:id="textFieldClientSecret" />
                         <TextField fx:id="textFieldURL" />
                         <TextField fx:id="textFieldSecret" />
                         <TextField fx:id="textFieldCurrency" />
