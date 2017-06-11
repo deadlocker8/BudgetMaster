@@ -61,11 +61,11 @@ public class NewCategoryController
 		buttonColor.prefWidthProperty().bind(textFieldName.widthProperty());
 		
 		ArrayList<Color> colors = new ArrayList<>();		
-		//grey (light to dark)
-		colors.add(Color.web("#ecf0f1"));
+		//grey (light to dark)		
 		colors.add(Color.web("#CCCCCC"));	
 		colors.add(Color.web("#888888"));		
-		colors.add(Color.web("#333333"));				
+		colors.add(Color.web("#333333"));	
+		colors.add(Color.rgb(255, 241, 119));	//lighyellow	
 		colors.add(Color.rgb(255, 204, 0));		//yellow
 		colors.add(Color.rgb(255, 149, 0)); 	//orange
 		colors.add(Color.rgb(255, 59, 48));		//red
