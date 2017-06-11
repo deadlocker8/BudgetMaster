@@ -101,16 +101,9 @@ public class ChartController implements Refreshable
 		});
 
 		comboBoxStartMonth.setItems(FXCollections.observableArrayList(Helpers.getMonthList()));
-		comboBoxStartMonth.setValue(controller.getCurrentDate().minusMonths(5).toString("MMMM"));
-		
 		comboBoxStartYear.setItems(FXCollections.observableArrayList(Helpers.getYearList()));
-		comboBoxStartYear.setValue(String.valueOf(controller.getCurrentDate().minusMonths(5).getYear()));
-		
 		comboBoxEndMonth.setItems(FXCollections.observableArrayList(Helpers.getMonthList()));
-		comboBoxEndMonth.setValue(controller.getCurrentDate().plusMonths(6).toString("MMMM"));
-		
-		comboBoxEndYear.setItems(FXCollections.observableArrayList(Helpers.getYearList()));
-		comboBoxEndYear.setValue(String.valueOf(controller.getCurrentDate().plusMonths(6).getYear()));
+		comboBoxEndYear.setItems(FXCollections.observableArrayList(Helpers.getYearList()));		
 
 		final ToggleGroup toggleGroup = new ToggleGroup();
 		radioButtonBars.setToggleGroup(toggleGroup);
@@ -221,6 +214,12 @@ public class ChartController implements Refreshable
 		datePickerEnd.setValue(endDate);
 
 		chartCategoriesShow();
+		
+		comboBoxStartMonth.setValue(controller.getCurrentDate().minusMonths(5).toString("MMMM"));
+		comboBoxStartYear.setValue(String.valueOf(controller.getCurrentDate().minusMonths(5).getYear()));
+		
+		comboBoxEndMonth.setValue(controller.getCurrentDate().plusMonths(6).toString("MMMM"));
+		comboBoxEndYear.setValue(String.valueOf(controller.getCurrentDate().plusMonths(6).getYear()));
 
 		// chart month
 		chartMonthShow();
