@@ -297,7 +297,10 @@ public class Controller
 		tabHome.setDisable(disable);
 		tabPayments.setDisable(disable);
 		tabCategories.setDisable(disable);
-		tabCharts.setDisable(disable);	
+		tabCharts.setDisable(disable);
+		buttonLeft.setDisable(disable);
+		buttonRight.setDisable(disable);
+		buttonToday.setDisable(disable);
 	}
 
 	public void about()
