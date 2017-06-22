@@ -787,7 +787,7 @@ public class DatabaseHandler
 		String correctRepeatEndDate = repeatEndDate;
 		if(correctRepeatEndDate == null || correctRepeatEndDate.equals("A"))
 		{
-			correctRepeatEndDate = "NULL";
+			correctRepeatEndDate = null;
 		}
 		else
 		{
@@ -809,6 +809,7 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
+			e.printStackTrace();
 			Logger.error(e);
 		}
 		finally
