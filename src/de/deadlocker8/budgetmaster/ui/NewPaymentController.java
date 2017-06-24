@@ -177,26 +177,39 @@ public class NewPaymentController
 			
 			if(payment instanceof RepeatingPaymentEntry)
 			{
-				RepeatingPaymentEntry currentPayment = (RepeatingPaymentEntry)payment;
-				//repeates every x days
-				if(currentPayment.getRepeatInterval() != 0)
+				try
 				{					
-					checkBoxRepeat.setSelected(true);
-					radioButtonPeriod.setSelected(true);
-					toggleRepeatingArea(true);
-					spinnerRepeatingPeriod.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, currentPayment.getRepeatInterval()));
+					RepeatingPaymentEntry currentPayment = (RepeatingPaymentEntry)payment;
+					
+					ServerConnection connection = new ServerConnection(controller.getSettings());
+					RepeatingPayment repeatingPayment = connection.getRepeatingPayment(currentPayment.getRepeatingPaymentID());
+					datePicker.setValue(LocalDate.parse(repeatingPayment.getDate()));
+					
+					//repeates every x days
+					if(currentPayment.getRepeatInterval() != 0)
+					{					
+						checkBoxRepeat.setSelected(true);
+						radioButtonPeriod.setSelected(true);
+						toggleRepeatingArea(true);
+						spinnerRepeatingPeriod.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, currentPayment.getRepeatInterval()));
+					}
+					//repeat every month on day x
+					else
+					{
+						checkBoxRepeat.setSelected(true);
+						radioButtonDay.setSelected(true);
+						toggleRepeatingArea(true);
+						comboBoxRepeatingDay.getSelectionModel().select(currentPayment.getRepeatMonthDay()-1);
+					}
+					if(currentPayment.getRepeatEndDate() != null)
+					{
+						datePickerEnddate.setValue(LocalDate.parse(currentPayment.getRepeatEndDate()));
+					}
 				}
-				//repeat every month on day x
-				else
+				catch(Exception e)
 				{
-					checkBoxRepeat.setSelected(true);
-					radioButtonDay.setSelected(true);
-					toggleRepeatingArea(true);
-					comboBoxRepeatingDay.getSelectionModel().select(currentPayment.getRepeatMonthDay()-1);
-				}
-				if(currentPayment.getRepeatEndDate() != null)
-				{
-					datePickerEnddate.setValue(LocalDate.parse(currentPayment.getRepeatEndDate()));
+					Logger.error(e);
+					controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 				}
 			}	
 			else
@@ -223,10 +236,10 @@ public class NewPaymentController
 			LocalDate currentLocalDate = LocalDate.now().withYear(currentDate.getYear())
 			.withMonth(currentDate.getMonthOfYear())
 			.withDayOfMonth(currentDate.getDayOfMonth());
-			datePicker.setValue(currentLocalDate);
-			datePicker.setEditable(false);			
-			//Platform.runLater(()->{datePicker.getEditor().clear();});
+			datePicker.setValue(currentLocalDate);			
 		}
+		
+		datePicker.setEditable(false);
 	}
 
 	public void save()
