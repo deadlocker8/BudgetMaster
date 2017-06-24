@@ -49,7 +49,7 @@ public class DatabaseImportTest
 	{	
 		try
 		{
-			File file = Paths.get("tests/de/deadlocker8/budgetmaster/tests/resources/export.json").toFile();
+			File file = Paths.get("tests/de/deadlocker8/budgetmaster/tests/resources/import.json").toFile();
 			Database database = de.deadlocker8.budgetmaster.logic.Utils.loadDatabaseJSON(file);			
 			
 			DatabaseImporter importer = new DatabaseImporter(databaseHandler);
