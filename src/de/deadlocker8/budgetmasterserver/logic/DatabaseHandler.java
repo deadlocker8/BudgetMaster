@@ -789,10 +789,6 @@ public class DatabaseHandler
 		{
 			correctRepeatEndDate = "NULL";
 		}
-		else
-		{
-			correctRepeatEndDate = "'" + correctRepeatEndDate + "'";
-		}
 
 		try
 		{
