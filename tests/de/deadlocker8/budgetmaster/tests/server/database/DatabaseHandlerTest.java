@@ -30,6 +30,7 @@ public class DatabaseHandlerTest
 		{
 			//init
 			Settings settings = Utils.loadSettings();
+			System.out.println(settings);
 			DatabaseHandler handler = new DatabaseHandler(settings);
 			handler.deleteDatabase();
 			handler = new DatabaseHandler(settings);			
