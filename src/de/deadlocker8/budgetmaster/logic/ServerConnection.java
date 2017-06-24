@@ -29,7 +29,7 @@ public class ServerConnection
 	private Gson gson;
 
 	public ServerConnection(Settings settings) throws Exception
-	{
+	{		
 		this.settings = settings;
 		this.gson = new Gson();
 

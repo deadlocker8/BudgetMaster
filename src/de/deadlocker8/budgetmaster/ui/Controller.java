@@ -10,6 +10,7 @@ import de.deadlocker8.budgetmaster.logic.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.CategoryHandler;
 import de.deadlocker8.budgetmaster.logic.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.FilterSettings;
+import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.PaymentHandler;
 import de.deadlocker8.budgetmaster.logic.ServerConnection;
@@ -34,6 +35,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import logger.Logger;
 import tools.AlertGenerator;
+import tools.Worker;
 
 public class Controller
 {
@@ -104,7 +106,13 @@ public class Controller
 			Parent nodeTabChart = (Parent)fxmlLoader.load();
 			chartController = fxmlLoader.getController();
 			chartController.init(this);
-			tabCharts.setContent(nodeTabChart);			
+			tabCharts.setContent(nodeTabChart);
+			tabCharts.selectedProperty().addListener((a,b,c)->{
+				if(c)
+				{
+					chartController.refresh();
+				}
+			});
 
 			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/SettingsTab.fxml"));
 			Parent nodeTabSettings = (Parent)fxmlLoader.load();
@@ -264,7 +272,10 @@ public class Controller
 		homeController.refresh();
 		paymentController.refresh();
 		categoryController.refresh();
-		chartController.refresh();
+		if(tabCharts.isSelected())
+		{
+			chartController.refresh();
+		}
 	}
 	
 	public ArrayList<CategoryBudget> getCategoryBudgets()
@@ -310,35 +321,53 @@ public class Controller
 	
 	public void refresh(FilterSettings newFilterSettings)
 	{
-		try
-		{
-			ServerConnection connection = new ServerConnection(settings);
-			
-			paymentHandler = new PaymentHandler();
-			paymentHandler.getPayments().addAll(connection.getPayments(currentDate.getYear(), currentDate.getMonthOfYear()));
-			paymentHandler.getPayments().addAll(connection.getRepeatingPayments(currentDate.getYear(), currentDate.getMonthOfYear()));			
-			paymentHandler.sort();
-			if(settings.isRestActivated())
-			{
-				int rest = connection.getRestForAllPreviousMonths(currentDate.getYear(), currentDate.getMonthOfYear());
-				//categoryID 2 = Rest
-				paymentHandler.getPayments().add(new NormalPayment(-1, rest, currentDate.withDayOfMonth(1).toString("yyyy-MM-dd"), 2, "Übertrag", ""));				
-			}
-			
-			categoryHandler = new CategoryHandler(connection.getCategories());
-			
-			categoryBudgets = connection.getCategoryBudgets(currentDate.getYear(), currentDate.getMonthOfYear());	
-			paymentHandler.filter(newFilterSettings);
-			
-			toggleAllTabsExceptSettings(false);
-		}
-		catch(Exception e)
-		{
-			Logger.error(e);
-			categoryHandler = new CategoryHandler(null);	
-			showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
-		}
+		Stage modalStage = Helpers.showModal("Vorgang läuft", "Lade Daten...", stage, icon);
 
-		refreshAllTabs();		
+		Worker.runLater(() -> {
+			try
+			{
+				ServerConnection connection = new ServerConnection(settings);
+				
+				paymentHandler = new PaymentHandler();
+				paymentHandler.getPayments().addAll(connection.getPayments(currentDate.getYear(), currentDate.getMonthOfYear()));
+				paymentHandler.getPayments().addAll(connection.getRepeatingPayments(currentDate.getYear(), currentDate.getMonthOfYear()));			
+				paymentHandler.sort();
+				if(settings.isRestActivated())
+				{
+					int rest = connection.getRestForAllPreviousMonths(currentDate.getYear(), currentDate.getMonthOfYear());
+					//categoryID 2 = Rest
+					paymentHandler.getPayments().add(new NormalPayment(-1, rest, currentDate.withDayOfMonth(1).toString("yyyy-MM-dd"), 2, "Übertrag", ""));				
+				}
+				
+				categoryHandler = new CategoryHandler(connection.getCategories());
+				
+				categoryBudgets = connection.getCategoryBudgets(currentDate.getYear(), currentDate.getMonthOfYear());	
+				paymentHandler.filter(newFilterSettings);
+				
+
+				Platform.runLater(() -> {
+					if(modalStage != null)
+					{
+						modalStage.close();
+					}
+					toggleAllTabsExceptSettings(false);
+					refreshAllTabs();
+				});
+			}
+			catch(Exception e)
+			{
+				Logger.error(e);
+				Platform.runLater(() -> {
+					if(modalStage != null)
+					{
+						modalStage.close();
+					}
+					Logger.error(e);
+					categoryHandler = new CategoryHandler(null);	
+					showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
+					refreshAllTabs();
+				});
+			}
+		});	
 	}
 }
