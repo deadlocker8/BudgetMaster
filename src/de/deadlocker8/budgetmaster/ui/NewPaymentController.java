@@ -192,7 +192,7 @@ public class NewPaymentController
 					checkBoxRepeat.setSelected(true);
 					radioButtonDay.setSelected(true);
 					toggleRepeatingArea(true);
-					comboBoxRepeatingDay.getSelectionModel().select(currentPayment.getRepeatMonthDay());
+					comboBoxRepeatingDay.getSelectionModel().select(currentPayment.getRepeatMonthDay()-1);
 				}
 				if(currentPayment.getRepeatEndDate() != null)
 				{
