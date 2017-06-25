@@ -805,6 +805,7 @@ public class DatabaseHandler
 		}
 		catch(SQLException e)
 		{
+			e.printStackTrace();
 			Logger.error(e);
 		}
 		finally
