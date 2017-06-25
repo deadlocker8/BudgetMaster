@@ -13,9 +13,6 @@ import de.deadlocker8.budgetmaster.logic.Utils;
 import de.deadlocker8.budgetmasterserver.logic.Database;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -29,7 +26,6 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import logger.Logger;
 import tools.AlertGenerator;
@@ -216,7 +212,7 @@ public class SettingsController
 		File file = fileChooser.showSaveDialog(controller.getStage());
 		if(file != null)
 		{
-			Stage modalStage = showModal("Vorgang läuft", "Die Datenbank wird exportiert, bitte warten...");
+			Stage modalStage = Helpers.showModal("Vorgang läuft", "Die Datenbank wird exportiert, bitte warten...", controller.getStage(), controller.getIcon());
 
 			Worker.runLater(() -> {
 				try
@@ -274,7 +270,7 @@ public class SettingsController
 				return;
 			}
 
-			Stage modalStage = showModal("Vorgang läuft", "Die Datenbank wird importiert, bitte warten...");
+			Stage modalStage = Helpers.showModal("Vorgang läuft", "Die Datenbank wird importiert, bitte warten...", controller.getStage(), controller.getIcon());
 
 			Worker.runLater(() -> {
 				try
@@ -353,7 +349,7 @@ public class SettingsController
 		{
 			if(result.get().equals(verificationCode))
 			{
-				Stage modalStage = showModal("Vorgang läuft", "Die Datenbank wird gelöscht, bitte warten...");
+				Stage modalStage = Helpers.showModal("Vorgang läuft", "Die Datenbank wird gelöscht, bitte warten...", controller.getStage(), controller.getIcon());
 
 				Worker.runLater(() -> {
 					try
@@ -389,32 +385,6 @@ public class SettingsController
 				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Die Eingabe stimmt nicht mit dem Bestätigungscode überein.", controller.getIcon(), controller.getStage(), null, false);
 				deleteDB();
 			}
-		}
-	}
-
-	private Stage showModal(String title, String message)
-	{
-		try
-		{
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/Modal.fxml"));
-			Parent root = (Parent)fxmlLoader.load();
-			Stage newStage = new Stage();
-			newStage.initOwner(controller.getStage());
-			newStage.initModality(Modality.APPLICATION_MODAL);
-			newStage.setTitle(title);
-			newStage.setScene(new Scene(root));
-			newStage.getIcons().add(controller.getIcon());
-			newStage.setResizable(false);
-			ModalController newController = fxmlLoader.getController();
-			newController.init(newStage, message);
-			newStage.show();
-
-			return newStage;
-		}
-		catch(IOException e)
-		{
-			Logger.error(e);
-			return null;
 		}
 	}
 }
