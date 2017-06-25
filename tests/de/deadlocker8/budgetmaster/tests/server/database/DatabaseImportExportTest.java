@@ -6,24 +6,29 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.google.gson.Gson;
+
 import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
 import de.deadlocker8.budgetmasterserver.logic.Database;
+import de.deadlocker8.budgetmasterserver.logic.DatabaseExporter;
 import de.deadlocker8.budgetmasterserver.logic.DatabaseHandler;
 import de.deadlocker8.budgetmasterserver.logic.DatabaseImporter;
 import de.deadlocker8.budgetmasterserver.logic.Settings;
 import de.deadlocker8.budgetmasterserver.logic.Utils;
 import javafx.scene.paint.Color;
 
-public class DatabaseImportTest
+public class DatabaseImportExportTest
 {			
+	private static Settings settings;
 	private static DatabaseHandler databaseHandler;
 	
 	@BeforeClass
@@ -32,7 +37,7 @@ public class DatabaseImportTest
 		try
 		{
 			//init
-			Settings settings = Utils.loadSettings();			
+			settings = Utils.loadSettings();			
 			DatabaseHandler handler = new DatabaseHandler(settings);
 			handler.deleteDatabase();
 			handler = new DatabaseHandler(settings);			
@@ -74,8 +79,8 @@ public class DatabaseImportTest
 			
 			//test repeating payment
 			RepeatingPayment expectedRepeatingPayment = new RepeatingPayment(1, -10012, "2017-06-01", 1, "Test Repeating", "Lorem Ipsum", 7, "2017-06-30", 0);			
-			RepeatingPayment repeatingPayment = databaseHandler.getRepeatingPayment(1);			
-			assertEquals(expectedRepeatingPayment.getAmount(), repeatingPayment.getAmount());		
+			RepeatingPayment repeatingPayment = databaseHandler.getRepeatingPayment(1);
+			assertEquals(expectedRepeatingPayment.getAmount(), repeatingPayment.getAmount());
 			assertEquals(expectedRepeatingPayment.getDate(), repeatingPayment.getDate());
 			assertEquals(expectedRepeatingPayment.getCategoryID(), repeatingPayment.getCategoryID());
 			assertEquals(expectedRepeatingPayment.getName(), repeatingPayment.getName());
@@ -83,6 +88,38 @@ public class DatabaseImportTest
 			assertEquals(expectedRepeatingPayment.getRepeatInterval(), repeatingPayment.getRepeatInterval());
 			assertEquals(expectedRepeatingPayment.getRepeatEndDate(), repeatingPayment.getRepeatEndDate());
 			assertEquals(expectedRepeatingPayment.getRepeatMonthDay(), repeatingPayment.getRepeatMonthDay());			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			fail(e.getMessage());
+		}		
+	}
+	
+	@Test
+	public void testExport()
+	{	
+		try
+		{
+			databaseHandler.deleteDatabase();
+			databaseHandler = new DatabaseHandler(settings);
+			
+			File file = Paths.get("tests/de/deadlocker8/budgetmaster/tests/resources/import.json").toFile();
+			Database database = de.deadlocker8.budgetmaster.logic.Utils.loadDatabaseJSON(file);			
+			
+			DatabaseImporter importer = new DatabaseImporter(databaseHandler);
+			importer.importDatabase(database);			
+			
+			file = Paths.get("tests/de/deadlocker8/budgetmaster/tests/resources/export.json").toFile();
+			DatabaseExporter exporter = new DatabaseExporter(settings);	
+			Gson gson = new Gson();
+			String databaseJSON = gson.toJson(exporter.exportDatabase());
+			de.deadlocker8.budgetmaster.logic.Utils.saveDatabaseJSON(file, databaseJSON);		
+			
+			String expectedJSON = new String(Files.readAllBytes(Paths.get("tests/de/deadlocker8/budgetmaster/tests/resources/import.json")));
+			String exportedJSON = new String(Files.readAllBytes(Paths.get("tests/de/deadlocker8/budgetmaster/tests/resources/export.json")));		
+			
+			assertEquals(expectedJSON, exportedJSON);
 		}
 		catch(Exception e)
 		{
