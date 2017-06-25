@@ -787,7 +787,7 @@ public class DatabaseHandler
 		String correctRepeatEndDate = repeatEndDate;
 		if(correctRepeatEndDate == null || correctRepeatEndDate.equals("A"))
 		{
-			correctRepeatEndDate = "NULL";
+			correctRepeatEndDate = null;
 		}
 
 		try
