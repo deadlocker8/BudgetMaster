@@ -28,6 +28,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import logger.Logger;
 import tools.ConvertTo;
 
 public class PaymentCell extends ListCell<Payment>
@@ -62,7 +63,7 @@ public class PaymentCell extends ListCell<Payment>
 			}
 			catch(ParseException e)
 			{
-				e.printStackTrace();
+				Logger.error(e);
 			}
 			Label labelDate = new Label(dateString);
 			labelDate.setPrefHeight(HEIGHT);

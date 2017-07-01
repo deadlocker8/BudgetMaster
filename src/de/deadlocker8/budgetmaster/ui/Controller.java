@@ -285,6 +285,7 @@ public class Controller
 		homeController.refresh();
 		paymentController.refresh();
 		categoryController.refresh();
+		reportController.refresh();
 		if(tabCharts.isSelected())
 		{
 			chartController.refresh();
@@ -322,6 +323,7 @@ public class Controller
 		tabPayments.setDisable(disable);
 		tabCategories.setDisable(disable);
 		tabCharts.setDisable(disable);
+		tabReports.setDisable(disable);
 		buttonLeft.setDisable(disable);
 		buttonRight.setDisable(disable);
 		buttonToday.setDisable(disable);
