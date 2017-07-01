@@ -31,14 +31,12 @@ public class FilterController
 
 	private Stage stage;
 	private Controller controller;
-	private PaymentController paymentController;
 	private FilterSettings filterSetttings;
 
-	public void init(Stage stage, Controller controller, PaymentController paymentController, FilterSettings filterSettings)
+	public void init(Stage stage, Controller controller, FilterSettings filterSettings)
 	{
 		this.stage = stage;
 		this.controller = controller;
-		this.paymentController = paymentController;
 		this.filterSetttings = filterSettings;
 
 		FontIcon iconCancel = new FontIcon(FontIconType.TIMES);
@@ -124,16 +122,10 @@ public class FilterController
 			name = null;
 		}
 
-		// get new unfiltered list from server
-		controller.refresh(new FilterSettings());
-
 		FilterSettings newFilterSettings = new FilterSettings(isIncomeAllowed, isPaymentAllowed, isNoRepeatingAllowed, isMonthlyRepeatingAllowed, isRepeatingEveryXDaysAllowed, allowedCategoryIDs, name);
-
 		controller.setFilterSettings(newFilterSettings);
-		controller.getPaymentHandler().filter(newFilterSettings);
-
+		controller.refresh(newFilterSettings);		
 		stage.close();
-		paymentController.getController().refreshAllTabs();
 	}
 
 	public void reset()
