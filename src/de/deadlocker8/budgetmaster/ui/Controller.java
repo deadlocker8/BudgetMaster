@@ -49,6 +49,7 @@ public class Controller
 	@FXML private Tab tabPayments;
 	@FXML private Tab tabCategories;
 	@FXML private Tab tabCharts;
+	@FXML private Tab tabReports;
 	@FXML private Tab tabSettings;
 	@FXML private Label labelNotification;
 
@@ -56,6 +57,7 @@ public class Controller
 	private PaymentController paymentController;
 	private CategoryController categoryController;
 	private ChartController chartController;
+	private ReportController reportController;
 	private SettingsController settingsController;
 
 	private Stage stage;
@@ -118,6 +120,12 @@ public class Controller
 					chartController.refresh();
 				}
 			});
+			
+			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/ReportTab.fxml"));
+			Parent nodeTabReport = (Parent)fxmlLoader.load();
+			reportController = fxmlLoader.getController();
+			reportController.init(this);
+			tabReports.setContent(nodeTabReport);
 
 			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/SettingsTab.fxml"));
 			Parent nodeTabSettings = (Parent)fxmlLoader.load();
