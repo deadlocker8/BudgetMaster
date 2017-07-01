@@ -64,6 +64,10 @@ public class ReportController implements Refreshable
 		iconPayment.setSize(18);
 		iconPayment.setStyle("-fx-text-fill: white");
 		buttonGenerate.setGraphic(iconPayment);
+		FontIcon iconWarning = new FontIcon(FontIconType.WARNING);
+		iconWarning.setSize(13);
+		iconWarning.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
+		labelFilterActive.setGraphic(iconWarning);
 		
 		checkBoxDescending.setSelected(true);
 
@@ -358,7 +362,7 @@ public class ReportController implements Refreshable
 
 	public void generate()
 	{
-
+		
 	}
 
 	public Controller getController()

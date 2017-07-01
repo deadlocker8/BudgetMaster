@@ -42,7 +42,7 @@ public class CategoriesChartGenerator
 	{
 		VBox generatedChart = new VBox();
 		HBox chart = new HBox();
-		chart.setMinHeight(30);
+		chart.setMinHeight(50);
 
 		Label labelTitle = new Label(title);
 		labelTitle.setStyle("-fx-font-size: 16; -fx-font-weight: bold;");
