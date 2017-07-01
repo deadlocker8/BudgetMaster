@@ -76,6 +76,11 @@ public class Controller
 		this.bundle = bundle;
 		this.settings = settings;
 		
+		stage.setOnCloseRequest((event)->{
+			Worker.shutdown();
+			System.exit(0);
+		});
+		
 		currentDate = DateTime.now();
 		labelMonth.setText(currentDate.toString("MMMM yyyy"));
 		
@@ -149,9 +154,9 @@ public class Controller
 		if(!settings.isComplete())
 		{			
 			Platform.runLater(() -> {
-				AlertGenerator.showAlert(AlertType.INFORMATION, "Hinweis", "", "Vor der ersten Benutzung musst du deine Serverdaten eingeben.", icon, stage, null, false);
 				toggleAllTabsExceptSettings(true);
 				tabPane.getSelectionModel().select(tabSettings);
+				AlertGenerator.showAlert(AlertType.INFORMATION, "Hinweis", "", "Vor der ersten Benutzung musst du deine Serverdaten eingeben.", icon, stage, null, false);
 			});
 		}
 		else

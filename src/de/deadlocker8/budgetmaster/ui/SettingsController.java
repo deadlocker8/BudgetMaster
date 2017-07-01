@@ -61,6 +61,7 @@ public class SettingsController
 		this.controller = controller;
 		
 		textFieldClientSecret.setText("******");
+		radioButtonRestDeactivated.setSelected(true);
 		
 		if(controller.getSettings().isComplete())
 		{
@@ -162,6 +163,7 @@ public class SettingsController
 		{
 			if(!clientSecret.equals("******"))
 			{
+				System.out.println(clientSecret);
 				controller.getSettings().setClientSecret(HashUtils.hash(clientSecret, Helpers.SALT));
 			}
 			
@@ -177,9 +179,25 @@ public class SettingsController
 		else
 		{
 			Settings settings = new Settings();
-			settings.setClientSecret(HashUtils.hash(clientSecret, Helpers.SALT));
-			settings.setUrl(url);
-			settings.setSecret(HashUtils.hash(secret, Helpers.SALT));
+			
+			if(!clientSecret.equals("******"))
+			{
+				settings.setClientSecret(HashUtils.hash(clientSecret, Helpers.SALT));
+			}
+			else
+			{
+				settings.setClientSecret(controller.getSettings().getClientSecret());
+			}
+			
+			if(!secret.equals("******"))
+			{
+				settings.setSecret(HashUtils.hash(secret, Helpers.SALT));
+			}
+			else
+			{
+				settings.setSecret(controller.getSettings().getSecret());
+			}
+			settings.setUrl(url);			
 			settings.setCurrency(currency);
 			settings.setRestActivated(radioButtonRestActivated.isSelected());
 			settings.setTrustedHosts(trustedHosts);
