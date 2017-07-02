@@ -113,7 +113,7 @@ public class ReportController implements Refreshable
 				String dateString = param.getValue().getDate();
 				try
 				{
-					DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+					DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 					Date date = format.parse(dateString);
 					DateFormat finalFormat = new SimpleDateFormat("dd.MM.yy");
 					dateString = finalFormat.format(date);
