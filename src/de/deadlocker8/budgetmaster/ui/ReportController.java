@@ -67,6 +67,7 @@ public class ReportController implements Refreshable
 
 	private Controller controller;
 	private ColumnFilter columnFilter;
+	private File reportPath;
 
 	public void init(Controller controller)
 	{
@@ -421,10 +422,16 @@ public class ReportController implements Refreshable
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Bericht speichern");
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf");
+		if(reportPath != null)
+		{
+			fileChooser.setInitialDirectory(reportPath.getParentFile());
+			fileChooser.setInitialFileName(reportPath.getName());
+		}
 		fileChooser.getExtensionFilters().add(extFilter);
 		File file = fileChooser.showSaveDialog(controller.getStage());		
 		if(file != null)
 		{		
+			reportPath = file;
 			ReportGenerator reportGenerator = new ReportGenerator(new ArrayList<ReportItem>(tableView.getItems()),																
 																columnOrder,
 																checkBoxSplitTable.isSelected(), 

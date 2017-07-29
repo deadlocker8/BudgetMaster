@@ -46,30 +46,28 @@ public class ReportGenerator
 		this.date = date;
 	}
 
-	public void generate() throws FileNotFoundException, DocumentException
+	private Chapter generateHeader()
 	{
-		Document document = new Document();
-		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(savePath));
-		writer.setPageEvent(new HeaderFooterPageEvent());
-		document.open();
-		
-		//header
 		Font chapterFont = new Font(FontFamily.HELVETICA, 16, Font.BOLDITALIC);
-        Font paragraphFont = new Font(FontFamily.HELVETICA, 12, Font.NORMAL);
-        Chunk chunk = new Chunk("Monatsbericht - " + date.toString("MMMM yyyy"), chapterFont);
-        Chapter chapter = new Chapter(new Paragraph(chunk), 1);
-        chapter.setNumberDepth(0);
-        chapter.add(Chunk.NEWLINE);
-        chapter.add(new Paragraph("Buchungen", paragraphFont));
-        document.add(chapter);
-        document.add(Chunk.NEWLINE);
-		
-        //table
+		Font paragraphFont = new Font(FontFamily.HELVETICA, 12, Font.NORMAL);
+		Chunk chunk = new Chunk("Monatsbericht - " + date.toString("MMMM yyyy"), chapterFont);
+		Chapter chapter = new Chapter(new Paragraph(chunk), 1);
+		chapter.setNumberDepth(0);
+		chapter.add(Chunk.NEWLINE);
+		chapter.add(new Paragraph("Buchungsübersicht", paragraphFont));
+		return chapter;
+	}
+
+	private PdfPTable generateTable(int tableWidth, AmountType amountType)
+	{
 		int numberOfColumns = columnOrder.getColumns().size();
+		int totalIncome = 0;
+		int totalPayment = 0;
+
 		if(numberOfColumns > 0)
 		{
 			PdfPTable table = new PdfPTable(numberOfColumns);
-			table.setWidthPercentage(100);
+			table.setWidthPercentage(tableWidth);
 			Font font = new Font(FontFamily.HELVETICA, 8, Font.NORMAL, GrayColor.BLACK);
 
 			for(ColumnType column : columnOrder.getColumns())
@@ -81,9 +79,25 @@ public class ReportGenerator
 				table.addCell(cell);
 			}
 			
-			
 			for(ReportItem currentItem : reportItems)
 			{
+				if(currentItem.getAmount() > 0)
+				{					
+					totalIncome += currentItem.getAmount();
+					if(amountType == AmountType.PAYMENT)
+					{
+						continue;
+					}
+				}
+				else
+				{
+					totalPayment += currentItem.getAmount();
+					if(amountType == AmountType.INCOME)
+					{
+						continue;
+					}
+				}
+				
 				for(ColumnType column : columnOrder.getColumns())
 				{
 					PdfPCell cell = new PdfPCell(new Phrase(getProperty(currentItem, column), font));
@@ -91,12 +105,79 @@ public class ReportGenerator
 					cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 					table.addCell(cell);
 				}
+			}		
+			
+			PdfPCell cellTotal;
+			String total = "";
+			switch(amountType)
+			{
+				case BOTH:
+					String totalIncomeString = String.valueOf(Helpers.NUMBER_FORMAT.format(totalIncome / 100.0).replace(".", ",")) + " " + currency;
+					String totalPaymentString = String.valueOf(Helpers.NUMBER_FORMAT.format(totalPayment / 100.0).replace(".", ",")) + " " + currency;
+					total = "Einnahmen: " + totalIncomeString + " / Ausgaben: " + totalPaymentString;
+					break;
+				case INCOME:
+					total = "Summe: " + String.valueOf(Helpers.NUMBER_FORMAT.format(totalIncome / 100.0).replace(".", ",")) + " " + currency;					
+					break;
+				case PAYMENT:
+					total = "Summe: " + String.valueOf(Helpers.NUMBER_FORMAT.format(totalPayment / 100.0).replace(".", ",")) + " " + currency;					
+					break;
+				default:
+					break;
+			}
+			
+			cellTotal = new PdfPCell(new Phrase(total, font));
+			cellTotal.setBackgroundColor(new BaseColor(Color.WHITE));
+			cellTotal.setColspan(numberOfColumns);
+			cellTotal.setHorizontalAlignment(Element.ALIGN_RIGHT);
+			table.addCell(cellTotal);
+
+			return table;
+		}
+		return null;
+	}
+
+	public void generate() throws FileNotFoundException, DocumentException
+	{
+		Document document = new Document();
+		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(savePath));
+		writer.setPageEvent(new HeaderFooterPageEvent());
+		document.open();
+		document.setMargins(50, 45, 50, 70);
+
+		document.add(generateHeader());
+		document.add(Chunk.NEWLINE);
+
+		if(splitTable)
+		{
+			Font paragraphFont = new Font(FontFamily.HELVETICA, 12, Font.NORMAL);
+
+			document.add(new Paragraph("Einnahmen", paragraphFont));
+			document.add(Chunk.NEWLINE);
+			PdfPTable table = generateTable(100, AmountType.INCOME);
+			if(table != null)
+			{
+				document.add(table);
 			}
 
-			
-			document.add(table);
+			document.add(Chunk.NEWLINE);
+			document.add(new Paragraph("Ausgaben", paragraphFont));
+			document.add(Chunk.NEWLINE);
+			table = generateTable(100, AmountType.PAYMENT);
+			if(table != null)
+			{
+				document.add(table);
+			}
 		}
-        
+		else
+		{
+			PdfPTable table = generateTable(100, AmountType.BOTH);
+			if(table != null)
+			{
+				document.add(table);
+			}
+		}
+
 		document.close();
 	}
 
@@ -107,9 +188,9 @@ public class ReportGenerator
 			case AMOUNT:
 				return String.valueOf(Helpers.NUMBER_FORMAT.format(reportItem.getAmount() / 100.0).replace(".", ",")) + " " + currency;
 			case CATEGORY:
-				return reportItem.getCategory().getName();			
+				return reportItem.getCategory().getName();
 			case DATE:
-				return reportItem.getDate();				
+				return reportItem.getDate();
 			case DESCRIPTION:
 				return reportItem.getDescription();
 			case NAME:
@@ -119,7 +200,7 @@ public class ReportGenerator
 			case RATING:
 				return reportItem.getAmount() > 0 ? "+" : "-";
 			case REPEATING:
-				//TODO icon
+				// TODO icon
 				return String.valueOf(reportItem.getRepeating());
 			default:
 				return null;
