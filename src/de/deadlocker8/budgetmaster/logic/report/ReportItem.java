@@ -1,4 +1,6 @@
-package de.deadlocker8.budgetmaster.logic;
+package de.deadlocker8.budgetmaster.logic.report;
+
+import de.deadlocker8.budgetmaster.logic.Category;
 
 public class ReportItem
 {
