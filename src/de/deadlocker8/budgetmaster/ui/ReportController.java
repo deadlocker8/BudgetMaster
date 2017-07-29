@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Optional;
 
@@ -44,6 +45,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -83,7 +85,10 @@ public class ReportController implements Refreshable
 		iconWarning.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
 		labelFilterActive.setGraphic(iconWarning);
 		
-		checkBoxDescending.setSelected(true);
+		checkBoxDescending.setSelected(true);	
+		checkBoxDescending.selectedProperty().addListener((a, b, c)->{
+			refreshTableView(c);
+		});
 
 		initTable();
 
@@ -160,7 +165,7 @@ public class ReportController implements Refreshable
 		columnDate.setGraphic(checkBoxDate);
 		columnDate.setSortable(false);
 		tableView.getColumns().add(columnDate);
-
+			
 		TableColumn<ReportItem, Boolean> columnIsRepeating = new TableColumn<>("Wiederholend");
 		columnIsRepeating.setUserData(ColumnType.REPEATING);
 		columnIsRepeating.setCellValueFactory(new PropertyValueFactory<ReportItem, Boolean>("repeating"));
@@ -362,7 +367,7 @@ public class ReportController implements Refreshable
 		}
 	}
 
-	private ArrayList<ReportItem> createReportItems(ArrayList<Payment> payments)
+	private ArrayList<ReportItem> createReportItems(ArrayList<Payment> payments, boolean descending)
 	{
 		ArrayList<ReportItem> reportItems = new ArrayList<>();
 		for(int i = 0; i < payments.size(); i++)
@@ -380,17 +385,21 @@ public class ReportController implements Refreshable
 			reportItems.add(reportItem);
 		}
 
+		if(!descending)
+		{
+			Collections.reverse(reportItems);
+		}
 		return reportItems;
 	}
 
-	private void refreshTableView()
+	private void refreshTableView(boolean descending)
 	{
 		tableView.getItems().clear();
 
-		ArrayList<Payment> payments = controller.getPaymentHandler().getPayments();
+		ArrayList<Payment> payments = controller.getPaymentHandler().getPayments();		
 		if(payments != null)
 		{
-			ArrayList<ReportItem> reportItems = createReportItems(payments);
+			ArrayList<ReportItem> reportItems = createReportItems(payments, descending);
 			ObservableList<ReportItem> objectsForTable = FXCollections.observableArrayList(reportItems);
 			tableView.setItems(objectsForTable);
 		}
@@ -407,22 +416,19 @@ public class ReportController implements Refreshable
 			{
 				columnOrder.addColumn(currentType);
 			}
-		}
+		}		
 		
-		//DEBUG
-//		FileChooser fileChooser = new FileChooser();
-//		fileChooser.setTitle("Bericht speichern");
-//		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf");
-//		fileChooser.getExtensionFilters().add(extFilter);
-//		File file = fileChooser.showSaveDialog(controller.getStage());
-		File file = new File("C:/Users/ROGO2/Desktop/123.pdf");
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Bericht speichern");
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf");
+		fileChooser.getExtensionFilters().add(extFilter);
+		File file = fileChooser.showSaveDialog(controller.getStage());		
 		if(file != null)
 		{		
 			ReportGenerator reportGenerator = new ReportGenerator(new ArrayList<ReportItem>(tableView.getItems()),																
 																columnOrder,
 																checkBoxSplitTable.isSelected(), 
-																checkBoxIncludeCategoryBudgets.isSelected(), 
-																checkBoxDescending.isSelected(), 
+																checkBoxIncludeCategoryBudgets.isSelected(),																
 																file,
 																controller.getSettings().getCurrency(),
 																controller.getCurrentDate());
@@ -517,6 +523,6 @@ public class ReportController implements Refreshable
 			labelFilterActive.setVisible(true);
 		}
 
-		refreshTableView();
+		refreshTableView(checkBoxDescending.isSelected());
 	}
 }

@@ -31,18 +31,16 @@ public class ReportGenerator
 	private ColumnOrder columnOrder;
 	private boolean splitTable;
 	private boolean includeCategoryBudgets;
-	private boolean descending;
 	private File savePath;
 	private String currency;
 	private DateTime date;
 
-	public ReportGenerator(ArrayList<ReportItem> reportItems, ColumnOrder columnOrder, boolean splitTable, boolean includeCategoryBudgets, boolean descending, File savePath, String currency, DateTime date)
+	public ReportGenerator(ArrayList<ReportItem> reportItems, ColumnOrder columnOrder, boolean splitTable, boolean includeCategoryBudgets, File savePath, String currency, DateTime date)
 	{
 		this.reportItems = reportItems;
 		this.columnOrder = columnOrder;
 		this.splitTable = splitTable;
 		this.includeCategoryBudgets = includeCategoryBudgets;
-		this.descending = descending;
 		this.savePath = savePath;
 		this.currency = currency;
 		this.date = date;
