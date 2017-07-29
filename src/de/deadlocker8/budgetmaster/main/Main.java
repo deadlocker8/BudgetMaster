@@ -27,7 +27,7 @@ public class Main extends Application
 			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("de/deadlocker8/budgetmaster/ui/SplashScreen.fxml"));
 			Parent root = (Parent)loader.load();
 			
-			Scene scene = new Scene(root, 400, 230);
+			Scene scene = new Scene(root, 450, 230);
 
 			((SplashScreenController)loader.getController()).init(stage, new Image("/de/deadlocker8/budgetmaster/resources/icon.png"), bundle);
 

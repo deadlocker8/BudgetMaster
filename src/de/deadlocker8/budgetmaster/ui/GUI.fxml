@@ -24,9 +24,9 @@
                      </HBox.margin>
                   </Region>
                   <Button fx:id="buttonLeft" mnemonicParsing="false" onAction="#previousMonth" />
-                  <Label fx:id="labelMonth" alignment="CENTER" prefHeight="36.0" prefWidth="196.0" text="Dezember 2016">
+                  <Label fx:id="labelMonth" alignment="CENTER" prefHeight="36.0" prefWidth="280.0" text="Dezember 2016" HBox.hgrow="ALWAYS">
                      <font>
-                        <Font name="System Bold" size="25.0" />
+                        <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
                   <Button fx:id="buttonRight" mnemonicParsing="false" onAction="#nextMonth" />
