@@ -145,12 +145,21 @@ public class MonthChartGenerator
 			legendItems.add(getLegendItem(label, currentItem.getColor()));
 		}
 
-		int legendWidth = (int)Math.ceil(Math.sqrt(legendItems.size()));		
-
-		for(int i = 0; i < legendItems.size(); i++)
+		int legendWidth;
+		int numberOfItems = legendItems.size();
+		if(numberOfItems <= 3)
+		{
+			legendWidth = numberOfItems;
+		}
+		else
+		{
+			legendWidth = (int)Math.ceil(Math.sqrt(numberOfItems));
+		}
+		
+		for(int i = 0; i < numberOfItems; i++)
 		{
 			int columnIndex = i % legendWidth;
-			int rowIndex = i / 4;
+			int rowIndex = i / legendWidth;			
 			legend.add(legendItems.get(i), columnIndex, rowIndex);
 		}
 
