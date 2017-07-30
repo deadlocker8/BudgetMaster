@@ -82,7 +82,7 @@ public class HomeController implements Refreshable
 			{
 				currency = controller.getSettings().getCurrency();
 			}
-			labelBudget.setText(String.valueOf(Helpers.NUMBER_FORMAT.format(remaining).replace(".", ",")) + " " + currency);
+			labelBudget.setText(Helpers.getCurrencyString(remaining, currency));
 			if(remaining <= 0)
 			{
 				labelBudget.setStyle("-fx-text-fill: #CC0000");
@@ -91,7 +91,7 @@ public class HomeController implements Refreshable
 			{
 				labelBudget.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
 			}
-			labelStartBudget.setText("von " + String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getIncomeSum()).replace(".", ",")) + " " + currency + " verbleibend");
+			labelStartBudget.setText("von " + Helpers.getCurrencyString(budget.getIncomeSum(), currency) + " verbleibend");
 			
 			double factor = remaining / budget.getIncomeSum();
 			if(factor < 0)

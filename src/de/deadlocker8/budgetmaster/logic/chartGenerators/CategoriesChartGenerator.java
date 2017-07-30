@@ -71,7 +71,7 @@ public class CategoriesChartGenerator
 			currentPart.prefWidthProperty().bind(chart.widthProperty().multiply(percentage));
 
 			Tooltip tooltip = new Tooltip();
-			tooltip.setText(currentItem.getName() + "\n" + Helpers.NUMBER_FORMAT.format(percentage*100) + " %\n" + Helpers.NUMBER_FORMAT.format(value).replace(".", ",") + currency);//
+			tooltip.setText(currentItem.getName() + "\n" + Helpers.NUMBER_FORMAT.format(percentage*100) + " %\n" + Helpers.getCurrencyString(value, currency));//
 			currentPart.setTooltip(tooltip);
 		}
 

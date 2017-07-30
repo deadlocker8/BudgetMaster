@@ -59,7 +59,7 @@ public class CategoryBudgetCell extends ListCell<CategoryBudget>
 			hbox.getChildren().add(r);
 			HBox.setHgrow(r, Priority.ALWAYS);
 
-			Label labelBudget = new Label(String.valueOf(Helpers.NUMBER_FORMAT.format(item.getBudget() / 100.0)).replace(".", ",") + " " + homeController.getController().getSettings().getCurrency());
+			Label labelBudget = new Label(Helpers.getCurrencyString(item.getBudget() / 100.0, homeController.getController().getSettings().getCurrency()));
 			labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #247A2D;");
 			if(item.getBudget() > 0)
 			{

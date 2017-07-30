@@ -191,8 +191,8 @@ public class PaymentController implements Refreshable
 		{
 			currency = controller.getSettings().getCurrency();
 		}
-		labelIncomes.setText(String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getIncomeSum()).replace(".", ",")) + " " + currency);
-		labelPayments.setText(String.valueOf(Helpers.NUMBER_FORMAT.format(budget.getPaymentSum()).replace(".", ",")) + " " + currency);
+		labelIncomes.setText(Helpers.getCurrencyString(budget.getIncomeSum(), currency));
+		labelPayments.setText(Helpers.getCurrencyString(budget.getPaymentSum(), currency));
 	}
 
 	public void deleteNormalPayment(NormalPayment payment)

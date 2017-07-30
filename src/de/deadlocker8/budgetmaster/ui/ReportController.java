@@ -326,7 +326,7 @@ public class ReportController implements Refreshable
 			{
 				StringProperty value = new SimpleStringProperty();
 				double amount = param.getValue().getAmount() / 100.0;
-				value.set(String.valueOf(Helpers.NUMBER_FORMAT.format(amount).replace(".", ",")) + " " + controller.getSettings().getCurrency());
+				value.set(Helpers.getCurrencyString(amount, controller.getSettings().getCurrency()));
 				return value;
 			}
 		});
@@ -432,7 +432,8 @@ public class ReportController implements Refreshable
 		if(file != null)
 		{		
 			reportPath = file;
-			ReportGenerator reportGenerator = new ReportGenerator(new ArrayList<ReportItem>(tableView.getItems()),																
+			ReportGenerator reportGenerator = new ReportGenerator(new ArrayList<ReportItem>(tableView.getItems()),
+																controller.getCategoryBudgets(),
 																columnOrder,
 																checkBoxSplitTable.isSelected(), 
 																checkBoxIncludeCategoryBudgets.isSelected(),																

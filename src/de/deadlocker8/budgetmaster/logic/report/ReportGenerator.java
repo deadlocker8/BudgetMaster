@@ -23,11 +23,13 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import de.deadlocker8.budgetmaster.logic.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.Helpers;
 
 public class ReportGenerator
 {
 	private ArrayList<ReportItem> reportItems;
+	private ArrayList<CategoryBudget> categoryBudgets;
 	private ColumnOrder columnOrder;
 	private boolean splitTable;
 	private boolean includeCategoryBudgets;
@@ -35,9 +37,10 @@ public class ReportGenerator
 	private String currency;
 	private DateTime date;
 
-	public ReportGenerator(ArrayList<ReportItem> reportItems, ColumnOrder columnOrder, boolean splitTable, boolean includeCategoryBudgets, File savePath, String currency, DateTime date)
-	{
+	public ReportGenerator(ArrayList<ReportItem> reportItems, ArrayList<CategoryBudget> categoryBudgets, ColumnOrder columnOrder, boolean splitTable, boolean includeCategoryBudgets, File savePath, String currency, DateTime date)
+	{	
 		this.reportItems = reportItems;
+		this.categoryBudgets = categoryBudgets;
 		this.columnOrder = columnOrder;
 		this.splitTable = splitTable;
 		this.includeCategoryBudgets = includeCategoryBudgets;
@@ -78,11 +81,11 @@ public class ReportGenerator
 				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.addCell(cell);
 			}
-			
+
 			for(ReportItem currentItem : reportItems)
 			{
 				if(currentItem.getAmount() > 0)
-				{					
+				{
 					totalIncome += currentItem.getAmount();
 					if(amountType == AmountType.PAYMENT)
 					{
@@ -97,7 +100,7 @@ public class ReportGenerator
 						continue;
 					}
 				}
-				
+
 				for(ColumnType column : columnOrder.getColumns())
 				{
 					PdfPCell cell = new PdfPCell(new Phrase(getProperty(currentItem, column), font));
@@ -105,27 +108,27 @@ public class ReportGenerator
 					cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 					table.addCell(cell);
 				}
-			}		
-			
+			}
+
 			PdfPCell cellTotal;
 			String total = "";
 			switch(amountType)
 			{
 				case BOTH:
-					String totalIncomeString = String.valueOf(Helpers.NUMBER_FORMAT.format(totalIncome / 100.0).replace(".", ",")) + " " + currency;
-					String totalPaymentString = String.valueOf(Helpers.NUMBER_FORMAT.format(totalPayment / 100.0).replace(".", ",")) + " " + currency;
+					String totalIncomeString = Helpers.getCurrencyString(totalIncome, currency);
+					String totalPaymentString = Helpers.getCurrencyString(totalPayment, currency);
 					total = "Einnahmen: " + totalIncomeString + " / Ausgaben: " + totalPaymentString;
 					break;
 				case INCOME:
-					total = "Summe: " + String.valueOf(Helpers.NUMBER_FORMAT.format(totalIncome / 100.0).replace(".", ",")) + " " + currency;					
+					total = "Summe: " + Helpers.getCurrencyString(totalIncome, currency);
 					break;
 				case PAYMENT:
-					total = "Summe: " + String.valueOf(Helpers.NUMBER_FORMAT.format(totalPayment / 100.0).replace(".", ",")) + " " + currency;					
+					total = "Summe: " + Helpers.getCurrencyString(totalPayment, currency);
 					break;
 				default:
 					break;
 			}
-			
+
 			cellTotal = new PdfPCell(new Phrase(total, font));
 			cellTotal.setBackgroundColor(new BaseColor(Color.WHITE));
 			cellTotal.setColspan(numberOfColumns);
@@ -144,14 +147,13 @@ public class ReportGenerator
 		writer.setPageEvent(new HeaderFooterPageEvent());
 		document.open();
 		document.setMargins(50, 45, 50, 70);
+		Font paragraphFont = new Font(FontFamily.HELVETICA, 12, Font.NORMAL);
 
 		document.add(generateHeader());
 		document.add(Chunk.NEWLINE);
 
 		if(splitTable)
 		{
-			Font paragraphFont = new Font(FontFamily.HELVETICA, 12, Font.NORMAL);
-
 			document.add(new Paragraph("Einnahmen", paragraphFont));
 			document.add(Chunk.NEWLINE);
 			PdfPTable table = generateTable(100, AmountType.INCOME);
@@ -178,7 +180,56 @@ public class ReportGenerator
 			}
 		}
 
+		if(includeCategoryBudgets)
+		{
+			document.add(Chunk.NEWLINE);
+			document.add(new Paragraph("Verbrauch nach Kategorien", paragraphFont));
+			document.add(Chunk.NEWLINE);
+			PdfPTable table = generateCategoryBudgets();
+			if(table != null)
+			{
+				document.add(table);
+			}
+		}
+
 		document.close();
+	}
+
+	private PdfPTable generateCategoryBudgets()
+	{
+		PdfPTable table = new PdfPTable(2);
+		table.setWidthPercentage(100);
+		Font font = new Font(FontFamily.HELVETICA, 8, Font.NORMAL, GrayColor.BLACK);
+		
+		//header cells
+		PdfPCell cellHeaderCategory = new PdfPCell(new Phrase("Kategorie", font));
+		cellHeaderCategory.setBackgroundColor(GrayColor.LIGHT_GRAY);
+		cellHeaderCategory.setHorizontalAlignment(Element.ALIGN_CENTER);
+		table.addCell(cellHeaderCategory);
+		PdfPCell cellHeaderAmount = new PdfPCell(new Phrase("Betrag", font));
+		cellHeaderAmount.setBackgroundColor(GrayColor.LIGHT_GRAY);
+		cellHeaderAmount.setHorizontalAlignment(Element.ALIGN_CENTER);
+		table.addCell(cellHeaderAmount);		
+
+		for(CategoryBudget budget : categoryBudgets)
+		{			
+			String name = budget.getName();
+			if(name.equals("NONE"))
+			{
+				name = "Keine Kategorie";
+			}			
+			PdfPCell cellName = new PdfPCell(new Phrase(name, font));
+			cellName.setBackgroundColor(new BaseColor(Color.WHITE));
+			cellName.setHorizontalAlignment(Element.ALIGN_CENTER);
+			table.addCell(cellName);
+			
+			PdfPCell cellAmount = new PdfPCell(new Phrase(Helpers.getCurrencyString(budget.getBudget() / 100.0, currency), font));
+			cellAmount.setBackgroundColor(new BaseColor(Color.WHITE));
+			cellAmount.setHorizontalAlignment(Element.ALIGN_CENTER);
+			table.addCell(cellAmount);
+		}
+		
+		return table;
 	}
 
 	private String getProperty(ReportItem reportItem, ColumnType columnType)
@@ -186,9 +237,14 @@ public class ReportGenerator
 		switch(columnType)
 		{
 			case AMOUNT:
-				return String.valueOf(Helpers.NUMBER_FORMAT.format(reportItem.getAmount() / 100.0).replace(".", ",")) + " " + currency;
+				return Helpers.getCurrencyString(reportItem.getAmount(), currency);
 			case CATEGORY:
-				return reportItem.getCategory().getName();
+				String name = reportItem.getCategory().getName();
+				if(name.equals("NONE"))
+				{
+					name = "Keine Kategorie";
+				}			
+				return name;
 			case DATE:
 				return reportItem.getDate();
 			case DESCRIPTION:

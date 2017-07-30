@@ -78,8 +78,9 @@ public class MonthChartGenerator
 
 	private VBox generateChart(ArrayList<CategoryInOutSum> categoryInOutSums, double total, boolean useBudgetIN)
 	{
-		VBox result = new VBox();									
-		Label labelAmount = new Label(Helpers.NUMBER_FORMAT.format(getTotal(categoryInOutSums, useBudgetIN)).replace(".", ",") + currency);
+		VBox result = new VBox();		
+		
+		Label labelAmount = new Label(Helpers.getCurrencyString(getTotal(categoryInOutSums, useBudgetIN), currency));
 		labelAmount.setStyle("-fx-font-size: 12; -fx-font-weight: bold;");
 		result.getChildren().add(labelAmount);
 		VBox.setMargin(labelAmount, new Insets(0, 0, 10, 0));
