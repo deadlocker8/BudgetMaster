@@ -255,9 +255,15 @@ public class ReportGenerator
 				return String.valueOf(reportItem.getPosition());
 			case RATING:
 				return reportItem.getAmount() > 0 ? "+" : "-";
-			case REPEATING:
-				// TODO icon
-				return String.valueOf(reportItem.getRepeating());
+			case REPEATING:	
+				if(reportItem.getRepeating())
+				{
+					return "Ja";
+				}
+				else
+				{
+					return "Nein";
+				}				
 			default:
 				return null;
 		}
