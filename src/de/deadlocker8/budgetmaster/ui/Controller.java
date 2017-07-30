@@ -44,11 +44,13 @@ public class Controller
 	@FXML private Button buttonLeft;
 	@FXML private Button buttonRight;
 	@FXML private Button buttonToday;
+	@FXML private Button buttonAbout;
 	@FXML private TabPane tabPane;
 	@FXML private Tab tabHome;
 	@FXML private Tab tabPayments;
 	@FXML private Tab tabCategories;
 	@FXML private Tab tabCharts;
+	@FXML private Tab tabReports;
 	@FXML private Tab tabSettings;
 	@FXML private Label labelNotification;
 
@@ -56,6 +58,7 @@ public class Controller
 	private PaymentController paymentController;
 	private CategoryController categoryController;
 	private ChartController chartController;
+	private ReportController reportController;
 	private SettingsController settingsController;
 
 	private Stage stage;
@@ -118,6 +121,12 @@ public class Controller
 					chartController.refresh();
 				}
 			});
+			
+			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/ReportTab.fxml"));
+			Parent nodeTabReport = (Parent)fxmlLoader.load();
+			reportController = fxmlLoader.getController();
+			reportController.init(this);
+			tabReports.setContent(nodeTabReport);
 
 			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/SettingsTab.fxml"));
 			Parent nodeTabSettings = (Parent)fxmlLoader.load();
@@ -142,6 +151,9 @@ public class Controller
 		FontIcon iconToday = new FontIcon(FontIconType.CALENDAR_ALT);
 		iconToday.setSize(20);
 		buttonToday.setGraphic(iconToday);
+		FontIcon iconAbout = new FontIcon(FontIconType.INFO);
+		iconAbout.setSize(20);
+		buttonAbout.setGraphic(iconAbout);
 
 		// apply theme
 		anchorPaneMain.setStyle("-fx-background-color: #DDDDDD");
@@ -149,7 +161,8 @@ public class Controller
 		labelNotification.setStyle("-fx-text-fill: #FFFFFF; -fx-font-size: 16; -fx-font-weight: bold; -fx-background-color: transparent;");
 		buttonLeft.setStyle("-fx-background-color: transparent;");
 		buttonRight.setStyle("-fx-background-color: transparent;");
-		buttonToday.setStyle("-fx-background-color: transparent;");		
+		buttonToday.setStyle("-fx-background-color: transparent;");
+		buttonAbout.setStyle("-fx-background-color: transparent;");
 		
 		if(!settings.isComplete())
 		{			
@@ -277,6 +290,7 @@ public class Controller
 		homeController.refresh();
 		paymentController.refresh();
 		categoryController.refresh();
+		reportController.refresh();
 		if(tabCharts.isSelected())
 		{
 			chartController.refresh();
@@ -314,6 +328,7 @@ public class Controller
 		tabPayments.setDisable(disable);
 		tabCategories.setDisable(disable);
 		tabCharts.setDisable(disable);
+		tabReports.setDisable(disable);
 		buttonLeft.setDisable(disable);
 		buttonRight.setDisable(disable);
 		buttonToday.setDisable(disable);

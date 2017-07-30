@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="anchorPaneMain" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.deadlocker8.budgetmaster.ui.ExportChartController">
+   <children>
+      <VBox AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+         <children>
+            <HBox prefHeight="125.0" prefWidth="372.0" spacing="15.0">
+               <children>
+                  <VBox alignment="TOP_RIGHT" prefHeight="125.0" prefWidth="99.0" spacing="15.0">
+                     <children>
+                        <Label text="Breite:">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label text="Höhe:">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="30.0" prefWidth="92.0" text="Speicherort:">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox prefHeight="4.0" prefWidth="100.0" spacing="15.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <TextField fx:id="textFieldWidth" />
+                        <TextField fx:id="textFieldHeight" />
+                        <HBox alignment="CENTER_LEFT" spacing="15.0">
+                           <children>
+                              <Label fx:id="labelSavePath" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
+                              <Button fx:id="buttonChooseFile" mnemonicParsing="false" onAction="#chooseFile" text="Ändern" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" spacing="25.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Button fx:id="buttonCancel" mnemonicParsing="false" onAction="#cancel" text="Abbrechen" />
+                  <Button fx:id="buttonExport" mnemonicParsing="false" onAction="#export" text="Exportieren" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

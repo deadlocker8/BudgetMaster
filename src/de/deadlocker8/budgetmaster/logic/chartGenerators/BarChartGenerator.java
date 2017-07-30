@@ -63,7 +63,7 @@ public class BarChartGenerator
 			{
 				Tooltip tooltip = new Tooltip();
 
-				tooltip.setText(Helpers.NUMBER_FORMAT.format(data.getYValue()).replace(".", ",") + currency);
+				tooltip.setText(Helpers.getCurrencyString(data.getYValue().doubleValue(), currency));
 				Tooltip.install(tool.getNode(), tooltip);
 				Node node = data.getNode();
 				node.setOnMouseEntered(new EventHandler<MouseEvent>()

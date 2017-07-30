@@ -97,7 +97,7 @@ public class PieChartGenerator
             String percent = String.valueOf(percentage);
             percent = percent.substring(0, percent.indexOf(".") + 2);
 
-            tooltip.setText(percent + " %\n" + Helpers.NUMBER_FORMAT.format(pieValue).replace(".", ",") + currency);
+            tooltip.setText(percent + " %\n" + Helpers.getCurrencyString(pieValue, currency));
             Tooltip.install(tool.getNode(), tooltip);
             Node node = tool.getNode();
             node.setOnMouseEntered(new EventHandler<MouseEvent>()

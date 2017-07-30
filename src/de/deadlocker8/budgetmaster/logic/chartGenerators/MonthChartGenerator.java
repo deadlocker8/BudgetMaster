@@ -78,8 +78,9 @@ public class MonthChartGenerator
 
 	private VBox generateChart(ArrayList<CategoryInOutSum> categoryInOutSums, double total, boolean useBudgetIN)
 	{
-		VBox result = new VBox();									
-		Label labelAmount = new Label(Helpers.NUMBER_FORMAT.format(getTotal(categoryInOutSums, useBudgetIN)).replace(".", ",") + currency);
+		VBox result = new VBox();		
+		
+		Label labelAmount = new Label(Helpers.getCurrencyString(getTotal(categoryInOutSums, useBudgetIN), currency));
 		labelAmount.setStyle("-fx-font-size: 12; -fx-font-weight: bold;");
 		result.getChildren().add(labelAmount);
 		VBox.setMargin(labelAmount, new Insets(0, 0, 10, 0));
@@ -145,12 +146,21 @@ public class MonthChartGenerator
 			legendItems.add(getLegendItem(label, currentItem.getColor()));
 		}
 
-		int legendWidth = (int)Math.ceil(Math.sqrt(legendItems.size()));		
-
-		for(int i = 0; i < legendItems.size(); i++)
+		int legendWidth;
+		int numberOfItems = legendItems.size();
+		if(numberOfItems <= 3)
+		{
+			legendWidth = numberOfItems;
+		}
+		else
+		{
+			legendWidth = (int)Math.ceil(Math.sqrt(numberOfItems));
+		}
+		
+		for(int i = 0; i < numberOfItems; i++)
 		{
 			int columnIndex = i % legendWidth;
-			int rowIndex = i / 4;
+			int rowIndex = i / legendWidth;			
 			legend.add(legendItems.get(i), columnIndex, rowIndex);
 		}
 
