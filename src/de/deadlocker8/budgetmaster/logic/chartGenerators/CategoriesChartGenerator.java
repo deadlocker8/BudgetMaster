@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import tools.ConvertTo;
@@ -123,6 +124,77 @@ public class CategoriesChartGenerator
 			legend.add(legendItems.get(i), columnIndex, rowIndex);
 		}
 
+		return legend;
+	}
+	
+	public VBox generateFullLegend()
+	{
+		VBox legend = new VBox();
+		legend.setPadding(new Insets(10));
+		legend.setSpacing(10);
+		legend.setStyle("-fx-background-color: #EEEEEE; -fx-border-color: #212121; -fx-border-width: 1; -fx-border-radius: 5;");
+
+		if(categoryInOutSums.size() == 0)
+		{
+			return legend;
+		}
+		
+		double totalIn = getTotal(categoryInOutSums, true);
+		double totalOut = getTotal(categoryInOutSums, false);
+				
+		HBox hboxLegend = new HBox();
+		hboxLegend.setSpacing(10);
+
+		VBox vboxCircles = new VBox();
+		vboxCircles.setSpacing(10);	
+		VBox vboxNames = new VBox();
+		vboxNames.setSpacing(10);
+		VBox vboxIn = new VBox();
+		vboxIn.setSpacing(10);
+		VBox vboxOut = new VBox();
+		vboxOut.setSpacing(10);
+		
+		for(CategoryInOutSum currentItem : categoryInOutSums)
+		{
+			String name = currentItem.getName();
+			if(name.equals("NONE"))
+			{
+				name = "Keine Kategorie";
+			}
+			
+			Label labelCircle = new Label();
+			labelCircle.setMinWidth(20);
+			labelCircle.setMinHeight(20);
+			labelCircle.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(currentItem.getColor()) + "; -fx-background-radius: 50%; -fx-border-width: 1; -fx-border-color: black - fx-border-radius: 50%");
+			vboxCircles.getChildren().add(labelCircle);
+
+			Label labelName = new Label(name);
+			labelName.setStyle("-fx-font-weight: bold;");
+			labelName.setMinHeight(20);
+			vboxNames.getChildren().add(labelName);
+			
+			String percentageIn = Helpers.NUMBER_FORMAT.format((currentItem.getBudgetIN() / totalIn));
+			Label labelInSum = new Label("+" + Helpers.getCurrencyString(currentItem.getBudgetIN(), currency) + " (" + percentageIn + "%)");
+			labelInSum.setStyle("-fx-font-weight: bold;");
+			labelInSum.setMinHeight(20);
+			vboxIn.getChildren().add(labelInSum);
+			
+			String percentageOut = Helpers.NUMBER_FORMAT.format((currentItem.getBudgetOUT() / totalOut));
+			Label labelOutSum = new Label(Helpers.getCurrencyString(currentItem.getBudgetOUT(), currency) + " (" + percentageOut + "%)");
+			labelOutSum.setStyle("-fx-font-weight: bold;");
+			labelOutSum.setMinHeight(20);
+			vboxOut.getChildren().add(labelOutSum);
+		}
+		
+		hboxLegend.getChildren().add(vboxCircles);
+		hboxLegend.getChildren().add(vboxNames);
+		HBox.setHgrow(vboxNames, Priority.ALWAYS);
+		hboxLegend.getChildren().add(vboxIn);
+		HBox.setHgrow(vboxIn, Priority.ALWAYS);
+		hboxLegend.getChildren().add(vboxOut);
+		HBox.setHgrow(vboxOut, Priority.ALWAYS);			
+		legend.getChildren().add(hboxLegend);		
+		
 		return legend;
 	}
 

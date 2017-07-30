@@ -1,5 +1,7 @@
 package de.deadlocker8.budgetmaster.ui;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -19,7 +21,10 @@ import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Alert.AlertType;
@@ -37,6 +42,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import logger.Logger;
@@ -52,6 +58,7 @@ public class ChartController implements Refreshable
 	@FXML private DatePicker datePickerEnd;
 	@FXML private VBox vboxChartMonth;
 	@FXML private Button buttonChartCategoriesShow;
+	@FXML private Button buttonChartCategoriesExport;
 	@FXML private ComboBox<String> comboBoxStartMonth;
 	@FXML private ComboBox<String> comboBoxStartYear;
 	@FXML private ComboBox<String> comboBoxEndMonth;
@@ -59,8 +66,11 @@ public class ChartController implements Refreshable
 	@FXML private Button buttonChartMonthShow;
 	@FXML private RadioButton radioButtonBars;
 	@FXML private RadioButton radioButtonLines;
+	@FXML private HBox hboxChartMonthButtons;
 
 	private Controller controller;
+	private Button buttonChartMonthExport;
+	private File lastExportPath;
 
 	public void init(Controller controller)
 	{
@@ -76,11 +86,28 @@ public class ChartController implements Refreshable
 		buttonChartCategoriesShow.setStyle("-fx-background-color: #2E79B9;");
 		buttonChartCategoriesShow.setGraphic(iconShow);
 		
-		FontIcon iconShow2 = new FontIcon(FontIconType.CHECK);
+		FontIcon iconShow2 = new FontIcon(FontIconType.SAVE);
 		iconShow2.setSize(16);
 		iconShow2.setColor(Color.WHITE);
+		buttonChartCategoriesExport.setStyle("-fx-background-color: #2E79B9;");
+		buttonChartCategoriesExport.setGraphic(iconShow2);
+
+		FontIcon iconShow3 = new FontIcon(FontIconType.CHECK);
+		iconShow3.setSize(16);
+		iconShow3.setColor(Color.WHITE);
 		buttonChartMonthShow.setStyle("-fx-background-color: #2E79B9;");
-		buttonChartMonthShow.setGraphic(iconShow2);		
+		buttonChartMonthShow.setGraphic(iconShow3);
+		
+		buttonChartMonthExport = new Button();
+		buttonChartMonthExport.setOnAction((event)->{
+			export(vboxChartMonth);
+		});		
+		
+		FontIcon iconShow4 = new FontIcon(FontIconType.SAVE);
+		iconShow4.setSize(16);
+		iconShow4.setColor(Color.WHITE);
+		buttonChartMonthExport.setStyle("-fx-background-color: #2E79B9;");
+		buttonChartMonthExport.setGraphic(iconShow4);
 		
 		datePickerEnd.setDayCellFactory(new Callback<DatePicker, DateCell>()
 		{
@@ -106,18 +133,23 @@ public class ChartController implements Refreshable
 		comboBoxStartMonth.setItems(FXCollections.observableArrayList(Helpers.getMonthList()));
 		comboBoxStartYear.setItems(FXCollections.observableArrayList(Helpers.getYearList()));
 		comboBoxEndMonth.setItems(FXCollections.observableArrayList(Helpers.getMonthList()));
-		comboBoxEndYear.setItems(FXCollections.observableArrayList(Helpers.getYearList()));		
+		comboBoxEndYear.setItems(FXCollections.observableArrayList(Helpers.getYearList()));				
 
 		final ToggleGroup toggleGroup = new ToggleGroup();
 		radioButtonBars.setToggleGroup(toggleGroup);
 		radioButtonBars.setSelected(true);
-		radioButtonLines.setToggleGroup(toggleGroup);
-		
+		radioButtonLines.setToggleGroup(toggleGroup);		
+
 		accordion.setExpandedPane(accordion.getPanes().get(0));
 		vboxChartMonth.setSpacing(15);
 	}
+	
+	public void buttonChartCategoriesShow()
+	{
+		chartCategoriesShow(false);
+	}
 
-	public void chartCategoriesShow()
+	public void chartCategoriesShow(boolean fullLegend)
 	{
 		DateTime startDate = DateTime.parse(datePickerStart.getValue().toString());
 		DateTime endDate = DateTime.parse(datePickerEnd.getValue().toString());
@@ -127,84 +159,139 @@ public class ChartController implements Refreshable
 			ServerConnection connection = new ServerConnection(controller.getSettings());
 			ArrayList<CategoryInOutSum> sums = connection.getCategoryInOutSumForMonth(startDate, endDate);
 
-			Platform.runLater(()->{
+			Platform.runLater(() -> {
 				vboxChartCategories.getChildren().clear();
-				
-				CategoriesChartGenerator generator = new CategoriesChartGenerator("Einnahmen nach Kategorien", sums, true, controller.getSettings().getCurrency());			
+
+				CategoriesChartGenerator generator = new CategoriesChartGenerator("Einnahmen nach Kategorien", sums, true, controller.getSettings().getCurrency());
 				vboxChartCategories.getChildren().add(generator.generate());
 				generator = new CategoriesChartGenerator("Ausgaben nach Kategorien", sums, false, controller.getSettings().getCurrency());
 				vboxChartCategories.getChildren().add(generator.generate());
-				
+
 				Region spacer = new Region();
 				vboxChartCategories.getChildren().add(spacer);
 				VBox.setVgrow(spacer, Priority.ALWAYS);
-				
-				vboxChartCategories.getChildren().add(generator.generateLegend());
+
+				if(fullLegend)
+				{
+					vboxChartCategories.getChildren().add(generator.generateFullLegend());
+				}
+				else
+				{
+					vboxChartCategories.getChildren().add(generator.generateLegend());
+				}
 			});
 		}
 		catch(Exception e)
 		{
 			Logger.error(e);
-			Platform.runLater(()->{
+			Platform.runLater(() -> {
 				controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 			});
 		}
 	}
+	
+	public void chartCategoriesExport()
+	{
+		export(vboxChartCategories);
+	}
+	
+	public void export(VBox chart)
+	{	
+		Worker.runLater(()->{
+			chartCategoriesShow(true);
+			Platform.runLater(()->{
+				try
+				{
+					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/ExportChartGUI.fxml"));
+					Parent root = (Parent)fxmlLoader.load();
+					Stage newStage = new Stage();
+					newStage.initOwner(controller.getStage());
+					newStage.initModality(Modality.APPLICATION_MODAL);
+					newStage.setTitle("Diagramm exportieren");
+					newStage.setScene(new Scene(root));
+					newStage.getIcons().add(controller.getIcon());
+					newStage.setResizable(false);
+					ExportChartController newController = fxmlLoader.getController();
+					newController.init(newStage, this, chart);
+					newStage.show();
+				}
+				catch(IOException e)
+				{
+					Logger.error(e);
+				}	
+			});
+		});
+	}
 
 	public void chartMonthShow()
 	{
-		Platform.runLater(()->{
+		if(radioButtonLines.isSelected())
+		{
+			if(!hboxChartMonthButtons.getChildren().contains(buttonChartMonthExport))
+			{
+				hboxChartMonthButtons.getChildren().add(buttonChartMonthExport);
+			}
+		}
+		else
+		{
+			if(hboxChartMonthButtons.getChildren().contains(buttonChartMonthExport))
+			{
+				hboxChartMonthButtons.getChildren().remove(buttonChartMonthExport);
+			}
+		}
+		
+		Platform.runLater(() -> {
 			vboxChartMonth.getChildren().clear();
 		});
-			
+
 		String startMonth = comboBoxStartMonth.getValue();
 		String startYear = comboBoxStartYear.getValue();
 		String endMonth = comboBoxEndMonth.getValue();
-		String endYear = comboBoxEndYear.getValue();		
-		
-		String startDateString = "01-" + startMonth + "-" + startYear;		
+		String endYear = comboBoxEndYear.getValue();
+
+		String startDateString = "01-" + startMonth + "-" + startYear;
 		DateTime startDate = DateTime.parse(startDateString, DateTimeFormat.forPattern("dd-MMMM-YYYY"));
-		
-		String endDateString = "01-" + endMonth + "-" + endYear;		
-		DateTime endDate = DateTime.parse(endDateString, DateTimeFormat.forPattern("dd-MMMM-YYYY"));	
-			
+
+		String endDateString = "01-" + endMonth + "-" + endYear;
+		DateTime endDate = DateTime.parse(endDateString, DateTimeFormat.forPattern("dd-MMMM-YYYY"));
+
 		if(endDate.isBefore(startDate))
-		{	
-			Platform.runLater(()->{		
+		{
+			Platform.runLater(() -> {
 				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Enddatum darf nicht vor dem Startdatum liegen.", controller.getIcon(), controller.getStage(), null, false);
 			});
 			return;
-		}		
-		
+		}
+
 		try
-		{			
+		{
 			ServerConnection connection = new ServerConnection(controller.getSettings());
 			ArrayList<MonthInOutSum> sums = connection.getMonthInOutSum(startDate, endDate);
-		
-			Platform.runLater(()->{
+
+			Platform.runLater(() -> {
 				vboxChartMonth.getChildren().clear();
-				
+
 				if(radioButtonBars.isSelected())
 				{
-					ScrollPane scrollPane = new ScrollPane();				
+					ScrollPane scrollPane = new ScrollPane();
 					scrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
 					scrollPane.setFocusTraversable(false);
 					scrollPane.setStyle("-fx-background-color: transparent; -fx-background-insets: 0; -fx-border-color: transparent; -fx-border-width: 0; -fx-border-insets: 0;");
 					scrollPane.setPadding(new Insets(0, 0, 10, 0));
-					
+
 					MonthChartGenerator generator = new MonthChartGenerator(sums, controller.getSettings().getCurrency());
 					HBox generatedChart = generator.generate();
-					scrollPane.setContent(generatedChart);				
+					scrollPane.setContent(generatedChart);
 					generatedChart.prefHeightProperty().bind(scrollPane.heightProperty().subtract(30));
 					vboxChartMonth.getChildren().add(scrollPane);
 					VBox.setVgrow(scrollPane, Priority.ALWAYS);
 					vboxChartMonth.getChildren().add(generator.generateLegend());
 				}
 				else
-				{				
+				{
 					LineChartGenerator generator = new LineChartGenerator(sums, controller.getSettings().getCurrency());
 					LineChart<String, Number> chartMonth = generator.generate();
-					vboxChartMonth.getChildren().add(chartMonth);	
+					vboxChartMonth.getChildren().add(chartMonth);
 					VBox.setVgrow(chartMonth, Priority.ALWAYS);
 				}
 			});
@@ -212,40 +299,55 @@ public class ChartController implements Refreshable
 		catch(Exception e)
 		{
 			Logger.error(e);
-			Platform.runLater(()->{
+			Platform.runLater(() -> {
 				controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 			});
 		}
 	}
+	
+	public Controller getControlle()
+	{
+		return controller;
+	}
+	
+	public void setLastExportPath(File lastExportPath)
+	{
+		this.lastExportPath = lastExportPath;		
+	}
+	
+	public File getLastExportPath()
+	{
+		return lastExportPath;
+	}
 
 	@Override
 	public void refresh()
-	{	
+	{
 		Stage modalStage = Helpers.showModal("Vorgang läuft", "Lade Diagramme...", controller.getStage(), controller.getIcon());
-		
+
 		// prepare chart categories
 		LocalDate startDate = LocalDate.parse(controller.getCurrentDate().withDayOfMonth(1).toString("yyyy-MM-dd"));
 		LocalDate endDate = LocalDate.parse(controller.getCurrentDate().dayOfMonth().withMaximumValue().toString("yyy-MM-dd"));
-		
+
 		datePickerStart.setValue(startDate);
-		datePickerEnd.setValue(endDate);	
-		
+		datePickerEnd.setValue(endDate);
+
 		// chart month
 		comboBoxStartMonth.setValue(controller.getCurrentDate().minusMonths(5).toString("MMMM"));
 		comboBoxStartYear.setValue(String.valueOf(controller.getCurrentDate().minusMonths(5).getYear()));
-		
+
 		comboBoxEndMonth.setValue(controller.getCurrentDate().plusMonths(6).toString("MMMM"));
 		comboBoxEndYear.setValue(String.valueOf(controller.getCurrentDate().plusMonths(6).getYear()));
 
-		Worker.runLater(() -> {	
-			chartCategoriesShow();
-			chartMonthShow();				
+		Worker.runLater(() -> {
+			chartCategoriesShow(false);
+			chartMonthShow();
 
 			Platform.runLater(() -> {
 				if(modalStage != null)
 				{
 					modalStage.close();
-				}				
+				}
 			});
 		});
 	}

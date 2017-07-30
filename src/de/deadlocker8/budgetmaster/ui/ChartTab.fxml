@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPaneMain" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.deadlocker8.budgetmaster.ui.ChartController">
+<AnchorPane fx:id="anchorPaneMain" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.deadlocker8.budgetmaster.ui.ChartController">
    <children>
       <Accordion fx:id="accordion" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="25.0">
         <panes>
@@ -44,13 +44,18 @@
                                        </font>
                                     </Label>
                                     <DatePicker fx:id="datePickerEnd" />
-                                    <Button fx:id="buttonChartCategoriesShow" mnemonicParsing="false" onAction="#chartCategoriesShow">
+                                    <Button fx:id="buttonChartCategoriesShow" mnemonicParsing="false" onAction="#buttonChartCategoriesShow">
                                        <font>
                                           <Font name="System Bold" size="12.0" />
                                        </font>
                                        <HBox.margin>
                                           <Insets left="15.0" />
                                        </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="buttonChartCategoriesExport" mnemonicParsing="false" onAction="#chartCategoriesExport">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
                                     </Button>
                                  </children>
                                  <HBox.margin>
@@ -108,7 +113,7 @@
                                     </HBox>
                                  </children>
                               </VBox>
-                              <HBox alignment="CENTER_LEFT" spacing="15.0" HBox.hgrow="ALWAYS">
+                              <HBox fx:id="hboxChartMonthButtons" alignment="CENTER_LEFT" spacing="15.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <RadioButton fx:id="radioButtonBars" mnemonicParsing="false" text="Balken">
                                        <font>
