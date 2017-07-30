@@ -75,8 +75,7 @@ public class ReportGenerator
 
 			for(ColumnType column : columnOrder.getColumns())
 			{
-				// TODO get string for enum type
-				PdfPCell cell = new PdfPCell(new Phrase(column.toString(), font));
+				PdfPCell cell = new PdfPCell(new Phrase(column.getName(), font));
 				cell.setBackgroundColor(GrayColor.LIGHT_GRAY);
 				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.addCell(cell);
