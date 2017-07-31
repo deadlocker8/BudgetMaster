@@ -154,6 +154,26 @@ public class CategoriesChartGenerator
 		VBox vboxOut = new VBox();
 		vboxOut.setSpacing(10);
 		
+		Label labelHeaderSpacer = new Label();
+		labelHeaderSpacer.setMinWidth(20);
+		labelHeaderSpacer.setMinHeight(20);
+		vboxCircles.getChildren().add(labelHeaderSpacer);
+		
+		Label labelHeaderName = new Label("Kategorie");
+		labelHeaderName.setStyle("-fx-font-weight: bold; -fx-underline: true;");
+		labelHeaderName.setMinHeight(20);
+		vboxNames.getChildren().add(labelHeaderName);	
+		
+		Label labelHeaderIn = new Label("Einnahmen");
+		labelHeaderIn.setStyle("-fx-font-weight: bold; -fx-underline: true;");
+		labelHeaderIn.setMinHeight(20);
+		vboxIn.getChildren().add(labelHeaderIn);		
+		
+		Label labelHeaderOut = new Label("Ausgaben");
+		labelHeaderOut.setStyle("-fx-font-weight: bold; -fx-underline: true;");
+		labelHeaderOut.setMinHeight(20);
+		vboxOut.getChildren().add(labelHeaderOut);		
+		
 		for(CategoryInOutSum currentItem : categoryInOutSums)
 		{
 			String name = currentItem.getName();
