@@ -55,6 +55,13 @@ public class ExportChartController
 		{
 			labelSavePath.setText(savePath.getAbsolutePath());
 		}
+		
+		stage.setOnCloseRequest((event)->{
+			controller.chartCategoriesShow(false);
+		});
+		
+		textFieldWidth.setText(String.valueOf((int)chart.getWidth()));
+		textFieldHeight.setText(String.valueOf((int)chart.getHeight()));
 
 		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");
 		
@@ -238,5 +245,6 @@ public class ExportChartController
 	public void cancel()
 	{
 		stage.close();
+		controller.chartCategoriesShow(false);
 	}
 }
