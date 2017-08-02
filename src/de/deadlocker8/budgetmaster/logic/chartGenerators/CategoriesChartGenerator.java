@@ -70,9 +70,15 @@ public class CategoriesChartGenerator
 			double percentage = value / total;
 
 			currentPart.prefWidthProperty().bind(chart.widthProperty().multiply(percentage));
-
+			
+			String categoryName = currentItem.getName();
+			if(categoryName.equals("NONE"))
+			{
+				categoryName = "Keine Kategorie";
+			}
+			
 			Tooltip tooltip = new Tooltip();
-			tooltip.setText(currentItem.getName() + "\n" + Helpers.NUMBER_FORMAT.format(percentage*100) + " %\n" + Helpers.getCurrencyString(value, currency));//
+			tooltip.setText(categoryName + "\n" + Helpers.NUMBER_FORMAT.format(percentage*100) + " %\n" + Helpers.getCurrencyString(value, currency));//
 			currentPart.setTooltip(tooltip);
 		}
 

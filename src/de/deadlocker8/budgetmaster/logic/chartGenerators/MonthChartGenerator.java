@@ -110,8 +110,14 @@ public class MonthChartGenerator
 			currentPart.setMinHeight(0);
 			currentPart.prefHeightProperty().bind(chart.heightProperty().multiply(percentage));	
 
+			String categoryName = currentItem.getName();
+			if(categoryName.equals("NONE"))
+			{
+				categoryName = "Keine Kategorie";
+			}
+			
 			Tooltip tooltip = new Tooltip();
-			tooltip.setText(currentItem.getName() + "\n"+ Helpers.NUMBER_FORMAT.format(percentage * 100) + " %\n" + Helpers.NUMBER_FORMAT.format(value).replace(".", ",") + currency);//
+			tooltip.setText(categoryName + "\n"+ Helpers.NUMBER_FORMAT.format(percentage * 100) + " %\n" + Helpers.NUMBER_FORMAT.format(value).replace(".", ",") + currency);//
 			currentPart.setTooltip(tooltip);
 		}
 
