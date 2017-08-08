@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Optional;
 
@@ -14,6 +15,8 @@ import de.deadlocker8.budgetmaster.logic.FilterSettings;
 import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
+import de.deadlocker8.budgetmaster.logic.comparators.DateComparator;
+import de.deadlocker8.budgetmaster.logic.comparators.RatingComparator;
 import de.deadlocker8.budgetmaster.logic.report.ColumnFilter;
 import de.deadlocker8.budgetmaster.logic.report.ColumnOrder;
 import de.deadlocker8.budgetmaster.logic.report.ColumnType;
@@ -60,7 +63,6 @@ public class ReportController implements Refreshable
 	@FXML private Label labelFilterActive;
 	@FXML private CheckBox checkBoxSplitTable;
 	@FXML private CheckBox checkBoxIncludeCategoryBudgets;
-	@FXML private CheckBox checkBoxDescending;
 	@FXML private Button buttonFilter;
 	@FXML private Button buttonGenerate;
 	@FXML private TableView<ReportItem> tableView;
@@ -86,11 +88,6 @@ public class ReportController implements Refreshable
 		iconWarning.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
 		labelFilterActive.setGraphic(iconWarning);
 		
-		checkBoxDescending.setSelected(true);	
-		checkBoxDescending.selectedProperty().addListener((a, b, c)->{
-			refreshTableView(c);
-		});
-
 		initTable();
 
 		// apply theme
@@ -100,9 +97,251 @@ public class ReportController implements Refreshable
 		buttonGenerate.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
 		checkBoxSplitTable.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text") + "; -fx-font-size: 14;");
 		checkBoxIncludeCategoryBudgets.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text") + "; -fx-font-size: 14;");
-		checkBoxDescending.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text") + "; -fx-font-size: 14;");
 
 		refresh();
+	}
+	
+	private void initColumnPosition()
+	{
+	    TableColumn<ReportItem, Integer> columnPosition = new TableColumn<>("Nr.");
+        columnPosition.setUserData(ColumnType.POSITION);
+        columnPosition.setCellValueFactory(new PropertyValueFactory<ReportItem, Integer>("position"));
+        columnPosition.setStyle("-fx-alignment: CENTER;");
+        CheckBox checkBoxPositions = new CheckBox();
+        checkBoxPositions.setSelected(true);
+        checkBoxPositions.selectedProperty().addListener((a, b, c)->{
+            String style = c ? "-fx-alignment: CENTER;" : "-fx-background-color: salmon; -fx-alignment: CENTER;";           
+            columnPosition.setStyle(style);
+            columnFilter.toggleColumn(ColumnType.POSITION, c);
+        });
+        columnPosition.setGraphic(checkBoxPositions);
+        tableView.getColumns().add(columnPosition);
+	}
+	
+	private void initColumnDate()
+	{
+	    TableColumn<ReportItem, String> columnDate = new TableColumn<>("Datum");
+        columnDate.setUserData(ColumnType.DATE);
+        columnDate.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ReportItem, String>, ObservableValue<String>>()
+        {
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<ReportItem, String> param)
+            {               
+                String dateString = param.getValue().getDate();
+                try
+                {
+                    DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date = format.parse(dateString);
+                    DateFormat finalFormat = new SimpleDateFormat("dd.MM.yy");
+                    dateString = finalFormat.format(date);
+                    return new SimpleStringProperty(dateString);
+                }
+                catch(Exception e)
+                {
+                    Logger.error(e);
+                    return null;
+                }
+            }
+        });
+        columnDate.setStyle("-fx-alignment: CENTER;");
+        CheckBox checkBoxDate = new CheckBox();
+        checkBoxDate.setSelected(true);
+        checkBoxDate.selectedProperty().addListener((a, b, c)->{
+            String style = c ? "-fx-alignment: CENTER;" : "-fx-background-color: salmon; -fx-alignment: CENTER;";           
+            columnDate.setStyle(style);
+            columnFilter.toggleColumn(ColumnType.DATE, c);
+        });
+        columnDate.setGraphic(checkBoxDate);
+        columnDate.setComparator(new DateComparator());
+        tableView.getColumns().add(columnDate);
+	}
+	
+	private void initColumnIsRepeating()
+	{
+	    TableColumn<ReportItem, Boolean> columnIsRepeating = new TableColumn<>("Wiederholend");
+        columnIsRepeating.setUserData(ColumnType.REPEATING);
+        columnIsRepeating.setCellValueFactory(new PropertyValueFactory<ReportItem, Boolean>("repeating"));
+        columnIsRepeating.setCellFactory(new Callback<TableColumn<ReportItem, Boolean>, TableCell<ReportItem, Boolean>>()
+        {
+            @Override
+            public TableCell<ReportItem, Boolean> call(TableColumn<ReportItem, Boolean> param)
+            {
+                TableCell<ReportItem, Boolean> cell = new TableCell<ReportItem, Boolean>()
+                {
+                    @Override
+                    public void updateItem(Boolean item, boolean empty)
+                    {
+                        if(!empty)
+                        {                           
+                            FontIcon iconRepeating = new FontIcon(FontIconType.CALENDAR);
+                            iconRepeating.setSize(16);                          
+                            Color color = item ? Color.web("#212121") : Color.TRANSPARENT;
+                            iconRepeating.setColor(color);
+                            
+                            Label labelRepeating = new Label();
+                            labelRepeating.setGraphic(iconRepeating);
+                            labelRepeating.setStyle("-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: #212121");
+                            labelRepeating.setAlignment(Pos.CENTER);
+                            setGraphic(labelRepeating);
+                        }
+                        else
+                        {
+                            setGraphic(null);
+                        }
+                    }
+                };
+                return cell;
+            }
+        });
+        columnIsRepeating.setStyle("-fx-alignment: CENTER;");
+        CheckBox checkBoxRepeating = new CheckBox();
+        checkBoxRepeating.setSelected(true);
+        checkBoxRepeating.selectedProperty().addListener((a, b, c)->{
+            String style = c ? "-fx-alignment: CENTER;" : "-fx-background-color: salmon; -fx-alignment: CENTER;";           
+            columnIsRepeating.setStyle(style);
+            columnFilter.toggleColumn(ColumnType.REPEATING, c);
+        });
+        columnIsRepeating.setGraphic(checkBoxRepeating);        
+        tableView.getColumns().add(columnIsRepeating);
+	}
+	
+	private void initColumnCategory()
+	{
+	    TableColumn<ReportItem, String> columnCategory = new TableColumn<>("Kategorie");
+        columnCategory.setUserData(ColumnType.CATEGORY);
+        columnCategory.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ReportItem, String>, ObservableValue<String>>()
+        {
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<ReportItem, String> param)
+            {
+                String categoryName = param.getValue().getCategory().getName();
+                if(categoryName.equals("NONE"))
+                {
+                    categoryName = "";
+                }
+                return new SimpleStringProperty(categoryName);
+            }
+        });
+        columnCategory.setStyle("-fx-alignment: CENTER;");
+        CheckBox checkBoxCategory = new CheckBox();
+        checkBoxCategory.setSelected(true);
+        checkBoxCategory.selectedProperty().addListener((a, b, c)->{
+            String style = c ? "-fx-alignment: CENTER;" : "-fx-background-color: salmon; -fx-alignment: CENTER;";           
+            columnCategory.setStyle(style);
+            columnFilter.toggleColumn(ColumnType.CATEGORY, c);
+        });
+        columnCategory.setGraphic(checkBoxCategory);    
+        tableView.getColumns().add(columnCategory);
+	}
+	
+	private void initColumnName()
+	{
+	    TableColumn<ReportItem, Integer> columnName = new TableColumn<>("Name");
+        columnName.setUserData(ColumnType.NAME);
+        columnName.setCellValueFactory(new PropertyValueFactory<ReportItem, Integer>("name"));
+        columnName.setStyle("-fx-alignment: CENTER;");
+        CheckBox checkBoxName = new CheckBox();
+        checkBoxName.setSelected(true);
+        checkBoxName.selectedProperty().addListener((a, b, c)->{
+            String style = c ? "-fx-alignment: CENTER;" : "-fx-background-color: salmon; -fx-alignment: CENTER;";           
+            columnName.setStyle(style);
+            columnFilter.toggleColumn(ColumnType.NAME, c);
+        });
+        columnName.setGraphic(checkBoxName);
+        tableView.getColumns().add(columnName);
+	}
+	
+	private void initColumnDescription()
+	{
+	    TableColumn<ReportItem, String> columnDescription = new TableColumn<>("Notiz");
+        columnDescription.setUserData(ColumnType.DESCRIPTION);
+        columnDescription.setCellValueFactory(new PropertyValueFactory<ReportItem, String>("description"));
+        columnDescription.setStyle("-fx-alignment: CENTER;");
+        CheckBox checkBoxDescription = new CheckBox();
+        checkBoxDescription.setSelected(true);
+        checkBoxDescription.selectedProperty().addListener((a, b, c)->{
+            String style = c ? "-fx-alignment: CENTER;" : "-fx-background-color: salmon; -fx-alignment: CENTER;";           
+            columnDescription.setStyle(style);
+            columnFilter.toggleColumn(ColumnType.DESCRIPTION, c);
+        });
+        columnDescription.setGraphic(checkBoxDescription);
+        tableView.getColumns().add(columnDescription);
+	}
+	
+	private void initColumnRating()
+	{
+	    TableColumn<ReportItem, Integer> columnRating = new TableColumn<>("Bewertung");
+        columnRating.setUserData(ColumnType.RATING);
+        columnRating.setCellValueFactory(new PropertyValueFactory<ReportItem, Integer>("amount"));
+        columnRating.setCellFactory(new Callback<TableColumn<ReportItem, Integer>, TableCell<ReportItem, Integer>>()
+        {
+            @Override
+            public TableCell<ReportItem, Integer> call(TableColumn<ReportItem, Integer> param)
+            {
+                TableCell<ReportItem, Integer> cell = new TableCell<ReportItem, Integer>()
+                {
+                    @Override
+                    public void updateItem(Integer item, boolean empty)
+                    {
+                        if(!empty)
+                        {                               
+                            FontIcon iconRepeating = item > 0 ? new FontIcon(FontIconType.PLUS) : new FontIcon(FontIconType.MINUS);                     
+                            iconRepeating.setSize(14);
+                            iconRepeating.setColor(Color.web("#212121"));
+                            
+                            Label labelRepeating = new Label();
+                            labelRepeating.setGraphic(iconRepeating);
+                            labelRepeating.setStyle("-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: #212121");
+                            labelRepeating.setAlignment(Pos.CENTER);
+                            setGraphic(labelRepeating);
+                        }
+                        else
+                        {
+                            setGraphic(null);
+                        }
+                    }
+                };
+                return cell;
+            }
+        });
+        columnRating.setStyle("-fx-alignment: CENTER;");
+        CheckBox checkBoxRating = new CheckBox();
+        checkBoxRating.setSelected(true);
+        checkBoxRating.selectedProperty().addListener((a, b, c)->{
+            String style = c ? "-fx-alignment: CENTER;" : "-fx-background-color: salmon; -fx-alignment: CENTER;";           
+            columnRating.setStyle(style);
+            columnFilter.toggleColumn(ColumnType.RATING, c);
+        });
+        columnRating.setGraphic(checkBoxRating);
+        columnRating.setComparator(new RatingComparator());
+        tableView.getColumns().add(columnRating);
+	}
+	
+	private void initColumnAmount()
+	{
+	    TableColumn<ReportItem, String> columnAmount = new TableColumn<>("Betrag");
+        columnAmount.setUserData(ColumnType.AMOUNT);
+        columnAmount.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ReportItem, String>, ObservableValue<String>>()
+        {
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<ReportItem, String> param)
+            {
+                StringProperty value = new SimpleStringProperty();
+                double amount = param.getValue().getAmount() / 100.0;
+                value.set(Helpers.getCurrencyString(amount, controller.getSettings().getCurrency()));
+                return value;
+            }
+        });
+        columnAmount.setStyle("-fx-alignment: CENTER;");
+        CheckBox checkBoxAmount = new CheckBox();
+        checkBoxAmount.setSelected(true);
+        checkBoxAmount.selectedProperty().addListener((a, b, c)->{
+            String style = c ? "-fx-alignment: CENTER;" : "-fx-background-color: salmon; -fx-alignment: CENTER;";           
+            columnAmount.setStyle(style);
+            columnFilter.toggleColumn(ColumnType.AMOUNT, c);
+        });
+        columnAmount.setGraphic(checkBoxAmount);
+        tableView.getColumns().add(columnAmount);
 	}
 
 	private void initTable()
@@ -115,234 +354,18 @@ public class ReportController implements Refreshable
 		
 		Label labelPlaceholder = new Label("Keine Daten verfügbar");
 		labelPlaceholder.setStyle("-fx-font-size: 16");
-		tableView.setPlaceholder(labelPlaceholder);
-
-		TableColumn<ReportItem, Integer> columnPosition = new TableColumn<>("Nr.");
-		columnPosition.setUserData(ColumnType.POSITION);
-		columnPosition.setCellValueFactory(new PropertyValueFactory<ReportItem, Integer>("position"));
-		columnPosition.setStyle("-fx-alignment: CENTER;");
-		CheckBox checkBoxPositions = new CheckBox();
-		checkBoxPositions.setSelected(true);
-		checkBoxPositions.selectedProperty().addListener((a, b, c)->{
-			String style = c ? "" : "-fx-background-color: salmon";			
-			columnPosition.setStyle(style);
-			columnFilter.toggleColumn(ColumnType.POSITION, c);
-		});
-		columnPosition.setGraphic(checkBoxPositions);
-		columnPosition.setSortable(false);
-		tableView.getColumns().add(columnPosition);
-
-		TableColumn<ReportItem, String> columnDate = new TableColumn<>("Datum");
-		columnDate.setUserData(ColumnType.DATE);
-		columnDate.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ReportItem, String>, ObservableValue<String>>()
-		{
-			@Override
-			public ObservableValue<String> call(CellDataFeatures<ReportItem, String> param)
-			{				
-				String dateString = param.getValue().getDate();
-				try
-				{
-					DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-					Date date = format.parse(dateString);
-					DateFormat finalFormat = new SimpleDateFormat("dd.MM.yy");
-					dateString = finalFormat.format(date);
-					return new SimpleStringProperty(dateString);
-				}
-				catch(Exception e)
-				{
-					Logger.error(e);
-					return null;
-				}
-			}
-		});
-		columnDate.setStyle("-fx-alignment: CENTER;");
-		CheckBox checkBoxDate = new CheckBox();
-		checkBoxDate.setSelected(true);
-		checkBoxDate.selectedProperty().addListener((a, b, c)->{
-			String style = c ? "" : "-fx-background-color: salmon";			
-			columnDate.setStyle(style);
-			columnFilter.toggleColumn(ColumnType.DATE, c);
-		});
-		columnDate.setGraphic(checkBoxDate);
-		columnDate.setSortable(false);
-		tableView.getColumns().add(columnDate);
-			
-		TableColumn<ReportItem, Boolean> columnIsRepeating = new TableColumn<>("Wiederholend");
-		columnIsRepeating.setUserData(ColumnType.REPEATING);
-		columnIsRepeating.setCellValueFactory(new PropertyValueFactory<ReportItem, Boolean>("repeating"));
-		columnIsRepeating.setCellFactory(new Callback<TableColumn<ReportItem, Boolean>, TableCell<ReportItem, Boolean>>()
-		{
-			@Override
-			public TableCell<ReportItem, Boolean> call(TableColumn<ReportItem, Boolean> param)
-			{
-				TableCell<ReportItem, Boolean> cell = new TableCell<ReportItem, Boolean>()
-				{
-					@Override
-					public void updateItem(Boolean item, boolean empty)
-					{
-						if(!empty)
-						{							
-							FontIcon iconRepeating = new FontIcon(FontIconType.CALENDAR);
-							iconRepeating.setSize(16);							
-							Color color = item ? Color.web("#212121") : Color.TRANSPARENT;
-							iconRepeating.setColor(color);
-							
-							Label labelRepeating = new Label();
-							labelRepeating.setGraphic(iconRepeating);
-							labelRepeating.setStyle("-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: #212121");
-							labelRepeating.setAlignment(Pos.CENTER);
-							setGraphic(labelRepeating);
-						}
-						else
-						{
-							setGraphic(null);
-						}
-					}
-				};
-				return cell;
-			}
-		});
-		columnIsRepeating.setStyle("-fx-alignment: CENTER;");
-		CheckBox checkBoxRepeating = new CheckBox();
-		checkBoxRepeating.setSelected(true);
-		checkBoxRepeating.selectedProperty().addListener((a, b, c)->{
-			String style = c ? "" : "-fx-background-color: salmon";			
-			columnIsRepeating.setStyle(style);
-			columnFilter.toggleColumn(ColumnType.REPEATING, c);
-		});
-		columnIsRepeating.setGraphic(checkBoxRepeating);
-		columnIsRepeating.setSortable(false);
-		tableView.getColumns().add(columnIsRepeating);
-
-		TableColumn<ReportItem, String> columnCategory = new TableColumn<>("Kategorie");
-		columnCategory.setUserData(ColumnType.CATEGORY);
-		columnCategory.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ReportItem, String>, ObservableValue<String>>()
-		{
-			@Override
-			public ObservableValue<String> call(CellDataFeatures<ReportItem, String> param)
-			{
-				String categoryName = param.getValue().getCategory().getName();
-				if(categoryName.equals("NONE"))
-				{
-					categoryName = "";
-				}
-				return new SimpleStringProperty(categoryName);
-			}
-		});
-		columnCategory.setStyle("-fx-alignment: CENTER;");
-		CheckBox checkBoxCategory = new CheckBox();
-		checkBoxCategory.setSelected(true);
-		checkBoxCategory.selectedProperty().addListener((a, b, c)->{
-			String style = c ? "" : "-fx-background-color: salmon";			
-			columnCategory.setStyle(style);
-			columnFilter.toggleColumn(ColumnType.CATEGORY, c);
-		});
-		columnCategory.setGraphic(checkBoxCategory);
-		columnCategory.setSortable(false);
-		tableView.getColumns().add(columnCategory);
-
-		TableColumn<ReportItem, Integer> columnName = new TableColumn<>("Name");
-		columnName.setUserData(ColumnType.NAME);
-		columnName.setCellValueFactory(new PropertyValueFactory<ReportItem, Integer>("name"));
-		columnName.setStyle("-fx-alignment: CENTER;");
-		CheckBox checkBoxName = new CheckBox();
-		checkBoxName.setSelected(true);
-		checkBoxName.selectedProperty().addListener((a, b, c)->{
-			String style = c ? "" : "-fx-background-color: salmon";			
-			columnName.setStyle(style);
-			columnFilter.toggleColumn(ColumnType.NAME, c);
-		});
-		columnName.setGraphic(checkBoxName);
-		columnName.setSortable(false);
-		tableView.getColumns().add(columnName);
-
-		TableColumn<ReportItem, Integer> columnDescription = new TableColumn<>("Notiz");
-		columnDescription.setUserData(ColumnType.DESCRIPTION);
-		columnDescription.setCellValueFactory(new PropertyValueFactory<ReportItem, Integer>("description"));
-		columnDescription.setStyle("-fx-alignment: CENTER;");
-		CheckBox checkBoxDescription = new CheckBox();
-		checkBoxDescription.setSelected(true);
-		checkBoxDescription.selectedProperty().addListener((a, b, c)->{
-			String style = c ? "" : "-fx-background-color: salmon";			
-			columnDescription.setStyle(style);
-			columnFilter.toggleColumn(ColumnType.DESCRIPTION, c);
-		});
-		columnDescription.setGraphic(checkBoxDescription);
-		columnDescription.setSortable(false);
-		tableView.getColumns().add(columnDescription);
-		
-		TableColumn<ReportItem, Integer> columnRating = new TableColumn<>("Bewertung");
-		columnRating.setUserData(ColumnType.RATING);
-		columnRating.setCellValueFactory(new PropertyValueFactory<ReportItem, Integer>("amount"));
-		columnRating.setCellFactory(new Callback<TableColumn<ReportItem, Integer>, TableCell<ReportItem, Integer>>()
-		{
-			@Override
-			public TableCell<ReportItem, Integer> call(TableColumn<ReportItem, Integer> param)
-			{
-				TableCell<ReportItem, Integer> cell = new TableCell<ReportItem, Integer>()
-				{
-					@Override
-					public void updateItem(Integer item, boolean empty)
-					{
-						if(!empty)
-						{								
-							FontIcon iconRepeating = item > 0 ? new FontIcon(FontIconType.PLUS) : new FontIcon(FontIconType.MINUS);						
-							iconRepeating.setSize(14);
-							iconRepeating.setColor(Color.web("#212121"));
-							
-							Label labelRepeating = new Label();
-							labelRepeating.setGraphic(iconRepeating);
-							labelRepeating.setStyle("-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: #212121");
-							labelRepeating.setAlignment(Pos.CENTER);
-							setGraphic(labelRepeating);
-						}
-						else
-						{
-							setGraphic(null);
-						}
-					}
-				};
-				return cell;
-			}
-		});
-		columnRating.setStyle("-fx-alignment: CENTER;");
-		CheckBox checkBoxRating = new CheckBox();
-		checkBoxRating.setSelected(true);
-		checkBoxRating.selectedProperty().addListener((a, b, c)->{
-			String style = c ? "" : "-fx-background-color: salmon";			
-			columnRating.setStyle(style);
-			columnFilter.toggleColumn(ColumnType.RATING, c);
-		});
-		columnRating.setGraphic(checkBoxRating);
-		columnRating.setSortable(false);
-		tableView.getColumns().add(columnRating);
-
-		TableColumn<ReportItem, String> columnAmount = new TableColumn<>("Betrag");
-		columnAmount.setUserData(ColumnType.AMOUNT);
-		columnAmount.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ReportItem, String>, ObservableValue<String>>()
-		{
-			@Override
-			public ObservableValue<String> call(CellDataFeatures<ReportItem, String> param)
-			{
-				StringProperty value = new SimpleStringProperty();
-				double amount = param.getValue().getAmount() / 100.0;
-				value.set(Helpers.getCurrencyString(amount, controller.getSettings().getCurrency()));
-				return value;
-			}
-		});
-		columnAmount.setStyle("-fx-alignment: CENTER;");
-		CheckBox checkBoxAmount = new CheckBox();
-		checkBoxAmount.setSelected(true);
-		checkBoxAmount.selectedProperty().addListener((a, b, c)->{
-			String style = c ? "" : "-fx-background-color: salmon";			
-			columnAmount.setStyle(style);
-			columnFilter.toggleColumn(ColumnType.AMOUNT, c);
-		});
-		columnAmount.setGraphic(checkBoxAmount);
-		columnAmount.setSortable(false);
-		tableView.getColumns().add(columnAmount);
+		tableView.setPlaceholder(labelPlaceholder);		
 
 		tableView.setFixedCellSize(26);
+		
+		initColumnPosition();
+		initColumnDate();
+		initColumnIsRepeating();
+		initColumnCategory();
+		initColumnName();
+		initColumnDescription();
+		initColumnRating();
+		initColumnAmount();
 	}
 
 	public void filter()
@@ -368,7 +391,7 @@ public class ReportController implements Refreshable
 		}
 	}
 
-	private ArrayList<ReportItem> createReportItems(ArrayList<Payment> payments, boolean descending)
+	private ArrayList<ReportItem> createReportItems(ArrayList<Payment> payments)
 	{
 		ArrayList<ReportItem> reportItems = new ArrayList<>();
 		for(int i = 0; i < payments.size(); i++)
@@ -386,21 +409,17 @@ public class ReportController implements Refreshable
 			reportItems.add(reportItem);
 		}
 
-		if(!descending)
-		{
-			Collections.reverse(reportItems);
-		}
 		return reportItems;
 	}
 
-	private void refreshTableView(boolean descending)
+	private void refreshTableView()
 	{
 		tableView.getItems().clear();
 
 		ArrayList<Payment> payments = controller.getPaymentHandler().getPayments();		
 		if(payments != null)
 		{
-			ArrayList<ReportItem> reportItems = createReportItems(payments, descending);
+			ArrayList<ReportItem> reportItems = createReportItems(payments);
 			ObservableList<ReportItem> objectsForTable = FXCollections.observableArrayList(reportItems);
 			tableView.setItems(objectsForTable);
 		}
@@ -530,7 +549,7 @@ public class ReportController implements Refreshable
 		{
 			labelFilterActive.setVisible(true);
 		}
-
-		refreshTableView(checkBoxDescending.isSelected());
+		
+		refreshTableView();
 	}
 }

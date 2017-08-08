@@ -40,8 +40,7 @@
                   <VBox spacing="10.0">
                      <children>
                         <CheckBox fx:id="checkBoxSplitTable" mnemonicParsing="false" text="Einnahmen und Ausgaben als getrennte Tabellen" />
-                        <CheckBox fx:id="checkBoxIncludeCategoryBudgets" mnemonicParsing="false" text="Verbrauch nach Kategorien hizufügen" />
-                        <CheckBox fx:id="checkBoxDescending" mnemonicParsing="false" text="Neuestes Datum zuerst" />
+                        <CheckBox fx:id="checkBoxIncludeCategoryBudgets" mnemonicParsing="false" text="Verbrauch nach Kategorien hinzufügen" />
                      </children>
                   </VBox>
                </children>
