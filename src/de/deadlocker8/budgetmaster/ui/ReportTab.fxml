@@ -45,7 +45,7 @@
                   </VBox>
                </children>
                <VBox.margin>
-                  <Insets />
+                  <Insets bottom="10.0" />
                </VBox.margin>
             </HBox>
             <TableView fx:id="tableView" prefHeight="270.0" prefWidth="772.0" VBox.vgrow="ALWAYS">

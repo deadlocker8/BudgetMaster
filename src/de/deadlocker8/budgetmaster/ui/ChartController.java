@@ -13,7 +13,9 @@ import de.deadlocker8.budgetmaster.logic.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.MonthInOutSum;
 import de.deadlocker8.budgetmaster.logic.ServerConnection;
-import de.deadlocker8.budgetmaster.logic.chartGenerators.CategoriesChartGenerator;
+import de.deadlocker8.budgetmaster.logic.chartGenerators.CategoriesChart;
+import de.deadlocker8.budgetmaster.logic.chartGenerators.ChartExportable;
+import de.deadlocker8.budgetmaster.logic.chartGenerators.LegendType;
 import de.deadlocker8.budgetmaster.logic.chartGenerators.LineChartGenerator;
 import de.deadlocker8.budgetmaster.logic.chartGenerators.MonthChartGenerator;
 import fontAwesome.FontIcon;
@@ -39,7 +41,6 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
@@ -71,6 +72,8 @@ public class ChartController implements Refreshable
 	private Controller controller;
 	private Button buttonChartMonthExport;
 	private File lastExportPath;
+	
+	private CategoriesChart categoriesChart;
 
 	public void init(Controller controller)
 	{
@@ -85,7 +88,7 @@ public class ChartController implements Refreshable
 		iconShow.setColor(Color.WHITE);
 		buttonChartCategoriesShow.setStyle("-fx-background-color: #2E79B9;");
 		buttonChartCategoriesShow.setGraphic(iconShow);
-		
+
 		FontIcon iconShow2 = new FontIcon(FontIconType.SAVE);
 		iconShow2.setSize(16);
 		iconShow2.setColor(Color.WHITE);
@@ -97,18 +100,19 @@ public class ChartController implements Refreshable
 		iconShow3.setColor(Color.WHITE);
 		buttonChartMonthShow.setStyle("-fx-background-color: #2E79B9;");
 		buttonChartMonthShow.setGraphic(iconShow3);
-		
+
 		buttonChartMonthExport = new Button();
-		buttonChartMonthExport.setOnAction((event)->{
-			export(vboxChartMonth);
-		});		
-		
+		//DEBUG
+//		buttonChartMonthExport.setOnAction((event) -> {
+//			export(vboxChartMonth);
+//		});
+
 		FontIcon iconShow4 = new FontIcon(FontIconType.SAVE);
 		iconShow4.setSize(16);
 		iconShow4.setColor(Color.WHITE);
 		buttonChartMonthExport.setStyle("-fx-background-color: #2E79B9;");
 		buttonChartMonthExport.setGraphic(iconShow4);
-		
+
 		datePickerEnd.setDayCellFactory(new Callback<DatePicker, DateCell>()
 		{
 			@Override
@@ -133,52 +137,40 @@ public class ChartController implements Refreshable
 		comboBoxStartMonth.setItems(FXCollections.observableArrayList(Helpers.getMonthList()));
 		comboBoxStartYear.setItems(FXCollections.observableArrayList(Helpers.getYearList()));
 		comboBoxEndMonth.setItems(FXCollections.observableArrayList(Helpers.getMonthList()));
-		comboBoxEndYear.setItems(FXCollections.observableArrayList(Helpers.getYearList()));				
+		comboBoxEndYear.setItems(FXCollections.observableArrayList(Helpers.getYearList()));
 
 		final ToggleGroup toggleGroup = new ToggleGroup();
 		radioButtonBars.setToggleGroup(toggleGroup);
 		radioButtonBars.setSelected(true);
-		radioButtonLines.setToggleGroup(toggleGroup);		
+		radioButtonLines.setToggleGroup(toggleGroup);
 
 		accordion.setExpandedPane(accordion.getPanes().get(0));
 		vboxChartMonth.setSpacing(15);
 	}
-	
+
 	public void buttonChartCategoriesShow()
 	{
-		chartCategoriesShow(false);
+		chartCategoriesShow(LegendType.NORMAL);
 	}
 
-	public void chartCategoriesShow(boolean fullLegend)
+	public void chartCategoriesShow(LegendType legendType)
 	{
 		DateTime startDate = DateTime.parse(datePickerStart.getValue().toString());
 		DateTime endDate = DateTime.parse(datePickerEnd.getValue().toString());
-
 		try
 		{
 			ServerConnection connection = new ServerConnection(controller.getSettings());
 			ArrayList<CategoryInOutSum> sums = connection.getCategoryInOutSumForMonth(startDate, endDate);
 
-			Platform.runLater(() -> {
+			Platform.runLater(()->{;
 				vboxChartCategories.getChildren().clear();
-
-				CategoriesChartGenerator generator = new CategoriesChartGenerator("Einnahmen nach Kategorien", sums, true, controller.getSettings().getCurrency());
-				vboxChartCategories.getChildren().add(generator.generate());
-				generator = new CategoriesChartGenerator("Ausgaben nach Kategorien", sums, false, controller.getSettings().getCurrency());
-				vboxChartCategories.getChildren().add(generator.generate());
-
-				Region spacer = new Region();
-				vboxChartCategories.getChildren().add(spacer);
-				VBox.setVgrow(spacer, Priority.ALWAYS);
-
-				if(fullLegend)
-				{
-					vboxChartCategories.getChildren().add(generator.generateFullLegend());
-				}
-				else
-				{
-					vboxChartCategories.getChildren().add(generator.generateLegend());
-				}
+				categoriesChart = new CategoriesChart("Einnahmen nach Kategorien", 
+																	  "Ausgaben nach Kategorien",
+																	  sums,
+																	  controller.getSettings().getCurrency(),
+																	  legendType);
+				vboxChartCategories.getChildren().add(categoriesChart);
+				VBox.setVgrow(categoriesChart, Priority.ALWAYS);
 			});
 		}
 		catch(Exception e)
@@ -192,14 +184,16 @@ public class ChartController implements Refreshable
 	
 	public void chartCategoriesExport()
 	{
-		export(vboxChartCategories);
+		if(categoriesChart != null)
+		{
+			export(categoriesChart);
+		}
 	}
-	
-	public void export(VBox chart)
-	{	
-		Worker.runLater(()->{
-			chartCategoriesShow(true);
-			Platform.runLater(()->{
+
+	public void export(ChartExportable chart)
+	{
+		Worker.runLater(() -> {
+			Platform.runLater(() -> {
 				try
 				{
 					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/ExportChartGUI.fxml"));
@@ -218,7 +212,7 @@ public class ChartController implements Refreshable
 				catch(IOException e)
 				{
 					Logger.error(e);
-				}	
+				}
 			});
 		});
 	}
@@ -239,7 +233,7 @@ public class ChartController implements Refreshable
 				hboxChartMonthButtons.getChildren().remove(buttonChartMonthExport);
 			}
 		}
-		
+
 		Platform.runLater(() -> {
 			vboxChartMonth.getChildren().clear();
 		});
@@ -304,17 +298,17 @@ public class ChartController implements Refreshable
 			});
 		}
 	}
-	
+
 	public Controller getControlle()
 	{
 		return controller;
 	}
-	
+
 	public void setLastExportPath(File lastExportPath)
 	{
-		this.lastExportPath = lastExportPath;		
+		this.lastExportPath = lastExportPath;
 	}
-	
+
 	public File getLastExportPath()
 	{
 		return lastExportPath;
@@ -340,7 +334,7 @@ public class ChartController implements Refreshable
 		comboBoxEndYear.setValue(String.valueOf(controller.getCurrentDate().plusMonths(6).getYear()));
 
 		Worker.runLater(() -> {
-			chartCategoriesShow(false);
+			chartCategoriesShow(LegendType.NORMAL);
 			chartMonthShow();
 
 			Platform.runLater(() -> {

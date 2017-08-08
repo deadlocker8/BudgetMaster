@@ -6,26 +6,37 @@ import de.deadlocker8.budgetmaster.logic.CategoryInOutSum;
 import de.deadlocker8.budgetmaster.logic.Helpers;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Transform;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import tools.ConvertTo;
 
-public class CategoriesChartGenerator
+public class CategoriesChart extends VBox implements ChartExportable
 {
-	private String title;
+	private String titleIncomes;
+	private String titlePayments;
 	private ArrayList<CategoryInOutSum> categoryInOutSums;
-	private boolean useBudgetIN;
 	private String currency;
-	private double total;
+	private double totalIncomes;
+	private double totalPayments;
+	private LegendType legendType;
+	
 
-	public CategoriesChartGenerator(String title, ArrayList<CategoryInOutSum> categoryInOutSums, boolean useBudgetIN, String currency)
+	public CategoriesChart(String titleIncomes, String titlePayments, ArrayList<CategoryInOutSum> categoryInOutSums, String currency, LegendType legendType)
 	{
-		this.title = title;
+		this.titleIncomes = titleIncomes;
+		this.titlePayments = titlePayments;
 		if(categoryInOutSums == null)
 		{
 			this.categoryInOutSums = new ArrayList<>();
@@ -33,13 +44,33 @@ public class CategoriesChartGenerator
 		else
 		{
 			this.categoryInOutSums = categoryInOutSums;
-		}		
-		this.useBudgetIN = useBudgetIN;
+		}
+		
 		this.currency = currency;
-		this.total = getTotal(this.categoryInOutSums, useBudgetIN);
+		this.totalIncomes = getTotal(this.categoryInOutSums, true);
+		this.totalPayments = getTotal(categoryInOutSums, false);
+		this.legendType = legendType;
+		
+		this.setSpacing(10);
+		
+		this.getChildren().add(generate(titleIncomes, true));
+		this.getChildren().add(generate(titlePayments, false));
+		
+		Region spacer = new Region();
+		this.getChildren().add(spacer);
+		VBox.setVgrow(spacer, Priority.ALWAYS);
+		
+		if(this.legendType == LegendType.NORMAL)
+		{
+			this.getChildren().add(generateLegend());
+		}
+		else if(this.legendType == LegendType.FULL)
+		{
+			this.getChildren().add(generateFullLegend());		
+		}
 	}	
 
-	public VBox generate()
+	private VBox generate(String title, boolean useIncomes)
 	{
 		VBox generatedChart = new VBox();
 		HBox chart = new HBox();
@@ -58,16 +89,17 @@ public class CategoriesChartGenerator
 			chart.getChildren().add(currentPart);
 
 			double value;
-			if(useBudgetIN)
+			double percentage;
+			if(useIncomes)
 			{
 				value = currentItem.getBudgetIN() / 100.0;
+				percentage = value / totalIncomes;
 			}
 			else
 			{
 				value = -currentItem.getBudgetOUT() / 100.0;
+				percentage = value / totalPayments;
 			}
-
-			double percentage = value / total;
 
 			currentPart.prefWidthProperty().bind(chart.widthProperty().multiply(percentage));
 			
@@ -87,7 +119,7 @@ public class CategoriesChartGenerator
 		return generatedChart;
 	}
 
-	public GridPane generateLegend()
+	private GridPane generateLegend()
 	{
 		GridPane legend = new GridPane();
 		legend.setPadding(new Insets(10));
@@ -133,7 +165,7 @@ public class CategoriesChartGenerator
 		return legend;
 	}
 	
-	public VBox generateFullLegend()
+	private VBox generateFullLegend()
 	{
 		VBox legend = new VBox();
 		legend.setPadding(new Insets(10));
@@ -242,12 +274,12 @@ public class CategoriesChartGenerator
 		return legendItem;
 	}
 
-	private double getTotal(ArrayList<CategoryInOutSum> categoryInOutSums, boolean useBudgetIN)
+	private double getTotal(ArrayList<CategoryInOutSum> categoryInOutSums, boolean useIncomes)
 	{		
 		double total = 0;
 		for(CategoryInOutSum currentItem : categoryInOutSums)
 		{
-			if(useBudgetIN)
+			if(useIncomes)
 			{
 				total += currentItem.getBudgetIN() / 100.0;
 			}
@@ -257,5 +289,32 @@ public class CategoriesChartGenerator
 			}
 		}
 		return total;
+	}
+
+	@Override
+	public WritableImage export(int width, int height)
+	{
+		VBox root = new VBox();
+		root.setPadding(new Insets(25));
+		root.getChildren().add(generate(titleIncomes, true));
+		root.getChildren().add(generate(titlePayments, false));
+		
+		Region spacer = new Region();
+		root.getChildren().add(spacer);
+		VBox.setVgrow(spacer, Priority.ALWAYS);
+		
+		root.getChildren().add(generateFullLegend());		
+		
+		Stage newStage = new Stage();
+		newStage.initModality(Modality.NONE);
+		newStage.setScene(new Scene(root, width, height));
+		newStage.setResizable(false);		
+		newStage.show();
+		
+		SnapshotParameters sp = new SnapshotParameters();
+		sp.setTransform(Transform.scale(width / root.getWidth(), height / root.getHeight()));
+		newStage.close();
+		
+		return root.snapshot(sp, null);
 	}
 }

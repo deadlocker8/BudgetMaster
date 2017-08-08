@@ -7,11 +7,11 @@ import java.util.Optional;
 
 import javax.imageio.ImageIO;
 
+import de.deadlocker8.budgetmaster.logic.chartGenerators.ChartExportable;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -21,9 +21,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.transform.Transform;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import logger.Logger;
@@ -41,10 +39,10 @@ public class ExportChartController
 	
 	private ChartController controller;
 	private Stage stage;
-	private VBox chart;
+	private ChartExportable chart;
 	private File savePath;
 
-	public void init(Stage stage, ChartController controller, VBox chart)
+	public void init(Stage stage, ChartController controller, ChartExportable chart)
 	{
 		this.controller = controller;
 		this.stage = stage;
@@ -55,13 +53,9 @@ public class ExportChartController
 		{
 			labelSavePath.setText(savePath.getAbsolutePath());
 		}
-		
-		stage.setOnCloseRequest((event)->{
-			controller.chartCategoriesShow(false);
-		});
-		
-		textFieldWidth.setText(String.valueOf((int)chart.getWidth()));
-		textFieldHeight.setText(String.valueOf((int)chart.getHeight()));
+				
+		textFieldWidth.setText("600");
+		textFieldHeight.setText("400");
 
 		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");
 		
@@ -177,11 +171,10 @@ public class ExportChartController
 		{
 			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Wähle einen Speicherort für das Diagramm aus.", controller.getControlle().getIcon(), stage, null, false);
 			return;
-		}			
+		}
 		
-		SnapshotParameters sp = new SnapshotParameters();
-		sp.setTransform(Transform.scale(width / chart.getWidth(), height / chart.getHeight()));
-		WritableImage image = chart.snapshot(sp, null);		
+		WritableImage image = chart.export(width, height);		
+		
 		try
 		{
 			ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", savePath);
@@ -237,14 +230,12 @@ public class ExportChartController
 			AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Beim Exportieren des Diagramms ist ein Fehler aufgetreten:\n\n" + e.getMessage(), controller.getControlle().getIcon(), stage, null, false);
 		}
 		
-		stage.close();
-		controller.chartCategoriesShow(false);
+		stage.close();	
 		controller.setLastExportPath(savePath);
 	}
 	
 	public void cancel()
 	{
 		stage.close();
-		controller.chartCategoriesShow(false);
 	}
 }
