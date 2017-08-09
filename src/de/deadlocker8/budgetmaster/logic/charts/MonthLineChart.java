@@ -36,15 +36,16 @@ public class MonthLineChart extends VBox implements ChartExportable
 		this.currency = currency;
 		
 		this.setSpacing(10);
-		this.getChildren().add(generate());
+		this.getChildren().add(generate(true));
 	}
 
-	private LineChart<String, Number> generate()
+	private LineChart<String, Number> generate(boolean animated)
 	{
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
 		final LineChart<String, Number> generatedChart = new LineChart<>(xAxis, yAxis);
 		generatedChart.setTitle(null);
+		generatedChart.setAnimated(animated);
 
 		xAxis.setLabel("");
 		yAxis.setLabel("Summe in " + currency);
@@ -154,7 +155,7 @@ public class MonthLineChart extends VBox implements ChartExportable
         root.setStyle("-fx-background-color: transparent;");
         root.setPadding(new Insets(25));
         
-        root.getChildren().add(generate());         
+        root.getChildren().add(generate(false));         
         
         Stage newStage = new Stage();
         newStage.initModality(Modality.NONE);
