@@ -8,6 +8,7 @@ import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Label;
@@ -51,7 +52,7 @@ public class MonthBarChart extends VBox implements ChartExportable
         scrollPane.setStyle("-fx-background-color: transparent; -fx-background-insets: 0; -fx-border-color: transparent; -fx-border-width: 0; -fx-border-insets: 0;");
         scrollPane.setPadding(new Insets(0, 0, 10, 0));
        
-        HBox generatedChart = generate();
+        HBox generatedChart = generate();              
         scrollPane.setContent(generatedChart);
         generatedChart.prefHeightProperty().bind(scrollPane.heightProperty().subtract(30));
         this.getChildren().add(scrollPane);
@@ -278,4 +279,35 @@ public class MonthBarChart extends VBox implements ChartExportable
         
         return root.snapshot(sp, null);
     }
+    
+    @Override
+	public double getSuggestedWidth()
+	{
+    	if(this.getChildren().size() < 2)
+    	{
+    		return 0;
+    	}
+    	
+    	Node currentNode = this.getChildren().get(0);
+    	
+    	if(!(currentNode instanceof ScrollPane))
+    	{
+    		return 0;
+    	}
+    	
+    	ScrollPane scrollPane = (ScrollPane)currentNode; 
+    	Node content = scrollPane.getContent();
+    	if(content == null)
+    	{
+    		return 0;
+    	}    	
+    	
+    	return ((Region)content).getWidth();
+	}
+
+	@Override
+	public double getSuggestedHeight()
+	{
+		return getHeight() + 50;
+	}
 }

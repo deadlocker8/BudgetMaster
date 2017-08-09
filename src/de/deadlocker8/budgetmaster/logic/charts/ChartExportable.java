@@ -9,4 +9,8 @@ public interface ChartExportable
 	double getWidth();
 	
 	double getHeight();
+	
+	double getSuggestedWidth();
+	
+	double getSuggestedHeight();
 }

@@ -319,4 +319,16 @@ public class CategoriesChart extends VBox implements ChartExportable
 		
 		return root.snapshot(sp, null);
 	}
+	
+	@Override
+	public double getSuggestedWidth()
+	{
+		return getWidth() + 50;
+	}
+
+	@Override
+	public double getSuggestedHeight()
+	{
+		return getHeight() + 50;
+	}
 }

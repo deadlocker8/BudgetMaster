@@ -161,7 +161,7 @@ public class MonthLineChart extends VBox implements ChartExportable
         newStage.initModality(Modality.NONE);
         newStage.setScene(new Scene(root, width, height));
         newStage.setResizable(false);       
-        newStage.show();       
+        newStage.show();
         
         SnapshotParameters sp = new SnapshotParameters();
         sp.setTransform(Transform.scale(width / root.getWidth(), height / root.getHeight()));
@@ -169,4 +169,16 @@ public class MonthLineChart extends VBox implements ChartExportable
         
         return root.snapshot(sp, null);
     }
+
+	@Override
+	public double getSuggestedWidth()
+	{
+		return getWidth() + 50;
+	}
+
+	@Override
+	public double getSuggestedHeight()
+	{
+		return getHeight() + 50;
+	}
 }

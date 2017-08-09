@@ -53,9 +53,9 @@ public class ExportChartController
 		{
 			labelSavePath.setText(savePath.getAbsolutePath());
 		}
-				
-		textFieldWidth.setText(String.valueOf((int)chart.getWidth()));
-		textFieldHeight.setText(String.valueOf((int)chart.getHeight()));
+		
+		textFieldWidth.setText(String.valueOf((int)chart.getSuggestedWidth()));
+		textFieldHeight.setText(String.valueOf((int)chart.getSuggestedHeight()));
 
 		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");
 		
