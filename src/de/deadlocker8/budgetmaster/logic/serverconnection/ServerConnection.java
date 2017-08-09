@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.logic;
+package de.deadlocker8.budgetmaster.logic.serverconnection;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -19,6 +19,15 @@ import org.joda.time.DateTime;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import de.deadlocker8.budgetmaster.logic.Category;
+import de.deadlocker8.budgetmaster.logic.CategoryBudget;
+import de.deadlocker8.budgetmaster.logic.CategoryInOutSum;
+import de.deadlocker8.budgetmaster.logic.MonthInOutSum;
+import de.deadlocker8.budgetmaster.logic.NormalPayment;
+import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
+import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
+import de.deadlocker8.budgetmaster.logic.Settings;
+import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmasterserver.logic.Database;
 import tools.ConvertTo;
 import tools.Read;

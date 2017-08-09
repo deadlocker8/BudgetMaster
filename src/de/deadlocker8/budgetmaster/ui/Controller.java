@@ -8,13 +8,13 @@ import org.joda.time.DateTime;
 
 import de.deadlocker8.budgetmaster.logic.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.CategoryHandler;
-import de.deadlocker8.budgetmaster.logic.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.FilterSettings;
-import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.PaymentHandler;
-import de.deadlocker8.budgetmaster.logic.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.Settings;
+import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
+import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
+import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.animation.FadeTransition;

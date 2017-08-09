@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.Optional;
 
 import de.deadlocker8.budgetmaster.logic.FilterSettings;
-import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmaster.logic.comparators.DateComparator;
@@ -20,6 +19,7 @@ import de.deadlocker8.budgetmaster.logic.report.ColumnOrder;
 import de.deadlocker8.budgetmaster.logic.report.ColumnType;
 import de.deadlocker8.budgetmaster.logic.report.ReportGenerator;
 import de.deadlocker8.budgetmaster.logic.report.ReportItem;
+import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;

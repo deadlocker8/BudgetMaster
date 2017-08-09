@@ -7,10 +7,10 @@ import java.util.Date;
 import java.util.Optional;
 
 import de.deadlocker8.budgetmaster.logic.Category;
-import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
+import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.ui.PaymentController;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;

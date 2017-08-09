@@ -3,9 +3,9 @@ package de.deadlocker8.budgetmaster.ui;
 import java.io.IOException;
 import java.util.ResourceBundle;
 
-import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.Settings;
-import de.deadlocker8.budgetmaster.logic.Utils;
+import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
+import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
@@ -63,7 +63,7 @@ public class SplashScreenController
 			}
 		});
 		
-		settings = Utils.loadSettings();
+		settings = FileHelper.loadSettings();
 		if(settings == null)
 		{	
 			settings = new Settings();
@@ -105,7 +105,7 @@ public class SplashScreenController
 			settings.setClientSecret(HashUtils.hash(password, Helpers.SALT));
 			try
 			{
-				Utils.saveSettings(settings);
+				FileHelper.saveSettings(settings);
 				
 				stage.close();
 				openBudgetMaster();	

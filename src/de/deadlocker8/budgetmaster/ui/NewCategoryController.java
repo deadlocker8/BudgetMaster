@@ -6,8 +6,8 @@ import org.controlsfx.control.PopOver;
 import org.controlsfx.control.PopOver.ArrowLocation;
 
 import de.deadlocker8.budgetmaster.logic.Category;
-import de.deadlocker8.budgetmaster.logic.ExceptionHandler;
-import de.deadlocker8.budgetmaster.logic.ServerConnection;
+import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
+import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.fxml.FXML;

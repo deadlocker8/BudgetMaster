@@ -1,9 +1,9 @@
-package de.deadlocker8.budgetmaster.logic.chartGenerators;
+package de.deadlocker8.budgetmaster.logic.charts;
 
 import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.CategoryInOutSum;
-import de.deadlocker8.budgetmaster.logic.Helpers;
+import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -295,7 +295,9 @@ public class CategoriesChart extends VBox implements ChartExportable
 	public WritableImage export(int width, int height)
 	{
 		VBox root = new VBox();
+		root.setStyle("-fx-background-color: transparent;");
 		root.setPadding(new Insets(25));
+		
 		root.getChildren().add(generate(titleIncomes, true));
 		root.getChildren().add(generate(titlePayments, false));
 		

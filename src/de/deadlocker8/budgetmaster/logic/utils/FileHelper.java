@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.logic;
+package de.deadlocker8.budgetmaster.logic.utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,10 +12,11 @@ import java.util.ResourceBundle;
 
 import com.google.gson.Gson;
 
+import de.deadlocker8.budgetmaster.logic.Settings;
 import de.deadlocker8.budgetmasterserver.logic.Database;
 import tools.PathUtils;
 
-public class Utils
+public class FileHelper
 {
 	private static final ResourceBundle bundle = ResourceBundle.getBundle("de/deadlocker8/budgetmaster/main/", Locale.GERMANY);
 	

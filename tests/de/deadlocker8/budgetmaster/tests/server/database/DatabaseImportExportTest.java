@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
+import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmasterserver.logic.Database;
 import de.deadlocker8.budgetmasterserver.logic.DatabaseExporter;
 import de.deadlocker8.budgetmasterserver.logic.DatabaseHandler;
@@ -55,7 +56,7 @@ public class DatabaseImportExportTest
 		try
 		{
 			File file = Paths.get("tests/de/deadlocker8/budgetmaster/tests/resources/import.json").toFile();
-			Database database = de.deadlocker8.budgetmaster.logic.Utils.loadDatabaseJSON(file);			
+			Database database = FileHelper.loadDatabaseJSON(file);			
 			
 			DatabaseImporter importer = new DatabaseImporter(databaseHandler);
 			importer.importDatabase(database);
@@ -105,7 +106,7 @@ public class DatabaseImportExportTest
 			databaseHandler = new DatabaseHandler(settings);
 			
 			File file = Paths.get("tests/de/deadlocker8/budgetmaster/tests/resources/import.json").toFile();
-			Database database = de.deadlocker8.budgetmaster.logic.Utils.loadDatabaseJSON(file);			
+			Database database = FileHelper.loadDatabaseJSON(file);			
 			
 			DatabaseImporter importer = new DatabaseImporter(databaseHandler);
 			importer.importDatabase(database);			
@@ -114,7 +115,7 @@ public class DatabaseImportExportTest
 			DatabaseExporter exporter = new DatabaseExporter(settings);	
 			Gson gson = new Gson();
 			String databaseJSON = gson.toJson(exporter.exportDatabase());
-			de.deadlocker8.budgetmaster.logic.Utils.saveDatabaseJSON(file, databaseJSON);		
+			FileHelper.saveDatabaseJSON(file, databaseJSON);		
 			
 			String expectedJSON = new String(Files.readAllBytes(Paths.get("tests/de/deadlocker8/budgetmaster/tests/resources/import.json")));
 			String exportedJSON = new String(Files.readAllBytes(Paths.get("tests/de/deadlocker8/budgetmaster/tests/resources/export.json")));		

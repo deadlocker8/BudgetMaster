@@ -1,34 +1,45 @@
-package de.deadlocker8.budgetmaster.logic.chartGenerators;
+package de.deadlocker8.budgetmaster.logic.charts;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
-import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.MonthInOutSum;
+import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.scene.transform.Transform;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
-public class LineChartGenerator
+public class MonthLineChart extends VBox implements ChartExportable
 {
 	private ArrayList<MonthInOutSum> monthInOutSums;
 	private String currency;
 
-	public LineChartGenerator(ArrayList<MonthInOutSum> monthInOutSums, String currency)
+	public MonthLineChart(ArrayList<MonthInOutSum> monthInOutSums, String currency)
 	{
 		this.monthInOutSums = monthInOutSums;
 		this.currency = currency;
+		
+		this.setSpacing(10);
+		this.getChildren().add(generate());
 	}
 
-	public LineChart<String, Number> generate()
+	private LineChart<String, Number> generate()
 	{
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
@@ -136,4 +147,25 @@ public class LineChartGenerator
 
 		return generatedChart;
 	}
+
+    @Override
+    public WritableImage export(int width, int height) {
+        VBox root = new VBox();
+        root.setStyle("-fx-background-color: transparent;");
+        root.setPadding(new Insets(25));
+        
+        root.getChildren().add(generate());         
+        
+        Stage newStage = new Stage();
+        newStage.initModality(Modality.NONE);
+        newStage.setScene(new Scene(root, width, height));
+        newStage.setResizable(false);       
+        newStage.show();       
+        
+        SnapshotParameters sp = new SnapshotParameters();
+        sp.setTransform(Transform.scale(width / root.getWidth(), height / root.getHeight()));
+        newStage.close();
+        
+        return root.snapshot(sp, null);
+    }
 }

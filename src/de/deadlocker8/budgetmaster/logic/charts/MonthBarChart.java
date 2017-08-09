@@ -1,30 +1,39 @@
-package de.deadlocker8.budgetmaster.logic.chartGenerators;
+package de.deadlocker8.budgetmaster.logic.charts;
 
 import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.CategoryInOutSum;
-import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.MonthInOutSum;
+import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.transform.Transform;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import tools.ConvertTo;
 
-public class MonthChartGenerator
+public class MonthBarChart extends VBox implements ChartExportable
 {
 	private ArrayList<MonthInOutSum> monthInOutSums;
 	private String currency;
 
-	public MonthChartGenerator(ArrayList<MonthInOutSum> monthInOutSums, String currency)
+	public MonthBarChart(ArrayList<MonthInOutSum> monthInOutSums, String currency)
 	{
 		if(monthInOutSums == null)
 		{
@@ -34,10 +43,24 @@ public class MonthChartGenerator
 		{
 			this.monthInOutSums = monthInOutSums;
 		}
-		this.currency = currency;
+		this.currency = currency;	
+		
+		ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
+        scrollPane.setFocusTraversable(false);
+        scrollPane.setStyle("-fx-background-color: transparent; -fx-background-insets: 0; -fx-border-color: transparent; -fx-border-width: 0; -fx-border-insets: 0;");
+        scrollPane.setPadding(new Insets(0, 0, 10, 0));
+       
+        HBox generatedChart = generate();
+        scrollPane.setContent(generatedChart);
+        generatedChart.prefHeightProperty().bind(scrollPane.heightProperty().subtract(30));
+        this.getChildren().add(scrollPane);
+        VBox.setVgrow(scrollPane, Priority.ALWAYS);
+        
+        this.getChildren().add(generateLegend());
 	}
 
-	public HBox generate()
+	private HBox generate()
 	{
 		HBox generatedChart = new HBox();
 		generatedChart.setAlignment(Pos.TOP_CENTER);
@@ -127,7 +150,7 @@ public class MonthChartGenerator
 		return result;
 	}
 
-	public GridPane generateLegend()
+	private GridPane generateLegend()
 	{
 		GridPane legend = new GridPane();
 		legend.setPadding(new Insets(10));
@@ -225,4 +248,34 @@ public class MonthChartGenerator
 		}
 		return maximum / 100.0;
 	}
+
+    @Override
+    public WritableImage export(int width, int height) 
+    {
+        VBox root = new VBox();
+        root.setStyle("-fx-background-color: transparent;");
+        root.setPadding(new Insets(25));
+        
+        HBox generatedChart = generate();
+        root.getChildren().add(generatedChart);        
+        VBox.setVgrow(generatedChart, Priority.ALWAYS);
+        
+        Region spacer = new Region();
+        spacer.setMinHeight(30);
+		root.getChildren().add(spacer);
+        
+        root.getChildren().add(generateLegend());       
+        
+        Stage newStage = new Stage();
+        newStage.initModality(Modality.NONE);
+        newStage.setScene(new Scene(root, width, height));
+        newStage.setResizable(false);       
+        newStage.show();
+        
+        SnapshotParameters sp = new SnapshotParameters();
+        sp.setTransform(Transform.scale(width / root.getWidth(), height / root.getHeight()));
+        newStage.close();
+        
+        return root.snapshot(sp, null);
+    }
 }

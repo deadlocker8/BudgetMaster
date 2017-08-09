@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.Budget;
 import de.deadlocker8.budgetmaster.logic.CategoryBudget;
-import de.deadlocker8.budgetmaster.logic.Helpers;
+import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.ui.cells.CategoryBudgetCell;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;

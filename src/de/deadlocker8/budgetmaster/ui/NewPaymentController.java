@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import org.joda.time.DateTime;
 
 import de.deadlocker8.budgetmaster.logic.Category;
-import de.deadlocker8.budgetmaster.logic.ExceptionHandler;
-import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
-import de.deadlocker8.budgetmaster.logic.ServerConnection;
+import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
+import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
+import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.ui.cells.ButtonCategoryCell;
 import de.deadlocker8.budgetmaster.ui.cells.RepeatingDayCell;
 import de.deadlocker8.budgetmaster.ui.cells.SmallCategoryCell;

@@ -9,25 +9,23 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
 import de.deadlocker8.budgetmaster.logic.CategoryInOutSum;
-import de.deadlocker8.budgetmaster.logic.ExceptionHandler;
-import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.MonthInOutSum;
-import de.deadlocker8.budgetmaster.logic.ServerConnection;
-import de.deadlocker8.budgetmaster.logic.chartGenerators.CategoriesChart;
-import de.deadlocker8.budgetmaster.logic.chartGenerators.ChartExportable;
-import de.deadlocker8.budgetmaster.logic.chartGenerators.LegendType;
-import de.deadlocker8.budgetmaster.logic.chartGenerators.LineChartGenerator;
-import de.deadlocker8.budgetmaster.logic.chartGenerators.MonthChartGenerator;
+import de.deadlocker8.budgetmaster.logic.charts.CategoriesChart;
+import de.deadlocker8.budgetmaster.logic.charts.ChartExportable;
+import de.deadlocker8.budgetmaster.logic.charts.LegendType;
+import de.deadlocker8.budgetmaster.logic.charts.MonthBarChart;
+import de.deadlocker8.budgetmaster.logic.charts.MonthLineChart;
+import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
+import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
+import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.LineChart;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -35,11 +33,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -65,15 +60,16 @@ public class ChartController implements Refreshable
 	@FXML private ComboBox<String> comboBoxEndMonth;
 	@FXML private ComboBox<String> comboBoxEndYear;
 	@FXML private Button buttonChartMonthShow;
+	@FXML private Button buttonChartMonthExport;
 	@FXML private RadioButton radioButtonBars;
 	@FXML private RadioButton radioButtonLines;
-	@FXML private HBox hboxChartMonthButtons;
 
 	private Controller controller;
-	private Button buttonChartMonthExport;
 	private File lastExportPath;
 	
 	private CategoriesChart categoriesChart;
+	private MonthLineChart monthLineChart;
+	private MonthBarChart monthBarChart;
 
 	public void init(Controller controller)
 	{
@@ -101,18 +97,12 @@ public class ChartController implements Refreshable
 		buttonChartMonthShow.setStyle("-fx-background-color: #2E79B9;");
 		buttonChartMonthShow.setGraphic(iconShow3);
 
-		buttonChartMonthExport = new Button();
-		//DEBUG
-//		buttonChartMonthExport.setOnAction((event) -> {
-//			export(vboxChartMonth);
-//		});
-
 		FontIcon iconShow4 = new FontIcon(FontIconType.SAVE);
 		iconShow4.setSize(16);
 		iconShow4.setColor(Color.WHITE);
 		buttonChartMonthExport.setStyle("-fx-background-color: #2E79B9;");
-		buttonChartMonthExport.setGraphic(iconShow4);
-
+		buttonChartMonthExport.setGraphic(iconShow4);		
+	
 		datePickerEnd.setDayCellFactory(new Callback<DatePicker, DateCell>()
 		{
 			@Override
@@ -189,6 +179,24 @@ public class ChartController implements Refreshable
 			export(categoriesChart);
 		}
 	}
+	
+	public void chartMonthExport()
+	{
+	    if(radioButtonLines.isSelected())
+        {
+            if(monthLineChart != null)
+            {
+                export(monthLineChart);
+            }
+        }
+        else
+        {
+            if(monthBarChart != null)
+            {
+                export(monthBarChart);
+            }
+        }
+	}
 
 	public void export(ChartExportable chart)
 	{
@@ -219,21 +227,6 @@ public class ChartController implements Refreshable
 
 	public void chartMonthShow()
 	{
-		if(radioButtonLines.isSelected())
-		{
-			if(!hboxChartMonthButtons.getChildren().contains(buttonChartMonthExport))
-			{
-				hboxChartMonthButtons.getChildren().add(buttonChartMonthExport);
-			}
-		}
-		else
-		{
-			if(hboxChartMonthButtons.getChildren().contains(buttonChartMonthExport))
-			{
-				hboxChartMonthButtons.getChildren().remove(buttonChartMonthExport);
-			}
-		}
-
 		Platform.runLater(() -> {
 			vboxChartMonth.getChildren().clear();
 		});
@@ -267,26 +260,15 @@ public class ChartController implements Refreshable
 
 				if(radioButtonBars.isSelected())
 				{
-					ScrollPane scrollPane = new ScrollPane();
-					scrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
-					scrollPane.setFocusTraversable(false);
-					scrollPane.setStyle("-fx-background-color: transparent; -fx-background-insets: 0; -fx-border-color: transparent; -fx-border-width: 0; -fx-border-insets: 0;");
-					scrollPane.setPadding(new Insets(0, 0, 10, 0));
-
-					MonthChartGenerator generator = new MonthChartGenerator(sums, controller.getSettings().getCurrency());
-					HBox generatedChart = generator.generate();
-					scrollPane.setContent(generatedChart);
-					generatedChart.prefHeightProperty().bind(scrollPane.heightProperty().subtract(30));
-					vboxChartMonth.getChildren().add(scrollPane);
-					VBox.setVgrow(scrollPane, Priority.ALWAYS);
-					vboxChartMonth.getChildren().add(generator.generateLegend());
+				    monthBarChart = new MonthBarChart(sums, controller.getSettings().getCurrency());
+				    vboxChartMonth.getChildren().add(monthBarChart);
+				    VBox.setVgrow(monthBarChart, Priority.ALWAYS);
 				}
 				else
 				{
-					LineChartGenerator generator = new LineChartGenerator(sums, controller.getSettings().getCurrency());
-					LineChart<String, Number> chartMonth = generator.generate();
-					vboxChartMonth.getChildren().add(chartMonth);
-					VBox.setVgrow(chartMonth, Priority.ALWAYS);
+					monthLineChart = new MonthLineChart(sums, controller.getSettings().getCurrency());					
+					vboxChartMonth.getChildren().add(monthLineChart);
+					VBox.setVgrow(monthLineChart, Priority.ALWAYS);
 				}
 			});
 		}

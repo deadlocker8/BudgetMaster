@@ -5,11 +5,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import de.deadlocker8.budgetmaster.logic.ExceptionHandler;
-import de.deadlocker8.budgetmaster.logic.Helpers;
-import de.deadlocker8.budgetmaster.logic.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.Settings;
-import de.deadlocker8.budgetmaster.logic.Utils;
+import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
+import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
+import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
+import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmasterserver.logic.Database;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -206,7 +206,7 @@ public class SettingsController
 
 		try
 		{
-			Utils.saveSettings(controller.getSettings());
+			FileHelper.saveSettings(controller.getSettings());
 		}
 		catch(IOException e)
 		{
@@ -237,7 +237,7 @@ public class SettingsController
 				{
 					ServerConnection connection = new ServerConnection(controller.getSettings());
 					String databaseJSON = connection.exportDatabase();
-					Utils.saveDatabaseJSON(file, databaseJSON);
+					FileHelper.saveDatabaseJSON(file, databaseJSON);
 
 					Platform.runLater(() -> {
 						if(modalStage != null)
@@ -274,7 +274,7 @@ public class SettingsController
 			Database database;
 			try
 			{
-				database = Utils.loadDatabaseJSON(file);
+				database = FileHelper.loadDatabaseJSON(file);
 				if(database.getCategories() == null || database.getNormalPayments() == null || database.getRepeatingPayments() == null)
 				{
 					AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Die angegebene Datei enthält kein gültiges BudgetMaster-Datenformat und kann daher nicht importiert werden.", controller.getIcon(), controller.getStage(), null, false);

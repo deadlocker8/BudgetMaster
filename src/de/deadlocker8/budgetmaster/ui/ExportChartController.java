@@ -7,7 +7,7 @@ import java.util.Optional;
 
 import javax.imageio.ImageIO;
 
-import de.deadlocker8.budgetmaster.logic.chartGenerators.ChartExportable;
+import de.deadlocker8.budgetmaster.logic.charts.ChartExportable;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.embed.swing.SwingFXUtils;
@@ -54,8 +54,8 @@ public class ExportChartController
 			labelSavePath.setText(savePath.getAbsolutePath());
 		}
 				
-		textFieldWidth.setText("600");
-		textFieldHeight.setText("400");
+		textFieldWidth.setText(String.valueOf((int)chart.getWidth()));
+		textFieldHeight.setText(String.valueOf((int)chart.getHeight()));
 
 		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");
 		

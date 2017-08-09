@@ -113,7 +113,7 @@
                                     </HBox>
                                  </children>
                               </VBox>
-                              <HBox fx:id="hboxChartMonthButtons" alignment="CENTER_LEFT" spacing="15.0" HBox.hgrow="ALWAYS">
+                              <HBox alignment="CENTER_LEFT" spacing="15.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <RadioButton fx:id="radioButtonBars" mnemonicParsing="false" text="Balken">
                                        <font>
@@ -124,6 +124,14 @@
                                           <Font size="14.0" />
                                        </font></RadioButton>
                                     <Button fx:id="buttonChartMonthShow" mnemonicParsing="false" onAction="#chartMonthShow">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="buttonChartMonthExport" mnemonicParsing="false" onAction="#chartMonthExport">
                                        <font>
                                           <Font name="System Bold" size="12.0" />
                                        </font>

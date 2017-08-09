@@ -17,7 +17,7 @@ import org.joda.time.DateTime;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import de.deadlocker8.budgetmaster.logic.Helpers;
+import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmasterserver.logic.DatabaseHandler;
 import de.deadlocker8.budgetmasterserver.logic.Settings;
 import de.deadlocker8.budgetmasterserver.server.category.CategoryAdd;

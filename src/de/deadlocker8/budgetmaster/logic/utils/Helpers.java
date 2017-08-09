@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.logic;
+package de.deadlocker8.budgetmaster.logic.utils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
