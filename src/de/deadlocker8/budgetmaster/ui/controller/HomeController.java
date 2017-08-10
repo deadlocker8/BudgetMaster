@@ -1,10 +1,11 @@
-package de.deadlocker8.budgetmaster.ui;
+package de.deadlocker8.budgetmaster.ui.controller;
 
 import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.Budget;
 import de.deadlocker8.budgetmaster.logic.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.ui.Refreshable;
 import de.deadlocker8.budgetmaster.ui.cells.CategoryBudgetCell;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -40,6 +41,10 @@ public class HomeController implements Refreshable
 				return new CategoryBudgetCell(thisController);
 			}
 		});
+		
+		Label labelPlaceholder = new Label("Keine Daten verfügbar");          
+        labelPlaceholder.setStyle("-fx-font-size: 16");
+        listView.setPlaceholder(labelPlaceholder);
 
 		listView.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>()
 		{
@@ -112,9 +117,5 @@ public class HomeController implements Refreshable
 	{
 		refreshListView();	
 		refreshCounter();
-		
-		Label labelPlaceholder = new Label("Keine Daten verfügbar");			
-		labelPlaceholder.setStyle("-fx-font-size: 16");
-		listView.setPlaceholder(labelPlaceholder);
 	}
 }

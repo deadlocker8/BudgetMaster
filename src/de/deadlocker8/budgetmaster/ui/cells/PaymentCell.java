@@ -11,8 +11,7 @@ import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
-import de.deadlocker8.budgetmaster.ui.PaymentController;
-import fontAwesome.FontIcon;
+import de.deadlocker8.budgetmaster.ui.controller.PaymentController;
 import fontAwesome.FontIconType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -73,18 +72,15 @@ public class PaymentCell extends ListCell<Payment>
 			labelDate.setMinWidth(75);
 			hbox.getChildren().add(labelDate);
 
-			FontIcon iconRepeating = new FontIcon(FontIconType.CALENDAR);
-			iconRepeating.setSize(20);
+			Label labelRepeating = new Label();
 			if(item instanceof RepeatingPaymentEntry)
-			{
-				iconRepeating.setColor(Color.web("#212121"));
+			{				
+				labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR, 20, Color.web("#212121")));
 			}
 			else
 			{
-				iconRepeating.setColor(Color.TRANSPARENT);
+			    labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR, 20, Color.TRANSPARENT));
 			}
-			Label labelRepeating = new Label();
-			labelRepeating.setGraphic(iconRepeating);
 			labelRepeating.setPrefHeight(HEIGHT);
 			labelRepeating.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #212121");
 			labelRepeating.setAlignment(Pos.CENTER);
@@ -141,10 +137,8 @@ public class PaymentCell extends ListCell<Payment>
 				labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #CC0000");
 			}
 
-			Button buttonDelete = new Button();
-			FontIcon iconDelete = new FontIcon(FontIconType.TRASH);
-			iconDelete.setSize(16);
-			buttonDelete.setGraphic(iconDelete);
+			Button buttonDelete = new Button();			
+			buttonDelete.setGraphic(Helpers.getFontIcon(FontIconType.TRASH, 16, Color.web("#212121")));
 			buttonDelete.setPrefHeight(HEIGHT);
 			buttonDelete.getStyleClass().add("greylabel");
 			buttonDelete.setStyle("-fx-background-color: transparent");			

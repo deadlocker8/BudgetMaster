@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import de.deadlocker8.budgetmaster.ui.SplashScreenController;
+import de.deadlocker8.budgetmaster.ui.controller.SplashScreenController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -24,15 +24,16 @@ public class Main extends Application
 	{
 		try
 		{
-			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("de/deadlocker8/budgetmaster/ui/SplashScreen.fxml"));
+		    Image icon = new Image("/de/deadlocker8/budgetmaster/resources/icon.png");
+			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("de/deadlocker8/budgetmaster/ui/fxml/SplashScreen.fxml"));
 			Parent root = (Parent)loader.load();
 			
 			Scene scene = new Scene(root, 450, 230);
 
-			((SplashScreenController)loader.getController()).init(stage, new Image("/de/deadlocker8/budgetmaster/resources/icon.png"), bundle);
+			((SplashScreenController)loader.getController()).init(stage, icon, bundle);
 
 			stage.setResizable(false);			
-			stage.getIcons().add(new Image("/de/deadlocker8/budgetmaster/resources/icon.png"));
+			stage.getIcons().add(icon);
 			stage.setTitle(bundle.getString("app.name"));
 			stage.setScene(scene);			
 			stage.show();

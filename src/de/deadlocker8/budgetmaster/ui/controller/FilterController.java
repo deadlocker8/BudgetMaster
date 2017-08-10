@@ -1,10 +1,10 @@
-package de.deadlocker8.budgetmaster.ui;
+package de.deadlocker8.budgetmaster.ui.controller;
 
 import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmaster.logic.FilterSettings;
-import fontAwesome.FontIcon;
+import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import fontAwesome.FontIconType;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class FilterController
@@ -39,18 +40,9 @@ public class FilterController
 		this.controller = controller;
 		this.filterSetttings = filterSettings;
 
-		FontIcon iconCancel = new FontIcon(FontIconType.TIMES);
-		iconCancel.setSize(17);
-		iconCancel.setStyle("-fx-text-fill: white");
-		buttonCancel.setGraphic(iconCancel);
-		FontIcon iconReset = new FontIcon(FontIconType.UNDO);
-		iconReset.setSize(17);
-		iconReset.setStyle("-fx-text-fill: white");
-		buttonReset.setGraphic(iconReset);
-		FontIcon iconSave = new FontIcon(FontIconType.FILTER);
-		iconSave.setSize(17);
-		iconSave.setStyle("-fx-text-fill: white");
-		buttonFilter.setGraphic(iconSave);
+		buttonCancel.setGraphic(Helpers.getFontIcon(FontIconType.TIMES, 17, Color.WHITE));
+		buttonReset.setGraphic(Helpers.getFontIcon(FontIconType.UNDO, 17, Color.WHITE));		
+		buttonFilter.setGraphic(Helpers.getFontIcon(FontIconType.FILTER, 17, Color.WHITE));
 
 		buttonCancel.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
 		buttonReset.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");

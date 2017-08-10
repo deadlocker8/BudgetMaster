@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.ui;
+package de.deadlocker8.budgetmaster.ui.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,8 +12,8 @@ import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.ui.Refreshable;
 import de.deadlocker8.budgetmaster.ui.cells.PaymentCell;
-import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -29,6 +29,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -79,6 +80,10 @@ public class PaymentController implements Refreshable
 				return cell;
 			}
 		});
+		
+		Label labelPlaceholder = new Label("Keine Daten verfügbar");      
+        labelPlaceholder.setStyle("-fx-font-size: 16");
+        listView.setPlaceholder(labelPlaceholder);
 
 		listView.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>()
 		{
@@ -95,23 +100,10 @@ public class PaymentController implements Refreshable
 			}
 		});
 
-		FontIcon iconIncome = new FontIcon(FontIconType.DOWNLOAD);
-		iconIncome.setSize(18);
-		iconIncome.setStyle("-fx-text-fill: white");
-		buttonNewIncome.setGraphic(iconIncome);
-		FontIcon iconFilter = new FontIcon(FontIconType.FILTER);
-		iconFilter.setSize(18);
-		iconFilter.setStyle("-fx-text-fill: white");
-		buttonFilter.setGraphic(iconFilter);
-		FontIcon iconPayment = new FontIcon(FontIconType.UPLOAD);
-		iconPayment.setSize(18);
-		iconPayment.setStyle("-fx-text-fill: white");
-		buttonNewPayment.setGraphic(iconPayment);
-		
-		FontIcon iconWarning = new FontIcon(FontIconType.WARNING);
-		iconWarning.setSize(13);
-		iconWarning.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
-		labelFilterActive.setGraphic(iconWarning);
+		buttonNewIncome.setGraphic(Helpers.getFontIcon(FontIconType.DOWNLOAD, 18, Color.WHITE));
+		buttonFilter.setGraphic(Helpers.getFontIcon(FontIconType.FILTER, 18, Color.WHITE));
+		buttonNewPayment.setGraphic(Helpers.getFontIcon(FontIconType.UPLOAD, 18, Color.WHITE));
+		labelFilterActive.setGraphic(Helpers.getFontIcon(FontIconType.WARNING, 13, Color.web(controller.getBundle().getString("color.text"))));
 
 		// apply theme
 		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");
@@ -141,7 +133,7 @@ public class PaymentController implements Refreshable
 	{
 		try
 		{
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/NewPaymentGUI.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/NewPaymentGUI.fxml"));
 			Parent root = (Parent)fxmlLoader.load();
 			Stage newStage = new Stage();
 			newStage.initOwner(controller.getStage());
@@ -248,7 +240,7 @@ public class PaymentController implements Refreshable
 	{
 		try
 		{
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/FilterGUI.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/FilterGUI.fxml"));
 			Parent root = (Parent)fxmlLoader.load();
 			Stage newStage = new Stage();
 			newStage.initOwner(controller.getStage());
@@ -286,9 +278,5 @@ public class PaymentController implements Refreshable
 		{
 			labelFilterActive.setVisible(true);
 		}
-
-		Label labelPlaceholder = new Label("Keine Daten verfügbar");		
-		labelPlaceholder.setStyle("-fx-font-size: 16");
-		listView.setPlaceholder(labelPlaceholder);
 	}
 }

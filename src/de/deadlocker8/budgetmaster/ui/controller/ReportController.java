@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.ui;
+package de.deadlocker8.budgetmaster.ui.controller;
 
 import java.awt.Desktop;
 import java.io.File;
@@ -20,7 +20,7 @@ import de.deadlocker8.budgetmaster.logic.report.ColumnType;
 import de.deadlocker8.budgetmaster.logic.report.ReportGenerator;
 import de.deadlocker8.budgetmaster.logic.report.ReportItem;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
-import fontAwesome.FontIcon;
+import de.deadlocker8.budgetmaster.ui.Refreshable;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -74,18 +74,9 @@ public class ReportController implements Refreshable
 	{
 		this.controller = controller;
 
-		FontIcon iconFilter = new FontIcon(FontIconType.FILTER);
-		iconFilter.setSize(18);
-		iconFilter.setStyle("-fx-text-fill: white");
-		buttonFilter.setGraphic(iconFilter);
-		FontIcon iconPayment = new FontIcon(FontIconType.COGS);
-		iconPayment.setSize(18);
-		iconPayment.setStyle("-fx-text-fill: white");
-		buttonGenerate.setGraphic(iconPayment);
-		FontIcon iconWarning = new FontIcon(FontIconType.WARNING);
-		iconWarning.setSize(13);
-		iconWarning.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
-		labelFilterActive.setGraphic(iconWarning);
+		buttonFilter.setGraphic(Helpers.getFontIcon(FontIconType.FILTER, 18, Color.WHITE));		
+		buttonGenerate.setGraphic(Helpers.getFontIcon(FontIconType.COGS, 18, Color.WHITE));	
+		labelFilterActive.setGraphic(Helpers.getFontIcon(FontIconType.WARNING, 16, Color.web(controller.getBundle().getString("color.text"))));
 		
 		initTable();
 
@@ -191,14 +182,16 @@ public class ReportController implements Refreshable
                     public void updateItem(Boolean item, boolean empty)
                     {
                         if(!empty)
-                        {                           
-                            FontIcon iconRepeating = new FontIcon(FontIconType.CALENDAR);
-                            iconRepeating.setSize(16);                          
-                            Color color = item ? Color.web("#212121") : Color.TRANSPARENT;
-                            iconRepeating.setColor(color);
-                            
+                        {   
                             Label labelRepeating = new Label();
-                            labelRepeating.setGraphic(iconRepeating);
+                            if(item)
+                            {
+                                labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR, 16, Color.web(controller.getBundle().getString("color.text"))));
+                            }
+                            else
+                            {
+                                labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR, 16, Color.TRANSPARENT));
+                            }                            
                             labelRepeating.setStyle("-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: #212121");
                             labelRepeating.setAlignment(Pos.CENTER);
                             setGraphic(labelRepeating);
@@ -345,12 +338,15 @@ public class ReportController implements Refreshable
                     {
                         if(!empty)
                         {                               
-                            FontIcon iconRepeating = item > 0 ? new FontIcon(FontIconType.PLUS) : new FontIcon(FontIconType.MINUS);                     
-                            iconRepeating.setSize(14);
-                            iconRepeating.setColor(Color.web("#212121"));
-                            
                             Label labelRepeating = new Label();
-                            labelRepeating.setGraphic(iconRepeating);
+                            if(item > 0)
+                            {
+                                labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.PLUS, 14, Color.web(controller.getBundle().getString("color.text"))));
+                            }
+                            else
+                            {
+                                labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.MINUS, 14, Color.web(controller.getBundle().getString("color.text"))));
+                            }
                             labelRepeating.setStyle("-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: #212121");
                             labelRepeating.setAlignment(Pos.CENTER);
                             setGraphic(labelRepeating);
@@ -452,7 +448,7 @@ public class ReportController implements Refreshable
 	{
 		try
 		{
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/FilterGUI.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/FilterGUI.fxml"));
 			Parent root = (Parent)fxmlLoader.load();
 			Stage newStage = new Stage();
 			newStage.initOwner(controller.getStage());

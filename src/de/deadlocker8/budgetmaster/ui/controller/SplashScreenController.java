@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.ui;
+package de.deadlocker8.budgetmaster.ui.controller;
 
 import java.io.IOException;
 import java.util.ResourceBundle;
@@ -6,7 +6,6 @@ import java.util.ResourceBundle;
 import de.deadlocker8.budgetmaster.logic.Settings;
 import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
-import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -21,6 +20,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import logger.Logger;
 import tools.AlertGenerator;
@@ -48,11 +48,8 @@ public class SplashScreenController
 		imageViewLogo.setImage(icon);
 		
 		labelVersion.setText("v" + bundle.getString("version.name"));
-		
-		FontIcon iconLogin = new FontIcon(FontIconType.SIGN_IN);
-		iconLogin.setSize(18);
-		iconLogin.setStyle("-fx-text-fill: white");
-		buttonLogin.setGraphic(iconLogin);
+	
+		buttonLogin.setGraphic(Helpers.getFontIcon(FontIconType.SIGN_IN, 18, Color.WHITE));
 		buttonLogin.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
 		buttonLogin.setPadding(new Insets(3, 7, 3, 7));		
 		
@@ -134,7 +131,7 @@ public class SplashScreenController
 	{
 		try
 		{
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/GUI.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/GUI.fxml"));
 			Parent root = (Parent)fxmlLoader.load();
 			Stage newStage = new Stage();
 			newStage.setTitle(bundle.getString("app.name"));

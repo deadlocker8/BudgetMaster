@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.ui;
+package de.deadlocker8.budgetmaster.ui.controller;
 
 import java.util.ArrayList;
 
@@ -8,7 +8,8 @@ import org.controlsfx.control.PopOver.ArrowLocation;
 import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
-import fontAwesome.FontIcon;
+import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.ui.colorPick.ColorView;
 import fontAwesome.FontIconType;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
@@ -44,15 +45,9 @@ public class NewCategoryController
 		this.edit = edit;
 		this.color = null;
 		this.category = category;
-
-		FontIcon iconCancel = new FontIcon(FontIconType.TIMES);
-		iconCancel.setSize(17);
-		iconCancel.setStyle("-fx-text-fill: white");
-		buttonCancel.setGraphic(iconCancel);
-		FontIcon iconSave = new FontIcon(FontIconType.SAVE);
-		iconSave.setSize(17);
-		iconSave.setStyle("-fx-text-fill: white");
-		buttonSave.setGraphic(iconSave);
+	
+		buttonCancel.setGraphic(Helpers.getFontIcon(FontIconType.TIMES, 17, Color.WHITE));		
+		buttonSave.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 17, Color.WHITE));
 
 		buttonCancel.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
 		buttonSave.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
@@ -60,23 +55,7 @@ public class NewCategoryController
 		
 		buttonColor.prefWidthProperty().bind(textFieldName.widthProperty());
 		
-		ArrayList<Color> colors = new ArrayList<>();		
-		//grey (light to dark)		
-		colors.add(Color.web("#CCCCCC"));	
-		colors.add(Color.web("#888888"));		
-		colors.add(Color.web("#333333"));	
-		colors.add(Color.rgb(255, 241, 119));	//lighyellow	
-		colors.add(Color.rgb(255, 204, 0));		//yellow
-		colors.add(Color.rgb(255, 149, 0)); 	//orange
-		colors.add(Color.rgb(255, 59, 48));		//red
-		colors.add(Color.rgb(169, 3, 41));		//darkred	
-		colors.add(Color.rgb(255, 81, 151));	//pink
-		colors.add(Color.rgb(155, 89, 182));	//purple
-		colors.add(Color.rgb(88, 86, 214));		//darkpurple
-		colors.add(Color.rgb(0, 122, 250));		//blue		
-		colors.add(Color.rgb(90, 200, 250));	//lightblue
-		colors.add(Color.rgb(76, 217, 100));	//lightgreen
-		colors.add(Color.rgb(46, 124, 43));		//darkgreen
+		ArrayList<Color> colors = Helpers.getCategoryColorList();
 		
 		buttonColor.setOnMouseClicked((e) -> {
 

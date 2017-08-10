@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.ui;
+package de.deadlocker8.budgetmaster.ui.controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +18,7 @@ import de.deadlocker8.budgetmaster.logic.charts.MonthLineChart;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
-import fontAwesome.FontIcon;
+import de.deadlocker8.budgetmaster.ui.Refreshable;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -79,29 +79,18 @@ public class ChartController implements Refreshable
 		vboxChartCategories.setStyle("-fx-background-color: #F4F4F4;");
 		vboxChartCategories.setSpacing(20);
 		vboxChartMonth.setStyle("-fx-background-color: #F4F4F4;");
-		FontIcon iconShow = new FontIcon(FontIconType.CHECK);
-		iconShow.setSize(16);
-		iconShow.setColor(Color.WHITE);
+		
 		buttonChartCategoriesShow.setStyle("-fx-background-color: #2E79B9;");
-		buttonChartCategoriesShow.setGraphic(iconShow);
+		buttonChartCategoriesShow.setGraphic(Helpers.getFontIcon(FontIconType.CHECK, 16, Color.WHITE));
 
-		FontIcon iconShow2 = new FontIcon(FontIconType.SAVE);
-		iconShow2.setSize(16);
-		iconShow2.setColor(Color.WHITE);
 		buttonChartCategoriesExport.setStyle("-fx-background-color: #2E79B9;");
-		buttonChartCategoriesExport.setGraphic(iconShow2);
+		buttonChartCategoriesExport.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 16, Color.WHITE));
 
-		FontIcon iconShow3 = new FontIcon(FontIconType.CHECK);
-		iconShow3.setSize(16);
-		iconShow3.setColor(Color.WHITE);
 		buttonChartMonthShow.setStyle("-fx-background-color: #2E79B9;");
-		buttonChartMonthShow.setGraphic(iconShow3);
+		buttonChartMonthShow.setGraphic(Helpers.getFontIcon(FontIconType.CHECK, 16, Color.WHITE));
 
-		FontIcon iconShow4 = new FontIcon(FontIconType.SAVE);
-		iconShow4.setSize(16);
-		iconShow4.setColor(Color.WHITE);
 		buttonChartMonthExport.setStyle("-fx-background-color: #2E79B9;");
-		buttonChartMonthExport.setGraphic(iconShow4);		
+		buttonChartMonthExport.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 16, Color.WHITE));		
 	
 		datePickerEnd.setDayCellFactory(new Callback<DatePicker, DateCell>()
 		{
@@ -204,7 +193,7 @@ public class ChartController implements Refreshable
 			Platform.runLater(() -> {
 				try
 				{
-					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/ExportChartGUI.fxml"));
+					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/ExportChartGUI.fxml"));
 					Parent root = (Parent)fxmlLoader.load();
 					Stage newStage = new Stage();
 					newStage.initOwner(controller.getStage());

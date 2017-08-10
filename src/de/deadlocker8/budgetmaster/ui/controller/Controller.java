@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.ui;
+package de.deadlocker8.budgetmaster.ui.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,7 +15,6 @@ import de.deadlocker8.budgetmaster.logic.Settings;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
-import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
@@ -31,6 +30,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import logger.Logger;
@@ -92,25 +92,25 @@ public class Controller
 
 		try
 		{
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/HomeTab.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/HomeTab.fxml"));
 			Parent nodeTabHome = (Parent)fxmlLoader.load();
 			homeController = fxmlLoader.getController();
 			homeController.init(this);
 			tabHome.setContent(nodeTabHome);
 
-			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/PaymentTab.fxml"));
+			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/PaymentTab.fxml"));
 			Parent nodeTabPayment = (Parent)fxmlLoader.load();
 			paymentController = fxmlLoader.getController();
 			paymentController.init(this);
 			tabPayments.setContent(nodeTabPayment);
 
-			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/CategoryTab.fxml"));
+			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/CategoryTab.fxml"));
 			Parent nodeTabCategory = (Parent)fxmlLoader.load();
 			categoryController = fxmlLoader.getController();
 			categoryController.init(this);
 			tabCategories.setContent(nodeTabCategory);
 
-			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/ChartTab.fxml"));
+			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/ChartTab.fxml"));
 			Parent nodeTabChart = (Parent)fxmlLoader.load();
 			chartController = fxmlLoader.getController();
 			chartController.init(this);
@@ -122,13 +122,13 @@ public class Controller
 				}
 			});
 			
-			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/ReportTab.fxml"));
+			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/ReportTab.fxml"));
 			Parent nodeTabReport = (Parent)fxmlLoader.load();
 			reportController = fxmlLoader.getController();
 			reportController.init(this);
 			tabReports.setContent(nodeTabReport);
 
-			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/SettingsTab.fxml"));
+			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/SettingsTab.fxml"));
 			Parent nodeTabSettings = (Parent)fxmlLoader.load();
 			settingsController = fxmlLoader.getController();
 			settingsController.init(this);
@@ -141,19 +141,11 @@ public class Controller
 				AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Beim Erstellen der Benutzeroberfläche ist ein Fehler aufgetreten", icon, stage, null, false);
 			});			
 		}
-
-		FontIcon iconPrevious = new FontIcon(FontIconType.CHEVRON_LEFT);
-		iconPrevious.setSize(20);
-		buttonLeft.setGraphic(iconPrevious);
-		FontIcon iconNext = new FontIcon(FontIconType.CHEVRON_RIGHT);
-		iconNext.setSize(20);
-		buttonRight.setGraphic(iconNext);
-		FontIcon iconToday = new FontIcon(FontIconType.CALENDAR_ALT);
-		iconToday.setSize(20);
-		buttonToday.setGraphic(iconToday);
-		FontIcon iconAbout = new FontIcon(FontIconType.INFO);
-		iconAbout.setSize(20);
-		buttonAbout.setGraphic(iconAbout);
+		
+		buttonLeft.setGraphic(Helpers.getFontIcon(FontIconType.CHEVRON_LEFT, 20, Color.web(bundle.getString("color.text"))));		
+		buttonRight.setGraphic(Helpers.getFontIcon(FontIconType.CHEVRON_RIGHT, 20, Color.web(bundle.getString("color.text"))));		
+		buttonToday.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR_ALT, 20, Color.web(bundle.getString("color.text"))));		
+		buttonAbout.setGraphic(Helpers.getFontIcon(FontIconType.INFO, 20, Color.web(bundle.getString("color.text"))));
 
 		// apply theme
 		anchorPaneMain.setStyle("-fx-background-color: #DDDDDD");

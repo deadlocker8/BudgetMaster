@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.ui;
+package de.deadlocker8.budgetmaster.ui.controller;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,7 +16,6 @@ import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.ui.cells.ButtonCategoryCell;
 import de.deadlocker8.budgetmaster.ui.cells.RepeatingDayCell;
 import de.deadlocker8.budgetmaster.ui.cells.SmallCategoryCell;
-import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
@@ -71,15 +70,9 @@ public class NewPaymentController
 		this.isPayment = isPayment;
 		this.edit = edit;
 		this.payment = payment;
-
-		FontIcon iconCancel = new FontIcon(FontIconType.TIMES);
-		iconCancel.setSize(17);
-		iconCancel.setStyle("-fx-text-fill: white");
-		buttonCancel.setGraphic(iconCancel);
-		FontIcon iconSave = new FontIcon(FontIconType.SAVE);
-		iconSave.setSize(17);
-		iconSave.setStyle("-fx-text-fill: white");
-		buttonSave.setGraphic(iconSave);
+		
+		buttonCancel.setGraphic(Helpers.getFontIcon(FontIconType.TIMES, 17, Color.WHITE));
+		buttonSave.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 17, Color.WHITE));
 
 		buttonCancel.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
 		buttonSave.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");

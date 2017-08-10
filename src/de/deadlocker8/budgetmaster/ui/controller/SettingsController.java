@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.ui;
+package de.deadlocker8.budgetmaster.ui.controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -163,7 +163,6 @@ public class SettingsController
 		{
 			if(!clientSecret.equals("******"))
 			{
-				System.out.println(clientSecret);
 				controller.getSettings().setClientSecret(HashUtils.hash(clientSecret, Helpers.SALT));
 			}
 			

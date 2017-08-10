@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.ui;
+package de.deadlocker8.budgetmaster.ui.controller;
 
 
 import java.io.IOException;
@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
+import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.ui.Refreshable;
 import de.deadlocker8.budgetmaster.ui.cells.CategoryCell;
-import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -24,6 +25,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -86,10 +88,7 @@ public class CategoryController implements Refreshable
 		labelPlaceholder.setStyle("-fx-font-size: 16");
 		listView.setPlaceholder(labelPlaceholder);
 
-		FontIcon iconCategory = new FontIcon(FontIconType.PLUS);
-		iconCategory.setSize(18);
-		iconCategory.setStyle("-fx-text-fill: white");
-		buttonCategory.setGraphic(iconCategory);
+		buttonCategory.setGraphic(Helpers.getFontIcon(FontIconType.PLUS, 18, Color.WHITE));
 
 		//apply theme
 		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");
@@ -123,7 +122,7 @@ public class CategoryController implements Refreshable
 	{
 		try
 		{
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/NewCategoryGUI.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/NewCategoryGUI.fxml"));
 			Parent root = (Parent)fxmlLoader.load();
 			Stage newStage = new Stage();
 			newStage.initOwner(controller.getStage());

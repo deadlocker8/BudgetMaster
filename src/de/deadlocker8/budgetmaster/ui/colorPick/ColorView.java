@@ -1,9 +1,9 @@
-package de.deadlocker8.budgetmaster.ui;
+package de.deadlocker8.budgetmaster.ui.colorPick;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
-import de.deadlocker8.budgetmaster.ui.colorPick.ColorPickController;
+import de.deadlocker8.budgetmaster.ui.controller.NewCategoryController;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.fxml.FXMLLoader;

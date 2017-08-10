@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.ui;
+package de.deadlocker8.budgetmaster.ui.controller;
 
 import java.awt.Desktop;
 import java.io.File;
@@ -8,7 +8,7 @@ import java.util.Optional;
 import javax.imageio.ImageIO;
 
 import de.deadlocker8.budgetmaster.logic.charts.ChartExportable;
-import fontAwesome.FontIcon;
+import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import fontAwesome.FontIconType;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
@@ -57,25 +57,16 @@ public class ExportChartController
 		textFieldWidth.setText(String.valueOf((int)chart.getSuggestedWidth()));
 		textFieldHeight.setText(String.valueOf((int)chart.getSuggestedHeight()));
 
-		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");
-		
-		FontIcon iconShow = new FontIcon(FontIconType.FOLDER_OPEN);
-		iconShow.setSize(14);
-		iconShow.setColor(Color.WHITE);
+		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");		
+	
 		buttonChooseFile.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
-		buttonChooseFile.setGraphic(iconShow);
-
-		FontIcon iconShow2 = new FontIcon(FontIconType.SAVE);
-		iconShow2.setSize(14);
-		iconShow2.setColor(Color.WHITE);
+		buttonChooseFile.setGraphic(Helpers.getFontIcon(FontIconType.FOLDER_OPEN, 14, Color.WHITE));
+		
 		buttonExport.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
-		buttonExport.setGraphic(iconShow2);
+		buttonExport.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 14, Color.WHITE));
 
-		FontIcon iconShow3 = new FontIcon(FontIconType.TIMES);
-		iconShow3.setSize(14);
-		iconShow3.setColor(Color.WHITE);
 		buttonCancel.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
-		buttonCancel.setGraphic(iconShow3);		
+		buttonCancel.setGraphic(Helpers.getFontIcon(FontIconType.TIMES, 14, Color.WHITE));		
 		
 		textFieldWidth.setTextFormatter(new TextFormatter<>(c -> {
 			if(c.getControlNewText().isEmpty())
