@@ -302,7 +302,7 @@ public class MonthBarChart extends VBox implements ChartExportable
     		return 0;
     	}    	
     	
-    	return ((Region)content).getWidth();
+    	return ((Region)content).getWidth() + 50;
 	}
 
 	@Override

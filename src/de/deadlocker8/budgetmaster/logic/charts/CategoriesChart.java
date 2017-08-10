@@ -329,6 +329,6 @@ public class CategoriesChart extends VBox implements ChartExportable
 	@Override
 	public double getSuggestedHeight()
 	{
-		return getHeight() + 50;
+		return getHeight() + 100;
 	}
 }
