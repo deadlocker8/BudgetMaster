@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="anchorPaneMain" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.deadlocker8.budgetmaster.ui.controller.SettingsController">
+   <children>
+      <VBox alignment="TOP_CENTER" layoutY="24.0" prefHeight="562.0" prefWidth="772.0" spacing="25.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="25.0">
+         <children>
+            <HBox prefHeight="359.0" prefWidth="722.0">
+               <children>
+                  <VBox alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="158.0" spacing="20.0">
+                     <children>
+                        <Label fx:id="labelClientSecret" prefHeight="25.0" text="Client Passwort:">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="labelURL" prefHeight="25.0" text="Server URL:">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="labelSecret" prefHeight="25.0" text="Server Passwort:">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="labelCurrency" prefHeight="25.0" text="Währung:">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="labelSecret11" prefHeight="25.0" text="Übertrag:">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="labelSecret111" alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="-Infinity" minHeight="60.0" prefWidth="158.0" text="Vertrauenswürdige Hosts:" textAlignment="RIGHT" wrapText="true">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="-5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="labelSecret1111" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" text="(ein Host pro Zeile)" textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="-20.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="labelSecret1112" alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="-Infinity" prefWidth="158.0" text="Datenbank:" textAlignment="RIGHT" wrapText="true">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="35.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="labelSecret11121" alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="-Infinity" prefWidth="158.0" textAlignment="RIGHT" wrapText="true">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Region prefHeight="19.0" prefWidth="158.0" VBox.vgrow="ALWAYS" />
+                     </children>
+                     <HBox.margin>
+                        <Insets right="25.0" />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="20.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <TextField fx:id="textFieldClientSecret" />
+                        <TextField fx:id="textFieldURL" />
+                        <TextField fx:id="textFieldSecret" />
+                        <TextField fx:id="textFieldCurrency" />
+                        <HBox alignment="CENTER" prefHeight="11.0" prefWidth="539.0" spacing="30.0">
+                           <children>
+                              <RadioButton fx:id="radioButtonRestActivated" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="aktiviert">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </RadioButton>
+                              <RadioButton fx:id="radioButtonRestDeactivated" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="deaktiviert" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </RadioButton>
+                           </children>
+                        </HBox>
+                        <TextArea fx:id="textAreaTrustedHosts" minHeight="110.0" prefHeight="148.0" prefWidth="539.0" VBox.vgrow="ALWAYS">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin></TextArea>
+                        <HBox alignment="CENTER_LEFT" prefHeight="11.0" prefWidth="539.0" spacing="30.0">
+                           <children>
+                              <Button fx:id="buttonExportDB" mnemonicParsing="false" onAction="#exportDB" text="Exportieren">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="buttonImportDB" mnemonicParsing="false" onAction="#importDB" text="Importieren">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="buttonDeleteDB" mnemonicParsing="false" onAction="#deleteDB" text="Löschen">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
+                        <Button fx:id="buttonSave" mnemonicParsing="false" onAction="#save" text="Speichern">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                        </Button>
+                        <Region prefWidth="158.0" VBox.vgrow="ALWAYS" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets right="50.0" />
+         </padding></VBox>
+   </children>
+</AnchorPane>

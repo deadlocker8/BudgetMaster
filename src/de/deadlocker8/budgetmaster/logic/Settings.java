@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class Settings
 {
+	private String clientSecret;
 	private String url;
 	private String secret;
 	private String currency;
@@ -13,8 +14,18 @@ public class Settings
 	public Settings()
 	{
 		
+	}	
+
+	public String getClientSecret()
+	{
+		return clientSecret;
 	}
 
+	public void setClientSecret(String clientPassword)
+	{
+		this.clientSecret = clientPassword;
+	}
+	
 	public String getUrl()
 	{
 		return url;
@@ -64,10 +75,22 @@ public class Settings
 	{
 		this.trustedHosts = trustedHosts;
 	}
+	
+	public boolean isComplete()
+	{
+		if(url == null)
+			return false;
+		if(secret == null)
+			return false;
+		if(currency == null)
+			return false;
+		
+		return true;
+	}
 
 	@Override
 	public String toString()
 	{
-		return "Settings [url=" + url + ", secret=" + secret + ", currency=" + currency + ", restActivated=" + restActivated + ", trustedHosts=" + trustedHosts + "]";
+		return "Settings [clientSecret=" + clientSecret + ", url=" + url + ", secret=" + secret + ", currency=" + currency + ", restActivated=" + restActivated + ", trustedHosts=" + trustedHosts + "]";
 	}
 }

@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmasterserver.logic;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -39,15 +40,28 @@ public class DatabaseExporter
 	    return new Database(categories, normalPayments, repeatingPayments);
 	}
 	
+	private void closeConnection(Statement statement)
+	{
+		if(statement != null)
+		{
+			try
+			{
+				statement.close();
+			}
+			catch(SQLException e)
+			{
+			}
+		}
+	}
+	
 	private ArrayList<Category> getAllCategories()
 	{	   
-        Statement stmt = null;
-        String query = "SELECT * FROM category ORDER BY category.ID";
+        PreparedStatement stmt = null;
         ArrayList<Category> results = new ArrayList<>();
         try
         {
-            stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
+        	stmt = connection.prepareStatement("SELECT * FROM category ORDER BY category.ID");            
+            ResultSet rs = stmt.executeQuery();
             while(rs.next())
             {
                 int id = rs.getInt("ID");
@@ -63,16 +77,7 @@ public class DatabaseExporter
         }
         finally
         {
-            if(stmt != null)
-            {
-                try
-                {
-                    stmt.close();
-                }
-                catch(SQLException e)
-                {
-                }
-            }
+            closeConnection(stmt);
         }
 
         return results;    
@@ -80,14 +85,12 @@ public class DatabaseExporter
 	
 	private ArrayList<NormalPayment> getAllNormalPayments()
     {
-	    Statement stmt = null;
-        String query = "SELECT * FROM payment;";
-
+	    PreparedStatement stmt = null;
         ArrayList<NormalPayment> results = new ArrayList<>();
         try
         {
-            stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
+        	stmt = connection.prepareStatement("SELECT * FROM payment;");           
+            ResultSet rs = stmt.executeQuery();
 
             while(rs.next())
             {
@@ -107,16 +110,7 @@ public class DatabaseExporter
         }
         finally
         {
-            if(stmt != null)
-            {
-                try
-                {
-                    stmt.close();
-                }
-                catch(SQLException e)
-                {
-                }
-            }
+           closeConnection(stmt);
         }
 
         return results;
@@ -124,14 +118,12 @@ public class DatabaseExporter
 	
 	private ArrayList<RepeatingPayment> getAllRepeatingPayments()
     {
-	    Statement stmt = null;
-        String query = "SELECT * FROM repeating_payment;";
-
+	    PreparedStatement stmt = null;
         ArrayList<RepeatingPayment> results = new ArrayList<>();
         try
         {
-            stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
+        	stmt = connection.prepareStatement("SELECT * FROM repeating_payment;");
+            ResultSet rs = stmt.executeQuery();
 
             while(rs.next())
             {
@@ -154,16 +146,7 @@ public class DatabaseExporter
         }
         finally
         {
-            if(stmt != null)
-            {
-                try
-                {
-                    stmt.close();
-                }
-                catch(SQLException e)
-                {
-                }
-            }
+            closeConnection(stmt);
         }
 
         return results;

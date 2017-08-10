@@ -7,12 +7,11 @@ import java.util.Date;
 import java.util.Optional;
 
 import de.deadlocker8.budgetmaster.logic.Category;
-import de.deadlocker8.budgetmaster.logic.Helpers;
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
-import de.deadlocker8.budgetmaster.ui.PaymentController;
-import fontAwesome.FontIcon;
+import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.ui.controller.PaymentController;
 import fontAwesome.FontIconType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -28,6 +27,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import logger.Logger;
 import tools.ConvertTo;
 
 public class PaymentCell extends ListCell<Payment>
@@ -62,7 +62,7 @@ public class PaymentCell extends ListCell<Payment>
 			}
 			catch(ParseException e)
 			{
-				e.printStackTrace();
+				Logger.error(e);
 			}
 			Label labelDate = new Label(dateString);
 			labelDate.setPrefHeight(HEIGHT);
@@ -72,18 +72,15 @@ public class PaymentCell extends ListCell<Payment>
 			labelDate.setMinWidth(75);
 			hbox.getChildren().add(labelDate);
 
-			FontIcon iconRepeating = new FontIcon(FontIconType.CALENDAR);
-			iconRepeating.setSize(20);
+			Label labelRepeating = new Label();
 			if(item instanceof RepeatingPaymentEntry)
-			{
-				iconRepeating.setColor(Color.web("#212121"));
+			{				
+				labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR, 20, Color.web("#212121")));
 			}
 			else
 			{
-				iconRepeating.setColor(Color.TRANSPARENT);
+			    labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR, 20, Color.TRANSPARENT));
 			}
-			Label labelRepeating = new Label();
-			labelRepeating.setGraphic(iconRepeating);
 			labelRepeating.setPrefHeight(HEIGHT);
 			labelRepeating.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #212121");
 			labelRepeating.setAlignment(Pos.CENTER);
@@ -121,7 +118,7 @@ public class PaymentCell extends ListCell<Payment>
 			hbox.getChildren().add(r);
 			HBox.setHgrow(r, Priority.ALWAYS);
 
-			Label labelBudget = new Label(String.valueOf(Helpers.NUMBER_FORMAT.format(item.getAmount() / 100.0)).replace(".", ",") + " " + paymentController.getController().getSettings().getCurrency());
+			Label labelBudget = new Label(Helpers.getCurrencyString(item.getAmount(), paymentController.getController().getSettings().getCurrency()));
 			labelBudget.setPrefHeight(HEIGHT);
 			labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #247A2D");
 			labelBudget.setAlignment(Pos.CENTER);
@@ -140,10 +137,8 @@ public class PaymentCell extends ListCell<Payment>
 				labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #CC0000");
 			}
 
-			Button buttonDelete = new Button();
-			FontIcon iconDelete = new FontIcon(FontIconType.TRASH);
-			iconDelete.setSize(16);
-			buttonDelete.setGraphic(iconDelete);
+			Button buttonDelete = new Button();			
+			buttonDelete.setGraphic(Helpers.getFontIcon(FontIconType.TRASH, 16, Color.web("#212121")));
 			buttonDelete.setPrefHeight(HEIGHT);
 			buttonDelete.getStyleClass().add("greylabel");
 			buttonDelete.setStyle("-fx-background-color: transparent");			

@@ -57,5 +57,10 @@
     	<artifactId>joda-time</artifactId>
     	<version>2.9.7</version>
 	</dependency>
+	<dependency>
+	    <groupId>com.itextpdf</groupId>
+	    <artifactId>itextpdf</artifactId>
+    	<version>5.0.6</version>
+	</dependency>
   </dependencies>
 </project>

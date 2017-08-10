@@ -3,8 +3,8 @@ package de.deadlocker8.budgetmaster.ui.cells;
 import java.util.Optional;
 
 import de.deadlocker8.budgetmaster.logic.Category;
-import de.deadlocker8.budgetmaster.ui.CategoryController;
-import fontAwesome.FontIcon;
+import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.ui.controller.CategoryController;
 import fontAwesome.FontIconType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -16,6 +16,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import tools.ConvertTo;
 
@@ -60,10 +61,8 @@ public class CategoryCell extends ListCell<Category>
 			hbox.getChildren().add(r);
 			HBox.setHgrow(r, Priority.ALWAYS);
 			
-			Button buttonEdit = new Button();
-			FontIcon iconEdit = new FontIcon(FontIconType.PENCIL);
-			iconEdit.setSize(16);
-			buttonEdit.setGraphic(iconEdit);
+			Button buttonEdit = new Button();			
+			buttonEdit.setGraphic(Helpers.getFontIcon(FontIconType.PENCIL, 16, Color.web("#212121")));
 			buttonEdit.setPrefHeight(HEIGHT);					
 			buttonEdit.getStyleClass().add("greylabel");
 			buttonEdit.setStyle("-fx-background-color: transparent");
@@ -73,10 +72,8 @@ public class CategoryCell extends ListCell<Category>
 			hbox.getChildren().add(buttonEdit);
 			HBox.setMargin(buttonEdit, new Insets(0, 0, 0, 25));
 			
-			Button buttonDelete = new Button();
-			FontIcon iconDelete = new FontIcon(FontIconType.TRASH);
-			iconDelete.setSize(16);
-			buttonDelete.setGraphic(iconDelete);
+			Button buttonDelete = new Button();			
+			buttonDelete.setGraphic(Helpers.getFontIcon(FontIconType.TRASH, 16, Color.web("#212121")));
 			buttonDelete.setPrefHeight(HEIGHT);					
 			buttonDelete.getStyleClass().add("greylabel");
 			buttonDelete.setStyle("-fx-background-color: transparent");
