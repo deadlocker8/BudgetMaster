@@ -1,6 +1,8 @@
 package de.deadlocker8.budgetmaster.logic;
 
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import javafx.scene.paint.Color;
+import tools.Localization;
 
 public class Category
 {
@@ -27,7 +29,12 @@ public class Category
 	}
 
 	public String getName()
-	{
+	{	    
+	    if(ID == 1)
+	    {
+	        return Localization.getString(Strings.CATEGORY_NONE);
+	    }
+	    
 		return name;
 	}
 

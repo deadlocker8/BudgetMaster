@@ -17,6 +17,7 @@ import de.deadlocker8.budgetmaster.logic.charts.MonthBarChart;
 import de.deadlocker8.budgetmaster.logic.charts.MonthLineChart;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
+import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.ui.Refreshable;
 import fontAwesome.FontIconType;
@@ -43,6 +44,7 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import logger.Logger;
 import tools.AlertGenerator;
+import tools.ConvertTo;
 import tools.Worker;
 
 public class ChartController implements Refreshable
@@ -75,21 +77,21 @@ public class ChartController implements Refreshable
 	{
 		this.controller = controller;
 
-		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");
-		vboxChartCategories.setStyle("-fx-background-color: #F4F4F4;");
+		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
+		vboxChartCategories.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
 		vboxChartCategories.setSpacing(20);
-		vboxChartMonth.setStyle("-fx-background-color: #F4F4F4;");
+		vboxChartMonth.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
 		
-		buttonChartCategoriesShow.setStyle("-fx-background-color: #2E79B9;");
+		buttonChartCategoriesShow.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE));
 		buttonChartCategoriesShow.setGraphic(Helpers.getFontIcon(FontIconType.CHECK, 16, Color.WHITE));
 
-		buttonChartCategoriesExport.setStyle("-fx-background-color: #2E79B9;");
+		buttonChartCategoriesExport.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE));
 		buttonChartCategoriesExport.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 16, Color.WHITE));
 
-		buttonChartMonthShow.setStyle("-fx-background-color: #2E79B9;");
+		buttonChartMonthShow.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE));
 		buttonChartMonthShow.setGraphic(Helpers.getFontIcon(FontIconType.CHECK, 16, Color.WHITE));
 
-		buttonChartMonthExport.setStyle("-fx-background-color: #2E79B9;");
+		buttonChartMonthExport.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE));
 		buttonChartMonthExport.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 16, Color.WHITE));		
 	
 		datePickerEnd.setDayCellFactory(new Callback<DatePicker, DateCell>()

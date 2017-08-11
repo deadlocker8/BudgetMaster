@@ -14,6 +14,7 @@ import de.deadlocker8.budgetmaster.logic.PaymentHandler;
 import de.deadlocker8.budgetmaster.logic.Settings;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
+import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import fontAwesome.FontIconType;
 import javafx.animation.FadeTransition;
@@ -30,11 +31,11 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import logger.Logger;
 import tools.AlertGenerator;
+import tools.ConvertTo;
 import tools.Worker;
 
 public class Controller
@@ -142,14 +143,14 @@ public class Controller
 			});			
 		}
 		
-		buttonLeft.setGraphic(Helpers.getFontIcon(FontIconType.CHEVRON_LEFT, 20, Color.web(bundle.getString("color.text"))));		
-		buttonRight.setGraphic(Helpers.getFontIcon(FontIconType.CHEVRON_RIGHT, 20, Color.web(bundle.getString("color.text"))));		
-		buttonToday.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR_ALT, 20, Color.web(bundle.getString("color.text"))));		
-		buttonAbout.setGraphic(Helpers.getFontIcon(FontIconType.INFO, 20, Color.web(bundle.getString("color.text"))));
+		buttonLeft.setGraphic(Helpers.getFontIcon(FontIconType.CHEVRON_LEFT, 20, Colors.TEXT));		
+		buttonRight.setGraphic(Helpers.getFontIcon(FontIconType.CHEVRON_RIGHT, 20, Colors.TEXT));		
+		buttonToday.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR_ALT, 20, Colors.TEXT));		
+		buttonAbout.setGraphic(Helpers.getFontIcon(FontIconType.INFO, 20, Colors.TEXT));
 
 		// apply theme
-		anchorPaneMain.setStyle("-fx-background-color: #DDDDDD");
-		labelMonth.setStyle("-fx-text-fill: " + bundle.getString("color.text"));
+		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_MAIN));
+		labelMonth.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
 		labelNotification.setStyle("-fx-text-fill: #FFFFFF; -fx-font-size: 16; -fx-font-weight: bold; -fx-background-color: transparent;");
 		buttonLeft.setStyle("-fx-background-color: transparent;");
 		buttonRight.setStyle("-fx-background-color: transparent;");
@@ -198,7 +199,7 @@ public class Controller
 	public void showNotification(String text)
 	{
 		labelNotification.setText(text);
-		labelNotification.setStyle("-fx-text-fill: #FFFFFF; -fx-font-size: 16; -fx-font-weight: bold; -fx-background-color: #323232;");
+		labelNotification.setStyle("-fx-text-fill: #FFFFFF; -fx-font-size: 16; -fx-font-weight: bold; -fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_NOTIFICATION));
 		FadeTransition fadeIn = new FadeTransition(Duration.millis(200), labelNotification);
 		fadeIn.setFromValue(0.0);
 		fadeIn.setToValue(1.0);

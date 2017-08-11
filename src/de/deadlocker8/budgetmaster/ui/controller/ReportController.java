@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 
+import org.joda.time.DateTime;
+
 import de.deadlocker8.budgetmaster.logic.FilterSettings;
 import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
@@ -19,6 +21,7 @@ import de.deadlocker8.budgetmaster.logic.report.ColumnOrder;
 import de.deadlocker8.budgetmaster.logic.report.ColumnType;
 import de.deadlocker8.budgetmaster.logic.report.ReportGenerator;
 import de.deadlocker8.budgetmaster.logic.report.ReportItem;
+import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.ui.Refreshable;
 import fontAwesome.FontIconType;
@@ -53,6 +56,7 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import logger.Logger;
 import tools.AlertGenerator;
+import tools.ConvertTo;
 import tools.Worker;
 
 public class ReportController implements Refreshable
@@ -76,17 +80,17 @@ public class ReportController implements Refreshable
 
 		buttonFilter.setGraphic(Helpers.getFontIcon(FontIconType.FILTER, 18, Color.WHITE));		
 		buttonGenerate.setGraphic(Helpers.getFontIcon(FontIconType.COGS, 18, Color.WHITE));	
-		labelFilterActive.setGraphic(Helpers.getFontIcon(FontIconType.WARNING, 16, Color.web(controller.getBundle().getString("color.text"))));
+		labelFilterActive.setGraphic(Helpers.getFontIcon(FontIconType.WARNING, 16, Colors.TEXT));
 		
 		initTable();
 
 		// apply theme
-		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");
-		labelFilterActive.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
-		buttonFilter.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
-		buttonGenerate.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
-		checkBoxSplitTable.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text") + "; -fx-font-size: 14;");
-		checkBoxIncludeCategoryBudgets.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text") + "; -fx-font-size: 14;");
+		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
+		labelFilterActive.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
+		buttonFilter.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
+		buttonGenerate.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
+		checkBoxSplitTable.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT) + "; -fx-font-size: 14;");
+		checkBoxIncludeCategoryBudgets.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT) + "; -fx-font-size: 14;");
 
 		refresh();
 	}
@@ -110,7 +114,7 @@ public class ReportController implements Refreshable
         hboxColumnPosition.getChildren().add(labelColumnPosition);
         
         checkBoxPositions.selectedProperty().addListener((a, b, c)->{
-            String style = c ? "" : "-fx-background-color: salmon;";           
+            String style = c ? "" : "-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_REPORT_TABLE_HEADER_DISABLED);           
             hboxColumnPosition.setStyle(style);
             columnFilter.toggleColumn(ColumnType.POSITION, c);
         });
@@ -157,7 +161,7 @@ public class ReportController implements Refreshable
         hboxColumnDate.getChildren().add(labelComlumnDate);        
         
         checkBoxDate.selectedProperty().addListener((a, b, c)->{
-            String style = c ? "" : "-fx-background-color: salmon;";           
+            String style = c ? "" : "-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_REPORT_TABLE_HEADER_DISABLED);           
             hboxColumnDate.setStyle(style);
             columnFilter.toggleColumn(ColumnType.DATE, c);
         });
@@ -186,7 +190,7 @@ public class ReportController implements Refreshable
                             Label labelRepeating = new Label();
                             if(item)
                             {
-                                labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR, 16, Color.web(controller.getBundle().getString("color.text"))));
+                                labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR, 16, Colors.TEXT));
                             }
                             else
                             {
@@ -219,7 +223,7 @@ public class ReportController implements Refreshable
         hboxColumnIsRepeating.getChildren().add(labelColumnIsRepeating);
         
         checkBoxRepeating.selectedProperty().addListener((a, b, c)->{
-            String style = c ? "" : "-fx-background-color: salmon;";           
+            String style = c ? "" : "-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_REPORT_TABLE_HEADER_DISABLED);           
             hboxColumnIsRepeating.setStyle(style);
             columnFilter.toggleColumn(ColumnType.REPEATING, c);
         });
@@ -237,12 +241,7 @@ public class ReportController implements Refreshable
             @Override
             public ObservableValue<String> call(CellDataFeatures<ReportItem, String> param)
             {
-                String categoryName = param.getValue().getCategory().getName();
-                if(categoryName.equals("NONE"))
-                {
-                    categoryName = "";
-                }
-                return new SimpleStringProperty(categoryName);
+                return new SimpleStringProperty(param.getValue().getCategory().getName());
             }
         });
         columnCategory.setStyle("-fx-alignment: CENTER;");
@@ -259,7 +258,7 @@ public class ReportController implements Refreshable
         hboxColumnCategory.getChildren().add(labelColumnCategory);
         
         checkBoxCategory.selectedProperty().addListener((a, b, c)->{
-            String style = c ? "" : "-fx-background-color: salmon;";           
+            String style = c ? "" : "-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_REPORT_TABLE_HEADER_DISABLED);           
             hboxColumnCategory.setStyle(style);
             columnFilter.toggleColumn(ColumnType.CATEGORY, c);
         });
@@ -286,7 +285,7 @@ public class ReportController implements Refreshable
         hboxColumnName.getChildren().add(labelColumnName);        
         
         checkBoxName.selectedProperty().addListener((a, b, c)->{
-            String style = c ? "" : "-fx-background-color: salmon;";           
+            String style = c ? "" : "-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_REPORT_TABLE_HEADER_DISABLED);           
             hboxColumnName.setStyle(style);
             columnFilter.toggleColumn(ColumnType.NAME, c);
         });
@@ -313,7 +312,7 @@ public class ReportController implements Refreshable
         hboxColumnDescription.getChildren().add(labelColumnDescription);
         
         checkBoxDescription.selectedProperty().addListener((a, b, c)->{
-            String style = c ? "" : "-fx-background-color: salmon;";           
+            String style = c ? "" : "-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_REPORT_TABLE_HEADER_DISABLED);           
             hboxColumnDescription.setStyle(style);
             columnFilter.toggleColumn(ColumnType.DESCRIPTION, c);
         });
@@ -341,11 +340,11 @@ public class ReportController implements Refreshable
                             Label labelRepeating = new Label();
                             if(item > 0)
                             {
-                                labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.PLUS, 14, Color.web(controller.getBundle().getString("color.text"))));
+                                labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.PLUS, 14, Colors.TEXT));
                             }
                             else
                             {
-                                labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.MINUS, 14, Color.web(controller.getBundle().getString("color.text"))));
+                                labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.MINUS, 14, Colors.TEXT));
                             }
                             labelRepeating.setStyle("-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: #212121");
                             labelRepeating.setAlignment(Pos.CENTER);
@@ -374,7 +373,7 @@ public class ReportController implements Refreshable
         hboxColumnRating.getChildren().add(labelColumnRating);
         
         checkBoxRating.selectedProperty().addListener((a, b, c)->{
-            String style = c ? "" : "-fx-background-color: salmon;";           
+            String style = c ? "" : "-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_REPORT_TABLE_HEADER_DISABLED);           
             hboxColumnRating.setStyle(style);
             columnFilter.toggleColumn(ColumnType.RATING, c);
         });
@@ -412,7 +411,7 @@ public class ReportController implements Refreshable
         hboxColumnAmount.getChildren().add(labelColumnAmount);
         
         checkBoxAmount.selectedProperty().addListener((a, b, c)->{
-            String style = c ? "" : "-fx-background-color: salmon;";           
+            String style = c ? "" : "-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_REPORT_TABLE_HEADER_DISABLED);          
             hboxColumnAmount.setStyle(style);
             columnFilter.toggleColumn(ColumnType.AMOUNT, c);
         });
@@ -521,6 +520,13 @@ public class ReportController implements Refreshable
 		{
 			fileChooser.setInitialDirectory(reportPath.getParentFile());
 			fileChooser.setInitialFileName(reportPath.getName());
+		}
+		else
+		{
+		    DateTime currentDate = controller.getCurrentDate();
+		    String currentMonth = currentDate.toString("MMMM");
+		    String currentYear = currentDate.toString("YYYY");
+		    fileChooser.setInitialFileName("BudgetMaster Monatsbericht - " + currentMonth + " " + currentYear + ".pdf");
 		}
 		fileChooser.getExtensionFilters().add(extFilter);
 		File file = fileChooser.showSaveDialog(controller.getStage());		

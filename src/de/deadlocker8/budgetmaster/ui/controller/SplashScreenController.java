@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 import de.deadlocker8.budgetmaster.logic.Settings;
+import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import fontAwesome.FontIconType;
@@ -24,6 +25,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import logger.Logger;
 import tools.AlertGenerator;
+import tools.ConvertTo;
 import tools.HashUtils;
 
 public class SplashScreenController
@@ -50,7 +52,7 @@ public class SplashScreenController
 		labelVersion.setText("v" + bundle.getString("version.name"));
 	
 		buttonLogin.setGraphic(Helpers.getFontIcon(FontIconType.SIGN_IN, 18, Color.WHITE));
-		buttonLogin.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
+		buttonLogin.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
 		buttonLogin.setPadding(new Insets(3, 7, 3, 7));		
 		
 		textFieldPassword.setOnKeyReleased((event)->{

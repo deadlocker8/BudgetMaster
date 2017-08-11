@@ -1,15 +1,18 @@
 package de.deadlocker8.budgetmaster.logic.report;
 
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
+import tools.Localization;
+
 public enum ColumnType
 {
-	POSITION("Nr."),
-	DATE("Datum"),
-	REPEATING("Wiederholend"),
-	CATEGORY("Kategorie"),
-	NAME("Name"),
-	DESCRIPTION("Notiz"), 
-	RATING("Bewertung"), 
-	AMOUNT("Betrag");
+	POSITION(Strings.REPORT_POSITION),
+	DATE(Strings.REPORT_DATE),
+	REPEATING(Strings.REPORT_REPEATING),
+	CATEGORY(Strings.REPORT_CATEGORY),
+	NAME(Strings.REPORT_NAME),
+	DESCRIPTION(Strings.REPORT_DESCRIPTION), 
+	RATING(Strings.REPORT_RATING), 
+	AMOUNT(Strings.REPORT_AMOUNT);
 	
 	private String name;
 
@@ -20,6 +23,6 @@ public enum ColumnType
 
 	public String getName()
 	{
-		return name;
+		return Localization.getString(name);
 	}
 }

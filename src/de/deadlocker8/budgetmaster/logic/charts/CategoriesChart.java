@@ -3,7 +3,9 @@ package de.deadlocker8.budgetmaster.logic.charts;
 import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.CategoryInOutSum;
+import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -21,6 +23,7 @@ import javafx.scene.transform.Transform;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import tools.ConvertTo;
+import tools.Localization;
 
 public class CategoriesChart extends VBox implements ChartExportable
 {
@@ -103,14 +106,11 @@ public class CategoriesChart extends VBox implements ChartExportable
 
 			currentPart.prefWidthProperty().bind(chart.widthProperty().multiply(percentage));
 			
-			String categoryName = currentItem.getName();
-			if(categoryName.equals("NONE"))
-			{
-				categoryName = "Keine Kategorie";
-			}
-			
 			Tooltip tooltip = new Tooltip();
-			tooltip.setText(categoryName + "\n" + Helpers.NUMBER_FORMAT.format(percentage*100) + " %\n" + Helpers.getCurrencyString(value, currency));//
+			tooltip.setText(Localization.getString(Strings.TOOLTIP_CHART_CATEGORIES,
+			                                       currentItem.getName(),
+			                                       Helpers.NUMBER_FORMAT.format(percentage * 100),
+			                                       Helpers.getCurrencyString(value, currency)));
 			currentPart.setTooltip(tooltip);
 		}
 
@@ -126,7 +126,7 @@ public class CategoriesChart extends VBox implements ChartExportable
 		legend.setHgap(20);
 		legend.setVgap(10);
 		legend.setAlignment(Pos.CENTER);
-		legend.setStyle("-fx-background-color: #EEEEEE; -fx-border-color: #212121; -fx-border-width: 1; -fx-border-radius: 5;");
+		legend.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_CHART_LEGEND) + "; -fx-border-color: #212121; -fx-border-width: 1; -fx-border-radius: 5;");
 
 		if(categoryInOutSums.size() == 0)
 		{
@@ -135,13 +135,8 @@ public class CategoriesChart extends VBox implements ChartExportable
 		
 		ArrayList<HBox> legendItems = new ArrayList<>();
 		for(CategoryInOutSum currentItem : categoryInOutSums)
-		{
-			String label = currentItem.getName();
-			if(label.equals("NONE"))
-			{
-				label = "Keine Kategorie";
-			}
-			legendItems.add(getLegendItem(label, currentItem.getColor()));
+		{			
+			legendItems.add(getLegendItem(currentItem.getName(), currentItem.getColor()));
 		}
 
 		int legendWidth;
@@ -170,7 +165,7 @@ public class CategoriesChart extends VBox implements ChartExportable
 		VBox legend = new VBox();
 		legend.setPadding(new Insets(10));
 		legend.setSpacing(10);
-		legend.setStyle("-fx-background-color: #EEEEEE; -fx-border-color: #212121; -fx-border-width: 1; -fx-border-radius: 5;");
+		legend.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_CHART_LEGEND) + "; -fx-border-color: #212121; -fx-border-width: 1; -fx-border-radius: 5;");
 
 		if(categoryInOutSums.size() == 0)
 		{
@@ -197,36 +192,30 @@ public class CategoriesChart extends VBox implements ChartExportable
 		labelHeaderSpacer.setMinHeight(20);
 		vboxCircles.getChildren().add(labelHeaderSpacer);
 		
-		Label labelHeaderName = new Label("Kategorie");
+		Label labelHeaderName = new Label(Localization.getString(Strings.TITLE_CATEGORIES));
 		labelHeaderName.setStyle("-fx-font-weight: bold; -fx-underline: true;");
 		labelHeaderName.setMinHeight(20);
 		vboxNames.getChildren().add(labelHeaderName);	
 		
-		Label labelHeaderIn = new Label("Einnahmen");
+		Label labelHeaderIn = new Label(Localization.getString(Strings.TITLE_INCOMES));
 		labelHeaderIn.setStyle("-fx-font-weight: bold; -fx-underline: true;");
 		labelHeaderIn.setMinHeight(20);
 		vboxIn.getChildren().add(labelHeaderIn);		
 		
-		Label labelHeaderOut = new Label("Ausgaben");
+		Label labelHeaderOut = new Label(Localization.getString(Strings.TITLE_PAYMENTS));
 		labelHeaderOut.setStyle("-fx-font-weight: bold; -fx-underline: true;");
 		labelHeaderOut.setMinHeight(20);
 		vboxOut.getChildren().add(labelHeaderOut);		
 		
 		for(CategoryInOutSum currentItem : categoryInOutSums)
-		{
-			String name = currentItem.getName();
-			if(name.equals("NONE"))
-			{
-				name = "Keine Kategorie";
-			}
-			
+		{	
 			Label labelCircle = new Label();
 			labelCircle.setMinWidth(20);
 			labelCircle.setMinHeight(20);
 			labelCircle.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(currentItem.getColor()) + "; -fx-background-radius: 50%; -fx-border-width: 1; -fx-border-color: black - fx-border-radius: 50%");
 			vboxCircles.getChildren().add(labelCircle);
 
-			Label labelName = new Label(name);
+			Label labelName = new Label(currentItem.getName());
 			labelName.setStyle("-fx-font-weight: bold;");
 			labelName.setMinHeight(20);
 			vboxNames.getChildren().add(labelName);
@@ -290,23 +279,31 @@ public class CategoriesChart extends VBox implements ChartExportable
 		}
 		return total;
 	}
+	
+	private VBox prepareExportChart()
+	{
+	    //TODO won't work because vbox is not added to stage at this point
+	    VBox root = new VBox();
+        root.setStyle("-fx-background-color: transparent;");
+        root.setPadding(new Insets(25));
+        
+        root.getChildren().add(generate(titleIncomes, true));
+        root.getChildren().add(generate(titlePayments, false));
+        
+        Region spacer = new Region();
+        root.getChildren().add(spacer);
+        VBox.setVgrow(spacer, Priority.ALWAYS);
+        
+        root.getChildren().add(generateFullLegend());
+        
+        return root;
+    }	
 
 	@Override
 	public WritableImage export(int width, int height)
 	{
-		VBox root = new VBox();
-		root.setStyle("-fx-background-color: transparent;");
-		root.setPadding(new Insets(25));
-		
-		root.getChildren().add(generate(titleIncomes, true));
-		root.getChildren().add(generate(titlePayments, false));
-		
-		Region spacer = new Region();
-		root.getChildren().add(spacer);
-		VBox.setVgrow(spacer, Priority.ALWAYS);
-		
-		root.getChildren().add(generateFullLegend());		
-		
+	    VBox root = prepareExportChart();
+	    
 		Stage newStage = new Stage();
 		newStage.initModality(Modality.NONE);
 		newStage.setScene(new Scene(root, width, height));
@@ -323,12 +320,12 @@ public class CategoriesChart extends VBox implements ChartExportable
 	@Override
 	public double getSuggestedWidth()
 	{
-		return getWidth() + 50;
+		return prepareExportChart().getWidth() + 50;
 	}
 
 	@Override
 	public double getSuggestedHeight()
 	{
-		return getHeight() + 100;
+		return prepareExportChart().getHeight() + 50;
 	}
 }

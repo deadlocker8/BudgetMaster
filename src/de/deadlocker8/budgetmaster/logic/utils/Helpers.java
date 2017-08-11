@@ -19,13 +19,11 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import logger.Logger;
+import tools.Localization;
 
 public class Helpers
 {
 	public static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("0.00");
-	
-	public static final String COLOR_INCOME = "#22BAD9";
-	public static final String COLOR_PAYMENT = "#F2612D";
 	public static final String SALT = "ny9/Y+G|WrJ,82|oIYQQ X %i-sq#4,uA-qKPtwFPnw+s(k2`rV)^-a1|t{D3Z>S";
 	
 	public static String getCurrencyString(int amount, String currency)
@@ -63,18 +61,18 @@ public class Helpers
 	public static ArrayList<String> getMonthList()
 	{
 		ArrayList<String> monthNames = new ArrayList<>();
-		monthNames.add("Januar");
-		monthNames.add("Februar");
-		monthNames.add("März");
-		monthNames.add("April");
-		monthNames.add("Mai");
-		monthNames.add("Juni");
-		monthNames.add("Juli");
-		monthNames.add("August");
-		monthNames.add("September");
-		monthNames.add("Oktober");
-		monthNames.add("November");
-		monthNames.add("Dezember");
+		monthNames.add(Localization.getString(Strings.MONTH_JANUARY));
+		monthNames.add(Localization.getString(Strings.MONTH_FEBRUARY));
+		monthNames.add(Localization.getString(Strings.MONTH_MARCH));
+		monthNames.add(Localization.getString(Strings.MONTH_APRIL));
+		monthNames.add(Localization.getString(Strings.MONTH_MAY));
+		monthNames.add(Localization.getString(Strings.MONTH_JUNE));
+		monthNames.add(Localization.getString(Strings.MONTH_JULY));
+		monthNames.add(Localization.getString(Strings.MONTH_AUGUST));
+		monthNames.add(Localization.getString(Strings.MONTH_SEPTEMBER));
+		monthNames.add(Localization.getString(Strings.MONTH_OCTOBER));
+		monthNames.add(Localization.getString(Strings.MONTH_NOVEMBER));
+		monthNames.add(Localization.getString(Strings.MONTH_DECEMBER));
 		return monthNames;
 	}
 
@@ -91,22 +89,21 @@ public class Helpers
 	public static ArrayList<Color> getCategoryColorList()
 	{
 	    ArrayList<Color> colors = new ArrayList<>();       
-        //grey (light to dark)      
-        colors.add(Color.web("#CCCCCC"));   
-        colors.add(Color.web("#888888"));       
-        colors.add(Color.web("#333333"));   
-        colors.add(Color.rgb(255, 241, 119));   //lighyellow    
-        colors.add(Color.rgb(255, 204, 0));     //yellow
-        colors.add(Color.rgb(255, 149, 0));     //orange
-        colors.add(Color.rgb(255, 59, 48));     //red
-        colors.add(Color.rgb(169, 3, 41));      //darkred   
-        colors.add(Color.rgb(255, 81, 151));    //pink
-        colors.add(Color.rgb(155, 89, 182));    //purple
-        colors.add(Color.rgb(88, 86, 214));     //darkpurple
-        colors.add(Color.rgb(0, 122, 250));     //blue      
-        colors.add(Color.rgb(90, 200, 250));    //lightblue
-        colors.add(Color.rgb(76, 217, 100));    //lightgreen
-        colors.add(Color.rgb(46, 124, 43));     //darkgreen
+        colors.add(Colors.CATEGORIES_LIGHT_GREY);        
+        colors.add(Colors.CATEGORIES_GREY);
+        colors.add(Colors.CATEGORIES_DARK_GREY);
+        colors.add(Colors.CATEGORIES_LIGHT_YELLOW);
+        colors.add(Colors.CATEGORIES_YELLOW);
+        colors.add(Colors.CATEGORIES_ORANGE);
+        colors.add(Colors.CATEGORIES_RED);
+        colors.add(Colors.CATEGORIES_DARK_RED);
+        colors.add(Colors.CATEGORIES_PINK);
+        colors.add(Colors.CATEGORIES_PURPLE);
+        colors.add(Colors.CATEGORIES_DARK_PURPLE);
+        colors.add(Colors.CATEGORIES_BLUE);
+        colors.add(Colors.CATEGORIES_LIGHT_BLUE);
+        colors.add(Colors.CATEGORIES_LIGHT_GREEN);
+        colors.add(Colors.CATEGORIES_DARK_GREEN);    
         
         return colors;
 	}

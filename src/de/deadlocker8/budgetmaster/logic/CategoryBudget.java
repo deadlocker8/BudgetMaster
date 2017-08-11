@@ -1,6 +1,8 @@
 package de.deadlocker8.budgetmaster.logic;
 
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import javafx.scene.paint.Color;
+import tools.Localization;
 
 public class CategoryBudget
 {
@@ -17,6 +19,11 @@ public class CategoryBudget
 
 	public String getName()
 	{
+	    //TODO this is not safe! --> if user wishes to name a category "NONE" --> use ID to identify NONE-category instead
+	    if(name != null && name.equals("NONE"))
+	    {
+	        return Localization.getString(Strings.CATEGORY_NONE);
+	    }
 		return name;
 	}
 

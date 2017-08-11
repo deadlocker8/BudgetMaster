@@ -8,6 +8,7 @@ import java.util.Optional;
 import javax.imageio.ImageIO;
 
 import de.deadlocker8.budgetmaster.logic.charts.ChartExportable;
+import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import fontAwesome.FontIconType;
 import javafx.embed.swing.SwingFXUtils;
@@ -26,6 +27,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import logger.Logger;
 import tools.AlertGenerator;
+import tools.ConvertTo;
 
 public class ExportChartController
 {
@@ -57,15 +59,15 @@ public class ExportChartController
 		textFieldWidth.setText(String.valueOf((int)chart.getSuggestedWidth()));
 		textFieldHeight.setText(String.valueOf((int)chart.getSuggestedHeight()));
 
-		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");		
+		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));		
 	
-		buttonChooseFile.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
+		buttonChooseFile.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
 		buttonChooseFile.setGraphic(Helpers.getFontIcon(FontIconType.FOLDER_OPEN, 14, Color.WHITE));
 		
-		buttonExport.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
+		buttonExport.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
 		buttonExport.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 14, Color.WHITE));
 
-		buttonCancel.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
+		buttonCancel.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
 		buttonCancel.setGraphic(Helpers.getFontIcon(FontIconType.TIMES, 14, Color.WHITE));		
 		
 		textFieldWidth.setTextFormatter(new TextFormatter<>(c -> {

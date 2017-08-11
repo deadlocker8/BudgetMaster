@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chapter;
@@ -25,6 +26,8 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import de.deadlocker8.budgetmaster.logic.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
+import tools.Localization;
 
 public class ReportGenerator
 {
@@ -53,11 +56,11 @@ public class ReportGenerator
 	{
 		Font chapterFont = new Font(FontFamily.HELVETICA, 16, Font.BOLDITALIC);
 		Font paragraphFont = new Font(FontFamily.HELVETICA, 12, Font.NORMAL);
-		Chunk chunk = new Chunk("Monatsbericht - " + date.toString("MMMM yyyy"), chapterFont);
+		Chunk chunk = new Chunk(Localization.getString(Strings.REPORT_HEADLINE, date.toString("MMMM yyyy")), chapterFont);
 		Chapter chapter = new Chapter(new Paragraph(chunk), 1);
 		chapter.setNumberDepth(0);
 		chapter.add(Chunk.NEWLINE);
-		chapter.add(new Paragraph("Buchungsübersicht", paragraphFont));
+		chapter.add(new Paragraph(Localization.getString(Strings.REPORT_HEADLINE_PAYMENTS_OVERVIEW), paragraphFont));
 		return chapter;
 	}
 
@@ -116,13 +119,13 @@ public class ReportGenerator
 				case BOTH:
 					String totalIncomeString = Helpers.getCurrencyString(totalIncome, currency);
 					String totalPaymentString = Helpers.getCurrencyString(totalPayment, currency);
-					total = "Einnahmen: " + totalIncomeString + " / Ausgaben: " + totalPaymentString;
+					total = Localization.getString(Strings.REPORT_SUM_TOTAL, totalIncomeString, totalPaymentString);
 					break;
 				case INCOME:
-					total = "Summe: " + Helpers.getCurrencyString(totalIncome, currency);
+					total = Localization.getString(Strings.REPORT_SUM, Helpers.getCurrencyString(totalIncome, currency));
 					break;
 				case PAYMENT:
-					total = "Summe: " + Helpers.getCurrencyString(totalPayment, currency);
+					total = Localization.getString(Strings.REPORT_SUM, Helpers.getCurrencyString(totalPayment, currency));
 					break;
 				default:
 					break;
@@ -153,7 +156,7 @@ public class ReportGenerator
 
 		if(splitTable)
 		{
-			document.add(new Paragraph("Einnahmen", paragraphFont));
+			document.add(new Paragraph(Localization.getString(Strings.TITLE_INCOMES), paragraphFont));
 			document.add(Chunk.NEWLINE);
 			PdfPTable table = generateTable(100, AmountType.INCOME);
 			if(table != null)
@@ -162,7 +165,7 @@ public class ReportGenerator
 			}
 
 			document.add(Chunk.NEWLINE);
-			document.add(new Paragraph("Ausgaben", paragraphFont));
+			document.add(new Paragraph(Localization.getString(Strings.TITLE_PAYMENTS), paragraphFont));
 			document.add(Chunk.NEWLINE);
 			table = generateTable(100, AmountType.PAYMENT);
 			if(table != null)
@@ -182,7 +185,7 @@ public class ReportGenerator
 		if(includeCategoryBudgets)
 		{
 			document.add(Chunk.NEWLINE);
-			document.add(new Paragraph("Verbrauch nach Kategorien", paragraphFont));
+			document.add(new Paragraph(Localization.getString(Strings.TITLE_CATEGORY_BUDGETS), paragraphFont));
 			document.add(Chunk.NEWLINE);
 			PdfPTable table = generateCategoryBudgets();
 			if(table != null)
@@ -201,23 +204,18 @@ public class ReportGenerator
 		Font font = new Font(FontFamily.HELVETICA, 8, Font.NORMAL, GrayColor.BLACK);
 		
 		//header cells
-		PdfPCell cellHeaderCategory = new PdfPCell(new Phrase("Kategorie", font));
+		PdfPCell cellHeaderCategory = new PdfPCell(new Phrase(Localization.getString(Strings.TITLE_CATEGORY), font));
 		cellHeaderCategory.setBackgroundColor(GrayColor.LIGHT_GRAY);
 		cellHeaderCategory.setHorizontalAlignment(Element.ALIGN_CENTER);
 		table.addCell(cellHeaderCategory);
-		PdfPCell cellHeaderAmount = new PdfPCell(new Phrase("Betrag", font));
+		PdfPCell cellHeaderAmount = new PdfPCell(new Phrase(Localization.getString(Strings.TITLE_AMOUNT), font));
 		cellHeaderAmount.setBackgroundColor(GrayColor.LIGHT_GRAY);
 		cellHeaderAmount.setHorizontalAlignment(Element.ALIGN_CENTER);
 		table.addCell(cellHeaderAmount);		
 
 		for(CategoryBudget budget : categoryBudgets)
-		{			
-			String name = budget.getName();
-			if(name.equals("NONE"))
-			{
-				name = "Keine Kategorie";
-			}			
-			PdfPCell cellName = new PdfPCell(new Phrase(name, font));
+		{				
+			PdfPCell cellName = new PdfPCell(new Phrase(budget.getName(), font));
 			cellName.setBackgroundColor(new BaseColor(Color.WHITE));
 			cellName.setHorizontalAlignment(Element.ALIGN_CENTER);
 			table.addCell(cellName);
@@ -237,15 +235,10 @@ public class ReportGenerator
 		{
 			case AMOUNT:
 				return Helpers.getCurrencyString(reportItem.getAmount(), currency);
-			case CATEGORY:
-				String name = reportItem.getCategory().getName();
-				if(name.equals("NONE"))
-				{
-					name = "Keine Kategorie";
-				}			
-				return name;
-			case DATE:
-				return reportItem.getDate();
+			case CATEGORY:	
+				return reportItem.getCategory().getName();
+			case DATE:			    
+				return DateTime.parse(reportItem.getDate(), DateTimeFormat.forPattern("YYYY-MM-dd")).toString("dd.MM.YYYY");
 			case DESCRIPTION:
 				return reportItem.getDescription();
 			case NAME:
@@ -257,11 +250,11 @@ public class ReportGenerator
 			case REPEATING:	
 				if(reportItem.getRepeating())
 				{
-					return "Ja";
+					return Localization.getString(Strings.REPORT_REPEATING_YES);
 				}
 				else
 				{
-					return "Nein";
+					return Localization.getString(Strings.REPORT_REPEATING_NO);
 				}				
 			default:
 				return null;

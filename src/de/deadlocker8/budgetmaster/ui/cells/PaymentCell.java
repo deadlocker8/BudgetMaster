@@ -88,20 +88,14 @@ public class PaymentCell extends ListCell<Payment>
 			hbox.getChildren().add(labelRepeating);
 			HBox.setMargin(labelRepeating, new Insets(0, 20, 0, 15));
 
-			String categoryName = category.getName();
-			if(categoryName.equals("NONE"))
-			{
-				categoryName = "Keine Kategorie";
-			}
-
-			Label labelCircle = new Label(categoryName.substring(0, 1).toUpperCase());
+			Label labelCircle = new Label(category.getName().substring(0, 1).toUpperCase());
 			labelCircle.setMinWidth(HEIGHT);
 			labelCircle.setMinHeight(HEIGHT);
 			labelCircle.setAlignment(Pos.CENTER);
 			labelCircle.getStyleClass().add("greylabel");
 			String textColor = ConvertTo.toRGBHex(ConvertTo.getAppropriateTextColor(category.getColor()));
 			labelCircle.setStyle("-fx-background-color: " + ConvertTo.toRGBHex(category.getColor()) + "; -fx-background-radius: 50%; -fx-text-fill: " + textColor + "; -fx-font-weight: bold; -fx-font-size: 20;");
-			Tooltip tooltip = new Tooltip(categoryName);
+			Tooltip tooltip = new Tooltip(category.getName());
 			tooltip.setStyle("-fx-font-size: 14");
 			labelCircle.setTooltip(tooltip);
 			hbox.getChildren().add(labelCircle);			

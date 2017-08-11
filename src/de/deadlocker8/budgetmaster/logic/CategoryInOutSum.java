@@ -1,6 +1,8 @@
 package de.deadlocker8.budgetmaster.logic;
 
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import javafx.scene.paint.Color;
+import tools.Localization;
 
 public class CategoryInOutSum
 {
@@ -20,9 +22,14 @@ public class CategoryInOutSum
 	}
 
 	public String getName()
-	{
-		return name;
-	}
+    {       
+        if(ID == 1)
+        {
+            return Localization.getString(Strings.CATEGORY_NONE);
+        }
+        
+        return name;
+    }
 	
 	public void setName(String name)
 	{

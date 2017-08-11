@@ -21,20 +21,13 @@ public class SmallCategoryCell extends ListCell<Category>
 		{		
 			HBox hbox = new HBox();
 			
-			if(item.getID() != 1)
-			{
-				Label labelCircle = new Label(item.getName().substring(0, 1).toUpperCase());
-				labelCircle.setPrefWidth(HEIGHT);
-				labelCircle.setPrefHeight(HEIGHT);
-				labelCircle.setAlignment(Pos.CENTER);
-				String textColor = ConvertTo.toRGBHex(ConvertTo.getAppropriateTextColor(item.getColor()));
-				labelCircle.setStyle("-fx-background-color: " + ConvertTo.toRGBHex(item.getColor()) + "; -fx-background-radius: 50%; -fx-text-fill: " + textColor + "; -fx-font-weight: bold; -fx-font-size: 15;");
-				hbox.getChildren().add(labelCircle);
-			}
-			else
-			{
-				item.setName("Keine Kategorie");
-			}
+			Label labelCircle = new Label(item.getName().substring(0, 1).toUpperCase());
+			labelCircle.setPrefWidth(HEIGHT);
+			labelCircle.setPrefHeight(HEIGHT);
+			labelCircle.setAlignment(Pos.CENTER);
+			String textColor = ConvertTo.toRGBHex(ConvertTo.getAppropriateTextColor(item.getColor()));
+			labelCircle.setStyle("-fx-background-color: " + ConvertTo.toRGBHex(item.getColor()) + "; -fx-background-radius: 50%; -fx-text-fill: " + textColor + "; -fx-font-weight: bold; -fx-font-size: 15;");
+			hbox.getChildren().add(labelCircle);			
 			
 			Label labelName = new Label(item.getName());
 			labelName.setPrefHeight(HEIGHT);

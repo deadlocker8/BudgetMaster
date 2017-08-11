@@ -13,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import logger.FileOutputMode;
 import logger.Logger;
+import tools.Localization;
 import tools.PathUtils;
 
 public class Main extends Application
@@ -24,6 +25,9 @@ public class Main extends Application
 	{
 		try
 		{
+			Localization.init("de/deadlocker8/budgetmaster/main/");
+			Localization.loadLanguage(Locale.GERMANY);
+			
 		    Image icon = new Image("/de/deadlocker8/budgetmaster/resources/icon.png");
 			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("de/deadlocker8/budgetmaster/ui/fxml/SplashScreen.fxml"));
 			Parent root = (Parent)loader.load();

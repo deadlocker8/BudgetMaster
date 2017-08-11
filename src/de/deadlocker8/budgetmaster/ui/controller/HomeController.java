@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.Budget;
 import de.deadlocker8.budgetmaster.logic.CategoryBudget;
+import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.ui.Refreshable;
 import de.deadlocker8.budgetmaster.ui.cells.CategoryBudgetCell;
@@ -17,6 +18,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
+import tools.ConvertTo;
 
 public class HomeController implements Refreshable
 {
@@ -60,7 +62,7 @@ public class HomeController implements Refreshable
 				});
 			}
 		});
-		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");
+		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
 		
 		refresh();
 	}
@@ -94,7 +96,7 @@ public class HomeController implements Refreshable
 			}
 			else
 			{
-				labelBudget.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
+				labelBudget.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
 			}
 			labelStartBudget.setText("von " + Helpers.getCurrencyString(budget.getIncomeSum(), currency) + " verbleibend");
 			
