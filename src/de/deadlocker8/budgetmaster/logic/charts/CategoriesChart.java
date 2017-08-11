@@ -30,8 +30,9 @@ public class CategoriesChart extends VBox implements ChartExportable
 	private String currency;
 	private double totalIncomes;
 	private double totalPayments;
-	private LegendType legendType;
-	
+	private LegendType legendType;	
+	private final double CHART_HEIGHT = 200;
+	private final double FULL_LEGEND_ITEM_HEIGHT = 40;
 
 	public CategoriesChart(String titleIncomes, String titlePayments, ArrayList<CategoryInOutSum> categoryInOutSums, String currency, LegendType legendType)
 	{
@@ -295,18 +296,21 @@ public class CategoriesChart extends VBox implements ChartExportable
 	public WritableImage export(int width, int height)
 	{
 		VBox root = new VBox();
-		root.setStyle("-fx-background-color: transparent;");
-		root.setPadding(new Insets(25));
-		
-		root.getChildren().add(generate(titleIncomes, true));
-		root.getChildren().add(generate(titlePayments, false));
-		
-		Region spacer = new Region();
-		root.getChildren().add(spacer);
-		VBox.setVgrow(spacer, Priority.ALWAYS);
-		
-		root.getChildren().add(generateFullLegend());		
-		
+
+        root.setStyle("-fx-background-color: transparent;");
+        root.setPadding(new Insets(25));
+        root.setSpacing(10);
+        
+        root.getChildren().add(generate(titleIncomes, true));
+        root.getChildren().add(generate(titlePayments, false));
+        
+        Region spacer = new Region();
+        spacer.setMinHeight(25);
+        root.getChildren().add(spacer);
+        VBox.setVgrow(spacer, Priority.ALWAYS);
+        
+        root.getChildren().add(generateFullLegend());	    
+
 		Stage newStage = new Stage();
 		newStage.initModality(Modality.NONE);
 		newStage.setScene(new Scene(root, width, height));
@@ -329,6 +333,6 @@ public class CategoriesChart extends VBox implements ChartExportable
 	@Override
 	public double getSuggestedHeight()
 	{
-		return getHeight() + 100;
+		return CHART_HEIGHT + categoryInOutSums.size() * FULL_LEGEND_ITEM_HEIGHT + 50;
 	}
 }
