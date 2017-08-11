@@ -138,7 +138,7 @@ public class Controller
 		{
 			Logger.error(e);
 			Platform.runLater(() -> {
-				AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Beim Erstellen der Benutzeroberfläche ist ein Fehler aufgetreten", icon, stage, null, false);
+				AlertGenerator.showAlert(AlertType.ERROR, Localization.getString(Strings.TITLE_ERROR), "", Localization.getString(Strings.ERROR_CREATE_UI), icon, stage, null, false);
 			});			
 		}
 		
@@ -161,7 +161,7 @@ public class Controller
 			Platform.runLater(() -> {
 				toggleAllTabsExceptSettings(true);
 				tabPane.getSelectionModel().select(tabSettings);
-				AlertGenerator.showAlert(AlertType.INFORMATION, "Hinweis", "", "Vor der ersten Benutzung musst du deine Serverdaten eingeben.", icon, stage, null, false);
+				AlertGenerator.showAlert(AlertType.INFORMATION, Localization.getString(Strings.TITLE_INFO), "", Localization.getString(Strings.INFO_FIRST_START), icon, stage, null, false);
 			});
 		}
 		else
@@ -251,16 +251,15 @@ public class Controller
 				
 				alertIsShowing = true;
 				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Fehler");
+				alert.setTitle(Localization.getString(Strings.TITLE_ERROR));
 				alert.setHeaderText("");
 				if(errorMessage == null)
 				{
-					alert.setContentText("Beim Herstellen der Verbindung zum Server ist ein Fehler aufgetreten. Bitte überprüfe deine Einstellungen.");
+					alert.setContentText(Localization.getString(Strings.ERROR_SERVER_CONNECTION));
 				}
 				else
 				{
-					alert.setContentText("Beim Herstellen der Verbindung zum Server ist ein Fehler aufgetreten. Bitte überprüfe deine Einstellungen.\n\n"
-							+ "Fehlerdetails:\n" + errorMessage);
+					alert.setContentText(Localization.getString(Strings.ERROR_SERVER_CONNECTION_WITH_DETAILS, errorMessage));
 				}
 				
 				Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
@@ -333,7 +332,7 @@ public class Controller
 	
 	public void refresh(FilterSettings newFilterSettings)
 	{
-		Stage modalStage = Helpers.showModal("Vorgang läuft", "Lade Daten...", stage, icon);
+		Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATA), stage, icon);
 
 		Worker.runLater(() -> {
 			try
@@ -348,7 +347,7 @@ public class Controller
 				{
 					int rest = connection.getRestForAllPreviousMonths(currentDate.getYear(), currentDate.getMonthOfYear());
 					//categoryID 2 = Rest
-					paymentHandler.getPayments().add(new NormalPayment(-1, rest, currentDate.withDayOfMonth(1).toString("yyyy-MM-dd"), 2, "Übertrag", ""));				
+					paymentHandler.getPayments().add(new NormalPayment(-1, rest, currentDate.withDayOfMonth(1).toString("yyyy-MM-dd"), 2, Localization.getString(Strings.CATEGORY_REST), ""));				
 				}
 				
 				categoryHandler = new CategoryHandler(connection.getCategories());

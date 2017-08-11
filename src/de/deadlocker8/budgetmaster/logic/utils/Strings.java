@@ -19,12 +19,24 @@ public class Strings
     public static final String TITLE_AMOUNT = "title.amount";
     public static final String TITLE_INFO = "title.info";
     public static final String TITLE_WARNING = "title.warning";
-    public static final String TITLE_ERROR = "title.error";    
+    public static final String TITLE_ERROR = "title.error";
+    public static final String TITLE_CATEGORY_NEW = "title.category.new";  
+    public static final String TITLE_CATEGORY_EDIT = "title.category.edit";  
+    public static final String TITLE_CHART_EXPORT = "title.chart.export";
+    public static final String TITLE_MODAL = "title.modal";
+    
+    //LOAD
+    public static final String LOAD_CHARTS = "load.charts";
+    public static final String LOAD_DATA = "load.data";
     
     //MISC
     public static final String CATEGORY_NONE = "category.none";
+    public static final String CATEGORY_REST = "category.rest";
     public static final String TOOLTIP_CHART_CATEGORIES = "tooltip.chart.categories";
-    public static final String CHART_MONTH_LINE_SUM = "chart.month.line.sum";   
+    public static final String CHART_MONTH_LINE_SUM = "chart.month.line.sum";
+    public static final String CATEGORIES_PLACEHOLDER = "categories.placeholder";
+    public static final String CHART_CATEGORIES_TITLE_INCOMES = "chart.categories.title.incomes";
+    public static final String CHART_CATEGORIES_TITLE_PAYMENTS = "chart.categories.title.payments";
     
     //REPORT
     public static final String REPORT_POSITION = "report.position";
@@ -56,8 +68,7 @@ public class Strings
     public static final String MONTH_SEPTEMBER ="month.september"; 
     public static final String MONTH_OCTOBER ="month.october"; 
     public static final String MONTH_NOVEMBER ="month.november"; 
-    public static final String MONTH_DECEMBER ="month.december"; 
-    
+    public static final String MONTH_DECEMBER ="month.december";     
     
     //INFO
     public static final String INFO_TITLE_CATEGORY_DELETE = "info.title.category.delete";
@@ -68,10 +79,10 @@ public class Strings
     public static final String INFO_TEXT_PAYMENT_REPEATING_DELETE_ALL = "info.text.payment.repeating.delete.all";
     public static final String INFO_TEXT_PAYMENT_REPEATING_DELETE_FUTURES = "info.text.payment.repeating.delete.futures";
     public static final String INFO_TEXT_PAYMENT_REPEATING_DELETE_CANCEL = "info.text.payment.repeating.delete.cancel";
-    
-    
+    public static final String INFO_FIRST_START = "info.first.start";
     
     //WARNING
+    public static final String WARNING_ENDDATE_BEFORE_STARTDATE = "warning.enddate.before.startdate";
     
     //ERROR
     public static final String ERROR_UNKNOWN_HOST = "error.unknown.host";
@@ -81,4 +92,7 @@ public class Strings
     public static final String ERROR_400 = "error.400";
     public static final String ERROR_401 = "error.401";
     public static final String ERROR_500 = "error.500";
+    public static final String ERROR_CREATE_UI = "error.create.ui";
+    public static final String ERROR_SERVER_CONNECTION = "error.server.connection";
+    public static final String ERROR_SERVER_CONNECTION_WITH_DETAILS = "error.server.connection.with.details";
 }

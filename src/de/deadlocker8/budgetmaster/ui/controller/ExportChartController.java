@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 import de.deadlocker8.budgetmaster.logic.charts.ChartExportable;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import fontAwesome.FontIconType;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
@@ -28,6 +29,7 @@ import javafx.stage.Stage;
 import logger.Logger;
 import tools.AlertGenerator;
 import tools.ConvertTo;
+import tools.Localization;
 
 public class ExportChartController
 {
@@ -106,7 +108,7 @@ public class ExportChartController
 	public void chooseFile()
 	{
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Diagramm exportieren");
+		fileChooser.setTitle(Localization.getString(Strings.TITLE_CHART_EXPORT));
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PNG (*.png)", "*.png");
 		if(savePath != null)
 		{
@@ -127,7 +129,7 @@ public class ExportChartController
 		String widthText = textFieldWidth.getText();
 		if(widthText == null || widthText.equals(""))
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Bitte gib eine Breite in Pixeln an.", controller.getControlle().getIcon(), stage, null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, Localization.getString(Strings.TITLE_WARNING), "", "Bitte gib eine Breite in Pixeln an.", controller.getControlle().getIcon(), stage, null, false);
 			return;
 		}
 		
@@ -138,14 +140,14 @@ public class ExportChartController
 		}
 		catch(Exception e)
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Nur ganzahlige Werte sind für das Feld Breite erlaubt.", controller.getControlle().getIcon(), stage, null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, Localization.getString(Strings.TITLE_WARNING), "", "Nur ganzahlige Werte sind für das Feld Breite erlaubt.", controller.getControlle().getIcon(), stage, null, false);
 			return;
 		}
 		
 		String heightText = textFieldHeight.getText();
 		if(heightText == null || heightText.equals(""))
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Bitte gib eine Höhe in Pixeln an.", controller.getControlle().getIcon(), stage, null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, Localization.getString(Strings.TITLE_WARNING), "", "Bitte gib eine Höhe in Pixeln an.", controller.getControlle().getIcon(), stage, null, false);
 			return;
 		}
 		
@@ -156,13 +158,13 @@ public class ExportChartController
 		}
 		catch(Exception e)
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Nur ganzahlige Werte sind für das Feld Höhe erlaubt.", controller.getControlle().getIcon(), stage, null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, Localization.getString(Strings.TITLE_WARNING), "", "Nur ganzahlige Werte sind für das Feld Höhe erlaubt.", controller.getControlle().getIcon(), stage, null, false);
 			return;
 		}
 
 		if(savePath == null)
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Wähle einen Speicherort für das Diagramm aus.", controller.getControlle().getIcon(), stage, null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, Localization.getString(Strings.TITLE_WARNING), "", "Wähle einen Speicherort für das Diagramm aus.", controller.getControlle().getIcon(), stage, null, false);
 			return;
 		}
 		
@@ -197,7 +199,7 @@ public class ExportChartController
 				catch(IOException e1)
 				{
 					Logger.error(e1);
-					AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Der Ordner konnte nicht geöffnet werden\n\n" + e1.getMessage(), controller.getControlle().getIcon(), stage, null, false);
+					AlertGenerator.showAlert(AlertType.ERROR, Localization.getString(Strings.TITLE_ERROR), "", "Der Ordner konnte nicht geöffnet werden\n\n" + e1.getMessage(), controller.getControlle().getIcon(), stage, null, false);
 				}
 			}
 			else if (result.get() == buttonTypeTwo)
@@ -209,7 +211,7 @@ public class ExportChartController
 				catch(IOException e1)
 				{
 					Logger.error(e1);
-					AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Das Diagramm konnte nicht geöffnet werden\n\n" + e1.getMessage(), controller.getControlle().getIcon(), stage, null, false);
+					AlertGenerator.showAlert(AlertType.ERROR, Localization.getString(Strings.TITLE_ERROR), "", "Das Diagramm konnte nicht geöffnet werden\n\n" + e1.getMessage(), controller.getControlle().getIcon(), stage, null, false);
 				}
 			}
 			else
@@ -220,7 +222,7 @@ public class ExportChartController
 		catch(IOException e)
 		{
 			Logger.error(e);
-			AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Beim Exportieren des Diagramms ist ein Fehler aufgetreten:\n\n" + e.getMessage(), controller.getControlle().getIcon(), stage, null, false);
+			AlertGenerator.showAlert(AlertType.ERROR, Localization.getString(Strings.TITLE_ERROR), "", "Beim Exportieren des Diagramms ist ein Fehler aufgetreten:\n\n" + e.getMessage(), controller.getControlle().getIcon(), stage, null, false);
 		}
 		
 		stage.close();	
