@@ -30,15 +30,9 @@ public class CategoryBudgetCell extends ListCell<CategoryBudget>
 
 		if(!empty)
 		{
-			String name = item.getName();
-			if(item.getName().equals("NONE"))
-			{
-				name = "Keine Kategorie";
-			}
-			
 			HBox hbox = new HBox();
 
-			Label labelCircle = new Label(name.substring(0, 1).toUpperCase());
+			Label labelCircle = new Label(item.getName().substring(0, 1).toUpperCase());
 			labelCircle.setPrefWidth(HEIGHT);
 			labelCircle.setPrefHeight(HEIGHT);
 			labelCircle.setAlignment(Pos.CENTER);
@@ -47,7 +41,7 @@ public class CategoryBudgetCell extends ListCell<CategoryBudget>
 			labelCircle.setStyle("-fx-background-color: " + ConvertTo.toRGBHex(item.getColor()) + "; -fx-background-radius: 50%; -fx-text-fill: " + textColor + "; -fx-font-weight: bold; -fx-font-size: 20;");
 			hbox.getChildren().add(labelCircle);
 
-			Label labelName = new Label(name);
+			Label labelName = new Label(item.getName());
 			labelName.setPrefHeight(HEIGHT);
 			labelName.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #212121");
 			labelName.setAlignment(Pos.CENTER);

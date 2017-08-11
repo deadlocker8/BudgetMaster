@@ -58,6 +58,21 @@ public class Strings
     public static final String MONTH_NOVEMBER ="month.november"; 
     public static final String MONTH_DECEMBER ="month.december"; 
     
+    
+    //INFO
+    public static final String INFO_TITLE_CATEGORY_DELETE = "info.title.category.delete";
+    public static final String INFO_TEXT_CATEGORY_DELETE = "info.text.category.delete";
+    public static final String INFO_TITLE_PAYMENT_DELETE = "info.title.payment.delete";
+    public static final String INFO_TEXT_PAYMENT_DELETE = "info.text.payment.delete";
+    public static final String INFO_TEXT_PAYMENT_REPEATING_DELETE = "info.text.payment.repeating.delete";
+    public static final String INFO_TEXT_PAYMENT_REPEATING_DELETE_ALL = "info.text.payment.repeating.delete.all";
+    public static final String INFO_TEXT_PAYMENT_REPEATING_DELETE_FUTURES = "info.text.payment.repeating.delete.futures";
+    public static final String INFO_TEXT_PAYMENT_REPEATING_DELETE_CANCEL = "info.text.payment.repeating.delete.cancel";
+    
+    
+    
+    //WARNING
+    
     //ERROR
     public static final String ERROR_UNKNOWN_HOST = "error.unknown.host";
     public static final String ERROR_UNKNOWN_ERROR = "error.unknown.error";

@@ -2,8 +2,8 @@ package de.deadlocker8.budgetmaster.main;
 
 import java.io.File;
 import java.util.Locale;
-import java.util.ResourceBundle;
 
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmaster.ui.controller.SplashScreenController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -18,27 +18,22 @@ import tools.PathUtils;
 
 public class Main extends Application
 {
-	public static ResourceBundle bundle = ResourceBundle.getBundle("de/deadlocker8/budgetmaster/main/", Locale.GERMANY);
-
 	@Override
 	public void start(Stage stage)
 	{
 		try
-		{
-			Localization.init("de/deadlocker8/budgetmaster/main/");
-			Localization.loadLanguage(Locale.GERMANY);
-			
+		{			
 		    Image icon = new Image("/de/deadlocker8/budgetmaster/resources/icon.png");
 			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("de/deadlocker8/budgetmaster/ui/fxml/SplashScreen.fxml"));
 			Parent root = (Parent)loader.load();
 			
 			Scene scene = new Scene(root, 450, 230);
 
-			((SplashScreenController)loader.getController()).init(stage, icon, bundle);
+			((SplashScreenController)loader.getController()).init(stage, icon);
 
 			stage.setResizable(false);			
 			stage.getIcons().add(icon);
-			stage.setTitle(bundle.getString("app.name"));
+			stage.setTitle(Localization.getString(Strings.APP_NAME));
 			stage.setScene(scene);			
 			stage.show();
 		}
@@ -51,15 +46,21 @@ public class Main extends Application
 	@Override
 	public void init() throws Exception
 	{
+		Localization.init("de/deadlocker8/budgetmaster/main/");
+		Localization.loadLanguage(Locale.GERMANY);
+		
 		Parameters params = getParameters();
 		String logLevelParam = params.getNamed().get("loglevel");
 		Logger.setLevel(logLevelParam);
 		
-		File logFolder = new File(PathUtils.getOSindependentPath() + bundle.getString("folder"));
+		File logFolder = new File(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER));
 		PathUtils.checkFolder(logFolder);
 		Logger.enableFileOutput(logFolder, System.out, System.err, FileOutputMode.COMBINED);
 
-		Logger.appInfo(bundle.getString("app.name"), bundle.getString("version.name"), bundle.getString("version.code"), bundle.getString("version.date"));
+		Logger.appInfo(Localization.getString(Strings.APP_NAME),
+						Localization.getString(Strings.VERSION_NAME),
+						Localization.getString(Strings.VERSION_CODE),
+						Localization.getString(Strings.VERSION_DATE));
 	}
 
 	public static void main(String[] args)

@@ -2,7 +2,6 @@ package de.deadlocker8.budgetmaster.ui.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 import org.joda.time.DateTime;
 
@@ -16,6 +15,7 @@ import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import fontAwesome.FontIconType;
 import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
@@ -36,6 +36,7 @@ import javafx.util.Duration;
 import logger.Logger;
 import tools.AlertGenerator;
 import tools.ConvertTo;
+import tools.Localization;
 import tools.Worker;
 
 public class Controller
@@ -63,8 +64,7 @@ public class Controller
 	private SettingsController settingsController;
 
 	private Stage stage;
-	private Image icon = new Image("de/deadlocker8/budgetmaster/resources/icon.png");
-	private ResourceBundle bundle;
+	private Image icon = new Image("de/deadlocker8/budgetmaster/resources/icon.png");	
 	private Settings settings;
 	private DateTime currentDate;
 	private ArrayList<CategoryBudget> categoryBudgets;
@@ -74,10 +74,9 @@ public class Controller
 
 	private boolean alertIsShowing = false;
 
-	public void init(Stage stage, ResourceBundle bundle, Settings settings)
+	public void init(Stage stage, Settings settings)
 	{
 		this.stage = stage;
-		this.bundle = bundle;
 		this.settings = settings;
 		
 		stage.setOnCloseRequest((event)->{
@@ -179,11 +178,6 @@ public class Controller
 	public Image getIcon()
 	{
 		return icon;
-	}
-
-	public ResourceBundle getBundle()
-	{
-		return bundle;
 	}
 
 	public Settings getSettings()
@@ -329,7 +323,12 @@ public class Controller
 
 	public void about()
 	{
-		AlertGenerator.showAboutAlert(bundle.getString("app.name"), bundle.getString("version.name"), bundle.getString("version.code"), bundle.getString("version.date"), bundle.getString("author"), icon, stage, null, false);
+		AlertGenerator.showAboutAlert(Localization.getString(Strings.APP_NAME),
+									Localization.getString(Strings.VERSION_NAME),
+									Localization.getString(Strings.VERSION_CODE),
+									Localization.getString(Strings.VERSION_DATE),
+									Localization.getString(Strings.AUTHOR),
+									icon, stage, null, false);
 	}	
 	
 	public void refresh(FilterSettings newFilterSettings)

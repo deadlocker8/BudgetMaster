@@ -11,6 +11,7 @@ import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmaster.ui.controller.PaymentController;
 import fontAwesome.FontIconType;
 import javafx.geometry.Insets;
@@ -29,6 +30,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import logger.Logger;
 import tools.ConvertTo;
+import tools.Localization;
 
 public class PaymentCell extends ListCell<Payment>
 {
@@ -138,20 +140,20 @@ public class PaymentCell extends ListCell<Payment>
 			buttonDelete.setStyle("-fx-background-color: transparent");			
 			buttonDelete.setOnAction((event) -> {
 				Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-				alert.setTitle("Zahlung löschen");
+				alert.setTitle(Localization.getString(Strings.INFO_TITLE_PAYMENT_DELETE));
 				alert.setHeaderText("");
-				alert.setContentText("Diese Zahlung wirklich unwiderruflich löschen?");
+				alert.setContentText(Localization.getString(Strings.INFO_TEXT_PAYMENT_DELETE));
 				Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
 				dialogStage.getIcons().add(paymentController.getController().getIcon());
 				dialogStage.centerOnScreen();
 
 				if(item instanceof RepeatingPaymentEntry)
 				{
-					alert.setContentText("Es handelt sich um eine wiederkehrende Zahlung. Welche Zahlungen sollen gelöscht werden?");
+					alert.setContentText(Localization.getString(Strings.INFO_TEXT_PAYMENT_REPEATING_DELETE));
 					
-					ButtonType buttonTypeOne = new ButtonType("Alle");
-					ButtonType buttonTypeTwo = new ButtonType("Alle zukünftigen");				
-					ButtonType buttonTypeCancel = new ButtonType("Abbrechen", ButtonData.CANCEL_CLOSE);
+					ButtonType buttonTypeOne = new ButtonType(Localization.getString(Strings.INFO_TEXT_PAYMENT_REPEATING_DELETE_ALL));
+					ButtonType buttonTypeTwo = new ButtonType(Localization.getString(Strings.INFO_TEXT_PAYMENT_REPEATING_DELETE_FUTURES));			
+					ButtonType buttonTypeCancel = new ButtonType(Localization.getString(Strings.INFO_TEXT_PAYMENT_REPEATING_DELETE_CANCEL), ButtonData.CANCEL_CLOSE);
 
 					alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
 

@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmaster.ui.controller.CategoryController;
 import fontAwesome.FontIconType;
 import javafx.geometry.Insets;
@@ -19,6 +20,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import tools.ConvertTo;
+import tools.Localization;
 
 public class CategoryCell extends ListCell<Category>
 {		
@@ -79,9 +81,9 @@ public class CategoryCell extends ListCell<Category>
 			buttonDelete.setStyle("-fx-background-color: transparent");
 			buttonDelete.setOnAction((event)->{
 				 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                 alert.setTitle("Kategorie löschen");
+                 alert.setTitle(Localization.getString(Strings.INFO_TITLE_CATEGORY_DELETE));
                  alert.setHeaderText("");
-                 alert.setContentText("Möchtest du diese Kategorie wirklich unwiderruflich löschen?");
+                 alert.setContentText(Localization.getString(Strings.INFO_TEXT_CATEGORY_DELETE));
                  Stage dialogStage = (Stage) alert.getDialogPane().getScene().getWindow();
                  dialogStage.getIcons().add(categoryController.getController().getIcon());
                  dialogStage.centerOnScreen();
@@ -92,7 +94,7 @@ public class CategoryCell extends ListCell<Category>
                 	 categoryController.deleteCategory(item.getID());
                  }				
 			});
-			//don't allow category "Übertrag" to be deleted
+			//don't allow category "rest" to be deleted
 			if(item.getID() != 2)
 			{
 				hbox.getChildren().add(buttonDelete);

@@ -1,12 +1,12 @@
 package de.deadlocker8.budgetmaster.ui.controller;
 
 import java.io.IOException;
-import java.util.ResourceBundle;
 
 import de.deadlocker8.budgetmaster.logic.Settings;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -27,29 +27,28 @@ import logger.Logger;
 import tools.AlertGenerator;
 import tools.ConvertTo;
 import tools.HashUtils;
+import tools.Localization;
 
 public class SplashScreenController
 {
 	@FXML private ImageView imageViewLogo;
 	@FXML private Label labelVersion;
 	@FXML private PasswordField textFieldPassword;
-	@FXML private Button buttonLogin;
-	
-	private ResourceBundle bundle;
+	@FXML private Button buttonLogin;	
+
 	private Stage stage;
 	private Image icon;
 	private Settings settings;
 	private boolean isFirstStart;
 
-	public void init(Stage stage, Image icon, ResourceBundle bundle)
+	public void init(Stage stage, Image icon)
 	{
 		this.stage = stage;
 		this.icon = icon;
-		this.bundle = bundle;
 		
 		imageViewLogo.setImage(icon);
 		
-		labelVersion.setText("v" + bundle.getString("version.name"));
+		labelVersion.setText("v" + Localization.getString(Strings.VERSION_NAME));
 	
 		buttonLogin.setGraphic(Helpers.getFontIcon(FontIconType.SIGN_IN, 18, Color.WHITE));
 		buttonLogin.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
@@ -136,7 +135,7 @@ public class SplashScreenController
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/GUI.fxml"));
 			Parent root = (Parent)fxmlLoader.load();
 			Stage newStage = new Stage();
-			newStage.setTitle(bundle.getString("app.name"));
+			newStage.setTitle(Localization.getString(Strings.APP_NAME));
 			newStage.setScene(new Scene(root, 650, 650));
 			newStage.getIcons().add(icon);			
 			newStage.setResizable(true);
@@ -144,7 +143,7 @@ public class SplashScreenController
 			newStage.setMinWidth(610);
 			newStage.getScene().getStylesheets().add("/de/deadlocker8/budgetmaster/ui/style.css");
 			Controller newController = fxmlLoader.getController();
-			newController.init(newStage, bundle, settings);
+			newController.init(newStage, settings);
 			newStage.show();
 		}
 		catch(IOException e)
