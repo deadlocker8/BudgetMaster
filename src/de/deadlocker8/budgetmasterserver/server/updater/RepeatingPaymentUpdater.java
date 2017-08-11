@@ -20,6 +20,7 @@ public class RepeatingPaymentUpdater
 		this.handler = handler;
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	public void updateRepeatingPayments(DateTime now)
 	{
 		try
