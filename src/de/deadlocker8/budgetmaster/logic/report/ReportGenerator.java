@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chapter;
@@ -244,8 +245,8 @@ public class ReportGenerator
 					name = "Keine Kategorie";
 				}			
 				return name;
-			case DATE:
-				return reportItem.getDate();
+			case DATE:			    
+				return DateTime.parse(reportItem.getDate(), DateTimeFormat.forPattern("YYYY-MM-dd")).toString("dd.MM.YYYY");
 			case DESCRIPTION:
 				return reportItem.getDescription();
 			case NAME:
