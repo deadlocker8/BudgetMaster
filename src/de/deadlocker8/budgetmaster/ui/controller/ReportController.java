@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 
+import org.joda.time.DateTime;
+
 import de.deadlocker8.budgetmaster.logic.FilterSettings;
 import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
@@ -521,6 +523,13 @@ public class ReportController implements Refreshable
 		{
 			fileChooser.setInitialDirectory(reportPath.getParentFile());
 			fileChooser.setInitialFileName(reportPath.getName());
+		}
+		else
+		{
+		    DateTime currentDate = controller.getCurrentDate();
+		    String currentMonth = currentDate.toString("MMMM");
+		    String currentYear = currentDate.toString("YYYY");
+		    fileChooser.setInitialFileName("BudgetMaster Monatsbericht - " + currentMonth + " " + currentYear + ".pdf");
 		}
 		fileChooser.getExtensionFilters().add(extFilter);
 		File file = fileChooser.showSaveDialog(controller.getStage());		
