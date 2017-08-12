@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chapter;
@@ -23,6 +24,7 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import de.deadlocker8.budgetmaster.logic.Budget;
 import de.deadlocker8.budgetmaster.logic.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 
@@ -31,33 +33,35 @@ public class ReportGenerator
 	private ArrayList<ReportItem> reportItems;
 	private ArrayList<CategoryBudget> categoryBudgets;
 	private ColumnOrder columnOrder;
+	private boolean includeBudget;
 	private boolean splitTable;
 	private boolean includeCategoryBudgets;
 	private File savePath;
 	private String currency;
 	private DateTime date;
+	private Budget budget;
 
-	public ReportGenerator(ArrayList<ReportItem> reportItems, ArrayList<CategoryBudget> categoryBudgets, ColumnOrder columnOrder, boolean splitTable, boolean includeCategoryBudgets, File savePath, String currency, DateTime date)
+	public ReportGenerator(ArrayList<ReportItem> reportItems, ArrayList<CategoryBudget> categoryBudgets, ColumnOrder columnOrder, boolean includeBudget, boolean splitTable, boolean includeCategoryBudgets, File savePath, String currency, DateTime date, Budget budget)
 	{	
 		this.reportItems = reportItems;
 		this.categoryBudgets = categoryBudgets;
 		this.columnOrder = columnOrder;
+		this.includeBudget = includeBudget;
 		this.splitTable = splitTable;
 		this.includeCategoryBudgets = includeCategoryBudgets;
 		this.savePath = savePath;
 		this.currency = currency;
 		this.date = date;
+		this.budget = budget;
 	}
 
 	private Chapter generateHeader()
 	{
-		Font chapterFont = new Font(FontFamily.HELVETICA, 16, Font.BOLDITALIC);
-		Font paragraphFont = new Font(FontFamily.HELVETICA, 12, Font.NORMAL);
+		Font chapterFont = new Font(FontFamily.HELVETICA, 16, Font.BOLDITALIC);		
 		Chunk chunk = new Chunk("Monatsbericht - " + date.toString("MMMM yyyy"), chapterFont);
 		Chapter chapter = new Chapter(new Paragraph(chunk), 1);
 		chapter.setNumberDepth(0);
-		chapter.add(Chunk.NEWLINE);
-		chapter.add(new Paragraph("Buchungsübersicht", paragraphFont));
+		chapter.add(Chunk.NEWLINE);		
 		return chapter;
 	}
 
@@ -69,7 +73,13 @@ public class ReportGenerator
 
 		if(numberOfColumns > 0)
 		{
-			PdfPTable table = new PdfPTable(numberOfColumns);
+			float[] proportions = new float[numberOfColumns];
+			for(int i = 0; i < columnOrder.getColumns().size(); i++)
+			{
+				proportions[i] = columnOrder.getColumns().get(i).getProportion();
+			}
+			
+			PdfPTable table = new PdfPTable(proportions);
 			table.setWidthPercentage(tableWidth);
 			Font font = new Font(FontFamily.HELVETICA, 8, Font.NORMAL, GrayColor.BLACK);
 
@@ -146,14 +156,32 @@ public class ReportGenerator
 		writer.setPageEvent(new HeaderFooterPageEvent());
 		document.open();
 		document.setMargins(50, 45, 50, 70);
+		Font headerFont = new Font(FontFamily.HELVETICA, 14, Font.BOLD);
+		Font smallHeaderFont = new Font(FontFamily.HELVETICA, 12, Font.BOLD);
 		Font paragraphFont = new Font(FontFamily.HELVETICA, 12, Font.NORMAL);
 
 		document.add(generateHeader());
 		document.add(Chunk.NEWLINE);
+		
+		if(includeBudget)
+		{
+			Font fontGreen = new Font(FontFamily.HELVETICA, 12, Font.NORMAL, new BaseColor(36, 122, 45));
+			Font fontRed = new Font(FontFamily.HELVETICA, 12, Font.NORMAL, BaseColor.RED);
+			Font fontBlack = new Font(FontFamily.HELVETICA, 12, Font.BOLD);
+			document.add(new Paragraph("Budget", headerFont));
+			document.add(Chunk.NEWLINE);
+			document.add(new Paragraph("Einnahmen: " + Helpers.getCurrencyString(budget.getIncomeSum(), currency), fontGreen));
+			document.add(new Paragraph("Ausgaben: " + Helpers.getCurrencyString(budget.getPaymentSum(), currency), fontRed));
+			document.add(new Paragraph("Restbudget: " + Helpers.getCurrencyString(budget.getIncomeSum()-budget.getPaymentSum(), currency), fontBlack));			
+			document.add(Chunk.NEWLINE);
+		}
+		
+		document.add(new Paragraph("Buchungsübersicht", headerFont));
+		document.add(Chunk.NEWLINE);
 
 		if(splitTable)
 		{
-			document.add(new Paragraph("Einnahmen", paragraphFont));
+			document.add(new Paragraph("Einnahmen", smallHeaderFont));
 			document.add(Chunk.NEWLINE);
 			PdfPTable table = generateTable(100, AmountType.INCOME);
 			if(table != null)
@@ -162,7 +190,7 @@ public class ReportGenerator
 			}
 
 			document.add(Chunk.NEWLINE);
-			document.add(new Paragraph("Ausgaben", paragraphFont));
+			document.add(new Paragraph("Ausgaben", smallHeaderFont));
 			document.add(Chunk.NEWLINE);
 			table = generateTable(100, AmountType.PAYMENT);
 			if(table != null)
@@ -182,7 +210,7 @@ public class ReportGenerator
 		if(includeCategoryBudgets)
 		{
 			document.add(Chunk.NEWLINE);
-			document.add(new Paragraph("Verbrauch nach Kategorien", paragraphFont));
+			document.add(new Paragraph("Verbrauch nach Kategorien", headerFont));
 			document.add(Chunk.NEWLINE);
 			PdfPTable table = generateCategoryBudgets();
 			if(table != null)
@@ -244,8 +272,8 @@ public class ReportGenerator
 					name = "Keine Kategorie";
 				}			
 				return name;
-			case DATE:
-				return reportItem.getDate();
+			case DATE:			    
+				return DateTime.parse(reportItem.getDate(), DateTimeFormat.forPattern("YYYY-MM-dd")).toString("dd.MM.YYYY");
 			case DESCRIPTION:
 				return reportItem.getDescription();
 			case NAME:
