@@ -70,7 +70,13 @@ public class ReportGenerator
 
 		if(numberOfColumns > 0)
 		{
-			PdfPTable table = new PdfPTable(numberOfColumns);
+			float[] proportions = new float[numberOfColumns];
+			for(int i = 0; i < columnOrder.getColumns().size(); i++)
+			{
+				proportions[i] = columnOrder.getColumns().get(i).getProportion();
+			}
+			
+			PdfPTable table = new PdfPTable(proportions);
 			table.setWidthPercentage(tableWidth);
 			Font font = new Font(FontFamily.HELVETICA, 8, Font.NORMAL, GrayColor.BLACK);
 
