@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import org.joda.time.DateTime;
 
+import de.deadlocker8.budgetmaster.logic.Budget;
 import de.deadlocker8.budgetmaster.logic.FilterSettings;
 import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
@@ -62,6 +63,7 @@ public class ReportController implements Refreshable
 	@FXML private AnchorPane anchorPaneMain;
 	@FXML private Label labelPayments;
 	@FXML private Label labelFilterActive;
+	@FXML private CheckBox checkBoxIncludeBudget;
 	@FXML private CheckBox checkBoxSplitTable;
 	@FXML private CheckBox checkBoxIncludeCategoryBudgets;
 	@FXML private Button buttonFilter;
@@ -87,6 +89,7 @@ public class ReportController implements Refreshable
 		labelFilterActive.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text"));
 		buttonFilter.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
 		buttonGenerate.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
+		checkBoxIncludeBudget.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text") + "; -fx-font-size: 14;");
 		checkBoxSplitTable.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text") + "; -fx-font-size: 14;");
 		checkBoxIncludeCategoryBudgets.setStyle("-fx-text-fill: " + controller.getBundle().getString("color.text") + "; -fx-font-size: 14;");
 
@@ -536,14 +539,19 @@ public class ReportController implements Refreshable
 		if(file != null)
 		{		
 			reportPath = file;
+			
+			Budget budget = new Budget(controller.getPaymentHandler().getPayments());		
+			
 			ReportGenerator reportGenerator = new ReportGenerator(new ArrayList<ReportItem>(tableView.getItems()),
 																controller.getCategoryBudgets(),
 																columnOrder,
+																checkBoxIncludeBudget.isSelected(),
 																checkBoxSplitTable.isSelected(), 
 																checkBoxIncludeCategoryBudgets.isSelected(),																
 																file,
 																controller.getSettings().getCurrency(),
-																controller.getCurrentDate());
+																controller.getCurrentDate(),
+																budget);
 			
 			Stage modalStage = Helpers.showModal("Vorgang läuft", "Der Monatsbericht wird erstellt, bitte warten...", controller.getStage(), controller.getIcon());
 
