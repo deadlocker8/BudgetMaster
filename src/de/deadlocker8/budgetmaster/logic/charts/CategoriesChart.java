@@ -281,25 +281,6 @@ public class CategoriesChart extends VBox implements ChartExportable
 		return total;
 	}
 	
-	private VBox prepareExportChart()
-	{
-	    //TODO won't work because vbox is not added to stage at this point
-	    VBox root = new VBox();
-        root.setStyle("-fx-background-color: transparent;");
-        root.setPadding(new Insets(25));
-        
-        root.getChildren().add(generate(titleIncomes, true));
-        root.getChildren().add(generate(titlePayments, false));
-        
-        Region spacer = new Region();
-        root.getChildren().add(spacer);
-        VBox.setVgrow(spacer, Priority.ALWAYS);
-        
-        root.getChildren().add(generateFullLegend());
-        
-        return root;
-    }	
-
 	@Override
 	public WritableImage export(int width, int height)
 	{
@@ -335,7 +316,7 @@ public class CategoriesChart extends VBox implements ChartExportable
 	@Override
 	public double getSuggestedWidth()
 	{
-		return prepareExportChart().getWidth() + 50;
+		return getWidth() + 50;
 	}
 
 	@Override
