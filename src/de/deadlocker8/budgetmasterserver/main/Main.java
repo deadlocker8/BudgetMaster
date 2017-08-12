@@ -15,6 +15,7 @@ import de.deadlocker8.budgetmasterserver.server.SparkServer;
 import logger.FileOutputMode;
 import logger.LogLevel;
 import logger.Logger;
+import tools.Localization;
 
 public class Main
 {
@@ -22,6 +23,9 @@ public class Main
 
 	public static void main(String[] args)
 	{
+		Localization.init("de/deadlocker8/budgetmaster/main/");
+		Localization.loadLanguage(Locale.GERMANY);
+		
 		Logger.setLevel(LogLevel.ALL);		
 		Logger.appInfo(bundle.getString("app.name"), bundle.getString("version.name"), bundle.getString("version.code"), bundle.getString("version.date"));
 		try
