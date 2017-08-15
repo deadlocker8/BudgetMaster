@@ -59,7 +59,7 @@ public class CategoryBudgetGet implements Route
 				
 				for(Category currentCategory : handler.getCategories())
 				{
-					budgets.add(new CategoryBudget(currentCategory.getName(), currentCategory.getColor(), 0));
+					budgets.add(new CategoryBudget(currentCategory, 0));
 					CategoryBudget currentBudget = budgets.get(budgets.size() - 1);
 					for(Payment currentPayment : payments)
 					{					

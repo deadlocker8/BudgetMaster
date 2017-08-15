@@ -244,7 +244,7 @@ public class ReportGenerator
 
 		for(CategoryBudget budget : categoryBudgets)
 		{				
-			PdfPCell cellName = new PdfPCell(new Phrase(budget.getName(), font));
+			PdfPCell cellName = new PdfPCell(new Phrase(budget.getCategory().getName(), font));
 			cellName.setBackgroundColor(new BaseColor(Color.WHITE));
 			cellName.setHorizontalAlignment(Element.ALIGN_CENTER);
 			table.addCell(cellName);
