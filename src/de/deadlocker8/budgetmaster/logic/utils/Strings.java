@@ -37,6 +37,10 @@ public class Strings
     public static final String CATEGORIES_PLACEHOLDER = "categories.placeholder";
     public static final String CHART_CATEGORIES_TITLE_INCOMES = "chart.categories.title.incomes";
     public static final String CHART_CATEGORIES_TITLE_PAYMENTS = "chart.categories.title.payments";
+    public static final String OK = "ok";
+    public static final String CANCEL = "cancel";
+    public static final String HOME_PLACEHOLDER = "home.placeholder";
+    public static final String HOME_BUDGET = "home.budget";
     
     //REPORT
     public static final String REPORT_POSITION = "report.position";
@@ -68,7 +72,10 @@ public class Strings
     public static final String MONTH_SEPTEMBER ="month.september"; 
     public static final String MONTH_OCTOBER ="month.october"; 
     public static final String MONTH_NOVEMBER ="month.november"; 
-    public static final String MONTH_DECEMBER ="month.december";     
+    public static final String MONTH_DECEMBER ="month.december";
+    
+    //NOTIFICATION
+    public static final String NOTIFICATION_CHART_EXPORT = "notification.chart.export";
     
     //INFO
     public static final String INFO_TITLE_CATEGORY_DELETE = "info.title.category.delete";
@@ -78,11 +85,27 @@ public class Strings
     public static final String INFO_TEXT_PAYMENT_REPEATING_DELETE = "info.text.payment.repeating.delete";
     public static final String INFO_TEXT_PAYMENT_REPEATING_DELETE_ALL = "info.text.payment.repeating.delete.all";
     public static final String INFO_TEXT_PAYMENT_REPEATING_DELETE_FUTURES = "info.text.payment.repeating.delete.futures";
-    public static final String INFO_TEXT_PAYMENT_REPEATING_DELETE_CANCEL = "info.text.payment.repeating.delete.cancel";
     public static final String INFO_FIRST_START = "info.first.start";
+    public static final String INFO_TITLE_CHART_EXPORT = "info.title.chart.export";
+    public static final String INFO_TEXT_CHART_EXPORT = "info.text.chart.export";
+    public static final String INFO_TEXT_CHART_EXPORT_OPEN_FOLDER = "info.text.chart.export.open.folder";
+    public static final String INFO_TEXT_CHART_EXPORT_OPEN_CHART = "info.text.chart.export.open.chart";
     
     //WARNING
     public static final String WARNING_ENDDATE_BEFORE_STARTDATE = "warning.enddate.before.startdate";
+    public static final String WARNING_EMPTY_WIDTH_IN_PIXELS = "warning.empty.width.in.pixels";
+    public static final String WARNING_INTEGER_WIDTH_IN_PIXELS = "warning.integer.width.in.pixels";
+    public static final String WARNING_EMPTY_HEIGHT_IN_PIXELS = "warning.empty.height.in.pixels";
+    public static final String WARNING_INTEGER_HEIGHT_IN_PIXELS = "warning.integer.height.in.pixels";
+    public static final String WARNING_EMPTY_SAVEPATH_CHART = "warning.empty.savepath.chart";
+    public static final String WARNING_EMPTY_CATEGORY_NAME = "warning.empty.category.name";
+    public static final String WARNING_EMPTY_PAYMENT_NAME = "warning.empty.payment.name";
+    public static final String WARNING_NAME_CHARACTER_LIMIT_REACHED_45 = "warning.name.character.limit.reached.45";
+    public static final String WARNING_NAME_CHARACTER_LIMIT_REACHED_150 = "warning.name.character.limit.reached.150";
+    public static final String WARNING_DESCRIPTION_CHARACTER_LIMIT_REACHED_150 = "warning.description.character.limit.reached.150";
+    public static final String WARNING_PAYMENT_AMOUNT = "warning.payment.amount";
+    public static final String WARNING_EMPTY_PAYMENT_DATE = "warning.empty.payment.date";
+    public static final String WARNING_PAYMENT_REPEATING = "warning.payment.repeating";
     
     //ERROR
     public static final String ERROR_UNKNOWN_HOST = "error.unknown.host";
@@ -95,4 +118,7 @@ public class Strings
     public static final String ERROR_CREATE_UI = "error.create.ui";
     public static final String ERROR_SERVER_CONNECTION = "error.server.connection";
     public static final String ERROR_SERVER_CONNECTION_WITH_DETAILS = "error.server.connection.with.details";
+    public static final String ERROR_OPEN_FOLDER = "error.open.folder";
+    public static final String ERROR_OPEN_CHART = "error.open.chart";
+    public static final String ERROR_CHART_EXPORT = "error.chart.export";
 }

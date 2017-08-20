@@ -14,6 +14,7 @@ import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmaster.ui.cells.ButtonCategoryCell;
 import de.deadlocker8.budgetmaster.ui.cells.RepeatingDayCell;
 import de.deadlocker8.budgetmaster.ui.cells.SmallCategoryCell;
@@ -37,6 +38,7 @@ import javafx.stage.Stage;
 import logger.Logger;
 import tools.AlertGenerator;
 import tools.ConvertTo;
+import tools.Localization;
 
 public class NewPaymentController
 {
@@ -241,27 +243,55 @@ public class NewPaymentController
 		String name = textFieldName.getText();
 		if(name == null || name.equals(""))
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Feld für den Namen darf nicht leer sein.", controller.getIcon(), controller.getStage(), null, false);
+			AlertGenerator.showAlert(AlertType.WARNING,
+			                        Localization.getString(Strings.TITLE_WARNING),
+			                        "", 
+			                        Localization.getString(Strings.WARNING_EMPTY_PAYMENT_NAME), 
+			                        controller.getIcon(), 
+			                        controller.getStage(), 
+			                        null, 
+			                        false);
 			return;
 		}
 		
 		if(name.length() > 150)
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Der Name darf maximal 150 Zeichen lang sein.", controller.getIcon(), controller.getStage(), null, false);
+			AlertGenerator.showAlert(AlertType.WARNING,
+			                        Localization.getString(Strings.TITLE_WARNING),
+			                        "", 
+			                        Localization.getString(Strings.WARNING_NAME_CHARACTER_LIMIT_REACHED_150), 
+			                        controller.getIcon(), 
+			                        controller.getStage(), 
+			                        null, 
+			                        false);
 			return;
 		}
 
 		String amountText = textFieldAmount.getText();
 		if(!amountText.matches("^-?\\d+(,\\d+)*(\\.\\d+(e\\d+)?)?$"))
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Gib eine gültige Zahl für den Betrag ein.", controller.getIcon(), controller.getStage(), null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, 
+			                        Localization.getString(Strings.TITLE_WARNING),
+			                        "",
+			                        Localization.getString(Strings.WARNING_PAYMENT_AMOUNT),
+			                        controller.getIcon(),
+			                        controller.getStage(),
+			                        null,
+			                        false);
 			return;
 		}
 
 		LocalDate date = datePicker.getValue();
 		if(date == null)
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Bitte wähle ein Datum aus.", controller.getIcon(), controller.getStage(), null, false);
+			AlertGenerator.showAlert(AlertType.WARNING,
+                			        Localization.getString(Strings.TITLE_WARNING),
+                			        "",
+                			        Localization.getString(Strings.WARNING_EMPTY_PAYMENT_DATE),
+                			        controller.getIcon(),
+                			        controller.getStage(),
+                			        null,
+                			        false);
 			return;
 		}
 
@@ -277,7 +307,14 @@ public class NewPaymentController
 		{
 			if(description.length() > 150)
 			{
-				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Die Notiz darf maximal 150 Zeichen lang sein.", controller.getIcon(), controller.getStage(), null, false);
+				AlertGenerator.showAlert(AlertType.WARNING,
+				                        Localization.getString(Strings.TITLE_WARNING),
+				                        "",
+				                        Localization.getString(Strings.WARNING_DESCRIPTION_CHARACTER_LIMIT_REACHED_150),
+				                        controller.getIcon(),
+				                        controller.getStage(),
+				                        null,
+				                        false);
 				return;
 			}
 		}
@@ -301,13 +338,27 @@ public class NewPaymentController
 
 			if(repeatingInterval == 0 && repeatingDay == 0)
 			{
-				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Wenn Wiederholung aktiviert ist dürfen nicht beide Eingabefelder 0 sein.\n(Zur Deaktivierung der Wiederholung einfach die Checkbox enthaken)", controller.getIcon(), controller.getStage(), null, false);
+				AlertGenerator.showAlert(AlertType.WARNING,
+				        Localization.getString(Strings.TITLE_WARNING),
+				        "",
+				        Localization.getString(Strings.WARNING_PAYMENT_REPEATING),				       
+				        controller.getIcon(),
+				        controller.getStage(),
+				        null,
+				        false);
 				return;
 			}
 
 			if(datePickerEnddate.getValue() != null && datePickerEnddate.getValue().isBefore(date))
 			{
-				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Enddatum darf zeitlich nicht vor dem Datum der Zahlung liegen.", controller.getIcon(), controller.getStage(), null, false);
+				AlertGenerator.showAlert(AlertType.WARNING, 
+				                        Localization.getString(Strings.TITLE_WARNING),
+				                        "",
+				                        Localization.getString(Strings.WARNING_ENDDATE_BEFORE_STARTDATE),
+				                        controller.getIcon(),
+				                        controller.getStage(),
+				                        null,
+				                        false);
 				return;
 			}			
 

@@ -10,6 +10,7 @@ import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmaster.ui.colorPick.ColorView;
 import fontAwesome.FontIconType;
 import javafx.fxml.FXML;
@@ -21,6 +22,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import tools.AlertGenerator;
 import tools.ConvertTo;
+import tools.Localization;
 
 public class NewCategoryController
 {
@@ -112,13 +114,27 @@ public class NewCategoryController
 		String name = textFieldName.getText();
 		if(name == null || name.equals(""))
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Feld für den Namen darf nicht leer sein.", controller.getIcon(), controller.getStage(), null, false);
+			AlertGenerator.showAlert(AlertType.WARNING,
+			                        Localization.getString(Strings.TITLE_WARNING),
+                        	        "",
+                        	        Localization.getString(Strings.WARNING_EMPTY_CATEGORY_NAME),
+                        	        controller.getIcon(), 
+                        	        controller.getStage(), 
+                        	        null, 
+                        	        false);
 			return;
 		}
 		
 		if(name.length() > 45)
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Der Name darf maximal 45 Zeichen lang sein.", controller.getIcon(), controller.getStage(), null, false);
+			AlertGenerator.showAlert(AlertType.WARNING,
+			                        Localization.getString(Strings.TITLE_WARNING),
+		                            "", 
+		                            Localization.getString(Strings.WARNING_NAME_CHARACTER_LIMIT_REACHED_45), 
+		                            controller.getIcon(), 
+		                            controller.getStage(), 
+		                            null, 
+		                            false);
 			return;
 		}
 		

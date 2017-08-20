@@ -153,7 +153,7 @@ public class PaymentCell extends ListCell<Payment>
 					
 					ButtonType buttonTypeOne = new ButtonType(Localization.getString(Strings.INFO_TEXT_PAYMENT_REPEATING_DELETE_ALL));
 					ButtonType buttonTypeTwo = new ButtonType(Localization.getString(Strings.INFO_TEXT_PAYMENT_REPEATING_DELETE_FUTURES));			
-					ButtonType buttonTypeCancel = new ButtonType(Localization.getString(Strings.INFO_TEXT_PAYMENT_REPEATING_DELETE_CANCEL), ButtonData.CANCEL_CLOSE);
+					ButtonType buttonTypeCancel = new ButtonType(Localization.getString(Strings.CANCEL), ButtonData.CANCEL_CLOSE);
 
 					alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
 
