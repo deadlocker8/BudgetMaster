@@ -11,6 +11,7 @@ import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmasterserver.logic.Database;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -33,6 +34,7 @@ import tools.AlertGenerator;
 import tools.BASE58Type;
 import tools.ConvertTo;
 import tools.HashUtils;
+import tools.Localization;
 import tools.RandomCreations;
 import tools.Worker;
 
@@ -89,6 +91,7 @@ public class SettingsController
 		buttonExportDB.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
 		buttonImportDB.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
 		buttonDeleteDB.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_RED) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
+		//TODO
 		textFieldURL.setPromptText("z.B. https://yourdomain.de");
 		textFieldCurrency.setPromptText("z.B. €, CHF, $");
 		textAreaTrustedHosts.setPromptText("z.B. localhost");
@@ -125,25 +128,53 @@ public class SettingsController
 		
 		if(clientSecret == null || clientSecret.equals(""))
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Feld für das Client Passwort darf nicht leer sein!", controller.getIcon(), controller.getStage(), null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, 
+									Localization.getString(Strings.TITLE_WARNING), 
+									"",
+									Localization.getString(Strings.WARNING_EMPTY_SECRET_CLIENT),
+									controller.getIcon(), 
+									controller.getStage(), 
+									null, 
+									false);
 			return;
 		}
 		
 		if(url == null || url.equals(""))
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Feld für die Server URL darf nicht leer sein!", controller.getIcon(), controller.getStage(), null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, 
+									Localization.getString(Strings.TITLE_WARNING), 
+									"", 
+									Localization.getString(Strings.WARNING_EMPTY_URL),
+									controller.getIcon(), 
+									controller.getStage(),
+									null, 
+									false);
 			return;
 		}
 
 		if(secret == null || secret.equals(""))
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Server Passwortfeld darf nicht leer sein!", controller.getIcon(), controller.getStage(), null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, 
+									Localization.getString(Strings.TITLE_WARNING), 
+									"", 
+									Localization.getString(Strings.WARNING_EMPTY_SECRET_SERVER), 
+									controller.getIcon(), 
+									controller.getStage(), 
+									null, 
+									false);
 			return;
 		}
 
 		if(currency == null || currency.equals(""))
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Bitte gib deine gewünschte Währung ein!", controller.getIcon(), controller.getStage(), null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, 
+									Localization.getString(Strings.TITLE_WARNING), 
+									"", 
+									Localization.getString(Strings.WARNING_EMPTY_CURRENCY),
+									controller.getIcon(), 
+									controller.getStage(), 
+									null, 
+									false);
 			return;
 		}
 
@@ -211,26 +242,33 @@ public class SettingsController
 		catch(IOException e)
 		{
 			Logger.error(e);
-			AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Beim Speichern der Einstellungen ist ein Fehler aufgetreten", controller.getIcon(), controller.getStage(), null, false);
+			AlertGenerator.showAlert(AlertType.ERROR, 
+									Localization.getString(Strings.TITLE_ERROR), 
+									"", 
+									Localization.getString(Strings.ERROR_SETTINGS_SAVE),
+									controller.getIcon(), 
+									controller.getStage(), 
+									null, 
+									false);
 		}
 
 		textFieldClientSecret.setText("******");
 		textFieldSecret.setText("******");
 
 		controller.refresh(controller.getFilterSettings());
-		controller.showNotification("Erfolgreich gespeichert");
+		controller.showNotification(Localization.getString(Strings.NOTIFICATION_SETTINGS_SAVE));
 	}
 
 	public void exportDB()
 	{
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Datenbank exportieren");
+		fileChooser.setTitle(Localization.getString(Strings.TITLE_DATABASE_EXPORT));
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON (*.json)", "*.json");
 		fileChooser.getExtensionFilters().add(extFilter);
 		File file = fileChooser.showSaveDialog(controller.getStage());
 		if(file != null)
 		{
-			Stage modalStage = Helpers.showModal("Vorgang läuft", "Die Datenbank wird exportiert, bitte warten...", controller.getStage(), controller.getIcon());
+			Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATABASE_EXPORT), controller.getStage(), controller.getIcon());
 
 			Worker.runLater(() -> {
 				try
@@ -244,7 +282,14 @@ public class SettingsController
 						{
 							modalStage.close();
 						}
-						AlertGenerator.showAlert(AlertType.INFORMATION, "Erfolgreich exportiert", "", "Die Datenbank wurde erfolgreich exportiert.", controller.getIcon(), controller.getStage(), null, false);
+						AlertGenerator.showAlert(AlertType.INFORMATION, 
+												Localization.getString(Strings.INFO_TITLE_DATABASE_EXPORT), 
+												"", 
+												Localization.getString(Strings.INFO_TEXT_DATABASE_EXPORT), 
+												controller.getIcon(), 
+												controller.getStage(), 
+												null, 
+												false);
 					});
 				}
 				catch(Exception e)
@@ -265,7 +310,7 @@ public class SettingsController
 	private void importDatabase()
 	{
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Datenbank importieren");
+		fileChooser.setTitle(Localization.getString(Strings.TITLE_DATABASE_IMPORT));
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON (*.json)", "*.json");
 		fileChooser.getExtensionFilters().add(extFilter);
 		File file = fileChooser.showOpenDialog(controller.getStage());
@@ -277,18 +322,32 @@ public class SettingsController
 				database = FileHelper.loadDatabaseJSON(file);
 				if(database.getCategories() == null || database.getNormalPayments() == null || database.getRepeatingPayments() == null)
 				{
-					AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Die angegebene Datei enthält kein gültiges BudgetMaster-Datenformat und kann daher nicht importiert werden.", controller.getIcon(), controller.getStage(), null, false);
+					AlertGenerator.showAlert(AlertType.ERROR, 
+											Localization.getString(Strings.TITLE_ERROR), 
+											"", 
+											Localization.getString(Strings.ERROR_DATABASE_IMPORT_WRONG_FILE), 
+											controller.getIcon(), 
+											controller.getStage(), 
+											null, 
+											false);
 					return;
 				}
 			}
 			catch(IOException e1)
 			{
 				Logger.error(e1);
-				AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Beim Einlesen der Datei ist ein Fehler aufgetreten.", controller.getIcon(), controller.getStage(), null, false);
+				AlertGenerator.showAlert(AlertType.ERROR, 
+										Localization.getString(Strings.TITLE_ERROR), 
+										"", 
+										Localization.getString(Strings.ERROR_DATABASE_IMPORT), 
+										controller.getIcon(), 
+										controller.getStage(), 
+										null, 
+										false);
 				return;
 			}
 
-			Stage modalStage = Helpers.showModal("Vorgang läuft", "Die Datenbank wird importiert, bitte warten...", controller.getStage(), controller.getIcon());
+			Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATABASE_IMPORT), controller.getStage(), controller.getIcon());
 
 			Worker.runLater(() -> {
 				try
@@ -301,7 +360,14 @@ public class SettingsController
 						{
 							modalStage.close();
 						}
-						AlertGenerator.showAlert(AlertType.INFORMATION, "Erfolgreich exportiert", "", "Die Datenbank wurder erfolgreich importiert.", controller.getIcon(), controller.getStage(), null, false);
+						AlertGenerator.showAlert(AlertType.INFORMATION, 
+												Localization.getString(Strings.INFO_TITLE_DATABASE_IMPORT), 
+												"", 
+												Localization.getString(Strings.INFO_TEXT_DATABASE_IMPORT), 
+												controller.getIcon(), 
+												controller.getStage(), 
+												null, 
+												false);
 					});
 				}
 				catch(Exception e)
@@ -322,16 +388,16 @@ public class SettingsController
 	public void importDB()
 	{
 		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Datenbank importieren");
+		alert.setTitle(Localization.getString(Strings.INFO_TITLE_DATABASE_IMPORT_DIALOG));
 		alert.setHeaderText("");		
-		alert.setContentText("Soll die Datenbank vor dem Importieren gelöscht werden?");
+		alert.setContentText(Localization.getString(Strings.INFO_TEXT_DATABASE_IMPORT_DIALOG));
 		Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
 		dialogStage.getIcons().add(controller.getIcon());
 		dialogStage.initOwner(controller.getStage());
 
-		ButtonType buttonTypeDelete = new ButtonType("Ja, Datenbank löschen");
-		ButtonType buttonTypeAppend = new ButtonType("Nein, Daten hinzufügen");
-		ButtonType buttonTypeCancel = new ButtonType("Abbrechen", ButtonData.CANCEL_CLOSE);
+		ButtonType buttonTypeDelete = new ButtonType(Localization.getString(Strings.INFO_TEXT_DATABASE_IMPORT_DIALOG_DELETE));
+		ButtonType buttonTypeAppend = new ButtonType(Localization.getString(Strings.INFO_TEXT_DATABASE_IMPORT_DIALOG_APPEND));
+		ButtonType buttonTypeCancel = new ButtonType(Localization.getString(Strings.CANCEL), ButtonData.CANCEL_CLOSE);
 
 		alert.getButtonTypes().setAll(buttonTypeDelete, buttonTypeAppend, buttonTypeCancel);
 		Optional<ButtonType> result = alert.showAndWait();
@@ -355,9 +421,9 @@ public class SettingsController
 		String verificationCode = ConvertTo.toBase58(RandomCreations.generateRandomMixedCaseString(4, true), true, BASE58Type.UPPER);
 
 		TextInputDialog dialog = new TextInputDialog();
-		dialog.setTitle("Datenbank löschen");
-		dialog.setHeaderText("Soll die Datenbank wirklich gelöscht werden?");
-		dialog.setContentText("Zur Bestätigung gib folgenden Code ein:\t" + verificationCode);
+		dialog.setTitle(Localization.getString(Strings.INFO_TITLE_DATABASE_DELETE));
+		dialog.setHeaderText(Localization.getString(Strings.INFO_HEADER_TEXT_DATABASE_DELETE));
+		dialog.setContentText(Localization.getString(Strings.INFO_TEXT_DATABASE_DELETE, verificationCode));
 		Stage dialogStage = (Stage)dialog.getDialogPane().getScene().getWindow();
 		dialogStage.getIcons().add(controller.getIcon());
 		dialogStage.initOwner(controller.getStage());
@@ -367,7 +433,7 @@ public class SettingsController
 		{
 			if(result.get().equals(verificationCode))
 			{
-				Stage modalStage = Helpers.showModal("Vorgang läuft", "Die Datenbank wird gelöscht, bitte warten...", controller.getStage(), controller.getIcon());
+				Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATABASE_DELETE), controller.getStage(), controller.getIcon());
 
 				Worker.runLater(() -> {
 					try
@@ -400,7 +466,14 @@ public class SettingsController
 			}
 			else
 			{
-				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Die Eingabe stimmt nicht mit dem Bestätigungscode überein.", controller.getIcon(), controller.getStage(), null, false);
+				AlertGenerator.showAlert(AlertType.WARNING, 
+										Localization.getString(Strings.TITLE_WARNING), 
+										"", 
+										Localization.getString(Strings.WARNING_WRONG_VERIFICATION_CODE), 
+										controller.getIcon(), 
+										controller.getStage(), 
+										null, 
+										false);
 				deleteDB();
 			}
 		}

@@ -13,6 +13,7 @@ import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmaster.ui.Refreshable;
 import de.deadlocker8.budgetmaster.ui.cells.PaymentCell;
 import fontAwesome.FontIconType;
@@ -36,6 +37,7 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import logger.Logger;
 import tools.ConvertTo;
+import tools.Localization;
 
 public class PaymentController implements Refreshable
 {
@@ -83,7 +85,7 @@ public class PaymentController implements Refreshable
 			}
 		});
 		
-		Label labelPlaceholder = new Label("Keine Daten verfügbar");      
+		Label labelPlaceholder = new Label(Localization.getString(Strings.PAYMENTS_PLACEHOLDER));      
         labelPlaceholder.setStyle("-fx-font-size: 16");
         listView.setPlaceholder(labelPlaceholder);
 
@@ -142,15 +144,15 @@ public class PaymentController implements Refreshable
 			newStage.initModality(Modality.APPLICATION_MODAL);
 			String titlePart;
 
-			titlePart = isPayment ? "Ausgabe" : "Einnahme";
+			titlePart = isPayment ? Localization.getString(Strings.TITLE_PAYMENT) : Localization.getString(Strings.TITLE_INCOME);
 
 			if(edit)
 			{
-				newStage.setTitle(titlePart + " bearbeiten");
+				newStage.setTitle(Localization.getString(Strings.TITLE_PAYMENT_EDIT, titlePart));
 			}
 			else
 			{
-				newStage.setTitle("Neue " + titlePart);
+				newStage.setTitle(Localization.getString(Strings.TITLE_PAYMENT_NEW, titlePart));
 			}
 
 			newStage.setScene(new Scene(root));
@@ -247,7 +249,7 @@ public class PaymentController implements Refreshable
 			Stage newStage = new Stage();
 			newStage.initOwner(controller.getStage());
 			newStage.initModality(Modality.APPLICATION_MODAL);	
-			newStage.setTitle("Filter");
+			newStage.setTitle(Localization.getString(Strings.TITLE_FILTER));
 			newStage.setScene(new Scene(root));
 			newStage.getIcons().add(controller.getIcon());
 			newStage.setResizable(false);

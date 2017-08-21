@@ -24,6 +24,7 @@ import de.deadlocker8.budgetmaster.logic.report.ReportGenerator;
 import de.deadlocker8.budgetmaster.logic.report.ReportItem;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmaster.ui.Refreshable;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
@@ -58,6 +59,7 @@ import javafx.util.Callback;
 import logger.Logger;
 import tools.AlertGenerator;
 import tools.ConvertTo;
+import tools.Localization;
 import tools.Worker;
 
 public class ReportController implements Refreshable
@@ -113,7 +115,7 @@ public class ReportController implements Refreshable
         checkBoxPositions.setSelected(true);
         hboxColumnPosition.getChildren().add(checkBoxPositions);
 
-        Label labelColumnPosition = new Label("Nr.");      
+        Label labelColumnPosition = new Label(Localization.getString(Strings.REPORT_POSITION));      
         hboxColumnPosition.getChildren().add(labelColumnPosition);
         
         checkBoxPositions.selectedProperty().addListener((a, b, c)->{
@@ -160,7 +162,7 @@ public class ReportController implements Refreshable
         checkBoxDate.setSelected(true);
         hboxColumnDate.getChildren().add(checkBoxDate);
 
-        Label labelComlumnDate = new Label("Datum");
+        Label labelComlumnDate = new Label(Localization.getString(Strings.REPORT_DATE));
         hboxColumnDate.getChildren().add(labelComlumnDate);        
         
         checkBoxDate.selectedProperty().addListener((a, b, c)->{
@@ -222,7 +224,7 @@ public class ReportController implements Refreshable
         checkBoxRepeating.setSelected(true);
         hboxColumnIsRepeating.getChildren().add(checkBoxRepeating);
         
-        Label labelColumnIsRepeating = new Label("Wiederholend");
+        Label labelColumnIsRepeating = new Label(Localization.getString(Strings.REPORT_REPEATING));
         hboxColumnIsRepeating.getChildren().add(labelColumnIsRepeating);
         
         checkBoxRepeating.selectedProperty().addListener((a, b, c)->{
@@ -257,7 +259,7 @@ public class ReportController implements Refreshable
         checkBoxCategory.setSelected(true);
         hboxColumnCategory.getChildren().add(checkBoxCategory);
         
-        Label labelColumnCategory = new Label("Kategorie");
+        Label labelColumnCategory = new Label(Localization.getString(Strings.REPORT_CATEGORY));
         hboxColumnCategory.getChildren().add(labelColumnCategory);
         
         checkBoxCategory.selectedProperty().addListener((a, b, c)->{
@@ -284,7 +286,7 @@ public class ReportController implements Refreshable
         checkBoxName.setSelected(true);
         hboxColumnName.getChildren().add(checkBoxName);
         
-        Label labelColumnName = new Label("Name");
+        Label labelColumnName = new Label(Localization.getString(Strings.REPORT_NAME));
         hboxColumnName.getChildren().add(labelColumnName);        
         
         checkBoxName.selectedProperty().addListener((a, b, c)->{
@@ -311,7 +313,7 @@ public class ReportController implements Refreshable
         checkBoxDescription.setSelected(true);
         hboxColumnDescription.getChildren().add(checkBoxDescription);
         
-        Label labelColumnDescription = new Label("Notiz");
+        Label labelColumnDescription = new Label(Localization.getString(Strings.REPORT_DESCRIPTION));
         hboxColumnDescription.getChildren().add(labelColumnDescription);
         
         checkBoxDescription.selectedProperty().addListener((a, b, c)->{
@@ -372,7 +374,7 @@ public class ReportController implements Refreshable
         checkBoxRating.setSelected(true);
         hboxColumnRating.getChildren().add(checkBoxRating);
         
-        Label labelColumnRating = new Label("Bewertung");
+        Label labelColumnRating = new Label(Localization.getString(Strings.REPORT_RATING));
         hboxColumnRating.getChildren().add(labelColumnRating);
         
         checkBoxRating.selectedProperty().addListener((a, b, c)->{
@@ -410,7 +412,7 @@ public class ReportController implements Refreshable
         checkBoxAmount.setSelected(true);
         hboxColumnAmount.getChildren().add(checkBoxAmount);
         
-        Label labelColumnAmount = new Label("Betrag");
+        Label labelColumnAmount = new Label(Localization.getString(Strings.REPORT_AMOUNT));
         hboxColumnAmount.getChildren().add(labelColumnAmount);
         
         checkBoxAmount.selectedProperty().addListener((a, b, c)->{
@@ -430,7 +432,7 @@ public class ReportController implements Refreshable
 			columnFilter.addColumn(type);
 		}
 		
-		Label labelPlaceholder = new Label("Keine Daten verfügbar");
+		Label labelPlaceholder = new Label(Localization.getString(Strings.PAYMENTS_PLACEHOLDER));
 		labelPlaceholder.setStyle("-fx-font-size: 16");
 		tableView.setPlaceholder(labelPlaceholder);		
 
@@ -455,7 +457,7 @@ public class ReportController implements Refreshable
 			Stage newStage = new Stage();
 			newStage.initOwner(controller.getStage());
 			newStage.initModality(Modality.APPLICATION_MODAL);
-			newStage.setTitle("Filter");
+			newStage.setTitle(Localization.getString(Strings.TITLE_FILTER));
 			newStage.setScene(new Scene(root));
 			newStage.getIcons().add(controller.getIcon());
 			newStage.setResizable(false);
@@ -517,7 +519,7 @@ public class ReportController implements Refreshable
 		}		
 		
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Bericht speichern");
+		fileChooser.setTitle(Localization.getString(Strings.TITLE_REPORT_SAVE));
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf");
 		if(reportPath != null)
 		{
@@ -529,7 +531,8 @@ public class ReportController implements Refreshable
 		    DateTime currentDate = controller.getCurrentDate();
 		    String currentMonth = currentDate.toString("MMMM");
 		    String currentYear = currentDate.toString("YYYY");
-		    fileChooser.setInitialFileName("BudgetMaster Monatsbericht - " + currentMonth + " " + currentYear + ".pdf");
+		   
+		    fileChooser.setInitialFileName( Localization.getString(Strings.REPORT_INITIAL_FILENAME, currentMonth, currentYear));
 		}
 		fileChooser.getExtensionFilters().add(extFilter);
 		File file = fileChooser.showSaveDialog(controller.getStage());		
@@ -550,7 +553,7 @@ public class ReportController implements Refreshable
 																controller.getCurrentDate(),
 																budget);
 			
-			Stage modalStage = Helpers.showModal("Vorgang läuft", "Der Monatsbericht wird erstellt, bitte warten...", controller.getStage(), controller.getIcon());
+			Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_REPORT), controller.getStage(), controller.getIcon());
 
 			Worker.runLater(() -> {
 				try
@@ -563,18 +566,18 @@ public class ReportController implements Refreshable
 							modalStage.close();
 						}
 						
-						controller.showNotification("Bericht erfolgreich gespeichert");	
+						controller.showNotification(Localization.getString(Strings.NOTIFICATION_REPORT_SAVE));	
 						
 						Alert alert = new Alert(AlertType.INFORMATION);
-						alert.setTitle("Erfolgreich erstellt");
+						alert.setTitle(Localization.getString(Strings.INFO_TITLE_REPORT_SAVE));
 						alert.setHeaderText("");
-						alert.setContentText("Der Monatsbericht wurde erfolgreich erstellt");			
+						alert.setContentText(Localization.getString(Strings.INFO_TEXT_REPORT_SAVE));			
 						Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
 						dialogStage.getIcons().add(controller.getIcon());						
 						
-						ButtonType buttonTypeOne = new ButtonType("Ordner öffnen");
-						ButtonType buttonTypeTwo = new ButtonType("Bericht öffnen");
-						ButtonType buttonTypeThree = new ButtonType("OK");						
+						ButtonType buttonTypeOne = new ButtonType(Localization.getString(Strings.INFO_TEXT_REPORT_SAVE_OPEN_FOLDER));
+						ButtonType buttonTypeTwo = new ButtonType(Localization.getString(Strings.INFO_TEXT_REPORT_SAVE_OPEN_REPORT));
+						ButtonType buttonTypeThree = new ButtonType(Localization.getString(Strings.OK));						
 						alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeThree);
 						
 						Optional<ButtonType> result = alert.showAndWait();						
@@ -587,7 +590,14 @@ public class ReportController implements Refreshable
 							catch(IOException e1)
 							{
 								Logger.error(e1);
-								AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Der Ordner konnte nicht geöffnet werden\n\n" + e1.getMessage(), controller.getIcon(), controller.getStage(), null, false);
+								AlertGenerator.showAlert(AlertType.ERROR, 
+														Localization.getString(Strings.TITLE_ERROR), 
+														"", 
+														Localization.getString(Strings.ERROR_OPEN_FOLDER, e1.getMessage()),
+														controller.getIcon(), 
+														controller.getStage(), 
+														null, 
+														false);
 							}
 						}
 						else if (result.get() == buttonTypeTwo)
@@ -599,7 +609,14 @@ public class ReportController implements Refreshable
 							catch(IOException e1)
 							{
 								Logger.error(e1);
-								AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Der Bericht konnte nicht geöffnet werden\n\n" + e1.getMessage(), controller.getIcon(), controller.getStage(), null, false);
+								AlertGenerator.showAlert(AlertType.ERROR, 
+														Localization.getString(Strings.TITLE_ERROR), 
+														"", 
+														Localization.getString(Strings.ERROR_OPEN_REPORT, e1.getMessage()), 
+														controller.getIcon(), 
+														controller.getStage(), 
+														null, 
+														false);
 							}
 						}
 						else
@@ -616,7 +633,14 @@ public class ReportController implements Refreshable
 						{
 							modalStage.close();
 						}
-						AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Beim Erstellen des Monatsberichts ist ein Fehler aufgetreten:\n\n" + e.getMessage(), controller.getIcon(), controller.getStage(), null, false);
+						AlertGenerator.showAlert(AlertType.ERROR, 
+												Localization.getString(Strings.TITLE_ERROR), 
+												"", 
+												Localization.getString(Strings.ERROR_REPORT_SAVE, e.getMessage()), 
+												controller.getIcon(), 
+												controller.getStage(), 
+												null, 
+												false);
 					});
 				}
 			});			

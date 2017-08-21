@@ -12,7 +12,9 @@ public class Strings
     
     //TITLE
     public static final String TITLE_INCOMES = "title.incomes";
+    public static final String TITLE_INCOME = "title.income";
     public static final String TITLE_PAYMENTS = "title.payments";
+    public static final String TITLE_PAYMENT = "title.payment";
     public static final String TITLE_CATEGORY = "title.category";
     public static final String TITLE_CATEGORIES = "title.categories";
     public static final String TITLE_CATEGORY_BUDGETS = "title.category.budgets";
@@ -24,10 +26,20 @@ public class Strings
     public static final String TITLE_CATEGORY_EDIT = "title.category.edit";  
     public static final String TITLE_CHART_EXPORT = "title.chart.export";
     public static final String TITLE_MODAL = "title.modal";
+    public static final String TITLE_PAYMENT_EDIT = "title.payment.edit";
+    public static final String TITLE_PAYMENT_NEW = "title.payment.new";
+    public static final String TITLE_FILTER = "title.filter";
+    public static final String TITLE_REPORT_SAVE = "title.report.save";
+    public static final String TITLE_DATABASE_EXPORT = "title.database.export";
+    public static final String TITLE_DATABASE_IMPORT = "title.database.import";
     
     //LOAD
     public static final String LOAD_CHARTS = "load.charts";
     public static final String LOAD_DATA = "load.data";
+    public static final String LOAD_REPORT = "load.report";
+    public static final String LOAD_DATABASE_EXPORT = "load.database.export";
+    public static final String LOAD_DATABASE_IMPORT = "load.database.import";
+    public static final String LOAD_DATABASE_DELETE = "load.database.delete";
     
     //MISC
     public static final String CATEGORY_NONE = "category.none";
@@ -41,6 +53,7 @@ public class Strings
     public static final String CANCEL = "cancel";
     public static final String HOME_PLACEHOLDER = "home.placeholder";
     public static final String HOME_BUDGET = "home.budget";
+    public static final String PAYMENTS_PLACEHOLDER = "payments.placeholder";
     
     //REPORT
     public static final String REPORT_POSITION = "report.position";
@@ -58,7 +71,8 @@ public class Strings
     public static final String REPORT_FOOTER_LEFT = "report.footer.left";
     public static final String REPORT_FOOTER_CENTER = "report.footer.center";
     public static final String REPORT_REPEATING_YES ="report.repeating.yes";
-    public static final String REPORT_REPEATING_NO ="report.repeating.no"; 
+    public static final String REPORT_REPEATING_NO ="report.repeating.no";
+    public static final String REPORT_INITIAL_FILENAME ="report.initial.filename"; 
     
     //MONTH_NAMES
     public static final String MONTH_JANUARY ="month.january"; 
@@ -76,6 +90,8 @@ public class Strings
     
     //NOTIFICATION
     public static final String NOTIFICATION_CHART_EXPORT = "notification.chart.export";
+    public static final String NOTIFICATION_REPORT_SAVE = "notification.report.save";
+    public static final String NOTIFICATION_SETTINGS_SAVE = "notification.settings.save";
     
     //INFO
     public static final String INFO_TITLE_CATEGORY_DELETE = "info.title.category.delete";
@@ -90,7 +106,26 @@ public class Strings
     public static final String INFO_TEXT_CHART_EXPORT = "info.text.chart.export";
     public static final String INFO_TEXT_CHART_EXPORT_OPEN_FOLDER = "info.text.chart.export.open.folder";
     public static final String INFO_TEXT_CHART_EXPORT_OPEN_CHART = "info.text.chart.export.open.chart";
-    
+    public static final String INFO_TITLE_REPORT_SAVE = "info.title.report.save";
+    public static final String INFO_TEXT_REPORT_SAVE = "info.text.report.save";
+    public static final String INFO_TEXT_REPORT_SAVE_OPEN_FOLDER = "info.text.report.save.open.folder";
+    public static final String INFO_TEXT_REPORT_SAVE_OPEN_REPORT = "info.text.report.save.open.report";
+    public static final String INFO_TITLE_DATABASE_EXPORT = "info.title.database.export";
+    public static final String INFO_TEXT_DATABASE_EXPORT = "info.text.database.export";
+    public static final String INFO_TITLE_DATABASE_IMPORT = "info.title.database.import";
+    public static final String INFO_TEXT_DATABASE_IMPORT = "info.text.database.import";
+    public static final String INFO_TITLE_DATABASE_IMPORT_DIALOG = "info.title.database.import.dialog";
+    public static final String INFO_TEXT_DATABASE_IMPORT_DIALOG = "info.text.database.import.dialog";
+    public static final String INFO_TEXT_DATABASE_IMPORT_DIALOG_DELETE = "info.text.database.import.dialog.delete";
+    public static final String INFO_TEXT_DATABASE_IMPORT_DIALOG_APPEND = "info.text.database.import.dialog.append";
+    public static final String INFO_TITLE_DATABASE_DELETE = "info.title.database.delete";
+    public static final String INFO_HEADER_TEXT_DATABASE_DELETE = "info.header.text.database.delete";
+    public static final String INFO_TEXT_DATABASE_DELETE = "info.text.database.delete";
+    public static final String INFO_TITLE_WELCOME = "info.title.welcome";
+    public static final String INFO_HEADER_TEXT_WELCOME = "info.header.text.welcome";
+    public static final String INFO_TEXT_WELCOME_FIRST_START = "info.text.welcome.first.start";
+    public static final String INFO_TEXT_WELCOME_COMPATIBILITY = "info.text.welcome.compatibility";
+        
     //WARNING
     public static final String WARNING_ENDDATE_BEFORE_STARTDATE = "warning.enddate.before.startdate";
     public static final String WARNING_EMPTY_WIDTH_IN_PIXELS = "warning.empty.width.in.pixels";
@@ -105,7 +140,14 @@ public class Strings
     public static final String WARNING_DESCRIPTION_CHARACTER_LIMIT_REACHED_150 = "warning.description.character.limit.reached.150";
     public static final String WARNING_PAYMENT_AMOUNT = "warning.payment.amount";
     public static final String WARNING_EMPTY_PAYMENT_DATE = "warning.empty.payment.date";
-    public static final String WARNING_PAYMENT_REPEATING = "warning.payment.repeating";
+    public static final String WARNING_PAYMENT_REPEATING = "warning.payment.repeating";    
+    public static final String WARNING_EMPTY_SECRET_CLIENT = " warning.empty.secret.client";
+    public static final String WARNING_EMPTY_URL = "warning.empty.url";
+    public static final String WARNING_EMPTY_SECRET_SERVER = "warning.empty.secret.server";
+    public static final String WARNING_EMPTY_CURRENCY = "warning.empty.currency";
+    public static final String WARNING_WRONG_VERIFICATION_CODE = "warning.wrong.verificationcode";
+    public static final String WARNING_EMPTY_PASSWORD = "warning.empty.password";
+    public static final String WARNING_WRONG_PASSWORD = "warning.wrong.password";
     
     //ERROR
     public static final String ERROR_UNKNOWN_HOST = "error.unknown.host";
@@ -120,5 +162,11 @@ public class Strings
     public static final String ERROR_SERVER_CONNECTION_WITH_DETAILS = "error.server.connection.with.details";
     public static final String ERROR_OPEN_FOLDER = "error.open.folder";
     public static final String ERROR_OPEN_CHART = "error.open.chart";
+    public static final String ERROR_OPEN_REPORT = "error.open.report";
     public static final String ERROR_CHART_EXPORT = "error.chart.export";
+    public static final String ERROR_REPORT_SAVE = "error.report.save";
+    public static final String ERROR_SETTINGS_SAVE = "error.settings.save";
+    public static final String ERROR_DATABASE_IMPORT = "error.database.import";
+    public static final String ERROR_DATABASE_IMPORT_WRONG_FILE = "error.database.import.wrong.file";
+    public static final String ERROR_PASSWORD_SAVE = "error.password.save";
 }

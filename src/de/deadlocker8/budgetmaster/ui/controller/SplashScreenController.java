@@ -67,7 +67,14 @@ public class SplashScreenController
 			settings = new Settings();
 			//first start of budgetmaster
 			Platform.runLater(() -> {
-				AlertGenerator.showAlert(AlertType.INFORMATION, "Willkommen", "Willkommen beim BudgetMaster", "Dies scheint dein erster Besuch zu sein, da noch keine Einstellungen existieren.\nDamit es losgehen kann, überlege dir ein Passwort und trage es in das Passwortfeld ein.\n\n(Hinweis: Das Passwort kann später jederzeit geändert werden.)\n ", icon, stage, null, false);
+				AlertGenerator.showAlert(AlertType.INFORMATION, 
+										Localization.getString(Strings.INFO_TITLE_WELCOME), 
+										Localization.getString(Strings.INFO_HEADER_TEXT_WELCOME),
+										Localization.getString(Strings.INFO_TEXT_WELCOME_FIRST_START),
+										icon, 
+										stage, 
+										null, 
+										false);
 			});
 			isFirstStart = true;
 		}
@@ -77,7 +84,14 @@ public class SplashScreenController
 			{
 				//compatibility (settings exists but from older version without clientSecret)
 				Platform.runLater(() -> {
-					AlertGenerator.showAlert(AlertType.INFORMATION, "Willkommen", "Willkommen beim BudgetMaster", "Deine Einstellungsdatei ist veraltet und muss aktualisert werden.\nSeit Version v1.3.0 wird ein Passwort benötigt, um BudgetMaster zu entsperren. Damit es losgehen kann, überlege dir ein Passwort und trage es in das Passwortfeld ein.\n\n(Hinweis: Das Passwort kann später jederzeit geändert werden.)\n ", icon, stage, null, false);
+					AlertGenerator.showAlert(AlertType.INFORMATION,
+											Localization.getString(Strings.INFO_TITLE_WELCOME), 
+											Localization.getString(Strings.INFO_HEADER_TEXT_WELCOME),
+											Localization.getString(Strings.INFO_TEXT_WELCOME_COMPATIBILITY),
+											icon,
+											stage,
+											null,
+											false);
 				});
 				isFirstStart = true;
 			}
@@ -93,7 +107,14 @@ public class SplashScreenController
 		String password = textFieldPassword.getText().trim();
 		if(password == null || password.isEmpty())
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Bitte gib dein Passwort ein.", icon, stage, null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, 
+									Localization.getString(Strings.TITLE_WARNING), 
+									"", 
+									Localization.getString(Strings.WARNING_EMPTY_PASSWORD), 
+									icon, 
+									stage, 
+									null, 
+									false);
 			return;
 		}		
 	
@@ -111,7 +132,14 @@ public class SplashScreenController
 			catch(IOException e)
 			{
 				Logger.error(e);
-				AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Beim Speichern des Passworts ist ein Fehler aufgetreten.", icon, stage, null, false);
+				AlertGenerator.showAlert(AlertType.ERROR, 
+										Localization.getString(Strings.TITLE_ERROR), 
+										"", 
+										Localization.getString(Strings.ERROR_PASSWORD_SAVE),
+										icon, 
+										stage, 
+										null, 
+										false);
 			}
 		}
 		else
@@ -119,7 +147,14 @@ public class SplashScreenController
 			//check password
 			if(!HashUtils.hash(password, Helpers.SALT).equals(settings.getClientSecret()))
 			{
-				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Passwort ist nicht korrekt.", icon, stage, null, false);
+				AlertGenerator.showAlert(AlertType.WARNING, 
+										Localization.getString(Strings.TITLE_WARNING), 
+										"", 
+										Localization.getString(Strings.WARNING_WRONG_PASSWORD),
+										icon, 
+										stage, 
+										null, 
+										false);
 				return;
 			}
 			
