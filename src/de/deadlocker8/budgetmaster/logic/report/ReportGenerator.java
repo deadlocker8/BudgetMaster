@@ -173,7 +173,7 @@ public class ReportGenerator
 			document.add(Chunk.NEWLINE);
 			document.add(new Paragraph("Einnahmen: " + Helpers.getCurrencyString(budget.getIncomeSum(), currency), fontGreen));
 			document.add(new Paragraph("Ausgaben: " + Helpers.getCurrencyString(budget.getPaymentSum(), currency), fontRed));
-			document.add(new Paragraph("Restbudget: " + Helpers.getCurrencyString(budget.getIncomeSum()-budget.getPaymentSum(), currency), fontBlack));			
+			document.add(new Paragraph("Restbudget: " + Helpers.getCurrencyString(budget.getIncomeSum() + budget.getPaymentSum(), currency), fontBlack));			
 			document.add(Chunk.NEWLINE);
 		}
 		

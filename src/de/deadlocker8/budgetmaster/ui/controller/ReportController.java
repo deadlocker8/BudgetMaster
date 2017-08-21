@@ -529,7 +529,7 @@ public class ReportController implements Refreshable
 		}
 		else
 		{
-		    fileChooser.setInitialFileName( Localization.getString(initialReportPath));
+		    fileChooser.setInitialFileName(initialReportPath);
 		}
 		fileChooser.getExtensionFilters().add(extFilter);
 		File file = fileChooser.showSaveDialog(controller.getStage());		
