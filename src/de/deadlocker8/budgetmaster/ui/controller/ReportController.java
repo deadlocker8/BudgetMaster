@@ -529,10 +529,10 @@ public class ReportController implements Refreshable
 		else
 		{
 		    DateTime currentDate = controller.getCurrentDate();
-		    String currentMonth = currentDate.toString("MMMM");
+		    String currentMonth = currentDate.toString("MM");
 		    String currentYear = currentDate.toString("YYYY");
 		   
-		    fileChooser.setInitialFileName( Localization.getString(Strings.REPORT_INITIAL_FILENAME, currentMonth, currentYear));
+		    fileChooser.setInitialFileName( Localization.getString(Strings.REPORT_INITIAL_FILENAME, currentYear, currentMonth));
 		}
 		fileChooser.getExtensionFilters().add(extFilter);
 		File file = fileChooser.showSaveDialog(controller.getStage());		
