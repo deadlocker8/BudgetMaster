@@ -54,6 +54,9 @@ public class Strings
     public static final String HOME_PLACEHOLDER = "home.placeholder";
     public static final String HOME_BUDGET = "home.budget";
     public static final String PAYMENTS_PLACEHOLDER = "payments.placeholder";
+    public static final String URL_PLACEHOLDER = "url.placeholder";
+    public static final String CURRENCY_PLACEHOLDER = "currency.placeholder";
+    public static final String TRUSTED_HOSTS_PLACEHOLDER = "trusted.hosts.placeholder";
     
     //REPORT
     public static final String REPORT_POSITION = "report.position";

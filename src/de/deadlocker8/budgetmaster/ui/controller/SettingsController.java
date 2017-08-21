@@ -91,10 +91,10 @@ public class SettingsController
 		buttonExportDB.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
 		buttonImportDB.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
 		buttonDeleteDB.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_RED) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
-		//TODO
-		textFieldURL.setPromptText("z.B. https://yourdomain.de");
-		textFieldCurrency.setPromptText("z.B. €, CHF, $");
-		textAreaTrustedHosts.setPromptText("z.B. localhost");
+
+		textFieldURL.setPromptText(Localization.getString(Strings.URL_PLACEHOLDER));
+		textFieldCurrency.setPromptText(Localization.getString(Strings.CURRENCY_PLACEHOLDER));
+		textAreaTrustedHosts.setPromptText(Localization.getString(Strings.TRUSTED_HOSTS_PLACEHOLDER));
 
 		ToggleGroup toggleGroup = new ToggleGroup();
 		radioButtonRestActivated.setToggleGroup(toggleGroup);
