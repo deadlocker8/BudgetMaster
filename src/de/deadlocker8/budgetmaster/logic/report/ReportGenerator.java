@@ -158,7 +158,6 @@ public class ReportGenerator
 		document.setMargins(50, 45, 50, 70);
 		Font headerFont = new Font(FontFamily.HELVETICA, 14, Font.BOLD);
 		Font smallHeaderFont = new Font(FontFamily.HELVETICA, 12, Font.BOLD);
-		Font paragraphFont = new Font(FontFamily.HELVETICA, 12, Font.NORMAL);
 
 		document.add(generateHeader());
 		document.add(Chunk.NEWLINE);

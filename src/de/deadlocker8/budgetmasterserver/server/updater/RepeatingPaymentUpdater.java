@@ -20,25 +20,28 @@ public class RepeatingPaymentUpdater
 		this.handler = handler;
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	public void updateRepeatingPayments(DateTime now)
 	{
 		try
-		{						
+		{
 			ArrayList<RepeatingPayment> repeatingPayments = handler.getAllRepeatingPayments();				
 			ArrayList<LatestRepeatingPayment> latest = handler.getLatestRepeatingPaymentEntries();
 			
 			for(RepeatingPayment currentPayment : repeatingPayments)
 			{
+				DateTime date = now;
 				int index = latest.indexOf(currentPayment);					
 				if(currentPayment.getRepeatEndDate() != null)
 				{
 					DateTime endDate = DateTime.parse(currentPayment.getRepeatEndDate());
-					if(endDate.isBefore(now))
-					{
-						now = endDate;
+					if(endDate.isBefore(date))
+					{						
+						date = endDate;
 					}
 				}
-				ArrayList<DateTime> correctDates = getCorrectRepeatingDates(currentPayment, now);				
+				ArrayList<DateTime> correctDates = getCorrectRepeatingDates(currentPayment, date);
+				
 				if(index != -1)
 				{
 					LatestRepeatingPayment currentLatest = latest.get(index);					
