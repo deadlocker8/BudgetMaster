@@ -77,6 +77,7 @@ public class ReportController implements Refreshable
 	private Controller controller;
 	private ColumnFilter columnFilter;
 	private File reportPath;
+	private String initialReportPath;
 
 	public void init(Controller controller)
 	{
@@ -528,11 +529,7 @@ public class ReportController implements Refreshable
 		}
 		else
 		{
-		    DateTime currentDate = controller.getCurrentDate();
-		    String currentMonth = currentDate.toString("MM");
-		    String currentYear = currentDate.toString("YYYY");
-		   
-		    fileChooser.setInitialFileName( Localization.getString(Strings.REPORT_INITIAL_FILENAME, currentYear, currentMonth));
+		    fileChooser.setInitialFileName( Localization.getString(initialReportPath));
 		}
 		fileChooser.getExtensionFilters().add(extFilter);
 		File file = fileChooser.showSaveDialog(controller.getStage());		
@@ -665,5 +662,11 @@ public class ReportController implements Refreshable
 		}
 		
 		refreshTableView();
+		
+		DateTime currentDate = controller.getCurrentDate();
+		String currentMonth = currentDate.toString("MM");
+	    String currentYear = currentDate.toString("YYYY");
+	   
+	    initialReportPath = Localization.getString(Strings.REPORT_INITIAL_FILENAME, currentYear, currentMonth);
 	}
 }
