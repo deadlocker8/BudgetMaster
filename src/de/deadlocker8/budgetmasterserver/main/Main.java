@@ -23,7 +23,7 @@ public class Main
 
 	public static void main(String[] args)
 	{
-		Localization.init("de/deadlocker8/budgetmaster/main/");
+		Localization.init("de/deadlocker8/budgetmaster/resources/");
 		Localization.loadLanguage(Locale.GERMANY);
 		
 		Logger.setLevel(LogLevel.ALL);		

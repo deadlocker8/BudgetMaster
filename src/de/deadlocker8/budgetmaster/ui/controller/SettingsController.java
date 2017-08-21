@@ -359,7 +359,8 @@ public class SettingsController
 						if(modalStage != null)
 						{
 							modalStage.close();
-						}
+						}						
+						
 						AlertGenerator.showAlert(AlertType.INFORMATION, 
 												Localization.getString(Strings.INFO_TITLE_DATABASE_IMPORT), 
 												"", 
@@ -368,6 +369,8 @@ public class SettingsController
 												controller.getStage(), 
 												null, 
 												false);
+						
+						controller.refresh(controller.getFilterSettings());
 					});
 				}
 				catch(Exception e)
@@ -382,6 +385,10 @@ public class SettingsController
 					});
 				}
 			});
+		}
+		else
+		{
+			controller.refresh(controller.getFilterSettings());
 		}
 	}
 
@@ -408,7 +415,7 @@ public class SettingsController
 		else if(result.get() == buttonTypeAppend)
 		{	
 			importDatabase();
-		}
+		}		
 	}
 	
 	public void deleteDB()
@@ -440,13 +447,17 @@ public class SettingsController
 					{
 						ServerConnection connection = new ServerConnection(controller.getSettings());
 						connection.deleteDatabase();
-						Platform.runLater(() -> {
+						Platform.runLater(() -> {							
 							if(modalStage != null)
 							{
 								modalStage.close();
 								if(importPending)
 								{
 									importDatabase();
+								}
+								else
+								{
+									controller.refresh(controller.getFilterSettings());
 								}
 							}
 						});
