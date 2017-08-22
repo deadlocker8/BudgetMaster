@@ -138,6 +138,7 @@ public class PaymentController implements Refreshable
 		try
 		{
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/NewPaymentGUI.fxml"));
+			fxmlLoader.setResources(Localization.getBundle());
 			Parent root = (Parent)fxmlLoader.load();
 			Stage newStage = new Stage();
 			newStage.initOwner(controller.getStage());
@@ -245,6 +246,7 @@ public class PaymentController implements Refreshable
 		try
 		{
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/FilterGUI.fxml"));
+			fxmlLoader.setResources(Localization.getBundle());
 			Parent root = (Parent)fxmlLoader.load();
 			Stage newStage = new Stage();
 			newStage.initOwner(controller.getStage());

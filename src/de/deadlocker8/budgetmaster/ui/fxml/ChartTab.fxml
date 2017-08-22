@@ -17,7 +17,7 @@
    <children>
       <Accordion fx:id="accordion" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="25.0">
         <panes>
-          <TitledPane animated="false" text="Einnahmen/Ausgaben nach Kategorien">
+          <TitledPane animated="false" text="%charttab.titlepane.chart.categories">
                <content>
                   <VBox spacing="20.0">
                      <children>
@@ -25,7 +25,7 @@
                            <children>
                               <HBox alignment="CENTER_RIGHT" spacing="10.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label text="Von:">
+                                    <Label text="%charttab.label.start">
                                        <font>
                                           <Font name="System Bold" size="16.0" />
                                        </font>
@@ -38,7 +38,7 @@
                               </HBox>
                               <HBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label text="Bis:">
+                                    <Label text="%charttab.label.end">
                                        <font>
                                           <Font name="System Bold" size="16.0" />
                                        </font>
@@ -78,7 +78,7 @@
                   <Font name="System Bold" size="12.0" />
                </font>
           </TitledPane>
-          <TitledPane animated="false" text="Einnahmen/Ausgaben pro Monat">
+          <TitledPane animated="false" text="%charttab.titlepane.chart.months">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
@@ -91,7 +91,7 @@
                                  <children>
                                     <HBox alignment="CENTER_RIGHT" spacing="10.0">
                                        <children>
-                                          <Label prefHeight="25.0" prefWidth="45.0" text="Von:">
+                                          <Label prefHeight="25.0" prefWidth="45.0" text="%charttab.label.end">
                                              <font>
                                                 <Font name="System Bold" size="16.0" />
                                              </font>
@@ -102,7 +102,7 @@
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" spacing="10.0">
                                        <children>
-                                          <Label prefWidth="45.0" text="Bis:">
+                                          <Label prefWidth="45.0" text="%charttab.label.end">
                                              <font>
                                                 <Font name="System Bold" size="16.0" />
                                              </font>
@@ -115,11 +115,11 @@
                               </VBox>
                               <HBox alignment="CENTER_LEFT" spacing="15.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <RadioButton fx:id="radioButtonBars" mnemonicParsing="false" text="Balken">
+                                    <RadioButton fx:id="radioButtonBars" mnemonicParsing="false" text="%charttab.checkbox.bars">
                                        <font>
                                           <Font size="14.0" />
                                        </font></RadioButton>
-                                    <RadioButton fx:id="radioButtonLines" mnemonicParsing="false" text="Linien">
+                                    <RadioButton fx:id="radioButtonLines" mnemonicParsing="false" text="%charttab.checkbox.lines">
                                        <font>
                                           <Font size="14.0" />
                                        </font></RadioButton>

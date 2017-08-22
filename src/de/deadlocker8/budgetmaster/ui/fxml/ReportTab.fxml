@@ -18,12 +18,12 @@
                <children>
                   <VBox alignment="CENTER" spacing="10.0">
                      <children>
-                        <Button fx:id="buttonFilter" mnemonicParsing="false" onAction="#filter" text="Filter">
+                        <Button fx:id="buttonFilter" mnemonicParsing="false" onAction="#filter" text="%paymenttab.button.filter">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Button>
-                        <Label fx:id="labelFilterActive" text="Filter aktiv">
+                        <Label fx:id="labelFilterActive" text="%paymenttab.label.filter.active">
                            <font>
                               <Font name="System Bold" size="13.0" />
                            </font>
@@ -39,9 +39,9 @@
                <children>
                   <VBox spacing="10.0">
                      <children>
-                        <CheckBox fx:id="checkBoxIncludeBudget" mnemonicParsing="false" text="Budgetkalkulation hinzufügen" />
-                        <CheckBox fx:id="checkBoxSplitTable" mnemonicParsing="false" text="Einnahmen und Ausgaben als getrennte Tabellen" />
-                        <CheckBox fx:id="checkBoxIncludeCategoryBudgets" mnemonicParsing="false" text="Verbrauch nach Kategorien hinzufügen" />
+                        <CheckBox fx:id="checkBoxIncludeBudget" mnemonicParsing="false" text="%reporttab.checkbox.include.budget" />
+                        <CheckBox fx:id="checkBoxSplitTable" mnemonicParsing="false" text="%reporttab.checkbox.split.tables" />
+                        <CheckBox fx:id="checkBoxIncludeCategoryBudgets" mnemonicParsing="false" text="%reporttab.checkbox.inclue.categorybudgets" />
                      </children>
                   </VBox>
                </children>
@@ -57,7 +57,7 @@
                <children>
                   <VBox alignment="CENTER" spacing="10.0">
                      <children>
-                        <Button fx:id="buttonGenerate" mnemonicParsing="false" onAction="#generate" text="Bericht erzeugen">
+                        <Button fx:id="buttonGenerate" mnemonicParsing="false" onAction="#generate" text="%reporttab.button.generate.report">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>

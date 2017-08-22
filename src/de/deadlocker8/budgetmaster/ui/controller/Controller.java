@@ -93,24 +93,28 @@ public class Controller
 		try
 		{
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/HomeTab.fxml"));
+			fxmlLoader.setResources(Localization.getBundle());
 			Parent nodeTabHome = (Parent)fxmlLoader.load();
 			homeController = fxmlLoader.getController();
 			homeController.init(this);
 			tabHome.setContent(nodeTabHome);
 
 			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/PaymentTab.fxml"));
+			fxmlLoader.setResources(Localization.getBundle());
 			Parent nodeTabPayment = (Parent)fxmlLoader.load();
 			paymentController = fxmlLoader.getController();
 			paymentController.init(this);
 			tabPayments.setContent(nodeTabPayment);
 
 			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/CategoryTab.fxml"));
+			fxmlLoader.setResources(Localization.getBundle());
 			Parent nodeTabCategory = (Parent)fxmlLoader.load();
 			categoryController = fxmlLoader.getController();
 			categoryController.init(this);
 			tabCategories.setContent(nodeTabCategory);
 
 			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/ChartTab.fxml"));
+			fxmlLoader.setResources(Localization.getBundle());
 			Parent nodeTabChart = (Parent)fxmlLoader.load();
 			chartController = fxmlLoader.getController();
 			chartController.init(this);
@@ -123,12 +127,14 @@ public class Controller
 			});
 			
 			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/ReportTab.fxml"));
+			fxmlLoader.setResources(Localization.getBundle());
 			Parent nodeTabReport = (Parent)fxmlLoader.load();
 			reportController = fxmlLoader.getController();
 			reportController.init(this);
 			tabReports.setContent(nodeTabReport);
 
 			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/SettingsTab.fxml"));
+			fxmlLoader.setResources(Localization.getBundle());
 			Parent nodeTabSettings = (Parent)fxmlLoader.load();
 			settingsController = fxmlLoader.getController();
 			settingsController.init(this);

@@ -168,6 +168,7 @@ public class SplashScreenController
 		try
 		{
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/GUI.fxml"));
+			fxmlLoader.setResources(Localization.getBundle());
 			Parent root = (Parent)fxmlLoader.load();
 			Stage newStage = new Stage();
 			newStage.setTitle(Localization.getString(Strings.APP_NAME));

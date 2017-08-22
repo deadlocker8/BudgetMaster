@@ -17,17 +17,17 @@
                <children>
                   <VBox alignment="TOP_RIGHT" prefHeight="125.0" prefWidth="99.0" spacing="15.0">
                      <children>
-                        <Label text="Breite:">
+                        <Label text="%export.chart.label.width">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Label text="Höhe:">
+                        <Label text="%export.chart.label.height">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="30.0" prefWidth="92.0" text="Speicherort:">
+                        <Label prefHeight="30.0" prefWidth="92.0" text="%export.chart.label.savepath">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
@@ -44,7 +44,7 @@
                         <HBox alignment="CENTER_LEFT" spacing="15.0">
                            <children>
                               <Label fx:id="labelSavePath" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-                              <Button fx:id="buttonChooseFile" mnemonicParsing="false" onAction="#chooseFile" text="Ändern" />
+                              <Button fx:id="buttonChooseFile" mnemonicParsing="false" onAction="#chooseFile" text="%export.chart.button.change" />
                            </children>
                         </HBox>
                      </children>
@@ -53,8 +53,8 @@
             </HBox>
             <HBox alignment="CENTER" spacing="25.0" VBox.vgrow="ALWAYS">
                <children>
-                  <Button fx:id="buttonCancel" mnemonicParsing="false" onAction="#cancel" text="Abbrechen" />
-                  <Button fx:id="buttonExport" mnemonicParsing="false" onAction="#export" text="Exportieren" />
+                  <Button fx:id="buttonCancel" mnemonicParsing="false" onAction="#cancel" text="%cancel" />
+                  <Button fx:id="buttonExport" mnemonicParsing="false" onAction="#export" text="%export.chart.button.export" />
                </children>
             </HBox>
          </children>

@@ -25,7 +25,6 @@ public class Main extends Application
 		{			
 		    Image icon = new Image("/de/deadlocker8/budgetmaster/resources/icon.png");
 			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("de/deadlocker8/budgetmaster/ui/fxml/SplashScreen.fxml"));
-			//TODO
 			loader.setResources(Localization.getBundle());
 			Parent root = (Parent)loader.load();
 			

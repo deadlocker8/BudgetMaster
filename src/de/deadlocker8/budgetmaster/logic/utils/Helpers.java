@@ -123,6 +123,7 @@ public class Helpers
 		{
 			FXMLLoader fxmlLoader = new FXMLLoader(Helpers.class.getResource("/de/deadlocker8/budgetmaster/ui/fxml/Modal.fxml"));
 			Parent root = (Parent)fxmlLoader.load();
+			fxmlLoader.setResources(Localization.getBundle());
 			Stage newStage = new Stage();
 			newStage.initOwner(owner);
 			newStage.initModality(Modality.APPLICATION_MODAL);

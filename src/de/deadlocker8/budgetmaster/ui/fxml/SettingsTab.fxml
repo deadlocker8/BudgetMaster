@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPaneMain" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.deadlocker8.budgetmaster.ui.controller.SettingsController">
+<AnchorPane fx:id="anchorPaneMain" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.deadlocker8.budgetmaster.ui.controller.SettingsController">
    <children>
       <VBox alignment="TOP_CENTER" layoutY="24.0" prefHeight="562.0" prefWidth="772.0" spacing="25.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="25.0">
          <children>
@@ -20,12 +20,12 @@
                <children>
                   <VBox alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="158.0" spacing="20.0">
                      <children>
-                        <Label fx:id="labelClientSecret" prefHeight="25.0" text="Client Passwort:">
+                        <Label fx:id="labelClientSecret" prefHeight="25.0" text="%settingstab.label.secret.client">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="labelURL" prefHeight="25.0" text="Server URL:">
+                        <Label fx:id="labelURL" prefHeight="25.0" text="%settingstab.label.url">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
@@ -33,22 +33,22 @@
                               <Insets />
                            </VBox.margin>
                         </Label>
-                        <Label fx:id="labelSecret" prefHeight="25.0" text="Server Passwort:">
+                        <Label fx:id="labelSecret" prefHeight="25.0" text="%settingstab.label.secret.server">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="labelCurrency" prefHeight="25.0" text="Währung:">
+                        <Label fx:id="labelCurrency" prefHeight="25.0" text="%settingstab.label.currency">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="labelSecret11" prefHeight="25.0" text="Übertrag:">
+                        <Label fx:id="labelSecret11" prefHeight="25.0" text="%settingstab.label.rest">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="labelSecret111" alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="-Infinity" minHeight="60.0" prefWidth="158.0" text="Vertrauenswürdige Hosts:" textAlignment="RIGHT" wrapText="true">
+                        <Label fx:id="labelSecret111" alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="-Infinity" minHeight="60.0" prefWidth="158.0" text="%settingstab.label.trusted.hosts" textAlignment="RIGHT" wrapText="true">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
@@ -56,7 +56,7 @@
                               <Insets top="-5.0" />
                            </VBox.margin>
                         </Label>
-                        <Label fx:id="labelSecret1111" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" text="(ein Host pro Zeile)" textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS">
+                        <Label fx:id="labelSecret1111" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" text="%settingstab.label.trusted.hosts.info" textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -64,7 +64,7 @@
                               <Insets top="-20.0" />
                            </VBox.margin>
                         </Label>
-                        <Label fx:id="labelSecret1112" alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="-Infinity" prefWidth="158.0" text="Datenbank:" textAlignment="RIGHT" wrapText="true">
+                        <Label fx:id="labelSecret1112" alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="-Infinity" prefWidth="158.0" text="%settingstab.label.database" textAlignment="RIGHT" wrapText="true">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
@@ -94,7 +94,7 @@
                         <TextField fx:id="textFieldCurrency" />
                         <HBox alignment="CENTER" prefHeight="11.0" prefWidth="539.0" spacing="30.0">
                            <children>
-                              <RadioButton fx:id="radioButtonRestActivated" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="aktiviert">
+                              <RadioButton fx:id="radioButtonRestActivated" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%settingstab.label.rest.activated">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
@@ -102,7 +102,7 @@
                                     <Insets />
                                  </HBox.margin>
                               </RadioButton>
-                              <RadioButton fx:id="radioButtonRestDeactivated" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="deaktiviert" HBox.hgrow="ALWAYS">
+                              <RadioButton fx:id="radioButtonRestDeactivated" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%settingstab.label.rest.deactivated" HBox.hgrow="ALWAYS">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
@@ -115,17 +115,17 @@
                            </VBox.margin></TextArea>
                         <HBox alignment="CENTER_LEFT" prefHeight="11.0" prefWidth="539.0" spacing="30.0">
                            <children>
-                              <Button fx:id="buttonExportDB" mnemonicParsing="false" onAction="#exportDB" text="Exportieren">
+                              <Button fx:id="buttonExportDB" mnemonicParsing="false" onAction="#exportDB" text="%settingstab.button.database.export">
                                  <font>
                                     <Font name="System Bold" size="14.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="buttonImportDB" mnemonicParsing="false" onAction="#importDB" text="Importieren">
+                              <Button fx:id="buttonImportDB" mnemonicParsing="false" onAction="#importDB" text="%settingstab.button.database.import">
                                  <font>
                                     <Font name="System Bold" size="14.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="buttonDeleteDB" mnemonicParsing="false" onAction="#deleteDB" text="Löschen">
+                              <Button fx:id="buttonDeleteDB" mnemonicParsing="false" onAction="#deleteDB" text="%settingstab.button.database.delete">
                                  <font>
                                     <Font name="System Bold" size="14.0" />
                                  </font>
@@ -135,7 +135,7 @@
                               <Insets />
                            </VBox.margin>
                         </HBox>
-                        <Button fx:id="buttonSave" mnemonicParsing="false" onAction="#save" text="Speichern">
+                        <Button fx:id="buttonSave" mnemonicParsing="false" onAction="#save" text="%settings.tab.button.save">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>

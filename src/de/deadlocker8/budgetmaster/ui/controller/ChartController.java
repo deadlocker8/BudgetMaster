@@ -198,6 +198,7 @@ public class ChartController implements Refreshable
 				try
 				{
 					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/ExportChartGUI.fxml"));
+					fxmlLoader.setResources(Localization.getBundle());
 					Parent root = (Parent)fxmlLoader.load();
 					Stage newStage = new Stage();
 					newStage.initOwner(controller.getStage());
