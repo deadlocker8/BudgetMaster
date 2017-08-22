@@ -11,7 +11,9 @@ import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.logic.utils.LanguageType;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
+import de.deadlocker8.budgetmaster.ui.cells.LanguageCell;
 import de.deadlocker8.budgetmasterserver.logic.database.Database;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -20,6 +22,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
@@ -56,8 +59,10 @@ public class SettingsController
 	@FXML private RadioButton radioButtonRestActivated;
 	@FXML private RadioButton radioButtonRestDeactivated;
 	@FXML private TextArea textAreaTrustedHosts;
+	@FXML private ComboBox<LanguageType> comboBoxLanguage;
 
 	private Controller controller;
+	private LanguageType previousLanguage;
 
 	public void init(Controller controller)
 	{
@@ -65,6 +70,15 @@ public class SettingsController
 		
 		textFieldClientSecret.setText("******");
 		radioButtonRestDeactivated.setSelected(true);
+		
+		comboBoxLanguage.setCellFactory((view) -> {
+			return new LanguageCell(true);
+		});		
+		
+		comboBoxLanguage.getItems().addAll(LanguageType.values());		
+		comboBoxLanguage.setButtonCell(new LanguageCell(false));
+		comboBoxLanguage.setValue(LanguageType.GERMAN);
+		previousLanguage = LanguageType.GERMAN;
 		
 		if(controller.getSettings().isComplete())
 		{
@@ -80,8 +94,15 @@ public class SettingsController
 				radioButtonRestDeactivated.setSelected(true);
 			}
 			setTextAreaTrustedHosts(controller.getSettings().getTrustedHosts());
+			
+			if(controller.getSettings().getLanguage() != null)
+			{
+				LanguageType language = controller.getSettings().getLanguage();
+				comboBoxLanguage.setValue(language);
+				previousLanguage = language;
+			}
 		}
-
+		
 		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
 		labelClientSecret.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
 		labelSecret.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
@@ -206,6 +227,7 @@ public class SettingsController
 			controller.getSettings().setCurrency(currency);
 			controller.getSettings().setRestActivated(radioButtonRestActivated.isSelected());
 			controller.getSettings().setTrustedHosts(trustedHosts);
+			controller.getSettings().setLanguage(comboBoxLanguage.getValue());
 		}
 		else
 		{
@@ -232,6 +254,7 @@ public class SettingsController
 			settings.setCurrency(currency);
 			settings.setRestActivated(radioButtonRestActivated.isSelected());
 			settings.setTrustedHosts(trustedHosts);
+			settings.setLanguage(comboBoxLanguage.getValue());
 			controller.setSettings(settings);
 		}
 
@@ -257,6 +280,30 @@ public class SettingsController
 
 		controller.refresh(controller.getFilterSettings());
 		controller.showNotification(Localization.getString(Strings.NOTIFICATION_SETTINGS_SAVE));
+		
+		if(controller.getSettings().getLanguage() != previousLanguage)
+		{
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle(Localization.getString(Strings.INFO_TITLE_LANGUAGE_CHANGED));
+			alert.setHeaderText("");
+			alert.setContentText(Localization.getString(Strings.INFO_TEXT_LANGUAGE_CHANGED));			
+			Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
+			dialogStage.getIcons().add(controller.getIcon());					
+			
+			ButtonType buttonTypeOne = new ButtonType(Localization.getString(Strings.INFO_TEXT_LANGUAGE_CHANGED_RESTART_NOW));
+			ButtonType buttonTypeTwo = new ButtonType(Localization.getString(Strings.INFO_TEXT_LANGUAGE_CHANGED_RESTART_LATER));							
+			alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
+			
+			Optional<ButtonType> result = alert.showAndWait();						
+			if (result.get() == buttonTypeOne)
+			{
+				//TODO restart programm
+			}
+			else
+			{
+				alert.close();
+			}
+		}
 	}
 
 	public void exportDB()

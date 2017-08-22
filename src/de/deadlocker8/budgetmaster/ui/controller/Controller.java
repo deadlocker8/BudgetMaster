@@ -328,12 +328,19 @@ public class Controller
 
 	public void about()
 	{
-		AlertGenerator.showAboutAlert(Localization.getString(Strings.APP_NAME),
-									Localization.getString(Strings.VERSION_NAME),
-									Localization.getString(Strings.VERSION_CODE),
-									Localization.getString(Strings.VERSION_DATE),
-									Localization.getString(Strings.AUTHOR),
-									icon, stage, null, false);
+		ArrayList<String> creditLines = new ArrayList<>();
+		creditLines.add(Localization.getString(Strings.CREDITS));
+				
+		AlertGenerator.showAboutAlertWithCredits(Localization.getString(Strings.APP_NAME),
+												Localization.getString(Strings.VERSION_NAME),
+												Localization.getString(Strings.VERSION_CODE),
+												Localization.getString(Strings.VERSION_DATE),
+												Localization.getString(Strings.AUTHOR),
+												creditLines,
+												icon, 
+												stage, 
+												null, 
+												false);
 	}	
 	
 	public void refresh(FilterSettings newFilterSettings)

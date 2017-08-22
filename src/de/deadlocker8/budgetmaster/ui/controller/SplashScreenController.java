@@ -62,6 +62,12 @@ public class SplashScreenController
 		});
 		
 		settings = FileHelper.loadSettings();
+		//load correct language
+		if(settings.getLanguage() != null)
+		{
+			Localization.loadLanguage(settings.getLanguage().getLocale());
+		}
+		
 		if(settings == null)
 		{	
 			settings = new Settings();
@@ -172,7 +178,7 @@ public class SplashScreenController
 			Parent root = (Parent)fxmlLoader.load();
 			Stage newStage = new Stage();
 			newStage.setTitle(Localization.getString(Strings.APP_NAME));
-			newStage.setScene(new Scene(root, 650, 650));
+			newStage.setScene(new Scene(root, 650, 675));
 			newStage.getIcons().add(icon);			
 			newStage.setResizable(true);
 			newStage.setMinHeight(650);

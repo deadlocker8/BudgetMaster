@@ -8,6 +8,7 @@ public class Strings
     public static final String VERSION_NAME = "version.name";
     public static final String VERSION_DATE = "version.date";
     public static final String AUTHOR = "author";
+    public static final String CREDITS = "credits";
     public static final String FOLDER = "folder";    
     
     //TITLE
@@ -128,6 +129,10 @@ public class Strings
     public static final String INFO_HEADER_TEXT_WELCOME = "info.header.text.welcome";
     public static final String INFO_TEXT_WELCOME_FIRST_START = "info.text.welcome.first.start";
     public static final String INFO_TEXT_WELCOME_COMPATIBILITY = "info.text.welcome.compatibility";
+    public static final String INFO_TITLE_LANGUAGE_CHANGED = "info.title.language.changed";
+    public static final String INFO_TEXT_LANGUAGE_CHANGED = "info.text.language.changed";
+    public static final String INFO_TEXT_LANGUAGE_CHANGED_RESTART_NOW = "info.text.language.changed.restart.now";
+    public static final String INFO_TEXT_LANGUAGE_CHANGED_RESTART_LATER = "info.text.language.changed.restart.later";
         
     //WARNING
     public static final String WARNING_ENDDATE_BEFORE_STARTDATE = "warning.enddate.before.startdate";

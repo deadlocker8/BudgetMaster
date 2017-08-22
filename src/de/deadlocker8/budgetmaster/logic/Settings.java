@@ -2,6 +2,8 @@ package de.deadlocker8.budgetmaster.logic;
 
 import java.util.ArrayList;
 
+import de.deadlocker8.budgetmaster.logic.utils.LanguageType;
+
 public class Settings
 {
 	private String clientSecret;
@@ -10,6 +12,7 @@ public class Settings
 	private String currency;
 	private boolean restActivated;
 	private ArrayList<String> trustedHosts;
+	private LanguageType language;
 	
 	public Settings()
 	{
@@ -74,8 +77,18 @@ public class Settings
 	public void setTrustedHosts(ArrayList<String> trustedHosts)
 	{
 		this.trustedHosts = trustedHosts;
-	}
+	}	
 	
+	public LanguageType getLanguage()
+	{
+		return language;
+	}
+
+	public void setLanguage(LanguageType language)
+	{
+		this.language = language;
+	}
+
 	public boolean isComplete()
 	{
 		if(url == null)
@@ -91,6 +104,6 @@ public class Settings
 	@Override
 	public String toString()
 	{
-		return "Settings [clientSecret=" + clientSecret + ", url=" + url + ", secret=" + secret + ", currency=" + currency + ", restActivated=" + restActivated + ", trustedHosts=" + trustedHosts + "]";
+		return "Settings [clientSecret=" + clientSecret + ", url=" + url + ", secret=" + secret + ", currency=" + currency + ", restActivated=" + restActivated + ", trustedHosts=" + trustedHosts + ", language=" + language + "]";
 	}
 }
