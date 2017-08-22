@@ -8,6 +8,7 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -19,6 +20,7 @@ import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
 import de.deadlocker8.budgetmasterserver.logic.Settings;
 import de.deadlocker8.budgetmasterserver.logic.Utils;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
+import tools.Localization;
 
 public class DatabaseHandlerTest
 {			
@@ -36,6 +38,9 @@ public class DatabaseHandlerTest
 			handler.deleteDatabase();
 			handler = new DatabaseHandler(settings);			
 			databaseHandler = handler;
+			
+			Localization.init("de/deadlocker8/budgetmaster/resources/");
+			Localization.loadLanguage(Locale.GERMANY);
 		}
 		catch(IOException | URISyntaxException e)
 		{
