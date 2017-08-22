@@ -47,7 +47,7 @@ public class Main extends Application
 	@Override
 	public void init() throws Exception
 	{
-		Localization.init("de/deadlocker8/budgetmaster/resources/");
+		Localization.init("de/deadlocker8/budgetmaster/resources/languages/");
 		Localization.loadLanguage(Locale.GERMANY);
 		
 		Parameters params = getParameters();
