@@ -19,13 +19,12 @@ import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
 import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
-import de.deadlocker8.budgetmasterserver.logic.Database;
-import de.deadlocker8.budgetmasterserver.logic.DatabaseExporter;
-import de.deadlocker8.budgetmasterserver.logic.DatabaseHandler;
-import de.deadlocker8.budgetmasterserver.logic.DatabaseImporter;
 import de.deadlocker8.budgetmasterserver.logic.Settings;
 import de.deadlocker8.budgetmasterserver.logic.Utils;
-import javafx.scene.paint.Color;
+import de.deadlocker8.budgetmasterserver.logic.database.Database;
+import de.deadlocker8.budgetmasterserver.logic.database.DatabaseExporter;
+import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
+import de.deadlocker8.budgetmasterserver.logic.database.DatabaseImporter;
 
 public class DatabaseImportExportTest
 {			
@@ -62,7 +61,7 @@ public class DatabaseImportExportTest
 			importer.importDatabase(database);
 			
 			//test category
-			Category expectedCategory = new Category(3, "123 Tü+?est Category", Color.ALICEBLUE);			
+			Category expectedCategory = new Category(3, "123 Tü+?est Category", "#FF0000");			
 			ArrayList<Category> categories = databaseHandler.getCategories();	
 			
 			Category category = databaseHandler.getCategory(categories.get(categories.size()-1).getID());

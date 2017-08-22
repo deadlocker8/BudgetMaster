@@ -2,8 +2,6 @@ package de.deadlocker8.budgetmaster.logic;
 
 import java.util.ArrayList;
 
-import javafx.scene.paint.Color;
-
 public class CategoryHandler
 {
 	private ArrayList<Category> categories;
@@ -32,6 +30,6 @@ public class CategoryHandler
 			}
 		}
 		
-		return new Category(1, "NONE", Color.web("#FFFFFF"));
+		return new Category(1, "NONE", "#FFFFFF");
 	}
 }

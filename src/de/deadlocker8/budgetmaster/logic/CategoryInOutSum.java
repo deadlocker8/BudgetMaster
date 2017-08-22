@@ -1,18 +1,17 @@
 package de.deadlocker8.budgetmaster.logic;
 
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
-import javafx.scene.paint.Color;
 import tools.Localization;
 
 public class CategoryInOutSum
 {
 	private int ID;
 	private String name;
-	private Color color;
+	private String color;
 	private int budgetIN;
 	private int budgetOUT;	
 	
-	public CategoryInOutSum(int ID, String name, Color color, int budgetIN, int budgetOUT)
+	public CategoryInOutSum(int ID, String name, String color, int budgetIN, int budgetOUT)
 	{		
 		this.ID = ID;
 		this.name = name;
@@ -36,12 +35,12 @@ public class CategoryInOutSum
 		this.name = name;
 	}
 
-	public Color getColor()
+	public String getColor()
 	{
 		return color;
 	}
 	
-	public void setColor(Color color)
+	public void setColor(String color)
 	{
 		this.color = color;
 	}

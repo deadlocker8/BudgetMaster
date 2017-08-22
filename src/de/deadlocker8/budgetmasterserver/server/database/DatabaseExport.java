@@ -4,8 +4,8 @@ import static spark.Spark.halt;
 
 import com.google.gson.Gson;
 
-import de.deadlocker8.budgetmasterserver.logic.DatabaseExporter;
 import de.deadlocker8.budgetmasterserver.logic.Settings;
+import de.deadlocker8.budgetmasterserver.logic.database.DatabaseExporter;
 import logger.Logger;
 import spark.Request;
 import spark.Response;

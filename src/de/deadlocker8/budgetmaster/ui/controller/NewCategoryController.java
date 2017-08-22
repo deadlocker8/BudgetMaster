@@ -85,10 +85,10 @@ public class NewCategoryController
 		if(edit)
 		{
 			textFieldName.setText(category.getName());
-			colorView = new ColorView(category.getColor(), colors, this, (finishColor) -> {
+			colorView = new ColorView(Color.web(category.getColor()), colors, this, (finishColor) -> {
 				setColor(finishColor);
 			});
-			setColor(category.getColor());
+			setColor(Color.web(category.getColor()));
 		}
 		else
 		{
@@ -141,7 +141,7 @@ public class NewCategoryController
 		if(edit)
 		{
 			category.setName(name);
-			category.setColor(color);
+			category.setColor(ConvertTo.toRGBHexWithoutOpacity(color));
 			ServerConnection connection;
 			try
 			{
@@ -155,7 +155,7 @@ public class NewCategoryController
 		}
 		else
 		{			
-			Category newCategory = new Category(name, color);		
+			Category newCategory = new Category(name, ConvertTo.toRGBHexWithoutOpacity(color));		
 			ServerConnection connection;
 			try
 			{

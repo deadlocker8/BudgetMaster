@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmasterserver.logic;
+package de.deadlocker8.budgetmasterserver.logic.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
-import javafx.scene.paint.Color;
+import de.deadlocker8.budgetmasterserver.logic.Settings;
 import logger.Logger;
 
 public class DatabaseExporter
@@ -68,7 +68,7 @@ public class DatabaseExporter
                 String name = rs.getString("Name");
                 String color = rs.getString("Color");
 
-                results.add(new Category(id, name, Color.web(color)));
+                results.add(new Category(id, name, color));
             }
         }
         catch(SQLException e)

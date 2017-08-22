@@ -95,8 +95,8 @@ public class PaymentCell extends ListCell<Payment>
 			labelCircle.setMinHeight(HEIGHT);
 			labelCircle.setAlignment(Pos.CENTER);
 			labelCircle.getStyleClass().add("greylabel");
-			String textColor = ConvertTo.toRGBHex(ConvertTo.getAppropriateTextColor(category.getColor()));
-			labelCircle.setStyle("-fx-background-color: " + ConvertTo.toRGBHex(category.getColor()) + "; -fx-background-radius: 50%; -fx-text-fill: " + textColor + "; -fx-font-weight: bold; -fx-font-size: 20;");
+			String textColor = ConvertTo.toRGBHex(ConvertTo.getAppropriateTextColor(Color.web(category.getColor())));
+			labelCircle.setStyle("-fx-background-color: " + category.getColor() + "; -fx-background-radius: 50%; -fx-text-fill: " + textColor + "; -fx-font-weight: bold; -fx-font-size: 20;");
 			Tooltip tooltip = new Tooltip(category.getName());
 			tooltip.setStyle("-fx-font-size: 14");
 			labelCircle.setTooltip(tooltip);

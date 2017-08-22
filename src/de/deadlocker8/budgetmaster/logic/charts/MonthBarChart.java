@@ -118,7 +118,7 @@ public class MonthBarChart extends VBox implements ChartExportable
 		for(CategoryInOutSum currentItem : categoryInOutSums)
 		{
 			Label currentPart = new Label();
-			currentPart.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(currentItem.getColor()));
+			currentPart.setStyle("-fx-background-color: " + currentItem.getColor());
 			currentPart.prefWidthProperty().bind(chart.widthProperty());
 			chart.getChildren().add(currentPart);
 
@@ -168,7 +168,7 @@ public class MonthBarChart extends VBox implements ChartExportable
 		ArrayList<HBox> legendItems = new ArrayList<>();
 		for(CategoryInOutSum currentItem : monthInOutSums.get(0).getSums())
 		{			
-			legendItems.add(getLegendItem(currentItem.getName(), currentItem.getColor()));
+			legendItems.add(getLegendItem(currentItem.getName(), Color.web(currentItem.getColor())));
 		}
 
 		int legendWidth;

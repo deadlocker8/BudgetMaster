@@ -12,7 +12,7 @@ import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
-import de.deadlocker8.budgetmasterserver.logic.Database;
+import de.deadlocker8.budgetmasterserver.logic.database.Database;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;

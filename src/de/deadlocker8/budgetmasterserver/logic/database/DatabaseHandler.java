@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmasterserver.logic;
+package de.deadlocker8.budgetmasterserver.logic.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,9 +18,8 @@ import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.Payment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
-import javafx.scene.paint.Color;
+import de.deadlocker8.budgetmasterserver.logic.Settings;
 import logger.Logger;
-import tools.ConvertTo;
 
 public class DatabaseHandler
 {
@@ -228,7 +227,7 @@ public class DatabaseHandler
 				String name = rs.getString("Name");
 				String color = rs.getString("Color");
 
-				results.add(new Category(id, name, Color.web(color)));
+				results.add(new Category(id, name, color));
 			}
 		}
 		catch(SQLException e)
@@ -258,7 +257,7 @@ public class DatabaseHandler
 				String name = rs.getString("Name");
 				String color = rs.getString("Color");
 
-				result = new Category(id, name, Color.web(color));
+				result = new Category(id, name, color);
 			}
 		}
 		catch(SQLException e)
@@ -273,7 +272,7 @@ public class DatabaseHandler
 		return result;
 	}
 	
-	public Category getCategory(String name, Color color)
+	public Category getCategory(String name, String color)
 	{
 		PreparedStatement stmt = null;
 		Category result = null;
@@ -281,7 +280,7 @@ public class DatabaseHandler
 		{
 			stmt = connection.prepareStatement("SELECT * FROM category WHERE category.name = ? AND category.color = ?;");
 			stmt.setString(1, name);
-			stmt.setString(2, ConvertTo.toRGBHexWithoutOpacity(color));
+			stmt.setString(2, color);
 			
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next())
@@ -290,7 +289,7 @@ public class DatabaseHandler
 				String categoryName = rs.getString("Name");
 				String categoryColor = rs.getString("Color");
 
-				result = new Category(id, categoryName, Color.web(categoryColor));
+				result = new Category(id, categoryName, categoryColor);
 			}
 		}
 		catch(SQLException e)
@@ -717,14 +716,14 @@ public class DatabaseHandler
 	/*
 	 * ADD
 	 */
-	public void addCategory(String name, Color color)
+	public void addCategory(String name, String color)
 	{
 		PreparedStatement stmt = null;
 		try
 		{
 			stmt = connection.prepareStatement("INSERT INTO category (Name, Color) VALUES(?, ?);");
 			stmt.setString(1, name);
-			stmt.setString(2, ConvertTo.toRGBHexWithoutOpacity(color));
+			stmt.setString(2, color);
 			stmt.execute();
 		}
 		catch(SQLException e)
@@ -745,7 +744,7 @@ public class DatabaseHandler
 			stmt = connection.prepareStatement("INSERT INTO category (ID, Name, Color) VALUES(?, ?, ?);");
 			stmt.setInt(1,  category.getID());
 			stmt.setString(2, category.getName());
-			stmt.setString(3, ConvertTo.toRGBHexWithoutOpacity(category.getColor()));
+			stmt.setString(3, category.getColor());
 			stmt.execute();
 		}
 		catch(SQLException e)
@@ -838,14 +837,14 @@ public class DatabaseHandler
 	/*
 	 * UPDATE
 	 */
-	public void updateCategory(int ID, String name, Color color)
+	public void updateCategory(int ID, String name, String color)
 	{
 		PreparedStatement stmt = null;
 		try
 		{
 			stmt = connection.prepareStatement("UPDATE category SET name=? , color=? WHERE ID = ?;");
 			stmt.setString(1, name);
-			stmt.setString(2, ConvertTo.toRGBHexWithoutOpacity(color));
+			stmt.setString(2, color);
 			stmt.setInt(3, ID);
 			stmt.executeUpdate();
 		}

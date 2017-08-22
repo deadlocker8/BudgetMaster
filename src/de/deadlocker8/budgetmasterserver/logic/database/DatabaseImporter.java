@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmasterserver.logic;
+package de.deadlocker8.budgetmasterserver.logic.database;
 
 import java.util.ArrayList;
 import java.util.Iterator;

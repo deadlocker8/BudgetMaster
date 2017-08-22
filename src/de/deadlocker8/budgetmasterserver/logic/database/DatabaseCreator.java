@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmasterserver.logic;
+package de.deadlocker8.budgetmasterserver.logic.database;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import de.deadlocker8.budgetmasterserver.logic.Settings;
 import logger.Logger;
 
 public class DatabaseCreator

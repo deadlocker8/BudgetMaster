@@ -1,22 +1,21 @@
 package de.deadlocker8.budgetmaster.logic;
 
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
-import javafx.scene.paint.Color;
 import tools.Localization;
 
 public class Category
 {
 	private int ID;
 	private String name;
-	private Color color;
+	private String color;
 
-	public Category(String name, Color color)
+	public Category(String name, String color)
 	{
 		this.name = name;
 		this.color = color;
 	}
 
-	public Category(int ID, String name, Color color)
+	public Category(int ID, String name, String color)
 	{
 		this.ID = ID;
 		this.name = name;
@@ -43,12 +42,12 @@ public class Category
 		this.name = name;
 	}
 
-	public Color getColor()
+	public String getColor()
 	{
 		return color;
 	}
 
-	public void setColor(Color color)
+	public void setColor(String color)
 	{
 		this.color = color;
 	}

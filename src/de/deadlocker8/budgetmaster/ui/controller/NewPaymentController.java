@@ -108,8 +108,8 @@ public class NewPaymentController
 		comboBoxCategory.setButtonCell(buttonCategoryCell);
 		comboBoxCategory.setStyle("-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 5;");
 		comboBoxCategory.valueProperty().addListener((listener, oldValue, newValue) -> {		
-			comboBoxCategory.setStyle("-fx-background-color: " + ConvertTo.toRGBHex(newValue.getColor()) + "; -fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 5;");
-			buttonCategoryCell.setColor(newValue.getColor());
+			comboBoxCategory.setStyle("-fx-background-color: " + newValue.getColor() + "; -fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 5;");
+			buttonCategoryCell.setColor(Color.web(newValue.getColor()));
 		});
 
 		checkBoxRepeat.selectedProperty().addListener((listener, oldValue, newValue) -> {

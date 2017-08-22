@@ -2,8 +2,7 @@ package de.deadlocker8.budgetmasterserver.server.category;
 
 import static spark.Spark.halt;
 
-import de.deadlocker8.budgetmasterserver.logic.DatabaseHandler;
-import javafx.scene.paint.Color;
+import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -38,7 +37,7 @@ public class CategoryUpdate implements Route
 			
 			try
 			{				
-				handler.updateCategory(id, req.queryMap("name").value(), Color.web("#" + req.queryMap("color").value()));			
+				handler.updateCategory(id, req.queryMap("name").value(), "#" + req.queryMap("color").value());			
 
 				return "";
 			}

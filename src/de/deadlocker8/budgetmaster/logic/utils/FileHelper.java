@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 import com.google.gson.Gson;
 
 import de.deadlocker8.budgetmaster.logic.Settings;
-import de.deadlocker8.budgetmasterserver.logic.Database;
+import de.deadlocker8.budgetmasterserver.logic.database.Database;
 import tools.Localization;
 import tools.PathUtils;
 

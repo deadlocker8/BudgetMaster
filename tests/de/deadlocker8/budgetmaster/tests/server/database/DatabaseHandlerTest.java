@@ -16,10 +16,9 @@ import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmaster.logic.LatestRepeatingPayment;
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
-import de.deadlocker8.budgetmasterserver.logic.DatabaseHandler;
 import de.deadlocker8.budgetmasterserver.logic.Settings;
 import de.deadlocker8.budgetmasterserver.logic.Utils;
-import javafx.scene.paint.Color;
+import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
 
 public class DatabaseHandlerTest
 {			
@@ -47,7 +46,7 @@ public class DatabaseHandlerTest
 	@Test
 	public void testLastInsertID()
 	{			
-		Category expected = new Category("123 Tü+?est Category", Color.ALICEBLUE);
+		Category expected = new Category("123 Tü+?est Category", "#FF0000");
 		databaseHandler.addCategory(expected.getName(), expected.getColor());
 		//3 because "NONE" and "Übertrag" has already been inserted at database creation	
 		assertEquals(3, databaseHandler.getLastInsertID());		
@@ -57,7 +56,7 @@ public class DatabaseHandlerTest
 	public void testCategory()
 	{
 		//add
-		Category expected = new Category("123 Tü+?est Category", Color.ALICEBLUE);
+		Category expected = new Category("123 Tü+?est Category", "#FF0000");
 		databaseHandler.addCategory(expected.getName(), expected.getColor());
 		ArrayList<Category> categories = databaseHandler.getCategories();	
 		
@@ -67,14 +66,14 @@ public class DatabaseHandlerTest
 		assertEquals(expected.getColor(), category.getColor());
 		
 		//update
-		Category expectedUpdated = new Category(category.getID(), "456", Color.RED);
+		Category expectedUpdated = new Category(category.getID(), "456", "#00FF00");
 		databaseHandler.updateCategory(expectedUpdated.getID(), expectedUpdated.getName(), expectedUpdated.getColor());
 		category = databaseHandler.getCategory(expectedUpdated.getID());
 		assertEquals(expectedUpdated.getName(), category.getName());
 		assertEquals(expectedUpdated.getColor(), category.getColor());
 		
 		//misc
-		category = databaseHandler.getCategory("NONE", Color.web("#FFFFFF"));
+		category = databaseHandler.getCategory("NONE", "#FFFFFF");
 		assertEquals(1, category.getID());
 		
 		assertTrue(databaseHandler.categoryExists(1));
@@ -84,7 +83,7 @@ public class DatabaseHandlerTest
 	public void testDeleteCategory()
 	{
 		//add
-		Category expected = new Category("123 Tü+?est Category", Color.ALICEBLUE);
+		Category expected = new Category("123 Tü+?est Category", "#FF0000");
 		databaseHandler.addCategory(expected.getName(), expected.getColor());		
 		
 		int id = databaseHandler.getLastInsertID();

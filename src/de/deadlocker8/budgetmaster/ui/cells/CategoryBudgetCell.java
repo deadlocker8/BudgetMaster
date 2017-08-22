@@ -11,6 +11,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
 import tools.ConvertTo;
 
 public class CategoryBudgetCell extends ListCell<CategoryBudget>
@@ -39,8 +40,8 @@ public class CategoryBudgetCell extends ListCell<CategoryBudget>
 			labelCircle.setPrefHeight(HEIGHT);
 			labelCircle.setAlignment(Pos.CENTER);
 			labelCircle.getStyleClass().add("greylabel");
-			String textColor = ConvertTo.toRGBHex(ConvertTo.getAppropriateTextColor(currentCategory.getColor()));
-			labelCircle.setStyle("-fx-background-color: " + ConvertTo.toRGBHex(currentCategory.getColor()) + "; -fx-background-radius: 50%; -fx-text-fill: " + textColor + "; -fx-font-weight: bold; -fx-font-size: 20;");
+			String textColor = ConvertTo.toRGBHex(ConvertTo.getAppropriateTextColor(Color.web(currentCategory.getColor())));
+			labelCircle.setStyle("-fx-background-color: " + currentCategory.getColor() + "; -fx-background-radius: 50%; -fx-text-fill: " + textColor + "; -fx-font-weight: bold; -fx-font-size: 20;");
 			hbox.getChildren().add(labelCircle);
 
 			Label labelName = new Label(currentCategory.getName());
