@@ -29,7 +29,7 @@ public class Main extends Application
 		
 		//load correct language
 		Settings settings = FileHelper.loadSettings();
-		if(settings.getLanguage() != null)
+		if(settings != null && settings.getLanguage() != null)
 		{
 			Localization.loadLanguage(settings.getLanguage().getLocale());
 		}
@@ -61,7 +61,7 @@ public class Main extends Application
 	public void init() throws Exception
 	{
 		Localization.init("de/deadlocker8/budgetmaster/resources/languages/");
-		Localization.loadLanguage(Locale.GERMANY);
+		Localization.loadLanguage(Locale.ENGLISH);
 		
 		Parameters params = getParameters();
 		String logLevelParam = params.getNamed().get("loglevel");

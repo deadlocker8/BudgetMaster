@@ -82,8 +82,8 @@ public class SettingsController
 		
 		comboBoxLanguage.getItems().addAll(LanguageType.values());		
 		comboBoxLanguage.setButtonCell(new LanguageCell(false));
-		comboBoxLanguage.setValue(LanguageType.GERMAN);
-		previousLanguage = LanguageType.GERMAN;
+		comboBoxLanguage.setValue(LanguageType.ENGLISH);
+		previousLanguage = LanguageType.ENGLISH;
 		
 		if(controller.getSettings().isComplete())
 		{
