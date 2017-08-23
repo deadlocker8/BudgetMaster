@@ -61,12 +61,7 @@ public class SplashScreenController
 			}
 		});
 		
-		settings = FileHelper.loadSettings();
-		//load correct language
-		if(settings.getLanguage() != null)
-		{
-			Localization.loadLanguage(settings.getLanguage().getLocale());
-		}
+		settings = FileHelper.loadSettings();		
 		
 		if(settings == null)
 		{	

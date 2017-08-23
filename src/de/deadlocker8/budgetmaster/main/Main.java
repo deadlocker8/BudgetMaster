@@ -3,6 +3,8 @@ package de.deadlocker8.budgetmaster.main;
 import java.io.File;
 import java.util.Locale;
 
+import de.deadlocker8.budgetmaster.logic.Settings;
+import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmaster.ui.controller.SplashScreenController;
 import javafx.application.Application;
@@ -24,6 +26,13 @@ public class Main extends Application
 	public void start(Stage stage)
 	{
 		primaryStage = stage;
+		
+		//load correct language
+		Settings settings = FileHelper.loadSettings();
+		if(settings.getLanguage() != null)
+		{
+			Localization.loadLanguage(settings.getLanguage().getLocale());
+		}
 		
 		try
 		{				
