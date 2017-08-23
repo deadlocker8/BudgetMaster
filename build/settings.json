@@ -1,0 +1,10 @@
+{
+	"databaseUrl": "jdbc:mysql://localhost:3306/",
+	"databaseName": "budgetmaster",
+	"databaseUsername": "root",
+	"databasePassword": "",
+	"serverPort": 9000,
+	"serverSecret": "geheim",
+	"keystorePath": "",
+	"keystorePassword": ""
+}
