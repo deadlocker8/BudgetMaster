@@ -20,7 +20,7 @@ import tools.Localization;
 public class Main
 {
 	//for server specific version information
-	private static ResourceBundle bundle = ResourceBundle.getBundle("de/deadlocker8/budgetmasterserver/main/", Locale.ENGLISH);
+	private static ResourceBundle bundle = ResourceBundle.getBundle("de/deadlocker8/budgetmasterserver/main/", Locale.GERMAN);
 
 	public static void main(String[] args)
 	{

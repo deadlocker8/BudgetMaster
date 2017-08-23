@@ -76,7 +76,6 @@ public class ReportController implements Refreshable
 
 	private Controller controller;
 	private ColumnFilter columnFilter;
-	private File reportPath;
 	private String initialReportPath;
 
 	public void init(Controller controller)
@@ -523,21 +522,11 @@ public class ReportController implements Refreshable
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle(Localization.getString(Strings.TITLE_REPORT_SAVE));
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf");
-		if(reportPath != null)
-		{
-			fileChooser.setInitialDirectory(reportPath.getParentFile());
-			fileChooser.setInitialFileName(reportPath.getName());
-		}
-		else
-		{
-		    fileChooser.setInitialFileName(initialReportPath);
-		}
+		fileChooser.setInitialFileName(initialReportPath);		
 		fileChooser.getExtensionFilters().add(extFilter);
 		File file = fileChooser.showSaveDialog(controller.getStage());		
 		if(file != null)
-		{		
-			reportPath = file;
-			
+		{				
 			Budget budget = new Budget(controller.getPaymentHandler().getPayments());		
 			
 			ReportGenerator reportGenerator = new ReportGenerator(new ArrayList<ReportItem>(tableView.getItems()),
