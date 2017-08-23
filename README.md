@@ -31,5 +31,5 @@ Manage your monthly budget easily with BudgetMaster
 
 ![bericht_2](https://user-images.githubusercontent.com/16324894/29183445-f9794b28-7e02-11e7-9c2a-0541cd1acd07.png)
 
-![einstellungen](https://user-images.githubusercontent.com/16324894/29183449-fa76a0c0-7e02-11e7-822c-1929d601eae2.png)
+![einstellungen](https://user-images.githubusercontent.com/16324894/29603059-f85da150-87e2-11e7-9e41-96c110d7abec.png)
 
