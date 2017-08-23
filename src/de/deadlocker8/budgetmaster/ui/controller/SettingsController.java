@@ -13,10 +13,14 @@ import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.LanguageType;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
+import de.deadlocker8.budgetmaster.main.Main;
 import de.deadlocker8.budgetmaster.ui.cells.LanguageCell;
 import de.deadlocker8.budgetmasterserver.logic.database.Database;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -29,6 +33,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -281,6 +286,7 @@ public class SettingsController
 		controller.refresh(controller.getFilterSettings());
 		controller.showNotification(Localization.getString(Strings.NOTIFICATION_SETTINGS_SAVE));
 		
+		//retstart application if language has changed
 		if(controller.getSettings().getLanguage() != previousLanguage)
 		{
 			Alert alert = new Alert(AlertType.INFORMATION);
@@ -296,8 +302,32 @@ public class SettingsController
 			
 			Optional<ButtonType> result = alert.showAndWait();						
 			if (result.get() == buttonTypeOne)
-			{
-				//TODO restart programm
+			{				
+				controller.getStage().close();				
+				
+				Localization.loadLanguage(controller.getSettings().getLanguage().getLocale());
+				
+				try
+				{				
+				    Image icon = new Image("/de/deadlocker8/budgetmaster/resources/icon.png");
+					FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("de/deadlocker8/budgetmaster/ui/fxml/SplashScreen.fxml"));
+					loader.setResources(Localization.getBundle());
+					Parent root = (Parent)loader.load();
+					
+					Scene scene = new Scene(root, 450, 230);
+
+					((SplashScreenController)loader.getController()).init(Main.primaryStage, icon);
+
+					Main.primaryStage.setResizable(false);			
+					Main.primaryStage.getIcons().add(icon);
+					Main.primaryStage.setTitle(Localization.getString(Strings.APP_NAME));
+					Main.primaryStage.setScene(scene);			
+					Main.primaryStage.show();
+				}
+				catch(Exception e)
+				{
+					Logger.error(e);
+				}	
 			}
 			else
 			{

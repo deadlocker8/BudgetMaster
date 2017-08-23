@@ -18,11 +18,15 @@ import tools.PathUtils;
 
 public class Main extends Application
 {
+	public static Stage primaryStage;
+	
 	@Override
 	public void start(Stage stage)
 	{
+		primaryStage = stage;
+		
 		try
-		{			
+		{				
 		    Image icon = new Image("/de/deadlocker8/budgetmaster/resources/icon.png");
 			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("de/deadlocker8/budgetmaster/ui/fxml/SplashScreen.fxml"));
 			loader.setResources(Localization.getBundle());
