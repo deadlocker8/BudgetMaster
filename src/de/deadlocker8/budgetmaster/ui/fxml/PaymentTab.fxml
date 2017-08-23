@@ -10,13 +10,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPaneMain" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.deadlocker8.budgetmaster.ui.controller.PaymentController">
+<AnchorPane fx:id="anchorPaneMain" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.deadlocker8.budgetmaster.ui.controller.PaymentController">
    <children>
       <VBox alignment="TOP_CENTER" layoutY="24.0" prefHeight="562.0" prefWidth="772.0" spacing="25.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="25.0">
          <children>
             <HBox prefHeight="11.0" prefWidth="772.0">
                <children>
-                  <Button fx:id="buttonNewIncome" mnemonicParsing="false" onAction="#newIncome" text=" Neue Einnahme">
+                  <Button fx:id="buttonNewIncome" mnemonicParsing="false" onAction="#newIncome" text="%paymenttab.button.new.income">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -24,12 +24,12 @@
                   <Region HBox.hgrow="ALWAYS" />
                   <VBox alignment="CENTER" spacing="10.0">
                      <children>
-                        <Button fx:id="buttonFilter" mnemonicParsing="false" onAction="#filter" text="Filter">
+                        <Button fx:id="buttonFilter" mnemonicParsing="false" onAction="#filter" text="%paymenttab.button.filter">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Button>
-                        <Label fx:id="labelFilterActive" text="Filter aktiv">
+                        <Label fx:id="labelFilterActive" text="%paymenttab.label.filter.active">
                            <font>
                               <Font name="System Bold" size="13.0" />
                            </font>
@@ -37,7 +37,7 @@
                      </children>
                   </VBox>
                   <Region HBox.hgrow="ALWAYS" />
-                  <Button fx:id="buttonNewPayment" mnemonicParsing="false" onAction="#newPayment" text=" Neue Ausgabe">
+                  <Button fx:id="buttonNewPayment" mnemonicParsing="false" onAction="#newPayment" text="%paymenttab.button.new.payment">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -49,7 +49,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="16.0" prefWidth="772.0">
                <children>
-                  <Label fx:id="labelIncome" prefHeight="27.0" text="Einnahmen:">
+                  <Label fx:id="labelIncome" prefHeight="27.0" text="%paymenttab.label.incomes">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -63,7 +63,7 @@
                      </HBox.margin>
                   </Label>
                   <Region prefHeight="27.0" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="labelPayment" prefHeight="27.0" text="Ausgaben:">
+                  <Label fx:id="labelPayment" prefHeight="27.0" text="%paymenttab.label.payments">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>

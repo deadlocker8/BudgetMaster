@@ -12,6 +12,9 @@ import com.itextpdf.text.pdf.GrayColor;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
+import tools.Localization;
+
 public class HeaderFooterPageEvent extends PdfPageEventHelper
 {
 	public void onStartPage(PdfWriter writer, Document document)
@@ -23,8 +26,8 @@ public class HeaderFooterPageEvent extends PdfPageEventHelper
 	{
 		Font font = new Font(FontFamily.HELVETICA, 8, Font.NORMAL, GrayColor.BLACK);
 
-		ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase("BudgetMaster Monatsbericht", font), 100, 25, 0);
-		ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase("Seite " + document.getPageNumber(), font), 300, 25, 0);
+		ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase(Localization.getString(Strings.REPORT_FOOTER_LEFT), font), 100, 25, 0);
+		ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase(Localization.getString(Strings.REPORT_FOOTER_LEFT, document.getPageNumber()), font), 300, 25, 0);
 		ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase(DateTime.now().toString("dd.MM.YYYY"), font), 500, 25, 0);
 	}
 }

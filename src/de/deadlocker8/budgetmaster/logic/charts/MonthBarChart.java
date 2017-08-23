@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.CategoryInOutSum;
 import de.deadlocker8.budgetmaster.logic.MonthInOutSum;
+import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -28,6 +30,7 @@ import javafx.scene.transform.Transform;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import tools.ConvertTo;
+import tools.Localization;
 
 public class MonthBarChart extends VBox implements ChartExportable
 {
@@ -115,7 +118,7 @@ public class MonthBarChart extends VBox implements ChartExportable
 		for(CategoryInOutSum currentItem : categoryInOutSums)
 		{
 			Label currentPart = new Label();
-			currentPart.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(currentItem.getColor()));
+			currentPart.setStyle("-fx-background-color: " + currentItem.getColor());
 			currentPart.prefWidthProperty().bind(chart.widthProperty());
 			chart.getChildren().add(currentPart);
 
@@ -134,14 +137,11 @@ public class MonthBarChart extends VBox implements ChartExportable
 			currentPart.setMinHeight(0);
 			currentPart.prefHeightProperty().bind(chart.heightProperty().multiply(percentage));	
 
-			String categoryName = currentItem.getName();
-			if(categoryName.equals("NONE"))
-			{
-				categoryName = "Keine Kategorie";
-			}
-			
 			Tooltip tooltip = new Tooltip();
-			tooltip.setText(categoryName + "\n"+ Helpers.NUMBER_FORMAT.format(percentage * 100) + " %\n" + Helpers.NUMBER_FORMAT.format(value).replace(".", ",") + currency);//
+			tooltip.setText(Localization.getString(Strings.TOOLTIP_CHART_CATEGORIES,
+                                                    currentItem.getName(),
+                                                    Helpers.NUMBER_FORMAT.format(percentage * 100),
+                                                    Helpers.getCurrencyString(value, currency)));
 			currentPart.setTooltip(tooltip);
 		}
 
@@ -158,7 +158,7 @@ public class MonthBarChart extends VBox implements ChartExportable
 		legend.setHgap(20);
 		legend.setVgap(10);
 		legend.setAlignment(Pos.CENTER);
-		legend.setStyle("-fx-background-color: #EEEEEE; -fx-border-color: #212121; -fx-border-width: 1; -fx-border-radius: 5;");
+		legend.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_CHART_LEGEND) + "; -fx-border-color: #212121; -fx-border-width: 1; -fx-border-radius: 5;");
 		
 		if(monthInOutSums.size() == 0)
 		{
@@ -167,13 +167,8 @@ public class MonthBarChart extends VBox implements ChartExportable
 		
 		ArrayList<HBox> legendItems = new ArrayList<>();
 		for(CategoryInOutSum currentItem : monthInOutSums.get(0).getSums())
-		{
-			String label = currentItem.getName();
-			if(label.equals("NONE"))
-			{
-				label = "Keine Kategorie";
-			}
-			legendItems.add(getLegendItem(label, currentItem.getColor()));
+		{			
+			legendItems.add(getLegendItem(currentItem.getName(), Color.web(currentItem.getColor())));
 		}
 
 		int legendWidth;

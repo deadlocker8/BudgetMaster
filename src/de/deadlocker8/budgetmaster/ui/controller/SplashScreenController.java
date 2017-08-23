@@ -1,11 +1,12 @@
 package de.deadlocker8.budgetmaster.ui.controller;
 
 import java.io.IOException;
-import java.util.ResourceBundle;
 
 import de.deadlocker8.budgetmaster.logic.Settings;
+import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -24,33 +25,33 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import logger.Logger;
 import tools.AlertGenerator;
+import tools.ConvertTo;
 import tools.HashUtils;
+import tools.Localization;
 
 public class SplashScreenController
 {
 	@FXML private ImageView imageViewLogo;
 	@FXML private Label labelVersion;
 	@FXML private PasswordField textFieldPassword;
-	@FXML private Button buttonLogin;
-	
-	private ResourceBundle bundle;
+	@FXML private Button buttonLogin;	
+
 	private Stage stage;
 	private Image icon;
 	private Settings settings;
 	private boolean isFirstStart;
 
-	public void init(Stage stage, Image icon, ResourceBundle bundle)
+	public void init(Stage stage, Image icon)
 	{
 		this.stage = stage;
 		this.icon = icon;
-		this.bundle = bundle;
 		
 		imageViewLogo.setImage(icon);
 		
-		labelVersion.setText("v" + bundle.getString("version.name"));
+		labelVersion.setText("v" + Localization.getString(Strings.VERSION_NAME));
 	
 		buttonLogin.setGraphic(Helpers.getFontIcon(FontIconType.SIGN_IN, 18, Color.WHITE));
-		buttonLogin.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
+		buttonLogin.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
 		buttonLogin.setPadding(new Insets(3, 7, 3, 7));		
 		
 		textFieldPassword.setOnKeyReleased((event)->{
@@ -60,13 +61,21 @@ public class SplashScreenController
 			}
 		});
 		
-		settings = FileHelper.loadSettings();
+		settings = FileHelper.loadSettings();		
+		
 		if(settings == null)
 		{	
 			settings = new Settings();
 			//first start of budgetmaster
 			Platform.runLater(() -> {
-				AlertGenerator.showAlert(AlertType.INFORMATION, "Willkommen", "Willkommen beim BudgetMaster", "Dies scheint dein erster Besuch zu sein, da noch keine Einstellungen existieren.\nDamit es losgehen kann, überlege dir ein Passwort und trage es in das Passwortfeld ein.\n\n(Hinweis: Das Passwort kann später jederzeit geändert werden.)\n ", icon, stage, null, false);
+				AlertGenerator.showAlert(AlertType.INFORMATION, 
+										Localization.getString(Strings.INFO_TITLE_WELCOME), 
+										Localization.getString(Strings.INFO_HEADER_TEXT_WELCOME),
+										Localization.getString(Strings.INFO_TEXT_WELCOME_FIRST_START),
+										icon, 
+										stage, 
+										null, 
+										false);
 			});
 			isFirstStart = true;
 		}
@@ -76,7 +85,14 @@ public class SplashScreenController
 			{
 				//compatibility (settings exists but from older version without clientSecret)
 				Platform.runLater(() -> {
-					AlertGenerator.showAlert(AlertType.INFORMATION, "Willkommen", "Willkommen beim BudgetMaster", "Deine Einstellungsdatei ist veraltet und muss aktualisert werden.\nSeit Version v1.3.0 wird ein Passwort benötigt, um BudgetMaster zu entsperren. Damit es losgehen kann, überlege dir ein Passwort und trage es in das Passwortfeld ein.\n\n(Hinweis: Das Passwort kann später jederzeit geändert werden.)\n ", icon, stage, null, false);
+					AlertGenerator.showAlert(AlertType.INFORMATION,
+											Localization.getString(Strings.INFO_TITLE_WELCOME), 
+											Localization.getString(Strings.INFO_HEADER_TEXT_WELCOME),
+											Localization.getString(Strings.INFO_TEXT_WELCOME_COMPATIBILITY),
+											icon,
+											stage,
+											null,
+											false);
 				});
 				isFirstStart = true;
 			}
@@ -92,7 +108,14 @@ public class SplashScreenController
 		String password = textFieldPassword.getText().trim();
 		if(password == null || password.isEmpty())
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Bitte gib dein Passwort ein.", icon, stage, null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, 
+									Localization.getString(Strings.TITLE_WARNING), 
+									"", 
+									Localization.getString(Strings.WARNING_EMPTY_PASSWORD), 
+									icon, 
+									stage, 
+									null, 
+									false);
 			return;
 		}		
 	
@@ -110,7 +133,14 @@ public class SplashScreenController
 			catch(IOException e)
 			{
 				Logger.error(e);
-				AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Beim Speichern des Passworts ist ein Fehler aufgetreten.", icon, stage, null, false);
+				AlertGenerator.showAlert(AlertType.ERROR, 
+										Localization.getString(Strings.TITLE_ERROR), 
+										"", 
+										Localization.getString(Strings.ERROR_PASSWORD_SAVE),
+										icon, 
+										stage, 
+										null, 
+										false);
 			}
 		}
 		else
@@ -118,7 +148,14 @@ public class SplashScreenController
 			//check password
 			if(!HashUtils.hash(password, Helpers.SALT).equals(settings.getClientSecret()))
 			{
-				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Passwort ist nicht korrekt.", icon, stage, null, false);
+				AlertGenerator.showAlert(AlertType.WARNING, 
+										Localization.getString(Strings.TITLE_WARNING), 
+										"", 
+										Localization.getString(Strings.WARNING_WRONG_PASSWORD),
+										icon, 
+										stage, 
+										null, 
+										false);
 				return;
 			}
 			
@@ -132,17 +169,18 @@ public class SplashScreenController
 		try
 		{
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/GUI.fxml"));
+			fxmlLoader.setResources(Localization.getBundle());
 			Parent root = (Parent)fxmlLoader.load();
 			Stage newStage = new Stage();
-			newStage.setTitle(bundle.getString("app.name"));
-			newStage.setScene(new Scene(root, 650, 650));
+			newStage.setTitle(Localization.getString(Strings.APP_NAME));
+			newStage.setScene(new Scene(root, 650, 675));
 			newStage.getIcons().add(icon);			
 			newStage.setResizable(true);
 			newStage.setMinHeight(650);
 			newStage.setMinWidth(610);
 			newStage.getScene().getStylesheets().add("/de/deadlocker8/budgetmaster/ui/style.css");
 			Controller newController = fxmlLoader.getController();
-			newController.init(newStage, bundle, settings);
+			newController.init(newStage, settings);
 			newStage.show();
 		}
 		catch(IOException e)

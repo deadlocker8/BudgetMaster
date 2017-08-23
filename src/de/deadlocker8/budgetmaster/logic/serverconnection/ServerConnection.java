@@ -28,8 +28,7 @@ import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmaster.logic.Settings;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
-import de.deadlocker8.budgetmasterserver.logic.Database;
-import tools.ConvertTo;
+import de.deadlocker8.budgetmasterserver.logic.database.Database;
 import tools.Read;
 
 public class ServerConnection
@@ -112,7 +111,7 @@ public class ServerConnection
 
 	public void addCategory(Category category) throws Exception
 	{
-		URL url = new URL(settings.getUrl() + "/category?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&name=" + Helpers.getURLEncodedString(category.getName()) + "&color=" + ConvertTo.toRGBHexWithoutOpacity(category.getColor()).replace("#", ""));
+		URL url = new URL(settings.getUrl() + "/category?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&name=" + Helpers.getURLEncodedString(category.getName()) + "&color=" + category.getColor().replace("#", ""));
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setRequestMethod("POST");
 		httpsCon.setDoInput(true);
@@ -130,7 +129,7 @@ public class ServerConnection
 
 	public void updateCategory(Category category) throws Exception
 	{
-		URL url = new URL(settings.getUrl() + "/category?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&id=" + category.getID() + "&name=" + Helpers.getURLEncodedString(category.getName()) + "&color=" + ConvertTo.toRGBHexWithoutOpacity(category.getColor()).replace("#", ""));
+		URL url = new URL(settings.getUrl() + "/category?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&id=" + category.getID() + "&name=" + Helpers.getURLEncodedString(category.getName()) + "&color=" + category.getColor().replace("#", ""));
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setRequestMethod("PUT");
 		httpsCon.setDoInput(true);

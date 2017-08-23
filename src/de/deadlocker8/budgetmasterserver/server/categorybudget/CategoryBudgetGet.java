@@ -12,7 +12,7 @@ import com.google.gson.Gson;
 import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmaster.logic.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.Payment;
-import de.deadlocker8.budgetmasterserver.logic.DatabaseHandler;
+import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -59,7 +59,7 @@ public class CategoryBudgetGet implements Route
 				
 				for(Category currentCategory : handler.getCategories())
 				{
-					budgets.add(new CategoryBudget(currentCategory.getName(), currentCategory.getColor(), 0));
+					budgets.add(new CategoryBudget(currentCategory, 0));
 					CategoryBudget currentBudget = budgets.get(budgets.size() - 1);
 					for(Payment currentPayment : payments)
 					{					

@@ -5,7 +5,9 @@ import java.util.Iterator;
 import java.util.Set;
 
 import de.deadlocker8.budgetmaster.logic.MonthInOutSum;
+import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
@@ -24,6 +26,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.transform.Transform;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import tools.ConvertTo;
+import tools.Localization;
 
 public class MonthLineChart extends VBox implements ChartExportable
 {
@@ -48,12 +52,12 @@ public class MonthLineChart extends VBox implements ChartExportable
 		generatedChart.setAnimated(animated);
 
 		xAxis.setLabel("");
-		yAxis.setLabel("Summe in " + currency);
+		yAxis.setLabel(Localization.getString(Strings.CHART_MONTH_LINE_SUM, currency));
 
 		XYChart.Series<String, Number> seriesIN = new XYChart.Series<String, Number>();
-		seriesIN.setName("Einnahmen");
+		seriesIN.setName(Localization.getString(Strings.TITLE_INCOMES));
 		XYChart.Series<String, Number> seriesOUT = new XYChart.Series<String, Number>();
-		seriesOUT.setName("Ausgaben");
+		seriesOUT.setName(Localization.getString(Strings.TITLE_PAYMENTS));
 
 		for(MonthInOutSum currentItem : monthInOutSums)
 		{
@@ -100,25 +104,25 @@ public class MonthLineChart extends VBox implements ChartExportable
 		// style line for incomes
 		for(Node n : generatedChart.lookupAll(".default-color0.chart-series-line"))
 		{
-			n.setStyle("-fx-stroke: " + Helpers.COLOR_INCOME + ";");
+			n.setStyle("-fx-stroke: " + ConvertTo.toRGBHexWithoutOpacity(Colors.INCOME) + ";");
 		}
 		
 		// style line dots for incomes
 		for(Node n : generatedChart.lookupAll(".default-color0.chart-line-symbol"))
 		{
-			n.setStyle("-fx-background-color: " + Helpers.COLOR_INCOME + ", white;");
+			n.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.INCOME) + ", white;");
 		}
 
 		// style line for payments
 		for(Node n : generatedChart.lookupAll(".default-color1.chart-series-line"))
 		{
-			n.setStyle("-fx-stroke: " + Helpers.COLOR_PAYMENT + ";");
+			n.setStyle("-fx-stroke: " + ConvertTo.toRGBHexWithoutOpacity(Colors.PAYMENT) + ";");
 		}
 		
 		// style line dots for payments
 		for(Node n : generatedChart.lookupAll(".default-color1.chart-line-symbol"))
 		{
-			n.setStyle("-fx-background-color: " + Helpers.COLOR_PAYMENT + ", white;");
+			n.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.PAYMENT) + ", white;");
 		}
 
 		// style legend item according to color
@@ -135,11 +139,11 @@ public class MonthLineChart extends VBox implements ChartExportable
 					Label labelLegendItem = (Label)node;
 					if(counter == 0)
 					{
-						labelLegendItem.getGraphic().setStyle("-fx-background-color: " + Helpers.COLOR_INCOME + ";");
+						labelLegendItem.getGraphic().setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.INCOME) + ";");
 					}
 					else
 					{
-						labelLegendItem.getGraphic().setStyle("-fx-background-color: " + Helpers.COLOR_PAYMENT + ";");
+						labelLegendItem.getGraphic().setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.PAYMENT) + ";");
 					}
 				}
 				counter++;

@@ -8,7 +8,9 @@ import java.util.Optional;
 import javax.imageio.ImageIO;
 
 import de.deadlocker8.budgetmaster.logic.charts.ChartExportable;
+import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import fontAwesome.FontIconType;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
@@ -26,6 +28,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import logger.Logger;
 import tools.AlertGenerator;
+import tools.ConvertTo;
+import tools.Localization;
 
 public class ExportChartController
 {
@@ -57,15 +61,15 @@ public class ExportChartController
 		textFieldWidth.setText(String.valueOf((int)chart.getSuggestedWidth()));
 		textFieldHeight.setText(String.valueOf((int)chart.getSuggestedHeight()));
 
-		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");		
+		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));		
 	
-		buttonChooseFile.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
+		buttonChooseFile.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
 		buttonChooseFile.setGraphic(Helpers.getFontIcon(FontIconType.FOLDER_OPEN, 14, Color.WHITE));
 		
-		buttonExport.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
+		buttonExport.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
 		buttonExport.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 14, Color.WHITE));
 
-		buttonCancel.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
+		buttonCancel.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
 		buttonCancel.setGraphic(Helpers.getFontIcon(FontIconType.TIMES, 14, Color.WHITE));		
 		
 		textFieldWidth.setTextFormatter(new TextFormatter<>(c -> {
@@ -104,7 +108,7 @@ public class ExportChartController
 	public void chooseFile()
 	{
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Diagramm exportieren");
+		fileChooser.setTitle(Localization.getString(Strings.TITLE_CHART_EXPORT));
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PNG (*.png)", "*.png");
 		if(savePath != null)
 		{
@@ -125,7 +129,14 @@ public class ExportChartController
 		String widthText = textFieldWidth.getText();
 		if(widthText == null || widthText.equals(""))
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Bitte gib eine Breite in Pixeln an.", controller.getControlle().getIcon(), stage, null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, 
+			                         Localization.getString(Strings.TITLE_WARNING), 
+			                         "", 
+			                         Localization.getString(Strings.WARNING_EMPTY_WIDTH_IN_PIXELS), 
+			                         controller.getControlle().getIcon(), 
+			                         stage, 
+			                         null, 
+			                         false);
 			return;
 		}
 		
@@ -136,14 +147,28 @@ public class ExportChartController
 		}
 		catch(Exception e)
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Nur ganzahlige Werte sind für das Feld Breite erlaubt.", controller.getControlle().getIcon(), stage, null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, 
+			                        Localization.getString(Strings.TITLE_WARNING), 
+			                        "", 
+			                        Localization.getString(Strings.WARNING_INTEGER_WIDTH_IN_PIXELS), 
+			                        controller.getControlle().getIcon(), 
+			                        stage, 
+			                        null, 
+			                        false);
 			return;
 		}
 		
 		String heightText = textFieldHeight.getText();
 		if(heightText == null || heightText.equals(""))
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Bitte gib eine Höhe in Pixeln an.", controller.getControlle().getIcon(), stage, null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, 
+			                        Localization.getString(Strings.TITLE_WARNING), 
+			                        "", 
+			                        Localization.getString(Strings.WARNING_EMPTY_HEIGHT_IN_PIXELS), 
+			                        controller.getControlle().getIcon(), 
+			                        stage, 
+			                        null, 
+			                        false);
 			return;
 		}
 		
@@ -154,13 +179,27 @@ public class ExportChartController
 		}
 		catch(Exception e)
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Nur ganzahlige Werte sind für das Feld Höhe erlaubt.", controller.getControlle().getIcon(), stage, null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, 
+			                        Localization.getString(Strings.TITLE_WARNING), 
+			                        "", 
+			                        Localization.getString(Strings.WARNING_INTEGER_HEIGHT_IN_PIXELS),
+			                        controller.getControlle().getIcon(), 
+			                        stage, 
+			                        null, 
+			                        false);
 			return;
 		}
 
 		if(savePath == null)
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Wähle einen Speicherort für das Diagramm aus.", controller.getControlle().getIcon(), stage, null, false);
+			AlertGenerator.showAlert(AlertType.WARNING, 
+			                        Localization.getString(Strings.TITLE_WARNING), 
+			                        "", 
+			                        Localization.getString(Strings.WARNING_EMPTY_SAVEPATH_CHART), 
+			                        controller.getControlle().getIcon(), 
+			                        stage,
+			                        null, 
+			                        false);
 			return;
 		}
 		
@@ -169,20 +208,20 @@ public class ExportChartController
 		try
 		{
 			ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", savePath);
-			controller.getControlle().showNotification("Diagramm erfolgreich exportiert");	
+			controller.getControlle().showNotification(Localization.getString(Strings.NOTIFICATION_CHART_EXPORT));	
 			
 			stage.close();			
 			
 			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Erfolgreich erstellt");
+			alert.setTitle(Localization.getString(Strings.INFO_TITLE_CHART_EXPORT));
 			alert.setHeaderText("");
-			alert.setContentText("Das Diagramm wurde erfolgreich exportiert");			
+			alert.setContentText(Localization.getString(Strings.INFO_TEXT_CHART_EXPORT));			
 			Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
 			dialogStage.getIcons().add(controller.getControlle().getIcon());						
 			
-			ButtonType buttonTypeOne = new ButtonType("Ordner öffnen");
-			ButtonType buttonTypeTwo = new ButtonType("Diagramm öffnen");
-			ButtonType buttonTypeThree = new ButtonType("OK");						
+			ButtonType buttonTypeOne = new ButtonType(Localization.getString(Strings.INFO_TEXT_CHART_EXPORT_OPEN_FOLDER));
+			ButtonType buttonTypeTwo = new ButtonType(Localization.getString(Strings.INFO_TEXT_CHART_EXPORT_OPEN_CHART));
+			ButtonType buttonTypeThree = new ButtonType(Localization.getString(Strings.OK));						
 			alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeThree);
 			
 			Optional<ButtonType> result = alert.showAndWait();						
@@ -195,7 +234,14 @@ public class ExportChartController
 				catch(IOException e1)
 				{
 					Logger.error(e1);
-					AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Der Ordner konnte nicht geöffnet werden\n\n" + e1.getMessage(), controller.getControlle().getIcon(), stage, null, false);
+					AlertGenerator.showAlert(AlertType.ERROR, 
+					                        Localization.getString(Strings.TITLE_ERROR), 
+                                            "",
+                                            Localization.getString(Strings.ERROR_OPEN_FOLDER, e1.getMessage()),
+                                            controller.getControlle().getIcon(), 
+                                            stage, 
+                                            null, 
+                                            false);
 				}
 			}
 			else if (result.get() == buttonTypeTwo)
@@ -207,7 +253,14 @@ public class ExportChartController
 				catch(IOException e1)
 				{
 					Logger.error(e1);
-					AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Das Diagramm konnte nicht geöffnet werden\n\n" + e1.getMessage(), controller.getControlle().getIcon(), stage, null, false);
+					AlertGenerator.showAlert(AlertType.ERROR, 
+                                            Localization.getString(Strings.TITLE_ERROR), 
+                                            "", 
+                                            Localization.getString(Strings.ERROR_OPEN_CHART, e1.getMessage()), 
+                                            controller.getControlle().getIcon(), 
+                                            stage, 
+                                            null, 
+                                            false);
 				}
 			}
 			else
@@ -218,7 +271,14 @@ public class ExportChartController
 		catch(IOException e)
 		{
 			Logger.error(e);
-			AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Beim Exportieren des Diagramms ist ein Fehler aufgetreten:\n\n" + e.getMessage(), controller.getControlle().getIcon(), stage, null, false);
+			AlertGenerator.showAlert(AlertType.ERROR, 
+			                         Localization.getString(Strings.TITLE_ERROR), 
+			                         "",
+			                         Localization.getString(Strings.ERROR_CHART_EXPORT, e.getMessage()),
+			                         controller.getControlle().getIcon(), 
+			                         stage, 
+			                         null, 
+			                         false);
 		}
 		
 		stage.close();	

@@ -2,7 +2,8 @@ package de.deadlocker8.budgetmaster.logic;
 
 import java.util.ArrayList;
 
-import javafx.scene.paint.Color;
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
+import tools.Localization;
 
 public class CategoryHandler
 {
@@ -13,7 +14,16 @@ public class CategoryHandler
 		this.categories = new ArrayList<>();
 		if(categories != null)
 		{
-			this.categories.addAll(categories);
+			this.categories.addAll(categories);		
+		
+			//set correct localized name for category "rest"
+			for(Category currentCategory : categories)
+			{
+				if(currentCategory.getID() == 2)
+				{
+					currentCategory.setName(Localization.getString(Strings.CATEGORY_REST));
+				}
+			}
 		}
 	}
 
@@ -32,6 +42,6 @@ public class CategoryHandler
 			}
 		}
 		
-		return new Category(1, "NONE", Color.web("#FFFFFF"));
+		return new Category(1, "NONE", "#FFFFFF");
 	}
 }

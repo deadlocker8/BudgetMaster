@@ -2,7 +2,6 @@ package de.deadlocker8.budgetmaster.ui.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 import org.joda.time.DateTime;
 
@@ -14,7 +13,9 @@ import de.deadlocker8.budgetmaster.logic.PaymentHandler;
 import de.deadlocker8.budgetmaster.logic.Settings;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
+import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import fontAwesome.FontIconType;
 import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
@@ -30,11 +31,12 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import logger.Logger;
 import tools.AlertGenerator;
+import tools.ConvertTo;
+import tools.Localization;
 import tools.Worker;
 
 public class Controller
@@ -62,8 +64,7 @@ public class Controller
 	private SettingsController settingsController;
 
 	private Stage stage;
-	private Image icon = new Image("de/deadlocker8/budgetmaster/resources/icon.png");
-	private ResourceBundle bundle;
+	private Image icon = new Image("de/deadlocker8/budgetmaster/resources/icon.png");	
 	private Settings settings;
 	private DateTime currentDate;
 	private ArrayList<CategoryBudget> categoryBudgets;
@@ -73,10 +74,9 @@ public class Controller
 
 	private boolean alertIsShowing = false;
 
-	public void init(Stage stage, ResourceBundle bundle, Settings settings)
+	public void init(Stage stage, Settings settings)
 	{
 		this.stage = stage;
-		this.bundle = bundle;
 		this.settings = settings;
 		
 		stage.setOnCloseRequest((event)->{
@@ -93,24 +93,28 @@ public class Controller
 		try
 		{
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/HomeTab.fxml"));
+			fxmlLoader.setResources(Localization.getBundle());
 			Parent nodeTabHome = (Parent)fxmlLoader.load();
 			homeController = fxmlLoader.getController();
 			homeController.init(this);
 			tabHome.setContent(nodeTabHome);
 
 			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/PaymentTab.fxml"));
+			fxmlLoader.setResources(Localization.getBundle());
 			Parent nodeTabPayment = (Parent)fxmlLoader.load();
 			paymentController = fxmlLoader.getController();
 			paymentController.init(this);
 			tabPayments.setContent(nodeTabPayment);
 
 			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/CategoryTab.fxml"));
+			fxmlLoader.setResources(Localization.getBundle());
 			Parent nodeTabCategory = (Parent)fxmlLoader.load();
 			categoryController = fxmlLoader.getController();
 			categoryController.init(this);
 			tabCategories.setContent(nodeTabCategory);
 
 			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/ChartTab.fxml"));
+			fxmlLoader.setResources(Localization.getBundle());
 			Parent nodeTabChart = (Parent)fxmlLoader.load();
 			chartController = fxmlLoader.getController();
 			chartController.init(this);
@@ -123,12 +127,14 @@ public class Controller
 			});
 			
 			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/ReportTab.fxml"));
+			fxmlLoader.setResources(Localization.getBundle());
 			Parent nodeTabReport = (Parent)fxmlLoader.load();
 			reportController = fxmlLoader.getController();
 			reportController.init(this);
 			tabReports.setContent(nodeTabReport);
 
 			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/SettingsTab.fxml"));
+			fxmlLoader.setResources(Localization.getBundle());
 			Parent nodeTabSettings = (Parent)fxmlLoader.load();
 			settingsController = fxmlLoader.getController();
 			settingsController.init(this);
@@ -138,18 +144,18 @@ public class Controller
 		{
 			Logger.error(e);
 			Platform.runLater(() -> {
-				AlertGenerator.showAlert(AlertType.ERROR, "Fehler", "", "Beim Erstellen der Benutzeroberfläche ist ein Fehler aufgetreten", icon, stage, null, false);
+				AlertGenerator.showAlert(AlertType.ERROR, Localization.getString(Strings.TITLE_ERROR), "", Localization.getString(Strings.ERROR_CREATE_UI), icon, stage, null, false);
 			});			
 		}
 		
-		buttonLeft.setGraphic(Helpers.getFontIcon(FontIconType.CHEVRON_LEFT, 20, Color.web(bundle.getString("color.text"))));		
-		buttonRight.setGraphic(Helpers.getFontIcon(FontIconType.CHEVRON_RIGHT, 20, Color.web(bundle.getString("color.text"))));		
-		buttonToday.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR_ALT, 20, Color.web(bundle.getString("color.text"))));		
-		buttonAbout.setGraphic(Helpers.getFontIcon(FontIconType.INFO, 20, Color.web(bundle.getString("color.text"))));
+		buttonLeft.setGraphic(Helpers.getFontIcon(FontIconType.CHEVRON_LEFT, 20, Colors.TEXT));		
+		buttonRight.setGraphic(Helpers.getFontIcon(FontIconType.CHEVRON_RIGHT, 20, Colors.TEXT));		
+		buttonToday.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR_ALT, 20, Colors.TEXT));		
+		buttonAbout.setGraphic(Helpers.getFontIcon(FontIconType.INFO, 20, Colors.TEXT));
 
 		// apply theme
-		anchorPaneMain.setStyle("-fx-background-color: #DDDDDD");
-		labelMonth.setStyle("-fx-text-fill: " + bundle.getString("color.text"));
+		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_MAIN));
+		labelMonth.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
 		labelNotification.setStyle("-fx-text-fill: #FFFFFF; -fx-font-size: 16; -fx-font-weight: bold; -fx-background-color: transparent;");
 		buttonLeft.setStyle("-fx-background-color: transparent;");
 		buttonRight.setStyle("-fx-background-color: transparent;");
@@ -161,7 +167,7 @@ public class Controller
 			Platform.runLater(() -> {
 				toggleAllTabsExceptSettings(true);
 				tabPane.getSelectionModel().select(tabSettings);
-				AlertGenerator.showAlert(AlertType.INFORMATION, "Hinweis", "", "Vor der ersten Benutzung musst du deine Serverdaten eingeben.", icon, stage, null, false);
+				AlertGenerator.showAlert(AlertType.INFORMATION, Localization.getString(Strings.TITLE_INFO), "", Localization.getString(Strings.INFO_FIRST_START), icon, stage, null, false);
 			});
 		}
 		else
@@ -180,11 +186,6 @@ public class Controller
 		return icon;
 	}
 
-	public ResourceBundle getBundle()
-	{
-		return bundle;
-	}
-
 	public Settings getSettings()
 	{
 		return settings;
@@ -198,7 +199,7 @@ public class Controller
 	public void showNotification(String text)
 	{
 		labelNotification.setText(text);
-		labelNotification.setStyle("-fx-text-fill: #FFFFFF; -fx-font-size: 16; -fx-font-weight: bold; -fx-background-color: #323232;");
+		labelNotification.setStyle("-fx-text-fill: #FFFFFF; -fx-font-size: 16; -fx-font-weight: bold; -fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_NOTIFICATION));
 		FadeTransition fadeIn = new FadeTransition(Duration.millis(200), labelNotification);
 		fadeIn.setFromValue(0.0);
 		fadeIn.setToValue(1.0);
@@ -256,16 +257,15 @@ public class Controller
 				
 				alertIsShowing = true;
 				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Fehler");
+				alert.setTitle(Localization.getString(Strings.TITLE_ERROR));
 				alert.setHeaderText("");
 				if(errorMessage == null)
 				{
-					alert.setContentText("Beim Herstellen der Verbindung zum Server ist ein Fehler aufgetreten. Bitte überprüfe deine Einstellungen.");
+					alert.setContentText(Localization.getString(Strings.ERROR_SERVER_CONNECTION));
 				}
 				else
 				{
-					alert.setContentText("Beim Herstellen der Verbindung zum Server ist ein Fehler aufgetreten. Bitte überprüfe deine Einstellungen.\n\n"
-							+ "Fehlerdetails:\n" + errorMessage);
+					alert.setContentText(Localization.getString(Strings.ERROR_SERVER_CONNECTION_WITH_DETAILS, errorMessage));
 				}
 				
 				Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
@@ -328,12 +328,24 @@ public class Controller
 
 	public void about()
 	{
-		AlertGenerator.showAboutAlert(bundle.getString("app.name"), bundle.getString("version.name"), bundle.getString("version.code"), bundle.getString("version.date"), bundle.getString("author"), icon, stage, null, false);
+		ArrayList<String> creditLines = new ArrayList<>();
+		creditLines.add(Localization.getString(Strings.CREDITS));
+				
+		AlertGenerator.showAboutAlertWithCredits(Localization.getString(Strings.APP_NAME),
+												Localization.getString(Strings.VERSION_NAME),
+												Localization.getString(Strings.VERSION_CODE),
+												Localization.getString(Strings.VERSION_DATE),
+												Localization.getString(Strings.AUTHOR),
+												creditLines,
+												icon, 
+												stage, 
+												null, 
+												false);
 	}	
 	
 	public void refresh(FilterSettings newFilterSettings)
 	{
-		Stage modalStage = Helpers.showModal("Vorgang läuft", "Lade Daten...", stage, icon);
+		Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATA), stage, icon);
 
 		Worker.runLater(() -> {
 			try
@@ -348,7 +360,7 @@ public class Controller
 				{
 					int rest = connection.getRestForAllPreviousMonths(currentDate.getYear(), currentDate.getMonthOfYear());
 					//categoryID 2 = Rest
-					paymentHandler.getPayments().add(new NormalPayment(-1, rest, currentDate.withDayOfMonth(1).toString("yyyy-MM-dd"), 2, "Übertrag", ""));				
+					paymentHandler.getPayments().add(new NormalPayment(-1, rest, currentDate.withDayOfMonth(1).toString("yyyy-MM-dd"), 2, Localization.getString(Strings.CATEGORY_REST), ""));				
 				}
 				
 				categoryHandler = new CategoryHandler(connection.getCategories());

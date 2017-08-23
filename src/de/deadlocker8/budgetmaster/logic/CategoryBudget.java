@@ -1,39 +1,25 @@
 package de.deadlocker8.budgetmaster.logic;
 
-import javafx.scene.paint.Color;
-
 public class CategoryBudget
 {
-	private String name;
-	private Color color;
+	private Category category;
 	private double budget;
 	
-	public CategoryBudget(String name, Color color, double budget)
+	public CategoryBudget(Category category, double budget)
 	{
-		this.name = name;
-		this.color = color;
+		this.category = category;		
 		this.budget = budget;
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public void setName(String name)
-	{
-		this.name = name;
-	}
-
-	public Color getColor()
-	{
-		return color;
-	}
-
-	public void setColor(Color color)
-	{
-		this.color = color;
 	}	
+
+	public Category getCategory()
+	{
+		return category;
+	}
+
+	public void setCategory(Category category)
+	{
+		this.category = category;
+	}
 
 	public double getBudget()
 	{
@@ -48,6 +34,6 @@ public class CategoryBudget
 	@Override
 	public String toString()
 	{
-		return "CategoryBudget [name=" + name + ", color=" + color + ", budget=" + budget + "]";
+		return "CategoryBudget [category=" + category + ", budget=" + budget + "]";
 	}
 }

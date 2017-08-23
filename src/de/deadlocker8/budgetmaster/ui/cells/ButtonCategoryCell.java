@@ -31,12 +31,7 @@ public class ButtonCategoryCell extends ListCell<Category>
 
 		if(!empty)
 		{		
-			HBox hbox = new HBox();		
-			
-			if(item.getID() == 1)
-			{
-				item.setName("Keine Kategorie");
-			}			
+			HBox hbox = new HBox();
 		
 			Label labelName = new Label(item.getName());
 			labelName.setStyle("-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: " + ConvertTo.toRGBHex(ConvertTo.getAppropriateTextColor(color)));

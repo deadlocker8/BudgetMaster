@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
+import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmaster.ui.Refreshable;
 import de.deadlocker8.budgetmaster.ui.cells.CategoryCell;
 import fontAwesome.FontIconType;
@@ -30,6 +32,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import logger.Logger;
+import tools.ConvertTo;
+import tools.Localization;
 
 public class CategoryController implements Refreshable
 {
@@ -84,15 +88,15 @@ public class CategoryController implements Refreshable
 			}
 		});
 		
-		Label labelPlaceholder = new Label("Keine Kategorien verfügbar");
+		Label labelPlaceholder = new Label(Localization.getString(Strings.CATEGORIES_PLACEHOLDER));
 		labelPlaceholder.setStyle("-fx-font-size: 16");
 		listView.setPlaceholder(labelPlaceholder);
 
 		buttonCategory.setGraphic(Helpers.getFontIcon(FontIconType.PLUS, 18, Color.WHITE));
 
 		//apply theme
-		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");
-		buttonCategory.setStyle("-fx-background-color: #2E79B9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
+		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
+		buttonCategory.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
 
 		refreshListView();
 	}
@@ -123,6 +127,7 @@ public class CategoryController implements Refreshable
 		try
 		{
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/NewCategoryGUI.fxml"));
+			fxmlLoader.setResources(Localization.getBundle());
 			Parent root = (Parent)fxmlLoader.load();
 			Stage newStage = new Stage();
 			newStage.initOwner(controller.getStage());
@@ -130,11 +135,11 @@ public class CategoryController implements Refreshable
 			
 			if(edit)
 			{
-				newStage.setTitle("Kategorie bearbeiten");
+				newStage.setTitle(Localization.getString(Strings.TITLE_CATEGORY_EDIT));
 			}
 			else
 			{
-				newStage.setTitle("Neue Kategorie");
+				newStage.setTitle(Localization.getString(Strings.TITLE_CATEGORY_NEW));
 			}
 			
 			newStage.setScene(new Scene(root));

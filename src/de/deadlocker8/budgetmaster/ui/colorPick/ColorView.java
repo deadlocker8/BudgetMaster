@@ -20,6 +20,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import logger.Logger;
 import tools.ConvertTo;
+import tools.Localization;
 
 public class ColorView extends GridPane
 {
@@ -75,6 +76,7 @@ public class ColorView extends GridPane
 							try
 							{
 								FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("de/deadlocker8/budgetmaster/ui/colorPick/ColorPickGUI.fxml"));
+								loader.setResources(Localization.getBundle());
 								Parent root = (Parent)loader.load();
 
 								Scene scene = new Scene(root, 500, 225);

@@ -17,7 +17,9 @@ import de.deadlocker8.budgetmaster.logic.charts.MonthBarChart;
 import de.deadlocker8.budgetmaster.logic.charts.MonthLineChart;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
+import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmaster.ui.Refreshable;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
@@ -43,6 +45,8 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import logger.Logger;
 import tools.AlertGenerator;
+import tools.ConvertTo;
+import tools.Localization;
 import tools.Worker;
 
 public class ChartController implements Refreshable
@@ -75,21 +79,21 @@ public class ChartController implements Refreshable
 	{
 		this.controller = controller;
 
-		anchorPaneMain.setStyle("-fx-background-color: #F4F4F4;");
-		vboxChartCategories.setStyle("-fx-background-color: #F4F4F4;");
+		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
+		vboxChartCategories.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
 		vboxChartCategories.setSpacing(20);
-		vboxChartMonth.setStyle("-fx-background-color: #F4F4F4;");
+		vboxChartMonth.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
 		
-		buttonChartCategoriesShow.setStyle("-fx-background-color: #2E79B9;");
+		buttonChartCategoriesShow.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE));
 		buttonChartCategoriesShow.setGraphic(Helpers.getFontIcon(FontIconType.CHECK, 16, Color.WHITE));
 
-		buttonChartCategoriesExport.setStyle("-fx-background-color: #2E79B9;");
+		buttonChartCategoriesExport.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE));
 		buttonChartCategoriesExport.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 16, Color.WHITE));
 
-		buttonChartMonthShow.setStyle("-fx-background-color: #2E79B9;");
+		buttonChartMonthShow.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE));
 		buttonChartMonthShow.setGraphic(Helpers.getFontIcon(FontIconType.CHECK, 16, Color.WHITE));
 
-		buttonChartMonthExport.setStyle("-fx-background-color: #2E79B9;");
+		buttonChartMonthExport.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE));
 		buttonChartMonthExport.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 16, Color.WHITE));		
 	
 		datePickerEnd.setDayCellFactory(new Callback<DatePicker, DateCell>()
@@ -143,11 +147,11 @@ public class ChartController implements Refreshable
 
 			Platform.runLater(()->{;
 				vboxChartCategories.getChildren().clear();
-				categoriesChart = new CategoriesChart("Einnahmen nach Kategorien", 
-																	  "Ausgaben nach Kategorien",
-																	  sums,
-																	  controller.getSettings().getCurrency(),
-																	  legendType);
+				categoriesChart = new CategoriesChart(Localization.getString(Strings.CHART_CATEGORIES_TITLE_INCOMES), 
+													  Localization.getString(Strings.CHART_CATEGORIES_TITLE_PAYMENTS),
+													  sums,
+													  controller.getSettings().getCurrency(),
+													  legendType);
 				vboxChartCategories.getChildren().add(categoriesChart);
 				VBox.setVgrow(categoriesChart, Priority.ALWAYS);
 			});
@@ -194,11 +198,12 @@ public class ChartController implements Refreshable
 				try
 				{
 					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/ExportChartGUI.fxml"));
+					fxmlLoader.setResources(Localization.getBundle());
 					Parent root = (Parent)fxmlLoader.load();
 					Stage newStage = new Stage();
 					newStage.initOwner(controller.getStage());
 					newStage.initModality(Modality.APPLICATION_MODAL);
-					newStage.setTitle("Diagramm exportieren");
+					newStage.setTitle(Localization.getString(Strings.TITLE_CHART_EXPORT));
 					newStage.setScene(new Scene(root));
 					newStage.getIcons().add(controller.getIcon());
 					newStage.setResizable(false);
@@ -234,7 +239,7 @@ public class ChartController implements Refreshable
 		if(endDate.isBefore(startDate))
 		{
 			Platform.runLater(() -> {
-				AlertGenerator.showAlert(AlertType.WARNING, "Warnung", "", "Das Enddatum darf nicht vor dem Startdatum liegen.", controller.getIcon(), controller.getStage(), null, false);
+				AlertGenerator.showAlert(AlertType.WARNING, Localization.getString(Strings.TITLE_WARNING), "", Localization.getString(Strings.WARNING_ENDDATE_BEFORE_STARTDATE), controller.getIcon(), controller.getStage(), null, false);
 			});
 			return;
 		}
@@ -288,11 +293,11 @@ public class ChartController implements Refreshable
 	@Override
 	public void refresh()
 	{
-		Stage modalStage = Helpers.showModal("Vorgang läuft", "Lade Diagramme...", controller.getStage(), controller.getIcon());
+		Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_CHARTS), controller.getStage(), controller.getIcon());
 
 		// prepare chart categories
 		LocalDate startDate = LocalDate.parse(controller.getCurrentDate().withDayOfMonth(1).toString("yyyy-MM-dd"));
-		LocalDate endDate = LocalDate.parse(controller.getCurrentDate().dayOfMonth().withMaximumValue().toString("yyy-MM-dd"));
+		LocalDate endDate = LocalDate.parse(controller.getCurrentDate().dayOfMonth().withMaximumValue().toString("yyyy-MM-dd"));
 
 		datePickerStart.setValue(startDate);
 		datePickerEnd.setValue(endDate);

@@ -24,7 +24,7 @@
                      </HBox.margin>
                   </Region>
                   <Button fx:id="buttonLeft" mnemonicParsing="false" onAction="#previousMonth" />
-                  <Label fx:id="labelMonth" alignment="CENTER" prefHeight="36.0" prefWidth="280.0" text="Dezember 2016" HBox.hgrow="ALWAYS">
+                  <Label fx:id="labelMonth" alignment="CENTER" prefHeight="36.0" prefWidth="280.0" HBox.hgrow="ALWAYS">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
@@ -43,12 +43,12 @@
                <children>
                   <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="403.0" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
-                      <Tab fx:id="tabHome" closable="false" text="Startseite" />
-                        <Tab fx:id="tabPayments" closable="false" text="Buchungen" />
-                        <Tab fx:id="tabCategories" closable="false" text="Kategorien" />
-                        <Tab fx:id="tabCharts" closable="false" text="Diagramme" />
-                        <Tab fx:id="tabReports" closable="false" text="Monatsbericht" />
-                        <Tab fx:id="tabSettings" closable="false" text="Einstellungen" />
+                      <Tab fx:id="tabHome" closable="false" text="%gui.tab.home" />
+                        <Tab fx:id="tabPayments" closable="false" text="%gui.tab.payments" />
+                        <Tab fx:id="tabCategories" closable="false" text="%gui.tab.categories" />
+                        <Tab fx:id="tabCharts" closable="false" text="%gui.tab.charts" />
+                        <Tab fx:id="tabReports" closable="false" text="%gui.tab.report" />
+                        <Tab fx:id="tabSettings" closable="false" text="%gui.tab.settings" />
                     </tabs>
                   </TabPane>
                   <Label fx:id="labelNotification" alignment="CENTER" maxWidth="1.7976931348623157E308" />

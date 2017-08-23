@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.ui.cells;
 
+import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmaster.logic.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.ui.controller.HomeController;
@@ -10,6 +11,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
 import tools.ConvertTo;
 
 public class CategoryBudgetCell extends ListCell<CategoryBudget>
@@ -30,24 +32,19 @@ public class CategoryBudgetCell extends ListCell<CategoryBudget>
 
 		if(!empty)
 		{
-			String name = item.getName();
-			if(item.getName().equals("NONE"))
-			{
-				name = "Keine Kategorie";
-			}
-			
 			HBox hbox = new HBox();
+			Category currentCategory = item.getCategory();
 
-			Label labelCircle = new Label(name.substring(0, 1).toUpperCase());
+			Label labelCircle = new Label(currentCategory.getName().substring(0, 1).toUpperCase());
 			labelCircle.setPrefWidth(HEIGHT);
 			labelCircle.setPrefHeight(HEIGHT);
 			labelCircle.setAlignment(Pos.CENTER);
 			labelCircle.getStyleClass().add("greylabel");
-			String textColor = ConvertTo.toRGBHex(ConvertTo.getAppropriateTextColor(item.getColor()));
-			labelCircle.setStyle("-fx-background-color: " + ConvertTo.toRGBHex(item.getColor()) + "; -fx-background-radius: 50%; -fx-text-fill: " + textColor + "; -fx-font-weight: bold; -fx-font-size: 20;");
+			String textColor = ConvertTo.toRGBHex(ConvertTo.getAppropriateTextColor(Color.web(currentCategory.getColor())));
+			labelCircle.setStyle("-fx-background-color: " + currentCategory.getColor() + "; -fx-background-radius: 50%; -fx-text-fill: " + textColor + "; -fx-font-weight: bold; -fx-font-size: 20;");
 			hbox.getChildren().add(labelCircle);
 
-			Label labelName = new Label(name);
+			Label labelName = new Label(currentCategory.getName());
 			labelName.setPrefHeight(HEIGHT);
 			labelName.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #212121");
 			labelName.setAlignment(Pos.CENTER);

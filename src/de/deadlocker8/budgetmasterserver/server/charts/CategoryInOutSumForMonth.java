@@ -9,7 +9,7 @@ import com.google.gson.Gson;
 import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmaster.logic.CategoryInOutSum;
 import de.deadlocker8.budgetmaster.logic.Payment;
-import de.deadlocker8.budgetmasterserver.logic.DatabaseHandler;
+import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
 import spark.Request;
 import spark.Response;
 import spark.Route;

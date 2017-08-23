@@ -15,13 +15,19 @@ import de.deadlocker8.budgetmasterserver.server.SparkServer;
 import logger.FileOutputMode;
 import logger.LogLevel;
 import logger.Logger;
+import tools.Localization;
 
 public class Main
 {
-	private static ResourceBundle bundle = ResourceBundle.getBundle("de/deadlocker8/budgetmasterserver/main/", Locale.GERMANY);
+	//for server specific version information
+	private static ResourceBundle bundle = ResourceBundle.getBundle("de/deadlocker8/budgetmasterserver/main/", Locale.ENGLISH);
 
 	public static void main(String[] args)
 	{
+		//for category.none in class Category
+		Localization.init("de/deadlocker8/budgetmaster/resources/languages/");
+		Localization.loadLanguage(Locale.ENGLISH);
+		
 		Logger.setLevel(LogLevel.ALL);		
 		Logger.appInfo(bundle.getString("app.name"), bundle.getString("version.name"), bundle.getString("version.code"), bundle.getString("version.date"));
 		try
