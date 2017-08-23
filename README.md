@@ -1,6 +1,10 @@
 # BudgetMaster
 Manage your monthly budget easily with BudgetMaster
 
+## Available Languages
+- English
+- German
+
 ## [Installation Instructions](https://github.com/deadlocker8/BudgetMaster/wiki/Server-Installation)
 
 ## Screenshots
