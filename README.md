@@ -5,6 +5,14 @@ Manage your monthly budget easily with BudgetMaster
 - English
 - German
 
+## In case of Errors
+- see corresponding error logs
+  - Client: `your_home_directory/Deadlocker/BudgetMaster/error.log`
+  - Server: `folder_containing_BudgetMasterServer/error.log`
+- print errors to console (only for client)
+  - start the client via console: `java -jar BudgetMasterClient.jar --loglevel=DEBUG`
+
+
 ## [Installation Instructions](https://github.com/deadlocker8/BudgetMaster/wiki/Server-Installation)
 
 ## Screenshots
