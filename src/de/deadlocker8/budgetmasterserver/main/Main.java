@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import de.deadlocker8.budgetmaster.logic.updater.VersionInformation;
 import de.deadlocker8.budgetmasterserver.logic.Settings;
 import de.deadlocker8.budgetmasterserver.logic.Utils;
 import de.deadlocker8.budgetmasterserver.server.SparkServer;
@@ -60,7 +61,12 @@ public class Main
 			try
 			{
 				settings = Utils.loadSettings();
-				new SparkServer(settings, bundle.getString("version.code"));
+				VersionInformation versionInfo = new VersionInformation();
+				versionInfo.setVersionCode(Integer.parseInt(bundle.getString("version.code")));
+				versionInfo.setVersionName(bundle.getString("version.name"));
+				versionInfo.setDate(bundle.getString("version.date"));
+				
+				new SparkServer(settings, versionInfo);
 			}
 			catch(IOException | URISyntaxException e)
 			{

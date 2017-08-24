@@ -1,21 +1,26 @@
 package de.deadlocker8.budgetmasterserver.server.version;
 
+import com.google.gson.Gson;
+
+import de.deadlocker8.budgetmaster.logic.updater.VersionInformation;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
 public class VersionGet implements Route
 {	
-	private String versionCode;
+	private Gson gson;
+	private VersionInformation versionInfo;
 
-	public VersionGet( String versionCode)
+	public VersionGet(Gson gson, VersionInformation versionInfo)
 	{
-		this.versionCode = versionCode;
+		this.gson=gson;
+		this.versionInfo = versionInfo;
 	}
 
 	@Override
 	public Object handle(Request req, Response res) throws Exception
 	{
-		return versionCode;
+		return gson.toJson(versionInfo);
 	}
 }

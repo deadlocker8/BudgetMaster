@@ -58,6 +58,7 @@ public class Strings
     public static final String URL_PLACEHOLDER = "url.placeholder";
     public static final String CURRENCY_PLACEHOLDER = "currency.placeholder";
     public static final String TRUSTED_HOSTS_PLACEHOLDER = "trusted.hosts.placeholder";
+    public static final String VERSION = "version";
     
     //REPORT
     public static final String REPORT_POSITION = "report.position";
@@ -159,6 +160,7 @@ public class Strings
     public static final String WARNING_WRONG_VERIFICATION_CODE = "warning.wrong.verificationcode";
     public static final String WARNING_EMPTY_PASSWORD = "warning.empty.password";
     public static final String WARNING_WRONG_PASSWORD = "warning.wrong.password";
+    public static final String WARNING_SERVER_VERSION = "warning.server.version";
     
     //ERROR
     public static final String ERROR_UNKNOWN_HOST = "error.unknown.host";

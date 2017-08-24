@@ -27,6 +27,7 @@ import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
 import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmaster.logic.Settings;
+import de.deadlocker8.budgetmaster.logic.updater.VersionInformation;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmasterserver.logic.database.Database;
 import tools.Read;
@@ -37,7 +38,7 @@ public class ServerConnection
 	private Gson gson;
 
 	public ServerConnection(Settings settings) throws Exception
-	{		
+	{			
 		this.settings = settings;
 		this.gson = new Gson();
 
@@ -494,7 +495,7 @@ public class ServerConnection
 	/*
 	 * VERSION
 	 */
-	public int getServerVersion() throws Exception
+	public VersionInformation getServerVersion() throws Exception
 	{
 		URL url = new URL(settings.getUrl() + "/version?secret=" + Helpers.getURLEncodedString(settings.getSecret()));
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
@@ -503,7 +504,8 @@ public class ServerConnection
 
 		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
 		{
-			return Integer.parseInt(Read.getStringFromInputStream(httpsCon.getInputStream()));
+			String result = Read.getStringFromInputStream(httpsCon.getInputStream());			
+			return gson.fromJson(result, VersionInformation.class);
 		}
 		else
 		{

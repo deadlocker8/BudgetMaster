@@ -15,6 +15,7 @@ import de.deadlocker8.budgetmaster.logic.Settings;
 import de.deadlocker8.budgetmaster.logic.Updater;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
+import de.deadlocker8.budgetmaster.logic.updater.VersionInformation;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
@@ -410,6 +411,28 @@ public class Controller
 			try
 			{
 				ServerConnection connection = new ServerConnection(settings);
+				
+				//check if server is compatible with client
+				VersionInformation serverVersion = connection.getServerVersion();
+				if(serverVersion.getVersionCode() < Integer.parseInt(Localization.getString(Strings.VERSION_CODE)))
+				{
+					Platform.runLater(()->{;
+						AlertGenerator.showAlert(AlertType.WARNING,
+												Localization.getString(Strings.TITLE_WARNING), 
+												"",
+												Localization.getString(Strings.WARNING_SERVER_VERSION, serverVersion.getVersionName(), Localization.getString(Strings.VERSION_NAME)), 
+												icon, stage, null, false);					
+					
+						if(modalStage != null)
+						{
+							modalStage.close();
+						};
+						categoryHandler = new CategoryHandler(null);					
+						toggleAllTabsExceptSettings(true);
+						tabPane.getSelectionModel().select(tabSettings);	
+					});
+					return;
+				}				
 				
 				paymentHandler = new PaymentHandler();
 				paymentHandler.getPayments().addAll(connection.getPayments(currentDate.getYear(), currentDate.getMonthOfYear()));

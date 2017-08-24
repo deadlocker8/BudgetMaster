@@ -17,6 +17,7 @@ import org.joda.time.DateTime;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import de.deadlocker8.budgetmaster.logic.updater.VersionInformation;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmasterserver.logic.Settings;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
@@ -51,11 +52,9 @@ public class SparkServer
 {	
 	private Gson gson;
 	private DatabaseHandler handler;
-	private String versionCode;
 	
-	public SparkServer(Settings settings, String versionCode)
-	{				
-		this.versionCode = versionCode;
+	public SparkServer(Settings settings, VersionInformation versionInfo)
+	{
 		Logger.info("Initializing SparkServer...");
 
 		gson = new GsonBuilder().setPrettyPrinting().create();
@@ -130,7 +129,7 @@ public class SparkServer
 		post("/database", new DatabaseImport(handler, gson));
 		delete("/database", new DatabaseDelete(handler, settings));
 		
-		get("/version", new VersionGet(versionCode));
+		get("/version", new VersionGet(gson, versionInfo));
 
 		after((request, response) -> {
 			new RepeatingPaymentUpdater(handler).updateRepeatingPayments(DateTime.now());

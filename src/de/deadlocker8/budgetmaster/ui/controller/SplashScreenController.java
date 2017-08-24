@@ -173,7 +173,7 @@ public class SplashScreenController
 			Parent root = (Parent)fxmlLoader.load();
 			Stage newStage = new Stage();
 			newStage.setTitle(Localization.getString(Strings.APP_NAME));
-			newStage.setScene(new Scene(root, 650, 675));
+			newStage.setScene(new Scene(root, 650, 700));
 			newStage.getIcons().add(icon);			
 			newStage.setResizable(true);
 			newStage.setMinHeight(650);
