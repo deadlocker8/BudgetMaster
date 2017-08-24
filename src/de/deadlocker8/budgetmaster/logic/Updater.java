@@ -15,7 +15,6 @@ import de.deadlocker8.budgetmaster.logic.updater.VersionInformation;
 public class Updater
 {
 	private VersionInformation latestVersion;
-	private JsonObject changelogJSON;
 	private static final String LATEST_VERSION_INFO_URL = "https://raw.githubusercontent.com/deadlocker8/BudgetMaster/master/src/de/deadlocker8/budgetmaster/resources/languages/_de.properties";
 	private static final String CHANGELOG_URL = "https://raw.githubusercontent.com/deadlocker8/BudgetMaster/master/src/de/deadlocker8/budgetmaster/resources/changelog.json";
 	
@@ -76,7 +75,7 @@ public class Updater
 		return latestVersion;
 	}
 
-	public void getChangelogFromURL() throws IOException
+	public JsonObject getChangelogFromURL() throws IOException
 	{
 		URL webseite = new URL(CHANGELOG_URL);
 		URLConnection connection = webseite.openConnection();
@@ -90,11 +89,13 @@ public class Updater
         }
         
         JsonParser parser = new JsonParser();
-        this.changelogJSON = parser.parse(data.toString()).getAsJsonObject();
+        return parser.parse(data.toString()).getAsJsonObject();
 	}
 	
-	public String getChangelog(int versionCode)
-	{
+	public String getChangelog(int versionCode) throws IOException
+	{		
+		JsonObject changelogJSON = getChangelogFromURL();
+		
 		if(changelogJSON != null)
 		{
 			return changelogJSON.get(String.valueOf(versionCode)).getAsString();
