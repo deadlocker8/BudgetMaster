@@ -180,4 +180,5 @@ public class Strings
     public static final String ERROR_DATABASE_IMPORT = "error.database.import";
     public static final String ERROR_DATABASE_IMPORT_WRONG_FILE = "error.database.import.wrong.file";
     public static final String ERROR_PASSWORD_SAVE = "error.password.save";
+    public static final String ERROR_UPDATER_GET_LATEST_VERSION = "error.updater.get.latest.version";
 }

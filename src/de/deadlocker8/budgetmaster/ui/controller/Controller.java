@@ -377,7 +377,11 @@ public class Controller
 		catch(NumberFormatException | IOException e)
 		{
 			Logger.error(e);
-			//ERRORHANDLING
+			AlertGenerator.showAlert(AlertType.ERROR, 
+									Localization.getString(Strings.TITLE_ERROR),
+									"", 
+									Localization.getString(Strings.ERROR_UPDATER_GET_LATEST_VERSION), 
+									icon, null, null, true);
 		}
 	}
 

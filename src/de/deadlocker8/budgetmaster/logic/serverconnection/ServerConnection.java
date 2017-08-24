@@ -490,4 +490,24 @@ public class ServerConnection
 			return null;
 		}
 	}
+	
+	/*
+	 * VERSION
+	 */
+	public int getServerVersion() throws Exception
+	{
+		URL url = new URL(settings.getUrl() + "/version?secret=" + Helpers.getURLEncodedString(settings.getSecret()));
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setDoOutput(true);
+		httpsCon.setRequestMethod("GET");
+
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			return Integer.parseInt(Read.getStringFromInputStream(httpsCon.getInputStream()));
+		}
+		else
+		{
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+		}
+	}
 }

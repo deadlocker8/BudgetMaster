@@ -41,6 +41,7 @@ import de.deadlocker8.budgetmasterserver.server.payment.repeating.RepeatingPayme
 import de.deadlocker8.budgetmasterserver.server.payment.repeating.RepeatingPaymentGetAll;
 import de.deadlocker8.budgetmasterserver.server.rest.RestGet;
 import de.deadlocker8.budgetmasterserver.server.updater.RepeatingPaymentUpdater;
+import de.deadlocker8.budgetmasterserver.server.version.VersionGet;
 import logger.Logger;
 import spark.Spark;
 import spark.route.RouteOverview;
@@ -50,10 +51,12 @@ public class SparkServer
 {	
 	private Gson gson;
 	private DatabaseHandler handler;
+	private String versionCode;
 	
-	public SparkServer(Settings settings)
+	public SparkServer(Settings settings, String versionCode)
 	{				
-		Logger.info("Initialized SparkServer");
+		this.versionCode = versionCode;
+		Logger.info("Initializing SparkServer...");
 
 		gson = new GsonBuilder().setPrettyPrinting().create();
 		
@@ -126,6 +129,8 @@ public class SparkServer
 		get("/database", new DatabaseExport(settings, gson));
 		post("/database", new DatabaseImport(handler, gson));
 		delete("/database", new DatabaseDelete(handler, settings));
+		
+		get("/version", new VersionGet(versionCode));
 
 		after((request, response) -> {
 			new RepeatingPaymentUpdater(handler).updateRepeatingPayments(DateTime.now());

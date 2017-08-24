@@ -60,7 +60,7 @@ public class Main
 			try
 			{
 				settings = Utils.loadSettings();
-				new SparkServer(settings);
+				new SparkServer(settings, bundle.getString("version.code"));
 			}
 			catch(IOException | URISyntaxException e)
 			{
