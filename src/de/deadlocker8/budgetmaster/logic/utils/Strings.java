@@ -133,6 +133,9 @@ public class Strings
     public static final String INFO_TEXT_LANGUAGE_CHANGED = "info.text.language.changed";
     public static final String INFO_TEXT_LANGUAGE_CHANGED_RESTART_NOW = "info.text.language.changed.restart.now";
     public static final String INFO_TEXT_LANGUAGE_CHANGED_RESTART_LATER = "info.text.language.changed.restart.later";
+    public static final String INFO_TITLE_UPDATE_AVAILABLE = "info.title.update.available";
+    public static final String INFO_TEXT_UPDATE_AVAILABLE = "info.text.update.available";
+    public static final String INFO_TEXT_UPDATE_AVAILABLE_NOW = "info.text.update.available.now";
         
     //WARNING
     public static final String WARNING_ENDDATE_BEFORE_STARTDATE = "warning.enddate.before.startdate";

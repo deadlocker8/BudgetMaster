@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.ui.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.joda.time.DateTime;
 
@@ -11,6 +12,7 @@ import de.deadlocker8.budgetmaster.logic.FilterSettings;
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.PaymentHandler;
 import de.deadlocker8.budgetmaster.logic.Settings;
+import de.deadlocker8.budgetmaster.logic.Updater;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
@@ -26,6 +28,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -71,6 +74,7 @@ public class Controller
 	private PaymentHandler paymentHandler;
 	private CategoryHandler categoryHandler;
 	private FilterSettings filterSettings;
+	private Updater updater;
 
 	private boolean alertIsShowing = false;
 
@@ -89,6 +93,12 @@ public class Controller
 		
 		filterSettings = new FilterSettings();
 		paymentHandler = new PaymentHandler();
+		updater = new Updater();
+		
+		if(settings.isAutoUpdateCheckEnabled())
+		{
+			checkForUpdates();
+		}
 
 		try
 		{
@@ -308,6 +318,11 @@ public class Controller
 	{
 		return filterSettings;
 	}
+	
+	public Updater getUpdater()
+	{
+		return updater;
+	}
 
 	public void setFilterSettings(FilterSettings filterSettings)
 	{
@@ -324,6 +339,46 @@ public class Controller
 		buttonLeft.setDisable(disable);
 		buttonRight.setDisable(disable);
 		buttonToday.setDisable(disable);
+	}
+	
+	public void checkForUpdates()
+	{
+		try
+		{
+			boolean updateAvailable = updater.isUpdateAvailable(Integer.parseInt(Localization.getString(Strings.VERSION_CODE)));
+			String changes = updater.getChangelog(updater.getLatestVersion().getVersionCode());
+			
+			if(!updateAvailable)
+				return;
+			
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle(Localization.getString(Strings.INFO_TITLE_UPDATE_AVAILABLE));
+			alert.setHeaderText("");
+			alert.setContentText(Localization.getString(Strings.INFO_TEXT_UPDATE_AVAILABLE,
+														updater.getLatestVersion().getVersionName(),
+														changes));			
+			Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
+			dialogStage.getIcons().add(icon);					
+			
+			ButtonType buttonTypeOne = new ButtonType(Localization.getString(Strings.INFO_TEXT_UPDATE_AVAILABLE_NOW));
+			ButtonType buttonTypeTwo = new ButtonType(Localization.getString(Strings.CANCEL));							
+			alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
+			
+			Optional<ButtonType> result = alert.showAndWait();						
+			if (result.get() == buttonTypeOne)
+			{				
+				//TODO update			
+			}
+			else
+			{
+				alert.close();
+			}
+		}		
+		catch(NumberFormatException | IOException e)
+		{
+			Logger.error(e);
+			//ERRORHANDLING
+		}
 	}
 
 	public void about()

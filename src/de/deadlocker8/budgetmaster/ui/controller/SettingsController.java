@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import de.deadlocker8.budgetmaster.logic.Settings;
+import de.deadlocker8.budgetmaster.logic.Updater;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
@@ -26,6 +27,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -65,6 +67,10 @@ public class SettingsController
 	@FXML private RadioButton radioButtonRestDeactivated;
 	@FXML private TextArea textAreaTrustedHosts;
 	@FXML private ComboBox<LanguageType> comboBoxLanguage;
+	@FXML private CheckBox checkboxEnableAutoUpdate;
+	@FXML private Button buttonSearchUpdates;
+	@FXML private Label labelCurrentVersion;
+	@FXML private Label labelLatestVersion;
 
 	private Controller controller;
 	private LanguageType previousLanguage;
@@ -106,6 +112,8 @@ public class SettingsController
 				comboBoxLanguage.setValue(language);
 				previousLanguage = language;
 			}
+			
+			checkboxEnableAutoUpdate.setSelected(controller.getSettings().isAutoUpdateCheckEnabled());
 		}
 		
 		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
@@ -117,6 +125,7 @@ public class SettingsController
 		buttonExportDB.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
 		buttonImportDB.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
 		buttonDeleteDB.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_RED) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
+		buttonSearchUpdates.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
 
 		textFieldURL.setPromptText(Localization.getString(Strings.URL_PLACEHOLDER));
 		textFieldCurrency.setPromptText(Localization.getString(Strings.CURRENCY_PLACEHOLDER));
@@ -125,6 +134,10 @@ public class SettingsController
 		ToggleGroup toggleGroup = new ToggleGroup();
 		radioButtonRestActivated.setToggleGroup(toggleGroup);
 		radioButtonRestDeactivated.setToggleGroup(toggleGroup);
+		
+		Updater updater = controller.getUpdater();
+		labelCurrentVersion.setText(Localization.getString(Strings.VERSION_NAME));
+		labelLatestVersion.setText(updater.getLatestVersion().getVersionName());
 	}
 
 	private void setTextAreaTrustedHosts(ArrayList<String> trustedHosts)
@@ -233,6 +246,7 @@ public class SettingsController
 			controller.getSettings().setRestActivated(radioButtonRestActivated.isSelected());
 			controller.getSettings().setTrustedHosts(trustedHosts);
 			controller.getSettings().setLanguage(comboBoxLanguage.getValue());
+			controller.getSettings().setAutoUpdateCheckEnabled(checkboxEnableAutoUpdate.isSelected());
 		}
 		else
 		{
@@ -260,6 +274,7 @@ public class SettingsController
 			settings.setRestActivated(radioButtonRestActivated.isSelected());
 			settings.setTrustedHosts(trustedHosts);
 			settings.setLanguage(comboBoxLanguage.getValue());
+			settings.setAutoUpdateCheckEnabled(checkboxEnableAutoUpdate.isSelected());
 			controller.setSettings(settings);
 		}
 
@@ -286,7 +301,7 @@ public class SettingsController
 		controller.refresh(controller.getFilterSettings());
 		controller.showNotification(Localization.getString(Strings.NOTIFICATION_SETTINGS_SAVE));
 		
-		//retstart application if language has changed
+		//restart application if language has changed
 		if(controller.getSettings().getLanguage() != previousLanguage)
 		{
 			Alert alert = new Alert(AlertType.INFORMATION);
@@ -565,5 +580,10 @@ public class SettingsController
 				deleteDB();
 			}
 		}
+	}
+	
+	public void checkForUpdates()
+	{
+		controller.checkForUpdates();
 	}
 }

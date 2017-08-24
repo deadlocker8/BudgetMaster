@@ -13,6 +13,7 @@ public class Settings
 	private boolean restActivated;
 	private ArrayList<String> trustedHosts;
 	private LanguageType language;
+	private boolean autoUpdateCheckEnabled;
 	
 	public Settings()
 	{
@@ -87,6 +88,16 @@ public class Settings
 	public void setLanguage(LanguageType language)
 	{
 		this.language = language;
+	}	
+
+	public boolean isAutoUpdateCheckEnabled()
+	{
+		return autoUpdateCheckEnabled;
+	}
+	
+	public void setAutoUpdateCheckEnabled(boolean autoUpdateCheckEnabled)
+	{
+		this.autoUpdateCheckEnabled = autoUpdateCheckEnabled;
 	}
 
 	public boolean isComplete()
@@ -104,6 +115,6 @@ public class Settings
 	@Override
 	public String toString()
 	{
-		return "Settings [clientSecret=" + clientSecret + ", url=" + url + ", secret=" + secret + ", currency=" + currency + ", restActivated=" + restActivated + ", trustedHosts=" + trustedHosts + ", language=" + language + "]";
+		return "Settings [clientSecret=" + clientSecret + ", url=" + url + ", secret=" + secret + ", currency=" + currency + ", restActivated=" + restActivated + ", trustedHosts=" + trustedHosts + ", language=" + language + ", autoUpdateCheckEnabled=" + autoUpdateCheckEnabled + "]";
 	}
 }
