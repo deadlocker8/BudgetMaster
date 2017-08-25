@@ -126,7 +126,8 @@ public class Updater
 		}		
 		
 		Path target = Paths.get(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER) + "/Updater." + ending);			
-		download(BUILD_FOLDER + "Updater.jar", target);		
+		download(BUILD_FOLDER + "Updater.jar", target);
+		Logger.debug("Successfully downloaded latest updater");
 	}
 	
 	private File getCurrentExecutableName()
@@ -164,12 +165,14 @@ public class Updater
 		if(fileEnding.equalsIgnoreCase("exe"))
 		{			
 			target = Paths.get(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER) + "/update_BudgetMaster.exe");			
-			download(BUILD_FOLDER + "BudgetMaster.exe", target);
+			download(BUILD_FOLDER + "BudgetMaster.exe", target);			
+			Logger.debug("Successfully downloaded latest EXE");
 		}
 		else
 		{
 			target = Paths.get(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER) + "/update_BudgetMasterClient.jar");			
-			download(BUILD_FOLDER + "BudgetMasterClient.jar", target);
+			download(BUILD_FOLDER + "BudgetMasterClient.jar", target);			
+			Logger.debug("Successfully downloaded latest JAR");
 		}
 		
 		String params = target.toString().replace(" ", "%20") + " " + currentExecutable.getAbsolutePath().replace(" ", "%20") + " "  + Localization.getString(Strings.APP_NAME);
