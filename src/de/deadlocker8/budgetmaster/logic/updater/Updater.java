@@ -120,7 +120,7 @@ public class Updater
 	{
 		//download into temp directory and file				
 		String ending = "jar";
-		if(osType == OSType.Other.Windows)
+		if(osType == OSType.Windows)
 		{
 			ending = "exe";
 		}		
@@ -156,8 +156,8 @@ public class Updater
 		PathUtils.checkFolder(new File(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER)));
 		
 		//download latest updater.jar
-		//DEBUG	
-//		downloadLatestUpdater(OS.getType());		
+		
+		downloadLatestUpdater(OS.getType());		
 		
 		//download into temp directory and file
 		Path target;

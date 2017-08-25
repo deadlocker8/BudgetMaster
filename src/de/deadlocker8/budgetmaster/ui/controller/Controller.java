@@ -351,11 +351,9 @@ public class Controller
 	{
 		try
 		{
-			boolean updateAvailable = updater.isUpdateAvailable(Integer.parseInt(Localization.getString(Strings.VERSION_CODE)));
-			//DEBUG
-			//String changes = updater.getChangelog(updater.getLatestVersion().getVersionCode());
-			String changes = "";
-			
+			boolean updateAvailable = updater.isUpdateAvailable(Integer.parseInt(Localization.getString(Strings.VERSION_CODE)));			
+			String changes = updater.getChangelog(updater.getLatestVersion().getVersionCode());
+
 			if(!updateAvailable)
 				return;
 			
