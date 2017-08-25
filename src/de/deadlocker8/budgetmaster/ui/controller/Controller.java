@@ -351,7 +351,7 @@ public class Controller
 	{
 		try
 		{
-			boolean updateAvailable = updater.isUpdateAvailable(Integer.parseInt(Localization.getString(Strings.VERSION_CODE)));			
+			boolean updateAvailable = updater.isUpdateAvailable(Integer.parseInt(Localization.getString(Strings.VERSION_CODE)));
 			String changes = updater.getChangelog(updater.getLatestVersion().getVersionCode());
 
 			if(!updateAvailable)
@@ -410,7 +410,7 @@ public class Controller
 				}
 			});
 		}		
-		catch(IOException e)
+		catch(Exception e)
 		{
 			Logger.error(e);
 			AlertGenerator.showAlert(AlertType.ERROR, 

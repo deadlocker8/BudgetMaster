@@ -6,5 +6,6 @@
     "5":"-bugfixes\n-reports can now include a budget calculation\n",
     "6":"Fixed critical bug that prevents repeating payments from being correctly updated for future months.\n",
     "7":"-localized all strings into external file\n-added english localization\n-added language chooser to settings\n-remove javafx.Color from server --> server should no run on linux with normal jdk\n-bugfixes:\n  -[FIXED] - report budget is calculated incorrectly\n  -[FIXED] - refresh after database imprt/delete missing\n  -[FIXED] - critical bug concerning repeating payments\n",
-    "8":"bugfixes:\n  -broken month chart if january is selected\n  -wrong footer in month report\n  -wrong initial file name for month report\n  -server start failure\n"
+    "8":"bugfixes:\n  -broken month chart if january is selected\n  -wrong footer in month report\n  -wrong initial file name for month report\n  -server start failure\n",
+	"9":""
 }

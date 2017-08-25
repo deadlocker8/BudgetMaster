@@ -105,13 +105,13 @@ public class Updater
         return parser.parse(data.toString()).getAsJsonObject();
 	}
 	
-	public String getChangelog(int versionCode) throws IOException
+	public String getChangelog(int versionCode) throws Exception
 	{		
 		JsonObject changelogJSON = getChangelogFromURL();
 		
 		if(changelogJSON != null)
 		{
-			return changelogJSON.get(String.valueOf(versionCode)).getAsString();
+			return changelogJSON.get(String.valueOf(versionCode)).getAsString();			
 		}
 		return null;
 	}
