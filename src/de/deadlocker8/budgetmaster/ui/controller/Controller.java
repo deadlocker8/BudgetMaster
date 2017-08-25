@@ -12,9 +12,9 @@ import de.deadlocker8.budgetmaster.logic.FilterSettings;
 import de.deadlocker8.budgetmaster.logic.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.PaymentHandler;
 import de.deadlocker8.budgetmaster.logic.Settings;
-import de.deadlocker8.budgetmaster.logic.Updater;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
+import de.deadlocker8.budgetmaster.logic.updater.Updater;
 import de.deadlocker8.budgetmaster.logic.updater.VersionInformation;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
@@ -97,10 +97,15 @@ public class Controller
 		updater = new Updater();
 		
 		if(settings.isAutoUpdateCheckEnabled())
-		{
+		{			
 			checkForUpdates();
 		}
-
+				
+		initUI();		
+	}
+	
+	private void initUI()
+	{
 		try
 		{
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/HomeTab.fxml"));
@@ -347,35 +352,69 @@ public class Controller
 		try
 		{
 			boolean updateAvailable = updater.isUpdateAvailable(Integer.parseInt(Localization.getString(Strings.VERSION_CODE)));
-			String changes = updater.getChangelog(updater.getLatestVersion().getVersionCode());
+			//DEBUG
+			//String changes = updater.getChangelog(updater.getLatestVersion().getVersionCode());
+			String changes = "";
 			
 			if(!updateAvailable)
 				return;
 			
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle(Localization.getString(Strings.INFO_TITLE_UPDATE_AVAILABLE));
-			alert.setHeaderText("");
-			alert.setContentText(Localization.getString(Strings.INFO_TEXT_UPDATE_AVAILABLE,
-														updater.getLatestVersion().getVersionName(),
-														changes));			
-			Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
-			dialogStage.getIcons().add(icon);					
-			
-			ButtonType buttonTypeOne = new ButtonType(Localization.getString(Strings.INFO_TEXT_UPDATE_AVAILABLE_NOW));
-			ButtonType buttonTypeTwo = new ButtonType(Localization.getString(Strings.CANCEL));							
-			alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
-			
-			Optional<ButtonType> result = alert.showAndWait();						
-			if (result.get() == buttonTypeOne)
-			{				
-				//TODO update			
-			}
-			else
-			{
-				alert.close();
-			}
+			Platform.runLater(()->{
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle(Localization.getString(Strings.INFO_TITLE_UPDATE_AVAILABLE));
+				alert.setHeaderText("");
+				alert.setContentText(Localization.getString(Strings.INFO_TEXT_UPDATE_AVAILABLE,
+															updater.getLatestVersion().getVersionName(),
+															changes));			
+				Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
+				dialogStage.getIcons().add(icon);					
+				
+				ButtonType buttonTypeOne = new ButtonType(Localization.getString(Strings.INFO_TEXT_UPDATE_AVAILABLE_NOW));
+				ButtonType buttonTypeTwo = new ButtonType(Localization.getString(Strings.CANCEL));							
+				alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
+				
+				Optional<ButtonType> result = alert.showAndWait();						
+				if (result.get() == buttonTypeOne)
+				{		
+					//TODO download latest updater first
+				
+					Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_UPDATE), stage, icon);
+					
+					Worker.runLater(() -> {
+						try 
+						{
+							updater.downloadLatestVersion();
+							Platform.runLater(() -> {
+								if(modalStage != null)
+								{
+									modalStage.close();
+								}							
+							});
+						}
+						catch(IOException ex)
+						{
+							Logger.error(ex);
+							Platform.runLater(() -> {
+								if(modalStage != null)
+								{
+									modalStage.close();
+									AlertGenerator.showAlert(AlertType.ERROR, 
+															Localization.getString(Strings.TITLE_ERROR),
+															"", 
+															Localization.getString(Strings.ERROR_UPDATER_DOWNLOAD_LATEST_VERSION, ex.getMessage()), 
+															icon, null, null, true);
+								}							
+							});
+						}
+					});
+				}
+				else
+				{
+					alert.close();
+				}
+			});
 		}		
-		catch(NumberFormatException | IOException e)
+		catch(IOException e)
 		{
 			Logger.error(e);
 			AlertGenerator.showAlert(AlertType.ERROR, 
@@ -448,8 +487,7 @@ public class Controller
 				categoryHandler = new CategoryHandler(connection.getCategories());
 				
 				categoryBudgets = connection.getCategoryBudgets(currentDate.getYear(), currentDate.getMonthOfYear());	
-				paymentHandler.filter(newFilterSettings);
-				
+				paymentHandler.filter(newFilterSettings);				
 
 				Platform.runLater(() -> {
 					if(modalStage != null)

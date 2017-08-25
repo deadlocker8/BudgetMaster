@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import de.deadlocker8.budgetmaster.logic.Settings;
-import de.deadlocker8.budgetmaster.logic.Updater;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
+import de.deadlocker8.budgetmaster.logic.updater.Updater;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;

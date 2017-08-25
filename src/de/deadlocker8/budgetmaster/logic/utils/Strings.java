@@ -41,6 +41,7 @@ public class Strings
     public static final String LOAD_DATABASE_EXPORT = "load.database.export";
     public static final String LOAD_DATABASE_IMPORT = "load.database.import";
     public static final String LOAD_DATABASE_DELETE = "load.database.delete";
+    public static final String LOAD_UPDATE = "load.update";
     
     //MISC
     public static final String CATEGORY_NONE = "category.none";
@@ -183,4 +184,5 @@ public class Strings
     public static final String ERROR_DATABASE_IMPORT_WRONG_FILE = "error.database.import.wrong.file";
     public static final String ERROR_PASSWORD_SAVE = "error.password.save";
     public static final String ERROR_UPDATER_GET_LATEST_VERSION = "error.updater.get.latest.version";
+    public static final String ERROR_UPDATER_DOWNLOAD_LATEST_VERSION = "error.updater.download.latest.version";
 }
