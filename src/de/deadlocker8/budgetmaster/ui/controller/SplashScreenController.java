@@ -41,7 +41,7 @@ public class SplashScreenController
 	private Settings settings;
 	private boolean isFirstStart;
 
-	public void init(Stage stage, Image icon)
+	public void init(Stage stage, Image icon, boolean isStartingAfterUpdate)
 	{
 		this.stage = stage;
 		this.icon = icon;
@@ -60,6 +60,20 @@ public class SplashScreenController
 				login();
 			}
 		});
+		
+		if(isStartingAfterUpdate)
+		{
+			Platform.runLater(() -> {
+				AlertGenerator.showAlert(AlertType.INFORMATION, 
+										Localization.getString(Strings.INFO_TITLE_START_AFTER_UPDATE), 
+										Localization.getString(Strings.INFO_HEADER_TEXT_START_AFTER_UPDATE, Localization.getString(Strings.VERSION_NAME)),
+										Localization.getString(Strings.INFO_TEXT_START_AFTER_UPDATE),
+										icon, 
+										stage, 
+										null, 
+										false);
+			});
+		}
 		
 		settings = FileHelper.loadSettings();		
 		

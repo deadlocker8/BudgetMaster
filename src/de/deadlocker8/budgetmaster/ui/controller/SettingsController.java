@@ -331,7 +331,7 @@ public class SettingsController
 					
 					Scene scene = new Scene(root, 450, 230);
 
-					((SplashScreenController)loader.getController()).init(Main.primaryStage, icon);
+					((SplashScreenController)loader.getController()).init(Main.primaryStage, icon, false);
 
 					Main.primaryStage.setResizable(false);			
 					Main.primaryStage.getIcons().add(icon);

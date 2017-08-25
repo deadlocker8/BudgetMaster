@@ -43,7 +43,7 @@ public class Main extends Application
 			
 			Scene scene = new Scene(root, 450, 230);
 
-			((SplashScreenController)loader.getController()).init(stage, icon);
+			((SplashScreenController)loader.getController()).init(stage, icon, getParameters().getNamed().get("update") != null);
 
 			stage.setResizable(false);			
 			stage.getIcons().add(icon);

@@ -138,6 +138,9 @@ public class Strings
     public static final String INFO_TITLE_UPDATE_AVAILABLE = "info.title.update.available";
     public static final String INFO_TEXT_UPDATE_AVAILABLE = "info.text.update.available";
     public static final String INFO_TEXT_UPDATE_AVAILABLE_NOW = "info.text.update.available.now";
+    public static final String INFO_TITLE_START_AFTER_UPDATE = "info.title.start.after.update";
+    public static final String INFO_HEADER_TEXT_START_AFTER_UPDATE = "info.header.text.start.after.update";
+    public static final String INFO_TEXT_START_AFTER_UPDATE = "info.text.start.after.update";
         
     //WARNING
     public static final String WARNING_ENDDATE_BEFORE_STARTDATE = "warning.enddate.before.startdate";

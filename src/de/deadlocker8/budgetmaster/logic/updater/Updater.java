@@ -18,7 +18,10 @@ import com.google.gson.JsonParser;
 
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import logger.Logger;
+import nativeWindows.NativeLauncher;
 import tools.Localization;
+import tools.OS;
+import tools.OS.OSType;
 import tools.PathUtils;
 
 public class Updater
@@ -113,10 +116,16 @@ public class Updater
 		return null;
 	}
 	
-	private void downloadLatestUpdater() throws IOException
+	private void downloadLatestUpdater(OSType osType) throws IOException
 	{
-		//download into temp directory and file					
-		Path target = Paths.get(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER) + "/Updater.jar");			
+		//download into temp directory and file				
+		String ending = "jar";
+		if(osType == OSType.Other.Windows)
+		{
+			ending = "exe";
+		}		
+		
+		Path target = Paths.get(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER) + "/Updater." + ending);			
 		download(BUILD_FOLDER + "Updater.jar", target);		
 	}
 	
@@ -126,10 +135,9 @@ public class Updater
 	}
 	
 	
-	public void downloadLatestVersion() throws IOException
+	public void downloadLatestVersion() throws Exception
 	{
 		File currentExecutable = getCurrentExecutableName();
-		File currentFolder = currentExecutable.getParentFile();
 		String currentFileName = currentExecutable.getName();
 		String fileEnding;
 		
@@ -148,22 +156,35 @@ public class Updater
 		PathUtils.checkFolder(new File(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER)));
 		
 		//download latest updater.jar
-		downloadLatestUpdater();
+		//DEBUG	
+//		downloadLatestUpdater(OS.getType());		
 		
 		//download into temp directory and file
+		Path target;
 		if(fileEnding.equalsIgnoreCase("exe"))
 		{			
-			Path target = Paths.get(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER) + "/update_BudgetMaster.exe");			
+			target = Paths.get(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER) + "/update_BudgetMaster.exe");			
 			download(BUILD_FOLDER + "BudgetMaster.exe", target);
 		}
 		else
 		{
-			Path target = Paths.get(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER) + "/update_BudgetMasterClient.jar");			
+			target = Paths.get(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER) + "/update_BudgetMasterClient.jar");			
 			download(BUILD_FOLDER + "BudgetMasterClient.jar", target);
 		}
 		
-		//TODO start upater with params
-		//--> move temp jar/exe to currentFolder with currentFileName
+		String params = target.toString().replace(" ", "%20") + " " + currentExecutable.getAbsolutePath().replace(" ", "%20") + " "  + Localization.getString(Strings.APP_NAME);
+		Logger.debug(params);		
+	
+		if(OS.getType() == OSType.Windows)
+		{
+			NativeLauncher.executeAsAdministrator(Paths.get(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER) + "/Updater.exe").toString(), params);
+		}
+		else
+		{
+			ProcessBuilder pb = new ProcessBuilder("java", "-jar", Paths.get(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER) + "/Updater.jar").toString(), target.toString().replace(" ", "%20"), currentExecutable.toString().replace(" ", "%20"), Localization.getString(Strings.APP_NAME)); 				
+			pb.start();	
+		}
+		System.exit(0);
 	}
 	
 	public void download(String url, Path target) throws IOException

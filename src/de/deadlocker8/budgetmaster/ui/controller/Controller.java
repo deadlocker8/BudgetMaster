@@ -375,9 +375,7 @@ public class Controller
 				
 				Optional<ButtonType> result = alert.showAndWait();						
 				if (result.get() == buttonTypeOne)
-				{		
-					//TODO download latest updater first
-				
+				{					
 					Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_UPDATE), stage, icon);
 					
 					Worker.runLater(() -> {
@@ -391,7 +389,7 @@ public class Controller
 								}							
 							});
 						}
-						catch(IOException ex)
+						catch(Exception ex)
 						{
 							Logger.error(ex);
 							Platform.runLater(() -> {
