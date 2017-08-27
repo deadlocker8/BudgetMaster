@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Optional;
 
@@ -22,7 +23,10 @@ import de.deadlocker8.budgetmaster.logic.report.ColumnOrder;
 import de.deadlocker8.budgetmaster.logic.report.ColumnType;
 import de.deadlocker8.budgetmaster.logic.report.ReportGenerator;
 import de.deadlocker8.budgetmaster.logic.report.ReportItem;
+import de.deadlocker8.budgetmaster.logic.report.ReportPreferences;
+import de.deadlocker8.budgetmaster.logic.report.ReportSorting;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
+import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmaster.ui.Refreshable;
@@ -36,6 +40,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -47,6 +52,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableColumn.SortType;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -77,6 +83,15 @@ public class ReportController implements Refreshable
 	private Controller controller;
 	private ColumnFilter columnFilter;
 	private String initialReportPath;
+	
+	private TableColumn<ReportItem, Integer> columnPosition;
+	private TableColumn<ReportItem, String> columnDate;
+	private TableColumn<ReportItem, Boolean> columnIsRepeating;
+	private TableColumn<ReportItem, String> columnCategory;
+	private TableColumn<ReportItem, Integer> columnName;
+	private TableColumn<ReportItem, String> columnDescription;
+	private TableColumn<ReportItem, Integer> columnRating;
+	private TableColumn<ReportItem, String> columnAmount;
 
 	public void init(Controller controller)
 	{
@@ -96,13 +111,94 @@ public class ReportController implements Refreshable
 		checkBoxIncludeBudget.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT) + "; -fx-font-size: 14;");
 		checkBoxSplitTable.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT) + "; -fx-font-size: 14;");
 		checkBoxIncludeCategoryBudgets.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT) + "; -fx-font-size: 14;");
+		
 
 		refresh();
+		prefill();
 	}
 	
-	private void initColumnPosition()
+	private void initColumn(ColumnType columnType, boolean activated)
 	{
-	    TableColumn<ReportItem, Integer> columnPosition = new TableColumn<>();
+		switch(columnType)
+		{
+			case AMOUNT:
+				initColumnAmount(activated);
+				toggleColumn(columnAmount, activated);
+				break;
+			case CATEGORY:
+				initColumnCategory(activated);
+				toggleColumn(columnCategory, activated);
+				break;
+			case DATE:
+				initColumnDate(activated);
+				toggleColumn(columnDate, activated);
+				break;
+			case DESCRIPTION:
+				initColumnDescription(activated);
+				toggleColumn(columnDescription, activated);
+				break;
+			case NAME:
+				initColumnName(activated);
+				toggleColumn(columnName, activated);
+				break;
+			case POSITION:
+				initColumnPosition(activated);
+				toggleColumn(columnPosition, activated);
+				break;
+			case RATING:
+				initColumnRating(activated);
+				toggleColumn(columnRating, activated);
+				break;
+			case REPEATING:
+				initColumnIsRepeating(activated);
+				toggleColumn(columnIsRepeating, activated);
+				break;
+			default:
+				break;					
+		}
+	}
+	
+	private void prefill()
+	{
+		Object loadedObject = FileHelper.loadObjectFromJSON("reportPreferences", new ReportPreferences());
+		if(loadedObject != null)
+		{
+			ReportPreferences reportPreferences = (ReportPreferences)loadedObject;
+			checkBoxIncludeBudget.setSelected(reportPreferences.isIncludeBudget());
+			checkBoxSplitTable.setSelected(reportPreferences.isSplitTable());
+			checkBoxIncludeCategoryBudgets.setSelected(reportPreferences.isIncludeCategoryBudgets());
+			
+			ArrayList<ColumnType> allColumns = new ArrayList<>(Arrays.asList(ColumnType.values()));			
+						
+			for(ColumnType currentType : reportPreferences.getColumnOrder().getColumns())
+			{
+				initColumn(currentType, true);				
+				allColumns.remove(currentType);
+			}
+			
+			for(ColumnType currentColumn : allColumns)
+			{
+				initColumn(currentColumn, false);
+			}
+			
+			//TODO prefill sorting
+		}
+		else
+		{
+			initColumnPosition(true);
+			initColumnDate(true);
+			initColumnIsRepeating(true);
+			initColumnCategory(true);
+			initColumnName(true);
+			initColumnDescription(true);
+			initColumnRating(true);
+			initColumnAmount(true);
+		}
+	}
+	
+	private void initColumnPosition(boolean activated)
+	{
+		columnPosition = new TableColumn<>();
         columnPosition.setUserData(ColumnType.POSITION);
         columnPosition.setCellValueFactory(new PropertyValueFactory<ReportItem, Integer>("position"));
         columnPosition.setStyle("-fx-alignment: CENTER;");
@@ -112,24 +208,22 @@ public class ReportController implements Refreshable
         hboxColumnPosition.setSpacing(3);
         
         CheckBox checkBoxPositions = new CheckBox();
-        checkBoxPositions.setSelected(true);
         hboxColumnPosition.getChildren().add(checkBoxPositions);
 
         Label labelColumnPosition = new Label(Localization.getString(Strings.REPORT_POSITION));      
         hboxColumnPosition.getChildren().add(labelColumnPosition);
         
         checkBoxPositions.selectedProperty().addListener((a, b, c)->{
-            String style = c ? "" : "-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_REPORT_TABLE_HEADER_DISABLED);           
-            hboxColumnPosition.setStyle(style);
-            columnFilter.toggleColumn(ColumnType.POSITION, c);
+        	 toggleColumn(columnPosition, c);
         });
+        checkBoxPositions.setSelected(activated);
         columnPosition.setGraphic(hboxColumnPosition);
         tableView.getColumns().add(columnPosition);
 	}
 	
-	private void initColumnDate()
+	private void initColumnDate(boolean activated)
 	{
-	    TableColumn<ReportItem, String> columnDate = new TableColumn<>();
+	    columnDate = new TableColumn<>();
         columnDate.setUserData(ColumnType.DATE);
         columnDate.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ReportItem, String>, ObservableValue<String>>()
         {
@@ -159,25 +253,23 @@ public class ReportController implements Refreshable
         hboxColumnDate.setSpacing(3);
         
         CheckBox checkBoxDate = new CheckBox();
-        checkBoxDate.setSelected(true);
         hboxColumnDate.getChildren().add(checkBoxDate);
 
         Label labelComlumnDate = new Label(Localization.getString(Strings.REPORT_DATE));
         hboxColumnDate.getChildren().add(labelComlumnDate);        
         
         checkBoxDate.selectedProperty().addListener((a, b, c)->{
-            String style = c ? "" : "-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_REPORT_TABLE_HEADER_DISABLED);           
-            hboxColumnDate.setStyle(style);
-            columnFilter.toggleColumn(ColumnType.DATE, c);
+        	 toggleColumn(columnDate, c);
         });
+        checkBoxDate.setSelected(activated);
         columnDate.setGraphic(hboxColumnDate);
         columnDate.setComparator(new DateComparator());
         tableView.getColumns().add(columnDate);
 	}
 	
-	private void initColumnIsRepeating()
+	private void initColumnIsRepeating(boolean activated)
 	{
-	    TableColumn<ReportItem, Boolean> columnIsRepeating = new TableColumn<>();
+	    columnIsRepeating = new TableColumn<>();
         columnIsRepeating.setUserData(ColumnType.REPEATING);
         columnIsRepeating.setCellValueFactory(new PropertyValueFactory<ReportItem, Boolean>("repeating"));
         columnIsRepeating.setCellFactory(new Callback<TableColumn<ReportItem, Boolean>, TableCell<ReportItem, Boolean>>()
@@ -221,25 +313,23 @@ public class ReportController implements Refreshable
         hboxColumnIsRepeating.setSpacing(3);
         
         CheckBox checkBoxRepeating = new CheckBox();
-        checkBoxRepeating.setSelected(true);
         hboxColumnIsRepeating.getChildren().add(checkBoxRepeating);
         
         Label labelColumnIsRepeating = new Label(Localization.getString(Strings.REPORT_REPEATING));
         hboxColumnIsRepeating.getChildren().add(labelColumnIsRepeating);
         
         checkBoxRepeating.selectedProperty().addListener((a, b, c)->{
-            String style = c ? "" : "-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_REPORT_TABLE_HEADER_DISABLED);           
-            hboxColumnIsRepeating.setStyle(style);
-            columnFilter.toggleColumn(ColumnType.REPEATING, c);
+        	 toggleColumn(columnIsRepeating, c);
         });
+        checkBoxRepeating.setSelected(activated);
         
         columnIsRepeating.setGraphic(hboxColumnIsRepeating);        
         tableView.getColumns().add(columnIsRepeating);
 	}
 	
-	private void initColumnCategory()
+	private void initColumnCategory(boolean activated)
 	{
-	    TableColumn<ReportItem, String> columnCategory = new TableColumn<>();
+	    columnCategory = new TableColumn<>();
         columnCategory.setUserData(ColumnType.CATEGORY);
         columnCategory.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ReportItem, String>, ObservableValue<String>>()
         {
@@ -256,24 +346,22 @@ public class ReportController implements Refreshable
         hboxColumnCategory.setSpacing(3);
         
         CheckBox checkBoxCategory = new CheckBox();
-        checkBoxCategory.setSelected(true);
         hboxColumnCategory.getChildren().add(checkBoxCategory);
         
         Label labelColumnCategory = new Label(Localization.getString(Strings.REPORT_CATEGORY));
         hboxColumnCategory.getChildren().add(labelColumnCategory);
         
         checkBoxCategory.selectedProperty().addListener((a, b, c)->{
-            String style = c ? "" : "-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_REPORT_TABLE_HEADER_DISABLED);           
-            hboxColumnCategory.setStyle(style);
-            columnFilter.toggleColumn(ColumnType.CATEGORY, c);
+        	 toggleColumn(columnCategory, c);
         });
+        checkBoxCategory.setSelected(activated);
         columnCategory.setGraphic(hboxColumnCategory);    
         tableView.getColumns().add(columnCategory);
 	}
 	
-	private void initColumnName()
+	private void initColumnName(boolean activated)
 	{
-	    TableColumn<ReportItem, Integer> columnName = new TableColumn<>();
+	    columnName = new TableColumn<>();
         columnName.setUserData(ColumnType.NAME);
         columnName.setCellValueFactory(new PropertyValueFactory<ReportItem, Integer>("name"));
         columnName.setStyle("-fx-alignment: CENTER;");
@@ -283,24 +371,22 @@ public class ReportController implements Refreshable
         hboxColumnName.setSpacing(3); 
         
         CheckBox checkBoxName = new CheckBox();
-        checkBoxName.setSelected(true);
         hboxColumnName.getChildren().add(checkBoxName);
         
         Label labelColumnName = new Label(Localization.getString(Strings.REPORT_NAME));
         hboxColumnName.getChildren().add(labelColumnName);        
         
         checkBoxName.selectedProperty().addListener((a, b, c)->{
-            String style = c ? "" : "-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_REPORT_TABLE_HEADER_DISABLED);           
-            hboxColumnName.setStyle(style);
-            columnFilter.toggleColumn(ColumnType.NAME, c);
+        	 toggleColumn(columnName, c);
         });
+        checkBoxName.setSelected(activated);
         columnName.setGraphic(hboxColumnName);
         tableView.getColumns().add(columnName);
 	}
 	
-	private void initColumnDescription()
+	private void initColumnDescription(boolean activated)
 	{
-	    TableColumn<ReportItem, String> columnDescription = new TableColumn<>();
+	    columnDescription = new TableColumn<>();
         columnDescription.setUserData(ColumnType.DESCRIPTION);
         columnDescription.setCellValueFactory(new PropertyValueFactory<ReportItem, String>("description"));
         columnDescription.setStyle("-fx-alignment: CENTER;");
@@ -310,24 +396,22 @@ public class ReportController implements Refreshable
         hboxColumnDescription.setSpacing(3); 
         
         CheckBox checkBoxDescription = new CheckBox();
-        checkBoxDescription.setSelected(true);
         hboxColumnDescription.getChildren().add(checkBoxDescription);
         
         Label labelColumnDescription = new Label(Localization.getString(Strings.REPORT_DESCRIPTION));
         hboxColumnDescription.getChildren().add(labelColumnDescription);
         
         checkBoxDescription.selectedProperty().addListener((a, b, c)->{
-            String style = c ? "" : "-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_REPORT_TABLE_HEADER_DISABLED);           
-            hboxColumnDescription.setStyle(style);
-            columnFilter.toggleColumn(ColumnType.DESCRIPTION, c);
+        	 toggleColumn(columnDescription, c);
         });
+        checkBoxDescription.setSelected(activated);
         columnDescription.setGraphic(hboxColumnDescription);
         tableView.getColumns().add(columnDescription);
 	}
 	
-	private void initColumnRating()
+	private void initColumnRating(boolean activated)
 	{
-	    TableColumn<ReportItem, Integer> columnRating = new TableColumn<>();
+	    columnRating = new TableColumn<>();
         columnRating.setUserData(ColumnType.RATING);
         columnRating.setCellValueFactory(new PropertyValueFactory<ReportItem, Integer>("amount"));
         columnRating.setCellFactory(new Callback<TableColumn<ReportItem, Integer>, TableCell<ReportItem, Integer>>()
@@ -371,25 +455,34 @@ public class ReportController implements Refreshable
         hboxColumnRating.setSpacing(3);         
         
         CheckBox checkBoxRating = new CheckBox();
-        checkBoxRating.setSelected(true);
         hboxColumnRating.getChildren().add(checkBoxRating);
         
         Label labelColumnRating = new Label(Localization.getString(Strings.REPORT_RATING));
         hboxColumnRating.getChildren().add(labelColumnRating);
         
         checkBoxRating.selectedProperty().addListener((a, b, c)->{
-            String style = c ? "" : "-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_REPORT_TABLE_HEADER_DISABLED);           
-            hboxColumnRating.setStyle(style);
-            columnFilter.toggleColumn(ColumnType.RATING, c);
+        	 toggleColumn(columnRating, c);
         });
+        checkBoxRating.setSelected(activated);
         columnRating.setGraphic(hboxColumnRating);
         columnRating.setComparator(new RatingComparator());
         tableView.getColumns().add(columnRating);
 	}
 	
-	private void initColumnAmount()
+	private void toggleColumn(TableColumn<ReportItem, ?> column, boolean activated)
 	{
-	    TableColumn<ReportItem, String> columnAmount = new TableColumn<>();
+		String style = activated ? "" : "-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_REPORT_TABLE_HEADER_DISABLED);
+		Node graphic = column.getGraphic();
+		if(graphic != null)
+		{
+			graphic.setStyle(style);
+		}
+        columnFilter.toggleColumn((ColumnType)column.getUserData(), activated);
+	}
+	
+	private void initColumnAmount(boolean activated)
+	{
+	    columnAmount = new TableColumn<>();
         columnAmount.setUserData(ColumnType.AMOUNT);
         columnAmount.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ReportItem, String>, ObservableValue<String>>()
         {
@@ -409,19 +502,17 @@ public class ReportController implements Refreshable
         hboxColumnAmount.setSpacing(3);
         
         CheckBox checkBoxAmount = new CheckBox();
-        checkBoxAmount.setSelected(true);
         hboxColumnAmount.getChildren().add(checkBoxAmount);
         
         Label labelColumnAmount = new Label(Localization.getString(Strings.REPORT_AMOUNT));
         hboxColumnAmount.getChildren().add(labelColumnAmount);
         
         checkBoxAmount.selectedProperty().addListener((a, b, c)->{
-            String style = c ? "" : "-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_REPORT_TABLE_HEADER_DISABLED);          
-            hboxColumnAmount.setStyle(style);
-            columnFilter.toggleColumn(ColumnType.AMOUNT, c);
+            toggleColumn(columnAmount, c);
         });
+        checkBoxAmount.setSelected(activated);
         columnAmount.setGraphic(hboxColumnAmount);
-        tableView.getColumns().add(columnAmount);
+        tableView.getColumns().add(columnAmount);               
 	}
 
 	private void initTable()
@@ -438,14 +529,9 @@ public class ReportController implements Refreshable
 
 		tableView.setFixedCellSize(26);
 		
-		initColumnPosition();
-		initColumnDate();
-		initColumnIsRepeating();
-		initColumnCategory();
-		initColumnName();
-		initColumnDescription();
-		initColumnRating();
-		initColumnAmount();
+		tableView.setOnSort((event)->{
+			System.out.println("sort");
+		});
 	}
 
 	public void filter()
@@ -517,6 +603,35 @@ public class ReportController implements Refreshable
 			{
 				columnOrder.addColumn(currentType);
 			}
+		}
+		
+		ReportSorting reportSorting = new ReportSorting();
+		ObservableList<TableColumn<ReportItem, ?>> sortOrder = tableView.getSortOrder();
+		if(sortOrder.size() >  0)
+		{
+			reportSorting.setColumnType((ColumnType)sortOrder.get(0).getUserData());
+			reportSorting.setSortType(sortOrder.get(0).getSortType());
+		}
+		else
+		{
+			reportSorting.setColumnType(ColumnType.DATE);
+			reportSorting.setSortType(SortType.DESCENDING);
+		}		
+		
+		ReportPreferences reportPreferences = new ReportPreferences(columnOrder, 
+																	checkBoxIncludeBudget.isSelected(),
+																	checkBoxSplitTable.isSelected(),
+																	checkBoxIncludeCategoryBudgets.isSelected(),
+																	reportSorting);
+		
+		//save report preferences
+		try
+		{
+			FileHelper.saveObjectToJSON("reportPreferences", reportPreferences);			
+		}
+		catch(IOException e2)
+		{
+			Logger.error(e2);
 		}		
 		
 		FileChooser fileChooser = new FileChooser();
@@ -531,10 +646,7 @@ public class ReportController implements Refreshable
 			
 			ReportGenerator reportGenerator = new ReportGenerator(new ArrayList<ReportItem>(tableView.getItems()),
 																controller.getCategoryBudgets(),
-																columnOrder,
-																checkBoxIncludeBudget.isSelected(),
-																checkBoxSplitTable.isSelected(), 
-																checkBoxIncludeCategoryBudgets.isSelected(),																
+																reportPreferences,														
 																file,
 																controller.getSettings().getCurrency(),
 																controller.getCurrentDate(),

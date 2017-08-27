@@ -34,23 +34,17 @@ public class ReportGenerator
 {
 	private ArrayList<ReportItem> reportItems;
 	private ArrayList<CategoryBudget> categoryBudgets;
-	private ColumnOrder columnOrder;
-	private boolean includeBudget;
-	private boolean splitTable;
-	private boolean includeCategoryBudgets;
+	private ReportPreferences reportPreferences;
 	private File savePath;
 	private String currency;
 	private DateTime date;
 	private Budget budget;
 
-	public ReportGenerator(ArrayList<ReportItem> reportItems, ArrayList<CategoryBudget> categoryBudgets, ColumnOrder columnOrder, boolean includeBudget, boolean splitTable, boolean includeCategoryBudgets, File savePath, String currency, DateTime date, Budget budget)
+	public ReportGenerator(ArrayList<ReportItem> reportItems, ArrayList<CategoryBudget> categoryBudgets, ReportPreferences reportPreferences, File savePath, String currency, DateTime date, Budget budget)
 	{	
 		this.reportItems = reportItems;
 		this.categoryBudgets = categoryBudgets;
-		this.columnOrder = columnOrder;
-		this.includeBudget = includeBudget;
-		this.splitTable = splitTable;
-		this.includeCategoryBudgets = includeCategoryBudgets;
+		this.reportPreferences = reportPreferences;
 		this.savePath = savePath;
 		this.currency = currency;
 		this.date = date;
@@ -69,23 +63,23 @@ public class ReportGenerator
 
 	private PdfPTable generateTable(int tableWidth, AmountType amountType)
 	{
-		int numberOfColumns = columnOrder.getColumns().size();
+		int numberOfColumns = reportPreferences.getColumnOrder().getColumns().size();
 		int totalIncome = 0;
 		int totalPayment = 0;
 
 		if(numberOfColumns > 0)
 		{
 			float[] proportions = new float[numberOfColumns];
-			for(int i = 0; i < columnOrder.getColumns().size(); i++)
+			for(int i = 0; i < reportPreferences.getColumnOrder().getColumns().size(); i++)
 			{
-				proportions[i] = columnOrder.getColumns().get(i).getProportion();
+				proportions[i] = reportPreferences.getColumnOrder().getColumns().get(i).getProportion();
 			}
 			
 			PdfPTable table = new PdfPTable(proportions);
 			table.setWidthPercentage(tableWidth);
 			Font font = new Font(FontFamily.HELVETICA, 8, Font.NORMAL, GrayColor.BLACK);
 
-			for(ColumnType column : columnOrder.getColumns())
+			for(ColumnType column : reportPreferences.getColumnOrder().getColumns())
 			{
 				PdfPCell cell = new PdfPCell(new Phrase(column.getName(), font));
 				cell.setBackgroundColor(GrayColor.LIGHT_GRAY);
@@ -112,7 +106,7 @@ public class ReportGenerator
 					}
 				}
 
-				for(ColumnType column : columnOrder.getColumns())
+				for(ColumnType column : reportPreferences.getColumnOrder().getColumns())
 				{
 					PdfPCell cell = new PdfPCell(new Phrase(getProperty(currentItem, column), font));
 					cell.setBackgroundColor(new BaseColor(Color.WHITE));
@@ -164,7 +158,7 @@ public class ReportGenerator
 		document.add(generateHeader());
 		document.add(Chunk.NEWLINE);
 		
-		if(includeBudget)
+		if(reportPreferences.isIncludeBudget())
 		{
 			Font fontGreen = new Font(FontFamily.HELVETICA, 12, Font.NORMAL, new BaseColor(36, 122, 45));
 			Font fontRed = new Font(FontFamily.HELVETICA, 12, Font.NORMAL, BaseColor.RED);
@@ -180,7 +174,7 @@ public class ReportGenerator
 		document.add(new Paragraph(Localization.getString(Strings.REPORT_HEADLINE_PAYMENTS_OVERVIEW), headerFont));
 		document.add(Chunk.NEWLINE);
 
-		if(splitTable)
+		if(reportPreferences.isSplitTable())
 		{
 			document.add(new Paragraph(Localization.getString(Strings.TITLE_INCOMES), smallHeaderFont));
 			document.add(Chunk.NEWLINE);
@@ -210,7 +204,7 @@ public class ReportGenerator
 			}
 		}
 
-		if(includeCategoryBudgets)
+		if(reportPreferences.isIncludeCategoryBudgets())
 		{
 			document.add(Chunk.NEWLINE);
 			document.add(new Paragraph(Localization.getString(Strings.TITLE_CATEGORY_BUDGETS), headerFont));

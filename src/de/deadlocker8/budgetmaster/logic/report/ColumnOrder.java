@@ -20,4 +20,10 @@ public class ColumnOrder
 	{
 		columns.add(column);
 	}
+
+	@Override
+	public String toString()
+	{
+		return "ColumnOrder [columns=" + columns + "]";
+	}
 }
