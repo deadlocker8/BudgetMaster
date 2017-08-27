@@ -111,55 +111,95 @@ public class ReportController implements Refreshable
 		checkBoxIncludeBudget.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT) + "; -fx-font-size: 14;");
 		checkBoxSplitTable.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT) + "; -fx-font-size: 14;");
 		checkBoxIncludeCategoryBudgets.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT) + "; -fx-font-size: 14;");
-		
-
-		refresh();
-		prefill();
+				
+		applyReportPreferences();
 	}
 	
-	private void initColumn(ColumnType columnType, boolean activated)
+	private void initColumn(ColumnType columnType, boolean activated, SortType sortType)
 	{
 		switch(columnType)
 		{
 			case AMOUNT:
 				initColumnAmount(activated);
 				toggleColumn(columnAmount, activated);
+				if(sortType != null)
+				{
+					columnAmount.setSortType(sortType);
+					tableView.getSortOrder().add(columnAmount);
+				}
 				break;
 			case CATEGORY:
 				initColumnCategory(activated);
 				toggleColumn(columnCategory, activated);
+				if(sortType != null)
+				{
+					columnCategory.setSortType(sortType);
+					tableView.getSortOrder().add(columnCategory);
+				}
 				break;
 			case DATE:
 				initColumnDate(activated);
 				toggleColumn(columnDate, activated);
+				if(sortType != null)
+				{
+					columnDate.setSortType(sortType);
+					tableView.getSortOrder().add(columnDate);
+				}
 				break;
 			case DESCRIPTION:
 				initColumnDescription(activated);
 				toggleColumn(columnDescription, activated);
+				if(sortType != null)
+				{
+					columnDescription.setSortType(sortType);
+					tableView.getSortOrder().add(columnDescription);
+				}
 				break;
 			case NAME:
 				initColumnName(activated);
 				toggleColumn(columnName, activated);
+				if(sortType != null)
+				{
+					columnName.setSortType(sortType);
+					tableView.getSortOrder().add(columnName);
+				}
 				break;
 			case POSITION:
 				initColumnPosition(activated);
 				toggleColumn(columnPosition, activated);
+				if(sortType != null)
+				{
+					columnPosition.setSortType(sortType);
+					tableView.getSortOrder().add(columnPosition);
+				}
 				break;
 			case RATING:
 				initColumnRating(activated);
 				toggleColumn(columnRating, activated);
+				if(sortType != null)
+				{
+					columnRating.setSortType(sortType);
+					tableView.getSortOrder().add(columnRating);
+				}
 				break;
 			case REPEATING:
 				initColumnIsRepeating(activated);
 				toggleColumn(columnIsRepeating, activated);
+				if(sortType != null)
+				{
+					columnIsRepeating.setSortType(sortType);
+					tableView.getSortOrder().add(columnIsRepeating);
+				}
 				break;
 			default:
 				break;					
 		}
 	}
 	
-	private void prefill()
+	private void applyReportPreferences()
 	{
+		tableView.getColumns().clear();		
+		
 		Object loadedObject = FileHelper.loadObjectFromJSON("reportPreferences", new ReportPreferences());
 		if(loadedObject != null)
 		{
@@ -168,31 +208,34 @@ public class ReportController implements Refreshable
 			checkBoxSplitTable.setSelected(reportPreferences.isSplitTable());
 			checkBoxIncludeCategoryBudgets.setSelected(reportPreferences.isIncludeCategoryBudgets());
 			
+			ReportSorting reportSorting = reportPreferences.getReportSorting();
+			
 			ArrayList<ColumnType> allColumns = new ArrayList<>(Arrays.asList(ColumnType.values()));			
-						
+
 			for(ColumnType currentType : reportPreferences.getColumnOrder().getColumns())
 			{
-				initColumn(currentType, true);				
+				if(currentType == reportSorting.getColumnType())
+				{
+					initColumn(currentType, true, reportSorting.getSortType());
+				}
+				else
+				{
+					initColumn(currentType, true, null);
+				}
 				allColumns.remove(currentType);
 			}
 			
 			for(ColumnType currentColumn : allColumns)
 			{
-				initColumn(currentColumn, false);
+				initColumn(currentColumn, false, null);
 			}
-			
-			//TODO prefill sorting
 		}
 		else
 		{
-			initColumnPosition(true);
-			initColumnDate(true);
-			initColumnIsRepeating(true);
-			initColumnCategory(true);
-			initColumnName(true);
-			initColumnDescription(true);
-			initColumnRating(true);
-			initColumnAmount(true);
+			for(ColumnType currentType : ColumnType.values())
+			{
+				initColumn(currentType, true, null);
+			}
 		}
 	}
 	
@@ -470,14 +513,14 @@ public class ReportController implements Refreshable
 	}
 	
 	private void toggleColumn(TableColumn<ReportItem, ?> column, boolean activated)
-	{
+	{		
 		String style = activated ? "" : "-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_REPORT_TABLE_HEADER_DISABLED);
 		Node graphic = column.getGraphic();
 		if(graphic != null)
 		{
 			graphic.setStyle(style);
 		}
-        columnFilter.toggleColumn((ColumnType)column.getUserData(), activated);
+        columnFilter.toggleColumn((ColumnType)column.getUserData(), activated);       
 	}
 	
 	private void initColumnAmount(boolean activated)
@@ -527,11 +570,7 @@ public class ReportController implements Refreshable
 		labelPlaceholder.setStyle("-fx-font-size: 16");
 		tableView.setPlaceholder(labelPlaceholder);		
 
-		tableView.setFixedCellSize(26);
-		
-		tableView.setOnSort((event)->{
-			System.out.println("sort");
-		});
+		tableView.setFixedCellSize(26);		
 	}
 
 	public void filter()
@@ -591,12 +630,11 @@ public class ReportController implements Refreshable
 			tableView.setItems(objectsForTable);
 		}
 	}
-
-	@SuppressWarnings("rawtypes")
-	public void generate()
+	
+	private ReportPreferences getReportPreferences()
 	{
 		ColumnOrder columnOrder = new ColumnOrder();
-		for(TableColumn currentColumn : tableView.getColumns())
+		for(TableColumn<ReportItem, ?> currentColumn : tableView.getColumns())
 		{
 			ColumnType currentType = (ColumnType)currentColumn.getUserData();			
 			if(columnFilter.containsColumn(currentType))
@@ -618,21 +656,29 @@ public class ReportController implements Refreshable
 			reportSorting.setSortType(SortType.DESCENDING);
 		}		
 		
-		ReportPreferences reportPreferences = new ReportPreferences(columnOrder, 
-																	checkBoxIncludeBudget.isSelected(),
-																	checkBoxSplitTable.isSelected(),
-																	checkBoxIncludeCategoryBudgets.isSelected(),
-																	reportSorting);
-		
-		//save report preferences
+		return new ReportPreferences(columnOrder, 
+									checkBoxIncludeBudget.isSelected(),
+									checkBoxSplitTable.isSelected(),
+									checkBoxIncludeCategoryBudgets.isSelected(),
+									reportSorting);
+	}
+	
+	private void saveReportPreferences(ReportPreferences reportPreferences) 
+	{
 		try
 		{
-			FileHelper.saveObjectToJSON("reportPreferences", reportPreferences);			
+			FileHelper.saveObjectToJSON("reportPreferences", reportPreferences);
 		}
-		catch(IOException e2)
+		catch(IOException e)
 		{
-			Logger.error(e2);
-		}		
+			Logger.error(e);
+		}	
+	}
+
+	public void generate()
+	{
+		ReportPreferences reportPreferences = getReportPreferences();		
+		saveReportPreferences(reportPreferences);
 		
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle(Localization.getString(Strings.TITLE_REPORT_SAVE));
@@ -763,7 +809,10 @@ public class ReportController implements Refreshable
 			labelFilterActive.setVisible(true);
 		}
 		
+		saveReportPreferences(getReportPreferences());
 		refreshTableView();
+		applyReportPreferences();
+		tableView.refresh();
 		
 		DateTime currentDate = controller.getCurrentDate();
 		String currentMonth = currentDate.toString("MM");
