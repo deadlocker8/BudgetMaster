@@ -93,7 +93,7 @@ public class HomeController implements Refreshable
 			labelBudget.setText(Helpers.getCurrencyString(remaining, currency));
 			if(remaining <= 0)
 			{
-				labelBudget.setStyle("-fx-text-fill: #CC0000");
+				labelBudget.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT_RED));
 			}
 			else
 			{

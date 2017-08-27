@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 public class Colors 
 {
     public static final Color TEXT = Color.web("#212121");
+    public static final Color TEXT_RED = Color.web("#CC0000");
     public static final Color INCOME = Color.web("#22BAD9");
     public static final Color PAYMENT = Color.web("#F2612D");
     public static final Color BACKGROUND = Color.web("#F4F4F4");
