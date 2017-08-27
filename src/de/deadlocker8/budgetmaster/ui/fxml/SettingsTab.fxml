@@ -71,7 +71,7 @@
                               <Font name="System Bold" size="16.0" />
                            </font>
                            <VBox.margin>
-                              <Insets top="35.0" />
+                              <Insets top="50.0" />
                            </VBox.margin>
                         </Label>
                         <Label fx:id="labelSecret11122" alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="-Infinity" prefWidth="158.0" text="%settingstab.label.database" textAlignment="RIGHT" wrapText="true">
