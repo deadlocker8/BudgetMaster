@@ -64,9 +64,8 @@ public class HomeController implements Refreshable
 				});
 			}
 		});
-		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
 		
-		refresh();
+		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
 	}
 	
 	private void refreshListView()
