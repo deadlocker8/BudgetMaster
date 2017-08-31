@@ -136,6 +136,11 @@ public class SettingsController
 		radioButtonRestActivated.setToggleGroup(toggleGroup);
 		radioButtonRestDeactivated.setToggleGroup(toggleGroup);
 		
+		refreshLabelsUpdate();
+	}
+	
+	private void refreshLabelsUpdate()
+	{
 		Updater updater = controller.getUpdater();
 		labelCurrentVersion.setText(Localization.getString(Strings.VERSION_NAME));
 		labelLatestVersion.setText(updater.getLatestVersion().getVersionName());
@@ -301,6 +306,12 @@ public class SettingsController
 
 		controller.refresh(controller.getFilterSettings());
 		controller.showNotification(Localization.getString(Strings.NOTIFICATION_SETTINGS_SAVE));
+		
+		if(controller.getSettings().isAutoUpdateCheckEnabled())
+		{
+			controller.checkForUpdates(false);
+			refreshLabelsUpdate();
+		}
 		
 		//restart application if language has changed
 		if(controller.getSettings().getLanguage() != previousLanguage)
