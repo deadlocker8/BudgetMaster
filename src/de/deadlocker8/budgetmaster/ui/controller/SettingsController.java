@@ -585,6 +585,6 @@ public class SettingsController
 	
 	public void checkForUpdates()
 	{
-		controller.checkForUpdates();
+		controller.checkForUpdates(true);
 	}
 }

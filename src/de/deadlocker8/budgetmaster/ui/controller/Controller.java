@@ -98,7 +98,7 @@ public class Controller
 		
 		if(settings.isAutoUpdateCheckEnabled())
 		{			
-			checkForUpdates();
+			checkForUpdates(false);
 		}
 				
 		initUI();		
@@ -347,7 +347,7 @@ public class Controller
 		buttonToday.setDisable(disable);
 	}
 	
-	public void checkForUpdates()
+	public void checkForUpdates(boolean showNotification)
 	{
 		try
 		{
@@ -356,7 +356,10 @@ public class Controller
 
 			if(!updateAvailable)
 			{
-				showNotification(Localization.getString(Strings.NOTIFICATION_NO_UPDATE_AVAILABLE));
+				if(showNotification)
+				{
+					showNotification(Localization.getString(Strings.NOTIFICATION_NO_UPDATE_AVAILABLE));
+				}
 				return;
 			}
 			
