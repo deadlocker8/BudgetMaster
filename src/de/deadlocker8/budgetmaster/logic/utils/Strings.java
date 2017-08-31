@@ -60,6 +60,7 @@ public class Strings
     public static final String CURRENCY_PLACEHOLDER = "currency.placeholder";
     public static final String TRUSTED_HOSTS_PLACEHOLDER = "trusted.hosts.placeholder";
     public static final String VERSION = "version";
+    public static final String UNDEFINED = "undefined";
     
     //REPORT
     public static final String REPORT_POSITION = "report.position";

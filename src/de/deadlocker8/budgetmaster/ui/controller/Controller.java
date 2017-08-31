@@ -448,26 +448,48 @@ public class Controller
 				ServerConnection connection = new ServerConnection(settings);
 				
 				//check if server is compatible with client
-				VersionInformation serverVersion = connection.getServerVersion();
-				if(serverVersion.getVersionCode() < Integer.parseInt(Localization.getString(Strings.VERSION_CODE)))
+				try
 				{
-					Platform.runLater(()->{;
+					VersionInformation serverVersion = connection.getServerVersion();
+					if(serverVersion.getVersionCode() < Integer.parseInt(Localization.getString(Strings.VERSION_CODE)))
+					{
+						Platform.runLater(()->{
+							AlertGenerator.showAlert(AlertType.WARNING,
+													Localization.getString(Strings.TITLE_WARNING), 
+													"",
+													Localization.getString(Strings.WARNING_SERVER_VERSION, serverVersion.getVersionName(), Localization.getString(Strings.VERSION_NAME)), 
+													icon, stage, null, false);				
+						
+							if(modalStage != null)
+							{
+								modalStage.close();
+							};
+							categoryHandler = new CategoryHandler(null);					
+							toggleAllTabsExceptSettings(true);
+							tabPane.getSelectionModel().select(tabSettings);	
+						});
+						return;
+					}
+				}
+				catch(Exception e1)
+				{
+					Platform.runLater(()->{
 						AlertGenerator.showAlert(AlertType.WARNING,
-												Localization.getString(Strings.TITLE_WARNING), 
-												"",
-												Localization.getString(Strings.WARNING_SERVER_VERSION, serverVersion.getVersionName(), Localization.getString(Strings.VERSION_NAME)), 
-												icon, stage, null, false);					
-					
+						Localization.getString(Strings.TITLE_WARNING), 
+						"",
+						Localization.getString(Strings.WARNING_SERVER_VERSION, Localization.getString(Strings.UNDEFINED), Localization.getString(Strings.VERSION_NAME)), 
+						icon, stage, null, false);				
+	
 						if(modalStage != null)
 						{
 							modalStage.close();
 						};
 						categoryHandler = new CategoryHandler(null);					
 						toggleAllTabsExceptSettings(true);
-						tabPane.getSelectionModel().select(tabSettings);	
+						tabPane.getSelectionModel().select(tabSettings);
 					});
-					return;
-				}				
+				}
+				
 				
 				paymentHandler = new PaymentHandler();
 				paymentHandler.getPayments().addAll(connection.getPayments(currentDate.getYear(), currentDate.getMonthOfYear()));
