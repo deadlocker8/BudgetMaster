@@ -355,7 +355,10 @@ public class Controller
 			String changes = updater.getChangelog(updater.getLatestVersion().getVersionCode());
 
 			if(!updateAvailable)
+			{
+				showNotification(Localization.getString(Strings.NOTIFICATION_NO_UPDATE_AVAILABLE));
 				return;
+			}
 			
 			Platform.runLater(()->{
 				Alert alert = new Alert(AlertType.INFORMATION);
@@ -488,6 +491,7 @@ public class Controller
 						toggleAllTabsExceptSettings(true);
 						tabPane.getSelectionModel().select(tabSettings);
 					});
+					return;
 				}
 				
 				

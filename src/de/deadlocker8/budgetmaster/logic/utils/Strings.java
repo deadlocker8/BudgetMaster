@@ -99,6 +99,7 @@ public class Strings
     public static final String NOTIFICATION_CHART_EXPORT = "notification.chart.export";
     public static final String NOTIFICATION_REPORT_SAVE = "notification.report.save";
     public static final String NOTIFICATION_SETTINGS_SAVE = "notification.settings.save";
+    public static final String NOTIFICATION_NO_UPDATE_AVAILABLE = "notification.no.update.available";
     
     //INFO
     public static final String INFO_TITLE_CATEGORY_DELETE = "info.title.category.delete";

@@ -90,6 +90,7 @@ public class SettingsController
 		comboBoxLanguage.setButtonCell(new LanguageCell(false));
 		comboBoxLanguage.setValue(LanguageType.ENGLISH);
 		previousLanguage = LanguageType.ENGLISH;
+		checkboxEnableAutoUpdate.setSelected(true);
 		
 		if(controller.getSettings().isComplete())
 		{
