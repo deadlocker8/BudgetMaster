@@ -126,7 +126,7 @@ public class Updater
 		}		
 		
 		Path target = Paths.get(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER) + "/Updater." + ending);			
-		download(BUILD_FOLDER + "Updater.jar", target);
+		download(BUILD_FOLDER + "Updater." + ending, target);
 		Logger.debug("Successfully downloaded latest updater");
 	}
 	
