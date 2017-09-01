@@ -30,11 +30,12 @@ import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmaster.ui.Refreshable;
+import de.deadlocker8.budgetmaster.ui.cells.report.table.ReportTableRatingCell;
+import de.deadlocker8.budgetmaster.ui.cells.report.table.ReportTableRepeatingCell;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -49,9 +50,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableColumn.SortType;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -61,7 +60,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import logger.Logger;
 import tools.AlertGenerator;
 import tools.ConvertTo;
@@ -268,27 +266,22 @@ public class ReportController implements Refreshable
 	{
 	    columnDate = new TableColumn<>();
         columnDate.setUserData(ColumnType.DATE);
-        columnDate.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ReportItem, String>, ObservableValue<String>>()
-        {
-            @Override
-            public ObservableValue<String> call(CellDataFeatures<ReportItem, String> param)
-            {               
-                String dateString = param.getValue().getDate();
-                try
-                {
-                    DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                    Date date = format.parse(dateString);
-                    DateFormat finalFormat = new SimpleDateFormat("dd.MM.yy");
-                    dateString = finalFormat.format(date);
-                    return new SimpleStringProperty(dateString);
-                }
-                catch(Exception e)
-                {
-                    Logger.error(e);
-                    return null;
-                }
-            }
-        });
+        columnDate.setCellValueFactory(param -> {               
+		    String dateString = param.getValue().getDate();
+		    try
+		    {
+		        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		        Date date = format.parse(dateString);
+		        DateFormat finalFormat = new SimpleDateFormat("dd.MM.yy");
+		        dateString = finalFormat.format(date);
+		        return new SimpleStringProperty(dateString);
+		    }
+		    catch(Exception e)
+		    {
+		        Logger.error(e);
+		        return null;
+		    }
+		});
         columnDate.setStyle("-fx-alignment: CENTER;");
         
         HBox hboxColumnDate = new HBox();
@@ -315,40 +308,9 @@ public class ReportController implements Refreshable
 	    columnIsRepeating = new TableColumn<>();
         columnIsRepeating.setUserData(ColumnType.REPEATING);
         columnIsRepeating.setCellValueFactory(new PropertyValueFactory<ReportItem, Boolean>("repeating"));
-        columnIsRepeating.setCellFactory(new Callback<TableColumn<ReportItem, Boolean>, TableCell<ReportItem, Boolean>>()
-        {
-            @Override
-            public TableCell<ReportItem, Boolean> call(TableColumn<ReportItem, Boolean> param)
-            {
-                TableCell<ReportItem, Boolean> cell = new TableCell<ReportItem, Boolean>()
-                {
-                    @Override
-                    public void updateItem(Boolean item, boolean empty)
-                    {
-                        if(!empty)
-                        {   
-                            Label labelRepeating = new Label();
-                            if(item)
-                            {
-                                labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR, 16, Colors.TEXT));
-                            }
-                            else
-                            {
-                                labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR, 16, Color.TRANSPARENT));
-                            }                            
-                            labelRepeating.setStyle("-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: #212121");
-                            labelRepeating.setAlignment(Pos.CENTER);
-                            setGraphic(labelRepeating);
-                        }
-                        else
-                        {
-                            setGraphic(null);
-                        }
-                    }
-                };
-                return cell;
-            }
-        });
+        columnIsRepeating.setCellFactory(param -> {
+		    return new ReportTableRepeatingCell();
+		});
         columnIsRepeating.setStyle("-fx-alignment: CENTER;");
         
         HBox hboxColumnIsRepeating = new HBox();
@@ -374,14 +336,7 @@ public class ReportController implements Refreshable
 	{
 	    columnCategory = new TableColumn<>();
         columnCategory.setUserData(ColumnType.CATEGORY);
-        columnCategory.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ReportItem, String>, ObservableValue<String>>()
-        {
-            @Override
-            public ObservableValue<String> call(CellDataFeatures<ReportItem, String> param)
-            {
-                return new SimpleStringProperty(param.getValue().getCategory().getName());
-            }
-        });
+        columnCategory.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getCategory().getName()));
         columnCategory.setStyle("-fx-alignment: CENTER;");
         
         HBox hboxColumnCategory = new HBox();
@@ -457,40 +412,9 @@ public class ReportController implements Refreshable
 	    columnRating = new TableColumn<>();
         columnRating.setUserData(ColumnType.RATING);
         columnRating.setCellValueFactory(new PropertyValueFactory<ReportItem, Integer>("amount"));
-        columnRating.setCellFactory(new Callback<TableColumn<ReportItem, Integer>, TableCell<ReportItem, Integer>>()
-        {
-            @Override
-            public TableCell<ReportItem, Integer> call(TableColumn<ReportItem, Integer> param)
-            {
-                TableCell<ReportItem, Integer> cell = new TableCell<ReportItem, Integer>()
-                {
-                    @Override
-                    public void updateItem(Integer item, boolean empty)
-                    {
-                        if(!empty)
-                        {                               
-                            Label labelRepeating = new Label();
-                            if(item > 0)
-                            {
-                                labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.PLUS, 14, Colors.TEXT));
-                            }
-                            else
-                            {
-                                labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.MINUS, 14, Colors.TEXT));
-                            }
-                            labelRepeating.setStyle("-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: #212121");
-                            labelRepeating.setAlignment(Pos.CENTER);
-                            setGraphic(labelRepeating);
-                        }
-                        else
-                        {
-                            setGraphic(null);
-                        }
-                    }
-                };
-                return cell;
-            }
-        });
+        columnRating.setCellFactory(param -> {		    
+		    return new ReportTableRatingCell();
+		});
         columnRating.setStyle("-fx-alignment: CENTER;");
         
         HBox hboxColumnRating = new HBox();
@@ -527,17 +451,12 @@ public class ReportController implements Refreshable
 	{
 	    columnAmount = new TableColumn<>();
         columnAmount.setUserData(ColumnType.AMOUNT);
-        columnAmount.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ReportItem, String>, ObservableValue<String>>()
-        {
-            @Override
-            public ObservableValue<String> call(CellDataFeatures<ReportItem, String> param)
-            {
-                StringProperty value = new SimpleStringProperty();
-                double amount = param.getValue().getAmount() / 100.0;
-                value.set(Helpers.getCurrencyString(amount, controller.getSettings().getCurrency()));
-                return value;
-            }
-        });
+        columnAmount.setCellValueFactory(param -> {
+		    StringProperty value = new SimpleStringProperty();
+		    double amount = param.getValue().getAmount() / 100.0;
+		    value.set(Helpers.getCurrencyString(amount, controller.getSettings().getCurrency()));
+		    return value;
+		});
         columnAmount.setStyle("-fx-alignment: CENTER;");
         
         HBox hboxColumnAmount = new HBox();

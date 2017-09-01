@@ -78,6 +78,7 @@ public class Controller
 	private Updater updater;
 
 	private boolean alertIsShowing = false;
+	private static final String DATE_FORMAT = "MMMM yyyy";
 
 	public void init(Stage stage, Settings settings)
 	{
@@ -90,7 +91,7 @@ public class Controller
 		});
 		
 		currentDate = DateTime.now();
-		labelMonth.setText(currentDate.toString("MMMM yyyy"));
+		labelMonth.setText(currentDate.toString(DATE_FORMAT));
 		
 		filterSettings = new FilterSettings();
 		paymentHandler = new PaymentHandler();
@@ -104,37 +105,30 @@ public class Controller
 		initUI();		
 	}
 	
+	private <T> T loadTab(String fileName, Tab tab) throws IOException
+	{
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fileName));
+		fxmlLoader.setResources(Localization.getBundle());
+		Parent nodeTab = (Parent)fxmlLoader.load();		
+		tab.setContent(nodeTab);
+		return fxmlLoader.getController();
+	}
+	
 	private void initUI()
 	{
 		try
 		{
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/HomeTab.fxml"));
-			fxmlLoader.setResources(Localization.getBundle());
-			Parent nodeTabHome = (Parent)fxmlLoader.load();
-			homeController = fxmlLoader.getController();
-			homeController.init(this);
-			tabHome.setContent(nodeTabHome);
-
-			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/PaymentTab.fxml"));
-			fxmlLoader.setResources(Localization.getBundle());
-			Parent nodeTabPayment = (Parent)fxmlLoader.load();
-			paymentController = fxmlLoader.getController();
+			homeController = loadTab("/de/deadlocker8/budgetmaster/ui/fxml/HomeTab.fxml", tabHome);
+			homeController.init(this);			
+			
+			paymentController = loadTab("/de/deadlocker8/budgetmaster/ui/fxml/PaymentTab.fxml", tabPayments);
 			paymentController.init(this);
-			tabPayments.setContent(nodeTabPayment);
-
-			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/CategoryTab.fxml"));
-			fxmlLoader.setResources(Localization.getBundle());
-			Parent nodeTabCategory = (Parent)fxmlLoader.load();
-			categoryController = fxmlLoader.getController();
+			
+			categoryController = loadTab("/de/deadlocker8/budgetmaster/ui/fxml/CategoryTab.fxml", tabCategories);
 			categoryController.init(this);
-			tabCategories.setContent(nodeTabCategory);
-
-			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/ChartTab.fxml"));
-			fxmlLoader.setResources(Localization.getBundle());
-			Parent nodeTabChart = (Parent)fxmlLoader.load();
-			chartController = fxmlLoader.getController();
+			
+			chartController = loadTab("/de/deadlocker8/budgetmaster/ui/fxml/ChartTab.fxml", tabCharts);
 			chartController.init(this);
-			tabCharts.setContent(nodeTabChart);
 			tabCharts.selectedProperty().addListener((a,b,c)->{
 				if(c)
 				{
@@ -142,19 +136,11 @@ public class Controller
 				}
 			});
 			
-			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/ReportTab.fxml"));
-			fxmlLoader.setResources(Localization.getBundle());
-			Parent nodeTabReport = (Parent)fxmlLoader.load();
-			reportController = fxmlLoader.getController();
+			reportController = loadTab("/de/deadlocker8/budgetmaster/ui/fxml/ReportTab.fxml", tabReports);
 			reportController.init(this);
-			tabReports.setContent(nodeTabReport);
-
-			fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/SettingsTab.fxml"));
-			fxmlLoader.setResources(Localization.getBundle());
-			Parent nodeTabSettings = (Parent)fxmlLoader.load();
-			settingsController = fxmlLoader.getController();
-			settingsController.init(this);
-			tabSettings.setContent(nodeTabSettings);
+			
+			settingsController = loadTab("/de/deadlocker8/budgetmaster/ui/fxml/SettingsTab.fxml", tabSettings);
+			settingsController.init(this);		
 		}
 		catch(IOException e)
 		{
@@ -236,7 +222,7 @@ public class Controller
 	public void previousMonth()
 	{
 		currentDate = currentDate.minusMonths(1);
-		labelMonth.setText(currentDate.toString("MMMM yyyy"));
+		labelMonth.setText(currentDate.toString(DATE_FORMAT));
 
 		refresh(filterSettings);
 	}
@@ -244,7 +230,7 @@ public class Controller
 	public void nextMonth()
 	{
 		currentDate = currentDate.plusMonths(1);
-		labelMonth.setText(currentDate.toString("MMMM yyyy"));
+		labelMonth.setText(currentDate.toString(DATE_FORMAT));
 
 		refresh(filterSettings);
 	}
@@ -252,7 +238,7 @@ public class Controller
 	public void today()
 	{
 		currentDate = DateTime.now();
-		labelMonth.setText(currentDate.toString("MMMM yyyy"));
+		labelMonth.setText(currentDate.toString(DATE_FORMAT));
 
 		refresh(filterSettings);
 	}

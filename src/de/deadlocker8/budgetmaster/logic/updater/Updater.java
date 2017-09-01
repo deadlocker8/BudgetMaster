@@ -11,7 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
+import java.util.Properties;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -41,35 +41,14 @@ public class Updater
 		URL webseite = new URL(LATEST_VERSION_INFO_URL);
 		URLConnection connection = webseite.openConnection();
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-		String line;
-        
-        ArrayList<String> lines = new ArrayList<String>();        
-
-        while ((line = br.readLine()) != null)
-        {
-        	lines.add(line);            		
-        }
-        
+		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+	        
         VersionInformation versionInfo = new VersionInformation();
-        
-        for(String currentLine : lines)
-        {
-        	if(currentLine.contains("version.code"))
-        	{
-        		versionInfo.setVersionCode(Integer.parseInt(currentLine.substring(currentLine.indexOf("=") + 1, currentLine.length())));
-        	}
-        	
-        	if(currentLine.contains("version.name"))
-        	{
-        		versionInfo.setVersionName(currentLine.substring(currentLine.indexOf("=") + 1, currentLine.length()));
-        	}
-        	
-        	if(currentLine.contains("version.date"))
-        	{
-        		versionInfo.setDate(currentLine.substring(currentLine.indexOf("=") + 1, currentLine.length()));
-        	}
-        }
+        Properties properties = new Properties();
+        properties.load(bufferedReader);           
+        versionInfo.setVersionCode(Integer.parseInt(properties.getProperty("version.code", "-1")));
+        versionInfo.setVersionName(properties.getProperty("version.name"));
+        versionInfo.setDate(properties.getProperty("version.date"));
         
         if(!versionInfo.isComplete())
         	throw new IllegalArgumentException("VersionInformation not complete");        	

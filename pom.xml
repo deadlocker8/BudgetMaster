@@ -62,5 +62,12 @@
 	    <artifactId>itextpdf</artifactId>
     	<version>5.0.6</version>
 	</dependency>
+	<dependency>
+		<groupId>de.deadlocker8</groupId>
+		<artifactId>tools</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+		<systemPath>${basedir}/lib/Tools.jar</systemPath>
+	</dependency>
   </dependencies>
 </project>
