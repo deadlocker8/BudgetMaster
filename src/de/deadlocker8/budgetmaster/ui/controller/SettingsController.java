@@ -15,13 +15,11 @@ import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.LanguageType;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmaster.main.Main;
+import de.deadlocker8.budgetmaster.ui.Styleable;
 import de.deadlocker8.budgetmaster.ui.cells.LanguageCell;
 import de.deadlocker8.budgetmasterserver.logic.database.Database;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -48,7 +46,7 @@ import tools.Localization;
 import tools.RandomCreations;
 import tools.Worker;
 
-public class SettingsController
+public class SettingsController implements Styleable
 {
 	@FXML private AnchorPane anchorPaneMain;
 	@FXML private Label labelClientSecret;
@@ -117,16 +115,7 @@ public class SettingsController
 			checkboxEnableAutoUpdate.setSelected(controller.getSettings().isAutoUpdateCheckEnabled());
 		}
 		
-		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
-		labelClientSecret.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
-		labelSecret.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
-		labelURL.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
-		labelCurrency.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
-		buttonSave.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
-		buttonExportDB.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
-		buttonImportDB.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
-		buttonDeleteDB.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_RED) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
-		buttonSearchUpdates.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
+		applyStyle();
 
 		textFieldURL.setPromptText(Localization.getString(Strings.URL_PLACEHOLDER));
 		textFieldCurrency.setPromptText(Localization.getString(Strings.CURRENCY_PLACEHOLDER));
@@ -334,27 +323,8 @@ public class SettingsController
 				
 				Localization.loadLanguage(controller.getSettings().getLanguage().getLocale());
 				
-				try
-				{				
-				    Image icon = new Image("/de/deadlocker8/budgetmaster/resources/icon.png");
-					FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("de/deadlocker8/budgetmaster/ui/fxml/SplashScreen.fxml"));
-					loader.setResources(Localization.getBundle());
-					Parent root = (Parent)loader.load();
-					
-					Scene scene = new Scene(root, 450, 230);
-
-					((SplashScreenController)loader.getController()).init(Main.primaryStage, icon, false);
-
-					Main.primaryStage.setResizable(false);			
-					Main.primaryStage.getIcons().add(icon);
-					Main.primaryStage.setTitle(Localization.getString(Strings.APP_NAME));
-					Main.primaryStage.setScene(scene);			
-					Main.primaryStage.show();
-				}
-				catch(Exception e)
-				{
-					Logger.error(e);
-				}	
+			    Image icon = new Image("/de/deadlocker8/budgetmaster/resources/icon.png");
+				new SplashScreenController(Main.primaryStage, icon, false);			
 			}
 			else
 			{
@@ -597,5 +567,20 @@ public class SettingsController
 	public void checkForUpdates()
 	{
 		controller.checkForUpdates(true);
+	}
+
+	@Override
+	public void applyStyle()
+	{
+		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
+		labelClientSecret.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
+		labelSecret.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
+		labelURL.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
+		labelCurrency.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
+		buttonSave.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
+		buttonExportDB.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
+		buttonImportDB.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
+		buttonDeleteDB.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_RED) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
+		buttonSearchUpdates.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
 	}
 }

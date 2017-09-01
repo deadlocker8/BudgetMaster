@@ -11,6 +11,7 @@ import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
+import de.deadlocker8.budgetmaster.ui.Styleable;
 import de.deadlocker8.budgetmaster.ui.colorPick.ColorView;
 import fontAwesome.FontIconType;
 import javafx.fxml.FXML;
@@ -18,20 +19,21 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import tools.AlertGenerator;
 import tools.ConvertTo;
 import tools.Localization;
 
-public class NewCategoryController
+public class NewCategoryController extends BaseController implements Styleable
 {
 	@FXML private TextField textFieldName;
 	@FXML private Button buttonColor;
 	@FXML private Button buttonCancel;
 	@FXML private Button buttonSave;
 
-	private Stage stage;
+	private Stage parentStage;
 	private Controller controller;
 	private CategoryController categoryController;
 	private boolean edit;
@@ -39,22 +41,44 @@ public class NewCategoryController
 	private PopOver colorChooser;
 	private ColorView colorView;
 	private Category category;
-
-	public void init(Stage stage, Controller controller, CategoryController categoryController, boolean edit, Category category)
+	
+	
+	public NewCategoryController(Stage parentStage, Controller controller, CategoryController categoryController, boolean edit, Category category)
 	{
-		this.stage = stage;
+		this.parentStage = parentStage;
 		this.controller = controller;
 		this.categoryController = categoryController;
 		this.edit = edit;
 		this.color = null;
 		this.category = category;
+		load("/de/deadlocker8/budgetmaster/ui/fxml/NewCategoryGUI.fxml", Localization.getBundle());
+		getStage().showAndWait();
+	}	
 	
-		buttonCancel.setGraphic(Helpers.getFontIcon(FontIconType.TIMES, 17, Color.WHITE));		
-		buttonSave.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 17, Color.WHITE));
-
-		buttonCancel.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
-		buttonSave.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
-		buttonColor.setStyle("-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 5;");
+	@Override
+	public void initStage(Stage stage)
+	{
+		stage.initOwner(controller.getStage());
+		stage.initModality(Modality.APPLICATION_MODAL);			
+		
+		if(edit)
+		{
+			stage.setTitle(Localization.getString(Strings.TITLE_CATEGORY_EDIT));
+		}
+		else
+		{
+			stage.setTitle(Localization.getString(Strings.TITLE_CATEGORY_NEW));
+		}		
+	
+		stage.getIcons().add(controller.getIcon());
+		stage.setResizable(false);
+		stage.getScene().getStylesheets().add("/de/deadlocker8/budgetmaster/ui/style.css");
+	}	
+	
+	@Override
+	public void init()
+	{
+		applyStyle();
 		
 		buttonColor.prefWidthProperty().bind(textFieldName.widthProperty());
 		
@@ -75,7 +99,7 @@ public class NewCategoryController
 			}
 		});
 
-		stage.setOnCloseRequest(event -> {
+		getStage().setOnCloseRequest(event -> {
 			if(colorChooser != null)
 			{
 				colorChooser.hide(Duration.millis(0));
@@ -168,12 +192,23 @@ public class NewCategoryController
 			}	
 		}
 		
-		stage.close();
+		parentStage.close();
 		categoryController.getController().refresh(controller.getFilterSettings());
 	}
 
 	public void cancel()
 	{
-		stage.close();
+		parentStage.close();
+	}
+
+	@Override
+	public void applyStyle()
+	{
+		buttonCancel.setGraphic(Helpers.getFontIcon(FontIconType.TIMES, 17, Color.WHITE));		
+		buttonSave.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 17, Color.WHITE));
+
+		buttonCancel.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
+		buttonSave.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
+		buttonColor.setStyle("-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 5;");		
 	}
 }

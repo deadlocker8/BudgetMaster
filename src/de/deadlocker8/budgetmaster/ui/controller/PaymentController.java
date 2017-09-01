@@ -1,6 +1,5 @@
 package de.deadlocker8.budgetmaster.ui.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.Budget;
@@ -15,16 +14,12 @@ import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmaster.ui.Refreshable;
+import de.deadlocker8.budgetmaster.ui.Styleable;
 import de.deadlocker8.budgetmaster.ui.cells.PaymentCell;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -32,14 +27,12 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import javafx.util.Callback;
 import logger.Logger;
 import tools.ConvertTo;
 import tools.Localization;
 
-public class PaymentController implements Refreshable
+public class PaymentController implements Refreshable, Styleable
 {
 	@FXML private AnchorPane anchorPaneMain;
 	@FXML private Label labelIncome;
@@ -65,18 +58,13 @@ public class PaymentController implements Refreshable
 			public ListCell<Payment> call(ListView<Payment> param)
 			{
 				PaymentCell cell = new PaymentCell(thisController);
-				cell.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>()
-				{
-					@Override
-					public void handle(MouseEvent event)
-					{
-						if(event.getClickCount() == 2)
-						{						
-							// don't allow editing of payment "rest"
-							if(cell.getItem().getCategoryID() != 2)
-							{
-								payment(!cell.getItem().isIncome(), true, cell.getItem());
-							}
+				cell.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+					if(event.getClickCount() == 2)
+					{						
+						// don't allow editing of payment "rest"
+						if(cell.getItem().getCategoryID() != 2)
+						{
+							payment(!cell.getItem().isIncome(), true, cell.getItem());
 						}
 					}
 				});
@@ -89,36 +77,9 @@ public class PaymentController implements Refreshable
         labelPlaceholder.setStyle("-fx-font-size: 16");
         listView.setPlaceholder(labelPlaceholder);
 
-		listView.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>()
-		{
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
-			{
-				Platform.runLater(new Runnable()
-				{
-					public void run()
-					{
-						listView.getSelectionModel().select(-1);
-					}
-				});
-			}
-		});
+		listView.getSelectionModel().selectedIndexProperty().addListener((ChangeListener<Number>)(observable, oldValue, newValue) -> Platform.runLater(() -> listView.getSelectionModel().select(-1)));
 
-		buttonNewIncome.setGraphic(Helpers.getFontIcon(FontIconType.DOWNLOAD, 18, Color.WHITE));
-		buttonFilter.setGraphic(Helpers.getFontIcon(FontIconType.FILTER, 18, Color.WHITE));
-		buttonNewPayment.setGraphic(Helpers.getFontIcon(FontIconType.UPLOAD, 18, Color.WHITE));
-		labelFilterActive.setGraphic(Helpers.getFontIcon(FontIconType.WARNING, 13, Colors.TEXT));
-
-		// apply theme
-		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
-		labelIncome.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
-		labelIncomes.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
-		labelPayment.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
-		labelPayments.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
-		labelFilterActive.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
-		buttonNewIncome.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
-		buttonFilter.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
-		buttonNewPayment.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
+		applyStyle();
 	}
 
 	public void newIncome()
@@ -132,39 +93,8 @@ public class PaymentController implements Refreshable
 	}
 
 	public void payment(boolean isPayment, boolean edit, Payment payment)
-	{
-		try
-		{
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/NewPaymentGUI.fxml"));
-			fxmlLoader.setResources(Localization.getBundle());
-			Parent root = (Parent)fxmlLoader.load();
-			Stage newStage = new Stage();
-			newStage.initOwner(controller.getStage());
-			newStage.initModality(Modality.APPLICATION_MODAL);
-			String titlePart;
-
-			titlePart = isPayment ? Localization.getString(Strings.TITLE_PAYMENT) : Localization.getString(Strings.TITLE_INCOME);
-
-			if(edit)
-			{
-				newStage.setTitle(Localization.getString(Strings.TITLE_PAYMENT_EDIT, titlePart));
-			}
-			else
-			{
-				newStage.setTitle(Localization.getString(Strings.TITLE_PAYMENT_NEW, titlePart));
-			}
-
-			newStage.setScene(new Scene(root));
-			newStage.getIcons().add(controller.getIcon());
-			newStage.setResizable(false);
-			NewPaymentController newController = fxmlLoader.getController();
-			newController.init(newStage, controller, this, isPayment, edit, payment);
-			newStage.show();
-		}
-		catch(IOException e)
-		{
-			Logger.error(e);
-		}
+	{		
+		new NewPaymentController(controller.getStage(), controller, this, isPayment, edit, payment);		
 	}
 
 	private void refreshListView()
@@ -200,7 +130,7 @@ public class PaymentController implements Refreshable
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			Logger.error(e);
 			controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 		}
 	}
@@ -215,7 +145,7 @@ public class PaymentController implements Refreshable
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			Logger.error(e);
 			controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 		}
 	}
@@ -234,33 +164,14 @@ public class PaymentController implements Refreshable
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			Logger.error(e);
 			controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 		}
 	}
 	
 	public void filter()
-	{
-		try
-		{
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/FilterGUI.fxml"));
-			fxmlLoader.setResources(Localization.getBundle());
-			Parent root = (Parent)fxmlLoader.load();
-			Stage newStage = new Stage();
-			newStage.initOwner(controller.getStage());
-			newStage.initModality(Modality.APPLICATION_MODAL);	
-			newStage.setTitle(Localization.getString(Strings.TITLE_FILTER));
-			newStage.setScene(new Scene(root));
-			newStage.getIcons().add(controller.getIcon());
-			newStage.setResizable(false);
-			FilterController newController = fxmlLoader.getController();			
-			newController.init(newStage, controller, controller.getFilterSettings());
-			newStage.showAndWait();
-		}
-		catch(IOException e)
-		{
-			Logger.error(e);
-		}
+	{			
+		new FilterController(controller.getStage(), controller, controller.getFilterSettings());	
 	}
 
 	public Controller getController()
@@ -282,5 +193,24 @@ public class PaymentController implements Refreshable
 		{
 			labelFilterActive.setVisible(true);
 		}
+	}
+
+	@Override
+	public void applyStyle()
+	{
+		buttonNewIncome.setGraphic(Helpers.getFontIcon(FontIconType.DOWNLOAD, 18, Color.WHITE));
+		buttonFilter.setGraphic(Helpers.getFontIcon(FontIconType.FILTER, 18, Color.WHITE));
+		buttonNewPayment.setGraphic(Helpers.getFontIcon(FontIconType.UPLOAD, 18, Color.WHITE));
+		labelFilterActive.setGraphic(Helpers.getFontIcon(FontIconType.WARNING, 13, Colors.TEXT));
+
+		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
+		labelIncome.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
+		labelIncomes.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
+		labelPayment.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
+		labelPayments.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
+		labelFilterActive.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
+		buttonNewIncome.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
+		buttonFilter.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
+		buttonNewPayment.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
 	}
 }

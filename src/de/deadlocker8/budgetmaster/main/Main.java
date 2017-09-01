@@ -8,9 +8,6 @@ import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmaster.ui.controller.SplashScreenController;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import logger.FileOutputMode;
@@ -21,40 +18,21 @@ import tools.PathUtils;
 public class Main extends Application
 {
 	public static Stage primaryStage;
-	
+
 	@Override
 	public void start(Stage stage)
 	{
 		primaryStage = stage;
-		
-		//load correct language
+
+		// load correct language
 		Settings settings = FileHelper.loadSettings();
 		if(settings != null && settings.getLanguage() != null)
 		{
 			Localization.loadLanguage(settings.getLanguage().getLocale());
 		}
-		
-		try
-		{				
-		    Image icon = new Image("/de/deadlocker8/budgetmaster/resources/icon.png");
-			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("de/deadlocker8/budgetmaster/ui/fxml/SplashScreen.fxml"));
-			loader.setResources(Localization.getBundle());
-			Parent root = (Parent)loader.load();
-			
-			Scene scene = new Scene(root, 450, 230);
 
-			((SplashScreenController)loader.getController()).init(stage, icon, getParameters().getNamed().get("update") != null);
-
-			stage.setResizable(false);			
-			stage.getIcons().add(icon);
-			stage.setTitle(Localization.getString(Strings.APP_NAME));
-			stage.setScene(scene);			
-			stage.show();
-		}
-		catch(Exception e)
-		{
-			Logger.error(e);
-		}
+		Image icon = new Image("/de/deadlocker8/budgetmaster/resources/icon.png");
+		new SplashScreenController(stage, icon, getParameters().getNamed().get("update") != null);
 	}
 
 	@Override
@@ -62,19 +40,16 @@ public class Main extends Application
 	{
 		Localization.init("de/deadlocker8/budgetmaster/resources/languages/");
 		Localization.loadLanguage(Locale.ENGLISH);
-		
+
 		Parameters params = getParameters();
 		String logLevelParam = params.getNamed().get("loglevel");
 		Logger.setLevel(logLevelParam);
-		
+
 		File logFolder = new File(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER));
 		PathUtils.checkFolder(logFolder);
 		Logger.enableFileOutput(logFolder, System.out, System.err, FileOutputMode.COMBINED);
 
-		Logger.appInfo(Localization.getString(Strings.APP_NAME),
-						Localization.getString(Strings.VERSION_NAME),
-						Localization.getString(Strings.VERSION_CODE),
-						Localization.getString(Strings.VERSION_DATE));
+		Logger.appInfo(Localization.getString(Strings.APP_NAME), Localization.getString(Strings.VERSION_NAME), Localization.getString(Strings.VERSION_CODE), Localization.getString(Strings.VERSION_DATE));
 	}
 
 	public static void main(String[] args)

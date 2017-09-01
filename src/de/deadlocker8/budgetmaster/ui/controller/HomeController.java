@@ -8,21 +8,19 @@ import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmaster.ui.Refreshable;
+import de.deadlocker8.budgetmaster.ui.Styleable;
 import de.deadlocker8.budgetmaster.ui.cells.CategoryBudgetCell;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.AnchorPane;
-import javafx.util.Callback;
 import tools.ConvertTo;
 import tools.Localization;
 
-public class HomeController implements Refreshable
+public class HomeController implements Refreshable, Styleable
 {
 	@FXML private AnchorPane anchorPaneMain;
 	@FXML private Label labelBudget;
@@ -37,35 +35,15 @@ public class HomeController implements Refreshable
 		this.controller = controller;
 
 		HomeController thisController = this;
-		listView.setCellFactory(new Callback<ListView<CategoryBudget>, ListCell<CategoryBudget>>()
-		{
-			@Override
-			public ListCell<CategoryBudget> call(ListView<CategoryBudget> param)
-			{
-				return new CategoryBudgetCell(thisController);
-			}
-		});
+		listView.setCellFactory(param -> new CategoryBudgetCell(thisController));
 		
 		Label labelPlaceholder = new Label(Localization.getString(Strings.HOME_PLACEHOLDER));          
         labelPlaceholder.setStyle("-fx-font-size: 16");
         listView.setPlaceholder(labelPlaceholder);
 
-		listView.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>()
-		{
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
-			{
-				Platform.runLater(new Runnable()
-				{
-					public void run()
-					{
-						listView.getSelectionModel().select(-1);
-					}
-				});
-			}
-		});
+		listView.getSelectionModel().selectedIndexProperty().addListener((ChangeListener<Number>)(observable, oldValue, newValue) -> Platform.runLater(() -> listView.getSelectionModel().select(-1)));
 		
-		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
+		applyStyle();
 	}
 	
 	private void refreshListView()
@@ -120,5 +98,11 @@ public class HomeController implements Refreshable
 	{
 		refreshListView();	
 		refreshCounter();
+	}
+
+	@Override
+	public void applyStyle()
+	{
+		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
 	}
 }

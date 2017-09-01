@@ -15,6 +15,7 @@ import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
+import de.deadlocker8.budgetmaster.ui.Styleable;
 import de.deadlocker8.budgetmaster.ui.cells.ButtonCategoryCell;
 import de.deadlocker8.budgetmaster.ui.cells.RepeatingDayCell;
 import de.deadlocker8.budgetmaster.ui.cells.SmallCategoryCell;
@@ -34,13 +35,14 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import logger.Logger;
 import tools.AlertGenerator;
 import tools.ConvertTo;
 import tools.Localization;
 
-public class NewPaymentController
+public class NewPaymentController extends BaseController implements Styleable
 {
 	@FXML private TextField textFieldName;
 	@FXML private TextField textFieldAmount;
@@ -57,29 +59,53 @@ public class NewPaymentController
 	@FXML private Label labelText1, labelText2, labelText3;
 	@FXML private TextArea textArea;
 
-	private Stage stage;
+	private Stage parentStage;
 	private Controller controller;
 	private PaymentController paymentController;
 	private boolean isPayment;
 	private boolean edit;
 	private Payment payment;
 	private ButtonCategoryCell buttonCategoryCell;
-
-	public void init(Stage stage, Controller controller, PaymentController paymentController, boolean isPayment, boolean edit, Payment payment)
+	
+	public NewPaymentController(Stage parentStage, Controller controller, PaymentController paymentController, boolean isPayment, boolean edit, Payment payment)
 	{
-		this.stage = stage;
+		this.parentStage = parentStage;
 		this.controller = controller;
 		this.paymentController = paymentController;
 		this.isPayment = isPayment;
 		this.edit = edit;
 		this.payment = payment;
+		load("/de/deadlocker8/budgetmaster/ui/fxml/NewPaymentGUI.fxml", Localization.getBundle());
+		getStage().showAndWait();
+	}
+	
+	@Override
+	public void initStage(Stage stage)
+	{
+		stage.initOwner(parentStage);
+		stage.initModality(Modality.APPLICATION_MODAL);
+		String titlePart;
+
+		titlePart = isPayment ? Localization.getString(Strings.TITLE_PAYMENT) : Localization.getString(Strings.TITLE_INCOME);
+
+		if(edit)
+		{
+			stage.setTitle(Localization.getString(Strings.TITLE_PAYMENT_EDIT, titlePart));
+		}
+		else
+		{
+			stage.setTitle(Localization.getString(Strings.TITLE_PAYMENT_NEW, titlePart));
+		}
+	
+		stage.getIcons().add(controller.getIcon());
+		stage.setResizable(false);	
+	}
+	
+	@Override
+	public void init()
+	{	
+		applyStyle();
 		
-		buttonCancel.setGraphic(Helpers.getFontIcon(FontIconType.TIMES, 17, Color.WHITE));
-		buttonSave.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 17, Color.WHITE));
-
-		buttonCancel.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
-		buttonSave.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
-
 		SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 0);
 		spinnerRepeatingPeriod.setValueFactory(valueFactory);
 		spinnerRepeatingPeriod.setEditable(true);
@@ -136,7 +162,7 @@ public class NewPaymentController
 		catch(Exception e)
 		{
 			controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
-			stage.close();
+			getStage().close();
 			return;
 		}
 
@@ -441,13 +467,13 @@ public class NewPaymentController
 			}
 		}
 
-		stage.close();
+		getStage().close();
 		paymentController.getController().refresh(controller.getFilterSettings());
 	}
 
 	public void cancel()
 	{
-		stage.close();
+		getStage().close();
 	}
 
 	private void toggleRepeatingArea(boolean selected)
@@ -485,5 +511,14 @@ public class NewPaymentController
 		labelText2.setDisable(!selected);
 		comboBoxRepeatingDay.setDisable(selected);
 		labelText3.setDisable(selected);
+	}
+	@Override
+	public void applyStyle()
+	{
+		buttonCancel.setGraphic(Helpers.getFontIcon(FontIconType.TIMES, 17, Color.WHITE));
+		buttonSave.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 17, Color.WHITE));
+
+		buttonCancel.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
+		buttonSave.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
 	}
 }

@@ -7,6 +7,7 @@ import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
+import de.deadlocker8.budgetmaster.ui.Styleable;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -29,30 +30,47 @@ import tools.ConvertTo;
 import tools.HashUtils;
 import tools.Localization;
 
-public class SplashScreenController
+public class SplashScreenController extends BaseController implements Styleable
 {
 	@FXML private ImageView imageViewLogo;
 	@FXML private Label labelVersion;
 	@FXML private PasswordField textFieldPassword;
 	@FXML private Button buttonLogin;	
 
-	private Stage stage;
+	private Stage parentStage;
 	private Image icon;
 	private Settings settings;
 	private boolean isFirstStart;
-
-	public void init(Stage stage, Image icon, boolean isStartingAfterUpdate)
+	private boolean isStartingAfterUpdate;
+	
+	public SplashScreenController(Stage parentStage, Image icon, boolean isStartingAfterUpdate)
 	{
-		this.stage = stage;
+		this.parentStage = parentStage;
 		this.icon = icon;
-		
+		this.isStartingAfterUpdate = isStartingAfterUpdate;
+		load("/de/deadlocker8/budgetmaster/ui/fxml/SplashScreen.fxml", Localization.getBundle());
+		getStage().show();
+	}
+	
+	@Override
+	public void initStage(Stage stage)
+	{	
+		stage.initOwner(parentStage);
+		stage.setWidth(450);
+		stage.setHeight(250);
+		stage.setResizable(false);			
+		stage.getIcons().add(icon);
+		stage.setTitle(Localization.getString(Strings.APP_NAME));
+	}
+
+	@Override
+	public void init()
+	{
 		imageViewLogo.setImage(icon);
 		
 		labelVersion.setText("v" + Localization.getString(Strings.VERSION_NAME));
 	
-		buttonLogin.setGraphic(Helpers.getFontIcon(FontIconType.SIGN_IN, 18, Color.WHITE));
-		buttonLogin.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
-		buttonLogin.setPadding(new Insets(3, 7, 3, 7));		
+		applyStyle();
 		
 		textFieldPassword.setOnKeyReleased((event)->{
 			if(event.getCode() == KeyCode.ENTER)
@@ -69,7 +87,7 @@ public class SplashScreenController
 										Localization.getString(Strings.INFO_HEADER_TEXT_START_AFTER_UPDATE, Localization.getString(Strings.VERSION_NAME)),
 										Localization.getString(Strings.INFO_TEXT_START_AFTER_UPDATE),
 										icon, 
-										stage, 
+										getStage(),
 										null, 
 										false);
 			});
@@ -87,7 +105,7 @@ public class SplashScreenController
 										Localization.getString(Strings.INFO_HEADER_TEXT_WELCOME),
 										Localization.getString(Strings.INFO_TEXT_WELCOME_FIRST_START),
 										icon, 
-										stage, 
+										getStage(), 
 										null, 
 										false);
 			});
@@ -104,7 +122,7 @@ public class SplashScreenController
 											Localization.getString(Strings.INFO_HEADER_TEXT_WELCOME),
 											Localization.getString(Strings.INFO_TEXT_WELCOME_COMPATIBILITY),
 											icon,
-											stage,
+											getStage(),
 											null,
 											false);
 				});
@@ -127,7 +145,7 @@ public class SplashScreenController
 									"", 
 									Localization.getString(Strings.WARNING_EMPTY_PASSWORD), 
 									icon, 
-									stage, 
+									getStage(), 
 									null, 
 									false);
 			return;
@@ -141,7 +159,7 @@ public class SplashScreenController
 			{
 				FileHelper.saveSettings(settings);
 				
-				stage.close();
+				getStage().close();
 				openBudgetMaster();	
 			}
 			catch(IOException e)
@@ -152,7 +170,7 @@ public class SplashScreenController
 										"", 
 										Localization.getString(Strings.ERROR_PASSWORD_SAVE),
 										icon, 
-										stage, 
+										getStage(), 
 										null, 
 										false);
 			}
@@ -167,13 +185,13 @@ public class SplashScreenController
 										"", 
 										Localization.getString(Strings.WARNING_WRONG_PASSWORD),
 										icon, 
-										stage, 
+										getStage(), 
 										null, 
 										false);
 				return;
 			}
 			
-			stage.close();
+			getStage().close();
 			openBudgetMaster();	
 		}
 	}
@@ -201,5 +219,13 @@ public class SplashScreenController
 		{
 			Logger.error(e);
 		}
+	}
+
+	@Override
+	public void applyStyle()
+	{
+		buttonLogin.setGraphic(Helpers.getFontIcon(FontIconType.SIGN_IN, 18, Color.WHITE));
+		buttonLogin.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
+		buttonLogin.setPadding(new Insets(3, 7, 3, 7));		
 	}
 }

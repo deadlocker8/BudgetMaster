@@ -177,10 +177,13 @@
                                        <font>
                                           <Font name="System Bold" size="13.0" />
                                        </font>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
                                     </Label>
                                  </children>
                               </VBox>
-                              <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" HBox.hgrow="ALWAYS">
+                              <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label fx:id="labelCurrentVersion" alignment="TOP_LEFT" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" minHeight="25.0" textAlignment="CENTER" wrapText="true">
                                        <font>

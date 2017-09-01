@@ -6,6 +6,8 @@ import de.deadlocker8.budgetmaster.logic.Category;
 import de.deadlocker8.budgetmaster.logic.FilterSettings;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
+import de.deadlocker8.budgetmaster.ui.Styleable;
 import fontAwesome.FontIconType;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -14,10 +16,12 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import tools.ConvertTo;
+import tools.Localization;
 
-public class FilterController
+public class FilterController extends BaseController implements Styleable
 {
 	@FXML private CheckBox checkBoxIncome;
 	@FXML private CheckBox checkBoxPayment;
@@ -32,25 +36,33 @@ public class FilterController
 	@FXML private Button buttonCategoryAll;
 	@FXML private Button buttonCategoryNone;
 
-	private Stage stage;
+	private Stage parentStage;
 	private Controller controller;
 	private FilterSettings filterSetttings;
-
-	public void init(Stage stage, Controller controller, FilterSettings filterSettings)
+	
+	public FilterController(Stage parentStage, Controller controller, FilterSettings filterSettings)
 	{
-		this.stage = stage;
+		this.parentStage = parentStage;
 		this.controller = controller;
 		this.filterSetttings = filterSettings;
+		load("/de/deadlocker8/budgetmaster/ui/fxml/FilterGUI.fxml", Localization.getBundle());
+		getStage().showAndWait();
+	}	
+	
+	@Override
+	public void initStage(Stage stage)
+	{		
+		stage.initOwner(parentStage);
+		stage.initModality(Modality.APPLICATION_MODAL);	
+		stage.setTitle(Localization.getString(Strings.TITLE_FILTER));
+		stage.getIcons().add(controller.getIcon());
+		stage.setResizable(false);		
+	}
 
-		buttonCancel.setGraphic(Helpers.getFontIcon(FontIconType.TIMES, 17, Color.WHITE));
-		buttonReset.setGraphic(Helpers.getFontIcon(FontIconType.UNDO, 17, Color.WHITE));		
-		buttonFilter.setGraphic(Helpers.getFontIcon(FontIconType.FILTER, 17, Color.WHITE));
-
-		buttonCancel.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
-		buttonReset.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
-		buttonFilter.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
-		buttonCategoryAll.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13;");
-		buttonCategoryNone.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13;");
+	@Override
+	public void init()
+	{
+		applyStyle();
 
 		for(Category currentCategory : controller.getCategoryHandler().getCategories())
 		{
@@ -119,7 +131,7 @@ public class FilterController
 		FilterSettings newFilterSettings = new FilterSettings(isIncomeAllowed, isPaymentAllowed, isNoRepeatingAllowed, isMonthlyRepeatingAllowed, isRepeatingEveryXDaysAllowed, allowedCategoryIDs, name);
 		controller.setFilterSettings(newFilterSettings);
 		controller.refresh(newFilterSettings);		
-		stage.close();
+		getStage().close();
 	}
 
 	public void reset()
@@ -132,7 +144,7 @@ public class FilterController
 
 	public void cancel()
 	{
-		stage.close();
+		getStage().close();
 	}	
 
 	public void enableAllCategories()
@@ -149,5 +161,19 @@ public class FilterController
 		{
 			((CheckBox)node).setSelected(false);
 		}
+	}
+
+	@Override
+	public void applyStyle()
+	{
+		buttonCancel.setGraphic(Helpers.getFontIcon(FontIconType.TIMES, 17, Color.WHITE));
+		buttonReset.setGraphic(Helpers.getFontIcon(FontIconType.UNDO, 17, Color.WHITE));		
+		buttonFilter.setGraphic(Helpers.getFontIcon(FontIconType.FILTER, 17, Color.WHITE));
+
+		buttonCancel.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
+		buttonReset.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
+		buttonFilter.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
+		buttonCategoryAll.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13;");
+		buttonCategoryNone.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13;");
 	}
 }

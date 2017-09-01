@@ -11,6 +11,7 @@ import de.deadlocker8.budgetmaster.logic.charts.ChartExportable;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
+import de.deadlocker8.budgetmaster.ui.Styleable;
 import fontAwesome.FontIconType;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
@@ -25,13 +26,14 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import logger.Logger;
 import tools.AlertGenerator;
 import tools.ConvertTo;
 import tools.Localization;
 
-public class ExportChartController
+public class ExportChartController extends BaseController implements Styleable
 {
 	@FXML private AnchorPane anchorPaneMain;
 	@FXML private TextField textFieldWidth;
@@ -42,15 +44,33 @@ public class ExportChartController
 	@FXML private Button buttonCancel;
 	
 	private ChartController controller;
-	private Stage stage;
+	private Stage parentStage;
 	private ChartExportable chart;
 	private File savePath;
-
-	public void init(Stage stage, ChartController controller, ChartExportable chart)
+	
+	public ExportChartController(Stage parentStage, ChartController controller, ChartExportable chart)
 	{
+		this.parentStage = parentStage;
 		this.controller = controller;
-		this.stage = stage;
 		this.chart = chart;
+		load("/de/deadlocker8/budgetmaster/ui/fxml/ExportChartGUI.fxml", Localization.getBundle());
+		getStage().showAndWait();
+	}
+	
+	@Override
+	public void initStage(Stage stage)
+	{
+		stage.initOwner(parentStage);
+		stage.initModality(Modality.APPLICATION_MODAL);
+		stage.setTitle(Localization.getString(Strings.TITLE_CHART_EXPORT));		
+		stage.getIcons().add(controller.getControlle().getIcon());
+		stage.setResizable(false);
+	}
+	
+	@Override
+	public void init()
+	{	
+		applyStyle();
 		
 		this.savePath = controller.getLastExportPath();
 		if(savePath != null)
@@ -59,18 +79,7 @@ public class ExportChartController
 		}
 		
 		textFieldWidth.setText(String.valueOf((int)chart.getSuggestedWidth()));
-		textFieldHeight.setText(String.valueOf((int)chart.getSuggestedHeight()));
-
-		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));		
-	
-		buttonChooseFile.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
-		buttonChooseFile.setGraphic(Helpers.getFontIcon(FontIconType.FOLDER_OPEN, 14, Color.WHITE));
-		
-		buttonExport.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
-		buttonExport.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 14, Color.WHITE));
-
-		buttonCancel.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
-		buttonCancel.setGraphic(Helpers.getFontIcon(FontIconType.TIMES, 14, Color.WHITE));		
+		textFieldHeight.setText(String.valueOf((int)chart.getSuggestedHeight()));	
 		
 		textFieldWidth.setTextFormatter(new TextFormatter<>(c -> {
 			if(c.getControlNewText().isEmpty())
@@ -116,7 +125,7 @@ public class ExportChartController
 			fileChooser.setInitialFileName(savePath.getName());
 		}
 		fileChooser.getExtensionFilters().add(extFilter);
-		File file = fileChooser.showSaveDialog(stage);		
+		File file = fileChooser.showSaveDialog(getStage());		
 		if(file != null)
 		{		
 			savePath = file;
@@ -134,7 +143,7 @@ public class ExportChartController
 			                         "", 
 			                         Localization.getString(Strings.WARNING_EMPTY_WIDTH_IN_PIXELS), 
 			                         controller.getControlle().getIcon(), 
-			                         stage, 
+			                         getStage(), 
 			                         null, 
 			                         false);
 			return;
@@ -152,7 +161,7 @@ public class ExportChartController
 			                        "", 
 			                        Localization.getString(Strings.WARNING_INTEGER_WIDTH_IN_PIXELS), 
 			                        controller.getControlle().getIcon(), 
-			                        stage, 
+			                        getStage(), 
 			                        null, 
 			                        false);
 			return;
@@ -166,7 +175,7 @@ public class ExportChartController
 			                        "", 
 			                        Localization.getString(Strings.WARNING_EMPTY_HEIGHT_IN_PIXELS), 
 			                        controller.getControlle().getIcon(), 
-			                        stage, 
+			                        getStage(), 
 			                        null, 
 			                        false);
 			return;
@@ -184,7 +193,7 @@ public class ExportChartController
 			                        "", 
 			                        Localization.getString(Strings.WARNING_INTEGER_HEIGHT_IN_PIXELS),
 			                        controller.getControlle().getIcon(), 
-			                        stage, 
+			                        getStage(), 
 			                        null, 
 			                        false);
 			return;
@@ -197,7 +206,7 @@ public class ExportChartController
 			                        "", 
 			                        Localization.getString(Strings.WARNING_EMPTY_SAVEPATH_CHART), 
 			                        controller.getControlle().getIcon(), 
-			                        stage,
+			                        getStage(),
 			                        null, 
 			                        false);
 			return;
@@ -210,7 +219,7 @@ public class ExportChartController
 			ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", savePath);
 			controller.getControlle().showNotification(Localization.getString(Strings.NOTIFICATION_CHART_EXPORT));	
 			
-			stage.close();			
+			getStage().close();			
 			
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle(Localization.getString(Strings.INFO_TITLE_CHART_EXPORT));
@@ -239,7 +248,7 @@ public class ExportChartController
                                             "",
                                             Localization.getString(Strings.ERROR_OPEN_FOLDER, e1.getMessage()),
                                             controller.getControlle().getIcon(), 
-                                            stage, 
+                                            getStage(), 
                                             null, 
                                             false);
 				}
@@ -258,7 +267,7 @@ public class ExportChartController
                                             "", 
                                             Localization.getString(Strings.ERROR_OPEN_CHART, e1.getMessage()), 
                                             controller.getControlle().getIcon(), 
-                                            stage, 
+                                            getStage(), 
                                             null, 
                                             false);
 				}
@@ -276,17 +285,32 @@ public class ExportChartController
 			                         "",
 			                         Localization.getString(Strings.ERROR_CHART_EXPORT, e.getMessage()),
 			                         controller.getControlle().getIcon(), 
-			                         stage, 
+			                         getStage(), 
 			                         null, 
 			                         false);
 		}
 		
-		stage.close();	
+		getStage().close();	
 		controller.setLastExportPath(savePath);
 	}
 	
 	public void cancel()
 	{
-		stage.close();
+		getStage().close();
+	}
+
+	@Override
+	public void applyStyle()
+	{
+		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));		
+		
+		buttonChooseFile.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
+		buttonChooseFile.setGraphic(Helpers.getFontIcon(FontIconType.FOLDER_OPEN, 14, Color.WHITE));
+		
+		buttonExport.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
+		buttonExport.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 14, Color.WHITE));
+
+		buttonCancel.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
+		buttonCancel.setGraphic(Helpers.getFontIcon(FontIconType.TIMES, 14, Color.WHITE));		
 	}
 }

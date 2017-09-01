@@ -30,6 +30,7 @@ import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmaster.ui.Refreshable;
+import de.deadlocker8.budgetmaster.ui.Styleable;
 import de.deadlocker8.budgetmaster.ui.cells.report.table.ReportTableRatingCell;
 import de.deadlocker8.budgetmaster.ui.cells.report.table.ReportTableRepeatingCell;
 import fontAwesome.FontIconType;
@@ -39,11 +40,8 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -58,7 +56,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import logger.Logger;
 import tools.AlertGenerator;
@@ -66,7 +63,7 @@ import tools.ConvertTo;
 import tools.Localization;
 import tools.Worker;
 
-public class ReportController implements Refreshable
+public class ReportController implements Refreshable, Styleable
 {
 	@FXML private AnchorPane anchorPaneMain;
 	@FXML private Label labelPayments;
@@ -94,22 +91,8 @@ public class ReportController implements Refreshable
 	public void init(Controller controller)
 	{
 		this.controller = controller;
-
-		buttonFilter.setGraphic(Helpers.getFontIcon(FontIconType.FILTER, 18, Color.WHITE));		
-		buttonGenerate.setGraphic(Helpers.getFontIcon(FontIconType.COGS, 18, Color.WHITE));	
-		labelFilterActive.setGraphic(Helpers.getFontIcon(FontIconType.WARNING, 16, Colors.TEXT));
-		
 		initTable();
-
-		// apply theme
-		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
-		labelFilterActive.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
-		buttonFilter.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
-		buttonGenerate.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
-		checkBoxIncludeBudget.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT) + "; -fx-font-size: 14;");
-		checkBoxSplitTable.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT) + "; -fx-font-size: 14;");
-		checkBoxIncludeCategoryBudgets.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT) + "; -fx-font-size: 14;");
-				
+		applyStyle();			
 		applyReportPreferences();
 	}
 	
@@ -494,26 +477,7 @@ public class ReportController implements Refreshable
 
 	public void filter()
 	{
-		try
-		{
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/FilterGUI.fxml"));
-			fxmlLoader.setResources(Localization.getBundle());
-			Parent root = (Parent)fxmlLoader.load();
-			Stage newStage = new Stage();
-			newStage.initOwner(controller.getStage());
-			newStage.initModality(Modality.APPLICATION_MODAL);
-			newStage.setTitle(Localization.getString(Strings.TITLE_FILTER));
-			newStage.setScene(new Scene(root));
-			newStage.getIcons().add(controller.getIcon());
-			newStage.setResizable(false);
-			FilterController newController = fxmlLoader.getController();
-			newController.init(newStage, controller, controller.getFilterSettings());
-			newStage.show();
-		}
-		catch(IOException e)
-		{
-			Logger.error(e);
-		}
+		new FilterController(controller.getStage(), controller, controller.getFilterSettings());	
 	}
 
 	private ArrayList<ReportItem> createReportItems(ArrayList<Payment> payments)
@@ -738,5 +702,21 @@ public class ReportController implements Refreshable
 	    String currentYear = currentDate.toString("YYYY");
 	   
 	    initialReportPath = Localization.getString(Strings.REPORT_INITIAL_FILENAME, currentYear, currentMonth);
+	}
+
+	@Override
+	public void applyStyle()
+	{
+		buttonFilter.setGraphic(Helpers.getFontIcon(FontIconType.FILTER, 18, Color.WHITE));		
+		buttonGenerate.setGraphic(Helpers.getFontIcon(FontIconType.COGS, 18, Color.WHITE));	
+		labelFilterActive.setGraphic(Helpers.getFontIcon(FontIconType.WARNING, 16, Colors.TEXT));
+		
+		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
+		labelFilterActive.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
+		buttonFilter.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
+		buttonGenerate.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
+		checkBoxIncludeBudget.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT) + "; -fx-font-size: 14;");
+		checkBoxSplitTable.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT) + "; -fx-font-size: 14;");
+		checkBoxIncludeCategoryBudgets.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT) + "; -fx-font-size: 14;");
 	}
 }

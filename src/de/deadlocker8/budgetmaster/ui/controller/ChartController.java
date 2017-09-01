@@ -1,7 +1,6 @@
 package de.deadlocker8.budgetmaster.ui.controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -21,13 +20,11 @@ import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmaster.ui.Refreshable;
+import de.deadlocker8.budgetmaster.ui.Styleable;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -40,16 +37,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import logger.Logger;
 import tools.AlertGenerator;
 import tools.ConvertTo;
 import tools.Localization;
 import tools.Worker;
 
-public class ChartController implements Refreshable
+public class ChartController implements Refreshable, Styleable
 {
 	@FXML private AnchorPane anchorPaneMain;
 	@FXML private Accordion accordion;
@@ -78,42 +73,18 @@ public class ChartController implements Refreshable
 	public void init(Controller controller)
 	{
 		this.controller = controller;
-
-		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
-		vboxChartCategories.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
-		vboxChartCategories.setSpacing(20);
-		vboxChartMonth.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
-		
-		buttonChartCategoriesShow.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE));
-		buttonChartCategoriesShow.setGraphic(Helpers.getFontIcon(FontIconType.CHECK, 16, Color.WHITE));
-
-		buttonChartCategoriesExport.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE));
-		buttonChartCategoriesExport.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 16, Color.WHITE));
-
-		buttonChartMonthShow.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE));
-		buttonChartMonthShow.setGraphic(Helpers.getFontIcon(FontIconType.CHECK, 16, Color.WHITE));
-
-		buttonChartMonthExport.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE));
-		buttonChartMonthExport.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 16, Color.WHITE));		
 	
-		datePickerEnd.setDayCellFactory(new Callback<DatePicker, DateCell>()
+		datePickerEnd.setDayCellFactory(param -> new DateCell()
 		{
 			@Override
-			public DateCell call(DatePicker param)
+			public void updateItem(LocalDate item, boolean empty)
 			{
-				return new DateCell()
+				super.updateItem(item, empty);
+				if(item.isBefore(datePickerStart.getValue().plusDays(1)))
 				{
-					@Override
-					public void updateItem(LocalDate item, boolean empty)
-					{
-						super.updateItem(item, empty);
-						if(item.isBefore(datePickerStart.getValue().plusDays(1)))
-						{
-							setDisable(true);
-							setStyle("-fx-background-color: #ffc0cb;");
-						}
-					}
-				};
+					setDisable(true);
+					setStyle("-fx-background-color: #ffc0cb;");
+				}
 			}
 		});
 
@@ -129,6 +100,8 @@ public class ChartController implements Refreshable
 
 		accordion.setExpandedPane(accordion.getPanes().get(0));
 		vboxChartMonth.setSpacing(15);
+		
+		applyStyle();
 	}
 
 	public void buttonChartCategoriesShow()
@@ -195,26 +168,7 @@ public class ChartController implements Refreshable
 	{
 		Worker.runLater(() -> {
 			Platform.runLater(() -> {
-				try
-				{
-					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/ExportChartGUI.fxml"));
-					fxmlLoader.setResources(Localization.getBundle());
-					Parent root = (Parent)fxmlLoader.load();
-					Stage newStage = new Stage();
-					newStage.initOwner(controller.getStage());
-					newStage.initModality(Modality.APPLICATION_MODAL);
-					newStage.setTitle(Localization.getString(Strings.TITLE_CHART_EXPORT));
-					newStage.setScene(new Scene(root));
-					newStage.getIcons().add(controller.getIcon());
-					newStage.setResizable(false);
-					ExportChartController newController = fxmlLoader.getController();
-					newController.init(newStage, this, chart);
-					newStage.show();
-				}
-				catch(IOException e)
-				{
-					Logger.error(e);
-				}
+				new ExportChartController(controller.getStage(), this, chart);
 			});
 		});
 	}
@@ -320,5 +274,26 @@ public class ChartController implements Refreshable
 				}
 			});
 		});
+	}
+
+	@Override
+	public void applyStyle()
+	{
+		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
+		vboxChartCategories.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
+		vboxChartCategories.setSpacing(20);
+		vboxChartMonth.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
+		
+		buttonChartCategoriesShow.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE));
+		buttonChartCategoriesShow.setGraphic(Helpers.getFontIcon(FontIconType.CHECK, 16, Color.WHITE));
+
+		buttonChartCategoriesExport.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE));
+		buttonChartCategoriesExport.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 16, Color.WHITE));
+
+		buttonChartMonthShow.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE));
+		buttonChartMonthShow.setGraphic(Helpers.getFontIcon(FontIconType.CHECK, 16, Color.WHITE));
+
+		buttonChartMonthExport.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE));
+		buttonChartMonthExport.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 16, Color.WHITE));		
 	}
 }
