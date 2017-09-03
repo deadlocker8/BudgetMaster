@@ -44,6 +44,7 @@ public class PaymentController implements Refreshable, Styleable
 	@FXML private Button buttonNewIncome;
 	@FXML private Button buttonFilter;
 	@FXML private Button buttonNewPayment;
+	@FXML private Button buttonSearch;
 
 	private Controller controller;
 
@@ -173,6 +174,11 @@ public class PaymentController implements Refreshable, Styleable
 	{			
 		new FilterController(controller.getStage(), controller, controller.getFilterSettings());	
 	}
+	
+	public void search()
+	{
+		new SearchController(controller.getStage(), controller);
+	}
 
 	public Controller getController()
 	{
@@ -202,6 +208,7 @@ public class PaymentController implements Refreshable, Styleable
 		buttonFilter.setGraphic(Helpers.getFontIcon(FontIconType.FILTER, 18, Color.WHITE));
 		buttonNewPayment.setGraphic(Helpers.getFontIcon(FontIconType.UPLOAD, 18, Color.WHITE));
 		labelFilterActive.setGraphic(Helpers.getFontIcon(FontIconType.WARNING, 13, Colors.TEXT));
+		buttonSearch.setGraphic(Helpers.getFontIcon(FontIconType.SEARCH, 18, Color.WHITE));
 
 		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
 		labelIncome.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
@@ -212,5 +219,6 @@ public class PaymentController implements Refreshable, Styleable
 		buttonNewIncome.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
 		buttonFilter.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
 		buttonNewPayment.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
+		buttonSearch.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
 	}
 }

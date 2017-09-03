@@ -333,22 +333,22 @@ public class ServerConnection
 		}
 	}
 	
-	public ArrayList<Payment> getPaymentForSearch(String name, String description, String categoryName) throws Exception
+	public ArrayList<Payment> getPaymentForSearch(String query, boolean searchName, boolean searchDescription, boolean searchCategoryName) throws Exception
 	{
-		String urlString = settings.getUrl() + "/payment/search?secret=" + Helpers.getURLEncodedString(settings.getSecret());
-		if(name != null)
+		String urlString = settings.getUrl() + "/payment/search?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&query=" + query;
+		if(searchName)
 		{
-			urlString += "&name=" + name;
+			urlString += "&name=" + 1;
 		}
 		
-		if(description != null)
+		if(searchDescription)
 		{
-			urlString += "&description=" + description;
+			urlString += "&description=" + 1;
 		}
 		
-		if(categoryName != null)
+		if(searchCategoryName)
 		{
-			urlString += "&categoryName=" + categoryName;
+			urlString += "&categoryName=" + 1;
 		}
 		
 		URL url = new URL(urlString);

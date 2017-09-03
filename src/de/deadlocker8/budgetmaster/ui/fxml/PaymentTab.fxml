@@ -37,6 +37,15 @@
                      </children>
                   </VBox>
                   <Region HBox.hgrow="ALWAYS" />
+                  <Button fx:id="buttonSearch" mnemonicParsing="false" onAction="#search" text="%paymenttab.button.search">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+                  <Region HBox.hgrow="ALWAYS" />
                   <Button fx:id="buttonNewPayment" mnemonicParsing="false" onAction="#newPayment" text="%paymenttab.button.new.payment">
                      <font>
                         <Font name="System Bold" size="14.0" />

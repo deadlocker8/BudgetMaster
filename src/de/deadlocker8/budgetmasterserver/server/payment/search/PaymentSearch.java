@@ -71,11 +71,11 @@ public class PaymentSearch implements Route
 	private boolean meetsCriteria(Request req, Payment payment)
 	{
 		if(!req.queryParams().contains("name") && !req.queryParams().contains("description") && !req.queryParams().contains("categoryName"))
-			return true;
+			return false;
 
 		if(req.queryParams().contains("name"))
 		{
-			if(payment.getName().toLowerCase().contains(req.queryMap("name").value().toLowerCase()))
+			if(payment.getName().toLowerCase().contains(req.queryMap("query").value().toLowerCase()))
 			{
 				return true;
 			}
@@ -83,7 +83,7 @@ public class PaymentSearch implements Route
 
 		if(req.queryParams().contains("description"))
 		{
-			if(payment.getDescription().toLowerCase().contains(req.queryMap("description").value().toLowerCase()))
+			if(payment.getDescription().toLowerCase().contains(req.queryMap("query").value().toLowerCase()))
 			{
 				return true;
 			}
@@ -96,7 +96,7 @@ public class PaymentSearch implements Route
 				return false;
 
 			Category category = handler.getCategory(payment.getCategoryID());
-			if(category.getName().toLowerCase().contains(req.queryMap("categoryName").value().toLowerCase()))
+			if(category.getName().toLowerCase().contains(req.queryMap("query").value().toLowerCase()))
 			{
 				return true;
 			}

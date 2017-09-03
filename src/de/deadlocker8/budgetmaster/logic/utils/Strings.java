@@ -30,6 +30,7 @@ public class Strings
     public static final String TITLE_PAYMENT_EDIT = "title.payment.edit";
     public static final String TITLE_PAYMENT_NEW = "title.payment.new";
     public static final String TITLE_FILTER = "title.filter";
+    public static final String TITLE_SEARCH = "title.search";
     public static final String TITLE_REPORT_SAVE = "title.report.save";
     public static final String TITLE_DATABASE_EXPORT = "title.database.export";
     public static final String TITLE_DATABASE_IMPORT = "title.database.import";
