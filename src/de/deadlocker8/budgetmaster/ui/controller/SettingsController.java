@@ -167,7 +167,7 @@ public class SettingsController implements Styleable
 									"",
 									Localization.getString(Strings.WARNING_EMPTY_SECRET_CLIENT),
 									controller.getIcon(), 
-									controller.getStage(), 
+									controller.getParentStage(), 
 									null, 
 									false);
 			return;
@@ -180,7 +180,7 @@ public class SettingsController implements Styleable
 									"", 
 									Localization.getString(Strings.WARNING_EMPTY_URL),
 									controller.getIcon(), 
-									controller.getStage(),
+									controller.getParentStage(),
 									null, 
 									false);
 			return;
@@ -193,7 +193,7 @@ public class SettingsController implements Styleable
 									"", 
 									Localization.getString(Strings.WARNING_EMPTY_SECRET_SERVER), 
 									controller.getIcon(), 
-									controller.getStage(), 
+									controller.getParentStage(), 
 									null, 
 									false);
 			return;
@@ -206,7 +206,7 @@ public class SettingsController implements Styleable
 									"", 
 									Localization.getString(Strings.WARNING_EMPTY_CURRENCY),
 									controller.getIcon(), 
-									controller.getStage(), 
+									controller.getParentStage(), 
 									null, 
 									false);
 			return;
@@ -285,7 +285,7 @@ public class SettingsController implements Styleable
 									"", 
 									Localization.getString(Strings.ERROR_SETTINGS_SAVE),
 									controller.getIcon(), 
-									controller.getStage(), 
+									controller.getParentStage(), 
 									null, 
 									false);
 		}
@@ -319,7 +319,7 @@ public class SettingsController implements Styleable
 			Optional<ButtonType> result = alert.showAndWait();						
 			if (result.get() == buttonTypeOne)
 			{				
-				controller.getStage().close();				
+				controller.getParentStage().close();				
 				
 				Localization.loadLanguage(controller.getSettings().getLanguage().getLocale());
 				
@@ -339,10 +339,10 @@ public class SettingsController implements Styleable
 		fileChooser.setTitle(Localization.getString(Strings.TITLE_DATABASE_EXPORT));
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON (*.json)", "*.json");
 		fileChooser.getExtensionFilters().add(extFilter);
-		File file = fileChooser.showSaveDialog(controller.getStage());
+		File file = fileChooser.showSaveDialog(controller.getParentStage());
 		if(file != null)
 		{
-			Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATABASE_EXPORT), controller.getStage(), controller.getIcon());
+			Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATABASE_EXPORT), controller.getParentStage(), controller.getIcon());
 
 			Worker.runLater(() -> {
 				try
@@ -361,7 +361,7 @@ public class SettingsController implements Styleable
 												"", 
 												Localization.getString(Strings.INFO_TEXT_DATABASE_EXPORT), 
 												controller.getIcon(), 
-												controller.getStage(), 
+												controller.getParentStage(), 
 												null, 
 												false);
 					});
@@ -387,7 +387,7 @@ public class SettingsController implements Styleable
 		fileChooser.setTitle(Localization.getString(Strings.TITLE_DATABASE_IMPORT));
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON (*.json)", "*.json");
 		fileChooser.getExtensionFilters().add(extFilter);
-		File file = fileChooser.showOpenDialog(controller.getStage());
+		File file = fileChooser.showOpenDialog(controller.getParentStage());
 		if(file != null)
 		{
 			Database database;
@@ -401,7 +401,7 @@ public class SettingsController implements Styleable
 											"", 
 											Localization.getString(Strings.ERROR_DATABASE_IMPORT_WRONG_FILE), 
 											controller.getIcon(), 
-											controller.getStage(), 
+											controller.getParentStage(), 
 											null, 
 											false);
 					return;
@@ -415,13 +415,13 @@ public class SettingsController implements Styleable
 										"", 
 										Localization.getString(Strings.ERROR_DATABASE_IMPORT), 
 										controller.getIcon(), 
-										controller.getStage(), 
+										controller.getParentStage(), 
 										null, 
 										false);
 				return;
 			}
 
-			Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATABASE_IMPORT), controller.getStage(), controller.getIcon());
+			Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATABASE_IMPORT), controller.getParentStage(), controller.getIcon());
 
 			Worker.runLater(() -> {
 				try
@@ -440,7 +440,7 @@ public class SettingsController implements Styleable
 												"", 
 												Localization.getString(Strings.INFO_TEXT_DATABASE_IMPORT), 
 												controller.getIcon(), 
-												controller.getStage(), 
+												controller.getParentStage(), 
 												null, 
 												false);
 						
@@ -474,7 +474,7 @@ public class SettingsController implements Styleable
 		alert.setContentText(Localization.getString(Strings.INFO_TEXT_DATABASE_IMPORT_DIALOG));
 		Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
 		dialogStage.getIcons().add(controller.getIcon());
-		dialogStage.initOwner(controller.getStage());
+		dialogStage.initOwner(controller.getParentStage());
 
 		ButtonType buttonTypeDelete = new ButtonType(Localization.getString(Strings.INFO_TEXT_DATABASE_IMPORT_DIALOG_DELETE));
 		ButtonType buttonTypeAppend = new ButtonType(Localization.getString(Strings.INFO_TEXT_DATABASE_IMPORT_DIALOG_APPEND));
@@ -507,14 +507,14 @@ public class SettingsController implements Styleable
 		dialog.setContentText(Localization.getString(Strings.INFO_TEXT_DATABASE_DELETE, verificationCode));
 		Stage dialogStage = (Stage)dialog.getDialogPane().getScene().getWindow();
 		dialogStage.getIcons().add(controller.getIcon());
-		dialogStage.initOwner(controller.getStage());
+		dialogStage.initOwner(controller.getParentStage());
 
 		Optional<String> result = dialog.showAndWait();
 		if(result.isPresent())
 		{
 			if(result.get().equals(verificationCode))
 			{
-				Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATABASE_DELETE), controller.getStage(), controller.getIcon());
+				Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATABASE_DELETE), controller.getParentStage(), controller.getIcon());
 
 				Worker.runLater(() -> {
 					try
@@ -556,7 +556,7 @@ public class SettingsController implements Styleable
 										"", 
 										Localization.getString(Strings.WARNING_WRONG_VERIFICATION_CODE), 
 										controller.getIcon(), 
-										controller.getStage(), 
+										controller.getParentStage(), 
 										null, 
 										false);
 				deleteDB();

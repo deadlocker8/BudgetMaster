@@ -168,7 +168,7 @@ public class ChartController implements Refreshable, Styleable
 	{
 		Worker.runLater(() -> {
 			Platform.runLater(() -> {
-				new ExportChartController(controller.getStage(), this, chart);
+				new ExportChartController(controller.getParentStage(), this, chart);
 			});
 		});
 	}
@@ -193,7 +193,7 @@ public class ChartController implements Refreshable, Styleable
 		if(endDate.isBefore(startDate))
 		{
 			Platform.runLater(() -> {
-				AlertGenerator.showAlert(AlertType.WARNING, Localization.getString(Strings.TITLE_WARNING), "", Localization.getString(Strings.WARNING_ENDDATE_BEFORE_STARTDATE), controller.getIcon(), controller.getStage(), null, false);
+				AlertGenerator.showAlert(AlertType.WARNING, Localization.getString(Strings.TITLE_WARNING), "", Localization.getString(Strings.WARNING_ENDDATE_BEFORE_STARTDATE), controller.getIcon(), controller.getParentStage(), null, false);
 			});
 			return;
 		}
@@ -247,7 +247,7 @@ public class ChartController implements Refreshable, Styleable
 	@Override
 	public void refresh()
 	{
-		Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_CHARTS), controller.getStage(), controller.getIcon());
+		Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_CHARTS), controller.getParentStage(), controller.getIcon());
 
 		// prepare chart categories
 		LocalDate startDate = LocalDate.parse(controller.getCurrentDate().withDayOfMonth(1).toString("yyyy-MM-dd"));

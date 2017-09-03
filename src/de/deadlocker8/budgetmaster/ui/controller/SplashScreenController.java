@@ -11,10 +11,7 @@ import de.deadlocker8.budgetmaster.ui.Styleable;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -198,27 +195,7 @@ public class SplashScreenController extends BaseController implements Styleable
 	
 	private void openBudgetMaster()
 	{
-		try
-		{
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/budgetmaster/ui/fxml/GUI.fxml"));
-			fxmlLoader.setResources(Localization.getBundle());
-			Parent root = (Parent)fxmlLoader.load();
-			Stage newStage = new Stage();
-			newStage.setTitle(Localization.getString(Strings.APP_NAME));
-			newStage.setScene(new Scene(root, 650, 700));
-			newStage.getIcons().add(icon);			
-			newStage.setResizable(true);
-			newStage.setMinHeight(650);
-			newStage.setMinWidth(610);
-			newStage.getScene().getStylesheets().add("/de/deadlocker8/budgetmaster/ui/style.css");
-			Controller newController = fxmlLoader.getController();
-			newController.init(newStage, settings);
-			newStage.show();
-		}
-		catch(IOException e)
-		{
-			Logger.error(e);
-		}
+		new Controller(parentStage, settings);
 	}
 
 	@Override

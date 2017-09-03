@@ -19,7 +19,7 @@ public class PaymentJSONDeserializer
 			payment.setDate(paymentObject.get("date").getAsString());
 			payment.setCategoryID(paymentObject.get("categoryID").getAsInt());
 			payment.setName(paymentObject.get("name").getAsString());
-			payment.setName(paymentObject.get("description").getAsString());
+			payment.setDescription(paymentObject.get("description").getAsString());
 			return payment;
 		}
 		
@@ -31,7 +31,7 @@ public class PaymentJSONDeserializer
 			payment.setDate(paymentObject.get("date").getAsString());
 			payment.setCategoryID(paymentObject.get("categoryID").getAsInt());
 			payment.setName(paymentObject.get("name").getAsString());
-			payment.setName(paymentObject.get("description").getAsString());
+			payment.setDescription(paymentObject.get("description").getAsString());
 			
 			payment.setRepeatInterval(paymentObject.get("repeatInterval").getAsInt());
 			payment.setRepeatMonthDay(paymentObject.get("repeatMonthDay").getAsInt());

@@ -477,7 +477,7 @@ public class ReportController implements Refreshable, Styleable
 
 	public void filter()
 	{
-		new FilterController(controller.getStage(), controller, controller.getFilterSettings());	
+		new FilterController(controller.getParentStage(), controller, controller.getFilterSettings());	
 	}
 
 	private ArrayList<ReportItem> createReportItems(ArrayList<Payment> payments)
@@ -568,7 +568,7 @@ public class ReportController implements Refreshable, Styleable
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf");
 		fileChooser.setInitialFileName(initialReportPath);		
 		fileChooser.getExtensionFilters().add(extFilter);
-		File file = fileChooser.showSaveDialog(controller.getStage());		
+		File file = fileChooser.showSaveDialog(controller.getParentStage());		
 		if(file != null)
 		{				
 			Budget budget = new Budget(controller.getPaymentHandler().getPayments());		
@@ -581,7 +581,7 @@ public class ReportController implements Refreshable, Styleable
 																controller.getCurrentDate(),
 																budget);
 			
-			Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_REPORT), controller.getStage(), controller.getIcon());
+			Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_REPORT), controller.getParentStage(), controller.getIcon());
 
 			Worker.runLater(() -> {
 				try
@@ -623,7 +623,7 @@ public class ReportController implements Refreshable, Styleable
 														"", 
 														Localization.getString(Strings.ERROR_OPEN_FOLDER, e1.getMessage()),
 														controller.getIcon(), 
-														controller.getStage(), 
+														controller.getParentStage(), 
 														null, 
 														false);
 							}
@@ -642,7 +642,7 @@ public class ReportController implements Refreshable, Styleable
 														"", 
 														Localization.getString(Strings.ERROR_OPEN_REPORT, e1.getMessage()), 
 														controller.getIcon(), 
-														controller.getStage(), 
+														controller.getParentStage(), 
 														null, 
 														false);
 							}
@@ -666,7 +666,7 @@ public class ReportController implements Refreshable, Styleable
 												"", 
 												Localization.getString(Strings.ERROR_REPORT_SAVE, e.getMessage()), 
 												controller.getIcon(), 
-												controller.getStage(), 
+												controller.getParentStage(), 
 												null, 
 												false);
 					});

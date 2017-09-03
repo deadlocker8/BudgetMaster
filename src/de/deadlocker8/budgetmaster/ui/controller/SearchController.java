@@ -1,5 +1,7 @@
 package de.deadlocker8.budgetmaster.ui.controller;
 
+import java.util.ArrayList;
+
 import de.deadlocker8.budgetmaster.logic.payment.Payment;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
@@ -54,7 +56,10 @@ public class SearchController extends BaseController implements Styleable
 		stage.initModality(Modality.APPLICATION_MODAL);	
 		stage.setTitle(Localization.getString(Strings.TITLE_SEARCH));
 		stage.getIcons().add(controller.getIcon());
-		stage.setResizable(false);		
+		stage.setResizable(true);
+		stage.setMinWidth(500);
+		stage.setMinHeight(500);
+		stage.setWidth(650);
 	}
 
 	@Override
@@ -83,6 +88,8 @@ public class SearchController extends BaseController implements Styleable
         listView.setPlaceholder(labelPlaceholder);
 
 		listView.getSelectionModel().selectedIndexProperty().addListener((ChangeListener<Number>)(observable, oldValue, newValue) -> Platform.runLater(() -> listView.getSelectionModel().select(-1)));
+		
+		checkBoxName.setSelected(true);
 
 		applyStyle();	
 	}
@@ -93,11 +100,18 @@ public class SearchController extends BaseController implements Styleable
 		try
 		{
 			ServerConnection connection = new ServerConnection(controller.getSettings());
-			//DEBUG
-			System.out.println(connection.getPaymentForSearch(query, 
-																checkBoxName.isSelected(), 
-																checkBoxDescription.isSelected(), 
-																checkBoxCategoryName.isSelected()));
+			
+			listView.getItems().clear();
+
+			ArrayList<Payment> payments = connection.getPaymentForSearch(query, 
+																		checkBoxName.isSelected(), 
+																		checkBoxDescription.isSelected(), 
+																		checkBoxCategoryName.isSelected());
+			if(payments != null)
+			{
+				listView.getItems().setAll(payments);
+			}
+			
 		}
 		catch(Exception e)
 		{
@@ -116,6 +130,11 @@ public class SearchController extends BaseController implements Styleable
 	{
 		return controller;
 	}
+	
+	//TODO description under name
+	//TODO modal while server connection
+	//TODO focus search textfield after search
+	//TODO search on enter
 
 	@Override
 	public void applyStyle()

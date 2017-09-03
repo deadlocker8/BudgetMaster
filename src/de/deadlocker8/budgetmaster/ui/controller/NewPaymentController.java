@@ -274,7 +274,7 @@ public class NewPaymentController extends BaseController implements Styleable
 			                        "", 
 			                        Localization.getString(Strings.WARNING_EMPTY_PAYMENT_NAME), 
 			                        controller.getIcon(), 
-			                        controller.getStage(), 
+			                        controller.getParentStage(), 
 			                        null, 
 			                        false);
 			return;
@@ -287,7 +287,7 @@ public class NewPaymentController extends BaseController implements Styleable
 			                        "", 
 			                        Localization.getString(Strings.WARNING_NAME_CHARACTER_LIMIT_REACHED_150), 
 			                        controller.getIcon(), 
-			                        controller.getStage(), 
+			                        controller.getParentStage(), 
 			                        null, 
 			                        false);
 			return;
@@ -301,7 +301,7 @@ public class NewPaymentController extends BaseController implements Styleable
 			                        "",
 			                        Localization.getString(Strings.WARNING_PAYMENT_AMOUNT),
 			                        controller.getIcon(),
-			                        controller.getStage(),
+			                        controller.getParentStage(),
 			                        null,
 			                        false);
 			return;
@@ -315,7 +315,7 @@ public class NewPaymentController extends BaseController implements Styleable
                 			        "",
                 			        Localization.getString(Strings.WARNING_EMPTY_PAYMENT_DATE),
                 			        controller.getIcon(),
-                			        controller.getStage(),
+                			        controller.getParentStage(),
                 			        null,
                 			        false);
 			return;
@@ -338,7 +338,7 @@ public class NewPaymentController extends BaseController implements Styleable
 				                        "",
 				                        Localization.getString(Strings.WARNING_DESCRIPTION_CHARACTER_LIMIT_REACHED_150),
 				                        controller.getIcon(),
-				                        controller.getStage(),
+				                        controller.getParentStage(),
 				                        null,
 				                        false);
 				return;
@@ -369,7 +369,7 @@ public class NewPaymentController extends BaseController implements Styleable
 				        "",
 				        Localization.getString(Strings.WARNING_PAYMENT_REPEATING),				       
 				        controller.getIcon(),
-				        controller.getStage(),
+				        controller.getParentStage(),
 				        null,
 				        false);
 				return;
@@ -382,7 +382,7 @@ public class NewPaymentController extends BaseController implements Styleable
 				                        "",
 				                        Localization.getString(Strings.WARNING_ENDDATE_BEFORE_STARTDATE),
 				                        controller.getIcon(),
-				                        controller.getStage(),
+				                        controller.getParentStage(),
 				                        null,
 				                        false);
 				return;

@@ -43,7 +43,7 @@ import tools.ConvertTo;
 import tools.Localization;
 import tools.Worker;
 
-public class Controller
+public class Controller extends BaseController
 {
 	@FXML private AnchorPane anchorPaneMain;
 	@FXML private Label labelMonth;
@@ -67,7 +67,7 @@ public class Controller
 	private ReportController reportController;
 	private SettingsController settingsController;
 
-	private Stage stage;
+	private Stage parentStage;
 	private Image icon = new Image("de/deadlocker8/budgetmaster/resources/icon.png");	
 	private Settings settings;
 	private DateTime currentDate;
@@ -79,13 +79,32 @@ public class Controller
 
 	private boolean alertIsShowing = false;
 	private static final String DATE_FORMAT = "MMMM yyyy";
-
-	public void init(Stage stage, Settings settings)
+	
+	public Controller(Stage parentStage, Settings settings)
 	{
-		this.stage = stage;
-		this.settings = settings;
-		
-		stage.setOnCloseRequest((event)->{
+		this.parentStage = parentStage;
+		this.settings = settings;	
+		load("/de/deadlocker8/budgetmaster/ui/fxml/GUI.fxml", Localization.getBundle());
+		getStage().show();
+	}
+	
+	@Override
+	public void initStage(Stage stage)
+	{
+		stage.setTitle(Localization.getString(Strings.APP_NAME));
+		stage.getIcons().add(icon);			
+		stage.setResizable(true);
+		stage.setWidth(660);
+		stage.setHeight(700);
+		stage.setMinWidth(660);
+		stage.setMinHeight(650);
+		stage.getScene().getStylesheets().add("/de/deadlocker8/budgetmaster/ui/style.css");
+	}
+
+	@Override
+	public void init()
+	{		
+		getStage().setOnCloseRequest((event)->{
 			Worker.shutdown();
 			System.exit(0);
 		});
@@ -146,7 +165,7 @@ public class Controller
 		{
 			Logger.error(e);
 			Platform.runLater(() -> {
-				AlertGenerator.showAlert(AlertType.ERROR, Localization.getString(Strings.TITLE_ERROR), "", Localization.getString(Strings.ERROR_CREATE_UI), icon, stage, null, false);
+				AlertGenerator.showAlert(AlertType.ERROR, Localization.getString(Strings.TITLE_ERROR), "", Localization.getString(Strings.ERROR_CREATE_UI), icon, parentStage, null, false);
 			});			
 		}
 		
@@ -169,7 +188,7 @@ public class Controller
 			Platform.runLater(() -> {
 				toggleAllTabsExceptSettings(true);
 				tabPane.getSelectionModel().select(tabSettings);
-				AlertGenerator.showAlert(AlertType.INFORMATION, Localization.getString(Strings.TITLE_INFO), "", Localization.getString(Strings.INFO_FIRST_START), icon, stage, null, false);
+				AlertGenerator.showAlert(AlertType.INFORMATION, Localization.getString(Strings.TITLE_INFO), "", Localization.getString(Strings.INFO_FIRST_START), icon, parentStage, null, false);
 			});
 		}
 		else
@@ -178,9 +197,9 @@ public class Controller
 		}
 	}
 
-	public Stage getStage()
+	public Stage getParentStage()
 	{
-		return stage;
+		return parentStage;
 	}
 
 	public Image getIcon()
@@ -272,7 +291,7 @@ public class Controller
 				
 				Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
 				dialogStage.getIcons().add(icon);
-				dialogStage.initOwner(stage);
+				dialogStage.initOwner(parentStage);
 				alert.showAndWait();
 				alertIsShowing = false;
 			});
@@ -366,7 +385,7 @@ public class Controller
 				Optional<ButtonType> result = alert.showAndWait();						
 				if (result.get() == buttonTypeOne)
 				{					
-					Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_UPDATE), stage, icon);
+					Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_UPDATE), parentStage, icon);
 					
 					Worker.runLater(() -> {
 						try 
@@ -425,14 +444,14 @@ public class Controller
 												Localization.getString(Strings.AUTHOR),
 												creditLines,
 												icon, 
-												stage, 
+												parentStage, 
 												null, 
 												false);
 	}	
 	
 	public void refresh(FilterSettings newFilterSettings)
 	{
-		Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATA), stage, icon);
+		Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATA), parentStage, icon);
 
 		Worker.runLater(() -> {
 			try
@@ -450,7 +469,7 @@ public class Controller
 													Localization.getString(Strings.TITLE_WARNING), 
 													"",
 													Localization.getString(Strings.WARNING_SERVER_VERSION, serverVersion.getVersionName(), Localization.getString(Strings.VERSION_NAME)), 
-													icon, stage, null, false);				
+													icon, parentStage, null, false);				
 						
 							if(modalStage != null)
 							{
@@ -470,7 +489,7 @@ public class Controller
 						Localization.getString(Strings.TITLE_WARNING), 
 						"",
 						Localization.getString(Strings.WARNING_SERVER_VERSION, Localization.getString(Strings.UNDEFINED), Localization.getString(Strings.VERSION_NAME)), 
-						icon, stage, null, false);				
+						icon, parentStage, null, false);				
 	
 						if(modalStage != null)
 						{

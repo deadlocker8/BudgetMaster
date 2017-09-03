@@ -88,7 +88,7 @@ public class CategoryController implements Refreshable, Styleable
 
 	public void newCategory(boolean edit, Category category)
 	{		
-		new NewCategoryController(controller.getStage(), controller, this, edit, category);		
+		new NewCategoryController(controller.getParentStage(), controller, this, edit, category);		
 	}
 	
 	public void deleteCategory(int ID)

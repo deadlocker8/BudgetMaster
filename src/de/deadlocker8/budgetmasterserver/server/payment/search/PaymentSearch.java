@@ -70,6 +70,9 @@ public class PaymentSearch implements Route
 
 	private boolean meetsCriteria(Request req, Payment payment)
 	{
+		if(req.queryMap("query").value().toLowerCase().equals(""))
+			return false;
+		
 		if(!req.queryParams().contains("name") && !req.queryParams().contains("description") && !req.queryParams().contains("categoryName"))
 			return false;
 

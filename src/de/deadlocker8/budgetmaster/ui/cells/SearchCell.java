@@ -7,7 +7,7 @@ import java.util.Date;
 
 import de.deadlocker8.budgetmaster.logic.category.Category;
 import de.deadlocker8.budgetmaster.logic.payment.Payment;
-import de.deadlocker8.budgetmaster.logic.payment.RepeatingPaymentEntry;
+import de.deadlocker8.budgetmaster.logic.payment.RepeatingPayment;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.ui.controller.SearchController;
 import fontAwesome.FontIconType;
@@ -26,7 +26,7 @@ import tools.ConvertTo;
 
 public class SearchCell extends ListCell<Payment>
 {
-	private final double HEIGHT = 40.0;
+	private final double HEIGHT = 30.0;
 	private SearchController searchController;
 
 	public SearchCell(SearchController searchController)
@@ -62,21 +62,21 @@ public class SearchCell extends ListCell<Payment>
 			labelDate.setPrefHeight(HEIGHT);
 			labelDate.setAlignment(Pos.CENTER);
 			labelDate.getStyleClass().add("greylabel");
-			labelDate.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #212121");
-			labelDate.setMinWidth(75);
+			labelDate.setStyle("-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: #212121");
+			labelDate.setMinWidth(60);
 			hbox.getChildren().add(labelDate);
 
 			Label labelRepeating = new Label();
-			if(item instanceof RepeatingPaymentEntry)
+			if(item instanceof RepeatingPayment)
 			{				
-				labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR, 20, Color.web("#212121")));
+				labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR, 18, Color.web("#212121")));
 			}
 			else
 			{
-			    labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR, 20, Color.TRANSPARENT));
+			    labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR, 18, Color.TRANSPARENT));
 			}
 			labelRepeating.setPrefHeight(HEIGHT);
-			labelRepeating.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #212121");
+			labelRepeating.setStyle("-fx-font-size: 15; -fx-text-fill: #212121");
 			labelRepeating.setAlignment(Pos.CENTER);
 			labelRepeating.getStyleClass().add("greylabel");
 			hbox.getChildren().add(labelRepeating);
@@ -88,7 +88,7 @@ public class SearchCell extends ListCell<Payment>
 			labelCircle.setAlignment(Pos.CENTER);
 			labelCircle.getStyleClass().add("greylabel");
 			String textColor = ConvertTo.toRGBHex(ConvertTo.getAppropriateTextColor(Color.web(category.getColor())));
-			labelCircle.setStyle("-fx-background-color: " + category.getColor() + "; -fx-background-radius: 50%; -fx-text-fill: " + textColor + "; -fx-font-weight: bold; -fx-font-size: 20;");
+			labelCircle.setStyle("-fx-background-color: " + category.getColor() + "; -fx-background-radius: 50%; -fx-text-fill: " + textColor + "; -fx-font-weight: bold; -fx-font-size: 18;");
 			Tooltip tooltip = new Tooltip(category.getName());
 			tooltip.setStyle("-fx-font-size: 14");
 			labelCircle.setTooltip(tooltip);
@@ -96,11 +96,20 @@ public class SearchCell extends ListCell<Payment>
 
 			Label labelName = new Label(item.getName());
 			labelName.setPrefHeight(HEIGHT);
-			labelName.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #212121");
+			labelName.setStyle("-fx-font-size: 15; -fx-text-fill: #212121");
 			labelName.setAlignment(Pos.CENTER);
-			labelName.getStyleClass().add("greylabel");			
+			labelName.getStyleClass().add("greylabel");
+			labelName.setMinWidth(100);
 			hbox.getChildren().add(labelName);
 			HBox.setMargin(labelName, new Insets(0, 0, 0, 20));
+			
+			Label labelDescription = new Label(item.getDescription());
+			labelDescription.setPrefHeight(HEIGHT);
+			labelDescription.setStyle("-fx-font-size: 14; -fx-text-fill: #212121; -fx-font-style: italic");
+			labelDescription.setAlignment(Pos.CENTER);
+			labelDescription.getStyleClass().add("greylabel");			
+			hbox.getChildren().add(labelDescription);
+			HBox.setMargin(labelDescription, new Insets(0, 0, 0, 10));
 
 			Region r = new Region();
 			hbox.getChildren().add(r);
@@ -108,7 +117,7 @@ public class SearchCell extends ListCell<Payment>
 
 			Label labelBudget = new Label(Helpers.getCurrencyString(item.getAmount(), searchController.getController().getSettings().getCurrency()));
 			labelBudget.setPrefHeight(HEIGHT);
-			labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #247A2D");
+			labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: #247A2D");
 			labelBudget.setAlignment(Pos.CENTER);
 			labelBudget.getStyleClass().add("greylabel");
 			labelBudget.setMinWidth(90);
@@ -122,7 +131,7 @@ public class SearchCell extends ListCell<Payment>
 			else
 			{
 				labelBudget.setText(labelBudget.getText());
-				labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #CC0000");
+				labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: #CC0000");
 			}
 
 			Button buttonGoto = new Button();			
