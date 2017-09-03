@@ -14,10 +14,10 @@ import org.joda.time.DateTime;
 
 import de.deadlocker8.budgetmaster.logic.Budget;
 import de.deadlocker8.budgetmaster.logic.FilterSettings;
-import de.deadlocker8.budgetmaster.logic.Payment;
-import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmaster.logic.comparators.DateComparator;
 import de.deadlocker8.budgetmaster.logic.comparators.RatingComparator;
+import de.deadlocker8.budgetmaster.logic.payment.Payment;
+import de.deadlocker8.budgetmaster.logic.payment.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmaster.logic.report.ColumnFilter;
 import de.deadlocker8.budgetmaster.logic.report.ColumnOrder;
 import de.deadlocker8.budgetmaster.logic.report.ColumnType;

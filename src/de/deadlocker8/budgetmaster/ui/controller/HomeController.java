@@ -3,7 +3,7 @@ package de.deadlocker8.budgetmaster.ui.controller;
 import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.Budget;
-import de.deadlocker8.budgetmaster.logic.CategoryBudget;
+import de.deadlocker8.budgetmaster.logic.category.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;

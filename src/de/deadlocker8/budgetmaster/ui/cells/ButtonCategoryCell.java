@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.ui.cells;
 
-import de.deadlocker8.budgetmaster.logic.Category;
+import de.deadlocker8.budgetmaster.logic.category.Category;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;

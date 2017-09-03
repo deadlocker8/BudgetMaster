@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.ui.cells;
 
-import de.deadlocker8.budgetmaster.logic.Category;
-import de.deadlocker8.budgetmaster.logic.CategoryBudget;
+import de.deadlocker8.budgetmaster.logic.category.Category;
+import de.deadlocker8.budgetmaster.logic.category.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.ui.controller.HomeController;
 import javafx.geometry.Insets;

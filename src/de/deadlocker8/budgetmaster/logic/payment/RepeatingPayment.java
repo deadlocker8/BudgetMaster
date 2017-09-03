@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.logic;
+package de.deadlocker8.budgetmaster.logic.payment;
 
 public class RepeatingPayment extends Payment
 {	
@@ -8,10 +8,15 @@ public class RepeatingPayment extends Payment
 
 	public RepeatingPayment(int ID, int amount, String date, int categoryID, String name, String description, int repeatInterval, String repeatEndDate, int repeatMonthDay)
 	{
-		super(ID, amount, date, categoryID, name, description);
+		super(ID, amount, date, categoryID, name, description);	
 		this.repeatInterval = repeatInterval;
-		this.repeatEndDate = repeatEndDate;
+		this.repeatEndDate = repeatEndDate;		
 		this.repeatMonthDay = repeatMonthDay;
+	}
+	
+	public RepeatingPayment()
+	{
+		
 	}
 
 	public int getRepeatInterval()

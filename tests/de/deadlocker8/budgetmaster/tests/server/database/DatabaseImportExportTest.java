@@ -16,9 +16,9 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 
-import de.deadlocker8.budgetmaster.logic.Category;
-import de.deadlocker8.budgetmaster.logic.NormalPayment;
-import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
+import de.deadlocker8.budgetmaster.logic.category.Category;
+import de.deadlocker8.budgetmaster.logic.payment.NormalPayment;
+import de.deadlocker8.budgetmaster.logic.payment.RepeatingPayment;
 import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmasterserver.logic.Settings;
 import de.deadlocker8.budgetmasterserver.logic.Utils;

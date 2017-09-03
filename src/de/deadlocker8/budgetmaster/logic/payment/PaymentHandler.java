@@ -1,9 +1,11 @@
-package de.deadlocker8.budgetmaster.logic;
+package de.deadlocker8.budgetmaster.logic.payment;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.stream.Collectors;
+
+import de.deadlocker8.budgetmaster.logic.FilterSettings;
 
 public class PaymentHandler
 {

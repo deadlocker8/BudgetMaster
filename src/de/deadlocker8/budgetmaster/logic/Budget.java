@@ -2,6 +2,8 @@ package de.deadlocker8.budgetmaster.logic;
 
 import java.util.List;
 
+import de.deadlocker8.budgetmaster.logic.payment.Payment;
+
 public class Budget
 {
 	private double incomeSum;

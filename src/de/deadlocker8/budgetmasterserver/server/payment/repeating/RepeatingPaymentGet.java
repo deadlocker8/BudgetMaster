@@ -4,7 +4,7 @@ import static spark.Spark.halt;
 
 import com.google.gson.Gson;
 
-import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
+import de.deadlocker8.budgetmaster.logic.payment.RepeatingPayment;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
 import spark.Request;
 import spark.Response;

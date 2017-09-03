@@ -17,16 +17,20 @@ import javax.net.ssl.X509TrustManager;
 import org.joda.time.DateTime;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
-import de.deadlocker8.budgetmaster.logic.Category;
-import de.deadlocker8.budgetmaster.logic.CategoryBudget;
-import de.deadlocker8.budgetmaster.logic.CategoryInOutSum;
-import de.deadlocker8.budgetmaster.logic.MonthInOutSum;
-import de.deadlocker8.budgetmaster.logic.NormalPayment;
-import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
-import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmaster.logic.Settings;
+import de.deadlocker8.budgetmaster.logic.category.Category;
+import de.deadlocker8.budgetmaster.logic.category.CategoryBudget;
+import de.deadlocker8.budgetmaster.logic.charts.CategoryInOutSum;
+import de.deadlocker8.budgetmaster.logic.charts.MonthInOutSum;
+import de.deadlocker8.budgetmaster.logic.payment.NormalPayment;
+import de.deadlocker8.budgetmaster.logic.payment.Payment;
+import de.deadlocker8.budgetmaster.logic.payment.PaymentJSONDeserializer;
+import de.deadlocker8.budgetmaster.logic.payment.RepeatingPayment;
+import de.deadlocker8.budgetmaster.logic.payment.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmaster.logic.updater.VersionInformation;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmasterserver.logic.database.Database;
@@ -322,6 +326,42 @@ public class ServerConnection
 			InputStream stream = httpsCon.getInputStream();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 			reader.close();
+		}
+		else
+		{
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+		}
+	}
+	
+	public ArrayList<Payment> getPaymentForSearch(String name, String description, String categoryName) throws Exception
+	{
+		String urlString = settings.getUrl() + "/payment/search?secret=" + Helpers.getURLEncodedString(settings.getSecret());
+		if(name != null)
+		{
+			urlString += "&name=" + name;
+		}
+		
+		if(description != null)
+		{
+			urlString += "&description=" + description;
+		}
+		
+		if(categoryName != null)
+		{
+			urlString += "&categoryName=" + categoryName;
+		}
+		
+		URL url = new URL(urlString);
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setDoOutput(true);
+		httpsCon.setRequestMethod("GET");
+			
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			String result = Read.getStringFromInputStream(httpsCon.getInputStream());
+			JsonParser parser = new JsonParser();
+			JsonElement resultJSON = parser.parse(result);		
+	        return PaymentJSONDeserializer.deserializePaymentList(resultJSON.getAsJsonObject().get("payments").getAsJsonArray());
 		}
 		else
 		{

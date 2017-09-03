@@ -13,10 +13,10 @@ import java.util.Locale;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.deadlocker8.budgetmaster.logic.Category;
-import de.deadlocker8.budgetmaster.logic.LatestRepeatingPayment;
-import de.deadlocker8.budgetmaster.logic.NormalPayment;
-import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
+import de.deadlocker8.budgetmaster.logic.category.Category;
+import de.deadlocker8.budgetmaster.logic.payment.LatestRepeatingPayment;
+import de.deadlocker8.budgetmaster.logic.payment.NormalPayment;
+import de.deadlocker8.budgetmaster.logic.payment.RepeatingPayment;
 import de.deadlocker8.budgetmasterserver.logic.Settings;
 import de.deadlocker8.budgetmasterserver.logic.Utils;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;

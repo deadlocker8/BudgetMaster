@@ -1,7 +1,7 @@
-package de.deadlocker8.budgetmaster.logic;
+package de.deadlocker8.budgetmaster.logic.payment;
 
 public abstract class Payment
-{	
+{
 	private int ID;
 	private int amount;
 	private String date;
@@ -17,6 +17,11 @@ public abstract class Payment
 		this.categoryID = categoryID;
 		this.name = name;
 		this.description = description;
+	}
+	
+	public Payment()
+	{
+		
 	}
 
 	public int getID()

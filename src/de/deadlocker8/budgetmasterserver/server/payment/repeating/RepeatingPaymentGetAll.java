@@ -8,7 +8,7 @@ import org.joda.time.DateTime;
 
 import com.google.gson.Gson;
 
-import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
+import de.deadlocker8.budgetmaster.logic.payment.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
 import de.deadlocker8.budgetmasterserver.server.updater.RepeatingPaymentUpdater;
 import spark.Request;

@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.logic;
+package de.deadlocker8.budgetmaster.logic.category;
 
 import java.util.ArrayList;
 

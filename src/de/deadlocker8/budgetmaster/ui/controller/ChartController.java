@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
-import de.deadlocker8.budgetmaster.logic.CategoryInOutSum;
-import de.deadlocker8.budgetmaster.logic.MonthInOutSum;
 import de.deadlocker8.budgetmaster.logic.charts.CategoriesChart;
+import de.deadlocker8.budgetmaster.logic.charts.CategoryInOutSum;
 import de.deadlocker8.budgetmaster.logic.charts.ChartExportable;
 import de.deadlocker8.budgetmaster.logic.charts.LegendType;
 import de.deadlocker8.budgetmaster.logic.charts.MonthBarChart;
+import de.deadlocker8.budgetmaster.logic.charts.MonthInOutSum;
 import de.deadlocker8.budgetmaster.logic.charts.MonthLineChart;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;

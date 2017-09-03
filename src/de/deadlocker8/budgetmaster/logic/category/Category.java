@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.logic;
+package de.deadlocker8.budgetmaster.logic.category;
 
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import tools.Localization;

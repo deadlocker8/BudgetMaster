@@ -2,7 +2,6 @@ package de.deadlocker8.budgetmaster.logic.charts;
 
 import java.util.ArrayList;
 
-import de.deadlocker8.budgetmaster.logic.CategoryInOutSum;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;

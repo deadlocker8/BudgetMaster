@@ -6,10 +6,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
-import de.deadlocker8.budgetmaster.logic.Category;
-import de.deadlocker8.budgetmaster.logic.NormalPayment;
-import de.deadlocker8.budgetmaster.logic.Payment;
-import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
+import de.deadlocker8.budgetmaster.logic.category.Category;
+import de.deadlocker8.budgetmaster.logic.payment.NormalPayment;
+import de.deadlocker8.budgetmaster.logic.payment.Payment;
+import de.deadlocker8.budgetmaster.logic.payment.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmaster.ui.controller.PaymentController;

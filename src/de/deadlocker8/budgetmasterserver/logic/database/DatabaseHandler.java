@@ -12,12 +12,12 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import de.deadlocker8.budgetmaster.logic.Category;
-import de.deadlocker8.budgetmaster.logic.LatestRepeatingPayment;
-import de.deadlocker8.budgetmaster.logic.NormalPayment;
-import de.deadlocker8.budgetmaster.logic.Payment;
-import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
-import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
+import de.deadlocker8.budgetmaster.logic.category.Category;
+import de.deadlocker8.budgetmaster.logic.payment.LatestRepeatingPayment;
+import de.deadlocker8.budgetmaster.logic.payment.NormalPayment;
+import de.deadlocker8.budgetmaster.logic.payment.Payment;
+import de.deadlocker8.budgetmaster.logic.payment.RepeatingPayment;
+import de.deadlocker8.budgetmaster.logic.payment.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmasterserver.logic.Settings;
 import logger.Logger;
 
@@ -364,6 +364,41 @@ public class DatabaseHandler
 		}
 
 		return null;
+	}
+	
+	public ArrayList<NormalPayment> getAllNormalPayments()
+	{		
+		PreparedStatement stmt = null;
+
+		ArrayList<NormalPayment> results = new ArrayList<>();
+		try
+		{
+			stmt = connection.prepareStatement("SELECT * FROM payment;");
+			
+			ResultSet rs = stmt.executeQuery();
+
+			while(rs.next())
+			{
+				int resultID = rs.getInt("ID");
+				String name = rs.getString("Name");
+				int amount = rs.getInt("amount");
+				String date = rs.getString("Date");
+				int categoryID = rs.getInt("CategoryID");
+				String description = rs.getString("Description");
+
+				results.add(new NormalPayment(resultID, amount, date, categoryID, name, description));
+			}
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+		finally
+		{
+			closeConnection(stmt);
+		}
+
+		return results;
 	}
 
 	public ArrayList<NormalPayment> getPayments(int year, int month)

@@ -8,9 +8,9 @@ import org.joda.time.DateTime;
 
 import com.google.gson.Gson;
 
-import de.deadlocker8.budgetmaster.logic.Category;
-import de.deadlocker8.budgetmaster.logic.CategoryInOutSum;
-import de.deadlocker8.budgetmaster.logic.Payment;
+import de.deadlocker8.budgetmaster.logic.category.Category;
+import de.deadlocker8.budgetmaster.logic.charts.CategoryInOutSum;
+import de.deadlocker8.budgetmaster.logic.payment.Payment;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
 import spark.Request;
 import spark.Response;
@@ -40,7 +40,7 @@ public class MonthInOutSum implements Route
 			DateTime startDate = DateTime.parse(req.queryMap("startDate").value()).withDayOfMonth(1);
 			DateTime endDate = DateTime.parse(req.queryMap("endDate").value()).withDayOfMonth(1);		
 			
-			ArrayList<de.deadlocker8.budgetmaster.logic.MonthInOutSum> monthInOutSums = new ArrayList<>();
+			ArrayList<de.deadlocker8.budgetmaster.logic.charts.MonthInOutSum> monthInOutSums = new ArrayList<>();
 			
 			while(startDate.isBefore(endDate) || startDate.isEqual(endDate))
 			{
@@ -71,7 +71,7 @@ public class MonthInOutSum implements Route
 					}
 				}
 				
-				monthInOutSums.add(new de.deadlocker8.budgetmaster.logic.MonthInOutSum(startDate.getMonthOfYear(), startDate.getYear(), sums));				
+				monthInOutSums.add(new de.deadlocker8.budgetmaster.logic.charts.MonthInOutSum(startDate.getMonthOfYear(), startDate.getYear(), sums));				
 				
 				startDate = startDate.plusMonths(1);
 			}	

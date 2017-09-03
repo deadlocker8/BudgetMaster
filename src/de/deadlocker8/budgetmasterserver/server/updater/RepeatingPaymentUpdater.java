@@ -6,8 +6,8 @@ import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.Months;
 
-import de.deadlocker8.budgetmaster.logic.LatestRepeatingPayment;
-import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
+import de.deadlocker8.budgetmaster.logic.payment.LatestRepeatingPayment;
+import de.deadlocker8.budgetmaster.logic.payment.RepeatingPayment;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
 import logger.Logger;
 

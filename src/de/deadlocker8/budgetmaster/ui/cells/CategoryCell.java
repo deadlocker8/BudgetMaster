@@ -2,7 +2,7 @@ package de.deadlocker8.budgetmaster.ui.cells;
 
 import java.util.Optional;
 
-import de.deadlocker8.budgetmaster.logic.Category;
+import de.deadlocker8.budgetmaster.logic.category.Category;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmaster.ui.controller.CategoryController;

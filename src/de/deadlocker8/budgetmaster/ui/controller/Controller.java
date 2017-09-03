@@ -6,12 +6,12 @@ import java.util.Optional;
 
 import org.joda.time.DateTime;
 
-import de.deadlocker8.budgetmaster.logic.CategoryBudget;
-import de.deadlocker8.budgetmaster.logic.CategoryHandler;
 import de.deadlocker8.budgetmaster.logic.FilterSettings;
-import de.deadlocker8.budgetmaster.logic.NormalPayment;
-import de.deadlocker8.budgetmaster.logic.PaymentHandler;
 import de.deadlocker8.budgetmaster.logic.Settings;
+import de.deadlocker8.budgetmaster.logic.category.CategoryBudget;
+import de.deadlocker8.budgetmaster.logic.category.CategoryHandler;
+import de.deadlocker8.budgetmaster.logic.payment.NormalPayment;
+import de.deadlocker8.budgetmaster.logic.payment.PaymentHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.updater.Updater;
@@ -483,7 +483,6 @@ public class Controller
 					return;
 				}
 				
-				
 				paymentHandler = new PaymentHandler();
 				paymentHandler.getPayments().addAll(connection.getPayments(currentDate.getYear(), currentDate.getMonthOfYear()));
 				paymentHandler.getPayments().addAll(connection.getRepeatingPayments(currentDate.getYear(), currentDate.getMonthOfYear()));			
@@ -498,7 +497,7 @@ public class Controller
 				categoryHandler = new CategoryHandler(connection.getCategories());
 				
 				categoryBudgets = connection.getCategoryBudgets(currentDate.getYear(), currentDate.getMonthOfYear());	
-				paymentHandler.filter(newFilterSettings);				
+				paymentHandler.filter(newFilterSettings);
 
 				Platform.runLater(() -> {
 					if(modalStage != null)

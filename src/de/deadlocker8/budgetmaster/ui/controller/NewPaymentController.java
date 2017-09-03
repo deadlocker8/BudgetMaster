@@ -5,11 +5,11 @@ import java.util.ArrayList;
 
 import org.joda.time.DateTime;
 
-import de.deadlocker8.budgetmaster.logic.Category;
-import de.deadlocker8.budgetmaster.logic.NormalPayment;
-import de.deadlocker8.budgetmaster.logic.Payment;
-import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
-import de.deadlocker8.budgetmaster.logic.RepeatingPaymentEntry;
+import de.deadlocker8.budgetmaster.logic.category.Category;
+import de.deadlocker8.budgetmaster.logic.payment.NormalPayment;
+import de.deadlocker8.budgetmaster.logic.payment.Payment;
+import de.deadlocker8.budgetmaster.logic.payment.RepeatingPayment;
+import de.deadlocker8.budgetmaster.logic.payment.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;

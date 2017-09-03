@@ -3,9 +3,9 @@ package de.deadlocker8.budgetmasterserver.logic.database;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import de.deadlocker8.budgetmaster.logic.Category;
-import de.deadlocker8.budgetmaster.logic.NormalPayment;
-import de.deadlocker8.budgetmaster.logic.RepeatingPayment;
+import de.deadlocker8.budgetmaster.logic.category.Category;
+import de.deadlocker8.budgetmaster.logic.payment.NormalPayment;
+import de.deadlocker8.budgetmaster.logic.payment.RepeatingPayment;
 
 public class DatabaseImporter
 {
