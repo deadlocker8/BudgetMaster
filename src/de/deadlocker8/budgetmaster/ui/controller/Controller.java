@@ -95,7 +95,7 @@ public class Controller extends BaseController
 		stage.getIcons().add(icon);			
 		stage.setResizable(true);
 		stage.setWidth(660);
-		stage.setHeight(700);
+		stage.setHeight(725);
 		stage.setMinWidth(660);
 		stage.setMinHeight(650);
 		stage.getScene().getStylesheets().add("/de/deadlocker8/budgetmaster/ui/style.css");

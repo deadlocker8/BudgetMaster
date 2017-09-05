@@ -77,8 +77,7 @@ public class SettingsController implements Styleable
 	{
 		this.controller = controller;
 		
-		textFieldClientSecret.setText("******");
-		radioButtonRestDeactivated.setSelected(true);
+		textFieldClientSecret.setText("******");		
 		
 		comboBoxLanguage.setCellFactory((view) -> {
 			return new LanguageCell(true);
@@ -113,6 +112,10 @@ public class SettingsController implements Styleable
 			}
 			
 			checkboxEnableAutoUpdate.setSelected(controller.getSettings().isAutoUpdateCheckEnabled());
+		}
+		else
+		{
+			radioButtonRestDeactivated.setSelected(true);
 		}
 		
 		applyStyle();
