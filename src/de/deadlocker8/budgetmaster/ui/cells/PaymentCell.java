@@ -14,6 +14,7 @@ import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmaster.ui.controller.PaymentController;
 import fontAwesome.FontIconType;
+import javafx.animation.FadeTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -28,6 +29,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import logger.Logger;
 import tools.ConvertTo;
 import tools.Localization;
@@ -185,6 +187,22 @@ public class PaymentCell extends ListCell<Payment>
 			}
 
 			hbox.setPadding(new Insets(10, 8, 10, 5));
+			
+			Payment selectedPayment = paymentController.getController().getSelectedPayment();
+			if(selectedPayment != null && item.getID() == selectedPayment.getID())
+			{
+				// payment is selected after search								
+				FadeTransition ft = new FadeTransition(Duration.millis(750), hbox);
+	            ft.setFromValue(1.0);
+	            ft.setToValue(0.0);
+	            ft.setCycleCount(4);
+	            ft.setAutoReverse(true);
+	            ft.play();
+	            ft.setOnFinished((event)->{	            	
+	            	paymentController.getController().setSelectedPayment(null);	            	
+	            });
+			}
+				
 			setStyle("-fx-background: transparent; -fx-border-color: #545454; -fx-border-width: 0 0 1 0");
 			setGraphic(hbox);
 			setAlignment(Pos.CENTER);

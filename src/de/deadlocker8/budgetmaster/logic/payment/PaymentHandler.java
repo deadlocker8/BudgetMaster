@@ -26,6 +26,22 @@ public class PaymentHandler
 		this.payments = payments;
 	}
 	
+	public int getPosition(Payment payment)
+	{
+		if(payment == null)
+			return -1;
+		
+		for(int i = 0; i < payments.size(); i++)
+		{
+			if(payment.getID() == payments.get(i).getID())
+			{
+				return i;
+			}
+		}
+		
+		return -1;
+	}
+	
 	public void sort()
 	{
 		Collections.sort(payments, new Comparator<Payment>() {

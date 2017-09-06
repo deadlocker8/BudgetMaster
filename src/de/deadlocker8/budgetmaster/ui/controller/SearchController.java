@@ -43,7 +43,6 @@ public class SearchController extends BaseController implements Styleable
 
 	private Stage parentStage;
 	private Controller controller;
-	private String lastQuery;
 	
 	public SearchController(Stage parentStage, Controller controller)
 	{
@@ -102,6 +101,11 @@ public class SearchController extends BaseController implements Styleable
             }	        
 	    });
 		
+		if(controller.getLastSearchQuery() != null)
+		{
+			textFieldSearch.setText(controller.getLastSearchQuery());
+		}
+		
 		applyStyle();	
 	}
 	
@@ -109,14 +113,14 @@ public class SearchController extends BaseController implements Styleable
 	{
 		String query = textFieldSearch.getText().trim();
 		// only perform search if query differs from last query (reduce server connections)
-		if(lastQuery != null && lastQuery.equalsIgnoreCase(query))
+		if(controller.getLastSearchQuery() != null && controller.getLastSearchQuery().equalsIgnoreCase(query))
 		{
 			textFieldSearch.requestFocus();
 			textFieldSearch.positionCaret(textFieldSearch.getText().length());
 			return;
 		}
 		
-		lastQuery = query;
+		controller.setLastSearchQuery(query);
 		
 		Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_SEARCH), getStage(), controller.getIcon());
 		

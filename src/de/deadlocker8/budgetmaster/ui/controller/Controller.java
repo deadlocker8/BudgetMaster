@@ -11,6 +11,7 @@ import de.deadlocker8.budgetmaster.logic.Settings;
 import de.deadlocker8.budgetmaster.logic.category.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.category.CategoryHandler;
 import de.deadlocker8.budgetmaster.logic.payment.NormalPayment;
+import de.deadlocker8.budgetmaster.logic.payment.Payment;
 import de.deadlocker8.budgetmaster.logic.payment.PaymentHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
@@ -76,6 +77,8 @@ public class Controller extends BaseController
 	private CategoryHandler categoryHandler;
 	private FilterSettings filterSettings;
 	private Updater updater;
+	private Payment selectedPayment;
+	private String lastSearchQuery;
 
 	private boolean alertIsShowing = false;
 	private static final String DATE_FORMAT = "MMMM yyyy";
@@ -261,6 +264,14 @@ public class Controller extends BaseController
 
 		refresh(filterSettings);
 	}
+	
+	public void setDate(DateTime newDate)
+	{
+		currentDate = newDate;
+		labelMonth.setText(currentDate.toString(DATE_FORMAT));
+
+		refresh(filterSettings);
+	}
 
 	public DateTime getCurrentDate()
 	{
@@ -352,6 +363,26 @@ public class Controller extends BaseController
 		buttonToday.setDisable(disable);
 	}
 	
+	public void setSelectedPayment(Payment payment)
+	{
+		selectedPayment = payment;
+	}
+	
+	public Payment getSelectedPayment()
+	{
+		return selectedPayment;
+	}
+	
+	public String getLastSearchQuery()
+	{
+		return lastSearchQuery;
+	}
+
+	public void setLastSearchQuery(String lastSearchQuery)
+	{
+		this.lastSearchQuery = lastSearchQuery;
+	}
+
 	public void checkForUpdates(boolean showNotification)
 	{
 		try

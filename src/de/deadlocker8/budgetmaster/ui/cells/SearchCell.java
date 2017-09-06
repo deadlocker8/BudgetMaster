@@ -5,6 +5,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+
 import de.deadlocker8.budgetmaster.logic.category.Category;
 import de.deadlocker8.budgetmaster.logic.payment.Payment;
 import de.deadlocker8.budgetmaster.logic.payment.RepeatingPayment;
@@ -148,7 +151,10 @@ public class SearchCell extends ListCell<Payment>
 			buttonGoto.getStyleClass().add("greylabel");
 			buttonGoto.setStyle("-fx-background-color: transparent");			
 			buttonGoto.setOnAction((event) -> {
-				//TODO goto month and payment
+				DateTime newDate = DateTime.parse(item.getDate(), DateTimeFormat.forPattern("YYYY-MM-dd"));
+				searchController.getController().setSelectedPayment(item);
+				searchController.getController().setDate(newDate);
+				searchController.cancel();
 			});
 			hbox.getChildren().add(buttonGoto);
 			HBox.setMargin(buttonGoto, new Insets(0, 0, 0, 10));

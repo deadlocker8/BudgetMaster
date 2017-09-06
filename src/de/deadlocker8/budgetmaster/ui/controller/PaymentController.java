@@ -98,7 +98,7 @@ public class PaymentController implements Refreshable, Styleable
 		new NewPaymentController(controller.getParentStage(), controller, this, isPayment, edit, payment);		
 	}
 
-	private void refreshListView()
+	private void refreshListView(Payment selectedPayment)
 	{
 		listView.getItems().clear();
 
@@ -106,6 +106,7 @@ public class PaymentController implements Refreshable, Styleable
 		if(payments != null)
 		{
 			listView.getItems().setAll(payments);
+			listView.scrollTo(controller.getPaymentHandler().getPosition(selectedPayment));			
 		}
 	}
 
@@ -188,7 +189,7 @@ public class PaymentController implements Refreshable, Styleable
 	@Override
 	public void refresh()
 	{
-		refreshListView();
+		refreshListView(controller.getSelectedPayment());
 		refreshCounter();
 		
 		if(controller.getFilterSettings().equals(new FilterSettings()))
