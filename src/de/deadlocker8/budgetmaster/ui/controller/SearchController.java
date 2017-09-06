@@ -115,15 +115,7 @@ public class SearchController extends BaseController implements Styleable
 	
 	public void search()
 	{
-		String query = textFieldSearch.getText().trim();
-		// only perform search if query differs from last query (reduce server connections)
-		if(controller.getLastSearchQuery() != null && controller.getLastSearchQuery().equalsIgnoreCase(query))
-		{
-			textFieldSearch.requestFocus();
-			textFieldSearch.positionCaret(textFieldSearch.getText().length());
-			return;
-		}
-		
+		String query = textFieldSearch.getText().trim();		
 		controller.setLastSearchQuery(query);
 		
 		Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_SEARCH), getStage(), controller.getIcon());

@@ -95,10 +95,10 @@ public class PaymentSearch implements Route
 		if(req.queryParams().contains("categoryName"))
 		{
 			int id = payment.getCategoryID();
-			if(id != -1)
+			if(id == -1)
 				return false;
 
-			Category category = handler.getCategory(payment.getCategoryID());
+			Category category = handler.getCategory(payment.getCategoryID());		
 			if(category.getName().toLowerCase().contains(req.queryMap("query").value().toLowerCase()))
 			{
 				return true;
