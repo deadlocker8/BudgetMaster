@@ -43,6 +43,7 @@ public class Strings
     public static final String LOAD_DATABASE_IMPORT = "load.database.import";
     public static final String LOAD_DATABASE_DELETE = "load.database.delete";
     public static final String LOAD_UPDATE = "load.update";
+    public static final String LOAD_SEARCH = "load.search";
     
     //MISC
     public static final String CATEGORY_NONE = "category.none";

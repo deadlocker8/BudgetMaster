@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmaster.ui.controller;
 import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.payment.Payment;
+import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
@@ -19,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
@@ -27,6 +29,7 @@ import javafx.util.Callback;
 import logger.Logger;
 import tools.ConvertTo;
 import tools.Localization;
+import tools.Worker;
 
 public class SearchController extends BaseController implements Styleable
 {
@@ -40,6 +43,7 @@ public class SearchController extends BaseController implements Styleable
 
 	private Stage parentStage;
 	private Controller controller;
+	private String lastQuery;
 	
 	public SearchController(Stage parentStage, Controller controller)
 	{
@@ -90,35 +94,69 @@ public class SearchController extends BaseController implements Styleable
 		listView.getSelectionModel().selectedIndexProperty().addListener((ChangeListener<Number>)(observable, oldValue, newValue) -> Platform.runLater(() -> listView.getSelectionModel().select(-1)));
 		
 		checkBoxName.setSelected(true);
-
+		
+		textFieldSearch.setOnKeyPressed((event)->{
+            if(event.getCode().equals(KeyCode.ENTER))
+            {
+            	search();
+            }	        
+	    });
+		
 		applyStyle();	
 	}
 	
 	public void search()
 	{
-		String query = textFieldSearch.getText().trim();		
-		try
+		String query = textFieldSearch.getText().trim();
+		// only perform search if query differs from last query (reduce server connections)
+		if(lastQuery != null && lastQuery.equalsIgnoreCase(query))
 		{
-			ServerConnection connection = new ServerConnection(controller.getSettings());
-			
-			listView.getItems().clear();
-
-			ArrayList<Payment> payments = connection.getPaymentForSearch(query, 
-																		checkBoxName.isSelected(), 
-																		checkBoxDescription.isSelected(), 
-																		checkBoxCategoryName.isSelected());
-			if(payments != null)
-			{
-				listView.getItems().setAll(payments);
-			}
-			
-		}
-		catch(Exception e)
-		{
-			//ERRORHANDLING
-			Logger.error(e);
+			textFieldSearch.requestFocus();
+			textFieldSearch.positionCaret(textFieldSearch.getText().length());
+			return;
 		}
 		
+		lastQuery = query;
+		
+		Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_SEARCH), getStage(), controller.getIcon());
+		
+		Worker.runLater(() -> {
+			try 
+			{
+				
+				ServerConnection connection = new ServerConnection(controller.getSettings());
+				ArrayList<Payment> payments = connection.getPaymentForSearch(query, 
+																			checkBoxName.isSelected(), 
+																			checkBoxDescription.isSelected(), 
+																			checkBoxCategoryName.isSelected());
+				Platform.runLater(() -> {
+					listView.getItems().clear();
+					if(payments != null)
+					{
+						listView.getItems().setAll(payments);
+					}
+				
+					if(modalStage != null)
+					{
+						modalStage.close();
+					}							
+				});
+			}
+			catch(Exception e)
+			{
+				Logger.error(e);
+				Platform.runLater(() -> {
+					if(modalStage != null)
+					{
+						modalStage.close();
+					}
+					controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
+				});
+			}
+		});
+		
+		textFieldSearch.requestFocus();
+		textFieldSearch.positionCaret(textFieldSearch.getText().length());
 	}
 	
 	public void cancel()
@@ -130,11 +168,6 @@ public class SearchController extends BaseController implements Styleable
 	{
 		return controller;
 	}
-	
-	//TODO description under name
-	//TODO modal while server connection
-	//TODO focus search textfield after search
-	//TODO search on enter
 
 	@Override
 	public void applyStyle()

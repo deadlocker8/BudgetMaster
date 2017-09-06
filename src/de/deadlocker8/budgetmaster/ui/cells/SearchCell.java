@@ -8,6 +8,7 @@ import java.util.Date;
 import de.deadlocker8.budgetmaster.logic.category.Category;
 import de.deadlocker8.budgetmaster.logic.payment.Payment;
 import de.deadlocker8.budgetmaster.logic.payment.RepeatingPayment;
+import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.ui.controller.SearchController;
 import fontAwesome.FontIconType;
@@ -20,6 +21,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import logger.Logger;
 import tools.ConvertTo;
@@ -92,24 +94,30 @@ public class SearchCell extends ListCell<Payment>
 			Tooltip tooltip = new Tooltip(category.getName());
 			tooltip.setStyle("-fx-font-size: 14");
 			labelCircle.setTooltip(tooltip);
-			hbox.getChildren().add(labelCircle);			
-
-			Label labelName = new Label(item.getName());
-			labelName.setPrefHeight(HEIGHT);
-			labelName.setStyle("-fx-font-size: 15; -fx-text-fill: #212121");
-			labelName.setAlignment(Pos.CENTER);
-			labelName.getStyleClass().add("greylabel");
-			labelName.setMinWidth(100);
-			hbox.getChildren().add(labelName);
-			HBox.setMargin(labelName, new Insets(0, 0, 0, 20));
+			hbox.getChildren().add(labelCircle);	
 			
-			Label labelDescription = new Label(item.getDescription());
-			labelDescription.setPrefHeight(HEIGHT);
-			labelDescription.setStyle("-fx-font-size: 14; -fx-text-fill: #212121; -fx-font-style: italic");
-			labelDescription.setAlignment(Pos.CENTER);
-			labelDescription.getStyleClass().add("greylabel");			
-			hbox.getChildren().add(labelDescription);
-			HBox.setMargin(labelDescription, new Insets(0, 0, 0, 10));
+			VBox vboxNameAndDescription = new VBox();
+			vboxNameAndDescription.setSpacing(2);
+			vboxNameAndDescription.setAlignment(Pos.CENTER_LEFT);
+			vboxNameAndDescription.setMinHeight(HEIGHT + 12);
+
+			Label labelName = new Label(item.getName());			
+			labelName.setStyle("-fx-font-size: 15; -fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
+			labelName.setAlignment(Pos.CENTER_LEFT);
+			labelName.getStyleClass().add("greylabel");
+			vboxNameAndDescription.getChildren().add(labelName);
+			
+			if(item.getDescription() != null && !item.getDescription().equals(""))
+			{				
+				Label labelDescription = new Label(item.getDescription());
+				labelDescription.setStyle("-fx-font-size: 14; -fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT) + "; -fx-font-style: italic");
+				labelDescription.setAlignment(Pos.CENTER_LEFT);
+				labelDescription.getStyleClass().add("greylabel");			
+				vboxNameAndDescription.getChildren().add(labelDescription);
+			}
+			
+			hbox.getChildren().add(vboxNameAndDescription);
+			HBox.setMargin(vboxNameAndDescription, new Insets(0, 0, 0, 20));
 
 			Region r = new Region();
 			hbox.getChildren().add(r);
@@ -145,7 +153,8 @@ public class SearchCell extends ListCell<Payment>
 			hbox.getChildren().add(buttonGoto);
 			HBox.setMargin(buttonGoto, new Insets(0, 0, 0, 10));
 			
-			hbox.setPadding(new Insets(10, 8, 10, 5));
+			hbox.setPadding(new Insets(8, 8, 8, 5));
+			hbox.setAlignment(Pos.CENTER_LEFT);
 			setStyle("-fx-background: transparent; -fx-border-color: #545454; -fx-border-width: 0 0 1 0");
 			setGraphic(hbox);
 			setAlignment(Pos.CENTER);
