@@ -291,7 +291,7 @@ public class Controller extends BaseController
 				
 				Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
 				dialogStage.getIcons().add(icon);
-				dialogStage.initOwner(parentStage);
+				dialogStage.initOwner(getStage());
 				alert.showAndWait();
 				alertIsShowing = false;
 			});
@@ -385,7 +385,7 @@ public class Controller extends BaseController
 				Optional<ButtonType> result = alert.showAndWait();						
 				if (result.get() == buttonTypeOne)
 				{					
-					Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_UPDATE), parentStage, icon);
+					Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_UPDATE), getStage(), icon);
 					
 					Worker.runLater(() -> {
 						try 
@@ -451,7 +451,7 @@ public class Controller extends BaseController
 	
 	public void refresh(FilterSettings newFilterSettings)
 	{
-		Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATA), parentStage, icon);
+		Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATA), getStage(), icon);
 
 		Worker.runLater(() -> {
 			try
@@ -484,21 +484,32 @@ public class Controller extends BaseController
 				}
 				catch(Exception e1)
 				{
-					Platform.runLater(()->{
-						AlertGenerator.showAlert(AlertType.WARNING,
-						Localization.getString(Strings.TITLE_WARNING), 
-						"",
-						Localization.getString(Strings.WARNING_SERVER_VERSION, Localization.getString(Strings.UNDEFINED), Localization.getString(Strings.VERSION_NAME)), 
-						icon, getStage(), null, false);				
-	
-						if(modalStage != null)
-						{
-							modalStage.close();
-						};
-						categoryHandler = new CategoryHandler(null);					
-						toggleAllTabsExceptSettings(true);
-						tabPane.getSelectionModel().select(tabSettings);
-					});
+					Logger.error(e1);
+					
+					if(e1.getMessage().contains("404"))
+					{
+						//old server
+						Platform.runLater(()->{
+							AlertGenerator.showAlert(AlertType.WARNING,
+							Localization.getString(Strings.TITLE_WARNING), 
+							"",
+							Localization.getString(Strings.WARNING_SERVER_VERSION, Localization.getString(Strings.UNDEFINED), Localization.getString(Strings.VERSION_NAME)), 
+							icon, getStage(), null, false);				
+		
+							if(modalStage != null)
+							{
+								modalStage.close();
+							};
+							categoryHandler = new CategoryHandler(null);					
+							toggleAllTabsExceptSettings(true);
+							tabPane.getSelectionModel().select(tabSettings);
+						});
+					}
+					else
+					{
+						//normal connection error (e.g. server not running)
+						showConnectionErrorAlert(ExceptionHandler.getMessageForException(e1));
+					}
 					return;
 				}
 				
