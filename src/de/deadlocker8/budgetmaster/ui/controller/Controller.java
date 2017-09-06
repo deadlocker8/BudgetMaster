@@ -383,6 +383,11 @@ public class Controller extends BaseController
 		this.lastSearchQuery = lastSearchQuery;
 	}
 
+	public PaymentController getPaymentController()
+	{
+		return paymentController;
+	}
+
 	public void checkForUpdates(boolean showNotification)
 	{
 		try
