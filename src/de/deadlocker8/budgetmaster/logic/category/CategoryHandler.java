@@ -32,6 +32,20 @@ public class CategoryHandler
 		return categories;
 	}
 	
+	public ArrayList<Category> getCategoriesWithoutNone()
+	{
+		ArrayList<Category> categoriesWithoutNone = new ArrayList<>();
+		for(Category currentCategory : categories)
+		{			
+			if(currentCategory.getID() != 1)
+			{
+				categoriesWithoutNone.add(currentCategory);
+			}
+		}
+		
+		return categoriesWithoutNone;
+	}
+	
 	public Category getCategory(int ID)
 	{
 		for(Category currentCategory : categories)

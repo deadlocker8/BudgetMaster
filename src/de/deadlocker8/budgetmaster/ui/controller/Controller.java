@@ -165,7 +165,7 @@ public class Controller extends BaseController
 		{
 			Logger.error(e);
 			Platform.runLater(() -> {
-				AlertGenerator.showAlert(AlertType.ERROR, Localization.getString(Strings.TITLE_ERROR), "", Localization.getString(Strings.ERROR_CREATE_UI), icon, parentStage, null, false);
+				AlertGenerator.showAlert(AlertType.ERROR, Localization.getString(Strings.TITLE_ERROR), "", Localization.getString(Strings.ERROR_CREATE_UI), icon, getStage(), null, false);
 			});			
 		}
 		
@@ -188,7 +188,7 @@ public class Controller extends BaseController
 			Platform.runLater(() -> {
 				toggleAllTabsExceptSettings(true);
 				tabPane.getSelectionModel().select(tabSettings);
-				AlertGenerator.showAlert(AlertType.INFORMATION, Localization.getString(Strings.TITLE_INFO), "", Localization.getString(Strings.INFO_FIRST_START), icon, parentStage, null, false);
+				AlertGenerator.showAlert(AlertType.INFORMATION, Localization.getString(Strings.TITLE_INFO), "", Localization.getString(Strings.INFO_FIRST_START), icon, getStage(), null, false);
 			});
 		}
 		else
@@ -409,7 +409,7 @@ public class Controller extends BaseController
 															Localization.getString(Strings.TITLE_ERROR),
 															"", 
 															Localization.getString(Strings.ERROR_UPDATER_DOWNLOAD_LATEST_VERSION, ex.getMessage()), 
-															icon, null, null, true);
+															icon, getStage(), null, true);
 								}							
 							});
 						}
@@ -444,7 +444,7 @@ public class Controller extends BaseController
 												Localization.getString(Strings.AUTHOR),
 												creditLines,
 												icon, 
-												parentStage, 
+												getStage(), 
 												null, 
 												false);
 	}	
@@ -469,7 +469,7 @@ public class Controller extends BaseController
 													Localization.getString(Strings.TITLE_WARNING), 
 													"",
 													Localization.getString(Strings.WARNING_SERVER_VERSION, serverVersion.getVersionName(), Localization.getString(Strings.VERSION_NAME)), 
-													icon, parentStage, null, false);				
+													icon, getStage(), null, false);				
 						
 							if(modalStage != null)
 							{
@@ -489,7 +489,7 @@ public class Controller extends BaseController
 						Localization.getString(Strings.TITLE_WARNING), 
 						"",
 						Localization.getString(Strings.WARNING_SERVER_VERSION, Localization.getString(Strings.UNDEFINED), Localization.getString(Strings.VERSION_NAME)), 
-						icon, parentStage, null, false);				
+						icon, getStage(), null, false);				
 	
 						if(modalStage != null)
 						{

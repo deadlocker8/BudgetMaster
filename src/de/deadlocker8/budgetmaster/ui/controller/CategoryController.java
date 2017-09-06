@@ -71,11 +71,9 @@ public class CategoryController implements Refreshable, Styleable
 		
 		if(controller.getCategoryHandler() != null)
 		{
-			ArrayList<Category> categories = controller.getCategoryHandler().getCategories();	
+			ArrayList<Category> categories = controller.getCategoryHandler().getCategoriesWithoutNone();	
 			if(categories != null && categories.size() > 0)
 			{				
-				//remove category NONE (not editable)
-				categories.remove(0);				
 				listView.getItems().setAll(categories);
 			}	
 		}

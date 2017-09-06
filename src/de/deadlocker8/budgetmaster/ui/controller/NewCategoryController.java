@@ -192,7 +192,7 @@ public class NewCategoryController extends BaseController implements Styleable
 			}	
 		}
 		
-		parentStage.close();
+		getStage().close();
 		categoryController.getController().refresh(controller.getFilterSettings());
 	}
 

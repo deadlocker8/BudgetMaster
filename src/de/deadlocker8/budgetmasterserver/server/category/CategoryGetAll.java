@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmasterserver.server.category;
 import static spark.Spark.halt;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import com.google.gson.Gson;
 
@@ -28,7 +29,8 @@ public class CategoryGetAll implements Route
 	{
 		try
 		{	
-			ArrayList<Category> categories = handler.getCategories();			
+			ArrayList<Category> categories = handler.getCategories();
+			Collections.sort(categories, (c1, c2) -> c1.getName().toLowerCase().compareTo(c2.getName().toLowerCase()));
 
 			return gson.toJson(categories);
 		}
