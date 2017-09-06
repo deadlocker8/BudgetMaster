@@ -243,7 +243,7 @@ public class NewPaymentController extends BaseController implements Styleable
 		}
 		else
 		{
-			comboBoxCategory.getSelectionModel().select(0);
+			comboBoxCategory.setValue(controller.getCategoryHandler().getCategory(1));
 			checkBoxRepeat.setSelected(false);
 			radioButtonPeriod.setSelected(true);
 			toggleRepeatingArea(false);			
@@ -253,12 +253,13 @@ public class NewPaymentController extends BaseController implements Styleable
 			if(DateTime.now().getDayOfMonth() > currentDate.dayOfMonth().withMaximumValue().getDayOfMonth())
 			{
 				currentDate = currentDate.dayOfMonth().withMaximumValue();				
-			}		
+			}
 			
 			LocalDate currentLocalDate = LocalDate.now().withYear(currentDate.getYear())
 			.withMonth(currentDate.getMonthOfYear())
 			.withDayOfMonth(currentDate.getDayOfMonth());
-			datePicker.setValue(currentLocalDate);			
+			datePicker.setValue(currentLocalDate);	
+			datePickerEnddate.setValue(currentLocalDate);
 		}
 		
 		datePicker.setEditable(false);
