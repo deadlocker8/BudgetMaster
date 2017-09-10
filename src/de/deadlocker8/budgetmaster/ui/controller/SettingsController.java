@@ -301,7 +301,7 @@ public class SettingsController implements Styleable
 		
 		if(controller.getSettings().isAutoUpdateCheckEnabled())
 		{
-			controller.checkForUpdates(false);
+			controller.checkForUpdates(false);			
 			refreshLabelsUpdate();
 		}
 		
@@ -569,7 +569,8 @@ public class SettingsController implements Styleable
 	
 	public void checkForUpdates()
 	{
-		controller.checkForUpdates(true);
+		controller.checkForUpdates(true);		
+		refreshLabelsUpdate();
 	}
 
 	@Override
