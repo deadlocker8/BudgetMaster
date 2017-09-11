@@ -18,6 +18,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.transform.Transform;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -35,6 +36,7 @@ public class CategoriesChart extends VBox implements ChartExportable
 	private LegendType legendType;	
 	private final double CHART_HEIGHT = 200;
 	private final double FULL_LEGEND_ITEM_HEIGHT = 40;
+	private final double DELIMITER_HEIGHT = 21;
 
 	public CategoriesChart(String titleIncomes, String titlePayments, ArrayList<CategoryInOutSum> categoryInOutSums, String currency, LegendType legendType)
 	{
@@ -176,10 +178,10 @@ public class CategoriesChart extends VBox implements ChartExportable
 		double totalOut = getTotal(categoryInOutSums, false);
 				
 		HBox hboxLegend = new HBox();
-		hboxLegend.setSpacing(10);
+		hboxLegend.setSpacing(0);
 
 		VBox vboxCircles = new VBox();
-		vboxCircles.setSpacing(10);	
+		vboxCircles.setSpacing(10);
 		VBox vboxNames = new VBox();
 		vboxNames.setSpacing(10);
 		VBox vboxIn = new VBox();
@@ -195,7 +197,8 @@ public class CategoriesChart extends VBox implements ChartExportable
 		Label labelHeaderName = new Label(Localization.getString(Strings.TITLE_CATEGORIES));
 		labelHeaderName.setStyle("-fx-font-weight: bold; -fx-underline: true;");
 		labelHeaderName.setMinHeight(20);
-		vboxNames.getChildren().add(labelHeaderName);	
+		labelHeaderName.setPadding(new Insets(0, 0, 0, 10));
+		vboxNames.getChildren().add(labelHeaderName);			
 		
 		Label labelHeaderIn = new Label(Localization.getString(Strings.TITLE_INCOMES));
 		labelHeaderIn.setStyle("-fx-font-weight: bold; -fx-underline: true;");
@@ -213,12 +216,13 @@ public class CategoriesChart extends VBox implements ChartExportable
 			labelCircle.setMinWidth(20);
 			labelCircle.setMinHeight(20);
 			labelCircle.setStyle("-fx-background-color: " + currentItem.getColor() + "; -fx-background-radius: 50%; -fx-border-width: 1; -fx-border-color: black - fx-border-radius: 50%");
-			vboxCircles.getChildren().add(labelCircle);
+			vboxCircles.getChildren().add(labelCircle);			
 
 			Label labelName = new Label(currentItem.getName());
 			labelName.setStyle("-fx-font-weight: bold;");
 			labelName.setMinHeight(20);
-			vboxNames.getChildren().add(labelName);			
+			labelName.setPadding(new Insets(0, 0, 0, 10));
+			vboxNames.getChildren().add(labelName);
 			
 			String percentageIn = totalIn != 0 ? Helpers.NUMBER_FORMAT.format(Math.abs((currentItem.getBudgetIN() / totalIn))) : "0,00";
 			Label labelInSum = new Label("+" + Helpers.getCurrencyString(currentItem.getBudgetIN(), currency) + " (" + percentageIn + "%)");
@@ -231,9 +235,15 @@ public class CategoriesChart extends VBox implements ChartExportable
 			labelOutSum.setStyle("-fx-font-weight: bold;");
 			labelOutSum.setMinHeight(20);
 			vboxOut.getChildren().add(labelOutSum);
+			
+			//add delimiters
+			vboxCircles.getChildren().add(generateNewSeparator());
+			vboxNames.getChildren().add(generateNewSeparator());
+			vboxIn.getChildren().add(generateNewSeparator());
+			vboxOut.getChildren().add(generateNewSeparator());
 		}
 		
-		hboxLegend.getChildren().add(vboxCircles);
+		hboxLegend.getChildren().add(vboxCircles);	
 		hboxLegend.getChildren().add(vboxNames);
 		HBox.setHgrow(vboxNames, Priority.ALWAYS);
 		hboxLegend.getChildren().add(vboxIn);
@@ -261,6 +271,17 @@ public class CategoriesChart extends VBox implements ChartExportable
 		HBox.setMargin(labelText, new Insets(0, 0, 0, 5));
 
 		return legendItem;
+	}
+	
+	private Label generateNewSeparator()
+	{
+		Label separator = new Label();
+		separator.setStyle("-fx-background-color: #212121; -fx-padding: 0;");
+		separator.setFont(new Font(1));
+		separator.setMinHeight(1);
+		separator.setMaxHeight(1);
+		separator.setMaxWidth(Double.MAX_VALUE);
+		return separator;
 	}
 
 	private double getTotal(ArrayList<CategoryInOutSum> categoryInOutSums, boolean useIncomes)
@@ -321,6 +342,6 @@ public class CategoriesChart extends VBox implements ChartExportable
 	@Override
 	public double getSuggestedHeight()
 	{
-		return CHART_HEIGHT + categoryInOutSums.size() * FULL_LEGEND_ITEM_HEIGHT + 50;
+		return CHART_HEIGHT + categoryInOutSums.size() * (FULL_LEGEND_ITEM_HEIGHT + DELIMITER_HEIGHT) + 50;
 	}
 }
