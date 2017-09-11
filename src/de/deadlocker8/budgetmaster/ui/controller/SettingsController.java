@@ -29,12 +29,14 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import logger.Logger;
@@ -49,6 +51,8 @@ import tools.Worker;
 public class SettingsController implements Styleable
 {
 	@FXML private AnchorPane anchorPaneMain;
+	@FXML private ScrollPane scrollPane;
+	@FXML private HBox hboxSettings;
 	@FXML private Label labelClientSecret;
 	@FXML private TextField textFieldClientSecret;
 	@FXML private TextField textFieldURL;
@@ -127,6 +131,8 @@ public class SettingsController implements Styleable
 		ToggleGroup toggleGroup = new ToggleGroup();
 		radioButtonRestActivated.setToggleGroup(toggleGroup);
 		radioButtonRestDeactivated.setToggleGroup(toggleGroup);
+		
+		hboxSettings.prefWidthProperty().bind(scrollPane.widthProperty().subtract(25));
 		
 		refreshLabelsUpdate();
 	}
@@ -577,6 +583,7 @@ public class SettingsController implements Styleable
 	public void applyStyle()
 	{
 		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
+		scrollPane.setStyle("-fx-background-color: transparent");
 		labelClientSecret.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
 		labelSecret.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
 		labelURL.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
