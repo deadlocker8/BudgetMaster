@@ -33,6 +33,7 @@ public class NewCategoryController extends BaseController implements Styleable
 	@FXML private Button buttonCancel;
 	@FXML private Button buttonSave;
 
+	@SuppressWarnings("unused")
 	private Stage parentStage;
 	private Controller controller;
 	private CategoryController categoryController;
@@ -198,7 +199,7 @@ public class NewCategoryController extends BaseController implements Styleable
 
 	public void cancel()
 	{
-		parentStage.close();
+		getStage().close();
 	}
 
 	@Override
