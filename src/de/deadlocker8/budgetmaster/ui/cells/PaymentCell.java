@@ -10,6 +10,7 @@ import de.deadlocker8.budgetmaster.logic.category.Category;
 import de.deadlocker8.budgetmaster.logic.payment.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.payment.Payment;
 import de.deadlocker8.budgetmaster.logic.payment.RepeatingPaymentEntry;
+import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmaster.ui.controller.PaymentController;
@@ -27,6 +28,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -36,7 +38,7 @@ import tools.Localization;
 
 public class PaymentCell extends ListCell<Payment>
 {
-	private final double HEIGHT = 40.0;
+	private final double HEIGHT = 30.0;
 	private PaymentController paymentController;
 
 	public PaymentCell(PaymentController paymentController)
@@ -72,21 +74,21 @@ public class PaymentCell extends ListCell<Payment>
 			labelDate.setPrefHeight(HEIGHT);
 			labelDate.setAlignment(Pos.CENTER);
 			labelDate.getStyleClass().add("greylabel");
-			labelDate.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #212121");
-			labelDate.setMinWidth(75);
+			labelDate.setStyle("-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: #212121");
+			labelDate.setMinWidth(60);
 			hbox.getChildren().add(labelDate);
 
 			Label labelRepeating = new Label();
 			if(item instanceof RepeatingPaymentEntry)
 			{				
-				labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR, 20, Color.web("#212121")));
+				labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR, 18, Color.web("#212121")));
 			}
 			else
 			{
-			    labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR, 20, Color.TRANSPARENT));
+			    labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR, 18, Color.TRANSPARENT));
 			}
 			labelRepeating.setPrefHeight(HEIGHT);
-			labelRepeating.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #212121");
+			labelRepeating.setStyle("-fx-font-size: 15; -fx-text-fill: #212121");
 			labelRepeating.setAlignment(Pos.CENTER);
 			labelRepeating.getStyleClass().add("greylabel");
 			hbox.getChildren().add(labelRepeating);
@@ -98,19 +100,34 @@ public class PaymentCell extends ListCell<Payment>
 			labelCircle.setAlignment(Pos.CENTER);
 			labelCircle.getStyleClass().add("greylabel");
 			String textColor = ConvertTo.toRGBHex(ConvertTo.getAppropriateTextColor(Color.web(category.getColor())));
-			labelCircle.setStyle("-fx-background-color: " + category.getColor() + "; -fx-background-radius: 50%; -fx-text-fill: " + textColor + "; -fx-font-weight: bold; -fx-font-size: 20;");
+			labelCircle.setStyle("-fx-background-color: " + category.getColor() + "; -fx-background-radius: 50%; -fx-text-fill: " + textColor + "; -fx-font-weight: bold; -fx-font-size: 18;");
 			Tooltip tooltip = new Tooltip(category.getName());
 			tooltip.setStyle("-fx-font-size: 14");
 			labelCircle.setTooltip(tooltip);
-			hbox.getChildren().add(labelCircle);			
+			hbox.getChildren().add(labelCircle);	
+			
+			VBox vboxNameAndDescription = new VBox();
+			vboxNameAndDescription.setSpacing(2);
+			vboxNameAndDescription.setAlignment(Pos.CENTER_LEFT);
+			vboxNameAndDescription.setMinHeight(HEIGHT + 12);
 
-			Label labelName = new Label(item.getName());
-			labelName.setPrefHeight(HEIGHT);
-			labelName.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #212121");
-			labelName.setAlignment(Pos.CENTER);
-			labelName.getStyleClass().add("greylabel");			
-			hbox.getChildren().add(labelName);
-			HBox.setMargin(labelName, new Insets(0, 0, 0, 20));
+			Label labelName = new Label(item.getName());			
+			labelName.setStyle("-fx-font-size: 15; -fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
+			labelName.setAlignment(Pos.CENTER_LEFT);
+			labelName.getStyleClass().add("greylabel");
+			vboxNameAndDescription.getChildren().add(labelName);
+			
+			if(item.getDescription() != null && !item.getDescription().equals(""))
+			{				
+				Label labelDescription = new Label(item.getDescription());
+				labelDescription.setStyle("-fx-font-size: 14; -fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT) + "; -fx-font-style: italic");
+				labelDescription.setAlignment(Pos.CENTER_LEFT);
+				labelDescription.getStyleClass().add("greylabel");			
+				vboxNameAndDescription.getChildren().add(labelDescription);
+			}
+			
+			hbox.getChildren().add(vboxNameAndDescription);
+			HBox.setMargin(vboxNameAndDescription, new Insets(0, 0, 0, 20));
 
 			Region r = new Region();
 			hbox.getChildren().add(r);
@@ -118,7 +135,7 @@ public class PaymentCell extends ListCell<Payment>
 
 			Label labelBudget = new Label(Helpers.getCurrencyString(item.getAmount(), paymentController.getController().getSettings().getCurrency()));
 			labelBudget.setPrefHeight(HEIGHT);
-			labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #247A2D");
+			labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: #247A2D");
 			labelBudget.setAlignment(Pos.CENTER);
 			labelBudget.getStyleClass().add("greylabel");
 			labelBudget.setMinWidth(90);
@@ -132,9 +149,9 @@ public class PaymentCell extends ListCell<Payment>
 			else
 			{
 				labelBudget.setText(labelBudget.getText());
-				labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #CC0000");
+				labelBudget.setStyle("-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: #CC0000");
 			}
-
+			
 			Button buttonDelete = new Button();			
 			buttonDelete.setGraphic(Helpers.getFontIcon(FontIconType.TRASH, 16, Color.web("#212121")));
 			buttonDelete.setPrefHeight(HEIGHT);
@@ -202,7 +219,9 @@ public class PaymentCell extends ListCell<Payment>
 	            	paymentController.getController().setSelectedPayment(null);	            	
 	            });
 			}
-				
+			
+			hbox.setPadding(new Insets(8, 8, 8, 5));
+			hbox.setAlignment(Pos.CENTER_LEFT);
 			setStyle("-fx-background: transparent; -fx-border-color: #545454; -fx-border-width: 0 0 1 0");
 			setGraphic(hbox);
 			setAlignment(Pos.CENTER);
