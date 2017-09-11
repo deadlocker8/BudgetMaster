@@ -172,7 +172,7 @@ public class Controller extends BaseController
 			});			
 		}
 		
-		buttonLeft.setGraphic(Helpers.getFontIcon(FontIconType.CHEVRON_LEFT, 20, Colors.TEXT));		
+		buttonLeft.setGraphic(Helpers.getFontIcon(FontIconType.CHEVRON_LEFT, 20, Colors.TEXT));
 		buttonRight.setGraphic(Helpers.getFontIcon(FontIconType.CHEVRON_RIGHT, 20, Colors.TEXT));		
 		buttonToday.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR_ALT, 20, Colors.TEXT));		
 		buttonAbout.setGraphic(Helpers.getFontIcon(FontIconType.INFO, 20, Colors.TEXT));
@@ -181,10 +181,18 @@ public class Controller extends BaseController
 		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_MAIN));
 		labelMonth.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
 		labelNotification.setStyle("-fx-text-fill: #FFFFFF; -fx-font-size: 16; -fx-font-weight: bold; -fx-background-color: transparent;");
+		
 		buttonLeft.setStyle("-fx-background-color: transparent;");
+		buttonLeft.getStyleClass().add("button-hoverable");
+		
 		buttonRight.setStyle("-fx-background-color: transparent;");
+		buttonRight.getStyleClass().add("button-hoverable");
+		
 		buttonToday.setStyle("-fx-background-color: transparent;");
+		buttonToday.getStyleClass().add("button-hoverable");
+		
 		buttonAbout.setStyle("-fx-background-color: transparent;");
+		buttonAbout.getStyleClass().add("button-hoverable");
 		
 		if(!settings.isComplete())
 		{			

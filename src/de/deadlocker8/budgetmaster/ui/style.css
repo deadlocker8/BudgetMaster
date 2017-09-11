@@ -87,3 +87,8 @@
   .color-picker .arrow-button{
   -fx-opacity: 0;
   }
+  
+  .button-hoverable:hover{
+  -fx-opacity: 0.6;
+  -fx-cursor: hand;
+}
