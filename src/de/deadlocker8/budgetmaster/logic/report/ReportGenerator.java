@@ -39,6 +39,7 @@ public class ReportGenerator
 	private String currency;
 	private DateTime date;
 	private Budget budget;
+	private final FontFamily FONT_FAMILY = FontFamily.HELVETICA;
 
 	public ReportGenerator(ArrayList<ReportItem> reportItems, ArrayList<CategoryBudget> categoryBudgets, ReportPreferences reportPreferences, File savePath, String currency, DateTime date, Budget budget)
 	{	
@@ -53,7 +54,7 @@ public class ReportGenerator
 
 	private Chapter generateHeader()
 	{
-		Font chapterFont = new Font(FontFamily.HELVETICA, 16, Font.BOLDITALIC);		
+		Font chapterFont = new Font(FONT_FAMILY, 16, Font.BOLDITALIC);		
 		Chunk chunk = new Chunk(Localization.getString(Strings.REPORT_HEADLINE, date.toString("MMMM yyyy")), chapterFont);
 		Chapter chapter = new Chapter(new Paragraph(chunk), 1);
 		chapter.setNumberDepth(0);
@@ -77,7 +78,7 @@ public class ReportGenerator
 			
 			PdfPTable table = new PdfPTable(proportions);
 			table.setWidthPercentage(tableWidth);
-			Font font = new Font(FontFamily.HELVETICA, 8, Font.NORMAL, GrayColor.BLACK);
+			Font font = new Font(FONT_FAMILY, 8, Font.NORMAL, GrayColor.BLACK);
 
 			for(ColumnType column : reportPreferences.getColumnOrder().getColumns())
 			{
@@ -152,17 +153,17 @@ public class ReportGenerator
 		writer.setPageEvent(new HeaderFooterPageEvent());
 		document.open();
 		document.setMargins(50, 45, 50, 70);
-		Font headerFont = new Font(FontFamily.HELVETICA, 14, Font.BOLD);
-		Font smallHeaderFont = new Font(FontFamily.HELVETICA, 12, Font.BOLD);
+		Font headerFont = new Font(FONT_FAMILY, 14, Font.BOLD);
+		Font smallHeaderFont = new Font(FONT_FAMILY, 12, Font.BOLD);
 
 		document.add(generateHeader());
 		document.add(Chunk.NEWLINE);
 		
 		if(reportPreferences.isIncludeBudget())
 		{
-			Font fontGreen = new Font(FontFamily.HELVETICA, 12, Font.NORMAL, new BaseColor(36, 122, 45));
-			Font fontRed = new Font(FontFamily.HELVETICA, 12, Font.NORMAL, BaseColor.RED);
-			Font fontBlack = new Font(FontFamily.HELVETICA, 12, Font.BOLD);
+			Font fontGreen = new Font(FONT_FAMILY, 12, Font.NORMAL, new BaseColor(36, 122, 45));
+			Font fontRed = new Font(FONT_FAMILY, 12, Font.NORMAL, BaseColor.RED);
+			Font fontBlack = new Font(FONT_FAMILY, 12, Font.BOLD);
 			document.add(new Paragraph("Budget", headerFont));
 			document.add(Chunk.NEWLINE);
 			document.add(new Paragraph("Einnahmen: " + Helpers.getCurrencyString(budget.getIncomeSum(), currency), fontGreen));
@@ -224,7 +225,7 @@ public class ReportGenerator
 	{
 		PdfPTable table = new PdfPTable(2);
 		table.setWidthPercentage(100);
-		Font font = new Font(FontFamily.HELVETICA, 8, Font.NORMAL, GrayColor.BLACK);
+		Font font = new Font(FONT_FAMILY, 8, Font.NORMAL, GrayColor.BLACK);
 		
 		//header cells
 		PdfPCell cellHeaderCategory = new PdfPCell(new Phrase(Localization.getString(Strings.TITLE_CATEGORY), font));

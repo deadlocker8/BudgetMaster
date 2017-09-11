@@ -77,7 +77,8 @@ public class ReportController implements Refreshable, Styleable
 
 	private Controller controller;
 	private ColumnFilter columnFilter;
-	private String initialReportPath;
+	private String initialReportFileName;
+	private ReportPreferences reportPreferences;
 	
 	private TableColumn<ReportItem, Integer> columnPosition;
 	private TableColumn<ReportItem, String> columnDate;
@@ -184,7 +185,7 @@ public class ReportController implements Refreshable, Styleable
 		Object loadedObject = FileHelper.loadObjectFromJSON("reportPreferences", new ReportPreferences());
 		if(loadedObject != null)
 		{
-			ReportPreferences reportPreferences = (ReportPreferences)loadedObject;
+			reportPreferences = (ReportPreferences)loadedObject;
 			checkBoxIncludeBudget.setSelected(reportPreferences.isIncludeBudget());
 			checkBoxSplitTable.setSelected(reportPreferences.isSplitTable());
 			checkBoxIncludeCategoryBudgets.setSelected(reportPreferences.isIncludeCategoryBudgets());
@@ -543,10 +544,11 @@ public class ReportController implements Refreshable, Styleable
 									checkBoxIncludeBudget.isSelected(),
 									checkBoxSplitTable.isSelected(),
 									checkBoxIncludeCategoryBudgets.isSelected(),
-									reportSorting);
+									reportSorting, 
+									reportPreferences.getReportFolderPath());
 	}
 	
-	private void saveReportPreferences(ReportPreferences reportPreferences) 
+	private void saveReportPreferences() 
 	{
 		try
 		{
@@ -559,19 +561,27 @@ public class ReportController implements Refreshable, Styleable
 	}
 
 	public void generate()
-	{
-		ReportPreferences reportPreferences = getReportPreferences();		
-		saveReportPreferences(reportPreferences);
-		
+	{		
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle(Localization.getString(Strings.TITLE_REPORT_SAVE));
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf");
-		fileChooser.setInitialFileName(initialReportPath);		
-		fileChooser.getExtensionFilters().add(extFilter);
-		File file = fileChooser.showSaveDialog(controller.getParentStage());		
+		fileChooser.setInitialFileName(initialReportFileName);
+		fileChooser.getExtensionFilters().add(extFilter);		
+		
+		String initialReportFolder = reportPreferences.getReportFolderPath();
+		if(initialReportFolder != null)
+		{
+			fileChooser.setInitialDirectory(new File(initialReportFolder));
+		}			
+		
+		File file = fileChooser.showSaveDialog(controller.getParentStage());	
 		if(file != null)
 		{				
 			Budget budget = new Budget(controller.getPaymentHandler().getPayments());		
+			
+			reportPreferences = getReportPreferences();
+			reportPreferences.setReportFolderPath(file.getParentFile().getAbsolutePath());
+			saveReportPreferences();
 			
 			ReportGenerator reportGenerator = new ReportGenerator(new ArrayList<ReportItem>(tableView.getItems()),
 																controller.getCategoryBudgets(),
@@ -692,7 +702,8 @@ public class ReportController implements Refreshable, Styleable
 			labelFilterActive.setVisible(true);
 		}
 		
-		saveReportPreferences(getReportPreferences());
+		reportPreferences = getReportPreferences();
+		saveReportPreferences();
 		refreshTableView();
 		applyReportPreferences();
 		tableView.refresh();
@@ -701,7 +712,7 @@ public class ReportController implements Refreshable, Styleable
 		String currentMonth = currentDate.toString("MM");
 	    String currentYear = currentDate.toString("YYYY");
 	   
-	    initialReportPath = Localization.getString(Strings.REPORT_INITIAL_FILENAME, currentYear, currentMonth);
+	    initialReportFileName = Localization.getString(Strings.REPORT_INITIAL_FILENAME, currentYear, currentMonth);
 	}
 
 	@Override

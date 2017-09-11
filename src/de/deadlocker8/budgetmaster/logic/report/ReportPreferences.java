@@ -2,24 +2,32 @@ package de.deadlocker8.budgetmaster.logic.report;
 
 public class ReportPreferences
 {
+	private final int VERSION = 2;
 	private ColumnOrder columnOrder;
 	private boolean includeBudget;
 	private boolean splitTable;
 	private boolean includeCategoryBudgets;
 	private ReportSorting reportSorting;
+	private String reportFolderPath;
 	
 	public ReportPreferences()
 	{
 	
 	}
 
-	public ReportPreferences(ColumnOrder columnOrder, boolean includeBudget, boolean splitTable, boolean includeCategoryBudgets, ReportSorting reportSorting)
-	{		
+	public ReportPreferences(ColumnOrder columnOrder, boolean includeBudget, boolean splitTable, boolean includeCategoryBudgets, ReportSorting reportSorting, String reportFolderPath)
+	{
 		this.columnOrder = columnOrder;
 		this.includeBudget = includeBudget;
 		this.splitTable = splitTable;
 		this.includeCategoryBudgets = includeCategoryBudgets;
 		this.reportSorting = reportSorting;
+		this.reportFolderPath = reportFolderPath;
+	}
+	
+	public int getVERSION()
+	{
+		return VERSION;
 	}
 
 	public ColumnOrder getColumnOrder()
@@ -71,10 +79,20 @@ public class ReportPreferences
 	{
 		this.reportSorting = reportSorting;
 	}
+	
+	public String getReportFolderPath()
+	{
+		return reportFolderPath;
+	}
+
+	public void setReportFolderPath(String reportFolderPath)
+	{
+		this.reportFolderPath = reportFolderPath;
+	}
 
 	@Override
 	public String toString()
 	{
-		return "ReportPreferences [columnOrder=" + columnOrder + ", includeBudget=" + includeBudget + ", splitTable=" + splitTable + ", includeCategoryBudgets=" + includeCategoryBudgets + ", reportSorting=" + reportSorting + "]";
+		return "ReportPreferences [VERSION=" + VERSION + ", columnOrder=" + columnOrder + ", includeBudget=" + includeBudget + ", splitTable=" + splitTable + ", includeCategoryBudgets=" + includeCategoryBudgets + ", reportSorting=" + reportSorting + ", reportFolderPath=" + reportFolderPath + "]";
 	}
 }
