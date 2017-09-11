@@ -144,8 +144,8 @@ public class FilterController extends BaseController implements Styleable
 
 	public void reset()
 	{
-		filterSetttings = new FilterSettings();
-		preselect();
+		filterSetttings = new FilterSettings();	
+		getStage().close();
 		controller.setFilterSettings(filterSetttings);
 		controller.refresh(filterSetttings);
 	}
