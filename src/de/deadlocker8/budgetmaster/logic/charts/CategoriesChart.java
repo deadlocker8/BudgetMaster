@@ -220,13 +220,13 @@ public class CategoriesChart extends VBox implements ChartExportable
 			labelName.setMinHeight(20);
 			vboxNames.getChildren().add(labelName);			
 			
-			String percentageIn = totalIn != 0 ? Helpers.NUMBER_FORMAT.format((currentItem.getBudgetIN() / totalIn)) : "0,00";
+			String percentageIn = totalIn != 0 ? Helpers.NUMBER_FORMAT.format(Math.abs((currentItem.getBudgetIN() / totalIn))) : "0,00";
 			Label labelInSum = new Label("+" + Helpers.getCurrencyString(currentItem.getBudgetIN(), currency) + " (" + percentageIn + "%)");
 			labelInSum.setStyle("-fx-font-weight: bold;");
 			labelInSum.setMinHeight(20);
 			vboxIn.getChildren().add(labelInSum);
 			
-			String percentageOut = totalOut != 0 ? Helpers.NUMBER_FORMAT.format((currentItem.getBudgetOUT() / totalOut)) : "0,00";
+			String percentageOut = totalOut != 0 ? Helpers.NUMBER_FORMAT.format(Math.abs((currentItem.getBudgetOUT() / totalOut))) : "0,00";
 			Label labelOutSum = new Label(Helpers.getCurrencyString(currentItem.getBudgetOUT(), currency) + " (" + percentageOut + "%)");
 			labelOutSum.setStyle("-fx-font-weight: bold;");
 			labelOutSum.setMinHeight(20);
