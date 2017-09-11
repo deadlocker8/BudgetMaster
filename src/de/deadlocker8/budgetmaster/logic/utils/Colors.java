@@ -14,7 +14,7 @@ public class Colors
     public static final Color BACKGROUND_BUTTON_RED = Color.web("#FF5047");
     public static final Color BACKGROUND_NOTIFICATION = Color.web("#323232");
     public static final Color BACKGROUND_REPORT_TABLE_HEADER_DISABLED = Color.SALMON;
-    public static final Color BACKGROUND_CHART_LEGEND = Color.web("#EEEEEE");
+    public static final Color BACKGROUND_CHART_LEGEND = Color.web("#DDDDDD");
 
     // CATEGORIES
     public static final Color CATEGORIES_LIGHT_GREY = Color.web("#EEEEEE");
@@ -32,5 +32,4 @@ public class Colors
     public static final Color CATEGORIES_LIGHT_BLUE = Color.rgb(90,200,250);
     public static final Color CATEGORIES_LIGHT_GREEN = Color.rgb(76,217,100);
     public static final Color CATEGORIES_DARK_GREEN = Color.rgb(46,124,43);
-
 }
