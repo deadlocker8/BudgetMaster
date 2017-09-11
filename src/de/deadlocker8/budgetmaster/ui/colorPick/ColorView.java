@@ -145,8 +145,8 @@ public class ColorView extends GridPane
 		rectangle.getStyleClass().add("color-view-item");
 
 		// dotted border
-		if(color == startColor)
-		{			
+		if(ConvertTo.toRGBHex(color).equals(ConvertTo.toRGBHex(startColor)))
+		{
 			lastSelectedNode = rectangle;
 			rectangle.getStrokeDashArray().add(3.0);
 		}
