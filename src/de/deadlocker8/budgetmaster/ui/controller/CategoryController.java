@@ -26,7 +26,7 @@ import logger.Logger;
 import tools.ConvertTo;
 import tools.Localization;
 
-public class CategoryController implements Refreshable, Styleable
+public class CategoryController extends BaseController implements Refreshable, Styleable
 {
 	@FXML private AnchorPane anchorPaneMain;
 	@FXML private Button buttonCategory;
@@ -86,7 +86,7 @@ public class CategoryController implements Refreshable, Styleable
 
 	public void newCategory(boolean edit, Category category)
 	{		
-		new NewCategoryController(controller.getParentStage(), controller, this, edit, category);		
+		new NewCategoryController(controller.getStage(), controller, this, edit, category);		
 	}
 	
 	public void deleteCategory(int ID)

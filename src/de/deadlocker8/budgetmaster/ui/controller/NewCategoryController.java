@@ -59,7 +59,7 @@ public class NewCategoryController extends BaseController implements Styleable
 	@Override
 	public void initStage(Stage stage)
 	{
-		stage.initOwner(controller.getParentStage());
+		stage.initOwner(parentStage);
 		stage.initModality(Modality.APPLICATION_MODAL);			
 		
 		if(edit)
@@ -144,7 +144,7 @@ public class NewCategoryController extends BaseController implements Styleable
                         	        "",
                         	        Localization.getString(Strings.WARNING_EMPTY_CATEGORY_NAME),
                         	        controller.getIcon(), 
-                        	        controller.getParentStage(), 
+                        	        controller.getStage(), 
                         	        null, 
                         	        false);
 			return;
@@ -157,7 +157,7 @@ public class NewCategoryController extends BaseController implements Styleable
 		                            "", 
 		                            Localization.getString(Strings.WARNING_NAME_CHARACTER_LIMIT_REACHED_45), 
 		                            controller.getIcon(), 
-		                            controller.getParentStage(), 
+		                            controller.getStage(), 
 		                            null, 
 		                            false);
 			return;

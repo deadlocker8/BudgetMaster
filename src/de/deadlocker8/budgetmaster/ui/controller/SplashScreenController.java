@@ -195,7 +195,7 @@ public class SplashScreenController extends BaseController implements Styleable
 	
 	private void openBudgetMaster()
 	{
-		new Controller(parentStage, settings);
+		new Controller(settings);
 	}
 
 	@Override

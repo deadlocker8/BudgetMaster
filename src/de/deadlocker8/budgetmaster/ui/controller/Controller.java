@@ -68,7 +68,6 @@ public class Controller extends BaseController
 	private ReportController reportController;
 	private SettingsController settingsController;
 
-	private Stage parentStage;
 	private Image icon = new Image("de/deadlocker8/budgetmaster/resources/icon.png");	
 	private Settings settings;
 	private DateTime currentDate;
@@ -83,9 +82,8 @@ public class Controller extends BaseController
 	private boolean alertIsShowing = false;
 	private static final String DATE_FORMAT = "MMMM yyyy";
 	
-	public Controller(Stage parentStage, Settings settings)
+	public Controller(Settings settings)
 	{
-		this.parentStage = parentStage;
 		this.settings = settings;	
 		load("/de/deadlocker8/budgetmaster/ui/fxml/GUI.fxml", Localization.getBundle());
 		getStage().show();
@@ -206,11 +204,6 @@ public class Controller extends BaseController
 		{
 			refresh(filterSettings);
 		}
-	}
-
-	public Stage getParentStage()
-	{
-		return parentStage;
 	}
 
 	public Image getIcon()

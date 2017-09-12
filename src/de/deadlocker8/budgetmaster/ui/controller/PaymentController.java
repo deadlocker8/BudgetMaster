@@ -95,7 +95,7 @@ public class PaymentController implements Refreshable, Styleable
 
 	public void payment(boolean isPayment, boolean edit, Payment payment)
 	{		
-		new NewPaymentController(controller.getParentStage(), controller, this, isPayment, edit, payment);		
+		new NewPaymentController(controller.getStage(), controller, this, isPayment, edit, payment);		
 	}
 
 	private void refreshListView(Payment selectedPayment)
@@ -173,12 +173,12 @@ public class PaymentController implements Refreshable, Styleable
 	
 	public void filter()
 	{			
-		new FilterController(controller.getParentStage(), controller, controller.getFilterSettings());	
+		new FilterController(controller.getStage(), controller, controller.getFilterSettings());	
 	}
 	
 	public void search()
 	{
-		new SearchController(controller.getParentStage(), controller);
+		new SearchController(controller.getStage(), controller);
 	}
 
 	public Controller getController()
