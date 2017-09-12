@@ -210,8 +210,10 @@ public class CategoriesChart extends VBox implements ChartExportable
 		labelHeaderOut.setMinHeight(20);
 		vboxOut.getChildren().add(labelHeaderOut);		
 		
-		for(CategoryInOutSum currentItem : categoryInOutSums)
-		{	
+		for(int i = 0; i < categoryInOutSums.size(); i++)
+		{
+			CategoryInOutSum currentItem = categoryInOutSums.get(i);
+			
 			Label labelCircle = new Label();
 			labelCircle.setMinWidth(20);
 			labelCircle.setMinHeight(20);
@@ -235,12 +237,15 @@ public class CategoriesChart extends VBox implements ChartExportable
 			labelOutSum.setStyle("-fx-font-weight: bold;");
 			labelOutSum.setMinHeight(20);
 			vboxOut.getChildren().add(labelOutSum);
-			
-			//add delimiters
-			vboxCircles.getChildren().add(generateNewSeparator());
-			vboxNames.getChildren().add(generateNewSeparator());
-			vboxIn.getChildren().add(generateNewSeparator());
-			vboxOut.getChildren().add(generateNewSeparator());
+						
+			if(i < categoryInOutSums.size()-1)
+			{
+				//add delimiters
+				vboxCircles.getChildren().add(generateNewSeparator());
+				vboxNames.getChildren().add(generateNewSeparator());
+				vboxIn.getChildren().add(generateNewSeparator());
+				vboxOut.getChildren().add(generateNewSeparator());
+			}
 		}
 		
 		hboxLegend.getChildren().add(vboxCircles);	
