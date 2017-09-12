@@ -19,10 +19,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
@@ -63,7 +66,7 @@ public class ExportChartController extends BaseController implements Styleable
 		stage.initOwner(parentStage);
 		stage.initModality(Modality.APPLICATION_MODAL);
 		stage.setTitle(Localization.getString(Strings.TITLE_CHART_EXPORT));		
-		stage.getIcons().add(controller.getControlle().getIcon());
+		stage.getIcons().add(controller.getController().getIcon());
 		stage.setResizable(false);
 	}
 	
@@ -142,7 +145,7 @@ public class ExportChartController extends BaseController implements Styleable
 			                         Localization.getString(Strings.TITLE_WARNING), 
 			                         "", 
 			                         Localization.getString(Strings.WARNING_EMPTY_WIDTH_IN_PIXELS), 
-			                         controller.getControlle().getIcon(), 
+			                         controller.getController().getIcon(), 
 			                         getStage(), 
 			                         null, 
 			                         false);
@@ -160,7 +163,7 @@ public class ExportChartController extends BaseController implements Styleable
 			                        Localization.getString(Strings.TITLE_WARNING), 
 			                        "", 
 			                        Localization.getString(Strings.WARNING_INTEGER_WIDTH_IN_PIXELS), 
-			                        controller.getControlle().getIcon(), 
+			                        controller.getController().getIcon(), 
 			                        getStage(), 
 			                        null, 
 			                        false);
@@ -174,7 +177,7 @@ public class ExportChartController extends BaseController implements Styleable
 			                        Localization.getString(Strings.TITLE_WARNING), 
 			                        "", 
 			                        Localization.getString(Strings.WARNING_EMPTY_HEIGHT_IN_PIXELS), 
-			                        controller.getControlle().getIcon(), 
+			                        controller.getController().getIcon(), 
 			                        getStage(), 
 			                        null, 
 			                        false);
@@ -192,7 +195,7 @@ public class ExportChartController extends BaseController implements Styleable
 			                        Localization.getString(Strings.TITLE_WARNING), 
 			                        "", 
 			                        Localization.getString(Strings.WARNING_INTEGER_HEIGHT_IN_PIXELS),
-			                        controller.getControlle().getIcon(), 
+			                        controller.getController().getIcon(), 
 			                        getStage(), 
 			                        null, 
 			                        false);
@@ -205,7 +208,7 @@ public class ExportChartController extends BaseController implements Styleable
 			                        Localization.getString(Strings.TITLE_WARNING), 
 			                        "", 
 			                        Localization.getString(Strings.WARNING_EMPTY_SAVEPATH_CHART), 
-			                        controller.getControlle().getIcon(), 
+			                        controller.getController().getIcon(), 
 			                        getStage(),
 			                        null, 
 			                        false);
@@ -217,21 +220,27 @@ public class ExportChartController extends BaseController implements Styleable
 		try
 		{
 			ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", savePath);
-			controller.getControlle().showNotification(Localization.getString(Strings.NOTIFICATION_CHART_EXPORT));	
-			
-			getStage().close();			
 			
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle(Localization.getString(Strings.INFO_TITLE_CHART_EXPORT));
+			alert.initOwner(controller.getController().getStage());
 			alert.setHeaderText("");
 			alert.setContentText(Localization.getString(Strings.INFO_TEXT_CHART_EXPORT));			
 			Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
-			dialogStage.getIcons().add(controller.getControlle().getIcon());						
+			dialogStage.getIcons().add(controller.getController().getIcon());						
 			
 			ButtonType buttonTypeOne = new ButtonType(Localization.getString(Strings.INFO_TEXT_CHART_EXPORT_OPEN_FOLDER));
 			ButtonType buttonTypeTwo = new ButtonType(Localization.getString(Strings.INFO_TEXT_CHART_EXPORT_OPEN_CHART));
 			ButtonType buttonTypeThree = new ButtonType(Localization.getString(Strings.OK));						
 			alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeThree);
+			
+			DialogPane dialogPane = alert.getDialogPane();
+			dialogPane.getButtonTypes().stream().map(dialogPane::lookupButton).forEach(button -> button.addEventHandler(KeyEvent.KEY_PRESSED, (event) -> {
+				if(KeyCode.ENTER.equals(event.getCode()) && event.getTarget() instanceof Button)
+				{
+					((Button)event.getTarget()).fire();
+				}
+			}));
 			
 			Optional<ButtonType> result = alert.showAndWait();						
 			if (result.get() == buttonTypeOne)
@@ -247,7 +256,7 @@ public class ExportChartController extends BaseController implements Styleable
 					                        Localization.getString(Strings.TITLE_ERROR), 
                                             "",
                                             Localization.getString(Strings.ERROR_OPEN_FOLDER, e1.getMessage()),
-                                            controller.getControlle().getIcon(), 
+                                            controller.getController().getIcon(), 
                                             getStage(), 
                                             null, 
                                             false);
@@ -266,7 +275,7 @@ public class ExportChartController extends BaseController implements Styleable
                                             Localization.getString(Strings.TITLE_ERROR), 
                                             "", 
                                             Localization.getString(Strings.ERROR_OPEN_CHART, e1.getMessage()), 
-                                            controller.getControlle().getIcon(), 
+                                            controller.getController().getIcon(), 
                                             getStage(), 
                                             null, 
                                             false);
@@ -284,13 +293,14 @@ public class ExportChartController extends BaseController implements Styleable
 			                         Localization.getString(Strings.TITLE_ERROR), 
 			                         "",
 			                         Localization.getString(Strings.ERROR_CHART_EXPORT, e.getMessage()),
-			                         controller.getControlle().getIcon(), 
+			                         controller.getController().getIcon(), 
 			                         getStage(), 
 			                         null, 
 			                         false);
 		}
 		
 		getStage().close();	
+		controller.getController().showNotification(Localization.getString(Strings.NOTIFICATION_CHART_EXPORT));	
 		controller.setLastExportPath(savePath);
 	}
 	

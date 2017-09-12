@@ -23,7 +23,10 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.Tooltip;
@@ -177,6 +180,14 @@ public class PaymentCell extends ListCell<Payment>
 					ButtonType buttonTypeCancel = new ButtonType(Localization.getString(Strings.CANCEL), ButtonData.CANCEL_CLOSE);
 
 					alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
+					
+					DialogPane dialogPane = alert.getDialogPane();
+					dialogPane.getButtonTypes().stream().map(dialogPane::lookupButton).forEach(button -> button.addEventHandler(KeyEvent.KEY_PRESSED, (e) -> {
+						if(KeyCode.ENTER.equals(e.getCode()) && e.getTarget() instanceof Button)
+						{
+							((Button)e.getTarget()).fire();
+						}
+					}));
 
 					Optional<ButtonType> result = alert.showAndWait();
 					if(result.get() == buttonTypeOne)

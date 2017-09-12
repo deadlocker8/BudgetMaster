@@ -229,7 +229,7 @@ public class ChartController implements Refreshable, Styleable
 		}
 	}
 
-	public Controller getControlle()
+	public Controller getController()
 	{
 		return controller;
 	}

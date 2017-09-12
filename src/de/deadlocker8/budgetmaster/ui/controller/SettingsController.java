@@ -27,6 +27,7 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
@@ -35,6 +36,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
@@ -325,6 +328,14 @@ public class SettingsController implements Styleable
 			ButtonType buttonTypeTwo = new ButtonType(Localization.getString(Strings.INFO_TEXT_LANGUAGE_CHANGED_RESTART_LATER));							
 			alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
 			
+			DialogPane dialogPane = alert.getDialogPane();
+			dialogPane.getButtonTypes().stream().map(dialogPane::lookupButton).forEach(button -> button.addEventHandler(KeyEvent.KEY_PRESSED, (event) -> {
+				if(KeyCode.ENTER.equals(event.getCode()) && event.getTarget() instanceof Button)
+				{
+					((Button)event.getTarget()).fire();
+				}
+			}));
+			
 			Optional<ButtonType> result = alert.showAndWait();						
 			if (result.get() == buttonTypeOne)
 			{				
@@ -488,8 +499,16 @@ public class SettingsController implements Styleable
 		ButtonType buttonTypeDelete = new ButtonType(Localization.getString(Strings.INFO_TEXT_DATABASE_IMPORT_DIALOG_DELETE));
 		ButtonType buttonTypeAppend = new ButtonType(Localization.getString(Strings.INFO_TEXT_DATABASE_IMPORT_DIALOG_APPEND));
 		ButtonType buttonTypeCancel = new ButtonType(Localization.getString(Strings.CANCEL), ButtonData.CANCEL_CLOSE);
-
 		alert.getButtonTypes().setAll(buttonTypeDelete, buttonTypeAppend, buttonTypeCancel);
+		
+		DialogPane dialogPane = alert.getDialogPane();
+		dialogPane.getButtonTypes().stream().map(dialogPane::lookupButton).forEach(button -> button.addEventHandler(KeyEvent.KEY_PRESSED, (event) -> {
+			if(KeyCode.ENTER.equals(event.getCode()) && event.getTarget() instanceof Button)
+			{
+				((Button)event.getTarget()).fire();
+			}
+		}));
+		
 		Optional<ButtonType> result = alert.showAndWait();
 		if(result.get() == buttonTypeDelete)
 		{

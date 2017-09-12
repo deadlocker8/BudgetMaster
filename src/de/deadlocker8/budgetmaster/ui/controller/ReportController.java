@@ -47,11 +47,14 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.SortType;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -609,6 +612,7 @@ public class ReportController implements Refreshable, Styleable
 						Alert alert = new Alert(AlertType.INFORMATION);
 						alert.setTitle(Localization.getString(Strings.INFO_TITLE_REPORT_SAVE));
 						alert.setHeaderText("");
+						alert.initOwner(controller.getStage());
 						alert.setContentText(Localization.getString(Strings.INFO_TEXT_REPORT_SAVE));			
 						Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
 						dialogStage.getIcons().add(controller.getIcon());						
@@ -617,6 +621,14 @@ public class ReportController implements Refreshable, Styleable
 						ButtonType buttonTypeTwo = new ButtonType(Localization.getString(Strings.INFO_TEXT_REPORT_SAVE_OPEN_REPORT));
 						ButtonType buttonTypeThree = new ButtonType(Localization.getString(Strings.OK));						
 						alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeThree);
+						
+						DialogPane dialogPane = alert.getDialogPane();
+						dialogPane.getButtonTypes().stream().map(dialogPane::lookupButton).forEach(button -> button.addEventHandler(KeyEvent.KEY_PRESSED, (event) -> {
+							if(KeyCode.ENTER.equals(event.getCode()) && event.getTarget() instanceof Button)
+							{
+								((Button)event.getTarget()).fire();
+							}
+						}));
 						
 						Optional<ButtonType> result = alert.showAndWait();						
 						if (result.get() == buttonTypeOne)
