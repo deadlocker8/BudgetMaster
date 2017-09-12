@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="anchorPaneMain" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -24,11 +23,7 @@
                      </HBox.margin>
                   </Region>
                   <Button fx:id="buttonLeft" mnemonicParsing="false" onAction="#previousMonth" />
-                  <Label fx:id="labelMonth" alignment="CENTER" prefHeight="36.0" prefWidth="280.0" HBox.hgrow="ALWAYS">
-                     <font>
-                        <Font name="System Bold" size="24.0" />
-                     </font>
-                  </Label>
+                  <Button fx:id="buttonDate" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#openDatePicker" prefHeight="25.0" prefWidth="280.0" textAlignment="CENTER" HBox.hgrow="ALWAYS" />
                   <Button fx:id="buttonRight" mnemonicParsing="false" onAction="#nextMonth" />
                   <Button fx:id="buttonToday" mnemonicParsing="false" onAction="#today" />
                   <Region prefHeight="0.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />

@@ -33,7 +33,6 @@ public class NewCategoryController extends BaseController implements Styleable
 	@FXML private Button buttonCancel;
 	@FXML private Button buttonSave;
 
-	@SuppressWarnings("unused")
 	private Stage parentStage;
 	private Controller controller;
 	private CategoryController categoryController;
@@ -41,8 +40,7 @@ public class NewCategoryController extends BaseController implements Styleable
 	private Color color;
 	private PopOver colorChooser;
 	private ColorView colorView;
-	private Category category;
-	
+	private Category category;	
 	
 	public NewCategoryController(Stage parentStage, Controller controller, CategoryController categoryController, boolean edit, Category category)
 	{

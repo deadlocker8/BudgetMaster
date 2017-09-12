@@ -47,7 +47,7 @@ import tools.Worker;
 public class Controller extends BaseController
 {
 	@FXML private AnchorPane anchorPaneMain;
-	@FXML private Label labelMonth;
+	@FXML private Button buttonDate;
 	@FXML private Button buttonLeft;
 	@FXML private Button buttonRight;
 	@FXML private Button buttonToday;
@@ -111,7 +111,7 @@ public class Controller extends BaseController
 		});
 		
 		currentDate = DateTime.now();
-		labelMonth.setText(currentDate.toString(DATE_FORMAT));
+		buttonDate.setText(currentDate.toString(DATE_FORMAT));
 		
 		filterSettings = new FilterSettings();
 		paymentHandler = new PaymentHandler();
@@ -177,8 +177,10 @@ public class Controller extends BaseController
 
 		// apply theme
 		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_MAIN));
-		labelMonth.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
 		labelNotification.setStyle("-fx-text-fill: #FFFFFF; -fx-font-size: 16; -fx-font-weight: bold; -fx-background-color: transparent;");
+		
+		buttonDate.setStyle("-fx-padding: 0; -fx-background-color: transparent; -fx-font-weight: bold; -fx-font-size: 24; -fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
+		buttonDate.getStyleClass().add("button-hoverable");
 		
 		buttonLeft.setStyle("-fx-background-color: transparent;");
 		buttonLeft.getStyleClass().add("button-hoverable");
@@ -245,7 +247,7 @@ public class Controller extends BaseController
 	public void previousMonth()
 	{
 		currentDate = currentDate.minusMonths(1);
-		labelMonth.setText(currentDate.toString(DATE_FORMAT));
+		buttonDate.setText(currentDate.toString(DATE_FORMAT));
 
 		refresh(filterSettings);
 	}
@@ -253,7 +255,7 @@ public class Controller extends BaseController
 	public void nextMonth()
 	{
 		currentDate = currentDate.plusMonths(1);
-		labelMonth.setText(currentDate.toString(DATE_FORMAT));
+		buttonDate.setText(currentDate.toString(DATE_FORMAT));
 
 		refresh(filterSettings);
 	}
@@ -261,7 +263,7 @@ public class Controller extends BaseController
 	public void today()
 	{
 		currentDate = DateTime.now();
-		labelMonth.setText(currentDate.toString(DATE_FORMAT));
+		buttonDate.setText(currentDate.toString(DATE_FORMAT));
 
 		refresh(filterSettings);
 	}
@@ -269,7 +271,7 @@ public class Controller extends BaseController
 	public void setDate(DateTime newDate)
 	{
 		currentDate = newDate;
-		labelMonth.setText(currentDate.toString(DATE_FORMAT));
+		buttonDate.setText(currentDate.toString(DATE_FORMAT));
 
 		refresh(filterSettings);
 	}
@@ -277,6 +279,11 @@ public class Controller extends BaseController
 	public DateTime getCurrentDate()
 	{
 		return currentDate;
+	}
+	
+	public void openDatePicker()
+	{
+		new DatePickerController(getStage(), this, currentDate);
 	}
 
 	public void showConnectionErrorAlert(String errorMessage)

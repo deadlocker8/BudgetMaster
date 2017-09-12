@@ -34,6 +34,7 @@ public class Strings
     public static final String TITLE_REPORT_SAVE = "title.report.save";
     public static final String TITLE_DATABASE_EXPORT = "title.database.export";
     public static final String TITLE_DATABASE_IMPORT = "title.database.import";
+    public static final String TITLE_DATEPICKER = "title.datepicker";
     
     //LOAD
     public static final String LOAD_CHARTS = "load.charts";
@@ -169,6 +170,8 @@ public class Strings
     public static final String WARNING_EMPTY_PASSWORD = "warning.empty.password";
     public static final String WARNING_WRONG_PASSWORD = "warning.wrong.password";
     public static final String WARNING_SERVER_VERSION = "warning.server.version";
+    public static final String WARNING_EMPTY_YEAR = "warning.empty.year";
+    public static final String WARNING_WRONG_YEAR = "warning.wrong.year";
     
     //ERROR
     public static final String ERROR_UNKNOWN_HOST = "error.unknown.host";
