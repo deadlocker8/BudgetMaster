@@ -16,9 +16,10 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.GrayColor;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -26,6 +27,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import de.deadlocker8.budgetmaster.logic.Budget;
 import de.deadlocker8.budgetmaster.logic.category.CategoryBudget;
+import de.deadlocker8.budgetmaster.logic.utils.Fonts;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import tools.Localization;
@@ -39,8 +41,8 @@ public class ReportGenerator
 	private String currency;
 	private DateTime date;
 	private Budget budget;
-	private final FontFamily FONT_FAMILY = FontFamily.HELVETICA;
-
+	private final String FONT = Fonts.OPEN_SANS;
+	
 	public ReportGenerator(ArrayList<ReportItem> reportItems, ArrayList<CategoryBudget> categoryBudgets, ReportPreferences reportPreferences, File savePath, String currency, DateTime date, Budget budget)
 	{	
 		this.reportItems = reportItems;
@@ -53,9 +55,9 @@ public class ReportGenerator
 	}
 
 	private Chapter generateHeader()
-	{
-		Font chapterFont = new Font(FONT_FAMILY, 16, Font.BOLDITALIC);		
-		Chunk chunk = new Chunk(Localization.getString(Strings.REPORT_HEADLINE, date.toString("MMMM yyyy")), chapterFont);
+	{	
+		Font font = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 16, Font.BOLDITALIC, BaseColor.BLACK);
+		Chunk chunk = new Chunk(Localization.getString(Strings.REPORT_HEADLINE, date.toString("MMMM yyyy")), font);
 		Chapter chapter = new Chapter(new Paragraph(chunk), 1);
 		chapter.setNumberDepth(0);
 		chapter.add(Chunk.NEWLINE);
@@ -78,7 +80,7 @@ public class ReportGenerator
 			
 			PdfPTable table = new PdfPTable(proportions);
 			table.setWidthPercentage(tableWidth);
-			Font font = new Font(FONT_FAMILY, 8, Font.NORMAL, GrayColor.BLACK);
+			Font font = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 8, Font.NORMAL, GrayColor.BLACK);
 
 			for(ColumnType column : reportPreferences.getColumnOrder().getColumns())
 			{
@@ -152,18 +154,19 @@ public class ReportGenerator
 		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(savePath));
 		writer.setPageEvent(new HeaderFooterPageEvent());
 		document.open();
-		document.setMargins(50, 45, 50, 70);
-		Font headerFont = new Font(FONT_FAMILY, 14, Font.BOLD);
-		Font smallHeaderFont = new Font(FONT_FAMILY, 12, Font.BOLD);
+		document.setMargins(50, 45, 50, 70);		
+		Font headerFont = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 14, Font.BOLD, BaseColor.BLACK);
+		Font smallHeaderFont = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 12, Font.BOLD, BaseColor.BLACK);
 
 		document.add(generateHeader());
 		document.add(Chunk.NEWLINE);
 		
 		if(reportPreferences.isIncludeBudget())
-		{
-			Font fontGreen = new Font(FONT_FAMILY, 12, Font.NORMAL, new BaseColor(36, 122, 45));
-			Font fontRed = new Font(FONT_FAMILY, 12, Font.NORMAL, BaseColor.RED);
-			Font fontBlack = new Font(FONT_FAMILY, 12, Font.BOLD);
+		{			
+			Font fontGreen = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 12, Font.NORMAL, new BaseColor(36, 122, 45));			
+			Font fontRed = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 12, Font.NORMAL, BaseColor.RED);
+			Font fontBlack = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 12, Font.BOLD, BaseColor.BLACK);
+			
 			document.add(new Paragraph("Budget", headerFont));
 			document.add(Chunk.NEWLINE);
 			document.add(new Paragraph("Einnahmen: " + Helpers.getCurrencyString(budget.getIncomeSum(), currency), fontGreen));
@@ -225,7 +228,7 @@ public class ReportGenerator
 	{
 		PdfPTable table = new PdfPTable(2);
 		table.setWidthPercentage(100);
-		Font font = new Font(FONT_FAMILY, 8, Font.NORMAL, GrayColor.BLACK);
+		Font font = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 8, Font.NORMAL, BaseColor.BLACK);
 		
 		//header cells
 		PdfPCell cellHeaderCategory = new PdfPCell(new Phrase(Localization.getString(Strings.TITLE_CATEGORY), font));
