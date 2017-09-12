@@ -9,6 +9,7 @@ import java.util.Optional;
 import de.deadlocker8.budgetmaster.logic.category.Category;
 import de.deadlocker8.budgetmaster.logic.payment.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.payment.Payment;
+import de.deadlocker8.budgetmaster.logic.payment.RepeatingPayment;
 import de.deadlocker8.budgetmaster.logic.payment.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
@@ -18,6 +19,7 @@ import fontAwesome.FontIconType;
 import javafx.animation.FadeTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
@@ -205,20 +207,9 @@ public class PaymentCell extends ListCell<Payment>
 
 			hbox.setPadding(new Insets(10, 8, 10, 5));
 			
+			// payment is selected after search
 			Payment selectedPayment = paymentController.getController().getSelectedPayment();
-			if(selectedPayment != null && item.getID() == selectedPayment.getID())
-			{
-				// payment is selected after search								
-				FadeTransition ft = new FadeTransition(Duration.millis(750), hbox);
-	            ft.setFromValue(1.0);
-	            ft.setToValue(0.0);
-	            ft.setCycleCount(4);
-	            ft.setAutoReverse(true);
-	            ft.play();
-	            ft.setOnFinished((event)->{	            	
-	            	paymentController.getController().setSelectedPayment(null);	            	
-	            });
-			}
+			selectPayment(selectedPayment, item, hbox);
 			
 			hbox.setPadding(new Insets(8, 8, 8, 5));
 			hbox.setAlignment(Pos.CENTER_LEFT);
@@ -232,5 +223,38 @@ public class PaymentCell extends ListCell<Payment>
 			setText(null);
 			setGraphic(null);
 		}
+	}
+	
+	private void selectPayment(Payment selectedPayment, Payment item, Node noteToFade)
+	{
+		if(selectedPayment == null)
+			return;
+
+		if(selectedPayment instanceof NormalPayment && item.getID() != selectedPayment.getID())
+			return;
+		
+		if(selectedPayment instanceof RepeatingPayment)
+		{				
+			if(item instanceof RepeatingPaymentEntry)
+			{		
+				RepeatingPaymentEntry itemRepeating = (RepeatingPaymentEntry)item;
+				if(itemRepeating.getRepeatingPaymentID() != selectedPayment.getID())
+					return;
+			}
+			else
+			{
+				return;
+			}
+		}
+								
+		FadeTransition ft = new FadeTransition(Duration.millis(750), noteToFade);
+        ft.setFromValue(1.0);
+        ft.setToValue(0.0);
+        ft.setCycleCount(4);
+        ft.setAutoReverse(true);
+        ft.play();
+        ft.setOnFinished((event)->{	            	
+        	paymentController.getController().setSelectedPayment(null);	            	
+        });		
 	}
 }
