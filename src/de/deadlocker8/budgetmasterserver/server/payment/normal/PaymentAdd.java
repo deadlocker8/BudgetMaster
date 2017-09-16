@@ -2,6 +2,8 @@ package de.deadlocker8.budgetmasterserver.server.payment.normal;
 
 import static spark.Spark.halt;
 
+import com.google.gson.Gson;
+
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
 import spark.Request;
 import spark.Response;
@@ -10,10 +12,12 @@ import spark.Route;
 public class PaymentAdd implements Route
 {
 	private DatabaseHandler handler;
+	private Gson gson;
 	
-	public PaymentAdd(DatabaseHandler handler)
+	public PaymentAdd(DatabaseHandler handler, Gson gson)
 	{	
 		this.handler = handler;
+		this.gson = gson;
 	}
 
 	@Override
@@ -38,13 +42,13 @@ public class PaymentAdd implements Route
 			
 			try
 			{			
-				handler.addNormalPayment(amount, 
-										req.queryMap("date").value(),
-										categoryID, 
-										req.queryMap("name").value(), 
-										req.queryMap("description").value());			
+				Integer id = handler.addNormalPayment(amount, 
+													  req.queryMap("date").value(),
+													  categoryID, 
+													  req.queryMap("name").value(), 
+													  req.queryMap("description").value());			
 
-				return "";
+				return gson.toJson(id);
 			}
 			catch(IllegalStateException ex)
 			{				
@@ -52,8 +56,7 @@ public class PaymentAdd implements Route
 			}
 		}
 		catch(Exception e)
-		{			
-			e.printStackTrace();
+		{
 			halt(400, "Bad Request");
 		}
 		

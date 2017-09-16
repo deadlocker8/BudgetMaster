@@ -792,18 +792,25 @@ public class DatabaseHandler
 		}
 	}
 
-	public void addNormalPayment(int amount, String date, int categoryID, String name, String description)
+	public Integer addNormalPayment(int amount, String date, int categoryID, String name, String description)
 	{
 		PreparedStatement stmt = null;
 		try
 		{
-			stmt = connection.prepareStatement("INSERT INTO payment (Amount, Date, CategoryID, Name, Description) VALUES(?, ?, ?, ?, ?);");
+			stmt = connection.prepareStatement("INSERT INTO payment (Amount, Date, CategoryID, Name, Description) VALUES(?, ?, ?, ?, ?);",
+												Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, amount);
 			stmt.setString(2, date);
 			stmt.setInt(3, categoryID);
 			stmt.setString(4, name);
 			stmt.setString(5, description);
 			stmt.execute();
+			
+			ResultSet rs = stmt.getGeneratedKeys();
+            if(rs.next())
+            {
+                return rs.getInt(1);
+            }
 		}
 		catch(SQLException e)
 		{
@@ -813,9 +820,11 @@ public class DatabaseHandler
 		{
 			closeConnection(stmt);
 		}
+		
+		return -1;
 	}
 
-	public void addRepeatingPayment(int amount, String date, int categoryID, String name, String description, int repeatInterval, String repeatEndDate, int repeatMonthDay)
+	public Integer addRepeatingPayment(int amount, String date, int categoryID, String name, String description, int repeatInterval, String repeatEndDate, int repeatMonthDay)
 	{
 		PreparedStatement stmt = null;
 		String correctRepeatEndDate = repeatEndDate;
@@ -826,7 +835,8 @@ public class DatabaseHandler
 
 		try
 		{
-			stmt = connection.prepareStatement("INSERT INTO repeating_payment (Amount, Date, CategoryID, Name, RepeatInterval, RepeatEndDate, RepeatMonthDay, Description) VALUES(?, ?, ?, ?, ?, ?, ?, ?);");
+			stmt = connection.prepareStatement("INSERT INTO repeating_payment (Amount, Date, CategoryID, Name, RepeatInterval, RepeatEndDate, RepeatMonthDay, Description) VALUES(?, ?, ?, ?, ?, ?, ?, ?);",
+												Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, amount);
 			stmt.setString(2, date);
 			stmt.setInt(3, categoryID);
@@ -836,16 +846,23 @@ public class DatabaseHandler
 			stmt.setInt(7, repeatMonthDay);
 			stmt.setString(8, description);
 			stmt.execute();
+			
+			ResultSet rs = stmt.getGeneratedKeys();
+            if(rs.next())
+            {
+                return rs.getInt(1);
+            }
 		}
 		catch(SQLException e)
-		{
-			e.printStackTrace();
+		{			
 			Logger.error(e);
 		}
 		finally
 		{
 			closeConnection(stmt);
 		}
+		
+		return -1;
 	}
 	
 	public void addRepeatingPaymentEntry(int repeatingPaymentID, String date)

@@ -77,6 +77,7 @@ public class NewPaymentController extends BaseController implements Styleable
 	private Payment payment;
 	private ButtonCategoryCell buttonCategoryCell;
 	private TagField tagField;
+	private ArrayList<Tag> previousTags;
 	
 	public NewPaymentController(Stage parentStage, Controller controller, PaymentController paymentController, boolean isPayment, boolean edit, Payment payment)
 	{
@@ -124,6 +125,8 @@ public class NewPaymentController extends BaseController implements Styleable
 		hboxTags.getChildren().add(tagField);
 		tagField.maxWidthProperty().bind(hboxTags.widthProperty());
 		HBox.setHgrow(tagField, Priority.ALWAYS);
+		
+		previousTags = new ArrayList<>();
 		
 		initRepeatingArea();
 		
@@ -281,7 +284,8 @@ public class NewPaymentController extends BaseController implements Styleable
 				try
 				{					
 					RepeatingPaymentEntry currentPayment = (RepeatingPaymentEntry)payment;
-					tagField.setTags(serverTagConnection.getAllTagsForRepeatingPayment(currentPayment));
+					previousTags = serverTagConnection.getAllTagsForRepeatingPayment(currentPayment.getRepeatingPaymentID());
+					tagField.setTags(new ArrayList<>(previousTags));
 					
 					ServerConnection connection = new ServerConnection(controller.getSettings());
 					RepeatingPayment repeatingPayment = connection.getRepeatingPayment(currentPayment.getRepeatingPaymentID());
@@ -316,7 +320,8 @@ public class NewPaymentController extends BaseController implements Styleable
 			}	
 			else
 			{
-				tagField.setTags(serverTagConnection.getAllTagsForPayment((NormalPayment)payment));
+				previousTags = serverTagConnection.getAllTagsForPayment((NormalPayment)payment);
+				tagField.setTags(new ArrayList<>(previousTags));
 				checkBoxRepeat.setSelected(false);
 				radioButtonPeriod.setSelected(true);
 				toggleRepeatingArea(false);
@@ -341,6 +346,7 @@ public class NewPaymentController extends BaseController implements Styleable
 				                false);
 	}
 
+	@FXML
 	public void save()
 	{
 		String name = textFieldName.getText();
@@ -390,6 +396,8 @@ public class NewPaymentController extends BaseController implements Styleable
 		{
 			description = "";
 		}
+		
+		Payment finalPayment;
 
 		int repeatingInterval = 0;
 		int repeatingDay = 0;
@@ -431,12 +439,16 @@ public class NewPaymentController extends BaseController implements Styleable
 					{	
 						connection.deleteRepeatingPayment((RepeatingPaymentEntry)payment);						
 					}	
-					connection.addRepeatingPayment(newPayment);
+					int id = connection.addRepeatingPayment(newPayment);
+					finalPayment = newPayment;
+					finalPayment.setID(id);
 				}
 				catch(Exception e)
 				{
 					Logger.error(e);
 					controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
+					getStage().close();
+					return;
 				}
 			}
 			else
@@ -445,12 +457,16 @@ public class NewPaymentController extends BaseController implements Styleable
 				try
 				{
 					ServerConnection connection = new ServerConnection(controller.getSettings());
-					connection.addRepeatingPayment(newPayment);
+					int id = connection.addRepeatingPayment(newPayment);
+					finalPayment = newPayment;
+					finalPayment.setID(id);
 				}
 				catch(Exception e)
 				{
 					Logger.error(e);
 					controller.showConnectionErrorAlert(e.getMessage());
+					getStage().close();
+					return;
 				}
 			}
 		}
@@ -459,24 +475,29 @@ public class NewPaymentController extends BaseController implements Styleable
 			if(edit)
 			{
 				NormalPayment newPayment = new NormalPayment(payment.getID(), amount, Helpers.getDateString(date), comboBoxCategory.getValue().getID(), name, description);
+				int id = payment.getID();
 				try
 				{
 					ServerConnection connection = new ServerConnection(controller.getSettings());
 					if(payment instanceof RepeatingPaymentEntry)
 					{
 						//if old one was repeating it should be deleted
-						connection.deleteRepeatingPayment((RepeatingPaymentEntry)payment);
-						connection.addNormalPayment(newPayment);
+						connection.deleteRepeatingPayment((RepeatingPaymentEntry)payment);						
+						id = connection.addNormalPayment(newPayment);
 					}
 					else
 					{
 						connection.updateNormalPayment(newPayment);
-					}					
+					}
+					finalPayment = newPayment;
+					finalPayment.setID(id);
 				}
 				catch(Exception e)
 				{
 					Logger.error(e);
 					controller.showConnectionErrorAlert(e.getMessage());
+					getStage().close();
+					return;
 				}
 			}
 			else
@@ -485,14 +506,28 @@ public class NewPaymentController extends BaseController implements Styleable
 				try
 				{
 					ServerConnection connection = new ServerConnection(controller.getSettings());
-					connection.addNormalPayment(newPayment);
+					int id = connection.addNormalPayment(newPayment);					
+					finalPayment = newPayment;
+					finalPayment.setID(id);
 				}
 				catch(Exception e)
 				{
 					Logger.error(e);
 					controller.showConnectionErrorAlert(e.getMessage());
+					getStage().close();
+					return;
 				}
 			}
+		}
+		
+		try
+		{
+			saveTags(tagField.getTags(), finalPayment);
+		}
+		catch(Exception e)
+		{
+			Logger.error(e);
+			controller.showConnectionErrorAlert(e.getMessage());
 		}
 
 		getStage().close();
@@ -539,6 +574,67 @@ public class NewPaymentController extends BaseController implements Styleable
 		labelText2.setDisable(!selected);
 		comboBoxRepeatingDay.setDisable(selected);
 		labelText3.setDisable(selected);
+	}
+	
+	private boolean tagListContainsTag(ArrayList<Tag> tags, String name)
+	{
+		for(Tag paymentTag: tags)
+		{
+			if(name.equals(paymentTag.getName()))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private void saveTags(ArrayList<Tag> tags, Payment payment) throws Exception
+	{
+		ServerTagConnection serverTagConnection = new ServerTagConnection(controller.getSettings());
+		
+		//check for deleted tags
+		for(Tag currentTag : previousTags)
+		{
+			if(!tagListContainsTag(tags, currentTag.getName()))
+			{
+				if(payment instanceof RepeatingPayment)
+				{
+					RepeatingPayment repeatingPayment = (RepeatingPayment)payment;
+					serverTagConnection.deleteTagMatchForRepeatingPayment(currentTag.getID(), repeatingPayment);
+				}
+				else
+				{
+					NormalPayment normalPayment = (NormalPayment)payment;
+					serverTagConnection.deleteTagMatchForPayment(currentTag.getID(), normalPayment);
+				}	
+			}
+		}
+		
+		//check for new tags
+		for(Tag paymentTag : tags)
+		{
+			if(!tagListContainsTag(previousTags, payment.getName()))
+			{
+				String name = paymentTag.getName();
+				Tag existingTag = serverTagConnection.getTag(name);
+				if(existingTag == null)
+				{
+					serverTagConnection.addTag(new Tag(-1, name));
+					existingTag = serverTagConnection.getTag(name);
+				}
+				
+				if(payment instanceof RepeatingPayment)
+				{
+					RepeatingPayment repeatingPayment = (RepeatingPayment)payment;
+					serverTagConnection.addTagMatchForRepeatingPayment(existingTag.getID(), repeatingPayment);
+				}
+				else
+				{
+					NormalPayment normalPayment = (NormalPayment)payment;
+					serverTagConnection.addTagMatchForPayment(existingTag.getID(), normalPayment);
+				}	
+			}
+		}	
 	}
 	
 	@Override

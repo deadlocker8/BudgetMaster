@@ -10,12 +10,12 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-public class TagGet implements Route
+public class TagGetByName implements Route
 {
 	private DatabaseTagHandler tagHandler;
 	private Gson gson;
 
-	public TagGet(DatabaseTagHandler tagHandler, Gson gson)
+	public TagGetByName(DatabaseTagHandler tagHandler, Gson gson)
 	{
 		this.tagHandler = tagHandler;
 		this.gson = gson;
@@ -24,37 +24,21 @@ public class TagGet implements Route
 	@Override
 	public Object handle(Request req, Response res) throws Exception
 	{
-		if(!req.queryParams().contains("id"))
+		if(!req.queryParams().contains("name"))
 		{
 			halt(400, "Bad Request");
 		}
-
-		int id = -1;
 
 		try
 		{
-			id = Integer.parseInt(req.queryMap("id").value());
-
-			if(id < 0)
-			{
-				halt(400, "Bad Request");
-			}
-
-			try
-			{
-				Tag tag = tagHandler.getTagByID(id);
-
-				return gson.toJson(tag);
-			}
-			catch(IllegalStateException e)
-			{				
-				halt(500, "Internal Server Error");
-			}
+			Tag tag = tagHandler.getTagByName(req.queryMap("name").value());
+			return gson.toJson(tag);
 		}
 		catch(Exception e)
 		{
-			halt(400, "Bad Request");
+			halt(500, "Internal Server Error");
 		}
+	
 		return null;
 	}
 }

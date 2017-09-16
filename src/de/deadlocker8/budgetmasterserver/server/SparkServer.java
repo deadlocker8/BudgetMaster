@@ -55,6 +55,7 @@ import de.deadlocker8.budgetmasterserver.server.tag.tag.TagAdd;
 import de.deadlocker8.budgetmasterserver.server.tag.tag.TagDelete;
 import de.deadlocker8.budgetmasterserver.server.tag.tag.TagGet;
 import de.deadlocker8.budgetmasterserver.server.tag.tag.TagGetAll;
+import de.deadlocker8.budgetmasterserver.server.tag.tag.TagGetByName;
 import de.deadlocker8.budgetmasterserver.server.updater.RepeatingPaymentUpdater;
 import de.deadlocker8.budgetmasterserver.server.version.VersionGet;
 import logger.Logger;
@@ -66,6 +67,7 @@ public class SparkServer
 {	
 	private Gson gson;
 	private DatabaseHandler handler;
+	private DatabaseTagHandler tagHandler;
 	
 	public SparkServer(Settings settings, VersionInformation versionInfo)
 	{
@@ -95,6 +97,7 @@ public class SparkServer
 		RouteOverview.enableRouteOverview();
 		
 		handler = new DatabaseHandler(settings);
+		tagHandler = new DatabaseTagHandler(settings);
 
 		before((request, response) -> {
 
@@ -119,15 +122,15 @@ public class SparkServer
 		get("/payment/search", new PaymentSearch(handler));
 		// Normal
 		get("/payment", new PaymentGet(handler, gson));
-		post("/payment", new PaymentAdd(handler));
+		post("/payment", new PaymentAdd(handler, gson));
 		put("/payment", new PaymentUpdate(handler));
-		delete("/payment", new PaymentDelete(handler));
+		delete("/payment", new PaymentDelete(handler, tagHandler));
 
 		// Repeating
 		get("/repeatingpayment/single", new RepeatingPaymentGet(handler, gson));
 		get("/repeatingpayment", new RepeatingPaymentGetAll(handler, gson));
-		post("/repeatingpayment", new RepeatingPaymentAdd(handler));
-		delete("/repeatingpayment", new RepeatingPaymentDelete(handler));
+		post("/repeatingpayment", new RepeatingPaymentAdd(handler, gson));
+		delete("/repeatingpayment", new RepeatingPaymentDelete(handler, tagHandler));
 		
 		// CategoryBudget
 		get("/categorybudget", new CategoryBudgetGet(handler, gson));
@@ -140,20 +143,21 @@ public class SparkServer
 		get("/charts/monthInOutSum", new MonthInOutSum(handler, gson));
 		
 		// tag
-		get("/tag/single", new TagGet(new DatabaseTagHandler(settings), gson));
-		get("/tag", new TagGetAll(new DatabaseTagHandler(settings), gson));
-		post("/tag", new TagAdd(new DatabaseTagHandler(settings)));
-		delete("/tag", new TagDelete(new DatabaseTagHandler(settings)));
+		get("/tag/single", new TagGet(tagHandler, gson));
+		get("/tag/single/byName", new TagGetByName(tagHandler, gson));
+		get("/tag", new TagGetAll(tagHandler, gson));
+		post("/tag", new TagAdd(tagHandler));
+		delete("/tag", new TagDelete(tagHandler));
 		
 		// tag match
-		get("/tag/match/all/normal", new TagMatchGetAllForPayment(new DatabaseTagHandler(settings), gson));
-		get("/tag/match/all/repeating", new TagMatchGetAllForRepeatingPayment(new DatabaseTagHandler(settings), gson));
-		get("/tag/match/normal", new TagMatchExistingForPayment(new DatabaseTagHandler(settings), gson));
-		get("/tag/match/repeating", new TagMatchExistingForRepeatingPayment(new DatabaseTagHandler(settings), gson));
-		post("/tag/match/normal", new TagMatchAddForPayment(new DatabaseTagHandler(settings)));
-		post("/tag/match/repeating", new TagMatchAddForRepeatingPayment(new DatabaseTagHandler(settings)));
-		delete("/tag/match/normal", new TagMatchDeleteForPayment(new DatabaseTagHandler(settings)));
-		delete("/tag/match/repeating", new TagMatchDeleteForRepeatingPayment(new DatabaseTagHandler(settings)));
+		get("/tag/match/all/normal", new TagMatchGetAllForPayment(tagHandler, gson));
+		get("/tag/match/all/repeating", new TagMatchGetAllForRepeatingPayment(tagHandler, gson));
+		get("/tag/match/normal", new TagMatchExistingForPayment(tagHandler, gson));
+		get("/tag/match/repeating", new TagMatchExistingForRepeatingPayment(tagHandler, gson));
+		post("/tag/match/normal", new TagMatchAddForPayment(tagHandler));
+		post("/tag/match/repeating", new TagMatchAddForRepeatingPayment(tagHandler));
+		delete("/tag/match/normal", new TagMatchDeleteForPayment(tagHandler));
+		delete("/tag/match/repeating", new TagMatchDeleteForRepeatingPayment(tagHandler));
 
 		// Database
 		get("/database", new DatabaseExport(settings, gson));

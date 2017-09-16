@@ -49,7 +49,7 @@ public class TagMatchGetAllForPayment implements Route
 				{
 					tags.add(currentTag);
 				}
-			}			
+			}
 			
 			return gson.toJson(tags);
 		}

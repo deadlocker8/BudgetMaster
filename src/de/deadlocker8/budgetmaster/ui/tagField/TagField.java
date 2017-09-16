@@ -1,7 +1,9 @@
 package de.deadlocker8.budgetmaster.ui.tagField;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
+import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
 import de.deadlocker8.budgetmaster.logic.tag.Tag;
@@ -18,6 +20,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 import tools.ConvertTo;
 import tools.Localization;
 
@@ -46,7 +49,26 @@ public class TagField extends VBox
             	addTag(textField.getText().trim());
             }
 	    });
-		TextFields.bindAutoCompletion(textField, param -> getCompletions(allTags));
+		
+		TextFields.bindAutoCompletion(textField, new Callback<AutoCompletionBinding.ISuggestionRequest, Collection<String>>()
+		{
+
+			@Override
+			public Collection<String> call(org.controlsfx.control.textfield.AutoCompletionBinding.ISuggestionRequest param)
+			{
+				ArrayList<String> completions = getCompletions(allTags);
+				ArrayList<String> remainingCompletions = new ArrayList<>();
+				for(String currentCompletion : completions)
+				{
+					if(currentCompletion.toLowerCase().contains(param.getUserText().toLowerCase()))
+					{
+						remainingCompletions.add(currentCompletion);
+					}
+				}
+				
+				return remainingCompletions;
+			}
+		});
 		this.getChildren().add(textField);		
 
 		this.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #000000; -fx-background-radius: 5px; -fx-border-radius: 5px");
@@ -59,7 +81,7 @@ public class TagField extends VBox
 	{
 		FlowPane flowPane = new FlowPane();
 		flowPane.setVgap(5);
-		flowPane.setMinHeight(20);
+		flowPane.setMinHeight(30);
 		flowPane.setHgap(5);
 		flowPane.setPadding(new Insets(5));
 		return flowPane;
@@ -107,10 +129,11 @@ public class TagField extends VBox
 
 	public void addTag(String tagName)
 	{
+		//TODO max length = 45 chars
 		if(tagName.equals(""))
 		{
 			return;
-		}		
+		}
 		
 		for(Tag currentTag : tags)
 		{
@@ -120,7 +143,7 @@ public class TagField extends VBox
 			}
 		}
 		
-		tags.add(new Tag(-1, tagName));	
+		tags.add(new Tag(-1, tagName));
 		refresh(true);
 	}
 	

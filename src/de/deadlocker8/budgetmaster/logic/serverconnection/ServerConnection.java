@@ -233,7 +233,7 @@ public class ServerConnection
 		}
 	}
 
-	public void addNormalPayment(NormalPayment payment) throws Exception
+	public Integer addNormalPayment(NormalPayment payment) throws Exception
 	{
 		URL url = new URL(settings.getUrl() + "/payment?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&amount=" + payment.getAmount() + "&date=" + payment.getDate() + "&categoryID=" + payment.getCategoryID() + "&name=" + Helpers.getURLEncodedString(payment.getName())
 				+ "&description=" + Helpers.getURLEncodedString(payment.getDescription()));
@@ -242,9 +242,8 @@ public class ServerConnection
 		httpsCon.setDoInput(true);
 		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
 		{
-			InputStream stream = httpsCon.getInputStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-			reader.close();
+			String result = Read.getStringFromInputStream(httpsCon.getInputStream());
+			return gson.fromJson(result, Integer.class);
 		}
 		else
 		{
@@ -271,7 +270,7 @@ public class ServerConnection
 		}
 	}
 
-	public void addRepeatingPayment(RepeatingPayment payment) throws Exception
+	public Integer addRepeatingPayment(RepeatingPayment payment) throws Exception
 	{
 		String repeatEndDate = payment.getRepeatEndDate();
 		if(repeatEndDate == null || repeatEndDate.equals(""))
@@ -287,9 +286,8 @@ public class ServerConnection
 		httpsCon.setDoInput(true);
 		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
 		{
-			InputStream stream = httpsCon.getInputStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-			reader.close();
+			String result = Read.getStringFromInputStream(httpsCon.getInputStream());
+			return gson.fromJson(result, Integer.class);
 		}
 		else
 		{

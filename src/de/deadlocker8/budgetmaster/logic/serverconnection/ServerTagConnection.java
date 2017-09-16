@@ -19,7 +19,6 @@ import com.google.gson.reflect.TypeToken;
 import de.deadlocker8.budgetmaster.logic.Settings;
 import de.deadlocker8.budgetmaster.logic.payment.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.payment.RepeatingPayment;
-import de.deadlocker8.budgetmaster.logic.payment.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmaster.logic.tag.Tag;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import tools.Read;
@@ -84,6 +83,24 @@ public class ServerTagConnection
 	public Tag getTag(int ID) throws Exception
 	{
 		URL url = new URL(settings.getUrl() + "/tag/single?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&id=" + ID);
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setDoOutput(true);
+		httpsCon.setRequestMethod("GET");
+
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			String result = Read.getStringFromInputStream(httpsCon.getInputStream());
+			return gson.fromJson(result, Tag.class);
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	public Tag getTag(String name) throws Exception
+	{
+		URL url = new URL(settings.getUrl() + "/tag/single/byName?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&name=" + Helpers.getURLEncodedString(name));
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setDoOutput(true);
 		httpsCon.setRequestMethod("GET");
@@ -268,9 +285,9 @@ public class ServerTagConnection
 		}
 	}
 	
-	public ArrayList<Tag> getAllTagsForRepeatingPayment(RepeatingPaymentEntry repeatingPayment) throws Exception
+	public ArrayList<Tag> getAllTagsForRepeatingPayment(int repeatingPaymentID) throws Exception
 	{
-		URL url = new URL(settings.getUrl() + "/tag/match/all/normal?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&repeatingPaymentID=" + repeatingPayment.getID());
+		URL url = new URL(settings.getUrl() + "/tag/match/all/repeating?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&repeatingPaymentID=" + repeatingPaymentID);
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setDoOutput(true);
 		httpsCon.setRequestMethod("GET");

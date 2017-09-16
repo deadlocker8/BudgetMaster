@@ -101,6 +101,36 @@ public class DatabaseTagHandler
         return tag;
     }
 	
+	public Tag getTagByName(String name)
+    {
+	    PreparedStatement stmt = null;
+	    Tag tag = null;
+        try
+        {
+        	stmt = connection.prepareStatement("SELECT * FROM tag WHERE tag.Name= ?;");	
+			stmt.setString(1, name);
+			ResultSet rs = stmt.executeQuery();
+
+            while(rs.next())
+            {
+            	int id = rs.getInt("ID");
+            	String newName = rs.getString("Name");
+            
+                tag = new Tag(id, newName);
+            }
+        }
+        catch(SQLException e)
+        {
+            Logger.error(e);
+        }
+        finally
+        {
+           closeConnection(stmt);
+        }
+
+        return tag;
+    }
+	
 	public void addTag(String name)
 	{
 		PreparedStatement stmt = null;

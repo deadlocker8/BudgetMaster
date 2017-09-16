@@ -2,6 +2,8 @@ package de.deadlocker8.budgetmasterserver.server.payment.repeating;
 
 import static spark.Spark.halt;
 
+import com.google.gson.Gson;
+
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
 import spark.Request;
 import spark.Response;
@@ -10,10 +12,12 @@ import spark.Route;
 public class RepeatingPaymentAdd implements Route
 {
 	private DatabaseHandler handler;
+	private Gson gson;
 	
-	public RepeatingPaymentAdd(DatabaseHandler handler)
+	public RepeatingPaymentAdd(DatabaseHandler handler, Gson gson)
 	{		
 		this.handler = handler;
+		this.gson = gson;
 	}
 
 	@Override
@@ -45,16 +49,16 @@ public class RepeatingPaymentAdd implements Route
 			
 			try
 			{				
-				handler.addRepeatingPayment(amount, 
-											req.queryMap("date").value(), 
-											categoryID, 
-											req.queryMap("name").value(), 
-											req.queryMap("description").value(), 
-											repeatInterval, 
-											req.queryMap("repeatEndDate").value(), 
-											repeatMonthDay);			
+				Integer id = handler.addRepeatingPayment(amount, 
+														req.queryMap("date").value(), 
+														categoryID, 
+														req.queryMap("name").value(), 
+														req.queryMap("description").value(), 
+														repeatInterval, 
+														req.queryMap("repeatEndDate").value(), 
+														repeatMonthDay);			
 
-				return "";
+				return gson.toJson(id);
 			}
 			catch(IllegalStateException ex)
 			{				

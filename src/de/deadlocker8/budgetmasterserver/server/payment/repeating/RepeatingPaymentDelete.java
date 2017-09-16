@@ -2,7 +2,10 @@ package de.deadlocker8.budgetmasterserver.server.payment.repeating;
 
 import static spark.Spark.halt;
 
+import java.util.ArrayList;
+
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
+import de.deadlocker8.budgetmasterserver.logic.database.DatabaseTagHandler;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -10,10 +13,12 @@ import spark.Route;
 public class RepeatingPaymentDelete implements Route
 {
 	private DatabaseHandler handler;
+	private DatabaseTagHandler tagHandler;
 	
-	public RepeatingPaymentDelete(DatabaseHandler handler)
+	public RepeatingPaymentDelete(DatabaseHandler handler, DatabaseTagHandler tagHandler)
 	{
 		this.handler = handler;
+		this.tagHandler = tagHandler;
 	}
 
 	@Override
@@ -37,7 +42,12 @@ public class RepeatingPaymentDelete implements Route
 			
 			try
 			{					
-				handler.deleteRepeatingPayment(id);			
+				handler.deleteRepeatingPayment(id);	
+				ArrayList<Integer> tagIDs = tagHandler.getAllTagsForRepeatingPayment(id);
+				for(Integer currentTagID : tagIDs)
+				{
+					tagHandler.deleteTagMatchForRepeatingPayment(currentTagID, id);
+				}
 
 				return "";
 			}
