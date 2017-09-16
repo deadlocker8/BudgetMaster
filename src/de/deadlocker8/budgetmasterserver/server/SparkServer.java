@@ -49,6 +49,8 @@ import de.deadlocker8.budgetmasterserver.server.tag.match.TagMatchDeleteForPayme
 import de.deadlocker8.budgetmasterserver.server.tag.match.TagMatchDeleteForRepeatingPayment;
 import de.deadlocker8.budgetmasterserver.server.tag.match.TagMatchExistingForPayment;
 import de.deadlocker8.budgetmasterserver.server.tag.match.TagMatchExistingForRepeatingPayment;
+import de.deadlocker8.budgetmasterserver.server.tag.match.TagMatchGetAllForPayment;
+import de.deadlocker8.budgetmasterserver.server.tag.match.TagMatchGetAllForRepeatingPayment;
 import de.deadlocker8.budgetmasterserver.server.tag.tag.TagAdd;
 import de.deadlocker8.budgetmasterserver.server.tag.tag.TagDelete;
 import de.deadlocker8.budgetmasterserver.server.tag.tag.TagGet;
@@ -144,6 +146,8 @@ public class SparkServer
 		delete("/tag", new TagDelete(new DatabaseTagHandler(settings)));
 		
 		// tag match
+		get("/tag/match/all/normal", new TagMatchGetAllForPayment(new DatabaseTagHandler(settings), gson));
+		get("/tag/match/all/repeating", new TagMatchGetAllForRepeatingPayment(new DatabaseTagHandler(settings), gson));
 		get("/tag/match/normal", new TagMatchExistingForPayment(new DatabaseTagHandler(settings), gson));
 		get("/tag/match/repeating", new TagMatchExistingForRepeatingPayment(new DatabaseTagHandler(settings), gson));
 		post("/tag/match/normal", new TagMatchAddForPayment(new DatabaseTagHandler(settings)));

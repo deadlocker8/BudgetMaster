@@ -193,6 +193,62 @@ public class DatabaseTagHandler
 		return false;
 	}
 	
+	public ArrayList<Integer> getAllTagsForPayment(int paymentID)
+	{
+		PreparedStatement stmt = null;
+		ArrayList<Integer> tagIDs = new ArrayList<>();
+		try
+		{
+			stmt = connection.prepareStatement("SELECT * FROM tag_match WHERE tag_match.Payment_ID = ?;");
+			stmt.setInt(1, paymentID);
+			ResultSet rs = stmt.executeQuery();
+
+            while(rs.next())
+            {
+            	int tagID = rs.getInt("Tag_ID");
+            	tagIDs.add(tagID);
+            }
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+		finally
+		{
+			closeConnection(stmt);
+		}
+		
+		return tagIDs;
+	}
+	
+	public ArrayList<Integer> getAllTagsForRepeatingPayment(int repeatingPaymentID)
+	{
+		PreparedStatement stmt = null;
+		ArrayList<Integer> tagIDs = new ArrayList<>();
+		try
+		{
+			stmt = connection.prepareStatement("SELECT * FROM tag_match WHERE tag_match.RepeatingPayment_ID = ?;");
+			stmt.setInt(1, repeatingPaymentID);
+			ResultSet rs = stmt.executeQuery();
+
+            while(rs.next())
+            {
+            	int tagID = rs.getInt("Tag_ID");
+            	tagIDs.add(tagID);
+            }
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+		finally
+		{
+			closeConnection(stmt);
+		}
+		
+		return tagIDs;
+	}	
+	
 	public void addTagMatchForPayment(int tagID, int paymentID)
 	{
 		PreparedStatement stmt = null;

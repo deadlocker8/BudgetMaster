@@ -346,7 +346,7 @@ public class Controller extends BaseController
 	{
 		return categoryHandler;
 	}
-
+	
 	public FilterSettings getFilterSettings()
 	{
 		return filterSettings;
@@ -530,7 +530,7 @@ public class Controller extends BaseController
 							{
 								modalStage.close();
 							};
-							categoryHandler = new CategoryHandler(null);					
+							categoryHandler = new CategoryHandler(null);				
 							toggleAllTabsExceptSettings(true);
 							tabPane.getSelectionModel().select(tabSettings);	
 						});

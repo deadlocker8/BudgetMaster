@@ -244,4 +244,48 @@ public class ServerTagConnection
 			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
 		}
 	}
+	
+	public ArrayList<Tag> getAllTagsForPayment(NormalPayment payment) throws Exception
+	{
+		URL url = new URL(settings.getUrl() + "/tag/match/all/normal?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&paymentID=" + payment.getID());
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setDoOutput(true);
+		httpsCon.setRequestMethod("GET");
+
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			String result = Read.getStringFromInputStream(httpsCon.getInputStream());
+			// required by GSON
+			Type listType = new TypeToken<ArrayList<Tag>>()
+			{
+			}.getType();
+			return gson.fromJson(result, listType);
+		}
+		else
+		{
+			return new ArrayList<>();
+		}
+	}
+	
+	public ArrayList<Tag> getAllTagsForRepeatingPayment(RepeatingPayment repeatingPayment) throws Exception
+	{
+		URL url = new URL(settings.getUrl() + "/tag/match/all/normal?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&repeatingPaymentID=" + repeatingPayment.getID());
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setDoOutput(true);
+		httpsCon.setRequestMethod("GET");
+
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			String result = Read.getStringFromInputStream(httpsCon.getInputStream());
+			// required by GSON
+			Type listType = new TypeToken<ArrayList<Tag>>()
+			{
+			}.getType();
+			return gson.fromJson(result, listType);
+		}
+		else
+		{
+			return new ArrayList<>();
+		}
+	}
 }

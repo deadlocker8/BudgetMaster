@@ -78,7 +78,7 @@ public class FilterController extends BaseController implements Styleable
             if(event.getCode().equals(KeyCode.ENTER))
             {
             	filter();
-            }	        
+            }
 	    });
 
 		preselect();

@@ -102,6 +102,16 @@
                   <TextArea fx:id="textArea" maxWidth="1.7976931348623157E308" prefHeight="37.0" prefWidth="240.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="465.0">
+               <children>
+                  <Label prefHeight="29.0" prefWidth="125.0" text="%payment.new.label.tags">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <HBox fx:id="hboxTags" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
             <VBox prefHeight="214.0" prefWidth="422.0" spacing="20.0">
                <children>
                   <HBox alignment="CENTER">

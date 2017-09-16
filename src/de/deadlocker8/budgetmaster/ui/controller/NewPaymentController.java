@@ -12,6 +12,8 @@ import de.deadlocker8.budgetmaster.logic.payment.RepeatingPayment;
 import de.deadlocker8.budgetmaster.logic.payment.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
+import de.deadlocker8.budgetmaster.logic.serverconnection.ServerTagConnection;
+import de.deadlocker8.budgetmaster.logic.tag.TagHandler;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
@@ -19,6 +21,7 @@ import de.deadlocker8.budgetmaster.ui.Styleable;
 import de.deadlocker8.budgetmaster.ui.cells.ButtonCategoryCell;
 import de.deadlocker8.budgetmaster.ui.cells.RepeatingDayCell;
 import de.deadlocker8.budgetmaster.ui.cells.SmallCategoryCell;
+import de.deadlocker8.budgetmaster.ui.tagField.TagField;
 import fontAwesome.FontIconType;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
@@ -34,6 +37,8 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -58,6 +63,7 @@ public class NewPaymentController extends BaseController implements Styleable
 	@FXML private RadioButton radioButtonDay;
 	@FXML private Label labelText1, labelText2, labelText3;
 	@FXML private TextArea textArea;
+	@FXML private HBox hboxTags;
 
 	private Stage parentStage;
 	private Controller controller;
@@ -98,7 +104,8 @@ public class NewPaymentController extends BaseController implements Styleable
 		}
 	
 		stage.getIcons().add(controller.getIcon());
-		stage.setResizable(false);	
+		stage.setResizable(false);
+		stage.getScene().getStylesheets().add("/de/deadlocker8/budgetmaster/ui/style.css");
 	}
 	
 	@Override
@@ -186,7 +193,7 @@ public class NewPaymentController extends BaseController implements Styleable
 					setStyle("-fx-background-color: #ffc0cb;");
 				}
 			}
-		});
+		});	
 		
 		if(edit)
 		{
@@ -239,6 +246,24 @@ public class NewPaymentController extends BaseController implements Styleable
 				checkBoxRepeat.setSelected(false);
 				radioButtonPeriod.setSelected(true);
 				toggleRepeatingArea(false);
+			}
+			
+			
+			ServerTagConnection s;
+			try
+			{
+				s = new ServerTagConnection(controller.getSettings());
+				TagHandler t = new TagHandler();
+				t.setTags(s.getTags());
+				TagField tagField = new TagField(s.getAllTagsForPayment((NormalPayment)payment), new TagHandler());
+				hboxTags.getChildren().add(tagField);
+				tagField.maxWidthProperty().bind(hboxTags.widthProperty());
+				HBox.setHgrow(tagField, Priority.ALWAYS);
+			}
+			catch(Exception e)
+			{
+				//ERRORHANDLING
+				Logger.error(e);
 			}
 		}
 		else
