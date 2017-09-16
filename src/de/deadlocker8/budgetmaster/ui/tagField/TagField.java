@@ -7,6 +7,7 @@ import org.controlsfx.control.textfield.TextFields;
 import de.deadlocker8.budgetmaster.logic.tag.Tag;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import fontAwesome.FontIconType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -16,27 +17,55 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import tools.ConvertTo;
+import tools.Localization;
 
-public class TagField extends FlowPane
+public class TagField extends VBox
 {
 	private ArrayList<Tag> tags;
 	private ArrayList<Tag> allTags;
+	private FlowPane flowPane;
+	private TextField textField;
 	
-	public TagField(ArrayList<Tag> tags, ArrayList<Tag> allTags)
+	public TagField(ArrayList<Tag> tags, ArrayList<Tag> allAvailableTags)
 	{
 		this.tags = tags;
-		this.allTags = allTags;
-		this.setVgap(5);
-		this.setHgap(5);
-		this.setPadding(new Insets(5));
+		this.allTags = allAvailableTags;
+		
+		this.flowPane = initFlowPane();	
+		this.getChildren().add(flowPane);
+		
+		textField = new TextField();
+		textField.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #000000; -fx-border-width: 1 0 0 0; -fx-background-radius: 5px;");		
+		textField.setPromptText(Localization.getString(Strings.TAGFIELD_PLACEHOLDER));
+		textField.setMaxWidth(Double.MAX_VALUE);
+		textField.setOnKeyPressed((event)->{
+            if(event.getCode().equals(KeyCode.ENTER))
+            {
+            	addTag(textField.getText().trim());
+            }
+	    });
+		TextFields.bindAutoCompletion(textField, param -> getCompletions(allTags));
+		this.getChildren().add(textField);		
+
 		this.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #000000; -fx-background-radius: 5px; -fx-border-radius: 5px");
+		this.setSpacing(5);
 		
 		refresh(false);
 	}
 	
-	private ArrayList<String> getCompletions(ArrayList<Tag> allTags)
+	private FlowPane initFlowPane() 
 	{
+		FlowPane flowPane = new FlowPane();
+		flowPane.setVgap(5);
+		flowPane.setHgap(5);
+		flowPane.setPadding(new Insets(5));
+		return flowPane;
+	}
+	
+	private ArrayList<String> getCompletions(ArrayList<Tag> allTags)
+	{		
 		ArrayList<String> newCompletions = new ArrayList<>();
 		for(Tag currentTag : allTags)
 		{
@@ -63,6 +92,18 @@ public class TagField extends FlowPane
 		return tags;
 	}
 	
+	public void setTags(ArrayList<Tag> tags)
+	{
+		this.tags = tags;
+		refresh(false);
+	}
+
+	public void setAllTags(ArrayList<Tag> allTags)
+	{
+		this.allTags = allTags;
+		refresh(false);
+	}
+
 	public void addTag(String tagName)
 	{
 		if(tagName.equals(""))
@@ -90,26 +131,16 @@ public class TagField extends FlowPane
 	
 	private void refresh(boolean requstFocus)
 	{
-		this.getChildren().clear();
+		flowPane.getChildren().clear();
 		
 		for(Tag currentTag : tags)
 		{
-			this.getChildren().add(generateTag(currentTag));
+			flowPane.getChildren().add(generateTag(currentTag));
 		}
-		
-		TextField textField = new TextField();
-		textField.setMaxWidth(Double.MAX_VALUE);
-		textField.setOnKeyPressed((event)->{
-            if(event.getCode().equals(KeyCode.ENTER))
-            {
-            	addTag(textField.getText().trim());
-            }
-	    });
-		TextFields.bindAutoCompletion(textField, getCompletions(allTags));
-		this.getChildren().add(textField);
 		
 		if(requstFocus)
 		{
+			textField.setText("");
 			textField.requestFocus();
 		}
 	}

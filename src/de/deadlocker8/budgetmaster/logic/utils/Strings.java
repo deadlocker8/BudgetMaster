@@ -64,6 +64,7 @@ public class Strings
     public static final String TRUSTED_HOSTS_PLACEHOLDER = "trusted.hosts.placeholder";
     public static final String VERSION = "version";
     public static final String UNDEFINED = "undefined";
+    public static final String TAGFIELD_PLACEHOLDER = "tagfield.placeholder";
     
     //REPORT
     public static final String REPORT_POSITION = "report.position";

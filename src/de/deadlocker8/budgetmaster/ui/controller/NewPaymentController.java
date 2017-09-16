@@ -13,6 +13,7 @@ import de.deadlocker8.budgetmaster.logic.payment.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerTagConnection;
+import de.deadlocker8.budgetmaster.logic.tag.Tag;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
@@ -75,6 +76,7 @@ public class NewPaymentController extends BaseController implements Styleable
 	private boolean edit;
 	private Payment payment;
 	private ButtonCategoryCell buttonCategoryCell;
+	private TagField tagField;
 	
 	public NewPaymentController(Stage parentStage, Controller controller, PaymentController paymentController, boolean isPayment, boolean edit, Payment payment)
 	{
@@ -113,35 +115,59 @@ public class NewPaymentController extends BaseController implements Styleable
 	
 	@Override
 	public void init()
-	{	
+	{		
 		vboxContent.prefWidthProperty().bind(scrollPane.widthProperty().subtract(25));
 		
-		applyStyle();
+		applyStyle();		
 		
-		SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 0);
-		spinnerRepeatingPeriod.setValueFactory(valueFactory);
-		spinnerRepeatingPeriod.setEditable(true);
-		spinnerRepeatingPeriod.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			if(!newValue)
-			{
-				spinnerRepeatingPeriod.increment(0); // won't change value, but will commit editor
-			}
-		});
-
-		comboBoxRepeatingDay.setCellFactory((view) -> {
-			return new RepeatingDayCell();
-		});
-		ArrayList<Integer> days = new ArrayList<>();
-		for(int i = 1; i <= 31; i++)
+		tagField = new TagField(new ArrayList<Tag>(), new ArrayList<Tag>());
+		hboxTags.getChildren().add(tagField);
+		tagField.maxWidthProperty().bind(hboxTags.widthProperty());
+		HBox.setHgrow(tagField, Priority.ALWAYS);
+		
+		initRepeatingArea();
+		
+		if(edit)
 		{
-			days.add(i);
+			prefill();
 		}
-		comboBoxRepeatingDay.getItems().addAll(days);
+		else
+		{
+			comboBoxCategory.setValue(controller.getCategoryHandler().getCategory(1));
+			checkBoxRepeat.setSelected(false);
+			radioButtonPeriod.setSelected(true);
+			toggleRepeatingArea(false);			
+
+			//preselect correct month and year
+			DateTime currentDate = controller.getCurrentDate();		
+			if(DateTime.now().getDayOfMonth() > currentDate.dayOfMonth().withMaximumValue().getDayOfMonth())
+			{
+				currentDate = currentDate.dayOfMonth().withMaximumValue();				
+			}
+			
+			LocalDate currentLocalDate = LocalDate.now().withYear(currentDate.getYear())
+			.withMonth(currentDate.getMonthOfYear())
+			.withDayOfMonth(currentDate.getDayOfMonth());
+			datePicker.setValue(currentLocalDate);	
+			datePickerEnddate.setValue(currentLocalDate);
+			
+			try
+			{
+				ServerTagConnection serverTagConnection = new ServerTagConnection(controller.getSettings());
+				tagField.setAllTags(serverTagConnection.getTags());
+			}
+			catch(Exception e)
+			{
+				//ERRORHANDLING
+				Logger.error(e);
+			}
+		}
 		
-		comboBoxCategory.setCellFactory((view) -> {
-			return new SmallCategoryCell();
-		});
-		comboBoxRepeatingDay.setValue(1);
+		datePicker.setEditable(false);
+	}
+	
+	private void initComboBoxCategory()
+	{
 		buttonCategoryCell = new ButtonCategoryCell(Color.WHITE);
 		comboBoxCategory.setButtonCell(buttonCategoryCell);
 		comboBoxCategory.setStyle("-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 5;");
@@ -149,11 +175,10 @@ public class NewPaymentController extends BaseController implements Styleable
 			comboBoxCategory.setStyle("-fx-background-color: " + newValue.getColor() + "; -fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 5;");
 			buttonCategoryCell.setColor(Color.web(newValue.getColor()));
 		});
-
-		checkBoxRepeat.selectedProperty().addListener((listener, oldValue, newValue) -> {
-			toggleRepeatingArea(newValue);
+		comboBoxCategory.setCellFactory((view) -> {
+			return new SmallCategoryCell();
 		});
-
+		
 		comboBoxCategory.getItems().clear();
 		try
 		{
@@ -167,8 +192,7 @@ public class NewPaymentController extends BaseController implements Styleable
 					{
 						comboBoxCategory.getItems().add(currentCategory);
 					}
-				}
-					
+				}					
 			}
 		}
 		catch(Exception e)
@@ -177,6 +201,17 @@ public class NewPaymentController extends BaseController implements Styleable
 			getStage().close();
 			return;
 		}
+	}
+	
+	private void initRepeatingArea() 
+	{
+		checkBoxRepeat.selectedProperty().addListener((listener, oldValue, newValue) -> {
+			toggleRepeatingArea(newValue);
+		});		
+		
+		initSpinnerRepeatingPeriod();
+		initComboBoxRepeatingDay();		
+		initComboBoxCategory();		
 
 		final ToggleGroup toggleGroup = new ToggleGroup();
 		radioButtonPeriod.setToggleGroup(toggleGroup);
@@ -198,22 +233,55 @@ public class NewPaymentController extends BaseController implements Styleable
 					setStyle("-fx-background-color: #ffc0cb;");
 				}
 			}
-		});	
-		
-		if(edit)
-		{
-			//prefill
-			textFieldName.setText(payment.getName());
-			textFieldAmount.setText(Helpers.NUMBER_FORMAT.format(Math.abs(payment.getAmount()/100.0)).replace(".", ","));		
-			comboBoxCategory.setValue(controller.getCategoryHandler().getCategory(payment.getCategoryID()));
-			datePicker.setValue(LocalDate.parse(payment.getDate()));
-			textArea.setText(payment.getDescription());
-			
-			if(payment instanceof RepeatingPaymentEntry)
+		});
+	}
+	
+	private void initSpinnerRepeatingPeriod()
+	{
+		SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 0);
+		spinnerRepeatingPeriod.setValueFactory(valueFactory);
+		spinnerRepeatingPeriod.setEditable(true);
+		spinnerRepeatingPeriod.focusedProperty().addListener((observable, oldValue, newValue) -> {
+			if(!newValue)
 			{
+				spinnerRepeatingPeriod.increment(0); // won't change value, but will commit editor
+			}
+		});		
+	}
+	
+	private void initComboBoxRepeatingDay()	
+	{		
+		comboBoxRepeatingDay.setCellFactory((view) -> {
+			return new RepeatingDayCell();
+		});
+		ArrayList<Integer> days = new ArrayList<>();
+		for(int i = 1; i <= 31; i++)
+		{
+			days.add(i);
+		}
+		comboBoxRepeatingDay.getItems().addAll(days);		
+		comboBoxRepeatingDay.setValue(1);		
+	}
+	
+	private void prefill()
+	{
+		textFieldName.setText(payment.getName());
+		textFieldAmount.setText(Helpers.NUMBER_FORMAT.format(Math.abs(payment.getAmount()/100.0)).replace(".", ","));		
+		comboBoxCategory.setValue(controller.getCategoryHandler().getCategory(payment.getCategoryID()));
+		datePicker.setValue(LocalDate.parse(payment.getDate()));
+		textArea.setText(payment.getDescription());
+		
+		try
+		{
+			ServerTagConnection serverTagConnection = new ServerTagConnection(controller.getSettings());			
+			tagField.setAllTags(serverTagConnection.getTags());		
+		
+			if(payment instanceof RepeatingPaymentEntry)
+			{				
 				try
 				{					
 					RepeatingPaymentEntry currentPayment = (RepeatingPaymentEntry)payment;
+					tagField.setTags(serverTagConnection.getAllTagsForRepeatingPayment(currentPayment));
 					
 					ServerConnection connection = new ServerConnection(controller.getSettings());
 					RepeatingPayment repeatingPayment = connection.getRepeatingPayment(currentPayment.getRepeatingPaymentID());
@@ -247,50 +315,18 @@ public class NewPaymentController extends BaseController implements Styleable
 				}
 			}	
 			else
-			{				
+			{
+				tagField.setTags(serverTagConnection.getAllTagsForPayment((NormalPayment)payment));
 				checkBoxRepeat.setSelected(false);
 				radioButtonPeriod.setSelected(true);
 				toggleRepeatingArea(false);
-			}
-			
-			
-			ServerTagConnection s;
-			try
-			{
-				s = new ServerTagConnection(controller.getSettings());
-				TagField tagField = new TagField(s.getAllTagsForPayment((NormalPayment)payment), s.getTags());
-				hboxTags.getChildren().add(tagField);
-				tagField.maxWidthProperty().bind(hboxTags.widthProperty());
-				HBox.setHgrow(tagField, Priority.ALWAYS);
-			}
-			catch(Exception e)
-			{
-				//ERRORHANDLING
-				Logger.error(e);
-			}
-		}
-		else
+			}	
+		}		
+		catch(Exception e)
 		{
-			comboBoxCategory.setValue(controller.getCategoryHandler().getCategory(1));
-			checkBoxRepeat.setSelected(false);
-			radioButtonPeriod.setSelected(true);
-			toggleRepeatingArea(false);			
-
-			//preselect correct month and year
-			DateTime currentDate = controller.getCurrentDate();		
-			if(DateTime.now().getDayOfMonth() > currentDate.dayOfMonth().withMaximumValue().getDayOfMonth())
-			{
-				currentDate = currentDate.dayOfMonth().withMaximumValue();				
-			}
-			
-			LocalDate currentLocalDate = LocalDate.now().withYear(currentDate.getYear())
-			.withMonth(currentDate.getMonthOfYear())
-			.withDayOfMonth(currentDate.getDayOfMonth());
-			datePicker.setValue(currentLocalDate);	
-			datePickerEnddate.setValue(currentLocalDate);
+			//ERRORHANDLING
+			Logger.error(e);
 		}
-		
-		datePicker.setEditable(false);
 	}
 
 	public void save()

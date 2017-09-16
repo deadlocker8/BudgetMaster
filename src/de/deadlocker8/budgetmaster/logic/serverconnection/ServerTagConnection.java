@@ -19,6 +19,7 @@ import com.google.gson.reflect.TypeToken;
 import de.deadlocker8.budgetmaster.logic.Settings;
 import de.deadlocker8.budgetmaster.logic.payment.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.payment.RepeatingPayment;
+import de.deadlocker8.budgetmaster.logic.payment.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmaster.logic.tag.Tag;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import tools.Read;
@@ -267,7 +268,7 @@ public class ServerTagConnection
 		}
 	}
 	
-	public ArrayList<Tag> getAllTagsForRepeatingPayment(RepeatingPayment repeatingPayment) throws Exception
+	public ArrayList<Tag> getAllTagsForRepeatingPayment(RepeatingPaymentEntry repeatingPayment) throws Exception
 	{
 		URL url = new URL(settings.getUrl() + "/tag/match/all/normal?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&repeatingPaymentID=" + repeatingPayment.getID());
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
