@@ -59,6 +59,7 @@ public class TagField extends VBox
 	{
 		FlowPane flowPane = new FlowPane();
 		flowPane.setVgap(5);
+		flowPane.setMinHeight(20);
 		flowPane.setHgap(5);
 		flowPane.setPadding(new Insets(5));
 		return flowPane;

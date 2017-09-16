@@ -157,9 +157,9 @@ public class NewPaymentController extends BaseController implements Styleable
 				tagField.setAllTags(serverTagConnection.getTags());
 			}
 			catch(Exception e)
-			{
-				//ERRORHANDLING
+			{				
 				Logger.error(e);
+				controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 			}
 		}
 		
@@ -323,10 +323,22 @@ public class NewPaymentController extends BaseController implements Styleable
 			}	
 		}		
 		catch(Exception e)
-		{
-			//ERRORHANDLING
+		{			
 			Logger.error(e);
+			controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 		}
+	}
+	
+	private void showWarning(String message)
+	{
+		AlertGenerator.showAlert(AlertType.WARNING,
+				                Localization.getString(Strings.TITLE_WARNING),
+				                "", 
+				                message, 
+				                controller.getIcon(), 
+				                controller.getStage(), 
+				                null, 
+				                false);
 	}
 
 	public void save()
@@ -334,55 +346,27 @@ public class NewPaymentController extends BaseController implements Styleable
 		String name = textFieldName.getText();
 		if(name == null || name.equals(""))
 		{
-			AlertGenerator.showAlert(AlertType.WARNING,
-			                        Localization.getString(Strings.TITLE_WARNING),
-			                        "", 
-			                        Localization.getString(Strings.WARNING_EMPTY_PAYMENT_NAME), 
-			                        controller.getIcon(), 
-			                        controller.getStage(), 
-			                        null, 
-			                        false);
+			showWarning(Localization.getString(Strings.WARNING_EMPTY_PAYMENT_NAME));			
 			return;
 		}
 		
 		if(name.length() > 150)
 		{
-			AlertGenerator.showAlert(AlertType.WARNING,
-			                        Localization.getString(Strings.TITLE_WARNING),
-			                        "", 
-			                        Localization.getString(Strings.WARNING_NAME_CHARACTER_LIMIT_REACHED_150), 
-			                        controller.getIcon(), 
-			                        controller.getStage(), 
-			                        null, 
-			                        false);
+			showWarning(Localization.getString(Strings.WARNING_NAME_CHARACTER_LIMIT_REACHED_150));			
 			return;
 		}
 
 		String amountText = textFieldAmount.getText();
 		if(!amountText.matches("^-?\\d+(,\\d+)*(\\.\\d+(e\\d+)?)?$"))
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, 
-			                        Localization.getString(Strings.TITLE_WARNING),
-			                        "",
-			                        Localization.getString(Strings.WARNING_PAYMENT_AMOUNT),
-			                        controller.getIcon(),
-			                        controller.getStage(),
-			                        null,
-			                        false);
+			showWarning(Localization.getString(Strings.WARNING_PAYMENT_AMOUNT));
 			return;
 		}
 
 		LocalDate date = datePicker.getValue();
 		if(date == null)
 		{
-			AlertGenerator.showAlert(AlertType.WARNING,
-                			        Localization.getString(Strings.TITLE_WARNING),
-                			        "",
-                			        Localization.getString(Strings.WARNING_EMPTY_PAYMENT_DATE),
-                			        controller.getIcon(),
-                			        controller.getStage(),
-                			        null,
-                			        false);
+			showWarning(Localization.getString(Strings.WARNING_EMPTY_PAYMENT_DATE));
 			return;
 		}
 
@@ -398,14 +382,7 @@ public class NewPaymentController extends BaseController implements Styleable
 		{
 			if(description.length() > 150)
 			{
-				AlertGenerator.showAlert(AlertType.WARNING,
-				                        Localization.getString(Strings.TITLE_WARNING),
-				                        "",
-				                        Localization.getString(Strings.WARNING_DESCRIPTION_CHARACTER_LIMIT_REACHED_150),
-				                        controller.getIcon(),
-				                        controller.getStage(),
-				                        null,
-				                        false);
+				showWarning(Localization.getString(Strings.WARNING_DESCRIPTION_CHARACTER_LIMIT_REACHED_150));				
 				return;
 			}
 		}
@@ -429,27 +406,13 @@ public class NewPaymentController extends BaseController implements Styleable
 
 			if(repeatingInterval == 0 && repeatingDay == 0)
 			{
-				AlertGenerator.showAlert(AlertType.WARNING,
-				        Localization.getString(Strings.TITLE_WARNING),
-				        "",
-				        Localization.getString(Strings.WARNING_PAYMENT_REPEATING),				       
-				        controller.getIcon(),
-				        controller.getStage(),
-				        null,
-				        false);
+				showWarning(Localization.getString(Strings.WARNING_PAYMENT_REPEATING));
 				return;
 			}
 
 			if(datePickerEnddate.getValue() != null && datePickerEnddate.getValue().isBefore(date))
 			{
-				AlertGenerator.showAlert(AlertType.WARNING, 
-				                        Localization.getString(Strings.TITLE_WARNING),
-				                        "",
-				                        Localization.getString(Strings.WARNING_ENDDATE_BEFORE_STARTDATE),
-				                        controller.getIcon(),
-				                        controller.getStage(),
-				                        null,
-				                        false);
+				showWarning(Localization.getString(Strings.WARNING_ENDDATE_BEFORE_STARTDATE));				
 				return;
 			}			
 
