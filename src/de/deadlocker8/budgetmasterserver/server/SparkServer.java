@@ -21,6 +21,7 @@ import de.deadlocker8.budgetmaster.logic.updater.VersionInformation;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmasterserver.logic.Settings;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
+import de.deadlocker8.budgetmasterserver.logic.database.DatabaseTagHandler;
 import de.deadlocker8.budgetmasterserver.server.category.CategoryAdd;
 import de.deadlocker8.budgetmasterserver.server.category.CategoryDelete;
 import de.deadlocker8.budgetmasterserver.server.category.CategoryGet;
@@ -42,6 +43,16 @@ import de.deadlocker8.budgetmasterserver.server.payment.repeating.RepeatingPayme
 import de.deadlocker8.budgetmasterserver.server.payment.repeating.RepeatingPaymentGetAll;
 import de.deadlocker8.budgetmasterserver.server.payment.search.PaymentSearch;
 import de.deadlocker8.budgetmasterserver.server.rest.RestGet;
+import de.deadlocker8.budgetmasterserver.server.tag.match.TagMatchAddForPayment;
+import de.deadlocker8.budgetmasterserver.server.tag.match.TagMatchAddForRepeatingPayment;
+import de.deadlocker8.budgetmasterserver.server.tag.match.TagMatchDeleteForPayment;
+import de.deadlocker8.budgetmasterserver.server.tag.match.TagMatchDeleteForRepeatingPayment;
+import de.deadlocker8.budgetmasterserver.server.tag.match.TagMatchExistingForPayment;
+import de.deadlocker8.budgetmasterserver.server.tag.match.TagMatchExistingForRepeatingPayment;
+import de.deadlocker8.budgetmasterserver.server.tag.tag.TagAdd;
+import de.deadlocker8.budgetmasterserver.server.tag.tag.TagDelete;
+import de.deadlocker8.budgetmasterserver.server.tag.tag.TagGet;
+import de.deadlocker8.budgetmasterserver.server.tag.tag.TagGetAll;
 import de.deadlocker8.budgetmasterserver.server.updater.RepeatingPaymentUpdater;
 import de.deadlocker8.budgetmasterserver.server.version.VersionGet;
 import logger.Logger;
@@ -122,9 +133,23 @@ public class SparkServer
 		// Rest
 		get("/rest", new RestGet(handler, gson));		
 
-		//charts
+		// charts
 		get("/charts/categoryInOutSum", new CategoryInOutSumForMonth(handler, gson));
 		get("/charts/monthInOutSum", new MonthInOutSum(handler, gson));
+		
+		// tag
+		get("/tag/single", new TagGet(new DatabaseTagHandler(settings), gson));
+		get("/tag", new TagGetAll(new DatabaseTagHandler(settings), gson));
+		post("/tag", new TagAdd(new DatabaseTagHandler(settings)));
+		delete("/tag", new TagDelete(new DatabaseTagHandler(settings)));
+		
+		// tag match
+		get("/tag/match/normal", new TagMatchExistingForPayment(new DatabaseTagHandler(settings), gson));
+		get("/tag/match/repeating", new TagMatchExistingForRepeatingPayment(new DatabaseTagHandler(settings), gson));
+		post("/tag/match/normal", new TagMatchAddForPayment(new DatabaseTagHandler(settings)));
+		post("/tag/match/repeating", new TagMatchAddForRepeatingPayment(new DatabaseTagHandler(settings)));
+		delete("/tag/match/normal", new TagMatchDeleteForPayment(new DatabaseTagHandler(settings)));
+		delete("/tag/match/repeating", new TagMatchDeleteForRepeatingPayment(new DatabaseTagHandler(settings)));
 
 		// Database
 		get("/database", new DatabaseExport(settings, gson));

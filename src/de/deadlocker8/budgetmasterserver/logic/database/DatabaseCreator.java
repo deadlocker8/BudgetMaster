@@ -64,6 +64,16 @@ public class DatabaseCreator
 		{
 			createTableRepeatingEntry();
 		}
+		
+		if(!existingTables.contains("tag"))
+		{
+			createTableTag();
+		}
+		
+		if(!existingTables.contains("tag_match"))
+		{
+			createTableTagMatch();
+		}
 	}
 	
 	private void createTableCategory()
@@ -115,9 +125,9 @@ public class DatabaseCreator
 					 "`Amount` int(11) DEFAULT NULL COMMENT 'amount in cents'," +
 					 "`Date` date DEFAULT NULL COMMENT 'payment date',"	 +
 					 "`Description` varchar(150) DEFAULT NULL COMMENT 'optional description'" +
-					 ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";			
-		String query2 = "ALTER TABLE `payment` ADD PRIMARY KEY (`ID`);";		
-		String query3 = "ALTER TABLE `payment` MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID';";	
+					 ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";		
+		String query2 = "ALTER TABLE `payment` ADD PRIMARY KEY (`ID`);";
+		String query3 = "ALTER TABLE `payment` MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID';";
 		
 		try
 		{
@@ -210,6 +220,77 @@ public class DatabaseCreator
 			stmt.execute(query2);
 			stmt.execute(query3);
 			Logger.info("Successfully created table repeating_payment");
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+	}
+	
+	private void createTableTag()
+	{
+		Statement stmt = null;
+		String query = "CREATE TABLE `tag` (`ID` int(11) NOT NULL COMMENT 'ID'," + 
+		"  `Name` varchar(45) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Name'" + 
+		") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+		String query2 = "ALTER TABLE `tag` ADD PRIMARY KEY (`ID`);";
+		String query3 = "ALTER TABLE `tag` MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID';";
+		
+		try
+		{
+			stmt = connection.createStatement();
+			stmt.execute(query);
+			stmt.execute(query2);
+			stmt.execute(query3);
+			Logger.info("Successfully created table tag");
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				try
+				{
+					stmt.close();
+				}
+				catch(SQLException e)
+				{
+				}
+			}
+		}
+	}
+	
+	private void createTableTagMatch()
+	{
+		Statement stmt = null;
+		String query = "CREATE TABLE `tag_match` (`Tag_ID` int(11) NOT NULL," + 
+				"`Payment_ID` int(11) NOT NULL," +
+				"`RepeatingPayment_ID` int(11) NOT NULL" +
+				") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";		
+		String query2 = "ALTER TABLE `tag_match` ADD KEY `Tag_ID` (`Tag_ID`), ADD KEY `Payment_ID` (`Payment_ID`), ADD KEY `RepeatingPayment_ID` (`RepeatingPayment_ID`);";
+		
+		try
+		{
+			stmt = connection.createStatement();
+			stmt.execute(query);
+			stmt.execute(query2);
+			Logger.info("Successfully created table tag_match");
 		}
 		catch(SQLException e)
 		{
