@@ -32,6 +32,7 @@ import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextArea;
@@ -39,6 +40,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -49,6 +51,8 @@ import tools.Localization;
 
 public class NewPaymentController extends BaseController implements Styleable
 {
+	@FXML private ScrollPane scrollPane;
+	@FXML private VBox vboxContent;
 	@FXML private TextField textFieldName;
 	@FXML private TextField textFieldAmount;
 	@FXML private Button buttonCancel;
@@ -111,6 +115,8 @@ public class NewPaymentController extends BaseController implements Styleable
 	@Override
 	public void init()
 	{	
+		vboxContent.prefWidthProperty().bind(scrollPane.widthProperty().subtract(25));
+		
 		applyStyle();
 		
 		SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 0);
@@ -544,6 +550,7 @@ public class NewPaymentController extends BaseController implements Styleable
 		buttonCancel.setGraphic(Helpers.getFontIcon(FontIconType.TIMES, 17, Color.WHITE));
 		buttonSave.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 17, Color.WHITE));
 
+		scrollPane.setStyle("-fx-background-color: transparent");
 		buttonCancel.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
 		buttonSave.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
 	}
