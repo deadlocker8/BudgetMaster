@@ -13,7 +13,6 @@ import de.deadlocker8.budgetmaster.logic.payment.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerTagConnection;
-import de.deadlocker8.budgetmaster.logic.tag.TagHandler;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
@@ -259,9 +258,7 @@ public class NewPaymentController extends BaseController implements Styleable
 			try
 			{
 				s = new ServerTagConnection(controller.getSettings());
-				TagHandler t = new TagHandler();
-				t.setTags(s.getTags());
-				TagField tagField = new TagField(s.getAllTagsForPayment((NormalPayment)payment), new TagHandler());
+				TagField tagField = new TagField(s.getAllTagsForPayment((NormalPayment)payment), s.getTags());
 				hboxTags.getChildren().add(tagField);
 				tagField.maxWidthProperty().bind(hboxTags.widthProperty());
 				HBox.setHgrow(tagField, Priority.ALWAYS);
@@ -544,6 +541,7 @@ public class NewPaymentController extends BaseController implements Styleable
 		comboBoxRepeatingDay.setDisable(selected);
 		labelText3.setDisable(selected);
 	}
+	
 	@Override
 	public void applyStyle()
 	{

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.controlsfx.control.textfield.TextFields;
 
 import de.deadlocker8.budgetmaster.logic.tag.Tag;
-import de.deadlocker8.budgetmaster.logic.tag.TagHandler;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import fontAwesome.FontIconType;
@@ -22,26 +21,46 @@ import tools.ConvertTo;
 public class TagField extends FlowPane
 {
 	private ArrayList<Tag> tags;
-	private TextField textField;
+	private ArrayList<Tag> allTags;
 	
-	public TagField(ArrayList<Tag> tags, TagHandler tagHandler)
+	public TagField(ArrayList<Tag> tags, ArrayList<Tag> allTags)
 	{
 		this.tags = tags;
+		this.allTags = allTags;
 		this.setVgap(5);
 		this.setHgap(5);
 		this.setPadding(new Insets(5));
 		this.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #000000; -fx-background-radius: 5px; -fx-border-radius: 5px");
 		
-		textField = new TextField();
-		textField.setMaxWidth(Double.MAX_VALUE);
-		textField.setOnKeyPressed((event)->{
-            if(event.getCode().equals(KeyCode.ENTER))
-            {
-            	addTag(textField.getText().trim());
-            }
-	    });
-		
 		refresh(false);
+	}
+	
+	private ArrayList<String> getCompletions(ArrayList<Tag> allTags)
+	{
+		ArrayList<String> newCompletions = new ArrayList<>();
+		for(Tag currentTag : allTags)
+		{
+			boolean isAlreadyInList = false;
+			for(Tag paymentTag : tags)
+			{
+				if(currentTag.getName().equals(paymentTag.getName()))
+				{
+					isAlreadyInList = true;
+				}
+			}
+			
+			if(!isAlreadyInList)
+			{
+				newCompletions.add(currentTag.getName());
+			}
+		}
+		
+		return newCompletions;
+	}
+	
+	public ArrayList<Tag> getTags()
+	{
+		return tags;
 	}
 	
 	public void addTag(String tagName)
@@ -55,13 +74,11 @@ public class TagField extends FlowPane
 		{
 			if(currentTag.getName().equals(tagName))
 			{
-				textField.setText("");
 				return;
 			}
 		}
 		
-		tags.add(new Tag(-1, tagName));
-		textField.setText("");
+		tags.add(new Tag(-1, tagName));	
 		refresh(true);
 	}
 	
@@ -79,12 +96,17 @@ public class TagField extends FlowPane
 		{
 			this.getChildren().add(generateTag(currentTag));
 		}
-	
-		ArrayList<String> test = new ArrayList<>();		
-		test.add("apfel");
-		test.add("baum");
-		TextFields.bindAutoCompletion(textField, test);
-		this.getChildren().add(textField);	
+		
+		TextField textField = new TextField();
+		textField.setMaxWidth(Double.MAX_VALUE);
+		textField.setOnKeyPressed((event)->{
+            if(event.getCode().equals(KeyCode.ENTER))
+            {
+            	addTag(textField.getText().trim());
+            }
+	    });
+		TextFields.bindAutoCompletion(textField, getCompletions(allTags));
+		this.getChildren().add(textField);
 		
 		if(requstFocus)
 		{
@@ -97,7 +119,7 @@ public class TagField extends FlowPane
 		HBox hboxTag = new HBox();
 		hboxTag.setSpacing(5);
 		hboxTag.setAlignment(Pos.CENTER_LEFT);
-		hboxTag.setPadding(new Insets(0, 5, 0, 5));
+		hboxTag.setPadding(new Insets(0, 3, 0, 7));
 		hboxTag.setStyle("-fx-background-color: #cccccc; -fx-background-radius: 5px;");
 		
 		Label labelTagName = new Label(tag.getName());
