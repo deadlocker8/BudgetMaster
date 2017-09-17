@@ -35,6 +35,7 @@ public class Strings
     public static final String TITLE_DATABASE_EXPORT = "title.database.export";
     public static final String TITLE_DATABASE_IMPORT = "title.database.import";
     public static final String TITLE_DATEPICKER = "title.datepicker";
+    public static final String TITLE_TAGS = "title.tags";
     
     //LOAD
     public static final String LOAD_CHARTS = "load.charts";
@@ -148,6 +149,7 @@ public class Strings
     public static final String INFO_TITLE_START_AFTER_UPDATE = "info.title.start.after.update";
     public static final String INFO_HEADER_TEXT_START_AFTER_UPDATE = "info.header.text.start.after.update";
     public static final String INFO_TEXT_START_AFTER_UPDATE = "info.text.start.after.update";
+    public static final String INFO_TAGS = "info.tags";
         
     //WARNING
     public static final String WARNING_ENDDATE_BEFORE_STARTDATE = "warning.enddate.before.startdate";

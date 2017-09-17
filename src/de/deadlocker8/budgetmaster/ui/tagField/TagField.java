@@ -17,10 +17,12 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import tools.AlertGenerator;
@@ -31,7 +33,7 @@ public class TagField extends VBox
 {
 	private ArrayList<Tag> tags;
 	private ArrayList<Tag> allTags;
-	private FlowPane flowPane;
+	private HBox hboxTags;
 	private TextField textField;
 	private NewPaymentController parentController; 
 	
@@ -41,11 +43,18 @@ public class TagField extends VBox
 		this.allTags = allAvailableTags;
 		this.parentController = parentController;
 		
-		this.flowPane = initFlowPane();	
-		this.getChildren().add(flowPane);
+		this.hboxTags = initHboxTags();	
+		ScrollPane scrollPane = new ScrollPane();
+		scrollPane.setContent(hboxTags);
+		scrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
+		scrollPane.setMinHeight(50);
+		scrollPane.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 5px; -fx-border-color: #000000; -fx-border-width: 1 1 0 1; -fx-border-radius: 5px 5px 0 0");
+
+		this.getChildren().add(scrollPane);
+		VBox.setVgrow(scrollPane, Priority.ALWAYS);
 		
 		textField = new TextField();
-		textField.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #000000; -fx-border-width: 1 0 0 0; -fx-background-radius: 5px;");		
+		textField.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #000000; -fx-border-width: 1; -fx-background-radius: 5px; -fx-border-radius: 0 0 5px 5px");		
 		textField.setPromptText(Localization.getString(Strings.TAGFIELD_PLACEHOLDER));
 		textField.setMaxWidth(Double.MAX_VALUE);
 		textField.setOnKeyPressed((event)->{
@@ -53,11 +62,15 @@ public class TagField extends VBox
             {
             	addTag(textField.getText().trim());
             }
+            else if(event.getCode().equals(KeyCode.DOWN))
+            {
+            	textField.setText(" ");
+            	textField.setText("");
+            }
 	    });
 		
 		TextFields.bindAutoCompletion(textField, new Callback<AutoCompletionBinding.ISuggestionRequest, Collection<String>>()
 		{
-
 			@Override
 			public Collection<String> call(org.controlsfx.control.textfield.AutoCompletionBinding.ISuggestionRequest param)
 			{
@@ -76,20 +89,18 @@ public class TagField extends VBox
 		});
 		this.getChildren().add(textField);		
 
-		this.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #000000; -fx-background-radius: 5px; -fx-border-radius: 5px");
-		this.setSpacing(5);
+		this.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 5px;");
 		
 		refresh(false);
 	}
 	
-	private FlowPane initFlowPane() 
+	private HBox initHboxTags() 
 	{
-		FlowPane flowPane = new FlowPane();
-		flowPane.setVgap(5);
-		flowPane.setMinHeight(30);
-		flowPane.setHgap(5);
-		flowPane.setPadding(new Insets(5));
-		return flowPane;
+		HBox newHboxTags = new HBox();
+		newHboxTags.setSpacing(5);
+		newHboxTags.setPadding(new Insets(5));
+		newHboxTags.setStyle("-fx-background-color: transparent");		
+		return newHboxTags;
 	}
 	
 	private ArrayList<String> getCompletions(ArrayList<Tag> allTags)
@@ -172,11 +183,11 @@ public class TagField extends VBox
 	
 	private void refresh(boolean requstFocus)
 	{
-		flowPane.getChildren().clear();
+		hboxTags.getChildren().clear();
 		
 		for(Tag currentTag : tags)
 		{
-			flowPane.getChildren().add(generateTag(currentTag));
+			hboxTags.getChildren().add(generateTag(currentTag));
 		}
 		
 		if(requstFocus)

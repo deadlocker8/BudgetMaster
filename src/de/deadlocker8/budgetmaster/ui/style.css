@@ -92,3 +92,7 @@
   -fx-opacity: 0.6;
   -fx-cursor: hand;
 }
+
+.scroll-pane > .viewport {
+   -fx-background-color: transparent;
+}

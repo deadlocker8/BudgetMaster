@@ -24,6 +24,7 @@ import de.deadlocker8.budgetmaster.ui.cells.SmallCategoryCell;
 import de.deadlocker8.budgetmaster.ui.tagField.TagField;
 import fontAwesome.FontIconType;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -68,6 +69,7 @@ public class NewPaymentController extends BaseController implements Styleable
 	@FXML private Label labelText1, labelText2, labelText3;
 	@FXML private TextArea textArea;
 	@FXML private HBox hboxTags;
+	@FXML private Button buttonTagsHelp;
 
 	private Stage parentStage;
 	private Controller controller;
@@ -543,6 +545,18 @@ public class NewPaymentController extends BaseController implements Styleable
 	{
 		getStage().close();
 	}
+	
+	@FXML
+	public void showTagsHelp()
+	{
+		AlertGenerator.showAlert(AlertType.INFORMATION, 
+								Localization.getString(Strings.TITLE_TAGS), 
+								"", 
+								Localization.getString(Strings.INFO_TAGS), 
+								controller.getIcon(), 
+								getStage(), 
+								null, false);
+	}
 
 	private void toggleRepeatingArea(boolean selected)
 	{
@@ -645,10 +659,16 @@ public class NewPaymentController extends BaseController implements Styleable
 	@Override
 	public void applyStyle()
 	{
+		buttonTagsHelp.setGraphic(Helpers.getFontIcon(FontIconType.QUESTION, 13, Colors.TEXT));
 		buttonCancel.setGraphic(Helpers.getFontIcon(FontIconType.TIMES, 17, Color.WHITE));
 		buttonSave.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 17, Color.WHITE));
 
 		scrollPane.setStyle("-fx-background-color: transparent");
+		buttonTagsHelp.setStyle("-fx-background-color: transparent; -fx-border-radius: 50%; -fx-border-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
+		buttonTagsHelp.getStyleClass().add("button-hoverable");
+		buttonTagsHelp.setPrefWidth(18);
+		buttonTagsHelp.setPrefHeight(18);
+		buttonTagsHelp.setPadding(new Insets(0));
 		buttonCancel.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
 		buttonSave.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
 	}

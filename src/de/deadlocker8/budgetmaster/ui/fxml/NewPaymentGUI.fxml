@@ -107,11 +107,16 @@
                   </HBox>
                   <HBox prefHeight="30.0" prefWidth="465.0">
                      <children>
-                        <Label prefHeight="29.0" prefWidth="125.0" text="%payment.new.label.tags">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                        </Label>
+                        <VBox>
+                           <children>
+                              <Label prefHeight="29.0" prefWidth="125.0" text="%payment.new.label.tags">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="buttonTagsHelp" mnemonicParsing="false" onAction="#showTagsHelp" />
+                           </children>
+                        </VBox>
                         <HBox fx:id="hboxTags" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
