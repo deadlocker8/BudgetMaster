@@ -10,6 +10,7 @@ public class ReportItem
 	private Category category;
 	private String name;
 	private String description;
+	private String tags;
 	private boolean repeating;
 
 	public ReportItem()
@@ -75,6 +76,16 @@ public class ReportItem
 	public void setDescription(String description)
 	{
 		this.description = description;
+	}	
+
+	public String getTags()
+	{
+		return tags;
+	}
+
+	public void setTags(String tags)
+	{
+		this.tags = tags;
 	}
 
 	public boolean getRepeating()
@@ -90,6 +101,6 @@ public class ReportItem
 	@Override
 	public String toString()
 	{
-		return "ReportItem [position=" + position + ", amount=" + amount + ", date=" + date + ", category=" + category + ", name=" + name + ", description=" + description + ", isRepeating=" + repeating + "]";
+		return "ReportItem [position=" + position + ", amount=" + amount + ", date=" + date + ", category=" + category + ", name=" + name + ", description=" + description + ", tags=" + tags + ", repeating=" + repeating + "]";
 	}
 }

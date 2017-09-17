@@ -73,6 +73,7 @@ public class Strings
     public static final String REPORT_CATEGORY = "report.category";
     public static final String REPORT_NAME = "report.name";
     public static final String REPORT_DESCRIPTION = "report.description";
+    public static final String REPORT_TAGS = "report.tags";
     public static final String REPORT_RATING = "report.rating";
     public static final String REPORT_AMOUNT = "report.amount";
     public static final String REPORT_HEADLINE = "report.headline";

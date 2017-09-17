@@ -25,6 +25,7 @@ import de.deadlocker8.budgetmaster.logic.report.ReportGenerator;
 import de.deadlocker8.budgetmaster.logic.report.ReportItem;
 import de.deadlocker8.budgetmaster.logic.report.ReportPreferences;
 import de.deadlocker8.budgetmaster.logic.report.ReportSorting;
+import de.deadlocker8.budgetmaster.logic.tag.TagHandler;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
@@ -89,6 +90,7 @@ public class ReportController implements Refreshable, Styleable
 	private TableColumn<ReportItem, String> columnCategory;
 	private TableColumn<ReportItem, Integer> columnName;
 	private TableColumn<ReportItem, String> columnDescription;
+	private TableColumn<ReportItem, String> columnTags;
 	private TableColumn<ReportItem, Integer> columnRating;
 	private TableColumn<ReportItem, String> columnAmount;
 
@@ -174,6 +176,15 @@ public class ReportController implements Refreshable, Styleable
 				{
 					columnIsRepeating.setSortType(sortType);
 					tableView.getSortOrder().add(columnIsRepeating);
+				}
+				break;
+			case TAGS:
+				initColumnTags(activated);
+				toggleColumn(columnTags, activated);
+				if(sortType != null)
+				{
+					columnTags.setSortType(sortType);
+					tableView.getSortOrder().add(columnTags);
 				}
 				break;
 			default:
@@ -393,6 +404,31 @@ public class ReportController implements Refreshable, Styleable
         columnDescription.setGraphic(hboxColumnDescription);
         tableView.getColumns().add(columnDescription);
 	}
+
+	private void initColumnTags(boolean activated)
+	{
+	    columnTags = new TableColumn<>();
+	    columnTags.setUserData(ColumnType.TAGS);
+	    columnTags.setCellValueFactory(new PropertyValueFactory<ReportItem, String>("tags"));
+	    columnTags.setStyle("-fx-alignment: CENTER;");
+        
+        HBox hboxColumnTags = new HBox();
+        hboxColumnTags.setAlignment(Pos.CENTER);
+        hboxColumnTags.setSpacing(3); 
+        
+        CheckBox checkBoxTags = new CheckBox();
+        hboxColumnTags.getChildren().add(checkBoxTags);
+        
+        Label labelColumnTags = new Label(Localization.getString(Strings.REPORT_TAGS));
+        hboxColumnTags.getChildren().add(labelColumnTags);        
+        
+        checkBoxTags.selectedProperty().addListener((a, b, c)->{
+        	 toggleColumn(columnTags, c);
+        });
+        checkBoxTags.setSelected(activated);
+        columnTags.setGraphic(hboxColumnTags);
+        tableView.getColumns().add(columnTags);
+	}
 	
 	private void initColumnRating(boolean activated)
 	{
@@ -487,6 +523,8 @@ public class ReportController implements Refreshable, Styleable
 	private ArrayList<ReportItem> createReportItems(ArrayList<Payment> payments)
 	{
 		ArrayList<ReportItem> reportItems = new ArrayList<>();
+		TagHandler tagHander = new TagHandler(controller.getSettings());
+		
 		for(int i = 0; i < payments.size(); i++)
 		{
 			Payment currentPayment = payments.get(i);
@@ -494,10 +532,20 @@ public class ReportController implements Refreshable, Styleable
 			reportItem.setPosition(i + 1);
 			reportItem.setDate(currentPayment.getDate());
 			reportItem.setAmount(currentPayment.getAmount());
-			reportItem.setDescription(currentPayment.getDescription());
 			reportItem.setName(currentPayment.getName());
+			reportItem.setDescription(currentPayment.getDescription());
 			reportItem.setRepeating(currentPayment instanceof RepeatingPaymentEntry);
 			reportItem.setCategory(controller.getCategoryHandler().getCategory(currentPayment.getCategoryID()));
+			
+			try
+			{
+				reportItem.setTags(tagHander.getTagsAsString(currentPayment));
+			}
+			catch(Exception e)
+			{
+				Logger.error(e);
+				controller.showConnectionErrorAlert(Localization.getString(Strings.ERROR_SERVER_CONNECTION_WITH_DETAILS));
+			}
 
 			reportItems.add(reportItem);
 		}

@@ -11,6 +11,7 @@ public enum ColumnType
 	CATEGORY(Strings.REPORT_CATEGORY, 3),
 	NAME(Strings.REPORT_NAME, 3),
 	DESCRIPTION(Strings.REPORT_DESCRIPTION, 3), 
+	TAGS(Strings.REPORT_TAGS, 3),
 	RATING(Strings.REPORT_RATING, 1), 
 	AMOUNT(Strings.REPORT_AMOUNT, 2);
 	

@@ -268,6 +268,8 @@ public class ReportGenerator
 				return DateTime.parse(reportItem.getDate(), DateTimeFormat.forPattern("YYYY-MM-dd")).toString("dd.MM.YYYY");
 			case DESCRIPTION:
 				return reportItem.getDescription();
+			case TAGS:
+				return reportItem.getTags();
 			case NAME:
 				return reportItem.getName();
 			case POSITION:
