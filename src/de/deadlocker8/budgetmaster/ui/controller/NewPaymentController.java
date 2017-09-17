@@ -596,7 +596,7 @@ public class NewPaymentController extends BaseController implements Styleable
 	private void saveTags(ArrayList<Tag> tags, Payment payment) throws Exception
 	{
 		ServerTagConnection serverTagConnection = new ServerTagConnection(controller.getSettings());
-		
+				
 		//check for deleted tags
 		for(Tag currentTag : previousTags)
 		{
@@ -618,7 +618,7 @@ public class NewPaymentController extends BaseController implements Styleable
 		//check for new tags
 		for(Tag paymentTag : tags)
 		{
-			if(!tagListContainsTag(previousTags, payment.getName()))
+			if(!tagListContainsTag(previousTags, paymentTag.getName()))
 			{
 				String name = paymentTag.getName();
 				Tag existingTag = serverTagConnection.getTag(name);
