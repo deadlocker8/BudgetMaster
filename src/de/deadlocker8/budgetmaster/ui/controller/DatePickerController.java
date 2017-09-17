@@ -12,8 +12,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -24,7 +24,7 @@ import tools.Localization;
 public class DatePickerController extends BaseController implements Styleable
 {
 	@FXML private ComboBox<String> comboBoxMonth;
-	@FXML private TextField textFieldYear;
+	@FXML private Spinner<Integer> spinnerYear;
 	@FXML private Button buttonCancel;
 	@FXML private Button buttonConfirm;
 	
@@ -54,23 +54,15 @@ public class DatePickerController extends BaseController implements Styleable
 	@Override
 	public void init()
 	{
-		textFieldYear.setTextFormatter(new TextFormatter<>(c -> {
-			if(c.getControlNewText().isEmpty())
+		SpinnerValueFactory<Integer> spinnerYearValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 3000, currentDate.getYear()); 
+		spinnerYear.setValueFactory(spinnerYearValueFactory);
+		spinnerYear.setEditable(false);
+		spinnerYear.focusedProperty().addListener((observable, oldValue, newValue) -> {
+			if(!newValue)
 			{
-				return c;
+				spinnerYear.increment(0); // won't change value, but will commit editor
 			}
-
-			if(c.getControlNewText().matches("[0-9]*"))
-			{
-				return c;
-			}
-			else
-			{
-				return null;
-			}
-		}));
-		
-		textFieldYear.setText(String.valueOf(currentDate.getYear()));
+		});
 		
 		comboBoxMonth.getItems().addAll(Helpers.getMonthList());
 		comboBoxMonth.setValue(Helpers.getMonthList().get(currentDate.getMonthOfYear()-1));
@@ -80,7 +72,7 @@ public class DatePickerController extends BaseController implements Styleable
 
 	public void confirm()
 	{
-		String year = textFieldYear.getText();
+		String year = String.valueOf(spinnerYear.getValue());
 		if(year == null || year.equals(""))
 		{
 			AlertGenerator.showAlert(AlertType.WARNING,

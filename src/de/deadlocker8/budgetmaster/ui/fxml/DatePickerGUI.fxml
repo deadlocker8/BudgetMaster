@@ -4,7 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -33,11 +33,7 @@
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="textFieldYear" maxWidth="1.7976931348623157E308" prefHeight="29.0">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                        </TextField>
+                        <Spinner fx:id="spinnerYear" editable="true" maxWidth="1.7976931348623157E308" minHeight="29.0" minWidth="163.0" prefHeight="29.0" prefWidth="163.0" />
                      </children>
                   </VBox>
                </children>

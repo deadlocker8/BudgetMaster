@@ -250,13 +250,13 @@ public class NewPaymentController extends BaseController implements Styleable
 	{
 		SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 0);
 		spinnerRepeatingPeriod.setValueFactory(valueFactory);
-		spinnerRepeatingPeriod.setEditable(true);
+		spinnerRepeatingPeriod.setEditable(false);
 		spinnerRepeatingPeriod.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			if(!newValue)
 			{
 				spinnerRepeatingPeriod.increment(0); // won't change value, but will commit editor
 			}
-		});		
+		});
 	}
 	
 	private void initComboBoxRepeatingDay()	
