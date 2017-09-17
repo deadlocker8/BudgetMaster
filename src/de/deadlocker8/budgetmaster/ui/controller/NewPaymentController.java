@@ -121,7 +121,7 @@ public class NewPaymentController extends BaseController implements Styleable
 		
 		applyStyle();		
 		
-		tagField = new TagField(new ArrayList<Tag>(), new ArrayList<Tag>());
+		tagField = new TagField(new ArrayList<Tag>(), new ArrayList<Tag>(), this);
 		hboxTags.getChildren().add(tagField);
 		tagField.maxWidthProperty().bind(hboxTags.widthProperty());
 		HBox.setHgrow(tagField, Priority.ALWAYS);
@@ -167,6 +167,11 @@ public class NewPaymentController extends BaseController implements Styleable
 		}
 		
 		datePicker.setEditable(false);
+	}
+	
+	public Controller getController()
+	{
+		return controller;
 	}
 	
 	private void initComboBoxCategory()

@@ -10,9 +10,11 @@ import de.deadlocker8.budgetmaster.logic.tag.Tag;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
+import de.deadlocker8.budgetmaster.ui.controller.NewPaymentController;
 import fontAwesome.FontIconType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -21,6 +23,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
+import tools.AlertGenerator;
 import tools.ConvertTo;
 import tools.Localization;
 
@@ -30,11 +33,13 @@ public class TagField extends VBox
 	private ArrayList<Tag> allTags;
 	private FlowPane flowPane;
 	private TextField textField;
+	private NewPaymentController parentController; 
 	
-	public TagField(ArrayList<Tag> tags, ArrayList<Tag> allAvailableTags)
+	public TagField(ArrayList<Tag> tags, ArrayList<Tag> allAvailableTags, NewPaymentController parentController)
 	{
 		this.tags = tags;
 		this.allTags = allAvailableTags;
+		this.parentController = parentController;
 		
 		this.flowPane = initFlowPane();	
 		this.getChildren().add(flowPane);
@@ -128,8 +133,7 @@ public class TagField extends VBox
 	}
 
 	public void addTag(String tagName)
-	{
-		//TODO max length = 45 chars
+	{		
 		if(tagName.equals(""))
 		{
 			return;
@@ -141,6 +145,19 @@ public class TagField extends VBox
 			{
 				return;
 			}
+		}
+		
+		if(tagName.length() > 45) 
+		{
+			AlertGenerator.showAlert(AlertType.WARNING, 
+									Localization.getString(Strings.TITLE_WARNING), 
+									"", 
+									Localization.getString(Strings.WARNING_TAG_CHARACTER_LIMIT_REACHED_45), 
+									parentController.getController().getIcon(), 
+									parentController.getStage(), 
+									null, 
+									false);
+			return;
 		}
 		
 		tags.add(new Tag(-1, tagName));

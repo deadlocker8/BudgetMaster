@@ -160,6 +160,7 @@ public class Strings
     public static final String WARNING_NAME_CHARACTER_LIMIT_REACHED_45 = "warning.name.character.limit.reached.45";
     public static final String WARNING_NAME_CHARACTER_LIMIT_REACHED_150 = "warning.name.character.limit.reached.150";
     public static final String WARNING_DESCRIPTION_CHARACTER_LIMIT_REACHED_150 = "warning.description.character.limit.reached.150";
+    public static final String WARNING_TAG_CHARACTER_LIMIT_REACHED_45 = "warning.tag.character.limit.reached.45";
     public static final String WARNING_PAYMENT_AMOUNT = "warning.payment.amount";
     public static final String WARNING_EMPTY_PAYMENT_DATE = "warning.empty.payment.date";
     public static final String WARNING_PAYMENT_REPEATING = "warning.payment.repeating";    
