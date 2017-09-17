@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.stream.Collectors;
 
 import de.deadlocker8.budgetmaster.logic.FilterSettings;
+import de.deadlocker8.budgetmaster.logic.tag.TagHandler;
 
 public class PaymentHandler
 {
@@ -152,13 +153,44 @@ public class PaymentHandler
 		return new ArrayList<>();
 	}
 	
-	public void filter(FilterSettings filterSettings)
+	private ArrayList<Payment> filterByTag(FilterSettings filterSettings, ArrayList<Payment> paymentsList, TagHandler tagHandler) throws Exception
+	{		
+		if(filterSettings.getAllowedTagIDs() == null)			
+		{
+			return paymentsList;
+		}
+		
+		if(filterSettings.getAllowedTagIDs().size() == 0)
+		{
+			return new ArrayList<>();
+		}
+		
+		ArrayList<Payment> filteredPayments = new ArrayList<>();
+		for(Payment currentPayment : paymentsList)
+		{
+			ArrayList<Integer> paymentTagIDs = tagHandler.getTagIDs(currentPayment);
+			
+			for(Integer tagID : filterSettings.getAllowedTagIDs())
+			{
+				if(paymentTagIDs.contains(tagID))
+				{
+					filteredPayments.add(currentPayment);
+					break;
+				}
+			}
+		}
+		
+		return filteredPayments;		
+	}
+	
+	public void filter(FilterSettings filterSettings, TagHandler tagHandler) throws Exception
 	{
 		ArrayList<Payment> filteredPayments = filterByType(filterSettings, payments);
 		filteredPayments = filterByType(filterSettings, filteredPayments);
 		filteredPayments = filterByRepeating(filterSettings, filteredPayments);
 		filteredPayments = filterByCategory(filterSettings, filteredPayments);
 		filteredPayments = filterByName(filterSettings, filteredPayments);
+		filteredPayments = filterByTag(filterSettings, filteredPayments, tagHandler);
 		
 		payments = filteredPayments;
 	}

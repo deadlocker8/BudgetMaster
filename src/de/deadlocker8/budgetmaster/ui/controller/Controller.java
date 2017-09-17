@@ -15,6 +15,7 @@ import de.deadlocker8.budgetmaster.logic.payment.Payment;
 import de.deadlocker8.budgetmaster.logic.payment.PaymentHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
+import de.deadlocker8.budgetmaster.logic.tag.TagHandler;
 import de.deadlocker8.budgetmaster.logic.updater.Updater;
 import de.deadlocker8.budgetmaster.logic.updater.VersionInformation;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
@@ -582,7 +583,7 @@ public class Controller extends BaseController
 				categoryHandler = new CategoryHandler(connection.getCategories());
 				
 				categoryBudgets = connection.getCategoryBudgets(currentDate.getYear(), currentDate.getMonthOfYear());	
-				paymentHandler.filter(newFilterSettings);
+				paymentHandler.filter(newFilterSettings, new TagHandler(settings));
 
 				Platform.runLater(() -> {
 					if(modalStage != null)

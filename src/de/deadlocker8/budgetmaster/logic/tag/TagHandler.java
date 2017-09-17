@@ -50,4 +50,16 @@ public class TagHandler
 		
 		return sb.toString();
 	}
+	
+	public ArrayList<Integer> getTagIDs(Payment payment) throws Exception
+	{
+		ArrayList<Tag> tags = getTags(payment);
+		ArrayList<Integer> ids = new ArrayList<>();
+		for(Tag currentTag : tags)
+		{
+			ids.add(currentTag.getID());
+		}
+		
+		return ids;
+	}
 }

@@ -14,128 +14,171 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox prefHeight="273.0" prefWidth="465.0" spacing="25.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
-         <children>
-            <Label text="%filter.headline">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Label>
-            <VBox prefHeight="15.0" prefWidth="422.0" spacing="10.0">
+      <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" layoutX="14.0" layoutY="14.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+         <content>
+            <VBox fx:id="vboxMain" prefHeight="567.0" prefWidth="409.0" spacing="15.0">
                <children>
-                  <Label text="%filter.type">
+                  <Label text="%filter.headline">
                      <font>
-                        <Font name="System Bold" size="16.0" />
+                        <Font name="System Bold" size="18.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets bottom="-5.0" />
+                     </VBox.margin>
                   </Label>
-                  <HBox prefHeight="10.0" prefWidth="422.0" spacing="25.0">
+                  <VBox prefHeight="15.0" prefWidth="422.0" spacing="5.0">
                      <children>
-                        <CheckBox fx:id="checkBoxIncome" mnemonicParsing="false" text="%filter.type.income">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </CheckBox>
-                        <CheckBox fx:id="checkBoxPayment" mnemonicParsing="false" text="%filter.type.payment">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </CheckBox>
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-            <VBox prefHeight="33.0" prefWidth="422.0" spacing="10.0">
-               <children>
-                  <Label text="%filter.repeating">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Label>
-                  <CheckBox fx:id="checkBoxNoRepeating" mnemonicParsing="false" text="%filter.repeating.none">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <CheckBox fx:id="checkBoxMonthlyRepeating" mnemonicParsing="false" text="%filter.repeating.monthday">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <CheckBox fx:id="checkBoxRepeatEveryXDays" mnemonicParsing="false" text="%filter.repeating.interval">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-               </children>
-            </VBox>
-            <VBox prefHeight="150.0" prefWidth="422.0" spacing="10.0">
-               <children>
-                  <HBox spacing="10.0">
-                     <children>
-                        <Label text="%filter.categories">
+                        <Label text="%filter.type">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Region prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                        <Button fx:id="buttonCategoryAll" mnemonicParsing="false" onAction="#enableAllCategories" text="%filter.categories.button.all">
+                        <HBox prefHeight="10.0" prefWidth="422.0" spacing="25.0">
+                           <children>
+                              <CheckBox fx:id="checkBoxIncome" mnemonicParsing="false" text="%filter.type.income">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </CheckBox>
+                              <CheckBox fx:id="checkBoxPayment" mnemonicParsing="false" text="%filter.type.payment">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </CheckBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="33.0" prefWidth="422.0" spacing="5.0">
+                     <children>
+                        <Label text="%filter.repeating">
                            <font>
-                              <Font name="System Bold" size="13.0" />
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <HBox spacing="10.0">
+                           <children>
+                              <CheckBox fx:id="checkBoxNoRepeating" mnemonicParsing="false" text="%filter.repeating.none">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </CheckBox>
+                              <CheckBox fx:id="checkBoxMonthlyRepeating" mnemonicParsing="false" text="%filter.repeating.monthday">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </CheckBox>
+                              <CheckBox fx:id="checkBoxRepeatEveryXDays" mnemonicParsing="false" text="%filter.repeating.interval">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </CheckBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="150.0" prefWidth="422.0" spacing="5.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <HBox spacing="10.0">
+                           <children>
+                              <Label text="%filter.categories">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Region prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                              <Button fx:id="buttonCategoryAll" mnemonicParsing="false" onAction="#enableAllCategories" text="%filter.categories.button.all">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="buttonCategoryNone" mnemonicParsing="false" onAction="#disableAllCategories" text="%filter.categories.button.none">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <ScrollPane prefHeight="88.0" prefWidth="409.0" VBox.vgrow="ALWAYS">
+                           <content>
+                              <VBox fx:id="vboxCategories" spacing="5.0" />
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="33.0" prefWidth="422.0" spacing="5.0">
+                     <children>
+                        <Label text="%filter.name">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="textFieldSearch" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="150.0" prefWidth="422.0" spacing="5.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <HBox spacing="10.0">
+                           <children>
+                              <Label text="%filter.tags">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Region prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                              <Button fx:id="buttonTagsAll" mnemonicParsing="false" onAction="#enableAllTags" text="%filter.categories.button.all">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="buttonTagsNone" mnemonicParsing="false" onAction="#disableAllTags" text="%filter.categories.button.none">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <ScrollPane prefHeight="85.0" prefWidth="409.0" VBox.vgrow="ALWAYS">
+                           <content>
+                              <VBox fx:id="vboxTags" spacing="5.0" />
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </VBox>
+                  <HBox alignment="CENTER" prefHeight="30.0" prefWidth="465.0" spacing="10.0">
+                     <children>
+                        <Button fx:id="buttonCancel" mnemonicParsing="false" onAction="#cancel" text="%cancel">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
                            </font>
                         </Button>
-                        <Button fx:id="buttonCategoryNone" mnemonicParsing="false" onAction="#disableAllCategories" text="%filter.categories.button.none">
+                        <Button fx:id="buttonReset" mnemonicParsing="false" onAction="#reset" text="%filter.button.reset">
                            <font>
-                              <Font name="System Bold" size="13.0" />
+                              <Font name="System Bold" size="14.0" />
                            </font>
+                           <HBox.margin>
+                              <Insets left="25.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="buttonFilter" mnemonicParsing="false" onAction="#filter" text="%filter.button.filter">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="25.0" />
+                           </HBox.margin>
                         </Button>
                      </children>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
                   </HBox>
-                  <ScrollPane prefHeight="93.0" prefWidth="422.0" VBox.vgrow="ALWAYS">
-                     <content>
-                        <VBox fx:id="vboxCategories" spacing="5.0" />
-                     </content>
-                  </ScrollPane>
                </children>
+               <padding>
+                  <Insets bottom="15.0" />
+               </padding>
             </VBox>
-            <VBox prefHeight="33.0" prefWidth="422.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <Label text="%filter.name">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="textFieldSearch" />
-               </children>
-            </VBox>
-            <HBox alignment="CENTER" prefHeight="30.0" prefWidth="465.0" spacing="10.0">
-               <children>
-                  <Button fx:id="buttonCancel" mnemonicParsing="false" onAction="#cancel" text="%cancel">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="buttonReset" mnemonicParsing="false" onAction="#reset" text="%filter.button.reset">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="25.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button fx:id="buttonFilter" mnemonicParsing="false" onAction="#filter" text="%filter.button.filter">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="25.0" />
-                     </HBox.margin>
-                  </Button>
-               </children>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </HBox>
-         </children>
-      </VBox>
+         </content>
+      </ScrollPane>
    </children>
 </AnchorPane>

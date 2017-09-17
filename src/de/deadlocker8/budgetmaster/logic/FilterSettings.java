@@ -10,9 +10,10 @@ public class FilterSettings
 	private boolean isMonthlyRepeatingAllowed;
 	private boolean isRepeatingEveryXDaysAllowed;
 	private ArrayList<Integer> allowedCategoryIDs;
+	private ArrayList<Integer> allowedTagIDs;
 	private String name;
 
-	public FilterSettings(boolean isIncomeAllowed, boolean isPaymentAllowed, boolean isNoRepeatingAllowed, boolean isMonthlyRepeatingAllowed, boolean isRepeatingEveryXDaysAllowed, ArrayList<Integer> allowedCategoryIDs, String name)
+	public FilterSettings(boolean isIncomeAllowed, boolean isPaymentAllowed, boolean isNoRepeatingAllowed, boolean isMonthlyRepeatingAllowed, boolean isRepeatingEveryXDaysAllowed, ArrayList<Integer> allowedCategoryIDs, ArrayList<Integer> allowedTagIDs, String name)
 	{
 		this.isIncomeAllowed = isIncomeAllowed;
 		this.isPaymentAllowed = isPaymentAllowed;
@@ -20,6 +21,7 @@ public class FilterSettings
 		this.isMonthlyRepeatingAllowed = isMonthlyRepeatingAllowed;
 		this.isRepeatingEveryXDaysAllowed = isRepeatingEveryXDaysAllowed;
 		this.allowedCategoryIDs = allowedCategoryIDs;
+		this.allowedTagIDs = allowedTagIDs;
 		this.name = name;
 	}
 
@@ -31,6 +33,7 @@ public class FilterSettings
 		this.isMonthlyRepeatingAllowed = true;
 		this.isRepeatingEveryXDaysAllowed = true;
 		this.allowedCategoryIDs = null;
+		this.allowedTagIDs = null;
 		this.name = null;
 	}
 
@@ -93,6 +96,16 @@ public class FilterSettings
 	{
 		this.allowedCategoryIDs = allowedCategoryIDs;
 	}
+	
+	public ArrayList<Integer> getAllowedTagIDs()
+	{
+		return allowedTagIDs;
+	}
+
+	public void setAllowedTagIDs(ArrayList<Integer> allowedTagIDs)
+	{
+		this.allowedTagIDs = allowedTagIDs;
+	}
 
 	public String getName()
 	{
@@ -102,12 +115,13 @@ public class FilterSettings
 	public void setName(String name)
 	{
 		this.name = name;
-	}
+	}	
 
+	@Override
 	public String toString()
 	{
 		return "FilterSettings [isIncomeAllowed=" + isIncomeAllowed + ", isPaymentAllowed=" + isPaymentAllowed + ", isNoRepeatingAllowed=" + isNoRepeatingAllowed + ", isMonthlyRepeatingAllowed=" + isMonthlyRepeatingAllowed + ", isRepeatingEveryXDaysAllowed=" + isRepeatingEveryXDaysAllowed
-				+ ", allowedCategoryIDs=" + allowedCategoryIDs + ", name=" + name + "]";
+				+ ", allowedCategoryIDs=" + allowedCategoryIDs + ", allowedTagIDs=" + allowedTagIDs + ", name=" + name + "]";
 	}
 
 	public boolean equals(Object other)
@@ -166,7 +180,33 @@ public class FilterSettings
 						return true;		
 					}
 				}				
-			}				
+			}
+			
+			if(allowedTagIDs == null)
+			{
+				if(otherSettings.getAllowedTagIDs() != null)
+				{
+					return false;				
+				}
+				else
+				{
+					return true;
+				}
+			}
+			else 
+			{
+				if(otherSettings.getAllowedTagIDs() == null)
+				{
+					return false;
+				}
+				else
+				{					
+					if(allowedTagIDs.equals(otherSettings.getAllowedTagIDs())) 
+					{
+						return true;		
+					}
+				}
+			}
 		}			
 			
 		return false;

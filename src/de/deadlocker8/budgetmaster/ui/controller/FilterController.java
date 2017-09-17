@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.FilterSettings;
 import de.deadlocker8.budgetmaster.logic.category.Category;
+import de.deadlocker8.budgetmaster.logic.serverconnection.ServerTagConnection;
+import de.deadlocker8.budgetmaster.logic.tag.Tag;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
@@ -13,17 +15,21 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import logger.Logger;
 import tools.ConvertTo;
 import tools.Localization;
 
 public class FilterController extends BaseController implements Styleable
 {
+	@FXML private ScrollPane scrollPane;
+	@FXML private VBox vboxMain;
 	@FXML private CheckBox checkBoxIncome;
 	@FXML private CheckBox checkBoxPayment;
 	@FXML private CheckBox checkBoxNoRepeating;
@@ -31,15 +37,19 @@ public class FilterController extends BaseController implements Styleable
 	@FXML private CheckBox checkBoxRepeatEveryXDays;
 	@FXML private VBox vboxCategories;
 	@FXML private TextField textFieldSearch;
+	@FXML private VBox vboxTags;
 	@FXML private Button buttonCancel;
 	@FXML private Button buttonReset;
 	@FXML private Button buttonFilter;
 	@FXML private Button buttonCategoryAll;
 	@FXML private Button buttonCategoryNone;
+	@FXML private Button buttonTagsAll;
+	@FXML private Button buttonTagsNone;
 
 	private Stage parentStage;
 	private Controller controller;
 	private FilterSettings filterSetttings;
+	private ArrayList<Tag> allTags;
 	
 	public FilterController(Stage parentStage, Controller controller, FilterSettings filterSettings)
 	{
@@ -57,7 +67,9 @@ public class FilterController extends BaseController implements Styleable
 		stage.initModality(Modality.APPLICATION_MODAL);	
 		stage.setTitle(Localization.getString(Strings.TITLE_FILTER));
 		stage.getIcons().add(controller.getIcon());
-		stage.setResizable(false);		
+		stage.setResizable(true);
+		stage.setMinHeight(600);
+		stage.setMinWidth(475);
 	}
 
 	@Override
@@ -74,13 +86,34 @@ public class FilterController extends BaseController implements Styleable
 			vboxCategories.getChildren().add(newCheckBox);
 		}
 		
+		try
+		{
+			ServerTagConnection connection = new ServerTagConnection(controller.getSettings());
+			allTags = connection.getTags();
+			for(Tag currentTag : allTags)
+			{
+				CheckBox newCheckBox = new CheckBox();
+				newCheckBox.setText(currentTag.getName());
+				newCheckBox.setUserData(currentTag.getID());
+				newCheckBox.setStyle("-fx-font-size: 14;");
+				vboxTags.getChildren().add(newCheckBox);
+			}
+		}
+		catch(Exception e)
+		{
+			//ERRORHANDLING
+			Logger.error(e);
+		}
+	
 		textFieldSearch.setOnKeyPressed((event)->{
             if(event.getCode().equals(KeyCode.ENTER))
             {
             	filter();
             }
 	    });
-
+		
+		vboxMain.prefWidthProperty().bind(scrollPane.widthProperty().subtract(25));
+		vboxMain.prefHeightProperty().bind(scrollPane.heightProperty().subtract(5));
 		preselect();
 	}
 
@@ -93,11 +126,20 @@ public class FilterController extends BaseController implements Styleable
 		checkBoxRepeatEveryXDays.setSelected(filterSetttings.isRepeatingEveryXDaysAllowed());
 
 		ArrayList<Integer> allowedCategoryIDs = filterSetttings.getAllowedCategoryIDs();
-
 		for(Node node : vboxCategories.getChildren())
 		{
 			CheckBox currentCheckBox = (CheckBox)node;
 			if(allowedCategoryIDs == null || allowedCategoryIDs.contains(currentCheckBox.getUserData()))
+			{
+				currentCheckBox.setSelected(true);
+			}
+		}
+		
+		ArrayList<Integer> allowedTagIDs = filterSetttings.getAllowedTagIDs();
+		for(Node node : vboxTags.getChildren())
+		{
+			CheckBox currentCheckBox = (CheckBox)node;
+			if(allowedTagIDs == null || allowedTagIDs.contains(currentCheckBox.getUserData()))
 			{
 				currentCheckBox.setSelected(true);
 			}
@@ -135,8 +177,23 @@ public class FilterController extends BaseController implements Styleable
 		{
 			name = null;
 		}
+		
+		ArrayList<Integer> allowedTagIDs = new ArrayList<>();
+		for(Node node : vboxTags.getChildren())
+		{
+			CheckBox currentCheckBox = (CheckBox)node;
+			if(currentCheckBox.isSelected())
+			{
+				allowedTagIDs.add((int)currentCheckBox.getUserData());
+			}
+		}
 
-		FilterSettings newFilterSettings = new FilterSettings(isIncomeAllowed, isPaymentAllowed, isNoRepeatingAllowed, isMonthlyRepeatingAllowed, isRepeatingEveryXDaysAllowed, allowedCategoryIDs, name);
+		if(allowedTagIDs.size() == allTags.size())
+		{
+			allowedTagIDs = null;
+		}
+
+		FilterSettings newFilterSettings = new FilterSettings(isIncomeAllowed, isPaymentAllowed, isNoRepeatingAllowed, isMonthlyRepeatingAllowed, isRepeatingEveryXDaysAllowed, allowedCategoryIDs, allowedTagIDs, name);
 		controller.setFilterSettings(newFilterSettings);
 		controller.refresh(newFilterSettings);		
 		getStage().close();
@@ -170,18 +227,37 @@ public class FilterController extends BaseController implements Styleable
 			((CheckBox)node).setSelected(false);
 		}
 	}
+	
+	public void enableAllTags()
+	{
+		for(Node node : vboxTags.getChildren())
+		{
+			((CheckBox)node).setSelected(true);
+		}
+	}
+	
+	public void disableAllTags()
+	{
+		for(Node node : vboxTags.getChildren())
+		{
+			((CheckBox)node).setSelected(false);
+		}
+	}
 
 	@Override
 	public void applyStyle()
 	{
 		buttonCancel.setGraphic(Helpers.getFontIcon(FontIconType.TIMES, 17, Color.WHITE));
 		buttonReset.setGraphic(Helpers.getFontIcon(FontIconType.UNDO, 17, Color.WHITE));		
-		buttonFilter.setGraphic(Helpers.getFontIcon(FontIconType.FILTER, 17, Color.WHITE));
+		buttonFilter.setGraphic(Helpers.getFontIcon(FontIconType.FILTER, 17, Color.WHITE));		
 
+		scrollPane.setStyle("-fx-background-color: transparent");
 		buttonCancel.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
 		buttonReset.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
 		buttonFilter.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
 		buttonCategoryAll.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13;");
 		buttonCategoryNone.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13;");
+		buttonTagsAll.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13;");
+		buttonTagsNone.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13;");
 	}
 }
