@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -46,6 +47,9 @@ public class FilterController extends BaseController implements Styleable
 	@FXML private Button buttonCategoryNone;
 	@FXML private Button buttonTagsAll;
 	@FXML private Button buttonTagsNone;
+	@FXML private Label labelSeparator;
+	@FXML private Label labelSeparatorHorizontalLeft;
+	@FXML private Label labelSeparatorHorizontalRight;
 
 	private Stage parentStage;
 	private Controller controller;
@@ -114,7 +118,7 @@ public class FilterController extends BaseController implements Styleable
             }
 	    });
 		
-		vboxMain.prefWidthProperty().bind(scrollPane.widthProperty().subtract(25));
+		vboxMain.prefWidthProperty().bind(scrollPane.widthProperty().subtract(5));
 		vboxMain.prefHeightProperty().bind(scrollPane.heightProperty().subtract(5));
 		preselect();
 	}
@@ -254,6 +258,19 @@ public class FilterController extends BaseController implements Styleable
 		buttonFilter.setGraphic(Helpers.getFontIcon(FontIconType.FILTER, 17, Color.WHITE));		
 
 		scrollPane.setStyle("-fx-background-color: transparent");
+		
+		labelSeparator.setStyle("-fx-background-color: #CCCCCC;");
+		labelSeparator.setMinWidth(1);
+		labelSeparator.setMaxWidth(1);
+		
+		labelSeparatorHorizontalLeft.setStyle("-fx-background-color: #CCCCCC;");
+		labelSeparatorHorizontalLeft.setMinHeight(1);
+		labelSeparatorHorizontalLeft.setMaxHeight(1);
+		
+		labelSeparatorHorizontalRight.setStyle("-fx-background-color: #CCCCCC;");
+		labelSeparatorHorizontalRight.setMinHeight(1);
+		labelSeparatorHorizontalRight.setMaxHeight(1);
+		
 		buttonCancel.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
 		buttonReset.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
 		buttonFilter.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
