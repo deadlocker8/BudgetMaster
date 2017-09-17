@@ -25,6 +25,7 @@ import de.deadlocker8.budgetmaster.logic.report.ReportGenerator;
 import de.deadlocker8.budgetmaster.logic.report.ReportItem;
 import de.deadlocker8.budgetmaster.logic.report.ReportPreferences;
 import de.deadlocker8.budgetmaster.logic.report.ReportSorting;
+import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.tag.TagHandler;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
@@ -544,7 +545,7 @@ public class ReportController implements Refreshable, Styleable
 			catch(Exception e)
 			{
 				Logger.error(e);
-				controller.showConnectionErrorAlert(Localization.getString(Strings.ERROR_SERVER_CONNECTION_WITH_DETAILS));
+				controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 			}
 
 			reportItems.add(reportItem);

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.FilterSettings;
 import de.deadlocker8.budgetmaster.logic.category.Category;
+import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerTagConnection;
 import de.deadlocker8.budgetmaster.logic.tag.Tag;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
@@ -101,8 +102,9 @@ public class FilterController extends BaseController implements Styleable
 		}
 		catch(Exception e)
 		{
-			//ERRORHANDLING
 			Logger.error(e);
+			controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
+			return;
 		}
 	
 		textFieldSearch.setOnKeyPressed((event)->{
