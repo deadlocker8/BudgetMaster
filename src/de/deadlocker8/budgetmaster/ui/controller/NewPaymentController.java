@@ -448,6 +448,7 @@ public class NewPaymentController extends BaseController implements Styleable
 					}	
 					int id = connection.addRepeatingPayment(newPayment);
 					finalPayment = newPayment;
+					previousTags = new ArrayList<>();
 					finalPayment.setID(id);
 				}
 				catch(Exception e)
@@ -610,7 +611,7 @@ public class NewPaymentController extends BaseController implements Styleable
 	private void saveTags(ArrayList<Tag> tags, Payment payment) throws Exception
 	{
 		ServerTagConnection serverTagConnection = new ServerTagConnection(controller.getSettings());
-				
+						
 		//check for deleted tags
 		for(Tag currentTag : previousTags)
 		{
