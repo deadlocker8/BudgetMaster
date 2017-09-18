@@ -164,7 +164,7 @@ public class FilterSettings
 				}
 				else
 				{
-					return true;
+					return isEqualTagIDs(otherSettings);
 				}
 			}
 			else 
@@ -177,38 +177,43 @@ public class FilterSettings
 				{					
 					if(allowedCategoryIDs.equals(otherSettings.getAllowedCategoryIDs())) 
 					{
-						return true;		
+						return isEqualTagIDs(otherSettings);		
 					}
 				}				
-			}
-			
-			if(allowedTagIDs == null)
-			{
-				if(otherSettings.getAllowedTagIDs() != null)
-				{
-					return false;				
-				}
-				else
-				{
-					return true;
-				}
-			}
-			else 
-			{
-				if(otherSettings.getAllowedTagIDs() == null)
-				{
-					return false;
-				}
-				else
-				{					
-					if(allowedTagIDs.equals(otherSettings.getAllowedTagIDs())) 
-					{
-						return true;		
-					}
-				}
-			}
+			}		
 		}			
 			
+		return false;
+	}
+	
+	private boolean isEqualTagIDs(FilterSettings otherSettings)
+	{
+		if(allowedTagIDs == null)	
+		{
+			if(otherSettings.getAllowedTagIDs() != null)
+			{
+				return false;				
+			}
+			else
+			{
+				return true;
+			}
+		}
+		else 
+		{
+			if(otherSettings.getAllowedTagIDs() == null)
+			{
+				return false;
+			}
+			else
+			{					
+				if(allowedTagIDs.equals(otherSettings.getAllowedTagIDs())) 
+				{
+					return true;		
+				}
+			}
+		}
+		
 		return false;
 	}
 }
