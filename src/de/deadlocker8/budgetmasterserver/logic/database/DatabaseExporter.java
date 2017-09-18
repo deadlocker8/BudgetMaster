@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import de.deadlocker8.budgetmaster.logic.category.Category;
 import de.deadlocker8.budgetmaster.logic.payment.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.payment.RepeatingPayment;
+import de.deadlocker8.budgetmaster.logic.tag.Tag;
+import de.deadlocker8.budgetmaster.logic.tag.TagMatch;
 import de.deadlocker8.budgetmasterserver.logic.Settings;
 import logger.Logger;
 
@@ -36,8 +38,10 @@ public class DatabaseExporter
 	    ArrayList<Category> categories = getAllCategories();
 	    ArrayList<NormalPayment> normalPayments = getAllNormalPayments();
 	    ArrayList<RepeatingPayment> repeatingPayments = getAllRepeatingPayments();
+	    ArrayList<Tag> tags = getAllTags();
+	    ArrayList<TagMatch> tagMatches = getAllTagMatches();
 	    
-	    return new Database(categories, normalPayments, repeatingPayments);
+	    return new Database(categories, normalPayments, repeatingPayments, tags, tagMatches);
 	}
 	
 	private void closeConnection(Statement statement)
@@ -150,5 +154,64 @@ public class DatabaseExporter
         }
 
         return results;
-    }	
+    }
+	
+	private ArrayList<Tag> getAllTags()
+    {
+	    PreparedStatement stmt = null;
+        ArrayList<Tag> results = new ArrayList<>();
+        try
+        {
+        	stmt = connection.prepareStatement("SELECT * FROM tag;");
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next())
+            {
+                int resultID = rs.getInt("ID");                               
+                String name = rs.getString("Name");               
+            
+                results.add(new Tag(resultID, name));
+            }
+        }
+        catch(SQLException e)
+        {
+            Logger.error(e);
+        }
+        finally
+        {
+            closeConnection(stmt);
+        }
+
+        return results;
+    }
+	
+	private ArrayList<TagMatch> getAllTagMatches()
+    {
+	    PreparedStatement stmt = null;
+        ArrayList<TagMatch> results = new ArrayList<>();
+        try
+        {
+        	stmt = connection.prepareStatement("SELECT * FROM tag_match;");
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next())
+            {
+                int tagID = rs.getInt("Tag_ID");
+                int paymentID = rs.getInt("Payment_ID");
+                int repeatingPaymentID = rs.getInt("RepeatingPayment_ID");                             
+            
+                results.add(new TagMatch(tagID, paymentID, repeatingPaymentID));
+            }
+        }
+        catch(SQLException e)
+        {
+            Logger.error(e);
+        }
+        finally
+        {
+            closeConnection(stmt);
+        }
+
+        return results;
+    }
 }
