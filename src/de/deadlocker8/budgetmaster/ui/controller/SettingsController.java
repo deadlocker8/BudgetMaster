@@ -591,7 +591,7 @@ public class SettingsController implements Styleable
 										controller.getStage(), 
 										null, 
 										false);
-				deleteDB();
+				deleteDatabase(importPending);
 			}
 		}
 	}
