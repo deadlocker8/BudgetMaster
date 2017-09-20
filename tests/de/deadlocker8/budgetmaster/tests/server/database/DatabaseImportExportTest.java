@@ -26,12 +26,14 @@ import de.deadlocker8.budgetmasterserver.logic.database.Database;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseExporter;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseImporter;
+import de.deadlocker8.budgetmasterserver.logic.database.DatabaseTagHandler;
 import tools.Localization;
 
 public class DatabaseImportExportTest
 {			
 	private static Settings settings;
 	private static DatabaseHandler databaseHandler;
+	private static DatabaseTagHandler tagHandler;
 	
 	@BeforeClass
 	public static void init()
@@ -44,6 +46,7 @@ public class DatabaseImportExportTest
 			handler.deleteDatabase();
 			handler = new DatabaseHandler(settings);			
 			databaseHandler = handler;
+			tagHandler = new DatabaseTagHandler(settings);
 			
 			Localization.init("de/deadlocker8/budgetmaster/resources/");
 			Localization.loadLanguage(Locale.GERMANY);
@@ -62,7 +65,7 @@ public class DatabaseImportExportTest
 			File file = Paths.get("tests/de/deadlocker8/budgetmaster/tests/resources/import.json").toFile();
 			Database database = FileHelper.loadDatabaseJSON(file);			
 			
-			DatabaseImporter importer = new DatabaseImporter(databaseHandler);
+			DatabaseImporter importer = new DatabaseImporter(databaseHandler, tagHandler);
 			importer.importDatabase(database);
 			
 			//test category
@@ -112,7 +115,7 @@ public class DatabaseImportExportTest
 			File file = Paths.get("tests/de/deadlocker8/budgetmaster/tests/resources/import.json").toFile();
 			Database database = FileHelper.loadDatabaseJSON(file);			
 			
-			DatabaseImporter importer = new DatabaseImporter(databaseHandler);
+			DatabaseImporter importer = new DatabaseImporter(databaseHandler, tagHandler);
 			importer.importDatabase(database);			
 			
 			file = Paths.get("tests/de/deadlocker8/budgetmaster/tests/resources/export.json").toFile();

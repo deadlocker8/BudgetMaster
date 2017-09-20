@@ -414,7 +414,11 @@ public class SettingsController implements Styleable
 			try
 			{
 				database = FileHelper.loadDatabaseJSON(file);
-				if(database.getCategories() == null || database.getNormalPayments() == null || database.getRepeatingPayments() == null)
+				if(database.getCategories() == null 
+						|| database.getNormalPayments() == null 
+						|| database.getRepeatingPayments() == null
+						|| database.getTags() == null
+						|| database.getTagMatches() == null)
 				{
 					AlertGenerator.showAlert(AlertType.ERROR, 
 											Localization.getString(Strings.TITLE_ERROR), 

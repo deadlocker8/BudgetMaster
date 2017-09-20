@@ -43,6 +43,32 @@ public class DatabaseTagHandler
 		}
 	}
 	
+	public int getLastInsertID()
+	{
+		PreparedStatement stmt = null;
+		int lastInsertID = 0;
+		try
+		{
+			stmt = connection.prepareStatement("SELECT LAST_INSERT_ID();");		
+			ResultSet rs = stmt.executeQuery();
+
+			while(rs.next())
+			{
+				lastInsertID = rs.getInt("LAST_INSERT_ID()");				
+			}
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+		finally
+		{
+			closeConnection(stmt);
+		}
+
+		return lastInsertID;
+	}
+	
 	public ArrayList<Tag> getAllTags()
 	{	   
         PreparedStatement stmt = null;

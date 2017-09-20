@@ -724,6 +724,8 @@ public class DatabaseHandler
 		String tablePayment = "DROP TABLE IF EXISTS payment;";
 		String tableRepeatingPayment = "DROP TABLE IF EXISTS repeating_payment;";
 		String tableRepeatingEntry = "DROP TABLE IF EXISTS repeating_entry;";
+		String tableTag = "DROP TABLE IF EXISTS tag;";
+		String tableTagMatch = "DROP TABLE IF EXISTS tag_match;";
 		try
 		{
 			stmt = connection.createStatement();
@@ -736,6 +738,10 @@ public class DatabaseHandler
 			Logger.info("Deleted table: repeating_payment");
 			stmt.execute(tableRepeatingEntry);
 			Logger.info("Deleted table: repeating_entry");
+			stmt.execute(tableTag);
+			Logger.info("Deleted table: tag");
+			stmt.execute(tableTagMatch);
+			Logger.info("Deleted table: tag_match");
 			stmt.execute("SET FOREIGN_KEY_CHECKS = 1;");
 		}
 		catch(SQLException e)
