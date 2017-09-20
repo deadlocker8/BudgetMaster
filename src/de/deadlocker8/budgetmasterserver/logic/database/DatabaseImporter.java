@@ -46,6 +46,11 @@ public class DatabaseImporter
 	{	   	
         for(Category currentCategory : categories)
         {
+        	if(currentCategory.getID() == 1 || currentCategory.getID() == 2)
+        	{
+        		continue;
+        	}
+        	
         	Category existingCategory = handler.getCategory(currentCategory.getName(), currentCategory.getColor());
         	if(existingCategory == null)
         	{
