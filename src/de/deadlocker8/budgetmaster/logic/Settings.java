@@ -3,9 +3,21 @@ package de.deadlocker8.budgetmaster.logic;
 import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.utils.LanguageType;
+import de.deadlocker8.budgetmaster.logic.utils.SaveFileType;
 
 public class Settings
 {
+	/*
+	 * VERSIONS 
+	 * 
+	 * --> 1
+	 * initial
+	 * 
+	 */	
+	
+	@SuppressWarnings("unused")
+	private final String TYPE = SaveFileType.BUDGETMASTER_SETTINGS.toString();
+	private final int VERSION = 1;	
 	private String clientSecret;
 	private String url;
 	private String secret;
@@ -112,9 +124,15 @@ public class Settings
 		return true;
 	}
 
+	public int getVERSION()
+	{
+		return VERSION;
+	}
+
 	@Override
 	public String toString()
 	{
-		return "Settings [clientSecret=" + clientSecret + ", url=" + url + ", secret=" + secret + ", currency=" + currency + ", restActivated=" + restActivated + ", trustedHosts=" + trustedHosts + ", language=" + language + ", autoUpdateCheckEnabled=" + autoUpdateCheckEnabled + "]";
+		return "Settings [TYPE=" + TYPE + ", VERSION=" + VERSION + ", clientSecret=" + clientSecret + ", url=" + url + ", secret=" + secret + ", currency=" + currency + ", restActivated=" + restActivated + ", trustedHosts=" + trustedHosts + ", language=" + language + ", autoUpdateCheckEnabled="
+				+ autoUpdateCheckEnabled + "]";
 	}
 }

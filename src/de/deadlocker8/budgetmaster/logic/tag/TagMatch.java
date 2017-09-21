@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.logic.tag;
 
-import de.deadlocker8.budgetmasterserver.logic.DatabaseImportExport;
+import de.deadlocker8.budgetmasterserver.logic.database.DatabaseImportExport;
 
 @DatabaseImportExport
 public class TagMatch

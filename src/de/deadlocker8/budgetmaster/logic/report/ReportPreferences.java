@@ -1,7 +1,21 @@
 package de.deadlocker8.budgetmaster.logic.report;
 
+import de.deadlocker8.budgetmaster.logic.utils.SaveFileType;
+
 public class ReportPreferences
 {
+	/*
+	 * VERSIONS 
+	 * 
+	 * --> 1
+	 * initial
+	 * 
+	 * --> 2
+	 * added last export folder as reportFolderPath
+	 */	
+	
+	@SuppressWarnings("unused")
+	private final String TYPE = SaveFileType.BUDGETMASTER_REPORT_PREFERENCES.toString();
 	private final int VERSION = 2;
 	private ColumnOrder columnOrder;
 	private boolean includeBudget;

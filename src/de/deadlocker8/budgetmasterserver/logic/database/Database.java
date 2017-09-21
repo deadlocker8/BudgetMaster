@@ -7,6 +7,7 @@ import de.deadlocker8.budgetmaster.logic.payment.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.payment.RepeatingPayment;
 import de.deadlocker8.budgetmaster.logic.tag.Tag;
 import de.deadlocker8.budgetmaster.logic.tag.TagMatch;
+import de.deadlocker8.budgetmaster.logic.utils.SaveFileType;
 
 public class Database
 {
@@ -21,7 +22,7 @@ public class Database
 	 */	
 	
 	@SuppressWarnings("unused")
-	private final String TYPE = "BUDGETMASTER_DATABASE";
+	private final String TYPE = SaveFileType.BUDGETMASTER_DATABASE.toString();
 	private final int VERSION = 2;
 	private ArrayList<Category> categoriesX;
 	private ArrayList<NormalPayment> normalPayments;
