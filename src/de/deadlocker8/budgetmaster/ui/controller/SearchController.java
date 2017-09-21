@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmaster.ui.controller;
 import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.payment.Payment;
+import de.deadlocker8.budgetmaster.logic.search.SearchPreferences;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
@@ -106,9 +107,14 @@ public class SearchController extends BaseController implements Styleable
             }	        
 	    });
 		
-		if(controller.getLastSearchQuery() != null)
+		//prefill
+		if(controller.getSearchPreferences() != null)
 		{
-			textFieldSearch.setText(controller.getLastSearchQuery());
+			textFieldSearch.setText(controller.getSearchPreferences().getLastQuery());
+			checkBoxName.setSelected(controller.getSearchPreferences().isSearchName());
+			checkBoxDescription.setSelected(controller.getSearchPreferences().isSearchDescription());
+			checkBoxCategoryName.setSelected(controller.getSearchPreferences().isSearchCategorNames());
+			checkBoxTags.setSelected(controller.getSearchPreferences().isSearchTags());
 		}
 		
 		applyStyle();	
@@ -116,8 +122,16 @@ public class SearchController extends BaseController implements Styleable
 	
 	public void search()
 	{
-		String query = textFieldSearch.getText().trim();		
-		controller.setLastSearchQuery(query);
+		String query = textFieldSearch.getText().trim();
+		if(controller.getSearchPreferences() == null)
+		{
+			controller.setSearchPreferences(new SearchPreferences());
+		}
+		controller.getSearchPreferences().setLastQuery(query);
+		controller.getSearchPreferences().setSearchName(checkBoxName.isSelected());
+		controller.getSearchPreferences().setSearchDescription(checkBoxDescription.isSelected());
+		controller.getSearchPreferences().setSearchCategorNames(checkBoxCategoryName.isSelected());
+		controller.getSearchPreferences().setSearchTags(checkBoxTags.isSelected());
 		
 		Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_SEARCH), getStage(), controller.getIcon());
 		

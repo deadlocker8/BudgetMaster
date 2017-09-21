@@ -13,6 +13,7 @@ import de.deadlocker8.budgetmaster.logic.category.CategoryHandler;
 import de.deadlocker8.budgetmaster.logic.payment.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.payment.Payment;
 import de.deadlocker8.budgetmaster.logic.payment.PaymentHandler;
+import de.deadlocker8.budgetmaster.logic.search.SearchPreferences;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.tag.TagHandler;
@@ -81,7 +82,7 @@ public class Controller extends BaseController
 	private FilterSettings filterSettings;
 	private Updater updater;
 	private Payment selectedPayment;
-	private String lastSearchQuery;
+	private SearchPreferences searchPreferences;
 
 	private boolean alertIsShowing = false;
 	private static final String DATE_FORMAT = "MMMM yyyy";
@@ -383,16 +384,16 @@ public class Controller extends BaseController
 	public Payment getSelectedPayment()
 	{
 		return selectedPayment;
-	}
-	
-	public String getLastSearchQuery()
+	}	
+
+	public SearchPreferences getSearchPreferences()
 	{
-		return lastSearchQuery;
+		return searchPreferences;
 	}
 
-	public void setLastSearchQuery(String lastSearchQuery)
+	public void setSearchPreferences(SearchPreferences searchPreferences)
 	{
-		this.lastSearchQuery = lastSearchQuery;
+		this.searchPreferences = searchPreferences;
 	}
 
 	public PaymentController getPaymentController()
