@@ -43,6 +43,11 @@
                         <Font size="14.0" />
                      </font>
                   </CheckBox>
+                  <CheckBox fx:id="checkBoxTags" mnemonicParsing="false" text="%search.by.tags">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </CheckBox>
                </children>
             </HBox>
             <ListView fx:id="listView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />

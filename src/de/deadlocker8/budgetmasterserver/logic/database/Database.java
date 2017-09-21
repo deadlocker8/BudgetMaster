@@ -24,7 +24,7 @@ public class Database
 	@SuppressWarnings("unused")
 	private final String TYPE = SaveFileType.BUDGETMASTER_DATABASE.toString();
 	private final int VERSION = 2;
-	private ArrayList<Category> categoriesX;
+	private ArrayList<Category> categories;
 	private ArrayList<NormalPayment> normalPayments;
 	private ArrayList<RepeatingPayment> repeatingPayments;
 	private ArrayList<Tag> tags;
@@ -37,7 +37,7 @@ public class Database
 	
 	public Database(ArrayList<Category> categories, ArrayList<NormalPayment> normalPayments, ArrayList<RepeatingPayment> repeatingPayments, ArrayList<Tag> tags, ArrayList<TagMatch> tagMatches)
 	{	
-		this.categoriesX = categories;
+		this.categories = categories;
 		this.normalPayments = normalPayments;
 		this.repeatingPayments = repeatingPayments;
 		this.tags = tags;
@@ -46,7 +46,7 @@ public class Database
 
 	public ArrayList<Category> getCategories()
 	{
-	    return categoriesX;
+	    return categories;
 	}
 	
 	public ArrayList<NormalPayment> getNormalPayments()
@@ -77,6 +77,6 @@ public class Database
 	@Override
 	public String toString()
 	{
-		return "Database [VERSION=" + VERSION + ", categories=" + categoriesX + ", normalPayments=" + normalPayments + ", repeatingPayments=" + repeatingPayments + ", tags=" + tags + ", tagMatches=" + tagMatches + "]";
+		return "Database [VERSION=" + VERSION + ", categories=" + categories + ", normalPayments=" + normalPayments + ", repeatingPayments=" + repeatingPayments + ", tags=" + tags + ", tagMatches=" + tagMatches + "]";
 	}
 }

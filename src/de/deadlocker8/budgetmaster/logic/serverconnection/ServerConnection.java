@@ -331,7 +331,7 @@ public class ServerConnection
 		}
 	}
 	
-	public ArrayList<Payment> getPaymentForSearch(String query, boolean searchName, boolean searchDescription, boolean searchCategoryName) throws Exception
+	public ArrayList<Payment> getPaymentForSearch(String query, boolean searchName, boolean searchDescription, boolean searchCategoryName, boolean searchTags) throws Exception
 	{
 		String urlString = settings.getUrl() + "/payment/search?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&query=" + query;
 		if(searchName)
@@ -347,6 +347,11 @@ public class ServerConnection
 		if(searchCategoryName)
 		{
 			urlString += "&categoryName=" + 1;
+		}
+		
+		if(searchTags)
+		{
+			urlString += "&tags=" + 1;
 		}
 		
 		URL url = new URL(urlString);

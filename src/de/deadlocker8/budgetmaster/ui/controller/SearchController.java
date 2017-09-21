@@ -36,6 +36,7 @@ public class SearchController extends BaseController implements Styleable
 	@FXML private CheckBox checkBoxName;
 	@FXML private CheckBox checkBoxDescription;
 	@FXML private CheckBox checkBoxCategoryName;
+	@FXML private CheckBox checkBoxTags;
 	@FXML private TextField textFieldSearch;
 	@FXML private Button buttonCancel;
 	@FXML private Button buttonSearch;
@@ -128,7 +129,8 @@ public class SearchController extends BaseController implements Styleable
 				ArrayList<Payment> payments = connection.getPaymentForSearch(query, 
 																			checkBoxName.isSelected(), 
 																			checkBoxDescription.isSelected(), 
-																			checkBoxCategoryName.isSelected());
+																			checkBoxCategoryName.isSelected(),
+																			checkBoxTags.isSelected());
 				Platform.runLater(() -> {
 					listView.getItems().clear();
 					if(payments != null)

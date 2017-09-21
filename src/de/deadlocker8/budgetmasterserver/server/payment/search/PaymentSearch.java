@@ -11,7 +11,9 @@ import de.deadlocker8.budgetmaster.logic.payment.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.payment.Payment;
 import de.deadlocker8.budgetmaster.logic.payment.PaymentJSONSerializer;
 import de.deadlocker8.budgetmaster.logic.payment.RepeatingPayment;
+import de.deadlocker8.budgetmaster.logic.tag.Tag;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
+import de.deadlocker8.budgetmasterserver.logic.database.DatabaseTagHandler;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -19,10 +21,12 @@ import spark.Route;
 public class PaymentSearch implements Route
 {
 	private DatabaseHandler handler;
+	private DatabaseTagHandler tagHandler;
 
-	public PaymentSearch(DatabaseHandler handler)
+	public PaymentSearch(DatabaseHandler handler, DatabaseTagHandler tagHandler)
 	{
 		this.handler = handler;
+		this.tagHandler = tagHandler;
 	}
 
 	@Override
@@ -73,7 +77,7 @@ public class PaymentSearch implements Route
 		if(req.queryMap("query").value().toLowerCase().equals(""))
 			return false;
 		
-		if(!req.queryParams().contains("name") && !req.queryParams().contains("description") && !req.queryParams().contains("categoryName"))
+		if(!req.queryParams().contains("name") && !req.queryParams().contains("description") && !req.queryParams().contains("categoryName") && !req.queryParams().contains("tags"))
 			return false;
 
 		if(req.queryParams().contains("name"))
@@ -102,6 +106,34 @@ public class PaymentSearch implements Route
 			if(category.getName().toLowerCase().contains(req.queryMap("query").value().toLowerCase()))
 			{
 				return true;
+			}
+		}
+		
+		if(req.queryParams().contains("tags"))
+		{
+			ArrayList<Integer> tagIDs = new ArrayList<>();
+			if(payment instanceof NormalPayment)
+			{
+				tagIDs = tagHandler.getAllTagsForPayment(payment.getID());				
+			}
+			else
+			{
+				tagIDs = tagHandler.getAllTagsForRepeatingPayment(payment.getID());
+			}
+			
+			if(tagIDs.size() > 0) 
+			{				
+				for(Integer currentTagID : tagIDs)
+				{
+					Tag currentTag = tagHandler.getTagByID(currentTagID);
+					if(currentTag != null)
+					{
+						if(currentTag.getName().toLowerCase().contains(req.queryMap("query").value().toLowerCase())) 
+						{
+							return true;
+						}
+					}
+				}				
 			}
 		}
 

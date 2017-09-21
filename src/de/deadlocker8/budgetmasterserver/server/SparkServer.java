@@ -119,7 +119,7 @@ public class SparkServer
 		delete("/category", new CategoryDelete(handler));
 
 		// Payment
-		get("/payment/search", new PaymentSearch(handler));
+		get("/payment/search", new PaymentSearch(handler, tagHandler));
 		// Normal
 		get("/payment", new PaymentGet(handler, gson));
 		post("/payment", new PaymentAdd(handler, gson));

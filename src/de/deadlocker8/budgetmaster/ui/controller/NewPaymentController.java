@@ -284,10 +284,26 @@ public class NewPaymentController extends BaseController implements Styleable
 		try
 		{
 			ServerTagConnection serverTagConnection = new ServerTagConnection(controller.getSettings());			
-			tagField.setAllTags(serverTagConnection.getTags());		
+			tagField.setAllTags(serverTagConnection.getTags());
 		
+			if(payment instanceof RepeatingPayment)
+			{
+				//search gets RepeatingPayments instead of RepeatingPaymenEntries --> convert it to RepeatingPaymentEntry to maintain compatibility
+				RepeatingPayment tempPayment = (RepeatingPayment)payment;
+				payment = new RepeatingPaymentEntry(-1, 
+													tempPayment.getID(), 
+													tempPayment.getDate(), 
+													tempPayment.getAmount(), 
+													tempPayment.getCategoryID(),
+													tempPayment.getName(), 
+													tempPayment.getDescription(), 
+													tempPayment.getRepeatInterval(), 
+													tempPayment.getRepeatEndDate(), 
+													tempPayment.getRepeatMonthDay());
+			}
+			
 			if(payment instanceof RepeatingPaymentEntry)
-			{				
+			{
 				try
 				{					
 					RepeatingPaymentEntry currentPayment = (RepeatingPaymentEntry)payment;
