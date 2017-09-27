@@ -15,6 +15,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import de.deadlocker8.budgetmaster.logic.category.Category;
 import de.deadlocker8.budgetmaster.logic.payment.NormalPayment;
@@ -48,7 +49,7 @@ public class DatabaseImportExportTest
 			databaseHandler = handler;
 			tagHandler = new DatabaseTagHandler(settings);
 			
-			Localization.init("de/deadlocker8/budgetmaster/resources/");
+			Localization.init("de/deadlocker8/budgetmaster/resources/languages/");
 			Localization.loadLanguage(Locale.GERMANY);
 		}
 		catch(IOException | URISyntaxException e)
@@ -77,7 +78,7 @@ public class DatabaseImportExportTest
 			assertEquals(expectedCategory.getColor(), category.getColor());
 			
 			//test normal payment
-			NormalPayment expectedPayment = new NormalPayment(1, 23, "2017-06-02", 0, "Test Normal", "Lorem Ipsum");			
+			NormalPayment expectedPayment = new NormalPayment(1, 23, "2017-06-02", 3, "Test Normal", "Lorem Ipsum");			
 			NormalPayment payment = databaseHandler.getPayment(1);			
 			assertEquals(expectedPayment.getAmount(), payment.getAmount());		
 			assertEquals(expectedPayment.getDate(), payment.getDate());
@@ -86,7 +87,7 @@ public class DatabaseImportExportTest
 			assertEquals(expectedPayment.getDescription(), payment.getDescription());
 			
 			//test repeating payment
-			RepeatingPayment expectedRepeatingPayment = new RepeatingPayment(1, -10012, "2017-06-01", 3, "Test Repeating", "Lorem Ipsum", 7, "2017-06-30", 0);			
+			RepeatingPayment expectedRepeatingPayment = new RepeatingPayment(1, -10012, "2017-06-01", 1, "Test Repeating", "Lorem Ipsum", 7, "2017-06-30", 0);			
 			RepeatingPayment repeatingPayment = databaseHandler.getRepeatingPayment(1);
 			assertEquals(expectedRepeatingPayment.getAmount(), repeatingPayment.getAmount());
 			assertEquals(expectedRepeatingPayment.getDate(), repeatingPayment.getDate());
@@ -95,7 +96,7 @@ public class DatabaseImportExportTest
 			assertEquals(expectedRepeatingPayment.getDescription(), repeatingPayment.getDescription());
 			assertEquals(expectedRepeatingPayment.getRepeatInterval(), repeatingPayment.getRepeatInterval());
 			assertEquals(expectedRepeatingPayment.getRepeatEndDate(), repeatingPayment.getRepeatEndDate());
-			assertEquals(expectedRepeatingPayment.getRepeatMonthDay(), repeatingPayment.getRepeatMonthDay());			
+			assertEquals(expectedRepeatingPayment.getRepeatMonthDay(), repeatingPayment.getRepeatMonthDay());	
 		}
 		catch(Exception e)
 		{
@@ -120,8 +121,8 @@ public class DatabaseImportExportTest
 			
 			file = Paths.get("tests/de/deadlocker8/budgetmaster/tests/resources/export.json").toFile();
 			DatabaseExporter exporter = new DatabaseExporter(settings);	
-			Gson gson = new Gson();
-			String databaseJSON = gson.toJson(exporter.exportDatabase());
+			Gson gson = new GsonBuilder().setPrettyPrinting().create();
+			String databaseJSON = gson.toJson(exporter.exportDatabase()).replaceAll("\n", "");
 			FileHelper.saveDatabaseJSON(file, databaseJSON);
 			FileHelper.saveDatabaseJSON(new File("C:/Users/ROGO2/Desktop/123.json"), databaseJSON);
 			

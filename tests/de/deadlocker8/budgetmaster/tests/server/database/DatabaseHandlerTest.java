@@ -39,7 +39,7 @@ public class DatabaseHandlerTest
 			handler = new DatabaseHandler(settings);			
 			databaseHandler = handler;
 			
-			Localization.init("de/deadlocker8/budgetmaster/resources/");
+			Localization.init("de/deadlocker8/budgetmaster/resources/languages/");
 			Localization.loadLanguage(Locale.GERMANY);
 		}
 		catch(IOException | URISyntaxException e)
