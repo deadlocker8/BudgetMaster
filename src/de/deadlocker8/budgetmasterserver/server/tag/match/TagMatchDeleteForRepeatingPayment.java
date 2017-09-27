@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmasterserver.server.tag.match;
 import static spark.Spark.halt;
 
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseTagHandler;
+import de.deadlocker8.budgetmasterserver.server.updater.TagUpdater;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -35,6 +36,9 @@ public class TagMatchDeleteForRepeatingPayment implements Route
 			}
 			
 			tagHandler.deleteTagMatchForRepeatingPayment(tagID, repeatingPaymentID);
+			
+			TagUpdater tagUpdater = new TagUpdater(tagHandler);
+			tagUpdater.deleteTagsIfNotReferenced();
 
 			return "";
 		}

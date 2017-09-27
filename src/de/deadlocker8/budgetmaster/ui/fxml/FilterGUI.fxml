@@ -83,7 +83,10 @@
                                     </HBox>
                                     <ScrollPane prefHeight="183.0" prefWidth="297.0" VBox.vgrow="ALWAYS">
                                        <content>
-                                          <VBox fx:id="vboxCategories" spacing="5.0" />
+                                          <VBox fx:id="vboxCategories" spacing="5.0">
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding></VBox>
                                        </content>
                                     </ScrollPane>
                                  </children>
@@ -155,7 +158,10 @@
                                     </HBox>
                                     <ScrollPane prefHeight="85.0" prefWidth="409.0" VBox.vgrow="ALWAYS">
                                        <content>
-                                          <VBox fx:id="vboxTags" spacing="5.0" />
+                                          <VBox fx:id="vboxTags" spacing="5.0">
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding></VBox>
                                        </content>
                                     </ScrollPane>
                                  </children>

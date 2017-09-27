@@ -386,4 +386,30 @@ public class DatabaseTagHandler
 			closeConnection(stmt);
 		}
 	}
+	
+	public boolean isTagUsedInMatches(int tagID)
+	{
+		PreparedStatement stmt = null;
+		try
+		{
+			stmt = connection.prepareStatement("SELECT * FROM tag_match WHERE tag_match.Tag_ID = ?;");
+			stmt.setInt(1, tagID);
+			ResultSet rs = stmt.executeQuery();
+
+            while(rs.next())
+            {
+            	return true;
+            }
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+		finally
+		{
+			closeConnection(stmt);
+		}
+		
+		return false;
+	}	
 }
