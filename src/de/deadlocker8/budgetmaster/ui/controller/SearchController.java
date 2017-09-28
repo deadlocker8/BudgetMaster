@@ -249,10 +249,9 @@ public class SearchController extends BaseController implements Styleable
 		
 		Worker.runLater(() -> {
 			try 
-			{
-				
+			{				
 				ServerConnection connection = new ServerConnection(controller.getSettings());
-				ArrayList<Payment> payments = connection.getPaymentForSearch(query, 
+				ArrayList<Payment> payments = connection.getPaymentsForSearch(query, 
 																			checkBoxName.isSelected(), 
 																			checkBoxDescription.isSelected(), 
 																			checkBoxCategoryName.isSelected(),

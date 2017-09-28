@@ -78,7 +78,7 @@
                         <HBox fx:id="hboxSearchByAmount" alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
                            <children>
                               <TextField fx:id="textFieldAmountMin" prefHeight="25.0" prefWidth="55.0" />
-                              <HBox fx:id="hboxRangeSlider" prefHeight="32.0" prefWidth="123.0" />
+                              <HBox fx:id="hboxRangeSlider" prefHeight="32.0" prefWidth="123.0" HBox.hgrow="ALWAYS" />
                               <TextField fx:id="textFieldAmountMax" prefHeight="25.0" prefWidth="55.0" />
                            </children>
                         </HBox>
