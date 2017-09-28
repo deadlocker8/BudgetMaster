@@ -8,6 +8,7 @@ import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmaster.ui.Styleable;
+import de.deadlocker8.budgetmaster.ui.customAlert.CustomAlertController;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -69,9 +70,10 @@ public class SplashScreenController extends BaseController implements Styleable
 	
 		applyStyle();
 		
-		textFieldPassword.setOnKeyReleased((event)->{
+		textFieldPassword.setOnKeyReleased((event)->{			
 			if(event.getCode() == KeyCode.ENTER)
 			{
+				event.consume();
 				login();
 			}
 		});
@@ -177,14 +179,7 @@ public class SplashScreenController extends BaseController implements Styleable
 			//check password
 			if(!HashUtils.hash(password, Helpers.SALT).equals(settings.getClientSecret()))
 			{
-				AlertGenerator.showAlert(AlertType.WARNING, 
-										Localization.getString(Strings.TITLE_WARNING), 
-										"", 
-										Localization.getString(Strings.WARNING_WRONG_PASSWORD),
-										icon, 
-										getStage(), 
-										null, 
-										false);
+				new CustomAlertController(getStage(), this, AlertType.WARNING, Localization.getString(Strings.TITLE_WARNING), Localization.getString(Strings.WARNING_WRONG_PASSWORD));
 				return;
 			}
 			
@@ -196,6 +191,11 @@ public class SplashScreenController extends BaseController implements Styleable
 	private void openBudgetMaster()
 	{
 		new Controller(settings);
+	}
+	
+	public Image getIcon()
+	{
+		return icon;
 	}
 
 	@Override
