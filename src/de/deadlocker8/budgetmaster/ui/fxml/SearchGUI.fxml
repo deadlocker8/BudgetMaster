@@ -20,36 +20,72 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="textFieldSearch" />
-            <HBox prefHeight="10.0" prefWidth="422.0" spacing="25.0">
+            <VBox spacing="15.0">
                <children>
-                  <Label text="%search.by">
+                  <HBox spacing="25.0">
+                     <children>
+                        <VBox spacing="20.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <TextField fx:id="textFieldSearch" />
+                              <HBox spacing="15.0">
+                                 <children>
+                                    <Label text="%search.by">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <CheckBox fx:id="checkBoxName" mnemonicParsing="false" text="%search.by.name">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </CheckBox>
+                                    <CheckBox fx:id="checkBoxDescription" mnemonicParsing="false" text="%search.by.description">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </CheckBox>
+                                    <CheckBox fx:id="checkBoxCategoryName" mnemonicParsing="false" text="%search.by.category.name">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </CheckBox>
+                                    <CheckBox fx:id="checkBoxTags" mnemonicParsing="false" text="%search.by.tags">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </CheckBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <Label fx:id="labelSeparator" maxWidth="1.7976931348623157E308">
                      <font>
-                        <Font name="System Bold" size="14.0" />
+                        <Font size="1.0" />
                      </font>
                   </Label>
-                  <CheckBox fx:id="checkBoxName" mnemonicParsing="false" text="%search.by.name">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <CheckBox fx:id="checkBoxDescription" mnemonicParsing="false" text="%search.by.description">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <CheckBox fx:id="checkBoxCategoryName" mnemonicParsing="false" text="%search.by.category.name">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <CheckBox fx:id="checkBoxTags" mnemonicParsing="false" text="%search.by.tags">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="377.0" spacing="10.0">
+                     <children>
+                        <CheckBox fx:id="checkBoxSearchByAmount" mnemonicParsing="false" text="Betrag eingrenzen">
+                           <HBox.margin>
+                              <Insets right="25.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </CheckBox>
+                        <HBox fx:id="hboxSearchByAmount" alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <TextField fx:id="textFieldAmountMin" prefHeight="25.0" prefWidth="55.0" />
+                              <HBox fx:id="hboxRangeSlider" prefHeight="32.0" prefWidth="123.0" />
+                              <TextField fx:id="textFieldAmountMax" prefHeight="25.0" prefWidth="55.0" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
                </children>
-            </HBox>
+            </VBox>
             <ListView fx:id="listView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
             <HBox alignment="CENTER" prefHeight="30.0" prefWidth="465.0" spacing="10.0">
                <children>

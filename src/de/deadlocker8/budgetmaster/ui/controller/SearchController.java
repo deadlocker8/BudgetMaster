@@ -2,6 +2,8 @@ package de.deadlocker8.budgetmaster.ui.controller;
 
 import java.util.ArrayList;
 
+import org.controlsfx.control.RangeSlider;
+
 import de.deadlocker8.budgetmaster.logic.payment.Payment;
 import de.deadlocker8.budgetmaster.logic.search.SearchPreferences;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
@@ -15,14 +17,18 @@ import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -39,6 +45,12 @@ public class SearchController extends BaseController implements Styleable
 	@FXML private CheckBox checkBoxCategoryName;
 	@FXML private CheckBox checkBoxTags;
 	@FXML private TextField textFieldSearch;
+	@FXML private CheckBox checkBoxSearchByAmount;
+	@FXML private TextField textFieldAmountMin;
+	@FXML private TextField textFieldAmountMax;
+	@FXML private HBox hboxRangeSlider;
+	@FXML private Label labelSeparator;
+	@FXML private HBox hboxSearchByAmount;
 	@FXML private Button buttonCancel;
 	@FXML private Button buttonSearch;
 	@FXML private ListView<Payment> listView;
@@ -65,7 +77,7 @@ public class SearchController extends BaseController implements Styleable
 		stage.setMinWidth(500);
 		stage.setMinHeight(500);
 		stage.setWidth(650);
-	}
+	}	
 
 	@Override
 	public void init()
@@ -107,6 +119,93 @@ public class SearchController extends BaseController implements Styleable
             }	        
 	    });
 		
+		checkBoxSearchByAmount.selectedProperty().addListener((a, b, c)->{
+			hboxSearchByAmount.setDisable(!c);
+		});
+		
+		hboxSearchByAmount.setDisable(true);
+		
+		//TODO get max from server
+		int maximum = 3500;
+		
+		RangeSlider rangeSlider = new RangeSlider();
+		rangeSlider.setMin(0);
+		rangeSlider.setMax(maximum);
+		rangeSlider.setLowValue(rangeSlider.getMin());
+		rangeSlider.setHighValue(rangeSlider.getMax());		
+		rangeSlider.setShowTickMarks(true);
+		rangeSlider.setShowTickLabels(true);
+		rangeSlider.setMajorTickUnit(getMayorTickUnit(maximum));
+		rangeSlider.setMinorTickCount(0);
+		rangeSlider.lowValueProperty().addListener((a, b, c)->{
+			textFieldAmountMin.setText(String.valueOf(c.intValue()));
+		});
+		rangeSlider.highValueProperty().addListener((a, b, c)->{
+			textFieldAmountMax.setText(String.valueOf(c.intValue()));
+		});
+		hboxRangeSlider.getChildren().add(rangeSlider);
+		hboxRangeSlider.setAlignment(Pos.CENTER);
+		HBox.setHgrow(rangeSlider, Priority.ALWAYS);
+		
+		textFieldAmountMin.setTextFormatter(new TextFormatter<>(c -> {
+			if(c.getControlNewText().isEmpty())
+			{
+				return c;
+			}
+
+			if(c.getControlNewText().matches("[0-9]*"))
+			{
+				return c;
+			}
+			else
+			{
+				return null;
+			}
+		}));
+		
+		textFieldAmountMax.setTextFormatter(new TextFormatter<>(c -> {
+			if(c.getControlNewText().isEmpty())
+			{
+				return c;
+			}
+
+			if(c.getControlNewText().matches("[0-9]*"))
+			{
+				return c;
+			}
+			else
+			{
+				return null;
+			}
+		}));
+		
+		textFieldAmountMin.setOnKeyReleased((event)->{			
+			if(event.getCode() == KeyCode.ENTER)
+			{
+				String text = textFieldAmountMin.getText();
+				if(text != null && !text.equals(""))
+				{
+					rangeSlider.setLowValue(Integer.parseInt(text));
+				}
+			}
+		});
+		
+		textFieldAmountMax.setOnKeyReleased((event)->{			
+			if(event.getCode() == KeyCode.ENTER)
+			{
+				String text = textFieldAmountMax.getText();
+				if(text != null && !text.equals(""))
+				{
+					rangeSlider.setHighValue(Integer.parseInt(text));
+				}
+			}
+		});
+		
+		textFieldAmountMin.setText("0");
+		textFieldAmountMax.setText(String.valueOf(maximum));		
+		
+		//TODO save search by amount to SearchPreferences
+		
 		//prefill
 		if(controller.getSearchPreferences() != null)
 		{
@@ -118,6 +217,19 @@ public class SearchController extends BaseController implements Styleable
 		}
 		
 		applyStyle();	
+	}
+	
+
+	private int getMayorTickUnit(int maximum)
+	{
+		if(maximum < 10)
+			return 1;
+	
+		if(maximum < 100)
+			return 5;
+		
+		int length = String.valueOf(maximum).length();
+		return (int)Math.pow(10, length-2);
 	}
 	
 	public void search()
@@ -188,6 +300,10 @@ public class SearchController extends BaseController implements Styleable
 	@Override
 	public void applyStyle()
 	{
+		labelSeparator.setStyle("-fx-background-color: #CCCCCC;");
+		labelSeparator.setMinHeight(1);
+		labelSeparator.setMaxHeight(1);
+		
 		buttonCancel.setGraphic(Helpers.getFontIcon(FontIconType.TIMES, 17, Color.WHITE));	
 		buttonSearch.setGraphic(Helpers.getFontIcon(FontIconType.SEARCH, 17, Color.WHITE));
 
