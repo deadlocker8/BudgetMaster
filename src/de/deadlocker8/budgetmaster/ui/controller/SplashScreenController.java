@@ -139,15 +139,8 @@ public class SplashScreenController extends BaseController implements Styleable
 		String password = textFieldPassword.getText().trim();
 		if(password == null || password.isEmpty())
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, 
-									Localization.getString(Strings.TITLE_WARNING), 
-									"", 
-									Localization.getString(Strings.WARNING_EMPTY_PASSWORD), 
-									icon, 
-									getStage(), 
-									null, 
-									false);
-			return;
+			new CustomAlertController(getStage(), this, AlertType.WARNING, Localization.getString(Strings.TITLE_WARNING), Localization.getString(Strings.WARNING_EMPTY_PASSWORD));
+			return;		
 		}		
 	
 		if(isFirstStart)
@@ -164,14 +157,8 @@ public class SplashScreenController extends BaseController implements Styleable
 			catch(IOException e)
 			{
 				Logger.error(e);
-				AlertGenerator.showAlert(AlertType.ERROR, 
-										Localization.getString(Strings.TITLE_ERROR), 
-										"", 
-										Localization.getString(Strings.ERROR_PASSWORD_SAVE),
-										icon, 
-										getStage(), 
-										null, 
-										false);
+				new CustomAlertController(getStage(), this, AlertType.WARNING, Localization.getString(Strings.TITLE_ERROR), Localization.getString(Strings.ERROR_PASSWORD_SAVE));
+				return;				
 			}
 		}
 		else
