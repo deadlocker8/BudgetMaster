@@ -211,7 +211,7 @@ public class ReportGenerator
 		if(reportPreferences.isIncludeCategoryBudgets())
 		{
 			document.add(Chunk.NEWLINE);
-			document.add(new Paragraph(Localization.getString(Strings.TITLE_CATEGORY_BUDGETS), headerFont));
+			document.add(new Paragraph(Localization.getString(Strings.TITLE_CATEGORY_BUDGETS), smallHeaderFont));
 			document.add(Chunk.NEWLINE);
 			
 			PdfPTable table = generateCategoryBudgets();

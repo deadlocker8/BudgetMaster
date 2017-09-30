@@ -185,10 +185,10 @@ public class ChartController implements Refreshable, Styleable
 		String endYear = comboBoxEndYear.getValue();
 
 		String startDateString = "01-" + startMonth + "-" + startYear;
-		DateTime startDate = DateTime.parse(startDateString, DateTimeFormat.forPattern("dd-MMMM-YYYY"));
+		DateTime startDate = DateTime.parse(startDateString, DateTimeFormat.forPattern("dd-MMMM-YYYY").withLocale(controller.getSettings().getLanguage().getLocale()));
 
 		String endDateString = "01-" + endMonth + "-" + endYear;
-		DateTime endDate = DateTime.parse(endDateString, DateTimeFormat.forPattern("dd-MMMM-YYYY"));
+		DateTime endDate = DateTime.parse(endDateString, DateTimeFormat.forPattern("dd-MMMM-YYYY").withLocale(controller.getSettings().getLanguage().getLocale()));
 
 		if(endDate.isBefore(startDate))
 		{
@@ -257,10 +257,11 @@ public class ChartController implements Refreshable, Styleable
 		datePickerEnd.setValue(endDate);
 
 		// chart month
-		comboBoxStartMonth.setValue(controller.getCurrentDate().minusMonths(5).toString("MMMM"));
+		System.out.println(controller.getCurrentDate().minusMonths(5).monthOfYear().getAsText(controller.getSettings().getLanguage().getLocale()));
+		comboBoxStartMonth.setValue(controller.getCurrentDate().minusMonths(5).monthOfYear().getAsText(controller.getSettings().getLanguage().getLocale()));
 		comboBoxStartYear.setValue(String.valueOf(controller.getCurrentDate().minusMonths(5).getYear()));
 
-		comboBoxEndMonth.setValue(controller.getCurrentDate().plusMonths(6).toString("MMMM"));
+		comboBoxEndMonth.setValue(controller.getCurrentDate().plusMonths(6).monthOfYear().getAsText(controller.getSettings().getLanguage().getLocale()));
 		comboBoxEndYear.setValue(String.valueOf(controller.getCurrentDate().plusMonths(6).getYear()));
 
 		Worker.runLater(() -> {
