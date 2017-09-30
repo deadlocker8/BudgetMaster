@@ -680,6 +680,30 @@ public class DatabaseHandler
 
 		return -1;
 	}
+	
+	public int getRepeatingPaymentMaxAmount()
+	{
+		PreparedStatement stmt = null;
+		try
+		{
+			stmt = connection.prepareStatement("SELECT MAX(ABS(Amount)) as'max' FROM repeating_payment;");		;
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next())
+			{
+				return rs.getInt("max");			
+			}
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+		finally
+		{
+			closeConnection(stmt);
+		}
+
+		return -1;
+	}
 
 	/*
 	 * DELETE

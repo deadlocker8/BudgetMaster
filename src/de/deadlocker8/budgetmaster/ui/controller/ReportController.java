@@ -590,14 +590,20 @@ public class ReportController implements Refreshable, Styleable
 		{
 			reportSorting.setColumnType(ColumnType.DATE);
 			reportSorting.setSortType(SortType.DESCENDING);
-		}		
+		}
+		
+		String reportFolderPath = null;
+		if(reportPreferences != null)
+		{
+			reportFolderPath = reportPreferences.getReportFolderPath();
+		}
 		
 		return new ReportPreferences(columnOrder, 
 									checkBoxIncludeBudget.isSelected(),
 									checkBoxSplitTable.isSelected(),
 									checkBoxIncludeCategoryBudgets.isSelected(),
 									reportSorting, 
-									reportPreferences.getReportFolderPath());
+									reportFolderPath);
 	}
 	
 	private void saveReportPreferences() 

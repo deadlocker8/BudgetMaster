@@ -67,7 +67,7 @@
                   </Label>
                   <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="377.0" spacing="10.0">
                      <children>
-                        <CheckBox fx:id="checkBoxSearchByAmount" mnemonicParsing="false" text="Betrag eingrenzen">
+                        <CheckBox fx:id="checkBoxSearchByAmount" mnemonicParsing="false" text="%search.by.amount">
                            <HBox.margin>
                               <Insets right="25.0" />
                            </HBox.margin>

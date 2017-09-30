@@ -26,8 +26,15 @@ public class PaymentMaxAmount implements Route
 		try
 		{
 			int maxNormal = handler.getNormalPaymentMaxAmount();
+			int maxRepeating = handler.getRepeatingPaymentMaxAmount();
+			
+			int max = maxNormal;
+			if(maxRepeating > max)
+			{
+				max = maxRepeating;
+			}
 			//plus 1 to allow all amounts up to maxNormal.99 €
-			return gson.toJson((maxNormal+1)/100);
+			return gson.toJson((max+1)/100);
 		}
 		catch(IllegalStateException ex)
 		{

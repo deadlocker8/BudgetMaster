@@ -369,7 +369,8 @@ public class ServerConnection
 		{
 			String result = Read.getStringFromInputStream(httpsCon.getInputStream());
 			JsonParser parser = new JsonParser();
-			JsonElement resultJSON = parser.parse(result);		
+			JsonElement resultJSON = parser.parse(result);
+			
 	        return PaymentJSONDeserializer.deserializePaymentList(resultJSON.getAsJsonObject().get("payments").getAsJsonArray());
 		}
 		else
