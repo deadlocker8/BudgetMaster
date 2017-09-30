@@ -19,12 +19,22 @@ public class CategoryInOutSum
 		this.budgetIN = budgetIN;
 		this.budgetOUT = budgetOUT;
 	}
+	
+	public int getID()
+	{
+		return ID;
+	}
 
 	public String getName()
     {       
         if(ID == 1)
         {
             return Localization.getString(Strings.CATEGORY_NONE);
+        }
+        
+        if(ID == 2)
+        {
+            return Localization.getString(Strings.CATEGORY_REST);
         }
         
         return name;
