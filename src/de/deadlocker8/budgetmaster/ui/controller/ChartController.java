@@ -257,7 +257,6 @@ public class ChartController implements Refreshable, Styleable
 		datePickerEnd.setValue(endDate);
 
 		// chart month
-		System.out.println(controller.getCurrentDate().minusMonths(5).monthOfYear().getAsText(controller.getSettings().getLanguage().getLocale()));
 		comboBoxStartMonth.setValue(controller.getCurrentDate().minusMonths(5).monthOfYear().getAsText(controller.getSettings().getLanguage().getLocale()));
 		comboBoxStartYear.setValue(String.valueOf(controller.getCurrentDate().minusMonths(5).getYear()));
 
