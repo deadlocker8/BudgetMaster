@@ -75,16 +75,25 @@ public class PaymentSearch implements Route
 	private boolean meetsCriteria(Request req, Payment payment)
 	{
 		if(req.queryMap("query").value().toLowerCase().equals(""))
-			return true;
+			return checkAmount(req, payment);
 		
-		if(!req.queryParams().contains("name") && !req.queryParams().contains("description") && !req.queryParams().contains("categoryName") && !req.queryParams().contains("tags"))
+		if(!req.queryParams().contains("name") 
+			&& !req.queryParams().contains("description") 
+			&& !req.queryParams().contains("categoryName")
+			&& !req.queryParams().contains("tags")
+			&& !req.queryParams().contains("minAmount")
+			&& !req.queryParams().contains("maxAmount"))
 			return false;
 
 		if(req.queryParams().contains("name"))
 		{
 			if(payment.getName().toLowerCase().contains(req.queryMap("query").value().toLowerCase()))
 			{
-				return true;
+				return checkAmount(req, payment);
+			}
+			else
+			{
+				return false;
 			}
 		}
 
@@ -92,7 +101,11 @@ public class PaymentSearch implements Route
 		{
 			if(payment.getDescription().toLowerCase().contains(req.queryMap("query").value().toLowerCase()))
 			{
-				return true;
+				return checkAmount(req, payment);
+			}
+			else
+			{
+				return false;
 			}
 		}
 
@@ -105,7 +118,11 @@ public class PaymentSearch implements Route
 			Category category = handler.getCategory(payment.getCategoryID());		
 			if(category.getName().toLowerCase().contains(req.queryMap("query").value().toLowerCase()))
 			{
-				return true;
+				return checkAmount(req, payment);
+			}
+			else
+			{
+				return false;
 			}
 		}
 		
@@ -130,13 +147,59 @@ public class PaymentSearch implements Route
 					{
 						if(currentTag.getName().toLowerCase().contains(req.queryMap("query").value().toLowerCase())) 
 						{
-							return true;
+							return checkAmount(req, payment);
+						}
+						else
+						{
+							return false;
 						}
 					}
 				}				
 			}
 		}
 
-		return false;
+		/*
+		 * check here again if amount should be considered
+		 * otherwise the following situation is evaluated incorrectly:
+		 * 
+		 * -at least one of the previous criteria is enabled (e.g. search by name)
+		 * -payment doesn't match the criteria
+		 * --> checkAmount() is being processed
+		 * --> if amount is not in request (search shouldn't search by amount) the checkAmount()-Method returns true
+		 * --> payment that doesn't match the criteria AND shouldn't be searched by amount should be evaluated as FALSE instead of TRUE
+		 */
+		if(req.queryParams().contains("minAmount") && req.queryParams().contains("maxAmount"))
+		{
+			return checkAmount(req, payment);
+		}
+		return false;		
+	}
+	
+	private boolean checkAmount(Request req, Payment payment)
+	{
+		if(req.queryParams().contains("minAmount") && req.queryParams().contains("maxAmount"))
+		{
+			try
+			{
+				int minAmount = Integer.parseInt(req.queryMap("minAmount").value());
+				int maxAmount = Integer.parseInt(req.queryMap("maxAmount").value());			
+				int amount = Math.abs(payment.getAmount());
+				
+				if(amount >= minAmount && amount <= maxAmount)
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			catch(NumberFormatException e)
+			{
+				halt(400, "Bad Request");
+			}
+		}
+			
+		return true;		
 	}
 }

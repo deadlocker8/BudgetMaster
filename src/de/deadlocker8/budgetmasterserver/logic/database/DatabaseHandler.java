@@ -656,6 +656,30 @@ public class DatabaseHandler
 
 		return result;
 	}
+	
+	public int getNormalPaymentMaxAmount()
+	{
+		PreparedStatement stmt = null;
+		try
+		{
+			stmt = connection.prepareStatement("SELECT MAX(ABS(Amount)) as'max' FROM payment;");		;
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next())
+			{
+				return rs.getInt("max");			
+			}
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+		finally
+		{
+			closeConnection(stmt);
+		}
+
+		return -1;
+	}
 
 	/*
 	 * DELETE

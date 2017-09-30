@@ -41,6 +41,7 @@ import de.deadlocker8.budgetmasterserver.server.payment.repeating.RepeatingPayme
 import de.deadlocker8.budgetmasterserver.server.payment.repeating.RepeatingPaymentDelete;
 import de.deadlocker8.budgetmasterserver.server.payment.repeating.RepeatingPaymentGet;
 import de.deadlocker8.budgetmasterserver.server.payment.repeating.RepeatingPaymentGetAll;
+import de.deadlocker8.budgetmasterserver.server.payment.search.PaymentMaxAmount;
 import de.deadlocker8.budgetmasterserver.server.payment.search.PaymentSearch;
 import de.deadlocker8.budgetmasterserver.server.rest.RestGet;
 import de.deadlocker8.budgetmasterserver.server.tag.match.TagMatchAddForPayment;
@@ -120,6 +121,7 @@ public class SparkServer
 
 		// Payment
 		get("/payment/search", new PaymentSearch(handler, tagHandler));
+		get("/payment/search/maxAmount", new PaymentMaxAmount(handler, gson));
 		// Normal
 		get("/payment", new PaymentGet(handler, gson));
 		post("/payment", new PaymentAdd(handler, gson));

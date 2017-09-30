@@ -331,7 +331,7 @@ public class ServerConnection
 		}
 	}
 	
-	public ArrayList<Payment> getPaymentsForSearch(String query, boolean searchName, boolean searchDescription, boolean searchCategoryName, boolean searchTags) throws Exception
+	public ArrayList<Payment> getPaymentsForSearch(String query, boolean searchName, boolean searchDescription, boolean searchCategoryName, boolean searchTags, boolean searchAmount, int minAmount, int maxAmount) throws Exception
 	{
 		String urlString = settings.getUrl() + "/payment/search?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&query=" + query;
 		if(searchName)
@@ -354,6 +354,12 @@ public class ServerConnection
 			urlString += "&tags=" + 1;
 		}
 		
+		if(searchAmount)
+		{
+			urlString += "&minAmount=" + minAmount;
+			urlString += "&maxAmount=" + maxAmount;
+		}
+		
 		URL url = new URL(urlString);
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
 		httpsCon.setDoOutput(true);
@@ -365,6 +371,24 @@ public class ServerConnection
 			JsonParser parser = new JsonParser();
 			JsonElement resultJSON = parser.parse(result);		
 	        return PaymentJSONDeserializer.deserializePaymentList(resultJSON.getAsJsonObject().get("payments").getAsJsonArray());
+		}
+		else
+		{
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+		}
+	}
+	
+	public int getMaxAmount() throws Exception
+	{
+		URL url = new URL(settings.getUrl() + "/payment/search/maxAmount?secret=" + Helpers.getURLEncodedString(settings.getSecret()));
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setDoOutput(true);
+		httpsCon.setRequestMethod("GET");
+			
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			String result = Read.getStringFromInputStream(httpsCon.getInputStream());
+			return gson.fromJson(result, Integer.class);
 		}
 		else
 		{

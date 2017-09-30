@@ -57,6 +57,7 @@ public class SearchController extends BaseController implements Styleable
 
 	private Stage parentStage;
 	private Controller controller;
+	private RangeSlider rangeSlider;
 	
 	public SearchController(Stage parentStage, Controller controller)
 	{
@@ -125,10 +126,20 @@ public class SearchController extends BaseController implements Styleable
 		
 		hboxSearchByAmount.setDisable(true);
 		
-		//TODO get max from server
-		int maximum = 3500;
+
+		int maximum;
+		try
+		{
+			maximum = getMaxAmountFromServer();
+		}
+		catch(Exception e)
+		{			
+			Logger.error(e);
+			controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
+			return;
+		}
 		
-		RangeSlider rangeSlider = new RangeSlider();
+		rangeSlider = new RangeSlider();
 		rangeSlider.setMin(0);
 		rangeSlider.setMax(maximum);
 		rangeSlider.setLowValue(rangeSlider.getMin());
@@ -202,23 +213,30 @@ public class SearchController extends BaseController implements Styleable
 		});
 		
 		textFieldAmountMin.setText("0");
-		textFieldAmountMax.setText(String.valueOf(maximum));		
-		
-		//TODO save search by amount to SearchPreferences
+		textFieldAmountMax.setText(String.valueOf(maximum));
 		
 		//prefill
+		SearchPreferences searchPreferences = controller.getSearchPreferences();
 		if(controller.getSearchPreferences() != null)
 		{
-			textFieldSearch.setText(controller.getSearchPreferences().getLastQuery());
-			checkBoxName.setSelected(controller.getSearchPreferences().isSearchName());
-			checkBoxDescription.setSelected(controller.getSearchPreferences().isSearchDescription());
-			checkBoxCategoryName.setSelected(controller.getSearchPreferences().isSearchCategorNames());
-			checkBoxTags.setSelected(controller.getSearchPreferences().isSearchTags());
+			textFieldSearch.setText(searchPreferences.getLastQuery());
+			checkBoxName.setSelected(searchPreferences.isSearchName());
+			checkBoxDescription.setSelected(searchPreferences.isSearchDescription());
+			checkBoxCategoryName.setSelected(searchPreferences.isSearchCategorNames());
+			checkBoxTags.setSelected(searchPreferences.isSearchTags());
+			checkBoxSearchByAmount.setSelected(searchPreferences.isSearchAmount());
+			rangeSlider.setLowValue(searchPreferences.getMinAmount());
+			rangeSlider.setHighValue(searchPreferences.getMaxAmount());
 		}
 		
 		applyStyle();	
 	}
 	
+	private int getMaxAmountFromServer() throws Exception
+	{						
+		ServerConnection connection = new ServerConnection(controller.getSettings());			
+		return connection.getMaxAmount();		
+	}
 
 	private int getMayorTickUnit(int maximum)
 	{
@@ -239,11 +257,15 @@ public class SearchController extends BaseController implements Styleable
 		{
 			controller.setSearchPreferences(new SearchPreferences());
 		}
-		controller.getSearchPreferences().setLastQuery(query);
-		controller.getSearchPreferences().setSearchName(checkBoxName.isSelected());
-		controller.getSearchPreferences().setSearchDescription(checkBoxDescription.isSelected());
-		controller.getSearchPreferences().setSearchCategorNames(checkBoxCategoryName.isSelected());
-		controller.getSearchPreferences().setSearchTags(checkBoxTags.isSelected());
+		SearchPreferences searchPreferences = controller.getSearchPreferences();
+		searchPreferences.setLastQuery(query);
+		searchPreferences.setSearchName(checkBoxName.isSelected());
+		searchPreferences.setSearchDescription(checkBoxDescription.isSelected());
+		searchPreferences.setSearchCategorNames(checkBoxCategoryName.isSelected());
+		searchPreferences.setSearchTags(checkBoxTags.isSelected());
+		searchPreferences.setSearchAmount(checkBoxSearchByAmount.isSelected());
+		searchPreferences.setMinAmount((int)rangeSlider.getLowValue());
+		searchPreferences.setMaxAmount((int)rangeSlider.getHighValue());
 		
 		Stage modalStage = Helpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_SEARCH), getStage(), controller.getIcon());
 		
@@ -255,7 +277,11 @@ public class SearchController extends BaseController implements Styleable
 																			checkBoxName.isSelected(), 
 																			checkBoxDescription.isSelected(), 
 																			checkBoxCategoryName.isSelected(),
-																			checkBoxTags.isSelected());
+																			checkBoxTags.isSelected(),
+																			checkBoxSearchByAmount.isSelected(),
+																			(int)rangeSlider.getLowValue()*100,
+																			(int)rangeSlider.getHighValue()*100);
+				
 				Platform.runLater(() -> {
 					listView.getItems().clear();
 					if(payments != null)
