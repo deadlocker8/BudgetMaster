@@ -21,7 +21,7 @@
    <children>
       <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" layoutX="14.0" layoutY="14.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
          <content>
-            <VBox fx:id="vboxContent" prefHeight="544.0" prefWidth="414.0" spacing="15.0">
+            <VBox fx:id="vboxContent" prefHeight="565.0" prefWidth="414.0" spacing="14.0">
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="465.0">
                      <children>
@@ -212,12 +212,12 @@
                         </Button>
                      </children>
                      <VBox.margin>
-                        <Insets top="10.0" />
+                        <Insets top="5.0" />
                      </VBox.margin>
                   </HBox>
                </children>
                <padding>
-                  <Insets bottom="15.0" />
+                  <Insets bottom="5.0" />
                </padding>
             </VBox>
          </content>

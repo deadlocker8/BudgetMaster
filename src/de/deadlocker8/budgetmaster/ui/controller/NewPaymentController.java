@@ -112,7 +112,9 @@ public class NewPaymentController extends BaseController implements Styleable
 		}
 	
 		stage.getIcons().add(controller.getIcon());
-		stage.setResizable(false);
+		stage.setResizable(true);
+		stage.setMinHeight(600);
+		stage.setMinWidth(450);
 		stage.getScene().getStylesheets().add("/de/deadlocker8/budgetmaster/ui/style.css");
 	}
 	
@@ -120,6 +122,7 @@ public class NewPaymentController extends BaseController implements Styleable
 	public void init()
 	{		
 		vboxContent.prefWidthProperty().bind(scrollPane.widthProperty().subtract(25));
+		vboxContent.prefHeightProperty().bind(scrollPane.heightProperty().subtract(10));		
 		
 		applyStyle();		
 		
