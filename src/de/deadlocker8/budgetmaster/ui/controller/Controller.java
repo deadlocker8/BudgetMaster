@@ -374,6 +374,7 @@ public class Controller extends BaseController
 		buttonLeft.setDisable(disable);
 		buttonRight.setDisable(disable);
 		buttonToday.setDisable(disable);
+		buttonDate.setDisable(disable);
 	}
 	
 	public void setSelectedPayment(Payment payment)
