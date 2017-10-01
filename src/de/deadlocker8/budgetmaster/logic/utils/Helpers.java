@@ -143,4 +143,16 @@ public class Helpers
 			return null;
 		}
 	}
+	
+	/**
+	 * Replaces line breaks and tabs with spaces
+	 * @param text
+	 * @return String
+	 */
+	public static String getFlatText(String text)
+	{
+		text = text.replace("\n", " ");
+		text = text.replace("\t", " ");
+		return text;
+	}
 }

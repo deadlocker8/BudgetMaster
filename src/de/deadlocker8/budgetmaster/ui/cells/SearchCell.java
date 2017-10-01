@@ -112,7 +112,7 @@ public class SearchCell extends ListCell<Payment>
 			
 			if(item.getDescription() != null && !item.getDescription().equals(""))
 			{				
-				Label labelDescription = new Label(item.getDescription());
+				Label labelDescription = new Label(Helpers.getFlatText(item.getDescription()));
 				labelDescription.setStyle("-fx-font-size: 14; -fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT) + "; -fx-font-style: italic");
 				labelDescription.setAlignment(Pos.CENTER_LEFT);
 				labelDescription.getStyleClass().add("greylabel");			
