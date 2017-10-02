@@ -125,8 +125,7 @@ public class SearchController extends BaseController implements Styleable
 			hboxSearchByAmount.setDisable(!c);
 		});
 		
-		hboxSearchByAmount.setDisable(true);
-		
+		hboxSearchByAmount.setDisable(true);		
 
 		int maximum;
 		try
@@ -160,12 +159,7 @@ public class SearchController extends BaseController implements Styleable
 		HBox.setHgrow(rangeSlider, Priority.ALWAYS);
 		
 		textFieldAmountMin.setTextFormatter(new TextFormatter<>(c -> {
-			if(c.getControlNewText().isEmpty())
-			{
-				return c;
-			}
-
-			if(c.getControlNewText().matches("[0-9]*"))
+			if(c.getControlNewText().isEmpty() || c.getControlNewText().matches("[0-9]*"))
 			{
 				return c;
 			}
@@ -176,12 +170,7 @@ public class SearchController extends BaseController implements Styleable
 		}));
 		
 		textFieldAmountMax.setTextFormatter(new TextFormatter<>(c -> {
-			if(c.getControlNewText().isEmpty())
-			{
-				return c;
-			}
-
-			if(c.getControlNewText().matches("[0-9]*"))
+			if(c.getControlNewText().isEmpty() || c.getControlNewText().matches("[0-9]*"))
 			{
 				return c;
 			}
@@ -189,28 +178,14 @@ public class SearchController extends BaseController implements Styleable
 			{
 				return null;
 			}
-		}));
+		}));	
 		
-		textFieldAmountMin.setOnKeyReleased((event)->{			
-			if(event.getCode() == KeyCode.ENTER)
-			{
-				String text = textFieldAmountMin.getText();
-				if(text != null && !text.equals(""))
-				{
-					rangeSlider.setLowValue(Integer.parseInt(text));
-				}
-			}
+		textFieldAmountMin.textProperty().addListener((a, b, c)->{
+			setRangeSliderAmountMin();
 		});
 		
-		textFieldAmountMax.setOnKeyReleased((event)->{			
-			if(event.getCode() == KeyCode.ENTER)
-			{
-				String text = textFieldAmountMax.getText();
-				if(text != null && !text.equals(""))
-				{
-					rangeSlider.setHighValue(Integer.parseInt(text));
-				}
-			}
+		textFieldAmountMax.textProperty().addListener((a, b, c)->{
+			setRangeSliderAmountMax();
 		});
 		
 		textFieldAmountMin.setText("0");
@@ -231,6 +206,24 @@ public class SearchController extends BaseController implements Styleable
 		}
 		
 		applyStyle();	
+	}
+	
+	private void setRangeSliderAmountMin()
+	{
+		String text = textFieldAmountMin.getText();
+		if(text != null && !text.equals(""))
+		{
+			rangeSlider.setLowValue(Integer.parseInt(text));
+		}
+	}
+	
+	private void setRangeSliderAmountMax()
+	{
+		String text = textFieldAmountMax.getText();
+		if(text != null && !text.equals(""))
+		{
+			rangeSlider.setHighValue(Integer.parseInt(text));
+		}
 	}
 	
 	private int getMaxAmountFromServer() throws Exception
