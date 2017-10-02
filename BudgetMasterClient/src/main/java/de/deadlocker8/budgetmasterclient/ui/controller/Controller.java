@@ -164,6 +164,12 @@ public class Controller extends BaseController
 			
 			reportController = loadTab("/de/deadlocker8/budgetmaster/ui/fxml/ReportTab.fxml", tabReports);
 			reportController.init(this);
+			tabReports.selectedProperty().addListener((a,b,c)->{
+				if(c)
+				{
+					reportController.refresh();
+				}
+			});
 			
 			settingsController = loadTab("/de/deadlocker8/budgetmaster/ui/fxml/SettingsTab.fxml", tabSettings);
 			settingsController.init(this);		
@@ -327,11 +333,14 @@ public class Controller extends BaseController
 	{
 		homeController.refresh();
 		paymentController.refresh();
-		categoryController.refresh();
-		reportController.refresh();
+		categoryController.refresh();		
 		if(tabCharts.isSelected())
 		{
 			chartController.refresh();
+		}
+		if(tabReports.isSelected())
+		{
+			reportController.refresh();
 		}
 	}
 	

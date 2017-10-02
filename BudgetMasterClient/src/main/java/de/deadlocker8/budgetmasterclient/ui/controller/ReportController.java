@@ -557,14 +557,16 @@ public class ReportController implements Refreshable, Styleable
 
 	private void refreshTableView()
 	{
-		tableView.getItems().clear();
+		Platform.runLater(()->{tableView.getItems().clear();});
 
 		ArrayList<Payment> payments = controller.getPaymentHandler().getPayments();		
 		if(payments != null)
 		{
 			ArrayList<ReportItem> reportItems = createReportItems(payments);
-			ObservableList<ReportItem> objectsForTable = FXCollections.observableArrayList(reportItems);
-			tableView.setItems(objectsForTable);
+			Platform.runLater(()->{;
+				ObservableList<ReportItem> objectsForTable = FXCollections.observableArrayList(reportItems);
+				tableView.setItems(objectsForTable);
+			});
 		}
 	}
 	
@@ -761,6 +763,8 @@ public class ReportController implements Refreshable, Styleable
 	@Override
 	public void refresh()
 	{
+		Stage modalStage = UIHelpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_REPORT_TAB), controller.getStage(), controller.getIcon());
+		
 		if(controller.getFilterSettings().equals(new FilterSettings()))
 		{
 			labelFilterActive.setVisible(false);
@@ -770,17 +774,28 @@ public class ReportController implements Refreshable, Styleable
 			labelFilterActive.setVisible(true);
 		}
 		
-		reportPreferences = getReportPreferences();
-		saveReportPreferences();
-		refreshTableView();
-		applyReportPreferences();
-		tableView.refresh();
-		
 		DateTime currentDate = controller.getCurrentDate();
 		String currentMonth = currentDate.toString("MM");
 	    String currentYear = currentDate.toString("YYYY");
 	   
 	    initialReportFileName = Localization.getString(Strings.REPORT_INITIAL_FILENAME, currentYear, currentMonth);
+		
+		reportPreferences = getReportPreferences();
+		saveReportPreferences();
+		
+		Worker.runLater(() -> {
+			refreshTableView();
+
+			Platform.runLater(() -> {
+				if(modalStage != null)
+				{
+					modalStage.close();
+				}
+				
+				applyReportPreferences();
+				tableView.refresh();
+			});
+		});
 	}
 
 	@Override

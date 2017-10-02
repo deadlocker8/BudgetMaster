@@ -40,6 +40,7 @@ public class Strings
     //LOAD
     public static final String LOAD_CHARTS = "load.charts";
     public static final String LOAD_DATA = "load.data";
+    public static final String LOAD_REPORT_TAB = "load.report.tab";
     public static final String LOAD_REPORT = "load.report";
     public static final String LOAD_DATABASE_EXPORT = "load.database.export";
     public static final String LOAD_DATABASE_IMPORT = "load.database.import";
