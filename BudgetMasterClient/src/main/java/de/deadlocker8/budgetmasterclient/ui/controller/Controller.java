@@ -544,6 +544,12 @@ public class Controller extends BaseController
 				catch(Exception e1)
 				{
 					Logger.error(e1);
+					Platform.runLater(()->{
+						if(modalStage != null)
+						{
+							modalStage.close();
+						}
+					});
 					
 					if(e1.getMessage().contains("404"))
 					{
@@ -553,12 +559,8 @@ public class Controller extends BaseController
 							Localization.getString(Strings.TITLE_WARNING), 
 							"",
 							Localization.getString(Strings.WARNING_SERVER_VERSION, Localization.getString(Strings.UNDEFINED), Localization.getString(Strings.VERSION_NAME)), 
-							icon, getStage(), null, false);				
-		
-							if(modalStage != null)
-							{
-								modalStage.close();
-							};
+							icon, getStage(), null, false);			
+							
 							categoryHandler = new CategoryHandler(null);					
 							toggleAllTabsExceptSettings(true);
 							tabPane.getSelectionModel().select(tabSettings);
