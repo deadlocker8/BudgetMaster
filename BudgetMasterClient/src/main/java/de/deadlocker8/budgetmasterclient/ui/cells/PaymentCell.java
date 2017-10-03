@@ -241,8 +241,20 @@ public class PaymentCell extends ListCell<Payment>
 		if(selectedPayment == null)
 			return;
 
-		if(selectedPayment instanceof NormalPayment && item.getID() != selectedPayment.getID())
-			return;
+		if(selectedPayment instanceof NormalPayment)
+		{
+			if(item instanceof NormalPayment)
+			{
+				if(item.getID() != selectedPayment.getID())
+				{
+					return;
+				}
+			}
+			else
+			{
+				return;
+			}
+		}
 		
 		if(selectedPayment instanceof RepeatingPayment)
 		{				
@@ -250,7 +262,9 @@ public class PaymentCell extends ListCell<Payment>
 			{		
 				RepeatingPaymentEntry itemRepeating = (RepeatingPaymentEntry)item;
 				if(itemRepeating.getRepeatingPaymentID() != selectedPayment.getID())
+				{
 					return;
+				}
 			}
 			else
 			{
