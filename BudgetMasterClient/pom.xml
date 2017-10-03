@@ -10,14 +10,50 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.7.0</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
 			</plugin>
+			<!-- LAUNCH4J -->
+			<plugin>
+				<groupId>com.akathist.maven.plugins.launch4j</groupId>
+				<artifactId>launch4j-maven-plugin</artifactId>
+				<version>1.7.21</version>
+				<executions>
+					<execution>
+						<id>l4j-clui</id>
+						<phase>package</phase>
+						<goals>
+							<goal>launch4j</goal>
+						</goals>
+						<configuration>
+							<headerType>gui</headerType>
+							<jar>../build/${project.version}/BudgetMasterClient-v${project.version}.jar</jar>
+							<outfile>../build/${project.version}/BudgetMasterClient-v${project.version}.exe</outfile>
+							<downloadUrl>http://java.com/download</downloadUrl>
+							<classPath>
+								<mainClass>de.deadlocker8.budgetmasterclient.main.Main</mainClass>
+							</classPath>
+							<jre>
+								<bundledJre64Bit>false</bundledJre64Bit>
+								<bundledJreAsFallback>false</bundledJreAsFallback>
+								<minVersion>1.8.0</minVersion>
+								<jdkPreference>preferJre</jdkPreference>
+								<runtimeBits>64/32</runtimeBits>
+							</jre>
+							<icon>../build/icon.ico</icon>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
+					<outputDirectory>../build/${project.version}</outputDirectory>
+					<finalName>BudgetMasterClient-v${project.version}</finalName>
+					<appendAssemblyId>false</appendAssemblyId>
 					<archive>
 						<manifest>
 							<mainClass>de.deadlocker8.budgetmasterclient.main.Main</mainClass>
@@ -36,14 +72,6 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.0.2</version>
-				<configuration>
-					<outputDirectory>../build</outputDirectory>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
