@@ -2,8 +2,8 @@
 Manage your monthly budget easily with BudgetMaster
 
 ## Available Languages
-- English
-- German
+- English [Screenshots](https://github.com/deadlocker8/BudgetMaster/wiki/English%20Screenshots)
+- German [Screenshots](https://github.com/deadlocker8/BudgetMaster/wiki/German%20Screenshots)
 
 ## In case of Errors
 - see corresponding error logs
@@ -17,27 +17,29 @@ Manage your monthly budget easily with BudgetMaster
 
 ## Screenshots
 
-![normal](https://user-images.githubusercontent.com/16324894/29183425-ecffe6f4-7e02-11e7-9a0c-48a1fe29199c.png)
+![normal](https://user-images.githubusercontent.com/16324894/31136348-48313fd4-a868-11e7-979a-2854f7720525.png)  
 
-![overbudget](https://user-images.githubusercontent.com/16324894/29183426-eda226e4-7e02-11e7-9af9-acc3bf2f20c0.png)
+![overbudget](https://user-images.githubusercontent.com/16324894/31136349-48e8355e-a868-11e7-8308-a6c5067c7e80.png)  
 
-![buchungen](https://user-images.githubusercontent.com/16324894/29183432-f1033170-7e02-11e7-9652-cefb168c5f92.png)
+![buchungen](https://user-images.githubusercontent.com/16324894/31136350-4a03cbec-a868-11e7-802e-98140041a406.png)  
 
-![filter](https://user-images.githubusercontent.com/16324894/29183435-f1e2fbb6-7e02-11e7-8bc7-bcd97555e43f.png)
+![filter](https://user-images.githubusercontent.com/16324894/31136353-4b8c7c48-a868-11e7-99eb-a3e8800c7502.png)  
 
-![bearbeiten](https://user-images.githubusercontent.com/16324894/29183436-f296fc60-7e02-11e7-9a2f-52c8608fad80.png)
+![suche](https://user-images.githubusercontent.com/16324894/31136356-4d631ff4-a868-11e7-85f9-77164baeb31c.png)  
 
-![kategorien](https://user-images.githubusercontent.com/16324894/29183437-f4d808ca-7e02-11e7-9eae-359f83a7617e.png)
+![bearbeiten](https://user-images.githubusercontent.com/16324894/31136360-4e9c073c-a868-11e7-8707-cd76d135601c.png)  
 
-![diagramme_1](https://user-images.githubusercontent.com/16324894/29183439-f606490a-7e02-11e7-8393-aa49e2c36175.png)
+![kategorien](https://user-images.githubusercontent.com/16324894/31136362-5204164e-a868-11e7-9bd8-a345fa927f2e.png)  
 
-![diagramme_2](https://user-images.githubusercontent.com/16324894/29183441-f6bc18a2-7e02-11e7-8ac6-664f50901076.png)
+![diagramme_1](https://user-images.githubusercontent.com/16324894/31136365-555e9044-a868-11e7-8767-0846ba51f3b0.png)  
 
-![diagramme_3](https://user-images.githubusercontent.com/16324894/29183442-f777ea64-7e02-11e7-88a0-f0c51cd5d634.png)
+![diagramme_2](https://user-images.githubusercontent.com/16324894/31136366-5589e4a6-a868-11e7-826a-de223b1bbc85.png)  
 
-![bericht_1](https://user-images.githubusercontent.com/16324894/29183443-f8dfc7d2-7e02-11e7-9943-3221a54ad656.png)
+![diagramme_3](https://user-images.githubusercontent.com/16324894/31136367-558df064-a868-11e7-9d9a-5bfb78325ee0.png)  
 
-![bericht_2](https://user-images.githubusercontent.com/16324894/29183445-f9794b28-7e02-11e7-9c2a-0541cd1acd07.png)
+![bericht_1](https://user-images.githubusercontent.com/16324894/31136375-580112f4-a868-11e7-9b12-28dd936b135b.png)  
 
-![einstellungen](https://user-images.githubusercontent.com/16324894/29603059-f85da150-87e2-11e7-9e41-96c110d7abec.png)
+![bericht_2](https://user-images.githubusercontent.com/16324894/31136518-cd900e30-a868-11e7-90f8-c2c44a629a8d.jpg)  
+
+![einstellungen](https://user-images.githubusercontent.com/16324894/31136379-59c15248-a868-11e7-9d68-1b5fa96a1106.png)
 
