@@ -333,7 +333,7 @@ public class ServerConnection
 	
 	public ArrayList<Payment> getPaymentsForSearch(String query, boolean searchName, boolean searchDescription, boolean searchCategoryName, boolean searchTags, boolean searchAmount, int minAmount, int maxAmount) throws Exception
 	{
-		String urlString = settings.getUrl() + "/payment/search?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&query=" + query;
+		String urlString = settings.getUrl() + "/payment/search?secret=" + Helpers.getURLEncodedString(settings.getSecret()) + "&query=" + Helpers.getURLEncodedString(query);
 		if(searchName)
 		{
 			urlString += "&name=" + 1;

@@ -74,6 +74,8 @@ public class PaymentSearch implements Route
 
 	private boolean meetsCriteria(Request req, Payment payment)
 	{
+		boolean otherChecksThanAmount = false;
+		
 		if(req.queryMap("query").value().toLowerCase().equals(""))
 			return checkAmount(req, payment);
 		
@@ -87,31 +89,27 @@ public class PaymentSearch implements Route
 
 		if(req.queryParams().contains("name"))
 		{
+			otherChecksThanAmount = true;
 			if(payment.getName().toLowerCase().contains(req.queryMap("query").value().toLowerCase()))
 			{
 				return checkAmount(req, payment);
-			}
-			else
-			{
-				return false;
 			}
 		}
 
 		if(req.queryParams().contains("description"))
 		{
+			otherChecksThanAmount = true;
 			if(payment.getDescription().toLowerCase().contains(req.queryMap("query").value().toLowerCase()))
 			{
 				return checkAmount(req, payment);
-			}
-			else
-			{
-				return false;
 			}
 		}
 
 		if(req.queryParams().contains("categoryName"))
 		{
+			otherChecksThanAmount = true;
 			int id = payment.getCategoryID();
+			//TODO
 			if(id == -1)
 				return false;
 
@@ -120,14 +118,11 @@ public class PaymentSearch implements Route
 			{
 				return checkAmount(req, payment);
 			}
-			else
-			{
-				return false;
-			}
 		}
 		
 		if(req.queryParams().contains("tags"))
 		{
+			otherChecksThanAmount = true;
 			ArrayList<Integer> tagIDs = new ArrayList<>();
 			if(payment instanceof NormalPayment)
 			{
@@ -149,30 +144,19 @@ public class PaymentSearch implements Route
 						{
 							return checkAmount(req, payment);
 						}
-						else
-						{
-							return false;
-						}
 					}
 				}				
 			}
 		}
-
-		/*
-		 * check here again if amount should be considered
-		 * otherwise the following situation is evaluated incorrectly:
-		 * 
-		 * -at least one of the previous criteria is enabled (e.g. search by name)
-		 * -payment doesn't match the criteria
-		 * --> checkAmount() is being processed
-		 * --> if amount is not in request (search shouldn't search by amount) the checkAmount()-Method returns true
-		 * --> payment that doesn't match the criteria AND shouldn't be searched by amount should be evaluated as FALSE instead of TRUE
-		 */
-		if(req.queryParams().contains("minAmount") && req.queryParams().contains("maxAmount"))
+		
+		if(otherChecksThanAmount)
+		{
+			return false;
+		}
+		else
 		{
 			return checkAmount(req, payment);
 		}
-		return false;		
 	}
 	
 	private boolean checkAmount(Request req, Payment payment)
