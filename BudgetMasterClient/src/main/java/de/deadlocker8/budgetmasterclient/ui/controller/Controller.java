@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import de.deadlocker8.budgetmaster.logic.FilterSettings;
 import de.deadlocker8.budgetmaster.logic.Settings;
@@ -86,11 +88,12 @@ public class Controller extends BaseController
 	private SearchPreferences searchPreferences;
 
 	private boolean alertIsShowing = false;
-	private static final String DATE_FORMAT = "MMMM yyyy";
+	private static DateTimeFormatter DATE_FORMAT;
 	
 	public Controller(Settings settings)
 	{
 		this.settings = settings;	
+		DATE_FORMAT = DateTimeFormat.forPattern("MMMM yyyy").withLocale(this.settings.getLanguage().getLocale());
 		load("/de/deadlocker8/budgetmaster/ui/fxml/GUI.fxml", Localization.getBundle());
 		getStage().show();
 	}
