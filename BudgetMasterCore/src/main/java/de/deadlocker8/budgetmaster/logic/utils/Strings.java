@@ -87,6 +87,10 @@ public class Strings
     public static final String REPORT_REPEATING_YES ="report.repeating.yes";
     public static final String REPORT_REPEATING_NO ="report.repeating.no";
     public static final String REPORT_INITIAL_FILENAME ="report.initial.filename"; 
+    public static final String REPORT_BUDGET = "report.budget";
+    public static final String REPORT_INCOMES = "report.incomes";
+    public static final String REPORT_PAYMENTS = "report.payments";
+    public static final String REPORT_BUDGET_REST = "report.budget.rest";
     
     //MONTH_NAMES
     public static final String MONTH_JANUARY ="month.january"; 
