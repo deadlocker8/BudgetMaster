@@ -67,6 +67,7 @@ public class Strings
     public static final String VERSION = "version";
     public static final String UNDEFINED = "undefined";
     public static final String TAGFIELD_PLACEHOLDER = "tagfield.placeholder";
+    public static final String SHORTCUT_DEV_CONSOLE = "shortcut.dev.console";
     
     //REPORT
     public static final String REPORT_POSITION = "report.position";

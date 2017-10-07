@@ -2,7 +2,9 @@ package de.deadlocker8.budgetmasterclient.ui.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -24,6 +26,8 @@ import de.deadlocker8.budgetmaster.logic.updater.VersionInformation;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
+import de.deadlocker8.budgetmasterclient.ui.commandLine.CommandLine;
+import de.deadlocker8.budgetmasterclient.ui.commandLine.commands.CommandBundle;
 import de.deadlocker8.budgetmasterclient.utils.UIHelpers;
 import fontAwesome.FontIconType;
 import javafx.animation.FadeTransition;
@@ -86,6 +90,7 @@ public class Controller extends BaseController
 	private Updater updater;
 	private Payment selectedPayment;
 	private SearchPreferences searchPreferences;
+	private CommandLine cmd;
 
 	private boolean alertIsShowing = false;
 	private static DateTimeFormatter DATE_FORMAT;
@@ -126,10 +131,28 @@ public class Controller extends BaseController
 		paymentHandler = new PaymentHandler();
 		updater = new Updater();
 		
+		CommandBundle commandBundle = new CommandBundle();
+		cmd = new CommandLine(getStage(), icon, ResourceBundle.getBundle("de/deadlocker8/budgetmaster/ui/commandLine/", Locale.ENGLISH), commandBundle);
+		
 		if(settings.isAutoUpdateCheckEnabled())
 		{			
 			checkForUpdates(false);
 		}
+		
+		getStage().getScene().setOnKeyReleased((event)->{
+			if(event.getCode().toString().equals(Localization.getString(Strings.SHORTCUT_DEV_CONSOLE)))
+			{
+				try
+				{
+					 cmd.showCommandLine("Dev Console", 400, 250, 400, 200, -1, -1, true);
+				}
+				catch(IOException e)
+				{
+			        //TODO: errorhandling
+			       Logger.error(e);
+				}
+			}
+		});
 				
 		initUI();		
 	}
