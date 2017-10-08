@@ -119,16 +119,11 @@ public class Updater
 	{
 		File currentExecutable = getCurrentExecutableName();
 		String currentFileName = currentExecutable.getName();
-		String fileEnding;
 		
 		//check if BudgetMaster is running from executable
 		//no updating procedure if running from source
-		if(currentFileName.contains("."))
-		{
-			fileEnding = currentExecutable.getAbsolutePath().substring(currentExecutable.getAbsolutePath().indexOf("."), currentExecutable.getAbsolutePath().length());			
-		}
-		else
-		{
+		if(!currentFileName.contains("."))
+		{			
 			Logger.debug("Update procedure will be skipped because BudgetMaster is running from source");
 			return;
 		}
@@ -141,7 +136,7 @@ public class Updater
 		
 		//download into temp directory and file
 		Path target;
-		if(fileEnding.equalsIgnoreCase("exe"))
+		if(currentFileName.endsWith(".exe"))
 		{			
 			target = Paths.get(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER) + "/update_BudgetMaster.exe");			
 			download(BUILD_FOLDER + "BudgetMaster.exe", target);			
