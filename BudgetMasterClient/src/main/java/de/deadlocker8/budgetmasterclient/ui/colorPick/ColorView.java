@@ -97,7 +97,7 @@ public class ColorView extends GridPane
 								stage.setResizable(false);	
 								stage.initModality(Modality.APPLICATION_MODAL);
 								stage.setScene(scene);
-								stage.getIcons().add(new Image("/de/deadlocker8/budgetmaster/resources/icon.png"));
+								stage.getIcons().add(new Image("/de/deadlocker8/budgetmaster/icon.png"));
 								stage.show();
 							}
 							catch(Exception e)
