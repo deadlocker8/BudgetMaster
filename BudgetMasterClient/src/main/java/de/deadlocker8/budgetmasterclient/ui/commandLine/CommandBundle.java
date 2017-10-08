@@ -3,14 +3,17 @@ package de.deadlocker8.budgetmasterclient.ui.commandLine;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
+import de.deadlocker8.budgetmaster.logic.Settings;
+
 public class CommandBundle
 {
 	private CommandLineController controller;
-	private ResourceBundle languageBundle;	
+	private ResourceBundle languageBundle;
+	private Settings settings;
 
-	public CommandBundle()
+	public CommandBundle(Settings settings)
 	{
-		
+		this.settings = settings;
 	}
 
 	public CommandLineController getController()
@@ -41,5 +44,10 @@ public class CommandBundle
 	public void setLanguageBundle(ResourceBundle languageBundle)
 	{
 		this.languageBundle = languageBundle;
-	}	
+	}
+
+	public Settings getSettings()
+	{
+		return settings;
+	}
 }

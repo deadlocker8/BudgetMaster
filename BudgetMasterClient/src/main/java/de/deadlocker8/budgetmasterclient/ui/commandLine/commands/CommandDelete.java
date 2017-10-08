@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmasterclient.ui.commandLine.commands;
 
+import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmasterclient.ui.commandLine.CommandBundle;
 import logger.Logger;
 
@@ -22,17 +23,25 @@ public class CommandDelete extends Command
 		}
 		
 		if(command[1].equals("log-client"))
-		{
+		{			
 			Logger.clearLogFile();
-			bundle.getController().print(bundle.getString("delete.success", "log-client", Logger.getFolder()));
+			bundle.getController().print(bundle.getString("delete.success", "client logfile"));
 			return;
 		}
 		
 		if(command[1].equals("log-server"))
 		{
-			//TODO
-//			Logger.clearLogFile();
-//			bundle.getController().print(bundle.getString("delete.success", "log-server", Logger.getFolder()));
+			try
+			{
+				ServerConnection connection = new ServerConnection(bundle.getSettings());
+				connection.deleteLog();
+				bundle.getController().print(bundle.getString("delete.success", "server logfile"));
+			}
+			catch(Exception e)
+			{
+				bundle.getController().print(bundle.getString("delete.error.connection"));
+			}
+			
 			return;
 		}
 			

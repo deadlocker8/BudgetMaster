@@ -33,6 +33,7 @@ import de.deadlocker8.budgetmasterserver.server.charts.MonthInOutSum;
 import de.deadlocker8.budgetmasterserver.server.database.DatabaseDelete;
 import de.deadlocker8.budgetmasterserver.server.database.DatabaseExport;
 import de.deadlocker8.budgetmasterserver.server.database.DatabaseImport;
+import de.deadlocker8.budgetmasterserver.server.log.LogDelete;
 import de.deadlocker8.budgetmasterserver.server.payment.normal.PaymentAdd;
 import de.deadlocker8.budgetmasterserver.server.payment.normal.PaymentDelete;
 import de.deadlocker8.budgetmasterserver.server.payment.normal.PaymentGet;
@@ -167,6 +168,7 @@ public class SparkServer
 		delete("/database", new DatabaseDelete(handler, settings));
 		
 		get("/version", new VersionGet(gson, versionInfo));
+		delete("/log", new LogDelete());
 
 		after((request, response) -> {
 			new RepeatingPaymentUpdater(handler).updateRepeatingPayments(DateTime.now());

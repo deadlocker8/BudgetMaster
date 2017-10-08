@@ -131,7 +131,7 @@ public class Controller extends BaseController
 		paymentHandler = new PaymentHandler();
 		updater = new Updater();
 		
-		CommandBundle commandBundle = new CommandBundle();
+		CommandBundle commandBundle = new CommandBundle(settings);
 		cmd = new CommandLine(getStage(), icon, ResourceBundle.getBundle("de/deadlocker8/budgetmaster/ui/commandLine/", Locale.ENGLISH), commandBundle);
 		
 		if(settings.isAutoUpdateCheckEnabled())
