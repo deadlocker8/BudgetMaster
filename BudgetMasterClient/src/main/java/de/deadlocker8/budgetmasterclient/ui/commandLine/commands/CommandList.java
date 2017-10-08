@@ -3,6 +3,8 @@ package de.deadlocker8.budgetmasterclient.ui.commandLine.commands;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+import de.deadlocker8.budgetmasterclient.ui.commandLine.CommandBundle;
+
 /**
  * Lists all available commands
  */
@@ -21,7 +23,7 @@ public class CommandList extends Command
 	{		
 		if(!isValid(command))
 		{			
-			bundle.getController().print(bundle.getLanguageBundle().getString("error.invalid.arguments"));
+			bundle.getController().print(bundle.getString("error.invalid.arguments"));
 			return;
 		}
 		

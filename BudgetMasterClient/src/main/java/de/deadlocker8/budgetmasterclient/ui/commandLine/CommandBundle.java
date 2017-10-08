@@ -1,8 +1,7 @@
-package de.deadlocker8.budgetmasterclient.ui.commandLine.commands;
+package de.deadlocker8.budgetmasterclient.ui.commandLine;
 
+import java.text.MessageFormat;
 import java.util.ResourceBundle;
-
-import de.deadlocker8.budgetmasterclient.ui.commandLine.CommandLineController;
 
 public class CommandBundle
 {
@@ -22,7 +21,17 @@ public class CommandBundle
 	public ResourceBundle getLanguageBundle()
 	{
 		return languageBundle;
-	}	
+	}
+	
+	public String getString(String key)
+	{
+		return languageBundle.getString(key);
+	}
+	
+	public String getString(String key, Object... args)
+	{
+		return MessageFormat.format(languageBundle.getString(key), args);
+	}
 
 	public void setController(CommandLineController controller)
 	{

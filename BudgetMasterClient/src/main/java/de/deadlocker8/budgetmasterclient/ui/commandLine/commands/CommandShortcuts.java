@@ -1,5 +1,7 @@
 package de.deadlocker8.budgetmasterclient.ui.commandLine.commands;
 
+import de.deadlocker8.budgetmasterclient.ui.commandLine.CommandBundle;
+
 /**
  * Lists all available Shortcuts
  */
@@ -16,6 +18,6 @@ public class CommandShortcuts extends Command
 	public void execute(String[] command, CommandBundle bundle)
 	{		
 		bundle.getController().print("Available Shortcuts:");
-		bundle.getController().print(bundle.getLanguageBundle().getString("info.shortcuts"));
+		bundle.getController().print(bundle.getString("info.shortcuts"));
 	}
 }

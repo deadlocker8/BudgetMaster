@@ -1,5 +1,7 @@
 package de.deadlocker8.budgetmasterclient.ui.commandLine.commands;
 
+import de.deadlocker8.budgetmasterclient.ui.commandLine.CommandBundle;
+
 public abstract class Command
 {
 	public String keyword;
@@ -23,13 +25,13 @@ public abstract class Command
 	
 	public boolean isValid(String[] command)
 	{
-		if((command.length - 1) < numberOfParams || (command.length -1) > numberOfParams)
+		if((command.length - 1) == numberOfParams)
 		{
-			return false;
+			return true;
 		}
 		else
 		{
-			return true;
+			return false;
 		}
 	}
 	

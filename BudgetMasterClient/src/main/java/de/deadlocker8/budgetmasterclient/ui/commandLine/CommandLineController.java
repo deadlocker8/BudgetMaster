@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 import de.deadlocker8.budgetmasterclient.ui.commandLine.commands.Command;
-import de.deadlocker8.budgetmasterclient.ui.commandLine.commands.HistoryEntry;
-import de.deadlocker8.budgetmasterclient.ui.commandLine.commands.HistoryType;
 import de.deadlocker8.budgetmasterclient.ui.commandLine.commands.PossibleCommands;
 import javafx.application.Platform;
 import javafx.event.EventHandler;

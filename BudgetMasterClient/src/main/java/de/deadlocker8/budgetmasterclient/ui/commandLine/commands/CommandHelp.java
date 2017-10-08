@@ -2,6 +2,8 @@ package de.deadlocker8.budgetmasterclient.ui.commandLine.commands;
 
 import java.util.MissingResourceException;
 
+import de.deadlocker8.budgetmasterclient.ui.commandLine.CommandBundle;
+
 /**
  * prints help for given command
  */
@@ -20,7 +22,7 @@ public class CommandHelp extends Command
 	{		
 		if(!isValid(command))
 		{			
-			bundle.getController().print(bundle.getLanguageBundle().getString("error.invalid.arguments"));
+			bundle.getController().print(bundle.getString("error.invalid.arguments"));
 			return;
 		}			
 		
@@ -30,16 +32,16 @@ public class CommandHelp extends Command
 			{	
 				try
 				{
-					bundle.getController().print(bundle.getLanguageBundle().getString("help." + command[1]));
+					bundle.getController().print(bundle.getString("help." + command[1]));
 				}
 				catch(MissingResourceException e)
 				{
-					bundle.getController().print(bundle.getLanguageBundle().getString("error.general"));
+					bundle.getController().print(bundle.getString("error.general"));
 				}
 				return;
 			}
 		}		
 				
-		bundle.getController().print(bundle.getLanguageBundle().getString("error.no.help"));		
+		bundle.getController().print(bundle.getString("error.no.help"));		
 	}
 }

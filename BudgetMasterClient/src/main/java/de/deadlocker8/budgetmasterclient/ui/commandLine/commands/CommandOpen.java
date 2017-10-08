@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
+import de.deadlocker8.budgetmasterclient.ui.commandLine.CommandBundle;
 import tools.Localization;
 import tools.PathUtils;
 
@@ -23,13 +24,13 @@ public class CommandOpen extends Command
 	{		
 		if(!isValid(command))
 		{			
-			bundle.getController().print(bundle.getLanguageBundle().getString("error.invalid.arguments"));
+			bundle.getController().print(bundle.getString("error.invalid.arguments"));
 			return;
 		}
 		
 		if(!command[1].equals("settings"))
 		{			
-			bundle.getController().print(bundle.getLanguageBundle().getString("error.invalid.arguments"));
+			bundle.getController().print(bundle.getString("error.invalid.parameter", command[1], keyword));
 			return;
 		}
 		
@@ -37,7 +38,7 @@ public class CommandOpen extends Command
 		{	
 			File folder = Paths.get(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER)).toFile();
 			Desktop.getDesktop().open(folder);
-			bundle.getController().print(bundle.getLanguageBundle().getString("help.success") + " " +  folder.getAbsolutePath());
+			bundle.getController().print(bundle.getString("open.success", folder.getAbsolutePath()));
 		}
 		catch(IOException e)
 		{

@@ -1,5 +1,7 @@
 package de.deadlocker8.budgetmasterclient.ui.commandLine.commands;
 
+import de.deadlocker8.budgetmasterclient.ui.commandLine.CommandBundle;
+
 /**
  * Clears the history log and console
  */
@@ -17,7 +19,7 @@ public class CommandClear extends Command
 	{		
 		if(!isValid(command))
 		{			
-			bundle.getController().print(bundle.getLanguageBundle().getString("error.invalid.arguments"));
+			bundle.getController().print(bundle.getString("error.invalid.arguments"));
 			return;
 		}	
 		

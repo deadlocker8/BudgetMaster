@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import de.deadlocker8.budgetmasterclient.ui.commandLine.commands.CommandBundle;
-import de.deadlocker8.budgetmasterclient.ui.commandLine.commands.HistoryEntry;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

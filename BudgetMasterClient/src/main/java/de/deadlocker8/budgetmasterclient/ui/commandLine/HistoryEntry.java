@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmasterclient.ui.commandLine.commands;
+package de.deadlocker8.budgetmasterclient.ui.commandLine;
 
 public class HistoryEntry
 {
