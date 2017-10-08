@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmasterserver.server.version;
+package de.deadlocker8.budgetmasterserver.server.info;
 
 import com.google.gson.Gson;
 
@@ -14,7 +14,7 @@ public class VersionGet implements Route
 
 	public VersionGet(Gson gson, VersionInformation versionInfo)
 	{
-		this.gson=gson;
+		this.gson = gson;
 		this.versionInfo = versionInfo;
 	}
 

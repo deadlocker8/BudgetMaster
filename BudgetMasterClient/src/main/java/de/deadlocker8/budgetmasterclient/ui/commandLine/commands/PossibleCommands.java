@@ -11,6 +11,7 @@ public class PossibleCommands
 				new CommandClear(),
 				new CommandShortcuts(),
 				new CommandOpen(),
-				new CommandDelete()
+				new CommandDelete(),
+				new CommandInfo()
 			));	
 }
