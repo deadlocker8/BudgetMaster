@@ -33,7 +33,7 @@ public class CommandDelete extends Command
 		{
 			try
 			{
-				ServerConnection connection = new ServerConnection(bundle.getSettings());
+				ServerConnection connection = new ServerConnection(bundle.getParentController().getSettings());
 				connection.deleteLog();
 				bundle.getController().print(bundle.getString("delete.success", "server logfile"));
 			}

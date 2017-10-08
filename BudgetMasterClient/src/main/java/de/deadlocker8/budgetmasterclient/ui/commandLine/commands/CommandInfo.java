@@ -43,7 +43,7 @@ public class CommandInfo extends Command
 		{			
 			try
 			{
-				ServerConnection connection = new ServerConnection(bundle.getSettings());
+				ServerConnection connection = new ServerConnection(bundle.getParentController().getSettings());
 				ServerInformation serverInfo = connection.getServerInfo();
 				VersionInformation versionInfo = serverInfo.getVersionInfo();
 				

@@ -3,17 +3,17 @@ package de.deadlocker8.budgetmasterclient.ui.commandLine;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
-import de.deadlocker8.budgetmaster.logic.Settings;
+import de.deadlocker8.budgetmasterclient.ui.controller.Controller;
 
 public class CommandBundle
 {
 	private CommandLineController controller;
 	private ResourceBundle languageBundle;
-	private Settings settings;
+	private Controller parentController; 
 
-	public CommandBundle(Settings settings)
+	public CommandBundle(Controller parentController)
 	{
-		this.settings = settings;
+		this.parentController = parentController;
 	}
 
 	public CommandLineController getController()
@@ -45,9 +45,9 @@ public class CommandBundle
 	{
 		this.languageBundle = languageBundle;
 	}
-
-	public Settings getSettings()
+	
+	public Controller getParentController()
 	{
-		return settings;
+		return parentController;
 	}
 }
