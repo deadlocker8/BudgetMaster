@@ -151,6 +151,7 @@ public class Strings
     public static final String INFO_TEXT_LANGUAGE_CHANGED_RESTART_LATER = "info.text.language.changed.restart.later";
     public static final String INFO_TITLE_UPDATE_AVAILABLE = "info.title.update.available";
     public static final String INFO_TEXT_UPDATE_AVAILABLE = "info.text.update.available";
+    public static final String INFO_TEXT_UPDATE_AVAILABLE_SHOW_CHANGES = "info.text.update.available.show.changes";
     public static final String INFO_TEXT_UPDATE_AVAILABLE_NOW = "info.text.update.available.now";
     public static final String INFO_TITLE_START_AFTER_UPDATE = "info.title.start.after.update";
     public static final String INFO_HEADER_TEXT_START_AFTER_UPDATE = "info.header.text.start.after.update";
@@ -206,4 +207,6 @@ public class Strings
     public static final String ERROR_PASSWORD_SAVE = "error.password.save";
     public static final String ERROR_UPDATER_GET_LATEST_VERSION = "error.updater.get.latest.version";
     public static final String ERROR_UPDATER_DOWNLOAD_LATEST_VERSION = "error.updater.download.latest.version";
+    public static final String ERROR_OPEN_BROWSER = "error.open.browser";
+    
 }

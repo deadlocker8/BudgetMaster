@@ -1,6 +1,9 @@
 package de.deadlocker8.budgetmasterclient.ui.controller;
 
+import java.awt.Desktop;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Optional;
@@ -41,6 +44,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -50,6 +54,8 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import logger.Logger;
@@ -454,8 +460,7 @@ public class Controller extends BaseController
 	{
 		try
 		{
-			boolean updateAvailable = updater.isUpdateAvailable(Integer.parseInt(Localization.getString(Strings.VERSION_CODE)));
-			String changes = updater.getChangelog(updater.getLatestVersion().getVersionCode());
+			boolean updateAvailable = updater.isUpdateAvailable(Integer.parseInt(Localization.getString(Strings.VERSION_CODE)));			
 
 			if(!updateAvailable)
 			{
@@ -470,11 +475,36 @@ public class Controller extends BaseController
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setTitle(Localization.getString(Strings.INFO_TITLE_UPDATE_AVAILABLE));
 				alert.setHeaderText("");
-				alert.setContentText(Localization.getString(Strings.INFO_TEXT_UPDATE_AVAILABLE,
-															updater.getLatestVersion().getVersionName(),
-															changes));			
 				Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
-				dialogStage.getIcons().add(icon);					
+				dialogStage.getIcons().add(icon);
+				
+				Hyperlink linkText =  new Hyperlink(Localization.getString(Strings.INFO_TEXT_UPDATE_AVAILABLE_SHOW_CHANGES));
+				linkText.setOnAction((event)->{
+					if(Desktop.isDesktopSupported())
+					{
+						try
+						{
+							Desktop.getDesktop().browse(new URI("http://deadlocker.thecodelabs.de/roadmap/php/index.php?id=1"));
+						}
+						catch(IOException | URISyntaxException e)
+						{
+							Logger.error(e);
+							AlertGenerator.showAlert(AlertType.ERROR, 
+													Localization.getString(Strings.TITLE_ERROR),
+													"",
+													Localization.getString(Strings.ERROR_OPEN_BROWSER), 
+													icon, getStage(), null, false);
+						}
+					}
+				});
+				
+				TextFlow textFlow = new TextFlow(
+				    new Text(Localization.getString(Strings.INFO_TEXT_UPDATE_AVAILABLE,
+													updater.getLatestVersion().getVersionName())),
+				    linkText
+				);
+				
+				alert.getDialogPane().setContent(textFlow);
 				
 				ButtonType buttonTypeOne = new ButtonType(Localization.getString(Strings.INFO_TEXT_UPDATE_AVAILABLE_NOW));
 				ButtonType buttonTypeTwo = new ButtonType(Localization.getString(Strings.CANCEL));							
