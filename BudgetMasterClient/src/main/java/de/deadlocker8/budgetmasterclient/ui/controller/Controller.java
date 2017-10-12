@@ -46,6 +46,8 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -139,7 +141,9 @@ public class Controller extends BaseController
 			checkForUpdates(false);
 		}
 		
-		getStage().getScene().setOnKeyReleased((event)->{
+		final KeyCombination keyCombinationSearch = new KeyCodeCombination(KeyCode.F, KeyCombination.CONTROL_DOWN);
+		
+		getStage().getScene().setOnKeyReleased((event)->{			
 			if(event.getCode().toString().equals(Localization.getString(Strings.SHORTCUT_DEV_CONSOLE)))
 			{
 				try
@@ -148,8 +152,16 @@ public class Controller extends BaseController
 				}
 				catch(IOException e)
 				{
-			        //TODO: errorhandling
+			       Logger.error("Error opening dev console");
 			       Logger.error(e);
+				}
+			}
+			else if(keyCombinationSearch.match(event))
+			{
+				if(!tabPayments.isDisabled())
+				{
+					tabPane.getSelectionModel().select(tabPayments);
+					paymentController.search();
 				}
 			}
 		});
@@ -331,7 +343,7 @@ public class Controller extends BaseController
 			alertIsShowing = true;
 			Platform.runLater(() -> {
 				toggleAllTabsExceptSettings(true);
-				tabPane.getSelectionModel().select(tabSettings);	
+				tabPane.getSelectionModel().select(tabSettings);
 				
 				alertIsShowing = true;
 				Alert alert = new Alert(AlertType.ERROR);
