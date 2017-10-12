@@ -484,7 +484,7 @@ public class Controller extends BaseController
 					{
 						try
 						{
-							Desktop.getDesktop().browse(new URI("http://deadlocker.thecodelabs.de/roadmap/php/index.php?id=1"));
+							Desktop.getDesktop().browse(new URI(Helpers.ROADMAP_URL));
 						}
 						catch(IOException | URISyntaxException e)
 						{
