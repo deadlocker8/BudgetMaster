@@ -9,7 +9,9 @@ public class Strings
     public static final String VERSION_DATE = "version.date";
     public static final String AUTHOR = "author";
     public static final String CREDITS = "credits";
-    public static final String FOLDER = "folder";    
+    public static final String FOLDER = "folder";
+    public static final String ROADMAP_URL = "roadmap.url";
+    public static final String GITHUB_URL = "github.url";
     
     //TITLE
     public static final String TITLE_INCOMES = "title.incomes";
@@ -152,6 +154,7 @@ public class Strings
     public static final String INFO_TITLE_UPDATE_AVAILABLE = "info.title.update.available";
     public static final String INFO_TEXT_UPDATE_AVAILABLE = "info.text.update.available";
     public static final String INFO_TEXT_UPDATE_AVAILABLE_SHOW_CHANGES = "info.text.update.available.show.changes";
+    public static final String INFO_TEXT_UPDATE_AVAILABLE_SHOW_CHANGES_DETAILED = "info.text.update.available.show.changes.detailed";
     public static final String INFO_TEXT_UPDATE_AVAILABLE_NOW = "info.text.update.available.now";
     public static final String INFO_TITLE_START_AFTER_UPDATE = "info.title.start.after.update";
     public static final String INFO_HEADER_TEXT_START_AFTER_UPDATE = "info.header.text.start.after.update";

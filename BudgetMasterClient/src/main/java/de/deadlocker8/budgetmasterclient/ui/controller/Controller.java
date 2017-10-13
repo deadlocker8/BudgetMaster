@@ -472,89 +472,7 @@ public class Controller extends BaseController
 			}
 			
 			Platform.runLater(()->{
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle(Localization.getString(Strings.INFO_TITLE_UPDATE_AVAILABLE));
-				alert.setHeaderText("");
-				Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
-				dialogStage.getIcons().add(icon);
-				
-				Hyperlink linkText =  new Hyperlink(Localization.getString(Strings.INFO_TEXT_UPDATE_AVAILABLE_SHOW_CHANGES));
-				linkText.setOnAction((event)->{
-					if(Desktop.isDesktopSupported())
-					{
-						try
-						{
-							Desktop.getDesktop().browse(new URI(Helpers.ROADMAP_URL));
-						}
-						catch(IOException | URISyntaxException e)
-						{
-							Logger.error(e);
-							AlertGenerator.showAlert(AlertType.ERROR, 
-													Localization.getString(Strings.TITLE_ERROR),
-													"",
-													Localization.getString(Strings.ERROR_OPEN_BROWSER), 
-													icon, getStage(), null, false);
-						}
-					}
-				});
-				
-				TextFlow textFlow = new TextFlow(
-				    new Text(Localization.getString(Strings.INFO_TEXT_UPDATE_AVAILABLE,
-													updater.getLatestVersion().getVersionName())),
-				    linkText
-				);
-				
-				alert.getDialogPane().setContent(textFlow);
-				
-				ButtonType buttonTypeOne = new ButtonType(Localization.getString(Strings.INFO_TEXT_UPDATE_AVAILABLE_NOW));
-				ButtonType buttonTypeTwo = new ButtonType(Localization.getString(Strings.CANCEL));							
-				alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
-				
-				DialogPane dialogPane = alert.getDialogPane();
-				dialogPane.getButtonTypes().stream().map(dialogPane::lookupButton).forEach(button -> button.addEventHandler(KeyEvent.KEY_PRESSED, (event) -> {
-					if(KeyCode.ENTER.equals(event.getCode()) && event.getTarget() instanceof Button)
-					{
-						((Button)event.getTarget()).fire();
-					}
-				}));
-				
-				Optional<ButtonType> result = alert.showAndWait();						
-				if (result.get() == buttonTypeOne)
-				{					
-					Stage modalStage = UIHelpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_UPDATE), getStage(), icon);
-					
-					Worker.runLater(() -> {
-						try 
-						{
-							updater.downloadLatestVersion();
-							Platform.runLater(() -> {
-								if(modalStage != null)
-								{
-									modalStage.close();
-								}							
-							});
-						}
-						catch(Exception ex)
-						{
-							Logger.error(ex);
-							Platform.runLater(() -> {
-								if(modalStage != null)
-								{
-									modalStage.close();
-									AlertGenerator.showAlert(AlertType.ERROR, 
-															Localization.getString(Strings.TITLE_ERROR),
-															"", 
-															Localization.getString(Strings.ERROR_UPDATER_DOWNLOAD_LATEST_VERSION, ex.getMessage()), 
-															icon, getStage(), null, true);
-								}							
-							});
-						}
-					});
-				}
-				else
-				{
-					alert.close();
-				}
+				showUpdateAlert();
 			});
 		}		
 		catch(Exception e)
@@ -565,6 +483,115 @@ public class Controller extends BaseController
 									"", 
 									Localization.getString(Strings.ERROR_UPDATER_GET_LATEST_VERSION), 
 									icon, null, null, true);
+		}
+	}
+	
+	private void showUpdateAlert()
+	{
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle(Localization.getString(Strings.INFO_TITLE_UPDATE_AVAILABLE));
+		alert.setHeaderText("");
+		Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
+		dialogStage.getIcons().add(icon);
+		
+		Hyperlink linkText =  new Hyperlink(Localization.getString(Strings.INFO_TEXT_UPDATE_AVAILABLE_SHOW_CHANGES));
+		linkText.setOnAction((event)->{
+			if(Desktop.isDesktopSupported())
+			{
+				try
+				{
+					Desktop.getDesktop().browse(new URI(Localization.getString(Strings.ROADMAP_URL)));
+				}
+				catch(IOException | URISyntaxException e)
+				{
+					Logger.error(e);
+					AlertGenerator.showAlert(AlertType.ERROR, 
+											Localization.getString(Strings.TITLE_ERROR),
+											"",
+											Localization.getString(Strings.ERROR_OPEN_BROWSER), 
+											icon, getStage(), null, false);
+				}
+			}
+		});
+		
+		Hyperlink detailedMilestones =  new Hyperlink(Localization.getString(Strings.INFO_TEXT_UPDATE_AVAILABLE_SHOW_CHANGES_DETAILED));
+		detailedMilestones.setOnAction((event)->{
+			if(Desktop.isDesktopSupported())
+			{
+				try
+				{
+					Desktop.getDesktop().browse(new URI(Localization.getString(Strings.GITHUB_URL)));
+				}
+				catch(IOException | URISyntaxException e)
+				{
+					Logger.error(e);
+					AlertGenerator.showAlert(AlertType.ERROR, 
+											Localization.getString(Strings.TITLE_ERROR),
+											"",
+											Localization.getString(Strings.ERROR_OPEN_BROWSER), 
+											icon, getStage(), null, false);
+				}
+			}
+		});
+		
+		TextFlow textFlow = new TextFlow(
+		    new Text(Localization.getString(Strings.INFO_TEXT_UPDATE_AVAILABLE,
+											updater.getLatestVersion().getVersionName())),
+		    linkText,
+		    new Text("\n\n"),
+		    detailedMilestones
+		);
+		
+		alert.getDialogPane().setContent(textFlow);
+		
+		ButtonType buttonTypeOne = new ButtonType(Localization.getString(Strings.INFO_TEXT_UPDATE_AVAILABLE_NOW));
+		ButtonType buttonTypeTwo = new ButtonType(Localization.getString(Strings.CANCEL));							
+		alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
+		
+		DialogPane dialogPane = alert.getDialogPane();
+		dialogPane.getButtonTypes().stream().map(dialogPane::lookupButton).forEach(button -> button.addEventHandler(KeyEvent.KEY_PRESSED, (event) -> {
+			if(KeyCode.ENTER.equals(event.getCode()) && event.getTarget() instanceof Button)
+			{
+				((Button)event.getTarget()).fire();
+			}
+		}));
+		
+		Optional<ButtonType> result = alert.showAndWait();						
+		if (result.get() == buttonTypeOne)
+		{					
+			Stage modalStage = UIHelpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_UPDATE), getStage(), icon);
+			
+			Worker.runLater(() -> {
+				try 
+				{
+					updater.downloadLatestVersion();
+					Platform.runLater(() -> {
+						if(modalStage != null)
+						{
+							modalStage.close();
+						}							
+					});
+				}
+				catch(Exception ex)
+				{
+					Logger.error(ex);
+					Platform.runLater(() -> {
+						if(modalStage != null)
+						{
+							modalStage.close();
+							AlertGenerator.showAlert(AlertType.ERROR, 
+													Localization.getString(Strings.TITLE_ERROR),
+													"", 
+													Localization.getString(Strings.ERROR_UPDATER_DOWNLOAD_LATEST_VERSION, ex.getMessage()), 
+													icon, getStage(), null, true);
+						}							
+					});
+				}
+			});
+		}
+		else
+		{
+			alert.close();
 		}
 	}
 
