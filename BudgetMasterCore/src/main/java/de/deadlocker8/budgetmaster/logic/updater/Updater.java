@@ -13,9 +13,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Properties;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import logger.Logger;
 import nativeWindows.NativeLauncher;
@@ -28,7 +25,6 @@ public class Updater
 {
 	private VersionInformation latestVersion;
 	private static final String LATEST_VERSION_INFO_URL = "https://raw.githubusercontent.com/deadlocker8/BudgetMaster/master/src/de/deadlocker8/budgetmaster/resources/languages/_de.properties";
-	private static final String CHANGELOG_URL = "https://raw.githubusercontent.com/deadlocker8/BudgetMaster/master/src/de/deadlocker8/budgetmaster/resources/changelog.json";
 	private static final String BUILD_FOLDER = "https://github.com/deadlocker8/BudgetMaster/raw/master/build/";
 	
 	public Updater()
@@ -65,35 +61,7 @@ public class Updater
 	public VersionInformation getLatestVersion()
 	{
 		return latestVersion;
-	}
-
-	public JsonObject getChangelogFromURL() throws IOException
-	{
-		URL webseite = new URL(CHANGELOG_URL);
-		URLConnection connection = webseite.openConnection();
-
-		BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-		String line;        
-        StringBuilder data = new StringBuilder();
-        while ((line = br.readLine()) != null)
-        {
-        	data.append(line);            		
-        }
-        
-        JsonParser parser = new JsonParser();
-        return parser.parse(data.toString()).getAsJsonObject();
-	}
-	
-	public String getChangelog(int versionCode) throws Exception
-	{		
-		JsonObject changelogJSON = getChangelogFromURL();
-		
-		if(changelogJSON != null)
-		{
-			return changelogJSON.get(String.valueOf(versionCode)).getAsString();			
-		}
-		return null;
-	}
+	}	
 	
 	private void downloadLatestUpdater(OSType osType) throws IOException
 	{
@@ -119,16 +87,11 @@ public class Updater
 	{
 		File currentExecutable = getCurrentExecutableName();
 		String currentFileName = currentExecutable.getName();
-		String fileEnding;
 		
 		//check if BudgetMaster is running from executable
 		//no updating procedure if running from source
-		if(currentFileName.contains("."))
-		{
-			fileEnding = currentExecutable.getAbsolutePath().substring(currentExecutable.getAbsolutePath().indexOf("."), currentExecutable.getAbsolutePath().length());			
-		}
-		else
-		{
+		if(!currentFileName.contains("."))
+		{			
 			Logger.debug("Update procedure will be skipped because BudgetMaster is running from source");
 			return;
 		}
@@ -141,7 +104,7 @@ public class Updater
 		
 		//download into temp directory and file
 		Path target;
-		if(fileEnding.equalsIgnoreCase("exe"))
+		if(currentFileName.endsWith(".exe"))
 		{			
 			target = Paths.get(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER) + "/update_BudgetMaster.exe");			
 			download(BUILD_FOLDER + "BudgetMaster.exe", target);			

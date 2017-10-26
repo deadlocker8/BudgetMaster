@@ -33,6 +33,9 @@ import de.deadlocker8.budgetmasterserver.server.charts.MonthInOutSum;
 import de.deadlocker8.budgetmasterserver.server.database.DatabaseDelete;
 import de.deadlocker8.budgetmasterserver.server.database.DatabaseExport;
 import de.deadlocker8.budgetmasterserver.server.database.DatabaseImport;
+import de.deadlocker8.budgetmasterserver.server.info.InformationGet;
+import de.deadlocker8.budgetmasterserver.server.info.VersionGet;
+import de.deadlocker8.budgetmasterserver.server.log.LogDelete;
 import de.deadlocker8.budgetmasterserver.server.payment.normal.PaymentAdd;
 import de.deadlocker8.budgetmasterserver.server.payment.normal.PaymentDelete;
 import de.deadlocker8.budgetmasterserver.server.payment.normal.PaymentGet;
@@ -58,7 +61,6 @@ import de.deadlocker8.budgetmasterserver.server.tag.tag.TagGet;
 import de.deadlocker8.budgetmasterserver.server.tag.tag.TagGetAll;
 import de.deadlocker8.budgetmasterserver.server.tag.tag.TagGetByName;
 import de.deadlocker8.budgetmasterserver.server.updater.RepeatingPaymentUpdater;
-import de.deadlocker8.budgetmasterserver.server.version.VersionGet;
 import logger.Logger;
 import spark.Spark;
 import spark.route.RouteOverview;
@@ -166,7 +168,9 @@ public class SparkServer
 		post("/database", new DatabaseImport(handler, tagHandler, gson));
 		delete("/database", new DatabaseDelete(handler, settings));
 		
+		get("/info", new InformationGet(gson, versionInfo, settings));
 		get("/version", new VersionGet(gson, versionInfo));
+		delete("/log", new LogDelete());
 
 		after((request, response) -> {
 			new RepeatingPaymentUpdater(handler).updateRepeatingPayments(DateTime.now());

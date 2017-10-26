@@ -9,7 +9,9 @@ public class Strings
     public static final String VERSION_DATE = "version.date";
     public static final String AUTHOR = "author";
     public static final String CREDITS = "credits";
-    public static final String FOLDER = "folder";    
+    public static final String FOLDER = "folder";
+    public static final String ROADMAP_URL = "roadmap.url";
+    public static final String GITHUB_URL = "github.url";
     
     //TITLE
     public static final String TITLE_INCOMES = "title.incomes";
@@ -67,6 +69,7 @@ public class Strings
     public static final String VERSION = "version";
     public static final String UNDEFINED = "undefined";
     public static final String TAGFIELD_PLACEHOLDER = "tagfield.placeholder";
+    public static final String SHORTCUT_DEV_CONSOLE = "shortcut.dev.console";
     
     //REPORT
     public static final String REPORT_POSITION = "report.position";
@@ -87,6 +90,10 @@ public class Strings
     public static final String REPORT_REPEATING_YES ="report.repeating.yes";
     public static final String REPORT_REPEATING_NO ="report.repeating.no";
     public static final String REPORT_INITIAL_FILENAME ="report.initial.filename"; 
+    public static final String REPORT_BUDGET = "report.budget";
+    public static final String REPORT_INCOMES = "report.incomes";
+    public static final String REPORT_PAYMENTS = "report.payments";
+    public static final String REPORT_BUDGET_REST = "report.budget.rest";
     
     //MONTH_NAMES
     public static final String MONTH_JANUARY ="month.january"; 
@@ -146,6 +153,8 @@ public class Strings
     public static final String INFO_TEXT_LANGUAGE_CHANGED_RESTART_LATER = "info.text.language.changed.restart.later";
     public static final String INFO_TITLE_UPDATE_AVAILABLE = "info.title.update.available";
     public static final String INFO_TEXT_UPDATE_AVAILABLE = "info.text.update.available";
+    public static final String INFO_TEXT_UPDATE_AVAILABLE_SHOW_CHANGES = "info.text.update.available.show.changes";
+    public static final String INFO_TEXT_UPDATE_AVAILABLE_SHOW_CHANGES_DETAILED = "info.text.update.available.show.changes.detailed";
     public static final String INFO_TEXT_UPDATE_AVAILABLE_NOW = "info.text.update.available.now";
     public static final String INFO_TITLE_START_AFTER_UPDATE = "info.title.start.after.update";
     public static final String INFO_HEADER_TEXT_START_AFTER_UPDATE = "info.header.text.start.after.update";
@@ -201,4 +210,15 @@ public class Strings
     public static final String ERROR_PASSWORD_SAVE = "error.password.save";
     public static final String ERROR_UPDATER_GET_LATEST_VERSION = "error.updater.get.latest.version";
     public static final String ERROR_UPDATER_DOWNLOAD_LATEST_VERSION = "error.updater.download.latest.version";
+    public static final String ERROR_OPEN_BROWSER = "error.open.browser";
+    
+    //ABOUT
+    public static final String ABOUT = "about";
+    public static final String ABOUT_ROADMAP_LINK = "about.roadmap.link";
+    public static final String ABOUT_VERSION = "about.version";
+    public static final String ABOUT_DATE = "about.date";
+    public static final String ABOUT_AUTHOR = "about.author";
+    public static final String ABOUT_ROADMAP = "about.roadmap";
+    public static final String ABOUT_SOURCECODE = "about.sourcecode";
+    public static final String ABOUT_CREDITS = "about.credits";
 }

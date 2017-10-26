@@ -167,11 +167,11 @@ public class ReportGenerator
 			Font fontRed = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 12, Font.NORMAL, BaseColor.RED);
 			Font fontBlack = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 12, Font.BOLD, BaseColor.BLACK);
 			
-			document.add(new Paragraph("Budget", headerFont));
+			document.add(new Paragraph(Localization.getString(Strings.REPORT_BUDGET), headerFont));
 			document.add(Chunk.NEWLINE);
-			document.add(new Paragraph("Einnahmen: " + Helpers.getCurrencyString(budget.getIncomeSum(), currency), fontGreen));
-			document.add(new Paragraph("Ausgaben: " + Helpers.getCurrencyString(budget.getPaymentSum(), currency), fontRed));
-			document.add(new Paragraph("Restbudget: " + Helpers.getCurrencyString(budget.getIncomeSum() + budget.getPaymentSum(), currency), fontBlack));			
+			document.add(new Paragraph(Localization.getString(Strings.REPORT_INCOMES) + Helpers.getCurrencyString(budget.getIncomeSum(), currency), fontGreen));
+			document.add(new Paragraph(Localization.getString(Strings.REPORT_PAYMENTS) + Helpers.getCurrencyString(budget.getPaymentSum(), currency), fontRed));
+			document.add(new Paragraph(Localization.getString(Strings.REPORT_BUDGET_REST) + Helpers.getCurrencyString(budget.getIncomeSum() + budget.getPaymentSum(), currency), fontBlack));			
 			document.add(Chunk.NEWLINE);
 		}
 		

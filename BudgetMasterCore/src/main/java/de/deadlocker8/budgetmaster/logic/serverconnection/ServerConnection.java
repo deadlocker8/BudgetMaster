@@ -561,8 +561,26 @@ public class ServerConnection
 	}
 	
 	/*
-	 * VERSION
+	 * INFORMATION
 	 */
+	public ServerInformation getServerInfo() throws Exception
+	{
+		URL url = new URL(settings.getUrl() + "/info?secret=" + Helpers.getURLEncodedString(settings.getSecret()));
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setDoOutput(true);
+		httpsCon.setRequestMethod("GET");
+
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			String result = Read.getStringFromInputStream(httpsCon.getInputStream());			
+			return gson.fromJson(result, ServerInformation.class);
+		}
+		else
+		{
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+		}
+	}
+	
 	public VersionInformation getServerVersion() throws Exception
 	{
 		URL url = new URL(settings.getUrl() + "/version?secret=" + Helpers.getURLEncodedString(settings.getSecret()));
@@ -579,5 +597,23 @@ public class ServerConnection
 		{
 			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
 		}
+	}
+	
+	public void deleteLog() throws Exception
+	{
+		URL url = new URL(settings.getUrl() + "/log?secret=" + Helpers.getURLEncodedString(settings.getSecret()));
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setRequestMethod("DELETE");
+		httpsCon.setDoInput(true);
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			InputStream stream = httpsCon.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			reader.close();
+		}
+		else
+		{
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+		}		
 	}
 }
