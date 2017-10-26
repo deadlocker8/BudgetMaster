@@ -38,6 +38,8 @@ import javafx.animation.SequentialTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -49,11 +51,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
@@ -594,22 +601,137 @@ public class Controller extends BaseController
 			alert.close();
 		}
 	}
+	
+	private Label getLabelForAboutColumns(String text, boolean bold)
+	{
+		Label label = new Label(text);
+		if(bold)
+		{
+			label.setStyle("-fx-font-size: 14; -fx-font-weight: bold;");
+		}
+		else
+		{			
+			label.setStyle("-fx-font-size: 14;");
+		}
+		return label;
+	}
 
 	public void about()
 	{
-		ArrayList<String> creditLines = new ArrayList<>();
-		creditLines.add(Localization.getString(Strings.CREDITS));
-				
-		AlertGenerator.showAboutAlertWithCredits(Localization.getString(Strings.APP_NAME),
-												Localization.getString(Strings.VERSION_NAME),
-												Localization.getString(Strings.VERSION_CODE),
-												Localization.getString(Strings.VERSION_DATE),
-												Localization.getString(Strings.AUTHOR),
-												creditLines,
-												icon, 
-												getStage(), 
-												null, 
-												false);
+		Alert alert = new Alert(AlertType.NONE);
+		alert.setTitle(Localization.getString(Strings.ABOUT, Localization.getString(Strings.APP_NAME)));
+		alert.setHeaderText("");
+		Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
+		dialogStage.getIcons().add(icon);
+		
+		Hyperlink roadmapLink =  new Hyperlink(Localization.getString(Strings.ABOUT_ROADMAP_LINK));
+		roadmapLink.setFont(new Font(14));
+		roadmapLink.setPadding(new Insets(0));
+		roadmapLink.setOnAction((event)->{
+			if(Desktop.isDesktopSupported())
+			{
+				try
+				{
+					Desktop.getDesktop().browse(new URI(Localization.getString(Strings.ROADMAP_URL)));
+				}
+				catch(IOException | URISyntaxException e)
+				{
+					Logger.error(e);
+					AlertGenerator.showAlert(AlertType.ERROR, 
+											Localization.getString(Strings.TITLE_ERROR),
+											"",
+											Localization.getString(Strings.ERROR_OPEN_BROWSER), 
+											icon, getStage(), null, false);
+				}
+			}
+		});
+		
+		Hyperlink githubLink =  new Hyperlink(Localization.getString(Strings.GITHUB_URL));
+		githubLink.setFont(new Font(14));
+		githubLink.setPadding(new Insets(0));
+		githubLink.setOnAction((event)->{
+			if(Desktop.isDesktopSupported())
+			{
+				try
+				{
+					Desktop.getDesktop().browse(new URI(Localization.getString(Strings.GITHUB_URL)));
+				}
+				catch(IOException | URISyntaxException e)
+				{
+					Logger.error(e);
+					AlertGenerator.showAlert(AlertType.ERROR, 
+											Localization.getString(Strings.TITLE_ERROR),
+											"",
+											Localization.getString(Strings.ERROR_OPEN_BROWSER), 
+											icon, getStage(), null, false);
+				}
+			}
+		});
+		
+		VBox vbox = new VBox();
+		vbox.setSpacing(10);
+		HBox hboxLogo = new HBox();
+		hboxLogo.setSpacing(25);
+		ImageView imageViewLogo = new ImageView(icon);
+		imageViewLogo.setFitHeight(75);
+		imageViewLogo.setFitWidth(75);
+		hboxLogo.getChildren().add(imageViewLogo);
+		
+		Label labelName = new Label(Localization.getString(Strings.ABOUT, Localization.getString(Strings.APP_NAME)));
+		labelName.setStyle("-fx-font-weight: bold; -fx-font-size: 22;");
+		labelName.setMaxWidth(Double.MAX_VALUE);
+		hboxLogo.getChildren().add(labelName);
+		HBox.setHgrow(labelName, Priority.ALWAYS);
+		hboxLogo.setAlignment(Pos.CENTER);
+		vbox.getChildren().add(hboxLogo);
+		
+		HBox hboxColumns = new HBox();
+		VBox vboxLeft = new VBox();
+		vboxLeft.setSpacing(7);
+		VBox vboxRight = new VBox();
+		vboxRight.setSpacing(7);
+		
+		vboxLeft.getChildren().add(getLabelForAboutColumns(Localization.getString(Strings.ABOUT_VERSION), true));
+		vboxLeft.getChildren().add(getLabelForAboutColumns(Localization.getString(Strings.ABOUT_DATE), true));
+		vboxLeft.getChildren().add(getLabelForAboutColumns(Localization.getString(Strings.ABOUT_AUTHOR), true));
+		vboxLeft.getChildren().add(getLabelForAboutColumns(Localization.getString(Strings.ABOUT_ROADMAP), true));
+		Label labelSourceCode = getLabelForAboutColumns(Localization.getString(Strings.ABOUT_SOURCECODE), true);
+		vboxLeft.getChildren().add(labelSourceCode);
+		VBox.setMargin(labelSourceCode, new Insets(2, 0, 0, 0));
+		vboxLeft.getChildren().add(getLabelForAboutColumns(Localization.getString(Strings.ABOUT_CREDITS), true));		
+		
+		vboxRight.getChildren().add(getLabelForAboutColumns(Localization.getString(Strings.VERSION_NAME) + " (" + Localization.getString(Strings.VERSION_CODE) + ")", false));
+		vboxRight.getChildren().add(getLabelForAboutColumns(Localization.getString(Strings.VERSION_DATE), false));
+		vboxRight.getChildren().add(getLabelForAboutColumns(Localization.getString(Strings.AUTHOR), false));
+		vboxRight.getChildren().add(roadmapLink);
+		vboxRight.getChildren().add(githubLink);
+		
+		VBox vboxCredits = new VBox();
+		for(String line : Localization.getString(Strings.CREDITS).split("\n"))
+		{
+			vboxCredits.getChildren().add(getLabelForAboutColumns(line, false));
+		}
+		vboxRight.getChildren().add(vboxCredits);
+		
+		vboxLeft.setMinWidth(100);
+		hboxColumns.getChildren().addAll(vboxLeft, vboxRight);
+		HBox.setHgrow(vboxLeft, Priority.ALWAYS);
+		HBox.setHgrow(vboxRight, Priority.ALWAYS);
+		
+		vbox.getChildren().add(hboxColumns);		
+		alert.getDialogPane().setContent(vbox);		
+		
+		alert.getButtonTypes().setAll(new ButtonType(Localization.getString(Strings.OK)));
+		
+		DialogPane dialogPane = alert.getDialogPane();
+		dialogPane.getButtonTypes().stream().map(dialogPane::lookupButton).forEach(button -> button.addEventHandler(KeyEvent.KEY_PRESSED, (event) -> {
+			if(KeyCode.ENTER.equals(event.getCode()) && event.getTarget() instanceof Button)
+			{
+				((Button)event.getTarget()).fire();
+			}
+		}));
+		
+		alert.showAndWait();						
 	}	
 	
 	public void refresh(FilterSettings newFilterSettings)

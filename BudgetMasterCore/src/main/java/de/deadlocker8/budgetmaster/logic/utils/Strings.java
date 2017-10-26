@@ -212,4 +212,13 @@ public class Strings
     public static final String ERROR_UPDATER_DOWNLOAD_LATEST_VERSION = "error.updater.download.latest.version";
     public static final String ERROR_OPEN_BROWSER = "error.open.browser";
     
+    //ABOUT
+    public static final String ABOUT = "about";
+    public static final String ABOUT_ROADMAP_LINK = "about.roadmap.link";
+    public static final String ABOUT_VERSION = "about.version";
+    public static final String ABOUT_DATE = "about.date";
+    public static final String ABOUT_AUTHOR = "about.author";
+    public static final String ABOUT_ROADMAP = "about.roadmap";
+    public static final String ABOUT_SOURCECODE = "about.sourcecode";
+    public static final String ABOUT_CREDITS = "about.credits";
 }
