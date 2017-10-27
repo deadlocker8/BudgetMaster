@@ -419,6 +419,11 @@ public class Controller extends BaseController
 	{
 		return updater;
 	}
+	
+	public SettingsController getSettingsController()
+	{
+		return settingsController;
+	}
 
 	public void setFilterSettings(FilterSettings filterSettings)
 	{

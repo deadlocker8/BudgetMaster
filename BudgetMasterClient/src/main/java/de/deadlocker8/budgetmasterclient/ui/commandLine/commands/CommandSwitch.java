@@ -63,6 +63,7 @@ public class CommandSwitch extends Command
 		
 		LanguageType previousLanguage = bundle.getParentController().getSettings().getLanguage();
 		bundle.getParentController().setSettings(FileHelper.loadSettings());
+		bundle.getParentController().getSettingsController().prefill();
 		RestartHandler restartHandler = new RestartHandler(bundle.getParentController());
 		restartHandler.handleRestart(previousLanguage);
 		bundle.getController().print(bundle.getString("switch.success"));

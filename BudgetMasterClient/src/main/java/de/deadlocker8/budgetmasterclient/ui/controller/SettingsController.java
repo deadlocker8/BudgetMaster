@@ -96,6 +96,25 @@ public class SettingsController implements Styleable
 		previousLanguage = LanguageType.ENGLISH;
 		checkboxEnableAutoUpdate.setSelected(true);
 		
+		prefill();
+		
+		applyStyle();
+
+		textFieldURL.setPromptText(Localization.getString(Strings.URL_PLACEHOLDER));
+		textFieldCurrency.setPromptText(Localization.getString(Strings.CURRENCY_PLACEHOLDER));
+		textAreaTrustedHosts.setPromptText(Localization.getString(Strings.TRUSTED_HOSTS_PLACEHOLDER));
+
+		ToggleGroup toggleGroup = new ToggleGroup();
+		radioButtonRestActivated.setToggleGroup(toggleGroup);
+		radioButtonRestDeactivated.setToggleGroup(toggleGroup);
+		
+		hboxSettings.prefWidthProperty().bind(scrollPane.widthProperty().subtract(25));
+		
+		refreshLabelsUpdate();
+	}
+	
+	public void prefill()
+	{
 		if(controller.getSettings().isComplete())
 		{
 			textFieldURL.setText(controller.getSettings().getUrl());
@@ -124,20 +143,6 @@ public class SettingsController implements Styleable
 		{
 			radioButtonRestDeactivated.setSelected(true);
 		}
-		
-		applyStyle();
-
-		textFieldURL.setPromptText(Localization.getString(Strings.URL_PLACEHOLDER));
-		textFieldCurrency.setPromptText(Localization.getString(Strings.CURRENCY_PLACEHOLDER));
-		textAreaTrustedHosts.setPromptText(Localization.getString(Strings.TRUSTED_HOSTS_PLACEHOLDER));
-
-		ToggleGroup toggleGroup = new ToggleGroup();
-		radioButtonRestActivated.setToggleGroup(toggleGroup);
-		radioButtonRestDeactivated.setToggleGroup(toggleGroup);
-		
-		hboxSettings.prefWidthProperty().bind(scrollPane.widthProperty().subtract(25));
-		
-		refreshLabelsUpdate();
 	}
 	
 	private void refreshLabelsUpdate()
