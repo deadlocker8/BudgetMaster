@@ -4,14 +4,14 @@ import static spark.Spark.halt;
 
 import com.google.gson.Gson;
 
+import de.deadlocker8.budgetmasterserver.logic.AdvancedRoute;
 import de.deadlocker8.budgetmasterserver.logic.Settings;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseExporter;
 import logger.Logger;
 import spark.Request;
 import spark.Response;
-import spark.Route;
 
-public class DatabaseExport implements Route
+public class DatabaseExport implements AdvancedRoute
 {
 	private Settings settings;
 	private Gson gson;
@@ -23,7 +23,12 @@ public class DatabaseExport implements Route
 	}
 
 	@Override
-	public Object handle(Request req, Response res) throws Exception
+	public void before()
+	{
+	}
+
+	@Override
+	public Object handleRequest(Request req, Response res)
 	{
 		try
 		{	
@@ -37,5 +42,10 @@ public class DatabaseExport implements Route
 		}		
 		
 		return "";
+	}
+
+	@Override
+	public void after()
+	{
 	}
 }

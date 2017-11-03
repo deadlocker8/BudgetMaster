@@ -15,21 +15,43 @@ import logger.Logger;
 public class DatabaseTagHandler
 {
 	private Connection connection;
+	private Settings settings;
 	
 	public DatabaseTagHandler(Settings settings) throws IllegalStateException
     {
-        try
-        {
-            this.connection = DriverManager.getConnection(settings.getDatabaseUrl() + settings.getDatabaseName() + "?useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin", settings.getDatabaseUsername(), settings.getDatabasePassword());
-        }
-        catch(Exception e)
-        {
-            Logger.error(e);
-            throw new IllegalStateException("Cannot connect the database!", e);
-        }
-    }	
+		this.settings = settings;
+        connect();
+    }
 	
-	private void closeConnection(Statement statement)
+	public void connect()
+	{
+		try
+		{
+			if(connection == null || connection.isClosed())
+			{				
+				this.connection = DriverManager.getConnection(settings.getDatabaseUrl() + settings.getDatabaseName() + "?useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin&autoReconnect=true&wait_timeout=86400", settings.getDatabaseUsername(), settings.getDatabasePassword());
+			}
+		}
+		catch(Exception e)
+		{
+			Logger.error(e);
+			throw new IllegalStateException("Cannot connect the database!", e);
+		}
+	}
+	
+	public void closeConnection()
+	{
+		try
+		{
+			connection.close();
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+	}
+	
+	private void closeStatement(Statement statement)
 	{
 		if(statement != null)
 		{
@@ -63,7 +85,7 @@ public class DatabaseTagHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return lastInsertID;
@@ -91,7 +113,7 @@ public class DatabaseTagHandler
         }
         finally
         {
-            closeConnection(stmt);
+            closeStatement(stmt);
         }
 
         return results;    
@@ -121,7 +143,7 @@ public class DatabaseTagHandler
         }
         finally
         {
-           closeConnection(stmt);
+           closeStatement(stmt);
         }
 
         return tag;
@@ -151,7 +173,7 @@ public class DatabaseTagHandler
         }
         finally
         {
-           closeConnection(stmt);
+           closeStatement(stmt);
         }
 
         return tag;
@@ -172,7 +194,7 @@ public class DatabaseTagHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 	
@@ -191,7 +213,7 @@ public class DatabaseTagHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 	
@@ -216,7 +238,7 @@ public class DatabaseTagHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 		
 		return false;
@@ -243,7 +265,7 @@ public class DatabaseTagHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 		
 		return false;
@@ -271,7 +293,7 @@ public class DatabaseTagHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 		
 		return tagIDs;
@@ -299,7 +321,7 @@ public class DatabaseTagHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 		
 		return tagIDs;
@@ -322,7 +344,7 @@ public class DatabaseTagHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 	
@@ -343,7 +365,7 @@ public class DatabaseTagHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 	
@@ -363,7 +385,7 @@ public class DatabaseTagHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 	
@@ -383,7 +405,7 @@ public class DatabaseTagHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 	
@@ -407,7 +429,7 @@ public class DatabaseTagHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 		
 		return false;

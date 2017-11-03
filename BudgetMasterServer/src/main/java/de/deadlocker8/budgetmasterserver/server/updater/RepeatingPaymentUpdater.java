@@ -24,8 +24,8 @@ public class RepeatingPaymentUpdater
 	public void updateRepeatingPayments(DateTime now)
 	{
 		try
-		{
-			ArrayList<RepeatingPayment> repeatingPayments = handler.getAllRepeatingPayments();				
+		{	
+			ArrayList<RepeatingPayment> repeatingPayments = handler.getAllRepeatingPayments();
 			ArrayList<LatestRepeatingPayment> latest = handler.getLatestRepeatingPaymentEntries();
 			
 			for(RepeatingPayment currentPayment : repeatingPayments)

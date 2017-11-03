@@ -4,13 +4,13 @@ import static spark.Spark.halt;
 
 import java.util.ArrayList;
 
+import de.deadlocker8.budgetmasterserver.logic.AdvancedRoute;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseTagHandler;
 import spark.Request;
 import spark.Response;
-import spark.Route;
 
-public class RepeatingPaymentDelete implements Route
+public class RepeatingPaymentDelete implements AdvancedRoute
 {
 	private DatabaseHandler handler;
 	private DatabaseTagHandler tagHandler;
@@ -22,7 +22,14 @@ public class RepeatingPaymentDelete implements Route
 	}
 
 	@Override
-	public Object handle(Request req, Response res) throws Exception
+	public void before()
+	{
+		handler.connect();
+		tagHandler.connect();
+	}
+
+	@Override
+	public Object handleRequest(Request req, Response res)
 	{
 		if(!req.queryParams().contains("id"))
 		{
@@ -62,5 +69,12 @@ public class RepeatingPaymentDelete implements Route
 		}
 		
 		return "";
+	}
+
+	@Override
+	public void after()
+	{
+		handler.closeConnection();
+		tagHandler.closeConnection();		
 	}
 }

@@ -24,15 +24,23 @@ import logger.Logger;
 public class DatabaseHandler
 {
 	private Connection connection;
+	private Settings settings;
 	private final DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 
 	public DatabaseHandler(Settings settings) throws IllegalStateException
 	{
+		this.settings = settings;
+		connect();
+	}
+	
+	public void connect()
+	{
 		try
 		{
-			this.connection = DriverManager.getConnection(settings.getDatabaseUrl() + settings.getDatabaseName() + "?useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin&autoReconnect=true&wait_timeout=86400", settings.getDatabaseUsername(), settings.getDatabasePassword());
-			new DatabaseCreator(connection, settings);
-			Logger.info("Successfully initialized database (" + settings.getDatabaseUrl() + settings.getDatabaseName() + ")");
+			if(connection == null || connection.isClosed())
+			{				
+				connection = DriverManager.getConnection(settings.getDatabaseUrl() + settings.getDatabaseName() + "?useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin&autoReconnect=true&wait_timeout=86400", settings.getDatabaseUsername(), settings.getDatabasePassword());
+			}
 		}
 		catch(Exception e)
 		{
@@ -41,7 +49,19 @@ public class DatabaseHandler
 		}
 	}
 	
-	private void closeConnection(Statement statement)
+	public void closeConnection()
+	{
+		try
+		{
+			connection.close();
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+	}
+	
+	private void closeStatement(Statement statement)
 	{
 		if(statement != null)
 		{
@@ -71,6 +91,7 @@ public class DatabaseHandler
 			{
 				lastInsertID = rs.getInt("LAST_INSERT_ID()");				
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -78,7 +99,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return lastInsertID;
@@ -105,6 +126,7 @@ public class DatabaseHandler
 					dateTime = formatter.parseDateTime(rs.getString("min"));
 				}
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -112,7 +134,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return dateTime;
@@ -139,6 +161,7 @@ public class DatabaseHandler
 					dateTime = formatter.parseDateTime(rs.getString("min"));
 				}
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -146,7 +169,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return dateTime;
@@ -229,6 +252,7 @@ public class DatabaseHandler
 
 				results.add(new Category(id, name, color));
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -236,7 +260,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return results;
@@ -259,6 +283,7 @@ public class DatabaseHandler
 
 				result = new Category(id, name, color);
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -266,7 +291,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return result;
@@ -291,6 +316,7 @@ public class DatabaseHandler
 
 				result = new Category(id, categoryName, categoryColor);
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -298,7 +324,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return result;
@@ -320,6 +346,7 @@ public class DatabaseHandler
 					exists = true;
 				}
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -327,7 +354,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return exists;
@@ -350,9 +377,10 @@ public class DatabaseHandler
 				String date = rs.getString("Date");
 				int categoryID = rs.getInt("CategoryID");
 				String description = rs.getString("Description");
-
+				rs.close();
 				return new NormalPayment(resultID, amount, date, categoryID, name, description);
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -360,7 +388,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return null;
@@ -388,6 +416,7 @@ public class DatabaseHandler
 
 				results.add(new NormalPayment(resultID, amount, date, categoryID, name, description));
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -395,7 +424,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return results;
@@ -424,6 +453,7 @@ public class DatabaseHandler
 
 				results.add(new NormalPayment(resultID, amount, date, categoryID, name, description));
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -431,7 +461,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return results;
@@ -460,6 +490,7 @@ public class DatabaseHandler
 			
 				results.add(new NormalPayment(resultID, amount, date, categoryID, name, description));
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -467,7 +498,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return results;
@@ -500,6 +531,7 @@ public class DatabaseHandler
 
 				results.add(new RepeatingPaymentEntry(resultID, repeatingPaymentID, date, amount, categoryID, name, description, repeatInterval, repeatEndDate, repeatMonthDay));
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -507,7 +539,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return results;
@@ -540,6 +572,7 @@ public class DatabaseHandler
 			
 				results.add(new RepeatingPaymentEntry(resultID, repeatingPaymentID, date, amount, categoryID, name, description,repeatInterval, repeatEndDate, repeatMonthDay));
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -547,7 +580,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return results;
@@ -577,6 +610,7 @@ public class DatabaseHandler
 
 				results.add(new RepeatingPayment(resultID, amount, date, categoryID, name, description, repeatInterval, repeatEndDate, repeatMonthDay));
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -584,7 +618,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return results;
@@ -608,6 +642,7 @@ public class DatabaseHandler
 
 				results.add(new LatestRepeatingPayment(resultID, repeatingPaymentID, date));
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -615,7 +650,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return results;
@@ -644,6 +679,7 @@ public class DatabaseHandler
 
 				result = new RepeatingPayment(id, amount, date, categoryID, name, description, repeatInterval, repeatEndDate, repeatMonthDay);
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -651,7 +687,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return result;
@@ -666,8 +702,11 @@ public class DatabaseHandler
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next())
 			{
-				return rs.getInt("max");			
+				int result = rs.getInt("max");
+				rs.close();
+				return result;
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -675,7 +714,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return -1;
@@ -690,8 +729,11 @@ public class DatabaseHandler
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next())
 			{
-				return rs.getInt("max");			
+				int result = rs.getInt("max");
+				rs.close();
+				return result;
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -699,7 +741,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return -1;
@@ -723,7 +765,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 
@@ -742,7 +784,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 
@@ -761,7 +803,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 
@@ -798,7 +840,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 
@@ -821,7 +863,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 
@@ -842,7 +884,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 
@@ -863,8 +905,11 @@ public class DatabaseHandler
 			ResultSet rs = stmt.getGeneratedKeys();
             if(rs.next())
             {
-                return rs.getInt(1);
+            	int result = rs.getInt(1);
+            	rs.close();
+                return result;
             }
+            rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -872,7 +917,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 		
 		return -1;
@@ -904,8 +949,11 @@ public class DatabaseHandler
 			ResultSet rs = stmt.getGeneratedKeys();
             if(rs.next())
             {
-                return rs.getInt(1);
+            	int result = rs.getInt(1);
+            	rs.close();
+                return result;
             }
+            rs.close();
 		}
 		catch(SQLException e)
 		{			
@@ -913,7 +961,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 		
 		return -1;
@@ -936,7 +984,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 
@@ -960,7 +1008,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 
@@ -984,7 +1032,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 }

@@ -8,9 +8,14 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -24,6 +29,7 @@ import de.deadlocker8.budgetmaster.logic.payment.RepeatingPayment;
 import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmasterserver.logic.Settings;
 import de.deadlocker8.budgetmasterserver.logic.Utils;
+import de.deadlocker8.budgetmasterserver.logic.database.DatabaseCreator;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseExporter;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseImporter;
@@ -42,21 +48,39 @@ public class DatabaseImportExportTest
 		try
 		{
 			//init
-			settings = Utils.loadSettings();			
+			settings = Utils.loadSettings();
+			System.out.println(settings);
 			DatabaseHandler handler = new DatabaseHandler(settings);
 			handler.deleteDatabase();
-			handler = new DatabaseHandler(settings);			
-			databaseHandler = handler;
+			handler.closeConnection();
+			Connection connection = DriverManager.getConnection(settings.getDatabaseUrl() + settings.getDatabaseName() + "?useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin&autoReconnect=true&wait_timeout=86400", settings.getDatabaseUsername(), settings.getDatabasePassword());
+			new DatabaseCreator(connection, settings);
+			connection.close();
+			databaseHandler = new DatabaseHandler(settings);
 			tagHandler = new DatabaseTagHandler(settings);
 			
 			Localization.init("de/deadlocker8/budgetmaster/");
 			Localization.loadLanguage(Locale.ENGLISH);
 		}
-		catch(IOException | URISyntaxException e)
+		catch(IOException | URISyntaxException | SQLException e)
 		{
 			fail(e.getMessage());
-		}		
+		}	
 	}	
+
+	@Before
+	public void before()
+	{
+		databaseHandler.connect();
+		tagHandler.connect();
+	}
+	
+	@After
+	public void after()
+	{
+		databaseHandler.closeConnection();
+		tagHandler.closeConnection();
+	}
 	
 	@Test
 	public void testImport()
@@ -111,6 +135,10 @@ public class DatabaseImportExportTest
 		try
 		{
 			databaseHandler.deleteDatabase();
+			databaseHandler.closeConnection();
+			Connection connection = DriverManager.getConnection(settings.getDatabaseUrl() + settings.getDatabaseName() + "?useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin&autoReconnect=true&wait_timeout=86400", settings.getDatabaseUsername(), settings.getDatabasePassword());
+			new DatabaseCreator(connection, settings);
+			connection.close();			
 			databaseHandler = new DatabaseHandler(settings);
 			
 			File file = Paths.get("src/test/resources/de/deadlocker8/budgetmaster/import.json").toFile();

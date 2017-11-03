@@ -11,6 +11,8 @@ import static spark.Spark.put;
 import static spark.Spark.secure;
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 import org.joda.time.DateTime;
 
@@ -20,6 +22,7 @@ import com.google.gson.GsonBuilder;
 import de.deadlocker8.budgetmaster.logic.updater.VersionInformation;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmasterserver.logic.Settings;
+import de.deadlocker8.budgetmasterserver.logic.database.DatabaseCreator;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseTagHandler;
 import de.deadlocker8.budgetmasterserver.server.category.CategoryAdd;
@@ -69,8 +72,6 @@ import tools.HashUtils;
 public class SparkServer
 {	
 	private Gson gson;
-	private DatabaseHandler handler;
-	private DatabaseTagHandler tagHandler;
 	
 	public SparkServer(Settings settings, VersionInformation versionInfo)
 	{
@@ -99,9 +100,19 @@ public class SparkServer
 		
 		RouteOverview.enableRouteOverview();
 		
-		handler = new DatabaseHandler(settings);
-		tagHandler = new DatabaseTagHandler(settings);
-
+		try
+		{
+			Connection connection = DriverManager.getConnection(settings.getDatabaseUrl() + settings.getDatabaseName() + "?useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin&autoReconnect=true&wait_timeout=86400", settings.getDatabaseUsername(), settings.getDatabasePassword());
+			new DatabaseCreator(connection, settings);
+			Logger.info("Successfully initialized database (" + settings.getDatabaseUrl() + settings.getDatabaseName() + ")");
+			connection.close();
+		}
+		catch(Exception e)
+		{
+			Logger.error(e);
+			throw new IllegalStateException("Cannot connect the database!", e);
+		}
+		
 		before((request, response) -> {
 
 			String clientSecret = request.queryMap("secret").value();
@@ -111,69 +122,75 @@ public class SparkServer
 				halt(401, "Unauthorized");
 			}
 
-			new RepeatingPaymentUpdater(handler).updateRepeatingPayments(DateTime.now());
+			DatabaseHandler handler = new DatabaseHandler(settings);
+			RepeatingPaymentUpdater paymentUpdater = new RepeatingPaymentUpdater(handler);
+			paymentUpdater.updateRepeatingPayments(DateTime.now());
+			handler.closeConnection();
 		});
 
 		// Category
-		get("/category", new CategoryGetAll(handler, gson));
-		get("/category/single", new CategoryGet(handler, gson));
-		post("/category", new CategoryAdd(handler));
-		put("/category", new CategoryUpdate(handler));
-		delete("/category", new CategoryDelete(handler));
+		get("/category", new CategoryGetAll(new DatabaseHandler(settings), gson));
+		get("/category/single", new CategoryGet(new DatabaseHandler(settings), gson));
+		post("/category", new CategoryAdd(new DatabaseHandler(settings)));
+		put("/category", new CategoryUpdate(new DatabaseHandler(settings)));
+		delete("/category", new CategoryDelete(new DatabaseHandler(settings)));
 
 		// Payment
-		get("/payment/search", new PaymentSearch(handler, tagHandler));
-		get("/payment/search/maxAmount", new PaymentMaxAmount(handler, gson));
+		get("/payment/search", new PaymentSearch(new DatabaseHandler(settings), new DatabaseTagHandler(settings)));
+		get("/payment/search/maxAmount", new PaymentMaxAmount(new DatabaseHandler(settings), gson));
 		// Normal
-		get("/payment", new PaymentGet(handler, gson));
-		post("/payment", new PaymentAdd(handler, gson));
-		put("/payment", new PaymentUpdate(handler));
-		delete("/payment", new PaymentDelete(handler, tagHandler));
+		get("/payment", new PaymentGet(new DatabaseHandler(settings), gson));
+		post("/payment", new PaymentAdd(new DatabaseHandler(settings), gson));
+		put("/payment", new PaymentUpdate(new DatabaseHandler(settings)));
+		delete("/payment", new PaymentDelete(new DatabaseHandler(settings), new DatabaseTagHandler(settings)));
 
 		// Repeating
-		get("/repeatingpayment/single", new RepeatingPaymentGet(handler, gson));
-		get("/repeatingpayment", new RepeatingPaymentGetAll(handler, gson));
-		post("/repeatingpayment", new RepeatingPaymentAdd(handler, gson));
-		delete("/repeatingpayment", new RepeatingPaymentDelete(handler, tagHandler));
+		get("/repeatingpayment/single", new RepeatingPaymentGet(new DatabaseHandler(settings), gson));
+		get("/repeatingpayment", new RepeatingPaymentGetAll(new DatabaseHandler(settings), gson));
+		post("/repeatingpayment", new RepeatingPaymentAdd(new DatabaseHandler(settings), gson));
+		delete("/repeatingpayment", new RepeatingPaymentDelete(new DatabaseHandler(settings), new DatabaseTagHandler(settings)));
 		
 		// CategoryBudget
-		get("/categorybudget", new CategoryBudgetGet(handler, gson));
+		get("/categorybudget", new CategoryBudgetGet(new DatabaseHandler(settings), gson));
 		
 		// Rest
-		get("/rest", new RestGet(handler, gson));		
+		get("/rest", new RestGet(new DatabaseHandler(settings), gson));		
 
 		// charts
-		get("/charts/categoryInOutSum", new CategoryInOutSumForMonth(handler, gson));
-		get("/charts/monthInOutSum", new MonthInOutSum(handler, gson));
+		get("/charts/categoryInOutSum", new CategoryInOutSumForMonth(new DatabaseHandler(settings), gson));
+		get("/charts/monthInOutSum", new MonthInOutSum(new DatabaseHandler(settings), gson));
 		
 		// tag
-		get("/tag/single", new TagGet(tagHandler, gson));
-		get("/tag/single/byName", new TagGetByName(tagHandler, gson));
-		get("/tag", new TagGetAll(tagHandler, gson));
-		post("/tag", new TagAdd(tagHandler));
-		delete("/tag", new TagDelete(tagHandler));
+		get("/tag/single", new TagGet(new DatabaseTagHandler(settings), gson));
+		get("/tag/single/byName", new TagGetByName(new DatabaseTagHandler(settings), gson));
+		get("/tag", new TagGetAll(new DatabaseTagHandler(settings), gson));
+		post("/tag", new TagAdd(new DatabaseTagHandler(settings)));
+		delete("/tag", new TagDelete(new DatabaseTagHandler(settings)));
 		
 		// tag match
-		get("/tag/match/all/normal", new TagMatchGetAllForPayment(tagHandler, gson));
-		get("/tag/match/all/repeating", new TagMatchGetAllForRepeatingPayment(tagHandler, gson));
-		get("/tag/match/normal", new TagMatchExistingForPayment(tagHandler, gson));
-		get("/tag/match/repeating", new TagMatchExistingForRepeatingPayment(tagHandler, gson));
-		post("/tag/match/normal", new TagMatchAddForPayment(tagHandler));
-		post("/tag/match/repeating", new TagMatchAddForRepeatingPayment(tagHandler));
-		delete("/tag/match/normal", new TagMatchDeleteForPayment(tagHandler));
-		delete("/tag/match/repeating", new TagMatchDeleteForRepeatingPayment(tagHandler));
+		get("/tag/match/all/normal", new TagMatchGetAllForPayment(new DatabaseTagHandler(settings), gson));
+		get("/tag/match/all/repeating", new TagMatchGetAllForRepeatingPayment(new DatabaseTagHandler(settings), gson));
+		get("/tag/match/normal", new TagMatchExistingForPayment(new DatabaseTagHandler(settings), gson));
+		get("/tag/match/repeating", new TagMatchExistingForRepeatingPayment(new DatabaseTagHandler(settings), gson));
+		post("/tag/match/normal", new TagMatchAddForPayment(new DatabaseTagHandler(settings)));
+		post("/tag/match/repeating", new TagMatchAddForRepeatingPayment(new DatabaseTagHandler(settings)));
+		delete("/tag/match/normal", new TagMatchDeleteForPayment(new DatabaseTagHandler(settings)));
+		delete("/tag/match/repeating", new TagMatchDeleteForRepeatingPayment(new DatabaseTagHandler(settings)));
 
 		// Database
 		get("/database", new DatabaseExport(settings, gson));
-		post("/database", new DatabaseImport(handler, tagHandler, gson));
-		delete("/database", new DatabaseDelete(handler, settings));
+		post("/database", new DatabaseImport(new DatabaseHandler(settings), new DatabaseTagHandler(settings), gson));
+		delete("/database", new DatabaseDelete(new DatabaseHandler(settings), settings));
 		
 		get("/info", new InformationGet(gson, versionInfo, settings));
 		get("/version", new VersionGet(gson, versionInfo));
 		delete("/log", new LogDelete());
 
 		after((request, response) -> {
-			new RepeatingPaymentUpdater(handler).updateRepeatingPayments(DateTime.now());
+			DatabaseHandler handler = new DatabaseHandler(settings);
+			RepeatingPaymentUpdater paymentUpdater = new RepeatingPaymentUpdater(handler);
+			paymentUpdater.updateRepeatingPayments(DateTime.now());
+			handler.closeConnection();
 		});
 		
 		Spark.exception(Exception.class, (exception, request, response) -> {

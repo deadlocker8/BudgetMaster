@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 
 import de.deadlocker8.budgetmaster.logic.tag.Tag;
+import de.deadlocker8.budgetmasterserver.logic.AdvancedRoute;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseTagHandler;
 import spark.Request;
 import spark.Response;
-import spark.Route;
 
-public class TagMatchGetAllForRepeatingPayment implements Route
+public class TagMatchGetAllForRepeatingPayment implements AdvancedRoute
 {
 	private DatabaseTagHandler tagHandler;
 	private Gson gson;
@@ -24,7 +24,13 @@ public class TagMatchGetAllForRepeatingPayment implements Route
 	}
 
 	@Override
-	public Object handle(Request req, Response res) throws Exception
+	public void before()
+	{
+		tagHandler.connect();
+	}
+
+	@Override
+	public Object handleRequest(Request req, Response res)
 	{
 		if(!req.queryParams().contains("repeatingPaymentID"))
 		{
@@ -63,5 +69,11 @@ public class TagMatchGetAllForRepeatingPayment implements Route
 		}
 		
 		return null;
+	}
+
+	@Override
+	public void after()
+	{
+		tagHandler.closeConnection();		
 	}
 }

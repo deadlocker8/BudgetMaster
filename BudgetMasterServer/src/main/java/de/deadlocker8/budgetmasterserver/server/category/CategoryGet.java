@@ -5,12 +5,12 @@ import static spark.Spark.halt;
 import com.google.gson.Gson;
 
 import de.deadlocker8.budgetmaster.logic.category.Category;
+import de.deadlocker8.budgetmasterserver.logic.AdvancedRoute;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
 import spark.Request;
 import spark.Response;
-import spark.Route;
 
-public class CategoryGet implements Route
+public class CategoryGet implements AdvancedRoute
 {
 	private DatabaseHandler handler;
 	private Gson gson;
@@ -22,7 +22,13 @@ public class CategoryGet implements Route
 	}
 
 	@Override
-	public Object handle(Request req, Response res) throws Exception
+	public void before()
+	{
+		handler.connect();
+	}
+
+	@Override
+	public Object handleRequest(Request req, Response res)
 	{
 		if(!req.queryParams().contains("id"))
 		{
@@ -57,5 +63,11 @@ public class CategoryGet implements Route
 			halt(400, "Bad Request");
 		}
 		return null;
+	}
+
+	@Override
+	public void after()
+	{
+		handler.closeConnection();
 	}
 }

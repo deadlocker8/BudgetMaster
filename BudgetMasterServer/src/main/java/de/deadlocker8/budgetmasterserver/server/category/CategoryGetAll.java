@@ -8,12 +8,12 @@ import java.util.Collections;
 import com.google.gson.Gson;
 
 import de.deadlocker8.budgetmaster.logic.category.Category;
+import de.deadlocker8.budgetmasterserver.logic.AdvancedRoute;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
 import spark.Request;
 import spark.Response;
-import spark.Route;
 
-public class CategoryGetAll implements Route
+public class CategoryGetAll implements AdvancedRoute
 {
 	private DatabaseHandler handler;
 	private Gson gson;
@@ -25,10 +25,16 @@ public class CategoryGetAll implements Route
 	}
 
 	@Override
-	public Object handle(Request req, Response res) throws Exception
+	public void before()
+	{
+		handler.connect();
+	}
+
+	@Override
+	public Object handleRequest(Request req, Response res)
 	{
 		try
-		{	
+		{
 			ArrayList<Category> categories = handler.getCategories();
 			Collections.sort(categories, (c1, c2) -> c1.getName().toLowerCase().compareTo(c2.getName().toLowerCase()));
 
@@ -37,7 +43,13 @@ public class CategoryGetAll implements Route
 		catch(IllegalStateException e)
 		{
 			halt(500, "Internal Server Error");
-		}	
+		}
 		return null;
+	}
+
+	@Override
+	public void after()
+	{
+		handler.closeConnection();
 	}
 }

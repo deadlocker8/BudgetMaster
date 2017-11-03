@@ -2,12 +2,12 @@ package de.deadlocker8.budgetmasterserver.server.tag.tag;
 
 import static spark.Spark.halt;
 
+import de.deadlocker8.budgetmasterserver.logic.AdvancedRoute;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseTagHandler;
 import spark.Request;
 import spark.Response;
-import spark.Route;
 
-public class TagAdd implements Route
+public class TagAdd implements AdvancedRoute
 {
 	private DatabaseTagHandler tagHandler;
 	
@@ -17,7 +17,13 @@ public class TagAdd implements Route
 	}
 
 	@Override
-	public Object handle(Request req, Response res) throws Exception
+	public void before()
+	{
+		tagHandler.connect();
+	}
+
+	@Override
+	public Object handleRequest(Request req, Response res)
 	{
 		if(!req.queryParams().contains("name"))
 		{
@@ -40,5 +46,11 @@ public class TagAdd implements Route
 		}
 		
 		return "";
+	}
+
+	@Override
+	public void after()
+	{
+		tagHandler.closeConnection();
 	}
 }
