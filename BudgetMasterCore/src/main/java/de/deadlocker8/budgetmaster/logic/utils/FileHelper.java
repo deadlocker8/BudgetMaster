@@ -34,7 +34,7 @@ public class FileHelper
 			reader.close();
 			return settings;
 		}
-		catch(IOException e)
+		catch(Exception e)
 		{
 			return null;
 		}
