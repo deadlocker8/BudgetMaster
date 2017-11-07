@@ -6,7 +6,6 @@ import de.deadlocker8.budgetmaster.logic.Settings;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
-import de.deadlocker8.budgetmaster.logic.utils.LanguageType;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmasterclient.ui.Styleable;
 import de.deadlocker8.budgetmasterclient.ui.customAlert.CustomAlertController;
@@ -98,7 +97,6 @@ public class SplashScreenController extends BaseController implements Styleable
 		if(settings == null)
 		{	
 			settings = new Settings();
-			settings.setLanguage(LanguageType.ENGLISH);
 			//first start of budgetmaster
 			Platform.runLater(() -> {
 				AlertGenerator.showAlert(AlertType.INFORMATION, 

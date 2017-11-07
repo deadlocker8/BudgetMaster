@@ -119,30 +119,26 @@ public class SettingsController implements Styleable
 		{
 			textFieldURL.setText(controller.getSettings().getUrl());
 			textFieldSecret.setText("******");
-			textFieldCurrency.setText(controller.getSettings().getCurrency());
-			if(controller.getSettings().isRestActivated())
-			{
-				radioButtonRestActivated.setSelected(true);
-			}
-			else
-			{
-				radioButtonRestDeactivated.setSelected(true);
-			}
-			setTextAreaTrustedHosts(controller.getSettings().getTrustedHosts());
-			
-			if(controller.getSettings().getLanguage() != null)
-			{
-				LanguageType language = controller.getSettings().getLanguage();
-				comboBoxLanguage.setValue(language);
-				previousLanguage = language;
-			}
-			
-			checkboxEnableAutoUpdate.setSelected(controller.getSettings().isAutoUpdateCheckEnabled());
+			textFieldCurrency.setText(controller.getSettings().getCurrency());		
+		}
+		
+		if(controller.getSettings().isRestActivated())
+		{
+			radioButtonRestActivated.setSelected(true);
 		}
 		else
 		{
 			radioButtonRestDeactivated.setSelected(true);
+		}		
+		setTextAreaTrustedHosts(controller.getSettings().getTrustedHosts());
+		if(controller.getSettings().getLanguage() != null)
+		{
+			LanguageType language = controller.getSettings().getLanguage();
+			comboBoxLanguage.setValue(language);
+			previousLanguage = language;
 		}
+		
+		checkboxEnableAutoUpdate.setSelected(controller.getSettings().isAutoUpdateCheckEnabled());
 	}
 	
 	private void refreshLabelsUpdate()
