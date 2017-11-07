@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.deadlocker8</groupId>
 	<artifactId>BudgetMasterServer</artifactId>
-	<version>1.7.0</version>
+	<version>1.7.1</version>
 	<name>BudgetMasterServer</name>
 	<build>
 		<plugins>

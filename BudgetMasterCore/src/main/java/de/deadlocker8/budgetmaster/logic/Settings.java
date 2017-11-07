@@ -22,10 +22,10 @@ public class Settings
 	private String url;
 	private String secret;
 	private String currency;
-	private boolean restActivated;
+	private boolean restActivated = true;
 	private ArrayList<String> trustedHosts;
-	private LanguageType language;
-	private boolean autoUpdateCheckEnabled;
+	private LanguageType language = LanguageType.ENGLISH;
+	private boolean autoUpdateCheckEnabled = true;
 	
 	public Settings()
 	{
