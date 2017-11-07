@@ -28,7 +28,6 @@ import de.deadlocker8.budgetmaster.logic.report.ReportSorting;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.tag.TagHandler;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
-import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmasterclient.ui.Refreshable;
@@ -67,6 +66,7 @@ import logger.Logger;
 import tools.AlertGenerator;
 import tools.ConvertTo;
 import tools.Localization;
+import tools.ObjectJSONHandler;
 import tools.Worker;
 
 public class ReportController implements Refreshable, Styleable
@@ -196,9 +196,9 @@ public class ReportController implements Refreshable, Styleable
 	
 	private void applyReportPreferences()
 	{
-		tableView.getColumns().clear();		
+		tableView.getColumns().clear();
 		
-		Object loadedObject = FileHelper.loadObjectFromJSON("reportPreferences", new ReportPreferences());
+		Object loadedObject = ObjectJSONHandler.loadObjectFromJSON(Localization.getString(Strings.FOLDER), "reportPreferences", new ReportPreferences());
 		if(loadedObject != null)
 		{
 			reportPreferences = (ReportPreferences)loadedObject;
@@ -613,7 +613,7 @@ public class ReportController implements Refreshable, Styleable
 	{
 		try
 		{
-			FileHelper.saveObjectToJSON("reportPreferences", reportPreferences);
+			ObjectJSONHandler.saveObjectToJSON(Localization.getString(Strings.FOLDER), "reportPreferences", reportPreferences);
 		}
 		catch(IOException e)
 		{
