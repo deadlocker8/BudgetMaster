@@ -2,7 +2,7 @@ package de.deadlocker8.budgetmasterclient.ui.cells.report.table;
 
 import de.deadlocker8.budgetmaster.logic.report.ReportItem;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
-import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -19,11 +19,11 @@ public class ReportTableRepeatingCell extends TableCell<ReportItem, Boolean>
              Label labelRepeating = new Label();
              if(item)
              {
-                 labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR, 16, Colors.TEXT));
+                 labelRepeating.setGraphic(new FontIcon(FontIconType.CALENDAR, 16, Colors.TEXT));
              }
              else
              {
-                 labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR, 16, Color.TRANSPARENT));
+                 labelRepeating.setGraphic(new FontIcon(FontIconType.CALENDAR, 16, Color.TRANSPARENT));
              }                            
              labelRepeating.setStyle("-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: #212121");
              labelRepeating.setAlignment(Pos.CENTER);

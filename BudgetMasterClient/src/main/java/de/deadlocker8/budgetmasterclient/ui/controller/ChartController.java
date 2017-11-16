@@ -22,6 +22,7 @@ import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmasterclient.ui.Refreshable;
 import de.deadlocker8.budgetmasterclient.ui.Styleable;
 import de.deadlocker8.budgetmasterclient.utils.UIHelpers;
+import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -286,15 +287,15 @@ public class ChartController implements Refreshable, Styleable
 		vboxChartMonth.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
 		
 		buttonChartCategoriesShow.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE));
-		buttonChartCategoriesShow.setGraphic(Helpers.getFontIcon(FontIconType.CHECK, 16, Color.WHITE));
+		buttonChartCategoriesShow.setGraphic(new FontIcon(FontIconType.CHECK, 16, Color.WHITE));
 
 		buttonChartCategoriesExport.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE));
-		buttonChartCategoriesExport.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 16, Color.WHITE));
+		buttonChartCategoriesExport.setGraphic(new FontIcon(FontIconType.SAVE, 16, Color.WHITE));
 
 		buttonChartMonthShow.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE));
-		buttonChartMonthShow.setGraphic(Helpers.getFontIcon(FontIconType.CHECK, 16, Color.WHITE));
+		buttonChartMonthShow.setGraphic(new FontIcon(FontIconType.CHECK, 16, Color.WHITE));
 
 		buttonChartMonthExport.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE));
-		buttonChartMonthExport.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 16, Color.WHITE));		
+		buttonChartMonthExport.setGraphic(new FontIcon(FontIconType.SAVE, 16, Color.WHITE));		
 	}
 }

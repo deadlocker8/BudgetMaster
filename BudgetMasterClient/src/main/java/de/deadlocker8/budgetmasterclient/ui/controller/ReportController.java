@@ -35,6 +35,7 @@ import de.deadlocker8.budgetmasterclient.ui.Styleable;
 import de.deadlocker8.budgetmasterclient.ui.cells.report.table.ReportTableRatingCell;
 import de.deadlocker8.budgetmasterclient.ui.cells.report.table.ReportTableRepeatingCell;
 import de.deadlocker8.budgetmasterclient.utils.UIHelpers;
+import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -801,9 +802,9 @@ public class ReportController implements Refreshable, Styleable
 	@Override
 	public void applyStyle()
 	{
-		buttonFilter.setGraphic(Helpers.getFontIcon(FontIconType.FILTER, 18, Color.WHITE));		
-		buttonGenerate.setGraphic(Helpers.getFontIcon(FontIconType.COGS, 18, Color.WHITE));	
-		labelFilterActive.setGraphic(Helpers.getFontIcon(FontIconType.WARNING, 16, Colors.TEXT));
+		buttonFilter.setGraphic(new FontIcon(FontIconType.FILTER, 18, Color.WHITE));		
+		buttonGenerate.setGraphic(new FontIcon(FontIconType.COGS, 18, Color.WHITE));	
+		labelFilterActive.setGraphic(new FontIcon(FontIconType.WARNING, 16, Colors.TEXT));
 		
 		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
 		labelFilterActive.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));

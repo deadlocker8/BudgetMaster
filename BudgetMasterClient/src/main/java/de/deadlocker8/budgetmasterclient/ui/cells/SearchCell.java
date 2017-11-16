@@ -14,6 +14,7 @@ import de.deadlocker8.budgetmaster.logic.payment.RepeatingPayment;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmasterclient.ui.controller.SearchController;
+import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -74,11 +75,11 @@ public class SearchCell extends ListCell<Payment>
 			Label labelRepeating = new Label();
 			if(item instanceof RepeatingPayment)
 			{				
-				labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR, 18, Color.web("#212121")));
+				labelRepeating.setGraphic(new FontIcon(FontIconType.CALENDAR, 18, Color.web("#212121")));
 			}
 			else
 			{
-			    labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR, 18, Color.TRANSPARENT));
+			    labelRepeating.setGraphic(new FontIcon(FontIconType.CALENDAR, 18, Color.TRANSPARENT));
 			}
 			labelRepeating.setPrefHeight(HEIGHT);
 			labelRepeating.setStyle("-fx-font-size: 15; -fx-text-fill: #212121");
@@ -146,7 +147,7 @@ public class SearchCell extends ListCell<Payment>
 			}
 
 			Button buttonGoto = new Button();			
-			buttonGoto.setGraphic(Helpers.getFontIcon(FontIconType.EXTERNAL_LINK_SQUARE, 16, Color.web("#212121")));
+			buttonGoto.setGraphic(new FontIcon(FontIconType.EXTERNAL_LINK_SQUARE, 16, Color.web("#212121")));
 			buttonGoto.setPrefHeight(HEIGHT);
 			buttonGoto.getStyleClass().add("greylabel");
 			buttonGoto.setStyle("-fx-background-color: transparent");			

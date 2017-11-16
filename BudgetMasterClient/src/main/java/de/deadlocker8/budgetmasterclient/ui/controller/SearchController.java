@@ -9,11 +9,11 @@ import de.deadlocker8.budgetmaster.logic.search.SearchPreferences;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
-import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmasterclient.ui.Styleable;
 import de.deadlocker8.budgetmasterclient.ui.cells.SearchCell;
 import de.deadlocker8.budgetmasterclient.utils.UIHelpers;
+import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -323,8 +323,8 @@ public class SearchController extends BaseController implements Styleable
 		labelSeparator.setMinHeight(1);
 		labelSeparator.setMaxHeight(1);
 		
-		buttonCancel.setGraphic(Helpers.getFontIcon(FontIconType.TIMES, 17, Color.WHITE));	
-		buttonSearch.setGraphic(Helpers.getFontIcon(FontIconType.SEARCH, 17, Color.WHITE));
+		buttonCancel.setGraphic(new FontIcon(FontIconType.TIMES, 17, Color.WHITE));	
+		buttonSearch.setGraphic(new FontIcon(FontIconType.SEARCH, 17, Color.WHITE));
 
 		buttonCancel.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
 		buttonSearch.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");

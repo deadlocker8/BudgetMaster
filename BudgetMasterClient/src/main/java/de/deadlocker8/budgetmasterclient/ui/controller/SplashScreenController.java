@@ -9,6 +9,7 @@ import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmasterclient.ui.Styleable;
 import de.deadlocker8.budgetmasterclient.ui.customAlert.CustomAlertController;
+import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -188,7 +189,7 @@ public class SplashScreenController extends BaseController implements Styleable
 	@Override
 	public void applyStyle()
 	{
-		buttonLogin.setGraphic(Helpers.getFontIcon(FontIconType.SIGN_IN, 18, Color.WHITE));
+		buttonLogin.setGraphic(new FontIcon(FontIconType.SIGN_IN, 18, Color.WHITE));
 		buttonLogin.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
 		buttonLogin.setPadding(new Insets(3, 7, 3, 7));		
 	}

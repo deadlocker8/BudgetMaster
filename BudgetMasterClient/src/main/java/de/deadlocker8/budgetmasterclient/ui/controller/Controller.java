@@ -27,11 +27,11 @@ import de.deadlocker8.budgetmaster.logic.tag.TagHandler;
 import de.deadlocker8.budgetmaster.logic.updater.Updater;
 import de.deadlocker8.budgetmaster.logic.updater.VersionInformation;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
-import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmasterclient.ui.commandLine.CommandBundle;
 import de.deadlocker8.budgetmasterclient.ui.commandLine.CommandLine;
 import de.deadlocker8.budgetmasterclient.utils.UIHelpers;
+import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
@@ -233,10 +233,10 @@ public class Controller extends BaseController
 			});			
 		}
 		
-		buttonLeft.setGraphic(Helpers.getFontIcon(FontIconType.CHEVRON_LEFT, 20, Colors.TEXT));
-		buttonRight.setGraphic(Helpers.getFontIcon(FontIconType.CHEVRON_RIGHT, 20, Colors.TEXT));		
-		buttonToday.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR_ALT, 20, Colors.TEXT));		
-		buttonAbout.setGraphic(Helpers.getFontIcon(FontIconType.INFO, 20, Colors.TEXT));
+		buttonLeft.setGraphic(new FontIcon(FontIconType.CHEVRON_LEFT, 20, Colors.TEXT));
+		buttonRight.setGraphic(new FontIcon(FontIconType.CHEVRON_RIGHT, 20, Colors.TEXT));		
+		buttonToday.setGraphic(new FontIcon(FontIconType.CALENDAR_ALT, 20, Colors.TEXT));		
+		buttonAbout.setGraphic(new FontIcon(FontIconType.INFO, 20, Colors.TEXT));
 
 		// apply theme
 		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_MAIN));

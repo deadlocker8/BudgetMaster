@@ -7,6 +7,7 @@ import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmasterclient.ui.Styleable;
+import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
@@ -114,8 +115,8 @@ public class DatePickerController extends BaseController implements Styleable
 	@Override
 	public void applyStyle()
 	{
-		buttonCancel.setGraphic(Helpers.getFontIcon(FontIconType.TIMES, 17, Color.WHITE));		
-		buttonConfirm.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 17, Color.WHITE));
+		buttonCancel.setGraphic(new FontIcon(FontIconType.TIMES, 17, Color.WHITE));		
+		buttonConfirm.setGraphic(new FontIcon(FontIconType.SAVE, 17, Color.WHITE));
 
 		buttonCancel.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");
 		buttonConfirm.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15;");

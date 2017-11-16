@@ -372,7 +372,6 @@ public class SettingsController implements Styleable
 			try
 			{
 				database = FileHelper.loadDatabaseJSON(file);
-				System.out.println(database);
 				if(database.getCategories() == null 
 					|| database.getNormalPayments() == null 
 					|| database.getRepeatingPayments() == null

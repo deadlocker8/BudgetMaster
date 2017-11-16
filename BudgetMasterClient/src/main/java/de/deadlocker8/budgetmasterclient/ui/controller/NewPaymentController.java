@@ -22,6 +22,7 @@ import de.deadlocker8.budgetmasterclient.ui.cells.ButtonCategoryCell;
 import de.deadlocker8.budgetmasterclient.ui.cells.RepeatingDayCell;
 import de.deadlocker8.budgetmasterclient.ui.cells.SmallCategoryCell;
 import de.deadlocker8.budgetmasterclient.ui.tagField.TagField;
+import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -679,9 +680,9 @@ public class NewPaymentController extends BaseController implements Styleable
 	@Override
 	public void applyStyle()
 	{
-		buttonTagsHelp.setGraphic(Helpers.getFontIcon(FontIconType.QUESTION, 13, Colors.TEXT));
-		buttonCancel.setGraphic(Helpers.getFontIcon(FontIconType.TIMES, 17, Color.WHITE));
-		buttonSave.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 17, Color.WHITE));
+		buttonTagsHelp.setGraphic(new FontIcon(FontIconType.QUESTION, 13, Colors.TEXT));
+		buttonCancel.setGraphic(new FontIcon(FontIconType.TIMES, 17, Color.WHITE));
+		buttonSave.setGraphic(new FontIcon(FontIconType.SAVE, 17, Color.WHITE));
 
 		scrollPane.setStyle("-fx-background-color: transparent");
 		buttonTagsHelp.setStyle("-fx-background-color: transparent; -fx-border-radius: 50%; -fx-border-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
