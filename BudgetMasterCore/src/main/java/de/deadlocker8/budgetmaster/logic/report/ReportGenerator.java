@@ -87,6 +87,7 @@ public class ReportGenerator
 				PdfPCell cell = new PdfPCell(new Phrase(column.getName(), font));
 				cell.setBackgroundColor(GrayColor.LIGHT_GRAY);
 				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);				
 				table.addCell(cell);
 			}
 
@@ -114,6 +115,7 @@ public class ReportGenerator
 					PdfPCell cell = new PdfPCell(new Phrase(getProperty(currentItem, column), font));
 					cell.setBackgroundColor(new BaseColor(Color.WHITE));
 					cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 					table.addCell(cell);
 				}
 			}
@@ -141,6 +143,7 @@ public class ReportGenerator
 			cellTotal.setBackgroundColor(new BaseColor(Color.WHITE));
 			cellTotal.setColspan(numberOfColumns);
 			cellTotal.setHorizontalAlignment(Element.ALIGN_RIGHT);
+			cellTotal.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			table.addCell(cellTotal);
 
 			return table;
@@ -245,11 +248,13 @@ public class ReportGenerator
 			PdfPCell cellName = new PdfPCell(new Phrase(budget.getCategory().getName(), font));
 			cellName.setBackgroundColor(new BaseColor(Color.WHITE));
 			cellName.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cellName.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			table.addCell(cellName);
 			
 			PdfPCell cellAmount = new PdfPCell(new Phrase(Helpers.getCurrencyString(budget.getBudget() / 100.0, currency), font));
 			cellAmount.setBackgroundColor(new BaseColor(Color.WHITE));
 			cellAmount.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cellAmount.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			table.addCell(cellAmount);
 		}
 		
