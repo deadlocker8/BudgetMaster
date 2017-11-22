@@ -12,6 +12,7 @@ import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmasterclient.ui.controller.NewPaymentController;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert.AlertType;
@@ -68,6 +69,11 @@ public class TagField extends VBox
             	textField.setText("");
             }
 	    });
+		
+		textField.setOnMousePressed((event)->{
+			textField.setText(" ");
+        	textField.setText("");
+		});
 		
 		TextFields.bindAutoCompletion(textField, new Callback<AutoCompletionBinding.ISuggestionRequest, Collection<String>>()
 		{
