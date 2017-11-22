@@ -98,6 +98,7 @@ public class SearchController extends BaseController implements Styleable
 						if(cell.getItem().getCategoryID() != 2)
 						{
 							controller.getPaymentController().payment(!cell.getItem().isIncome(), true, cell.getItem());
+							search();
 						}
 					}
 				});
