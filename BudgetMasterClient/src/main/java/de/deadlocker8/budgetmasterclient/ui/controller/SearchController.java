@@ -101,7 +101,7 @@ public class SearchController extends BaseController implements Styleable
 						}
 					}
 				});
-				cell.prefWidthProperty().bind(listView.widthProperty().subtract(2));
+				cell.prefWidthProperty().bind(listView.widthProperty().subtract(4));
 				return cell;
 			}
 		});
