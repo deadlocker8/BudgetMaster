@@ -1,5 +1,6 @@
 {
-	"databaseUrl": "jdbc:mysql://localhost:3306/",
+	"databaseType": "mysql",
+	"databaseUrl": "localhost:3306/",
 	"databaseName": "budgetmaster",
 	"databaseUsername": "root",
 	"databasePassword": "",

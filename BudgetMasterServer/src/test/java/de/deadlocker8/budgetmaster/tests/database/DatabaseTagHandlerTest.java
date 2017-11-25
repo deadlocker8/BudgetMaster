@@ -9,7 +9,6 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -22,9 +21,9 @@ import org.junit.Test;
 import de.deadlocker8.budgetmaster.logic.tag.Tag;
 import de.deadlocker8.budgetmasterserver.logic.Settings;
 import de.deadlocker8.budgetmasterserver.logic.Utils;
-import de.deadlocker8.budgetmasterserver.logic.database.DatabaseCreator;
-import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
-import de.deadlocker8.budgetmasterserver.logic.database.DatabaseTagHandler;
+import de.deadlocker8.budgetmasterserver.logic.database.creator.DatabaseCreator;
+import de.deadlocker8.budgetmasterserver.logic.database.handler.DatabaseHandler;
+import de.deadlocker8.budgetmasterserver.logic.database.taghandler.DatabaseTagHandler;
 import tools.Localization;
 
 public class DatabaseTagHandlerTest
@@ -39,13 +38,14 @@ public class DatabaseTagHandlerTest
 			//init
 			Settings settings = Utils.loadSettings();
 			System.out.println(settings);
-			DatabaseHandler handler = new DatabaseHandler(settings);
+			DatabaseHandler handler = Utils.getDatabaseHandler(settings);
 			handler.deleteDatabase();
 			handler.closeConnection();
-			Connection connection = DriverManager.getConnection(settings.getDatabaseUrl() + settings.getDatabaseName() + "?useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin&autoReconnect=true&wait_timeout=86400", settings.getDatabaseUsername(), settings.getDatabasePassword());
-			new DatabaseCreator(connection, settings);
+			Connection connection = Utils.getDatabaseConnection(settings);
+			DatabaseCreator creator = Utils.getDatabaseCreator(connection, settings);
+			creator.createTables();
 			connection.close();
-			tagHandler = new DatabaseTagHandler(settings);
+			tagHandler = Utils.getDatabaseTagHandler(settings);
 			
 			Localization.init("de/deadlocker8/budgetmaster/");
 			Localization.loadLanguage(Locale.ENGLISH);

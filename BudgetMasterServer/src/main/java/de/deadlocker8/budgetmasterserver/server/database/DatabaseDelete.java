@@ -3,13 +3,13 @@ package de.deadlocker8.budgetmasterserver.server.database;
 import static spark.Spark.halt;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import de.deadlocker8.budgetmasterserver.logic.AdvancedRoute;
 import de.deadlocker8.budgetmasterserver.logic.Settings;
-import de.deadlocker8.budgetmasterserver.logic.database.DatabaseCreator;
-import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
+import de.deadlocker8.budgetmasterserver.logic.Utils;
+import de.deadlocker8.budgetmasterserver.logic.database.creator.DatabaseCreator;
+import de.deadlocker8.budgetmasterserver.logic.database.handler.DatabaseHandler;
 import logger.Logger;
 import spark.Request;
 import spark.Response;
@@ -37,8 +37,9 @@ public class DatabaseDelete implements AdvancedRoute
 		try
 		{							
 			handler.deleteDatabase();
-			Connection connection = DriverManager.getConnection(settings.getDatabaseUrl() + settings.getDatabaseName() + "?useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin&autoReconnect=true&wait_timeout=86400", settings.getDatabaseUsername(), settings.getDatabasePassword());
-			new DatabaseCreator(connection, settings);
+			Connection connection = Utils.getDatabaseConnection(settings);
+			DatabaseCreator creator = Utils.getDatabaseCreator(connection, settings);
+			creator.createTables();
 			Logger.info("Successfully initialized database (" + settings.getDatabaseUrl() + settings.getDatabaseName() + ")");
 	
 			return "";

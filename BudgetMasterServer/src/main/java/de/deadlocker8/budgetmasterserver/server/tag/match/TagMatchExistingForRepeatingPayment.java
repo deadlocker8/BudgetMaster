@@ -5,7 +5,7 @@ import static spark.Spark.halt;
 import com.google.gson.Gson;
 
 import de.deadlocker8.budgetmasterserver.logic.AdvancedRoute;
-import de.deadlocker8.budgetmasterserver.logic.database.DatabaseTagHandler;
+import de.deadlocker8.budgetmasterserver.logic.database.taghandler.DatabaseTagHandler;
 import spark.Request;
 import spark.Response;
 

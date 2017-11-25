@@ -5,8 +5,8 @@ import static spark.Spark.halt;
 import java.util.ArrayList;
 
 import de.deadlocker8.budgetmasterserver.logic.AdvancedRoute;
-import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
-import de.deadlocker8.budgetmasterserver.logic.database.DatabaseTagHandler;
+import de.deadlocker8.budgetmasterserver.logic.database.handler.DatabaseHandler;
+import de.deadlocker8.budgetmasterserver.logic.database.taghandler.DatabaseTagHandler;
 import spark.Request;
 import spark.Response;
 

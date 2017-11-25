@@ -13,7 +13,7 @@ import de.deadlocker8.budgetmaster.logic.category.Category;
 import de.deadlocker8.budgetmaster.logic.category.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.payment.Payment;
 import de.deadlocker8.budgetmasterserver.logic.AdvancedRoute;
-import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
+import de.deadlocker8.budgetmasterserver.logic.database.handler.DatabaseHandler;
 import spark.Request;
 import spark.Response;
 

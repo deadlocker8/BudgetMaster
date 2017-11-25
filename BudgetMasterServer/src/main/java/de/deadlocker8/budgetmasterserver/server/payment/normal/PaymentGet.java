@@ -10,7 +10,7 @@ import com.google.gson.Gson;
 
 import de.deadlocker8.budgetmaster.logic.payment.NormalPayment;
 import de.deadlocker8.budgetmasterserver.logic.AdvancedRoute;
-import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
+import de.deadlocker8.budgetmasterserver.logic.database.handler.DatabaseHandler;
 import de.deadlocker8.budgetmasterserver.server.updater.RepeatingPaymentUpdater;
 import spark.Request;
 import spark.Response;

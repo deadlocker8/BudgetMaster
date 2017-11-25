@@ -6,9 +6,9 @@ import com.google.gson.Gson;
 
 import de.deadlocker8.budgetmaster.logic.database.Database;
 import de.deadlocker8.budgetmasterserver.logic.AdvancedRoute;
-import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseImporter;
-import de.deadlocker8.budgetmasterserver.logic.database.DatabaseTagHandler;
+import de.deadlocker8.budgetmasterserver.logic.database.handler.DatabaseHandler;
+import de.deadlocker8.budgetmasterserver.logic.database.taghandler.DatabaseTagHandler;
 import logger.Logger;
 import spark.Request;
 import spark.Response;

@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 
 import de.deadlocker8.budgetmaster.logic.payment.RepeatingPayment;
 import de.deadlocker8.budgetmasterserver.logic.AdvancedRoute;
-import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
+import de.deadlocker8.budgetmasterserver.logic.database.handler.DatabaseHandler;
 import spark.Request;
 import spark.Response;
 

@@ -9,6 +9,8 @@ import de.deadlocker8.budgetmaster.logic.payment.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.payment.RepeatingPayment;
 import de.deadlocker8.budgetmaster.logic.tag.Tag;
 import de.deadlocker8.budgetmaster.logic.tag.TagMatch;
+import de.deadlocker8.budgetmasterserver.logic.database.handler.DatabaseHandler;
+import de.deadlocker8.budgetmasterserver.logic.database.taghandler.DatabaseTagHandler;
 
 public class DatabaseImporter
 {
@@ -96,7 +98,7 @@ public class DatabaseImporter
         		updateTagMatchesByTagID(tagID, existingTag.getID());
         	}
         }
-        
+
         tagMatches.addAll(changedTagMatches);
         importTagMatches(tagMatches);
 	}
@@ -117,7 +119,7 @@ public class DatabaseImporter
 				 * 			call 2 = replace ID 3 with 4
 				 * --> would replace category IDs in payments where category ID has already been replaced 
 				 * --> would lead to wrong import
-				 * --> remove payment from list but add to "changedPayments" in order not to loose the payment completly
+				 * --> remove payment from list but add to "changedPayments" in order not to loose the payment completely
 				 * --> remaining payments in list and all payments from "changedPayments" will be merged after all categories are imported
 				 */				
 				changedNormalPayments.add(currentPayment);

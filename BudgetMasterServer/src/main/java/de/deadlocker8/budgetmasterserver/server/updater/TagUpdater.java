@@ -3,7 +3,7 @@ package de.deadlocker8.budgetmasterserver.server.updater;
 import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.tag.Tag;
-import de.deadlocker8.budgetmasterserver.logic.database.DatabaseTagHandler;
+import de.deadlocker8.budgetmasterserver.logic.database.taghandler.DatabaseTagHandler;
 
 public class TagUpdater
 {

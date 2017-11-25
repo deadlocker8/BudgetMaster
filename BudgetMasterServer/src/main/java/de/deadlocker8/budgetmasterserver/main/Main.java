@@ -46,6 +46,7 @@ public class Main
 			
 			if(!Files.exists(settingsPath))
 			{
+				Logger.warning("No settings file found! Creating default settings file...");
 				try
 				{
 					Files.copy(SparkServer.class.getClassLoader().getResourceAsStream("de/deadlocker8/budgetmasterserver/settings.json"), settingsPath);
@@ -60,6 +61,39 @@ public class Main
 			try
 			{
 				settings = Utils.loadSettings();
+				boolean settingsChanged = false;
+				if(settings.getDatabaseType() == null)
+				{
+					settings.setDatabaseType("mysql");
+					settingsChanged = true;
+				}
+				
+				if(!settings.getDatabaseType().equals("mysql") && !settings.getDatabaseType().equals("sqlite"))
+				{
+					Logger.error(settings.getDatabaseType() + " is no valid database type! (allowed types are: mysql and sqlite)");
+					return;
+				}
+				
+				if(settings.getDatabaseType().equals("sqlite") && (settings.getDatabaseUrl() == null || settings.getDatabaseUrl().equals("")))
+				{
+					Logger.warning("There is no save path  specified for the sqlite database file. It will be saved as \"BudgetMaster.db\" in current directory.");
+					settings.setDatabaseUrl(System.getProperty("user.dir").replace("\\", "/") + "/BudgetMaster.db");
+					settingsChanged = true;
+				}
+				
+				if(settings.getDatabaseUrl().contains("jdbc"))
+				{
+					settings.setDatabaseUrl(settings.getDatabaseUrl().replace("jdbc:mysql://", ""));
+					settingsChanged = true;
+				}
+				
+				
+				if(settingsChanged)
+				{
+					Logger.warning("Settings file is not up to date! Updated settings to new version.");
+					Utils.saveSettings(settings);
+				}
+				
 				VersionInformation versionInfo = new VersionInformation();
 				versionInfo.setVersionCode(Integer.parseInt(Localization.getString("version.code")));
 				versionInfo.setVersionName(Localization.getString("version.name"));

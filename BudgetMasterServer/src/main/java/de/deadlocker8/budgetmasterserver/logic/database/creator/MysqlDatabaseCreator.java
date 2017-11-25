@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmasterserver.logic.database;
+package de.deadlocker8.budgetmasterserver.logic.database.creator;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -10,21 +10,15 @@ import java.util.ArrayList;
 import de.deadlocker8.budgetmasterserver.logic.Settings;
 import logger.Logger;
 
-public class DatabaseCreator
+public class MysqlDatabaseCreator extends DatabaseCreator
 {
-	private Connection connection;
-	private Settings settings;
-
-	public DatabaseCreator(Connection connection, Settings settings)
+	public MysqlDatabaseCreator(Connection connection, Settings settings)
 	{
-		this.connection = connection;
-		this.settings = settings;
-		Logger.info("Checking tables...");
-		createTables(getExistingTables());	
-		Logger.info("Checking tables [DONE]");
+		super(connection, settings);
 	}
 
-	private ArrayList<String> getExistingTables()
+	@Override
+	public ArrayList<String> getExistingTables()
 	{
 		ArrayList<String> tables = new ArrayList<>();
 		try
@@ -41,42 +35,10 @@ public class DatabaseCreator
 			Logger.error(e);
 		}
 		return tables;
-	}
+	}	
 	
-	private void createTables(ArrayList<String> existingTables)
-	{
-		if(!existingTables.contains("category"))
-		{
-			createTableCategory();
-		}
-		
-		if(!existingTables.contains("payment"))
-		{
-			createTablePayment();
-		}
-		
-		if(!existingTables.contains("repeating_payment"))
-		{
-			createTableRepeatingPayment();
-		}
-		
-		if(!existingTables.contains("repeating_entry"))
-		{
-			createTableRepeatingEntry();
-		}
-		
-		if(!existingTables.contains("tag"))
-		{
-			createTableTag();
-		}
-		
-		if(!existingTables.contains("tag_match"))
-		{
-			createTableTagMatch();
-		}
-	}
-	
-	private void createTableCategory()
+	@Override
+	public void createTableCategory()
 	{
 		Statement stmt = null;
 		String query = "CREATE TABLE `category` (`ID` int(11) NOT NULL COMMENT 'ID'," +
@@ -115,7 +77,8 @@ public class DatabaseCreator
 		}
 	}
 	
-	private void createTablePayment()
+	@Override
+	public void createTablePayment()
 	{
 		Statement stmt = null;
 		String query = "CREATE TABLE `payment` (" +
@@ -156,7 +119,8 @@ public class DatabaseCreator
 		}
 	}
 	
-	private void createTableRepeatingEntry()
+	@Override
+	public void createTableRepeatingEntry()
 	{
 		Statement stmt = null;
 		String query = "CREATE TABLE `repeating_entry` (" +
@@ -196,7 +160,8 @@ public class DatabaseCreator
 		}
 	}
 	
-	private void createTableRepeatingPayment()
+	@Override
+	public void createTableRepeatingPayment()
 	{
 		Statement stmt = null;
 		String query = "CREATE TABLE `repeating_payment` (" +
@@ -240,7 +205,8 @@ public class DatabaseCreator
 		}
 	}
 	
-	private void createTableTag()
+	@Override
+	public void createTableTag()
 	{
 		Statement stmt = null;
 		String query = "CREATE TABLE `tag` (`ID` int(11) NOT NULL COMMENT 'ID'," + 
@@ -276,7 +242,8 @@ public class DatabaseCreator
 		}
 	}
 	
-	private void createTableTagMatch()
+	@Override
+	public void createTableTagMatch()
 	{
 		Statement stmt = null;
 		String query = "CREATE TABLE `tag_match` (`Tag_ID` int(11) NOT NULL," + 

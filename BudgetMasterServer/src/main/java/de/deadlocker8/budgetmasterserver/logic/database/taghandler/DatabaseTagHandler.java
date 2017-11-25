@@ -1,7 +1,6 @@
-package de.deadlocker8.budgetmasterserver.logic.database;
+package de.deadlocker8.budgetmasterserver.logic.database.taghandler;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,17 +9,17 @@ import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.tag.Tag;
 import de.deadlocker8.budgetmasterserver.logic.Settings;
+import de.deadlocker8.budgetmasterserver.logic.Utils;
 import logger.Logger;
 
-public class DatabaseTagHandler
+public abstract class DatabaseTagHandler
 {
-	private Connection connection;
-	private Settings settings;
+	Connection connection;
+	Settings settings;
 	
 	public DatabaseTagHandler(Settings settings) throws IllegalStateException
     {
 		this.settings = settings;
-        connect();
     }
 	
 	public void connect()
@@ -29,7 +28,7 @@ public class DatabaseTagHandler
 		{
 			if(connection == null || connection.isClosed())
 			{				
-				this.connection = DriverManager.getConnection(settings.getDatabaseUrl() + settings.getDatabaseName() + "?useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin&autoReconnect=true&wait_timeout=86400", settings.getDatabaseUsername(), settings.getDatabasePassword());
+				this.connection = Utils.getDatabaseConnection(settings); 
 			}
 		}
 		catch(Exception e)
@@ -51,7 +50,7 @@ public class DatabaseTagHandler
 		}
 	}
 	
-	private void closeStatement(Statement statement)
+	void closeStatement(Statement statement)
 	{
 		if(statement != null)
 		{
@@ -65,31 +64,7 @@ public class DatabaseTagHandler
 		}
 	}
 	
-	public int getLastInsertID()
-	{
-		PreparedStatement stmt = null;
-		int lastInsertID = 0;
-		try
-		{
-			stmt = connection.prepareStatement("SELECT LAST_INSERT_ID();");		
-			ResultSet rs = stmt.executeQuery();
-
-			while(rs.next())
-			{
-				lastInsertID = rs.getInt("LAST_INSERT_ID()");				
-			}
-		}
-		catch(SQLException e)
-		{
-			Logger.error(e);
-		}
-		finally
-		{
-			closeStatement(stmt);
-		}
-
-		return lastInsertID;
-	}
+	public abstract int getLastInsertID();
 	
 	public ArrayList<Tag> getAllTags()
 	{	   

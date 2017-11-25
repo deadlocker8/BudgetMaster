@@ -8,7 +8,7 @@ import org.joda.time.Months;
 
 import de.deadlocker8.budgetmaster.logic.payment.LatestRepeatingPayment;
 import de.deadlocker8.budgetmaster.logic.payment.RepeatingPayment;
-import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
+import de.deadlocker8.budgetmasterserver.logic.database.handler.DatabaseHandler;
 import logger.Logger;
 
 public class RepeatingPaymentUpdater
@@ -82,8 +82,8 @@ public class RepeatingPaymentUpdater
 		if(payment.getRepeatInterval() != 0)
 		{			
 			int numberOfDays = Days.daysBetween(startDate, now).getDays();			
-			int occurrences = numberOfDays / payment.getRepeatInterval();				
-			for(int i = 0; i <= occurrences + 1; i++)
+			int occurrences = numberOfDays / payment.getRepeatInterval();
+			for(int i = 0; i <= occurrences; i++)
 			{
 				dates.add(startDate.plusDays(i * payment.getRepeatInterval()));
 			}
