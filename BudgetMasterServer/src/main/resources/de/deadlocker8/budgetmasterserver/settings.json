@@ -5,6 +5,6 @@
 	"databasePassword": "",
 	"serverPort": 9000,
 	"serverSecret": "geheim",
-	"keystorePath": "",
-	"keystorePassword": ""
+	"keystorePath": "default",
+	"keystorePassword": "BudgetMaster"
 }

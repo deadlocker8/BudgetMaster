@@ -88,8 +88,17 @@ public class SparkServer
 			{
 				throw new Exception("empty string is no valid keystorePath");
 			}
-			File keystoreFile = new File(filePath);		
-			secure(keystoreFile.getAbsolutePath(), settings.getKeystorePassword(), null, null);						
+			else if(settings.getKeystorePath().equals("default"))
+			{
+				Logger.info("Connections are secured with default keystore");
+				Logger.warning("The Server is running with the default keystore. This is only recommended if the server is running in a local area network and is not exposed to the internet. Please check if this is intended.");
+				secure(SparkServer.class.getClassLoader().getResource("de/deadlocker8/budgetmasterserver/certificate/default_keystore.jks").toString(), settings.getKeystorePassword(), null, null);
+			}
+			else
+			{
+				Logger.info("Connections are secured with custom keystore");
+				secure(new File(filePath).getAbsolutePath(), settings.getKeystorePassword(), null, null);
+			}
 		}
 		catch(Exception e)
 		{
