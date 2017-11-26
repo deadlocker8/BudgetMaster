@@ -14,6 +14,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import de.deadlocker8.budgetmaster.logic.FilterSettings;
+import de.deadlocker8.budgetmaster.logic.ServerType;
 import de.deadlocker8.budgetmaster.logic.Settings;
 import de.deadlocker8.budgetmaster.logic.category.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.category.CategoryHandler;
@@ -112,7 +113,7 @@ public class Controller extends BaseController
 	
 	public Controller(Settings settings)
 	{
-		this.settings = settings;	
+		this.settings = settings;
 		DATE_FORMAT = DateTimeFormat.forPattern("MMMM yyyy").withLocale(this.settings.getLanguage().getLocale());
 		load("/de/deadlocker8/budgetmaster/ui/fxml/GUI.fxml", Localization.getBundle());
 		getStage().show();
@@ -138,6 +139,11 @@ public class Controller extends BaseController
 			Worker.shutdown();
 			System.exit(0);
 		});
+		
+		if(settings.getServerType() == null)
+		{
+			settings.setServerType(ServerType.ONLINE);
+		}
 		
 		currentDate = DateTime.now();
 		buttonDate.setText(currentDate.toString(DATE_FORMAT));
@@ -186,7 +192,7 @@ public class Controller extends BaseController
 	{
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fileName));
 		fxmlLoader.setResources(Localization.getBundle());
-		Parent nodeTab = (Parent)fxmlLoader.load();		
+		Parent nodeTab = (Parent)fxmlLoader.load();
 		tab.setContent(nodeTab);
 		return fxmlLoader.getController();
 	}
@@ -222,8 +228,7 @@ public class Controller extends BaseController
 				}
 			});
 			
-			settingsController = loadTab("/de/deadlocker8/budgetmaster/ui/fxml/SettingsTab.fxml", tabSettings);
-			settingsController.init(this);		
+			loadSettingsTab();
 		}
 		catch(IOException e)
 		{
@@ -268,6 +273,31 @@ public class Controller extends BaseController
 		else
 		{
 			refresh(filterSettings);
+		}
+	}
+	
+	public void loadSettingsTab()
+	{
+		try 
+		{
+			if(settings.getServerType().equals(ServerType.ONLINE))
+			{
+				settingsController = loadTab("/de/deadlocker8/budgetmaster/ui/fxml/SettingsTabOnlineServer.fxml", tabSettings);
+				settingsController.init(this);
+			}
+			else
+			{
+				settingsController = loadTab("/de/deadlocker8/budgetmaster/ui/fxml/SettingsTabLocalServer.fxml", tabSettings);
+				settingsController.init(this);
+			}
+			
+		}
+		catch(IOException e)
+		{
+			Logger.error(e);
+			Platform.runLater(() -> {
+				AlertGenerator.showAlert(AlertType.ERROR, Localization.getString(Strings.TITLE_ERROR), "", Localization.getString(Strings.ERROR_CREATE_UI), icon, getStage(), null, false);
+			});			
 		}
 	}
 

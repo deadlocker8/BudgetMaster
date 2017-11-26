@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="anchorPaneMain" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.deadlocker8.budgetmasterclient.ui.controller.LocalServerSettingsController">
+   <children>
+      <VBox alignment="TOP_CENTER" prefHeight="562.0" prefWidth="772.0" spacing="25.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+         <children>
+            <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+               <content>
+                  <VBox spacing="14.0">
+                     <children>
+                        <HBox alignment="TOP_CENTER">
+                           <children>
+                              <ToggleButton fx:id="toggleButtonOnline" mnemonicParsing="false" text="%settingstab.button.server.online" />
+                              <ToggleButton fx:id="toggleButtonLocal" mnemonicParsing="false" text="%settingstab.button.server.local" />
+                           </children>
+                        </HBox>
+                        <HBox fx:id="hboxSettings" prefHeight="359.0" prefWidth="722.0">
+                           <children>
+                              <VBox alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="158.0" spacing="15.0">
+                                 <children>
+                                    <Label fx:id="labelStatus" prefHeight="25.0" text="%settingstab.label.status">
+                                       <font>
+                                          <Font name="System Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="labelClientSecret" prefHeight="25.0" text="%settingstab.label.secret.client">
+                                       <font>
+                                          <Font name="System Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="labelCurrency" prefHeight="25.0" text="%settingstab.label.currency">
+                                       <font>
+                                          <Font name="System Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="labelSecret11" prefHeight="25.0" text="%settingstab.label.rest">
+                                       <font>
+                                          <Font name="System Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="labelSecret1112" alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="-Infinity" prefWidth="158.0" text="%settingstab.label.language" textAlignment="RIGHT" wrapText="true">
+                                       <font>
+                                          <Font name="System Bold" size="16.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label fx:id="labelSecret11122" alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="-Infinity" prefWidth="158.0" text="%settingstab.label.database" textAlignment="RIGHT" wrapText="true">
+                                       <font>
+                                          <Font name="System Bold" size="16.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="5.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label fx:id="labelSecret111221" alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="-Infinity" prefWidth="158.0" text="%settingstab.label.updates" textAlignment="RIGHT" wrapText="true">
+                                       <font>
+                                          <Font name="System Bold" size="16.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="5.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label fx:id="labelSecret11121" alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="-Infinity" prefWidth="158.0" textAlignment="RIGHT" wrapText="true">
+                                       <font>
+                                          <Font name="System Bold" size="16.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="15.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Region prefHeight="19.0" prefWidth="158.0" VBox.vgrow="ALWAYS" />
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets right="25.0" />
+                                 </HBox.margin>
+                              </VBox>
+                              <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="15.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                       <children>
+                                          <Label fx:id="labelLocalServerStatus" prefHeight="25.0">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Button fx:id="buttonLocalServerAction" mnemonicParsing="false">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Button>
+                                       </children>
+                                    </HBox>
+                                    <TextField fx:id="textFieldClientSecret" />
+                                    <TextField fx:id="textFieldCurrency" />
+                                    <HBox alignment="CENTER" prefHeight="11.0" prefWidth="539.0" spacing="30.0">
+                                       <children>
+                                          <RadioButton fx:id="radioButtonRestActivated" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%settingstab.label.rest.activated">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin>
+                                          </RadioButton>
+                                          <RadioButton fx:id="radioButtonRestDeactivated" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%settingstab.label.rest.deactivated" HBox.hgrow="ALWAYS">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </RadioButton>
+                                       </children>
+                                    </HBox>
+                                    <ComboBox fx:id="comboBoxLanguage" maxWidth="1.7976931348623157E308" />
+                                    <HBox alignment="CENTER_LEFT" prefHeight="11.0" prefWidth="539.0" spacing="30.0">
+                                       <children>
+                                          <Button fx:id="buttonExportDB" minWidth="100.0" mnemonicParsing="false" onAction="#exportDB" text="%settingstab.button.database.export">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Button>
+                                          <Button fx:id="buttonImportDB" minWidth="100.0" mnemonicParsing="false" onAction="#importDB" text="%settingstab.button.database.import">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Button>
+                                          <Button fx:id="buttonDeleteDB" minWidth="100.0" mnemonicParsing="false" onAction="#deleteDB" text="%settingstab.button.database.delete">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Button>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                                       <children>
+                                          <VBox minWidth="210.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Button fx:id="buttonSearchUpdates" minWidth="100.0" mnemonicParsing="false" onAction="#checkForUpdates" text="%settingstab.button.updates.search" />
+                                                <CheckBox fx:id="checkboxEnableAutoUpdate" mnemonicParsing="false" text="%settingstab.button.updates.automatic">
+                                                   <font>
+                                                      <Font size="13.0" />
+                                                   </font>
+                                                </CheckBox>
+                                             </children>
+                                          </VBox>
+                                          <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Label fx:id="labelSecret11111" alignment="TOP_LEFT" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" minHeight="25.0" text="%settingstab.label.updates.current.version" textAlignment="CENTER" wrapText="true">
+                                                   <font>
+                                                      <Font name="System Bold" size="13.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="labelSecret111111" alignment="TOP_LEFT" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" minHeight="25.0" text="%settingstab.label.updates.latest.version" textAlignment="CENTER" wrapText="true">
+                                                   <font>
+                                                      <Font name="System Bold" size="13.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets />
+                                                   </VBox.margin>
+                                                </Label>
+                                             </children>
+                                          </VBox>
+                                          <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Label fx:id="labelCurrentVersion" alignment="TOP_LEFT" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" minHeight="25.0" textAlignment="CENTER" wrapText="true">
+                                                   <font>
+                                                      <Font size="13.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="labelLatestVersion" alignment="TOP_LEFT" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" minHeight="25.0" textAlignment="CENTER" wrapText="true">
+                                                   <font>
+                                                      <Font size="13.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                    <Button fx:id="buttonSave" minWidth="100.0" mnemonicParsing="false" onAction="#save" text="%settingstab.button.save">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="15.0" />
+                                       </VBox.margin>
+                                    </Button>
+                                    <Region prefWidth="158.0" VBox.vgrow="ALWAYS" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </content>
+            </ScrollPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
