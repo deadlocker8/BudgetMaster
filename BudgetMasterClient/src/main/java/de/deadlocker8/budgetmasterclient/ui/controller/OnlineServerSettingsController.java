@@ -112,7 +112,7 @@ public class OnlineServerSettingsController extends SettingsController
 		{
 			textFieldURL.setText(controller.getSettings().getUrl());
 			textFieldSecret.setText("******");
-			textFieldCurrency.setText(controller.getSettings().getCurrency());		
+			textFieldCurrency.setText(controller.getSettings().getCurrency());	
 		}
 		
 		if(controller.getSettings().isRestActivated())

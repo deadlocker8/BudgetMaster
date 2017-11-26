@@ -70,6 +70,11 @@ public class Strings
     public static final String UNDEFINED = "undefined";
     public static final String TAGFIELD_PLACEHOLDER = "tagfield.placeholder";
     public static final String SHORTCUT_DEV_CONSOLE = "shortcut.dev.console";
+    public static final String LOCAL_SERVER_STATUS_OK = "local.server.status.ok";
+    public static final String LOCAL_SERVER_STATUS_NOT_STARTED = "local.server.status.not.started";
+    public static final String LOCAL_SERVER_STATUS_NOT_PRESENT = "local.server.status.not.present";
+    public static final String LOCAL_SERVER_ACTION_NOT_STARTED = "local.server.action.not.started";
+    public static final String LOCAL_SERVER_ACTION_NOT_PRESENT = "local.server.action.not.present";
     
     //REPORT
     public static final String REPORT_POSITION = "report.position";
@@ -177,7 +182,7 @@ public class Strings
     public static final String WARNING_PAYMENT_AMOUNT = "warning.payment.amount";
     public static final String WARNING_EMPTY_PAYMENT_DATE = "warning.empty.payment.date";
     public static final String WARNING_PAYMENT_REPEATING = "warning.payment.repeating";    
-    public static final String WARNING_EMPTY_SECRET_CLIENT = " warning.empty.secret.client";
+    public static final String WARNING_EMPTY_SECRET_CLIENT = "warning.empty.secret.client";
     public static final String WARNING_EMPTY_URL = "warning.empty.url";
     public static final String WARNING_EMPTY_SECRET_SERVER = "warning.empty.secret.server";
     public static final String WARNING_EMPTY_CURRENCY = "warning.empty.currency";
@@ -211,6 +216,8 @@ public class Strings
     public static final String ERROR_UPDATER_GET_LATEST_VERSION = "error.updater.get.latest.version";
     public static final String ERROR_UPDATER_DOWNLOAD_LATEST_VERSION = "error.updater.download.latest.version";
     public static final String ERROR_OPEN_BROWSER = "error.open.browser";
+    public static final String ERROR_LOCAL_SERVER_START = "error.local.server.start";
+    public static final String ERROR_LOCAL_SERVER_DOWNLOAD = "error.local.server.download";
     
     //ABOUT
     public static final String ABOUT = "about";

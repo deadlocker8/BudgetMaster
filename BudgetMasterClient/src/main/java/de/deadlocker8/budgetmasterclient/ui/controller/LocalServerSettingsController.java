@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmasterclient.ui.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import de.deadlocker8.budgetmaster.logic.LocalServerHandler;
 import de.deadlocker8.budgetmaster.logic.ServerType;
 import de.deadlocker8.budgetmaster.logic.Settings;
 import de.deadlocker8.budgetmaster.logic.updater.Updater;
@@ -98,10 +99,17 @@ public class LocalServerSettingsController extends SettingsController
 		hboxSettings.prefWidthProperty().bind(scrollPane.widthProperty().subtract(25));
 		
 		refreshLabelsUpdate();
+		
+		save();
 	}
 	
+	@Override
 	public void prefill()
 	{
+		checkServerStatus();
+		
+		textFieldCurrency.setText(controller.getSettings().getCurrency());
+		
 		if(controller.getSettings().isRestActivated())
 		{
 			radioButtonRestActivated.setSelected(true);
@@ -119,6 +127,82 @@ public class LocalServerSettingsController extends SettingsController
 		}
 		
 		checkboxEnableAutoUpdate.setSelected(controller.getSettings().isAutoUpdateCheckEnabled());
+	}
+	
+	private void checkServerStatus()
+	{
+		LocalServerHandler serverHandler = new LocalServerHandler();
+		if(serverHandler.isServerPresent())
+		{
+			if(serverHandler.isServerRunning())
+			{
+				labelLocalServerStatus.setText(Localization.getString(Strings.LOCAL_SERVER_STATUS_OK));
+				buttonLocalServerAction.setVisible(false);
+			}
+			else
+			{
+				labelLocalServerStatus.setText(Localization.getString(Strings.LOCAL_SERVER_STATUS_NOT_STARTED));
+				buttonLocalServerAction.setText(Localization.getString(Strings.LOCAL_SERVER_ACTION_NOT_STARTED));
+				buttonLocalServerAction.setVisible(true);
+				buttonLocalServerAction.setDisable(false);
+				buttonLocalServerAction.setOnAction((event)->{
+					buttonLocalServerAction.setDisable(true);
+					try
+					{
+						controller.setLocalServerProcess(serverHandler.startServer());
+						try
+						{
+							Thread.sleep(2000);
+						}
+						catch(InterruptedException e)
+						{							
+						}
+						checkServerStatus();
+						
+						//TODO refresh all data
+						//TODO modals for download and start of server
+						//TODO autostart server on startup if serverType = local and server is present
+					}
+					catch(IOException e)
+					{
+						Logger.error(e);
+						AlertGenerator.showAlert(AlertType.ERROR, 
+												Localization.getString(Strings.TITLE_ERROR), 
+												"", 
+												Localization.getString(Strings.ERROR_LOCAL_SERVER_START, e.getMessage()),
+												controller.getIcon(), controller.getStage(), null, false);
+						buttonLocalServerAction.setDisable(false);
+					}
+				});
+			}
+		}
+		else
+		{
+			labelLocalServerStatus.setText(Localization.getString(Strings.LOCAL_SERVER_STATUS_NOT_PRESENT));
+			buttonLocalServerAction.setText(Localization.getString(Strings.LOCAL_SERVER_ACTION_NOT_PRESENT));
+			buttonLocalServerAction.setVisible(true);
+			buttonLocalServerAction.setDisable(false);
+			
+			buttonLocalServerAction.setOnAction((event)->{
+				try
+				{
+					buttonLocalServerAction.setDisable(true);
+					serverHandler.downloadServer(Localization.getString(Strings.VERSION_NAME));
+					serverHandler.createServerSettings();
+					checkServerStatus();
+				}
+				catch(Exception e)
+				{
+					Logger.error(e);
+					AlertGenerator.showAlert(AlertType.ERROR, 
+											Localization.getString(Strings.TITLE_ERROR), 
+											"", 
+											Localization.getString(Strings.ERROR_LOCAL_SERVER_DOWNLOAD, e.getMessage()),
+											controller.getIcon(), controller.getStage(), null, false);
+					buttonLocalServerAction.setDisable(false);
+				}
+			});
+		}		
 	}
 	
 	@Override
@@ -161,7 +245,6 @@ public class LocalServerSettingsController extends SettingsController
 			return;
 		}
 
-		//TODO
 		if(controller.getSettings().isComplete())
 		{
 			if(!clientSecret.equals("******"))
@@ -195,7 +278,7 @@ public class LocalServerSettingsController extends SettingsController
 		}
 		
 		controller.getSettings().setSecret(HashUtils.hash("BudgetMaster", Helpers.SALT));
-		controller.getSettings().setUrl("localhost:9000");
+		controller.getSettings().setUrl("https://localhost:9000");
 		ArrayList<String> trustedHosts = new ArrayList<>();
 		trustedHosts.add("localhost");
 		controller.getSettings().setTrustedHosts(trustedHosts);
@@ -235,6 +318,7 @@ public class LocalServerSettingsController extends SettingsController
 		toggleButtonOnline.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14; -fx-background-radius: 3 0 0 3");
 		toggleButtonLocal.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_DARK_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14; -fx-background-radius: 0 3 3 0; -fx-effect: innershadow(gaussian, rgba(0,0,0,0.7), 10,0,0,0);");
 		buttonSave.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
+		buttonLocalServerAction.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
 		buttonExportDB.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
 		buttonImportDB.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
 		buttonDeleteDB.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_RED) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");

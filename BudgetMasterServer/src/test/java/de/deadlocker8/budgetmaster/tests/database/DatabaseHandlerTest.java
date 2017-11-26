@@ -51,7 +51,7 @@ public class DatabaseHandlerTest
 			Localization.init("de/deadlocker8/budgetmaster/");
 			Localization.loadLanguage(Locale.ENGLISH);
 		}
-		catch(IOException | URISyntaxException | SQLException e)
+		catch(IOException | URISyntaxException | SQLException | ClassNotFoundException e)
 		{
 			fail(e.getMessage());
 		}		

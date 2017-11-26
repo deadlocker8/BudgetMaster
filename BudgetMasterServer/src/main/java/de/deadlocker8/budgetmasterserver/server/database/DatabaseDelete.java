@@ -44,7 +44,7 @@ public class DatabaseDelete implements AdvancedRoute
 	
 			return "";
 		}
-		catch(IllegalStateException | SQLException ex)
+		catch(IllegalStateException | SQLException | ClassNotFoundException ex)
 		{
 			halt(500, "Internal Server Error");
 		}

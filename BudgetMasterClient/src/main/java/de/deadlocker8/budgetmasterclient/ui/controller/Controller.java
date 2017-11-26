@@ -107,6 +107,7 @@ public class Controller extends BaseController
 	private Payment selectedPayment;
 	private SearchPreferences searchPreferences;
 	private CommandLine cmd;
+	private Process localServerProcess;
 
 	private boolean alertIsShowing = false;
 	private static DateTimeFormatter DATE_FORMAT;
@@ -136,6 +137,11 @@ public class Controller extends BaseController
 	public void init()
 	{		
 		getStage().setOnCloseRequest((event)->{
+			if(localServerProcess != null) 
+			{
+				Logger.debug("Stopping local BudgetMasterServer...");
+				localServerProcess.destroy();
+			}
 			Worker.shutdown();
 			System.exit(0);
 		});
@@ -314,6 +320,11 @@ public class Controller extends BaseController
 	public void setSettings(Settings settings)
 	{
 		this.settings = settings;
+	}
+	
+	public void setLocalServerProcess(Process process)
+	{
+		this.localServerProcess = process;
 	}
 
 	public void showNotification(String text)

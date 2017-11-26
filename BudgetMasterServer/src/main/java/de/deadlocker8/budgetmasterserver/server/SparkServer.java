@@ -108,14 +108,14 @@ public class SparkServer
 		
 		RouteOverview.enableRouteOverview();
 		
-		Logger.info("Trying to connect to database (jdbc:" + settings.getDatabaseType() + "://" + settings.getDatabaseUrl() + settings.getDatabaseName() + ")");
+		Logger.info("Trying to connect to database (jdbc:" + settings.getDatabaseType() + "://" + settings.getDatabaseUrl() + ", databaseName: " + settings.getDatabaseName() + ")");
 		
 		try
 		{
 			Connection connection = Utils.getDatabaseConnection(settings);
 			DatabaseCreator creator = Utils.getDatabaseCreator(connection, settings);
 			creator.createTables();
-			Logger.info("Successfully initialized database (jdbc:" + settings.getDatabaseType() + "://" + settings.getDatabaseUrl() + settings.getDatabaseName() + ")");
+			Logger.info("Successfully initialized database (jdbc:" + settings.getDatabaseType() + "://" + settings.getDatabaseUrl() + ", databaseName: " + settings.getDatabaseName() + ")");
 			connection.close();
 		}
 		catch(Exception e)

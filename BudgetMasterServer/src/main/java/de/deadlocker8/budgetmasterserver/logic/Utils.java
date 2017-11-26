@@ -28,14 +28,14 @@ public class Utils
 	{
 		String settingsJSON;
 		Settings settings;
-		
+
 		Gson gson = new Gson();
-		
-		settingsJSON = new String(Files.readAllBytes(Paths.get(Settings.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().resolve("settings.json")));		
-		settings = gson.fromJson(settingsJSON, Settings.class);	
-		return settings;		
+
+		settingsJSON = new String(Files.readAllBytes(Paths.get(Settings.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().resolve("settings.json")));
+		settings = gson.fromJson(settingsJSON, Settings.class);
+		return settings;
 	}
-	
+
 	public static void saveSettings(Settings settings) throws IOException, URISyntaxException
 	{
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -44,9 +44,11 @@ public class Utils
 		writer.write(jsonString);
 		writer.close();
 	}
-	
-	public static Connection getDatabaseConnection(Settings settings) throws SQLException
+
+	public static Connection getDatabaseConnection(Settings settings) throws SQLException, ClassNotFoundException
 	{
+		Class.forName("org.sqlite.JDBC");
+		
 		if(settings.getDatabaseType().equals("mysql"))
 		{
 			return DriverManager.getConnection("jdbc:mysql://" + settings.getDatabaseUrl() + settings.getDatabaseName() + "?useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin&autoReconnect=true&wait_timeout=86400", settings.getDatabaseUsername(), settings.getDatabasePassword());
@@ -56,38 +58,38 @@ public class Utils
 			return DriverManager.getConnection("jdbc:sqlite://" + settings.getDatabaseUrl());
 		}
 	}
-	
+
 	public static DatabaseCreator getDatabaseCreator(Connection connection, Settings settings)
 	{
 		if(settings.getDatabaseType().equals("mysql"))
 		{
 			return new MysqlDatabaseCreator(connection, settings);
 		}
-		else		
+		else
 		{
 			return new SqliteDatabaseCreator(connection, settings);
 		}
 	}
-	
+
 	public static DatabaseHandler getDatabaseHandler(Settings settings)
 	{
 		if(settings.getDatabaseType().equals("mysql"))
 		{
 			return new MysqlDatabaseHandler(settings);
 		}
-		else		
+		else
 		{
 			return new SqliteDatabaseHandler(settings);
 		}
 	}
-	
+
 	public static DatabaseTagHandler getDatabaseTagHandler(Settings settings)
 	{
 		if(settings.getDatabaseType().equals("mysql"))
 		{
 			return new MysqlDatabaseTagHandler(settings);
 		}
-		else		
+		else
 		{
 			return new SqliteDatabaseTagHandler(settings);
 		}
