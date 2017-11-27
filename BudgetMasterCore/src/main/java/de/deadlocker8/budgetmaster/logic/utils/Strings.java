@@ -73,7 +73,6 @@ public class Strings
     public static final String LOCAL_SERVER_STATUS_OK = "local.server.status.ok";
     public static final String LOCAL_SERVER_STATUS_NOT_STARTED = "local.server.status.not.started";
     public static final String LOCAL_SERVER_STATUS_NOT_PRESENT = "local.server.status.not.present";
-    public static final String LOCAL_SERVER_ACTION_NOT_STARTED = "local.server.action.not.started";
     public static final String LOCAL_SERVER_ACTION_NOT_PRESENT = "local.server.action.not.present";
     
     //REPORT

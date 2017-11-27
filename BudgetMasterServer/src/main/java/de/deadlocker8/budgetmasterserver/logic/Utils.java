@@ -71,8 +71,10 @@ public class Utils
 		}
 	}
 
-	public static DatabaseHandler getDatabaseHandler(Settings settings)
+	public static DatabaseHandler getDatabaseHandler(Settings settings) throws ClassNotFoundException
 	{
+		Class.forName("org.sqlite.JDBC");
+		
 		if(settings.getDatabaseType().equals("mysql"))
 		{
 			return new MysqlDatabaseHandler(settings);
@@ -83,8 +85,10 @@ public class Utils
 		}
 	}
 
-	public static DatabaseTagHandler getDatabaseTagHandler(Settings settings)
+	public static DatabaseTagHandler getDatabaseTagHandler(Settings settings) throws ClassNotFoundException
 	{
+		Class.forName("org.sqlite.JDBC");
+		
 		if(settings.getDatabaseType().equals("mysql"))
 		{
 			return new MysqlDatabaseTagHandler(settings);

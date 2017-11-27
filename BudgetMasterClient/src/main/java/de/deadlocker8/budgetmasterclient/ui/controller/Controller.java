@@ -146,6 +146,15 @@ public class Controller extends BaseController
 			System.exit(0);
 		});
 		
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+			Logger.debug("Received shutdown hook");
+			if(localServerProcess != null) 
+			{
+				Logger.debug("Stopping local BudgetMasterServer...");
+				localServerProcess.destroy();
+			}
+		}));
+		
 		if(settings.getServerType() == null)
 		{
 			settings.setServerType(ServerType.ONLINE);
@@ -278,7 +287,7 @@ public class Controller extends BaseController
 		}
 		else
 		{
-			refresh(filterSettings);
+			refresh(filterSettings);			
 		}
 	}
 	

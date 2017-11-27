@@ -3,7 +3,9 @@ package de.deadlocker8.budgetmasterclient.ui.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import de.deadlocker8.budgetmaster.logic.LocalServerException;
 import de.deadlocker8.budgetmaster.logic.LocalServerHandler;
+import de.deadlocker8.budgetmaster.logic.LocalServerStatus;
 import de.deadlocker8.budgetmaster.logic.ServerType;
 import de.deadlocker8.budgetmaster.logic.Settings;
 import de.deadlocker8.budgetmaster.logic.updater.Updater;
@@ -65,29 +67,29 @@ public class LocalServerSettingsController extends SettingsController
 	public void init(Controller controller)
 	{
 		super.controller = controller;
-		
+
 		ToggleGroup toggleGroupServerType = new ToggleGroup();
 		toggleButtonOnline.setToggleGroup(toggleGroupServerType);
 		toggleButtonLocal.setToggleGroup(toggleGroupServerType);
-		toggleButtonOnline.setOnAction((event)->{
+		toggleButtonOnline.setOnAction((event) -> {
 			controller.getSettings().setServerType(ServerType.ONLINE);
 			controller.loadSettingsTab();
 		});
-		
-		textFieldClientSecret.setText("******");	
-		
+
+		textFieldClientSecret.setText("******");
+
 		comboBoxLanguage.setCellFactory((view) -> {
 			return new LanguageCell(true);
-		});		
-		
-		comboBoxLanguage.getItems().addAll(LanguageType.values());		
+		});
+
+		comboBoxLanguage.getItems().addAll(LanguageType.values());
 		comboBoxLanguage.setButtonCell(new LanguageCell(false));
 		comboBoxLanguage.setValue(LanguageType.ENGLISH);
 		previousLanguage = LanguageType.ENGLISH;
 		checkboxEnableAutoUpdate.setSelected(true);
-		
+
 		prefill();
-		
+
 		applyStyle();
 
 		textFieldCurrency.setPromptText(Localization.getString(Strings.CURRENCY_PLACEHOLDER));
@@ -95,21 +97,21 @@ public class LocalServerSettingsController extends SettingsController
 		ToggleGroup toggleGroup = new ToggleGroup();
 		radioButtonRestActivated.setToggleGroup(toggleGroup);
 		radioButtonRestDeactivated.setToggleGroup(toggleGroup);
-		
+
 		hboxSettings.prefWidthProperty().bind(scrollPane.widthProperty().subtract(25));
-		
+
 		refreshLabelsUpdate();
-		
+
 		save();
 	}
-	
+
 	@Override
 	public void prefill()
 	{
 		checkServerStatus();
-		
+
 		textFieldCurrency.setText(controller.getSettings().getCurrency());
-		
+
 		if(controller.getSettings().isRestActivated())
 		{
 			radioButtonRestActivated.setSelected(true);
@@ -118,93 +120,92 @@ public class LocalServerSettingsController extends SettingsController
 		{
 			radioButtonRestDeactivated.setSelected(true);
 		}
-		
+
 		if(controller.getSettings().getLanguage() != null)
 		{
 			LanguageType language = controller.getSettings().getLanguage();
 			comboBoxLanguage.setValue(language);
 			previousLanguage = language;
 		}
-		
+
 		checkboxEnableAutoUpdate.setSelected(controller.getSettings().isAutoUpdateCheckEnabled());
 	}
-	
+
 	private void checkServerStatus()
 	{
 		LocalServerHandler serverHandler = new LocalServerHandler();
-		if(serverHandler.isServerPresent())
+		switch(serverHandler.getServerStatus())
 		{
-			if(serverHandler.isServerRunning())
-			{
+			case ACTIVE:
 				labelLocalServerStatus.setText(Localization.getString(Strings.LOCAL_SERVER_STATUS_OK));
 				buttonLocalServerAction.setVisible(false);
-			}
-			else
-			{
+
+				RestartHandler restartHandler = new RestartHandler(controller);
+				restartHandler.handleRestart(controller.getSettings().getLanguage());
+				refreshLabelsUpdate();
+				break;
+			case INACTIVE:
 				labelLocalServerStatus.setText(Localization.getString(Strings.LOCAL_SERVER_STATUS_NOT_STARTED));
-				buttonLocalServerAction.setText(Localization.getString(Strings.LOCAL_SERVER_ACTION_NOT_STARTED));
-				buttonLocalServerAction.setVisible(true);
-				buttonLocalServerAction.setDisable(false);
-				buttonLocalServerAction.setOnAction((event)->{
-					buttonLocalServerAction.setDisable(true);
+				buttonLocalServerAction.setVisible(false);
+				try
+				{
+					Logger.debug("Starting local Server...");
+					serverHandler.createServerSettingsIfNotExists();
+					controller.setLocalServerProcess(serverHandler.startServer());
 					try
 					{
-						controller.setLocalServerProcess(serverHandler.startServer());
-						try
-						{
-							Thread.sleep(2000);
-						}
-						catch(InterruptedException e)
-						{							
-						}
-						checkServerStatus();
-						
-						//TODO refresh all data
-						//TODO modals for download and start of server
-						//TODO autostart server on startup if serverType = local and server is present
+						Thread.sleep(2000);
 					}
-					catch(IOException e)
+					catch(InterruptedException e)
+					{
+					}
+					
+					if(!serverHandler.getServerStatus().equals(LocalServerStatus.ACTIVE))
+					{
+						throw new LocalServerException("");
+					}
+
+					// TODO modals for download and start of server
+					// TODO what happens after update of client?
+					// --> TODO check compatibility of server and client
+				}
+				catch(IOException e)
+				{
+					Logger.debug("Error while starting local server");
+					Logger.error(e);
+					AlertGenerator.showAlert(AlertType.ERROR, Localization.getString(Strings.TITLE_ERROR), "", Localization.getString(Strings.ERROR_LOCAL_SERVER_START, e.getMessage()), controller.getIcon(), controller.getStage(), null, false);
+				}
+				catch(LocalServerException ex)
+				{
+					Logger.debug("Error while starting local server");
+					AlertGenerator.showAlert(AlertType.ERROR, Localization.getString(Strings.TITLE_ERROR), "", Localization.getString(Strings.ERROR_LOCAL_SERVER_START, ""), controller.getIcon(), controller.getStage(), null, false);
+				}
+				break;
+			case MISSING:
+				labelLocalServerStatus.setText(Localization.getString(Strings.LOCAL_SERVER_STATUS_NOT_PRESENT));
+				buttonLocalServerAction.setText(Localization.getString(Strings.LOCAL_SERVER_ACTION_NOT_PRESENT));
+				buttonLocalServerAction.setVisible(true);
+				buttonLocalServerAction.setDisable(false);
+
+				buttonLocalServerAction.setOnAction((event) -> {
+					try
+					{
+						buttonLocalServerAction.setDisable(true);
+						serverHandler.downloadServer(Localization.getString(Strings.VERSION_NAME));
+						serverHandler.createServerSettingsIfNotExists();
+						checkServerStatus();
+					}
+					catch(Exception e)
 					{
 						Logger.error(e);
-						AlertGenerator.showAlert(AlertType.ERROR, 
-												Localization.getString(Strings.TITLE_ERROR), 
-												"", 
-												Localization.getString(Strings.ERROR_LOCAL_SERVER_START, e.getMessage()),
-												controller.getIcon(), controller.getStage(), null, false);
+						AlertGenerator.showAlert(AlertType.ERROR, Localization.getString(Strings.TITLE_ERROR), "", Localization.getString(Strings.ERROR_LOCAL_SERVER_DOWNLOAD, e.getMessage()), controller.getIcon(), controller.getStage(), null, false);
 						buttonLocalServerAction.setDisable(false);
 					}
 				});
-			}
+				break;
 		}
-		else
-		{
-			labelLocalServerStatus.setText(Localization.getString(Strings.LOCAL_SERVER_STATUS_NOT_PRESENT));
-			buttonLocalServerAction.setText(Localization.getString(Strings.LOCAL_SERVER_ACTION_NOT_PRESENT));
-			buttonLocalServerAction.setVisible(true);
-			buttonLocalServerAction.setDisable(false);
-			
-			buttonLocalServerAction.setOnAction((event)->{
-				try
-				{
-					buttonLocalServerAction.setDisable(true);
-					serverHandler.downloadServer(Localization.getString(Strings.VERSION_NAME));
-					serverHandler.createServerSettings();
-					checkServerStatus();
-				}
-				catch(Exception e)
-				{
-					Logger.error(e);
-					AlertGenerator.showAlert(AlertType.ERROR, 
-											Localization.getString(Strings.TITLE_ERROR), 
-											"", 
-											Localization.getString(Strings.ERROR_LOCAL_SERVER_DOWNLOAD, e.getMessage()),
-											controller.getIcon(), controller.getStage(), null, false);
-					buttonLocalServerAction.setDisable(false);
-				}
-			});
-		}		
 	}
-	
+
 	@Override
 	void refreshLabelsUpdate()
 	{
@@ -218,30 +219,16 @@ public class LocalServerSettingsController extends SettingsController
 	{
 		String clientSecret = textFieldClientSecret.getText().trim();
 		String currency = textFieldCurrency.getText().trim();
-		
+
 		if(clientSecret == null || clientSecret.equals(""))
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, 
-									Localization.getString(Strings.TITLE_WARNING), 
-									"",
-									Localization.getString(Strings.WARNING_EMPTY_SECRET_CLIENT),
-									controller.getIcon(), 
-									controller.getStage(), 
-									null, 
-									false);
+			AlertGenerator.showAlert(AlertType.WARNING, Localization.getString(Strings.TITLE_WARNING), "", Localization.getString(Strings.WARNING_EMPTY_SECRET_CLIENT), controller.getIcon(), controller.getStage(), null, false);
 			return;
 		}
 
 		if(currency == null || currency.equals(""))
 		{
-			AlertGenerator.showAlert(AlertType.WARNING, 
-									Localization.getString(Strings.TITLE_WARNING), 
-									"", 
-									Localization.getString(Strings.WARNING_EMPTY_CURRENCY),
-									controller.getIcon(), 
-									controller.getStage(), 
-									null, 
-									false);
+			AlertGenerator.showAlert(AlertType.WARNING, Localization.getString(Strings.TITLE_WARNING), "", Localization.getString(Strings.WARNING_EMPTY_CURRENCY), controller.getIcon(), controller.getStage(), null, false);
 			return;
 		}
 
@@ -251,7 +238,7 @@ public class LocalServerSettingsController extends SettingsController
 			{
 				controller.getSettings().setClientSecret(HashUtils.hash(clientSecret, Helpers.SALT));
 			}
-			
+
 			controller.getSettings().setCurrency(currency);
 			controller.getSettings().setRestActivated(radioButtonRestActivated.isSelected());
 			controller.getSettings().setLanguage(comboBoxLanguage.getValue());
@@ -260,7 +247,7 @@ public class LocalServerSettingsController extends SettingsController
 		else
 		{
 			Settings settings = new Settings();
-			
+
 			if(!clientSecret.equals("******"))
 			{
 				settings.setClientSecret(HashUtils.hash(clientSecret, Helpers.SALT));
@@ -268,15 +255,15 @@ public class LocalServerSettingsController extends SettingsController
 			else
 			{
 				settings.setClientSecret(controller.getSettings().getClientSecret());
-			}			
-		
+			}
+
 			settings.setCurrency(currency);
 			settings.setRestActivated(radioButtonRestActivated.isSelected());
 			settings.setLanguage(comboBoxLanguage.getValue());
 			settings.setAutoUpdateCheckEnabled(checkboxEnableAutoUpdate.isSelected());
 			controller.setSettings(settings);
 		}
-		
+
 		controller.getSettings().setSecret(HashUtils.hash("BudgetMaster", Helpers.SALT));
 		controller.getSettings().setUrl("https://localhost:9000");
 		ArrayList<String> trustedHosts = new ArrayList<>();
@@ -290,14 +277,7 @@ public class LocalServerSettingsController extends SettingsController
 		catch(IOException e)
 		{
 			Logger.error(e);
-			AlertGenerator.showAlert(AlertType.ERROR, 
-									Localization.getString(Strings.TITLE_ERROR), 
-									"", 
-									Localization.getString(Strings.ERROR_SETTINGS_SAVE),
-									controller.getIcon(), 
-									controller.getStage(), 
-									null, 
-									false);
+			AlertGenerator.showAlert(AlertType.ERROR, Localization.getString(Strings.TITLE_ERROR), "", Localization.getString(Strings.ERROR_SETTINGS_SAVE), controller.getIcon(), controller.getStage(), null, false);
 		}
 
 		textFieldClientSecret.setText("******");

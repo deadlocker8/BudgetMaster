@@ -138,64 +138,71 @@ public class SparkServer
 			paymentUpdater.updateRepeatingPayments(DateTime.now());
 			handler.closeConnection();
 		});
-
-		// Category
-		get("/category", new CategoryGetAll(Utils.getDatabaseHandler(settings), gson));
-		get("/category/single", new CategoryGet(Utils.getDatabaseHandler(settings), gson));
-		post("/category", new CategoryAdd(Utils.getDatabaseHandler(settings)));
-		put("/category", new CategoryUpdate(Utils.getDatabaseHandler(settings)));
-		delete("/category", new CategoryDelete(Utils.getDatabaseHandler(settings)));
-
-		// Payment
-		get("/payment/search", new PaymentSearch(Utils.getDatabaseHandler(settings), Utils.getDatabaseTagHandler(settings)));
-		get("/payment/search/maxAmount", new PaymentMaxAmount(Utils.getDatabaseHandler(settings), gson));
-		// Normal
-		get("/payment", new PaymentGet(Utils.getDatabaseHandler(settings), gson));
-		post("/payment", new PaymentAdd(Utils.getDatabaseHandler(settings), gson));
-		put("/payment", new PaymentUpdate(Utils.getDatabaseHandler(settings)));
-		delete("/payment", new PaymentDelete(Utils.getDatabaseHandler(settings), Utils.getDatabaseTagHandler(settings)));
-
-		// Repeating
-		get("/repeatingpayment/single", new RepeatingPaymentGet(Utils.getDatabaseHandler(settings), gson));
-		get("/repeatingpayment", new RepeatingPaymentGetAll(Utils.getDatabaseHandler(settings), gson));
-		post("/repeatingpayment", new RepeatingPaymentAdd(Utils.getDatabaseHandler(settings), gson));
-		delete("/repeatingpayment", new RepeatingPaymentDelete(Utils.getDatabaseHandler(settings), Utils.getDatabaseTagHandler(settings)));
 		
-		// CategoryBudget
-		get("/categorybudget", new CategoryBudgetGet(Utils.getDatabaseHandler(settings), gson));
-		
-		// Rest
-		get("/rest", new RestGet(Utils.getDatabaseHandler(settings), gson));		
-
-		// charts
-		get("/charts/categoryInOutSum", new CategoryInOutSumForMonth(Utils.getDatabaseHandler(settings), gson));
-		get("/charts/monthInOutSum", new MonthInOutSum(Utils.getDatabaseHandler(settings), gson));
-		
-		// tag
-		get("/tag/single", new TagGet(Utils.getDatabaseTagHandler(settings), gson));
-		get("/tag/single/byName", new TagGetByName(Utils.getDatabaseTagHandler(settings), gson));
-		get("/tag", new TagGetAll(Utils.getDatabaseTagHandler(settings), gson));
-		post("/tag", new TagAdd(Utils.getDatabaseTagHandler(settings)));
-		delete("/tag", new TagDelete(Utils.getDatabaseTagHandler(settings)));
-		
-		// tag match
-		get("/tag/match/all/normal", new TagMatchGetAllForPayment(Utils.getDatabaseTagHandler(settings), gson));
-		get("/tag/match/all/repeating", new TagMatchGetAllForRepeatingPayment(Utils.getDatabaseTagHandler(settings), gson));
-		get("/tag/match/normal", new TagMatchExistingForPayment(Utils.getDatabaseTagHandler(settings), gson));
-		get("/tag/match/repeating", new TagMatchExistingForRepeatingPayment(Utils.getDatabaseTagHandler(settings), gson));
-		post("/tag/match/normal", new TagMatchAddForPayment(Utils.getDatabaseTagHandler(settings)));
-		post("/tag/match/repeating", new TagMatchAddForRepeatingPayment(Utils.getDatabaseTagHandler(settings)));
-		delete("/tag/match/normal", new TagMatchDeleteForPayment(Utils.getDatabaseTagHandler(settings)));
-		delete("/tag/match/repeating", new TagMatchDeleteForRepeatingPayment(Utils.getDatabaseTagHandler(settings)));
-
-		// Database
-		get("/database", new DatabaseExport(settings, gson));
-		post("/database", new DatabaseImport(Utils.getDatabaseHandler(settings), Utils.getDatabaseTagHandler(settings), gson));
-		delete("/database", new DatabaseDelete(Utils.getDatabaseHandler(settings), settings));
-		
-		get("/info", new InformationGet(gson, versionInfo, settings));
-		get("/version", new VersionGet(gson, versionInfo));
-		delete("/log", new LogDelete());
+		try
+		{	
+			// Category
+			get("/category", new CategoryGetAll(Utils.getDatabaseHandler(settings), gson));
+			get("/category/single", new CategoryGet(Utils.getDatabaseHandler(settings), gson));
+			post("/category", new CategoryAdd(Utils.getDatabaseHandler(settings)));
+			put("/category", new CategoryUpdate(Utils.getDatabaseHandler(settings)));
+			delete("/category", new CategoryDelete(Utils.getDatabaseHandler(settings)));
+	
+			// Payment
+			get("/payment/search", new PaymentSearch(Utils.getDatabaseHandler(settings), Utils.getDatabaseTagHandler(settings)));
+			get("/payment/search/maxAmount", new PaymentMaxAmount(Utils.getDatabaseHandler(settings), gson));
+			// Normal
+			get("/payment", new PaymentGet(Utils.getDatabaseHandler(settings), gson));
+			post("/payment", new PaymentAdd(Utils.getDatabaseHandler(settings), gson));
+			put("/payment", new PaymentUpdate(Utils.getDatabaseHandler(settings)));
+			delete("/payment", new PaymentDelete(Utils.getDatabaseHandler(settings), Utils.getDatabaseTagHandler(settings)));
+	
+			// Repeating
+			get("/repeatingpayment/single", new RepeatingPaymentGet(Utils.getDatabaseHandler(settings), gson));
+			get("/repeatingpayment", new RepeatingPaymentGetAll(Utils.getDatabaseHandler(settings), gson));
+			post("/repeatingpayment", new RepeatingPaymentAdd(Utils.getDatabaseHandler(settings), gson));
+			delete("/repeatingpayment", new RepeatingPaymentDelete(Utils.getDatabaseHandler(settings), Utils.getDatabaseTagHandler(settings)));
+			
+			// CategoryBudget
+			get("/categorybudget", new CategoryBudgetGet(Utils.getDatabaseHandler(settings), gson));
+			
+			// Rest
+			get("/rest", new RestGet(Utils.getDatabaseHandler(settings), gson));		
+	
+			// charts
+			get("/charts/categoryInOutSum", new CategoryInOutSumForMonth(Utils.getDatabaseHandler(settings), gson));
+			get("/charts/monthInOutSum", new MonthInOutSum(Utils.getDatabaseHandler(settings), gson));
+			
+			// tag
+			get("/tag/single", new TagGet(Utils.getDatabaseTagHandler(settings), gson));
+			get("/tag/single/byName", new TagGetByName(Utils.getDatabaseTagHandler(settings), gson));
+			get("/tag", new TagGetAll(Utils.getDatabaseTagHandler(settings), gson));
+			post("/tag", new TagAdd(Utils.getDatabaseTagHandler(settings)));
+			delete("/tag", new TagDelete(Utils.getDatabaseTagHandler(settings)));
+			
+			// tag match
+			get("/tag/match/all/normal", new TagMatchGetAllForPayment(Utils.getDatabaseTagHandler(settings), gson));
+			get("/tag/match/all/repeating", new TagMatchGetAllForRepeatingPayment(Utils.getDatabaseTagHandler(settings), gson));
+			get("/tag/match/normal", new TagMatchExistingForPayment(Utils.getDatabaseTagHandler(settings), gson));
+			get("/tag/match/repeating", new TagMatchExistingForRepeatingPayment(Utils.getDatabaseTagHandler(settings), gson));
+			post("/tag/match/normal", new TagMatchAddForPayment(Utils.getDatabaseTagHandler(settings)));
+			post("/tag/match/repeating", new TagMatchAddForRepeatingPayment(Utils.getDatabaseTagHandler(settings)));
+			delete("/tag/match/normal", new TagMatchDeleteForPayment(Utils.getDatabaseTagHandler(settings)));
+			delete("/tag/match/repeating", new TagMatchDeleteForRepeatingPayment(Utils.getDatabaseTagHandler(settings)));
+	
+			// Database
+			get("/database", new DatabaseExport(settings, gson));
+			post("/database", new DatabaseImport(Utils.getDatabaseHandler(settings), Utils.getDatabaseTagHandler(settings), gson));
+			delete("/database", new DatabaseDelete(Utils.getDatabaseHandler(settings), settings));
+			
+			get("/info", new InformationGet(gson, versionInfo, settings));
+			get("/version", new VersionGet(gson, versionInfo));
+			delete("/log", new LogDelete());
+		}
+		catch(ClassNotFoundException e)
+		{
+			Logger.error(e);
+		}
 
 		after((request, response) -> {
 			DatabaseHandler handler = Utils.getDatabaseHandler(settings);

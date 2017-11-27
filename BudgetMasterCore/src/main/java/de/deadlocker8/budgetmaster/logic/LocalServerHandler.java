@@ -52,16 +52,23 @@ public class LocalServerHandler
 		}
 		catch(Exception e)
 		{
-			Logger.error(e);
+			Logger.debug(e);
 			return false;
 		}
 	}
 	
-	public void createServerSettings() throws FileNotFoundException
+	public void createServerSettingsIfNotExists() throws FileNotFoundException
 	{
+		File settingsFile = new File(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER) + "/localServer/settings.json");
+		if(settingsFile.exists())
+		{
+			return;
+		}
+		Logger.debug("Creating settings file for local server...");
+		
 		String databasePath = PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER) + "/localServer/BudgetMaster.db";
 		String settings = "{\"databaseType\": \"sqlite\"," + 
-							"\"databaseUrl\": \"" + databasePath + "\"," + 
+							"\"databaseUrl\": \"" + databasePath.replace("\\", "/") + "\"," + 
 							"\"databaseName\": \"budgetmaster\"," + 
 							"\"databaseUsername\": \"root\"," + 
 							"\"databasePassword\": \"\"," + 
@@ -69,13 +76,14 @@ public class LocalServerHandler
 							"\"serverSecret\": \"BudgetMaster\"," + 
 							"\"keystorePath\": \"default\"," + 
 							"\"keystorePassword\": \"BudgetMaster\"}";
-		PrintWriter writer = new PrintWriter(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER) + "/localServer/settings.json");
+		PrintWriter writer = new PrintWriter(settingsFile);
 		writer.println(settings);
 		writer.close();
 	}
 	
 	public void downloadServer(String versionName) throws Exception
 	{
+		Logger.debug("Downloading BudgetMasterServer from " + BUILD_FOLDER.replace("{}", "v" + versionName));
 		PathUtils.checkFolder(new File(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER) + "/localServer"));
 		
 		//download into temp directory and file
@@ -95,5 +103,29 @@ public class LocalServerHandler
 	{
 		ProcessBuilder pb = new ProcessBuilder("java", "-jar", Paths.get(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER) + "/localServer/BudgetMasterServer.jar").toString()); 				
 		return pb.start();		
+	}
+	
+	public LocalServerStatus getServerStatus()
+	{
+		LocalServerHandler serverHandler = new LocalServerHandler();
+		if(serverHandler.isServerPresent())
+		{
+			Logger.debug("Local server found");
+			if(serverHandler.isServerRunning())
+			{
+				Logger.debug("Local server is running");
+				return LocalServerStatus.ACTIVE;
+			}
+			else
+			{
+				Logger.debug("Local server is NOT running");
+				return LocalServerStatus.INACTIVE;
+			}
+		}
+		else
+		{
+			Logger.debug("Local server NOT found");
+			return LocalServerStatus.MISSING;
+		}		
 	}
 }
