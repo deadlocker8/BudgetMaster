@@ -164,10 +164,6 @@ public class LocalServerSettingsController extends SettingsController
 					{
 						throw new LocalServerException("");
 					}
-
-					// TODO modals for download and start of server
-					// TODO what happens after update of client?
-					// --> TODO check compatibility of server and client
 				}
 				catch(IOException e)
 				{
