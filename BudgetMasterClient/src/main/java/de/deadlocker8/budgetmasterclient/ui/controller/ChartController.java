@@ -21,7 +21,7 @@ import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmasterclient.ui.Refreshable;
 import de.deadlocker8.budgetmasterclient.ui.Styleable;
-import de.deadlocker8.budgetmasterclient.utils.UIHelpers;
+import de.deadlocker8.budgetmasterclient.utils.LoadingModal;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
@@ -39,7 +39,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import logger.Logger;
 import tools.AlertGenerator;
 import tools.ConvertTo;
@@ -249,7 +248,7 @@ public class ChartController implements Refreshable, Styleable
 	@Override
 	public void refresh()
 	{
-		Stage modalStage = UIHelpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_CHARTS), controller.getStage(), controller.getIcon());
+		LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_CHARTS), controller.getStage(), controller.getIcon());
 
 		// prepare chart categories
 		LocalDate startDate = LocalDate.parse(controller.getCurrentDate().withDayOfMonth(1).toString("yyyy-MM-dd"));
@@ -270,10 +269,7 @@ public class ChartController implements Refreshable, Styleable
 			chartMonthShow();
 
 			Platform.runLater(() -> {
-				if(modalStage != null)
-				{
-					modalStage.close();
-				}
+				LoadingModal.closeModal();
 			});
 		});
 	}

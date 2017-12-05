@@ -16,6 +16,8 @@ import de.deadlocker8.budgetmaster.logic.utils.LanguageType;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmasterclient.ui.RestartHandler;
 import de.deadlocker8.budgetmasterclient.ui.cells.LanguageCell;
+import de.deadlocker8.budgetmasterclient.utils.LoadingModal;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -34,6 +36,7 @@ import tools.AlertGenerator;
 import tools.ConvertTo;
 import tools.HashUtils;
 import tools.Localization;
+import tools.Worker;
 
 public class LocalServerSettingsController extends SettingsController
 {
@@ -88,8 +91,6 @@ public class LocalServerSettingsController extends SettingsController
 		previousLanguage = LanguageType.ENGLISH;
 		checkboxEnableAutoUpdate.setSelected(true);
 
-		prefill();
-
 		applyStyle();
 
 		textFieldCurrency.setPromptText(Localization.getString(Strings.CURRENCY_PLACEHOLDER));
@@ -101,15 +102,13 @@ public class LocalServerSettingsController extends SettingsController
 		hboxSettings.prefWidthProperty().bind(scrollPane.widthProperty().subtract(25));
 
 		refreshLabelsUpdate();
-
-		save();
+		
+		prefill();
 	}
 
 	@Override
 	public void prefill()
 	{
-		checkServerStatus();
-
 		textFieldCurrency.setText(controller.getSettings().getCurrency());
 
 		if(controller.getSettings().isRestActivated())
@@ -129,6 +128,8 @@ public class LocalServerSettingsController extends SettingsController
 		}
 
 		checkboxEnableAutoUpdate.setSelected(controller.getSettings().isAutoUpdateCheckEnabled());
+		
+		checkServerStatus();
 	}
 
 	private void checkServerStatus()
@@ -143,40 +144,57 @@ public class LocalServerSettingsController extends SettingsController
 				RestartHandler restartHandler = new RestartHandler(controller);
 				restartHandler.handleRestart(controller.getSettings().getLanguage());
 				refreshLabelsUpdate();
+				save();
 				break;
 			case INACTIVE:
+				LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_LOCAL_SERVER), controller.getStage(), controller.getIcon());
 				labelLocalServerStatus.setText(Localization.getString(Strings.LOCAL_SERVER_STATUS_NOT_STARTED));
 				buttonLocalServerAction.setVisible(false);
-				try
-				{
-					Logger.debug("Starting local Server...");
-					serverHandler.createServerSettingsIfNotExists();
-					serverHandler.startServer();
+				Worker.runLater(() -> {
 					try
 					{
-						//DEBUG magic number
-						Thread.sleep(2000);
+						Logger.debug("Starting local Server...");
+						serverHandler.createServerSettingsIfNotExists();
+						serverHandler.startServer();
+						try
+						{
+							//DEBUG magic number
+							//TODO retry reconnecting
+							System.out.println("Start sleep");
+							Thread.sleep(2000);
+							System.out.println("End sleep");
+						}
+						catch(InterruptedException e)
+						{
+						}
+						
+						if(!serverHandler.getServerStatus().equals(LocalServerStatus.ACTIVE))
+						{
+							throw new LocalServerException("");
+						}
 					}
-					catch(InterruptedException e)
+					catch(IOException e)
 					{
+						Logger.debug("Error while starting local server");
+						Logger.error(e);
+						Platform.runLater(()->{
+							LoadingModal.closeModal();
+							AlertGenerator.showAlert(AlertType.ERROR, Localization.getString(Strings.TITLE_ERROR), "", Localization.getString(Strings.ERROR_LOCAL_SERVER_START, e.getMessage()), controller.getIcon(), controller.getStage(), null, false);
+						});
 					}
-					
-					if(!serverHandler.getServerStatus().equals(LocalServerStatus.ACTIVE))
+					catch(LocalServerException ex)
 					{
-						throw new LocalServerException("");
+						Logger.debug("Error while starting local server");
+						Platform.runLater(()->{
+							LoadingModal.closeModal();
+							AlertGenerator.showAlert(AlertType.ERROR, Localization.getString(Strings.TITLE_ERROR), "", Localization.getString(Strings.ERROR_LOCAL_SERVER_START, ""), controller.getIcon(), controller.getStage(), null, false);
+						});
 					}
-				}
-				catch(IOException e)
-				{
-					Logger.debug("Error while starting local server");
-					Logger.error(e);
-					AlertGenerator.showAlert(AlertType.ERROR, Localization.getString(Strings.TITLE_ERROR), "", Localization.getString(Strings.ERROR_LOCAL_SERVER_START, e.getMessage()), controller.getIcon(), controller.getStage(), null, false);
-				}
-				catch(LocalServerException ex)
-				{
-					Logger.debug("Error while starting local server");
-					AlertGenerator.showAlert(AlertType.ERROR, Localization.getString(Strings.TITLE_ERROR), "", Localization.getString(Strings.ERROR_LOCAL_SERVER_START, ""), controller.getIcon(), controller.getStage(), null, false);
-				}
+					Platform.runLater(()->{
+						checkServerStatus();
+						LoadingModal.closeModal();
+					});
+				});
 				break;
 			case MISSING:
 				labelLocalServerStatus.setText(Localization.getString(Strings.LOCAL_SERVER_STATUS_NOT_PRESENT));
@@ -185,19 +203,29 @@ public class LocalServerSettingsController extends SettingsController
 				buttonLocalServerAction.setDisable(false);
 
 				buttonLocalServerAction.setOnAction((event) -> {
-					try
-					{
-						buttonLocalServerAction.setDisable(true);
-						serverHandler.downloadServer(Localization.getString(Strings.VERSION_NAME));
-						serverHandler.createServerSettingsIfNotExists();
-						checkServerStatus();
-					}
-					catch(Exception e)
-					{
-						Logger.error(e);
-						AlertGenerator.showAlert(AlertType.ERROR, Localization.getString(Strings.TITLE_ERROR), "", Localization.getString(Strings.ERROR_LOCAL_SERVER_DOWNLOAD, e.getMessage()), controller.getIcon(), controller.getStage(), null, false);
-						buttonLocalServerAction.setDisable(false);
-					}
+					buttonLocalServerAction.setDisable(true);
+					LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_LOCAL_SERVER), controller.getStage(), controller.getIcon());
+
+					Worker.runLater(() -> {
+						try
+						{							
+							serverHandler.downloadServer(Localization.getString(Strings.VERSION_NAME));
+							serverHandler.createServerSettingsIfNotExists();
+							Platform.runLater(()->{
+								checkServerStatus();
+								LoadingModal.closeModal();
+							});
+						}
+						catch(Exception e)
+						{
+							Logger.error(e);
+							Platform.runLater(()->{
+								LoadingModal.closeModal();
+								AlertGenerator.showAlert(AlertType.ERROR, Localization.getString(Strings.TITLE_ERROR), "", Localization.getString(Strings.ERROR_LOCAL_SERVER_DOWNLOAD, e.getMessage()), controller.getIcon(), controller.getStage(), null, false);
+								buttonLocalServerAction.setDisable(false);
+							});
+						}
+					});
 				});
 				break;
 		}

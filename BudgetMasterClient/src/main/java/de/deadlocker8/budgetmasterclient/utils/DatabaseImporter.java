@@ -10,14 +10,13 @@ import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmasterclient.ui.controller.Controller;
-import de.deadlocker8.budgetmasterclient.utils.UIHelpers;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
@@ -115,7 +114,7 @@ public class DatabaseImporter
 				return;
 			}
 
-			Stage modalStage = UIHelpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATABASE_IMPORT), controller.getStage(), controller.getIcon());
+			LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATABASE_IMPORT), controller.getStage(), controller.getIcon());
 
 			Worker.runLater(() -> {
 				try
@@ -124,10 +123,7 @@ public class DatabaseImporter
 					connection.importDatabase(database);
 
 					Platform.runLater(() -> {
-						if(modalStage != null)
-						{
-							modalStage.close();
-						}						
+						LoadingModal.closeModal();					
 						
 						AlertGenerator.showAlert(AlertType.INFORMATION, 
 												Localization.getString(Strings.INFO_TITLE_DATABASE_IMPORT), 
@@ -145,10 +141,7 @@ public class DatabaseImporter
 				{
 					Logger.error(e);
 					Platform.runLater(() -> {
-						if(modalStage != null)
-						{
-							modalStage.close();
-						}
+						LoadingModal.closeModal();	
 						controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 					});
 				}

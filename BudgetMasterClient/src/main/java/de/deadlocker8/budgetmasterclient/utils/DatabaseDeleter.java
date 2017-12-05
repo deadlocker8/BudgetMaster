@@ -44,7 +44,7 @@ public class DatabaseDeleter
 		{
 			if(result.get().equals(verificationCode))
 			{
-				Stage modalStage = UIHelpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATABASE_DELETE), controller.getStage(), controller.getIcon());
+				LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATABASE_DELETE), controller.getStage(), controller.getIcon());
 
 				Worker.runLater(() -> {
 					try
@@ -52,18 +52,15 @@ public class DatabaseDeleter
 						ServerConnection connection = new ServerConnection(controller.getSettings());
 						connection.deleteDatabase();
 						Platform.runLater(() -> {							
-							if(modalStage != null)
+							LoadingModal.closeModal();
+							if(importPending)
 							{
-								modalStage.close();
-								if(importPending)
-								{
-									DatabaseImporter importer = new DatabaseImporter(controller);
-									importer.importDatabase();
-								}
-								else
-								{
-									controller.refresh(controller.getFilterSettings());
-								}
+								DatabaseImporter importer = new DatabaseImporter(controller);
+								importer.importDatabase();
+							}
+							else
+							{
+								controller.refresh(controller.getFilterSettings());
 							}
 						});
 					}
@@ -71,10 +68,7 @@ public class DatabaseDeleter
 					{
 						Logger.error(e);
 						Platform.runLater(() -> {
-							if(modalStage != null)
-							{
-								modalStage.close();
-							}
+							LoadingModal.closeModal();
 							controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 						});
 					}

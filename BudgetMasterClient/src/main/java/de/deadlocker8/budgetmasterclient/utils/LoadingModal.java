@@ -13,9 +13,32 @@ import javafx.stage.Stage;
 import logger.Logger;
 import tools.Localization;
 
-public class UIHelpers
+public class LoadingModal
 {
-	public static Stage showModal(String title, String message, Stage owner, Image icon)
+	private static Stage modalStage;
+	
+	public static void showModal(String title, String message, Stage owner, Image icon)
+	{
+		closeModal();
+		modalStage = createModal(title, message, owner, icon);
+	}	
+	
+	public static void closeModal()
+	{
+		System.out.println(Thread.currentThread().getStackTrace()[2]);
+		if(modalStage != null)
+		{
+			modalStage.close();
+			modalStage = null;
+		}
+	}
+	
+	public static boolean isShowing()
+	{
+		return modalStage != null && modalStage.isShowing();
+	}
+	
+	private static Stage createModal(String title, String message, Stage owner, Image icon)
 	{
 		try
 		{

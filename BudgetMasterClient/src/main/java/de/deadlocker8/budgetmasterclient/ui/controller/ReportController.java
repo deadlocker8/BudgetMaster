@@ -34,7 +34,7 @@ import de.deadlocker8.budgetmasterclient.ui.Refreshable;
 import de.deadlocker8.budgetmasterclient.ui.Styleable;
 import de.deadlocker8.budgetmasterclient.ui.cells.report.table.ReportTableRatingCell;
 import de.deadlocker8.budgetmasterclient.ui.cells.report.table.ReportTableRepeatingCell;
-import de.deadlocker8.budgetmasterclient.utils.UIHelpers;
+import de.deadlocker8.budgetmasterclient.utils.LoadingModal;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
@@ -653,7 +653,7 @@ public class ReportController implements Refreshable, Styleable
 																controller.getCurrentDate(),
 																budget);
 			
-			Stage modalStage = UIHelpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_REPORT), controller.getStage(), controller.getIcon());
+			LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_REPORT), controller.getStage(), controller.getIcon());
 
 			Worker.runLater(() -> {
 				try
@@ -661,10 +661,7 @@ public class ReportController implements Refreshable, Styleable
 					reportGenerator.generate();					
 
 					Platform.runLater(() -> {
-						if(modalStage != null)
-						{
-							modalStage.close();
-						}
+						LoadingModal.closeModal();
 						
 						controller.showNotification(Localization.getString(Strings.NOTIFICATION_REPORT_SAVE));	
 						
@@ -738,10 +735,7 @@ public class ReportController implements Refreshable, Styleable
 				{
 					Logger.error(e);
 					Platform.runLater(() -> {
-						if(modalStage != null)
-						{
-							modalStage.close();
-						}
+						LoadingModal.closeModal();
 						AlertGenerator.showAlert(AlertType.ERROR, 
 												Localization.getString(Strings.TITLE_ERROR), 
 												"", 
@@ -764,7 +758,7 @@ public class ReportController implements Refreshable, Styleable
 	@Override
 	public void refresh()
 	{
-		Stage modalStage = UIHelpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_REPORT_TAB), controller.getStage(), controller.getIcon());
+		LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_REPORT_TAB), controller.getStage(), controller.getIcon());
 		
 		if(controller.getFilterSettings().equals(new FilterSettings()))
 		{
@@ -788,11 +782,7 @@ public class ReportController implements Refreshable, Styleable
 			refreshTableView();
 
 			Platform.runLater(() -> {
-				if(modalStage != null)
-				{
-					modalStage.close();
-				}
-				
+				LoadingModal.closeModal();				
 				applyReportPreferences();
 				tableView.refresh();
 			});

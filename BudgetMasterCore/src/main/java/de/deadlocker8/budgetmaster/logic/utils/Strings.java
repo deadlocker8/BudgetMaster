@@ -49,6 +49,8 @@ public class Strings
     public static final String LOAD_DATABASE_DELETE = "load.database.delete";
     public static final String LOAD_UPDATE = "load.update";
     public static final String LOAD_SEARCH = "load.search";
+    public static final String LOAD_LOCAL_SERVER = "load.local.server";
+    public static final String LOAD_DOWNLOAD_LOCAL_SERVER = "load.download.local.server";
     
     //MISC
     public static final String CATEGORY_NONE = "category.none";

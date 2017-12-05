@@ -12,7 +12,7 @@ import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmasterclient.ui.Styleable;
 import de.deadlocker8.budgetmasterclient.ui.cells.SearchCell;
-import de.deadlocker8.budgetmasterclient.utils.UIHelpers;
+import de.deadlocker8.budgetmasterclient.utils.LoadingModal;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
@@ -262,7 +262,7 @@ public class SearchController extends BaseController implements Styleable
 		searchPreferences.setMinAmount((int)rangeSlider.getLowValue());
 		searchPreferences.setMaxAmount((int)rangeSlider.getHighValue());
 		
-		Stage modalStage = UIHelpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_SEARCH), getStage(), controller.getIcon());
+		LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_SEARCH), getStage(), controller.getIcon());
 		
 		Worker.runLater(() -> {
 			try 
@@ -284,20 +284,14 @@ public class SearchController extends BaseController implements Styleable
 						listView.getItems().setAll(payments);
 					}
 				
-					if(modalStage != null)
-					{
-						modalStage.close();
-					}							
+					LoadingModal.closeModal();							
 				});
 			}
 			catch(Exception e)
 			{
 				Logger.error(e);
 				Platform.runLater(() -> {
-					if(modalStage != null)
-					{
-						modalStage.close();
-					}
+					LoadingModal.closeModal();
 					controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 				});
 			}

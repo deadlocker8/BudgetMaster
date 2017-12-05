@@ -31,7 +31,7 @@ import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmasterclient.ui.commandLine.CommandBundle;
 import de.deadlocker8.budgetmasterclient.ui.commandLine.CommandLine;
-import de.deadlocker8.budgetmasterclient.utils.UIHelpers;
+import de.deadlocker8.budgetmasterclient.utils.LoadingModal;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.animation.FadeTransition;
@@ -132,26 +132,36 @@ public class Controller extends BaseController
 		stage.getScene().getStylesheets().add("/de/deadlocker8/budgetmaster/ui/style.css");
 	}
 	
+	public void shutdown()
+	{
+		Logger.debug("Stopping local BudgetMasterServer...");
+		try
+		{
+			ServerConnection connection = new ServerConnection(settings);
+			connection.shutdownServer();
+		}
+		catch(Exception e)
+		{
+			Logger.error(e);
+		}
+			
+		Worker.shutdown();		
+		System.exit(0);
+	}
+	
 	@Override
 	public void init()
 	{		
+		Thread shutdownThread = new Thread(() -> {
+			shutdown();
+		});		
+		
 		getStage().setOnCloseRequest((event)->{
-			Worker.shutdown();
+			Runtime.getRuntime().removeShutdownHook(shutdownThread);
+			shutdown();
 		});
 		
-		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-			Logger.debug("Stopping local BudgetMasterServer...");
-			try
-			{
-				ServerConnection connection = new ServerConnection(settings);
-				connection.shutdownServer();
-			}
-			catch(Exception e)
-			{
-				Logger.error(e);
-			}
-			System.exit(0);
-		}));
+		Runtime.getRuntime().addShutdownHook(shutdownThread);
 		
 		if(settings.getServerType() == null)
 		{
@@ -614,32 +624,26 @@ public class Controller extends BaseController
 		Optional<ButtonType> result = alert.showAndWait();						
 		if (result.get() == buttonTypeOne)
 		{					
-			Stage modalStage = UIHelpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_UPDATE), getStage(), icon);
+			LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_UPDATE), getStage(), icon);
 			
 			Worker.runLater(() -> {
 				try 
 				{
 					updater.downloadLatestVersion();
 					Platform.runLater(() -> {
-						if(modalStage != null)
-						{
-							modalStage.close();
-						}							
+						LoadingModal.closeModal();						
 					});
 				}
 				catch(Exception ex)
 				{
 					Logger.error(ex);
 					Platform.runLater(() -> {
-						if(modalStage != null)
-						{
-							modalStage.close();
-							AlertGenerator.showAlert(AlertType.ERROR, 
-													Localization.getString(Strings.TITLE_ERROR),
-													"", 
-													Localization.getString(Strings.ERROR_UPDATER_DOWNLOAD_LATEST_VERSION, ex.getMessage()), 
-													icon, getStage(), null, true);
-						}							
+						LoadingModal.closeModal();
+						AlertGenerator.showAlert(AlertType.ERROR, 
+												Localization.getString(Strings.TITLE_ERROR),
+												"", 
+												Localization.getString(Strings.ERROR_UPDATER_DOWNLOAD_LATEST_VERSION, ex.getMessage()), 
+												icon, getStage(), null, true);													
 					});
 				}
 			});
@@ -784,7 +788,7 @@ public class Controller extends BaseController
 	
 	public void refresh(FilterSettings newFilterSettings)
 	{
-		Stage modalStage = UIHelpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATA), getStage(), icon);
+		LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATA), getStage(), icon);
 
 		Worker.runLater(() -> {
 			try
@@ -804,10 +808,7 @@ public class Controller extends BaseController
 													Localization.getString(Strings.WARNING_SERVER_VERSION, serverVersion.getVersionName(), Localization.getString(Strings.VERSION_NAME)), 
 													icon, getStage(), null, false);				
 						
-							if(modalStage != null)
-							{
-								modalStage.close();
-							};
+							LoadingModal.closeModal();
 							categoryHandler = new CategoryHandler(null);				
 							toggleAllTabsExceptSettings(true);
 							tabPane.getSelectionModel().select(tabSettings);	
@@ -819,10 +820,7 @@ public class Controller extends BaseController
 				{
 					Logger.error(e1);
 					Platform.runLater(()->{
-						if(modalStage != null)
-						{
-							modalStage.close();
-						}
+						LoadingModal.closeModal();
 					});
 					
 					if(e1.getMessage().contains("404"))
@@ -865,10 +863,7 @@ public class Controller extends BaseController
 				paymentHandler.filter(newFilterSettings, new TagHandler(settings));
 
 				Platform.runLater(() -> {
-					if(modalStage != null)
-					{
-						modalStage.close();
-					}
+					LoadingModal.closeModal();
 					toggleAllTabsExceptSettings(false);
 					refreshAllTabs();
 				});
@@ -877,11 +872,7 @@ public class Controller extends BaseController
 			{
 				Logger.error(e);
 				Platform.runLater(() -> {
-					if(modalStage != null)
-					{
-						modalStage.close();
-					}
-					Logger.error(e);
+					LoadingModal.closeModal();
 					categoryHandler = new CategoryHandler(null);	
 					showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 					refreshAllTabs();

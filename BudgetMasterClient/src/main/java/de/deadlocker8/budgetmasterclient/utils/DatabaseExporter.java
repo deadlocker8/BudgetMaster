@@ -7,11 +7,9 @@ import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmasterclient.ui.controller.Controller;
-import de.deadlocker8.budgetmasterclient.utils.UIHelpers;
 import javafx.application.Platform;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import logger.Logger;
 import tools.AlertGenerator;
 import tools.Localization;
@@ -35,7 +33,7 @@ public class DatabaseExporter
 		File file = fileChooser.showSaveDialog(controller.getStage());
 		if(file != null)
 		{
-			Stage modalStage = UIHelpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATABASE_EXPORT), controller.getStage(), controller.getIcon());
+			LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATABASE_EXPORT), controller.getStage(), controller.getIcon());
 
 			Worker.runLater(() -> {
 				try
@@ -45,10 +43,7 @@ public class DatabaseExporter
 					FileHelper.saveDatabaseJSON(file, databaseJSON);
 
 					Platform.runLater(() -> {
-						if(modalStage != null)
-						{
-							modalStage.close();
-						}
+						LoadingModal.closeModal();
 						AlertGenerator.showAlert(AlertType.INFORMATION, 
 												Localization.getString(Strings.INFO_TITLE_DATABASE_EXPORT), 
 												"", 
@@ -63,10 +58,7 @@ public class DatabaseExporter
 				{
 					Logger.error(e);
 					Platform.runLater(() -> {
-						if(modalStage != null)
-						{
-							modalStage.close();
-						}
+						LoadingModal.closeModal();
 						controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));						
 					});
 				}
