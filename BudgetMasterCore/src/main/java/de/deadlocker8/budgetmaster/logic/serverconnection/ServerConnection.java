@@ -614,6 +614,24 @@ public class ServerConnection
 		else
 		{
 			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
-		}		
+		}
+	}
+	
+	public void shutdownServer() throws Exception
+	{
+		URL url = new URL(settings.getUrl() + "/shutdown?secret=" + Helpers.getURLEncodedString(settings.getSecret()));
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setRequestMethod("DELETE");
+		httpsCon.setDoInput(true);
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			InputStream stream = httpsCon.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			reader.close();
+		}
+		else
+		{
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+		}
 	}
 }

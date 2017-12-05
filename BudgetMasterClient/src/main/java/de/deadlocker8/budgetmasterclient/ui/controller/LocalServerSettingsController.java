@@ -151,9 +151,10 @@ public class LocalServerSettingsController extends SettingsController
 				{
 					Logger.debug("Starting local Server...");
 					serverHandler.createServerSettingsIfNotExists();
-					controller.setLocalServerProcess(serverHandler.startServer());
+					serverHandler.startServer();
 					try
 					{
+						//DEBUG magic number
 						Thread.sleep(2000);
 					}
 					catch(InterruptedException e)

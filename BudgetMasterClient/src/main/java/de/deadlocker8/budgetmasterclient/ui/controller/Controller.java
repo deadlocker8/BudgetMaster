@@ -107,7 +107,6 @@ public class Controller extends BaseController
 	private Payment selectedPayment;
 	private SearchPreferences searchPreferences;
 	private CommandLine cmd;
-	private Process localServerProcess;
 
 	private boolean alertIsShowing = false;
 	private static DateTimeFormatter DATE_FORMAT;
@@ -132,27 +131,26 @@ public class Controller extends BaseController
 		stage.setMinHeight(650);
 		stage.getScene().getStylesheets().add("/de/deadlocker8/budgetmaster/ui/style.css");
 	}
-
+	
 	@Override
 	public void init()
 	{		
 		getStage().setOnCloseRequest((event)->{
-			if(localServerProcess != null) 
-			{
-				Logger.debug("Stopping local BudgetMasterServer...");
-				localServerProcess.destroy();
-			}
 			Worker.shutdown();
-			System.exit(0);
 		});
 		
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-			Logger.debug("Received shutdown hook");
-			if(localServerProcess != null) 
+			Logger.debug("Stopping local BudgetMasterServer...");
+			try
 			{
-				Logger.debug("Stopping local BudgetMasterServer...");
-				localServerProcess.destroy();
+				ServerConnection connection = new ServerConnection(settings);
+				connection.shutdownServer();
 			}
+			catch(Exception e)
+			{
+				Logger.error(e);
+			}
+			System.exit(0);
 		}));
 		
 		if(settings.getServerType() == null)
@@ -329,11 +327,6 @@ public class Controller extends BaseController
 	public void setSettings(Settings settings)
 	{
 		this.settings = settings;
-	}
-	
-	public void setLocalServerProcess(Process process)
-	{
-		this.localServerProcess = process;
 	}
 
 	public void showNotification(String text)

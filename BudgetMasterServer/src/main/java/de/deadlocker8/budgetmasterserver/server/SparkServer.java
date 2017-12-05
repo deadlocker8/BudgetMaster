@@ -49,6 +49,7 @@ import de.deadlocker8.budgetmasterserver.server.payment.repeating.RepeatingPayme
 import de.deadlocker8.budgetmasterserver.server.payment.search.PaymentMaxAmount;
 import de.deadlocker8.budgetmasterserver.server.payment.search.PaymentSearch;
 import de.deadlocker8.budgetmasterserver.server.rest.RestGet;
+import de.deadlocker8.budgetmasterserver.server.shutdown.Shutdown;
 import de.deadlocker8.budgetmasterserver.server.tag.match.TagMatchAddForPayment;
 import de.deadlocker8.budgetmasterserver.server.tag.match.TagMatchAddForRepeatingPayment;
 import de.deadlocker8.budgetmasterserver.server.tag.match.TagMatchDeleteForPayment;
@@ -198,6 +199,7 @@ public class SparkServer
 			get("/info", new InformationGet(gson, versionInfo, settings));
 			get("/version", new VersionGet(gson, versionInfo));
 			delete("/log", new LogDelete());
+			delete("/shutdown", new Shutdown());
 		}
 		catch(ClassNotFoundException e)
 		{
