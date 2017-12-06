@@ -134,17 +134,19 @@ public class Controller extends BaseController
 	
 	public void shutdown()
 	{
-		Logger.debug("Stopping local BudgetMasterServer...");
-		try
+		if(settings.getServerType().equals(ServerType.LOCAL))
 		{
-			ServerConnection connection = new ServerConnection(settings);
-			connection.shutdownServer();
+			Logger.debug("Stopping local BudgetMasterServer...");
+			try
+			{
+				ServerConnection connection = new ServerConnection(settings);
+				connection.shutdownServer();
+			}
+			catch(Exception e)
+			{
+				Logger.error(e);
+			}
 		}
-		catch(Exception e)
-		{
-			Logger.error(e);
-		}
-			
 		Worker.shutdown();		
 		System.exit(0);
 	}
@@ -292,10 +294,6 @@ public class Controller extends BaseController
 				tabPane.getSelectionModel().select(tabSettings);
 				AlertGenerator.showAlert(AlertType.INFORMATION, Localization.getString(Strings.TITLE_INFO), "", Localization.getString(Strings.INFO_FIRST_START), icon, getStage(), null, false);
 			});
-		}
-		else
-		{
-			refresh(filterSettings);			
 		}
 	}
 	

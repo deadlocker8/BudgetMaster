@@ -103,6 +103,8 @@ public class OnlineServerSettingsController extends SettingsController
 		hboxSettings.prefWidthProperty().bind(scrollPane.widthProperty().subtract(25));
 		
 		refreshLabelsUpdate();
+		
+		controller.refresh(controller.getFilterSettings());
 	}
 	
 	@Override

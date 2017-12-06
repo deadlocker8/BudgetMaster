@@ -65,6 +65,9 @@ public class LocalServerSettingsController extends SettingsController
 	@FXML private Label labelLatestVersion;
 
 	private LanguageType previousLanguage;
+	
+	private final int MILLIS_UNTIL_NEXT_RETRY = 2000;
+	private final int MAX_NUMBER_OF_RETRIES = 5;
 
 	@Override
 	public void init(Controller controller)
@@ -139,10 +142,7 @@ public class LocalServerSettingsController extends SettingsController
 		{
 			case ACTIVE:
 				labelLocalServerStatus.setText(Localization.getString(Strings.LOCAL_SERVER_STATUS_OK));
-				buttonLocalServerAction.setVisible(false);
-
-				RestartHandler restartHandler = new RestartHandler(controller);
-				restartHandler.handleRestart(controller.getSettings().getLanguage());
+				buttonLocalServerAction.setVisible(false);				
 				refreshLabelsUpdate();
 				save();
 				break;
@@ -156,21 +156,38 @@ public class LocalServerSettingsController extends SettingsController
 						Logger.debug("Starting local Server...");
 						serverHandler.createServerSettingsIfNotExists();
 						serverHandler.startServer();
-						try
-						{
-							//DEBUG magic number
-							//TODO retry reconnecting
-							System.out.println("Start sleep");
-							Thread.sleep(2000);
-							System.out.println("End sleep");
-						}
-						catch(InterruptedException e)
-						{
-						}
 						
-						if(!serverHandler.getServerStatus().equals(LocalServerStatus.ACTIVE))
+						Logger.debug("Trying to connect to local server...");
+						Platform.runLater(()->{LoadingModal.setMessage(Localization.getString(Strings.LOAD_LOCAL_SERVER_CONNECT));});
+						int retryCount = 1;
+						while(retryCount <= MAX_NUMBER_OF_RETRIES)
 						{
-							throw new LocalServerException("");
+							final int retries = retryCount;
+							boolean isActive = serverHandler.getServerStatus().equals(LocalServerStatus.ACTIVE);
+							if(isActive)
+							{
+								Logger.debug("Connected to local server");
+								break;
+							}
+								
+							if(retryCount == MAX_NUMBER_OF_RETRIES)
+							{
+								Logger.debug("Couldn't connect to local server. Giving up after " + retryCount + " retries.");
+								throw new LocalServerException("");
+							}
+							else
+							{
+								Logger.debug("Couldn't connect to local server. Retry " + retryCount + "/" + MAX_NUMBER_OF_RETRIES + ". Next Retry in " + MILLIS_UNTIL_NEXT_RETRY/1000 + " Seconds...");							
+								Platform.runLater(()->{LoadingModal.setMessage(Localization.getString(Strings.LOAD_LOCAL_SERVER_RETRY, retries, MAX_NUMBER_OF_RETRIES));});
+								retryCount++;
+								try
+								{
+									Thread.sleep(MILLIS_UNTIL_NEXT_RETRY);
+								}
+								catch(InterruptedException e)
+								{
+								}
+							}							
 						}
 					}
 					catch(IOException e)
@@ -180,7 +197,9 @@ public class LocalServerSettingsController extends SettingsController
 						Platform.runLater(()->{
 							LoadingModal.closeModal();
 							AlertGenerator.showAlert(AlertType.ERROR, Localization.getString(Strings.TITLE_ERROR), "", Localization.getString(Strings.ERROR_LOCAL_SERVER_START, e.getMessage()), controller.getIcon(), controller.getStage(), null, false);
+							controller.refresh(controller.getFilterSettings());
 						});
+						return;
 					}
 					catch(LocalServerException ex)
 					{
@@ -188,8 +207,19 @@ public class LocalServerSettingsController extends SettingsController
 						Platform.runLater(()->{
 							LoadingModal.closeModal();
 							AlertGenerator.showAlert(AlertType.ERROR, Localization.getString(Strings.TITLE_ERROR), "", Localization.getString(Strings.ERROR_LOCAL_SERVER_START, ""), controller.getIcon(), controller.getStage(), null, false);
+							controller.refresh(controller.getFilterSettings());
+							buttonLocalServerAction.setText(Localization.getString(Strings.LOCAL_SERVER_ACTION_NOT_STARTED));
+							buttonLocalServerAction.setVisible(true);
+							buttonLocalServerAction.setDisable(false);
+
+							buttonLocalServerAction.setOnAction((event) -> {
+								buttonLocalServerAction.setDisable(true);
+								checkServerStatus();
+							});						
 						});
+						return;
 					}
+					
 					Platform.runLater(()->{
 						checkServerStatus();
 						LoadingModal.closeModal();
@@ -204,7 +234,7 @@ public class LocalServerSettingsController extends SettingsController
 
 				buttonLocalServerAction.setOnAction((event) -> {
 					buttonLocalServerAction.setDisable(true);
-					LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_LOCAL_SERVER), controller.getStage(), controller.getIcon());
+					LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DOWNLOAD_LOCAL_SERVER), controller.getStage(), controller.getIcon());
 
 					Worker.runLater(() -> {
 						try

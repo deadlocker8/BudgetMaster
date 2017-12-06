@@ -51,6 +51,9 @@ public class Strings
     public static final String LOAD_SEARCH = "load.search";
     public static final String LOAD_LOCAL_SERVER = "load.local.server";
     public static final String LOAD_DOWNLOAD_LOCAL_SERVER = "load.download.local.server";
+    public static final String LOAD_LOCAL_SERVER_CONNECT = "load.local.server.connect";
+    public static final String LOAD_LOCAL_SERVER_RETRY = "load.local.server.retry";
+    
     
     //MISC
     public static final String CATEGORY_NONE = "category.none";
@@ -74,6 +77,7 @@ public class Strings
     public static final String SHORTCUT_DEV_CONSOLE = "shortcut.dev.console";
     public static final String LOCAL_SERVER_STATUS_OK = "local.server.status.ok";
     public static final String LOCAL_SERVER_STATUS_NOT_STARTED = "local.server.status.not.started";
+    public static final String LOCAL_SERVER_ACTION_NOT_STARTED = "local.server.action.not.started";
     public static final String LOCAL_SERVER_STATUS_NOT_PRESENT = "local.server.status.not.present";
     public static final String LOCAL_SERVER_ACTION_NOT_PRESENT = "local.server.action.not.present";
     

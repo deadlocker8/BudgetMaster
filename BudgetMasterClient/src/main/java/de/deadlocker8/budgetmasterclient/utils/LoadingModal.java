@@ -16,20 +16,29 @@ import tools.Localization;
 public class LoadingModal
 {
 	private static Stage modalStage;
+	private static ModalController modalController;
 	
 	public static void showModal(String title, String message, Stage owner, Image icon)
 	{
 		closeModal();
 		modalStage = createModal(title, message, owner, icon);
-	}	
+	}
+	
+	public static void setMessage(String message)
+	{
+		if(modalController != null)
+		{
+			modalController.setMessage(message);
+		}
+	}
 	
 	public static void closeModal()
 	{
-		System.out.println(Thread.currentThread().getStackTrace()[2]);
 		if(modalStage != null)
 		{
 			modalStage.close();
 			modalStage = null;
+			modalController = null;
 		}
 	}
 	
@@ -52,8 +61,9 @@ public class LoadingModal
 			newStage.setScene(new Scene(root));
 			newStage.getIcons().add(icon);
 			newStage.setResizable(false);
-			ModalController newController = fxmlLoader.getController();
-			newController.init(newStage, message);
+			newStage.setAlwaysOnTop(true);
+			modalController = fxmlLoader.getController();
+			modalController.init(newStage, message);
 			newStage.show();
 
 			return newStage;

@@ -90,6 +90,9 @@
                                  <HBox.margin>
                                     <Insets right="25.0" />
                                  </HBox.margin>
+                                 <padding>
+                                    <Insets top="3.0" />
+                                 </padding>
                               </VBox>
                               <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="15.0" HBox.hgrow="ALWAYS">
                                  <children>

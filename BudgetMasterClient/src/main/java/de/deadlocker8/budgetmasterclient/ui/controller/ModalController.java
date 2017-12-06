@@ -15,4 +15,9 @@ public class ModalController
 			e.consume();
 		});
 	}
+	
+	public void setMessage(String message)
+	{
+		labelMessage.setText(message);
+	}
 }
