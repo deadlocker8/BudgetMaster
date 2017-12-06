@@ -3,11 +3,11 @@ package de.deadlocker8.budgetmasterclient.ui.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import de.deadlocker8.budgetmaster.logic.LocalServerException;
-import de.deadlocker8.budgetmaster.logic.LocalServerHandler;
-import de.deadlocker8.budgetmaster.logic.LocalServerStatus;
 import de.deadlocker8.budgetmaster.logic.ServerType;
 import de.deadlocker8.budgetmaster.logic.Settings;
+import de.deadlocker8.budgetmaster.logic.localserver.LocalServerException;
+import de.deadlocker8.budgetmaster.logic.localserver.LocalServerHandler;
+import de.deadlocker8.budgetmaster.logic.localserver.LocalServerStatus;
 import de.deadlocker8.budgetmaster.logic.updater.Updater;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
@@ -197,7 +197,7 @@ public class LocalServerSettingsController extends SettingsController
 						Platform.runLater(()->{
 							LoadingModal.closeModal();
 							AlertGenerator.showAlert(AlertType.ERROR, Localization.getString(Strings.TITLE_ERROR), "", Localization.getString(Strings.ERROR_LOCAL_SERVER_START, e.getMessage()), controller.getIcon(), controller.getStage(), null, false);
-							controller.refresh(controller.getFilterSettings());
+							controller.forceSettingsTab();
 						});
 						return;
 					}
@@ -227,6 +227,7 @@ public class LocalServerSettingsController extends SettingsController
 				});
 				break;
 			case MISSING:
+				controller.forceSettingsTab();
 				labelLocalServerStatus.setText(Localization.getString(Strings.LOCAL_SERVER_STATUS_NOT_PRESENT));
 				buttonLocalServerAction.setText(Localization.getString(Strings.LOCAL_SERVER_ACTION_NOT_PRESENT));
 				buttonLocalServerAction.setVisible(true);
@@ -257,6 +258,8 @@ public class LocalServerSettingsController extends SettingsController
 						}
 					});
 				});
+				break;
+			default:
 				break;
 		}
 	}
@@ -340,6 +343,43 @@ public class LocalServerSettingsController extends SettingsController
 		RestartHandler restartHandler = new RestartHandler(controller);
 		restartHandler.handleRestart(previousLanguage);
 		refreshLabelsUpdate();
+	}
+	
+	public void handleIncompatibleServer()
+	{
+		labelLocalServerStatus.setText(Localization.getString(Strings.LOCAL_SERVER_STATUS_INCOMPATIBLE));
+		buttonLocalServerAction.setText(Localization.getString(Strings.LOCAL_SERVER_ACTION_INCOMPATIBLE));
+		buttonLocalServerAction.setVisible(true);
+		buttonLocalServerAction.setDisable(false);
+
+		buttonLocalServerAction.setOnAction((event) -> {
+			buttonLocalServerAction.setDisable(true);
+			LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DOWNLOAD_LOCAL_SERVER), controller.getStage(), controller.getIcon());
+
+			Worker.runLater(() -> {
+				try
+				{					
+					LocalServerHandler serverHandler = new LocalServerHandler();
+					serverHandler.shutdownServer();
+					Thread.sleep(3000);
+					serverHandler.downloadServer(Localization.getString(Strings.VERSION_NAME));
+					serverHandler.createServerSettingsIfNotExists();
+					Platform.runLater(()->{
+						checkServerStatus();
+						LoadingModal.closeModal();
+					});
+				}
+				catch(Exception e)
+				{
+					Logger.error(e);
+					Platform.runLater(()->{
+						LoadingModal.closeModal();
+						AlertGenerator.showAlert(AlertType.ERROR, Localization.getString(Strings.TITLE_ERROR), "", Localization.getString(Strings.ERROR_LOCAL_SERVER_DOWNLOAD, e.getMessage()), controller.getIcon(), controller.getStage(), null, false);
+						buttonLocalServerAction.setDisable(false);
+					});
+				}
+			});
+		});
 	}
 
 	@Override

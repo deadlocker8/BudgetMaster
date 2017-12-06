@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.logic;
+package de.deadlocker8.budgetmaster.logic.localserver;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 
+import de.deadlocker8.budgetmaster.logic.Settings;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
@@ -57,6 +58,18 @@ public class LocalServerHandler
 		}
 	}
 	
+	public void shutdownServer() throws Exception
+	{
+		Settings settings = new Settings();
+		settings.setUrl("https://localhost:9000");
+		settings.setSecret(HashUtils.hash("BudgetMaster", Helpers.SALT));
+		ArrayList<String> trustedHosts = new ArrayList<>();
+		trustedHosts.add("localhost");
+		settings.setTrustedHosts(trustedHosts);		
+		ServerConnection connection = new ServerConnection(settings);
+		connection.shutdownServer();
+	}
+	
 	public void createServerSettingsIfNotExists() throws FileNotFoundException
 	{
 		File settingsFile = new File(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER) + "/localServer/settings.json");
@@ -88,7 +101,7 @@ public class LocalServerHandler
 		
 		//download into temp directory and file
 		Path target = Paths.get(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER) + "/localServer/BudgetMasterServer.jar");
-		download(BUILD_FOLDER.replace("{}", "v" + versionName) + "BudgetMasterServer.jar", target);			
+		download(BUILD_FOLDER.replace("{}", "v" + "1.7.0") + "BudgetMasterServer.jar", target);			
 		Logger.debug("Successfully downloaded BudgetMasterServer " + versionName);
 	}
 	

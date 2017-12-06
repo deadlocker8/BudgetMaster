@@ -399,6 +399,12 @@ public class Controller extends BaseController
 	{
 		new DatePickerController(getStage(), this, currentDate);
 	}
+	
+	public void forceSettingsTab()
+	{
+		toggleAllTabsExceptSettings(true);
+		tabPane.getSelectionModel().select(tabSettings);
+	}
 
 	public void showConnectionErrorAlert(String errorMessage)
 	{		
@@ -799,18 +805,31 @@ public class Controller extends BaseController
 					VersionInformation serverVersion = connection.getServerVersion();
 					if(serverVersion.getVersionCode() < Integer.parseInt(Localization.getString(Strings.VERSION_CODE)))
 					{
-						Platform.runLater(()->{
-							AlertGenerator.showAlert(AlertType.WARNING,
-													Localization.getString(Strings.TITLE_WARNING), 
-													"",
-													Localization.getString(Strings.WARNING_SERVER_VERSION, serverVersion.getVersionName(), Localization.getString(Strings.VERSION_NAME)), 
-													icon, getStage(), null, false);				
-						
-							LoadingModal.closeModal();
-							categoryHandler = new CategoryHandler(null);				
-							toggleAllTabsExceptSettings(true);
-							tabPane.getSelectionModel().select(tabSettings);	
-						});
+						if(settings.getServerType().equals(ServerType.ONLINE))
+						{					
+							Platform.runLater(()->{
+								AlertGenerator.showAlert(AlertType.WARNING,
+														Localization.getString(Strings.TITLE_WARNING), 
+														"",
+														Localization.getString(Strings.WARNING_SERVER_VERSION, serverVersion.getVersionName(), Localization.getString(Strings.VERSION_NAME)), 
+														icon, getStage(), null, false);				
+							
+								LoadingModal.closeModal();
+								categoryHandler = new CategoryHandler(null);			
+								toggleAllTabsExceptSettings(true);
+								tabPane.getSelectionModel().select(tabSettings);	
+							});
+						}
+						else
+						{
+							Platform.runLater(()->{
+								LoadingModal.closeModal();
+								categoryHandler = new CategoryHandler(null);			
+								toggleAllTabsExceptSettings(true);
+								tabPane.getSelectionModel().select(tabSettings);
+								((LocalServerSettingsController)settingsController).handleIncompatibleServer();
+							});
+						}
 						return;
 					}
 				}
