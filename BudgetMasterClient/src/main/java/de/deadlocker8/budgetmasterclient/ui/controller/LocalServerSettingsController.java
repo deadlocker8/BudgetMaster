@@ -107,6 +107,7 @@ public class LocalServerSettingsController extends SettingsController
 		refreshLabelsUpdate();
 		
 		prefill();
+		checkServerStatus();
 	}
 
 	@Override
@@ -131,8 +132,6 @@ public class LocalServerSettingsController extends SettingsController
 		}
 
 		checkboxEnableAutoUpdate.setSelected(controller.getSettings().isAutoUpdateCheckEnabled());
-		
-		checkServerStatus();
 	}
 
 	private void checkServerStatus()
@@ -147,7 +146,9 @@ public class LocalServerSettingsController extends SettingsController
 				save();
 				break;
 			case INACTIVE:
-				LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_LOCAL_SERVER), controller.getStage(), controller.getIcon());
+				Platform.runLater(()->{
+					LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_LOCAL_SERVER), controller.getStage(), controller.getIcon());
+				});
 				labelLocalServerStatus.setText(Localization.getString(Strings.LOCAL_SERVER_STATUS_NOT_STARTED));
 				buttonLocalServerAction.setVisible(false);
 				Worker.runLater(() -> {

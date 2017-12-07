@@ -147,7 +147,7 @@ public class Controller extends BaseController
 				Logger.error(e);
 			}
 		}
-		Worker.shutdown();		
+		Worker.shutdown();
 		System.exit(0);
 	}
 	
@@ -792,7 +792,9 @@ public class Controller extends BaseController
 	
 	public void refresh(FilterSettings newFilterSettings)
 	{
-		LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATA), getStage(), icon);
+		Platform.runLater(()->{
+			LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATA), getStage(), icon);
+		});
 
 		Worker.runLater(() -> {
 			try
