@@ -126,12 +126,16 @@ public class SparkServer
 		}
 		
 		before((request, response) -> {
-
 			String clientSecret = request.queryMap("secret").value();
 
 			if(clientSecret == null || !clientSecret.equals(HashUtils.hash(settings.getServerSecret(), Helpers.SALT)))
 			{
+				Logger.debug("Unauthorized request from " + request.ip());
 				halt(401, "Unauthorized");
+			}
+			else
+			{
+				Logger.debug("Authorized request from " + request.ip());
 			}
 
 			DatabaseHandler handler = Utils.getDatabaseHandler(settings);
