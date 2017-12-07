@@ -262,7 +262,7 @@ public class SearchController extends BaseController implements Styleable
 		searchPreferences.setMinAmount((int)rangeSlider.getLowValue());
 		searchPreferences.setMaxAmount((int)rangeSlider.getHighValue());
 		
-		LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_SEARCH), getStage(), controller.getIcon());
+		LoadingModal.showModal(controller, Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_SEARCH), getStage(), controller.getIcon());
 		
 		Worker.runLater(() -> {
 			try 

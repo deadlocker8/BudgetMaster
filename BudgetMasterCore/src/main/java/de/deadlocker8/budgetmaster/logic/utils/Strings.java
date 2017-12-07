@@ -172,6 +172,8 @@ public class Strings
     public static final String INFO_HEADER_TEXT_START_AFTER_UPDATE = "info.header.text.start.after.update";
     public static final String INFO_TEXT_START_AFTER_UPDATE = "info.text.start.after.update";
     public static final String INFO_TAGS = "info.tags";
+    public static final String INFO_TITLE_SHUTDOWN = "info.title.shutdown";
+    public static final String INFO_TEXT_SHUTDOWN = "info.text.shutdown";
         
     //WARNING
     public static final String WARNING_ENDDATE_BEFORE_STARTDATE = "warning.enddate.before.startdate";

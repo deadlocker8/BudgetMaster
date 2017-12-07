@@ -653,7 +653,7 @@ public class ReportController implements Refreshable, Styleable
 																controller.getCurrentDate(),
 																budget);
 			
-			LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_REPORT), controller.getStage(), controller.getIcon());
+			LoadingModal.showModal(controller, Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_REPORT), controller.getStage(), controller.getIcon());
 
 			Worker.runLater(() -> {
 				try
@@ -758,7 +758,7 @@ public class ReportController implements Refreshable, Styleable
 	@Override
 	public void refresh()
 	{
-		LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_REPORT_TAB), controller.getStage(), controller.getIcon());
+		LoadingModal.showModal(controller, Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_REPORT_TAB), controller.getStage(), controller.getIcon());
 		
 		if(controller.getFilterSettings().equals(new FilterSettings()))
 		{

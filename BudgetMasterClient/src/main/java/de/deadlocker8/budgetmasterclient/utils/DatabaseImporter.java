@@ -114,7 +114,7 @@ public class DatabaseImporter
 				return;
 			}
 
-			LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATABASE_IMPORT), controller.getStage(), controller.getIcon());
+			LoadingModal.showModal(controller, Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATABASE_IMPORT), controller.getStage(), controller.getIcon());
 
 			Worker.runLater(() -> {
 				try

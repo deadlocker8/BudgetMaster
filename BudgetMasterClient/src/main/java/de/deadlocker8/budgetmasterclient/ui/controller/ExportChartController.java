@@ -225,7 +225,7 @@ public class ExportChartController extends BaseController implements Styleable
 			alert.setTitle(Localization.getString(Strings.INFO_TITLE_CHART_EXPORT));
 			alert.initOwner(controller.getController().getStage());
 			alert.setHeaderText("");
-			alert.setContentText(Localization.getString(Strings.INFO_TEXT_CHART_EXPORT));			
+			alert.setContentText(Localization.getString(Strings.INFO_TEXT_CHART_EXPORT));
 			Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
 			dialogStage.getIcons().add(controller.getController().getIcon());						
 			

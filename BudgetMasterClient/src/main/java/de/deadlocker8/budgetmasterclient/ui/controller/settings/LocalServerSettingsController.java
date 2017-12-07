@@ -148,7 +148,7 @@ public class LocalServerSettingsController extends SettingsController
 				break;
 			case INACTIVE:
 				Platform.runLater(()->{
-					LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_LOCAL_SERVER), controller.getStage(), controller.getIcon());
+					LoadingModal.showModal(controller, Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_LOCAL_SERVER), controller.getStage(), controller.getIcon());
 				});
 				labelLocalServerStatus.setText(Localization.getString(Strings.LOCAL_SERVER_STATUS_NOT_STARTED));
 				buttonLocalServerAction.setVisible(false);
@@ -237,7 +237,7 @@ public class LocalServerSettingsController extends SettingsController
 
 				buttonLocalServerAction.setOnAction((event) -> {
 					buttonLocalServerAction.setDisable(true);
-					LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DOWNLOAD_LOCAL_SERVER), controller.getStage(), controller.getIcon());
+					LoadingModal.showModal(controller, Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DOWNLOAD_LOCAL_SERVER), controller.getStage(), controller.getIcon());
 
 					Worker.runLater(() -> {
 						try
@@ -356,7 +356,7 @@ public class LocalServerSettingsController extends SettingsController
 
 		buttonLocalServerAction.setOnAction((event) -> {
 			buttonLocalServerAction.setDisable(true);
-			LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DOWNLOAD_LOCAL_SERVER), controller.getStage(), controller.getIcon());
+			LoadingModal.showModal(controller, Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DOWNLOAD_LOCAL_SERVER), controller.getStage(), controller.getIcon());
 
 			Worker.runLater(() -> {
 				try

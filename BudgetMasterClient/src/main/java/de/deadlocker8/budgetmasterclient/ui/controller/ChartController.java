@@ -248,7 +248,7 @@ public class ChartController implements Refreshable, Styleable
 	@Override
 	public void refresh()
 	{
-		LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_CHARTS), controller.getStage(), controller.getIcon());
+		LoadingModal.showModal(controller, Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_CHARTS), controller.getStage(), controller.getIcon());
 
 		// prepare chart categories
 		LocalDate startDate = LocalDate.parse(controller.getCurrentDate().withDayOfMonth(1).toString("yyyy-MM-dd"));

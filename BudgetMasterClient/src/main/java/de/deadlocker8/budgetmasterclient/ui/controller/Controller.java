@@ -631,7 +631,7 @@ public class Controller extends BaseController
 		Optional<ButtonType> result = alert.showAndWait();						
 		if (result.get() == buttonTypeOne)
 		{					
-			LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_UPDATE), getStage(), icon);
+			LoadingModal.showModal(this, Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_UPDATE), getStage(), icon);
 			
 			Worker.runLater(() -> {
 				try 
@@ -797,7 +797,7 @@ public class Controller extends BaseController
 	{
 		Logger.debug("Starting main refresh...");
 		Platform.runLater(()->{
-			LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATA), getStage(), icon);
+			LoadingModal.showModal(this, Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATA), getStage(), icon);
 		});
 
 		Worker.runLater(() -> {

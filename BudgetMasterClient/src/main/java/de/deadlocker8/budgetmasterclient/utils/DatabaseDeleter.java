@@ -44,7 +44,7 @@ public class DatabaseDeleter
 		{
 			if(result.get().equals(verificationCode))
 			{
-				LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATABASE_DELETE), controller.getStage(), controller.getIcon());
+				LoadingModal.showModal(controller, Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATABASE_DELETE), controller.getStage(), controller.getIcon());
 
 				Worker.runLater(() -> {
 					try

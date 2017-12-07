@@ -33,7 +33,7 @@ public class DatabaseExporter
 		File file = fileChooser.showSaveDialog(controller.getStage());
 		if(file != null)
 		{
-			LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATABASE_EXPORT), controller.getStage(), controller.getIcon());
+			LoadingModal.showModal(controller, Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATABASE_EXPORT), controller.getStage(), controller.getIcon());
 
 			Worker.runLater(() -> {
 				try
