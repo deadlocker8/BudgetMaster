@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmasterclient.ui.controller;
+package de.deadlocker8.budgetmasterclient.ui.controller.settings;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,6 +13,7 @@ import de.deadlocker8.budgetmaster.logic.utils.LanguageType;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmasterclient.ui.RestartHandler;
 import de.deadlocker8.budgetmasterclient.ui.cells.LanguageCell;
+import de.deadlocker8.budgetmasterclient.ui.controller.Controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;

@@ -31,6 +31,8 @@ import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmasterclient.ui.commandLine.CommandBundle;
 import de.deadlocker8.budgetmasterclient.ui.commandLine.CommandLine;
+import de.deadlocker8.budgetmasterclient.ui.controller.settings.LocalServerSettingsController;
+import de.deadlocker8.budgetmasterclient.ui.controller.settings.SettingsController;
 import de.deadlocker8.budgetmasterclient.utils.LoadingModal;
 import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
@@ -169,6 +171,7 @@ public class Controller extends BaseController
 		{
 			settings.setServerType(ServerType.ONLINE);
 		}
+		Logger.info("Running with ServerType: " + settings.getServerType());
 		
 		currentDate = DateTime.now();
 		buttonDate.setText(currentDate.toString(DATE_FORMAT));
@@ -792,6 +795,7 @@ public class Controller extends BaseController
 	
 	public void refresh(FilterSettings newFilterSettings)
 	{
+		Logger.debug("Starting main refresh...");
 		Platform.runLater(()->{
 			LoadingModal.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATA), getStage(), icon);
 		});
@@ -804,9 +808,11 @@ public class Controller extends BaseController
 				//check if server is compatible with client
 				try
 				{
+					Logger.debug("Checking server compatibility...");
 					VersionInformation serverVersion = connection.getServerVersion();
 					if(serverVersion.getVersionCode() < Integer.parseInt(Localization.getString(Strings.VERSION_CODE)))
 					{
+						Logger.debug("Server (versionCode: " + serverVersion.getVersionCode() + ") is incompatible with client (versionCode: " + Localization.getString(Strings.VERSION_CODE) + ")");
 						if(settings.getServerType().equals(ServerType.ONLINE))
 						{					
 							Platform.runLater(()->{
@@ -834,6 +840,10 @@ public class Controller extends BaseController
 						}
 						return;
 					}
+					else
+					{
+						Logger.debug("Found compatible server (versionCode: " + serverVersion.getVersionCode() + ")");
+					}
 				}
 				catch(Exception e1)
 				{
@@ -844,6 +854,7 @@ public class Controller extends BaseController
 					
 					if(e1.getMessage().contains("404"))
 					{
+						Logger.debug("Server version is incompatible with current client version (" + Localization.getString(Strings.VERSION_CODE) + ")");
 						//old server
 						Platform.runLater(()->{
 							AlertGenerator.showAlert(AlertType.WARNING,
@@ -865,6 +876,8 @@ public class Controller extends BaseController
 					return;
 				}
 				
+				Logger.debug("Connected");
+				
 				paymentHandler = new PaymentHandler();
 				paymentHandler.getPayments().addAll(connection.getPayments(currentDate.getYear(), currentDate.getMonthOfYear()));
 				paymentHandler.getPayments().addAll(connection.getRepeatingPayments(currentDate.getYear(), currentDate.getMonthOfYear()));			
@@ -880,6 +893,7 @@ public class Controller extends BaseController
 				
 				categoryBudgets = connection.getCategoryBudgets(currentDate.getYear(), currentDate.getMonthOfYear());	
 				paymentHandler.filter(newFilterSettings, new TagHandler(settings));
+				Logger.debug("Main refresh done");
 
 				Platform.runLater(() -> {
 					LoadingModal.closeModal();

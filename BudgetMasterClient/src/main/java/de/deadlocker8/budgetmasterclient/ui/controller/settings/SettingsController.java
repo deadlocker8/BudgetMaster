@@ -1,6 +1,7 @@
-package de.deadlocker8.budgetmasterclient.ui.controller;
+package de.deadlocker8.budgetmasterclient.ui.controller.settings;
 
 import de.deadlocker8.budgetmasterclient.ui.Styleable;
+import de.deadlocker8.budgetmasterclient.ui.controller.Controller;
 import de.deadlocker8.budgetmasterclient.utils.DatabaseDeleter;
 import de.deadlocker8.budgetmasterclient.utils.DatabaseExporter;
 import de.deadlocker8.budgetmasterclient.utils.DatabaseImporter;
