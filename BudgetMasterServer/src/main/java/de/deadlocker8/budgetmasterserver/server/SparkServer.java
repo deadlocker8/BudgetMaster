@@ -133,10 +133,6 @@ public class SparkServer
 				Logger.debug("Unauthorized request from " + request.ip());
 				halt(401, "Unauthorized");
 			}
-			else
-			{
-				Logger.debug("Authorized request from " + request.ip());
-			}
 
 			DatabaseHandler handler = Utils.getDatabaseHandler(settings);
 			RepeatingPaymentUpdater paymentUpdater = new RepeatingPaymentUpdater(handler);
