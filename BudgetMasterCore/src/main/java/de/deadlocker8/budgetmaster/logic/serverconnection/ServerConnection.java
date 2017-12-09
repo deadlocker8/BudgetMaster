@@ -621,7 +621,7 @@ public class ServerConnection
 	{
 		URL url = new URL(settings.getUrl() + "/shutdown?secret=" + Helpers.getURLEncodedString(settings.getSecret()));
 		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
-		httpsCon.setRequestMethod("DELETE");
+		httpsCon.setRequestMethod("GET");
 		httpsCon.setDoInput(true);
 		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
 		{

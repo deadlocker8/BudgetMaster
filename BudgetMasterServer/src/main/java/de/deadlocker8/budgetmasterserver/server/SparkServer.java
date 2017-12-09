@@ -199,7 +199,7 @@ public class SparkServer
 			get("/info", new InformationGet(gson, versionInfo, settings));
 			get("/version", new VersionGet(gson, versionInfo));
 			delete("/log", new LogDelete());
-			delete("/shutdown", new Shutdown());
+			get("/shutdown", new Shutdown());
 		}
 		catch(ClassNotFoundException e)
 		{
