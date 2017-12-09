@@ -70,7 +70,7 @@ public class DatabaseImporter
 		}
 	}
 	
-	private void importDB()
+	public void importDB()
 	{
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle(Localization.getString(Strings.TITLE_DATABASE_IMPORT));

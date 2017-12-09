@@ -56,7 +56,7 @@ public class DatabaseDeleter
 							if(importPending)
 							{
 								DatabaseImporter importer = new DatabaseImporter(controller);
-								importer.importDatabase();
+								importer.importDB();
 							}
 							else
 							{
