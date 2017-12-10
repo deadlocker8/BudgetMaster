@@ -154,7 +154,7 @@
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                                        <children>
-                                          <VBox minWidth="210.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                                          <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                                              <children>
                                                 <Button fx:id="buttonSearchUpdates" minWidth="100.0" mnemonicParsing="false" onAction="#checkForUpdates" text="%settingstab.button.updates.search" />
                                                 <CheckBox fx:id="checkboxEnableAutoUpdate" mnemonicParsing="false" text="%settingstab.button.updates.automatic">
@@ -164,14 +164,14 @@
                                                 </CheckBox>
                                              </children>
                                           </VBox>
-                                          <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                                          <VBox prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <Label fx:id="labelSecret11111" alignment="TOP_LEFT" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" minHeight="25.0" text="%settingstab.label.updates.current.version" textAlignment="CENTER" wrapText="true">
+                                                <Label contentDisplay="CENTER" minHeight="30.0" text="%settingstab.label.updates.current.version" textAlignment="CENTER" wrapText="true">
                                                    <font>
                                                       <Font name="System Bold" size="13.0" />
                                                    </font>
                                                 </Label>
-                                                <Label fx:id="labelSecret111111" alignment="TOP_LEFT" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" minHeight="25.0" text="%settingstab.label.updates.latest.version" textAlignment="CENTER" wrapText="true">
+                                                <Label alignment="TOP_LEFT" contentDisplay="CENTER" minHeight="25.0" text="%settingstab.label.updates.latest.version" textAlignment="CENTER" wrapText="true">
                                                    <font>
                                                       <Font name="System Bold" size="13.0" />
                                                    </font>
@@ -181,14 +181,14 @@
                                                 </Label>
                                              </children>
                                           </VBox>
-                                          <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                                          <VBox prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <Label fx:id="labelCurrentVersion" alignment="TOP_LEFT" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" minHeight="25.0" textAlignment="CENTER" wrapText="true">
+                                                <Label fx:id="labelCurrentVersion" contentDisplay="CENTER" minHeight="30.0" textAlignment="CENTER" wrapText="true">
                                                    <font>
                                                       <Font size="13.0" />
                                                    </font>
                                                 </Label>
-                                                <Label fx:id="labelLatestVersion" alignment="TOP_LEFT" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" minHeight="25.0" textAlignment="CENTER" wrapText="true">
+                                                <Label fx:id="labelLatestVersion" alignment="TOP_LEFT" contentDisplay="CENTER" textAlignment="CENTER" wrapText="true">
                                                    <font>
                                                       <Font size="13.0" />
                                                    </font>
