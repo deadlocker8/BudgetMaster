@@ -190,6 +190,7 @@
                                     <Font name="System Bold" size="14.0" />
                                  </font>
                               </Label>
+                              <CheckBox fx:id="checkBoxEndDate" mnemonicParsing="false" />
                               <DatePicker fx:id="datePickerEnddate" maxWidth="1.7976931348623157E308" prefHeight="29.0" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>

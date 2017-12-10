@@ -71,6 +71,7 @@ public class NewPaymentController extends BaseController implements Styleable
 	@FXML private TextArea textArea;
 	@FXML private HBox hboxTags;
 	@FXML private Button buttonTagsHelp;
+	@FXML private CheckBox checkBoxEndDate;
 
 	private Stage parentStage;
 	private Controller controller;
@@ -248,6 +249,10 @@ public class NewPaymentController extends BaseController implements Styleable
 				}
 			}
 		});
+		
+		checkBoxEndDate.selectedProperty().addListener((obs, oldValue, newValue)->{
+			datePickerEnddate.setDisable(!newValue);
+		});
 	}
 	
 	private void initSpinnerRepeatingPeriod()
@@ -334,6 +339,8 @@ public class NewPaymentController extends BaseController implements Styleable
 						toggleRepeatingArea(true);
 						comboBoxRepeatingDay.getSelectionModel().select(currentPayment.getRepeatMonthDay()-1);
 					}
+					
+					checkBoxEndDate.setSelected(currentPayment.getRepeatEndDate() != null);
 					if(currentPayment.getRepeatEndDate() != null)
 					{
 						datePickerEnddate.setValue(LocalDate.parse(currentPayment.getRepeatEndDate()));
@@ -445,17 +452,18 @@ public class NewPaymentController extends BaseController implements Styleable
 				return;
 			}
 
-			if(datePickerEnddate.getValue() != null && datePickerEnddate.getValue().isBefore(date))
+			if(checkBoxEndDate.isSelected() && datePickerEnddate.getValue() != null && datePickerEnddate.getValue().isBefore(date))
 			{
 				showWarning(Localization.getString(Strings.WARNING_ENDDATE_BEFORE_STARTDATE));				
 				return;
 			}			
 
 			if(edit)
-			{				
+			{
 				try
-				{		
-					RepeatingPayment newPayment = new RepeatingPayment(-1, amount, Helpers.getDateString(date), comboBoxCategory.getValue().getID(), name, description, repeatingInterval, Helpers.getDateString(datePickerEnddate.getValue()), repeatingDay);
+				{
+					LocalDate endDate = checkBoxEndDate.isSelected() ? datePickerEnddate.getValue() : null;
+					RepeatingPayment newPayment = new RepeatingPayment(-1, amount, Helpers.getDateString(date), comboBoxCategory.getValue().getID(), name, description, repeatingInterval, Helpers.getDateString(endDate), repeatingDay);
 							
 					ServerConnection connection = new ServerConnection(controller.getSettings());
 					if(payment instanceof NormalPayment)
@@ -481,7 +489,8 @@ public class NewPaymentController extends BaseController implements Styleable
 			}
 			else
 			{
-				RepeatingPayment newPayment = new RepeatingPayment(-1, amount, Helpers.getDateString(date), comboBoxCategory.getValue().getID(), name, description, repeatingInterval,Helpers.getDateString(datePickerEnddate.getValue()), repeatingDay);
+				LocalDate endDate = checkBoxEndDate.isSelected() ? datePickerEnddate.getValue() : null;
+				RepeatingPayment newPayment = new RepeatingPayment(-1, amount, Helpers.getDateString(date), comboBoxCategory.getValue().getID(), name, description, repeatingInterval, Helpers.getDateString(endDate), repeatingDay);
 				try
 				{
 					ServerConnection connection = new ServerConnection(controller.getSettings());
@@ -599,7 +608,8 @@ public class NewPaymentController extends BaseController implements Styleable
 			spinnerRepeatingPeriod.setDisable(!selected);
 			comboBoxRepeatingDay.setDisable(!selected);
 		}
-		datePickerEnddate.setDisable(!selected);
+		checkBoxEndDate.setDisable(!selected);
+		datePickerEnddate.setDisable(!selected || !checkBoxEndDate.isSelected());
 		radioButtonPeriod.setDisable(!selected);
 		radioButtonDay.setDisable(!selected);
 		labelText1.setDisable(!selected);
