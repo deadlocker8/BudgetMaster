@@ -29,6 +29,7 @@ import de.deadlocker8.budgetmaster.logic.updater.Updater;
 import de.deadlocker8.budgetmaster.logic.updater.VersionInformation;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
+import de.deadlocker8.budgetmasterclient.ui.ShutdownHandler;
 import de.deadlocker8.budgetmasterclient.ui.commandLine.CommandBundle;
 import de.deadlocker8.budgetmasterclient.ui.commandLine.CommandLine;
 import de.deadlocker8.budgetmasterclient.ui.controller.settings.LocalServerSettingsController;
@@ -100,6 +101,7 @@ public class Controller extends BaseController
 
 	private Image icon = new Image("de/deadlocker8/budgetmaster/icon.png");	
 	private Settings settings;
+	private ShutdownHandler shutdownHandler;
 	private DateTime currentDate;
 	private ArrayList<CategoryBudget> categoryBudgets;
 	private PaymentHandler paymentHandler;
@@ -113,9 +115,10 @@ public class Controller extends BaseController
 	private boolean alertIsShowing = false;
 	private static DateTimeFormatter DATE_FORMAT;
 	
-	public Controller(Settings settings)
+	public Controller(Settings settings, ShutdownHandler shutdownHandler)
 	{
 		this.settings = settings;
+		this.shutdownHandler = shutdownHandler;
 		DATE_FORMAT = DateTimeFormat.forPattern("MMMM yyyy").withLocale(this.settings.getLanguage().getLocale());
 		load("/de/deadlocker8/budgetmaster/ui/fxml/GUI.fxml", Localization.getBundle());
 		getStage().show();
@@ -134,38 +137,23 @@ public class Controller extends BaseController
 		stage.getScene().getStylesheets().add("/de/deadlocker8/budgetmaster/ui/style.css");
 	}
 	
-	public void shutdown()
-	{
-		if(settings.getServerType().equals(ServerType.LOCAL))
-		{
-			Logger.debug("Stopping local BudgetMasterServer...");
-			try
-			{
-				ServerConnection connection = new ServerConnection(settings);
-				connection.shutdownServer();
-			}
-			catch(Exception e)
-			{
-				Logger.error(e);
-			}
-		}
-		Worker.shutdown();
-		System.exit(0);
-	}
-	
 	@Override
 	public void init()
-	{		
-		Thread shutdownThread = new Thread(() -> {
-			shutdown();
-		});		
+	{
+		this.shutdownHandler.setController(this);
 		
 		getStage().setOnCloseRequest((event)->{
-			Runtime.getRuntime().removeShutdownHook(shutdownThread);
-			shutdown();
+			Runtime.getRuntime().removeShutdownHook(shutdownHandler.getShutdownThread());
+			shutdownHandler.shutdown();
 		});
 		
-		Runtime.getRuntime().addShutdownHook(shutdownThread);
+		try
+		{
+			Runtime.getRuntime().addShutdownHook(shutdownHandler.getShutdownThread());
+		}
+		catch(IllegalArgumentException e)
+		{
+		}
 		
 		if(settings.getServerType() == null)
 		{
@@ -343,6 +331,11 @@ public class Controller extends BaseController
 	public void setSettings(Settings settings)
 	{
 		this.settings = settings;
+	}
+	
+	public ShutdownHandler getShutdownHandler()
+	{
+		return shutdownHandler;
 	}
 
 	public void showNotification(String text)

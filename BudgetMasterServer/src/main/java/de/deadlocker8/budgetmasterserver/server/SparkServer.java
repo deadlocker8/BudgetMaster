@@ -72,6 +72,7 @@ import tools.HashUtils;
 public class SparkServer
 {	
 	private Gson gson;
+	private boolean shutdownInProgress = false;
 	
 	public SparkServer(Settings settings, VersionInformation versionInfo)
 	{
@@ -199,7 +200,7 @@ public class SparkServer
 			get("/info", new InformationGet(gson, versionInfo, settings));
 			get("/version", new VersionGet(gson, versionInfo));
 			delete("/log", new LogDelete());
-			get("/shutdown", new Shutdown());
+			get("/shutdown", new Shutdown(shutdownInProgress));
 		}
 		catch(ClassNotFoundException e)
 		{

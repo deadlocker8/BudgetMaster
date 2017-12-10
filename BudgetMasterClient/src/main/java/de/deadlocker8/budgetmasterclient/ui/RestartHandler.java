@@ -62,12 +62,12 @@ public class RestartHandler
 			Optional<ButtonType> result = alert.showAndWait();						
 			if (result.get() == buttonTypeOne)
 			{				
-				controller.getStage().close();				
+				controller.getStage().close();
 				
 				Localization.loadLanguage(controller.getSettings().getLanguage().getLocale());
 				
 			    Image icon = new Image("/de/deadlocker8/budgetmaster/icon.png");
-				new SplashScreenController(Main.primaryStage, icon, false);			
+				new SplashScreenController(Main.primaryStage, icon, false, controller.getShutdownHandler());			
 			}
 			else
 			{

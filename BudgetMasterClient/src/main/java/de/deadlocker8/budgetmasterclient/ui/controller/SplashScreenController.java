@@ -7,6 +7,7 @@ import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
+import de.deadlocker8.budgetmasterclient.ui.ShutdownHandler;
 import de.deadlocker8.budgetmasterclient.ui.Styleable;
 import de.deadlocker8.budgetmasterclient.ui.customAlert.CustomAlertController;
 import fontAwesome.FontIcon;
@@ -41,12 +42,14 @@ public class SplashScreenController extends BaseController implements Styleable
 	private Settings settings;
 	private boolean isFirstStart;
 	private boolean isStartingAfterUpdate;
+	private ShutdownHandler shutdownHandler;
 	
-	public SplashScreenController(Stage parentStage, Image icon, boolean isStartingAfterUpdate)
+	public SplashScreenController(Stage parentStage, Image icon, boolean isStartingAfterUpdate, ShutdownHandler shutdownHandler)
 	{
 		this.parentStage = parentStage;
 		this.icon = icon;
 		this.isStartingAfterUpdate = isStartingAfterUpdate;
+		this.shutdownHandler = shutdownHandler;
 		load("/de/deadlocker8/budgetmaster/ui/fxml/SplashScreen.fxml", Localization.getBundle());
 		getStage().show();
 	}
@@ -178,7 +181,7 @@ public class SplashScreenController extends BaseController implements Styleable
 	
 	private void openBudgetMaster()
 	{
-		new Controller(settings);
+		new Controller(settings, shutdownHandler);
 	}
 	
 	public Image getIcon()

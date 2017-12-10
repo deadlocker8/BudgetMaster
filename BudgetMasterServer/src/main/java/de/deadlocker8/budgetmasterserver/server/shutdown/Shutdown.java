@@ -10,9 +10,11 @@ import spark.Response;
 
 public class Shutdown implements AdvancedRoute
 {	
-	public Shutdown()
+	private boolean shutdownInProgress;
+	
+	public Shutdown(boolean shutdownInProgress)
 	{
-		
+		this.shutdownInProgress = shutdownInProgress;
 	}
 
 	@Override
@@ -24,19 +26,28 @@ public class Shutdown implements AdvancedRoute
 	public Object handleRequest(Request req, Response res)
 	{
 		Logger.info("Shutting down server due to client request");
-		TimerTask task = new TimerTask() 
+		if(!shutdownInProgress)
 		{
-			@Override
-			public void run()
+			shutdownInProgress = true;
+			TimerTask task = new TimerTask() 
 			{
-				Logger.info("Shutdown DONE");
-				System.exit(0);		
-			}
-		};
-		
-		Timer timer = new Timer();
-		timer.schedule(task, 2000);
-		return "";
+				@Override
+				public void run()
+				{
+					Logger.info("Shutdown DONE");
+					System.exit(0);		
+				}
+			};
+			
+			Timer timer = new Timer();
+			timer.schedule(task, 2000);
+			return "";
+		}
+		else
+		{
+			Logger.info("Shutdown is already scheduled");
+			return "";
+		}
 	}
 
 	@Override
