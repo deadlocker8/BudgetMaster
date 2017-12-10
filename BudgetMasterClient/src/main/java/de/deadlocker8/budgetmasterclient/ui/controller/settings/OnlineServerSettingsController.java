@@ -105,7 +105,10 @@ public class OnlineServerSettingsController extends SettingsController
 		
 		refreshLabelsUpdate();
 		
-		controller.refresh(controller.getFilterSettings());
+		if(controller.checkSettings())
+		{
+			controller.refresh(controller.getFilterSettings());
+		}
 	}
 	
 	@Override
@@ -166,12 +169,12 @@ public class OnlineServerSettingsController extends SettingsController
 	@Override
 	public void save()
 	{
-		String clientSecret = textFieldClientSecret.getText().trim();
-		String url = textFieldURL.getText().trim();
-		String secret = textFieldSecret.getText().trim();
-		String currency = textFieldCurrency.getText().trim();
+		String clientSecret = textFieldClientSecret.getText();
+		String url = textFieldURL.getText();
+		String secret = textFieldSecret.getText();
+		String currency = textFieldCurrency.getText();
 		
-		if(clientSecret == null || clientSecret.equals(""))
+		if(clientSecret == null || clientSecret.trim().equals(""))
 		{
 			AlertGenerator.showAlert(AlertType.WARNING, 
 									Localization.getString(Strings.TITLE_WARNING), 
@@ -183,8 +186,9 @@ public class OnlineServerSettingsController extends SettingsController
 									false);
 			return;
 		}
+		clientSecret = clientSecret.trim();
 		
-		if(url == null || url.equals(""))
+		if(url == null || url.trim().equals(""))
 		{
 			AlertGenerator.showAlert(AlertType.WARNING, 
 									Localization.getString(Strings.TITLE_WARNING), 
@@ -196,8 +200,9 @@ public class OnlineServerSettingsController extends SettingsController
 									false);
 			return;
 		}
+		url = url.trim();
 
-		if(secret == null || secret.equals(""))
+		if(secret == null || secret.trim().equals(""))
 		{
 			AlertGenerator.showAlert(AlertType.WARNING, 
 									Localization.getString(Strings.TITLE_WARNING), 
@@ -209,8 +214,9 @@ public class OnlineServerSettingsController extends SettingsController
 									false);
 			return;
 		}
+		secret = secret.trim();
 
-		if(currency == null || currency.equals(""))
+		if(currency == null || currency.trim().equals(""))
 		{
 			AlertGenerator.showAlert(AlertType.WARNING, 
 									Localization.getString(Strings.TITLE_WARNING), 
@@ -222,6 +228,7 @@ public class OnlineServerSettingsController extends SettingsController
 									false);
 			return;
 		}
+		currency = currency.trim();
 
 		ArrayList<String> trustedHosts = new ArrayList<>();
 		String trustedHostText = textAreaTrustedHosts.getText();
@@ -253,6 +260,7 @@ public class OnlineServerSettingsController extends SettingsController
 			controller.getSettings().setTrustedHosts(trustedHosts);
 			controller.getSettings().setLanguage(comboBoxLanguage.getValue());
 			controller.getSettings().setAutoUpdateCheckEnabled(checkboxEnableAutoUpdate.isSelected());
+			controller.getSettings().setServerType(ServerType.ONLINE);
 		}
 		else
 		{
@@ -281,6 +289,7 @@ public class OnlineServerSettingsController extends SettingsController
 			settings.setTrustedHosts(trustedHosts);
 			settings.setLanguage(comboBoxLanguage.getValue());
 			settings.setAutoUpdateCheckEnabled(checkboxEnableAutoUpdate.isSelected());
+			settings.setServerType(ServerType.ONLINE);
 			controller.setSettings(settings);
 		}
 

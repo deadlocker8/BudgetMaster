@@ -289,15 +289,6 @@ public class Controller extends BaseController
 		
 		buttonAbout.setStyle("-fx-background-color: transparent;");
 		buttonAbout.getStyleClass().add("button-hoverable");
-		
-		if(!settings.isComplete())
-		{			
-			Platform.runLater(() -> {
-				toggleAllTabsExceptSettings(true);
-				tabPane.getSelectionModel().select(tabSettings);
-				AlertGenerator.showAlert(AlertType.INFORMATION, Localization.getString(Strings.TITLE_INFO), "", Localization.getString(Strings.INFO_FIRST_START), icon, getStage(), null, false);
-			});
-		}
 	}
 	
 	public void loadSettingsTab()
@@ -323,6 +314,20 @@ public class Controller extends BaseController
 				AlertGenerator.showAlert(AlertType.ERROR, Localization.getString(Strings.TITLE_ERROR), "", Localization.getString(Strings.ERROR_CREATE_UI), icon, getStage(), null, false);
 			});			
 		}
+	}
+	
+	public boolean checkSettings()
+	{
+		if(!settings.isComplete())
+		{			
+			Platform.runLater(() -> {
+				toggleAllTabsExceptSettings(true);
+				tabPane.getSelectionModel().select(tabSettings);
+				AlertGenerator.showAlert(AlertType.INFORMATION, Localization.getString(Strings.TITLE_INFO), "", Localization.getString(Strings.INFO_FIRST_START), icon, getStage(), null, false);
+			});
+			return false;
+		}
+		return true;
 	}
 
 	public Image getIcon()

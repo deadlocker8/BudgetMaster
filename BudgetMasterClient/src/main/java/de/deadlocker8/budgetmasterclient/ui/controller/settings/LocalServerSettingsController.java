@@ -106,7 +106,6 @@ public class LocalServerSettingsController extends SettingsController
 		hboxSettings.prefWidthProperty().bind(scrollPane.widthProperty().subtract(25));
 
 		refreshLabelsUpdate();
-		
 		prefill();
 		checkServerStatus();
 	}
@@ -277,20 +276,22 @@ public class LocalServerSettingsController extends SettingsController
 	@Override
 	public void save()
 	{
-		String clientSecret = textFieldClientSecret.getText().trim();
-		String currency = textFieldCurrency.getText().trim();
-
-		if(clientSecret == null || clientSecret.equals(""))
+		String clientSecret = textFieldClientSecret.getText();
+		String currency = textFieldCurrency.getText();
+		
+		if(clientSecret == null || clientSecret.trim().equals(""))
 		{
 			AlertGenerator.showAlert(AlertType.WARNING, Localization.getString(Strings.TITLE_WARNING), "", Localization.getString(Strings.WARNING_EMPTY_SECRET_CLIENT), controller.getIcon(), controller.getStage(), null, false);
 			return;
 		}
+		clientSecret = clientSecret.trim();
 
-		if(currency == null || currency.equals(""))
+		if(currency == null || currency.trim().equals(""))
 		{
 			AlertGenerator.showAlert(AlertType.WARNING, Localization.getString(Strings.TITLE_WARNING), "", Localization.getString(Strings.WARNING_EMPTY_CURRENCY), controller.getIcon(), controller.getStage(), null, false);
 			return;
 		}
+		currency = currency.trim();
 
 		if(controller.getSettings().isComplete())
 		{
@@ -324,6 +325,7 @@ public class LocalServerSettingsController extends SettingsController
 			controller.setSettings(settings);
 		}
 
+		controller.getSettings().setServerType(ServerType.LOCAL);
 		controller.getSettings().setSecret(HashUtils.hash("BudgetMaster", Helpers.SALT));
 		controller.getSettings().setUrl("https://localhost:9000");
 		ArrayList<String> trustedHosts = new ArrayList<>();
