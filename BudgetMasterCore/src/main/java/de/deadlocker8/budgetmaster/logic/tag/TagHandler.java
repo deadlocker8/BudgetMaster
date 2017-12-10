@@ -11,15 +11,22 @@ import de.deadlocker8.budgetmaster.logic.serverconnection.ServerTagConnection;
 public class TagHandler
 {
 	private Settings settings;
+	private TagCache tagCache;
 	
 	public TagHandler(Settings settings)
 	{
 		this.settings = settings;
+		this.tagCache = new TagCache();
 	}
 
 	public ArrayList<Tag> getTags(Payment payment) throws Exception
 	{
 		ArrayList<Tag> tags = new ArrayList<>();
+		ArrayList<Tag> cachedTags = tagCache.getTags(payment);
+		if(cachedTags != null)
+		{
+			return cachedTags;
+		}
 		
 		ServerTagConnection connection = new ServerTagConnection(settings);
 		
@@ -31,6 +38,8 @@ public class TagHandler
 		{
 			tags.addAll(connection.getAllTagsForRepeatingPayment(((RepeatingPaymentEntry)payment).getRepeatingPaymentID()));
 		}
+		
+		tagCache.addTags(payment, tags);
 		
 		return tags;
 	}
