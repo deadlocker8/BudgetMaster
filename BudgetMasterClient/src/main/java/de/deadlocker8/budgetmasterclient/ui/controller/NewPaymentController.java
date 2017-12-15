@@ -420,7 +420,7 @@ public class NewPaymentController extends BaseController implements Styleable
 		String description = textArea.getText();
 		if(description != null)
 		{
-			if(description.length() > 150)
+			if(description.length() > 200)
 			{
 				showWarning(Localization.getString(Strings.WARNING_DESCRIPTION_CHARACTER_LIMIT_REACHED_150));				
 				return;
