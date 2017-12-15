@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmasterclient.ui.controller;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -411,7 +412,7 @@ public class NewPaymentController extends BaseController implements Styleable
 		}
 
 		int amount = 0;
-		amount = (int)(Double.parseDouble(amountText.replace(",", ".")) * 100);
+		amount = new BigDecimal(amountText.replace(",", ".")).multiply(new BigDecimal(100)).toBigInteger().intValue();
 		if(isPayment)
 		{
 			amount = -amount;
