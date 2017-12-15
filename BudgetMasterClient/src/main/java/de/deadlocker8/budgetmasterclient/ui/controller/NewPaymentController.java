@@ -398,7 +398,7 @@ public class NewPaymentController extends BaseController implements Styleable
 		}
 
 		String amountText = textFieldAmount.getText();
-		if(!amountText.matches("^-?\\d+(,\\d+)*(\\.\\d+(e\\d+)?)?$"))
+		if(!amountText.matches("^-?\\d+(,\\d+)?(\\.\\d+)?$"))
 		{
 			showWarning(Localization.getString(Strings.WARNING_PAYMENT_AMOUNT));
 			return;
