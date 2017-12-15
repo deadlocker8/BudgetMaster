@@ -411,7 +411,9 @@ public class NewPaymentController extends BaseController implements Styleable
 		}
 
 		int amount = 0;
-		amount = (int)(Double.parseDouble(amountText.replace(",", ".")) * 100);
+		amountText = amountText.replace(",", ".");
+		amountText = amountText.replace(".", "");
+		amount = Integer.parseInt(amountText);
 		if(isPayment)
 		{
 			amount = -amount;
