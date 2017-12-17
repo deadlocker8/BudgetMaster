@@ -1,6 +1,9 @@
 # BudgetMaster
 Manage your monthly budget easily with BudgetMaster
 
+- __start:__ 17.12.16
+- __current release:__ v1.8.0 (13) from 17.12.17
+
 ## Available Languages
 - English [Screenshots](https://github.com/deadlocker8/BudgetMaster/wiki/English%20Screenshots) [Roadmap](https://deadlocker.thecodelabs.de/roadmap/php/index.php?id=1)
 - German [Screenshots](https://github.com/deadlocker8/BudgetMaster/wiki/German%20Screenshots) [Roadmap](https://deadlocker.thecodelabs.de/roadmap/php/index.php?id=2)
