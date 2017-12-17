@@ -8,9 +8,9 @@ import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerTagConnection;
 import de.deadlocker8.budgetmaster.logic.tag.Tag;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
-import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmasterclient.ui.Styleable;
+import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -253,9 +253,9 @@ public class FilterController extends BaseController implements Styleable
 	@Override
 	public void applyStyle()
 	{
-		buttonCancel.setGraphic(Helpers.getFontIcon(FontIconType.TIMES, 17, Color.WHITE));
-		buttonReset.setGraphic(Helpers.getFontIcon(FontIconType.UNDO, 17, Color.WHITE));		
-		buttonFilter.setGraphic(Helpers.getFontIcon(FontIconType.FILTER, 17, Color.WHITE));		
+		buttonCancel.setGraphic(new FontIcon(FontIconType.TIMES, 17, Color.WHITE));
+		buttonReset.setGraphic(new FontIcon(FontIconType.UNDO, 17, Color.WHITE));		
+		buttonFilter.setGraphic(new FontIcon(FontIconType.FILTER, 17, Color.WHITE));		
 
 		scrollPane.setStyle("-fx-background-color: transparent");
 		

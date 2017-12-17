@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.deadlocker8</groupId>
 	<artifactId>BudgetMasterServer</artifactId>
-	<version>1.7.1</version>
+	<version>1.8.0</version>
 	<name>BudgetMasterServer</name>
 	<build>
 		<plugins>
@@ -40,7 +40,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>			
+			</plugin>
 		</plugins>
 	</build>
 
@@ -73,7 +73,7 @@
 		<dependency>
 			<groupId>de.deadlocker8</groupId>
 			<artifactId>tools</artifactId>
-			<version>0.0.1-SNAPSHOT</version>			
+			<version>1.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>de.deadlocker8</groupId>
@@ -85,6 +85,11 @@
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.xerial</groupId>
+			<artifactId>sqlite-jdbc</artifactId>
+			<version>3.21.0</version>
 		</dependency>
 	</dependencies>
 </project>

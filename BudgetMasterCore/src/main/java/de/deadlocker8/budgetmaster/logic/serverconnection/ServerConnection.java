@@ -3,9 +3,11 @@ package de.deadlocker8.budgetmaster.logic.serverconnection;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 
@@ -492,7 +494,7 @@ public class ServerConnection
 		httpsCon.setRequestProperty("Accept", "application/json");		
 		httpsCon.setDoInput(true);
 		httpsCon.setDoOutput(true);
-		PrintWriter writer = new PrintWriter(httpsCon.getOutputStream());
+		PrintWriter writer = new PrintWriter(new OutputStreamWriter(httpsCon.getOutputStream(), StandardCharsets.UTF_8));
 		writer.write(databaseJSON);
 		writer.flush();
 		writer.close();
@@ -614,6 +616,24 @@ public class ServerConnection
 		else
 		{
 			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
-		}		
+		}
+	}
+	
+	public void shutdownServer() throws Exception
+	{
+		URL url = new URL(settings.getUrl() + "/shutdown?secret=" + Helpers.getURLEncodedString(settings.getSecret()));
+		HttpsURLConnection httpsCon = (HttpsURLConnection)url.openConnection();
+		httpsCon.setRequestMethod("GET");
+		httpsCon.setDoInput(true);
+		if(httpsCon.getResponseCode() == HttpsURLConnection.HTTP_OK)
+		{
+			InputStream stream = httpsCon.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			reader.close();
+		}
+		else
+		{
+			throw new ServerConnectionException(String.valueOf(httpsCon.getResponseCode()));
+		}
 	}
 }

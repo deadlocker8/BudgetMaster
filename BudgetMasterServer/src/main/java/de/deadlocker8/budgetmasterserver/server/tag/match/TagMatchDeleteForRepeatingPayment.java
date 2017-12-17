@@ -2,13 +2,13 @@ package de.deadlocker8.budgetmasterserver.server.tag.match;
 
 import static spark.Spark.halt;
 
-import de.deadlocker8.budgetmasterserver.logic.database.DatabaseTagHandler;
+import de.deadlocker8.budgetmasterserver.logic.AdvancedRoute;
+import de.deadlocker8.budgetmasterserver.logic.database.taghandler.DatabaseTagHandler;
 import de.deadlocker8.budgetmasterserver.server.updater.TagUpdater;
 import spark.Request;
 import spark.Response;
-import spark.Route;
 
-public class TagMatchDeleteForRepeatingPayment implements Route
+public class TagMatchDeleteForRepeatingPayment implements AdvancedRoute
 {
 	private DatabaseTagHandler tagHandler;
 	
@@ -18,7 +18,13 @@ public class TagMatchDeleteForRepeatingPayment implements Route
 	}
 
 	@Override
-	public Object handle(Request req, Response res) throws Exception
+	public void before()
+	{
+		tagHandler.connect();
+	}
+
+	@Override
+	public Object handleRequest(Request req, Response res)
 	{
 		if(!req.queryParams().contains("tagID") || !req.queryParams().contains("repeatingPaymentID"))
 		{
@@ -52,5 +58,11 @@ public class TagMatchDeleteForRepeatingPayment implements Route
 		}
 		
 		return "";
+	}
+
+	@Override
+	public void after()
+	{
+		tagHandler.closeConnection();
 	}
 }

@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmasterclient.ui.controller;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -22,6 +23,7 @@ import de.deadlocker8.budgetmasterclient.ui.cells.ButtonCategoryCell;
 import de.deadlocker8.budgetmasterclient.ui.cells.RepeatingDayCell;
 import de.deadlocker8.budgetmasterclient.ui.cells.SmallCategoryCell;
 import de.deadlocker8.budgetmasterclient.ui.tagField.TagField;
+import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -70,6 +72,7 @@ public class NewPaymentController extends BaseController implements Styleable
 	@FXML private TextArea textArea;
 	@FXML private HBox hboxTags;
 	@FXML private Button buttonTagsHelp;
+	@FXML private CheckBox checkBoxEndDate;
 
 	private Stage parentStage;
 	private Controller controller;
@@ -247,6 +250,10 @@ public class NewPaymentController extends BaseController implements Styleable
 				}
 			}
 		});
+		
+		checkBoxEndDate.selectedProperty().addListener((obs, oldValue, newValue)->{
+			datePickerEnddate.setDisable(!newValue);
+		});
 	}
 	
 	private void initSpinnerRepeatingPeriod()
@@ -333,6 +340,8 @@ public class NewPaymentController extends BaseController implements Styleable
 						toggleRepeatingArea(true);
 						comboBoxRepeatingDay.getSelectionModel().select(currentPayment.getRepeatMonthDay()-1);
 					}
+					
+					checkBoxEndDate.setSelected(currentPayment.getRepeatEndDate() != null);
 					if(currentPayment.getRepeatEndDate() != null)
 					{
 						datePickerEnddate.setValue(LocalDate.parse(currentPayment.getRepeatEndDate()));
@@ -389,7 +398,7 @@ public class NewPaymentController extends BaseController implements Styleable
 		}
 
 		String amountText = textFieldAmount.getText();
-		if(!amountText.matches("^-?\\d+(,\\d+)*(\\.\\d+(e\\d+)?)?$"))
+		if(!amountText.matches("^-?\\d+(,\\d+)?(\\.\\d+)?$"))
 		{
 			showWarning(Localization.getString(Strings.WARNING_PAYMENT_AMOUNT));
 			return;
@@ -403,7 +412,7 @@ public class NewPaymentController extends BaseController implements Styleable
 		}
 
 		int amount = 0;
-		amount = (int)(Double.parseDouble(amountText.replace(",", ".")) * 100);
+		amount = new BigDecimal(amountText.replace(",", ".")).multiply(new BigDecimal(100)).toBigInteger().intValue();
 		if(isPayment)
 		{
 			amount = -amount;
@@ -412,7 +421,7 @@ public class NewPaymentController extends BaseController implements Styleable
 		String description = textArea.getText();
 		if(description != null)
 		{
-			if(description.length() > 150)
+			if(description.length() > 200)
 			{
 				showWarning(Localization.getString(Strings.WARNING_DESCRIPTION_CHARACTER_LIMIT_REACHED_150));				
 				return;
@@ -444,17 +453,18 @@ public class NewPaymentController extends BaseController implements Styleable
 				return;
 			}
 
-			if(datePickerEnddate.getValue() != null && datePickerEnddate.getValue().isBefore(date))
+			if(checkBoxEndDate.isSelected() && datePickerEnddate.getValue() != null && datePickerEnddate.getValue().isBefore(date))
 			{
 				showWarning(Localization.getString(Strings.WARNING_ENDDATE_BEFORE_STARTDATE));				
 				return;
 			}			
 
 			if(edit)
-			{				
+			{
 				try
-				{		
-					RepeatingPayment newPayment = new RepeatingPayment(-1, amount, Helpers.getDateString(date), comboBoxCategory.getValue().getID(), name, description, repeatingInterval, Helpers.getDateString(datePickerEnddate.getValue()), repeatingDay);
+				{
+					LocalDate endDate = checkBoxEndDate.isSelected() ? datePickerEnddate.getValue() : null;
+					RepeatingPayment newPayment = new RepeatingPayment(-1, amount, Helpers.getDateString(date), comboBoxCategory.getValue().getID(), name, description, repeatingInterval, Helpers.getDateString(endDate), repeatingDay);
 							
 					ServerConnection connection = new ServerConnection(controller.getSettings());
 					if(payment instanceof NormalPayment)
@@ -480,7 +490,8 @@ public class NewPaymentController extends BaseController implements Styleable
 			}
 			else
 			{
-				RepeatingPayment newPayment = new RepeatingPayment(-1, amount, Helpers.getDateString(date), comboBoxCategory.getValue().getID(), name, description, repeatingInterval,Helpers.getDateString(datePickerEnddate.getValue()), repeatingDay);
+				LocalDate endDate = checkBoxEndDate.isSelected() ? datePickerEnddate.getValue() : null;
+				RepeatingPayment newPayment = new RepeatingPayment(-1, amount, Helpers.getDateString(date), comboBoxCategory.getValue().getID(), name, description, repeatingInterval, Helpers.getDateString(endDate), repeatingDay);
 				try
 				{
 					ServerConnection connection = new ServerConnection(controller.getSettings());
@@ -598,7 +609,8 @@ public class NewPaymentController extends BaseController implements Styleable
 			spinnerRepeatingPeriod.setDisable(!selected);
 			comboBoxRepeatingDay.setDisable(!selected);
 		}
-		datePickerEnddate.setDisable(!selected);
+		checkBoxEndDate.setDisable(!selected);
+		datePickerEnddate.setDisable(!selected || !checkBoxEndDate.isSelected());
 		radioButtonPeriod.setDisable(!selected);
 		radioButtonDay.setDisable(!selected);
 		labelText1.setDisable(!selected);
@@ -679,9 +691,9 @@ public class NewPaymentController extends BaseController implements Styleable
 	@Override
 	public void applyStyle()
 	{
-		buttonTagsHelp.setGraphic(Helpers.getFontIcon(FontIconType.QUESTION, 13, Colors.TEXT));
-		buttonCancel.setGraphic(Helpers.getFontIcon(FontIconType.TIMES, 17, Color.WHITE));
-		buttonSave.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 17, Color.WHITE));
+		buttonTagsHelp.setGraphic(new FontIcon(FontIconType.QUESTION, 13, Colors.TEXT));
+		buttonCancel.setGraphic(new FontIcon(FontIconType.TIMES, 17, Color.WHITE));
+		buttonSave.setGraphic(new FontIcon(FontIconType.SAVE, 17, Color.WHITE));
 
 		scrollPane.setStyle("-fx-background-color: transparent");
 		buttonTagsHelp.setStyle("-fx-background-color: transparent; -fx-border-radius: 50%; -fx-border-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));

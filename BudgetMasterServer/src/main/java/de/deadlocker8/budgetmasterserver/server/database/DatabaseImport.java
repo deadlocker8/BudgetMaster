@@ -5,18 +5,18 @@ import static spark.Spark.halt;
 import com.google.gson.Gson;
 
 import de.deadlocker8.budgetmaster.logic.database.Database;
-import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
+import de.deadlocker8.budgetmasterserver.logic.AdvancedRoute;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseImporter;
-import de.deadlocker8.budgetmasterserver.logic.database.DatabaseTagHandler;
+import de.deadlocker8.budgetmasterserver.logic.database.handler.DatabaseHandler;
+import de.deadlocker8.budgetmasterserver.logic.database.taghandler.DatabaseTagHandler;
 import logger.Logger;
 import spark.Request;
 import spark.Response;
-import spark.Route;
 
-public class DatabaseImport implements Route
+public class DatabaseImport implements AdvancedRoute
 {
 	private DatabaseHandler handler;
-	private DatabaseTagHandler tagHandler; 
+	private DatabaseTagHandler tagHandler;
 	private Gson gson;
 
 	public DatabaseImport(DatabaseHandler handler, DatabaseTagHandler tagHandler, Gson gson)
@@ -27,10 +27,17 @@ public class DatabaseImport implements Route
 	}
 
 	@Override
-	public Object handle(Request req, Response res) throws Exception
-	{	
-		String databaseJSON = req.body();		
-		
+	public void before()
+	{
+		handler.connect();
+		tagHandler.connect();
+	}
+
+	@Override
+	public Object handleRequest(Request req, Response res)
+	{
+		String databaseJSON = req.body();
+
 		try
 		{
 			Database database = gson.fromJson(databaseJSON, Database.class);
@@ -44,7 +51,14 @@ public class DatabaseImport implements Route
 			Logger.error(e);
 			halt(500, "Internal Server Error");
 		}
-		
+
 		return "";
+	}
+
+	@Override
+	public void after()
+	{
+		handler.closeConnection();
+		tagHandler.closeConnection();
 	}
 }

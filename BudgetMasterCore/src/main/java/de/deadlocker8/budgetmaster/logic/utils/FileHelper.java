@@ -102,31 +102,5 @@ public class FileHelper
 		Writer writer = Files.newBufferedWriter(Paths.get(file.getAbsolutePath()), Charset.forName("UTF-8"));
 		writer.write(databaseJSON);
 		writer.close();
-	}
-
-	public static Object loadObjectFromJSON(String fileName, Object objectype)
-	{
-		try
-		{
-			Gson gson = new Gson();
-			Reader reader = Files.newBufferedReader(Paths.get(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER) + "/" + fileName + ".json"), Charset.forName("UTF-8"));
-			Object preferences = gson.fromJson(reader, objectype.getClass());
-			reader.close();
-			return preferences;
-		}
-		catch(IOException e)
-		{
-			return null;
-		}
-	}
-
-	public static void saveObjectToJSON(String fileName, Object objectToSave) throws IOException
-	{
-		Gson gson = new Gson();
-		String jsonString = gson.toJson(objectToSave);
-		PathUtils.checkFolder(new File(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER)));
-		Writer writer = Files.newBufferedWriter(Paths.get(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER) + "/" + fileName + ".json"), Charset.forName("UTF-8"));
-		writer.write(jsonString);
-		writer.close();
-	}
+	}	
 }

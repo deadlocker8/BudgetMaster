@@ -12,13 +12,13 @@ import de.deadlocker8.budgetmaster.logic.payment.Payment;
 import de.deadlocker8.budgetmaster.logic.payment.PaymentJSONSerializer;
 import de.deadlocker8.budgetmaster.logic.payment.RepeatingPayment;
 import de.deadlocker8.budgetmaster.logic.tag.Tag;
-import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
-import de.deadlocker8.budgetmasterserver.logic.database.DatabaseTagHandler;
+import de.deadlocker8.budgetmasterserver.logic.AdvancedRoute;
+import de.deadlocker8.budgetmasterserver.logic.database.handler.DatabaseHandler;
+import de.deadlocker8.budgetmasterserver.logic.database.taghandler.DatabaseTagHandler;
 import spark.Request;
 import spark.Response;
-import spark.Route;
 
-public class PaymentSearch implements Route
+public class PaymentSearch implements AdvancedRoute
 {
 	private DatabaseHandler handler;
 	private DatabaseTagHandler tagHandler;
@@ -28,49 +28,6 @@ public class PaymentSearch implements Route
 		this.handler = handler;
 		this.tagHandler = tagHandler;
 	}
-
-	@Override
-	public Object handle(Request req, Response res) throws Exception
-	{
-		try
-		{
-			ArrayList<Payment> payments = new ArrayList<>();
-			ArrayList<NormalPayment> normalPayments = handler.getAllNormalPayments();
-			ArrayList<RepeatingPayment> repeatingPayments = handler.getAllRepeatingPayments();
-			for(Payment currentPayment : normalPayments)
-			{
-				if(meetsCriteria(req, currentPayment))
-				{
-					payments.add(currentPayment);
-				}
-			}
-
-			for(Payment currentPayment : repeatingPayments)
-			{
-				if(meetsCriteria(req, currentPayment))
-				{
-					payments.add(currentPayment);
-				}
-			}
-
-			Collections.sort(payments, new Comparator<Payment>()
-			{
-				@Override
-				public int compare(Payment o1, Payment o2)
-				{
-					return o1.getDate().compareTo(o2.getDate());
-				}
-			});
-			
-			return PaymentJSONSerializer.serializePaymentList(payments);
-		}
-		catch(IllegalStateException ex)
-		{
-			halt(500, "Internal Server Error");
-		}
-
-		return null;
-	}	
 
 	private boolean meetsCriteria(Request req, Payment payment)
 	{
@@ -185,5 +142,62 @@ public class PaymentSearch implements Route
 		}
 			
 		return true;		
+	}
+
+	@Override
+	public void before()
+	{
+		handler.connect();
+		tagHandler.connect();
+	}
+
+	@Override
+	public Object handleRequest(Request req, Response res)
+	{
+		try
+		{
+			ArrayList<Payment> payments = new ArrayList<>();
+			ArrayList<NormalPayment> normalPayments = handler.getAllNormalPayments();
+			ArrayList<RepeatingPayment> repeatingPayments = handler.getAllRepeatingPayments();
+			for(Payment currentPayment : normalPayments)
+			{
+				if(meetsCriteria(req, currentPayment))
+				{
+					payments.add(currentPayment);
+				}
+			}
+
+			for(Payment currentPayment : repeatingPayments)
+			{
+				if(meetsCriteria(req, currentPayment))
+				{
+					payments.add(currentPayment);
+				}
+			}
+
+			Collections.sort(payments, new Comparator<Payment>()
+			{
+				@Override
+				public int compare(Payment o1, Payment o2)
+				{
+					return o1.getDate().compareTo(o2.getDate());
+				}
+			});
+			
+			return PaymentJSONSerializer.serializePaymentList(payments);
+		}
+		catch(IllegalStateException ex)
+		{
+			halt(500, "Internal Server Error");
+		}
+
+		return null;
+	}
+
+	@Override
+	public void after()
+	{
+		handler.closeConnection();
+		tagHandler.closeConnection();		
 	}
 }

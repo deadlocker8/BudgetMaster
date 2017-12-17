@@ -7,9 +7,13 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -19,7 +23,8 @@ import de.deadlocker8.budgetmaster.logic.payment.NormalPayment;
 import de.deadlocker8.budgetmaster.logic.payment.RepeatingPayment;
 import de.deadlocker8.budgetmasterserver.logic.Settings;
 import de.deadlocker8.budgetmasterserver.logic.Utils;
-import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
+import de.deadlocker8.budgetmasterserver.logic.database.creator.DatabaseCreator;
+import de.deadlocker8.budgetmasterserver.logic.database.handler.DatabaseHandler;
 import tools.Localization;
 
 public class DatabaseHandlerTest
@@ -34,27 +39,43 @@ public class DatabaseHandlerTest
 			//init
 			Settings settings = Utils.loadSettings();
 			System.out.println(settings);
-			DatabaseHandler handler = new DatabaseHandler(settings);
+			DatabaseHandler handler = Utils.getDatabaseHandler(settings);
 			handler.deleteDatabase();
-			handler = new DatabaseHandler(settings);			
-			databaseHandler = handler;
+			handler.closeConnection();
+			Connection connection = Utils.getDatabaseConnection(settings);
+			DatabaseCreator creator = Utils.getDatabaseCreator(connection, settings);
+			creator.createTables();
+			connection.close();
+			databaseHandler = Utils.getDatabaseHandler(settings);
 			
 			Localization.init("de/deadlocker8/budgetmaster/");
 			Localization.loadLanguage(Locale.ENGLISH);
 		}
-		catch(IOException | URISyntaxException e)
+		catch(IOException | URISyntaxException | SQLException | ClassNotFoundException e)
 		{
 			fail(e.getMessage());
 		}		
-	}	
+	}
+	
+	@Before
+	public void before()
+	{
+		databaseHandler.connect();
+	}
+	
+	@After
+	public void after()
+	{
+		databaseHandler.closeConnection();
+	}
 	
 	@Test
 	public void testLastInsertID()
-	{			
+	{		
 		Category expected = new Category("123 Tü+?est Category", "#FF0000");
 		databaseHandler.addCategory(expected.getName(), expected.getColor());
 		//3 because "NONE" and "Übertrag" has already been inserted at database creation	
-		assertEquals(3, databaseHandler.getLastInsertID());		
+		assertEquals(3, databaseHandler.getLastInsertID());
 	}
 	
 	@Test
@@ -252,7 +273,7 @@ public class DatabaseHandlerTest
 										 expectedPayment.getDescription());
 		int idPayment2 = databaseHandler.getLastInsertID();
 		
-		assertEquals(1000, databaseHandler.getRest(2017, 3));		
+		assertEquals(1000, databaseHandler.getRest(2017, 3));
 		assertEquals(200, databaseHandler.getRestForAllPreviousMonths(2017, 4));
 		
 		databaseHandler.deletePayment(idPayment1);

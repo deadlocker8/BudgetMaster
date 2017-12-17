@@ -11,6 +11,7 @@ public class Colors
     public static final Color BACKGROUND = Color.web("#F4F4F4");
     public static final Color BACKGROUND_MAIN = Color.web("#DDDDDD");
     public static final Color BACKGROUND_BUTTON_BLUE = Color.web("#2E79B9");
+    public static final Color BACKGROUND_BUTTON_DARK_BLUE = Color.web("#246091");
     public static final Color BACKGROUND_BUTTON_RED = Color.web("#FF5047");
     public static final Color BACKGROUND_NOTIFICATION = Color.web("#323232");
     public static final Color BACKGROUND_REPORT_TABLE_HEADER_DISABLED = Color.SALMON;

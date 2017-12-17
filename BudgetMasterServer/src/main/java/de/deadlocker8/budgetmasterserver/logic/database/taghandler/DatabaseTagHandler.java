@@ -1,7 +1,6 @@
-package de.deadlocker8.budgetmasterserver.logic.database;
+package de.deadlocker8.budgetmasterserver.logic.database.taghandler;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,26 +9,48 @@ import java.util.ArrayList;
 
 import de.deadlocker8.budgetmaster.logic.tag.Tag;
 import de.deadlocker8.budgetmasterserver.logic.Settings;
+import de.deadlocker8.budgetmasterserver.logic.Utils;
 import logger.Logger;
 
-public class DatabaseTagHandler
+public abstract class DatabaseTagHandler
 {
-	private Connection connection;
+	Connection connection;
+	Settings settings;
 	
 	public DatabaseTagHandler(Settings settings) throws IllegalStateException
     {
-        try
-        {
-            this.connection = DriverManager.getConnection(settings.getDatabaseUrl() + settings.getDatabaseName() + "?useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin", settings.getDatabaseUsername(), settings.getDatabasePassword());
-        }
-        catch(Exception e)
-        {
-            Logger.error(e);
-            throw new IllegalStateException("Cannot connect the database!", e);
-        }
-    }	
+		this.settings = settings;
+    }
 	
-	private void closeConnection(Statement statement)
+	public void connect()
+	{
+		try
+		{
+			if(connection == null || connection.isClosed())
+			{				
+				this.connection = Utils.getDatabaseConnection(settings); 
+			}
+		}
+		catch(Exception e)
+		{
+			Logger.error(e);
+			throw new IllegalStateException("Cannot connect the database!", e);
+		}
+	}
+	
+	public void closeConnection()
+	{
+		try
+		{
+			connection.close();
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+	}
+	
+	void closeStatement(Statement statement)
 	{
 		if(statement != null)
 		{
@@ -43,31 +64,7 @@ public class DatabaseTagHandler
 		}
 	}
 	
-	public int getLastInsertID()
-	{
-		PreparedStatement stmt = null;
-		int lastInsertID = 0;
-		try
-		{
-			stmt = connection.prepareStatement("SELECT LAST_INSERT_ID();");		
-			ResultSet rs = stmt.executeQuery();
-
-			while(rs.next())
-			{
-				lastInsertID = rs.getInt("LAST_INSERT_ID()");				
-			}
-		}
-		catch(SQLException e)
-		{
-			Logger.error(e);
-		}
-		finally
-		{
-			closeConnection(stmt);
-		}
-
-		return lastInsertID;
-	}
+	public abstract int getLastInsertID();
 	
 	public ArrayList<Tag> getAllTags()
 	{	   
@@ -91,7 +88,7 @@ public class DatabaseTagHandler
         }
         finally
         {
-            closeConnection(stmt);
+            closeStatement(stmt);
         }
 
         return results;    
@@ -121,7 +118,7 @@ public class DatabaseTagHandler
         }
         finally
         {
-           closeConnection(stmt);
+           closeStatement(stmt);
         }
 
         return tag;
@@ -151,7 +148,7 @@ public class DatabaseTagHandler
         }
         finally
         {
-           closeConnection(stmt);
+           closeStatement(stmt);
         }
 
         return tag;
@@ -172,7 +169,7 @@ public class DatabaseTagHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 	
@@ -191,7 +188,7 @@ public class DatabaseTagHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 	
@@ -216,7 +213,7 @@ public class DatabaseTagHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 		
 		return false;
@@ -243,7 +240,7 @@ public class DatabaseTagHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 		
 		return false;
@@ -271,7 +268,7 @@ public class DatabaseTagHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 		
 		return tagIDs;
@@ -299,7 +296,7 @@ public class DatabaseTagHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 		
 		return tagIDs;
@@ -322,7 +319,7 @@ public class DatabaseTagHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 	
@@ -343,7 +340,7 @@ public class DatabaseTagHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 	
@@ -363,7 +360,7 @@ public class DatabaseTagHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 	
@@ -383,7 +380,7 @@ public class DatabaseTagHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 	
@@ -407,7 +404,7 @@ public class DatabaseTagHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 		
 		return false;

@@ -96,8 +96,8 @@
                                                 <Font name="System Bold" size="16.0" />
                                              </font>
                                           </Label>
-                                          <ComboBox fx:id="comboBoxStartMonth" prefHeight="25.0" prefWidth="110.0" />
-                                          <ComboBox fx:id="comboBoxStartYear" prefWidth="70.0" />
+                                          <ComboBox fx:id="comboBoxStartMonth" prefHeight="25.0" prefWidth="115.0" />
+                                          <ComboBox fx:id="comboBoxStartYear" prefWidth="100.0" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" spacing="10.0">
@@ -107,8 +107,8 @@
                                                 <Font name="System Bold" size="16.0" />
                                              </font>
                                           </Label>
-                                          <ComboBox fx:id="comboBoxEndMonth" prefWidth="110.0" />
-                                          <ComboBox fx:id="comboBoxEndYear" prefWidth="70.0" />
+                                          <ComboBox fx:id="comboBoxEndMonth" prefWidth="115.0" />
+                                          <ComboBox fx:id="comboBoxEndYear" prefWidth="100.0" />
                                        </children>
                                     </HBox>
                                  </children>

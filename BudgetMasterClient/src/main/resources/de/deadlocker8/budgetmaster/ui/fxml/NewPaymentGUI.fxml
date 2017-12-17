@@ -32,7 +32,7 @@
                                     <Font name="System Bold" size="14.0" />
                                  </font>
                               </Label>
-                              <Label prefHeight="29.0" prefWidth="125.0" text="%payment.new.label.max.characters">
+                              <Label prefHeight="29.0" prefWidth="125.0" text="%payment.new.label.max.characters.name">
                                  <font>
                                     <Font size="11.0" />
                                  </font>
@@ -95,7 +95,7 @@
                                     <Font name="System Bold" size="14.0" />
                                  </font>
                               </Label>
-                              <Label prefHeight="29.0" prefWidth="125.0" text="%payment.new.label.max.characters">
+                              <Label prefHeight="29.0" prefWidth="125.0" text="%payment.new.label.max.characters.description">
                                  <font>
                                     <Font size="11.0" />
                                  </font>
@@ -190,6 +190,7 @@
                                     <Font name="System Bold" size="14.0" />
                                  </font>
                               </Label>
+                              <CheckBox fx:id="checkBoxEndDate" mnemonicParsing="false" />
                               <DatePicker fx:id="datePickerEnddate" maxWidth="1.7976931348623157E308" prefHeight="29.0" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>

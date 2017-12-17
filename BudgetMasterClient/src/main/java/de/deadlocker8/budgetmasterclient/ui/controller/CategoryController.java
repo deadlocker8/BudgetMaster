@@ -7,11 +7,11 @@ import de.deadlocker8.budgetmaster.logic.category.Category;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
-import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmasterclient.ui.Refreshable;
 import de.deadlocker8.budgetmasterclient.ui.Styleable;
 import de.deadlocker8.budgetmasterclient.ui.cells.CategoryCell;
+import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -118,7 +118,7 @@ public class CategoryController extends BaseController implements Refreshable, S
 	@Override
 	public void applyStyle()
 	{
-		buttonCategory.setGraphic(Helpers.getFontIcon(FontIconType.PLUS, 18, Color.WHITE));
+		buttonCategory.setGraphic(new FontIcon(FontIconType.PLUS, 18, Color.WHITE));
 		
 		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
 		buttonCategory.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");		

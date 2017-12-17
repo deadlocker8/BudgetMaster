@@ -8,9 +8,9 @@ import org.controlsfx.control.textfield.TextFields;
 
 import de.deadlocker8.budgetmaster.logic.tag.Tag;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
-import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmasterclient.ui.controller.NewPaymentController;
+import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -68,6 +68,11 @@ public class TagField extends VBox
             	textField.setText("");
             }
 	    });
+		
+		textField.setOnMousePressed((event)->{
+			textField.setText(" ");
+        	textField.setText("");
+		});
 		
 		TextFields.bindAutoCompletion(textField, new Callback<AutoCompletionBinding.ISuggestionRequest, Collection<String>>()
 		{
@@ -210,7 +215,7 @@ public class TagField extends VBox
 		hboxTag.getChildren().add(labelTagName);
 		
 		Button buttonDelete = new Button();
-		buttonDelete.setGraphic(Helpers.getFontIcon(FontIconType.TIMES, 13, Colors.TEXT));
+		buttonDelete.setGraphic(new FontIcon(FontIconType.TIMES, 13, Colors.TEXT));
 		buttonDelete.setStyle("-fx-background-color: transparent;");
 		buttonDelete.getStyleClass().add("button-hoverable");
 		buttonDelete.setOnAction((event)->{

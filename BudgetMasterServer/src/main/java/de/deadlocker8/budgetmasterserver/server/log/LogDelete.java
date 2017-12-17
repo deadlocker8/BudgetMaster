@@ -2,12 +2,12 @@ package de.deadlocker8.budgetmasterserver.server.log;
 
 import static spark.Spark.halt;
 
+import de.deadlocker8.budgetmasterserver.logic.AdvancedRoute;
 import logger.Logger;
 import spark.Request;
 import spark.Response;
-import spark.Route;
 
-public class LogDelete implements Route
+public class LogDelete implements AdvancedRoute
 {
 	public LogDelete()
 	{	
@@ -15,8 +15,13 @@ public class LogDelete implements Route
 	}
 
 	@Override
-	public Object handle(Request req, Response res) throws Exception
-	{		
+	public void before()
+	{
+	}
+
+	@Override
+	public Object handleRequest(Request req, Response res)
+	{
 		try
 		{							
 			Logger.clearLogFile();	
@@ -28,5 +33,10 @@ public class LogDelete implements Route
 		}
 		
 		return "";
+	}
+
+	@Override
+	public void after()
+	{
 	}
 }

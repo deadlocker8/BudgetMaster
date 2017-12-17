@@ -1,7 +1,6 @@
-package de.deadlocker8.budgetmasterserver.logic.database;
+package de.deadlocker8.budgetmasterserver.logic.database.handler;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,20 +18,28 @@ import de.deadlocker8.budgetmaster.logic.payment.Payment;
 import de.deadlocker8.budgetmaster.logic.payment.RepeatingPayment;
 import de.deadlocker8.budgetmaster.logic.payment.RepeatingPaymentEntry;
 import de.deadlocker8.budgetmasterserver.logic.Settings;
+import de.deadlocker8.budgetmasterserver.logic.Utils;
 import logger.Logger;
 
-public class DatabaseHandler
+public abstract class DatabaseHandler
 {
-	private Connection connection;
-	private final DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+	Connection connection;
+	Settings settings;
+	final DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 
 	public DatabaseHandler(Settings settings) throws IllegalStateException
 	{
+		this.settings = settings;
+	}
+	
+	public void connect()
+	{
 		try
 		{
-			this.connection = DriverManager.getConnection(settings.getDatabaseUrl() + settings.getDatabaseName() + "?useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin&autoReconnect=true&wait_timeout=86400", settings.getDatabaseUsername(), settings.getDatabasePassword());
-			new DatabaseCreator(connection, settings);
-			Logger.info("Successfully initialized database (" + settings.getDatabaseUrl() + settings.getDatabaseName() + ")");
+			if(connection == null || connection.isClosed())
+			{				
+				connection = Utils.getDatabaseConnection(settings);
+			}
 		}
 		catch(Exception e)
 		{
@@ -41,7 +48,19 @@ public class DatabaseHandler
 		}
 	}
 	
-	private void closeConnection(Statement statement)
+	public void closeConnection()
+	{
+		try
+		{
+			connection.close();
+		}
+		catch(SQLException e)
+		{
+			Logger.error(e);
+		}
+	}
+	
+	void closeStatement(Statement statement)
 	{
 		if(statement != null)
 		{
@@ -58,32 +77,8 @@ public class DatabaseHandler
 	/*
 	 * GET
 	 */
-	public int getLastInsertID()
-	{
-		PreparedStatement stmt = null;
-		int lastInsertID = 0;
-		try
-		{
-			stmt = connection.prepareStatement("SELECT LAST_INSERT_ID();");		
-			ResultSet rs = stmt.executeQuery();
-
-			while(rs.next())
-			{
-				lastInsertID = rs.getInt("LAST_INSERT_ID()");				
-			}
-		}
-		catch(SQLException e)
-		{
-			Logger.error(e);
-		}
-		finally
-		{
-			closeConnection(stmt);
-		}
-
-		return lastInsertID;
-	}
-	
+	public abstract int getLastInsertID();
+		
 	public DateTime getFirstNormalPaymentDate()
 	{
 		PreparedStatement stmt = null;
@@ -105,6 +100,7 @@ public class DatabaseHandler
 					dateTime = formatter.parseDateTime(rs.getString("min"));
 				}
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -112,7 +108,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return dateTime;
@@ -139,6 +135,7 @@ public class DatabaseHandler
 					dateTime = formatter.parseDateTime(rs.getString("min"));
 				}
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -146,7 +143,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return dateTime;
@@ -229,6 +226,7 @@ public class DatabaseHandler
 
 				results.add(new Category(id, name, color));
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -236,7 +234,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return results;
@@ -259,6 +257,7 @@ public class DatabaseHandler
 
 				result = new Category(id, name, color);
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -266,7 +265,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return result;
@@ -291,6 +290,7 @@ public class DatabaseHandler
 
 				result = new Category(id, categoryName, categoryColor);
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -298,7 +298,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return result;
@@ -320,6 +320,7 @@ public class DatabaseHandler
 					exists = true;
 				}
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -327,7 +328,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return exists;
@@ -350,9 +351,10 @@ public class DatabaseHandler
 				String date = rs.getString("Date");
 				int categoryID = rs.getInt("CategoryID");
 				String description = rs.getString("Description");
-
+				rs.close();
 				return new NormalPayment(resultID, amount, date, categoryID, name, description);
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -360,7 +362,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return null;
@@ -388,6 +390,7 @@ public class DatabaseHandler
 
 				results.add(new NormalPayment(resultID, amount, date, categoryID, name, description));
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -395,163 +398,19 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return results;
 	}
 
-	public ArrayList<NormalPayment> getPayments(int year, int month)
-	{
-		PreparedStatement stmt = null;
-
-		ArrayList<NormalPayment> results = new ArrayList<>();
-		try
-		{
-			stmt = connection.prepareStatement("SELECT * FROM payment WHERE YEAR(Date) = ? AND  MONTH(Date) = ?;");
-			stmt.setInt(1, year);
-			stmt.setInt(2, month);
-			ResultSet rs = stmt.executeQuery();
-
-			while(rs.next())
-			{
-				int resultID = rs.getInt("ID");
-				String name = rs.getString("Name");
-				int amount = rs.getInt("amount");
-				String date = rs.getString("Date");
-				int categoryID = rs.getInt("CategoryID");
-				String description = rs.getString("Description");
-
-				results.add(new NormalPayment(resultID, amount, date, categoryID, name, description));
-			}
-		}
-		catch(SQLException e)
-		{
-			Logger.error(e);
-		}
-		finally
-		{
-			closeConnection(stmt);
-		}
-
-		return results;
-	}
+	public abstract ArrayList<NormalPayment> getPayments(int year, int month);
 	
-	public ArrayList<NormalPayment> getPaymentsBetween(String startDate, String endDate)
-	{	
-		PreparedStatement stmt = null;
-
-		ArrayList<NormalPayment> results = new ArrayList<>();
-		try
-		{
-			stmt = connection.prepareStatement("SELECT * FROM payment WHERE DATE(Date) BETWEEN ? AND ?;");
-			stmt.setString(1, startDate);
-			stmt.setString(2, endDate);			
-			ResultSet rs = stmt.executeQuery();
-
-			while(rs.next())
-			{
-				int resultID = rs.getInt("ID");				
-				String name = rs.getString("Name");
-				int amount = rs.getInt("amount");
-				String date = rs.getString("Date");				
-				int categoryID = rs.getInt("CategoryID");
-				String description = rs.getString("Description");
-			
-				results.add(new NormalPayment(resultID, amount, date, categoryID, name, description));
-			}
-		}
-		catch(SQLException e)
-		{
-			Logger.error(e);
-		}
-		finally
-		{
-			closeConnection(stmt);
-		}
-
-		return results;
-	}
-
-	public ArrayList<RepeatingPaymentEntry> getRepeatingPayments(int year, int month)
-	{
-		PreparedStatement stmt = null;
-
-		ArrayList<RepeatingPaymentEntry> results = new ArrayList<>();
-		try
-		{
-			stmt = connection.prepareStatement("SELECT repeating_entry.ID, repeating_entry.RepeatingPaymentID, repeating_entry.Date, repeating_payment.Name, repeating_payment.CategoryID, repeating_payment.Amount, repeating_payment.RepeatInterval, repeating_payment.RepeatEndDate, repeating_payment.RepeatMonthDay, repeating_payment.Description FROM repeating_entry, repeating_payment WHERE repeating_entry.RepeatingPaymentID = repeating_payment.ID AND YEAR(repeating_entry.Date) = ? AND MONTH(repeating_entry.Date) = ?;");
-			stmt.setInt(1, year);
-			stmt.setInt(2, month);			
-			ResultSet rs = stmt.executeQuery();
-
-			while(rs.next())
-			{
-				int resultID = rs.getInt("ID");
-				int repeatingPaymentID = rs.getInt("repeatingPaymentID");
-				String name = rs.getString("Name");
-				String description = rs.getString("Description");
-				int amount = rs.getInt("amount");
-				String date = rs.getString("Date");
-				int categoryID = rs.getInt("CategoryID");
-				int repeatInterval = rs.getInt("RepeatInterval");
-				String repeatEndDate = rs.getString("RepeatEndDate");
-				int repeatMonthDay = rs.getInt("RepeatMonthDay");
-
-				results.add(new RepeatingPaymentEntry(resultID, repeatingPaymentID, date, amount, categoryID, name, description, repeatInterval, repeatEndDate, repeatMonthDay));
-			}
-		}
-		catch(SQLException e)
-		{
-			Logger.error(e);
-		}
-		finally
-		{
-			closeConnection(stmt);
-		}
-
-		return results;
-	}
+	public abstract ArrayList<NormalPayment> getPaymentsBetween(String startDate, String endDate);
 	
-	public ArrayList<RepeatingPaymentEntry> getRepeatingPaymentsBetween(String startDate, String endDate)
-	{
-		PreparedStatement stmt = null;
-
-		ArrayList<RepeatingPaymentEntry> results = new ArrayList<>();
-		try
-		{
-			stmt = connection.prepareStatement("SELECT repeating_entry.ID, repeating_entry.RepeatingPaymentID, repeating_entry.Date, repeating_payment.Name, repeating_payment.CategoryID, repeating_payment.Amount, repeating_payment.RepeatInterval, repeating_payment.RepeatEndDate, repeating_payment.RepeatMonthDay, repeating_payment.Description FROM repeating_entry, repeating_payment WHERE repeating_entry.RepeatingPaymentID = repeating_payment.ID AND DATE(repeating_entry.Date) BETWEEN ? AND ?;");
-			stmt.setString(1, startDate);
-			stmt.setString(2,  endDate);
-			ResultSet rs = stmt.executeQuery();
-
-			while(rs.next())
-			{
-				int resultID = rs.getInt("ID");
-				int repeatingPaymentID = rs.getInt("repeatingPaymentID");				
-				String name = rs.getString("Name");
-				String description = rs.getString("Description");
-				int amount = rs.getInt("amount");
-				String date = rs.getString("Date");				
-				int categoryID = rs.getInt("CategoryID");
-				int repeatInterval = rs.getInt("RepeatInterval");
-				String repeatEndDate = rs.getString("RepeatEndDate");
-				int repeatMonthDay = rs.getInt("RepeatMonthDay");		
-			
-				results.add(new RepeatingPaymentEntry(resultID, repeatingPaymentID, date, amount, categoryID, name, description,repeatInterval, repeatEndDate, repeatMonthDay));
-			}
-		}
-		catch(SQLException e)
-		{
-			Logger.error(e);
-		}
-		finally
-		{
-			closeConnection(stmt);
-		}
-
-		return results;
-	}
+	public abstract ArrayList<RepeatingPaymentEntry> getRepeatingPayments(int year, int month);	
+	
+	public abstract ArrayList<RepeatingPaymentEntry> getRepeatingPaymentsBetween(String startDate, String endDate);
 
 	public ArrayList<RepeatingPayment> getAllRepeatingPayments()
 	{
@@ -577,6 +436,7 @@ public class DatabaseHandler
 
 				results.add(new RepeatingPayment(resultID, amount, date, categoryID, name, description, repeatInterval, repeatEndDate, repeatMonthDay));
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -584,7 +444,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return results;
@@ -608,6 +468,7 @@ public class DatabaseHandler
 
 				results.add(new LatestRepeatingPayment(resultID, repeatingPaymentID, date));
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -615,7 +476,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return results;
@@ -644,6 +505,7 @@ public class DatabaseHandler
 
 				result = new RepeatingPayment(id, amount, date, categoryID, name, description, repeatInterval, repeatEndDate, repeatMonthDay);
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -651,7 +513,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return result;
@@ -666,8 +528,11 @@ public class DatabaseHandler
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next())
 			{
-				return rs.getInt("max");			
+				int result = rs.getInt("max");
+				rs.close();
+				return result;
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -675,7 +540,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return -1;
@@ -690,8 +555,11 @@ public class DatabaseHandler
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next())
 			{
-				return rs.getInt("max");			
+				int result = rs.getInt("max");
+				rs.close();
+				return result;
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -699,7 +567,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 
 		return -1;
@@ -723,7 +591,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 
@@ -742,7 +610,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 
@@ -761,46 +629,11 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 
-	public void deleteDatabase()
-	{
-		Statement stmt = null;
-		String tableCategory = "DROP TABLE IF EXISTS category;";
-		String tablePayment = "DROP TABLE IF EXISTS payment;";
-		String tableRepeatingPayment = "DROP TABLE IF EXISTS repeating_payment;";
-		String tableRepeatingEntry = "DROP TABLE IF EXISTS repeating_entry;";
-		String tableTag = "DROP TABLE IF EXISTS tag;";
-		String tableTagMatch = "DROP TABLE IF EXISTS tag_match;";
-		try
-		{
-			stmt = connection.createStatement();
-			stmt.execute("SET FOREIGN_KEY_CHECKS = 0;");
-			stmt.execute(tableCategory);
-			Logger.info("Deleted table: category");
-			stmt.execute(tablePayment);
-			Logger.info("Deleted table: payment");
-			stmt.execute(tableRepeatingPayment);
-			Logger.info("Deleted table: repeating_payment");
-			stmt.execute(tableRepeatingEntry);
-			Logger.info("Deleted table: repeating_entry");
-			stmt.execute(tableTag);
-			Logger.info("Deleted table: tag");
-			stmt.execute(tableTagMatch);
-			Logger.info("Deleted table: tag_match");
-			stmt.execute("SET FOREIGN_KEY_CHECKS = 1;");
-		}
-		catch(SQLException e)
-		{
-			Logger.error(e);
-		}
-		finally
-		{
-			closeConnection(stmt);
-		}
-	}
+	public abstract void deleteDatabase();
 
 	/*
 	 * ADD
@@ -821,7 +654,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 
@@ -842,7 +675,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 
@@ -863,8 +696,11 @@ public class DatabaseHandler
 			ResultSet rs = stmt.getGeneratedKeys();
             if(rs.next())
             {
-                return rs.getInt(1);
+            	int result = rs.getInt(1);
+            	rs.close();
+                return result;
             }
+            rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -872,7 +708,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 		
 		return -1;
@@ -904,8 +740,11 @@ public class DatabaseHandler
 			ResultSet rs = stmt.getGeneratedKeys();
             if(rs.next())
             {
-                return rs.getInt(1);
+            	int result = rs.getInt(1);
+            	rs.close();
+                return result;
             }
+            rs.close();
 		}
 		catch(SQLException e)
 		{			
@@ -913,7 +752,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 		
 		return -1;
@@ -936,7 +775,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 
@@ -960,7 +799,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 
@@ -984,7 +823,7 @@ public class DatabaseHandler
 		}
 		finally
 		{
-			closeConnection(stmt);
+			closeStatement(stmt);
 		}
 	}
 }

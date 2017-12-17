@@ -28,14 +28,14 @@ import de.deadlocker8.budgetmaster.logic.report.ReportSorting;
 import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
 import de.deadlocker8.budgetmaster.logic.tag.TagHandler;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
-import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmasterclient.ui.Refreshable;
 import de.deadlocker8.budgetmasterclient.ui.Styleable;
 import de.deadlocker8.budgetmasterclient.ui.cells.report.table.ReportTableRatingCell;
 import de.deadlocker8.budgetmasterclient.ui.cells.report.table.ReportTableRepeatingCell;
-import de.deadlocker8.budgetmasterclient.utils.UIHelpers;
+import de.deadlocker8.budgetmasterclient.utils.LoadingModal;
+import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -67,6 +67,7 @@ import logger.Logger;
 import tools.AlertGenerator;
 import tools.ConvertTo;
 import tools.Localization;
+import tools.ObjectJSONHandler;
 import tools.Worker;
 
 public class ReportController implements Refreshable, Styleable
@@ -196,9 +197,9 @@ public class ReportController implements Refreshable, Styleable
 	
 	private void applyReportPreferences()
 	{
-		tableView.getColumns().clear();		
+		tableView.getColumns().clear();
 		
-		Object loadedObject = FileHelper.loadObjectFromJSON("reportPreferences", new ReportPreferences());
+		Object loadedObject = ObjectJSONHandler.loadObjectFromJSON(Localization.getString(Strings.FOLDER), "reportPreferences", new ReportPreferences());
 		if(loadedObject != null)
 		{
 			reportPreferences = (ReportPreferences)loadedObject;
@@ -613,7 +614,7 @@ public class ReportController implements Refreshable, Styleable
 	{
 		try
 		{
-			FileHelper.saveObjectToJSON("reportPreferences", reportPreferences);
+			ObjectJSONHandler.saveObjectToJSON(Localization.getString(Strings.FOLDER), "reportPreferences", reportPreferences);
 		}
 		catch(IOException e)
 		{
@@ -652,7 +653,7 @@ public class ReportController implements Refreshable, Styleable
 																controller.getCurrentDate(),
 																budget);
 			
-			Stage modalStage = UIHelpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_REPORT), controller.getStage(), controller.getIcon());
+			LoadingModal.showModal(controller, Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_REPORT), controller.getStage(), controller.getIcon());
 
 			Worker.runLater(() -> {
 				try
@@ -660,10 +661,7 @@ public class ReportController implements Refreshable, Styleable
 					reportGenerator.generate();					
 
 					Platform.runLater(() -> {
-						if(modalStage != null)
-						{
-							modalStage.close();
-						}
+						LoadingModal.closeModal();
 						
 						controller.showNotification(Localization.getString(Strings.NOTIFICATION_REPORT_SAVE));	
 						
@@ -737,10 +735,7 @@ public class ReportController implements Refreshable, Styleable
 				{
 					Logger.error(e);
 					Platform.runLater(() -> {
-						if(modalStage != null)
-						{
-							modalStage.close();
-						}
+						LoadingModal.closeModal();
 						AlertGenerator.showAlert(AlertType.ERROR, 
 												Localization.getString(Strings.TITLE_ERROR), 
 												"", 
@@ -763,7 +758,7 @@ public class ReportController implements Refreshable, Styleable
 	@Override
 	public void refresh()
 	{
-		Stage modalStage = UIHelpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_REPORT_TAB), controller.getStage(), controller.getIcon());
+		LoadingModal.showModal(controller, Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_REPORT_TAB), controller.getStage(), controller.getIcon());
 		
 		if(controller.getFilterSettings().equals(new FilterSettings()))
 		{
@@ -787,11 +782,7 @@ public class ReportController implements Refreshable, Styleable
 			refreshTableView();
 
 			Platform.runLater(() -> {
-				if(modalStage != null)
-				{
-					modalStage.close();
-				}
-				
+				LoadingModal.closeModal();				
 				applyReportPreferences();
 				tableView.refresh();
 			});
@@ -801,9 +792,9 @@ public class ReportController implements Refreshable, Styleable
 	@Override
 	public void applyStyle()
 	{
-		buttonFilter.setGraphic(Helpers.getFontIcon(FontIconType.FILTER, 18, Color.WHITE));		
-		buttonGenerate.setGraphic(Helpers.getFontIcon(FontIconType.COGS, 18, Color.WHITE));	
-		labelFilterActive.setGraphic(Helpers.getFontIcon(FontIconType.WARNING, 16, Colors.TEXT));
+		buttonFilter.setGraphic(new FontIcon(FontIconType.FILTER, 18, Color.WHITE));		
+		buttonGenerate.setGraphic(new FontIcon(FontIconType.COGS, 18, Color.WHITE));	
+		labelFilterActive.setGraphic(new FontIcon(FontIconType.WARNING, 16, Colors.TEXT));
 		
 		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
 		labelFilterActive.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));

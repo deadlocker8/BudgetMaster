@@ -3,11 +3,11 @@ package de.deadlocker8.budgetmasterserver.server.info;
 import com.google.gson.Gson;
 
 import de.deadlocker8.budgetmaster.logic.updater.VersionInformation;
+import de.deadlocker8.budgetmasterserver.logic.AdvancedRoute;
 import spark.Request;
 import spark.Response;
-import spark.Route;
 
-public class VersionGet implements Route
+public class VersionGet implements AdvancedRoute
 {	
 	private Gson gson;
 	private VersionInformation versionInfo;
@@ -19,8 +19,18 @@ public class VersionGet implements Route
 	}
 
 	@Override
-	public Object handle(Request req, Response res) throws Exception
+	public void before()
+	{
+	}
+
+	@Override
+	public Object handleRequest(Request req, Response res)
 	{
 		return gson.toJson(versionInfo);
+	}
+
+	@Override
+	public void after()
+	{
 	}
 }

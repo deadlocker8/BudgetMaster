@@ -1,14 +1,10 @@
-package de.deadlocker8.budgetmasterclient.ui.controller;
+package de.deadlocker8.budgetmasterclient.ui.controller.settings;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Optional;
 
+import de.deadlocker8.budgetmaster.logic.ServerType;
 import de.deadlocker8.budgetmaster.logic.Settings;
-import de.deadlocker8.budgetmaster.logic.database.Database;
-import de.deadlocker8.budgetmaster.logic.serverconnection.ExceptionHandler;
-import de.deadlocker8.budgetmaster.logic.serverconnection.ServerConnection;
 import de.deadlocker8.budgetmaster.logic.updater.Updater;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
@@ -16,46 +12,35 @@ import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.LanguageType;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmasterclient.ui.RestartHandler;
-import de.deadlocker8.budgetmasterclient.ui.Styleable;
 import de.deadlocker8.budgetmasterclient.ui.cells.LanguageCell;
-import de.deadlocker8.budgetmasterclient.utils.UIHelpers;
-import javafx.application.Platform;
+import de.deadlocker8.budgetmasterclient.ui.controller.Controller;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import logger.Logger;
 import tools.AlertGenerator;
-import tools.BASE58Type;
 import tools.ConvertTo;
 import tools.HashUtils;
 import tools.Localization;
-import tools.RandomCreations;
-import tools.Worker;
 
-public class SettingsController implements Styleable
+public class OnlineServerSettingsController extends SettingsController
 {
 	@FXML private AnchorPane anchorPaneMain;
 	@FXML private ScrollPane scrollPane;
 	@FXML private HBox hboxSettings;
+	@FXML private ToggleButton toggleButtonOnline;
+	@FXML private ToggleButton toggleButtonLocal;
 	@FXML private Label labelClientSecret;
 	@FXML private TextField textFieldClientSecret;
 	@FXML private TextField textFieldURL;
@@ -77,12 +62,20 @@ public class SettingsController implements Styleable
 	@FXML private Label labelCurrentVersion;
 	@FXML private Label labelLatestVersion;
 
-	private Controller controller;
 	private LanguageType previousLanguage;
 
+	@Override
 	public void init(Controller controller)
 	{
-		this.controller = controller;
+		super.controller = controller;
+		
+		ToggleGroup toggleGroupServerType = new ToggleGroup();
+		toggleButtonOnline.setToggleGroup(toggleGroupServerType);
+		toggleButtonLocal.setToggleGroup(toggleGroupServerType);
+		toggleButtonLocal.setOnAction((event)->{
+			controller.getSettings().setServerType(ServerType.LOCAL);
+			controller.loadSettingsTab();
+		});
 		
 		textFieldClientSecret.setText("******");		
 		
@@ -111,15 +104,21 @@ public class SettingsController implements Styleable
 		hboxSettings.prefWidthProperty().bind(scrollPane.widthProperty().subtract(25));
 		
 		refreshLabelsUpdate();
+		
+		if(controller.checkSettings())
+		{
+			controller.refresh(controller.getFilterSettings());
+		}
 	}
 	
+	@Override
 	public void prefill()
 	{
 		if(controller.getSettings().isComplete())
 		{
 			textFieldURL.setText(controller.getSettings().getUrl());
 			textFieldSecret.setText("******");
-			textFieldCurrency.setText(controller.getSettings().getCurrency());		
+			textFieldCurrency.setText(controller.getSettings().getCurrency());	
 		}
 		
 		if(controller.getSettings().isRestActivated())
@@ -141,7 +140,8 @@ public class SettingsController implements Styleable
 		checkboxEnableAutoUpdate.setSelected(controller.getSettings().isAutoUpdateCheckEnabled());
 	}
 	
-	private void refreshLabelsUpdate()
+	@Override
+	void refreshLabelsUpdate()
 	{
 		Updater updater = controller.getUpdater();
 		labelCurrentVersion.setText(Localization.getString(Strings.VERSION_NAME));
@@ -166,14 +166,15 @@ public class SettingsController implements Styleable
 		}
 	}
 
+	@Override
 	public void save()
 	{
-		String clientSecret = textFieldClientSecret.getText().trim();
-		String url = textFieldURL.getText().trim();
-		String secret = textFieldSecret.getText().trim();
-		String currency = textFieldCurrency.getText().trim();
+		String clientSecret = textFieldClientSecret.getText();
+		String url = textFieldURL.getText();
+		String secret = textFieldSecret.getText();
+		String currency = textFieldCurrency.getText();
 		
-		if(clientSecret == null || clientSecret.equals(""))
+		if(clientSecret == null || clientSecret.trim().equals(""))
 		{
 			AlertGenerator.showAlert(AlertType.WARNING, 
 									Localization.getString(Strings.TITLE_WARNING), 
@@ -185,8 +186,9 @@ public class SettingsController implements Styleable
 									false);
 			return;
 		}
+		clientSecret = clientSecret.trim();
 		
-		if(url == null || url.equals(""))
+		if(url == null || url.trim().equals(""))
 		{
 			AlertGenerator.showAlert(AlertType.WARNING, 
 									Localization.getString(Strings.TITLE_WARNING), 
@@ -198,8 +200,9 @@ public class SettingsController implements Styleable
 									false);
 			return;
 		}
+		url = url.trim();
 
-		if(secret == null || secret.equals(""))
+		if(secret == null || secret.trim().equals(""))
 		{
 			AlertGenerator.showAlert(AlertType.WARNING, 
 									Localization.getString(Strings.TITLE_WARNING), 
@@ -211,8 +214,9 @@ public class SettingsController implements Styleable
 									false);
 			return;
 		}
+		secret = secret.trim();
 
-		if(currency == null || currency.equals(""))
+		if(currency == null || currency.trim().equals(""))
 		{
 			AlertGenerator.showAlert(AlertType.WARNING, 
 									Localization.getString(Strings.TITLE_WARNING), 
@@ -224,6 +228,7 @@ public class SettingsController implements Styleable
 									false);
 			return;
 		}
+		currency = currency.trim();
 
 		ArrayList<String> trustedHosts = new ArrayList<>();
 		String trustedHostText = textAreaTrustedHosts.getText();
@@ -255,6 +260,7 @@ public class SettingsController implements Styleable
 			controller.getSettings().setTrustedHosts(trustedHosts);
 			controller.getSettings().setLanguage(comboBoxLanguage.getValue());
 			controller.getSettings().setAutoUpdateCheckEnabled(checkboxEnableAutoUpdate.isSelected());
+			controller.getSettings().setServerType(ServerType.ONLINE);
 		}
 		else
 		{
@@ -283,6 +289,7 @@ public class SettingsController implements Styleable
 			settings.setTrustedHosts(trustedHosts);
 			settings.setLanguage(comboBoxLanguage.getValue());
 			settings.setAutoUpdateCheckEnabled(checkboxEnableAutoUpdate.isSelected());
+			settings.setServerType(ServerType.ONLINE);
 			controller.setSettings(settings);
 		}
 
@@ -311,261 +318,13 @@ public class SettingsController implements Styleable
 		refreshLabelsUpdate();
 	}
 
-	public void exportDB()
-	{
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle(Localization.getString(Strings.TITLE_DATABASE_EXPORT));
-		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON (*.json)", "*.json");
-		fileChooser.getExtensionFilters().add(extFilter);
-		File file = fileChooser.showSaveDialog(controller.getStage());
-		if(file != null)
-		{
-			Stage modalStage = UIHelpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATABASE_EXPORT), controller.getStage(), controller.getIcon());
-
-			Worker.runLater(() -> {
-				try
-				{
-					ServerConnection connection = new ServerConnection(controller.getSettings());
-					String databaseJSON = connection.exportDatabase();
-					FileHelper.saveDatabaseJSON(file, databaseJSON);
-
-					Platform.runLater(() -> {
-						if(modalStage != null)
-						{
-							modalStage.close();
-						}
-						AlertGenerator.showAlert(AlertType.INFORMATION, 
-												Localization.getString(Strings.INFO_TITLE_DATABASE_EXPORT), 
-												"", 
-												Localization.getString(Strings.INFO_TEXT_DATABASE_EXPORT), 
-												controller.getIcon(), 
-												controller.getStage(), 
-												null, 
-												false);
-					});
-				}
-				catch(Exception e)
-				{
-					Logger.error(e);
-					Platform.runLater(() -> {
-						if(modalStage != null)
-						{
-							modalStage.close();
-						}
-						controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));						
-					});
-				}
-			});
-		}
-	}
-	
-	private void importDatabase()
-	{
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle(Localization.getString(Strings.TITLE_DATABASE_IMPORT));
-		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON (*.json)", "*.json");
-		fileChooser.getExtensionFilters().add(extFilter);
-		File file = fileChooser.showOpenDialog(controller.getStage());
-		if(file != null)
-		{
-			Database database;
-			try
-			{
-				database = FileHelper.loadDatabaseJSON(file);
-				System.out.println(database);
-				if(database.getCategories() == null 
-					|| database.getNormalPayments() == null 
-					|| database.getRepeatingPayments() == null
-					|| database.getTags() == null
-					|| database.getTagMatches() == null)
-				{
-					AlertGenerator.showAlert(AlertType.ERROR, 
-											Localization.getString(Strings.TITLE_ERROR), 
-											"", 
-											Localization.getString(Strings.ERROR_DATABASE_IMPORT_WRONG_FILE), 
-											controller.getIcon(), 
-											controller.getStage(), 
-											null, 
-											false);
-					return;
-				}
-			}
-			catch(IOException e1)
-			{
-				Logger.error(e1);
-				AlertGenerator.showAlert(AlertType.ERROR, 
-										Localization.getString(Strings.TITLE_ERROR), 
-										"", 
-										Localization.getString(Strings.ERROR_DATABASE_IMPORT), 
-										controller.getIcon(), 
-										controller.getStage(), 
-										null, 
-										false);
-				return;
-			}
-
-			Stage modalStage = UIHelpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATABASE_IMPORT), controller.getStage(), controller.getIcon());
-
-			Worker.runLater(() -> {
-				try
-				{
-					ServerConnection connection = new ServerConnection(controller.getSettings());
-					connection.importDatabase(database);
-
-					Platform.runLater(() -> {
-						if(modalStage != null)
-						{
-							modalStage.close();
-						}						
-						
-						AlertGenerator.showAlert(AlertType.INFORMATION, 
-												Localization.getString(Strings.INFO_TITLE_DATABASE_IMPORT), 
-												"", 
-												Localization.getString(Strings.INFO_TEXT_DATABASE_IMPORT), 
-												controller.getIcon(), 
-												controller.getStage(), 
-												null, 
-												false);
-						
-						controller.refresh(controller.getFilterSettings());
-					});
-				}
-				catch(Exception e)
-				{
-					Logger.error(e);
-					Platform.runLater(() -> {
-						if(modalStage != null)
-						{
-							modalStage.close();
-						}
-						controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
-					});
-				}
-			});
-		}
-		else
-		{
-			controller.refresh(controller.getFilterSettings());
-		}
-	}
-
-	public void importDB()
-	{
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle(Localization.getString(Strings.INFO_TITLE_DATABASE_IMPORT_DIALOG));
-		alert.setHeaderText("");		
-		alert.setContentText(Localization.getString(Strings.INFO_TEXT_DATABASE_IMPORT_DIALOG));
-		Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
-		dialogStage.getIcons().add(controller.getIcon());
-		dialogStage.initOwner(controller.getStage());
-
-		ButtonType buttonTypeDelete = new ButtonType(Localization.getString(Strings.INFO_TEXT_DATABASE_IMPORT_DIALOG_DELETE));
-		ButtonType buttonTypeAppend = new ButtonType(Localization.getString(Strings.INFO_TEXT_DATABASE_IMPORT_DIALOG_APPEND));
-		ButtonType buttonTypeCancel = new ButtonType(Localization.getString(Strings.CANCEL), ButtonData.CANCEL_CLOSE);
-		alert.getButtonTypes().setAll(buttonTypeDelete, buttonTypeAppend, buttonTypeCancel);
-		
-		DialogPane dialogPane = alert.getDialogPane();
-		dialogPane.getButtonTypes().stream().map(dialogPane::lookupButton).forEach(button -> button.addEventHandler(KeyEvent.KEY_PRESSED, (event) -> {
-			if(KeyCode.ENTER.equals(event.getCode()) && event.getTarget() instanceof Button)
-			{
-				((Button)event.getTarget()).fire();
-			}
-		}));
-		
-		Optional<ButtonType> result = alert.showAndWait();
-		if(result.get() == buttonTypeDelete)
-		{
-			deleteDatabase(true);
-		}	
-		else if(result.get() == buttonTypeAppend)
-		{	
-			importDatabase();
-		}		
-	}
-	
-	public void deleteDB()
-	{
-		deleteDatabase(false);
-	}
-
-	public void deleteDatabase(boolean importPending)
-	{
-		String verificationCode = ConvertTo.toBase58(RandomCreations.generateRandomMixedCaseString(4, true), true, BASE58Type.UPPER);
-
-		TextInputDialog dialog = new TextInputDialog();
-		dialog.setTitle(Localization.getString(Strings.INFO_TITLE_DATABASE_DELETE));
-		dialog.setHeaderText(Localization.getString(Strings.INFO_HEADER_TEXT_DATABASE_DELETE));
-		dialog.setContentText(Localization.getString(Strings.INFO_TEXT_DATABASE_DELETE, verificationCode));
-		Stage dialogStage = (Stage)dialog.getDialogPane().getScene().getWindow();
-		dialogStage.getIcons().add(controller.getIcon());
-		dialogStage.initOwner(controller.getStage());
-
-		Optional<String> result = dialog.showAndWait();
-		if(result.isPresent())
-		{
-			if(result.get().equals(verificationCode))
-			{
-				Stage modalStage = UIHelpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATABASE_DELETE), controller.getStage(), controller.getIcon());
-
-				Worker.runLater(() -> {
-					try
-					{
-						ServerConnection connection = new ServerConnection(controller.getSettings());
-						connection.deleteDatabase();
-						Platform.runLater(() -> {							
-							if(modalStage != null)
-							{
-								modalStage.close();
-								if(importPending)
-								{
-									importDatabase();
-								}
-								else
-								{
-									controller.refresh(controller.getFilterSettings());
-								}
-							}
-						});
-					}
-					catch(Exception e)
-					{
-						Logger.error(e);
-						Platform.runLater(() -> {
-							if(modalStage != null)
-							{
-								modalStage.close();
-							}
-							controller.showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
-						});
-					}
-				});
-			}
-			else
-			{
-				AlertGenerator.showAlert(AlertType.WARNING, 
-										Localization.getString(Strings.TITLE_WARNING), 
-										"", 
-										Localization.getString(Strings.WARNING_WRONG_VERIFICATION_CODE), 
-										controller.getIcon(), 
-										controller.getStage(), 
-										null, 
-										false);
-				deleteDatabase(importPending);
-			}
-		}
-	}
-	
-	public void checkForUpdates()
-	{
-		controller.checkForUpdates(true);		
-		refreshLabelsUpdate();
-	}
-
 	@Override
 	public void applyStyle()
 	{
 		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
 		scrollPane.setStyle("-fx-background-color: transparent");
+		toggleButtonOnline.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_DARK_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14; -fx-background-radius: 3 0 0 3; -fx-effect: innershadow(gaussian, rgba(0,0,0,0.7), 10,0,0,0);");
+		toggleButtonLocal.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14; -fx-background-radius: 0 3 3 0");
 		labelClientSecret.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
 		labelSecret.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));
 		labelURL.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));

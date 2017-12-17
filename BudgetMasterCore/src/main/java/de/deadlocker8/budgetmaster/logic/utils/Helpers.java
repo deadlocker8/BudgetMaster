@@ -7,8 +7,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-import fontAwesome.FontIcon;
-import fontAwesome.FontIconType;
 import javafx.scene.paint.Color;
 import tools.Localization;
 
@@ -98,16 +96,7 @@ public class Helpers
         colors.add(Colors.CATEGORIES_DARK_GREEN);    
         
         return colors;
-	}
-	
-	public static FontIcon getFontIcon(FontIconType type, int size, Color color)
-	{
-	    FontIcon icon = new FontIcon(type);
-	    icon.setSize(size);
-	    icon.setColor(color);
-	    
-	    return icon;
-	}
+	}	
 	
 	/**
 	 * Replaces line breaks and tabs with spaces

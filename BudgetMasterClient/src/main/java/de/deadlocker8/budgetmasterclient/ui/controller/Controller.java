@@ -14,6 +14,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import de.deadlocker8.budgetmaster.logic.FilterSettings;
+import de.deadlocker8.budgetmaster.logic.ServerType;
 import de.deadlocker8.budgetmaster.logic.Settings;
 import de.deadlocker8.budgetmaster.logic.category.CategoryBudget;
 import de.deadlocker8.budgetmaster.logic.category.CategoryHandler;
@@ -27,11 +28,14 @@ import de.deadlocker8.budgetmaster.logic.tag.TagHandler;
 import de.deadlocker8.budgetmaster.logic.updater.Updater;
 import de.deadlocker8.budgetmaster.logic.updater.VersionInformation;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
-import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
+import de.deadlocker8.budgetmasterclient.ui.ShutdownHandler;
 import de.deadlocker8.budgetmasterclient.ui.commandLine.CommandBundle;
 import de.deadlocker8.budgetmasterclient.ui.commandLine.CommandLine;
-import de.deadlocker8.budgetmasterclient.utils.UIHelpers;
+import de.deadlocker8.budgetmasterclient.ui.controller.settings.LocalServerSettingsController;
+import de.deadlocker8.budgetmasterclient.ui.controller.settings.SettingsController;
+import de.deadlocker8.budgetmasterclient.utils.LoadingModal;
+import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
@@ -97,6 +101,7 @@ public class Controller extends BaseController
 
 	private Image icon = new Image("de/deadlocker8/budgetmaster/icon.png");	
 	private Settings settings;
+	private ShutdownHandler shutdownHandler;
 	private DateTime currentDate;
 	private ArrayList<CategoryBudget> categoryBudgets;
 	private PaymentHandler paymentHandler;
@@ -110,9 +115,10 @@ public class Controller extends BaseController
 	private boolean alertIsShowing = false;
 	private static DateTimeFormatter DATE_FORMAT;
 	
-	public Controller(Settings settings)
+	public Controller(Settings settings, ShutdownHandler shutdownHandler)
 	{
-		this.settings = settings;	
+		this.settings = settings;
+		this.shutdownHandler = shutdownHandler;
 		DATE_FORMAT = DateTimeFormat.forPattern("MMMM yyyy").withLocale(this.settings.getLanguage().getLocale());
 		load("/de/deadlocker8/budgetmaster/ui/fxml/GUI.fxml", Localization.getBundle());
 		getStage().show();
@@ -130,14 +136,30 @@ public class Controller extends BaseController
 		stage.setMinHeight(650);
 		stage.getScene().getStylesheets().add("/de/deadlocker8/budgetmaster/ui/style.css");
 	}
-
+	
 	@Override
 	public void init()
-	{		
+	{
+		this.shutdownHandler.setController(this);
+		
 		getStage().setOnCloseRequest((event)->{
-			Worker.shutdown();
-			System.exit(0);
+			Runtime.getRuntime().removeShutdownHook(shutdownHandler.getShutdownThread());
+			shutdownHandler.shutdown();
 		});
+		
+		try
+		{
+			Runtime.getRuntime().addShutdownHook(shutdownHandler.getShutdownThread());
+		}
+		catch(IllegalArgumentException e)
+		{
+		}
+		
+		if(settings.getServerType() == null)
+		{
+			settings.setServerType(ServerType.ONLINE);
+		}
+		Logger.info("Running with ServerType: " + settings.getServerType());
 		
 		currentDate = DateTime.now();
 		buttonDate.setText(currentDate.toString(DATE_FORMAT));
@@ -186,7 +208,7 @@ public class Controller extends BaseController
 	{
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fileName));
 		fxmlLoader.setResources(Localization.getBundle());
-		Parent nodeTab = (Parent)fxmlLoader.load();		
+		Parent nodeTab = (Parent)fxmlLoader.load();
 		tab.setContent(nodeTab);
 		return fxmlLoader.getController();
 	}
@@ -222,8 +244,7 @@ public class Controller extends BaseController
 				}
 			});
 			
-			settingsController = loadTab("/de/deadlocker8/budgetmaster/ui/fxml/SettingsTab.fxml", tabSettings);
-			settingsController.init(this);		
+			loadSettingsTab();
 		}
 		catch(IOException e)
 		{
@@ -233,10 +254,10 @@ public class Controller extends BaseController
 			});			
 		}
 		
-		buttonLeft.setGraphic(Helpers.getFontIcon(FontIconType.CHEVRON_LEFT, 20, Colors.TEXT));
-		buttonRight.setGraphic(Helpers.getFontIcon(FontIconType.CHEVRON_RIGHT, 20, Colors.TEXT));		
-		buttonToday.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR_ALT, 20, Colors.TEXT));		
-		buttonAbout.setGraphic(Helpers.getFontIcon(FontIconType.INFO, 20, Colors.TEXT));
+		buttonLeft.setGraphic(new FontIcon(FontIconType.CHEVRON_LEFT, 20, Colors.TEXT));
+		buttonRight.setGraphic(new FontIcon(FontIconType.CHEVRON_RIGHT, 20, Colors.TEXT));		
+		buttonToday.setGraphic(new FontIcon(FontIconType.CALENDAR_ALT, 20, Colors.TEXT));		
+		buttonAbout.setGraphic(new FontIcon(FontIconType.INFO, 20, Colors.TEXT));
 
 		// apply theme
 		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_MAIN));
@@ -256,7 +277,35 @@ public class Controller extends BaseController
 		
 		buttonAbout.setStyle("-fx-background-color: transparent;");
 		buttonAbout.getStyleClass().add("button-hoverable");
-		
+	}
+	
+	public void loadSettingsTab()
+	{
+		try 
+		{
+			if(settings.getServerType().equals(ServerType.ONLINE))
+			{
+				settingsController = loadTab("/de/deadlocker8/budgetmaster/ui/fxml/SettingsTabOnlineServer.fxml", tabSettings);
+				settingsController.init(this);
+			}
+			else
+			{
+				settingsController = loadTab("/de/deadlocker8/budgetmaster/ui/fxml/SettingsTabLocalServer.fxml", tabSettings);
+				settingsController.init(this);
+			}
+			
+		}
+		catch(IOException e)
+		{
+			Logger.error(e);
+			Platform.runLater(() -> {
+				AlertGenerator.showAlert(AlertType.ERROR, Localization.getString(Strings.TITLE_ERROR), "", Localization.getString(Strings.ERROR_CREATE_UI), icon, getStage(), null, false);
+			});			
+		}
+	}
+	
+	public boolean checkSettings()
+	{
 		if(!settings.isComplete())
 		{			
 			Platform.runLater(() -> {
@@ -264,11 +313,9 @@ public class Controller extends BaseController
 				tabPane.getSelectionModel().select(tabSettings);
 				AlertGenerator.showAlert(AlertType.INFORMATION, Localization.getString(Strings.TITLE_INFO), "", Localization.getString(Strings.INFO_FIRST_START), icon, getStage(), null, false);
 			});
+			return false;
 		}
-		else
-		{
-			refresh(filterSettings);
-		}
+		return true;
 	}
 
 	public Image getIcon()
@@ -284,6 +331,11 @@ public class Controller extends BaseController
 	public void setSettings(Settings settings)
 	{
 		this.settings = settings;
+	}
+	
+	public ShutdownHandler getShutdownHandler()
+	{
+		return shutdownHandler;
 	}
 
 	public void showNotification(String text)
@@ -347,6 +399,12 @@ public class Controller extends BaseController
 	public void openDatePicker()
 	{
 		new DatePickerController(getStage(), this, currentDate);
+	}
+	
+	public void forceSettingsTab()
+	{
+		toggleAllTabsExceptSettings(true);
+		tabPane.getSelectionModel().select(tabSettings);
 	}
 
 	public void showConnectionErrorAlert(String errorMessage)
@@ -571,32 +629,26 @@ public class Controller extends BaseController
 		Optional<ButtonType> result = alert.showAndWait();						
 		if (result.get() == buttonTypeOne)
 		{					
-			Stage modalStage = UIHelpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_UPDATE), getStage(), icon);
+			LoadingModal.showModal(this, Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_UPDATE), getStage(), icon);
 			
 			Worker.runLater(() -> {
 				try 
 				{
 					updater.downloadLatestVersion();
 					Platform.runLater(() -> {
-						if(modalStage != null)
-						{
-							modalStage.close();
-						}							
+						LoadingModal.closeModal();						
 					});
 				}
 				catch(Exception ex)
 				{
 					Logger.error(ex);
 					Platform.runLater(() -> {
-						if(modalStage != null)
-						{
-							modalStage.close();
-							AlertGenerator.showAlert(AlertType.ERROR, 
-													Localization.getString(Strings.TITLE_ERROR),
-													"", 
-													Localization.getString(Strings.ERROR_UPDATER_DOWNLOAD_LATEST_VERSION, ex.getMessage()), 
-													icon, getStage(), null, true);
-						}							
+						LoadingModal.closeModal();
+						AlertGenerator.showAlert(AlertType.ERROR, 
+												Localization.getString(Strings.TITLE_ERROR),
+												"", 
+												Localization.getString(Strings.ERROR_UPDATER_DOWNLOAD_LATEST_VERSION, ex.getMessage()), 
+												icon, getStage(), null, true);													
 					});
 				}
 			});
@@ -741,7 +793,10 @@ public class Controller extends BaseController
 	
 	public void refresh(FilterSettings newFilterSettings)
 	{
-		Stage modalStage = UIHelpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATA), getStage(), icon);
+		Logger.debug("Starting main refresh...");
+		Platform.runLater(()->{
+			LoadingModal.showModal(this, Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_DATA), getStage(), icon);
+		});
 
 		Worker.runLater(() -> {
 			try
@@ -751,39 +806,53 @@ public class Controller extends BaseController
 				//check if server is compatible with client
 				try
 				{
+					Logger.debug("Checking server compatibility...");
 					VersionInformation serverVersion = connection.getServerVersion();
 					if(serverVersion.getVersionCode() < Integer.parseInt(Localization.getString(Strings.VERSION_CODE)))
 					{
-						Platform.runLater(()->{
-							AlertGenerator.showAlert(AlertType.WARNING,
-													Localization.getString(Strings.TITLE_WARNING), 
-													"",
-													Localization.getString(Strings.WARNING_SERVER_VERSION, serverVersion.getVersionName(), Localization.getString(Strings.VERSION_NAME)), 
-													icon, getStage(), null, false);				
-						
-							if(modalStage != null)
-							{
-								modalStage.close();
-							};
-							categoryHandler = new CategoryHandler(null);				
-							toggleAllTabsExceptSettings(true);
-							tabPane.getSelectionModel().select(tabSettings);	
-						});
+						Logger.debug("Server (versionCode: " + serverVersion.getVersionCode() + ") is incompatible with client (versionCode: " + Localization.getString(Strings.VERSION_CODE) + ")");
+						if(settings.getServerType().equals(ServerType.ONLINE))
+						{					
+							Platform.runLater(()->{
+								AlertGenerator.showAlert(AlertType.WARNING,
+														Localization.getString(Strings.TITLE_WARNING), 
+														"",
+														Localization.getString(Strings.WARNING_SERVER_VERSION, serverVersion.getVersionName(), Localization.getString(Strings.VERSION_NAME)), 
+														icon, getStage(), null, false);				
+							
+								LoadingModal.closeModal();
+								categoryHandler = new CategoryHandler(null);			
+								toggleAllTabsExceptSettings(true);
+								tabPane.getSelectionModel().select(tabSettings);	
+							});
+						}
+						else
+						{
+							Platform.runLater(()->{
+								LoadingModal.closeModal();
+								categoryHandler = new CategoryHandler(null);			
+								toggleAllTabsExceptSettings(true);
+								tabPane.getSelectionModel().select(tabSettings);
+								((LocalServerSettingsController)settingsController).handleIncompatibleServer();
+							});
+						}
 						return;
+					}
+					else
+					{
+						Logger.debug("Found compatible server (versionCode: " + serverVersion.getVersionCode() + ")");
 					}
 				}
 				catch(Exception e1)
 				{
 					Logger.error(e1);
 					Platform.runLater(()->{
-						if(modalStage != null)
-						{
-							modalStage.close();
-						}
+						LoadingModal.closeModal();
 					});
 					
 					if(e1.getMessage().contains("404"))
 					{
+						Logger.debug("Server version is incompatible with current client version (" + Localization.getString(Strings.VERSION_CODE) + ")");
 						//old server
 						Platform.runLater(()->{
 							AlertGenerator.showAlert(AlertType.WARNING,
@@ -805,6 +874,8 @@ public class Controller extends BaseController
 					return;
 				}
 				
+				Logger.debug("Connected");
+				
 				paymentHandler = new PaymentHandler();
 				paymentHandler.getPayments().addAll(connection.getPayments(currentDate.getYear(), currentDate.getMonthOfYear()));
 				paymentHandler.getPayments().addAll(connection.getRepeatingPayments(currentDate.getYear(), currentDate.getMonthOfYear()));			
@@ -820,12 +891,10 @@ public class Controller extends BaseController
 				
 				categoryBudgets = connection.getCategoryBudgets(currentDate.getYear(), currentDate.getMonthOfYear());	
 				paymentHandler.filter(newFilterSettings, new TagHandler(settings));
+				Logger.debug("Main refresh done");
 
 				Platform.runLater(() -> {
-					if(modalStage != null)
-					{
-						modalStage.close();
-					}
+					LoadingModal.closeModal();
 					toggleAllTabsExceptSettings(false);
 					refreshAllTabs();
 				});
@@ -834,11 +903,7 @@ public class Controller extends BaseController
 			{
 				Logger.error(e);
 				Platform.runLater(() -> {
-					if(modalStage != null)
-					{
-						modalStage.close();
-					}
-					Logger.error(e);
+					LoadingModal.closeModal();
 					categoryHandler = new CategoryHandler(null);	
 					showConnectionErrorAlert(ExceptionHandler.getMessageForException(e));
 					refreshAllTabs();

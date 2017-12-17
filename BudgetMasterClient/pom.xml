@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.deadlocker8</groupId>
 	<artifactId>BudgetMasterClient</artifactId>
-	<version>1.7.1</version>
+	<version>1.8.0</version>
 	<name>BudgetMasterClient</name>
 	<build>
 		<plugins>
@@ -105,7 +105,7 @@
 		<dependency>
 			<groupId>de.deadlocker8</groupId>
 			<artifactId>tools</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
 </project>

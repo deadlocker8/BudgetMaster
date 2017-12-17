@@ -3,9 +3,9 @@ package de.deadlocker8.budgetmasterclient.ui.cells;
 import java.util.Optional;
 
 import de.deadlocker8.budgetmaster.logic.category.Category;
-import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmasterclient.ui.controller.CategoryController;
+import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -64,7 +64,7 @@ public class CategoryCell extends ListCell<Category>
 			HBox.setHgrow(r, Priority.ALWAYS);
 			
 			Button buttonEdit = new Button();			
-			buttonEdit.setGraphic(Helpers.getFontIcon(FontIconType.PENCIL, 16, Color.web("#212121")));
+			buttonEdit.setGraphic(new FontIcon(FontIconType.PENCIL, 16, Color.web("#212121")));
 			buttonEdit.setPrefHeight(HEIGHT);					
 			buttonEdit.getStyleClass().add("greylabel");
 			buttonEdit.setStyle("-fx-background-color: transparent");
@@ -75,7 +75,7 @@ public class CategoryCell extends ListCell<Category>
 			HBox.setMargin(buttonEdit, new Insets(0, 0, 0, 25));
 			
 			Button buttonDelete = new Button();			
-			buttonDelete.setGraphic(Helpers.getFontIcon(FontIconType.TRASH, 16, Color.web("#212121")));
+			buttonDelete.setGraphic(new FontIcon(FontIconType.TRASH, 16, Color.web("#212121")));
 			buttonDelete.setPrefHeight(HEIGHT);					
 			buttonDelete.getStyleClass().add("greylabel");
 			buttonDelete.setStyle("-fx-background-color: transparent");

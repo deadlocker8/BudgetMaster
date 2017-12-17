@@ -49,6 +49,11 @@ public class Strings
     public static final String LOAD_DATABASE_DELETE = "load.database.delete";
     public static final String LOAD_UPDATE = "load.update";
     public static final String LOAD_SEARCH = "load.search";
+    public static final String LOAD_LOCAL_SERVER = "load.local.server";
+    public static final String LOAD_DOWNLOAD_LOCAL_SERVER = "load.download.local.server";
+    public static final String LOAD_LOCAL_SERVER_CONNECT = "load.local.server.connect";
+    public static final String LOAD_LOCAL_SERVER_RETRY = "load.local.server.retry";
+    
     
     //MISC
     public static final String CATEGORY_NONE = "category.none";
@@ -70,6 +75,13 @@ public class Strings
     public static final String UNDEFINED = "undefined";
     public static final String TAGFIELD_PLACEHOLDER = "tagfield.placeholder";
     public static final String SHORTCUT_DEV_CONSOLE = "shortcut.dev.console";
+    public static final String LOCAL_SERVER_STATUS_OK = "local.server.status.ok";
+    public static final String LOCAL_SERVER_STATUS_NOT_STARTED = "local.server.status.not.started";
+    public static final String LOCAL_SERVER_ACTION_NOT_STARTED = "local.server.action.not.started";
+    public static final String LOCAL_SERVER_STATUS_NOT_PRESENT = "local.server.status.not.present";
+    public static final String LOCAL_SERVER_ACTION_NOT_PRESENT = "local.server.action.not.present";
+    public static final String LOCAL_SERVER_STATUS_INCOMPATIBLE = "local.server.status.incompatible";
+    public static final String LOCAL_SERVER_ACTION_INCOMPATIBLE = "local.server.action.incompatible";
     
     //REPORT
     public static final String REPORT_POSITION = "report.position";
@@ -160,6 +172,8 @@ public class Strings
     public static final String INFO_HEADER_TEXT_START_AFTER_UPDATE = "info.header.text.start.after.update";
     public static final String INFO_TEXT_START_AFTER_UPDATE = "info.text.start.after.update";
     public static final String INFO_TAGS = "info.tags";
+    public static final String INFO_TITLE_SHUTDOWN = "info.title.shutdown";
+    public static final String INFO_TEXT_SHUTDOWN = "info.text.shutdown";
         
     //WARNING
     public static final String WARNING_ENDDATE_BEFORE_STARTDATE = "warning.enddate.before.startdate";
@@ -177,7 +191,7 @@ public class Strings
     public static final String WARNING_PAYMENT_AMOUNT = "warning.payment.amount";
     public static final String WARNING_EMPTY_PAYMENT_DATE = "warning.empty.payment.date";
     public static final String WARNING_PAYMENT_REPEATING = "warning.payment.repeating";    
-    public static final String WARNING_EMPTY_SECRET_CLIENT = " warning.empty.secret.client";
+    public static final String WARNING_EMPTY_SECRET_CLIENT = "warning.empty.secret.client";
     public static final String WARNING_EMPTY_URL = "warning.empty.url";
     public static final String WARNING_EMPTY_SECRET_SERVER = "warning.empty.secret.server";
     public static final String WARNING_EMPTY_CURRENCY = "warning.empty.currency";
@@ -211,6 +225,8 @@ public class Strings
     public static final String ERROR_UPDATER_GET_LATEST_VERSION = "error.updater.get.latest.version";
     public static final String ERROR_UPDATER_DOWNLOAD_LATEST_VERSION = "error.updater.download.latest.version";
     public static final String ERROR_OPEN_BROWSER = "error.open.browser";
+    public static final String ERROR_LOCAL_SERVER_START = "error.local.server.start";
+    public static final String ERROR_LOCAL_SERVER_DOWNLOAD = "error.local.server.download";
     
     //ABOUT
     public static final String ABOUT = "about";

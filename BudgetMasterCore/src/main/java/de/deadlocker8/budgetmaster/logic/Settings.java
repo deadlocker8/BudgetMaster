@@ -13,11 +13,14 @@ public class Settings
 	 * --> 1
 	 * initial
 	 * 
+	 * --> 2
+	 * added field for "serverType"
+	 * 
 	 */	
 	
-	@SuppressWarnings("unused")
 	private final String TYPE = SaveFileType.BUDGETMASTER_SETTINGS.toString();
-	private final int VERSION = 1;	
+	private final int VERSION = 2;
+	private ServerType serverType;
 	private String clientSecret;
 	private String url;
 	private String secret;
@@ -30,7 +33,17 @@ public class Settings
 	public Settings()
 	{
 		
-	}	
+	}
+
+	public ServerType getServerType()
+	{
+		return serverType;
+	}
+
+	public void setServerType(ServerType serverType)
+	{
+		this.serverType = serverType;
+	}
 
 	public String getClientSecret()
 	{
@@ -132,7 +145,7 @@ public class Settings
 	@Override
 	public String toString()
 	{
-		return "Settings [TYPE=" + TYPE + ", VERSION=" + VERSION + ", clientSecret=" + clientSecret + ", url=" + url + ", secret=" + secret + ", currency=" + currency + ", restActivated=" + restActivated + ", trustedHosts=" + trustedHosts + ", language=" + language + ", autoUpdateCheckEnabled="
-				+ autoUpdateCheckEnabled + "]";
+		return "Settings [TYPE=" + TYPE + ", VERSION=" + VERSION + ", serverType=" + serverType + ", clientSecret=" + clientSecret + ", url=" + url + ", secret=" + secret + ", currency=" + currency + ", restActivated=" + restActivated + ", trustedHosts=" + trustedHosts + ", language=" + language
+				+ ", autoUpdateCheckEnabled=" + autoUpdateCheckEnabled + "]";
 	}
 }

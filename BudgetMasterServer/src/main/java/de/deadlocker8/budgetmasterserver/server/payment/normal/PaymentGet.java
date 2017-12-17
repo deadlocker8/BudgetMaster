@@ -9,13 +9,13 @@ import org.joda.time.DateTime;
 import com.google.gson.Gson;
 
 import de.deadlocker8.budgetmaster.logic.payment.NormalPayment;
-import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
+import de.deadlocker8.budgetmasterserver.logic.AdvancedRoute;
+import de.deadlocker8.budgetmasterserver.logic.database.handler.DatabaseHandler;
 import de.deadlocker8.budgetmasterserver.server.updater.RepeatingPaymentUpdater;
 import spark.Request;
 import spark.Response;
-import spark.Route;
 
-public class PaymentGet implements Route
+public class PaymentGet implements AdvancedRoute
 {
 	private DatabaseHandler handler;
 	private Gson gson;
@@ -24,10 +24,16 @@ public class PaymentGet implements Route
 	{
 		this.handler = handler;
 		this.gson = gson;
+	}	
+
+	@Override
+	public void before()
+	{
+		handler.connect();
 	}
 
 	@Override
-	public Object handle(Request req, Response res) throws Exception
+	public Object handleRequest(Request req, Response res)
 	{
 		if(!req.queryParams().contains("year") || !req.queryParams().contains("month"))
 		{
@@ -59,7 +65,7 @@ public class PaymentGet implements Route
 			try
 			{				
 				ArrayList<NormalPayment> payments = new ArrayList<>();				
-				payments.addAll(handler.getPayments(year, month));	
+				payments.addAll(handler.getPayments(year, month));
 				
 				return gson.toJson(payments);
 			}
@@ -74,5 +80,11 @@ public class PaymentGet implements Route
 		}
 		
 		return null;
+	}
+
+	@Override
+	public void after()
+	{
+		handler.closeConnection();		
 	}
 }

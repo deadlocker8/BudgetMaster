@@ -8,9 +8,13 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -25,9 +29,10 @@ import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmasterserver.logic.Settings;
 import de.deadlocker8.budgetmasterserver.logic.Utils;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseExporter;
-import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
 import de.deadlocker8.budgetmasterserver.logic.database.DatabaseImporter;
-import de.deadlocker8.budgetmasterserver.logic.database.DatabaseTagHandler;
+import de.deadlocker8.budgetmasterserver.logic.database.creator.DatabaseCreator;
+import de.deadlocker8.budgetmasterserver.logic.database.handler.DatabaseHandler;
+import de.deadlocker8.budgetmasterserver.logic.database.taghandler.DatabaseTagHandler;
 import tools.Localization;
 
 public class DatabaseImportExportTest
@@ -42,21 +47,40 @@ public class DatabaseImportExportTest
 		try
 		{
 			//init
-			settings = Utils.loadSettings();			
-			DatabaseHandler handler = new DatabaseHandler(settings);
+			settings = Utils.loadSettings();
+			System.out.println(settings);
+			DatabaseHandler handler = Utils.getDatabaseHandler(settings);
 			handler.deleteDatabase();
-			handler = new DatabaseHandler(settings);			
-			databaseHandler = handler;
-			tagHandler = new DatabaseTagHandler(settings);
+			handler.closeConnection();
+			Connection connection = Utils.getDatabaseConnection(settings);
+			DatabaseCreator creator = Utils.getDatabaseCreator(connection, settings);
+			creator.createTables();
+			connection.close();
+			databaseHandler = Utils.getDatabaseHandler(settings);
+			tagHandler = Utils.getDatabaseTagHandler(settings);
 			
 			Localization.init("de/deadlocker8/budgetmaster/");
 			Localization.loadLanguage(Locale.ENGLISH);
 		}
-		catch(IOException | URISyntaxException e)
+		catch(IOException | URISyntaxException | SQLException | ClassNotFoundException e)
 		{
 			fail(e.getMessage());
-		}		
+		}	
 	}	
+
+	@Before
+	public void before()
+	{
+		databaseHandler.connect();
+		tagHandler.connect();
+	}
+	
+	@After
+	public void after()
+	{
+		databaseHandler.closeConnection();
+		tagHandler.closeConnection();
+	}
 	
 	@Test
 	public void testImport()
@@ -111,7 +135,12 @@ public class DatabaseImportExportTest
 		try
 		{
 			databaseHandler.deleteDatabase();
-			databaseHandler = new DatabaseHandler(settings);
+			databaseHandler.closeConnection();
+			Connection connection = Utils.getDatabaseConnection(settings);
+			DatabaseCreator creator = Utils.getDatabaseCreator(connection, settings);
+			creator.createTables();
+			connection.close();			
+			databaseHandler = Utils.getDatabaseHandler(settings);;
 			
 			File file = Paths.get("src/test/resources/de/deadlocker8/budgetmaster/import.json").toFile();
 			Database database = FileHelper.loadDatabaseJSON(file);			
@@ -124,7 +153,6 @@ public class DatabaseImportExportTest
 			Gson gson = new GsonBuilder().setPrettyPrinting().create();
 			String databaseJSON = gson.toJson(exporter.exportDatabase()).replaceAll("\n", "");
 			FileHelper.saveDatabaseJSON(file, databaseJSON);
-			FileHelper.saveDatabaseJSON(new File("C:/Users/ROGO2/Desktop/123.json"), databaseJSON);
 			
 			String expectedJSON = new String(Files.readAllBytes(Paths.get("src/test/resources/de/deadlocker8/budgetmaster/import.json")));
 			String exportedJSON = new String(Files.readAllBytes(Paths.get("src/test/resources/de/deadlocker8/budgetmaster/export.json")));		

@@ -15,6 +15,7 @@ import de.deadlocker8.budgetmaster.logic.utils.Colors;
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmasterclient.ui.controller.PaymentController;
+import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.animation.FadeTransition;
 import javafx.geometry.Insets;
@@ -23,13 +24,13 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -86,11 +87,11 @@ public class PaymentCell extends ListCell<Payment>
 			Label labelRepeating = new Label();
 			if(item instanceof RepeatingPaymentEntry)
 			{				
-				labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR, 18, Color.web("#212121")));
+				labelRepeating.setGraphic(new FontIcon(FontIconType.CALENDAR, 18, Color.web("#212121")));
 			}
 			else
 			{
-			    labelRepeating.setGraphic(Helpers.getFontIcon(FontIconType.CALENDAR, 18, Color.TRANSPARENT));
+			    labelRepeating.setGraphic(new FontIcon(FontIconType.CALENDAR, 18, Color.TRANSPARENT));
 			}
 			labelRepeating.setPrefHeight(HEIGHT);
 			labelRepeating.setStyle("-fx-font-size: 15; -fx-text-fill: #212121");
@@ -158,7 +159,7 @@ public class PaymentCell extends ListCell<Payment>
 			}
 			
 			Button buttonDelete = new Button();			
-			buttonDelete.setGraphic(Helpers.getFontIcon(FontIconType.TRASH, 16, Color.web("#212121")));
+			buttonDelete.setGraphic(new FontIcon(FontIconType.TRASH, 16, Color.web("#212121")));
 			buttonDelete.setPrefHeight(HEIGHT);
 			buttonDelete.getStyleClass().add("greylabel");
 			buttonDelete.setStyle("-fx-background-color: transparent");			

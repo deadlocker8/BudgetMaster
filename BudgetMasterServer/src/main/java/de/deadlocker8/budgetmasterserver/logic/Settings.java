@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmasterserver.logic;
 
 public class Settings
 {
+	private String databaseType;
 	private String databaseUrl;
 	private String databaseName;
 	private String databaseUsername;
@@ -14,6 +15,16 @@ public class Settings
 	public Settings()
 	{
 
+	}
+
+	public String getDatabaseType()
+	{
+		return databaseType;
+	}
+
+	public void setDatabaseType(String databaseType)
+	{
+		this.databaseType = databaseType;
 	}
 
 	public String getDatabaseUrl()
@@ -99,8 +110,25 @@ public class Settings
 	@Override
 	public String toString()
 	{
-		return "Settings [databaseUrl=" + databaseUrl + ", databaseName=" + databaseName + ", databaseUsername=" + databaseUsername + ", databasePassword=" + databasePassword + ", serverPort=" + serverPort + ", serverSecret=" + serverSecret + ", keystorePath=" + keystorePath + ", keystorePassword="
-				+ keystorePassword + "]";
+		return "Settings [databaseType=" + databaseType + ", databaseUrl=" + databaseUrl + ", databaseName=" + databaseName + ", databaseUsername=" + databaseUsername + ", databasePassword=" + databasePassword + ", serverPort=" + serverPort + ", serverSecret=" + serverSecret + ", keystorePath="
+				+ keystorePath + ", keystorePassword=" + keystorePassword + "]";
+	}
+
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((databaseName == null) ? 0 : databaseName.hashCode());
+		result = prime * result + ((databasePassword == null) ? 0 : databasePassword.hashCode());
+		result = prime * result + ((databaseType == null) ? 0 : databaseType.hashCode());
+		result = prime * result + ((databaseUrl == null) ? 0 : databaseUrl.hashCode());
+		result = prime * result + ((databaseUsername == null) ? 0 : databaseUsername.hashCode());
+		result = prime * result + ((keystorePassword == null) ? 0 : keystorePassword.hashCode());
+		result = prime * result + ((keystorePath == null) ? 0 : keystorePath.hashCode());
+		result = prime * result + serverPort;
+		result = prime * result + ((serverSecret == null) ? 0 : serverSecret.hashCode());
+		return result;
 	}
 
 	@Override
@@ -126,6 +154,13 @@ public class Settings
 				return false;
 		}
 		else if(!databasePassword.equals(other.databasePassword))
+			return false;
+		if(databaseType == null)
+		{
+			if(other.databaseType != null)
+				return false;
+		}
+		else if(!databaseType.equals(other.databaseType))
 			return false;
 		if(databaseUrl == null)
 		{

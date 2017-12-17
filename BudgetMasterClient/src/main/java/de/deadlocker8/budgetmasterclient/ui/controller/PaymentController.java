@@ -16,6 +16,7 @@ import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmasterclient.ui.Refreshable;
 import de.deadlocker8.budgetmasterclient.ui.Styleable;
 import de.deadlocker8.budgetmasterclient.ui.cells.PaymentCell;
+import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -205,11 +206,11 @@ public class PaymentController implements Refreshable, Styleable
 	@Override
 	public void applyStyle()
 	{
-		buttonNewIncome.setGraphic(Helpers.getFontIcon(FontIconType.DOWNLOAD, 18, Color.WHITE));
-		buttonFilter.setGraphic(Helpers.getFontIcon(FontIconType.FILTER, 18, Color.WHITE));
-		buttonNewPayment.setGraphic(Helpers.getFontIcon(FontIconType.UPLOAD, 18, Color.WHITE));
-		labelFilterActive.setGraphic(Helpers.getFontIcon(FontIconType.WARNING, 13, Colors.TEXT));
-		buttonSearch.setGraphic(Helpers.getFontIcon(FontIconType.SEARCH, 18, Color.WHITE));
+		buttonNewIncome.setGraphic(new FontIcon(FontIconType.DOWNLOAD, 18, Color.WHITE));
+		buttonFilter.setGraphic(new FontIcon(FontIconType.FILTER, 18, Color.WHITE));
+		buttonNewPayment.setGraphic(new FontIcon(FontIconType.UPLOAD, 18, Color.WHITE));
+		labelFilterActive.setGraphic(new FontIcon(FontIconType.WARNING, 13, Colors.TEXT));
+		buttonSearch.setGraphic(new FontIcon(FontIconType.SEARCH, 18, Color.WHITE));
 
 		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
 		labelIncome.setStyle("-fx-text-fill: " + ConvertTo.toRGBHexWithoutOpacity(Colors.TEXT));

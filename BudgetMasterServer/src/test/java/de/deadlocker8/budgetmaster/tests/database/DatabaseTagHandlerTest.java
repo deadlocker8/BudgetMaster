@@ -8,16 +8,23 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Locale;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.deadlocker8.budgetmaster.logic.tag.Tag;
 import de.deadlocker8.budgetmasterserver.logic.Settings;
 import de.deadlocker8.budgetmasterserver.logic.Utils;
-import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
-import de.deadlocker8.budgetmasterserver.logic.database.DatabaseTagHandler;
+import de.deadlocker8.budgetmasterserver.logic.database.creator.DatabaseCreator;
+import de.deadlocker8.budgetmasterserver.logic.database.handler.DatabaseHandler;
+import de.deadlocker8.budgetmasterserver.logic.database.taghandler.DatabaseTagHandler;
+import tools.Localization;
 
 public class DatabaseTagHandlerTest
 {			
@@ -31,15 +38,34 @@ public class DatabaseTagHandlerTest
 			//init
 			Settings settings = Utils.loadSettings();
 			System.out.println(settings);
-			DatabaseHandler handler = new DatabaseHandler(settings);
+			DatabaseHandler handler = Utils.getDatabaseHandler(settings);
 			handler.deleteDatabase();
-			handler = new DatabaseHandler(settings);			
-			tagHandler = new DatabaseTagHandler(settings);
+			handler.closeConnection();
+			Connection connection = Utils.getDatabaseConnection(settings);
+			DatabaseCreator creator = Utils.getDatabaseCreator(connection, settings);
+			creator.createTables();
+			connection.close();
+			tagHandler = Utils.getDatabaseTagHandler(settings);
+			
+			Localization.init("de/deadlocker8/budgetmaster/");
+			Localization.loadLanguage(Locale.ENGLISH);
 		}
-		catch(IOException | URISyntaxException e)
+		catch(IOException | URISyntaxException | SQLException | ClassNotFoundException e)
 		{
 			fail(e.getMessage());
 		}		
+	}
+	
+	@Before
+	public void before()
+	{
+		tagHandler.connect();
+	}
+	
+	@After
+	public void after()
+	{
+		tagHandler.closeConnection();
 	}
 	
 	@Test

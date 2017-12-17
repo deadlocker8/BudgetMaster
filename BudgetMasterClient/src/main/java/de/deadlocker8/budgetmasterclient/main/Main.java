@@ -6,6 +6,7 @@ import java.util.Locale;
 import de.deadlocker8.budgetmaster.logic.Settings;
 import de.deadlocker8.budgetmaster.logic.utils.FileHelper;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
+import de.deadlocker8.budgetmasterclient.ui.ShutdownHandler;
 import de.deadlocker8.budgetmasterclient.ui.controller.SplashScreenController;
 import javafx.application.Application;
 import javafx.scene.image.Image;
@@ -30,9 +31,11 @@ public class Main extends Application
 		{
 			Localization.loadLanguage(settings.getLanguage().getLocale());
 		}
+		
+		ShutdownHandler shutdownHandler = new ShutdownHandler();
 
 		Image icon = new Image("/de/deadlocker8/budgetmaster/icon.png");
-		new SplashScreenController(stage, icon, getParameters().getNamed().get("update") != null);
+		new SplashScreenController(stage, icon, getParameters().getNamed().get("update") != null, shutdownHandler);
 	}
 
 	@Override

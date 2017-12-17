@@ -21,7 +21,8 @@ import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmasterclient.ui.Refreshable;
 import de.deadlocker8.budgetmasterclient.ui.Styleable;
-import de.deadlocker8.budgetmasterclient.utils.UIHelpers;
+import de.deadlocker8.budgetmasterclient.utils.LoadingModal;
+import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -38,7 +39,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import logger.Logger;
 import tools.AlertGenerator;
 import tools.ConvertTo;
@@ -248,7 +248,7 @@ public class ChartController implements Refreshable, Styleable
 	@Override
 	public void refresh()
 	{
-		Stage modalStage = UIHelpers.showModal(Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_CHARTS), controller.getStage(), controller.getIcon());
+		LoadingModal.showModal(controller, Localization.getString(Strings.TITLE_MODAL), Localization.getString(Strings.LOAD_CHARTS), controller.getStage(), controller.getIcon());
 
 		// prepare chart categories
 		LocalDate startDate = LocalDate.parse(controller.getCurrentDate().withDayOfMonth(1).toString("yyyy-MM-dd"));
@@ -269,10 +269,7 @@ public class ChartController implements Refreshable, Styleable
 			chartMonthShow();
 
 			Platform.runLater(() -> {
-				if(modalStage != null)
-				{
-					modalStage.close();
-				}
+				LoadingModal.closeModal();
 			});
 		});
 	}
@@ -286,15 +283,15 @@ public class ChartController implements Refreshable, Styleable
 		vboxChartMonth.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));
 		
 		buttonChartCategoriesShow.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE));
-		buttonChartCategoriesShow.setGraphic(Helpers.getFontIcon(FontIconType.CHECK, 16, Color.WHITE));
+		buttonChartCategoriesShow.setGraphic(new FontIcon(FontIconType.CHECK, 16, Color.WHITE));
 
 		buttonChartCategoriesExport.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE));
-		buttonChartCategoriesExport.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 16, Color.WHITE));
+		buttonChartCategoriesExport.setGraphic(new FontIcon(FontIconType.SAVE, 16, Color.WHITE));
 
 		buttonChartMonthShow.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE));
-		buttonChartMonthShow.setGraphic(Helpers.getFontIcon(FontIconType.CHECK, 16, Color.WHITE));
+		buttonChartMonthShow.setGraphic(new FontIcon(FontIconType.CHECK, 16, Color.WHITE));
 
 		buttonChartMonthExport.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE));
-		buttonChartMonthExport.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 16, Color.WHITE));		
+		buttonChartMonthExport.setGraphic(new FontIcon(FontIconType.SAVE, 16, Color.WHITE));		
 	}
 }

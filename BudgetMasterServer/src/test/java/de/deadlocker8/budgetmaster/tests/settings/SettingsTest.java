@@ -21,14 +21,15 @@ public class SettingsTest
 			Settings settings = Utils.loadSettings();
 			
 			Settings expectedSettings = new Settings();
-			expectedSettings.setDatabaseName("b");
-			expectedSettings.setDatabaseUrl("jdbc:mysql://localhost:3306/");
+			expectedSettings.setDatabaseType("mysql");
+			expectedSettings.setDatabaseName("budgetmaster");
+			expectedSettings.setDatabaseUrl("localhost:3306/");
 			expectedSettings.setDatabaseUsername("root");
 			expectedSettings.setDatabasePassword("");
 			expectedSettings.setServerPort(9000);
 			expectedSettings.setServerSecret("geheim");
-			expectedSettings.setKeystorePath("C:/Programmierung/eclipse/workspace/BudgetMaster/certs/keystore_self_signed.jks");
-			expectedSettings.setKeystorePassword("geheim");			
+			expectedSettings.setKeystorePath("default");
+			expectedSettings.setKeystorePassword("BudgetMaster");	
 			
 			assertEquals(expectedSettings, settings);
 		}

@@ -2,13 +2,19 @@ package de.deadlocker8.budgetmasterserver.server.database;
 
 import static spark.Spark.halt;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import de.deadlocker8.budgetmasterserver.logic.AdvancedRoute;
 import de.deadlocker8.budgetmasterserver.logic.Settings;
-import de.deadlocker8.budgetmasterserver.logic.database.DatabaseHandler;
+import de.deadlocker8.budgetmasterserver.logic.Utils;
+import de.deadlocker8.budgetmasterserver.logic.database.creator.DatabaseCreator;
+import de.deadlocker8.budgetmasterserver.logic.database.handler.DatabaseHandler;
+import logger.Logger;
 import spark.Request;
 import spark.Response;
-import spark.Route;
 
-public class DatabaseDelete implements Route
+public class DatabaseDelete implements AdvancedRoute
 {
 	private DatabaseHandler handler;
 	private Settings settings;
@@ -20,20 +26,35 @@ public class DatabaseDelete implements Route
 	}
 
 	@Override
-	public Object handle(Request req, Response res) throws Exception
-	{		
+	public void before()
+	{
+		handler.connect();
+	}
+
+	@Override
+	public Object handleRequest(Request req, Response res)
+	{
 		try
 		{							
 			handler.deleteDatabase();
-			handler = new DatabaseHandler(settings);
+			Connection connection = Utils.getDatabaseConnection(settings);
+			DatabaseCreator creator = Utils.getDatabaseCreator(connection, settings);
+			creator.createTables();
+			Logger.info("Successfully initialized database (" + settings.getDatabaseUrl() + settings.getDatabaseName() + ")");
 	
 			return "";
 		}
-		catch(IllegalStateException ex)
+		catch(IllegalStateException | SQLException | ClassNotFoundException ex)
 		{
 			halt(500, "Internal Server Error");
 		}
 		
 		return "";
+	}
+
+	@Override
+	public void after()
+	{
+		handler.closeConnection();
 	}
 }

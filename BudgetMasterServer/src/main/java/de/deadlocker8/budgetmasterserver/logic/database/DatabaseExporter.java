@@ -1,7 +1,6 @@
 package de.deadlocker8.budgetmasterserver.logic.database;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,6 +14,7 @@ import de.deadlocker8.budgetmaster.logic.payment.RepeatingPayment;
 import de.deadlocker8.budgetmaster.logic.tag.Tag;
 import de.deadlocker8.budgetmaster.logic.tag.TagMatch;
 import de.deadlocker8.budgetmasterserver.logic.Settings;
+import de.deadlocker8.budgetmasterserver.logic.Utils;
 import logger.Logger;
 
 public class DatabaseExporter
@@ -25,7 +25,7 @@ public class DatabaseExporter
     {
         try
         {
-            this.connection = DriverManager.getConnection(settings.getDatabaseUrl() + settings.getDatabaseName() + "?useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin", settings.getDatabaseUsername(), settings.getDatabasePassword());
+            this.connection = Utils.getDatabaseConnection(settings); 
         }
         catch(Exception e)
         {
@@ -200,7 +200,6 @@ public class DatabaseExporter
                 int tagID = rs.getInt("Tag_ID");
                 int paymentID = rs.getInt("Payment_ID");
                 int repeatingPaymentID = rs.getInt("RepeatingPayment_ID");                             
-            
                 results.add(new TagMatch(tagID, paymentID, repeatingPaymentID));
             }
         }

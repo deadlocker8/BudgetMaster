@@ -9,9 +9,9 @@ import javax.imageio.ImageIO;
 
 import de.deadlocker8.budgetmaster.logic.charts.ChartExportable;
 import de.deadlocker8.budgetmaster.logic.utils.Colors;
-import de.deadlocker8.budgetmaster.logic.utils.Helpers;
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
 import de.deadlocker8.budgetmasterclient.ui.Styleable;
+import fontAwesome.FontIcon;
 import fontAwesome.FontIconType;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
@@ -225,7 +225,7 @@ public class ExportChartController extends BaseController implements Styleable
 			alert.setTitle(Localization.getString(Strings.INFO_TITLE_CHART_EXPORT));
 			alert.initOwner(controller.getController().getStage());
 			alert.setHeaderText("");
-			alert.setContentText(Localization.getString(Strings.INFO_TEXT_CHART_EXPORT));			
+			alert.setContentText(Localization.getString(Strings.INFO_TEXT_CHART_EXPORT));
 			Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
 			dialogStage.getIcons().add(controller.getController().getIcon());						
 			
@@ -315,12 +315,12 @@ public class ExportChartController extends BaseController implements Styleable
 		anchorPaneMain.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND));		
 		
 		buttonChooseFile.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
-		buttonChooseFile.setGraphic(Helpers.getFontIcon(FontIconType.FOLDER_OPEN, 14, Color.WHITE));
+		buttonChooseFile.setGraphic(new FontIcon(FontIconType.FOLDER_OPEN, 14, Color.WHITE));
 		
 		buttonExport.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
-		buttonExport.setGraphic(Helpers.getFontIcon(FontIconType.SAVE, 14, Color.WHITE));
+		buttonExport.setGraphic(new FontIcon(FontIconType.SAVE, 14, Color.WHITE));
 
 		buttonCancel.setStyle("-fx-background-color: " + ConvertTo.toRGBHexWithoutOpacity(Colors.BACKGROUND_BUTTON_BLUE) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
-		buttonCancel.setGraphic(Helpers.getFontIcon(FontIconType.TIMES, 14, Color.WHITE));		
+		buttonCancel.setGraphic(new FontIcon(FontIconType.TIMES, 14, Color.WHITE));		
 	}
 }

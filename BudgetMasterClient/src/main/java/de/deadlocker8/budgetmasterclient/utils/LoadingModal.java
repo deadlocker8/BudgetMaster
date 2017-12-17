@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmasterclient.utils;
 import java.io.IOException;
 
 import de.deadlocker8.budgetmaster.logic.utils.Helpers;
+import de.deadlocker8.budgetmasterclient.ui.controller.Controller;
 import de.deadlocker8.budgetmasterclient.ui.controller.ModalController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,9 +14,42 @@ import javafx.stage.Stage;
 import logger.Logger;
 import tools.Localization;
 
-public class UIHelpers
+public class LoadingModal
 {
-	public static Stage showModal(String title, String message, Stage owner, Image icon)
+	private static Stage modalStage;
+	private static ModalController modalController;
+	
+	public static void showModal(Controller controller, String title, String message, Stage owner, Image icon)
+	{
+		closeModal();
+		modalStage = createModal(controller, title, message, owner, icon);
+	}
+	
+	public static void setMessage(String message)
+	{
+		if(modalController != null)
+		{
+			modalController.setMessage(message);
+		}
+	}
+	
+	public static void closeModal()
+	{
+		if(modalStage != null)
+		{
+			modalController.closeAlert();
+			modalStage.close();
+			modalStage = null;
+			modalController = null;
+		}
+	}
+	
+	public static boolean isShowing()
+	{
+		return modalStage != null && modalStage.isShowing();
+	}
+	
+	private static Stage createModal(Controller controller, String title, String message, Stage owner, Image icon)
 	{
 		try
 		{
@@ -29,8 +63,8 @@ public class UIHelpers
 			newStage.setScene(new Scene(root));
 			newStage.getIcons().add(icon);
 			newStage.setResizable(false);
-			ModalController newController = fxmlLoader.getController();
-			newController.init(newStage, message);
+			modalController = fxmlLoader.getController();
+			modalController.init(controller, newStage, message);
 			newStage.show();
 
 			return newStage;
