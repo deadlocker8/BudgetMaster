@@ -15,6 +15,9 @@ Manage your monthly budget easily with BudgetMaster
 
 ## [Installation Instructions](https://github.com/deadlocker8/BudgetMaster/wiki/Server-Installation)
 
+## Additional Information
+This repo is using a special repo named `Tools` as dependency which is available [here](https://github.com/deadlocker8/Tools) (just download and install via maven)
+
 ## Screenshots
 
 ![normal](https://user-images.githubusercontent.com/16324894/31136348-48313fd4-a868-11e7-979a-2854f7720525.png)  
