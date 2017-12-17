@@ -101,7 +101,7 @@ public class LocalServerHandler
 		
 		//download into temp directory and file
 		Path target = Paths.get(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER) + "/localServer/BudgetMasterServer.jar");
-		download(BUILD_FOLDER.replace("{}", "v" + "1.7.0") + "BudgetMasterServer.jar", target);			
+		download(BUILD_FOLDER.replace("{}", "v" + Localization.getString(Strings.VERSION_NAME)) + "BudgetMasterServer.jar", target);			
 		Logger.debug("Successfully downloaded BudgetMasterServer " + versionName);
 	}
 	
