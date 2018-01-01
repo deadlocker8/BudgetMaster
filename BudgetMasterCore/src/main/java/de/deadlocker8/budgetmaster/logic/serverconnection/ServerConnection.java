@@ -8,6 +8,8 @@ import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.security.cert.CertificateExpiredException;
+import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 
@@ -59,8 +61,12 @@ public class ServerConnection
 			{
 			}
 
-			public void checkServerTrusted(X509Certificate[] certs, String authType)
+			public void checkServerTrusted(X509Certificate[] certs, String authType) throws CertificateExpiredException, CertificateNotYetValidException
 			{
+				for(X509Certificate currentCert : certs)
+				{
+					currentCert.checkValidity();
+				}
 			}
 		} };
 
