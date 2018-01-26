@@ -730,8 +730,8 @@ public class Controller extends BaseController
 		HBox hboxLogo = new HBox();
 		hboxLogo.setSpacing(25);
 		ImageView imageViewLogo = new ImageView(icon);
-		imageViewLogo.setFitHeight(75);
-		imageViewLogo.setFitWidth(75);
+		imageViewLogo.setFitHeight(80);
+		imageViewLogo.setFitWidth(80);
 		hboxLogo.getChildren().add(imageViewLogo);
 		
 		Label labelName = new Label(Localization.getString(Strings.ABOUT, Localization.getString(Strings.APP_NAME)));
