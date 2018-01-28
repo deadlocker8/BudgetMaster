@@ -18,12 +18,10 @@ main {
     flex: 1 0 auto;
 }
 
-.budgetmaster-blue {
-    background-color: #4864B1;
-}
-
-.budgetmaster-blue-text {
-    color: #4864B1;
+.main-card {
+    margin: auto;
+    width: 95%;
+    padding: 2rem;
 }
 
 #nav-logo-container {
@@ -100,8 +98,4 @@ main {
 
 .budget {
     font-size: 3.5vmin;
-}
-
-.bold {
-    font-weight: bold;
 }

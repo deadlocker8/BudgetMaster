@@ -1,0 +1,33 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+#logo-container {
+    height: 12vmin;
+}
+
+#logo {
+    max-height: 10vmin;
+}
+
+/* label focus color */
+.input-field input[type=password]:focus + label {
+    color: #212121 !important;
+}
+/* label underline focus color */
+.input-field input[type=password]:focus {
+    border-bottom: 1px solid #212121 !important;
+    box-shadow: 0 1px 0 0 #CCCCCC !important;
+}
+
+.full-height {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
