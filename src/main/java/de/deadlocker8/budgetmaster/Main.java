@@ -1,9 +1,17 @@
 package de.deadlocker8.budgetmaster;
 
+import de.deadlocker8.budgetmaster.logic.utils.Strings;
+import logger.FileOutputMode;
+import logger.Logger;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import tools.Localization;
+import tools.PathUtils;
+
+import java.io.File;
+import java.util.Locale;
 
 
 @SpringBootApplication
@@ -17,7 +25,8 @@ public class Main implements ApplicationRunner
 	@Override
 	public void run(ApplicationArguments args) throws Exception
 	{
-//		Localization.init("de/deadlocker8/budgetmaster/languages/");
+		//TODO: disabled due to #280 - Spring log messages are consumed by Logger
+//		Localization.init("languages/");
 //		Localization.loadLanguage(Locale.ENGLISH);
 //
 //		String logLevelParam = args.getOptionValues("loglevel").get(0);
