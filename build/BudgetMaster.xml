@@ -15,7 +15,7 @@
   <manifest></manifest>
   <icon>C:\Programmierung\eclipse\workspace\BudgetMaster\build\icon.ico</icon>
   <classPath>
-    <mainClass>de.deadlocker8.budgetmaster.main.Main</mainClass>
+    <mainClass>de.deadlocker8.budgetmaster.Main</mainClass>
     <cp>.</cp>
   </classPath>
   <jre>
