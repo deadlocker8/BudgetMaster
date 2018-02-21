@@ -7,3 +7,4 @@ certs/
 *.iml
 
 build/[0-9]*.[0-9]*.[0-9]*
+/error.log

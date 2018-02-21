@@ -1,22 +1,22 @@
 package de.deadlocker8.budgetmaster;
 
 import de.deadlocker8.budgetmaster.logic.utils.Strings;
-import logger.FileOutputMode;
-import logger.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import tools.Localization;
-import tools.PathUtils;
 
-import java.io.File;
 import java.util.Locale;
 
 
 @SpringBootApplication
 public class Main implements ApplicationRunner
 {
+	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+
 	public static void main(String[] args)
 	{
 		SpringApplication.run(Main.class, args);
@@ -25,17 +25,16 @@ public class Main implements ApplicationRunner
 	@Override
 	public void run(ApplicationArguments args) throws Exception
 	{
-		//TODO: disabled due to #280 - Spring log messages are consumed by Logger
-//		Localization.init("languages/");
-//		Localization.loadLanguage(Locale.ENGLISH);
-//
+		Localization.init("languages/");
+		Localization.loadLanguage(Locale.ENGLISH);
+
+		//TODO set loglevel
 //		String logLevelParam = args.getOptionValues("loglevel").get(0);
-//		Logger.setLevel(logLevelParam);
-//
-//		File logFolder = new File(PathUtils.getOSindependentPath() + Localization.getString(Strings.FOLDER));
-//		PathUtils.checkFolder(logFolder);
-//		Logger.enableFileOutput(logFolder, System.out, System.err, FileOutputMode.COMBINED);
-//
-//		Logger.appInfo(Localization.getString(Strings.APP_NAME), Localization.getString(Strings.VERSION_NAME), Localization.getString(Strings.VERSION_CODE), Localization.getString(Strings.VERSION_DATE));
+
+		logAppInfo(Localization.getString(Strings.APP_NAME), Localization.getString(Strings.VERSION_NAME), Localization.getString(Strings.VERSION_CODE), Localization.getString(Strings.VERSION_DATE));
+	}
+
+	private void logAppInfo(String appName, String versionName, String versionCode, String versionDate) {
+		LOGGER.info(appName + " - v" + versionName + " - (versioncode: " + versionCode + ") from " + versionDate + ")");
 	}
 }
