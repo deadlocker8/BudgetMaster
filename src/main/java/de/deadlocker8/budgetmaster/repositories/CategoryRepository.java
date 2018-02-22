@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface CategoryRepository extends CrudRepository<Category, Long>
 {
-
+	//TODO: insert default categories "NONE" and "REST" if not exists
 }

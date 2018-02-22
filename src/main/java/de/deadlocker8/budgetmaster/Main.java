@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster;
 
-import de.deadlocker8.budgetmaster.logic.utils.Strings;
+import de.deadlocker8.budgetmaster.utils.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;

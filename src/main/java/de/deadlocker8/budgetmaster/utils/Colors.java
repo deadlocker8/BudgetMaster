@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.logic.utils;
+package de.deadlocker8.budgetmaster.utils;
 
 import javafx.scene.paint.Color;
 
