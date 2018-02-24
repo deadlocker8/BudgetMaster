@@ -9,38 +9,71 @@ import javax.persistence.Id;
 public class Category
 {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer ID;
 	private String name;
 	private String color;
+	private CategoryType type;
 
-	public Integer getID() {
+	public Category(String name, String color, CategoryType type)
+	{
+		this.name = name;
+		this.color = color;
+		this.type = type;
+	}
+
+	public Category()
+	{
+	}
+
+	public Integer getID()
+	{
 		return ID;
 	}
 
-	public void setId(Integer ID) {
+	public void setID(Integer ID)
+	{
 		this.ID = ID;
 	}
 
-	public String getName() {
+	public String getName()
+	{
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(String name)
+	{
 		this.name = name;
 	}
 
-	public String getColor() {
+	public String getColor()
+	{
 		return color;
 	}
 
-	public void setColor(String color) {
+	public void setColor(String color)
+	{
 		this.color = color;
+	}
+
+	public CategoryType getType()
+	{
+		return type;
+	}
+
+	public void setType(CategoryType type)
+	{
+		this.type = type;
 	}
 
 	@Override
 	public String toString()
 	{
-		return "Category [ID=" + ID + ", name=" + name + ", color=" + color + "]";
+		return "Category{" +
+				"ID=" + ID +
+				", name='" + name + '\'' +
+				", color='" + color + '\'' +
+				", type=" + type +
+				'}';
 	}
 }

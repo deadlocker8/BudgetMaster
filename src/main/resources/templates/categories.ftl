@@ -31,7 +31,7 @@
                 </ul>
             </li>
             <li><a href="#!" class="waves-effect"><i class="material-icons">description</i>Berichte</a></li>
-            <li><a href="categories" class="waves-effect"><i class="material-icons">label</i>Kategorien</a></li>
+            <li><a href="#!" class="waves-effect"><i class="material-icons">label</i>Kategorien</a></li>
             <li><a href="#!" class="waves-effect"><i class="material-icons">settings</i>Einstellungen</a></li>
             <li><div class="divider"></div></li>
             <li><a href="#!" class="waves-effect"><i class="material-icons">lock</i>Logout</a></li>
@@ -42,57 +42,51 @@
             <div class="card main-card">
                 <div class="container">
                     <div class="section center-align">
-                        <a href="" class="waves-effect grey-text text-darken-4"><i class="material-icons icon-chevron">chevron_left</i></a>
-                        <a href="" class="waves-effect grey-text text-darken-4 headline">September 2018</a>
-                        <a href="" class="waves-effect grey-text text-darken-4"><i class="material-icons icon-chevron">chevron_right</i></a>
+                        <div class="grey-text text-darken-4 headline">Kategorien</div>
                     </div>
                 </div>
                 <div class="hide-on-small-only"><br></div>
                 <div class="container">
-                    <div class="row">
-                        <div class="col s12 m4">
-                            <div class="icon-block">
-                                <h1 class="center text-green"><i class="material-icons icon-budget">file_download</i></h1>
-                                <h5 class="center budget">2350,15 €</h5>
-                                <h5 class="center grey-text text-darken-1 budget-headline">Einnahmen</h5>
-                            </div>
-                        </div>
-                        <div class="col s12 m4">
-                            <div class="icon-block">
-                                <h1 class="center text-red"><i class="material-icons icon-budget">file_upload</i></h1>
-                                <h5 class="center budget">-576,33 €</h5>
-                                <h5 class="center grey-text text-darken-1 budget-headline">Ausgaben</h5>
-                            </div>
-                        </div>
-                        <div class="col s12 m4">
-                            <div class="icon-block">
-                                <h1 class="center budgetmaster-blue-text"><i class="material-icons icon-budget">account_balance</i></h1>
-                                <h5 class="center budget">1773,82 €</h5>
-                                <h5 class="center grey-text text-darken-1 budget-headline">Rest</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="hide-on-small-only"><br><br></div>
-                    <div class="row">
-                        <div class="col s12">
-                            <div class="budget-bar-container">
-                                <div class="budget-bar color-green" style="width: 100%"></div>
-                            </div>
-                            <div class="budget-bar-container">
-                                <div class="budget-bar color-red" style="width: 25%"></div>
-                            </div>
-                            <div class="budget-bar-container">
-                                <div class="budget-bar budgetmaster-blue" style="width: 75%"></div>
-                            </div>
-                        </div>
-                    </div>
+                    <table class="bordered">
+                        <tr>
+                            <th>id</th>
+                            <th>name</th>
+                            <th>color</th>
+                        </tr>
+                        <#list model["categories"] as category>
+                        <tr>
+                            <td>${category.ID}</td>
+                            <td>${category.name}</td>
+                            <td>${category.color}</td>
+                            <td>
+                                <a href="/categories/${category.ID}/edit" class="btn-flat"><i class="material-icons left">edit</i></a>
+                                <a href="/categories/${category.ID}/requestDelete" class="btn-flat"><i class="material-icons left">delete</i></a>
+                            </td>
+                        </tr>
+                        </#list>
+                    </table>
                 </div>
             </div>
+
+            <#if model["currentCategory"]??>
+                <!-- confirm delete modal -->
+                <div id="modalConfirmDelete" class="modal">
+                    <div class="modal-content">
+                        <h4>Kategorie löschen</h4>
+                        <p>Möchtest du die Kategorie "${model["currentCategory"].name}" wirklich löschen?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="modal-action modal-close waves-effect waves-red btn-flat ">Abbrechen</a>
+                        <a href="/categories/${model["currentCategory"].ID}/delete" class="modal-action modal-close waves-effect waves-green btn-flat ">Löschen</a>
+                    </div>
+                </div>
+            </#if>
         </main>
 
         <!--  Scripts-->
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
         <script src="/js/main.js"></script>
+        <script src="/js/categories.js"></script>
     </body>
 </html>

@@ -1,10 +1,13 @@
 package de.deadlocker8.budgetmaster.repositories;
 
 import de.deadlocker8.budgetmaster.entities.Category;
-import org.springframework.data.repository.CrudRepository;
+import de.deadlocker8.budgetmaster.entities.CategoryType;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 
-public interface CategoryRepository extends CrudRepository<Category, Long>
+public interface CategoryRepository extends JpaRepository<Category, Integer>
 {
-	//TODO: insert default categories "NONE" and "REST" if not exists
+	Category findByName(String name);
+
+	Category findByType(CategoryType categoryType);
 }
