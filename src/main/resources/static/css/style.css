@@ -45,6 +45,10 @@ main {
     padding: 0 0 0 32px !important;
 }
 
+.nav-margin {
+    margin: 0 0 0 32px !important;
+}
+
 .no-padding {
     padding: 0;
 }

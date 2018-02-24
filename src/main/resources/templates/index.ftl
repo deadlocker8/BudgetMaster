@@ -18,13 +18,13 @@
                 <ul class="collapsible collapsible-accordion no-padding">
                     <li>
                         <a class="collapsible-header nav-padding"><i class="material-icons">show_chart</i>Diagramme</a>
-                        <div class="collapsible-body nav-padding">
+                        <div class="collapsible-body">
                             <ul>
-                                <li><a href="#!" class="waves-effect">Eingaben/Ausgaben nach Kategorien</a></li>
-                                <li><a href="#!" class="waves-effect">Eingaben/Ausgaben pro Monat</a></li>
-                                <li><a href="#!" class="waves-effect">Eingaben/Ausgaben nach Tags</a></li>
-                                <li><a href="#!" class="waves-effect">Verbrauch nach Kategorien</a></li>
-                                <li><a href="#!" class="waves-effect">Histogramm</a></li>
+                                <li><a href="#!" class="waves-effect"><span class="nav-margin">Eingaben/Ausgaben nach Kategorien</span></a></li>
+                                <li><a href="#!" class="waves-effect"><span class="nav-margin">Eingaben/Ausgaben pro Monatn</span></a></li>
+                                <li><a href="#!" class="waves-effect"><span class="nav-margin">Eingaben/Ausgaben nach Tagsn</span></a></li>
+                                <li><a href="#!" class="waves-effect"><span class="nav-margin">Verbrauch nach Kategorienn</span></a></li>
+                                <li><a href="#!" class="waves-effect"><span class="nav-margin">Histogrammn</span></a></li>
                             </ul>
                         </div>
                     </li>
