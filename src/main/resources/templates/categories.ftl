@@ -48,19 +48,21 @@
                 <div class="hide-on-small-only"><br></div>
                 <div class="container">
                     <table class="bordered">
-                        <tr>
-                            <th>id</th>
-                            <th>name</th>
-                            <th>color</th>
-                        </tr>
                         <#list model["categories"] as category>
                         <tr>
-                            <td>${category.ID}</td>
-                            <td>${category.name}</td>
-                            <td>${category.color}</td>
                             <td>
-                                <a href="/categories/${category.ID}/edit" class="btn-flat"><i class="material-icons left">edit</i></a>
-                                <a href="/categories/${category.ID}/requestDelete" class="btn-flat"><i class="material-icons left">delete</i></a>
+                                <div class="category-circle" style="background-color: ${category.color}">
+                                    <span style="color: ${category.getAppropriateTextColor()}">
+                                        ${category.name?capitalize[0]}
+                                    </span>
+                                </div>
+                            </td>
+                            <td>${category.name}</td>
+                            <td>
+                                <a href="/categories/${category.ID}/edit" class="btn-flat no-padding"><i class="material-icons left">edit</i></a>
+                                <#if (category.type.name() == "CUSTOM")>
+                                    <a href="/categories/${category.ID}/requestDelete" class="btn-flat no-padding"><i class="material-icons left">delete</i></a>
+                                </#if>
                             </td>
                         </tr>
                         </#list>

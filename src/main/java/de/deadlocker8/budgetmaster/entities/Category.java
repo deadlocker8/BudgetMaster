@@ -1,5 +1,8 @@
 package de.deadlocker8.budgetmaster.entities;
 
+import javafx.scene.paint.Color;
+import tools.ConvertTo;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -64,6 +67,11 @@ public class Category
 	public void setType(CategoryType type)
 	{
 		this.type = type;
+	}
+
+	public String getAppropriateTextColor()
+	{
+		return ConvertTo.toRGBHexWithoutOpacity(ConvertTo.getAppropriateTextColor(Color.web(color)));
 	}
 
 	@Override

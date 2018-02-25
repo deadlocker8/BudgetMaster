@@ -13,7 +13,6 @@ import tools.Localization;
 public class Helpers
 {
 	public static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("0.00");
-	public static final String SALT = "ny9/Y+G|WrJ,82|oIYQQ X %i-sq#4,uA-qKPtwFPnw+s(k2`rV)^-a1|t{D3Z>S";
 	public static final String ROADMAP_URL = "https://deadlocker.thecodelabs.de/roadmap/php/index.php?id=1";
 	
 	public static String getCurrencyString(int amount, String currency)
