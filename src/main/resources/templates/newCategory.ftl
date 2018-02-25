@@ -11,7 +11,7 @@
     </head>
     <body class="budgetmaster-blue-light">
         <ul id="slide-out" class="side-nav fixed">
-            <li><a href="" class="waves-effect" id="nav-logo-container"><img id="nav-logo" src="/images/Logo_with_text.png"></a></li>
+            <li><a href="/" class="waves-effect" id="nav-logo-container"><img id="nav-logo" src="/images/Logo_with_text.png"></a></li>
             <li><div class="divider"></div></li>
             <li><a href="/" class="waves-effect"><i class="material-icons">home</i>Startseite</a></li>
             <li><a href="#!" class="waves-effect"><i class="material-icons">list</i>Buchungen</a></li>
@@ -34,7 +34,9 @@
             <li><a href="#!" class="waves-effect"><i class="material-icons">description</i>Berichte</a></li>
             <li class="active"><a href="/categories" class="waves-effect"><i class="material-icons">label</i>Kategorien</a></li>
             <li><a href="#!" class="waves-effect"><i class="material-icons">settings</i>Einstellungen</a></li>
-            <li><div class="divider"></div></li>
+            <li><div class="divider no-margin"></div></li>
+            <li><a href="#!" class="waves-effect"><i class="material-icons">info</i>Über</a></li>
+            <li><div class="divider no-margin"></div></li>
             <li><a href="#!" class="waves-effect"><i class="material-icons">lock</i>Logout</a></li>
         </ul>
         <a href="#" data-activates="slide-out" id="mobile-menu" class="mobile-menu"><i class="material-icons left mobile-menu-icon">menu</i>Menü</a>

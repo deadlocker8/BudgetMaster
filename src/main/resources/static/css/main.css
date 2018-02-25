@@ -22,6 +22,10 @@
 	background-color: #70A3CF;
 }
 
+.btn:focus {
+    background-color: #2E79B9;
+}
+
 .bold {
 	font-weight: bold;
 }
@@ -34,5 +38,16 @@
 /* label underline focus color */
 .input-field input[type=text]:focus {
     border-bottom: 1px solid #2E79B9 !important;
-    box-shadow: 0 1px 0 0 #2E79B9 !important;
+    box-shadow: 0 1px 0 0 #CCCCCC !important;
+}
+
+/* label password focus color */
+.input-field input[type=password]:focus + label {
+    color: #2E79B9 !important;
+}
+
+/* label password underline focus color */
+.input-field input[type=password]:focus {
+    border-bottom: 1px solid #2E79B9 !important;
+    box-shadow: 0 1px 0 0 #CCCCCC !important;
 }
