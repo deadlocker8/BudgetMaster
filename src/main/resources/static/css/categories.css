@@ -1,0 +1,28 @@
+.category-circle {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 50%;
+    display: inline-block;
+    line-height: 40px;
+    font-size: 20px;
+}
+
+.category-color {
+    height: 35px;
+    border-radius: 5px;
+    border: 2px solid #212121;
+    line-height: 30px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.category-color:hover {
+    cursor: pointer;
+}
+
+.category-color-active {
+    border: 3px dashed black;
+}

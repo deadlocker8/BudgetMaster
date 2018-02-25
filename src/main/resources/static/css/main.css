@@ -10,10 +10,29 @@
     background-color: rgba(46, 121, 185, 0.8);
 }
 
+.side-nav li.active {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+.btn {
+    text-transform: capitalize;
+}
+
 .btn:hover {
 	background-color: #70A3CF;
 }
 
 .bold {
 	font-weight: bold;
+}
+
+/* label focus color */
+.input-field input[type=text]:focus + label {
+    color: #2E79B9 !important;
+}
+
+/* label underline focus color */
+.input-field input[type=text]:focus {
+    border-bottom: 1px solid #2E79B9 !important;
+    box-shadow: 0 1px 0 0 #2E79B9 !important;
 }

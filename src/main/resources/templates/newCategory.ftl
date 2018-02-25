@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.css">
         <link type="text/css" rel="stylesheet" href="/css/main.css"/>
         <link type="text/css" rel="stylesheet" href="/css/style.css"/>
+        <link type="text/css" rel="stylesheet" href="/css/categories.css"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <body class="budgetmaster-blue-light">
@@ -50,20 +51,51 @@
                     <form>
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
-                                <input id="category-name" type="text" class="validate">
+                                <input id="category-name" type="text">
                                 <label for="category-name">Name</label>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="input-field col s12 m12 l8 offset-l2">
-                                <input id="category-color" type="text" class="validate">
-                                <label for="category-color">Farbe</label>
-                            </div>
-                        </div>
-                        <div class="row center-align hide-on-small-only">
-                            <div class="col m12 l8 offset-l2">
+                        <#list model["categoryColors"] as color>
+                            <#if color?counter == 16>
+                                <#--add custom color picker-->
+                                 <div class="col s1">
+                                     <div class="category-color" style="background-color: ${color}">
+                                         +
+                                     </div>
+                                 </div>
+                            <#else>
+                                <#if color?counter == 1 || color?counter == 9>
+                                    <div class="row">
+                                        <div class="col s1 offset-s2">
+                                            <div class="category-color <#if color == model["activeColor"]>category-color-active</#if>" style="background-color: ${color}"></div>
+                                        </div>
+                                <#else>
+                                    <div class="col s1"><div class="category-color <#if color == model["activeColor"]>category-color-active</#if>" style="background-color: ${color}"></div></div>
+                                </#if>
+                            </#if>
+
+                            <#if color?counter == 8 || color?counter == 16>
+                                </div>
+                            </#if>
+                        </#list>
+
+                        <#--<div class="row">-->
+                            <#--<div class="col s1 offset-s2"><div class="category-color category-color-active"></div></div>-->
+                            <#--<div class="col s1"><div class="category-color"></div></div>-->
+                            <#--<div class="col s1"><div class="category-color"></div></div>-->
+                            <#--<div class="col s1"><div class="category-color"></div></div>-->
+                            <#--<div class="col s1"><div class="category-color"></div></div>-->
+                            <#--<div class="col s1"><div class="category-color"></div></div>-->
+                            <#--<div class="col s1"><div class="category-color"></div></div>-->
+                            <#--<div class="col s1"><div class="category-color"></div></div>-->
+                        <#--</div>-->
+                        <br>
+                        <div class="row hide-on-small-only">
+                            <div class="col m6 l4 offset-l2 right-align">
                                 <a href="/categories" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>Abbrechen</a>
-                                <span class="button-spacer"></span>
+                            </div>
+
+                            <div class="col m6 l4 left-align">
                                 <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action">
                                     <i class="material-icons left">save</i>Speichern
                                 </button>
@@ -76,9 +108,11 @@
                                 </div>
                             </div>
                             <div class="row center-align">
-                                <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action">
-                                    <i class="material-icons left">save</i>Speichern
-                                </button>
+                                <div class="col s12">
+                                    <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action">
+                                        <i class="material-icons left">save</i>Speichern
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </form>

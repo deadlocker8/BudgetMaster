@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javafx.scene.paint.Color;
+import tools.ConvertTo;
 import tools.Localization;
 
 public class Helpers
@@ -75,28 +76,6 @@ public class Helpers
 		return years;
 	}
 	
-	public static ArrayList<Color> getCategoryColorList()
-	{
-	    ArrayList<Color> colors = new ArrayList<>();       
-        colors.add(Colors.CATEGORIES_LIGHT_GREY);        
-        colors.add(Colors.CATEGORIES_GREY);
-        colors.add(Colors.CATEGORIES_DARK_GREY);
-        colors.add(Colors.CATEGORIES_LIGHT_YELLOW);
-        colors.add(Colors.CATEGORIES_YELLOW);
-        colors.add(Colors.CATEGORIES_ORANGE);
-        colors.add(Colors.CATEGORIES_RED);
-        colors.add(Colors.CATEGORIES_DARK_RED);
-        colors.add(Colors.CATEGORIES_PINK);
-        colors.add(Colors.CATEGORIES_PURPLE);
-        colors.add(Colors.CATEGORIES_DARK_PURPLE);
-        colors.add(Colors.CATEGORIES_BLUE);
-        colors.add(Colors.CATEGORIES_LIGHT_BLUE);
-        colors.add(Colors.CATEGORIES_LIGHT_GREEN);
-        colors.add(Colors.CATEGORIES_DARK_GREEN);    
-        
-        return colors;
-	}	
-	
 	/**
 	 * Replaces line breaks and tabs with spaces
 	 * @param text
@@ -107,5 +86,27 @@ public class Helpers
 		text = text.replace("\n", " ");
 		text = text.replace("\t", " ");
 		return text;
+	}
+
+	public static ArrayList<String> getCategoryColorList()
+	{
+		ArrayList<String> categoryColors = new ArrayList<>();
+		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY));
+		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_GREY));
+		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_DARK_GREY));
+		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_YELLOW));
+		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_YELLOW));
+		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_ORANGE));
+		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_RED));
+		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_DARK_RED));
+		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_PINK));
+		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_PURPLE));
+		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_DARK_PURPLE));
+		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_BLUE));
+		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_BLUE));
+		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREEN));
+		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_DARK_GREEN));
+
+		return categoryColors;
 	}
 }

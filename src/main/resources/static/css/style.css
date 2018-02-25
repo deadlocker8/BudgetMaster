@@ -113,17 +113,6 @@ main {
     font-size: 3.5vmin;
 }
 
-.category-circle {
-    width: 40px;
-    height: 40px;
-    text-align: center;
-    font-weight: bold;
-    border-radius: 50%;
-    display: inline-block;
-    line-height: 40px;
-    font-size: 20px;
-}
-
 .mobile-menu {
     color: #000000;
     background-color: #FFFFFF;
@@ -132,17 +121,4 @@ main {
 
 .mobile-menu-icon {
     margin-right: 5px !important;
-}
-
-.side-nav li.active {
-    background-color: rgba(0, 0, 0, 0.15);
-}
-
-.btn {
-    text-transform: capitalize;
-}
-
-.button-spacer {
-    display: inline-block;
-    width: 20px;
 }
