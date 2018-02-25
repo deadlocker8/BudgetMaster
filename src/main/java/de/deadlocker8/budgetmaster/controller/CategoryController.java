@@ -54,4 +54,10 @@ public class CategoryController extends BaseController
 		Category categoryToDelete = categoryRepository.getOne(ID);
 		return categoryToDelete != null && categoryToDelete.getType() == CategoryType.CUSTOM;
 	}
+
+	@RequestMapping("/categories/add")
+	public String add(@ModelAttribute("model") ModelMap model)
+	{
+		return "newCategory";
+	}
 }

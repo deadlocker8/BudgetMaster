@@ -133,3 +133,16 @@ main {
 .mobile-menu-icon {
     margin-right: 5px !important;
 }
+
+.side-nav li.active {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+.btn {
+    text-transform: capitalize;
+}
+
+.button-spacer {
+    display: inline-block;
+    width: 20px;
+}
