@@ -1,5 +1,5 @@
 $( document ).ready(function() {
-    $(".button-collapse").sideNav({
+    $("#mobile-menu").sideNav({
         menuWidth: 350 // Default is 300
     });
 

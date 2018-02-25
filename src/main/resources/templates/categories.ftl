@@ -12,7 +12,7 @@
         <ul id="slide-out" class="side-nav fixed">
             <li><a href="" class="waves-effect" id="nav-logo-container"><img id="nav-logo" src="/images/Logo_with_text.png"></a></li>
             <li><div class="divider"></div></li>
-            <li class="active"><a href="#!" class="waves-effect"><i class="material-icons">home</i>Startseite</a></li>
+            <li><a href="/" class="waves-effect"><i class="material-icons">home</i>Startseite</a></li>
             <li><a href="#!" class="waves-effect"><i class="material-icons">list</i>Buchungen</a></li>
             <li>
                 <ul class="collapsible collapsible-accordion no-padding">
@@ -31,12 +31,13 @@
                 </ul>
             </li>
             <li><a href="#!" class="waves-effect"><i class="material-icons">description</i>Berichte</a></li>
-            <li><a href="#!" class="waves-effect"><i class="material-icons">label</i>Kategorien</a></li>
+            <li class="active"><a href="/categories" class="waves-effect"><i class="material-icons">label</i>Kategorien</a></li>
             <li><a href="#!" class="waves-effect"><i class="material-icons">settings</i>Einstellungen</a></li>
             <li><div class="divider"></div></li>
             <li><a href="#!" class="waves-effect"><i class="material-icons">lock</i>Logout</a></li>
         </ul>
-        <a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>
+        <a href="#" data-activates="slide-out" id="mobile-menu" class="mobile-menu"><i class="material-icons left mobile-menu-icon">menu</i>Menü</a>
+        <div class="hide-on-large-only"><br></div>
 
         <main>
             <div class="card main-card">

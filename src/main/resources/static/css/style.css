@@ -57,6 +57,10 @@ main {
     margin-bottom: 0;
 }
 
+.no-margin {
+    margin: 0;
+}
+
 .text-red {
     color: #D82C29;
 }
@@ -92,6 +96,11 @@ main {
 }
 
 .headline {
+    font-size: 2rem;
+    text-transform: capitalize;
+}
+
+.headline-date {
     font-size: 4vmin;
     text-transform: capitalize;
 }
@@ -113,4 +122,14 @@ main {
     display: inline-block;
     line-height: 40px;
     font-size: 20px;
+}
+
+.mobile-menu {
+    color: #000000;
+    background-color: #FFFFFF;
+    width: 70px;
+}
+
+.mobile-menu-icon {
+    margin-right: 5px !important;
 }
