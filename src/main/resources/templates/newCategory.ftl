@@ -80,17 +80,6 @@
                                 </div>
                             </#if>
                         </#list>
-
-                        <#--<div class="row">-->
-                            <#--<div class="col s1 offset-s2"><div class="category-color category-color-active"></div></div>-->
-                            <#--<div class="col s1"><div class="category-color"></div></div>-->
-                            <#--<div class="col s1"><div class="category-color"></div></div>-->
-                            <#--<div class="col s1"><div class="category-color"></div></div>-->
-                            <#--<div class="col s1"><div class="category-color"></div></div>-->
-                            <#--<div class="col s1"><div class="category-color"></div></div>-->
-                            <#--<div class="col s1"><div class="category-color"></div></div>-->
-                            <#--<div class="col s1"><div class="category-color"></div></div>-->
-                        <#--</div>-->
                         <br>
                         <div class="row hide-on-small-only">
                             <div class="col m6 l4 offset-l2 right-align">
