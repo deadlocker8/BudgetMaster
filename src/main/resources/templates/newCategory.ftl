@@ -58,25 +58,27 @@
                             </div>
                         </div>
                         <#list model["categoryColors"] as color>
-                            <#if color?counter == 16>
+                            <#if color?counter == 18>
                                 <#--add custom color picker-->
-                                 <div class="col s1">
+                                 <div class="col s2 m1 no-padding">
                                      <div class="category-color" style="background-color: ${color}">
                                          +
                                      </div>
                                  </div>
                             <#else>
-                                <#if color?counter == 1 || color?counter == 9>
+                                <#if color?counter == 1 || color?counter == 7 || color?counter == 13>
                                     <div class="row">
-                                        <div class="col s1 offset-s2">
+                                        <div class="col s2 m1 offset-m3 no-padding">
                                             <div class="category-color <#if color == model["activeColor"]>category-color-active</#if>" style="background-color: ${color}"></div>
                                         </div>
                                 <#else>
-                                    <div class="col s1"><div class="category-color <#if color == model["activeColor"]>category-color-active</#if>" style="background-color: ${color}"></div></div>
+                                    <div class="col s2 m1 no-padding">
+                                        <div class="category-color <#if color == model["activeColor"]>category-color-active</#if>" style="background-color: ${color}"></div>
+                                    </div>
                                 </#if>
                             </#if>
 
-                            <#if color?counter == 8 || color?counter == 16>
+                            <#if color?counter == 6 || color?counter == 12 || color?counter == 18>
                                 </div>
                             </#if>
                         </#list>

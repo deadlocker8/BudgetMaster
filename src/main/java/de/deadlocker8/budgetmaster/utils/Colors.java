@@ -30,7 +30,9 @@ public class Colors
     public static final Color CATEGORIES_PURPLE = Color.rgb(155,89,182);    
     public static final Color CATEGORIES_DARK_PURPLE = Color.rgb(88,86,214);
     public static final Color CATEGORIES_BLUE = Color.rgb(0,122,250);
+    public static final Color CATEGORIES_SOFT_BLUE = Color.web("#4F85D6");
     public static final Color CATEGORIES_LIGHT_BLUE = Color.rgb(90,200,250);
     public static final Color CATEGORIES_LIGHT_GREEN = Color.rgb(76,217,100);
+    public static final Color CATEGORIES_LIME_GREEN = Color.web("#ABDB64");
     public static final Color CATEGORIES_DARK_GREEN = Color.rgb(46,124,43);
 }
