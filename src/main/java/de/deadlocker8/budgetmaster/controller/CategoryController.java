@@ -11,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import tools.ConvertTo;
 
 import java.util.ArrayList;
@@ -60,11 +61,10 @@ public class CategoryController extends BaseController
 		return categoryToDelete != null && categoryToDelete.getType() == CategoryType.CUSTOM;
 	}
 
-	@RequestMapping("/categories/add")
-	public String add(@ModelAttribute("model") ModelMap model)
+	@RequestMapping("/categories/newCategory")
+	public String newCategory(@ModelAttribute("model") ModelMap model)
 	{
 		//TODO: add color picker for custom colors
-		//TODO: get values from ftl form
 		//TODO: validate wrong inputs --> empty name --> message on page --> validate before send?
 
 		ArrayList<String> categoryColors = Helpers.getCategoryColorList();
@@ -74,5 +74,25 @@ public class CategoryController extends BaseController
 
 		model.addAttribute("activeColor", ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY));
 		return "newCategory";
+	}
+
+	@RequestMapping(value = "/categories/post/", method = RequestMethod.POST)
+	public String post(@ModelAttribute("NewCategory") Category category)
+	{
+		if(category == null
+				|| category.getName() == null
+				|| category.getName().isEmpty()
+				|| category.getColor() == null
+				|| category.getColor().isEmpty())
+		{
+			System.out.println("Wrong input");
+		}
+		else
+		{
+			category.setType(CategoryType.CUSTOM);
+			categoryRepository.save(category);
+		}
+
+		return "redirect:/categories";
 	}
 }

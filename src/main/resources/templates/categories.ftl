@@ -50,7 +50,7 @@
                     </div>
                 </div>
                 <br>
-                <div class="center-align"><a href="/categories/add" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>Neue Kategorie</a></div>
+                <div class="center-align"><a href="/categories/newCategory" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>Neue Kategorie</a></div>
                 <br>
                 <div class="container">
                     <table class="bordered">
