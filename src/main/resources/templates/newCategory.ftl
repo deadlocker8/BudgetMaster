@@ -52,6 +52,7 @@
                 </div>
                 <div class="container">
                     <form name="NewCategory" action="/categories/newCategory" method="post">
+                        <input type="hidden" name="ID" value="<#if model["category"].getID()??>${model["category"].getID()}</#if>">
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
                                 <input id="category-name" type="text" name="name" value="<#if model["category"].getName()??>${model["category"].getName()}</#if>">
