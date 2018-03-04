@@ -97,7 +97,7 @@ main {
 
 .headline {
     font-size: 2rem;
-    text-transform: capitalize;
+    text-transform: initial;
 }
 
 .headline-date {

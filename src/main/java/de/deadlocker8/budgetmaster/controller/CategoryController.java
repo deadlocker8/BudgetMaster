@@ -4,10 +4,7 @@ import de.deadlocker8.budgetmaster.Validators.CategoryValidator;
 import de.deadlocker8.budgetmaster.entities.Category;
 import de.deadlocker8.budgetmaster.entities.CategoryType;
 import de.deadlocker8.budgetmaster.repositories.CategoryRepository;
-import de.deadlocker8.budgetmaster.utils.Colors;
-import de.deadlocker8.budgetmaster.utils.Helpers;
-import de.deadlocker8.budgetmaster.utils.Notification;
-import de.deadlocker8.budgetmaster.utils.NotificationLevel;
+import de.deadlocker8.budgetmaster.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -77,15 +74,36 @@ public class CategoryController extends BaseController
 
 		//add custom color (defaults to white here because we are adding a new category instead of editing an existing)
 		model.addAttribute("customColor", "#FFFFFF");
-		Category emptyCategory = new Category(null, ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY), CategoryType.CUSTOM);
+		Category emptyCategory = new Category(null, ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase(), CategoryType.CUSTOM);
 		model.addAttribute("category", emptyCategory);
+		return "newCategory";
+	}
+
+	@RequestMapping("/categories/{ID}/edit")
+	public String editCategory(@ModelAttribute("model") ModelMap model, @PathVariable("ID") Integer ID)
+	{
+		Category category = categoryRepository.findOne(ID);
+		if(category == null)
+		{
+			throw new ResourceNotFoundException();
+		}
+
+		if(Helpers.getCategoryColorList().contains(category.getColor()))
+		{
+			model.addAttribute("customColor", "#FFFFFF");
+		}
+		else
+		{
+			model.addAttribute("customColor", category.getColor());
+		}
+
+		model.addAttribute("category", category);
 		return "newCategory";
 	}
 
 	@RequestMapping(value = "/categories/newCategory", method = RequestMethod.POST)
 	public String post(@ModelAttribute("model") ModelMap model, @ModelAttribute("NewCategory") Category category, BindingResult bindingResult)
 	{
-		System.out.println(category);
 		CategoryValidator userValidator = new CategoryValidator();
 		userValidator.validate(category, bindingResult);
 
@@ -109,7 +127,7 @@ public class CategoryController extends BaseController
 
 			if(category.getColor() == null)
 			{
-				category.setColor(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY));
+				category.setColor(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase());
 			}
 			model.addAttribute("category", category);
 			return "newCategory";

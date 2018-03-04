@@ -46,14 +46,14 @@
             <div class="card main-card">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="grey-text text-darken-4 headline">Neue Kategorie</div>
+                        <div class="grey-text text-darken-4 headline"><#if model["category"].getID()??>Kategorie bearbeiten<#else>Neue Kategorie</#if></div>
                     </div>
                 </div>
                 <div class="container">
                     <form name="NewCategory" action="/categories/newCategory" method="post">
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
-                                <input id="category-name" type="text" name="name" value="<#if !model["category"].getName??>${model["category"].getName()}</#if>">
+                                <input id="category-name" type="text" name="name" value="<#if model["category"].getName()??>${model["category"].getName()}</#if>">
                                 <label for="category-name">Name</label>
                             </div>
                         </div>
@@ -118,8 +118,8 @@
             <#if model["notifications"]?size == 1>
                 <div id="notificationModal" class="modal">
                     <div class="modal-content">
-                        <h4>${model["notifications"][0].messageTitle}</h4>
-                        <#if model["notifications"][0].messageHeader??><h5>${model["notifications"][0].messageHeader}</h5></#if>
+                        <h5>${model["notifications"][0].messageTitle}</h5>
+                        <#if model["notifications"][0].messageHeader??><h6>${model["notifications"][0].messageHeader}</h6></#if>
                         <p>${model["notifications"][0].messageBody}</p>
                     </div>
                     <div class="modal-footer">
@@ -127,7 +127,22 @@
                     </div>
                 </div>
             <#else>
+                 <div id="notificationModal" class="modal">
+                     <div class="modal-content">
+                         <h5>Mehrere Meldungen</h5>
+                         <#list model["notifications"] as notification>
+                            <p>
+                                ${notification.messageTitle}:
+                                <#if notification.messageHeader??>${notification.messageHeader}</#if>
+                                ${notification.messageBody}
+                            </p>
 
+                         </#list>
+                     </div>
+                     <div class="modal-footer">
+                         <a class="modal-action modal-close waves-effect waves-green btn-flat">OK</a>
+                     </div>
+                 </div>
             </#if>
         </#if>
 
