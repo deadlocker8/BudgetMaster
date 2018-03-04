@@ -183,6 +183,7 @@ public class Strings
     public static final String WARNING_INTEGER_HEIGHT_IN_PIXELS = "warning.integer.height.in.pixels";
     public static final String WARNING_EMPTY_SAVEPATH_CHART = "warning.empty.savepath.chart";
     public static final String WARNING_EMPTY_CATEGORY_NAME = "warning.empty.category.name";
+    public static final String WARNING_EMPTY_CATEGORY_COLOR = "warning.empty.category.color";
     public static final String WARNING_EMPTY_PAYMENT_NAME = "warning.empty.payment.name";
     public static final String WARNING_NAME_CHARACTER_LIMIT_REACHED_45 = "warning.name.character.limit.reached.45";
     public static final String WARNING_NAME_CHARACTER_LIMIT_REACHED_150 = "warning.name.character.limit.reached.150";
