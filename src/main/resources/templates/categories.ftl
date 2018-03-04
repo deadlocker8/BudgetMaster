@@ -8,6 +8,7 @@
         <link type="text/css" rel="stylesheet" href="/css/style.css"/>
         <link type="text/css" rel="stylesheet" href="/css/categories.css"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <#assign locale = localization["tools.Localization"]>
     </head>
     <body class="budgetmaster-blue-light">
         <ul id="slide-out" class="side-nav fixed">
@@ -46,11 +47,11 @@
             <div class="card main-card">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="grey-text text-darken-4 headline">Kategorien</div>
+                        <div class="grey-text text-darken-4 headline">${locale.getString("title.categories")}</div>
                     </div>
                 </div>
                 <br>
-                <div class="center-align"><a href="/categories/newCategory" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>Neue Kategorie</a></div>
+                <div class="center-align"><a href="/categories/newCategory" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.category.new")}</a></div>
                 <br>
                 <div class="container">
                     <table class="bordered">
