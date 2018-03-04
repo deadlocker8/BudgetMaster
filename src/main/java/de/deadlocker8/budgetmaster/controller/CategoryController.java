@@ -5,6 +5,8 @@ import de.deadlocker8.budgetmaster.entities.Category;
 import de.deadlocker8.budgetmaster.entities.CategoryType;
 import de.deadlocker8.budgetmaster.repositories.CategoryRepository;
 import de.deadlocker8.budgetmaster.utils.*;
+import freemarker.ext.beans.BeansWrapper;
+import freemarker.template.TemplateHashModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;

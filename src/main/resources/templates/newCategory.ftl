@@ -8,6 +8,7 @@
         <link type="text/css" rel="stylesheet" href="/css/style.css"/>
         <link type="text/css" rel="stylesheet" href="/css/categories.css"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <#assign locale = localization["tools.Localization"]>
     </head>
     <body class="budgetmaster-blue-light">
         <ul id="slide-out" class="side-nav fixed">
@@ -46,7 +47,7 @@
             <div class="card main-card">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="grey-text text-darken-4 headline"><#if model["category"].getID()??>Kategorie bearbeiten<#else>Neue Kategorie</#if></div>
+                        <div class="grey-text text-darken-4 headline"><#if model["category"].getID()??>${locale.getString("title.category.edit")}<#else>${locale.getString("title.category.new")}</#if></div>
                     </div>
                 </div>
                 <div class="container">
@@ -54,7 +55,7 @@
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
                                 <input id="category-name" type="text" name="name" value="<#if model["category"].getName()??>${model["category"].getName()}</#if>">
-                                <label for="category-name">Name</label>
+                                <label for="category-name">${locale.getString("category.new.label.name")}</label>
                             </div>
                         </div>
                         <input type="hidden" name="color" id="categoryColor" value="${model["category"].getColor()}">
@@ -85,25 +86,25 @@
                         <br>
                         <div class="row hide-on-small-only">
                             <div class="col m6 l4 offset-l2 right-align">
-                                <a href="/categories" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>Abbrechen</a>
+                                <a href="/categories" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
                             </div>
 
                             <div class="col m6 l4 left-align">
                                 <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action">
-                                    <i class="material-icons left">save</i>Speichern
+                                    <i class="material-icons left">save</i>${locale.getString("save")}
                                 </button>
                             </div>
                         </div>
                         <div class="hide-on-med-and-up">
                             <div class="row center-align">
                                 <div class="col s12">
-                                    <a href="/categories" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>Abbrechen</a>
+                                    <a href="/categories" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
                                 </div>
                             </div>
                             <div class="row center-align">
                                 <div class="col s12">
                                     <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="buttonSave">
-                                        <i class="material-icons left">save</i>Speichern
+                                        <i class="material-icons left">save</i>${locale.getString("save")}
                                     </button>
                                 </div>
                             </div>
