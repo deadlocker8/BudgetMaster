@@ -51,7 +51,7 @@
                         <p>Möchtest du die Kategorie "${currentCategory.name}" wirklich löschen?</p>
                     </div>
                     <div class="modal-footer">
-                        <a href="#" class="modal-action modal-close waves-effect waves-red btn-flat ">Abbrechen</a>
+                        <a href="/categories" class="modal-action modal-close waves-effect waves-red btn-flat ">Abbrechen</a>
                         <a href="/categories/${currentCategory.ID}/delete" class="modal-action modal-close waves-effect waves-green btn-flat ">Löschen</a>
                     </div>
                 </div>
