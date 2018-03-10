@@ -18,6 +18,95 @@ main {
     flex: 1 0 auto;
 }
 
+.budgetmaster-blue {
+    background-color: #2E79B9;
+}
+
+.budgetmaster-blue-text {
+    color: #2E79B9;
+}
+
+.budgetmaster-blue-light {
+    background-color: rgba(46, 121, 185, 0.8);
+}
+
+.budgetmaster-green {
+    background-color: #5cb85c;
+}
+
+.budgetmaster-red {
+    background-color: #D82C29;
+}
+
+.budgetmaster-orange {
+    background-color: orange;
+}
+
+.budgetmaster-grey {
+    background-color: #696969;
+}
+
+.budgetmaster-baby-blue {
+    background-color: #5ac8fa;
+}
+
+.budgetmaster-purple {
+    background-color: #5856d6;
+}
+
+.side-nav li.active {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+/*active nav bar sub list items*/
+.side-nav .collapsible-body > ul:not(.collapsible) > li.active, .side-nav.fixed .collapsible-body > ul:not(.collapsible) > li.active {
+    background-color: rgba(0, 0, 0, 0.25);
+}
+
+/*text color for active nav bar sub list items*/
+.side-nav .collapsible-body > ul:not(.collapsible) > li.active a,
+.side-nav.fixed .collapsible-body > ul:not(.collapsible) > li.active a {
+    color: rgba(0, 0, 0, 0.87);
+}
+
+.btn {
+    text-transform: capitalize;
+}
+
+.btn:hover {
+    background-color: #70A3CF;
+}
+
+.btn:focus {
+    background-color: #2E79B9;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+/* label focus color */
+.input-field input[type=text]:focus + label {
+    color: #2E79B9 !important;
+}
+
+/* label underline focus color */
+.input-field input[type=text]:focus {
+    border-bottom: 1px solid #2E79B9 !important;
+    box-shadow: 0 1px 0 0 #CCCCCC !important;
+}
+
+/* label password focus color */
+.input-field input[type=password]:focus + label {
+    color: #2E79B9 !important;
+}
+
+/* label password underline focus color */
+.input-field input[type=password]:focus {
+    border-bottom: 1px solid #2E79B9 !important;
+    box-shadow: 0 1px 0 0 #CCCCCC !important;
+}
+
 .main-card {
     margin: auto;
     width: 95%;
@@ -127,6 +216,26 @@ main {
     max-height: 20vmin;
 }
 
-.break-all{
+.break-all {
     word-break: break-all;
+}
+
+.stripe {
+    width: 6px;
+    margin-right: 26px;
+    height: 48px;
+    display: inline-block;
+    float: left;
+}
+
+.stripe-level-2 {
+    width: 12px;
+    margin-right: 52px;
+    height: 48px;
+    display: inline-block;
+    float: left;
+}
+
+.debug {
+    border: 1px solid red;
 }

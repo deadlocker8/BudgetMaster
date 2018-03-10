@@ -66,8 +66,6 @@ public class CategoryController extends BaseController
 	@RequestMapping("/categories/newCategory")
 	public String newCategory(Model model)
 	{
-		//TODO: add color picker for custom colors
-
 		//add custom color (defaults to white here because we are adding a new category instead of editing an existing)
 		model.addAttribute("customColor", "#FFFFFF");
 		Category emptyCategory = new Category(null, ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase(), CategoryType.CUSTOM);
