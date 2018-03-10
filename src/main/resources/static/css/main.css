@@ -14,12 +14,23 @@
     background-color: rgba(0, 0, 0, 0.15);
 }
 
+/*active nav bar sub list items*/
+.side-nav .collapsible-body > ul:not(.collapsible) > li.active, .side-nav.fixed .collapsible-body > ul:not(.collapsible) > li.active {
+    background-color: rgba(0, 0, 0, 0.25);
+}
+
+/*text color for active nav bar sub list items*/
+.side-nav .collapsible-body > ul:not(.collapsible) > li.active a,
+.side-nav.fixed .collapsible-body > ul:not(.collapsible) > li.active a {
+    color: rgba(0, 0, 0, 0.87);
+}
+
 .btn {
     text-transform: capitalize;
 }
 
 .btn:hover {
-	background-color: #70A3CF;
+    background-color: #70A3CF;
 }
 
 .btn:focus {
@@ -27,7 +38,7 @@
 }
 
 .bold {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 /* label focus color */
@@ -53,5 +64,5 @@
 }
 
 .debug {
-   border: 1px solid red;
+    border: 1px solid red;
 }

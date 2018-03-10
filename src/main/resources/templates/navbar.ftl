@@ -1,13 +1,11 @@
 <#macro navbar activeID>
     <#assign locale = localization["tools.Localization"]>
     <ul id="slide-out" class="side-nav fixed">
-        <!-- TODO: deselect everything when selecting a sublist-->
-
         <@itemLogo/>
         <@itemDivider/>
         <@itemWithIcon "home", "/", locale.getString("menu.home"), "home", activeID/>
         <@itemWithIcon "payments", "", locale.getString("menu.payments"), "list", activeID/>
-        <@subListStart locale.getString("menu.charts"), "show_chart"/>
+        <@subListStart "chart" locale.getString("menu.charts"), "show_chart" activeID/>
             <@itemPlain "chartCategories", "", locale.getString("menu.charts.chartCategories"), activeID/>
             <@itemPlain "chartMonth", "", locale.getString("menu.charts.chartMonth"), activeID/>
             <@itemPlain "chartTags", "", locale.getString("menu.charts.chartTags"), activeID/>
@@ -45,11 +43,11 @@
     <li <#if activeID == ID>class="active"</#if>><a href="${link}" class="waves-effect"><i class="material-icons">${icon}</i>${text}</a></li>
 </#macro>
 
-<#macro subListStart text icon>
+<#macro subListStart ID text icon activeID>
 <li>
     <ul class="collapsible collapsible-accordion no-padding">
         <li>
-            <a class="collapsible-header nav-padding"><i class="material-icons">${icon}</i>${text}</a>
+            <a class="collapsible-header nav-padding<#if activeID?starts_with(ID)> active</#if>"><i class="material-icons">${icon}</i>${text}</a>
             <div class="collapsible-body">
                 <ul>
 </#macro>
