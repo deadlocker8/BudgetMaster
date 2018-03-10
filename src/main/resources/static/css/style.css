@@ -122,3 +122,11 @@ main {
 .mobile-menu-icon {
     margin-right: 5px !important;
 }
+
+#logo-huge {
+    max-height: 20vmin;
+}
+
+.break-all{
+    word-break: break-all;
+}

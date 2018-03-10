@@ -18,7 +18,7 @@
         <@itemWithIcon "settings", "", locale.getString("menu.settings"), "settings", activeID/>
 
         <@itemDivider/>
-        <@itemWithIcon "about", "", locale.getString("menu.about"), "info", activeID/>
+        <@itemWithIcon "about", "/about", locale.getString("menu.about"), "info", activeID/>
 
         <@itemDivider/>
         <@itemWithIcon "logout", "", locale.getString("menu.logout") "lock", activeID/>
