@@ -2,6 +2,7 @@
     <head>
         <#import "../header.ftl" as header>
         <@header.header/>
+        <link type="text/css" rel="stylesheet" href="/css/spectrum.css"/>
         <link type="text/css" rel="stylesheet" href="/css/categories.css"/>
         <#assign locale = localization["tools.Localization"]>
     </head>
@@ -45,8 +46,8 @@
                         </#list>
                             <#--add custom color picker-->
                             <div class="col s2 m1 no-padding">
-                                <div class="category-color <#if customColor == category.getColor()>category-color-active</#if>" style="background-color: ${customColor}">
-                                    +
+                                <div id="customColorPickerContainer" class="category-color <#if customColor == category.getColor()>category-color-active</#if>" style="background-color: ${customColor}">
+                                    <input type="text" id="customColorPicker" value="${customColor}" placeholder="+"/>
                                 </div>
                             </div>
                         </div>
@@ -86,6 +87,7 @@
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
         <script src="/js/main.js"></script>
+        <script src="/js/spectrum.js"></script>
         <script src="/js/categories.js"></script>
     </body>
 </html>

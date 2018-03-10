@@ -27,3 +27,32 @@
 .category-color-active {
     border: 3px dashed black;
 }
+
+/*style spectrum color picker*/
+
+/*hide spectrum color picker arrow*/
+.sp-dd {
+    display: none;
+}
+
+.sp-preview {
+    margin-right: 0;
+    border: none;
+    height: 100%;
+    width: 100%;
+    border-radius: 2px;
+    color: #000000;
+}
+
+.sp-preview-inner:after {
+    content: '+';
+}
+
+.sp-replacer {
+    background-color: transparent;
+    border: none;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    border-radius: 2px;
+}
