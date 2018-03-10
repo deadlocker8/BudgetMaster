@@ -35,7 +35,7 @@ public class CategoryController extends BaseController
 	public String index(@ModelAttribute("model") ModelMap model)
 	{
 		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
-		return "categories";
+		return "categories/categories";
 	}
 
 	@RequestMapping("/categories/{ID}/requestDelete")
@@ -49,7 +49,7 @@ public class CategoryController extends BaseController
 		model.addAttribute("confirm", true);
 		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
 		model.addAttribute("currentCategory", categoryRepository.getOne(ID));
-		return "categories";
+		return "categories/categories";
 	}
 
 	@RequestMapping("/categories/{ID}/delete")
@@ -78,7 +78,7 @@ public class CategoryController extends BaseController
 		model.addAttribute("customColor", "#FFFFFF");
 		Category emptyCategory = new Category(null, ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase(), CategoryType.CUSTOM);
 		model.addAttribute("category", emptyCategory);
-		return "newCategory";
+		return "categories/newCategory";
 	}
 
 	@RequestMapping("/categories/{ID}/edit")
@@ -100,7 +100,7 @@ public class CategoryController extends BaseController
 		}
 
 		model.addAttribute("category", category);
-		return "newCategory";
+		return "categories/newCategory";
 	}
 
 	@RequestMapping(value = "/categories/newCategory", method = RequestMethod.POST)
@@ -132,7 +132,7 @@ public class CategoryController extends BaseController
 				category.setColor(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase());
 			}
 			model.addAttribute("category", category);
-			return "newCategory";
+			return "categories/newCategory";
 		}
 		else
 		{
