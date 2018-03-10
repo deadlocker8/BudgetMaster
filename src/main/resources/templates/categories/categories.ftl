@@ -21,7 +21,7 @@
                 <br>
                 <div class="container">
                     <table class="bordered">
-                        <#list model["categories"] as category>
+                        <#list categories as category>
                         <tr>
                             <td>
                                 <div class="category-circle" style="background-color: ${category.color}">
@@ -43,16 +43,16 @@
                 </div>
             </div>
 
-            <#if model["currentCategory"]??>
+            <#if currentCategory??>
                 <!-- confirm delete modal -->
                 <div id="modalConfirmDelete" class="modal">
                     <div class="modal-content">
                         <h4>Kategorie löschen</h4>
-                        <p>Möchtest du die Kategorie "${model["currentCategory"].name}" wirklich löschen?</p>
+                        <p>Möchtest du die Kategorie "${currentCategory.name}" wirklich löschen?</p>
                     </div>
                     <div class="modal-footer">
                         <a href="#" class="modal-action modal-close waves-effect waves-red btn-flat ">Abbrechen</a>
-                        <a href="/categories/${model["currentCategory"].ID}/delete" class="modal-action modal-close waves-effect waves-green btn-flat ">Löschen</a>
+                        <a href="/categories/${currentCategory.ID}/delete" class="modal-action modal-close waves-effect waves-green btn-flat ">Löschen</a>
                     </div>
                 </div>
             </#if>

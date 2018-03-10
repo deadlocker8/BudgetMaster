@@ -13,38 +13,39 @@
             <div class="card main-card">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="grey-text text-darken-4 headline"><#if model["category"].getID()??>${locale.getString("title.category.edit")}<#else>${locale.getString("title.category.new")}</#if></div>
+                        <div class="grey-text text-darken-4 headline"><#if category.getID()??>${locale.getString("title.category.edit")}<#else>${locale.getString("title.category.new")}</#if></div>
                     </div>
                 </div>
                 <div class="container">
+                     <#import "../validation.ftl" as validation>
                     <form name="NewCategory" action="/categories/newCategory" method="post">
-                        <input type="hidden" name="ID" value="<#if model["category"].getID()??>${model["category"].getID()}</#if>">
+                        <input type="hidden" name="ID" value="<#if category.getID()??>${category.getID()}</#if>">
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
-                                <input id="category-name" type="text" name="name" value="<#if model["category"].getName()??>${model["category"].getName()}</#if>">
+                                <input id="category-name" type="text" name="name" <@validation.validation "name"/> value="<#if category.getName()??>${category.getName()}</#if>">
                                 <label for="category-name">${locale.getString("category.new.label.name")}</label>
                             </div>
                         </div>
-                        <input type="hidden" name="color" id="categoryColor" value="${model["category"].getColor()}">
+                        <input type="hidden" name="color" id="categoryColor" value="${category.getColor()}">
                         <#list categoryColors as color>
                             <#if color?counter == 1 || color?counter == 7 || color?counter == 13>
                                 <div class="row">
                                     <div class="col s2 m1 offset-m3 no-padding">
-                                        <div class="category-color <#if color == model["category"].getColor()>category-color-active</#if>" style="background-color: ${color}"></div>
+                                        <div class="category-color <#if color == category.getColor()>category-color-active</#if>" style="background-color: ${color}"></div>
                                     </div>
                             <#else>
                                 <div class="col s2 m1 no-padding">
-                                    <div class="category-color <#if color == model["category"].getColor()>category-color-active</#if>" style="background-color: ${color}"></div>
+                                    <div class="category-color <#if color == category.getColor()>category-color-active</#if>" style="background-color: ${color}"></div>
                                 </div>
                             </#if>
 
                             <#if color?counter == 6 || color?counter == 12>
                                 </div>
                             </#if>
-                        </#list>-
+                        </#list>
                             <#--add custom color picker-->
                             <div class="col s2 m1 no-padding">
-                                <div class="category-color <#if model["customColor"] == model["category"].getColor()>category-color-active</#if>" style="background-color: ${model["customColor"]}">
+                                <div class="category-color <#if customColor == category.getColor()>category-color-active</#if>" style="background-color: ${customColor}">
                                     +
                                 </div>
                             </div>
@@ -81,11 +82,7 @@
             </div>
         </main>
 
-        <!-- notification modal -->
-        <#import "../notification.ftl" as notification>
-        <@notification.notification/>
-
-        <!--  Scripts-->
+        <!-- Scripts-->
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
         <script src="/js/main.js"></script>
