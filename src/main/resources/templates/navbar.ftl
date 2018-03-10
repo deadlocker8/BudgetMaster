@@ -1,28 +1,29 @@
 <#macro navbar activeID>
+    <#assign locale = localization["tools.Localization"]>
     <ul id="slide-out" class="side-nav fixed">
         <!-- TODO: deselect everything when selecting a sublist-->
 
         <@itemLogo/>
         <@itemDivider/>
-        <@itemWithIcon "home", "/", "Startseite", "home", activeID/>
-        <@itemWithIcon "payments", "", "Buchungen", "list", activeID/>
-        <@subListStart "Diagramme", "show_chart"/>
-            <@itemPlain "chartCategories", "", "Eingaben/Ausgaben nach Kategorien", activeID/>
-            <@itemPlain "chartMonth", "", "Eingaben/Ausgaben pro Monat", activeID/>
-            <@itemPlain "chartTags", "", "Eingaben/Ausgaben nach Tags", activeID/>
-            <@itemPlain "chartCategoryBudget", "", "Verbrauch nach Kategorien", activeID/>
-            <@itemPlain "chartHistogram", "", "Histogramm", activeID/>
+        <@itemWithIcon "home", "/", locale.getString("menu.home"), "home", activeID/>
+        <@itemWithIcon "payments", "", locale.getString("menu.payments"), "list", activeID/>
+        <@subListStart locale.getString("menu.charts"), "show_chart"/>
+            <@itemPlain "chartCategories", "", locale.getString("menu.charts.chartCategories"), activeID/>
+            <@itemPlain "chartMonth", "", locale.getString("menu.charts.chartMonth"), activeID/>
+            <@itemPlain "chartTags", "", locale.getString("menu.charts.chartTags"), activeID/>
+            <@itemPlain "chartCategoryBudget", "", locale.getString("menu.charts.chartCategoryBudget"), activeID/>
+            <@itemPlain "chartHistogram", "", locale.getString("menu.charts.chartHistogram"), activeID/>
         <@subListEnd/>
 
-        <@itemWithIcon "reports", "", "Berichte", "description", activeID/>
-        <@itemWithIcon "categories", "/categories", "Kategorien", "label", activeID/>
-        <@itemWithIcon "settings", "", "Einstellungen", "settings", activeID/>
+        <@itemWithIcon "reports", "", locale.getString("menu.reports"), "description", activeID/>
+        <@itemWithIcon "categories", "/categories", locale.getString("menu.categories"), "label", activeID/>
+        <@itemWithIcon "settings", "", locale.getString("menu.settings"), "settings", activeID/>
 
         <@itemDivider/>
-        <@itemWithIcon "about", "", "Über", "info", activeID/>
+        <@itemWithIcon "about", "", locale.getString("menu.about"), "info", activeID/>
 
         <@itemDivider/>
-        <@itemWithIcon "logout", "", "Logout", "lock", activeID/>
+        <@itemWithIcon "logout", "", locale.getString("menu.logout") "lock", activeID/>
     </ul>
     <a href="#" data-activates="slide-out" id="mobile-menu" class="mobile-menu"><i class="material-icons left mobile-menu-icon">menu</i>Menü</a>
     <div class="hide-on-large-only"><br></div>
