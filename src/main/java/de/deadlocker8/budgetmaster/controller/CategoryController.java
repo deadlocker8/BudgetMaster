@@ -2,9 +2,12 @@ package de.deadlocker8.budgetmaster.controller;
 
 import de.deadlocker8.budgetmaster.entities.Category;
 import de.deadlocker8.budgetmaster.entities.CategoryType;
+import de.deadlocker8.budgetmaster.entities.Settings;
 import de.deadlocker8.budgetmaster.repositories.CategoryRepository;
+import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
 import de.deadlocker8.budgetmaster.utils.Colors;
 import de.deadlocker8.budgetmaster.utils.Helpers;
+import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import de.deadlocker8.budgetmaster.validators.CategoryValidator;
 import org.springframework.beans.factory.annotation.Autowired;
