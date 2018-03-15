@@ -1,9 +1,9 @@
 package de.deadlocker8.budgetmaster.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
+
+import javax.persistence.*;
 
 @Entity
 public class Payment
@@ -12,8 +12,9 @@ public class Payment
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer ID;
 	private Integer amount;
-	private String date;
-	private Integer categoryID;
+	private DateTime date;
+	@ManyToOne
+	private Category category;
 	private String name;
 	private String description;
 //	private RepeatingDefinition repeatingDefinition;
@@ -38,24 +39,24 @@ public class Payment
 		this.amount = amount;
 	}
 
-	public String getDate()
+	public DateTime getDate()
 	{
 		return date;
 	}
 
-	public void setDate(String date)
+	public void setDate(DateTime date)
 	{
 		this.date = date;
 	}
 
-	public Integer getCategoryID()
+	public Category getCategory()
 	{
-		return categoryID;
+		return category;
 	}
 
-	public void setCategoryID(Integer categoryID)
+	public void setCategory(Category category)
 	{
-		this.categoryID = categoryID;
+		this.category = category;
 	}
 
 	public String getName()
@@ -95,7 +96,7 @@ public class Payment
 				"ID=" + ID +
 				", amount=" + amount +
 				", date='" + date + '\'' +
-				", categoryID=" + categoryID +
+				", category=" + category +
 				", name='" + name + '\'' +
 				", description='" + description + '\'' +
 //				", repeatingDefinition=" + repeatingDefinition +

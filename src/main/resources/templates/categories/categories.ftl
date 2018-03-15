@@ -13,7 +13,7 @@
             <div class="card main-card">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="grey-text text-darken-4 headline">${locale.getString("title.categories")}</div>
+                        <div class="grey-text text-darken-4 headline">${locale.getString("menu.categories")}</div>
                     </div>
                 </div>
                 <br>
