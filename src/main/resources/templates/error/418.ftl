@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>BudgetMaster - 403</title>
+        <title>BudgetMaster - 418</title>
         <meta charset="UTF-8"/>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.css">
@@ -8,6 +8,7 @@
         <link type="text/css" rel="stylesheet" href="/css/login.css"/>
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <#assign locale = localization["tools.Localization"]>
     </head>
     <body class="budgetmaster-blue-light">
         <main>
@@ -20,17 +21,24 @@
                             </span>
                             <div class="row">
                                 <div class="col s12 center-align">
-                                    <h1>🔒 403</h1>
-                                    <h5>Zugriff nicht gestattet.</h5>
+                                    <img id="teapot" src="/images/teapot.png">
+                                    <h1>418</h1>
+                                    <h5>${locale.getString("errorpages.418")}</h5>
+                                    <div>${locale.getString("errorpages.418.credits")}</div>
                                 </div>
                             </div>
                             <div class="center-align">
-                                <a href="/" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">home</i>Zur Startseite</a>
+                                <a href="/" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">home</i>${locale.getString("errorpages.home")}</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
+
+    <!--  Scripts-->
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script src="/js/main.js"></script>
     </body>
 </html>

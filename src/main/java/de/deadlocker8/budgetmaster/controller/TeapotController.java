@@ -10,6 +10,6 @@ public class TeapotController extends BaseController
 	@RequestMapping("/418")
 	public String index()
 	{
-		return "error/418.html";
+		return "error/418";
 	}
 }

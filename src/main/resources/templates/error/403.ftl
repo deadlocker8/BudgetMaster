@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>BudgetMaster - 404</title>
+        <title>BudgetMaster - 403</title>
         <meta charset="UTF-8"/>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.css">
@@ -8,6 +8,7 @@
         <link type="text/css" rel="stylesheet" href="/css/login.css"/>
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <#assign locale = localization["tools.Localization"]>
     </head>
     <body class="budgetmaster-blue-light">
         <main>
@@ -20,12 +21,12 @@
                             </span>
                             <div class="row">
                                 <div class="col s12 center-align">
-                                    <h1>😔 404</h1>
-                                    <h5>Die angegebene Seite konnte nicht gefunden werden.</h5>
+                                    <h1>🔒 403</h1>
+                                    <h5>${locale.getString("errorpages.403")}</h5>
                                 </div>
                             </div>
                             <div class="center-align">
-                                <a href="/" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">home</i>Zur Startseite</a>
+                                <a href="/" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">home</i>${locale.getString("errorpages.home")}</a>
                             </div>
                         </div>
                     </div>

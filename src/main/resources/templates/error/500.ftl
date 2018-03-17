@@ -8,6 +8,7 @@
         <link type="text/css" rel="stylesheet" href="/css/login.css"/>
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <#assign locale = localization["tools.Localization"]>
     </head>
     <body class="budgetmaster-blue-light">
         <main>
@@ -21,11 +22,11 @@
                             <div class="row">
                                 <div class="col s12 center-align">
                                     <h1>😔 500</h1>
-                                    <h5>Ein interner Serverfehler ist aufgetreten.</h5>
+                                    <h5>${locale.getString("errorpages.500")}</h5>
                                 </div>
                             </div>
                             <div class="center-align">
-                                <a href="/" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">home</i>Zur Startseite</a>
+                                <a href="/" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">home</i>${locale.getString("errorpages.home")}</a>
                             </div>
                         </div>
                     </div>
