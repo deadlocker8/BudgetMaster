@@ -2,12 +2,20 @@ package de.deadlocker8.budgetmaster.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Locale;
 
+import de.deadlocker8.budgetmaster.entities.Settings;
+import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
 import javafx.scene.paint.Color;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import tools.ConvertTo;
 import tools.Localization;
 
@@ -38,14 +46,14 @@ public class Helpers
 		}
 	}
 
-	public static String getDateString(LocalDate date)
+	public static String getDateString(DateTime date, Settings settings)
 	{
-		if(date == null)
-		{
-			return "";
-		}
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		return date.format(formatter);
+		return date.toString(DateTimeFormat.forPattern("yyyy-MM-dd").withLocale(settings.getLanguage().getLocale()));
+	}
+
+	public static String getDateStringWithMonthAndYear(DateTime date, Settings settings)
+	{
+		return date.toString(DateTimeFormat.forPattern("MMMM yyyy").withLocale(settings.getLanguage().getLocale()));
 	}
 
 	public static ArrayList<String> getMonthList()

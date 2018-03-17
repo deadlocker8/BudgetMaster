@@ -11,13 +11,13 @@
 
         <main>
             <div class="card main-card">
-                <div class="container">
-                    <div class="section center-align">
-                        <div class="grey-text text-darken-4 headline">${locale.getString("menu.payments")}</div>
-                    </div>
+                <#import "../datePicker.ftl" as datePicker>
+                <@datePicker.datePicker currentDate currentDateFormatted/>
+                <div class="hide-on-small-only"><br></div>
+                <div class="row">
+                    <div class="col s6 center-align"><a href="/categories/newIncome" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">file_download</i>${locale.getString("title.payment.new", locale.getString("title.income"))}</a></div>
+                    <div class="col s6 center-align"><a href="/categories/newPayment" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">file_upload</i>${locale.getString("title.payment.new", locale.getString("title.payment"))}</a></div>
                 </div>
-                <br>
-                <div class="center-align"><a href="/categories/newCategory" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.category.new")}</a></div>
                 <br>
                 <div class="container">
                     <table class="bordered">
@@ -62,6 +62,6 @@
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
         <script src="/js/main.js"></script>
-        <#--<script src="/js/categories.js"></script>-->
+        <script src="/js/datePicker.js"></script>
     </body>
 </html>

@@ -236,6 +236,10 @@ main {
     float: left;
 }
 
+.hidden {
+    display: none;
+}
+
 .debug {
     border: 1px solid red;
 }
