@@ -2,8 +2,10 @@ package de.deadlocker8.budgetmaster.controller;
 
 import de.deadlocker8.budgetmaster.entities.Category;
 import de.deadlocker8.budgetmaster.entities.CategoryType;
+import de.deadlocker8.budgetmaster.entities.Payment;
 import de.deadlocker8.budgetmaster.entities.Settings;
 import de.deadlocker8.budgetmaster.repositories.CategoryRepository;
+import de.deadlocker8.budgetmaster.repositories.PaymentRepository;
 import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
 import de.deadlocker8.budgetmaster.utils.Colors;
 import de.deadlocker8.budgetmaster.utils.Helpers;
@@ -20,13 +22,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import tools.ConvertTo;
 
+import java.util.List;
+
 
 @Controller
 public class CategoryController extends BaseController
 {
 	@Autowired
 	private CategoryRepository categoryRepository;
-
 
 	@RequestMapping("/categories")
 	public String index(Model model)
@@ -43,7 +46,6 @@ public class CategoryController extends BaseController
 			return "redirect:/categories";
 		}
 
-		model.addAttribute("confirm", true);
 		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
 		model.addAttribute("currentCategory", categoryRepository.getOne(ID));
 		return "categories/categories";
