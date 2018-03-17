@@ -14,9 +14,8 @@
                 <#import "../datePicker.ftl" as datePicker>
                 <@datePicker.datePicker currentDate currentDateFormatted/>
                 <div class="hide-on-small-only"><br></div>
-                <div class="row">
-                    <div class="col s6 center-align"><a href="/payments/newIncome" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">file_download</i>${locale.getString("title.payment.new", locale.getString("title.income"))}</a></div>
-                    <div class="col s6 center-align"><a href="/payments/newPayment" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">file_upload</i>${locale.getString("title.payment.new", locale.getString("title.payment"))}</a></div>
+                <div class="container">
+                    <div class="center-align"><a href="/payments/newPayment" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.payment.new")}</a></div>
                 </div>
                 <br>
                 <div class="container">
