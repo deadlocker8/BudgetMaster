@@ -47,12 +47,12 @@
                 <!-- confirm delete modal -->
                 <div id="modalConfirmDelete" class="modal">
                     <div class="modal-content">
-                        <h4>Kategorie löschen</h4>
-                        <p>Möchtest du die Kategorie "${currentCategory.name}" wirklich löschen?</p>
+                        <h4>${locale.getString("info.title.category.delete")}</h4>
+                        <p>${locale.getString("info.text.category.delete", currentCategory.name)}</p>
                     </div>
                     <div class="modal-footer">
-                        <a href="/categories" class="modal-action modal-close waves-effect waves-red btn-flat ">Abbrechen</a>
-                        <a href="/categories/${currentCategory.ID}/delete" class="modal-action modal-close waves-effect waves-green btn-flat ">Löschen</a>
+                        <a href="/categories" class="modal-action modal-close waves-effect waves-red btn-flat ">${locale.getString("cancel")}</a>
+                        <a href="/categories/${currentCategory.ID}/delete" class="modal-action modal-close waves-effect waves-green btn-flat ">${locale.getString("delete")}</a>
                     </div>
                 </div>
             </#if>

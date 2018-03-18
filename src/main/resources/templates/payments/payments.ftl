@@ -56,12 +56,12 @@
                 <!-- confirm delete modal -->
                 <div id="modalConfirmDelete" class="modal">
                     <div class="modal-content">
-                        <h4>Buchung löschen</h4>
-                        <p>Möchtest du die Buchung "${currentPayment.name}" wirklich löschen?</p>
+                        <h4>${locale.getString("info.title.payment.delete")}</h4>
+                        <p>${locale.getString("info.text.payment.delete", currentPayment.name)}</p>
                     </div>
                     <div class="modal-footer">
-                        <a href="/payments" class="modal-action modal-close waves-effect waves-red btn-flat ">Abbrechen</a>
-                        <a href="/payments/${currentPayment.ID}/delete" class="modal-action modal-close waves-effect waves-green btn-flat ">Löschen</a>
+                        <a href="/payments" class="modal-action modal-close waves-effect waves-red btn-flat ">${locale.getString("cancel")}</a>
+                        <a href="/payments/${currentPayment.ID}/delete" class="modal-action modal-close waves-effect waves-green btn-flat ">${locale.getString("delete")}</a>
                     </div>
                 </div>
             </#if>
