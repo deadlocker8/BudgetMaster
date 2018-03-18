@@ -12,7 +12,7 @@
         <main>
             <div class="card main-card">
                 <#import "../datePicker.ftl" as datePicker>
-                <@datePicker.datePicker currentDate currentDateFormatted/>
+                <@datePicker.datePicker currentDate/>
                 <div class="hide-on-small-only"><br></div>
                 <div class="container">
                     <div class="center-align"><a href="/payments/newPayment" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.payment.new")}</a></div>
@@ -73,6 +73,6 @@
         <script src="/js/main.js"></script>
         <script src="/js/payments.js"></script>
         <script src="/js/datePicker.js"></script>
-        <script>document.cookie = "currentDate=${currentDate}";</script>
+        <script>document.cookie = "currentDate=${helpers.getDateString(currentDate)}";</script>
     </body>
 </html>

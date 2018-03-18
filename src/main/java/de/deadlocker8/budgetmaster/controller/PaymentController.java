@@ -46,8 +46,7 @@ public class PaymentController extends BaseController
 			date = DateTime.parse(cookieDate, DateTimeFormat.forPattern("dd.MM.yy").withLocale(getSettings().getLanguage().getLocale()));
 		}
 
-		model.addAttribute("currentDate", helpers.getDateString(date));
-		model.addAttribute("currentDateFormatted", helpers.getDateStringWithMonthAndYear(date));
+		model.addAttribute("currentDate", date);
 		model.addAttribute("payments", getPaymentsForMonthAndYear(date.getMonthOfYear(), date.getYear()));
 		return "payments/payments";
 	}
@@ -75,7 +74,7 @@ public class PaymentController extends BaseController
 	}
 
 	@RequestMapping("/payments/{ID}/requestDelete")
-	public String requestDeletePayment(Model model, @PathVariable("ID") Integer ID)
+	public String requestDeletePayment(Model model, @PathVariable("ID") Integer ID, @CookieValue("currentDate") String cookieDate)
 	{
 		if(!isDeletable(ID))
 		{
@@ -83,17 +82,16 @@ public class PaymentController extends BaseController
 		}
 
 		DateTime date;
-		if(model.containsAttribute("date"))
-		{
-			date = (DateTime)model.asMap().get("date");
-		}
-		else
+		if(cookieDate == null)
 		{
 			date = DateTime.now();
 		}
+		else
+		{
+			date = DateTime.parse(cookieDate, DateTimeFormat.forPattern("dd.MM.yy").withLocale(getSettings().getLanguage().getLocale()));
+		}
 
-		model.addAttribute("currentDate", helpers.getDateString(date));
-		model.addAttribute("currentDateFormatted", helpers.getDateStringWithMonthAndYear(date));
+		model.addAttribute("currentDate", date);
 		model.addAttribute("payments", getPaymentsForMonthAndYear(date.getMonthOfYear(), date.getYear()));
 		model.addAttribute("currentPayment", paymentRepository.getOne(ID));
 		return "payments/payments";

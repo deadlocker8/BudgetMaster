@@ -3,12 +3,10 @@ package de.deadlocker8.budgetmaster.entities;
 import javafx.scene.paint.Color;
 import tools.ConvertTo;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 public class Category
@@ -16,11 +14,15 @@ public class Category
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer ID;
+
 	@NotNull
 	@Size(min = 1)
 	private String name;
 	private String color;
 	private CategoryType type;
+
+	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+	private List<Payment> referringPayments;
 
 	public Category(String name, String color, CategoryType type)
 	{
@@ -71,6 +73,16 @@ public class Category
 	public void setType(CategoryType type)
 	{
 		this.type = type;
+	}
+
+	public List<Payment> getReferringPayments()
+	{
+		return referringPayments;
+	}
+
+	public void setReferringPayments(List<Payment> referringPayments)
+	{
+		this.referringPayments = referringPayments;
 	}
 
 	public String getAppropriateTextColor()

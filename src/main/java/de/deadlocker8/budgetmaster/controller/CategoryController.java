@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmaster.controller;
 import de.deadlocker8.budgetmaster.entities.Category;
 import de.deadlocker8.budgetmaster.entities.CategoryType;
 import de.deadlocker8.budgetmaster.repositories.CategoryRepository;
+import de.deadlocker8.budgetmaster.services.CategoryService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.utils.Colors;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
@@ -23,6 +24,9 @@ public class CategoryController extends BaseController
 {
 	@Autowired
 	private CategoryRepository categoryRepository;
+
+	@Autowired
+	private CategoryService categoryService;
 
 	@Autowired
 	private HelpersService helpers;
@@ -52,7 +56,7 @@ public class CategoryController extends BaseController
 	{
 		if(isDeletable(ID))
 		{
-			categoryRepository.delete(ID);
+			categoryService.deleteCategory(ID);
 		}
 
 		return "redirect:/categories";
