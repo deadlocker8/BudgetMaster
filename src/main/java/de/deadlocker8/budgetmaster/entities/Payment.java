@@ -19,6 +19,10 @@ public class Payment
 	private String description;
 //	private RepeatingDefinition repeatingDefinition;
 
+	public Payment()
+	{
+	}
+
 	public Integer getID()
 	{
 		return ID;

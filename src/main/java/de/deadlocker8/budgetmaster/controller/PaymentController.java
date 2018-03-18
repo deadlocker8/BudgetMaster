@@ -1,19 +1,24 @@
 package de.deadlocker8.budgetmaster.controller;
 
+import de.deadlocker8.budgetmaster.entities.Category;
 import de.deadlocker8.budgetmaster.entities.CategoryType;
 import de.deadlocker8.budgetmaster.entities.Payment;
 import de.deadlocker8.budgetmaster.entities.Settings;
+import de.deadlocker8.budgetmaster.repositories.CategoryRepository;
 import de.deadlocker8.budgetmaster.repositories.PaymentRepository;
 import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
 import de.deadlocker8.budgetmaster.services.HelpersService;
+import de.deadlocker8.budgetmaster.utils.Colors;
+import de.deadlocker8.budgetmaster.validators.CategoryValidator;
+import de.deadlocker8.budgetmaster.validators.PaymentValidator;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import tools.ConvertTo;
 
 import java.util.List;
 
@@ -23,6 +28,9 @@ public class PaymentController extends BaseController
 {
 	@Autowired
 	private PaymentRepository paymentRepository;
+
+	@Autowired
+	private CategoryRepository categoryRepository;
 
 	@Autowired
 	private SettingsRepository settingsRepository;
@@ -84,6 +92,35 @@ public class PaymentController extends BaseController
 		if(isDeletable(ID))
 		{
 			paymentRepository.delete(ID);
+		}
+
+		return "redirect:/payments";
+	}
+
+	@RequestMapping("/payments/newPayment")
+	public String newCategory(Model model)
+	{
+		Payment emptyPayment = new Payment();
+		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
+		model.addAttribute("payment", emptyPayment);
+		return "payments/newPayment";
+	}
+
+	@RequestMapping(value = "/payments/newPayment", method = RequestMethod.POST)
+	public String post(Model model, @ModelAttribute("NewPayment") Payment payment, BindingResult bindingResult)
+	{
+		PaymentValidator userValidator = new PaymentValidator();
+		userValidator.validate(payment, bindingResult);
+
+		if(bindingResult.hasErrors())
+		{
+			model.addAttribute("error", bindingResult);
+			model.addAttribute("payment", payment);
+			return "payments/newPayment";
+		}
+		else
+		{
+			paymentRepository.save(payment);
 		}
 
 		return "redirect:/payments";

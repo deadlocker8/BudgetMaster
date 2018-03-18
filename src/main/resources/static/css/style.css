@@ -253,6 +253,10 @@ ul.dropdown-content.select-dropdown li span {
     color: #2E79B9;
 }
 
+ul.dropdown-content.select-dropdown li.selected {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
 .hidden {
     display: none;
 }

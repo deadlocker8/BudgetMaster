@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <div class="container">
-                     <#import "../validation.ftl" as validation>
+                    <#import "../validation.ftl" as validation>
                     <form name="NewCategory" action="/categories/newCategory" method="post">
                         <input type="hidden" name="ID" value="<#if category.getID()??>${category.getID()}</#if>">
                         <div class="row">
