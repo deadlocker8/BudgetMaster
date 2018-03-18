@@ -34,7 +34,7 @@ public class PaymentController extends BaseController
 	private HelpersService helpers;
 
 	@RequestMapping("/payments")
-	public String payments(Model model, @CookieValue("currentDate") String cookieDate)
+	public String payments(Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
 	{
 		DateTime date;
 		if(cookieDate == null)

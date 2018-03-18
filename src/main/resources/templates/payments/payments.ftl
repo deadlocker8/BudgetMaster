@@ -33,7 +33,7 @@
                             </td>
                             <td>
                                 <div>${payment.name}</div>
-                                <div>${payment.description}</div>
+                                <div class="italic">${payment.description}</div>
                             </td>
                             <#if payment.amount < 0>
                                 <td class="bold text-red">${helpers.getCurrencyString(payment.amount)}</td>

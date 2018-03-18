@@ -85,6 +85,10 @@ main {
     font-weight: bold;
 }
 
+.italic {
+    font-style: italic;
+}
+
 /* label focus color */
 .input-field input[type=text]:focus + label {
     color: #2E79B9 !important;
