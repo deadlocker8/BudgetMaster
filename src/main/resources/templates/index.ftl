@@ -9,13 +9,8 @@
 
         <main>
             <div class="card main-card">
-                <div class="container">
-                    <div class="section center-align">
-                        <a href="" class="waves-effect grey-text text-darken-4"><i class="material-icons icon-chevron">chevron_left</i></a>
-                        <a href="" class="waves-effect grey-text text-darken-4 headline-date">September 2018</a>
-                        <a href="" class="waves-effect grey-text text-darken-4"><i class="material-icons icon-chevron">chevron_right</i></a>
-                    </div>
-                </div>
+                <#import "datePicker.ftl" as datePicker>
+                <@datePicker.datePicker currentDate "/"/>
                 <div class="hide-on-small-only"><br></div>
                 <div class="container">
                     <div class="row">

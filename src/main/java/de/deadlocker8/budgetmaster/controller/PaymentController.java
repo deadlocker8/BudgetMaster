@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 
@@ -51,36 +49,6 @@ public class PaymentController extends BaseController
 		model.addAttribute("paymentSum", getPaymentSum(payments));
 		model.addAttribute("currentDate", date);
 		return "payments/payments";
-	}
-
-	@RequestMapping(value = "/previousMonth")
-	public String previousMonth(HttpServletResponse response, @CookieValue("currentDate") String date)
-	{
-		Settings settings = getSettings();
-		DateTime currentDate = DateTime.parse(date, DateTimeFormat.forPattern("dd.MM.yy").withLocale(settings.getLanguage().getLocale()));
-		currentDate = currentDate.minusMonths(1);
-
-		response.addCookie(new Cookie("currentDate", helpers.getDateString(currentDate)));
-		return "redirect:/payments";
-	}
-
-	@RequestMapping(value = "/nextMonth")
-	public String nextMonth(HttpServletResponse response, @CookieValue("currentDate") String date)
-	{
-		Settings settings = getSettings();
-		DateTime currentDate = DateTime.parse(date, DateTimeFormat.forPattern("dd.MM.yy").withLocale(settings.getLanguage().getLocale()));
-		currentDate = currentDate.plusMonths(1);
-
-		response.addCookie(new Cookie("currentDate", helpers.getDateString(currentDate)));
-		return "redirect:/payments";
-	}
-
-	@RequestMapping(value = "/today")
-	public String previousMonth(HttpServletResponse response)
-	{
-		DateTime currentDate = DateTime.now();
-		response.addCookie(new Cookie("currentDate", helpers.getDateString(currentDate)));
-		return "redirect:/payments";
 	}
 
 	@RequestMapping("/payments/{ID}/requestDelete")

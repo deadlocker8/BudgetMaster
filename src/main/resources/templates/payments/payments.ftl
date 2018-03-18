@@ -12,7 +12,7 @@
         <main>
             <div class="card main-card">
                 <#import "../datePicker.ftl" as datePicker>
-                <@datePicker.datePicker currentDate/>
+                <@datePicker.datePicker currentDate "/payments"/>
                 <div class="hide-on-small-only"><br></div>
                  <div class="container">
                     <div class="row valign-wrapper">
