@@ -14,11 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
 import java.util.List;
 
 
@@ -47,8 +45,11 @@ public class PaymentController extends BaseController
 			date = DateTime.parse(cookieDate, DateTimeFormat.forPattern("dd.MM.yy").withLocale(getSettings().getLanguage().getLocale()));
 		}
 
+		List<Payment> payments = getPaymentsForMonthAndYear(date.getMonthOfYear(), date.getYear());
+		model.addAttribute("payments", payments);
+		model.addAttribute("incomeSum", getIncomeSum(payments));
+		model.addAttribute("paymentSum", getPaymentSum(payments));
 		model.addAttribute("currentDate", date);
-		model.addAttribute("payments", getPaymentsForMonthAndYear(date.getMonthOfYear(), date.getYear()));
 		return "payments/payments";
 	}
 
@@ -100,8 +101,11 @@ public class PaymentController extends BaseController
 			date = DateTime.parse(cookieDate, DateTimeFormat.forPattern("dd.MM.yy").withLocale(getSettings().getLanguage().getLocale()));
 		}
 
+		List<Payment> payments = getPaymentsForMonthAndYear(date.getMonthOfYear(), date.getYear());
+		model.addAttribute("payments", payments);
+		model.addAttribute("incomeSum", getIncomeSum(payments));
+		model.addAttribute("paymentSum", getPaymentSum(payments));
 		model.addAttribute("currentDate", date);
-		model.addAttribute("payments", getPaymentsForMonthAndYear(date.getMonthOfYear(), date.getYear()));
 		model.addAttribute("currentPayment", paymentRepository.getOne(ID));
 		return "payments/payments";
 	}
@@ -133,5 +137,31 @@ public class PaymentController extends BaseController
 		DateTime startDate = DateTime.now().withYear(year).withMonthOfYear(month).minusMonths(1).dayOfMonth().withMaximumValue();
 		DateTime endDate = DateTime.now().withYear(year).withMonthOfYear(month).dayOfMonth().withMaximumValue();
 		return paymentRepository.findAllByDateBetweenOrderByDateDesc(startDate, endDate);
+	}
+
+	private int getIncomeSum(List<Payment> payments)
+	{
+		int sum = 0;
+		for(Payment payment : payments)
+		{
+			if(payment.getAmount() > 0)
+			{
+				sum += payment.getAmount();
+			}
+		}
+		return sum;
+	}
+
+	private int getPaymentSum(List<Payment> payments)
+	{
+		int sum = 0;
+		for(Payment payment : payments)
+		{
+			if(payment.getAmount() < 0)
+			{
+				sum += payment.getAmount();
+			}
+		}
+		return sum;
 	}
 }

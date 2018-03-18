@@ -14,11 +14,13 @@
                 <#import "../datePicker.ftl" as datePicker>
                 <@datePicker.datePicker currentDate/>
                 <div class="hide-on-small-only"><br></div>
-                <div class="container">
-                    <div class="center-align"><a href="/payments/newPayment" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.payment.new")}</a></div>
-                </div>
-                <br>
-                <div class="container">
+                 <div class="container">
+                    <div class="row valign-wrapper">
+                        <div class="col s4 left-align"><h5>${locale.getString("title.incomes")}: ${helpers.getCurrencyString(incomeSum)}</h5></div>
+                        <div class="col s4 center-align"><a href="/payments/newPayment" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.payment.new")}</a></div>
+                        <div class="col s4 right-align"><h5>${locale.getString("title.payments")}: ${helpers.getCurrencyString(paymentSum)}</h5></div>
+                    </div>
+                    <br>
                     <table class="bordered">
                         <#list payments as payment>
                         <tr>
