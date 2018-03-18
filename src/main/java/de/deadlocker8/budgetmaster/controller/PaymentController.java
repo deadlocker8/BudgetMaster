@@ -132,6 +132,6 @@ public class PaymentController extends BaseController
 	{
 		DateTime startDate = DateTime.now().withYear(year).withMonthOfYear(month).minusMonths(1).dayOfMonth().withMaximumValue();
 		DateTime endDate = DateTime.now().withYear(year).withMonthOfYear(month).dayOfMonth().withMaximumValue();
-		return paymentRepository.findAllByDateBetweenOrderByDate(startDate, endDate);
+		return paymentRepository.findAllByDateBetweenOrderByDateDesc(startDate, endDate);
 	}
 }

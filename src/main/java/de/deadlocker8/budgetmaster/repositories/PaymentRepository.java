@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface PaymentRepository extends JpaRepository<Payment, Integer>
 {
-	List<Payment> findAllByDateBetweenOrderByDate(DateTime startDate, DateTime endDate);
+	List<Payment> findAllByDateBetweenOrderByDateDesc(DateTime startDate, DateTime endDate);
 }
