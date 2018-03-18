@@ -1,3 +1,3 @@
 $( document ).ready(function() {
-    $('.modal').modal('open');
+    $('#modalConfirmDelete').modal('open');
 });

@@ -248,6 +248,11 @@ main {
     float: left;
 }
 
+/* select font color */
+ul.dropdown-content.select-dropdown li span {
+    color: #2E79B9;
+}
+
 .hidden {
     display: none;
 }

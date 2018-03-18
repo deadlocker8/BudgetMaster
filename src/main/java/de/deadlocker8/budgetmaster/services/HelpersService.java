@@ -72,12 +72,12 @@ public class HelpersService
 		return monthNames;
 	}
 
-	public ArrayList<String> getYearList()
+	public ArrayList<Integer> getYearList()
 	{
-		ArrayList<String> years = new ArrayList<>();
+		ArrayList<Integer> years = new ArrayList<>();
 		for(int i = 2000; i < 2100; i++)
 		{
-			years.add(String.valueOf(i));
+			years.add(i);
 		}
 		return years;
 	}

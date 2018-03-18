@@ -52,6 +52,16 @@ public class DatePickerController extends BaseController
 		return "redirect:" + target;
 	}
 
+	@RequestMapping(value = "/setDate")
+	public String setDate(HttpServletResponse response, @CookieValue("currentDate") String date, @RequestParam("target") String target)
+	{
+		Settings settings = settingsRepository.findOne(0);
+		DateTime currentDate = DateTime.parse(date, DateTimeFormat.forPattern("dd.MM.yy").withLocale(settings.getLanguage().getLocale()));
+
+		response.addCookie(new Cookie("currentDate", helpers.getDateString(currentDate)));
+		return "redirect:" + target;
+	}
+
 	@RequestMapping(value = "/today")
 	public String previousMonth(HttpServletResponse response, @RequestParam("target") String target)
 	{
