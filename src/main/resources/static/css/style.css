@@ -192,6 +192,10 @@ main {
     font-size: 6vmin !important;
 }
 
+.icon-today {
+    font-size: 4vmin !important;
+}
+
 .headline {
     font-size: 2rem;
     text-transform: initial;

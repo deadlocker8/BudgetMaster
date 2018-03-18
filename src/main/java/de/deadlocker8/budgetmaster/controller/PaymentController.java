@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
 
 
@@ -69,6 +70,14 @@ public class PaymentController extends BaseController
 		DateTime currentDate = DateTime.parse(date, DateTimeFormat.forPattern("dd.MM.yy").withLocale(settings.getLanguage().getLocale()));
 		currentDate = currentDate.plusMonths(1);
 
+		response.addCookie(new Cookie("currentDate", helpers.getDateString(currentDate)));
+		return "redirect:/payments";
+	}
+
+	@RequestMapping(value = "/today")
+	public String previousMonth(HttpServletResponse response)
+	{
+		DateTime currentDate = DateTime.now();
 		response.addCookie(new Cookie("currentDate", helpers.getDateString(currentDate)));
 		return "redirect:/payments";
 	}
