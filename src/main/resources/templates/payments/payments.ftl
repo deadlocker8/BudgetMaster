@@ -35,7 +35,11 @@
                                 <div>${payment.name}</div>
                                 <div>${payment.description}</div>
                             </td>
-                            <td>${payment.amount}</td>
+                            <#if payment.amount < 0>
+                                <td class="bold text-red">${helpers.getCurrencyString(payment.amount)}</td>
+                            <#else>
+                                <td class="bold text-dark-green">${helpers.getCurrencyString(payment.amount)}</td>
+                            </#if>
                             <td>
                                 <a href="/payments/${payment.ID}/edit" class="btn-flat no-padding"><i class="material-icons left">edit</i></a>
                                 <#if (payment.category.type.name() != "REST")>

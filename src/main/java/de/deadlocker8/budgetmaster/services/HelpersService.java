@@ -22,14 +22,14 @@ public class HelpersService
 	@Autowired
 	private SettingsRepository settingsRepository;
 	
-	public String getCurrencyString(int amount, String currency)
+	public String getCurrencyString(int amount)
 	{
-		return String.valueOf(NUMBER_FORMAT.format(amount / 100.0).replace(".", ",")) + " " + currency;
+		return String.valueOf(NUMBER_FORMAT.format(amount / 100.0).replace(".", ",")) + " " + settingsRepository.findOne(0).getCurrency();
 	}
 
-	public String getCurrencyString(double amount, String currency)
+	public String getCurrencyString(double amount)
 	{
-		return String.valueOf(NUMBER_FORMAT.format(amount).replace(".", ",")) + " " + currency;
+		return String.valueOf(NUMBER_FORMAT.format(amount).replace(".", ",")) + " " + settingsRepository.findOne(0).getCurrency();
 	}
 	
 	public String getURLEncodedString(String input)

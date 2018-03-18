@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 
@@ -32,16 +34,16 @@ public class PaymentController extends BaseController
 	private HelpersService helpers;
 
 	@RequestMapping("/payments")
-	public String payments(Model model)
+	public String payments(Model model, @CookieValue("currentDate") String cookieDate)
 	{
 		DateTime date;
-		if(model.containsAttribute("date"))
+		if(cookieDate == null)
 		{
-			date = (DateTime)model.asMap().get("date");
+			date = DateTime.now();
 		}
 		else
 		{
-			date = DateTime.now();
+			date = DateTime.parse(cookieDate, DateTimeFormat.forPattern("dd.MM.yy").withLocale(getSettings().getLanguage().getLocale()));
 		}
 
 		model.addAttribute("currentDate", helpers.getDateString(date));
@@ -51,24 +53,24 @@ public class PaymentController extends BaseController
 	}
 
 	@RequestMapping(value = "/previousMonth")
-	public String previousMonth(RedirectAttributes redirectAttributes, @CookieValue("currentDate") String date)
+	public String previousMonth(HttpServletResponse response, @CookieValue("currentDate") String date)
 	{
 		Settings settings = getSettings();
 		DateTime currentDate = DateTime.parse(date, DateTimeFormat.forPattern("dd.MM.yy").withLocale(settings.getLanguage().getLocale()));
 		currentDate = currentDate.minusMonths(1);
 
-		redirectAttributes.addFlashAttribute("date", currentDate);
+		response.addCookie(new Cookie("currentDate", helpers.getDateString(currentDate)));
 		return "redirect:/payments";
 	}
 
 	@RequestMapping(value = "/nextMonth")
-	public String nextMonth(RedirectAttributes redirectAttributes, @CookieValue("currentDate") String date)
+	public String nextMonth(HttpServletResponse response, @CookieValue("currentDate") String date)
 	{
 		Settings settings = getSettings();
 		DateTime currentDate = DateTime.parse(date, DateTimeFormat.forPattern("dd.MM.yy").withLocale(settings.getLanguage().getLocale()));
 		currentDate = currentDate.plusMonths(1);
 
-		redirectAttributes.addFlashAttribute("date", currentDate);
+		response.addCookie(new Cookie("currentDate", helpers.getDateString(currentDate)));
 		return "redirect:/payments";
 	}
 
