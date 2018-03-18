@@ -3,7 +3,7 @@
         <#import "../header.ftl" as header>
         <@header.header/>
         <link type="text/css" rel="stylesheet" href="/css/categories.css"/>
-        <#assign locale = localization["tools.Localization"]>
+        <#assign locale = static["tools.Localization"]>
     </head>
     <body class="budgetmaster-blue-light">
         <#import "../navbar.ftl" as navbar>
@@ -22,7 +22,7 @@
                     <table class="bordered">
                         <#list payments as payment>
                         <tr>
-                            <td>${payment.date}</td>
+                            <td>${helpers.getDateString(payment.date)}</td>
                             <td><i class="material-icons">repeat</i></td>
                             <td>
                                 <div class="category-circle" style="background-color: ${payment.category.color}">

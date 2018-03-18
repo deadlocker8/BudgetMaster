@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 @ControllerAdvice
-public class LocalizationAdvice
+public class StaticClassesAdvice
 {
-	@ModelAttribute("localization")
+	@ModelAttribute("static")
 	public TemplateHashModel getLocalization()
 	{
 		BeansWrapperBuilder builder = new BeansWrapperBuilder(Configuration.VERSION_2_3_27);

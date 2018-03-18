@@ -2,7 +2,7 @@
     <head>
         <#import "header.ftl" as header>
         <@header.header/>
-        <#assign locale = localization["tools.Localization"]>
+        <#assign locale = static["tools.Localization"]>
     </head>
     <body class="budgetmaster-blue-light">
         <#import "navbar.ftl" as navbar>

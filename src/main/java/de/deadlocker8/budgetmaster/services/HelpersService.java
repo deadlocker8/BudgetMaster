@@ -1,40 +1,38 @@
-package de.deadlocker8.budgetmaster.utils;
+package de.deadlocker8.budgetmaster.services;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Locale;
-
-import de.deadlocker8.budgetmaster.entities.Settings;
 import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
-import javafx.scene.paint.Color;
+import de.deadlocker8.budgetmaster.utils.Colors;
+import de.deadlocker8.budgetmaster.utils.Strings;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.stereotype.Service;
 import tools.ConvertTo;
 import tools.Localization;
 
-public class Helpers
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+
+@Service
+public class HelpersService
 {
-	public static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("0.00");
-	public static final String ROADMAP_URL = "https://deadlocker.thecodelabs.de/roadmap/php/index.php?id=1";
+	private final DecimalFormat NUMBER_FORMAT = new DecimalFormat("0.00");
+	@Autowired
+	private SettingsRepository settingsRepository;
 	
-	public static String getCurrencyString(int amount, String currency)
+	public String getCurrencyString(int amount, String currency)
 	{
 		return String.valueOf(NUMBER_FORMAT.format(amount / 100.0).replace(".", ",")) + " " + currency;
 	}
 
-	public static String getCurrencyString(double amount, String currency)
+	public String getCurrencyString(double amount, String currency)
 	{
 		return String.valueOf(NUMBER_FORMAT.format(amount).replace(".", ",")) + " " + currency;
 	}
 	
-	public static String getURLEncodedString(String input)
+	public String getURLEncodedString(String input)
 	{
 		try
 		{
@@ -46,17 +44,17 @@ public class Helpers
 		}
 	}
 
-	public static String getDateString(DateTime date, Settings settings)
+	public String getDateString(DateTime date)
 	{
-		return date.toString(DateTimeFormat.forPattern("yyyy-MM-dd").withLocale(settings.getLanguage().getLocale()));
+		return date.toString(DateTimeFormat.forPattern("dd.MM.yy").withLocale(settingsRepository.findOne(0).getLanguage().getLocale()));
 	}
 
-	public static String getDateStringWithMonthAndYear(DateTime date, Settings settings)
+	public String getDateStringWithMonthAndYear(DateTime date)
 	{
-		return date.toString(DateTimeFormat.forPattern("MMMM yyyy").withLocale(settings.getLanguage().getLocale()));
+		return date.toString(DateTimeFormat.forPattern("MMMM yyyy").withLocale(settingsRepository.findOne(0).getLanguage().getLocale()));
 	}
 
-	public static ArrayList<String> getMonthList()
+	public ArrayList<String> getMonthList()
 	{
 		ArrayList<String> monthNames = new ArrayList<>();
 		monthNames.add(Localization.getString(Strings.MONTH_JANUARY));
@@ -74,7 +72,7 @@ public class Helpers
 		return monthNames;
 	}
 
-	public static ArrayList<String> getYearList()
+	public ArrayList<String> getYearList()
 	{
 		ArrayList<String> years = new ArrayList<>();
 		for(int i = 2000; i < 2100; i++)
@@ -89,14 +87,14 @@ public class Helpers
 	 * @param text
 	 * @return String
 	 */
-	public static String getFlatText(String text)
+	public String getFlatText(String text)
 	{
 		text = text.replace("\n", " ");
 		text = text.replace("\t", " ");
 		return text;
 	}
 
-	public static ArrayList<String> getCategoryColorList()
+	public ArrayList<String> getCategoryColorList()
 	{
 		ArrayList<String> categoryColors = new ArrayList<>();
 		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase());

@@ -4,7 +4,7 @@
         <@header.header/>
         <link type="text/css" rel="stylesheet" href="/css/spectrum.css"/>
         <link type="text/css" rel="stylesheet" href="/css/categories.css"/>
-        <#assign locale = localization["tools.Localization"]>
+        <#assign locale = static["tools.Localization"]>
     </head>
     <body class="budgetmaster-blue-light">
         <#import "../navbar.ftl" as navbar>

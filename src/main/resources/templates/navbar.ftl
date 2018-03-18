@@ -1,5 +1,5 @@
 <#macro navbar activeID>
-    <#assign locale = localization["tools.Localization"]>
+    <#assign locale = static["tools.Localization"]>
     <ul id="slide-out" class="side-nav fixed">
         <@itemLogo/>
         <@itemDivider/>

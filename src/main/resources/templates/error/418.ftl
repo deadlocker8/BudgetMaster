@@ -8,7 +8,7 @@
         <link type="text/css" rel="stylesheet" href="/css/login.css"/>
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <#assign locale = localization["tools.Localization"]>
+        <#assign locale = static["tools.Localization"]>
     </head>
     <body class="budgetmaster-blue-light">
         <main>

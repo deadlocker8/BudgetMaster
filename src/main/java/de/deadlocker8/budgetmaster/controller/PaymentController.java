@@ -5,7 +5,7 @@ import de.deadlocker8.budgetmaster.entities.Payment;
 import de.deadlocker8.budgetmaster.entities.Settings;
 import de.deadlocker8.budgetmaster.repositories.PaymentRepository;
 import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
-import de.deadlocker8.budgetmaster.utils.Helpers;
+import de.deadlocker8.budgetmaster.services.HelpersService;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -29,6 +28,9 @@ public class PaymentController extends BaseController
 	@Autowired
 	private SettingsRepository settingsRepository;
 
+	@Autowired
+	private HelpersService helpers;
+
 	@RequestMapping("/payments")
 	public String payments(Model model)
 	{
@@ -42,8 +44,8 @@ public class PaymentController extends BaseController
 			date = DateTime.now();
 		}
 
-		model.addAttribute("currentDate", Helpers.getDateString(date, getSettings()));
-		model.addAttribute("currentDateFormatted", Helpers.getDateStringWithMonthAndYear(date, getSettings()));
+		model.addAttribute("currentDate", helpers.getDateString(date));
+		model.addAttribute("currentDateFormatted", helpers.getDateStringWithMonthAndYear(date));
 		model.addAttribute("payments", getPaymentsForMonthAndYear(date.getMonthOfYear(), date.getYear()));
 		return "payments/payments";
 	}
@@ -52,7 +54,7 @@ public class PaymentController extends BaseController
 	public String previousMonth(RedirectAttributes redirectAttributes, @CookieValue("currentDate") String date)
 	{
 		Settings settings = getSettings();
-		DateTime currentDate = DateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd").withLocale(settings.getLanguage().getLocale()));
+		DateTime currentDate = DateTime.parse(date, DateTimeFormat.forPattern("dd.MM.yy").withLocale(settings.getLanguage().getLocale()));
 		currentDate = currentDate.minusMonths(1);
 
 		redirectAttributes.addFlashAttribute("date", currentDate);
@@ -63,7 +65,7 @@ public class PaymentController extends BaseController
 	public String nextMonth(RedirectAttributes redirectAttributes, @CookieValue("currentDate") String date)
 	{
 		Settings settings = getSettings();
-		DateTime currentDate = DateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd").withLocale(settings.getLanguage().getLocale()));
+		DateTime currentDate = DateTime.parse(date, DateTimeFormat.forPattern("dd.MM.yy").withLocale(settings.getLanguage().getLocale()));
 		currentDate = currentDate.plusMonths(1);
 
 		redirectAttributes.addFlashAttribute("date", currentDate);
@@ -88,8 +90,8 @@ public class PaymentController extends BaseController
 			date = DateTime.now();
 		}
 
-		model.addAttribute("currentDate", Helpers.getDateString(date, getSettings()));
-		model.addAttribute("currentDateFormatted", Helpers.getDateStringWithMonthAndYear(date, getSettings()));
+		model.addAttribute("currentDate", helpers.getDateString(date));
+		model.addAttribute("currentDateFormatted", helpers.getDateStringWithMonthAndYear(date));
 		model.addAttribute("payments", getPaymentsForMonthAndYear(date.getMonthOfYear(), date.getYear()));
 		model.addAttribute("currentPayment", paymentRepository.getOne(ID));
 		return "payments/payments";

@@ -2,14 +2,9 @@ package de.deadlocker8.budgetmaster.controller;
 
 import de.deadlocker8.budgetmaster.entities.Category;
 import de.deadlocker8.budgetmaster.entities.CategoryType;
-import de.deadlocker8.budgetmaster.entities.Payment;
-import de.deadlocker8.budgetmaster.entities.Settings;
 import de.deadlocker8.budgetmaster.repositories.CategoryRepository;
-import de.deadlocker8.budgetmaster.repositories.PaymentRepository;
-import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
+import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.utils.Colors;
-import de.deadlocker8.budgetmaster.utils.Helpers;
-import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import de.deadlocker8.budgetmaster.validators.CategoryValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import tools.ConvertTo;
 
-import java.util.List;
-
 
 @Controller
 public class CategoryController extends BaseController
 {
 	@Autowired
 	private CategoryRepository categoryRepository;
+
+	@Autowired
+	private HelpersService helpers;
 
 	@RequestMapping("/categories")
 	public String index(Model model)
@@ -87,7 +83,7 @@ public class CategoryController extends BaseController
 			throw new ResourceNotFoundException();
 		}
 
-		if(Helpers.getCategoryColorList().contains(category.getColor()))
+		if(helpers.getCategoryColorList().contains(category.getColor()))
 		{
 			model.addAttribute("customColor", "#FFFFFF");
 		}
@@ -110,7 +106,7 @@ public class CategoryController extends BaseController
 		{
 			model.addAttribute("error", bindingResult);
 
-			if(Helpers.getCategoryColorList().contains(category.getColor()))
+			if(helpers.getCategoryColorList().contains(category.getColor()))
 			{
 				model.addAttribute("customColor", "#FFFFFF");
 			}
