@@ -69,5 +69,6 @@
         <script src="/js/main.js"></script>
         <script src="/js/payments.js"></script>
         <script src="/js/datePicker.js"></script>
+        <script>document.cookie = "currentDate=${currentDate}";</script>
     </body>
 </html>

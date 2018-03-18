@@ -11,6 +11,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,7 +49,7 @@ public class PaymentController extends BaseController
 	}
 
 	@RequestMapping(value = "/previousMonth")
-	public String previousMonth(@RequestParam(value = "currentDate") String date, RedirectAttributes redirectAttributes)
+	public String previousMonth(RedirectAttributes redirectAttributes, @CookieValue("currentDate") String date)
 	{
 		Settings settings = getSettings();
 		DateTime currentDate = DateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd").withLocale(settings.getLanguage().getLocale()));
@@ -59,7 +60,7 @@ public class PaymentController extends BaseController
 	}
 
 	@RequestMapping(value = "/nextMonth")
-	public String nextMonth(@RequestParam(value = "currentDate") String date, RedirectAttributes redirectAttributes)
+	public String nextMonth(RedirectAttributes redirectAttributes, @CookieValue("currentDate") String date)
 	{
 		Settings settings = getSettings();
 		DateTime currentDate = DateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd").withLocale(settings.getLanguage().getLocale()));
