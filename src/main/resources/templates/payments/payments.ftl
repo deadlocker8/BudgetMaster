@@ -33,7 +33,9 @@
                             </td>
                             <td>
                                 <div>${payment.name}</div>
-                                <div class="italic">${payment.description}</div>
+                                <#if payment.description??>
+                                    <div class="italic">${payment.description}</div>
+                                </#if>
                             </td>
                             <#if payment.amount < 0>
                                 <td class="bold text-red">${helpers.getCurrencyString(payment.amount)}</td>

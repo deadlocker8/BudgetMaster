@@ -130,8 +130,8 @@ public class PaymentController extends BaseController
 
 	private List<Payment> getPaymentsForMonthAndYear(int month, int year)
 	{
-		DateTime startDate = DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(1);
+		DateTime startDate = DateTime.now().withYear(year).withMonthOfYear(month).minusMonths(1).dayOfMonth().withMaximumValue();
 		DateTime endDate = DateTime.now().withYear(year).withMonthOfYear(month).dayOfMonth().withMaximumValue();
-		return paymentRepository.findAllByDateBetween(startDate, endDate);
+		return paymentRepository.findAllByDateBetweenOrderByDate(startDate, endDate);
 	}
 }
