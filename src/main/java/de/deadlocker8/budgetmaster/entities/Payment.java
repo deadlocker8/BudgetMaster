@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.entities;
 
-import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 
@@ -12,6 +12,7 @@ public class Payment
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer ID;
 	private Integer amount;
+	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private DateTime date;
 	@ManyToOne
 	private Category category;

@@ -63,7 +63,7 @@ public class DatePickerController extends BaseController
 	}
 
 	@RequestMapping(value = "/today")
-	public String previousMonth(HttpServletResponse response, @RequestParam("target") String target)
+	public String today(HttpServletResponse response, @RequestParam("target") String target)
 	{
 		DateTime currentDate = DateTime.now();
 		response.addCookie(new Cookie("currentDate", helpers.getDateString(currentDate)));

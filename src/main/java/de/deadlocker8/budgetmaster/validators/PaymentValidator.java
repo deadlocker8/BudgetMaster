@@ -18,5 +18,6 @@ public class PaymentValidator implements Validator
 	{
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", Strings.WARNING_EMPTY_PAYMENT_NAME);
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "amount", Strings.WARNING_PAYMENT_AMOUNT);
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "date", Strings.WARNING_EMPTY_PAYMENT_DATE);
 	}
 }

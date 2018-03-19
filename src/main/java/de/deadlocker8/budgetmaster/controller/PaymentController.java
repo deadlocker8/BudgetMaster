@@ -37,16 +37,7 @@ public class PaymentController extends BaseController
 	@RequestMapping("/payments")
 	public String payments(Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
 	{
-		DateTime date;
-		if(cookieDate == null)
-		{
-			date = DateTime.now();
-		}
-		else
-		{
-			date = DateTime.parse(cookieDate, DateTimeFormat.forPattern("dd.MM.yy").withLocale(getSettings().getLanguage().getLocale()));
-		}
-
+		DateTime date = getDateTimeFromCookie(cookieDate);
 		List<Payment> payments = getPaymentsForMonthAndYear(date.getMonthOfYear(), date.getYear());
 		model.addAttribute("payments", payments);
 		model.addAttribute("incomeSum", getIncomeSum(payments));
@@ -63,16 +54,7 @@ public class PaymentController extends BaseController
 			return "redirect:/payments";
 		}
 
-		DateTime date;
-		if(cookieDate == null)
-		{
-			date = DateTime.now();
-		}
-		else
-		{
-			date = DateTime.parse(cookieDate, DateTimeFormat.forPattern("dd.MM.yy").withLocale(getSettings().getLanguage().getLocale()));
-		}
-
+		DateTime date = getDateTimeFromCookie(cookieDate);
 		List<Payment> payments = getPaymentsForMonthAndYear(date.getMonthOfYear(), date.getYear());
 		model.addAttribute("payments", payments);
 		model.addAttribute("incomeSum", getIncomeSum(payments));
@@ -94,9 +76,11 @@ public class PaymentController extends BaseController
 	}
 
 	@RequestMapping("/payments/newPayment")
-	public String newCategory(Model model)
+	public String newPayment(Model model, @CookieValue("currentDate") String cookieDate)
 	{
+		DateTime date = getDateTimeFromCookie(cookieDate);
 		Payment emptyPayment = new Payment();
+		model.addAttribute("currentDate", date);
 		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
 		model.addAttribute("payment", emptyPayment);
 		return "payments/newPayment";
@@ -111,6 +95,7 @@ public class PaymentController extends BaseController
 		if(bindingResult.hasErrors())
 		{
 			model.addAttribute("error", bindingResult);
+			model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
 			model.addAttribute("payment", payment);
 			return "payments/newPayment";
 		}
@@ -164,5 +149,17 @@ public class PaymentController extends BaseController
 			}
 		}
 		return sum;
+	}
+
+	private DateTime getDateTimeFromCookie(String cookieDate)
+	{
+		if(cookieDate == null)
+		{
+			return DateTime.now();
+		}
+		else
+		{
+			return DateTime.parse(cookieDate, DateTimeFormat.forPattern("dd.MM.yy").withLocale(getSettings().getLanguage().getLocale()));
+		}
 	}
 }

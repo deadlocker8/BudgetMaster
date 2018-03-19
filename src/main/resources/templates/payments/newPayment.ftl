@@ -63,7 +63,7 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
-                                <input id="payment-datepicker" type="text" class="datepicker">
+                                <input id="payment-datepicker" type="text" class="datepicker" name="date"> value="<#if payment.getDate()??>${helpers.getDateString(payment.getDate())}<#else>${helpers.getDateString(currentDate)}</#if>">
                                 <label for="payment-datepicker">${locale.getString("payment.new.label.date")}</label>
                             </div>
                         </div>

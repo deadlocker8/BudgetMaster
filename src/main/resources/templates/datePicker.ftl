@@ -62,7 +62,7 @@
         weekDaysShort = [${weekDaysShort}];
         weekDaysLetters = [${weekDaysLetters}];
         buttonToday = '${locale.getString("today")}';
-        buttonClear = '${locale.getString("clear")}';
+        buttonClear = '';
         buttonClose = '${locale.getString("ok")}';
     </script>
 </#macro>
