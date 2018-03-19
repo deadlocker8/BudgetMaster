@@ -24,7 +24,7 @@
                                 <div class="switch">
                                     <label>
                                         ${locale.getString("title.income")}
-                                        <input type="checkbox" <#if payment.getAmount()?? && payment.getAmount() < 0>checked</#if>>
+                                        <input type="checkbox" name="isPayment" <#if payment.getAmount()?? && payment.getAmount() < 0>checked</#if>>
                                         <span class="lever"></span>
                                         ${locale.getString("title.payment")}
                                     </label>
@@ -63,7 +63,7 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
-                                <input id="payment-datepicker" type="text" class="datepicker" name="date"> value="<#if payment.getDate()??>${helpers.getDateString(payment.getDate())}<#else>${helpers.getDateString(currentDate)}</#if>">
+                                <input id="payment-datepicker" type="text" class="datepicker" name="date" value="<#if payment.getDate()??>${helpers.getDateString(payment.getDate())}<#else>${helpers.getDateString(currentDate)}</#if>">
                                 <label for="payment-datepicker">${locale.getString("payment.new.label.date")}</label>
                             </div>
                         </div>
