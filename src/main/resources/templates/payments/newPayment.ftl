@@ -20,6 +20,18 @@
                     <form name="NewPayment" action="/payments/newPayment" method="post">
                         <input type="hidden" name="ID" value="<#if payment.getID()??>${payment.getID()}</#if>">
                         <div class="row">
+                            <div class="s12 m12 l8 offset-l2 center-align">
+                                <div class="switch">
+                                    <label>
+                                        ${locale.getString("title.income")}
+                                        <input type="checkbox" <#if payment.getAmount()?? && payment.getAmount() < 0>checked</#if>>
+                                        <span class="lever"></span>
+                                        ${locale.getString("title.payment")}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
                                 <input id="payment-name" type="text" name="name" <@validation.validation "name"/> value="<#if payment.getName()??>${payment.getName()}</#if>">
                                 <label for="payment-name">${locale.getString("payment.new.label.name")}</label>
@@ -47,6 +59,12 @@
                                     </#list>
                                 </select>
                                 <label for="payment-amount">${locale.getString("payment.new.label.category")}</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12 m12 l8 offset-l2">
+                                <input id="payment-datepicker" type="text" class="datepicker">
+                                <label for="payment-datepicker">${locale.getString("payment.new.label.date")}</label>
                             </div>
                         </div>
                         <div class="row">
@@ -85,6 +103,9 @@
                 </div>
             </div>
         </main>
+
+        <#import "../datePicker.ftl" as datePicker>
+        <@datePicker.datePickerLocalization/>
 
         <!-- Scripts-->
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>

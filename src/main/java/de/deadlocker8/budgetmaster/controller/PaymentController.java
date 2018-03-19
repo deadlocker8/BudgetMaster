@@ -1,6 +1,5 @@
 package de.deadlocker8.budgetmaster.controller;
 
-import de.deadlocker8.budgetmaster.entities.Category;
 import de.deadlocker8.budgetmaster.entities.CategoryType;
 import de.deadlocker8.budgetmaster.entities.Payment;
 import de.deadlocker8.budgetmaster.entities.Settings;
@@ -8,8 +7,6 @@ import de.deadlocker8.budgetmaster.repositories.CategoryRepository;
 import de.deadlocker8.budgetmaster.repositories.PaymentRepository;
 import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
 import de.deadlocker8.budgetmaster.services.HelpersService;
-import de.deadlocker8.budgetmaster.utils.Colors;
-import de.deadlocker8.budgetmaster.validators.CategoryValidator;
 import de.deadlocker8.budgetmaster.validators.PaymentValidator;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -18,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import tools.ConvertTo;
 
 import java.util.List;
 

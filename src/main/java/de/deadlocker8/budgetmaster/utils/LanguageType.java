@@ -11,7 +11,7 @@ public enum LanguageType
 	private Locale locale;
 	private String iconName;
 	
-	private LanguageType(String name, Locale locale, String iconName)
+	LanguageType(String name, Locale locale, String iconName)
 	{
 		this.name = name;
 		this.locale = locale;

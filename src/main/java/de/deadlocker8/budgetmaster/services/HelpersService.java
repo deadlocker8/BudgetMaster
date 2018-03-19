@@ -54,6 +54,19 @@ public class HelpersService
 		return date.toString(DateTimeFormat.forPattern("MMMM yyyy").withLocale(settingsRepository.findOne(0).getLanguage().getLocale()));
 	}
 
+	public ArrayList<String> getWeekDays()
+	{
+		ArrayList<String> weekDays = new ArrayList<>();
+		weekDays.add(Localization.getString(Strings.SUNDAY));
+		weekDays.add(Localization.getString(Strings.MONDAY));
+		weekDays.add(Localization.getString(Strings.TUESDAY));
+		weekDays.add(Localization.getString(Strings.WEDNESDAY));
+		weekDays.add(Localization.getString(Strings.THURSDAY));
+		weekDays.add(Localization.getString(Strings.FRIDAY));
+		weekDays.add(Localization.getString(Strings.SATURDAY));
+		return weekDays;
+	}
+
 	public ArrayList<String> getMonthList()
 	{
 		ArrayList<String> monthNames = new ArrayList<>();

@@ -257,6 +257,15 @@ ul.dropdown-content.select-dropdown li.selected {
     background-color: rgba(0, 0, 0, 0.15);
 }
 
+/* switch color */
+.switch label input[type="checkbox"]:checked + .lever {
+    background-color: rgba(46, 121, 185, 0.6);
+}
+
+.switch label input[type="checkbox"]:checked + .lever::after {
+    background-color: #2E79B9;
+}
+
 .hidden {
     display: none;
 }

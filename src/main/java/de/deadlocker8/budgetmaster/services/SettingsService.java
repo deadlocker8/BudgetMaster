@@ -6,6 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tools.Localization;
+
+import java.util.Locale;
 
 @Service
 public class SettingsService
@@ -20,5 +23,8 @@ public class SettingsService
 			settingsRepository.save(Settings.getDefault());
 			LOGGER.debug("Created default settings");
 		}
+
+		Localization.init("languages/");
+		Localization.loadLanguage(settingsRepository.findOne(0).getLanguage().getLocale());
 	}
 }

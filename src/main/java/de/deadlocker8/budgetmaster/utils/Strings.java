@@ -12,7 +12,7 @@ public class Strings
     public static final String FOLDER = "folder";
     public static final String ROADMAP_URL = "roadmap.url";
     public static final String GITHUB_URL = "github.url";
-    
+
     //TITLE
     public static final String TITLE_INCOMES = "title.incomes";
     public static final String TITLE_INCOME = "title.income";
@@ -25,8 +25,8 @@ public class Strings
     public static final String TITLE_INFO = "title.info";
     public static final String TITLE_WARNING = "title.warning";
     public static final String TITLE_ERROR = "title.error";
-    public static final String TITLE_CATEGORY_NEW = "title.category.new";  
-    public static final String TITLE_CATEGORY_EDIT = "title.category.edit";  
+    public static final String TITLE_CATEGORY_NEW = "title.category.new";
+    public static final String TITLE_CATEGORY_EDIT = "title.category.edit";
     public static final String TITLE_CHART_EXPORT = "title.chart.export";
     public static final String TITLE_MODAL = "title.modal";
     public static final String TITLE_PAYMENT_EDIT = "title.payment.edit";
@@ -38,7 +38,7 @@ public class Strings
     public static final String TITLE_DATABASE_IMPORT = "title.database.import";
     public static final String TITLE_DATEPICKER = "title.datepicker";
     public static final String TITLE_TAGS = "title.tags";
-    
+
     //LOAD
     public static final String LOAD_CHARTS = "load.charts";
     public static final String LOAD_DATA = "load.data";
@@ -53,8 +53,8 @@ public class Strings
     public static final String LOAD_DOWNLOAD_LOCAL_SERVER = "load.download.local.server";
     public static final String LOAD_LOCAL_SERVER_CONNECT = "load.local.server.connect";
     public static final String LOAD_LOCAL_SERVER_RETRY = "load.local.server.retry";
-    
-    
+
+
     //MISC
     public static final String CATEGORY_NONE = "category.none";
     public static final String CATEGORY_REST = "category.rest";
@@ -82,7 +82,7 @@ public class Strings
     public static final String LOCAL_SERVER_ACTION_NOT_PRESENT = "local.server.action.not.present";
     public static final String LOCAL_SERVER_STATUS_INCOMPATIBLE = "local.server.status.incompatible";
     public static final String LOCAL_SERVER_ACTION_INCOMPATIBLE = "local.server.action.incompatible";
-    
+
     //REPORT
     public static final String REPORT_POSITION = "report.position";
     public static final String REPORT_DATE = "report.date";
@@ -101,32 +101,41 @@ public class Strings
     public static final String REPORT_FOOTER_CENTER = "report.footer.center";
     public static final String REPORT_REPEATING_YES ="report.repeating.yes";
     public static final String REPORT_REPEATING_NO ="report.repeating.no";
-    public static final String REPORT_INITIAL_FILENAME ="report.initial.filename"; 
+    public static final String REPORT_INITIAL_FILENAME ="report.initial.filename";
     public static final String REPORT_BUDGET = "report.budget";
     public static final String REPORT_INCOMES = "report.incomes";
     public static final String REPORT_PAYMENTS = "report.payments";
     public static final String REPORT_BUDGET_REST = "report.budget.rest";
-    
+
+    //WEEK_DAYS
+    public static final String MONDAY ="monday";
+    public static final String TUESDAY ="tuesday";
+    public static final String WEDNESDAY ="wednesday";
+    public static final String THURSDAY ="thursday";
+    public static final String FRIDAY ="friday";
+    public static final String SATURDAY ="saturday";
+    public static final String SUNDAY ="sunday";
+
     //MONTH_NAMES
-    public static final String MONTH_JANUARY ="month.january"; 
-    public static final String MONTH_FEBRUARY ="month.february"; 
-    public static final String MONTH_MARCH ="month.march"; 
-    public static final String MONTH_APRIL ="month.april"; 
-    public static final String MONTH_MAY ="month.may"; 
-    public static final String MONTH_JUNE ="month.june"; 
-    public static final String MONTH_JULY ="month.july"; 
-    public static final String MONTH_AUGUST ="month.august"; 
-    public static final String MONTH_SEPTEMBER ="month.september"; 
-    public static final String MONTH_OCTOBER ="month.october"; 
-    public static final String MONTH_NOVEMBER ="month.november"; 
+    public static final String MONTH_JANUARY ="month.january";
+    public static final String MONTH_FEBRUARY ="month.february";
+    public static final String MONTH_MARCH ="month.march";
+    public static final String MONTH_APRIL ="month.april";
+    public static final String MONTH_MAY ="month.may";
+    public static final String MONTH_JUNE ="month.june";
+    public static final String MONTH_JULY ="month.july";
+    public static final String MONTH_AUGUST ="month.august";
+    public static final String MONTH_SEPTEMBER ="month.september";
+    public static final String MONTH_OCTOBER ="month.october";
+    public static final String MONTH_NOVEMBER ="month.november";
     public static final String MONTH_DECEMBER ="month.december";
-    
+
     //NOTIFICATION
     public static final String NOTIFICATION_CHART_EXPORT = "notification.chart.export";
     public static final String NOTIFICATION_REPORT_SAVE = "notification.report.save";
     public static final String NOTIFICATION_SETTINGS_SAVE = "notification.settings.save";
     public static final String NOTIFICATION_NO_UPDATE_AVAILABLE = "notification.no.update.available";
-    
+
     //INFO
     public static final String INFO_TITLE_CATEGORY_DELETE = "info.title.category.delete";
     public static final String INFO_TEXT_CATEGORY_DELETE = "info.text.category.delete";
@@ -174,7 +183,7 @@ public class Strings
     public static final String INFO_TAGS = "info.tags";
     public static final String INFO_TITLE_SHUTDOWN = "info.title.shutdown";
     public static final String INFO_TEXT_SHUTDOWN = "info.text.shutdown";
-        
+
     //WARNING
     public static final String WARNING_ENDDATE_BEFORE_STARTDATE = "warning.enddate.before.startdate";
     public static final String WARNING_EMPTY_WIDTH_IN_PIXELS = "warning.empty.width.in.pixels";
@@ -191,7 +200,7 @@ public class Strings
     public static final String WARNING_TAG_CHARACTER_LIMIT_REACHED_45 = "warning.tag.character.limit.reached.45";
     public static final String WARNING_PAYMENT_AMOUNT = "warning.payment.amount";
     public static final String WARNING_EMPTY_PAYMENT_DATE = "warning.empty.payment.date";
-    public static final String WARNING_PAYMENT_REPEATING = "warning.payment.repeating";    
+    public static final String WARNING_PAYMENT_REPEATING = "warning.payment.repeating";
     public static final String WARNING_EMPTY_SECRET_CLIENT = "warning.empty.secret.client";
     public static final String WARNING_EMPTY_URL = "warning.empty.url";
     public static final String WARNING_EMPTY_SECRET_SERVER = "warning.empty.secret.server";
@@ -202,7 +211,7 @@ public class Strings
     public static final String WARNING_SERVER_VERSION = "warning.server.version";
     public static final String WARNING_EMPTY_YEAR = "warning.empty.year";
     public static final String WARNING_WRONG_YEAR = "warning.wrong.year";
-    
+
     //ERROR
     public static final String ERROR_UNKNOWN_HOST = "error.unknown.host";
     public static final String ERROR_UNKNOWN_ERROR = "error.unknown.error";
@@ -228,7 +237,7 @@ public class Strings
     public static final String ERROR_OPEN_BROWSER = "error.open.browser";
     public static final String ERROR_LOCAL_SERVER_START = "error.local.server.start";
     public static final String ERROR_LOCAL_SERVER_DOWNLOAD = "error.local.server.download";
-    
+
     //ABOUT
     public static final String ABOUT = "about";
     public static final String ABOUT_ROADMAP_LINK = "about.roadmap.link";

@@ -9,7 +9,7 @@
          </div>
      </div>
     <!-- modal to select specific month and year -->
-    <div id="modalDate" class="modal">
+    <div id="modalDate" class="modal modal-fixed-footer">
         <div class="modal-content">
             <h4>${locale.getString("title.datepicker")}</h4>
             <div class="input-field col s12">
@@ -34,4 +34,35 @@
             <a href="/setDate?target=${target}" id="buttonChooseDate" class="modal-action modal-close waves-effect waves-green btn-flat">${locale.getString("ok")}</a>
         </div>
     </div>
+</#macro>
+
+<#macro datePickerLocalization>
+    <#assign locale = static["tools.Localization"]>
+    <#-- localization for scripts -->
+    <script>
+        <#assign monthNames = "">
+        <#assign monthNamesShort = "">
+        <#list helpers.getMonthList() as monthName>
+            <#assign monthNames += "'" + monthName + "', ">
+            <#assign monthNamesShort += "'" + monthName[0..2] + "', ">
+        </#list>
+
+        <#assign weekDays = "">
+        <#assign weekDaysShort = "">
+        <#assign weekDaysLetters = "">
+        <#list helpers.getWeekDays() as weekDay>
+            <#assign weekDays += "'" + weekDay + "', ">
+            <#assign weekDaysShort += "'" + weekDay[0..1] + "', ">
+            <#assign weekDaysLetters += "'" + weekDay[0] + "', ">
+        </#list>
+
+        monthNames = [${monthNames}];
+        monthNamesShort = [${monthNamesShort}];
+        weekDays = [${weekDays}];
+        weekDaysShort = [${weekDaysShort}];
+        weekDaysLetters = [${weekDaysLetters}];
+        buttonToday = '${locale.getString("today")}';
+        buttonClear = '${locale.getString("clear")}';
+        buttonClose = '${locale.getString("ok")}';
+    </script>
 </#macro>
