@@ -3,9 +3,11 @@ package de.deadlocker8.budgetmaster.controller;
 import de.deadlocker8.budgetmaster.entities.CategoryType;
 import de.deadlocker8.budgetmaster.entities.Payment;
 import de.deadlocker8.budgetmaster.entities.Settings;
+import de.deadlocker8.budgetmaster.entities.Tag;
 import de.deadlocker8.budgetmaster.repositories.CategoryRepository;
 import de.deadlocker8.budgetmaster.repositories.PaymentRepository;
 import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
+import de.deadlocker8.budgetmaster.repositories.TagRepository;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.validators.PaymentValidator;
 import org.joda.time.DateTime;
@@ -32,6 +34,9 @@ public class PaymentController extends BaseController
 	private SettingsRepository settingsRepository;
 
 	@Autowired
+	private TagRepository tagRepository;
+
+	@Autowired
 	private HelpersService helpers;
 
 	@RequestMapping("/payments")
@@ -39,6 +44,7 @@ public class PaymentController extends BaseController
 	{
 		DateTime date = getDateTimeFromCookie(cookieDate);
 		List<Payment> payments = getPaymentsForMonthAndYear(date.getMonthOfYear(), date.getYear());
+
 		model.addAttribute("payments", payments);
 		model.addAttribute("incomeSum", getIncomeSum(payments));
 		model.addAttribute("paymentSum", getPaymentSum(payments));
@@ -161,5 +167,27 @@ public class PaymentController extends BaseController
 		{
 			return DateTime.parse(cookieDate, DateTimeFormat.forPattern("dd.MM.yy").withLocale(getSettings().getLanguage().getLocale()));
 		}
+	}
+
+	private void addTagToPayment(String name, Payment payment)
+	{
+		if(tagRepository.findByName(name) == null)
+		{
+			tagRepository.save(new Tag(name));
+		}
+
+		List<Payment> referringPayments = tagRepository.findByName(name).getReferringPayments();
+		if(referringPayments == null || !referringPayments.contains(payment))
+		{
+			payment.getTags().add(tagRepository.findByName(name));
+			paymentRepository.save(payment);
+		}
+	}
+
+	private void removeTagFromPayment(String name, Payment payment)
+	{
+		Tag currentTag = tagRepository.findByName(name);
+		currentTag.getReferringPayments().remove(payment);
+		tagRepository.save(currentTag);
 	}
 }

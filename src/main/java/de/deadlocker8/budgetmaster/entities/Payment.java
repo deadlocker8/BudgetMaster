@@ -4,6 +4,8 @@ import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Payment
@@ -12,13 +14,19 @@ public class Payment
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer ID;
 	private Integer amount;
+
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private DateTime date;
+
 	@ManyToOne
 	private Category category;
+
 	private String name;
 	private String description;
-//	private RepeatingDefinition repeatingDefinition;
+
+	@ManyToMany(cascade = CascadeType.ALL)
+	private List<Tag> tags;
+	//	private RepeatingDefinition repeatingDefinition;
 
 	public Payment()
 	{
@@ -84,15 +92,15 @@ public class Payment
 		this.description = description;
 	}
 
-//	public RepeatingDefinition getRepeatingDefinition()
-//	{
-//		return repeatingDefinition;
-//	}
-//
-//	public void setRepeatingDefinition(RepeatingDefinition repeatingDefinition)
-//	{
-//		this.repeatingDefinition = repeatingDefinition;
-//	}
+	public List<Tag> getTags()
+	{
+		return tags;
+	}
+
+	public void setTags(List<Tag> tags)
+	{
+		this.tags = tags;
+	}
 
 	@Override
 	public String toString()
@@ -100,11 +108,11 @@ public class Payment
 		return "Payment{" +
 				"ID=" + ID +
 				", amount=" + amount +
-				", date='" + date + '\'' +
+				", date=" + date +
 				", category=" + category +
 				", name='" + name + '\'' +
 				", description='" + description + '\'' +
-//				", repeatingDefinition=" + repeatingDefinition +
+				", tags=" + tags +
 				'}';
 	}
 }
