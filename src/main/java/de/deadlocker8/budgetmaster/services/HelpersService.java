@@ -49,6 +49,11 @@ public class HelpersService
 		return date.toString(DateTimeFormat.forPattern("dd.MM.yy").withLocale(settingsRepository.findOne(0).getLanguage().getLocale()));
 	}
 
+	public String getLongDateString(DateTime date)
+	{
+		return date.toString(DateTimeFormat.forPattern("dd.MM.yyyy").withLocale(settingsRepository.findOne(0).getLanguage().getLocale()));
+	}
+
 	public String getDateStringWithMonthAndYear(DateTime date)
 	{
 		return date.toString(DateTimeFormat.forPattern("MMMM yyyy").withLocale(settingsRepository.findOne(0).getLanguage().getLocale()));

@@ -39,13 +39,14 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
-                                <input id="payment-amount" type="text" name="amount" <@validation.validation "amount"/> value="<#if payment.getAmount()??>${payment.getAmount()}</#if>">
+                                <input id="payment-amount" type="text" <@validation.validation "amount"/> value="<#if payment.getAmount()??>${payment.getAmount()}</#if>">
                                 <label for="payment-amount">${locale.getString("payment.new.label.amount")}</label>
                             </div>
+                            <input type="hidden" id="hidden-payment-amount" name="amount" value="<#if payment.getAmount()??>${payment.getAmount()}</#if>">
                         </div>
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
-                                <select id="payment-amount" name="category" <@validation.validation "category"/>>
+                                <select id="payment-category" name="category" <@validation.validation "category"/>>
                                     <#list categories as category>
                                         <#if payment.getCategory()??>
                                             <option selected value="${category.getID()}">${category.getName()}</option>
@@ -58,12 +59,12 @@
                                         </#if>
                                     </#list>
                                 </select>
-                                <label for="payment-amount">${locale.getString("payment.new.label.category")}</label>
+                                <label for="payment-category">${locale.getString("payment.new.label.category")}</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
-                                <input id="payment-datepicker" type="text" class="datepicker" name="date" value="<#if payment.getDate()??>${helpers.getDateString(payment.getDate())}<#else>${helpers.getDateString(currentDate)}</#if>">
+                                <input id="payment-datepicker" type="text" class="datepicker" name="date" value="<#if payment.getDate()??>${helpers.getLongDateString(payment.getDate())}<#else>${helpers.getLongDateString(currentDate)}</#if>">
                                 <label for="payment-datepicker">${locale.getString("payment.new.label.date")}</label>
                             </div>
                         </div>
@@ -104,8 +105,11 @@
             </div>
         </main>
 
+
+        <!-- Pass localization to JS -->
         <#import "../datePicker.ftl" as datePicker>
         <@datePicker.datePickerLocalization/>
+        <script>amountValidationMessage = "${locale.getString("warning.payment.amount")}";</script>
 
         <!-- Scripts-->
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>

@@ -93,11 +93,11 @@ public class PaymentController extends BaseController
 	}
 
 	@RequestMapping(value = "/payments/newPayment", method = RequestMethod.POST)
-	public String post(Model model, @ModelAttribute("NewPayment") Payment payment, BindingResult bindingResult)
+	public String post(Model model, @ModelAttribute("NewPayment") Payment payment, BindingResult bindingResult, @RequestParam(value = "isPayment", required = false) boolean isPayment)
 	{
 		PaymentValidator userValidator = new PaymentValidator();
 		userValidator.validate(payment, bindingResult);
-
+		
 		if(bindingResult.hasErrors())
 		{
 			model.addAttribute("error", bindingResult);
@@ -107,6 +107,14 @@ public class PaymentController extends BaseController
 		}
 		else
 		{
+			if(isPayment)
+			{
+				payment.setAmount(-Math.abs(payment.getAmount()));
+			}
+			else
+			{
+				payment.setAmount(Math.abs(payment.getAmount()));
+			}
 			paymentRepository.save(payment);
 		}
 
