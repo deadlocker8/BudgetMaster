@@ -60,7 +60,7 @@
                 <ul>
 </#macro>
 
-<#macro subListEnd >
+<#macro subListEnd>
                 </ul>
             </div>
         </li>

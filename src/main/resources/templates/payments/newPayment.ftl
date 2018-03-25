@@ -19,6 +19,8 @@
                     <#import "../validation.ftl" as validation>
                     <form name="NewPayment" action="/payments/newPayment" method="post" onsubmit="return validateForm()">
                         <input type="hidden" name="ID" value="<#if payment.getID()??>${payment.getID()}</#if>">
+
+                        <#-- isPayment switch -->
                         <div class="row">
                             <div class="s12 m12 l8 offset-l2 center-align">
                                 <div class="switch">
@@ -31,12 +33,16 @@
                                 </div>
                             </div>
                         </div>
+
+                        <#-- name -->
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
                                 <input id="payment-name" type="text" name="name" <@validation.validation "name"/> value="<#if payment.getName()??>${payment.getName()}</#if>">
                                 <label for="payment-name">${locale.getString("payment.new.label.name")}</label>
                             </div>
                         </div>
+
+                        <#-- amount -->
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
                                 <input id="payment-amount" type="text" <@validation.validation "amount"/> value="<#if payment.getAmount()??>${payment.getAmount()}</#if>">
@@ -44,6 +50,8 @@
                             </div>
                             <input type="hidden" id="hidden-payment-amount" name="amount" value="<#if payment.getAmount()??>${payment.getAmount()}</#if>">
                         </div>
+
+                        <#-- category -->
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
                                 <select id="payment-category" name="category" <@validation.validation "category"/>>
@@ -63,18 +71,24 @@
                             </div>
                             <div id="hidden-payment-tags"></div>
                         </div>
+
+                        <#-- date -->
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
                                 <input id="payment-datepicker" type="text" class="datepicker" name="date" value="<#if payment.getDate()??>${helpers.getLongDateString(payment.getDate())}<#else>${helpers.getLongDateString(currentDate)}</#if>">
                                 <label for="payment-datepicker">${locale.getString("payment.new.label.date")}</label>
                             </div>
                         </div>
+
+                        <#-- description -->
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
                                 <textarea id="payment-description" class="materialize-textarea" name="description" <@validation.validation "description"/>><#if payment.getDescription()??>${payment.getDescription()}</#if></textarea>
                                 <label for="payment-description">${locale.getString("payment.new.label.description")}</label>
                             </div>
                         </div>
+
+                        <#-- tags -->
                         <div class="row">
                             <div class="col s12 m12 l8 offset-l2">
                                 <label class="chips-label" for="payment-chips">${locale.getString("payment.new.label.tags")}</label>
@@ -91,6 +105,8 @@
                             </div>
                         </div>
                         <br>
+
+                        <#-- buttons -->
                         <div class="row hide-on-small-only">
                             <div class="col m6 l4 offset-l2 right-align">
                                 <a href="/payments" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>

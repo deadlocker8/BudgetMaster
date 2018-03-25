@@ -21,12 +21,16 @@
                     <#import "../validation.ftl" as validation>
                     <form name="NewCategory" action="/categories/newCategory" method="post">
                         <input type="hidden" name="ID" value="<#if category.getID()??>${category.getID()}</#if>">
+
+                        <#-- name -->
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
                                 <input id="category-name" type="text" name="name" <@validation.validation "name"/> value="<#if category.getName()??>${category.getName()}</#if>">
                                 <label for="category-name">${locale.getString("category.new.label.name")}</label>
                             </div>
                         </div>
+
+                        <#-- color -->
                         <input type="hidden" name="color" id="categoryColor" value="${category.getColor()}">
                         <#list categoryColors as color>
                             <#if color?counter == 1 || color?counter == 7 || color?counter == 13>
@@ -51,8 +55,9 @@
                                 </div>
                             </div>
                         </div>
-
                         <br>
+
+                        <#-- buttons -->
                         <div class="row hide-on-small-only">
                             <div class="col m6 l4 offset-l2 right-align">
                                 <a href="/categories" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
