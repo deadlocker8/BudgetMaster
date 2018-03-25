@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.services;
 
+import de.deadlocker8.budgetmaster.entities.Settings;
 import de.deadlocker8.budgetmaster.entities.Tag;
 import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
 import de.deadlocker8.budgetmaster.repositories.TagRepository;
@@ -15,13 +16,14 @@ import tools.Localization;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class HelpersService
 {
-	private final DecimalFormat NUMBER_FORMAT = new DecimalFormat("0.00");
 	@Autowired
 	private SettingsRepository settingsRepository;
 
@@ -30,12 +32,16 @@ public class HelpersService
 	
 	public String getCurrencyString(int amount)
 	{
-		return String.valueOf(NUMBER_FORMAT.format(amount / 100.0).replace(".", ",")) + " " + settingsRepository.findOne(0).getCurrency();
+		return getCurrencyString(amount/100.0);
 	}
 
 	public String getCurrencyString(double amount)
 	{
-		return String.valueOf(NUMBER_FORMAT.format(amount).replace(".", ",")) + " " + settingsRepository.findOne(0).getCurrency();
+		Settings settings = settingsRepository.findOne(0);
+		NumberFormat format = NumberFormat.getNumberInstance(settings.getLanguage().getLocale());
+		format.setMaximumFractionDigits(2);
+		format.setMinimumFractionDigits(2);
+		return String.valueOf(format.format(amount)) + " " + settingsRepository.findOne(0).getCurrency();
 	}
 	
 	public String getURLEncodedString(String input)
