@@ -111,6 +111,28 @@ main {
     box-shadow: 0 1px 0 0 #CCCCCC !important;
 }
 
+/* label focus color */
+.input-field textarea:focus + label {
+    color: #2E79B9 !important;
+}
+
+/* label underline focus color */
+.input-field textarea:focus {
+    border-bottom: 1px solid #2E79B9 !important;
+    box-shadow: 0 1px 0 0 #CCCCCC !important;
+}
+
+/* label focus color */
+.chips-label.active {
+    color: #2E79B9 !important;
+}
+
+/* label chips underline focus color */
+.chips.focus {
+    border-bottom: 1px solid #2E79B9 !important;
+    box-shadow: 0 1px 0 0 #CCCCCC !important;
+}
+
 .main-card {
     margin: auto;
     width: 95%;
@@ -264,6 +286,15 @@ ul.dropdown-content.select-dropdown li.selected {
 
 .switch label input[type="checkbox"]:checked + .lever::after {
     background-color: #2E79B9;
+}
+
+/* chips autocomplete dropdown */
+.autocomplete-content li span{
+    color: #2E79B9;
+}
+
+.autocomplete-content li:hover {
+    background-color: rgba(0, 0, 0, 0.15);
 }
 
 .hidden {

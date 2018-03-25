@@ -17,7 +17,7 @@
                 </div>
                 <div class="container">
                     <#import "../validation.ftl" as validation>
-                    <form name="NewPayment" action="/payments/newPayment" method="post">
+                    <form name="NewPayment" action="/payments/newPayment" method="post" onsubmit="return validateForm()">
                         <input type="hidden" name="ID" value="<#if payment.getID()??>${payment.getID()}</#if>">
                         <div class="row">
                             <div class="s12 m12 l8 offset-l2 center-align">
@@ -61,6 +61,7 @@
                                 </select>
                                 <label for="payment-category">${locale.getString("payment.new.label.category")}</label>
                             </div>
+                            <div id="hidden-payment-tags"></div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
@@ -72,6 +73,21 @@
                             <div class="input-field col s12 m12 l8 offset-l2">
                                 <textarea id="payment-description" class="materialize-textarea" name="description" <@validation.validation "description"/>><#if payment.getDescription()??>${payment.getDescription()}</#if></textarea>
                                 <label for="payment-description">${locale.getString("payment.new.label.description")}</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m12 l8 offset-l2">
+                                <label class="chips-label" for="payment-chips">${locale.getString("payment.new.label.tags")}</label>
+                                <div id="payment-chips" class="chips chips-placeholder chips-autocomplete">
+                                    <#if payment.getTags()??>
+                                        <#list payment.getTags() as tag>
+                                            <div class="chip">
+                                                ${tag.getName()}
+                                                <i class="close material-icons">close</i>
+                                            </div>
+                                        </#list>
+                                    </#if>
+                                </div>
                             </div>
                         </div>
                         <br>
@@ -109,7 +125,19 @@
         <!-- Pass localization to JS -->
         <#import "../datePicker.ftl" as datePicker>
         <@datePicker.datePickerLocalization/>
-        <script>amountValidationMessage = "${locale.getString("warning.payment.amount")}";</script>
+        <script>
+            amountValidationMessage = "${locale.getString("warning.payment.amount")}";
+            tagsPlaceholder = "${locale.getString("tagfield.placeholder")}";
+        </script>
+
+        <!-- Tag autocomplete -->
+        <script>
+            tagAutoComplete = {
+                <#list helpers.getAllTags() as tag>
+                    '${tag.getName()}': null,
+                </#list>
+            }
+        </script>
 
         <!-- Scripts-->
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>

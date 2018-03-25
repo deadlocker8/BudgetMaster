@@ -40,6 +40,27 @@ $( document ).ready(function() {
             validateAmount($(this).val());
         });
     }
+
+    if($(".chips-autocomplete").length)
+    {
+        $('.chips-autocomplete').material_chip({
+            autocompleteOptions: {
+                data: tagAutoComplete,
+                limit: Infinity,
+                minLength: 1
+            },
+            placeholder: tagsPlaceholder
+        });
+    }
+
+    // prevent form submit on enter (otherwise tag functionality will be hard to use)
+    $(document).on("keypress", 'form', function (e) {
+        var code = e.keyCode || e.which;
+        if (code === 13) {
+            e.preventDefault();
+            return false;
+        }
+    });
 });
 
 AMOUNT_REGEX = new RegExp("^-?\\d+(,\\d+)?(\\.\\d+)?$");
@@ -71,4 +92,20 @@ function validateAmount(text)
         var amount = parseInt(parseFloat(text.replace(",", ".")) * 100);
         document.getElementById("hidden-payment-amount").value = amount;
     }
+}
+
+function validateForm()
+{
+    var tags = $('.chips-autocomplete').material_chip('data');
+    var parent = document.getElementById("hidden-payment-tags");
+    for(var i = 0; i < tags.length; i++)
+    {
+        var input = document.createElement("input");
+        input.setAttribute("type", "hidden");
+        input.setAttribute("name", "tags[" + i + "].name");
+        input.setAttribute("value", tags[i].tag);
+        parent.appendChild(input);
+    }
+
+    return true;
 }

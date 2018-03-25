@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -97,7 +98,7 @@ public class PaymentController extends BaseController
 	{
 		PaymentValidator userValidator = new PaymentValidator();
 		userValidator.validate(payment, bindingResult);
-		
+
 		if(bindingResult.hasErrors())
 		{
 			model.addAttribute("error", bindingResult);
@@ -115,6 +116,17 @@ public class PaymentController extends BaseController
 			{
 				payment.setAmount(Math.abs(payment.getAmount()));
 			}
+
+			List<Tag> tags = payment.getTags();
+			if(tags != null)
+			{
+				payment.setTags(new ArrayList<>());
+				for(Tag currentTag : tags)
+				{
+					addTagToPayment(currentTag.getName(), payment);
+				}
+			}
+
 			paymentRepository.save(payment);
 		}
 

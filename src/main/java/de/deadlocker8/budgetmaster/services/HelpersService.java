@@ -1,6 +1,8 @@
 package de.deadlocker8.budgetmaster.services;
 
+import de.deadlocker8.budgetmaster.entities.Tag;
 import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
+import de.deadlocker8.budgetmaster.repositories.TagRepository;
 import de.deadlocker8.budgetmaster.utils.Colors;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import org.joda.time.DateTime;
@@ -14,6 +16,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class HelpersService
@@ -21,6 +24,9 @@ public class HelpersService
 	private final DecimalFormat NUMBER_FORMAT = new DecimalFormat("0.00");
 	@Autowired
 	private SettingsRepository settingsRepository;
+
+	@Autowired
+	private TagRepository tagRepository;
 	
 	public String getCurrencyString(int amount)
 	{
@@ -134,5 +140,10 @@ public class HelpersService
 		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_DARK_GREEN).toLowerCase());
 
 		return categoryColors;
+	}
+
+	public List<Tag> getAllTags()
+	{
+		return tagRepository.findAllByOrderByNameAsc();
 	}
 }
