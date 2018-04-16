@@ -168,10 +168,6 @@ main {
     margin: 0 0 0 32px !important;
 }
 
-.account-select-padding {
-    padding: 0 32px;
-}
-
 .no-padding {
     padding: 0;
 }
@@ -303,6 +299,14 @@ ul.dropdown-content.select-dropdown li.selected {
 
 .autocomplete-content li:hover {
     background-color: rgba(0, 0, 0, 0.15);
+}
+
+.account-budget {
+    font-size: 20px !important;
+}
+
+.account-navbar {
+    padding: 5px 32px 12px 32px;
 }
 
 .hidden {

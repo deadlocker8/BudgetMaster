@@ -39,12 +39,21 @@
 </#macro>
 
 <#macro itemAccountSelect>
-<div class="input-field account-select-padding">
-    <select id="selectAccount">
-        <#list helpers.getAllAccounts() as account>
-            <option <#if account.isSelected()>selected</#if> value="${account.getName()}">${account.getName()}</option>
-        </#list>
-    </select>
+<div class="account-navbar center-align">
+    <div class="input-field no-margin">
+        <select id="selectAccount">
+            <#list helpers.getAllAccounts() as account>
+                <option <#if account.isSelected()>selected</#if> value="${account.getName()}">${account.getName()}</option>
+            </#list>
+        </select>
+    </div>
+    <#-- TODO: get account budget with rest -->
+    <#assign accountBudget = -235112/>
+    <#if  accountBudget < 0>
+        <div class="account-budget text-red">${helpers.getCurrencyString(accountBudget)}</div>
+    <#else>
+        <div class="account-budget text-dark-green">${helpers.getCurrencyString(accountBudget)}</div>
+    </#if>
 </div>
 </#macro>
 
@@ -57,7 +66,7 @@
         <li class="active"><a href="${link}" class="waves-effect no-padding"><div class="stripe ${activeColor}"></div><i class="material-icons">${icon}</i>${text}</a></li>
     <#else>
         <li><a href="${link}" class="waves-effect"><i class="material-icons">${icon}</i>${text}</a></li>
-    </#if>
+</#if>
 </#macro>
 
 <#macro subListStart ID text icon activeColor activeID>
