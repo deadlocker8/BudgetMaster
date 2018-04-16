@@ -1,6 +1,4 @@
 $(document).ready(function () {
-    $('select').material_select();
-
     $("#buttonChooseDate").click(function () {
         var month = $("#selectMonth").val();
         var year = $("#selectYear").val();

@@ -34,6 +34,10 @@ main {
     background-color: #5cb85c;
 }
 
+.budgetmaster-dark-green {
+    background-color: #468C46;
+}
+
 .budgetmaster-red {
     background-color: #D82C29;
 }
@@ -162,6 +166,10 @@ main {
 
 .nav-margin {
     margin: 0 0 0 32px !important;
+}
+
+.account-select-padding {
+    padding: 0 32px;
 }
 
 .no-padding {

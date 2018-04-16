@@ -11,4 +11,6 @@ public interface AccountRepository extends JpaRepository<Account, Integer>
 	List<Account> findAllByOrderByNameAsc();
 
 	Account findByName(String name);
+
+	Account findByIsSelected(boolean isSelected);
 }

@@ -19,9 +19,12 @@ public class Account
 	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
 	private List<Payment> referringPayments;
 
+	private boolean isSelected;
+
 	public Account(String name)
 	{
 		this.name = name;
+		this.isSelected = false;
 	}
 
 	public Account()
@@ -58,6 +61,16 @@ public class Account
 		this.referringPayments = referringPayments;
 	}
 
+	public boolean isSelected()
+	{
+		return isSelected;
+	}
+
+	public void setSelected(boolean selected)
+	{
+		isSelected = selected;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -65,6 +78,7 @@ public class Account
 				"ID=" + ID +
 				", name='" + name + '\'' +
 				", referringPayments=" + referringPayments +
+				", isSelected=" + isSelected +
 				'}';
 	}
 }

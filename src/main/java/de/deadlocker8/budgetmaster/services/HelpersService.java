@@ -1,7 +1,9 @@
 package de.deadlocker8.budgetmaster.services;
 
+import de.deadlocker8.budgetmaster.entities.Account;
 import de.deadlocker8.budgetmaster.entities.Settings;
 import de.deadlocker8.budgetmaster.entities.Tag;
+import de.deadlocker8.budgetmaster.repositories.AccountRepository;
 import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
 import de.deadlocker8.budgetmaster.repositories.TagRepository;
 import de.deadlocker8.budgetmaster.utils.Colors;
@@ -29,10 +31,13 @@ public class HelpersService
 
 	@Autowired
 	private TagRepository tagRepository;
-	
+
+	@Autowired
+	private AccountRepository accountRepository;
+
 	public String getCurrencyString(int amount)
 	{
-		return getCurrencyString(amount/100.0);
+		return getCurrencyString(amount / 100.0);
 	}
 
 	public String getCurrencyString(double amount)
@@ -43,7 +48,7 @@ public class HelpersService
 		format.setMinimumFractionDigits(2);
 		return String.valueOf(format.format(amount)) + " " + settingsRepository.findOne(0).getCurrency();
 	}
-	
+
 	public String getURLEncodedString(String input)
 	{
 		try
@@ -111,9 +116,10 @@ public class HelpersService
 		}
 		return years;
 	}
-	
+
 	/**
 	 * Replaces line breaks and tabs with spaces
+	 *
 	 * @param text
 	 * @return String
 	 */
@@ -151,5 +157,15 @@ public class HelpersService
 	public List<Tag> getAllTags()
 	{
 		return tagRepository.findAllByOrderByNameAsc();
+	}
+
+	public List<Account> getAllAccounts()
+	{
+		return accountRepository.findAllByOrderByNameAsc();
+	}
+
+	public Account getCurrentAccount()
+	{
+		return accountRepository.findByIsSelected(true);
 	}
 }
