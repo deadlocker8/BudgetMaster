@@ -19,6 +19,9 @@ public class Payment
 	private DateTime date;
 
 	@ManyToOne
+	private Account account;
+
+	@ManyToOne
 	private Category category;
 
 	private String name;
@@ -60,6 +63,16 @@ public class Payment
 	public void setDate(DateTime date)
 	{
 		this.date = date;
+	}
+
+	public Account getAccount()
+	{
+		return account;
+	}
+
+	public void setAccount(Account account)
+	{
+		this.account = account;
 	}
 
 	public Category getCategory()
@@ -109,6 +122,7 @@ public class Payment
 				"ID=" + ID +
 				", amount=" + amount +
 				", date=" + date +
+				", account=" + account +
 				", category=" + category +
 				", name='" + name + '\'' +
 				", description='" + description + '\'' +
