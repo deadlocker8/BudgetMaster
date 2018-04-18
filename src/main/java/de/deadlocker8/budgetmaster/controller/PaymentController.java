@@ -47,8 +47,8 @@ public class PaymentController extends BaseController
 		List<Payment> payments = getPaymentsForMonthAndYear(date.getMonthOfYear(), date.getYear());
 
 		model.addAttribute("payments", payments);
-		model.addAttribute("incomeSum", getIncomeSum(payments));
-		model.addAttribute("paymentSum", getPaymentSum(payments));
+		model.addAttribute("incomeSum", helpers.getIncomeSumForPaymentList(payments));
+		model.addAttribute("paymentSum", helpers.getPaymentSumForPaymentList(payments));
 		model.addAttribute("currentDate", date);
 		return "payments/payments";
 	}
@@ -64,8 +64,8 @@ public class PaymentController extends BaseController
 		DateTime date = getDateTimeFromCookie(cookieDate);
 		List<Payment> payments = getPaymentsForMonthAndYear(date.getMonthOfYear(), date.getYear());
 		model.addAttribute("payments", payments);
-		model.addAttribute("incomeSum", getIncomeSum(payments));
-		model.addAttribute("paymentSum", getPaymentSum(payments));
+		model.addAttribute("incomeSum", helpers.getIncomeSumForPaymentList(payments));
+		model.addAttribute("paymentSum", helpers.getPaymentSumForPaymentList(payments));
 		model.addAttribute("currentDate", date);
 		model.addAttribute("currentPayment", paymentRepository.getOne(ID));
 		return "payments/payments";
@@ -148,33 +148,7 @@ public class PaymentController extends BaseController
 	{
 		DateTime startDate = DateTime.now().withYear(year).withMonthOfYear(month).minusMonths(1).dayOfMonth().withMaximumValue();
 		DateTime endDate = DateTime.now().withYear(year).withMonthOfYear(month).dayOfMonth().withMaximumValue();
-		return paymentRepository.findAllByDateBetweenOrderByDateDesc(startDate, endDate);
-	}
-
-	private int getIncomeSum(List<Payment> payments)
-	{
-		int sum = 0;
-		for(Payment payment : payments)
-		{
-			if(payment.getAmount() > 0)
-			{
-				sum += payment.getAmount();
-			}
-		}
-		return sum;
-	}
-
-	private int getPaymentSum(List<Payment> payments)
-	{
-		int sum = 0;
-		for(Payment payment : payments)
-		{
-			if(payment.getAmount() < 0)
-			{
-				sum += payment.getAmount();
-			}
-		}
-		return sum;
+		return paymentRepository.findAllByAccountAndDateBetweenOrderByDateDesc(helpers.getCurrentAccount(), startDate, endDate);
 	}
 
 	private DateTime getDateTimeFromCookie(String cookieDate)

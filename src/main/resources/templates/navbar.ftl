@@ -47,9 +47,8 @@
             </#list>
         </select>
     </div>
-    <#-- TODO: get account budget with rest -->
-    <#assign accountBudget = -235112/>
-    <#if  accountBudget < 0>
+    <#assign accountBudget = helpers.getAccountBudget()/>
+    <#if accountBudget <= 0>
         <div class="account-budget text-red">${helpers.getCurrencyString(accountBudget)}</div>
     <#else>
         <div class="account-budget text-dark-green">${helpers.getCurrencyString(accountBudget)}</div>

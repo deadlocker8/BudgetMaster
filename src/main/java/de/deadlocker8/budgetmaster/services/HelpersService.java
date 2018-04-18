@@ -1,9 +1,11 @@
 package de.deadlocker8.budgetmaster.services;
 
 import de.deadlocker8.budgetmaster.entities.Account;
+import de.deadlocker8.budgetmaster.entities.Payment;
 import de.deadlocker8.budgetmaster.entities.Settings;
 import de.deadlocker8.budgetmaster.entities.Tag;
 import de.deadlocker8.budgetmaster.repositories.AccountRepository;
+import de.deadlocker8.budgetmaster.repositories.PaymentRepository;
 import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
 import de.deadlocker8.budgetmaster.repositories.TagRepository;
 import de.deadlocker8.budgetmaster.utils.Colors;
@@ -34,6 +36,9 @@ public class HelpersService
 
 	@Autowired
 	private AccountRepository accountRepository;
+
+	@Autowired
+	private PaymentRepository paymentRepository;
 
 	public String getCurrencyString(int amount)
 	{
@@ -167,5 +172,44 @@ public class HelpersService
 	public Account getCurrentAccount()
 	{
 		return accountRepository.findByIsSelected(true);
+	}
+
+	public int getIncomeSumForPaymentList(List<Payment> payments)
+	{
+		int sum = 0;
+		for(Payment payment : payments)
+
+		{
+			if(payment.getAmount() > 0)
+			{
+				sum += payment.getAmount();
+			}
+		}
+		return sum;
+	}
+
+	public int getPaymentSumForPaymentList(List<Payment> payments)
+	{
+		int sum = 0;
+		for(Payment payment : payments)
+		{
+			if(payment.getAmount() < 0)
+			{
+				sum += payment.getAmount();
+			}
+		}
+		return sum;
+	}
+
+	public int getAccountBudget()
+	{
+		List<Payment> payments = paymentRepository.findAllByAccount(getCurrentAccount());
+		int sum = 0;
+		for(Payment payment : payments)
+		{
+			sum += payment.getAmount();
+		}
+
+		return sum;
 	}
 }
