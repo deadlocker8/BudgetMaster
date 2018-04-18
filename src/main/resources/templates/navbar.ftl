@@ -43,7 +43,7 @@
     <div class="input-field no-margin">
         <select id="selectAccount">
             <#list helpers.getAllAccounts() as account>
-                <option <#if account.isSelected()>selected</#if> value="${account.getName()}">${account.getName()}</option>
+                <option <#if account.isSelected()>selected</#if> value="${account.getID()}">${account.getName()}</option>
             </#list>
         </select>
     </div>

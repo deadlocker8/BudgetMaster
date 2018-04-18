@@ -6,6 +6,12 @@ $( document ).ready(function() {
     $('.modal').modal();
 
     $('select').material_select();
+
+    $("#selectAccount").on('change', function()
+    {
+        var accountID = $(this).val();
+        window.location = "/account/" + accountID + "/select";
+    });
 });
 
 function addClass(element, className)
