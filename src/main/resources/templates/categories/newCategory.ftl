@@ -1,7 +1,7 @@
 <html>
     <head>
         <#import "../header.ftl" as header>
-        <@header.header/>
+        <@header.header "BudgetMaster"/>
         <link type="text/css" rel="stylesheet" href="/css/spectrum.css"/>
         <link type="text/css" rel="stylesheet" href="/css/categories.css"/>
         <#assign locale = static["tools.Localization"]>
@@ -89,9 +89,8 @@
         </main>
 
         <!-- Scripts-->
-        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-        <script src="/js/main.js"></script>
+        <#import "../scripts.ftl" as scripts>
+        <@scripts.scripts/>
         <script src="/js/spectrum.js"></script>
         <script src="/js/categories.js"></script>
     </body>

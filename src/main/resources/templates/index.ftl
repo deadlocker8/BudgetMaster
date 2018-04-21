@@ -1,7 +1,7 @@
 <html>
     <head>
         <#import "header.ftl" as header>
-        <@header.header/>
+        <@header.header "BudgetMaster"/>
     </head>
     <body class="budgetmaster-blue-light">
         <#import "navbar.ftl" as navbar>
@@ -55,9 +55,8 @@
         </main>
 
         <!--  Scripts-->
-        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-        <script src="/js/main.js"></script>
+        <#import "scripts.ftl" as scripts>
+        <@scripts.scripts/>
         <script src="/js/datePicker.js"></script>
     </body>
 </html>

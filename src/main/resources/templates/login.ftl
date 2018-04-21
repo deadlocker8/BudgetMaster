@@ -1,7 +1,7 @@
 <html>
     <head>
         <#import "header.ftl" as header>
-        <@header.header/>
+        <@header.header "BudgetMaster"/>
         <link type="text/css" rel="stylesheet" href="/css/login.css"/>
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -30,9 +30,8 @@
             </div>
         </main>
 
-    <!--  Scripts-->
-    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-    <script src="/js/main.js"></script>
+        <!--  Scripts-->
+        <#import "scripts.ftl" as scripts>
+        <@scripts.scripts/>
     </body>
 </html>

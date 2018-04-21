@@ -1,13 +1,8 @@
 <html>
     <head>
-        <title>BudgetMaster - 500</title>
-        <meta charset="UTF-8"/>
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.css">
-        <link type="text/css" rel="stylesheet" href="/css/style.css"/>
+        <#import "../header.ftl" as header>
+        <@header.header "BudgetMaster - 500"/>
         <link type="text/css" rel="stylesheet" href="/css/login.css"/>
-
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <#assign locale = static["tools.Localization"]>
     </head>
     <body class="budgetmaster-blue-light">
@@ -34,9 +29,8 @@
             </div>
         </main>
 
-    <!--  Scripts-->
-    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-    <script src="/js/main.js"></script>
+        <!--  Scripts-->
+        <#import "../scripts.ftl" as scripts>
+        <@scripts.scripts/>
     </body>
 </html>
