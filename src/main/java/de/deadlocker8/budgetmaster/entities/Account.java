@@ -14,6 +14,7 @@ public class Account
 
 	@NotNull
 	@Size(min = 1)
+	@Column(unique=true)
 	private String name;
 
 	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
