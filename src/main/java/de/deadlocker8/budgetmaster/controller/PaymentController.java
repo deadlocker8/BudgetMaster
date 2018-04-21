@@ -4,10 +4,7 @@ import de.deadlocker8.budgetmaster.entities.CategoryType;
 import de.deadlocker8.budgetmaster.entities.Payment;
 import de.deadlocker8.budgetmaster.entities.Settings;
 import de.deadlocker8.budgetmaster.entities.Tag;
-import de.deadlocker8.budgetmaster.repositories.CategoryRepository;
-import de.deadlocker8.budgetmaster.repositories.PaymentRepository;
-import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
-import de.deadlocker8.budgetmaster.repositories.TagRepository;
+import de.deadlocker8.budgetmaster.repositories.*;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.validators.PaymentValidator;
 import org.joda.time.DateTime;
@@ -30,6 +27,9 @@ public class PaymentController extends BaseController
 
 	@Autowired
 	private CategoryRepository categoryRepository;
+
+	@Autowired
+	private AccountRepository accountRepository;
 
 	@Autowired
 	private SettingsRepository settingsRepository;
@@ -89,6 +89,7 @@ public class PaymentController extends BaseController
 		Payment emptyPayment = new Payment();
 		model.addAttribute("currentDate", date);
 		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
+		model.addAttribute("accounts", accountRepository.findAllByOrderByNameAsc());
 		model.addAttribute("payment", emptyPayment);
 		return "payments/newPayment";
 	}
@@ -103,6 +104,7 @@ public class PaymentController extends BaseController
 		{
 			model.addAttribute("error", bindingResult);
 			model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
+			model.addAttribute("accounts", accountRepository.findAllByOrderByNameAsc());
 			model.addAttribute("payment", payment);
 			return "payments/newPayment";
 		}

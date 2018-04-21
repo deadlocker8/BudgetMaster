@@ -56,7 +56,7 @@
                             <div class="input-field col s12 m12 l8 offset-l2">
                                 <select id="payment-category" name="category" <@validation.validation "category"/>>
                                     <#list categories as category>
-                                        <#if payment.getCategory()??>
+                                        <#if payment.getCategory()?? && payment.getCategory() == category>
                                             <option selected value="${category.getID()}">${category.getName()}</option>
                                         <#else>
                                             <#if category.getType() == "NONE">
@@ -103,6 +103,27 @@
                                     </#if>
                                 </div>
                             </div>
+                        </div>
+
+                        <#-- account -->
+                        <div class="row">
+                            <div class="input-field col s12 m12 l8 offset-l2">
+                                <select id="payment-account" name="account" <@validation.validation "account"/>>
+                                    <#list accounts as account>
+                                        <#if payment.getAccount()?? && payment.getAccount() == account>
+                                            <option selected value="${account.getID()}">${account.getName()}</option>
+                                        <#else>
+                                            <#if account == helpers.getCurrentAccount()>
+                                                <option selected value="${account.getID()}">${account.getName()}</option>
+                                            <#else>
+                                                <option value="${account.getID()}">${account.getName()}</option>
+                                            </#if>
+                                        </#if>
+                                    </#list>
+                                </select>
+                                <label for="payment-account">${locale.getString("payment.new.label.account")}</label>
+                            </div>
+                            <div id="hidden-payment-tags"></div>
                         </div>
                         <br>
 

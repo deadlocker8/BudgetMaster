@@ -122,7 +122,7 @@ public class Payment
 				"ID=" + ID +
 				", amount=" + amount +
 				", date=" + date +
-				", account=" + account +
+				", account=Account[ID=" + account.getID() + ", name=" + account.getName() + "]" +
 				", category=" + category +
 				", name='" + name + '\'' +
 				", description='" + description + '\'' +
