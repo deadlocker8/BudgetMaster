@@ -32,7 +32,7 @@ public class CategoryController extends BaseController
 	private HelpersService helpers;
 
 	@RequestMapping("/categories")
-	public String index(Model model)
+	public String categories(Model model)
 	{
 		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
 		return "categories/categories";

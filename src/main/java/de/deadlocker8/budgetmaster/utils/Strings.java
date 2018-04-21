@@ -107,6 +107,9 @@ public class Strings
     public static final String REPORT_PAYMENTS = "report.payments";
     public static final String REPORT_BUDGET_REST = "report.budget.rest";
 
+    //ACCOUNT
+    public static final String ACCOUNT_DEFAULT_NAME = "account.default.name";
+
     //WEEK_DAYS
     public static final String MONDAY ="monday";
     public static final String TUESDAY ="tuesday";
@@ -192,6 +195,7 @@ public class Strings
     public static final String WARNING_INTEGER_HEIGHT_IN_PIXELS = "warning.integer.height.in.pixels";
     public static final String WARNING_EMPTY_SAVEPATH_CHART = "warning.empty.savepath.chart";
     public static final String WARNING_EMPTY_CATEGORY_NAME = "warning.empty.category.name";
+    public static final String WARNING_EMPTY_ACCOUNT_NAME = "warning.empty.account.name";
     public static final String WARNING_EMPTY_CATEGORY_COLOR = "warning.empty.category.color";
     public static final String WARNING_EMPTY_PAYMENT_NAME = "warning.empty.payment.name";
     public static final String WARNING_NAME_CHARACTER_LIMIT_REACHED_45 = "warning.name.character.limit.reached.45";
