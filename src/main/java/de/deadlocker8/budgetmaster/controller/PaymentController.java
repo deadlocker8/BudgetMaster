@@ -6,6 +6,7 @@ import de.deadlocker8.budgetmaster.entities.Settings;
 import de.deadlocker8.budgetmaster.entities.Tag;
 import de.deadlocker8.budgetmaster.repositories.*;
 import de.deadlocker8.budgetmaster.services.HelpersService;
+import de.deadlocker8.budgetmaster.services.PaymentService;
 import de.deadlocker8.budgetmaster.validators.PaymentValidator;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -26,6 +27,9 @@ public class PaymentController extends BaseController
 	private PaymentRepository paymentRepository;
 
 	@Autowired
+	private PaymentService paymentService;
+
+	@Autowired
 	private CategoryRepository categoryRepository;
 
 	@Autowired
@@ -44,7 +48,7 @@ public class PaymentController extends BaseController
 	public String payments(Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
 	{
 		DateTime date = getDateTimeFromCookie(cookieDate);
-		List<Payment> payments = getPaymentsForMonthAndYear(date.getMonthOfYear(), date.getYear());
+		List<Payment> payments = paymentService.getPaymentsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear());
 
 		model.addAttribute("payments", payments);
 		model.addAttribute("incomeSum", helpers.getIncomeSumForPaymentList(payments));
@@ -62,7 +66,7 @@ public class PaymentController extends BaseController
 		}
 
 		DateTime date = getDateTimeFromCookie(cookieDate);
-		List<Payment> payments = getPaymentsForMonthAndYear(date.getMonthOfYear(), date.getYear());
+		List<Payment> payments = paymentService.getPaymentsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear());
 		model.addAttribute("payments", payments);
 		model.addAttribute("incomeSum", helpers.getIncomeSumForPaymentList(payments));
 		model.addAttribute("paymentSum", helpers.getPaymentSumForPaymentList(payments));
@@ -144,13 +148,6 @@ public class PaymentController extends BaseController
 	private Settings getSettings()
 	{
 		return settingsRepository.findOne(0);
-	}
-
-	private List<Payment> getPaymentsForMonthAndYear(int month, int year)
-	{
-		DateTime startDate = DateTime.now().withYear(year).withMonthOfYear(month).minusMonths(1).dayOfMonth().withMaximumValue();
-		DateTime endDate = DateTime.now().withYear(year).withMonthOfYear(month).dayOfMonth().withMaximumValue();
-		return paymentRepository.findAllByAccountAndDateBetweenOrderByDateDesc(helpers.getCurrentAccount(), startDate, endDate);
 	}
 
 	private DateTime getDateTimeFromCookie(String cookieDate)
