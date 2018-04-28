@@ -5,6 +5,7 @@
         <link type="text/css" rel="stylesheet" href="/css/login.css"/>
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <#assign locale = static["tools.Localization"]>
     </head>
     <body class="budgetmaster-blue-light">
         <main>
@@ -15,15 +16,22 @@
                             <span class="card-title">
                                 <div id="logo-container" class="center-align"><img id="logo" src="/images/Logo_with_text_medium_res.png"></div>
                             </span>
-                            <div class="row">
-                                <div class="input-field col s12">
-                                    <input id="password" type="password" class="validate">
-                                    <label for="password">Passwort</label>
+                            <form action="/login" method="post">
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input id="password" type="password" name="name">
+                                        <label for="password">${locale.getString("account.new.label.name")}</label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="right-align">
-                                <a class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons right">send</i>Login</a>
-                            </div>
+
+                                <div class="row">
+                                    <div class="col s12 right-align">
+                                        <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action">
+                                            <i class="material-icons left">send</i>${locale.getString("login.button")}
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
