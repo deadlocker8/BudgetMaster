@@ -2,6 +2,9 @@ package de.deadlocker8.budgetmaster.repeating.modifier;
 
 import org.joda.time.DateTime;
 
+import javax.persistence.Entity;
+
+@Entity
 public class RepeatingModifierYears extends RepeatingModifier
 {
 	public RepeatingModifierYears(int numberOfYears)
