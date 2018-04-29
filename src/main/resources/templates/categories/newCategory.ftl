@@ -20,6 +20,7 @@
                 <div class="container">
                     <#import "../validation.ftl" as validation>
                     <form name="NewCategory" action="/categories/newCategory" method="post">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="ID" value="<#if category.getID()??>${category.getID()}</#if>">
 
                         <#-- name -->

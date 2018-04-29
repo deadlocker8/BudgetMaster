@@ -18,6 +18,7 @@
                 <div class="container">
                     <#import "../validation.ftl" as validation>
                     <form name="NewAccount" action="/accounts/newAccount" method="post">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="ID" value="<#if account.getID()??>${account.getID()}</#if>">
 
                         <#-- name -->
