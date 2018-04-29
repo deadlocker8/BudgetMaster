@@ -309,6 +309,19 @@ ul.dropdown-content.select-dropdown li.selected {
     padding: 5px 32px 12px 32px;
 }
 
+.login-button {
+    text-transform: none;
+}
+
+.login-margin-top {
+    margin-top: 20px;
+}
+
+.login-message {
+    width: auto;
+    margin: auto
+}
+
 .hidden {
     display: none;
 }
