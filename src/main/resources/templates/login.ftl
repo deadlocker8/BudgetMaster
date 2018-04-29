@@ -17,10 +17,13 @@
                                 <div id="logo-container" class="center-align"><img id="logo" src="/images/Logo_with_text_medium_res.png"></div>
                             </span>
                             <form action="/login" method="post">
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                <input type="hidden" name="username" value="Default">
+
                                 <div class="row">
                                     <div class="input-field col s12">
-                                        <input id="password" type="password" name="name">
-                                        <label for="password">${locale.getString("account.new.label.name")}</label>
+                                        <input id="password" type="password" name="password">
+                                        <label for="password">${locale.getString("login.password")}</label>
                                     </div>
                                 </div>
 

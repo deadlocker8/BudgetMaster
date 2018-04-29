@@ -24,7 +24,7 @@ public class User
 	@Size(min = 1)
 	private String password;
 
-	@ManyToOne
+	@OneToOne
 	private Account selectedAccount;
 
 

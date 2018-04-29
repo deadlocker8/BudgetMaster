@@ -24,10 +24,19 @@
         <@itemWithIcon "about", "/about", locale.getString("menu.about"), "info", "budgetmaster-grey", activeID/>
 
         <@itemDivider/>
-        <@itemWithIcon "logout", "/logout", locale.getString("menu.logout") "lock", "budgetmaster-red", activeID/>
+        <@itemWithIcon "logout", "javascript:\" onclick=\"$('#logout-form').submit();\"", locale.getString("menu.logout") "lock", "budgetmaster-red", activeID/>
     </ul>
     <a href="#" data-activates="slide-out" id="mobile-menu" class="mobile-menu"><i class="material-icons left mobile-menu-icon">menu</i>Menü</a>
     <div class="hide-on-large-only"><br></div>
+
+    <#--logout form -->
+    <form class="hide" id="logout-form" action="/logout" method="post">
+        <#if _csrf??>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <input type="hidden" name="mess" value=<%=n%>
+        </#if>
+    </form>
+
 </#macro>
 
 <#macro itemLogo>

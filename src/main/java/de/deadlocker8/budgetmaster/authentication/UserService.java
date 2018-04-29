@@ -13,10 +13,10 @@ public class UserService
 	@Autowired
 	public UserService(UserRepository userRepository)
 	{
-		if(userRepository.findAll().size() == 0)
-		{
-			userRepository.save(new User("Default", "123"));
-			LOGGER.debug("Created default user");
-		}
+//		if(userRepository.findAll().size() == 0)
+//		{
+//			userRepository.save(new User("Default", "123"));
+//			LOGGER.debug("Created default user");
+//		}
 	}
 }

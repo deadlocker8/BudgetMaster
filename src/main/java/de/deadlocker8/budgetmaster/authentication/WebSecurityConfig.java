@@ -1,11 +1,15 @@
 package de.deadlocker8.budgetmaster.authentication;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 
@@ -15,11 +19,18 @@ import org.springframework.security.web.RedirectStrategy;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 {
 	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+	private final UserDetailsService userDetailsService;
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception
+	@Autowired
+	public WebSecurityConfig(UserDetailsService userDetailsService)
 	{
-		auth.inMemoryAuthentication().withUser("Default").password("1233").roles("USER");
+		this.userDetailsService = userDetailsService;
+	}
+
+	@Bean
+	public BCryptPasswordEncoder bCryptPasswordEncoder()
+	{
+		return new BCryptPasswordEncoder();
 	}
 
 	@Override
@@ -29,24 +40,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 			.and()
 
 			.authorizeRequests()
-			.antMatchers("/static/**").permitAll()
-			.antMatchers("/accounts/**").authenticated()
-			.antMatchers("/payments/**").authenticated()
-			.antMatchers("/charts/**").authenticated()
-			.antMatchers("/reports/**").authenticated()
-			.antMatchers("/categories/**").authenticated()
-			.antMatchers("/settings/**").authenticated()
-			.antMatchers("/about/**").authenticated()
+			.antMatchers("/css/**", "/js/**", "/font-awesome-5.0.10/**", "/images/**", "/jquery/**", "/materialize-0.100.2/**").permitAll()
+			.antMatchers("/**").authenticated()
+			.antMatchers("/login").permitAll()
 			.and()
 
 			.formLogin()
 			.loginPage("/login")
-			.successHandler((req, res, auth) -> redirectStrategy.sendRedirect(req, res, "/"))
-			.failureUrl("/login?error=true")
+			.successHandler((req, res, auth) -> {
+				String preLoginURL = req.getSession().getAttribute("preLoginURL").toString();
+				if(preLoginURL.contains("login"))
+				{
+					preLoginURL = "/";
+				}
+				redirectStrategy.sendRedirect(req, res, preLoginURL);
+			})
 			.permitAll()
 			.and()
 
 			.logout()
-				.permitAll();
+			.permitAll();
+	}
+
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
 	}
 }
