@@ -3,14 +3,26 @@ package de.deadlocker8.budgetmaster.repeating;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEnd;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifier;
 import org.joda.time.DateTime;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class RepeatingOption
 {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer ID;
+
+	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private DateTime startDate;
+
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private RepeatingModifier modifier;
+
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private RepeatingEnd endOption;
 
 	public RepeatingOption(DateTime startDate, RepeatingModifier modifier, RepeatingEnd endOption)
@@ -18,6 +30,16 @@ public class RepeatingOption
 		this.startDate = startDate;
 		this.modifier = modifier;
 		this.endOption = endOption;
+	}
+
+	public Integer getID()
+	{
+		return ID;
+	}
+
+	public void setID(Integer ID)
+	{
+		this.ID = ID;
 	}
 
 	public DateTime getStartDate()
@@ -56,7 +78,8 @@ public class RepeatingOption
 		dates.add(startDate);
 		while(!endOption.isEndReached(dates))
 		{
-			DateTime nextDate = modifier.getNextDate(dates.get(dates.size() - 1));
+			DateTime lastDate = dates.get(dates.size() - 1);
+			DateTime nextDate = modifier.getNextDate(lastDate);
 			if(nextDate.isAfter(dateFetchLimit))
 			{
 				return dates;

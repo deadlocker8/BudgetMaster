@@ -2,6 +2,7 @@
     <head>
         <#import "header.ftl" as header>
         <@header.header "BudgetMaster"/>
+        <#assign locale = static["tools.Localization"]>
     </head>
     <body class="budgetmaster-blue-light">
         <#import "navbar.ftl" as navbar>
@@ -17,37 +18,49 @@
                         <div class="col s12 m4">
                             <div class="icon-block">
                                 <h1 class="center text-green"><i class="material-icons icon-budget">file_download</i></h1>
-                                <h5 class="center budget">2350,15 €</h5>
-                                <h5 class="center grey-text text-darken-1 budget-headline">Einnahmen</h5>
+                                <h5 class="center budget">${helpers.getCurrencyString(incomeSum)}</h5>
+                                <h5 class="center grey-text text-darken-1 budget-headline">${locale.getString("title.incomes")}</h5>
                             </div>
                         </div>
                         <div class="col s12 m4">
                             <div class="icon-block">
                                 <h1 class="center text-red"><i class="material-icons icon-budget">file_upload</i></h1>
-                                <h5 class="center budget">-576,33 €</h5>
-                                <h5 class="center grey-text text-darken-1 budget-headline">Ausgaben</h5>
+                                <h5 class="center budget">${helpers.getCurrencyString(paymentSum)}</h5>
+                                <h5 class="center grey-text text-darken-1 budget-headline">${locale.getString("title.payments")}</h5>
                             </div>
                         </div>
                         <div class="col s12 m4">
                             <div class="icon-block">
-                                <h1 class="center budgetmaster-blue-text"><i class="material-icons icon-budget">account_balance</i></h1>
-                                <h5 class="center budget">1773,82 €</h5>
-                                <h5 class="center grey-text text-darken-1 budget-headline">Rest</h5>
+                                <h1 class="center budgetmaster-blue-text"><i class="fas fa-piggy-bank icon-budget"></i></h1>
+                                <h5 class="center budget">${helpers.getCurrencyString(rest)}</h5>
+                                <h5 class="center grey-text text-darken-1 budget-headline">${locale.getString("title.rest")}</h5>
                             </div>
                         </div>
                     </div>
                     <div class="hide-on-small-only"><br><br></div>
                     <div class="row">
+                        <#if incomeSum gt paymentSum?abs>
+                            <#assign fullPercentage = incomeSum>
+                        <#else>
+                            <#assign fullPercentage = paymentSum?abs>
+                        </#if>
+
                         <div class="col s12">
-                            <div class="budget-bar-container">
-                                <div class="budget-bar color-green" style="width: 100%"></div>
-                            </div>
-                            <div class="budget-bar-container">
-                                <div class="budget-bar color-red" style="width: 25%"></div>
-                            </div>
-                            <div class="budget-bar-container">
-                                <div class="budget-bar budgetmaster-blue" style="width: 75%"></div>
-                            </div>
+                            <#if fullPercentage gt 0>
+                                <div class="budget-bar-container">
+                                    <div class="budget-bar color-green" style="width: ${(100 / fullPercentage * incomeSum)?abs?c}%"></div>
+                                </div>
+                            </#if>
+                            <#if fullPercentage gt 0>
+                                <div class="budget-bar-container">
+                                    <div class="budget-bar color-red" style="width: ${(100 / fullPercentage * paymentSum)?abs?c}%"></div>
+                                </div>
+                            </#if>
+                            <#if rest gt 0>
+                                <div class="budget-bar-container">
+                                    <div class="budget-bar budgetmaster-blue" style="width: ${(100 / fullPercentage * rest)?abs?c}%"></div>
+                                </div>
+                            </#if>
                         </div>
                     </div>
                 </div>

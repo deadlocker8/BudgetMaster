@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.entities;
 
+import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -29,7 +30,9 @@ public class Payment
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	private List<Tag> tags;
-	//	private RepeatingDefinition repeatingDefinition;
+
+	@OneToOne(optional = true, cascade = CascadeType.ALL)
+	private RepeatingOption repeatingOption;
 
 	public Payment()
 	{
@@ -115,6 +118,16 @@ public class Payment
 		this.tags = tags;
 	}
 
+	public RepeatingOption getRepeatingOption()
+	{
+		return repeatingOption;
+	}
+
+	public void setRepeatingOption(RepeatingOption repeatingOption)
+	{
+		this.repeatingOption = repeatingOption;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -127,6 +140,7 @@ public class Payment
 				", name='" + name + '\'' +
 				", description='" + description + '\'' +
 				", tags=" + tags +
+				", repeatingOption=" + repeatingOption +
 				'}';
 	}
 }
