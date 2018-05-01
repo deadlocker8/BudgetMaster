@@ -45,8 +45,8 @@
                                 <td class="bold text-dark-green">${helpers.getCurrencyString(payment.amount)}</td>
                             </#if>
                             <td>
-                                <a href="/payments/${payment.ID}/edit" class="btn-flat no-padding"><i class="material-icons left">edit</i></a>
                                 <#if (payment.category.type.name() != "REST")>
+                                    <a href="/payments/${payment.ID}/edit" class="btn-flat no-padding"><i class="material-icons left">edit</i></a>
                                     <a href="/payments/${payment.ID}/requestDelete" class="btn-flat no-padding"><i class="material-icons left">delete</i></a>
                                 </#if>
                             </td>
