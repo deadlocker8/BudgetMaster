@@ -44,16 +44,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 			.antMatchers("/**").authenticated()
 			.antMatchers("/login").permitAll()
 			.and()
-
 			.formLogin()
 			.loginPage("/login")
 			.successHandler((req, res, auth) -> {
-				String preLoginURL = req.getSession().getAttribute("preLoginURL").toString();
-				if(preLoginURL.contains("login"))
+				Object preLoginURL = req.getSession().getAttribute("preLoginURL");
+				if(preLoginURL == null || preLoginURL.toString().contains("login"))
 				{
 					preLoginURL = "/";
 				}
-				redirectStrategy.sendRedirect(req, res, preLoginURL);
+				redirectStrategy.sendRedirect(req, res, preLoginURL.toString());
 			})
 			.permitAll()
 			.and()
