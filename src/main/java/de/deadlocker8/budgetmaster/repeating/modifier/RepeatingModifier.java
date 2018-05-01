@@ -15,10 +15,16 @@ public abstract class RepeatingModifier
 
 	Integer quantity;
 
-	RepeatingModifier(int quantity)
+	@Transient
+	private String localizationKey;
+
+	RepeatingModifier(int quantity, String localizationKey)
 	{
 		this.quantity = quantity;
+		this.localizationKey = localizationKey;
 	}
+
+	RepeatingModifier() {}
 
 	public Integer getID()
 	{
@@ -28,6 +34,26 @@ public abstract class RepeatingModifier
 	public void setID(Integer ID)
 	{
 		this.ID = ID;
+	}
+
+	public Integer getQuantity()
+	{
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity)
+	{
+		this.quantity = quantity;
+	}
+
+	public String getLocalizationKey()
+	{
+		return localizationKey;
+	}
+
+	public void setLocalizationKey(String localizationKey)
+	{
+		this.localizationKey = localizationKey;
 	}
 
 	@Transient

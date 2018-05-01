@@ -9,8 +9,10 @@ public class RepeatingModifierMonths extends RepeatingModifier
 {
 	public RepeatingModifierMonths(int numberOfmonths)
 	{
-		super(numberOfmonths);
+		super(numberOfmonths, "repeating.modifier.months");
 	}
+
+	public RepeatingModifierMonths() {}
 
 	@Override
 	public DateTime getNextDate(DateTime lastDate)

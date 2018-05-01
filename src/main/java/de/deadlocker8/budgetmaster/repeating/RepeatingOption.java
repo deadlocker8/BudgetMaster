@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.repeating;
 
+import de.deadlocker8.budgetmaster.entities.Payment;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEnd;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifier;
 import org.joda.time.DateTime;
@@ -25,12 +26,17 @@ public class RepeatingOption
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private RepeatingEnd endOption;
 
+	@OneToMany(mappedBy = "repeatingOption", fetch = FetchType.LAZY)
+	private List<Payment> referringPayments;
+
 	public RepeatingOption(DateTime startDate, RepeatingModifier modifier, RepeatingEnd endOption)
 	{
 		this.startDate = startDate;
 		this.modifier = modifier;
 		this.endOption = endOption;
 	}
+
+	public RepeatingOption() {}
 
 	public Integer getID()
 	{
@@ -70,6 +76,16 @@ public class RepeatingOption
 	public void setEndOption(RepeatingEnd endOption)
 	{
 		this.endOption = endOption;
+	}
+
+	public List<Payment> getReferringPayments()
+	{
+		return referringPayments;
+	}
+
+	public void setReferringPayments(List<Payment> referringPayments)
+	{
+		this.referringPayments = referringPayments;
 	}
 
 	public List<DateTime> getRepeatingDates(DateTime dateFetchLimit)

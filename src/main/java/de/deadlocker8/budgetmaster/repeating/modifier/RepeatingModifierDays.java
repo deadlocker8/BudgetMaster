@@ -9,8 +9,10 @@ public class RepeatingModifierDays extends RepeatingModifier
 {
 	public RepeatingModifierDays(int numberOfDays)
 	{
-		super(numberOfDays);
+		super(numberOfDays, "repeating.modifier.days");
 	}
+
+	public RepeatingModifierDays() {}
 
 	@Override
 	public DateTime getNextDate(DateTime lastDate)

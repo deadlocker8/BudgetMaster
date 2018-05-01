@@ -17,6 +17,8 @@ public class RepeatingEndDate extends RepeatingEnd
 		this.endDate = endDate;
 	}
 
+	public RepeatingEndDate() {}
+
 	@Override
 	@Transient
 	public boolean isEndReached(List<DateTime> dates)

@@ -32,10 +32,18 @@ $( document ).ready(function() {
         });
     }
 
-    if($("#payment-amount").length)
+    if($('#payment-amount').length)
     {
         $('#payment-amount').on('change keydown paste input', function() {
             validateAmount($(this).val());
+        });
+    }
+
+    var paymentRepeatingModifierID = "#payment-repeating-modifier";
+    if($(paymentRepeatingModifierID).length)
+    {
+        $(paymentRepeatingModifierID).on('change keydown paste input', function() {
+            validateNumber($(this).val(), paymentRepeatingModifierID.substr(1), numberValidationMessage);
         });
     }
 
@@ -51,6 +59,24 @@ $( document ).ready(function() {
         });
     }
 
+    $('#enableRepeating').change(function(){
+        if($(this).is(":checked"))
+        {
+            $('#payment-repeating-modifier').prop('disabled', false);
+            $('#payment-repeating-modifier-type').prop('disabled', false);
+            $('#payment-repeating-modifier-type').material_select();
+        }
+        else
+        {
+            $('#payment-repeating-modifier').prop('disabled', true);
+            $('#payment-repeating-modifier-type').prop('disabled', true);
+            $('#payment-repeating-modifier-type').material_select();
+        }
+    });
+
+    // fire change listener on page load
+    $('#enableRepeating').trigger("change");
+
     // prevent form submit on enter (otherwise tag functionality will be hard to use)
     $(document).on("keypress", 'form', function (e) {
         var code = e.keyCode || e.which;
@@ -62,34 +88,63 @@ $( document ).ready(function() {
 });
 
 AMOUNT_REGEX = new RegExp("^-?\\d+(,\\d+)?(\\.\\d+)?$");
+NUMBER_REGEX = new RegExp("^\\d+$");
 ALLOWED_CHARACTERS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "."];
 
 function validateAmount(text)
 {
-    var element = document.getElementById("payment-amount");
+    var id = "payment-amount";
 
     if(text.match(AMOUNT_REGEX) == null)
     {
-        removeClass(element, "validate");
-        removeClass(element, "valid");
-        addClass(element, "tooltipped");
-        addClass(element, "invalid");
-        element.dataset.tooltip=amountValidationMessage;
-        element.dataset.position="bottom";
-        element.dataset.delay="50";
-        $('#payment-amount').tooltip();
-        document.getElementById("hidden-payment-amount").value = "";
+        addTooltip(id, amountValidationMessage);
+        document.getElementById("hidden-" + id).value = "";
     }
     else
     {
-        removeClass(element, "validate");
-        removeClass(element, "invalid");
-        removeClass(element, "tooltipped");
-        addClass(element, "valid");
-        $('#payment-amount').tooltip('remove');
+        removeTooltip(id);
         var amount = parseInt(parseFloat(text.replace(",", ".")) * 100);
-        document.getElementById("hidden-payment-amount").value = amount;
+        document.getElementById("hidden-" + id).value = amount;
     }
+}
+
+function validateNumber(text, id, message)
+{
+    if(text.match(NUMBER_REGEX) == null)
+    {
+        addTooltip(id, message);
+        document.getElementById("hidden-" + id).value = "";
+    }
+    else
+    {
+        removeTooltip(id);
+        document.getElementById("hidden-" + id).value =  parseInt(text);
+    }
+}
+
+function addTooltip(id, message)
+{
+    var element = document.getElementById(id);
+
+    removeClass(element, "validate");
+    removeClass(element, "valid");
+    addClass(element, "tooltipped");
+    addClass(element, "invalid");
+    element.dataset.tooltip=message;
+    element.dataset.position="bottom";
+    element.dataset.delay="50";
+    $('#' + id).tooltip();
+}
+
+function removeTooltip(id)
+{
+    var element = document.getElementById(id);
+
+    removeClass(element, "validate");
+    removeClass(element, "invalid");
+    removeClass(element, "tooltipped");
+    addClass(element, "valid");
+    $('#' + id).tooltip('remove');
 }
 
 function validateForm()

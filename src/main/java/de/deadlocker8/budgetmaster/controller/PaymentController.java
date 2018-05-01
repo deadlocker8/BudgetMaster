@@ -4,6 +4,10 @@ import de.deadlocker8.budgetmaster.entities.CategoryType;
 import de.deadlocker8.budgetmaster.entities.Payment;
 import de.deadlocker8.budgetmaster.entities.Settings;
 import de.deadlocker8.budgetmaster.entities.Tag;
+import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
+import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEnd;
+import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndAfterXTimes;
+import de.deadlocker8.budgetmaster.repeating.modifier.*;
 import de.deadlocker8.budgetmaster.repositories.*;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.services.PaymentService;
@@ -15,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import tools.Localization;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,10 +104,14 @@ public class PaymentController extends BaseController
 	}
 
 	@RequestMapping(value = "/payments/newPayment", method = RequestMethod.POST)
-	public String post(Model model, @ModelAttribute("NewPayment") Payment payment, BindingResult bindingResult, @RequestParam(value = "isPayment", required = false) boolean isPayment)
+	public String post(Model model, @ModelAttribute("NewPayment") Payment payment, BindingResult bindingResult,
+					   @RequestParam(value = "isPayment", required = false) boolean isPayment,
+					   @RequestParam(value = "enableRepeating", required = false) boolean enableRepeating,
+					   @RequestParam(value = "repeatingModifierNumber", required = false) int repeatingModifierNumber,
+					   @RequestParam(value = "repeatingModifierType", required = false) String repeatingModifierType)
 	{
-		PaymentValidator userValidator = new PaymentValidator();
-		userValidator.validate(payment, bindingResult);
+		PaymentValidator paymentValidator = new PaymentValidator();
+		paymentValidator.validate(payment, bindingResult);
 
 		if(bindingResult.hasErrors())
 		{
@@ -132,6 +141,31 @@ public class PaymentController extends BaseController
 					addTagToPayment(currentTag.getName(), payment);
 				}
 			}
+
+			RepeatingOption repeatingOption = null;
+			if(enableRepeating)
+			{
+				RepeatingModifier repeatingModifier = null;
+				RepeatingModifierType type = RepeatingModifierType.getByLocalization(repeatingModifierType);
+				switch(type)
+				{
+					case DAYS:
+						repeatingModifier = new RepeatingModifierDays(repeatingModifierNumber);
+						break;
+					case MONTHS:
+						repeatingModifier = new RepeatingModifierMonths(repeatingModifierNumber);
+						break;
+					case YEARS:
+						repeatingModifier = new RepeatingModifierYears(repeatingModifierNumber);
+						break;
+				}
+
+				//TODO
+				RepeatingEnd repeatingEnd = new RepeatingEndAfterXTimes(3);
+
+				repeatingOption = new RepeatingOption(payment.getDate(), repeatingModifier, repeatingEnd);
+			}
+			payment.setRepeatingOption(repeatingOption);
 
 			paymentRepository.save(payment);
 		}

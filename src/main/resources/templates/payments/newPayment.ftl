@@ -23,7 +23,7 @@
 
                         <#-- isPayment switch -->
                         <div class="row">
-                            <div class="s12 m12 l8 offset-l2 center-align">
+                            <div class="col s12 m12 l8 offset-l2 center-align">
                                 <div class="switch">
                                     <label>
                                         ${locale.getString("title.income")}
@@ -70,7 +70,6 @@
                                 </select>
                                 <label for="payment-category">${locale.getString("payment.new.label.category")}</label>
                             </div>
-                            <div id="hidden-payment-tags"></div>
                         </div>
 
                         <#-- date -->
@@ -104,6 +103,7 @@
                                     </#if>
                                 </div>
                             </div>
+                            <div id="hidden-payment-tags"></div>
                         </div>
 
                         <#-- account -->
@@ -124,8 +124,46 @@
                                 </select>
                                 <label for="payment-account">${locale.getString("payment.new.label.account")}</label>
                             </div>
-                            <div id="hidden-payment-tags"></div>
                         </div>
+
+                        <#-- repeating options -->
+                        <div class="row">
+                            <div class="col s12 m12 l8 offset-l2">
+                                <div class="switch">
+                                    <label>
+                                        <input type="checkbox" id="enableRepeating" name="enableRepeating" <#if payment.getRepeatingOption()??>checked</#if>>
+                                        <span class="lever"></span>
+                                        ${locale.getString("payment.new.label.repeating")}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <#-- repeating modifier -->
+                        <div class="row">
+                            <div class="input-field col s6 m6 l4 offset-l2">
+                                <input id="payment-repeating-modifier" name="repeatingModifierNumber" type="text" <@validation.validation "repeatingModifierNumber"/> value="<#if payment.getRepeatingOption()??>${payment.getRepeatingOption().getModifier().getQuantity()}</#if>">
+                                <label for="payment-repeating-modifier">${locale.getString("payment.new.label.repeating.all")}</label>
+                            </div>
+                            <input type="hidden" id="hidden-payment-repeating-modifier" value="<#if payment.getRepeatingOption()??>${payment.getRepeatingOption().getModifier().getQuantity()}</#if>">
+
+                            <div class="input-field col s6 m6 l4">
+                                <select id="payment-repeating-modifier-type" name="repeatingModifierType">
+                                    <#list helpers.getRepeatingModifierTypes() as modifierType>
+                                        <#assign modifierName=locale.getString(modifierType.getLocalizationKey())>
+                                        <#if payment.getRepeatingOption()??>
+                                            <#if payment.getRepeatingOption().getModifier().getLocalizationKey() == modifierName>
+                                                <option selected value="${modifierName}">${modifierName}</option>
+                                            </#if>
+                                        </#if>
+                                        <option value="${modifierName}">${modifierName}</option>
+                                    </#list>
+                                </select>
+                                <input type="hidden" id="hidden-payment-repeating-modifier-type" value="<#if payment.getRepeatingOption()??>${locale.getString(payment.getRepeatingOption().getModifier().getLocalizationKey())}</#if>">
+                            </div>
+                        </div>
+
+                        <#-- repeating end option -->
                         <br>
 
                         <#-- buttons -->
@@ -165,6 +203,7 @@
         <@datePicker.datePickerLocalization/>
         <script>
             amountValidationMessage = "${locale.getString("warning.payment.amount")}";
+            numberValidationMessage = "${locale.getString("warning.payment.number")}";
             tagsPlaceholder = "${locale.getString("tagfield.placeholder")}";
         </script>
 

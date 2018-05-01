@@ -4,6 +4,7 @@ import de.deadlocker8.budgetmaster.entities.Account;
 import de.deadlocker8.budgetmaster.entities.Payment;
 import de.deadlocker8.budgetmaster.entities.Settings;
 import de.deadlocker8.budgetmaster.entities.Tag;
+import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierType;
 import de.deadlocker8.budgetmaster.repositories.AccountRepository;
 import de.deadlocker8.budgetmaster.repositories.PaymentRepository;
 import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
@@ -22,6 +23,7 @@ import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -211,5 +213,10 @@ public class HelpersService
 		}
 
 		return sum;
+	}
+
+	public List<RepeatingModifierType> getRepeatingModifierTypes()
+	{
+		return Arrays.asList(RepeatingModifierType.values());
 	}
 }

@@ -9,8 +9,10 @@ public class RepeatingModifierYears extends RepeatingModifier
 {
 	public RepeatingModifierYears(int numberOfYears)
 	{
-		super(numberOfYears);
+		super(numberOfYears, "repeating.modifier.years");
 	}
+
+	public  RepeatingModifierYears() {}
 
 	@Override
 	public DateTime getNextDate(DateTime lastDate)

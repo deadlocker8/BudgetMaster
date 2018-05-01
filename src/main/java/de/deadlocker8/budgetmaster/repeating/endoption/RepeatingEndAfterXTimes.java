@@ -15,6 +15,8 @@ public class RepeatingEndAfterXTimes extends RepeatingEnd
 		this.times = times;
 	}
 
+	public RepeatingEndAfterXTimes() {}
+
 	@Override
 	@Transient
 	public boolean isEndReached(List<DateTime> dates)

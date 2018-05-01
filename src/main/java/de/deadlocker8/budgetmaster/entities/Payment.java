@@ -31,7 +31,7 @@ public class Payment
 	@ManyToMany(cascade = CascadeType.ALL)
 	private List<Tag> tags;
 
-	@OneToOne(optional = true, cascade = CascadeType.ALL)
+	@ManyToOne(optional = true, cascade = CascadeType.ALL)
 	private RepeatingOption repeatingOption;
 
 	public Payment()
