@@ -9,6 +9,14 @@
     <version>2.0.0</version>
     <name>BudgetMaster</name>
 
+    <repositories>
+        <repository>
+            <id>releases</id>
+            <name>Tools</name>
+            <url>https://maven.thecodelabs.de/nexus/content/repositories/releases</url>
+        </repository>
+    </repositories>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
