@@ -62,15 +62,13 @@ $( document ).ready(function() {
     $('#enableRepeating').change(function(){
         if($(this).is(":checked"))
         {
-            $('#payment-repeating-modifier').prop('disabled', false);
-            $('#payment-repeating-modifier-type').prop('disabled', false);
-            $('#payment-repeating-modifier-type').material_select();
+            $('#payment-repeating-modifier-row').show();
+            $('#payment-repeating-end').show();
         }
         else
         {
-            $('#payment-repeating-modifier').prop('disabled', true);
-            $('#payment-repeating-modifier-type').prop('disabled', true);
-            $('#payment-repeating-modifier-type').material_select();
+            $('#payment-repeating-modifier-row').hide();
+            $('#payment-repeating-end').hide();
         }
     });
 
@@ -149,6 +147,7 @@ function removeTooltip(id)
 
 function validateForm()
 {
+    // handle tags
     var tags = $('.chips-autocomplete').material_chip('data');
     var parent = document.getElementById("hidden-payment-tags");
     for(var i = 0; i < tags.length; i++)
@@ -158,6 +157,27 @@ function validateForm()
         input.setAttribute("name", "tags[" + i + "].name");
         input.setAttribute("value", tags[i].tag);
         parent.appendChild(input);
+    }
+
+    // handle repeating end
+    var endNever = document.getElementById("repeating-end-never");
+    var endAfterXTimes = document.getElementById("repeating-end-after-x-times");
+    var endDate = document.getElementById("repeating-end-date");
+    var endInput = document.getElementById("hidden-payment-repeating-end-value");
+
+    if(endNever.checked)
+    {
+        return true;
+    }
+
+    if(endAfterXTimes.checked)
+    {
+        endInput.value = "12";
+    }
+
+    if(endDate.checked)
+    {
+        endInput.value = "13.05.18";
     }
 
     return true;

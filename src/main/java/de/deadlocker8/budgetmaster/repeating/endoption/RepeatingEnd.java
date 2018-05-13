@@ -14,6 +14,16 @@ public abstract class RepeatingEnd
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer ID;
 
+	@Transient
+	private String localizationKey;
+
+	RepeatingEnd(String localizationKey)
+	{
+		this.localizationKey = localizationKey;
+	}
+
+	RepeatingEnd() {}
+
 	public Integer getID()
 	{
 		return ID;
@@ -22,6 +32,16 @@ public abstract class RepeatingEnd
 	public void setID(Integer ID)
 	{
 		this.ID = ID;
+	}
+
+	public String getLocalizationKey()
+	{
+		return localizationKey;
+	}
+
+	public void setLocalizationKey(String localizationKey)
+	{
+		this.localizationKey = localizationKey;
 	}
 
 	public abstract boolean isEndReached(List<DateTime> dates);

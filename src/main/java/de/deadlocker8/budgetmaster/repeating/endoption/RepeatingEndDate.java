@@ -14,6 +14,7 @@ public class RepeatingEndDate extends RepeatingEnd
 
 	public RepeatingEndDate(DateTime endDate)
 	{
+		super("repeating.end.key.date");
 		this.endDate = endDate;
 	}
 

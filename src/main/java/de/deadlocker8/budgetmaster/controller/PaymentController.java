@@ -108,7 +108,9 @@ public class PaymentController extends BaseController
 					   @RequestParam(value = "isPayment", required = false) boolean isPayment,
 					   @RequestParam(value = "enableRepeating", required = false) boolean enableRepeating,
 					   @RequestParam(value = "repeatingModifierNumber", required = false) int repeatingModifierNumber,
-					   @RequestParam(value = "repeatingModifierType", required = false) String repeatingModifierType)
+					   @RequestParam(value = "repeatingModifierType", required = false) String repeatingModifierType,
+					   @RequestParam(value = "repeatingEndType", required = false) String repeatingEndType,
+					   @RequestParam(value = "repeatingEndValue", required = false) String repeatingEndValue)
 	{
 		PaymentValidator paymentValidator = new PaymentValidator();
 		paymentValidator.validate(payment, bindingResult);

@@ -12,6 +12,7 @@ public class RepeatingEndAfterXTimes extends RepeatingEnd
 
 	public RepeatingEndAfterXTimes(int times)
 	{
+		super("repeating.end.key.afterXTimes");
 		this.times = times;
 	}
 

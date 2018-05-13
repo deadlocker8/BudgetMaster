@@ -293,12 +293,21 @@ ul.dropdown-content.select-dropdown li.selected {
 }
 
 /* chips autocomplete dropdown */
-.autocomplete-content li span{
+.autocomplete-content li span {
     color: #2E79B9;
 }
 
 .autocomplete-content li:hover {
     background-color: rgba(0, 0, 0, 0.15);
+}
+
+/* radio buttons */
+input[type="radio"]:checked + label::after, [type="radio"].with-gap:checked + label::after {
+    background-color: #2E79B9;
+}
+
+input[type="radio"]:checked + label::after, [type="radio"].with-gap:checked + label::before, [type="radio"].with-gap:checked + label::after {
+    border: 2px solid #2E79B9;
 }
 
 .account-budget {
