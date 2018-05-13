@@ -39,11 +39,18 @@ $( document ).ready(function() {
         });
     }
 
-    var paymentRepeatingModifierID = "#payment-repeating-modifier";
     if($(paymentRepeatingModifierID).length)
     {
         $(paymentRepeatingModifierID).on('change keydown paste input', function() {
-            validateNumber($(this).val(), paymentRepeatingModifierID.substr(1), numberValidationMessage);
+            // substr(1) removes "#" at the beginning
+            validateNumber($(this).val(), paymentRepeatingModifierID.substr(1), "hidden-" + paymentRepeatingModifierID.substr(1), numberValidationMessage);
+        });
+    }
+
+    if($(paymentRepeatingEndAfterXTimesInputID).length)
+    {
+        $(paymentRepeatingEndAfterXTimesInputID).on('change keydown paste input', function() {
+            validateNumber($(this).val(), paymentRepeatingEndAfterXTimesInputID.substr(1), null, numberValidationMessage);
         });
     }
 
@@ -85,6 +92,9 @@ $( document ).ready(function() {
     });
 });
 
+var paymentRepeatingModifierID = "#payment-repeating-modifier";
+var paymentRepeatingEndAfterXTimesInputID = "#payment-repeating-end-after-x-times-input";
+
 AMOUNT_REGEX = new RegExp("^-?\\d+(,\\d+)?(\\.\\d+)?$");
 NUMBER_REGEX = new RegExp("^\\d+$");
 ALLOWED_CHARACTERS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "."];
@@ -106,17 +116,25 @@ function validateAmount(text)
     }
 }
 
-function validateNumber(text, id, message)
+function validateNumber(text, ID, hiddenID, message)
 {
     if(text.match(NUMBER_REGEX) == null)
     {
-        addTooltip(id, message);
-        document.getElementById("hidden-" + id).value = "";
+        addTooltip(ID, message);
+        if (hiddenID != null)
+        {
+            document.getElementById(hiddenID).value = "";
+        }
+        return false;
     }
     else
     {
-        removeTooltip(id);
-        document.getElementById("hidden-" + id).value =  parseInt(text);
+        removeTooltip(ID);
+        if (hiddenID != null)
+        {
+            document.getElementById(hiddenID).value = parseInt(text);
+        }
+        return true;
     }
 }
 
@@ -147,6 +165,11 @@ function removeTooltip(id)
 
 function validateForm()
 {
+    if(!validateNumber($(paymentRepeatingModifierID).val(), paymentRepeatingModifierID.substr(1), "hidden-" + paymentRepeatingModifierID.substr(1), numberValidationMessage))
+    {
+        return false;
+    }
+
     // handle tags
     var tags = $('.chips-autocomplete').material_chip('data');
     var parent = document.getElementById("hidden-payment-tags");
@@ -172,7 +195,12 @@ function validateForm()
 
     if(endAfterXTimes.checked)
     {
-        endInput.value = "12";
+        if(!validateNumber($(paymentRepeatingEndAfterXTimesInputID).val(), paymentRepeatingEndAfterXTimesInputID.substr(1), null, numberValidationMessage))
+        {
+            return false;
+        }
+
+        endInput.value = $(paymentRepeatingEndAfterXTimesInputID).val();
     }
 
     if(endDate.checked)

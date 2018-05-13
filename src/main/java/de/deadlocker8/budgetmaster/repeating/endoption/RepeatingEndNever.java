@@ -20,4 +20,10 @@ public class RepeatingEndNever extends RepeatingEnd
 	{
 		return false;
 	}
+
+	@Override
+	public Object getValue()
+	{
+		return null;
+	}
 }

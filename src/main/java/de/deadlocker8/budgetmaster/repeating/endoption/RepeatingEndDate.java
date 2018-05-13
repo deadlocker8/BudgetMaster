@@ -27,4 +27,10 @@ public class RepeatingEndDate extends RepeatingEnd
 		DateTime lastDate = dates.get(dates.size() - 1);
 		return lastDate.isAfter(endDate);
 	}
+
+	@Override
+	public Object getValue()
+	{
+		return endDate;
+	}
 }

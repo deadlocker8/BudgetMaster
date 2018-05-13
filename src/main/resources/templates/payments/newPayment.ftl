@@ -2,6 +2,7 @@
     <head>
         <#import "../header.ftl" as header>
         <@header.header "BudgetMaster"/>
+        <link type="text/css" rel="stylesheet" href="/css/payments.css"/>
         <#assign locale = static["tools.Localization"]>
     </head>
     <body class="budgetmaster-blue-light">
@@ -142,10 +143,10 @@
                         <#-- repeating modifier -->
                         <div class="row" id="payment-repeating-modifier-row">
                             <div class="input-field col s6 m6 l4 offset-l2">
-                                <input id="payment-repeating-modifier" name="repeatingModifierNumber" type="text" <@validation.validation "repeatingModifierNumber"/> value="<#if payment.getRepeatingOption()??>${payment.getRepeatingOption().getModifier().getQuantity()}</#if>">
+                                <input id="payment-repeating-modifier" type="text" <@validation.validation "repeatingModifierNumber"/> value="<#if payment.getRepeatingOption()??>${payment.getRepeatingOption().getModifier().getQuantity()}</#if>">
                                 <label for="payment-repeating-modifier">${locale.getString("payment.new.label.repeating.all")}</label>
                             </div>
-                            <input type="hidden" id="hidden-payment-repeating-modifier" value="<#if payment.getRepeatingOption()??>${payment.getRepeatingOption().getModifier().getQuantity()}</#if>">
+                            <input type="hidden" id="hidden-payment-repeating-modifier" name="repeatingModifierNumber" value="<#if payment.getRepeatingOption()??>${payment.getRepeatingOption().getModifier().getQuantity()}</#if>">
 
                             <div class="input-field col s6 m6 l4">
                                 <select id="payment-repeating-modifier-type" name="repeatingModifierType">
@@ -168,39 +169,64 @@
                         <#-- repeating end option -->
                         <div class="row" id="payment-repeating-end">
                             <div class="col s12 m12 l8 offset-l2">
-                                ${locale.getString("repeating.end")}
-                                <p>
-                                    <#if payment.getRepeatingOption()??>
-                                        <#if payment.getRepeatingOption().getEndOption().getLocalizationKey() == locale.getString("repeating.end.key.never")>
-                                            <input class="with-gap" name="repeatingEndType" type="radio" id="repeating-end-never" checked value="${locale.getString("repeating.end.key.never")}"/>
-                                        <#else>
-                                            <input class="with-gap" name="repeatingEndType" type="radio" id="repeating-end-never" value="${locale.getString("repeating.end.key.never")}"/>
-                                        </#if>
-                                    <#else>
-                                        <#-- default -->
-                                        <input class="with-gap" name="repeatingEndType" type="radio" id="repeating-end-never" checked value="${locale.getString("repeating.end.key.never")}"/>
-                                    </#if>
-                                    <label for="repeating-end-never">${locale.getString("repeating.end.never")}</label>
-                                </p>
-                                <p>
-                                    <#if payment.getRepeatingOption()?? && payment.getRepeatingOption().getEndOption().getLocalizationKey() == locale.getString("repeating.end.key.afterXTimes")>
-                                        <input class="with-gap" name="repeatingEndType" type="radio" id="repeating-end-after-x-times" checked value="${locale.getString("repeating.end.key.afterXTimes")}"/>
-                                    <#else>
-                                        <input class="with-gap" name="repeatingEndType" type="radio" id="repeating-end-after-x-times" value="${locale.getString("repeating.end.key.afterXTimes")}"/>
-                                    </#if>
-                                    <label for="repeating-end-after-x-times">${locale.getString("repeating.end.afterXTimes.A")} 8 ${locale.getString("repeating.end.afterXTimes.B")}</label>
-                                </p>
-                                <p>
-                                    <#if payment.getRepeatingOption()?? && payment.getRepeatingOption().getEndOption().getLocalizationKey() == locale.getString("repeating.end.key.date")>
-                                        <input class="with-gap" name="repeatingEndType" type="radio" id="repeating-end-date" checked value="${locale.getString("repeating.end.key.date")}"/>
-                                    <#else>
-                                        <input class="with-gap" name="repeatingEndType" type="radio" id="repeating-end-date" value="${locale.getString("repeating.end.key.date")}"/>
-                                    </#if>
-                                    <label for="repeating-end-date">${locale.getString("repeating.end.date")} 13.05.2018</label>
-                                </p>
+                                <div class="row">
+                                    <div class="col s12 left-align">
+                                        ${locale.getString("repeating.end")}
+                                    </div>
+                                </div>
+                                <@repeatingEndNever (payment.getRepeatingOption()?? && payment.getRepeatingOption().getEndOption().getLocalizationKey() == locale.getString("repeating.end.key.never")) || !payment.getRepeatingOption()??/>
+                                <@repeatingEndAfterXTimes payment.getRepeatingOption()?? && payment.getRepeatingOption().getEndOption().getLocalizationKey() == locale.getString("repeating.end.key.afterXTimes")/>
+                                <@repeatingEndDate payment.getRepeatingOption()?? && payment.getRepeatingOption().getEndOption().getLocalizationKey() == locale.getString("repeating.end.key.date")/>
                                 <input type="hidden" id="hidden-payment-repeating-end-value" name="repeatingEndValue" value="">
                             </div>
                         </div>
+
+                        <#macro repeatingEndNever checked>
+                            <div class="row valign-wrapper">
+                                <div class="col s1">
+                                    <input class="with-gap" name="repeatingEndType" type="radio" id="repeating-end-never" value="${locale.getString("repeating.end.key.never")}" <#if checked>checked</#if>/>
+                                    <label for="repeating-end-never"></label>
+                                </div>
+                                <div class="col s11">
+                                    ${locale.getString("repeating.end.never")}
+                                </div>
+                            </div>
+                        </#macro>
+
+                        <#macro repeatingEndAfterXTimes checked>
+                            <div class="row valign-wrapper">
+                                <div class="col s1">
+                                    <input class="with-gap" name="repeatingEndType" type="radio" id="repeating-end-after-x-times" value="${locale.getString("repeating.end.key.afterXTimes")}" <#if checked>checked</#if>/>
+                                    <label for="repeating-end-after-x-times"></label>
+                                </div>
+                                <div class="col s11">
+                                    <table class="table-repeating-end">
+                                        <tr>
+                                            <td>${locale.getString("repeating.end.afterXTimes.A")}</td>
+                                            <td>
+                                                <div class="input-field">
+                                                    <input class="no-margin" id="payment-repeating-end-after-x-times-input" type="text" value="<#if payment.getRepeatingOption()??>${payment.getRepeatingOption().getEndOption().getValue()}</#if>">
+                                                    <label for="payment-repeating-end-after-x-times-input"></label>
+                                                </div>
+                                            </td>
+                                            <td>${locale.getString("repeating.end.afterXTimes.B")}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </#macro>
+
+                        <#macro repeatingEndDate checked>
+                            <div class="row valign-wrapper">
+                                <div class="col s1">
+                                    <input class="with-gap" name="repeatingEndType" type="radio" id="repeating-end-date" value="${locale.getString("repeating.end.key.date")}" <#if checked>checked</#if>/>
+                                    <label for="repeating-end-date"></label>
+                                </div>
+                                <div class="col s11">
+                                    ${locale.getString("repeating.end.date")} 13.05.2018
+                                </div>
+                            </div>
+                        </#macro>
 
                         <br>
 

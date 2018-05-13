@@ -24,4 +24,10 @@ public class RepeatingEndAfterXTimes extends RepeatingEnd
 	{
 		return dates.size() - 1 > times;
 	}
+
+	@Override
+	public Object getValue()
+	{
+		return times;
+	}
 }

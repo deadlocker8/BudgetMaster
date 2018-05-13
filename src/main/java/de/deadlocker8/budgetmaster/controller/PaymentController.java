@@ -5,8 +5,7 @@ import de.deadlocker8.budgetmaster.entities.Payment;
 import de.deadlocker8.budgetmaster.entities.Settings;
 import de.deadlocker8.budgetmaster.entities.Tag;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
-import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEnd;
-import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndAfterXTimes;
+import de.deadlocker8.budgetmaster.repeating.endoption.*;
 import de.deadlocker8.budgetmaster.repeating.modifier.*;
 import de.deadlocker8.budgetmaster.repositories.*;
 import de.deadlocker8.budgetmaster.services.HelpersService;
@@ -18,8 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import tools.Localization;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -162,8 +161,21 @@ public class PaymentController extends BaseController
 						break;
 				}
 
-				//TODO
-				RepeatingEnd repeatingEnd = new RepeatingEndAfterXTimes(3);
+				RepeatingEnd repeatingEnd = null;
+				RepeatingEndType endType = RepeatingEndType.getByLocalization(repeatingEndType);
+				switch(endType)
+				{
+					case NEVER:
+						repeatingEnd = new RepeatingEndNever();
+						break;
+					case AFTER_X_TIMES:
+						repeatingEnd = new RepeatingEndAfterXTimes(Integer.parseInt(repeatingEndValue));
+						break;
+					case DATE:
+						//TODO
+						repeatingEnd = new RepeatingEndDate(null);
+						break;
+				}
 
 				repeatingOption = new RepeatingOption(payment.getDate(), repeatingModifier, repeatingEnd);
 			}

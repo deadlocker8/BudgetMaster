@@ -45,4 +45,6 @@ public abstract class RepeatingEnd
 	}
 
 	public abstract boolean isEndReached(List<DateTime> dates);
+
+	public abstract  Object getValue();
 }
