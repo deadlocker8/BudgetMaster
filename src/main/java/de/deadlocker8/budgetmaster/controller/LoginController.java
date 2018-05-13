@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.controller;
 
+import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +23,11 @@ public class LoginController extends BaseController
 		if(paramMap.containsKey("logout"))
 			model.addAttribute("isLogout", true);
 
-		request.getSession().setAttribute("preLoginURL", request.getHeader("Referer"));
+		DefaultSavedRequest savedRequest = (DefaultSavedRequest)request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST");
+		if(savedRequest != null)
+		{
+			request.getSession().setAttribute("preLoginURL", savedRequest.getRequestURL());
+		}
 		return "login";
 	}
 }
