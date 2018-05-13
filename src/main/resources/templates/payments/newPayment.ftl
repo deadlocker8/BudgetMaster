@@ -3,6 +3,7 @@
         <#import "../header.ftl" as header>
         <@header.header "BudgetMaster"/>
         <link type="text/css" rel="stylesheet" href="/css/payments.css"/>
+        <link type="text/css" rel="stylesheet" href="/css/datepicker.css"/>
         <#assign locale = static["tools.Localization"]>
     </head>
     <body class="budgetmaster-blue-light">

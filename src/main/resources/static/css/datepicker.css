@@ -1,0 +1,15 @@
+.picker__date-display {
+    background-color: #2E79B9;
+}
+
+.picker__day--selected, .picker__day--selected:hover, .picker--focused .picker__day--selected {
+    background-color: #2E79B9;
+}
+
+.picker__close, .picker__today, .picker__clear {
+    color: #2E79B9;
+}
+
+.picker__nav--prev:hover, .picker__nav--next:hover {
+    background-color: rgba(46, 121, 185, 0.3);
+}
