@@ -182,30 +182,33 @@ function validateForm()
         parent.appendChild(input);
     }
 
-    // handle repeating end
-    var endNever = document.getElementById("repeating-end-never");
-    var endAfterXTimes = document.getElementById("repeating-end-after-x-times");
-    var endDate = document.getElementById("repeating-end-date");
-    var endInput = document.getElementById("hidden-payment-repeating-end-value");
-
-    if(endNever.checked)
+    if(document.getElementById("enableRepeating").checked)
     {
-        return true;
-    }
+        // handle repeating end
+        var endNever = document.getElementById("repeating-end-never");
+        var endAfterXTimes = document.getElementById("repeating-end-after-x-times");
+        var endDate = document.getElementById("repeating-end-date");
+        var endInput = document.getElementById("hidden-payment-repeating-end-value");
 
-    if(endAfterXTimes.checked)
-    {
-        if(!validateNumber($(paymentRepeatingEndAfterXTimesInputID).val(), paymentRepeatingEndAfterXTimesInputID.substr(1), null, numberValidationMessage))
+        if(endNever.checked)
         {
-            return false;
+            return true;
         }
 
-        endInput.value = $(paymentRepeatingEndAfterXTimesInputID).val();
-    }
+        if(endAfterXTimes.checked)
+        {
+            if(!validateNumber($(paymentRepeatingEndAfterXTimesInputID).val(), paymentRepeatingEndAfterXTimesInputID.substr(1), null, numberValidationMessage))
+            {
+                return false;
+            }
 
-    if(endDate.checked)
-    {
-        endInput.value = $("#payment-repeating-end-date-input").val();
+            endInput.value = $(paymentRepeatingEndAfterXTimesInputID).val();
+        }
+
+        if(endDate.checked)
+        {
+            endInput.value = $("#payment-repeating-end-date-input").val();
+        }
     }
 
     return true;
