@@ -13,3 +13,7 @@
 .picker__nav--prev:hover, .picker__nav--next:hover {
     background-color: rgba(46, 121, 185, 0.3);
 }
+
+.picker__day.picker__day--today {
+    color: #2E79B9;
+}
