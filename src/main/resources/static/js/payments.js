@@ -165,11 +165,6 @@ function removeTooltip(id)
 
 function validateForm()
 {
-    if(!validateNumber($(paymentRepeatingModifierID).val(), paymentRepeatingModifierID.substr(1), "hidden-" + paymentRepeatingModifierID.substr(1), numberValidationMessage))
-    {
-        return false;
-    }
-
     // handle tags
     var tags = $('.chips-autocomplete').material_chip('data');
     var parent = document.getElementById("hidden-payment-tags");
@@ -184,6 +179,11 @@ function validateForm()
 
     if(document.getElementById("enableRepeating").checked)
     {
+        if(!validateNumber($(paymentRepeatingModifierID).val(), paymentRepeatingModifierID.substr(1), "hidden-" + paymentRepeatingModifierID.substr(1), numberValidationMessage))
+        {
+            return false;
+        }
+
         // handle repeating end
         var endNever = document.getElementById("repeating-end-never");
         var endAfterXTimes = document.getElementById("repeating-end-after-x-times");
@@ -209,6 +209,10 @@ function validateForm()
         {
             endInput.value = $("#payment-repeating-end-date-input").val();
         }
+    }
+    else
+    {
+        document.getElementById("hidden-" + paymentRepeatingModifierID.substr(1)).value = -1;
     }
 
     return true;

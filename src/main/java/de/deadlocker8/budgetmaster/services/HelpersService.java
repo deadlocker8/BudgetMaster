@@ -49,11 +49,21 @@ public class HelpersService
 
 	public String getCurrencyString(double amount)
 	{
+		return getAmountString(amount) + " " + settingsRepository.findOne(0).getCurrency();
+	}
+
+	public String getAmountString(int amount)
+	{
+		return getAmountString(amount / 100.0);
+	}
+
+	public String getAmountString(double amount)
+	{
 		Settings settings = settingsRepository.findOne(0);
 		NumberFormat format = NumberFormat.getNumberInstance(settings.getLanguage().getLocale());
 		format.setMaximumFractionDigits(2);
 		format.setMinimumFractionDigits(2);
-		return String.valueOf(format.format(amount)) + " " + settingsRepository.findOne(0).getCurrency();
+		return String.valueOf(format.format(amount));
 	}
 
 	public String getURLEncodedString(String input)

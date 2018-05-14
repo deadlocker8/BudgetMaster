@@ -1,15 +1,13 @@
 package de.deadlocker8.budgetmaster.controller;
 
-import de.deadlocker8.budgetmaster.entities.CategoryType;
-import de.deadlocker8.budgetmaster.entities.Payment;
-import de.deadlocker8.budgetmaster.entities.Settings;
-import de.deadlocker8.budgetmaster.entities.Tag;
+import de.deadlocker8.budgetmaster.entities.*;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.repeating.endoption.*;
 import de.deadlocker8.budgetmaster.repeating.modifier.*;
 import de.deadlocker8.budgetmaster.repositories.*;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.services.PaymentService;
+import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import de.deadlocker8.budgetmaster.validators.PaymentValidator;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -191,6 +189,23 @@ public class PaymentController extends BaseController
 
 		paymentRepository.save(payment);
 		return "redirect:/payments";
+	}
+
+	@RequestMapping("/payments/{ID}/edit")
+	public String editPayment(Model model, @CookieValue("currentDate") String cookieDate, @PathVariable("ID") Integer ID)
+	{
+		Payment payment = paymentRepository.findOne(ID);
+		if(payment == null)
+		{
+			throw new ResourceNotFoundException();
+		}
+
+		DateTime date = getDateTimeFromCookie(cookieDate);
+		model.addAttribute("currentDate", date);
+		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
+		model.addAttribute("accounts", accountRepository.findAllByOrderByNameAsc());
+		model.addAttribute("payment", payment);
+		return "payments/newPayment";
 	}
 
 	private boolean isDeletable(Integer ID)

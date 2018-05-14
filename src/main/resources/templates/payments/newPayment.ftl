@@ -48,7 +48,7 @@
                         <#-- amount -->
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
-                                <input id="payment-amount" type="text" <@validation.validation "amount"/> value="<#if payment.getAmount()??>${payment.getAmount()}</#if>">
+                                <input id="payment-amount" type="text" <@validation.validation "amount"/> value="<#if payment.getAmount()??>${helpers.getAmountString(payment.getAmount())}</#if>">
                                 <label for="payment-amount">${locale.getString("payment.new.label.amount")}</label>
                             </div>
                             <input type="hidden" id="hidden-payment-amount" name="amount" value="<#if payment.getAmount()??>${payment.getAmount()}</#if>">
@@ -59,14 +59,14 @@
                             <div class="input-field col s12 m12 l8 offset-l2">
                                 <select id="payment-category" name="category" <@validation.validation "category"/>>
                                     <#list categories as category>
-                                        <#if payment.getCategory()?? && payment.getCategory() == category>
-                                            <option selected value="${category.getID()}">${category.getName()}</option>
-                                        <#else>
-                                            <#if category.getType() == "NONE">
+                                        <#if payment.getCategory()??>
+                                            <#if payment.getCategory().getID() == category.getID()>
                                                 <option selected value="${category.getID()}">${category.getName()}</option>
                                             <#elseif category.getType() != "REST">
                                                 <option value="${category.getID()}">${category.getName()}</option>
                                             </#if>
+                                        <#elseif category.getType() == "NONE">
+                                            <option selected value="${category.getID()}">${category.getName()}</option>
                                         </#if>
                                     </#list>
                                 </select>
