@@ -205,7 +205,7 @@ function validateForm()
 
     if(endDate.checked)
     {
-        endInput.value = "13.05.18";
+        endInput.value = $("#payment-repeating-end-date-input").val();
     }
 
     return true;

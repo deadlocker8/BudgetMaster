@@ -175,9 +175,9 @@
                                         ${locale.getString("repeating.end")}
                                     </div>
                                 </div>
-                                <@repeatingEndNever (payment.getRepeatingOption()?? && payment.getRepeatingOption().getEndOption().getLocalizationKey() == locale.getString("repeating.end.key.never")) || !payment.getRepeatingOption()??/>
-                                <@repeatingEndAfterXTimes payment.getRepeatingOption()?? && payment.getRepeatingOption().getEndOption().getLocalizationKey() == locale.getString("repeating.end.key.afterXTimes")/>
-                                <@repeatingEndDate payment.getRepeatingOption()?? && payment.getRepeatingOption().getEndOption().getLocalizationKey() == locale.getString("repeating.end.key.date")/>
+                                <@repeatingEndNever (payment.getRepeatingOption()?? && payment.getRepeatingOption().getEndOption().getLocalizationKey() == "repeating.end.key.never") || !payment.getRepeatingOption()??/>
+                                <@repeatingEndAfterXTimes payment.getRepeatingOption()?? && payment.getRepeatingOption().getEndOption().getLocalizationKey() == "repeating.end.key.afterXTimes"/>
+                                <@repeatingEndDate payment.getRepeatingOption()?? && payment.getRepeatingOption().getEndOption().getLocalizationKey() == "repeating.end.key.date"/>
                                 <input type="hidden" id="hidden-payment-repeating-end-value" name="repeatingEndValue" value="">
                             </div>
                         </div>
@@ -206,7 +206,7 @@
                                             <td>${locale.getString("repeating.end.afterXTimes.A")}</td>
                                             <td>
                                                 <div class="input-field">
-                                                    <input class="no-margin" id="payment-repeating-end-after-x-times-input" type="text" value="<#if payment.getRepeatingOption()??>${payment.getRepeatingOption().getEndOption().getValue()}</#if>">
+                                                    <input class="no-margin" id="payment-repeating-end-after-x-times-input" type="text" value="<#if checked>${payment.getRepeatingOption().getEndOption().getValue()}</#if>">
                                                     <label for="payment-repeating-end-after-x-times-input"></label>
                                                 </div>
                                             </td>
@@ -224,7 +224,17 @@
                                     <label for="repeating-end-date"></label>
                                 </div>
                                 <div class="col s11">
-                                    ${locale.getString("repeating.end.date")} 13.05.2018
+                                    <table class="table-repeating-end">
+                                        <tr>
+                                            <td>${locale.getString("repeating.end.date")}</td>
+                                            <td>
+                                                <div class="input-field">
+                                                    <input class="datepicker no-margin" id="payment-repeating-end-date-input" type="text" value="<#if checked>${helpers.getLongDateString(payment.getRepeatingOption().getEndOption().getValue())}<#else>${helpers.getLongDateString(currentDate)}</#if>">
+                                                    <label for="payment-repeating-end-date-input"></label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </div>
                             </div>
                         </#macro>

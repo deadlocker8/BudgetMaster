@@ -103,7 +103,8 @@ public class PaymentController extends BaseController
 	}
 
 	@RequestMapping(value = "/payments/newPayment", method = RequestMethod.POST)
-	public String post(Model model, @ModelAttribute("NewPayment") Payment payment, BindingResult bindingResult,
+	public String post(Model model, @CookieValue("currentDate") String cookieDate,
+					   @ModelAttribute("NewPayment") Payment payment, BindingResult bindingResult,
 					   @RequestParam(value = "isPayment", required = false) boolean isPayment,
 					   @RequestParam(value = "enableRepeating", required = false) boolean enableRepeating,
 					   @RequestParam(value = "repeatingModifierNumber", required = false) int repeatingModifierNumber,
@@ -111,79 +112,84 @@ public class PaymentController extends BaseController
 					   @RequestParam(value = "repeatingEndType", required = false) String repeatingEndType,
 					   @RequestParam(value = "repeatingEndValue", required = false) String repeatingEndValue)
 	{
+		DateTime date = getDateTimeFromCookie(cookieDate);
+
 		PaymentValidator paymentValidator = new PaymentValidator();
 		paymentValidator.validate(payment, bindingResult);
+
+		if(payment.getAmount() == null)
+		{
+			payment.setAmount(0);
+		}
+
+		if(isPayment)
+		{
+			payment.setAmount(-Math.abs(payment.getAmount()));
+		}
+		else
+		{
+			payment.setAmount(Math.abs(payment.getAmount()));
+		}
+
+		List<Tag> tags = payment.getTags();
+		if(tags != null)
+		{
+			payment.setTags(new ArrayList<>());
+			for(Tag currentTag : tags)
+			{
+				addTagToPayment(currentTag.getName(), payment);
+			}
+		}
+
+		RepeatingOption repeatingOption = null;
+		if(enableRepeating)
+		{
+			RepeatingModifier repeatingModifier = null;
+			RepeatingModifierType type = RepeatingModifierType.getByLocalization(repeatingModifierType);
+			switch(type)
+			{
+				case DAYS:
+					repeatingModifier = new RepeatingModifierDays(repeatingModifierNumber);
+					break;
+				case MONTHS:
+					repeatingModifier = new RepeatingModifierMonths(repeatingModifierNumber);
+					break;
+				case YEARS:
+					repeatingModifier = new RepeatingModifierYears(repeatingModifierNumber);
+					break;
+			}
+
+			RepeatingEnd repeatingEnd = null;
+			RepeatingEndType endType = RepeatingEndType.getByLocalization(repeatingEndType);
+			switch(endType)
+			{
+				case NEVER:
+					repeatingEnd = new RepeatingEndNever();
+					break;
+				case AFTER_X_TIMES:
+					repeatingEnd = new RepeatingEndAfterXTimes(Integer.parseInt(repeatingEndValue));
+					break;
+				case DATE:
+					DateTime endDate = DateTime.parse(repeatingEndValue, DateTimeFormat.forPattern("dd.MM.yy").withLocale(getSettings().getLanguage().getLocale()));
+					repeatingEnd = new RepeatingEndDate(endDate);
+					break;
+			}
+
+			repeatingOption = new RepeatingOption(payment.getDate(), repeatingModifier, repeatingEnd);
+		}
+		payment.setRepeatingOption(repeatingOption);
 
 		if(bindingResult.hasErrors())
 		{
 			model.addAttribute("error", bindingResult);
+			model.addAttribute("currentDate", date);
 			model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
 			model.addAttribute("accounts", accountRepository.findAllByOrderByNameAsc());
 			model.addAttribute("payment", payment);
 			return "payments/newPayment";
 		}
-		else
-		{
-			if(isPayment)
-			{
-				payment.setAmount(-Math.abs(payment.getAmount()));
-			}
-			else
-			{
-				payment.setAmount(Math.abs(payment.getAmount()));
-			}
 
-			List<Tag> tags = payment.getTags();
-			if(tags != null)
-			{
-				payment.setTags(new ArrayList<>());
-				for(Tag currentTag : tags)
-				{
-					addTagToPayment(currentTag.getName(), payment);
-				}
-			}
-
-			RepeatingOption repeatingOption = null;
-			if(enableRepeating)
-			{
-				RepeatingModifier repeatingModifier = null;
-				RepeatingModifierType type = RepeatingModifierType.getByLocalization(repeatingModifierType);
-				switch(type)
-				{
-					case DAYS:
-						repeatingModifier = new RepeatingModifierDays(repeatingModifierNumber);
-						break;
-					case MONTHS:
-						repeatingModifier = new RepeatingModifierMonths(repeatingModifierNumber);
-						break;
-					case YEARS:
-						repeatingModifier = new RepeatingModifierYears(repeatingModifierNumber);
-						break;
-				}
-
-				RepeatingEnd repeatingEnd = null;
-				RepeatingEndType endType = RepeatingEndType.getByLocalization(repeatingEndType);
-				switch(endType)
-				{
-					case NEVER:
-						repeatingEnd = new RepeatingEndNever();
-						break;
-					case AFTER_X_TIMES:
-						repeatingEnd = new RepeatingEndAfterXTimes(Integer.parseInt(repeatingEndValue));
-						break;
-					case DATE:
-						//TODO
-						repeatingEnd = new RepeatingEndDate(null);
-						break;
-				}
-
-				repeatingOption = new RepeatingOption(payment.getDate(), repeatingModifier, repeatingEnd);
-			}
-			payment.setRepeatingOption(repeatingOption);
-
-			paymentRepository.save(payment);
-		}
-
+		paymentRepository.save(payment);
 		return "redirect:/payments";
 	}
 
