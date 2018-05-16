@@ -203,14 +203,14 @@
                                 <div class="col s11">
                                     <table class="table-repeating-end">
                                         <tr>
-                                            <td>${locale.getString("repeating.end.afterXTimes.A")}</td>
-                                            <td>
-                                                <div class="input-field">
+                                            <td class="cell">${locale.getString("repeating.end.afterXTimes.A")}</td>
+                                            <td class="cell input-cell">
+                                                <div class="input-field no-margin">
                                                     <input class="no-margin" id="payment-repeating-end-after-x-times-input" type="text" value="<#if checked>${payment.getRepeatingOption().getEndOption().getValue()}</#if>">
                                                     <label for="payment-repeating-end-after-x-times-input"></label>
                                                 </div>
                                             </td>
-                                            <td>${locale.getString("repeating.end.afterXTimes.B")}</td>
+                                            <td class="cell stretched-cell">${locale.getString("repeating.end.afterXTimes.B")}</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -226,13 +226,14 @@
                                 <div class="col s11">
                                     <table class="table-repeating-end">
                                         <tr>
-                                            <td>${locale.getString("repeating.end.date")}</td>
-                                            <td>
-                                                <div class="input-field">
+                                            <td class="cell">${locale.getString("repeating.end.date")}</td>
+                                            <td class="cell input-cell">
+                                                <div class="input-field no-margin">
                                                     <input class="datepicker no-margin" id="payment-repeating-end-date-input" type="text" value="<#if checked>${helpers.getLongDateString(payment.getRepeatingOption().getEndOption().getValue())}<#else>${helpers.getLongDateString(currentDate)}</#if>">
                                                     <label for="payment-repeating-end-date-input"></label>
                                                 </div>
                                             </td>
+                                            <td class="cell stretched-cell"></td>
                                         </tr>
                                     </table>
                                 </div>
