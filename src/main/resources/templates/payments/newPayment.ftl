@@ -94,18 +94,18 @@
                         <div class="row">
                             <div class="col s12 m12 l8 offset-l2">
                                 <label class="chips-label" for="payment-chips">${locale.getString("payment.new.label.tags")}</label>
-                                <div id="payment-chips" class="chips chips-placeholder chips-autocomplete">
-                                    <#if payment.getTags()??>
-                                        <#list payment.getTags() as tag>
-                                            <div class="chip">
-                                                ${tag.getName()}
-                                                <i class="close material-icons">close</i>
-                                            </div>
-                                        </#list>
-                                    </#if>
-                                </div>
+                                <div id="payment-chips" class="chips chips-placeholder chips-autocomplete"></div>
                             </div>
                             <div id="hidden-payment-tags"></div>
+                            <script>
+                                var initialTags = [
+                                    <#if payment.getTags()??>
+                                        <#list payment.getTags() as tag>
+                                            {tag: '${tag.getName()}'},
+                                        </#list>
+                                    </#if>
+                                ];
+                            </script>
                         </div>
 
                         <#-- account -->

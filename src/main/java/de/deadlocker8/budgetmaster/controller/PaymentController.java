@@ -135,7 +135,7 @@ public class PaymentController extends BaseController
 			payment.setTags(new ArrayList<>());
 			for(Tag currentTag : tags)
 			{
-				addTagToPayment(currentTag.getName(), payment);
+				payment = addTagToPayment(currentTag.getName(), payment);
 			}
 		}
 
@@ -231,7 +231,7 @@ public class PaymentController extends BaseController
 		}
 	}
 
-	private void addTagToPayment(String name, Payment payment)
+	private Payment addTagToPayment(String name, Payment payment)
 	{
 		if(tagRepository.findByName(name) == null)
 		{
@@ -242,8 +242,9 @@ public class PaymentController extends BaseController
 		if(referringPayments == null || !referringPayments.contains(payment))
 		{
 			payment.getTags().add(tagRepository.findByName(name));
-			paymentRepository.save(payment);
 		}
+
+		return payment;
 	}
 
 	private void removeTagFromPayment(String name, Payment payment)

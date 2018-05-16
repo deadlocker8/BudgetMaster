@@ -103,7 +103,8 @@ $( document ).ready(function() {
                 limit: Infinity,
                 minLength: 1
             },
-            placeholder: tagsPlaceholder
+            placeholder: tagsPlaceholder,
+            data: initialTags
         });
     }
 
