@@ -3,7 +3,46 @@ $( document ).ready(function() {
 
     if($(".datepicker").length)
     {
-        $('.datepicker').pickadate({
+        var pickerStartDate = $('#payment-datepicker').pickadate({
+            selectMonths: true,
+            selectYears: 100,
+            firstDay: 1,
+
+            // Strings and translations
+            monthsFull: monthNames,
+            monthsShort: monthNamesShort,
+            weekdaysFull: weekDays,
+            weekdaysShort: weekDaysShort,
+            weekdaysLetter: weekDaysLetters,
+
+            // Buttons
+            today: buttonToday,
+            clear: buttonClear,
+            close: buttonClose,
+
+            // Accessibility labels
+            labelMonthNext: '',
+            labelMonthPrev: '',
+            labelMonthSelect: '',
+            labelYearSelect: '',
+
+            // Formats
+            format: 'dd.mm.yyyy',
+            formatSubmit: 'dd.mm.yyyy',
+
+            onSet: function()
+            {
+                var selectedDate = this.get('select').obj;
+                if(pickerEndDate.get('select').obj < selectedDate)
+                {
+                    pickerEndDate.set('select', selectedDate);
+                }
+
+                pickerEndDate.set('min', selectedDate);
+            }
+        });
+
+        var pickerEndDate = $('#payment-repeating-end-date-input').pickadate({
             selectMonths: true,
             selectYears: 100,
             firstDay: 1,
@@ -30,6 +69,8 @@ $( document ).ready(function() {
             format: 'dd.mm.yyyy',
             formatSubmit: 'dd.mm.yyyy'
         });
+
+        pickerEndDate = pickerEndDate.pickadate('picker');
     }
 
     if($('#payment-amount').length)
