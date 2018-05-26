@@ -109,6 +109,7 @@ public class PaymentController extends BaseController
 	@RequestMapping(value = "/payments/newPayment", method = RequestMethod.POST)
 	public String post(Model model, @CookieValue("currentDate") String cookieDate,
 					   @ModelAttribute("NewPayment") Payment payment, BindingResult bindingResult,
+					   @RequestParam(value = "isRepeating", required = false) boolean isRepeating,
 					   @RequestParam(value = "isPayment", required = false) boolean isPayment,
 					   @RequestParam(value = "enableRepeating", required = false) boolean enableRepeating,
 					   @RequestParam(value = "repeatingModifierNumber", required = false) int repeatingModifierNumber,
@@ -119,10 +120,8 @@ public class PaymentController extends BaseController
 		DateTime date = getDateTimeFromCookie(cookieDate);
 
 		// handle repeatingPayments
-		System.out.println(payment);
-		if(payment.getID() != null && payment.getRepeatingOption() != null)
+		if(payment.getID() != null && isRepeating)
 		{
-			System.out.println("Edit repeating payment --> delete first");
 			paymentService.deletePayment(payment.getID());
 		}
 
@@ -219,8 +218,6 @@ public class PaymentController extends BaseController
 		{
 			payment = payment.getRepeatingOption().getReferringPayments().get(0);
 		}
-
-		System.out.println("Editing Payment: " + payment);
 
 		DateTime date = getDateTimeFromCookie(cookieDate);
 		model.addAttribute("currentDate", date);

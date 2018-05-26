@@ -14,17 +14,21 @@ import java.util.Locale;
 public class SettingsService
 {
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	private SettingsRepository settingsRepository;
 
 	@Autowired
 	public SettingsService(SettingsRepository settingsRepository)
 	{
+		this.settingsRepository = settingsRepository;
 		if(settingsRepository.findOne(0) == null)
 		{
 			settingsRepository.save(Settings.getDefault());
 			LOGGER.debug("Created default settings");
 		}
+	}
 
-		Localization.init("languages/");
-		Localization.loadLanguage(settingsRepository.findOne(0).getLanguage().getLocale());
+	public Settings getSettings()
+	{
+		return settingsRepository.findOne(0);
 	}
 }

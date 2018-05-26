@@ -4,6 +4,7 @@ import de.deadlocker8.budgetmaster.entities.Account;
 import de.deadlocker8.budgetmaster.repositories.AccountRepository;
 import de.deadlocker8.budgetmaster.repositories.PaymentRepository;
 import de.deadlocker8.budgetmaster.utils.Strings;
+import org.apache.tomcat.jni.Local;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +19,14 @@ public class AccountService
 	private PaymentRepository paymentRepository;
 
 	@Autowired
-	public AccountService(AccountRepository accountRepository, PaymentRepository paymentRepository)
+	public AccountService(AccountRepository accountRepository, PaymentRepository paymentRepository, LocalizationService localizationService)
 	{
 		this.accountRepository = accountRepository;
 		this.paymentRepository = paymentRepository;
 
 		if(accountRepository.findAll().size() == 0)
 		{
-			Account account = new Account(Strings.ACCOUNT_DEFAULT_NAME);
+			Account account = new Account(Localization.getString(Strings.ACCOUNT_DEFAULT_NAME));
 			account.setSelected(true);
 			accountRepository.save(account);
 			LOGGER.debug("Created default account");

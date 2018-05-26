@@ -141,6 +141,11 @@ public class Payment
 		this.repeatingOption = repeatingOption;
 	}
 
+	public boolean isRepeating()
+	{
+		return repeatingOption != null;
+	}
+
 	@Override
 	public String toString()
 	{
