@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tools.Localization;
 
 @Service
 public class AccountService
@@ -24,8 +25,10 @@ public class AccountService
 
 		if(accountRepository.findAll().size() == 0)
 		{
-			accountRepository.save(new Account(Strings.ACCOUNT_DEFAULT_NAME));
-			LOGGER.debug("Created default category NONE");
+			Account account = new Account(Strings.ACCOUNT_DEFAULT_NAME);
+			account.setSelected(true);
+			accountRepository.save(account);
+			LOGGER.debug("Created default account");
 		}
 	}
 
