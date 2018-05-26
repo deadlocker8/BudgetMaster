@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.controller;
 
 import de.deadlocker8.budgetmaster.entities.Payment;
 import de.deadlocker8.budgetmaster.entities.Settings;
+import de.deadlocker8.budgetmaster.repeating.RepeatingPaymentUpdater;
 import de.deadlocker8.budgetmaster.repositories.PaymentRepository;
 import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
 import de.deadlocker8.budgetmaster.services.HelpersService;
@@ -21,13 +22,16 @@ import java.util.List;
 public class IndexController extends BaseController
 {
 	@Autowired
-	SettingsRepository settingsRepository;
+	private SettingsRepository settingsRepository;
 
 	@Autowired
 	private PaymentService paymentService;
 
 	@Autowired
-	PaymentRepository paymentRepository;
+	private PaymentRepository paymentRepository;
+
+	@Autowired
+	private RepeatingPaymentUpdater repeatingPaymentUpdater;
 
 	@Autowired
 	private HelpersService helpers;
@@ -48,6 +52,7 @@ public class IndexController extends BaseController
 
 		model.addAttribute("currentDate", date);
 
+		repeatingPaymentUpdater.updateRepeatingPayments(date);
 		List<Payment> payments = paymentService.getPaymentsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear());
 
 		int incomeSum = helpers.getIncomeSumForPaymentList(payments);

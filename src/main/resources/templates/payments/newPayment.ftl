@@ -22,6 +22,7 @@
                     <form name="NewPayment" action="/payments/newPayment" method="post" onsubmit="return validateForm()">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="ID" value="<#if payment.getID()??>${payment.getID()}</#if>">
+                        <input type="hidden" name="repeatingOption" value="<#if payment.getRepeatingOption()??>${payment.getRepeatingOption()}</#if>">
 
                         <#-- isPayment switch -->
                         <div class="row">

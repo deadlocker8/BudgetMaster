@@ -14,7 +14,6 @@ public abstract class RepeatingEnd
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer ID;
 
-	@Transient
 	private String localizationKey;
 
 	RepeatingEnd(String localizationKey)
@@ -47,4 +46,13 @@ public abstract class RepeatingEnd
 	public abstract boolean isEndReached(List<DateTime> dates);
 
 	public abstract  Object getValue();
+
+	@Override
+	public String toString()
+	{
+		return "RepeatingEnd{" +
+				"ID=" + ID +
+				", localizationKey='" + localizationKey + '\'' +
+				'}';
+	}
 }

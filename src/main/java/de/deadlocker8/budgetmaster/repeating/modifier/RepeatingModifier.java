@@ -15,7 +15,6 @@ public abstract class RepeatingModifier
 
 	Integer quantity;
 
-	@Transient
 	private String localizationKey;
 
 	RepeatingModifier(int quantity, String localizationKey)
@@ -58,4 +57,14 @@ public abstract class RepeatingModifier
 
 	@Transient
 	public abstract DateTime getNextDate(DateTime lastDate);
+
+	@Override
+	public String toString()
+	{
+		return "RepeatingModifier{" +
+				"ID=" + ID +
+				", quantity=" + quantity +
+				", localizationKey='" + localizationKey + '\'' +
+				'}';
+	}
 }

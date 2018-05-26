@@ -38,6 +38,19 @@ public class Payment
 	{
 	}
 
+	public Payment(Payment payment)
+	{
+		this.ID = payment.getID();
+		this.amount = payment.getAmount();
+		this.date = payment.getDate();
+		this.account = payment.getAccount();
+		this.category = payment.getCategory();
+		this.name = payment.getName();
+		this.description = payment.getDescription();
+		this.tags = new ArrayList<>(payment.getTags());
+		this.repeatingOption = payment.getRepeatingOption();
+	}
+
 	public Integer getID()
 	{
 		return ID;

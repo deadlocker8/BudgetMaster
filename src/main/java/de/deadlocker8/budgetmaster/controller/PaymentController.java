@@ -1,7 +1,10 @@
 package de.deadlocker8.budgetmaster.controller;
 
-import de.deadlocker8.budgetmaster.entities.*;
+import de.deadlocker8.budgetmaster.entities.Payment;
+import de.deadlocker8.budgetmaster.entities.Settings;
+import de.deadlocker8.budgetmaster.entities.Tag;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
+import de.deadlocker8.budgetmaster.repeating.RepeatingPaymentUpdater;
 import de.deadlocker8.budgetmaster.repeating.endoption.*;
 import de.deadlocker8.budgetmaster.repeating.modifier.*;
 import de.deadlocker8.budgetmaster.repositories.*;
@@ -15,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -44,12 +46,20 @@ public class PaymentController extends BaseController
 	private TagRepository tagRepository;
 
 	@Autowired
+	private RepeatingOptionRepository repeatingOptionRepository;
+
+	@Autowired
+	private RepeatingPaymentUpdater repeatingPaymentUpdater;
+
+	@Autowired
 	private HelpersService helpers;
 
 	@RequestMapping("/payments")
 	public String payments(Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
 	{
 		DateTime date = getDateTimeFromCookie(cookieDate);
+
+		repeatingPaymentUpdater.updateRepeatingPayments(date);
 		List<Payment> payments = paymentService.getPaymentsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear());
 
 		model.addAttribute("payments", payments);
@@ -62,7 +72,7 @@ public class PaymentController extends BaseController
 	@RequestMapping("/payments/{ID}/requestDelete")
 	public String requestDeletePayment(Model model, @PathVariable("ID") Integer ID, @CookieValue("currentDate") String cookieDate)
 	{
-		if(!isDeletable(ID))
+		if(!paymentService.isDeletable(ID))
 		{
 			return "redirect:/payments";
 		}
@@ -80,11 +90,7 @@ public class PaymentController extends BaseController
 	@RequestMapping("/payments/{ID}/delete")
 	public String deletePayment(Model model, @PathVariable("ID") Integer ID)
 	{
-		if(isDeletable(ID))
-		{
-			paymentRepository.delete(ID);
-		}
-
+		paymentService.deletePayment(ID);
 		return "redirect:/payments";
 	}
 
@@ -111,6 +117,14 @@ public class PaymentController extends BaseController
 					   @RequestParam(value = "repeatingEndValue", required = false) String repeatingEndValue)
 	{
 		DateTime date = getDateTimeFromCookie(cookieDate);
+
+		// handle repeatingPayments
+		System.out.println(payment);
+		if(payment.getID() != null && payment.getRepeatingOption() != null)
+		{
+			System.out.println("Edit repeating payment --> delete first");
+			paymentService.deletePayment(payment.getID());
+		}
 
 		PaymentValidator paymentValidator = new PaymentValidator();
 		paymentValidator.validate(payment, bindingResult);
@@ -200,18 +214,20 @@ public class PaymentController extends BaseController
 			throw new ResourceNotFoundException();
 		}
 
+		// select first payment in order to provide correct start date for repeating payments
+		if(payment.getRepeatingOption() != null)
+		{
+			payment = payment.getRepeatingOption().getReferringPayments().get(0);
+		}
+
+		System.out.println("Editing Payment: " + payment);
+
 		DateTime date = getDateTimeFromCookie(cookieDate);
 		model.addAttribute("currentDate", date);
 		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
 		model.addAttribute("accounts", accountRepository.findAllByOrderByNameAsc());
 		model.addAttribute("payment", payment);
 		return "payments/newPayment";
-	}
-
-	private boolean isDeletable(Integer ID)
-	{
-		Payment paymentToDelete = paymentRepository.getOne(ID);
-		return paymentToDelete != null && paymentToDelete.getCategory().getType() != CategoryType.REST;
 	}
 
 	private Settings getSettings()

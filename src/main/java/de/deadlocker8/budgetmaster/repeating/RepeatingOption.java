@@ -26,7 +26,7 @@ public class RepeatingOption
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private RepeatingEnd endOption;
 
-	@OneToMany(mappedBy = "repeatingOption", fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "repeatingOption", fetch = FetchType.LAZY)
 	private List<Payment> referringPayments;
 
 	public RepeatingOption(DateTime startDate, RepeatingModifier modifier, RepeatingEnd endOption)
