@@ -32,4 +32,17 @@ public enum LanguageType
 	{
 		return iconName;
 	}
+
+	public static LanguageType fromName(String name)
+	{
+		for(LanguageType type : values())
+		{
+			if(type.getName().equals(name))
+			{
+				return type;
+			}
+		}
+
+		return null;
+	}
 }

@@ -215,6 +215,8 @@ public class Strings
     public static final String WARNING_SERVER_VERSION = "warning.server.version";
     public static final String WARNING_EMPTY_YEAR = "warning.empty.year";
     public static final String WARNING_WRONG_YEAR = "warning.wrong.year";
+    public static final String WARNING_SETTINGS_PASSWORD_EMPTY = "warning.settings.password.empty";
+    public static final String WARNING_SETTINGS_PASSWORD_LENGTH = "warning.settings.password.length";
 
     //ERROR
     public static final String ERROR_UNKNOWN_HOST = "error.unknown.host";

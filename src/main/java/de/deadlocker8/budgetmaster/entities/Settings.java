@@ -16,9 +16,6 @@ public class Settings
 {
 	@Id
 	private int ID;
-	@NotNull
-	@Size(min = 1)
-	private String password;
 	private String currency;
 	private LanguageType language;
 	private boolean restActivated;
@@ -33,7 +30,6 @@ public class Settings
 	public static Settings getDefault()
 	{
 		Settings defaultSettings = new Settings();
-		defaultSettings.setPassword("BudgetMaster");
 		defaultSettings.setCurrency("€");
 		defaultSettings.setLanguage(LanguageType.ENGLISH);
 		defaultSettings.setRestActivated(true);
@@ -46,16 +42,6 @@ public class Settings
 	public int getID()
 	{
 		return ID;
-	}
-
-	public String getPassword()
-	{
-		return password;
-	}
-
-	public void setPassword(String password)
-	{
-		this.password = password;
 	}
 
 	public String getCurrency()
@@ -111,8 +97,8 @@ public class Settings
 	@Override
 	public String toString()
 	{
-		return "SettingsRepository{" +
-				"password='" + password + '\'' +
+		return "Settings{" +
+				"ID=" + ID +
 				", currency='" + currency + '\'' +
 				", language=" + language +
 				", restActivated=" + restActivated +

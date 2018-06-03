@@ -44,7 +44,7 @@
                                 <div class="switch">
                                     <label>
                                     ${locale.getString("settings.rest.deactivated")}
-                                        <input type="checkbox" name="isPayment" <#if settings.isRestActivated()>checked</#if>>
+                                        <input type="checkbox" name="restActivated" <#if settings.isRestActivated()>checked</#if>>
                                         <span class="lever"></span>
                                     ${locale.getString("settings.rest.activated")}
                                     </label>
@@ -55,7 +55,7 @@
                                 <div class="switch">
                                     <label>
                                     ${locale.getString("settings.darkTheme.deactivated")}
-                                        <input type="checkbox" name="isPayment" <#if settings.isUseDarkTheme()>checked</#if>>
+                                        <input type="checkbox" name="useDarkTheme" <#if settings.isUseDarkTheme()>checked</#if>>
                                         <span class="lever"></span>
                                     ${locale.getString("settings.darkTheme.activated")}
                                     </label>
@@ -66,7 +66,7 @@
                         <#-- language -->
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
-                                <select id="settings-language" name="language" <@validation.validation "language"/>>
+                                <select id="settings-language" name="languageType" <@validation.validation "language"/>>
                                     <#list helpers.getAvailableLanguages() as language>
                                         <#if settings.getLanguage() == language>
                                             <option selected value="${language.getName()}">${language.getName()}</option>
@@ -94,7 +94,7 @@
                                             <div class="switch">
                                                 <label>
                                                 ${locale.getString("settings.updates.automatic.deactivated")}
-                                                    <input type="checkbox" name="isPayment" <#if settings.isUseDarkTheme()>checked</#if>>
+                                                    <input type="checkbox" name="autoUpdateCheckEnabled" <#if settings.isUseDarkTheme()>checked</#if>>
                                                     <span class="lever"></span>
                                                 ${locale.getString("settings.updates.automatic.activated")}
                                                 </label>
