@@ -10,6 +10,7 @@ import de.deadlocker8.budgetmaster.repositories.PaymentRepository;
 import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
 import de.deadlocker8.budgetmaster.repositories.TagRepository;
 import de.deadlocker8.budgetmaster.utils.Colors;
+import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -76,6 +77,11 @@ public class HelpersService
 		{
 			return input;
 		}
+	}
+
+	public List<LanguageType> getAvailableLanguages()
+	{
+		return Arrays.asList(LanguageType.values());
 	}
 
 	public String getDateString(DateTime date)

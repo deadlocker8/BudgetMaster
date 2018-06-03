@@ -15,13 +15,6 @@ public class EmptyPageController extends BaseController
 		return "emptyPage";
 	}
 
-	@RequestMapping("/settings")
-	public String settings(Model model)
-	{
-		model.addAttribute("active", "settings");
-		return "emptyPage";
-	}
-
 	@RequestMapping("/charts")
 	public String charts(Model model)
 	{

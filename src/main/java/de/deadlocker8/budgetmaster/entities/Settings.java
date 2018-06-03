@@ -43,6 +43,11 @@ public class Settings
 		return defaultSettings;
 	}
 
+	public int getID()
+	{
+		return ID;
+	}
+
 	public String getPassword()
 	{
 		return password;
