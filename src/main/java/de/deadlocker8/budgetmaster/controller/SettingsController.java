@@ -78,4 +78,22 @@ public class SettingsController extends BaseController
 
 		return "redirect:/settings";
 	}
+
+	@RequestMapping("/settings/database/requestImport")
+	public String requestImportDatabase(Model model)
+	{
+		return "settings";
+	}
+
+	@RequestMapping("/settings/database/requestExport")
+	public String requestExportDatabase(Model model)
+	{
+		return "settings";
+	}
+
+	@RequestMapping("/settings/database/requestDelete")
+	public String requestDeleteDatabase(Model model)
+	{
+		return "settings";
+	}
 }

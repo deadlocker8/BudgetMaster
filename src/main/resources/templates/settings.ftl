@@ -101,7 +101,7 @@
                                             </div>
                                         </td>
                                         <td>${locale.getString("settings.updates.current.version")}</td>
-                                        <td>v2.0.0</td>
+                                        <td>v${locale.getString("version.name")} (${locale.getString("version.code")})</td>
                                     </tr>
                                     <tr>
                                         <td>${locale.getString("settings.updates.latest.version")}</td>
@@ -127,6 +127,49 @@
                             </div>
                         </div>
                     </form>
+                </div>
+
+                <hr>
+                <#-- database -->
+                <div class="container">
+                    <div class="section center-align">
+                        <div class="grey-text text-darken-4 headline">${locale.getString("menu.settings.database")}</div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row hide-on-small-only">
+                        <div class="col m4 l4 center-align">
+                            <a href="/settings/database/requestImport" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">cloud_upload</i>${locale.getString("settings.database.import")}</a>
+                        </div>
+
+                        <div class="col m4 l4 center-align">
+                            <a href="/settings/database/requestExport" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">cloud_download</i>${locale.getString("settings.database.export")}</a>
+                        </div>
+
+                        <div class="col m4 l4 center-align">
+                            <a href="/settings/database/requestDelete" class="waves-effect waves-light btn budgetmaster-red"><i class="material-icons left">delete_forever</i>${locale.getString("settings.database.delete")}</a>
+                        </div>
+                    </div>
+
+                    <div class="hide-on-med-and-up">
+                        <div class="row center-align">
+                            <div class="col s12">
+                                <a href="/settings/database/requestImport" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">cloud_upload</i>${locale.getString("settings.database.import")}</a>
+                            </div>
+                        </div>
+
+                        <div class="row center-align">
+                            <div class="col s12">
+                                <a href="/settings/database/requestExport" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">cloud_download</i>${locale.getString("settings.database.export")}</a>
+                            </div>
+                        </div>
+
+                        <div class="row center-align">
+                            <div class="col s12">
+                                <a href="/settings/database/requestDelete" class="waves-effect waves-light btn budgetmaster-red"><i class="material-icons left">delete_forever</i>${locale.getString("settings.database.delete")}</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
