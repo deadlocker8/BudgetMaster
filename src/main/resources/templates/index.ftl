@@ -71,5 +71,6 @@
         <#import "scripts.ftl" as scripts>
         <@scripts.scripts/>
         <script src="/js/datePicker.js"></script>
+        <script>document.cookie = "currentDate=${helpers.getDateString(currentDate)}";</script>
     </body>
 </html>
