@@ -20,6 +20,11 @@ public class SettingsService
 	public SettingsService(SettingsRepository settingsRepository)
 	{
 		this.settingsRepository = settingsRepository;
+		createDefaultSettingsIfNotExists();
+	}
+
+	public void createDefaultSettingsIfNotExists()
+	{
 		if(settingsRepository.findOne(0) == null)
 		{
 			settingsRepository.save(Settings.getDefault());

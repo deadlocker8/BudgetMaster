@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CategoryService
+public class CategoryService implements Resetable
 {
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private CategoryRepository categoryRepository;
@@ -20,17 +20,7 @@ public class CategoryService
 	{
 		this.categoryRepository = categoryRepository;
 
-		if(categoryRepository.findByType(CategoryType.NONE) == null)
-		{
-			categoryRepository.save(new Category("Keine Kategorie", "#FFFFFF", CategoryType.NONE));
-			LOGGER.debug("Created default category NONE");
-		}
-
-		if(categoryRepository.findByType(CategoryType.REST) == null)
-		{
-			categoryRepository.save(new Category("Übertrag", "#FFFF00", CategoryType.REST));
-			LOGGER.debug("Created default category REST");
-		}
+		createDefaults();
 	}
 
 	public void deleteCategory(int ID)
@@ -42,5 +32,27 @@ public class CategoryService
 		}
 
 		categoryRepository.delete(ID);
+	}
+
+	@Override
+	public void deleteAll()
+	{
+		categoryRepository.deleteAll();
+	}
+
+	@Override
+	public void createDefaults()
+	{
+		if(categoryRepository.findByType(CategoryType.NONE) == null)
+		{
+			categoryRepository.save(new Category("Keine Kategorie", "#FFFFFF", CategoryType.NONE));
+			LOGGER.debug("Created default category NONE");
+		}
+
+		if(categoryRepository.findByType(CategoryType.REST) == null)
+		{
+			categoryRepository.save(new Category("Übertrag", "#FFFF00", CategoryType.REST));
+			LOGGER.debug("Created default category REST");
+		}
 	}
 }

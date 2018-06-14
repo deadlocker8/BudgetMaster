@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import tools.Localization;
 
 @Service
-public class AccountService
+public class AccountService implements Resetable
 {
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private AccountRepository accountRepository;
@@ -24,13 +24,7 @@ public class AccountService
 		this.accountRepository = accountRepository;
 		this.paymentRepository = paymentRepository;
 
-		if(accountRepository.findAll().size() == 0)
-		{
-			Account account = new Account(Localization.getString(Strings.ACCOUNT_DEFAULT_NAME));
-			account.setSelected(true);
-			accountRepository.save(account);
-			LOGGER.debug("Created default account");
-		}
+		createDefaults();
 	}
 
 	public void deleteAccount(int ID)
@@ -38,5 +32,23 @@ public class AccountService
 		Account accountToDelete = accountRepository.findOne(ID);
 		paymentRepository.delete(accountToDelete.getReferringPayments());
 		accountRepository.delete(ID);
+	}
+
+	@Override
+	public void deleteAll()
+	{
+		accountRepository.deleteAll();
+	}
+
+	@Override
+	public void createDefaults()
+	{
+		if(accountRepository.findAll().size() == 0)
+		{
+			Account account = new Account(Localization.getString(Strings.ACCOUNT_DEFAULT_NAME));
+			account.setSelected(true);
+			accountRepository.save(account);
+			LOGGER.debug("Created default account");
+		}
 	}
 }

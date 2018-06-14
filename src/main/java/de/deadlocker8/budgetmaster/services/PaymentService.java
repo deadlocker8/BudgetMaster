@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class PaymentService
+public class PaymentService implements Resetable
 {
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private PaymentRepository paymentRepository;
@@ -55,5 +55,16 @@ public class PaymentService
 	{
 		Payment paymentToDelete = paymentRepository.getOne(ID);
 		return paymentToDelete != null && paymentToDelete.getCategory().getType() != CategoryType.REST;
+	}
+
+	@Override
+	public void deleteAll()
+	{
+		paymentRepository.deleteAll();
+	}
+
+	@Override
+	public void createDefaults()
+	{
 	}
 }

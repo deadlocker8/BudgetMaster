@@ -4,6 +4,7 @@ import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
 import de.deadlocker8.budgetmaster.entities.Settings;
 import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
+import de.deadlocker8.budgetmaster.services.DatabaseService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.deadlocker8.budgetmaster.utils.Strings;
@@ -18,6 +19,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import tools.BASE58Type;
+import tools.ConvertTo;
+import tools.RandomCreations;
 
 
 @Controller
@@ -31,6 +35,9 @@ public class SettingsController extends BaseController
 
 	@Autowired
 	private HelpersService helpers;
+
+	@Autowired
+	private DatabaseService databaseService;
 
 	@RequestMapping("/settings")
 	public String settings(Model model)
@@ -94,6 +101,28 @@ public class SettingsController extends BaseController
 	@RequestMapping("/settings/database/requestDelete")
 	public String requestDeleteDatabase(Model model)
 	{
+		String verificationCode = ConvertTo.toBase58(RandomCreations.generateRandomMixedCaseString(4, true), true, BASE58Type.UPPER);
+		model.addAttribute("deleteDatabase", true);
+		model.addAttribute("verificationCode", verificationCode);
+		return "settings";
+	}
+
+	@RequestMapping(value = "/settings/database/delete", method = RequestMethod.POST)
+	public String deleteDatabase(Model model,
+								 @RequestParam("verificationCode") String verificationCode,
+								 @RequestParam("verificationUserInput") String verificationUserInput)
+	{
+		if(verificationUserInput.equals(verificationCode))
+		{
+			LOGGER.info("Deleting database...");
+			databaseService.reset();
+			LOGGER.info("Deleting database DONE.");
+		}
+		else
+		{
+			return "redirect:/settings/database/requestDelete";
+		}
+
 		return "settings";
 	}
 }
