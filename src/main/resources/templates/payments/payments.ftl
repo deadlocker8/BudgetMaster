@@ -15,11 +15,21 @@
                 <@datePicker.datePicker currentDate "/payments"/>
                 <div class="hide-on-small-only"><br></div>
                  <div class="container">
-                    <div class="row valign-wrapper">
+                    <div class="row valign-wrapper hide-on-small-only">
                         <div class="col s4 left-align"><h5>${locale.getString("title.incomes")}: ${helpers.getCurrencyString(incomeSum)}</h5></div>
                         <div class="col s4 center-align"><a href="/payments/newPayment" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.payment.new")}</a></div>
                         <div class="col s4 right-align"><h5>${locale.getString("title.payments")}: ${helpers.getCurrencyString(paymentSum)}</h5></div>
                     </div>
+
+                     <div class="hide-on-med-and-up">
+                         <div class="row valign-wrapper">
+                             <div class="col s6 left-align"><h5>${locale.getString("title.incomes")}: ${helpers.getCurrencyString(incomeSum)}</h5></div>
+                             <div class="col s6 right-align"><h5>${locale.getString("title.payments")}: ${helpers.getCurrencyString(paymentSum)}</h5></div>
+                         </div>
+                         <div class="row valign-wrapper">
+                             <div class="col s12 center-align"><a href="/payments/newPayment" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.payment.new")}</a></div>
+                         </div>
+                     </div>
                     <br>
                     <table class="bordered">
                         <#list payments as payment>
