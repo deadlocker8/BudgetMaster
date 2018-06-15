@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.repeating.endoption;
 
+import com.google.gson.annotations.Expose;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
@@ -12,8 +13,10 @@ public abstract class RepeatingEnd
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Expose
 	private Integer ID;
 
+	@Expose
 	private String localizationKey;
 
 	RepeatingEnd(String localizationKey)

@@ -1,9 +1,18 @@
 package de.deadlocker8.budgetmaster.services;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
+import de.deadlocker8.budgetmaster.entities.Account;
+import de.deadlocker8.budgetmaster.entities.Category;
+import de.deadlocker8.budgetmaster.entities.Payment;
+import de.deadlocker8.budgetmaster.entities.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class DatabaseService
@@ -12,13 +21,15 @@ public class DatabaseService
 	private AccountService accountService;
 	private CategoryService categoryService;
 	private PaymentService paymentService;
+	private TagService tagService;
 
 	@Autowired
-	public DatabaseService(AccountService accountService, CategoryService categoryService, PaymentService paymentService)
+	public DatabaseService(AccountService accountService, CategoryService categoryService, PaymentService paymentService, TagService tagService)
 	{
 		this.accountService = accountService;
 		this.categoryService = categoryService;
 		this.paymentService = paymentService;
+		this.tagService = tagService;
 	}
 
 	public void reset()
@@ -56,8 +67,20 @@ public class DatabaseService
 	private void resetTags()
 	{
 		LOGGER.info("Resetting tags...");
-		paymentService.deleteAll();
-		paymentService.createDefaults();
+		tagService.deleteAll();
+		tagService.createDefaults();
 		LOGGER.info("All tags reset.");
+	}
+
+	public String getDatabaseAsJSON()
+	{
+		List<Category> categories = categoryService.getRepository().findAll();
+		List<Account> accounts = accountService.getRepository().findAll();
+		List<Payment> payments = paymentService.getRepository().findAll();
+
+		Database database = new Database(categories, accounts, payments);
+
+		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
+		return gson.toJson(database);
 	}
 }

@@ -27,6 +27,11 @@ public class AccountService implements Resetable
 		createDefaults();
 	}
 
+	public AccountRepository getRepository()
+	{
+		return accountRepository;
+	}
+
 	public void deleteAccount(int ID)
 	{
 		Account accountToDelete = accountRepository.findOne(ID);

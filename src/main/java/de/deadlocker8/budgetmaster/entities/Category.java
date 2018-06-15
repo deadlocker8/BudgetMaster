@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.entities;
 
+import com.google.gson.annotations.Expose;
 import javafx.scene.paint.Color;
 import tools.ConvertTo;
 
@@ -13,16 +14,20 @@ public class Category
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Expose
 	private Integer ID;
 
 	@NotNull
 	@Size(min = 1)
+	@Expose
 	private String name;
+	@Expose
 	private String color;
+	@Expose
 	private CategoryType type;
 
 	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-	private List<Payment> referringPayments;
+	private transient List<Payment> referringPayments;
 
 	public Category(String name, String color, CategoryType type)
 	{

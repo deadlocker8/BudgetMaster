@@ -8,12 +8,14 @@ import de.deadlocker8.budgetmaster.services.DatabaseService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.deadlocker8.budgetmaster.utils.Strings;
+import logger.Logger;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import tools.BASE58Type;
 import tools.ConvertTo;
 import tools.RandomCreations;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 
 
 @Controller
@@ -93,9 +102,28 @@ public class SettingsController extends BaseController
 	}
 
 	@RequestMapping("/settings/database/requestExport")
-	public String requestExportDatabase(Model model)
+	public void downloadFile(HttpServletResponse response)
 	{
-		return "settings";
+		LOGGER.debug("Exporting database...");
+		String data = databaseService.getDatabaseAsJSON();
+
+		String fileName = "BudgetMasterDatabase_" + DateTime.now().toString("yyyy_MM_dd") + ".json";
+		response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+
+		response.setContentType("application/json");
+		response.setContentLength(data.length());
+
+		try(ServletOutputStream out = response.getOutputStream())
+		{
+			out.println(data);
+			out.flush();
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+
+		LOGGER.debug("Exporting database DONE");
 	}
 
 	@RequestMapping("/settings/database/requestDelete")

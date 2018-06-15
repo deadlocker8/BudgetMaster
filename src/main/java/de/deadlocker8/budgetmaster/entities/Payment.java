@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.entities;
 
+import com.google.gson.annotations.Expose;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,25 +14,34 @@ public class Payment
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Expose
 	private Integer ID;
+	@Expose
 	private Integer amount;
 
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
+	@Expose
 	private DateTime date;
 
 	@ManyToOne
+	@Expose
 	private Account account;
 
 	@ManyToOne
+	@Expose
 	private Category category;
 
+	@Expose
 	private String name;
+	@Expose
 	private String description;
 
 	@ManyToMany(cascade = CascadeType.ALL)
+	@Expose
 	private List<Tag> tags;
 
 	@ManyToOne(optional = true, cascade = CascadeType.ALL)
+	@Expose
 	private RepeatingOption repeatingOption;
 
 	public Payment()

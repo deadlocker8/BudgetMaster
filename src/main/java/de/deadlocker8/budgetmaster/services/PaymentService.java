@@ -27,6 +27,11 @@ public class PaymentService implements Resetable
 		this.repeatingOptionRepository = repeatingOptionRepository;
 	}
 
+	public PaymentRepository getRepository()
+	{
+		return paymentRepository;
+	}
+
 	public List<Payment> getPaymentsForMonthAndYear(Account account, int month, int year)
 	{
 		DateTime startDate = DateTime.now().withYear(year).withMonthOfYear(month).minusMonths(1).dayOfMonth().withMaximumValue();

@@ -23,6 +23,11 @@ public class CategoryService implements Resetable
 		createDefaults();
 	}
 
+	public CategoryRepository getRepository()
+	{
+		return categoryRepository;
+	}
+
 	public void deleteCategory(int ID)
 	{
 		Category categoryToDelete = categoryRepository.findOne(ID);

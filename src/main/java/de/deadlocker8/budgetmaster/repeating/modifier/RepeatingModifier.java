@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.repeating.modifier;
 
+import com.google.gson.annotations.Expose;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
@@ -11,10 +12,13 @@ public abstract class RepeatingModifier
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Expose
 	private Integer ID;
 
+	@Expose
 	Integer quantity;
 
+	@Expose
 	private String localizationKey;
 
 	RepeatingModifier(int quantity, String localizationKey)

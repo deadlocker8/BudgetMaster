@@ -18,6 +18,11 @@ public class TagService implements Resetable
 		this.tagRepository = tagRepository;
 	}
 
+	public TagRepository getRepository()
+	{
+		return tagRepository;
+	}
+
 	@Override
 	public void deleteAll()
 	{

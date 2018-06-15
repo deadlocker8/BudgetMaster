@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.repeating;
 
+import com.google.gson.annotations.Expose;
 import de.deadlocker8.budgetmaster.entities.Payment;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEnd;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifier;
@@ -15,15 +16,19 @@ public class RepeatingOption
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Expose
 	private Integer ID;
 
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
+	@Expose
 	private DateTime startDate;
 
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@Expose
 	private RepeatingModifier modifier;
 
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@Expose
 	private RepeatingEnd endOption;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "repeatingOption", fetch = FetchType.LAZY)
