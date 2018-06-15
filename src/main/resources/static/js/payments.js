@@ -207,6 +207,9 @@ function removeTooltip(id)
 
 function validateForm()
 {
+    // amount
+    validateAmount($('#payment-amount').val());
+
     // handle tags
     var tags = $('.chips-autocomplete').material_chip('data');
     var parent = document.getElementById("hidden-payment-tags");
