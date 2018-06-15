@@ -68,6 +68,8 @@
                                             </#if>
                                         <#elseif category.getType() == "NONE">
                                             <option selected value="${category.getID()}">${category.getName()}</option>
+                                        <#else>
+                                            <option value="${category.getID()}">${category.getName()}</option>
                                         </#if>
                                     </#list>
                                 </select>
