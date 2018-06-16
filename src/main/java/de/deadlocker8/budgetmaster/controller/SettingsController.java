@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tools.BASE58Type;
 import tools.ConvertTo;
+import tools.Localization;
 import tools.RandomCreations;
 
 import javax.servlet.ServletOutputStream;
@@ -86,6 +87,8 @@ public class SettingsController extends BaseController
 
 			settingsRepository.delete(0);
 			settingsRepository.save(settings);
+
+			Localization.loadLanguage(settings.getLanguage().getLocale());
 		}
 
 		return "redirect:/settings";
