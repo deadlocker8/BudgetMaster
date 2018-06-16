@@ -29,7 +29,6 @@ public class LegacyParserTest
 		try
 		{
 			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("LegacyParserTest.json").toURI())));
-			Account account = new Account("LEGACY_IMPORT");
 
 			LegacyParser importer = new LegacyParser(json);
 			Database database = importer.parseDatabaseFromJSON();

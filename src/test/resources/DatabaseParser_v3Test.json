@@ -1,0 +1,173 @@
+{
+  "TYPE": "BUDGETMASTER_DATABASE",
+  "VERSION": 3,
+  "categories": [
+    {
+      "ID": 1,
+      "name": "Keine Kategorie",
+      "color": "#FFFFFF",
+      "type": "NONE"
+    },
+    {
+      "ID": 2,
+      "name": "Übertrag",
+      "color": "#FFFF00",
+      "type": "REST"
+    },
+    {
+      "ID": 3,
+      "name": "0815",
+      "color": "#ffcc00",
+      "type": "CUSTOM"
+    }
+  ],
+  "accounts": [
+    {
+      "ID": 1,
+      "name": "Default"
+    },
+	 {
+      "ID": 2,
+      "name": "Second Account"
+    }
+  ],
+  "payments": [
+    {
+      "ID": 5,
+      "amount": 35000,
+      "date": "2018-03-13",
+      "account": {
+        "ID": 1,
+        "name": "Default"
+      },
+      "category": {
+        "ID": 1,
+        "name": "Keine Kategorie",
+        "color": "#FFFFFF",
+        "type": "NONE"
+      },
+      "name": "Income",
+      "description": "Lorem Ipsum",
+      "tags": []
+    },
+    {
+      "ID": 12,
+      "amount": -2000,
+      "date": "2018-06-15",
+      "account": {
+        "ID": 2,
+        "name": "Second Account"
+      },
+      "category": {
+        "ID": 3,
+        "name": "0815",
+        "color": "#ffcc00",
+        "type": "CUSTOM"
+      },
+      "name": "Simple",
+      "description": "",
+      "tags": [
+        {
+          "ID": 1,
+          "name": "0815"
+        }
+      ]
+    },
+    {
+      "ID": 13,
+      "amount": -12300,
+      "date": "2018-03-13",
+      "account": {
+        "ID": 1,
+        "name": "Default"
+      },
+      "category": {
+        "ID": 1,
+        "name": "Keine Kategorie",
+        "color": "#FFFFFF",
+        "type": "NONE"
+      },
+      "name": "Test",
+      "description": "",
+      "tags": [],
+      "repeatingOption": {
+        "ID": 2,
+        "startDate": "2018-03-13",
+        "modifier": {
+          "ID": 3,
+          "quantity": 10,
+          "localizationKey": "repeating.modifier.days"
+        },
+        "endOption": {
+          "times": 2,
+          "ID": 3,
+          "localizationKey": "repeating.end.key.afterXTimes"
+        }
+      }
+    },
+    {
+      "ID": 14,
+      "amount": -12300,
+      "date": "2018-03-23",
+      "account": {
+        "ID": 1,
+        "name": "Default"
+      },
+      "category": {
+        "ID": 1,
+        "name": "Keine Kategorie",
+        "color": "#FFFFFF",
+        "type": "NONE"
+      },
+      "name": "Test",
+      "description": "",
+      "tags": [],
+      "repeatingOption": {
+        "ID": 2,
+        "startDate": "2018-03-13",
+        "modifier": {
+          "ID": 3,
+          "quantity": 10,
+          "localizationKey": "repeating.modifier.days"
+        },
+        "endOption": {
+          "times": 2,
+          "ID": 3,
+          "localizationKey": "repeating.end.key.afterXTimes"
+        }
+      }
+    },
+    {
+      "ID": 15,
+      "amount": -12300,
+      "date": "2018-04-02",
+      "account": {
+        "ID": 1,
+        "name": "Default"
+      },
+      "category": {
+        "ID": 1,
+        "name": "Keine Kategorie",
+        "color": "#FFFFFF",
+        "type": "NONE"
+      },
+      "name": "Test",
+      "description": "",
+      "tags": [],
+      "repeatingOption": {
+        "ID": 2,
+        "startDate": "2018-03-13",
+        "modifier": {
+          "ID": 3,
+          "quantity": 10,
+          "localizationKey": "repeating.modifier.days"
+        },
+        "endOption": {
+          "times": 2,
+          "ID": 3,
+          "localizationKey": "repeating.end.key.afterXTimes"
+        }
+      }
+    }
+  ]
+}

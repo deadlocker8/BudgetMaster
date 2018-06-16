@@ -1,10 +1,7 @@
 package de.deadlocker8.budgetmaster.database;
 
 import com.google.gson.*;
-import de.deadlocker8.budgetmaster.entities.Account;
-import de.deadlocker8.budgetmaster.entities.Category;
-import de.deadlocker8.budgetmaster.entities.Payment;
-import de.deadlocker8.budgetmaster.entities.Tag;
+import de.deadlocker8.budgetmaster.entities.*;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.repeating.endoption.*;
 import de.deadlocker8.budgetmaster.repeating.modifier.*;
@@ -12,6 +9,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.Localization;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +34,7 @@ public class DatabaseParser_v3
 		accounts = parseAccounts(root);
 		List<Payment> payments = parsePayments(root);
 
-		return new Database(categories, accounts, null);
+		return new Database(categories, accounts, payments);
 	}
 
 	private List<Category> parseCategories(JsonObject root)
@@ -45,7 +43,8 @@ public class DatabaseParser_v3
 		JsonArray categories = root.get("categories").getAsJsonArray();
 		for(JsonElement currentCategory : categories)
 		{
-			parsedCategories.add(new Gson().fromJson(currentCategory, Category.class));
+			Category parsedCategory = new Gson().fromJson(currentCategory, Category.class);
+			parsedCategories.add(parsedCategory);
 		}
 
 		return parsedCategories;
@@ -86,7 +85,7 @@ public class DatabaseParser_v3
 			payment.setAccount(getAccountByID(accountID));
 
 			String date = currentPayment.getAsJsonObject().get("date").getAsString();
-			DateTime parsedDate = DateTime.parse(date, DateTimeFormat.forPattern("dd.MM.yyyy"));
+			DateTime parsedDate = DateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd"));
 			payment.setDate(parsedDate);
 
 			payment.setRepeatingOption(parseRepeatingOption(currentPayment.getAsJsonObject(), parsedDate));
@@ -109,14 +108,14 @@ public class DatabaseParser_v3
 		JsonObject repeatingModifier = option.get("modifier").getAsJsonObject();
 		String repeatingModifierType = repeatingModifier.get("localizationKey").getAsString();
 
-		RepeatingModifierType type = RepeatingModifierType.getByLocalization(repeatingModifierType);
+		RepeatingModifierType type = RepeatingModifierType.getByLocalization(Localization.getString(repeatingModifierType));
 		RepeatingModifier modifier = RepeatingModifier.fromModifierType(type, repeatingModifier.get("quantity").getAsInt());
 
 		JsonObject repeatingEnd = option.get("endOption").getAsJsonObject();
 		String repeatingEndType = repeatingEnd.get("localizationKey").getAsString();
 
 		RepeatingEnd endOption = null;
-		RepeatingEndType endType = RepeatingEndType.getByLocalization(repeatingEndType);
+		RepeatingEndType endType = RepeatingEndType.getByLocalization(Localization.getString(repeatingEndType));
 		switch(endType)
 		{
 			case NEVER:
@@ -126,7 +125,7 @@ public class DatabaseParser_v3
 				endOption = new RepeatingEndAfterXTimes(repeatingEnd.get("times").getAsInt());
 				break;
 			case DATE:
-				DateTime endDate = DateTime.parse(repeatingEnd.get("endDate").getAsString(), DateTimeFormat.forPattern("dd.MM.yyyy"));
+				DateTime endDate = DateTime.parse(repeatingEnd.get("endDate").getAsString(), DateTimeFormat.forPattern("yyyy-MM-dd"));
 				endOption = new RepeatingEndDate(endDate);
 				break;
 		}
