@@ -9,6 +9,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import tools.Localization;
 
+import java.util.Arrays;
+
 
 @SpringBootApplication
 public class Main implements ApplicationRunner
@@ -17,6 +19,8 @@ public class Main implements ApplicationRunner
 
 	public static void main(String[] args)
 	{
+		ProgramArgs.setArgs(Arrays.asList(args));
+
 		SpringApplication.run(Main.class, args);
 	}
 

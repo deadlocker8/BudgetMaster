@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.authentication;
 
+import de.deadlocker8.budgetmaster.ProgramArgs;
 import de.deadlocker8.budgetmaster.repositories.AccountRepository;
 import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
 import org.slf4j.Logger;
@@ -16,6 +17,12 @@ public class UserService
 	@Autowired
 	public UserService(UserRepository userRepository, AccountRepository accountRepository)
 	{
+		if(ProgramArgs.getArgs().contains("--resetPassword"))
+		{
+			LOGGER.info("Password reset");
+			userRepository.deleteAll();
+		}
+
 		if(userRepository.findAll().size() == 0)
 		{
 			BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -23,7 +30,7 @@ public class UserService
 			User user = new User("Default", encryptedPassword);
 			user.setSelectedAccount(accountRepository.findByIsSelected(true));
 			userRepository.save(user);
-			LOGGER.debug("Created default user");
+			LOGGER.info("Created default user");
 		}
 	}
 }
