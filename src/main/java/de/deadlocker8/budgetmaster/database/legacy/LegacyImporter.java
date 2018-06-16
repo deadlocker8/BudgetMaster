@@ -1,9 +1,10 @@
-package de.deadlocker8.budgetmaster.database;
+package de.deadlocker8.budgetmaster.database.legacy;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.entities.Account;
 import de.deadlocker8.budgetmaster.entities.Category;
 import de.deadlocker8.budgetmaster.entities.CategoryType;
