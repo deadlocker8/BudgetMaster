@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class RepeatingOption
@@ -129,5 +130,24 @@ public class RepeatingOption
 				", modifier=" + modifier +
 				", endOption=" + endOption +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
+		RepeatingOption that = (RepeatingOption) o;
+		return Objects.equals(ID, that.ID) &&
+				Objects.equals(startDate, that.startDate) &&
+				Objects.equals(modifier, that.modifier) &&
+				Objects.equals(endOption, that.endOption);
+	}
+
+	@Override
+	public int hashCode()
+	{
+
+		return Objects.hash(ID, startDate, modifier, endOption);
 	}
 }

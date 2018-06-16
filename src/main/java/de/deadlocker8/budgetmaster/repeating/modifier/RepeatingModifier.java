@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -70,5 +71,23 @@ public abstract class RepeatingModifier
 				", quantity=" + quantity +
 				", localizationKey='" + localizationKey + '\'' +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
+		RepeatingModifier that = (RepeatingModifier) o;
+		return Objects.equals(ID, that.ID) &&
+				Objects.equals(quantity, that.quantity) &&
+				Objects.equals(localizationKey, that.localizationKey);
+	}
+
+	@Override
+	public int hashCode()
+	{
+
+		return Objects.hash(ID, quantity, localizationKey);
 	}
 }

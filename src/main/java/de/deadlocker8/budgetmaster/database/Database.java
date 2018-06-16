@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.services;
+package de.deadlocker8.budgetmaster.database;
 
 import com.google.gson.annotations.Expose;
 import de.deadlocker8.budgetmaster.entities.Account;
@@ -29,5 +29,20 @@ public class Database
 		this.categories = categories;
 		this.accounts = accounts;
 		this.payments = payments;
+	}
+
+	public List<Category> getCategories()
+	{
+		return categories;
+	}
+
+	public List<Account> getAccounts()
+	{
+		return accounts;
+	}
+
+	public List<Payment> getPayments()
+	{
+		return payments;
 	}
 }

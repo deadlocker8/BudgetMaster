@@ -5,6 +5,7 @@ import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -57,5 +58,22 @@ public abstract class RepeatingEnd
 				"ID=" + ID +
 				", localizationKey='" + localizationKey + '\'' +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
+		RepeatingEnd that = (RepeatingEnd) o;
+		return Objects.equals(ID, that.ID) &&
+				Objects.equals(localizationKey, that.localizationKey);
+	}
+
+	@Override
+	public int hashCode()
+	{
+
+		return Objects.hash(ID, localizationKey);
 	}
 }

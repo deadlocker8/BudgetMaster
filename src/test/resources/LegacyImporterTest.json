@@ -1,0 +1,75 @@
+{
+	"TYPE": "BUDGETMASTER_DATABASE",
+	"VERSION": 2,
+	"categories": [{
+		"ID": 1,
+		"name": "NONE",
+		"color": "#FFFFFF"
+	},
+	{
+		"ID": 2,
+		"name": "Übertrag",
+		"color": "#FFFF00"
+	},
+	{
+		"ID": 3,
+		"name": "Salary",
+		"color": "#4CD964"
+	},
+	{
+		"ID": 4,
+		"name": "Stuff",
+		"color": "#9B59B6"
+	}],
+	"normalPayments": [{
+		"ID": 1,
+		"amount": -2323,
+		"date": "2018-01-21",
+		"categoryID": 4,
+		"name": "Fuel",
+		"description": "Lorem Ipsum"
+	},
+	{
+		"ID": 32,
+		"amount": 100,
+		"date": "2018-01-01",
+		"categoryID": 1,
+		"name": "no category",
+		"description": ""
+	}],
+	"repeatingPayments": [{
+		"repeatInterval": 0,
+		"repeatMonthDay": 1,
+		"ID": 1,
+		"amount": 500000,
+		"date": "2017-03-01",
+		"categoryID": 3,
+		"name": "Salary",
+		"description": "Monthly cash"
+	},
+	{
+		"repeatInterval": 7,
+		"repeatEndDate": "2017-06-15",
+		"repeatMonthDay": 0,
+		"ID": 2,
+		"amount": -2500,
+		"date": "2017-03-15",
+		"categoryID": 4,
+		"name": "Rent",
+		"description": "Repeating every 7 days"
+	}],
+	"tags": [{
+		"ID": 1,
+		"name": "0815"
+	}],
+	"tagMatches": [{
+		"tagID": 1,
+		"paymentID": 1,
+		"repeatingPaymentID": -1
+	},
+	{
+		"tagID": 1,
+		"paymentID": -1,
+		"repeatingPaymentID": 1
+	}]
+}

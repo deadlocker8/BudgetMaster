@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Account
@@ -85,5 +86,23 @@ public class Account
 				", referringPayments=" + referringPayments +
 				", isSelected=" + isSelected +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
+		Account account = (Account) o;
+		return isSelected == account.isSelected &&
+				Objects.equals(ID, account.ID) &&
+				Objects.equals(name, account.name);
+	}
+
+	@Override
+	public int hashCode()
+	{
+
+		return Objects.hash(ID, name, isSelected);
 	}
 }

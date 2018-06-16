@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Payment
@@ -170,5 +171,29 @@ public class Payment
 				", tags=" + tags +
 				", repeatingOption=" + repeatingOption +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
+		Payment payment = (Payment) o;
+		return Objects.equals(ID, payment.ID) &&
+				Objects.equals(amount, payment.amount) &&
+				Objects.equals(date, payment.date) &&
+				Objects.equals(account, payment.account) &&
+				Objects.equals(category, payment.category) &&
+				Objects.equals(name, payment.name) &&
+				Objects.equals(description, payment.description) &&
+				Objects.equals(tags, payment.tags) &&
+				Objects.equals(repeatingOption, payment.repeatingOption);
+	}
+
+	@Override
+	public int hashCode()
+	{
+
+		return Objects.hash(ID, amount, date, account, category, name, description, tags, repeatingOption);
 	}
 }

@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Tag
@@ -62,5 +63,22 @@ public class Tag
 	public String toString()
 	{
 		return "Tag{ID=" + ID +	", name='" + name + '}';
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
+		Tag tag = (Tag) o;
+		return Objects.equals(ID, tag.ID) &&
+				Objects.equals(name, tag.name);
+	}
+
+	@Override
+	public int hashCode()
+	{
+
+		return Objects.hash(ID, name);
 	}
 }

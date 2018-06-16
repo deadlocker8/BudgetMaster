@@ -2,11 +2,10 @@ package de.deadlocker8.budgetmaster.services;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.annotations.Expose;
+import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.entities.Account;
 import de.deadlocker8.budgetmaster.entities.Category;
 import de.deadlocker8.budgetmaster.entities.Payment;
-import de.deadlocker8.budgetmaster.entities.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
