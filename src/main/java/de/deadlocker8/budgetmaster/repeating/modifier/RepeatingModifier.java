@@ -22,13 +22,13 @@ public abstract class RepeatingModifier
 	@Expose
 	private String localizationKey;
 
-	RepeatingModifier(int quantity, String localizationKey)
+	public RepeatingModifier(int quantity, String localizationKey)
 	{
 		this.quantity = quantity;
 		this.localizationKey = localizationKey;
 	}
 
-	RepeatingModifier() {}
+	public RepeatingModifier() {}
 
 	public Integer getID()
 	{
@@ -87,7 +87,21 @@ public abstract class RepeatingModifier
 	@Override
 	public int hashCode()
 	{
-
 		return Objects.hash(ID, quantity, localizationKey);
+	}
+
+	public static RepeatingModifier fromModifierType(RepeatingModifierType type, int quantity)
+	{
+		switch(type)
+		{
+			case DAYS:
+				return new RepeatingModifierDays(quantity);
+			case MONTHS:
+				return new RepeatingModifierMonths(quantity);
+			case YEARS:
+				return new RepeatingModifierYears(quantity);
+		}
+
+		return null;
 	}
 }

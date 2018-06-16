@@ -155,20 +155,8 @@ public class PaymentController extends BaseController
 		RepeatingOption repeatingOption = null;
 		if(enableRepeating)
 		{
-			RepeatingModifier repeatingModifier = null;
 			RepeatingModifierType type = RepeatingModifierType.getByLocalization(repeatingModifierType);
-			switch(type)
-			{
-				case DAYS:
-					repeatingModifier = new RepeatingModifierDays(repeatingModifierNumber);
-					break;
-				case MONTHS:
-					repeatingModifier = new RepeatingModifierMonths(repeatingModifierNumber);
-					break;
-				case YEARS:
-					repeatingModifier = new RepeatingModifierYears(repeatingModifierNumber);
-					break;
-			}
+			RepeatingModifier repeatingModifier = RepeatingModifier.fromModifierType(type, repeatingModifierNumber);
 
 			RepeatingEnd repeatingEnd = null;
 			RepeatingEndType endType = RepeatingEndType.getByLocalization(repeatingEndType);

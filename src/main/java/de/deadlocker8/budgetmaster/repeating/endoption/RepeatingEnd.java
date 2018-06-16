@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.repeating.endoption;
 
 import com.google.gson.annotations.Expose;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.List;
@@ -20,12 +21,12 @@ public abstract class RepeatingEnd
 	@Expose
 	private String localizationKey;
 
-	RepeatingEnd(String localizationKey)
+	public RepeatingEnd(String localizationKey)
 	{
 		this.localizationKey = localizationKey;
 	}
 
-	RepeatingEnd() {}
+	public RepeatingEnd() {}
 
 	public Integer getID()
 	{
@@ -73,7 +74,6 @@ public abstract class RepeatingEnd
 	@Override
 	public int hashCode()
 	{
-
 		return Objects.hash(ID, localizationKey);
 	}
 }

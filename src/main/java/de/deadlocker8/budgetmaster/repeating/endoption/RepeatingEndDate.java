@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.repeating.endoption;
 
+import com.google.gson.annotations.Expose;
 import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -10,6 +11,7 @@ import java.util.List;
 public class RepeatingEndDate extends RepeatingEnd
 {
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
+	@Expose
 	private DateTime endDate;
 
 	public RepeatingEndDate(DateTime endDate)
