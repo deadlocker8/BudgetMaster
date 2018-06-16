@@ -14,6 +14,7 @@ import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import de.deadlocker8.budgetmaster.validators.PaymentValidator;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.ISODateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,12 +61,15 @@ public class PaymentController extends BaseController
 		DateTime date = getDateTimeFromCookie(cookieDate);
 
 		repeatingPaymentUpdater.updateRepeatingPayments(date);
-		List<Payment> payments = paymentService.getPaymentsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear());
+
+		List<Payment> payments = paymentService.getPaymentsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear(), getSettings().isRestActivated());
 
 		model.addAttribute("payments", payments);
 		model.addAttribute("incomeSum", helpers.getIncomeSumForPaymentList(payments));
 		model.addAttribute("paymentSum", helpers.getPaymentSumForPaymentList(payments));
 		model.addAttribute("currentDate", date);
+
+
 		return "payments/payments";
 	}
 
@@ -78,7 +82,7 @@ public class PaymentController extends BaseController
 		}
 
 		DateTime date = getDateTimeFromCookie(cookieDate);
-		List<Payment> payments = paymentService.getPaymentsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear());
+		List<Payment> payments = paymentService.getPaymentsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear(), getSettings().isRestActivated());
 		model.addAttribute("payments", payments);
 		model.addAttribute("incomeSum", helpers.getIncomeSumForPaymentList(payments));
 		model.addAttribute("paymentSum", helpers.getPaymentSumForPaymentList(payments));

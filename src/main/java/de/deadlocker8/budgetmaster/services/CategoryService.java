@@ -4,10 +4,12 @@ import de.deadlocker8.budgetmaster.entities.Category;
 import de.deadlocker8.budgetmaster.entities.CategoryType;
 import de.deadlocker8.budgetmaster.entities.Payment;
 import de.deadlocker8.budgetmaster.repositories.CategoryRepository;
+import de.deadlocker8.budgetmaster.utils.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tools.Localization;
 
 @Service
 public class CategoryService implements Resetable
@@ -50,13 +52,13 @@ public class CategoryService implements Resetable
 	{
 		if(categoryRepository.findByType(CategoryType.NONE) == null)
 		{
-			categoryRepository.save(new Category("Keine Kategorie", "#FFFFFF", CategoryType.NONE));
+			categoryRepository.save(new Category(Localization.getString(Strings.CATEGORY_NONE), "#FFFFFF", CategoryType.NONE));
 			LOGGER.debug("Created default category NONE");
 		}
 
 		if(categoryRepository.findByType(CategoryType.REST) == null)
 		{
-			categoryRepository.save(new Category("Übertrag", "#FFFF00", CategoryType.REST));
+			categoryRepository.save(new Category(Localization.getString(Strings.CATEGORY_REST), "#FFFF00", CategoryType.REST));
 			LOGGER.debug("Created default category REST");
 		}
 	}

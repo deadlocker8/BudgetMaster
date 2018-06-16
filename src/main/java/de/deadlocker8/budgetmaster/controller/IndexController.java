@@ -53,7 +53,7 @@ public class IndexController extends BaseController
 		model.addAttribute("currentDate", date);
 
 		repeatingPaymentUpdater.updateRepeatingPayments(date);
-		List<Payment> payments = paymentService.getPaymentsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear());
+		List<Payment> payments = paymentService.getPaymentsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear(), settingsRepository.findOne(0).isRestActivated());
 
 		int incomeSum = helpers.getIncomeSumForPaymentList(payments);
 		int paymentSum = helpers.getPaymentSumForPaymentList(payments);
