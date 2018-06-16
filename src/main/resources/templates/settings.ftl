@@ -175,38 +175,61 @@
         </main>
 
         <#if deleteDatabase??>
-        <!-- confirm delete modal -->
-        <div id="modalConfirmDelete" class="modal">
-            <div class="modal-content">
-                <h4>${locale.getString("info.title.database.delete")}</h4>
-                <p>${locale.getString("info.header.text.database.delete")}</p>
-                <p>${locale.getString("info.text.database.delete", verificationCode)}</p>
+            <div id="modalConfirmDelete" class="modal">
+                <div class="modal-content">
+                    <h4>${locale.getString("info.title.database.delete")}</h4>
+                    <p>${locale.getString("info.header.text.database.delete")}</p>
+                    <p>${locale.getString("info.text.database.delete", verificationCode)}</p>
 
-                <form id="form-confirm-database-delete" action="/settings/database/delete" method="post">
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    <input type="hidden" name="verificationCode" value="${verificationCode}"/>
+                    <form id="form-confirm-database-delete" action="/settings/database/delete" method="post">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <input type="hidden" name="verificationCode" value="${verificationCode}"/>
 
-                    <div class="row">
-                        <div class="input-field col s12 m8 l6">
-                            <input id="verification" type="text" name="verificationUserInput">
-                            <label for="verification">${locale.getString("settings.database.delete.verification")}</label>
+                        <div class="row">
+                            <div class="input-field col s12 m8 l6">
+                                <input id="verification" type="text" name="verificationUserInput">
+                                <label for="verification">${locale.getString("settings.database.delete.verification")}</label>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
 
+                </div>
+                <div class="modal-footer">
+                    <a href="/settings" class="modal-action modal-close waves-effect waves-red btn-flat ">${locale.getString("cancel")}</a>
+                    <a class="modal-action modal-close waves-effect waves-green btn-flat" id="button-confirm-database-delete">${locale.getString("delete")}</a>
+                </div>
             </div>
-            <div class="modal-footer">
-                <a href="/settings" class="modal-action modal-close waves-effect waves-red btn-flat ">${locale.getString("cancel")}</a>
-                <a class="modal-action modal-close waves-effect waves-green btn-flat" id="button-confirm-database-delete">${locale.getString("delete")}</a>
+        </#if>
+
+        <#if importDatabase??>
+            <div id="modalImportDatabase" class="modal">
+                <div class="modal-content">
+                    <h4>${locale.getString("info.title.database.import.dialog")}</h4>
+
+                    <form id="form-database-import" method="POST" action="/settings/database/upload" enctype="multipart/form-data">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <div class="file-field input-field">
+                            <div class="btn waves-effect waves-light budgetmaster-blue">
+                                <i class="material-icons">cloud_upload</i>
+                                <input type="file" name="file">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <a href="/settings" class="modal-action modal-close waves-effect waves-red btn-flat ">${locale.getString("cancel")}</a>
+                    <a class="modal-action modal-close waves-effect waves-green btn-flat" id="button-confirm-database-import">${locale.getString("settings.database.import")}</a>
+                </div>
             </div>
-        </div>
-    </#if>
+        </#if>
 
         <!-- Scripts-->
         <#import "scripts.ftl" as scripts>
         <@scripts.scripts/>
         <script src="/js/spectrum.js"></script>
-        <script src="/js/categories.js"></script>
         <script src="/js/settings.js"></script>
     </body>
 </html>

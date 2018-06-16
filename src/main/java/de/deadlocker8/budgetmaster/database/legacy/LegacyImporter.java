@@ -31,13 +31,13 @@ public class LegacyImporter
 	private List<Tag> tags;
 	private List<TagMatch> tagMatches;
 
-	public LegacyImporter(String json, Account account)
+	public LegacyImporter(String json)
 	{
 		this.jsonString = json;
-		this.account = account;
+		this.account = new Account("LEGACY_IMPORT");
 	}
 
-	public Database parseJSON()
+	public Database parseDatabaseFromJSON()
 	{
 		JsonObject root = new JsonParser().parse(jsonString).getAsJsonObject();
 		categories = new ArrayList<>(parseCategories(root));

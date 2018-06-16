@@ -2,14 +2,14 @@ package de.deadlocker8.budgetmaster.controller;
 
 import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
+import de.deadlocker8.budgetmaster.database.Database;
+import de.deadlocker8.budgetmaster.database.DatabaseImporter;
 import de.deadlocker8.budgetmaster.entities.Settings;
 import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
 import de.deadlocker8.budgetmaster.services.DatabaseService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.deadlocker8.budgetmaster.utils.Strings;
-import logger.Logger;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,10 +17,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import tools.BASE58Type;
 import tools.ConvertTo;
 import tools.RandomCreations;
@@ -28,9 +27,6 @@ import tools.RandomCreations;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.io.PrintWriter;
 
 
 @Controller
@@ -60,7 +56,7 @@ public class SettingsController extends BaseController
 					   @RequestParam(value = "password") String password,
 					   @RequestParam(value = "languageType") String languageType)
 	{
-		if(password == null ||password.equals(""))
+		if(password == null || password.equals(""))
 		{
 			bindingResult.addError(new ObjectError("password", Strings.WARNING_SETTINGS_PASSWORD_EMPTY));
 		}
@@ -93,12 +89,6 @@ public class SettingsController extends BaseController
 		}
 
 		return "redirect:/settings";
-	}
-
-	@RequestMapping("/settings/database/requestImport")
-	public String requestImportDatabase(Model model)
-	{
-		return "settings";
 	}
 
 	@RequestMapping("/settings/database/requestExport")
@@ -152,5 +142,37 @@ public class SettingsController extends BaseController
 		}
 
 		return "settings";
+	}
+
+	@RequestMapping("/settings/database/requestImport")
+	public String requestImportDatabase(Model model)
+	{
+		model.addAttribute("importDatabase", true);
+		return "settings";
+	}
+
+	@RequestMapping("/settings/database/upload")
+	public String upload(@RequestParam("file") MultipartFile file)
+	{
+		if(file.isEmpty())
+		{
+			return "redirect:/settings/database/requestImport";
+		}
+
+		try
+		{
+			String jsonString = new String(file.getBytes());
+			DatabaseImporter importer = new DatabaseImporter(jsonString);
+			Database database = importer.parseDatabaseFromJSON();
+
+		}
+		catch(Exception e)
+		{
+			//TODO
+			e.printStackTrace();
+		}
+
+		//TODO redirect to account combination page
+		return "redirect:/settings";
 	}
 }

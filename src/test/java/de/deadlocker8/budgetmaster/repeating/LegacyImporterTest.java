@@ -29,12 +29,10 @@ public class LegacyImporterTest
 		try
 		{
 			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("LegacyImporterTest.json").toURI())));
-			Account account = new Account();
-			account.setID(1);
-			account.setName("Default");
+			Account account = new Account("LEGACY_IMPORT");
 
-			LegacyImporter importer = new LegacyImporter(json, account);
-			Database database = importer.parseJSON();
+			LegacyImporter importer = new LegacyImporter(json);
+			Database database = importer.parseDatabaseFromJSON();
 
 			assertEquals(2, database.getCategories().size());
 			Category category3 = new Category("Salary", "#4CD964", CategoryType.CUSTOM);
@@ -57,15 +55,11 @@ public class LegacyImporterTest
 		try
 		{
 			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("LegacyImporterTest.json").toURI())));
-			Account account = new Account();
-			account.setID(1);
-			account.setName("Default");
-
-			LegacyImporter importer = new LegacyImporter(json, account);
-			Database database = importer.parseJSON();
+			LegacyImporter importer = new LegacyImporter(json);
+			Database database = importer.parseDatabaseFromJSON();
 
 			assertEquals(1, database.getAccounts().size());
-			assertEquals(account.getName(), database.getAccounts().get(0).getName());
+			assertEquals("LEGACY_IMPORT", database.getAccounts().get(0).getName());
 		}
 		catch(IOException | URISyntaxException e)
 		{
@@ -79,9 +73,7 @@ public class LegacyImporterTest
 		try
 		{
 			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("LegacyImporterTest.json").toURI())));
-			Account account = new Account();
-			account.setID(1);
-			account.setName("Default");
+			Account account = new Account("LEGACY_IMPORT");
 
 			List<Tag> tags = new ArrayList<>();
 			tags.add(new Tag("0815"));
@@ -92,8 +84,8 @@ public class LegacyImporterTest
 			Category category4 = new Category("Stuff", "#9B59B6", CategoryType.CUSTOM);
 			category4.setID(4);
 
-			LegacyImporter importer = new LegacyImporter(json, account);
-			Database database = importer.parseJSON();
+			LegacyImporter importer = new LegacyImporter(json);
+			Database database = importer.parseDatabaseFromJSON();
 
 			assertEquals(4, database.getPayments().size());
 
