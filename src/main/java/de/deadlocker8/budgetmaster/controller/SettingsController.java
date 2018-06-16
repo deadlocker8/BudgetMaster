@@ -26,6 +26,7 @@ import tools.RandomCreations;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 
 @Controller
@@ -95,24 +96,31 @@ public class SettingsController extends BaseController
 	{
 		LOGGER.debug("Exporting database...");
 		String data = databaseService.getDatabaseAsJSON();
-
-		String fileName = "BudgetMasterDatabase_" + DateTime.now().toString("yyyy_MM_dd") + ".json";
-		response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-
-		response.setContentType("application/json");
-		response.setContentLength(data.length());
-
-		try(ServletOutputStream out = response.getOutputStream())
+		try
 		{
-			out.println(data);
-			out.flush();
+			byte[] dataBytes = data.getBytes("UTF8");
+			String fileName = "BudgetMasterDatabase_" + DateTime.now().toString("yyyy_MM_dd") + ".json";
+			response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+
+			response.setContentType("application/json; charset=UTF-8");
+			response.setContentLength(dataBytes.length);
+			response.setCharacterEncoding("UTF-8");
+
+			try(ServletOutputStream out = response.getOutputStream())
+			{
+				out.write(dataBytes);
+				out.flush();
+				LOGGER.debug("Exporting database DONE");
+			}
+			catch(IOException e)
+			{
+				e.printStackTrace();
+			}
 		}
-		catch(IOException e)
+		catch(UnsupportedEncodingException e)
 		{
 			e.printStackTrace();
 		}
-
-		LOGGER.debug("Exporting database DONE");
 	}
 
 	@RequestMapping("/settings/database/requestDelete")

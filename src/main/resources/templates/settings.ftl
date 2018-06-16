@@ -206,7 +206,7 @@
                 <div class="modal-content">
                     <h4>${locale.getString("info.title.database.import.dialog")}</h4>
 
-                    <form id="form-database-import" method="POST" action="/settings/database/upload" enctype="multipart/form-data">
+                    <form id="form-database-import" method="POST" action="/settings/database/upload" enctype="multipart/form-data" accept-charset="UTF-8">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <div class="file-field input-field">
                             <div class="btn waves-effect waves-light budgetmaster-blue">
