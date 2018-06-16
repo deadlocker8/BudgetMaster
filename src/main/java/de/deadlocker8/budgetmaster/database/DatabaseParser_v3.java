@@ -1,7 +1,6 @@
 package de.deadlocker8.budgetmaster.database;
 
 import com.google.gson.*;
-import de.deadlocker8.budgetmaster.database.legacy.LegacyImporter;
 import de.deadlocker8.budgetmaster.entities.Account;
 import de.deadlocker8.budgetmaster.entities.Category;
 import de.deadlocker8.budgetmaster.entities.Payment;
@@ -17,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DatabaseImporterv3
+public class DatabaseParser_v3
 {
 	final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private String jsonString;
@@ -25,7 +24,7 @@ public class DatabaseImporterv3
 	private List<Account> accounts;
 
 
-	public DatabaseImporterv3(String json)
+	public DatabaseParser_v3(String json)
 	{
 		this.jsonString = json;
 	}

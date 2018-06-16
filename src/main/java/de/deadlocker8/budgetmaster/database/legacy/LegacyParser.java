@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 @SuppressWarnings("deprecation")
-public class LegacyImporter
+public class LegacyParser
 {
 	private Account account;
 	private String jsonString;
@@ -31,7 +31,7 @@ public class LegacyImporter
 	private List<Tag> tags;
 	private List<TagMatch> tagMatches;
 
-	public LegacyImporter(String json)
+	public LegacyParser(String json)
 	{
 		this.jsonString = json;
 		this.account = new Account("LEGACY_IMPORT");

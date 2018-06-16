@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.repeating;
 
 import de.deadlocker8.budgetmaster.database.Database;
-import de.deadlocker8.budgetmaster.database.legacy.LegacyImporter;
+import de.deadlocker8.budgetmaster.database.legacy.LegacyParser;
 import de.deadlocker8.budgetmaster.entities.*;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndDate;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndNever;
@@ -21,17 +21,17 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class LegacyImporterTest
+public class LegacyParserTest
 {
 	@Test
 	public void test_Categories()
 	{
 		try
 		{
-			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("LegacyImporterTest.json").toURI())));
+			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("LegacyParserTest.json").toURI())));
 			Account account = new Account("LEGACY_IMPORT");
 
-			LegacyImporter importer = new LegacyImporter(json);
+			LegacyParser importer = new LegacyParser(json);
 			Database database = importer.parseDatabaseFromJSON();
 
 			assertEquals(2, database.getCategories().size());
@@ -54,8 +54,8 @@ public class LegacyImporterTest
 	{
 		try
 		{
-			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("LegacyImporterTest.json").toURI())));
-			LegacyImporter importer = new LegacyImporter(json);
+			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("LegacyParserTest.json").toURI())));
+			LegacyParser importer = new LegacyParser(json);
 			Database database = importer.parseDatabaseFromJSON();
 
 			assertEquals(1, database.getAccounts().size());
@@ -72,7 +72,7 @@ public class LegacyImporterTest
 	{
 		try
 		{
-			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("LegacyImporterTest.json").toURI())));
+			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("LegacyParserTest.json").toURI())));
 			Account account = new Account("LEGACY_IMPORT");
 
 			List<Tag> tags = new ArrayList<>();
@@ -84,7 +84,7 @@ public class LegacyImporterTest
 			Category category4 = new Category("Stuff", "#9B59B6", CategoryType.CUSTOM);
 			category4.setID(4);
 
-			LegacyImporter importer = new LegacyImporter(json);
+			LegacyParser importer = new LegacyParser(json);
 			Database database = importer.parseDatabaseFromJSON();
 
 			assertEquals(4, database.getPayments().size());

@@ -1,18 +1,17 @@
 package de.deadlocker8.budgetmaster.database;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import de.deadlocker8.budgetmaster.database.legacy.LegacyImporter;
+import de.deadlocker8.budgetmaster.database.legacy.LegacyParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DatabaseImporter
+public class DatabaseParser
 {
 	final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private String jsonString;
 
-	public DatabaseImporter(String json)
+	public DatabaseParser(String json)
 	{
 		this.jsonString = json;
 	}
@@ -31,12 +30,12 @@ public class DatabaseImporter
 
 		if(version == 2)
 		{
-			return new LegacyImporter(jsonString).parseDatabaseFromJSON();
+			return new LegacyParser(jsonString).parseDatabaseFromJSON();
 		}
 
 		if(version == 3)
 		{
-			return new Gson().fromJson(jsonString, Database.class);
+			return new DatabaseParser_v3(jsonString).parseDatabaseFromJSON();
 		}
 
 		throw new IllegalArgumentException("unknown BUDGETMASTER_DATABASE version");

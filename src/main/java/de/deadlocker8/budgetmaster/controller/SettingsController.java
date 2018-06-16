@@ -3,7 +3,7 @@ package de.deadlocker8.budgetmaster.controller;
 import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
 import de.deadlocker8.budgetmaster.database.Database;
-import de.deadlocker8.budgetmaster.database.DatabaseImporter;
+import de.deadlocker8.budgetmaster.database.DatabaseParser;
 import de.deadlocker8.budgetmaster.entities.Settings;
 import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
 import de.deadlocker8.budgetmaster.services.DatabaseService;
@@ -19,7 +19,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import tools.BASE58Type;
 import tools.ConvertTo;
 import tools.RandomCreations;
@@ -162,7 +161,7 @@ public class SettingsController extends BaseController
 		try
 		{
 			String jsonString = new String(file.getBytes());
-			DatabaseImporter importer = new DatabaseImporter(jsonString);
+			DatabaseParser importer = new DatabaseParser(jsonString);
 			Database database = importer.parseDatabaseFromJSON();
 
 		}
