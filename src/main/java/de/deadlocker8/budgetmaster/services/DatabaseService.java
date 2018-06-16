@@ -1,16 +1,18 @@
 package de.deadlocker8.budgetmaster.services;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.entities.Account;
 import de.deadlocker8.budgetmaster.entities.Category;
 import de.deadlocker8.budgetmaster.entities.Payment;
+import org.joda.time.DateTime;
+import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 @Service
@@ -79,7 +81,12 @@ public class DatabaseService
 
 		Database database = new Database(categories, accounts, payments);
 
-		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
+		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().registerTypeAdapter(DateTime.class, new JsonSerializer<DateTime>(){
+			@Override
+			public JsonElement serialize(DateTime json, Type typeOfSrc, JsonSerializationContext context) {
+				return new JsonPrimitive(ISODateTimeFormat.date().print(json));
+			}
+		}).create();
 		return gson.toJson(database);
 	}
 }
