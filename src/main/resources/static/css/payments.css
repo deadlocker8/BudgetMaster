@@ -10,3 +10,7 @@
 .table-repeating-end .input-cell {
     min-width: 20%;
 }
+
+.chips .chip.selected {
+    background-color: #2E79B9;
+}
