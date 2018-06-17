@@ -372,12 +372,12 @@ input[type="radio"]:checked + label::after, [type="radio"].with-gap:checked + la
     background-color: #EEEEEE;
 }
 
-.home-menu-disabled * {
-    color: #AAAAAA !important;
-}
-
 .home-menu-link {
     display: inline-block;
+}
+
+.home-menu-disabled * {
+    color: #AAAAAA !important;
 }
 
 .hidden {
