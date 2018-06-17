@@ -1,8 +1,8 @@
 package de.deadlocker8.budgetmaster.database;
 
-import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.legacy.LegacyParser;
 import de.deadlocker8.budgetmaster.entities.*;
+import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndDate;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndNever;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierDays;

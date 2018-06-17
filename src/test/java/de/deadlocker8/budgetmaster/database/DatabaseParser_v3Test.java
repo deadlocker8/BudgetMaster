@@ -1,14 +1,9 @@
 package de.deadlocker8.budgetmaster.database;
 
-import de.deadlocker8.budgetmaster.database.Database;
-import de.deadlocker8.budgetmaster.database.DatabaseParser_v3;
-import de.deadlocker8.budgetmaster.database.legacy.LegacyParser;
 import de.deadlocker8.budgetmaster.entities.*;
+import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndAfterXTimes;
-import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndDate;
-import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndNever;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierDays;
-import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierMonths;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.junit.Before;
