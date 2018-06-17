@@ -30,32 +30,68 @@ main {
     background-color: rgba(46, 121, 185, 0.8);
 }
 
+.budgetmaster-blue-light-text {
+    color: rgba(46, 121, 185, 0.8);
+}
+
 .budgetmaster-green {
     background-color: #5cb85c;
+}
+
+.budgetmaster-green-text {
+   color: #5cb85c;
 }
 
 .budgetmaster-dark-green {
     background-color: #468C46;
 }
 
+.budgetmaster-dark-green-text {
+    color: #468C46;
+}
+
 .budgetmaster-red {
     background-color: #D82C29;
+}
+
+.budgetmaster-red-text {
+   color: #D82C29;
 }
 
 .budgetmaster-orange {
     background-color: orange;
 }
 
+.budgetmaster-orange-text {
+    color: orange;
+}
+
 .budgetmaster-grey {
     background-color: #696969;
 }
 
+.budgetmaster-grey-text {
+    color: #696969;
+}
+
 .budgetmaster-baby-blue {
-    background-color: #5ac8fa;
+    background-color: #4CABD3;
+}
+
+.budgetmaster-baby-blue-text {
+    color: #4CABD3;
 }
 
 .budgetmaster-purple {
     background-color: #5856d6;
+}
+
+.budgetmaster-purple-text {
+    color: #5856d6;
+}
+
+.budgetmaster-text-black {
+    color: rgba(0,0,0,0.87);
 }
 
 .side-nav li.active {
@@ -210,10 +246,6 @@ main {
     height: 100%;
 }
 
-.icon-budget {
-    font-size: 5.5vmin !important;
-}
-
 .icon-chevron {
     font-size: 6vmin !important;
 }
@@ -232,12 +264,8 @@ main {
     text-transform: capitalize;
 }
 
-.budget-headline {
-    font-size: 2.5vmin;
-}
-
-.budget {
-    font-size: 3.5vmin;
+.budget-headline-icon {
+    margin-top: 0;
 }
 
 .mobile-menu {
@@ -252,6 +280,10 @@ main {
 
 #logo-huge {
     max-height: 20vmin;
+}
+
+#logo-home {
+    max-height: 15vmin;
 }
 
 .break-all {
@@ -331,8 +363,67 @@ input[type="radio"]:checked + label::after, [type="radio"].with-gap:checked + la
     margin: auto
 }
 
+.home-menu-flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.home-menu-cell:hover {
+    background-color: #EEEEEE;
+}
+
+.home-menu-disabled * {
+    color: #AAAAAA !important;
+}
+
+.home-menu-link {
+    display: inline-block;
+}
+
 .hidden {
     display: none;
+}
+
+@media all and (min-width: 960px) {
+    .icon-budget {
+        font-size: 4vmin !important;
+    }
+
+    .budget-headline {
+        font-size: 1.5vmin;
+    }
+
+    .budget {
+        font-size: 2.5vmin;
+    }
+}
+
+@media all and (max-width: 959px) and (min-width: 600px) {
+    .icon-budget {
+        font-size: 5.5vmin !important;
+    }
+
+    .budget-headline {
+        font-size: 2.5vmin;
+    }
+
+    .budget {
+        font-size: 3.5vmin;
+    }
+}
+
+@media all and (max-width: 599px) and (min-width: 320px) {
+    .icon-budget {
+        font-size: 6vmin !important;
+    }
+
+    .budget-headline {
+        font-size: 4vmin;
+    }
+
+    .budget {
+        font-size: 3.8vmin;
+    }
 }
 
 .debug {

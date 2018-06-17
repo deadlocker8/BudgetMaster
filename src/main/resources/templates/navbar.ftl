@@ -6,7 +6,7 @@
         <@itemAccountSelect/>
         <@itemDivider/>
         <@itemWithIcon "home", "/", locale.getString("menu.home"), "home", "budgetmaster-blue", activeID/>
-        <@itemWithIcon "accounts", "/accounts", locale.getString("menu.accounts"), "account_balance", "budgetmaster-dark-green", activeID/>
+        <@itemWithIcon "accounts", "/accounts", locale.getString("menu.accounts"), "account_balance", "budgetmaster-grey", activeID/>
         <@itemWithIcon "payments", "/payments", locale.getString("menu.payments"), "list", "budgetmaster-baby-blue", activeID/>
         <@subListStart "chart" locale.getString("menu.charts"), "show_chart" "budgetmaster-purple", activeID/>
             <@itemPlain "chartCategories", "", locale.getString("menu.charts.chartCategories"), activeID/>

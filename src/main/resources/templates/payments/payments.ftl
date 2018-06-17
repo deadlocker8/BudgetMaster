@@ -13,54 +13,68 @@
             <div class="card main-card">
                 <#import "../datePicker.ftl" as datePicker>
                 <@datePicker.datePicker currentDate "/payments"/>
-                <div class="hide-on-small-only"><br></div>
-                 <div class="container">
-                    <div class="row valign-wrapper hide-on-small-only">
-                        <div class="col s4 left-align"><h5>${locale.getString("title.incomes")}: ${helpers.getCurrencyString(incomeSum)}</h5></div>
-                        <div class="col s4 center-align"><a href="/payments/newPayment" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.payment.new")}</a></div>
-                        <div class="col s4 right-align"><h5>${locale.getString("title.payments")}: ${helpers.getCurrencyString(paymentSum)}</h5></div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col s4">
+                            <div class="icon-block">
+                                <h1 class="center text-green budget-headline-icon"><i class="material-icons icon-budget">file_download</i></h1>
+                                <h5 class="center budget">${helpers.getCurrencyString(incomeSum)}</h5>
+                                <h5 class="center grey-text text-darken-1 budget-headline">${locale.getString("title.incomes")}</h5>
+                            </div>
+                        </div>
+                        <div class="col s4">
+                            <div class="icon-block">
+                                <h1 class="center text-red budget-headline-icon"><i class="material-icons icon-budget">file_upload</i></h1>
+                                <h5 class="center budget">${helpers.getCurrencyString(paymentSum)}</h5>
+                                <h5 class="center grey-text text-darken-1 budget-headline">${locale.getString("title.payments")}</h5>
+                            </div>
+                        </div>
+                        <div class="col s4">
+                            <div class="icon-block">
+                                <h1 class="center budgetmaster-blue-text budget-headline-icon"><i class="fas fa-piggy-bank icon-budget"></i></h1>
+                                <h5 class="center budget">${helpers.getCurrencyString(rest)}</h5>
+                                <h5 class="center grey-text text-darken-1 budget-headline">${locale.getString("title.rest")}</h5>
+                            </div>
+                        </div>
                     </div>
 
-                     <div class="hide-on-med-and-up">
-                         <div class="row valign-wrapper">
-                             <div class="col s6 left-align"><h5>${locale.getString("title.incomes")}: ${helpers.getCurrencyString(incomeSum)}</h5></div>
-                             <div class="col s6 right-align"><h5>${locale.getString("title.payments")}: ${helpers.getCurrencyString(paymentSum)}</h5></div>
-                         </div>
-                         <div class="row valign-wrapper">
-                             <div class="col s12 center-align"><a href="/payments/newPayment" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.payment.new")}</a></div>
-                         </div>
-                     </div>
+                    <#-- button new -->
+                    <div class="row valign-wrapper">
+                        <div class="col s12 center-align"><a href="/payments/newPayment" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.payment.new")}</a></div>
+                    </div>
+
+                    <#-- payments list -->
                     <br>
                     <table class="bordered">
                         <#list payments as payment>
-                        <tr>
-                            <td>${helpers.getDateString(payment.date)}</td>
-                            <td><i class="material-icons">repeat</i></td>
-                            <td>
-                                <div class="category-circle" style="background-color: ${payment.category.color}">
-                                    <span style="color: ${payment.category.getAppropriateTextColor()}">
-                                        ${payment.category.name?capitalize[0]}
-                                    </span>
-                                </div>
-                            </td>
-                            <td>
-                                <div>${payment.name}</div>
-                                <#if payment.description??>
-                                    <div class="italic">${payment.description}</div>
+                            <tr>
+                                <td>${helpers.getDateString(payment.date)}</td>
+                                <td><i class="material-icons">repeat</i></td>
+                                <td>
+                                    <div class="category-circle" style="background-color: ${payment.category.color}">
+                                        <span style="color: ${payment.category.getAppropriateTextColor()}">
+                                            ${payment.category.name?capitalize[0]}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>${payment.name}</div>
+                                    <#if payment.description??>
+                                        <div class="italic">${payment.description}</div>
+                                    </#if>
+                                </td>
+                                <#if payment.amount <= 0>
+                                    <td class="bold text-red">${helpers.getCurrencyString(payment.amount)}</td>
+                                <#else>
+                                    <td class="bold text-dark-green">${helpers.getCurrencyString(payment.amount)}</td>
                                 </#if>
-                            </td>
-                            <#if payment.amount <= 0>
-                                <td class="bold text-red">${helpers.getCurrencyString(payment.amount)}</td>
-                            <#else>
-                                <td class="bold text-dark-green">${helpers.getCurrencyString(payment.amount)}</td>
-                            </#if>
-                            <td>
-                                <#if (payment.category.type.name() != "REST")>
-                                    <a href="/payments/${payment.ID}/edit" class="btn-flat no-padding"><i class="material-icons left">edit</i></a>
-                                    <a href="/payments/${payment.ID}/requestDelete" class="btn-flat no-padding"><i class="material-icons left">delete</i></a>
-                                </#if>
-                            </td>
-                        </tr>
+                                <td>
+                                    <#if (payment.category.type.name() != "REST")>
+                                        <a href="/payments/${payment.ID}/edit" class="btn-flat no-padding"><i class="material-icons left">edit</i></a>
+                                        <a href="/payments/${payment.ID}/requestDelete" class="btn-flat no-padding"><i class="material-icons left">delete</i></a>
+                                    </#if>
+                                </td>
+                            </tr>
                         </#list>
                     </table>
                 </div>
