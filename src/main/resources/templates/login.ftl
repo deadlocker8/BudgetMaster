@@ -22,8 +22,8 @@
 
                                 <div class="row no-margin-bottom">
                                     <div class="input-field col s12">
-                                        <input id="password" type="password" name="password">
-                                        <label for="password">${locale.getString("login.password")}</label>
+                                        <input id="login-password" type="password" name="password">
+                                        <label for="login-password">${locale.getString("login.password")}</label>
                                     </div>
                                 </div>
 

@@ -12,6 +12,10 @@ $( document ).ready(function() {
         var accountID = $(this).val();
         window.location = "/account/" + accountID + "/select";
     });
+
+    if($("#login-password").length) {
+        document.getElementById("login-password").focus();
+    }
 });
 
 function addClass(element, className)
