@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.repeating;
+package de.deadlocker8.budgetmaster.database;
 
 import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.legacy.LegacyParser;
