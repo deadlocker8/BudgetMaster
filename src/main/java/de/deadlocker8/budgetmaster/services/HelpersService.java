@@ -39,6 +39,9 @@ public class HelpersService
 	private AccountRepository accountRepository;
 
 	@Autowired
+	private AccountService accountService;
+
+	@Autowired
 	private PaymentRepository paymentRepository;
 
 	public String getCurrencyString(int amount)
@@ -187,7 +190,17 @@ public class HelpersService
 
 	public Account getCurrentAccount()
 	{
-		return accountRepository.findByIsSelected(true);
+		Account selectedAccount = accountRepository.findByIsSelected(true);
+
+		// select random account if no account is selected
+		if(selectedAccount == null)
+		{
+			Account account = accountRepository.findAll().get(0);
+			accountService.selectAccount(account.getID());
+			selectedAccount = accountRepository.findByIsSelected(true);
+		}
+
+		return selectedAccount;
 	}
 
 	public int getIncomeSumForPaymentList(List<Payment> payments)

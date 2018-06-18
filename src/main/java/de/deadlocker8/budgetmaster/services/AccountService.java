@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tools.Localization;
 
+import java.util.List;
+
 @Service
 public class AccountService implements Resetable
 {
@@ -55,5 +57,19 @@ public class AccountService implements Resetable
 			accountRepository.save(account);
 			LOGGER.debug("Created default account");
 		}
+	}
+
+	public void selectAccount(int ID)
+	{
+		List<Account> accounts = accountRepository.findAll();
+		for(Account currentAccount : accounts)
+		{
+			currentAccount.setSelected(false);
+			accountRepository.save(currentAccount);
+		}
+
+		Account accountToSelect = accountRepository.findOne(ID);
+		accountToSelect.setSelected(true);
+		accountRepository.save(accountToSelect);
 	}
 }

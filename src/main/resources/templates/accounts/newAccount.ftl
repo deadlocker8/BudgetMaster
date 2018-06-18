@@ -20,6 +20,7 @@
                     <form name="NewAccount" action="/accounts/newAccount" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="ID" value="<#if account.getID()??>${account.getID()}</#if>">
+                        <input type="hidden" name="isSelected" value="<#if account.isSelected()??>${account.isSelected()?c}</#if>">
 
                         <#-- name -->
                         <div class="row">

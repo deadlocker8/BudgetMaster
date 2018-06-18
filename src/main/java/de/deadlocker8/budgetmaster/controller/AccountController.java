@@ -32,17 +32,7 @@ public class AccountController extends BaseController
 	@RequestMapping(value = "/account/{ID}/select")
 	public String selectAccount(HttpServletRequest request, @PathVariable("ID") Integer ID)
 	{
-		List<Account> accounts = accountRepository.findAll();
-		for(Account currentAccount : accounts)
-		{
-			currentAccount.setSelected(false);
-			accountRepository.save(currentAccount);
-		}
-
-		Account accountToSelect = accountRepository.findOne(ID);
-		accountToSelect.setSelected(true);
-		accountRepository.save(accountToSelect);
-
+		accountService.selectAccount(ID);
 		return "redirect:" + request.getHeader("Referer");
 	}
 
@@ -65,7 +55,6 @@ public class AccountController extends BaseController
 	public String deleteAccountAndReferringPayments(Model model, @PathVariable("ID") Integer ID)
 	{
 		accountService.deleteAccount(ID);
-
 		return "redirect:/accounts";
 	}
 
@@ -109,7 +98,18 @@ public class AccountController extends BaseController
 		}
 		else
 		{
-			accountRepository.save(account);
+			if(account.getID() == null)
+			{
+				// new account
+				accountRepository.save(account);
+			}
+			else
+			{
+				// edit existing account
+				Account existingAccount = accountRepository.findOne(account.getID());
+				existingAccount.setName(account.getName());
+				accountRepository.save(existingAccount);
+			}
 		}
 
 		return "redirect:/accounts";
