@@ -64,5 +64,6 @@
         <!--  Scripts-->
         <#import "../scripts.ftl" as scripts>
         <@scripts.scripts/>
+        <script src="/js/accounts.js"></script>
     </body>
 </html>

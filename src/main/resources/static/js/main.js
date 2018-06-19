@@ -5,8 +5,6 @@ $( document ).ready(function() {
 
     $('.modal').modal();
 
-    $('.modal').modal('open');
-
     $('select').material_select();
 
     $("#selectAccount").on('change', function()

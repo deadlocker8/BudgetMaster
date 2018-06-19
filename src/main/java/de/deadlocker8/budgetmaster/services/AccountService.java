@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tools.Localization;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -43,9 +44,11 @@ public class AccountService implements Resetable
 	{
 		Account accountToDelete = accountRepository.findOne(ID);
 		paymentRepository.delete(accountToDelete.getReferringPayments());
+		accountToDelete.setReferringPayments(new ArrayList<>());
 
 		List<Account> accounts = accountRepository.findAll();
 		accounts.remove(accountToDelete);
+
 		Account newSelectedAccount = accounts.get(0);
 		selectAccount(newSelectedAccount.getID());
 
