@@ -32,25 +32,37 @@
                     </table>
                 </div>
             </div>
-
-            <#if currentAccount??>
-                <!-- confirm delete modal -->
-                <div id="modalConfirmDelete" class="modal">
-                    <div class="modal-content">
-                        <h4>${locale.getString("info.title.account.delete")}</h4>
-                        <p>${locale.getString("info.text.account.delete", currentAccount.getName(), currentAccount.getReferringPayments()?size)}</p>
-                    </div>
-                    <div class="modal-footer">
-                        <a href="/accounts" class="modal-action modal-close waves-effect waves-red btn-flat ">${locale.getString("cancel")}</a>
-                        <a href="/accounts/${currentAccount.getID()}/delete" class="modal-action modal-close waves-effect waves-green btn-flat ">${locale.getString("info.button.account.delete")}</a>
-                    </div>
-                </div>
-            </#if>
         </main>
+
+        <#if currentAccount??>
+            <!-- confirm delete modal -->
+            <div id="modalConfirmDelete" class="modal">
+                <div class="modal-content">
+                    <h4>${locale.getString("info.title.account.delete")}</h4>
+                    <p>${locale.getString("info.text.account.delete", currentAccount.getName(), currentAccount.getReferringPayments()?size)}</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="/accounts" class="modal-action modal-close waves-effect waves-red btn-flat ">${locale.getString("cancel")}</a>
+                    <a href="/accounts/${currentAccount.getID()}/delete" class="modal-action modal-close waves-effect waves-green btn-flat ">${locale.getString("info.button.account.delete")}</a>
+                </div>
+            </div>
+        </#if>
+
+        <#if accountNotDeletable??>
+            <!-- warning account not deletable -->
+            <div id="modalAccountNotDeletable" class="modal">
+                <div class="modal-content">
+                    <h4>${locale.getString("info.title.account.delete")}</h4>
+                    <p>${locale.getString("warning.text.account.delete", currentAccount.getName())}</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="/accounts" class="modal-action modal-close waves-effect waves-green btn-flat ">${locale.getString("ok")}</a>
+                </div>
+            </div>
+        </#if>
 
         <!--  Scripts-->
         <#import "../scripts.ftl" as scripts>
         <@scripts.scripts/>
-        <script src="/js/categories.js"></script>
     </body>
 </html>

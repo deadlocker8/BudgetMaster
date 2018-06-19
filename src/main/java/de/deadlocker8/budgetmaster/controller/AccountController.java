@@ -54,8 +54,16 @@ public class AccountController extends BaseController
 	@RequestMapping("/accounts/{ID}/delete")
 	public String deleteAccountAndReferringPayments(Model model, @PathVariable("ID") Integer ID)
 	{
-		accountService.deleteAccount(ID);
-		return "redirect:/accounts";
+		if(accountRepository.findAll().size() > 1)
+		{
+			accountService.deleteAccount(ID);
+			return "redirect:/accounts";
+		}
+
+		model.addAttribute("accounts", accountRepository.findAllByOrderByNameAsc());
+		model.addAttribute("currentAccount", accountRepository.getOne(ID));
+		model.addAttribute("accountNotDeletable", true);
+		return "accounts/accounts";
 	}
 
 	@RequestMapping("/accounts/newAccount")

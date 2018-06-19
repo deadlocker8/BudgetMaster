@@ -1,5 +1,8 @@
 package de.deadlocker8.budgetmaster.services;
 
+import de.deadlocker8.budgetmaster.authentication.User;
+import de.deadlocker8.budgetmaster.authentication.UserRepository;
+import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.entities.Account;
 import de.deadlocker8.budgetmaster.repositories.AccountRepository;
 import de.deadlocker8.budgetmaster.repositories.PaymentRepository;
@@ -19,12 +22,14 @@ public class AccountService implements Resetable
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private AccountRepository accountRepository;
 	private PaymentRepository paymentRepository;
+	private UserRepository userRepository;
 
 	@Autowired
-	public AccountService(AccountRepository accountRepository, PaymentRepository paymentRepository, LocalizationService localizationService)
+	public AccountService(AccountRepository accountRepository, PaymentRepository paymentRepository, UserRepository userRepository)
 	{
 		this.accountRepository = accountRepository;
 		this.paymentRepository = paymentRepository;
+		this.userRepository = userRepository;
 
 		createDefaults();
 	}
@@ -38,6 +43,12 @@ public class AccountService implements Resetable
 	{
 		Account accountToDelete = accountRepository.findOne(ID);
 		paymentRepository.delete(accountToDelete.getReferringPayments());
+
+		List<Account> accounts = accountRepository.findAll();
+		accounts.remove(accountToDelete);
+		Account newSelectedAccount = accounts.get(0);
+		selectAccount(newSelectedAccount.getID());
+
 		accountRepository.delete(ID);
 	}
 
@@ -71,5 +82,9 @@ public class AccountService implements Resetable
 		Account accountToSelect = accountRepository.findOne(ID);
 		accountToSelect.setSelected(true);
 		accountRepository.save(accountToSelect);
+
+		User user = userRepository.findByName("Default");
+		user.setSelectedAccount(accountToSelect);
+		userRepository.save(user);
 	}
 }
