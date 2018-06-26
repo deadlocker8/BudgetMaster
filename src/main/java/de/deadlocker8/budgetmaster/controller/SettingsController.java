@@ -16,8 +16,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import tools.BASE58Type;
 import tools.ConvertTo;
@@ -59,11 +62,11 @@ public class SettingsController extends BaseController
 	{
 		if(password == null || password.equals(""))
 		{
-			bindingResult.addError(new ObjectError("password", Strings.WARNING_SETTINGS_PASSWORD_EMPTY));
+			bindingResult.addError(new FieldError("Settings", "password", password, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_EMPTY}, null, Strings.WARNING_SETTINGS_PASSWORD_EMPTY));
 		}
 		else if(password.length() < 3)
 		{
-			bindingResult.addError(new ObjectError("password", Strings.WARNING_SETTINGS_PASSWORD_LENGTH));
+			bindingResult.addError(new FieldError("Settings", "password", password, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_LENGTH}, null, Strings.WARNING_SETTINGS_PASSWORD_LENGTH));
 		}
 
 		settings.setLanguage(LanguageType.fromName(languageType));
