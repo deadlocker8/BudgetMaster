@@ -15,3 +15,11 @@
         <@style "style"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </#macro>
+
+<#macro logo id classes>
+        <#if helpers.getSettings().isUseDarkTheme()>
+                <img class="${classes}" id="${id}" src="/images/Logo_with_white_text_medium_res.png">
+        <#else>
+                <img class="${classes}" id="${id}" src="/images/Logo_with_text_medium_res.png">
+        </#if>
+</#macro>

@@ -13,7 +13,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col s8 offset-s2 center-align">
-                            <img class="responsive-img" id="logo-huge" src="/images/Logo_with_text_medium_res.png">
+                            <@header.logo "logo-huge" "responsive-img"/>
                         </div>
                     </div>
                     <div class="hide-on-small-only"><br><br></div>

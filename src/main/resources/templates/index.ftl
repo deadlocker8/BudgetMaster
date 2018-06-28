@@ -15,7 +15,7 @@
                     <div class="row">
                         <div class="col s8 offset-s2 center-align">
                             <a href="/about">
-                                <img class="responsive-img" id="logo-home" src="/images/Logo_with_text_medium_res.png">
+                                <@header.logo "logo-home" "responsive-img"/>
                             </a>
                         </div>
                     </div>

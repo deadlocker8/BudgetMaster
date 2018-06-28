@@ -40,7 +40,8 @@
 </#macro>
 
 <#macro itemLogo>
-    <li><a href="/" class="waves-effect" id="nav-logo-container"><img id="nav-logo" src="/images/Logo_with_text_medium_res.png"></a></li>
+    <#import "header.ftl" as header>
+    <li><a href="/" class="waves-effect" id="nav-logo-container"><@header.logo "nav-logo" ""/></a></li>
 </#macro>
 
 <#macro itemDivider>

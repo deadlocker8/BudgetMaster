@@ -13,7 +13,7 @@
                     <div class="card">
                         <div class="card-content">
                             <span class="card-title">
-                                <div id="logo-container" class="center-align"><img id="logo" src="/images/Logo_with_text_medium_res.png"></div>
+                                <div id="logo-container" class="center-align"><@header.logo "logo" ""/></div>
                             </span>
                             <div class="row">
                                 <div class="col s12 center-align">

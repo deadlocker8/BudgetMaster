@@ -11,10 +11,10 @@
         <main>
             <div class="row valign-wrapper full-height">
                 <div class="col l4 offset-l4 m6 offset-m3 s10 offset-s1">
-                    <div class="card">
+                    <div class="card" id="card-login">
                         <div class="card-content">
                             <span class="card-title">
-                                <div id="logo-container" class="center-align"><img id="logo" src="/images/Logo_with_text_medium_res.png"></div>
+                                <div id="logo-container" class="center-align"><@header.logo "logo" ""/></div>
                             </span>
                             <form action="/login" method="post">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
