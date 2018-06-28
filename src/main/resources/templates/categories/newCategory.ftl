@@ -2,8 +2,8 @@
     <head>
         <#import "../header.ftl" as header>
         <@header.header "BudgetMaster"/>
-        <link type="text/css" rel="stylesheet" href="/css/spectrum.css"/>
-        <link type="text/css" rel="stylesheet" href="/css/categories.css"/>
+        <@header.style "spectrum"/>
+        <@header.style "categories"/>
         <#assign locale = static["tools.Localization"]>
     </head>
     <body class="budgetmaster-blue-light">

@@ -2,7 +2,7 @@
     <head>
         <#import "../header.ftl" as header>
         <@header.header "BudgetMaster - 500"/>
-        <link type="text/css" rel="stylesheet" href="/css/login.css"/>
+        <@header.style "login"/>
         <#assign locale = static["tools.Localization"]>
     </head>
     <body class="budgetmaster-blue-light">

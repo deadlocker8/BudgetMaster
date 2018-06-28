@@ -1,9 +1,10 @@
 <html>
     <head>
-            <#import "../header.ftl" as header>
-            <@header.header "BudgetMaster - 403"/>
-            <link type="text/css" rel="stylesheet" href="/css/login.css"/>
-            <#assign locale = static["tools.Localization"]>
+        <#import "../header.ftl" as header>
+        <@header.header "BudgetMaster - 403"/>
+        <@header.style "login"/>
+
+        <#assign locale = static["tools.Localization"]>
     </head>
     <body class="budgetmaster-blue-light">
         <main>

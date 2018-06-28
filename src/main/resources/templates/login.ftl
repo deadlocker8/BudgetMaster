@@ -2,7 +2,7 @@
     <head>
         <#import "header.ftl" as header>
         <@header.header "BudgetMaster"/>
-        <link type="text/css" rel="stylesheet" href="/css/login.css"/>
+        <@header.style "login"/>
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <#assign locale = static["tools.Localization"]>

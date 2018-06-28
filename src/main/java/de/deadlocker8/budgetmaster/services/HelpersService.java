@@ -33,6 +33,9 @@ public class HelpersService
 	private SettingsRepository settingsRepository;
 
 	@Autowired
+	private SettingsService settingsService;
+
+	@Autowired
 	private TagRepository tagRepository;
 
 	@Autowired
@@ -245,5 +248,10 @@ public class HelpersService
 	public List<RepeatingModifierType> getRepeatingModifierTypes()
 	{
 		return Arrays.asList(RepeatingModifierType.values());
+	}
+
+	public Settings getSettings()
+	{
+		return settingsService.getSettings();
 	}
 }
