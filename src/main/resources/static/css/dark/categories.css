@@ -1,0 +1,58 @@
+.category-circle {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 50%;
+    display: inline-block;
+    line-height: 40px;
+    font-size: 20px;
+}
+
+.category-color {
+    height: 35px;
+    width: 90%;
+    border-radius: 5px;
+    border: 2px solid #212121;
+    line-height: 30px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.category-color:hover {
+    cursor: pointer;
+}
+
+.category-color-active {
+    border: 3px dashed black;
+}
+
+/*style spectrum color picker*/
+
+/*hide spectrum color picker arrow*/
+.sp-dd {
+    display: none;
+}
+
+.sp-preview {
+    margin-right: 0;
+    border: none;
+    height: 100%;
+    width: 100%;
+    border-radius: 2px;
+    color: #000000;
+}
+
+.sp-preview-inner:after {
+    content: '+';
+}
+
+.sp-replacer {
+    background-color: transparent;
+    border: none;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    border-radius: 2px;
+}

@@ -1,0 +1,16 @@
+.table-repeating-end .cell{
+    padding: 0 2vmin 0 0;
+}
+
+.table-repeating-end .stretched-cell {
+    width: 100%;
+    padding: 0 2% 0 2%;
+}
+
+.table-repeating-end .input-cell {
+    min-width: 20%;
+}
+
+.chips .chip.selected {
+    background-color: #2E79B9;
+}
