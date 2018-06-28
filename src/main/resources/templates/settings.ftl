@@ -24,8 +24,16 @@
                         <#-- password -->
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
-                                <input id="settings-password" type="text" name="password" <@validation.validation "password"/> value="•••••">
+                                <input id="settings-password" type="password" name="password" <@validation.validation "password"/> value="•••••">
                                 <label for="settings-password">${locale.getString("settings.password")}</label>
+                            </div>
+                        </div>
+
+                        <#-- password confirmation-->
+                        <div class="row">
+                            <div class="input-field col s12 m12 l8 offset-l2">
+                                <input id="settings-password-confirmation" type="password" name="passwordConfirmation" <@validation.validation "passwordConfirmation"/> value="•••••">
+                                <label for="settings-password-confirmation">${locale.getString("settings.password.confirmation")}</label>
                             </div>
                         </div>
 

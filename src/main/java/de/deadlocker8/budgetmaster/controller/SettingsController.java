@@ -58,18 +58,16 @@ public class SettingsController extends BaseController
 	@RequestMapping(value = "/settings/save", method = RequestMethod.POST)
 	public String post(Model model, @ModelAttribute("Settings") Settings settings, BindingResult bindingResult,
 					   @RequestParam(value = "password") String password,
+					   @RequestParam(value = "passwordConfirmation") String passwordConfirmation,
 					   @RequestParam(value = "languageType") String languageType)
 	{
-		if(password == null || password.equals(""))
-		{
-			bindingResult.addError(new FieldError("Settings", "password", password, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_EMPTY}, null, Strings.WARNING_SETTINGS_PASSWORD_EMPTY));
-		}
-		else if(password.length() < 3)
-		{
-			bindingResult.addError(new FieldError("Settings", "password", password, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_LENGTH}, null, Strings.WARNING_SETTINGS_PASSWORD_LENGTH));
-		}
-
 		settings.setLanguage(LanguageType.fromName(languageType));
+
+		FieldError error = validatePassword(password, passwordConfirmation);
+		if(error != null)
+		{
+			bindingResult.addError(error);
+		}
 
 		if(bindingResult.hasErrors())
 		{
@@ -95,6 +93,30 @@ public class SettingsController extends BaseController
 		}
 
 		return "redirect:/settings";
+	}
+
+	private FieldError validatePassword(String password, String passwordConfirmation)
+	{
+		if(password == null || password.equals(""))
+		{
+			return new FieldError("Settings", "password", password, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_EMPTY}, null, Strings.WARNING_SETTINGS_PASSWORD_EMPTY);
+		}
+		else if(password.length() < 3)
+		{
+			return new FieldError("Settings", "password", password, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_LENGTH}, null, Strings.WARNING_SETTINGS_PASSWORD_LENGTH);
+		}
+
+		if(passwordConfirmation == null || passwordConfirmation.equals(""))
+		{
+			return new FieldError("Settings", "passwordConfirmation", passwordConfirmation, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_EMPTY}, null, Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_EMPTY);
+		}
+
+		if(!password.equals(passwordConfirmation))
+		{
+			return new FieldError("Settings", "passwordConfirmation", passwordConfirmation, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_WRONG}, null, Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_WRONG);
+		}
+
+		return null;
 	}
 
 	@RequestMapping("/settings/database/requestExport")
