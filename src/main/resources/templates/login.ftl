@@ -6,6 +6,14 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <#assign locale = static["tools.Localization"]>
+
+        <#if helpers.getSettings().isUseDarkTheme()>
+            <#assign greenTextColor="text-green"/>
+            <#assign redTextColor="text-light-red"/>
+        <#else>
+            <#assign greenTextColor="text-dark-green"/>
+            <#assign redTextColor="text-red"/>
+        </#if>
     </head>
     <body class="budgetmaster-blue-light">
         <main>
@@ -30,7 +38,7 @@
                                 <#if isError??>
                                     <div class="row no-margin-bottom">
                                         <div class="col s12 center-align">
-                                            <table class="text-red login-message">
+                                            <table class="${redTextColor} login-message">
                                                 <tr>
                                                     <td><i class="material-icons">warning</i></td>
                                                     <td>${locale.getString("warning.wrong.password")}</td>
@@ -43,7 +51,7 @@
                                 <#if isLogout??>
                                     <div class="row no-margin-bottom">
                                         <div class="col s12 center-align">
-                                            <table class="text-dark-green login-message">
+                                            <table class="${greenTextColor} login-message">
                                                 <tr>
                                                     <td><i class="material-icons">info_outline</i></td>
                                                     <td>${locale.getString("logout.success")}</td>

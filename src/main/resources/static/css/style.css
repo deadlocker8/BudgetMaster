@@ -220,12 +220,20 @@ main {
     color: #D82C29;
 }
 
+.text-light-red {
+    color: #F55856;
+}
+
 .text-green {
     color: #5cb85c;
 }
 
 .text-dark-green {
     color: #247A2C;
+}
+
+.text-grey {
+    color: #757575;
 }
 
 .color-red {

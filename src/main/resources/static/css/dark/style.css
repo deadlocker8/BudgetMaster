@@ -67,11 +67,11 @@ main {
 }
 
 .budgetmaster-grey {
-    background-color: #696969;
+    background-color: #CCCCCC;
 }
 
 .budgetmaster-grey-text {
-    color: #696969;
+    color: #CCCCCC;
 }
 
 .budgetmaster-baby-blue {
@@ -91,22 +91,38 @@ main {
 }
 
 .budgetmaster-text-black {
-    color: rgba(0,0,0,0.87);
+    color: rgba(0, 0, 0, 0.87);
+}
+
+.side-nav, .side-nav-sub{
+    background-color: #444444;
+}
+
+.side-nav li > a, .side-nav-sub li > a {
+    color: #FFFFFF;
+}
+
+.side-nav li > a:hover, .side-nav-sub li > a:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.side-nav li > a > i, .side-nav-sub li > a > i{
+    color: #FFFFFF !important;
 }
 
 .side-nav li.active {
-    background-color: rgba(0, 0, 0, 0.15);
+    background-color: rgba(255, 255, 255, 0.25);
 }
 
 /*active nav bar sub list items*/
 .side-nav .collapsible-body > ul:not(.collapsible) > li.active, .side-nav.fixed .collapsible-body > ul:not(.collapsible) > li.active {
-    background-color: rgba(0, 0, 0, 0.25);
+    background-color: rgba(255, 255, 255, 0.35);
 }
 
 /*text color for active nav bar sub list items*/
 .side-nav .collapsible-body > ul:not(.collapsible) > li.active a,
 .side-nav.fixed .collapsible-body > ul:not(.collapsible) > li.active a {
-    color: rgba(0, 0, 0, 0.87);
+    color: rgba(255, 255, 255, 0.87);
 }
 
 .btn {
@@ -129,6 +145,18 @@ main {
     font-style: italic;
 }
 
+/* input text color */
+.input-field input[type=text] {
+    color: #FFFFFF;
+    border-bottom: 1px solid #FFFFFF !important;
+    box-shadow: 0 1px 0 0 #CCCCCC !important;
+}
+
+/* input password label color */
+.input-field input[type=text] + label {
+    color: #FFFFFF !important;
+}
+
 /* label focus color */
 .input-field input[type=text]:focus + label {
     color: #2E79B9 !important;
@@ -138,6 +166,18 @@ main {
 .input-field input[type=text]:focus {
     border-bottom: 1px solid #2E79B9 !important;
     box-shadow: 0 1px 0 0 #CCCCCC !important;
+}
+
+/* input password color */
+.input-field input[type=password] {
+    color: #FFFFFF !important;
+    border-bottom: 1px solid #FFFFFF !important;
+    box-shadow: 0 1px 0 0 #CCCCCC !important;
+}
+
+/* input password label color */
+.input-field input[type=password] + label {
+    color: #FFFFFF !important;
 }
 
 /* label password focus color */
@@ -221,12 +261,20 @@ main {
     color: #D82C29;
 }
 
+.text-light-red {
+    color: #F55856;
+}
+
 .text-green {
     color: #5cb85c;
 }
 
 .text-dark-green {
     color: #247A2C;
+}
+
+.text-grey {
+    color: #CCCCCC;
 }
 
 .color-red {
@@ -370,15 +418,16 @@ input[type="radio"]:checked + label::after, [type="radio"].with-gap:checked + la
 }
 
 .home-menu-cell:hover {
-    background-color: #EEEEEE;
+    background-color: #333333;
 }
 
 .home-menu-link {
     display: inline-block;
+    color: #FFFFFF;
 }
 
 .home-menu-disabled * {
-    color: #AAAAAA !important;
+    color: #777777 !important;
 }
 
 .hidden {

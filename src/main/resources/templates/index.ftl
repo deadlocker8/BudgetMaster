@@ -26,14 +26,14 @@
                             <a href="/accounts" class="home-menu-link budgetmaster-text-black">
                                 <h1 class="center budgetmaster-grey-text"><i class="material-icons icon-budget">account_balance</i></h1>
                                 <h3 class="center budget">${locale.getString("menu.accounts")}</h3>
-                                <p class="grey-text text-darken-1">${locale.getString("home.menu.accounts")}</p>
+                                <p class="text-grey">${locale.getString("home.menu.accounts")}</p>
                             </a>
                         </div>
                         <div class="col s12 m4 center-align home-menu-cell">
                             <a href="/payments" class="home-menu-link budgetmaster-text-black">
                                 <h1 class="center budgetmaster-baby-blue-text"><i class="material-icons icon-budget">list</i></h1>
                                 <h3 class="center budget">${locale.getString("menu.payments")}</h3>
-                                <p class="grey-text text-darken-1">${locale.getString("home.menu.payments")}</p>
+                                <p class="text-grey">${locale.getString("home.menu.payments")}</p>
                             </a>
                         </div>
                         <div class="col s12 m4 center-align home-menu-cell">
@@ -56,14 +56,14 @@
                             <a href="/categories" class="home-menu-link budgetmaster-text-black">
                                 <h1 class="center budgetmaster-orange-text"><i class="material-icons icon-budget">label</i></h1>
                                 <h3 class="center budget">${locale.getString("menu.categories")}</h3>
-                                <p class="grey-text text-darken-1">${locale.getString("home.menu.categories")}</p>
+                                <p class="text-grey">${locale.getString("home.menu.categories")}</p>
                             </a>
                         </div>
                         <div class="col s12 m4 center-align home-menu-cell">
                             <a href="/settings" class="home-menu-link budgetmaster-text-black">
                                 <h1 class="center budgetmaster-red-text"><i class="material-icons icon-budget">settings</i></h1>
                                 <h3 class="center budget">${locale.getString("menu.settings")}</h3>
-                                <p class="grey-text text-darken-1">${locale.getString("home.menu.settings")}</p>
+                                <p class="text-grey">${locale.getString("home.menu.settings")}</p>
                             </a>
                         </div>
                     </div>

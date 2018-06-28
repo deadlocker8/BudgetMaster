@@ -80,7 +80,7 @@
 
 <#macro subListStart ID text icon activeColor activeID>
 <li>
-    <ul class="collapsible collapsible-accordion no-padding">
+    <ul class="collapsible collapsible-accordion no-padding side-nav-sub">
         <li>
             <#if activeID?starts_with(ID)>
                 <a href="/charts" class="collapsible-header no-padding active"><div class="stripe ${activeColor}"></div><i class="material-icons">${icon}</i>${text}</a>
@@ -88,7 +88,7 @@
                 <a href="/charts" class="collapsible-header nav-padding"><i class="material-icons">${icon}</i>${text}</a>
             </#if>
             <div class="collapsible-body">
-                <ul>
+                <ul class="side-nav-sub">
 </#macro>
 
 <#macro subListEnd>
