@@ -1,14 +1,14 @@
 <html>
     <head>
         <#import "../header.ftl" as header>
-        <@header.header "BudgetMaster - 418">
+        <@header.header "BudgetMaster - 418"/>
         <@header.style "login"/>
     </head>
     <body class="budgetmaster-blue-light">
         <main>
             <div class="row valign-wrapper full-height">
                 <div class="col l4 offset-l4 m6 offset-m3 s10 offset-s1">
-                    <div class="card">
+                    <div class="card background-color">
                         <div class="card-content">
                             <span class="card-title">
                                 <div id="logo-container" class="center-align"><@header.logo "logo" ""/></div>
