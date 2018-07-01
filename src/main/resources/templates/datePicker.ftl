@@ -1,5 +1,4 @@
 <#macro datePicker fullDate target>
-    <#assign locale = static["tools.Localization"]>
      <div class="container">
          <div class="section center-align">
              <a href="/previousMonth?target=${target}" class="waves-effect text-color"><i class="material-icons icon-chevron">chevron_left</i></a>
@@ -37,7 +36,6 @@
 </#macro>
 
 <#macro datePickerLocalization>
-    <#assign locale = static["tools.Localization"]>
     <#-- localization for scripts -->
     <script>
         <#assign monthNames = "">

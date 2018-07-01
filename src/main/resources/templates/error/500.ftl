@@ -3,7 +3,6 @@
         <#import "../header.ftl" as header>
         <@header.header "BudgetMaster - 500"/>
         <@header.style "login"/>
-        <#assign locale = static["tools.Localization"]>
     </head>
     <body class="budgetmaster-blue-light">
         <main>

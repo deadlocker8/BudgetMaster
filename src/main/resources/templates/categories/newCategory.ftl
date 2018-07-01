@@ -4,7 +4,6 @@
         <@header.header "BudgetMaster"/>
         <@header.style "spectrum"/>
         <@header.style "categories"/>
-        <#assign locale = static["tools.Localization"]>
     </head>
     <body class="budgetmaster-blue-light">
         <#import "../navbar.ftl" as navbar>

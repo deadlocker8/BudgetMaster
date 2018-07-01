@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="/materialize-0.100.2/css/materialize.min.css">
         <@style "style"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <#global locale = static["tools.Localization"]>
 
         <#if helpers.getSettings().isUseDarkTheme()>
                 <#global greenTextColor="text-green"/>

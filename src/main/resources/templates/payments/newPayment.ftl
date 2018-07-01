@@ -4,8 +4,6 @@
         <@header.header "BudgetMaster"/>
         <@header.style "payments"/>
         <@header.style "datepicker"/>
-
-        <#assign locale = static["tools.Localization"]>
     </head>
     <body class="budgetmaster-blue-light">
         <#import "../navbar.ftl" as navbar>
