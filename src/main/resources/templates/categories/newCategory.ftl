@@ -11,10 +11,10 @@
         <@navbar.navbar "categories"/>
 
         <main>
-            <div class="card main-card">
+            <div class="card main-card background-color">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="grey-text text-darken-4 headline"><#if category.getID()??>${locale.getString("title.category.edit")}<#else>${locale.getString("title.category.new")}</#if></div>
+                        <div class="headline"><#if category.getID()??>${locale.getString("title.category.edit")}<#else>${locale.getString("title.category.new")}</#if></div>
                     </div>
                 </div>
                 <div class="container">

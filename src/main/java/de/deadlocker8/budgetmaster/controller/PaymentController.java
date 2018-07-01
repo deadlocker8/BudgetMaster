@@ -86,11 +86,17 @@ public class PaymentController extends BaseController
 
 		DateTime date = getDateTimeFromCookie(cookieDate);
 		List<Payment> payments = paymentService.getPaymentsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear(), getSettings().isRestActivated());
+		int incomeSum = helpers.getIncomeSumForPaymentList(payments);
+		int paymentSum = helpers.getPaymentSumForPaymentList(payments);
+		int rest = incomeSum + paymentSum;
+
 		model.addAttribute("payments", payments);
-		model.addAttribute("incomeSum", helpers.getIncomeSumForPaymentList(payments));
-		model.addAttribute("paymentSum", helpers.getPaymentSumForPaymentList(payments));
+		model.addAttribute("incomeSum", incomeSum);
+		model.addAttribute("paymentSum", paymentSum);
 		model.addAttribute("currentDate", date);
 		model.addAttribute("currentPayment", paymentRepository.getOne(ID));
+		model.addAttribute("rest", rest);
+
 		return "payments/payments";
 	}
 

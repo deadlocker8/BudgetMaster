@@ -265,6 +265,7 @@ main {
 .headline {
     font-size: 2rem;
     text-transform: initial;
+    color: #212121;
 }
 
 .headline-date {
@@ -399,6 +400,7 @@ input[type="radio"]:checked + label::after, [type="radio"].with-gap:checked + la
 
     .budget-headline {
         font-size: 1.5vmin;
+        color: #757575;
     }
 
     .budget {
@@ -413,6 +415,7 @@ input[type="radio"]:checked + label::after, [type="radio"].with-gap:checked + la
 
     .budget-headline {
         font-size: 2.5vmin;
+        color: #757575;
     }
 
     .budget {
@@ -427,6 +430,7 @@ input[type="radio"]:checked + label::after, [type="radio"].with-gap:checked + la
 
     .budget-headline {
         font-size: 4vmin;
+        color: #757575;
     }
 
     .budget {

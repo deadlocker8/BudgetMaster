@@ -9,10 +9,10 @@
         <@navbar.navbar "accounts"/>
 
         <main>
-            <div class="card main-card">
+            <div class="card main-card background-color">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="grey-text text-darken-4 headline">${locale.getString("menu.accounts")}</div>
+                        <div class="headline">${locale.getString("menu.accounts")}</div>
                     </div>
                 </div>
                 <br>
@@ -24,8 +24,8 @@
                         <tr>
                             <td>${account.getName()}</td>
                             <td>
-                                <a href="/accounts/${account.getID()}/edit" class="btn-flat no-padding"><i class="material-icons left">edit</i></a>
-                                <a href="/accounts/${account.getID()}/requestDelete" class="btn-flat no-padding"><i class="material-icons left">delete</i></a>
+                                <a href="/accounts/${account.getID()}/edit" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
+                                <a href="/accounts/${account.getID()}/requestDelete" class="btn-flat no-padding text-color"><i class="material-icons left">delete</i></a>
                             </td>
                         </tr>
                         </#list>
@@ -36,12 +36,12 @@
 
         <#if currentAccount??>
             <!-- confirm delete modal -->
-            <div id="modalConfirmDelete" class="modal">
+            <div id="modalConfirmDelete" class="modal background-color">
                 <div class="modal-content">
                     <h4>${locale.getString("info.title.account.delete")}</h4>
                     <p>${locale.getString("info.text.account.delete", currentAccount.getName(), currentAccount.getReferringPayments()?size)}</p>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer background-color">
                     <a href="/accounts" class="modal-action modal-close waves-effect waves-red btn-flat ">${locale.getString("cancel")}</a>
                     <a href="/accounts/${currentAccount.getID()}/delete" class="modal-action modal-close waves-effect waves-green btn-flat ">${locale.getString("info.button.account.delete")}</a>
                 </div>
@@ -50,13 +50,13 @@
 
         <#if accountNotDeletable??>
             <!-- warning account not deletable -->
-            <div id="modalAccountNotDeletable" class="modal">
+            <div id="modalAccountNotDeletable" class="modal background-color">
                 <div class="modal-content">
                     <h4>${locale.getString("info.title.account.delete")}</h4>
                     <p>${locale.getString("warning.text.account.delete", currentAccount.getName())}</p>
                 </div>
-                <div class="modal-footer">
-                    <a href="/accounts" class="modal-action modal-close waves-effect waves-green btn-flat ">${locale.getString("ok")}</a>
+                <div class="modal-footer background-color">
+                    <a href="/accounts" class="modal-action modal-close waves-effect waves-green btn-flat text-color">${locale.getString("ok")}</a>
                 </div>
             </div>
         </#if>

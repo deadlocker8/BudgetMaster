@@ -2,15 +2,15 @@
     <#assign locale = static["tools.Localization"]>
      <div class="container">
          <div class="section center-align">
-             <a href="/previousMonth?target=${target}" class="waves-effect grey-text text-darken-4"><i class="material-icons icon-chevron">chevron_left</i></a>
-             <a href="#modalDate" class="waves-effect grey-text text-darken-4 headline-date modal-trigger">${helpers.getDateStringWithMonthAndYear(fullDate)}</a>
-             <a href="/nextMonth?target=${target}" class="waves-effect grey-text text-darken-4"><i class="material-icons icon-chevron">chevron_right</i></a>
-             <a href="/today?target=${target}" class="waves-effect grey-text text-darken-4"><i class="material-icons icon-today">event</i></a>
+             <a href="/previousMonth?target=${target}" class="waves-effect text-color"><i class="material-icons icon-chevron">chevron_left</i></a>
+             <a href="#modalDate" class="waves-effect headline-date modal-trigger text-color">${helpers.getDateStringWithMonthAndYear(fullDate)}</a>
+             <a href="/nextMonth?target=${target}" class="waves-effect text-color"><i class="material-icons icon-chevron">chevron_right</i></a>
+             <a href="/today?target=${target}" class="waves-effect text-color"><i class="material-icons icon-today">event</i></a>
          </div>
      </div>
     <!-- modal to select specific month and year -->
     <div id="modalDate" class="modal modal-fixed-footer">
-        <div class="modal-content">
+        <div class="modal-content background-color">
             <h4>${locale.getString("title.datepicker")}</h4>
             <div class="input-field col s12">
                 <select id="selectMonth">
@@ -29,7 +29,7 @@
                 <label for="selectYear">${locale.getString("datepicker.label.year")}</label>
             </div>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer background-color">
             <a href="${target}" class="modal-action modal-close waves-effect waves-red btn-flat">${locale.getString("cancel")}</a>
             <a href="/setDate?target=${target}" id="buttonChooseDate" class="modal-action modal-close waves-effect waves-green btn-flat">${locale.getString("ok")}</a>
         </div>

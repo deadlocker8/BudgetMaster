@@ -9,10 +9,10 @@
         <@navbar.navbar "settings"/>
 
         <main>
-            <div class="card main-card">
+            <div class="card main-card background-color">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="grey-text text-darken-4 headline">${locale.getString("menu.settings")}</div>
+                        <div class="headline">${locale.getString("menu.settings")}</div>
                     </div>
                 </div>
                 <div class="container">
@@ -141,7 +141,7 @@
                 <#-- database -->
                 <div class="container">
                     <div class="section center-align">
-                        <div class="grey-text text-darken-4 headline">${locale.getString("menu.settings.database")}</div>
+                        <div class="headline">${locale.getString("menu.settings.database")}</div>
                     </div>
                 </div>
                 <div class="container">
@@ -183,7 +183,7 @@
         </main>
 
         <#if deleteDatabase??>
-            <div id="modalConfirmDelete" class="modal">
+            <div id="modalConfirmDelete" class="modal background-color">
                 <div class="modal-content">
                     <h4>${locale.getString("info.title.database.delete")}</h4>
                     <p>${locale.getString("info.header.text.database.delete")}</p>
@@ -200,9 +200,8 @@
                             </div>
                         </div>
                     </form>
-
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer background-color">
                     <a href="/settings" class="modal-action modal-close waves-effect waves-red btn-flat ">${locale.getString("cancel")}</a>
                     <a class="modal-action modal-close waves-effect waves-green btn-flat" id="button-confirm-database-delete">${locale.getString("delete")}</a>
                 </div>
@@ -210,7 +209,7 @@
         </#if>
 
         <#if importDatabase??>
-            <div id="modalImportDatabase" class="modal">
+            <div id="modalImportDatabase" class="modal background-color">
                 <div class="modal-content">
                     <h4>${locale.getString("info.title.database.import.dialog")}</h4>
 
@@ -227,7 +226,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer background-color">
                     <a href="/settings" class="modal-action modal-close waves-effect waves-red btn-flat ">${locale.getString("cancel")}</a>
                     <a class="modal-action modal-close waves-effect waves-green btn-flat" id="button-confirm-database-import">${locale.getString("settings.database.import")}</a>
                 </div>

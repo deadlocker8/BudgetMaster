@@ -9,7 +9,7 @@
         <@navbar.navbar "home"/>
 
         <main>
-            <div class="card main-card">
+            <div class="card main-card background-color">
                 <div class="container">
                 <#-- icon -->
                     <div class="row">

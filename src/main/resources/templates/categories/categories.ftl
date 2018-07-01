@@ -10,10 +10,10 @@
         <@navbar.navbar "categories"/>
 
         <main>
-            <div class="card main-card">
+            <div class="card main-card background-color">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="grey-text text-darken-4 headline">${locale.getString("menu.categories")}</div>
+                        <div class="headline">${locale.getString("menu.categories")}</div>
                     </div>
                 </div>
                 <br>
@@ -32,9 +32,9 @@
                             </td>
                             <td>${category.name}</td>
                             <td>
-                                <a href="/categories/${category.ID}/edit" class="btn-flat no-padding"><i class="material-icons left">edit</i></a>
+                                <a href="/categories/${category.ID}/edit" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
                                 <#if (category.type.name() == "CUSTOM")>
-                                    <a href="/categories/${category.ID}/requestDelete" class="btn-flat no-padding"><i class="material-icons left">delete</i></a>
+                                    <a href="/categories/${category.ID}/requestDelete" class="btn-flat no-padding text-color"><i class="material-icons left">delete</i></a>
                                 </#if>
                             </td>
                         </tr>
@@ -45,12 +45,12 @@
 
             <#if currentCategory??>
                 <!-- confirm delete modal -->
-                <div id="modalConfirmDelete" class="modal">
+                <div id="modalConfirmDelete" class="modal background-color">
                     <div class="modal-content">
                         <h4>${locale.getString("info.title.category.delete")}</h4>
                         <p>${locale.getString("info.text.category.delete", currentCategory.name)}</p>
                     </div>
-                    <div class="modal-footer">
+                    <div class="modal-footer background-color">
                         <a href="/categories" class="modal-action modal-close waves-effect waves-red btn-flat ">${locale.getString("cancel")}</a>
                         <a href="/categories/${currentCategory.ID}/delete" class="modal-action modal-close waves-effect waves-green btn-flat ">${locale.getString("delete")}</a>
                     </div>

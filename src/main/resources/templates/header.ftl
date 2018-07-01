@@ -14,6 +14,14 @@
         <link rel="stylesheet" href="/materialize-0.100.2/css/materialize.min.css">
         <@style "style"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <#if helpers.getSettings().isUseDarkTheme()>
+                <#global greenTextColor="text-green"/>
+                <#global redTextColor="text-light-red"/>
+        <#else>
+                <#global greenTextColor="text-dark-green"/>
+                <#global redTextColor="text-red"/>
+        </#if>
 </#macro>
 
 <#macro logo id classes>

@@ -3,17 +3,7 @@
         <#import "header.ftl" as header>
         <@header.header "BudgetMaster"/>
         <@header.style "login"/>
-
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <#assign locale = static["tools.Localization"]>
-
-        <#if helpers.getSettings().isUseDarkTheme()>
-            <#assign greenTextColor="text-green"/>
-            <#assign redTextColor="text-light-red"/>
-        <#else>
-            <#assign greenTextColor="text-dark-green"/>
-            <#assign redTextColor="text-red"/>
-        </#if>
     </head>
     <body class="budgetmaster-blue-light">
         <main>

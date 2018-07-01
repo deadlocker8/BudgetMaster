@@ -9,7 +9,7 @@
         <@navbar.navbar "about"/>
 
         <main>
-            <div class="card main-card">
+            <div class="card main-card background-color">
                 <div class="container">
                     <div class="row">
                         <div class="col s8 offset-s2 center-align">

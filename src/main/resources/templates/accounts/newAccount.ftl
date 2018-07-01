@@ -9,10 +9,10 @@
         <@navbar.navbar "accounts"/>
 
         <main>
-            <div class="card main-card">
+            <div class="card main-card background-color">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="grey-text text-darken-4 headline"><#if account.getID()??>${locale.getString("title.account.edit")}<#else>${locale.getString("title.account.new")}</#if></div>
+                        <div class="headline"><#if account.getID()??>${locale.getString("title.account.edit")}<#else>${locale.getString("title.account.new")}</#if></div>
                     </div>
                 </div>
                 <div class="container">

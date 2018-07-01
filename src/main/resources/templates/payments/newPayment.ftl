@@ -12,10 +12,10 @@
         <@navbar.navbar "payments"/>
 
         <main>
-            <div class="card main-card">
+            <div class="card main-card background-color">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="grey-text text-darken-4 headline"><#if payment.getID()??>${locale.getString("title.payment.edit")}<#else>${locale.getString("title.payment.new")}</#if></div>
+                        <div class="headline"><#if payment.getID()??>${locale.getString("title.payment.edit")}<#else>${locale.getString("title.payment.new")}</#if></div>
                     </div>
                 </div>
                 <div class="container">

@@ -10,7 +10,7 @@
         <@navbar.navbar "payments"/>
 
         <main>
-            <div class="card main-card">
+            <div class="card main-card background-color">
                 <#import "../datePicker.ftl" as datePicker>
                 <@datePicker.datePicker currentDate "/payments"/>
                 <div class="container">
@@ -19,21 +19,21 @@
                             <div class="icon-block">
                                 <h1 class="center text-green budget-headline-icon"><i class="material-icons icon-budget">file_download</i></h1>
                                 <h5 class="center budget">${helpers.getCurrencyString(incomeSum)}</h5>
-                                <h5 class="center grey-text text-darken-1 budget-headline">${locale.getString("title.incomes")}</h5>
+                                <h5 class="center budget-headline">${locale.getString("title.incomes")}</h5>
                             </div>
                         </div>
                         <div class="col s4">
                             <div class="icon-block">
-                                <h1 class="center text-red budget-headline-icon"><i class="material-icons icon-budget">file_upload</i></h1>
+                                <h1 class="center ${redTextColor} budget-headline-icon"><i class="material-icons icon-budget">file_upload</i></h1>
                                 <h5 class="center budget">${helpers.getCurrencyString(paymentSum)}</h5>
-                                <h5 class="center grey-text text-darken-1 budget-headline">${locale.getString("title.payments")}</h5>
+                                <h5 class="center budget-headline">${locale.getString("title.payments")}</h5>
                             </div>
                         </div>
                         <div class="col s4">
                             <div class="icon-block">
                                 <h1 class="center budgetmaster-blue-text budget-headline-icon"><i class="fas fa-piggy-bank icon-budget"></i></h1>
                                 <h5 class="center budget">${helpers.getCurrencyString(rest)}</h5>
-                                <h5 class="center grey-text text-darken-1 budget-headline">${locale.getString("title.rest")}</h5>
+                                <h5 class="center budget-headline">${locale.getString("title.rest")}</h5>
                             </div>
                         </div>
                     </div>
@@ -64,14 +64,14 @@
                                     </#if>
                                 </td>
                                 <#if payment.amount <= 0>
-                                    <td class="bold text-red">${helpers.getCurrencyString(payment.amount)}</td>
+                                    <td class="bold ${redTextColor}">${helpers.getCurrencyString(payment.amount)}</td>
                                 <#else>
-                                    <td class="bold text-dark-green">${helpers.getCurrencyString(payment.amount)}</td>
+                                    <td class="bold ${greenTextColor}">${helpers.getCurrencyString(payment.amount)}</td>
                                 </#if>
                                 <td>
                                     <#if (payment.category.type.name() != "REST")>
-                                        <a href="/payments/${payment.ID}/edit" class="btn-flat no-padding"><i class="material-icons left">edit</i></a>
-                                        <a href="/payments/${payment.ID}/requestDelete" class="btn-flat no-padding"><i class="material-icons left">delete</i></a>
+                                        <a href="/payments/${payment.ID}/edit" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
+                                        <a href="/payments/${payment.ID}/requestDelete" class="btn-flat no-padding text-color"><i class="material-icons left">delete</i></a>
                                     </#if>
                                 </td>
                             </tr>
@@ -82,12 +82,12 @@
 
             <#if currentPayment??>
                 <!-- confirm delete modal -->
-                <div id="modalConfirmDelete" class="modal">
+                <div id="modalConfirmDelete" class="modal background-color">
                     <div class="modal-content">
                         <h4>${locale.getString("info.title.payment.delete")}</h4>
                         <p>${locale.getString("info.text.payment.delete", currentPayment.name)}</p>
                     </div>
-                    <div class="modal-footer">
+                    <div class="modal-footer background-color">
                         <a href="/payments" class="modal-action modal-close waves-effect waves-red btn-flat ">${locale.getString("cancel")}</a>
                         <a href="/payments/${currentPayment.ID}/delete" class="modal-action modal-close waves-effect waves-green btn-flat ">${locale.getString("delete")}</a>
                     </div>
