@@ -217,10 +217,7 @@
                         <div class="file-field input-field">
                             <div class="btn waves-effect waves-light budgetmaster-blue">
                                 <i class="material-icons">cloud_upload</i>
-                                <input type="file" name="file">
-                            </div>
-                            <div class="file-path-wrapper">
-                                <input class="file-path validate" type="text">
+                                <input type="file" accept=".json" name="file">
                             </div>
                         </div>
                     </form>
