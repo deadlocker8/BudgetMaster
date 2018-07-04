@@ -2,9 +2,11 @@ bin/
 target/
 certs/
 .idea/
+*.p12
 
 *.db
 *.iml
 
 build/[0-9]*.[0-9]*.[0-9]*
 /error.log
+/application.properties
