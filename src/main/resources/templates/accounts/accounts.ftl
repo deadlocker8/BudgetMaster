@@ -29,6 +29,9 @@
                         </tr>
                         </#list>
                     </table>
+                    <#if accounts?size == 0>
+                        <div class="headline center-align">${locale.getString("placeholder")}</div>
+                    </#if>
                 </div>
             </div>
         </main>

@@ -39,6 +39,9 @@
                         </tr>
                         </#list>
                     </table>
+                    <#if categories?size == 0>
+                        <div class="headline center-align">${locale.getString("placeholder")}</div>
+                    </#if>
                 </div>
             </div>
 

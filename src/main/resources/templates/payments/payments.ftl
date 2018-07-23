@@ -76,6 +76,9 @@
                             </tr>
                         </#list>
                     </table>
+                    <#if payments?size == 0>
+                        <div class="headline center-align">${locale.getString("placeholder")}</div>
+                    </#if>
                 </div>
             </div>
 
