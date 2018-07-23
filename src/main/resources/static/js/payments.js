@@ -42,6 +42,8 @@ $( document ).ready(function() {
             }
         });
 
+        pickerStartDate = pickerStartDate.pickadate('picker');
+
         var pickerEndDate = $('#payment-repeating-end-date-input').pickadate({
             selectMonths: true,
             selectYears: 100,
@@ -71,6 +73,14 @@ $( document ).ready(function() {
         });
 
         pickerEndDate = pickerEndDate.pickadate('picker');
+
+        // picker end date
+        var selectedDate = pickerStartDate.get('select').obj;
+        if(pickerEndDate.get('select').obj < selectedDate)
+        {
+            pickerEndDate.set('select', selectedDate);
+        }
+        pickerEndDate.set('min', selectedDate);
     }
 
     if($('#payment-amount').length)
