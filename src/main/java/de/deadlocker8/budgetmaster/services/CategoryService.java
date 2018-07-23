@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tools.Localization;
 
+import java.util.List;
+
 @Service
 public class CategoryService implements Resetable
 {
@@ -33,9 +35,13 @@ public class CategoryService implements Resetable
 	public void deleteCategory(int ID)
 	{
 		Category categoryToDelete = categoryRepository.findOne(ID);
-		for(Payment payment : categoryToDelete.getReferringPayments())
+		List<Payment> referringPayments = categoryToDelete.getReferringPayments();
+		if(referringPayments != null)
 		{
-			payment.setCategory(categoryRepository.findByType(CategoryType.NONE));
+			for(Payment payment : referringPayments)
+			{
+				payment.setCategory(categoryRepository.findByType(CategoryType.NONE));
+			}
 		}
 
 		categoryRepository.delete(ID);
