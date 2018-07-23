@@ -8,11 +8,12 @@
         <@itemWithIcon "accounts", "/accounts", locale.getString("menu.accounts"), "account_balance", "budgetmaster-grey", activeID/>
         <@itemWithIcon "payments", "/payments", locale.getString("menu.payments"), "list", "budgetmaster-baby-blue", activeID/>
         <@subListStart "chart" locale.getString("menu.charts"), "show_chart" "budgetmaster-purple", activeID/>
-            <@itemPlain "chartCategories", "", locale.getString("menu.charts.chartCategories"), activeID/>
-            <@itemPlain "chartMonth", "", locale.getString("menu.charts.chartMonth"), activeID/>
-            <@itemPlain "chartTags", "", locale.getString("menu.charts.chartTags"), activeID/>
-            <@itemPlain "chartCategoryBudget", "", locale.getString("menu.charts.chartCategoryBudget"), activeID/>
-            <@itemPlain "chartHistogram", "", locale.getString("menu.charts.chartHistogram"), activeID/>
+            <#-- disabled until future versions -->
+            <#--<@itemPlain "chartCategories", "", locale.getString("menu.charts.chartCategories"), activeID/>-->
+            <#--<@itemPlain "chartMonth", "", locale.getString("menu.charts.chartMonth"), activeID/>-->
+            <#--<@itemPlain "chartTags", "", locale.getString("menu.charts.chartTags"), activeID/>-->
+            <#--<@itemPlain "chartCategoryBudget", "", locale.getString("menu.charts.chartCategoryBudget"), activeID/>-->
+            <#--<@itemPlain "chartHistogram", "", locale.getString("menu.charts.chartHistogram"), activeID/>-->
         <@subListEnd/>
 
         <@itemWithIcon "reports", "/reports", locale.getString("menu.reports"), "description", "budgetmaster-green", activeID/>

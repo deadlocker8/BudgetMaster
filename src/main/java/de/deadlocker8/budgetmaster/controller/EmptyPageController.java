@@ -12,20 +12,13 @@ public class EmptyPageController extends BaseController
 	public String reports(Model model)
 	{
 		model.addAttribute("active", "reports");
-		return "emptyPage";
+		return "comingSoon";
 	}
 
 	@RequestMapping("/charts")
 	public String charts(Model model)
 	{
 		model.addAttribute("active", "charts");
-		return "emptyPage";
-	}
-
-	@RequestMapping("/logout")
-	public String logout(Model model)
-	{
-		model.addAttribute("active", "logout");
-		return "emptyPage";
+		return "comingSoon";
 	}
 }

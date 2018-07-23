@@ -8,7 +8,7 @@
         <@navbar.navbar active/>
 
         <!--  Scripts-->
-         <#import "scripts.ftl" as scripts>
+        <#import "scripts.ftl" as scripts>
         <@scripts.scripts/>
     </body>
 </html>
