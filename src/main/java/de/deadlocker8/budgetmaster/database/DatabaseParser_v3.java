@@ -21,7 +21,6 @@ public class DatabaseParser_v3
 	private List<Category> categories;
 	private List<Account> accounts;
 
-
 	public DatabaseParser_v3(String json)
 	{
 		this.jsonString = json;

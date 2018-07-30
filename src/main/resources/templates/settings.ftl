@@ -229,6 +229,18 @@
             </div>
         </#if>
 
+        <#if errorImportDatabase??>
+            <div id="modalErrorImportDatabase" class="modal background-color">
+                <div class="modal-content">
+                    <h4>${locale.getString("error.title.database.import")}</h4>
+                    <p>${locale.getString("error.text.database.import", errorImportDatabase)}</p>
+                </div>
+                <div class="modal-footer background-color">
+                    <a href="/settings" class="modal-action modal-close waves-effect waves-red btn-flat ">${locale.getString("ok")}</a>
+                </div>
+            </div>
+        </#if>
+
         <!-- Scripts-->
         <#import "scripts.ftl" as scripts>
         <@scripts.scripts/>

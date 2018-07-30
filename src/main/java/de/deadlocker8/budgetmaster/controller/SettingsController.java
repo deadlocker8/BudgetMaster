@@ -5,6 +5,7 @@ import de.deadlocker8.budgetmaster.authentication.UserRepository;
 import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.DatabaseParser;
 import de.deadlocker8.budgetmaster.entities.Settings;
+import de.deadlocker8.budgetmaster.repositories.AccountRepository;
 import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
 import de.deadlocker8.budgetmaster.services.DatabaseService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
@@ -47,6 +48,9 @@ public class SettingsController extends BaseController
 
 	@Autowired
 	private DatabaseService databaseService;
+
+	@Autowired
+	private AccountRepository accountRepository;
 
 	@RequestMapping("/settings")
 	public String settings(Model model)
@@ -187,7 +191,7 @@ public class SettingsController extends BaseController
 	}
 
 	@RequestMapping("/settings/database/upload")
-	public String upload(@RequestParam("file") MultipartFile file)
+	public String upload(Model model, @RequestParam("file") MultipartFile file)
 	{
 		if(file.isEmpty())
 		{
@@ -199,12 +203,12 @@ public class SettingsController extends BaseController
 			String jsonString = new String(file.getBytes());
 			DatabaseParser importer = new DatabaseParser(jsonString);
 			Database database = importer.parseDatabaseFromJSON();
-
 		}
 		catch(Exception e)
 		{
-			//TODO
 			e.printStackTrace();
+			model.addAttribute("errorImportDatabase", e.getMessage());
+			return "settings";
 		}
 
 		//TODO redirect to account combination page
