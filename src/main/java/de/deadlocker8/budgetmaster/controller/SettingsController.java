@@ -2,8 +2,10 @@ package de.deadlocker8.budgetmaster.controller;
 
 import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
+import de.deadlocker8.budgetmaster.database.AccountMatch;
 import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.DatabaseParser;
+import de.deadlocker8.budgetmaster.entities.Account;
 import de.deadlocker8.budgetmaster.entities.Settings;
 import de.deadlocker8.budgetmaster.repositories.AccountRepository;
 import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
@@ -32,6 +34,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Controller
@@ -165,9 +169,8 @@ public class SettingsController extends BaseController
 	}
 
 	@RequestMapping(value = "/settings/database/delete", method = RequestMethod.POST)
-	public String deleteDatabase(Model model,
-								 @RequestParam("verificationCode") String verificationCode,
-								 @RequestParam("verificationUserInput") String verificationUserInput)
+	public String deleteDatabase(@RequestParam("verificationCode") String verificationCode,
+								  @RequestParam("verificationUserInput") String verificationUserInput)
 	{
 		if(verificationUserInput.equals(verificationCode))
 		{
@@ -203,15 +206,17 @@ public class SettingsController extends BaseController
 			String jsonString = new String(file.getBytes());
 			DatabaseParser importer = new DatabaseParser(jsonString);
 			Database database = importer.parseDatabaseFromJSON();
+
+			model.addAttribute("database", database);
+			model.addAttribute("availableAccounts", accountRepository.findAllByOrderByNameAsc());
+			return "import";
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+
 			model.addAttribute("errorImportDatabase", e.getMessage());
 			return "settings";
 		}
-
-		//TODO redirect to account combination page
-		return "redirect:/settings";
 	}
 }

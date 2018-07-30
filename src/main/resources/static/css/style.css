@@ -109,7 +109,7 @@ main {
     color: rgba(0, 0, 0, 0.87);
 }
 
-.btn {
+.btn, .btn-flat {
     text-transform: capitalize;
 }
 
@@ -387,6 +387,10 @@ input[type="radio"]:checked + label::after, [type="radio"].with-gap:checked + la
 
 .home-menu-disabled * {
     color: #AAAAAA !important;
+}
+
+.import-text {
+    color: #2E79B9;
 }
 
 .hidden {

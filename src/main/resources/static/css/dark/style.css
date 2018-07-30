@@ -130,7 +130,7 @@ main {
     color: rgba(255, 255, 255, 0.87);
 }
 
-.btn {
+.btn, .btn-flat {
     text-transform: capitalize;
 }
 
@@ -450,6 +450,10 @@ input[type="radio"]:not(:checked) + label::before, [type="radio"]:not(:checked) 
 
 .chips .input {
     color: #FFFFFF;
+}
+
+.import-text {
+    color: #4CABD3;
 }
 
 .hidden {

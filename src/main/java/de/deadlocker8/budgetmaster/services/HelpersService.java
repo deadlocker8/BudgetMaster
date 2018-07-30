@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.services;
 
+import de.deadlocker8.budgetmaster.database.AccountMatch;
 import de.deadlocker8.budgetmaster.entities.Account;
 import de.deadlocker8.budgetmaster.entities.Payment;
 import de.deadlocker8.budgetmaster.entities.Settings;
@@ -253,5 +254,16 @@ public class HelpersService
 	public Settings getSettings()
 	{
 		return settingsService.getSettings();
+	}
+
+	public List<AccountMatch> getAccountMatches(List<Account> accounts)
+	{
+		List<AccountMatch> accountMatches = new ArrayList<>();
+		for(Account account : accounts)
+		{
+			accountMatches.add(new AccountMatch(account));
+		}
+
+		return accountMatches;
 	}
 }
