@@ -374,6 +374,10 @@ ul.dropdown-content.select-dropdown li.selected {
     background-color: rgba(0, 0, 0, 0.15);
 }
 
+.caret {
+    color: white !important;
+}
+
 /* switch color */
 .switch label input[type="checkbox"]:checked + .lever {
     background-color: rgba(131, 190, 240, 0.6)
