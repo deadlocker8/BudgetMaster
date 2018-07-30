@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.services;
 
-import de.deadlocker8.budgetmaster.database.AccountMatch;
+import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.entities.Account;
 import de.deadlocker8.budgetmaster.entities.Payment;
 import de.deadlocker8.budgetmaster.entities.Settings;

@@ -17,17 +17,17 @@
                 </div>
                 <div class="container">
                     <#import "validation.ftl" as validation>
-                    <form name="Import" action="/settings/database/import" method="post">
+                    <form name="Import" action="/settings/database/import" method="post" onsubmit="return validateForm()">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                         <table class="bordered">
                             <#list helpers.getAccountMatches(database.getAccounts()) as accountMatch>
                                 <tr>
                                     <td class="import-text">${locale.getString("info.database.import.source")}</td>
-                                    <td>${accountMatch.getAccountSource().getName()}</td>
+                                    <td class="account-source">${accountMatch.getAccountSource().getName()}</td>
                                     <td class="import-text">${locale.getString("info.database.import.destination")}</td>
                                     <td>
-                                        <select>
+                                        <select class="account-destination">
                                             <#list availableAccounts as account>
                                                 <option value="${account.getName()}">${account.getName()}</option>
                                             </#list>
@@ -43,6 +43,8 @@
                         <#if availableAccounts?size == 0>
                             <div class="headline center-align">${locale.getString("placeholder")}</div>
                         </#if>
+
+                        <div id="hidden-account-matches"></div>
 
                         <br>
 
@@ -62,5 +64,6 @@
         <!-- Scripts-->
         <#import "scripts.ftl" as scripts>
         <@scripts.scripts/>
+        <script src="/js/import.js"></script>
     </body>
 </html>

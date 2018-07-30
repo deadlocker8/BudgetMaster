@@ -2,10 +2,9 @@ package de.deadlocker8.budgetmaster.controller;
 
 import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
-import de.deadlocker8.budgetmaster.database.AccountMatch;
+import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
 import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.DatabaseParser;
-import de.deadlocker8.budgetmaster.entities.Account;
 import de.deadlocker8.budgetmaster.entities.Settings;
 import de.deadlocker8.budgetmaster.repositories.AccountRepository;
 import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
@@ -33,8 +32,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Controller
@@ -225,5 +222,13 @@ public class SettingsController extends BaseController
 		model.addAttribute("database", request.getSession().getAttribute("database"));
 		model.addAttribute("availableAccounts", accountRepository.findAllByOrderByNameAsc());
 		return "import";
+	}
+
+	@RequestMapping("/settings/database/import")
+	public String importDatabase(Model model, @ModelAttribute("Import") AccountMatchList accountMatchList, BindingResult bindingResult)
+	{
+		System.out.println(accountMatchList);
+		System.out.println(bindingResult);
+		return "settings";
 	}
 }

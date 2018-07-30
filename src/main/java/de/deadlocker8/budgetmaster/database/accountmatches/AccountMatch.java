@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.database;
+package de.deadlocker8.budgetmaster.database.accountmatches;
 
 import de.deadlocker8.budgetmaster.entities.Account;
 
@@ -6,6 +6,10 @@ public class AccountMatch
 {
 	private Account accountSource;
 	private Account accountDestination;
+
+	public AccountMatch()
+	{
+	}
 
 	public AccountMatch(Account accountSource)
 	{
