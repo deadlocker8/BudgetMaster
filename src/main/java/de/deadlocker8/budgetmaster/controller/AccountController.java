@@ -10,15 +10,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
 
 @Controller
+@SessionAttributes("database")
 public class AccountController extends BaseController
 {
 	@Autowired
@@ -35,8 +34,13 @@ public class AccountController extends BaseController
 	}
 
 	@RequestMapping("/accounts")
-	public String accounts(Model model)
+	public String accounts(HttpServletRequest request, Model model)
 	{
+		if(request.getSession().getAttribute("database") != null)
+		{
+			return "redirect:/settings/database/accountMatcher";
+		}
+
 		model.addAttribute("accounts", accountRepository.findAllByOrderByNameAsc());
 		return "accounts/accounts";
 	}
@@ -86,7 +90,9 @@ public class AccountController extends BaseController
 	}
 
 	@RequestMapping(value = "/accounts/newAccount", method = RequestMethod.POST)
-	public String post(Model model, @ModelAttribute("NewAccount") Account account, BindingResult bindingResult)
+	public String post(HttpServletRequest request, Model model,
+					   @ModelAttribute("NewAccount") Account account,
+					   BindingResult bindingResult)
 	{
 		AccountValidator accountValidator = new AccountValidator();
 		accountValidator.validate(account, bindingResult);
@@ -116,6 +122,11 @@ public class AccountController extends BaseController
 				existingAccount.setName(account.getName());
 				accountRepository.save(existingAccount);
 			}
+		}
+
+		if(request.getSession().getAttribute("database") != null)
+		{
+			return "redirect:/settings/database/accountMatcher";
 		}
 
 		return "redirect:/accounts";

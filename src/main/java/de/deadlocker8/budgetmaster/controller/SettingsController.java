@@ -20,17 +20,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import tools.BASE58Type;
 import tools.ConvertTo;
 import tools.Localization;
 import tools.RandomCreations;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -39,6 +38,7 @@ import java.util.List;
 
 
 @Controller
+@SessionAttributes("database")
 public class SettingsController extends BaseController
 {
 	@Autowired
@@ -194,7 +194,7 @@ public class SettingsController extends BaseController
 	}
 
 	@RequestMapping("/settings/database/upload")
-	public String upload(Model model, @RequestParam("file") MultipartFile file)
+	public String upload(HttpServletRequest request, Model model, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
 	{
 		if(file.isEmpty())
 		{
@@ -207,9 +207,8 @@ public class SettingsController extends BaseController
 			DatabaseParser importer = new DatabaseParser(jsonString);
 			Database database = importer.parseDatabaseFromJSON();
 
-			model.addAttribute("database", database);
-			model.addAttribute("availableAccounts", accountRepository.findAllByOrderByNameAsc());
-			return "import";
+			request.getSession().setAttribute("database", database);
+			return "redirect:/settings/database/accountMatcher";
 		}
 		catch(Exception e)
 		{
@@ -218,5 +217,13 @@ public class SettingsController extends BaseController
 			model.addAttribute("errorImportDatabase", e.getMessage());
 			return "settings";
 		}
+	}
+
+	@RequestMapping("/settings/database/accountMatcher")
+	public String openAccountMatcher(HttpServletRequest request, Model model)
+	{
+		model.addAttribute("database", request.getSession().getAttribute("database"));
+		model.addAttribute("availableAccounts", accountRepository.findAllByOrderByNameAsc());
+		return "import";
 	}
 }

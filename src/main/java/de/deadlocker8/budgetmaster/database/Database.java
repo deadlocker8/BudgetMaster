@@ -24,6 +24,10 @@ public class Database
 	@Expose
 	private List<Payment> payments;
 
+	public Database()
+	{
+	}
+
 	public Database(List<Category> categories, List<Account> accounts, List<Payment> payments)
 	{
 		this.categories = categories;
