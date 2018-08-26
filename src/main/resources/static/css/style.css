@@ -18,6 +18,10 @@ main {
     flex: 1 0 auto;
 }
 
+.text-color {
+    color: #212121;
+}
+
 .budgetmaster-blue {
     background-color: #2E79B9;
 }
