@@ -28,7 +28,7 @@ public class Category
 	private CategoryType type;
 
 	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-	private transient List<Payment> referringPayments;
+	private transient List<Transaction> referringTransactions;
 
 	public Category(String name, String color, CategoryType type)
 	{
@@ -81,14 +81,14 @@ public class Category
 		this.type = type;
 	}
 
-	public List<Payment> getReferringPayments()
+	public List<Transaction> getReferringTransactions()
 	{
-		return referringPayments;
+		return referringTransactions;
 	}
 
-	public void setReferringPayments(List<Payment> referringPayments)
+	public void setReferringTransactions(List<Transaction> referringTransactions)
 	{
-		this.referringPayments = referringPayments;
+		this.referringTransactions = referringTransactions;
 	}
 
 	public String getAppropriateTextColor()

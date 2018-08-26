@@ -31,9 +31,9 @@ public class DatabaseParser_v3
 		JsonObject root = new JsonParser().parse(jsonString).getAsJsonObject();
 		categories = parseCategories(root);
 		accounts = parseAccounts(root);
-		List<Payment> payments = parsePayments(root);
+		List<Transaction> transactions = parseTransactions(root);
 
-		return new Database(categories, accounts, payments);
+		return new Database(categories, accounts, transactions);
 	}
 
 	private List<Category> parseCategories(JsonObject root)
@@ -61,48 +61,48 @@ public class DatabaseParser_v3
 		return parsedAccounts;
 	}
 
-	private List<Payment> parsePayments(JsonObject root)
+	private List<Transaction> parseTransactions(JsonObject root)
 	{
-		List<Payment> parsedPayments = new ArrayList<>();
-		JsonArray payments = root.get("payments").getAsJsonArray();
-		for(JsonElement currentPayment : payments)
+		List<Transaction> parsedTransactions = new ArrayList<>();
+		JsonArray transactions = root.get("transactions").getAsJsonArray();
+		for(JsonElement currentTransaction : transactions)
 		{
-			int amount = currentPayment.getAsJsonObject().get("amount").getAsInt();
-			String name = currentPayment.getAsJsonObject().get("name").getAsString();
-			String description = currentPayment.getAsJsonObject().get("description").getAsString();
+			int amount = currentTransaction.getAsJsonObject().get("amount").getAsInt();
+			String name = currentTransaction.getAsJsonObject().get("name").getAsString();
+			String description = currentTransaction.getAsJsonObject().get("description").getAsString();
 
-			Payment payment = new Payment();
-			payment.setAmount(amount);
-			payment.setName(name);
-			payment.setDescription(description);
-			payment.setTags(parseTags(currentPayment.getAsJsonObject()));
+			Transaction transaction = new Transaction();
+			transaction.setAmount(amount);
+			transaction.setName(name);
+			transaction.setDescription(description);
+			transaction.setTags(parseTags(currentTransaction.getAsJsonObject()));
 
-			int categoryID = currentPayment.getAsJsonObject().get("category").getAsJsonObject().get("ID").getAsInt();
-			payment.setCategory(getCategoryByID(categoryID));
+			int categoryID = currentTransaction.getAsJsonObject().get("category").getAsJsonObject().get("ID").getAsInt();
+			transaction.setCategory(getCategoryByID(categoryID));
 
-			int accountID = currentPayment.getAsJsonObject().get("account").getAsJsonObject().get("ID").getAsInt();
-			payment.setAccount(getAccountByID(accountID));
+			int accountID = currentTransaction.getAsJsonObject().get("account").getAsJsonObject().get("ID").getAsInt();
+			transaction.setAccount(getAccountByID(accountID));
 
-			String date = currentPayment.getAsJsonObject().get("date").getAsString();
+			String date = currentTransaction.getAsJsonObject().get("date").getAsString();
 			DateTime parsedDate = DateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd"));
-			payment.setDate(parsedDate);
+			transaction.setDate(parsedDate);
 
-			payment.setRepeatingOption(parseRepeatingOption(currentPayment.getAsJsonObject(), parsedDate));
+			transaction.setRepeatingOption(parseRepeatingOption(currentTransaction.getAsJsonObject(), parsedDate));
 
-			parsedPayments.add(payment);
+			parsedTransactions.add(transaction);
 		}
 
-		return parsedPayments;
+		return parsedTransactions;
 	}
 
-	private RepeatingOption parseRepeatingOption(JsonObject payment, DateTime startDate)
+	private RepeatingOption parseRepeatingOption(JsonObject transactiob, DateTime startDate)
 	{
-		if(!payment.has("repeatingOption"))
+		if(!transactiob.has("repeatingOption"))
 		{
 			return null;
 		}
 
-		JsonObject option = payment.get("repeatingOption").getAsJsonObject();
+		JsonObject option = transactiob.get("repeatingOption").getAsJsonObject();
 
 		JsonObject repeatingModifier = option.get("modifier").getAsJsonObject();
 		String repeatingModifierType = repeatingModifier.get("localizationKey").getAsString();
@@ -137,10 +137,10 @@ public class DatabaseParser_v3
 		return repeatingOption;
 	}
 
-	private List<Tag> parseTags(JsonObject payment)
+	private List<Tag> parseTags(JsonObject transaction)
 	{
 		List<Tag> parsedTags = new ArrayList<>();
-		JsonArray tags = payment.get("tags").getAsJsonArray();
+		JsonArray tags = transaction.get("tags").getAsJsonArray();
 		for(JsonElement currentTag : tags)
 		{
 			parsedTags.add(new Gson().fromJson(currentTag, Tag.class));

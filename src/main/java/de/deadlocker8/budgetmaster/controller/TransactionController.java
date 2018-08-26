@@ -1,24 +1,24 @@
 package de.deadlocker8.budgetmaster.controller;
 
-import de.deadlocker8.budgetmaster.entities.Payment;
+import de.deadlocker8.budgetmaster.entities.Transaction;
 import de.deadlocker8.budgetmaster.entities.Settings;
 import de.deadlocker8.budgetmaster.entities.Tag;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
-import de.deadlocker8.budgetmaster.repeating.RepeatingPaymentUpdater;
+import de.deadlocker8.budgetmaster.repeating.RepeatingTransactionUpdater;
 import de.deadlocker8.budgetmaster.repeating.endoption.*;
 import de.deadlocker8.budgetmaster.repeating.modifier.*;
 import de.deadlocker8.budgetmaster.repositories.*;
 import de.deadlocker8.budgetmaster.services.HelpersService;
-import de.deadlocker8.budgetmaster.services.PaymentService;
+import de.deadlocker8.budgetmaster.services.TransactionService;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
-import de.deadlocker8.budgetmaster.validators.PaymentValidator;
+import de.deadlocker8.budgetmaster.validators.TransactionValidator;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.ISODateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -26,13 +26,13 @@ import java.util.List;
 
 
 @Controller
-public class PaymentController extends BaseController
+public class TransactionController extends BaseController
 {
 	@Autowired
-	private PaymentRepository paymentRepository;
+	private TransactionRepository transactionRepository;
 
 	@Autowired
-	private PaymentService paymentService;
+	private TransactionService transactionService;
 
 	@Autowired
 	private CategoryRepository categoryRepository;
@@ -50,78 +50,78 @@ public class PaymentController extends BaseController
 	private RepeatingOptionRepository repeatingOptionRepository;
 
 	@Autowired
-	private RepeatingPaymentUpdater repeatingPaymentUpdater;
+	private RepeatingTransactionUpdater repeatingTransactionUpdater;
 
 	@Autowired
 	private HelpersService helpers;
 
-	@RequestMapping("/payments")
-	public String payments(Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
+	@RequestMapping("/transactions")
+	public String transactions(Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
 	{
 		DateTime date = getDateTimeFromCookie(cookieDate);
 
-		repeatingPaymentUpdater.updateRepeatingPayments(date);
+		repeatingTransactionUpdater.updateRepeatingTransactions(date);
 
-		List<Payment> payments = paymentService.getPaymentsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear(), getSettings().isRestActivated());
-		int incomeSum = helpers.getIncomeSumForPaymentList(payments);
-		int paymentSum = helpers.getPaymentSumForPaymentList(payments);
+		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear(), getSettings().isRestActivated());
+		int incomeSum = helpers.getIncomeSumForTransactionList(transactions);
+		int paymentSum = helpers.getPaymentSumForTransactionList(transactions);
 		int rest = incomeSum + paymentSum;
 
-		model.addAttribute("payments", payments);
+		model.addAttribute("transactions", transactions);
 		model.addAttribute("incomeSum", incomeSum);
 		model.addAttribute("paymentSum", paymentSum);
 		model.addAttribute("currentDate", date);
 		model.addAttribute("rest", rest);
 
-		return "payments/payments";
+		return "transactions/transactions";
 	}
 
-	@RequestMapping("/payments/{ID}/requestDelete")
-	public String requestDeletePayment(Model model, @PathVariable("ID") Integer ID, @CookieValue("currentDate") String cookieDate)
+	@RequestMapping("/transactions/{ID}/requestDelete")
+	public String requestDeleteTransaction(Model model, @PathVariable("ID") Integer ID, @CookieValue("currentDate") String cookieDate)
 	{
-		if(!paymentService.isDeletable(ID))
+		if(!transactionService.isDeletable(ID))
 		{
-			return "redirect:/payments";
+			return "redirect:/transactions";
 		}
 
 		DateTime date = getDateTimeFromCookie(cookieDate);
-		List<Payment> payments = paymentService.getPaymentsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear(), getSettings().isRestActivated());
-		int incomeSum = helpers.getIncomeSumForPaymentList(payments);
-		int paymentSum = helpers.getPaymentSumForPaymentList(payments);
+		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear(), getSettings().isRestActivated());
+		int incomeSum = helpers.getIncomeSumForTransactionList(transactions);
+		int paymentSum = helpers.getPaymentSumForTransactionList(transactions);
 		int rest = incomeSum + paymentSum;
 
-		model.addAttribute("payments", payments);
+		model.addAttribute("transactions", transactions);
 		model.addAttribute("incomeSum", incomeSum);
 		model.addAttribute("paymentSum", paymentSum);
 		model.addAttribute("currentDate", date);
-		model.addAttribute("currentPayment", paymentRepository.getOne(ID));
+		model.addAttribute("currentTransaction", transactionRepository.getOne(ID));
 		model.addAttribute("rest", rest);
 
-		return "payments/payments";
+		return "transactions/transactions";
 	}
 
-	@RequestMapping("/payments/{ID}/delete")
-	public String deletePayment(Model model, @PathVariable("ID") Integer ID)
+	@RequestMapping("/transactions/{ID}/delete")
+	public String deleteTransaction(Model model, @PathVariable("ID") Integer ID)
 	{
-		paymentService.deletePayment(ID);
-		return "redirect:/payments";
+		transactionService.deleteTransaction(ID);
+		return "redirect:/transactions";
 	}
 
-	@RequestMapping("/payments/newPayment")
-	public String newPayment(Model model, @CookieValue("currentDate") String cookieDate)
+	@RequestMapping("/transactions/newTransaction")
+	public String newTransaction(Model model, @CookieValue("currentDate") String cookieDate)
 	{
 		DateTime date = getDateTimeFromCookie(cookieDate);
-		Payment emptyPayment = new Payment();
+		Transaction emptyTransaction = new Transaction();
 		model.addAttribute("currentDate", date);
 		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
 		model.addAttribute("accounts", accountRepository.findAllByOrderByNameAsc());
-		model.addAttribute("payment", emptyPayment);
-		return "payments/newPayment";
+		model.addAttribute("transaction", emptyTransaction);
+		return "transactions/newTransaction";
 	}
 
-	@RequestMapping(value = "/payments/newPayment", method = RequestMethod.POST)
+	@RequestMapping(value = "/transactions/newTransaction", method = RequestMethod.POST)
 	public String post(Model model, @CookieValue("currentDate") String cookieDate,
-					   @ModelAttribute("NewPayment") Payment payment, BindingResult bindingResult,
+					   @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
 					   @RequestParam(value = "isRepeating", required = false) boolean isRepeating,
 					   @RequestParam(value = "isPayment", required = false) boolean isPayment,
 					   @RequestParam(value = "enableRepeating", required = false) boolean enableRepeating,
@@ -132,36 +132,36 @@ public class PaymentController extends BaseController
 	{
 		DateTime date = getDateTimeFromCookie(cookieDate);
 
-		// handle repeatingPayments
-		if(payment.getID() != null && isRepeating)
+		// handle repeating transactions
+		if(transaction.getID() != null && isRepeating)
 		{
-			paymentService.deletePayment(payment.getID());
+			transactionService.deleteTransaction(transaction.getID());
 		}
 
-		PaymentValidator paymentValidator = new PaymentValidator();
-		paymentValidator.validate(payment, bindingResult);
+		TransactionValidator transactionValidator = new TransactionValidator();
+		transactionValidator.validate(transaction, bindingResult);
 
-		if(payment.getAmount() == null)
+		if(transaction.getAmount() == null)
 		{
-			payment.setAmount(0);
+			transaction.setAmount(0);
 		}
 
 		if(isPayment)
 		{
-			payment.setAmount(-Math.abs(payment.getAmount()));
+			transaction.setAmount(-Math.abs(transaction.getAmount()));
 		}
 		else
 		{
-			payment.setAmount(Math.abs(payment.getAmount()));
+			transaction.setAmount(Math.abs(transaction.getAmount()));
 		}
 
-		List<Tag> tags = payment.getTags();
+		List<Tag> tags = transaction.getTags();
 		if(tags != null)
 		{
-			payment.setTags(new ArrayList<>());
+			transaction.setTags(new ArrayList<>());
 			for(Tag currentTag : tags)
 			{
-				payment = addTagToPayment(currentTag.getName(), payment);
+				transaction = addTagForTransaction(currentTag.getName(), transaction);
 			}
 		}
 
@@ -187,9 +187,9 @@ public class PaymentController extends BaseController
 					break;
 			}
 
-			repeatingOption = new RepeatingOption(payment.getDate(), repeatingModifier, repeatingEnd);
+			repeatingOption = new RepeatingOption(transaction.getDate(), repeatingModifier, repeatingEnd);
 		}
-		payment.setRepeatingOption(repeatingOption);
+		transaction.setRepeatingOption(repeatingOption);
 
 		if(bindingResult.hasErrors())
 		{
@@ -197,35 +197,35 @@ public class PaymentController extends BaseController
 			model.addAttribute("currentDate", date);
 			model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
 			model.addAttribute("accounts", accountRepository.findAllByOrderByNameAsc());
-			model.addAttribute("payment", payment);
-			return "payments/newPayment";
+			model.addAttribute("transaction", transaction);
+			return "transactions/newTransactiob";
 		}
 
-		paymentRepository.save(payment);
-		return "redirect:/payments";
+		transactionRepository.save(transaction);
+		return "redirect:/transactions";
 	}
 
-	@RequestMapping("/payments/{ID}/edit")
-	public String editPayment(Model model, @CookieValue("currentDate") String cookieDate, @PathVariable("ID") Integer ID)
+	@RequestMapping("/transactions/{ID}/edit")
+	public String editTransaction(Model model, @CookieValue("currentDate") String cookieDate, @PathVariable("ID") Integer ID)
 	{
-		Payment payment = paymentRepository.findOne(ID);
-		if(payment == null)
+		Transaction transaction = transactionRepository.findOne(ID);
+		if(transaction == null)
 		{
 			throw new ResourceNotFoundException();
 		}
 
-		// select first payment in order to provide correct start date for repeating payments
-		if(payment.getRepeatingOption() != null)
+		// select first transaction in order to provide correct start date for repeating transactions
+		if(transaction.getRepeatingOption() != null)
 		{
-			payment = payment.getRepeatingOption().getReferringPayments().get(0);
+			transaction = transaction.getRepeatingOption().getReferringTransactions().get(0);
 		}
 
 		DateTime date = getDateTimeFromCookie(cookieDate);
 		model.addAttribute("currentDate", date);
 		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
 		model.addAttribute("accounts", accountRepository.findAllByOrderByNameAsc());
-		model.addAttribute("payment", payment);
-		return "payments/newPayment";
+		model.addAttribute("transaction", transaction);
+		return "transactions/newTransaction";
 	}
 
 	private Settings getSettings()
@@ -245,26 +245,26 @@ public class PaymentController extends BaseController
 		}
 	}
 
-	private Payment addTagToPayment(String name, Payment payment)
+	private Transaction addTagForTransaction(String name, Transaction transaction)
 	{
 		if(tagRepository.findByName(name) == null)
 		{
 			tagRepository.save(new Tag(name));
 		}
 
-		List<Payment> referringPayments = tagRepository.findByName(name).getReferringPayments();
-		if(referringPayments == null || !referringPayments.contains(payment))
+		List<Transaction> referringTransactions = tagRepository.findByName(name).getReferringTransactions();
+		if(referringTransactions == null || !referringTransactions.contains(transaction))
 		{
-			payment.getTags().add(tagRepository.findByName(name));
+			transaction.getTags().add(tagRepository.findByName(name));
 		}
 
-		return payment;
+		return transaction;
 	}
 
-	private void removeTagFromPayment(String name, Payment payment)
+	private void removeTagForTransaction(String name, Transaction transaction)
 	{
 		Tag currentTag = tagRepository.findByName(name);
-		currentTag.getReferringPayments().remove(payment);
+		currentTag.getReferringTransactions().remove(transaction);
 		tagRepository.save(currentTag);
 	}
 }

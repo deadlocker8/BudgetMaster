@@ -2,12 +2,12 @@ package de.deadlocker8.budgetmaster.services;
 
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.entities.Account;
-import de.deadlocker8.budgetmaster.entities.Payment;
+import de.deadlocker8.budgetmaster.entities.Transaction;
 import de.deadlocker8.budgetmaster.entities.Settings;
 import de.deadlocker8.budgetmaster.entities.Tag;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierType;
 import de.deadlocker8.budgetmaster.repositories.AccountRepository;
-import de.deadlocker8.budgetmaster.repositories.PaymentRepository;
+import de.deadlocker8.budgetmaster.repositories.TransactionRepository;
 import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
 import de.deadlocker8.budgetmaster.repositories.TagRepository;
 import de.deadlocker8.budgetmaster.utils.Colors;
@@ -46,7 +46,7 @@ public class HelpersService
 	private AccountService accountService;
 
 	@Autowired
-	private PaymentRepository paymentRepository;
+	private TransactionRepository transactionRepository;
 
 	public String getCurrencyString(int amount)
 	{
@@ -207,28 +207,28 @@ public class HelpersService
 		return selectedAccount;
 	}
 
-	public int getIncomeSumForPaymentList(List<Payment> payments)
+	public int getIncomeSumForTransactionList(List<Transaction> transactions)
 	{
 		int sum = 0;
-		for(Payment payment : payments)
+		for(Transaction transaction : transactions)
 
 		{
-			if(payment.getAmount() > 0)
+			if(transaction.getAmount() > 0)
 			{
-				sum += payment.getAmount();
+				sum += transaction.getAmount();
 			}
 		}
 		return sum;
 	}
 
-	public int getPaymentSumForPaymentList(List<Payment> payments)
+	public int getPaymentSumForTransactionList(List<Transaction> transactions)
 	{
 		int sum = 0;
-		for(Payment payment : payments)
+		for(Transaction transaction : transactions)
 		{
-			if(payment.getAmount() < 0)
+			if(transaction.getAmount() < 0)
 			{
-				sum += payment.getAmount();
+				sum += transaction.getAmount();
 			}
 		}
 		return sum;
@@ -236,11 +236,11 @@ public class HelpersService
 
 	public int getAccountBudget()
 	{
-		List<Payment> payments = paymentRepository.findAllByAccount(getCurrentAccount());
+		List<Transaction> transactions = transactionRepository.findAllByAccount(getCurrentAccount());
 		int sum = 0;
-		for(Payment payment : payments)
+		for(Transaction transaction : transactions)
 		{
-			sum += payment.getAmount();
+			sum += transaction.getAmount();
 		}
 
 		return sum;

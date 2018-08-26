@@ -10,7 +10,7 @@
         <main>
             <div class="card main-card background-color">
                 <div class="container">
-                <#-- icon -->
+                    <#-- icon -->
                     <div class="row">
                         <div class="col s8 offset-s2 center-align">
                             <a href="/about">
@@ -29,10 +29,10 @@
                             </a>
                         </div>
                         <div class="col s12 m4 center-align home-menu-cell">
-                            <a href="/payments" class="home-menu-link budgetmaster-text-black">
+                            <a href="/transactions" class="home-menu-link budgetmaster-text-black">
                                 <h1 class="center budgetmaster-baby-blue-text"><i class="material-icons icon-budget">list</i></h1>
-                                <h3 class="center budget">${locale.getString("menu.payments")}</h3>
-                                <p class="text-grey">${locale.getString("home.menu.payments")}</p>
+                                <h3 class="center budget">${locale.getString("menu.transactions")}</h3>
+                                <p class="text-grey">${locale.getString("home.menu.transactions")}</p>
                             </a>
                         </div>
                         <div class="col s12 m4 center-align home-menu-cell">

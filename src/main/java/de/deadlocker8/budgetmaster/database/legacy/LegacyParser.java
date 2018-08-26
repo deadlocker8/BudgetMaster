@@ -8,7 +8,7 @@ import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.entities.Account;
 import de.deadlocker8.budgetmaster.entities.Category;
 import de.deadlocker8.budgetmaster.entities.CategoryType;
-import de.deadlocker8.budgetmaster.entities.Payment;
+import de.deadlocker8.budgetmaster.entities.Transaction;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndDate;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndNever;
@@ -43,12 +43,12 @@ public class LegacyParser
 		categories = new ArrayList<>(parseCategories(root));
 		tags = parseTags(root);
 		tagMatches = parseTagMatches(root);
-		List<Payment> payments = parsePayments(root);
+		List<Transaction> transactions = parsePayments(root);
 
 		List<Account> accounts = new ArrayList<>();
 		accounts.add(account);
 
-		return new Database(categories, accounts, payments);
+		return new Database(categories, accounts, transactions);
 	}
 
 	private Set<Category> parseCategories(JsonObject root)
@@ -104,18 +104,18 @@ public class LegacyParser
 		return parsedTagMatches;
 	}
 
-	private List<Payment> parsePayments(JsonObject root)
+	private List<Transaction> parsePayments(JsonObject root)
 	{
-		List<Payment> parsedPayments = new ArrayList<>();
-		parsedPayments.addAll(parseNormalPayments(root));
-		parsedPayments.addAll(parseRepeatingPayments(root));
+		List<Transaction> parsedTransactions = new ArrayList<>();
+		parsedTransactions.addAll(parseNormalPayments(root));
+		parsedTransactions.addAll(parseRepeatingPayments(root));
 
-		return parsedPayments;
+		return parsedTransactions;
 	}
 
-	private List<Payment> parseNormalPayments(JsonObject root)
+	private List<Transaction> parseNormalPayments(JsonObject root)
 	{
-		List<Payment> parsedPayments = new ArrayList<>();
+		List<Transaction> parsedTransactions = new ArrayList<>();
 		JsonArray payments = root.get("normalPayments").getAsJsonArray();
 		for(JsonElement currentPayment : payments)
 		{
@@ -126,27 +126,27 @@ public class LegacyParser
 			String name = currentPayment.getAsJsonObject().get("name").getAsString();
 			String description = currentPayment.getAsJsonObject().get("description").getAsString();
 
-			Payment payment = new Payment();
-			payment.setAmount(amount);
-			payment.setName(name);
-			payment.setDescription(description);
-			payment.setCategory(getCategoryByID(categoryID));
-			payment.setAccount(account);
-			payment.setRepeatingOption(null);
-			payment.setTags(getTagsByPaymentID(ID));
+			Transaction transaction = new Transaction();
+			transaction.setAmount(amount);
+			transaction.setName(name);
+			transaction.setDescription(description);
+			transaction.setCategory(getCategoryByID(categoryID));
+			transaction.setAccount(account);
+			transaction.setRepeatingOption(null);
+			transaction.setTags(getTagsByPaymentID(ID));
 
 			DateTime parsedDate = DateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd"));
-			payment.setDate(parsedDate);
+			transaction.setDate(parsedDate);
 
-			parsedPayments.add(payment);
+			parsedTransactions.add(transaction);
 		}
 
-		return parsedPayments;
+		return parsedTransactions;
 	}
 
-	private List<Payment> parseRepeatingPayments(JsonObject root)
+	private List<Transaction> parseRepeatingPayments(JsonObject root)
 	{
-		List<Payment> parsedPayments = new ArrayList<>();
+		List<Transaction> parsedTransactions = new ArrayList<>();
 		JsonArray payments = root.get("repeatingPayments").getAsJsonArray();
 		for(JsonElement currentPayment : payments)
 		{
@@ -157,23 +157,23 @@ public class LegacyParser
 			String name = currentPayment.getAsJsonObject().get("name").getAsString();
 			String description = currentPayment.getAsJsonObject().get("description").getAsString();
 
-			Payment payment = new Payment();
-			payment.setAmount(amount);
-			payment.setName(name);
-			payment.setDescription(description);
-			payment.setCategory(getCategoryByID(categoryID));
-			payment.setTags(getTagsByPaymentID(ID));
-			payment.setAccount(account);
+			Transaction transaction = new Transaction();
+			transaction.setAmount(amount);
+			transaction.setName(name);
+			transaction.setDescription(description);
+			transaction.setCategory(getCategoryByID(categoryID));
+			transaction.setTags(getTagsByPaymentID(ID));
+			transaction.setAccount(account);
 
 			DateTime parsedDate = DateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd"));
-			payment.setDate(parsedDate);
+			transaction.setDate(parsedDate);
 
-			payment.setRepeatingOption(parseRepeatingOption(currentPayment.getAsJsonObject(), parsedDate));
+			transaction.setRepeatingOption(parseRepeatingOption(currentPayment.getAsJsonObject(), parsedDate));
 
-			parsedPayments.add(payment);
+			parsedTransactions.add(transaction);
 		}
 
-		return parsedPayments;
+		return parsedTransactions;
 	}
 
 	private RepeatingOption parseRepeatingOption(JsonObject repeatingPayment, DateTime startDate)

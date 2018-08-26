@@ -2,7 +2,7 @@ package de.deadlocker8.budgetmaster.services;
 
 import de.deadlocker8.budgetmaster.entities.Category;
 import de.deadlocker8.budgetmaster.entities.CategoryType;
-import de.deadlocker8.budgetmaster.entities.Payment;
+import de.deadlocker8.budgetmaster.entities.Transaction;
 import de.deadlocker8.budgetmaster.repositories.CategoryRepository;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import org.slf4j.Logger;
@@ -35,12 +35,12 @@ public class CategoryService implements Resetable
 	public void deleteCategory(int ID)
 	{
 		Category categoryToDelete = categoryRepository.findOne(ID);
-		List<Payment> referringPayments = categoryToDelete.getReferringPayments();
-		if(referringPayments != null)
+		List<Transaction> referringTransactions = categoryToDelete.getReferringTransactions();
+		if(referringTransactions != null)
 		{
-			for(Payment payment : referringPayments)
+			for(Transaction transaction : referringTransactions)
 			{
-				payment.setCategory(categoryRepository.findByType(CategoryType.NONE));
+				transaction.setCategory(categoryRepository.findByType(CategoryType.NONE));
 			}
 		}
 

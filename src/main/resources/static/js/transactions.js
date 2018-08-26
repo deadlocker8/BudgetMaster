@@ -3,7 +3,7 @@ $( document ).ready(function() {
 
     if($(".datepicker").length)
     {
-        var pickerStartDate = $('#payment-datepicker').pickadate({
+        var pickerStartDate = $('#transaction-datepicker').pickadate({
             selectMonths: true,
             selectYears: 100,
             firstDay: 1,
@@ -44,7 +44,7 @@ $( document ).ready(function() {
 
         pickerStartDate = pickerStartDate.pickadate('picker');
 
-        var pickerEndDate = $('#payment-repeating-end-date-input').pickadate({
+        var pickerEndDate = $('#transaction-repeating-end-date-input').pickadate({
             selectMonths: true,
             selectYears: 100,
             firstDay: 1,
@@ -83,25 +83,25 @@ $( document ).ready(function() {
         pickerEndDate.set('min', selectedDate);
     }
 
-    if($('#payment-amount').length)
+    if($('#transaction-amount').length)
     {
-        $('#payment-amount').on('change keydown paste input', function() {
+        $('#transaction-amount').on('change keydown paste input', function() {
             validateAmount($(this).val());
         });
     }
 
-    if($(paymentRepeatingModifierID).length)
+    if($(transactionRepeatingModifierID).length)
     {
-        $(paymentRepeatingModifierID).on('change keydown paste input', function() {
+        $(transactionRepeatingModifierID).on('change keydown paste input', function() {
             // substr(1) removes "#" at the beginning
-            validateNumber($(this).val(), paymentRepeatingModifierID.substr(1), "hidden-" + paymentRepeatingModifierID.substr(1), numberValidationMessage);
+            validateNumber($(this).val(), transactionRepeatingModifierID.substr(1), "hidden-" + transactionRepeatingModifierID.substr(1), numberValidationMessage);
         });
     }
 
-    if($(paymentRepeatingEndAfterXTimesInputID).length)
+    if($(transactionRepeatingEndAfterXTimesInputID).length)
     {
-        $(paymentRepeatingEndAfterXTimesInputID).on('change keydown paste input', function() {
-            validateNumber($(this).val(), paymentRepeatingEndAfterXTimesInputID.substr(1), null, numberValidationMessage);
+        $(transactionRepeatingEndAfterXTimesInputID).on('change keydown paste input', function() {
+            validateNumber($(this).val(), transactionRepeatingEndAfterXTimesInputID.substr(1), null, numberValidationMessage);
         });
     }
 
@@ -121,13 +121,13 @@ $( document ).ready(function() {
     $('#enableRepeating').change(function(){
         if($(this).is(":checked"))
         {
-            $('#payment-repeating-modifier-row').show();
-            $('#payment-repeating-end').show();
+            $('#transaction-repeating-modifier-row').show();
+            $('#transaction-repeating-end').show();
         }
         else
         {
-            $('#payment-repeating-modifier-row').hide();
-            $('#payment-repeating-end').hide();
+            $('#transaction-repeating-modifier-row').hide();
+            $('#transaction-repeating-end').hide();
         }
     });
 
@@ -144,8 +144,8 @@ $( document ).ready(function() {
     });
 });
 
-var paymentRepeatingModifierID = "#payment-repeating-modifier";
-var paymentRepeatingEndAfterXTimesInputID = "#payment-repeating-end-after-x-times-input";
+var transactionRepeatingModifierID = "#transaction-repeating-modifier";
+var transactionRepeatingEndAfterXTimesInputID = "#transaction-repeating-end-after-x-times-input";
 
 AMOUNT_REGEX = new RegExp("^-?\\d+(,\\d+)?(\\.\\d+)?$");
 NUMBER_REGEX = new RegExp("^\\d+$");
@@ -153,7 +153,7 @@ ALLOWED_CHARACTERS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "."
 
 function validateAmount(text)
 {
-    var id = "payment-amount";
+    var id = "transaction-amount";
 
     if(text.match(AMOUNT_REGEX) == null)
     {
@@ -218,11 +218,11 @@ function removeTooltip(id)
 function validateForm()
 {
     // amount
-    validateAmount($('#payment-amount').val());
+    validateAmount($('#transaction-amount').val());
 
     // handle tags
     var tags = $('.chips-autocomplete').material_chip('data');
-    var parent = document.getElementById("hidden-payment-tags");
+    var parent = document.getElementById("hidden-transaction-tags");
     for(var i = 0; i < tags.length; i++)
     {
         var input = document.createElement("input");
@@ -234,7 +234,7 @@ function validateForm()
 
     if(document.getElementById("enableRepeating").checked)
     {
-        if(!validateNumber($(paymentRepeatingModifierID).val(), paymentRepeatingModifierID.substr(1), "hidden-" + paymentRepeatingModifierID.substr(1), numberValidationMessage))
+        if(!validateNumber($(transactionRepeatingModifierID).val(), transactionRepeatingModifierID.substr(1), "hidden-" + transactionRepeatingModifierID.substr(1), numberValidationMessage))
         {
             return false;
         }
@@ -243,7 +243,7 @@ function validateForm()
         var endNever = document.getElementById("repeating-end-never");
         var endAfterXTimes = document.getElementById("repeating-end-after-x-times");
         var endDate = document.getElementById("repeating-end-date");
-        var endInput = document.getElementById("hidden-payment-repeating-end-value");
+        var endInput = document.getElementById("hidden-transaction-repeating-end-value");
 
         if(endNever.checked)
         {
@@ -252,22 +252,22 @@ function validateForm()
 
         if(endAfterXTimes.checked)
         {
-            if(!validateNumber($(paymentRepeatingEndAfterXTimesInputID).val(), paymentRepeatingEndAfterXTimesInputID.substr(1), null, numberValidationMessage))
+            if(!validateNumber($(transactionRepeatingEndAfterXTimesInputID).val(), transactionRepeatingEndAfterXTimesInputID.substr(1), null, numberValidationMessage))
             {
                 return false;
             }
 
-            endInput.value = $(paymentRepeatingEndAfterXTimesInputID).val();
+            endInput.value = $(transactionRepeatingEndAfterXTimesInputID).val();
         }
 
         if(endDate.checked)
         {
-            endInput.value = $("#payment-repeating-end-date-input").val();
+            endInput.value = $("#transaction-repeating-end-date-input").val();
         }
     }
     else
     {
-        document.getElementById("hidden-" + paymentRepeatingModifierID.substr(1)).value = -1;
+        document.getElementById("hidden-" + transactionRepeatingModifierID.substr(1)).value = -1;
     }
 
     return true;

@@ -78,7 +78,7 @@ public class DatabaseParser_v3Test
 	}
 
 	@Test
-	public void test_Payments()
+	public void test_Transactions()
 	{
 		try
 		{
@@ -98,64 +98,64 @@ public class DatabaseParser_v3Test
 			Category category3 = new Category("0815", "#ffcc00", CategoryType.CUSTOM);
 			category3.setID(3);
 
-			assertEquals(5, database.getPayments().size());
+			assertEquals(5, database.getTransactions().size());
 
-			Payment normalPayment_1 = new Payment();
-			normalPayment_1.setAmount(35000);
-			normalPayment_1.setDate(DateTime.parse("2018-03-13", DateTimeFormat.forPattern("yyyy-MM-dd")));
-			normalPayment_1.setCategory(categoryNone);
-			normalPayment_1.setName("Income");
-			normalPayment_1.setDescription("Lorem Ipsum");
-			normalPayment_1.setTags(new ArrayList<>());
-			normalPayment_1.setAccount(account1);
-			assertTrue(database.getPayments().contains(normalPayment_1));
+			Transaction normalTransaction_1 = new Transaction();
+			normalTransaction_1.setAmount(35000);
+			normalTransaction_1.setDate(DateTime.parse("2018-03-13", DateTimeFormat.forPattern("yyyy-MM-dd")));
+			normalTransaction_1.setCategory(categoryNone);
+			normalTransaction_1.setName("Income");
+			normalTransaction_1.setDescription("Lorem Ipsum");
+			normalTransaction_1.setTags(new ArrayList<>());
+			normalTransaction_1.setAccount(account1);
+			assertTrue(database.getTransactions().contains(normalTransaction_1));
 
-			Payment normalPayment_2 = new Payment();
-			normalPayment_2.setAmount(-2000);
-			normalPayment_2.setDate(DateTime.parse("2018-06-15", DateTimeFormat.forPattern("yyyy-MM-dd")));
-			normalPayment_2.setName("Simple");
-			normalPayment_2.setDescription("");
-			normalPayment_2.setAccount(account2);
-			normalPayment_2.setCategory(category3);
+			Transaction normalTransaction_2 = new Transaction();
+			normalTransaction_2.setAmount(-2000);
+			normalTransaction_2.setDate(DateTime.parse("2018-06-15", DateTimeFormat.forPattern("yyyy-MM-dd")));
+			normalTransaction_2.setName("Simple");
+			normalTransaction_2.setDescription("");
+			normalTransaction_2.setAccount(account2);
+			normalTransaction_2.setCategory(category3);
 
 			List<Tag> tags = new ArrayList<>();
 			Tag tag = new Tag("0815");
 			tag.setID(1);
 			tags.add(tag);
-			normalPayment_2.setTags(tags);
-			assertTrue(database.getPayments().contains(normalPayment_2));
+			normalTransaction_2.setTags(tags);
+			assertTrue(database.getTransactions().contains(normalTransaction_2));
 
-			Payment repeatingPayment_1 = new Payment();
-			repeatingPayment_1.setAmount(-12300);
-			DateTime repeatingPaymentDate_1 = DateTime.parse("2018-03-13", DateTimeFormat.forPattern("yyyy-MM-dd"));
-			repeatingPayment_1.setDate(repeatingPaymentDate_1);
-			repeatingPayment_1.setCategory(categoryNone);
-			repeatingPayment_1.setName("Test");
-			repeatingPayment_1.setDescription("");
-			repeatingPayment_1.setAccount(account1);
+			Transaction repeatingTransaction_1 = new Transaction();
+			repeatingTransaction_1.setAmount(-12300);
+			DateTime repeatingTransactionDate_1 = DateTime.parse("2018-03-13", DateTimeFormat.forPattern("yyyy-MM-dd"));
+			repeatingTransaction_1.setDate(repeatingTransactionDate_1);
+			repeatingTransaction_1.setCategory(categoryNone);
+			repeatingTransaction_1.setName("Test");
+			repeatingTransaction_1.setDescription("");
+			repeatingTransaction_1.setAccount(account1);
 			RepeatingOption repeatingOption_1 = new RepeatingOption();
 			repeatingOption_1.setModifier(new RepeatingModifierDays(10));
-			repeatingOption_1.setStartDate(repeatingPaymentDate_1);
+			repeatingOption_1.setStartDate(repeatingTransactionDate_1);
 			repeatingOption_1.setEndOption(new RepeatingEndAfterXTimes(2));
-			repeatingPayment_1.setRepeatingOption(repeatingOption_1);
-			repeatingPayment_1.setTags(new ArrayList<>());
-			assertTrue(database.getPayments().contains(repeatingPayment_1));
+			repeatingTransaction_1.setRepeatingOption(repeatingOption_1);
+			repeatingTransaction_1.setTags(new ArrayList<>());
+			assertTrue(database.getTransactions().contains(repeatingTransaction_1));
 
-			Payment repeatingPayment_2 = new Payment();
-			repeatingPayment_2.setAmount(-12300);
-			DateTime repeatingPaymentDate_2 = DateTime.parse("2018-03-23", DateTimeFormat.forPattern("yyyy-MM-dd"));
-			repeatingPayment_2.setDate(repeatingPaymentDate_2);
-			repeatingPayment_2.setCategory(categoryNone);
-			repeatingPayment_2.setName("Test");
-			repeatingPayment_2.setDescription("");
-			repeatingPayment_2.setAccount(account1);
+			Transaction repeatingTransaction_2 = new Transaction();
+			repeatingTransaction_2.setAmount(-12300);
+			DateTime repeatingTransactionDate_2 = DateTime.parse("2018-03-23", DateTimeFormat.forPattern("yyyy-MM-dd"));
+			repeatingTransaction_2.setDate(repeatingTransactionDate_2);
+			repeatingTransaction_2.setCategory(categoryNone);
+			repeatingTransaction_2.setName("Test");
+			repeatingTransaction_2.setDescription("");
+			repeatingTransaction_2.setAccount(account1);
 			RepeatingOption repeatingOption_2 = new RepeatingOption();
 			repeatingOption_2.setModifier(new RepeatingModifierDays(10));
-			repeatingOption_2.setStartDate(repeatingPaymentDate_2);
+			repeatingOption_2.setStartDate(repeatingTransactionDate_2);
 			repeatingOption_2.setEndOption(new RepeatingEndAfterXTimes(2));
-			repeatingPayment_2.setRepeatingOption(repeatingOption_2);
-			repeatingPayment_2.setTags(new ArrayList<>());
-			assertTrue(database.getPayments().contains(repeatingPayment_2));
+			repeatingTransaction_2.setRepeatingOption(repeatingOption_2);
+			repeatingTransaction_2.setTags(new ArrayList<>());
+			assertTrue(database.getTransactions().contains(repeatingTransaction_2));
 		}
 		catch(IOException | URISyntaxException e)
 		{

@@ -41,7 +41,7 @@
             <div id="modalConfirmDelete" class="modal background-color">
                 <div class="modal-content">
                     <h4>${locale.getString("info.title.account.delete")}</h4>
-                    <p>${locale.getString("info.text.account.delete", currentAccount.getName(), currentAccount.getReferringPayments()?size)}</p>
+                    <p>${locale.getString("info.text.account.delete", currentAccount.getName(), currentAccount.getReferringTransactions()?size)}</p>
                 </div>
                 <div class="modal-footer background-color">
                     <a href="/accounts" class="modal-action modal-close waves-effect waves-red btn-flat ">${locale.getString("cancel")}</a>

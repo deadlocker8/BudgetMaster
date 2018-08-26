@@ -43,9 +43,9 @@ public class Strings
     public static final String WARNING_EMPTY_CATEGORY_NAME = "warning.empty.category.name";
     public static final String WARNING_EMPTY_ACCOUNT_NAME = "warning.empty.account.name";
     public static final String WARNING_EMPTY_CATEGORY_COLOR = "warning.empty.category.color";
-    public static final String WARNING_EMPTY_PAYMENT_NAME = "warning.empty.payment.name";
-    public static final String WARNING_PAYMENT_AMOUNT = "warning.payment.amount";
-    public static final String WARNING_EMPTY_PAYMENT_DATE = "warning.empty.payment.date";
+    public static final String WARNING_EMPTY_TRANSACTION_NAME = "warning.empty.transaction.name";
+    public static final String WARNING_TRANSACTION_AMOUNT = "warning.transaction.amount";
+    public static final String WARNING_EMPTY_TRANSACTION_DATE = "warning.empty.transaction.date";
     public static final String WARNING_SETTINGS_PASSWORD_EMPTY = "warning.settings.password.empty";
     public static final String WARNING_SETTINGS_PASSWORD_LENGTH = "warning.settings.password.length";
     public static final String WARNING_SETTINGS_PASSWORD_CONFIRMATION_EMPTY = "warning.settings.password.confirmation.empty";

@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import tools.Localization;
 
 import java.util.Arrays;
+import java.util.Locale;
 
 
 @SpringBootApplication
@@ -20,6 +21,9 @@ public class Main implements ApplicationRunner
 	public static void main(String[] args)
 	{
 		ProgramArgs.setArgs(Arrays.asList(args));
+
+		Localization.init("languages/");
+		Localization.loadLanguage(Locale.ENGLISH);
 
 		SpringApplication.run(Main.class, args);
 	}

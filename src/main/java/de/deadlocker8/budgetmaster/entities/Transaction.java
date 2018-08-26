@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Payment
+public class Transaction
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -45,21 +45,21 @@ public class Payment
 	@Expose
 	private RepeatingOption repeatingOption;
 
-	public Payment()
+	public Transaction()
 	{
 	}
 
-	public Payment(Payment payment)
+	public Transaction(Transaction transaction)
 	{
-		this.ID = payment.getID();
-		this.amount = payment.getAmount();
-		this.date = payment.getDate();
-		this.account = payment.getAccount();
-		this.category = payment.getCategory();
-		this.name = payment.getName();
-		this.description = payment.getDescription();
-		this.tags = new ArrayList<>(payment.getTags());
-		this.repeatingOption = payment.getRepeatingOption();
+		this.ID = transaction.getID();
+		this.amount = transaction.getAmount();
+		this.date = transaction.getDate();
+		this.account = transaction.getAccount();
+		this.category = transaction.getCategory();
+		this.name = transaction.getName();
+		this.description = transaction.getDescription();
+		this.tags = new ArrayList<>(transaction.getTags());
+		this.repeatingOption = transaction.getRepeatingOption();
 	}
 
 	public Integer getID()
@@ -160,7 +160,7 @@ public class Payment
 	@Override
 	public String toString()
 	{
-		return "Payment{" +
+		return "Transaction{" +
 				"ID=" + ID +
 				", amount=" + amount +
 				", date=" + date +
@@ -178,16 +178,16 @@ public class Payment
 	{
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
-		Payment payment = (Payment) o;
-		return Objects.equals(ID, payment.ID) &&
-				Objects.equals(amount, payment.amount) &&
-				Objects.equals(date, payment.date) &&
-				Objects.equals(account, payment.account) &&
-				Objects.equals(category, payment.category) &&
-				Objects.equals(name, payment.name) &&
-				Objects.equals(description, payment.description) &&
-				Objects.equals(tags, payment.tags) &&
-				Objects.equals(repeatingOption, payment.repeatingOption);
+		Transaction transaction = (Transaction) o;
+		return Objects.equals(ID, transaction.ID) &&
+				Objects.equals(amount, transaction.amount) &&
+				Objects.equals(date, transaction.date) &&
+				Objects.equals(account, transaction.account) &&
+				Objects.equals(category, transaction.category) &&
+				Objects.equals(name, transaction.name) &&
+				Objects.equals(description, transaction.description) &&
+				Objects.equals(tags, transaction.tags) &&
+				Objects.equals(repeatingOption, transaction.repeatingOption);
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.repeating;
 
 import com.google.gson.annotations.Expose;
-import de.deadlocker8.budgetmaster.entities.Payment;
+import de.deadlocker8.budgetmaster.entities.Transaction;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEnd;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifier;
 import org.joda.time.DateTime;
@@ -33,7 +33,7 @@ public class RepeatingOption
 	private RepeatingEnd endOption;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "repeatingOption", fetch = FetchType.LAZY)
-	private List<Payment> referringPayments;
+	private List<Transaction> referringTransactions;
 
 	public RepeatingOption(DateTime startDate, RepeatingModifier modifier, RepeatingEnd endOption)
 	{
@@ -84,14 +84,14 @@ public class RepeatingOption
 		this.endOption = endOption;
 	}
 
-	public List<Payment> getReferringPayments()
+	public List<Transaction> getReferringTransactions()
 	{
-		return referringPayments;
+		return referringTransactions;
 	}
 
-	public void setReferringPayments(List<Payment> referringPayments)
+	public void setReferringTransactions(List<Transaction> referringTransactions)
 	{
-		this.referringPayments = referringPayments;
+		this.referringTransactions = referringTransactions;
 	}
 
 	public List<DateTime> getRepeatingDates(DateTime dateFetchLimit)

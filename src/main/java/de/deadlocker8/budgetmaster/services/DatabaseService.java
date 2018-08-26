@@ -4,7 +4,7 @@ import com.google.gson.*;
 import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.entities.Account;
 import de.deadlocker8.budgetmaster.entities.Category;
-import de.deadlocker8.budgetmaster.entities.Payment;
+import de.deadlocker8.budgetmaster.entities.Transaction;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
@@ -21,21 +21,21 @@ public class DatabaseService
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private AccountService accountService;
 	private CategoryService categoryService;
-	private PaymentService paymentService;
+	private TransactionService transactionService;
 	private TagService tagService;
 
 	@Autowired
-	public DatabaseService(AccountService accountService, CategoryService categoryService, PaymentService paymentService, TagService tagService)
+	public DatabaseService(AccountService accountService, CategoryService categoryService, TransactionService transactionService, TagService tagService)
 	{
 		this.accountService = accountService;
 		this.categoryService = categoryService;
-		this.paymentService = paymentService;
+		this.transactionService = transactionService;
 		this.tagService = tagService;
 	}
 
 	public void reset()
 	{
-		resetPayments();
+		resetTransactions();
 		resetCategories();
 		resetAccounts();
 		resetTags();
@@ -57,12 +57,12 @@ public class DatabaseService
 		LOGGER.info("All categories reset.");
 	}
 
-	private void resetPayments()
+	private void resetTransactions()
 	{
-		LOGGER.info("Resetting payments...");
-		paymentService.deleteAll();
-		paymentService.createDefaults();
-		LOGGER.info("All payments reset.");
+		LOGGER.info("Resetting transactions...");
+		transactionService.deleteAll();
+		transactionService.createDefaults();
+		LOGGER.info("All transactions reset.");
 	}
 
 	private void resetTags()
@@ -77,9 +77,9 @@ public class DatabaseService
 	{
 		List<Category> categories = categoryService.getRepository().findAll();
 		List<Account> accounts = accountService.getRepository().findAll();
-		List<Payment> payments = paymentService.getRepository().findAll();
+		List<Transaction> transactions = transactionService.getRepository().findAll();
 
-		Database database = new Database(categories, accounts, payments);
+		Database database = new Database(categories, accounts, transactions);
 
 		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().registerTypeAdapter(DateTime.class, new JsonSerializer<DateTime>(){
 			@Override

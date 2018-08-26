@@ -50,7 +50,11 @@
 
                         <#-- buttons -->
                         <div class="row">
-                            <div class="col s12 m12 l4 offset-l4 center-align">
+                            <div class="col m6 l4 offset-l2 right-align">
+                                <a href="/settings" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
+                            </div>
+
+                            <div class="col m6 l4 left-align">
                                 <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action">
                                     <i class="material-icons left">unarchive</i>${locale.getString("settings.database.import")}
                                 </button>

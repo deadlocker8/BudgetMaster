@@ -3,7 +3,7 @@ package de.deadlocker8.budgetmaster.database;
 import com.google.gson.annotations.Expose;
 import de.deadlocker8.budgetmaster.entities.Account;
 import de.deadlocker8.budgetmaster.entities.Category;
-import de.deadlocker8.budgetmaster.entities.Payment;
+import de.deadlocker8.budgetmaster.entities.Transaction;
 
 import java.util.List;
 
@@ -22,17 +22,17 @@ public class Database
 	private List<Account> accounts;
 
 	@Expose
-	private List<Payment> payments;
+	private List<Transaction> transactions;
 
 	public Database()
 	{
 	}
 
-	public Database(List<Category> categories, List<Account> accounts, List<Payment> payments)
+	public Database(List<Category> categories, List<Account> accounts, List<Transaction> transactions)
 	{
 		this.categories = categories;
 		this.accounts = accounts;
-		this.payments = payments;
+		this.transactions = transactions;
 	}
 
 	public List<Category> getCategories()
@@ -45,8 +45,8 @@ public class Database
 		return accounts;
 	}
 
-	public List<Payment> getPayments()
+	public List<Transaction> getTransactions()
 	{
-		return payments;
+		return transactions;
 	}
 }

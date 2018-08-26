@@ -2,12 +2,10 @@ package de.deadlocker8.budgetmaster.services;
 
 import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
-import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.entities.Account;
 import de.deadlocker8.budgetmaster.repositories.AccountRepository;
-import de.deadlocker8.budgetmaster.repositories.PaymentRepository;
+import de.deadlocker8.budgetmaster.repositories.TransactionRepository;
 import de.deadlocker8.budgetmaster.utils.Strings;
-import org.apache.tomcat.jni.Local;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +20,14 @@ public class AccountService implements Resetable
 {
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private AccountRepository accountRepository;
-	private PaymentRepository paymentRepository;
+	private TransactionRepository transactionRepository;
 	private UserRepository userRepository;
 
 	@Autowired
-	public AccountService(AccountRepository accountRepository, PaymentRepository paymentRepository, UserRepository userRepository)
+	public AccountService(AccountRepository accountRepository, TransactionRepository transactionRepository, UserRepository userRepository)
 	{
 		this.accountRepository = accountRepository;
-		this.paymentRepository = paymentRepository;
+		this.transactionRepository = transactionRepository;
 		this.userRepository = userRepository;
 
 		createDefaults();
@@ -43,8 +41,8 @@ public class AccountService implements Resetable
 	public void deleteAccount(int ID)
 	{
 		Account accountToDelete = accountRepository.findOne(ID);
-		paymentRepository.delete(accountToDelete.getReferringPayments());
-		accountToDelete.setReferringPayments(new ArrayList<>());
+		transactionRepository.delete(accountToDelete.getReferringTransactions());
+		accountToDelete.setReferringTransactions(new ArrayList<>());
 
 		List<Account> accounts = accountRepository.findAll();
 		accounts.remove(accountToDelete);

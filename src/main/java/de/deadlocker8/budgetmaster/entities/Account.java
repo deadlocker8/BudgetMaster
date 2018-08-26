@@ -23,7 +23,7 @@ public class Account
 	private String name;
 
 	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
-	private List<Payment> referringPayments;
+	private List<Transaction> referringTransactions;
 
 	private boolean isSelected;
 
@@ -57,14 +57,14 @@ public class Account
 		this.name = name;
 	}
 
-	public List<Payment> getReferringPayments()
+	public List<Transaction> getReferringTransactions()
 	{
-		return referringPayments;
+		return referringTransactions;
 	}
 
-	public void setReferringPayments(List<Payment> referringPayments)
+	public void setReferringTransactions(List<Transaction> referringTransactions)
 	{
-		this.referringPayments = referringPayments;
+		this.referringTransactions = referringTransactions;
 	}
 
 	public boolean isSelected()
@@ -83,7 +83,7 @@ public class Account
 		return "Account{" +
 				"ID=" + ID +
 				", name='" + name + '\'' +
-				", referringPayments=" + referringPayments +
+				", referringTransactions=" + referringTransactions +
 				", isSelected=" + isSelected +
 				'}';
 	}

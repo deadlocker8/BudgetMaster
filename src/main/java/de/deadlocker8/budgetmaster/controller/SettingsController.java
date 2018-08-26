@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.controller;
 
 import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
+import de.deadlocker8.budgetmaster.database.DatabaseImporter;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
 import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.DatabaseParser;
@@ -54,7 +55,7 @@ public class SettingsController extends BaseController
 	private AccountRepository accountRepository;
 
 	@RequestMapping("/settings")
-	public String settings(Model model)
+	public String settings(HttpServletRequest request, Model model)
 	{
 		model.addAttribute("settings", settingsRepository.findOne(0));
 		return "settings";
@@ -225,10 +226,11 @@ public class SettingsController extends BaseController
 	}
 
 	@RequestMapping("/settings/database/import")
-	public String importDatabase(Model model, @ModelAttribute("Import") AccountMatchList accountMatchList, BindingResult bindingResult)
+	public String importDatabase(HttpServletRequest request, @ModelAttribute("Import") AccountMatchList accountMatchList)
 	{
-		System.out.println(accountMatchList);
-		System.out.println(bindingResult);
+		DatabaseImporter importer = new DatabaseImporter((Database)request.getSession().getAttribute("database"), accountMatchList);
+		importer.importDatabase();
+
 		return "settings";
 	}
 }

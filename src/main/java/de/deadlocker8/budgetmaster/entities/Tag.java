@@ -23,7 +23,7 @@ public class Tag
 	private String name;
 
 	@ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
-	private transient List<Payment> referringPayments;
+	private transient List<Transaction> referringTransactions;
 
 	public Tag()
 	{
@@ -54,9 +54,9 @@ public class Tag
 		this.name = name;
 	}
 
-	public List<Payment> getReferringPayments()
+	public List<Transaction> getReferringTransactions()
 	{
-		return referringPayments;
+		return referringTransactions;
 	}
 
 	@Override

@@ -54,7 +54,7 @@ public class AccountController extends BaseController
 	}
 
 	@RequestMapping("/accounts/{ID}/delete")
-	public String deleteAccountAndReferringPayments(Model model, @PathVariable("ID") Integer ID)
+	public String deleteAccountAndReferringTransactions(Model model, @PathVariable("ID") Integer ID)
 	{
 		if(accountRepository.findAll().size() > 1)
 		{

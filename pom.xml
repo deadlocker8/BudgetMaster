@@ -11,9 +11,24 @@
 
     <repositories>
         <repository>
-            <id>releases</id>
-            <name>Tools</name>
-            <url>https://maven.thecodelabs.de/nexus/content/repositories/releases</url>
+            <id>release</id>
+            <url>https://maven.thecodelabs.de/artifactory/TheCodeLabs-release</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>snapshots</id>
+            <url>https://maven.thecodelabs.de/artifactory/TheCodeLabs-snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
     </repositories>
 
@@ -55,7 +70,7 @@
         <dependency>
             <groupId>de.deadlocker8</groupId>
             <artifactId>tools</artifactId>
-            <version>1.0.0</version>
+            <version>1.1.0</version>
         </dependency>
 
         <dependency>

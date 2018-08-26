@@ -14,4 +14,6 @@ public interface CategoryRepository extends JpaRepository<Category, Integer>
 	Category findByName(String name);
 
 	Category findByType(CategoryType categoryType);
+
+	Category findByNameAndColorAndType(String name, String color, CategoryType categoryType);
 }
