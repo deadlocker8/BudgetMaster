@@ -21,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import tools.BASE58Type;
@@ -36,7 +37,6 @@ import java.io.UnsupportedEncodingException;
 
 
 @Controller
-@SessionAttributes("database")
 public class SettingsController extends BaseController
 {
 	@Autowired
@@ -55,9 +55,10 @@ public class SettingsController extends BaseController
 	private AccountRepository accountRepository;
 
 	@RequestMapping("/settings")
-	public String settings(HttpServletRequest request, Model model)
+	public String settings(WebRequest request, Model model)
 	{
 		model.addAttribute("settings", settingsRepository.findOne(0));
+		request.removeAttribute("database", WebRequest.SCOPE_SESSION);
 		return "settings";
 	}
 
@@ -192,7 +193,7 @@ public class SettingsController extends BaseController
 	}
 
 	@RequestMapping("/settings/database/upload")
-	public String upload(HttpServletRequest request, Model model, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
+	public String upload(WebRequest request, Model model, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
 	{
 		if(file.isEmpty())
 		{
@@ -205,7 +206,7 @@ public class SettingsController extends BaseController
 			DatabaseParser importer = new DatabaseParser(jsonString);
 			Database database = importer.parseDatabaseFromJSON();
 
-			request.getSession().setAttribute("database", database);
+			request.setAttribute("database", database, WebRequest.SCOPE_SESSION);
 			return "redirect:/settings/database/accountMatcher";
 		}
 		catch(Exception e)
@@ -218,17 +219,17 @@ public class SettingsController extends BaseController
 	}
 
 	@RequestMapping("/settings/database/accountMatcher")
-	public String openAccountMatcher(HttpServletRequest request, Model model)
+	public String openAccountMatcher(WebRequest request, Model model)
 	{
-		model.addAttribute("database", request.getSession().getAttribute("database"));
+		model.addAttribute("database", request.getAttribute("database", WebRequest.SCOPE_SESSION));
 		model.addAttribute("availableAccounts", accountRepository.findAllByOrderByNameAsc());
 		return "import";
 	}
 
 	@RequestMapping("/settings/database/import")
-	public String importDatabase(HttpServletRequest request, @ModelAttribute("Import") AccountMatchList accountMatchList)
+	public String importDatabase(WebRequest request, @ModelAttribute("Import") AccountMatchList accountMatchList)
 	{
-		DatabaseImporter importer = new DatabaseImporter((Database)request.getSession().getAttribute("database"), accountMatchList);
+		DatabaseImporter importer = new DatabaseImporter((Database)request.getAttribute("database", WebRequest.SCOPE_SESSION), accountMatchList);
 		importer.importDatabase();
 
 		return "settings";

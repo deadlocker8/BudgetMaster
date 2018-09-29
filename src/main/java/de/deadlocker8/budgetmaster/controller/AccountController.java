@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 
 
 @Controller
-@SessionAttributes("database")
 public class AccountController extends BaseController
 {
 	@Autowired
@@ -36,11 +35,6 @@ public class AccountController extends BaseController
 	@RequestMapping("/accounts")
 	public String accounts(HttpServletRequest request, Model model)
 	{
-		if(request.getSession().getAttribute("database") != null)
-		{
-			return "redirect:/settings/database/accountMatcher";
-		}
-
 		model.addAttribute("accounts", accountRepository.findAllByOrderByNameAsc());
 		return "accounts/accounts";
 	}
