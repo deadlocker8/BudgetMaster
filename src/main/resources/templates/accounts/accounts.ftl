@@ -44,8 +44,8 @@
                     <p>${locale.getString("info.text.account.delete", currentAccount.getName(), currentAccount.getReferringTransactions()?size)}</p>
                 </div>
                 <div class="modal-footer background-color">
-                    <a href="/accounts" class="modal-action modal-close waves-effect waves-red btn-flat ">${locale.getString("cancel")}</a>
-                    <a href="/accounts/${currentAccount.getID()}/delete" class="modal-action modal-close waves-effect waves-green btn-flat ">${locale.getString("info.button.account.delete")}</a>
+                    <a href="/accounts" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
+                    <a href="/accounts/${currentAccount.getID()}/delete" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("info.button.account.delete")}</a>
                 </div>
             </div>
         </#if>
@@ -58,7 +58,7 @@
                     <p>${locale.getString("warning.text.account.delete", currentAccount.getName())}</p>
                 </div>
                 <div class="modal-footer background-color">
-                    <a href="/accounts" class="modal-action modal-close waves-effect waves-green btn-flat text-color">${locale.getString("ok")}</a>
+                    <a href="/accounts" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("ok")}</a>
                 </div>
             </div>
         </#if>

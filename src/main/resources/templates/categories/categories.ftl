@@ -53,8 +53,8 @@
                         <p>${locale.getString("info.text.category.delete", currentCategory.name)}</p>
                     </div>
                     <div class="modal-footer background-color">
-                        <a href="/categories" class="modal-action modal-close waves-effect waves-red btn-flat ">${locale.getString("cancel")}</a>
-                        <a href="/categories/${currentCategory.ID}/delete" class="modal-action modal-close waves-effect waves-green btn-flat ">${locale.getString("delete")}</a>
+                        <a href="/categories" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
+                        <a href="/categories/${currentCategory.ID}/delete" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("delete")}</a>
                     </div>
                 </div>
             </#if>

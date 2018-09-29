@@ -29,8 +29,8 @@
             </div>
         </div>
         <div class="modal-footer background-color">
-            <a href="${target}" class="modal-action modal-close waves-effect waves-red btn-flat">${locale.getString("cancel")}</a>
-            <a href="/setDate?target=${target}" id="buttonChooseDate" class="modal-action modal-close waves-effect waves-green btn-flat">${locale.getString("ok")}</a>
+            <a href="${target}" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
+            <a href="/setDate?target=${target}" id="buttonChooseDate" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("ok")}</a>
         </div>
     </div>
 </#macro>

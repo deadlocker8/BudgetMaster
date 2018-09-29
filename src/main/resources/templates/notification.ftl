@@ -8,7 +8,7 @@
                     <p>${model["notifications"][0].messageBody}</p>
                 </div>
                 <div class="modal-footer">
-                    <a class="modal-action modal-close waves-effect waves-green btn-flat">OK</a>
+                    <a class="modal-action modal-close waves-effect waves-light green btn-flat white-text">OK</a>
                 </div>
             </div>
         <#else>
@@ -24,7 +24,7 @@
                      </#list>
                  </div>
                  <div class="modal-footer">
-                     <a class="modal-action modal-close waves-effect waves-green btn-flat">OK</a>
+                     <a class="modal-action modal-close waves-effect waves-light green btn-flat white-text">OK</a>
                  </div>
              </div>
         </#if>

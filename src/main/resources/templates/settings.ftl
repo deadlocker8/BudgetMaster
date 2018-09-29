@@ -201,8 +201,8 @@
                     </form>
                 </div>
                 <div class="modal-footer background-color">
-                    <a href="/settings" class="modal-action modal-close waves-effect waves-red btn-flat ">${locale.getString("cancel")}</a>
-                    <a class="modal-action modal-close waves-effect waves-green btn-flat" id="button-confirm-database-delete">${locale.getString("delete")}</a>
+                    <a href="/settings" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
+                    <a class="modal-action modal-close waves-effect waves-light green btn-flat white-text" id="button-confirm-database-delete">${locale.getString("delete")}</a>
                 </div>
             </div>
         </#if>
@@ -223,8 +223,8 @@
                     </form>
                 </div>
                 <div class="modal-footer background-color">
-                    <a href="/settings" class="modal-action modal-close waves-effect waves-red btn-flat ">${locale.getString("cancel")}</a>
-                    <a class="modal-action modal-close waves-effect waves-green btn-flat" id="button-confirm-database-import">${locale.getString("settings.database.import")}</a>
+                    <a href="/settings" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
+                    <a class="modal-action modal-close waves-effect waves-light green btn-flat white-text" id="button-confirm-database-import">${locale.getString("settings.database.import")}</a>
                 </div>
             </div>
         </#if>
@@ -236,7 +236,7 @@
                     <p>${locale.getString("error.text.database.import", errorImportDatabase)}</p>
                 </div>
                 <div class="modal-footer background-color">
-                    <a href="/settings" class="modal-action modal-close waves-effect waves-red btn-flat ">${locale.getString("ok")}</a>
+                    <a href="/settings" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("ok")}</a>
                 </div>
             </div>
         </#if>

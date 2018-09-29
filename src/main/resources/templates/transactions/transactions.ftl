@@ -90,8 +90,8 @@
                         <p>${locale.getString("info.text.transaction.delete", currentTransaction.name)}</p>
                     </div>
                     <div class="modal-footer background-color">
-                        <a href="/transactions" class="modal-action modal-close waves-effect waves-red btn-flat ">${locale.getString("cancel")}</a>
-                        <a href="/transactions/${currentTransaction.ID}/delete" class="modal-action modal-close waves-effect waves-green btn-flat ">${locale.getString("delete")}</a>
+                        <a href="/transactions" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
+                        <a href="/transactions/${currentTransaction.ID}/delete" class="modal-action modal-close waves-effectwaves-light green btn-flat white-text">${locale.getString("delete")}</a>
                     </div>
                 </div>
             </#if>
