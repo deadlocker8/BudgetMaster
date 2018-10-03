@@ -56,6 +56,11 @@ public class AccountService implements Resetable
 	@Override
 	public void deleteAll()
 	{
+		deselectAllAccounts();
+		User user = userRepository.findByName("Default");
+		user.setSelectedAccount(null);
+		userRepository.save(user);
+
 		accountRepository.deleteAll();
 	}
 
@@ -65,13 +70,13 @@ public class AccountService implements Resetable
 		if(accountRepository.findAll().size() == 0)
 		{
 			Account account = new Account(Localization.getString(Strings.ACCOUNT_DEFAULT_NAME));
-			account.setSelected(true);
-			accountRepository.save(account);
+			account = accountRepository.save(account);
+			selectAccount(account.getID());
 			LOGGER.debug("Created default account");
 		}
 	}
 
-	public void selectAccount(int ID)
+	private void deselectAllAccounts()
 	{
 		List<Account> accounts = accountRepository.findAll();
 		for(Account currentAccount : accounts)
@@ -79,6 +84,11 @@ public class AccountService implements Resetable
 			currentAccount.setSelected(false);
 			accountRepository.save(currentAccount);
 		}
+	}
+
+	public void selectAccount(int ID)
+	{
+		deselectAllAccounts();
 
 		Account accountToSelect = accountRepository.findOne(ID);
 		accountToSelect.setSelected(true);
