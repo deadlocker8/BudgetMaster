@@ -140,20 +140,8 @@ public class ImportService
 		for(Transaction transaction : database.getTransactions())
 		{
 			updateTagsForTransaction(transaction);
-//			if(transaction.isRepeating())
-//			{
-//				transaction.getRepeatingOption().setID(null);
-//			}
-
 			transaction.setID(null);
-			try
-			{
-				transactionRepository.save(transaction);
-			}
-			catch(Exception e)
-			{
-				System.out.println(transaction);
-			}
+			transactionRepository.save(transaction);
 		}
 	}
 
