@@ -12,23 +12,37 @@ $( document ).ready(function() {
 function validateForm()
 {
     // handle account matches
-    var accountSources = $('.account-source');
+    var accountSourcesIDs = $('.account-source-id');
+    var accountSourcesNames= $('.account-source');
+
     var accountDestinations = $('select.account-destination');
     var parent = document.getElementById("hidden-account-matches");
 
-    for(var i = 0; i < accountSources.length; i++)
+    for(var i = 0; i < accountSourcesIDs.length; i++)
     {
-        var input = document.createElement("input");
-        input.setAttribute("type", "hidden");
-        input.setAttribute("name", "accountMatches[" + i + "].accountSource.name");
-        input.setAttribute("value", accountSources[i].innerText);
-        parent.appendChild(input);
+        var inputSourceID = document.createElement("input");
+        inputSourceID.setAttribute("type", "hidden");
+        inputSourceID.setAttribute("name", "accountMatches[" + i + "].accountSource.ID");
+        inputSourceID.setAttribute("value", accountSourcesIDs[i].innerText);
+        parent.appendChild(inputSourceID);
 
-        var inputDestination = document.createElement("input");
-        inputDestination.setAttribute("type", "hidden");
-        inputDestination.setAttribute("name", "accountMatches[" + i + "].accountDestination.name");
-        inputDestination.setAttribute("value", accountDestinations[i].value);
-        parent.appendChild(inputDestination);
+        var inputSourceName = document.createElement("input");
+        inputSourceName.setAttribute("type", "hidden");
+        inputSourceName.setAttribute("name", "accountMatches[" + i + "].accountSource.name");
+        inputSourceName.setAttribute("value", accountSourcesNames[i].innerText);
+        parent.appendChild(inputSourceName);
+
+        var inputDestinationID = document.createElement("input");
+        inputDestinationID.setAttribute("type", "hidden");
+        inputDestinationID.setAttribute("name", "accountMatches[" + i + "].accountDestination.ID");
+        inputDestinationID.setAttribute("value", accountDestinations[i].value);
+        parent.appendChild(inputDestinationID);
+
+        var inputDestinationNames = document.createElement("input");
+        inputDestinationNames.setAttribute("type", "hidden");
+        inputDestinationNames.setAttribute("name", "accountMatches[" + i + "].accountDestination.name");
+        inputDestinationNames.setAttribute("value", accountDestinations[i].innerText);
+        parent.appendChild(inputDestinationNames);
     }
 
     return true;

@@ -34,12 +34,16 @@ public class DatabaseParser
 
 			if(version == 2)
 			{
-				return new LegacyParser(jsonString).parseDatabaseFromJSON();
+				Database database = new LegacyParser(jsonString).parseDatabaseFromJSON();
+				LOGGER.debug("Parsed database with " + database.getTransactions().size() + " transactions, " + database.getCategories().size() + " categories and " + database.getAccounts().size() + " accounts");
+				return database;
 			}
 
 			if(version == 3)
 			{
-				return new DatabaseParser_v3(jsonString).parseDatabaseFromJSON();
+				Database database = new DatabaseParser_v3(jsonString).parseDatabaseFromJSON();
+				LOGGER.debug("Parsed database with " + database.getTransactions().size() + " transactions, " + database.getCategories().size() + " categories and " + database.getAccounts().size() + " accounts");
+				return database;
 			}
 
 			throw new IllegalArgumentException(Localization.getString("error.database.import.unknown.version"));

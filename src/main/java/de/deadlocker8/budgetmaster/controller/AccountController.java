@@ -29,7 +29,13 @@ public class AccountController extends BaseController
 	public String selectAccount(HttpServletRequest request, @PathVariable("ID") Integer ID)
 	{
 		accountService.selectAccount(ID);
-		return "redirect:" + request.getHeader("Referer");
+
+		String referer = request.getHeader("Referer");
+		if(referer.contains("database/import"))
+		{
+			return "redirect:/settings";
+		}
+		return "redirect:" + referer;
 	}
 
 	@RequestMapping("/accounts")

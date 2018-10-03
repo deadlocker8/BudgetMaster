@@ -24,12 +24,13 @@
                             <#list helpers.getAccountMatches(database.getAccounts()) as accountMatch>
                                 <tr>
                                     <td class="import-text">${locale.getString("info.database.import.source")}</td>
+                                    <td class="account-source-id hidden"><#if accountMatch.getAccountSource().getID()??>${accountMatch.getAccountSource().getID()}<#else>-1</#if> </td>
                                     <td class="account-source">${accountMatch.getAccountSource().getName()}</td>
                                     <td class="import-text">${locale.getString("info.database.import.destination")}</td>
                                     <td>
                                         <select class="account-destination">
                                             <#list availableAccounts as account>
-                                                <option value="${account.getName()}">${account.getName()}</option>
+                                                <option value="${account.getID()}">${account.getName()}</option>
                                             </#list>
                                         </select>
                                     </td>
