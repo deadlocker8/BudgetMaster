@@ -1,8 +1,9 @@
 package de.deadlocker8.budgetmaster;
 
 import de.deadlocker8.budgetmaster.utils.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import de.tobias.logger.*;
+import de.tobias.utils.application.ApplicationUtils;
+import de.tobias.utils.application.container.PathType;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,10 +17,10 @@ import java.util.Locale;
 @SpringBootApplication
 public class Main implements ApplicationRunner
 {
-	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-
 	public static void main(String[] args)
 	{
+		Logger.init(ApplicationUtils.getApplication().getPath(PathType.LOG));
+
 		ProgramArgs.setArgs(Arrays.asList(args));
 
 		Localization.init("languages/");
@@ -31,13 +32,30 @@ public class Main implements ApplicationRunner
 	@Override
 	public void run(ApplicationArguments args) throws Exception
 	{
-		//TODO set loglevel
-//		String logLevelParam = args.getOptionValues("loglevel").get(0);
+		String logLevelParam = args.getOptionValues("loglevel").get(0);
+		if(logLevelParam.equalsIgnoreCase("debug"))
+		{
+			Logger.setLevelFilter(LogLevelFilter.DEBUG);
+			Logger.addFilter(logMessage -> {
+				if(logMessage.getCaller().getClassName().contains("deadlocker8"))
+				{
+					return true;
+				}
 
-		logAppInfo(Localization.getString(Strings.APP_NAME), Localization.getString(Strings.VERSION_NAME), Localization.getString(Strings.VERSION_CODE), Localization.getString(Strings.VERSION_DATE));
-	}
+				if(logMessage.getLevel().equals(LogLevel.DEBUG) || logMessage.getLevel().equals(LogLevel.TRACE))
+				{
+					return false;
+				}
 
-	private void logAppInfo(String appName, String versionName, String versionCode, String versionDate) {
-		LOGGER.info(appName + " - v" + versionName + " - (versioncode: " + versionCode + ") from " + versionDate + ")");
+				return true;
+			});
+		}
+		else
+		{
+			Logger.setLevelFilter(LogLevelFilter.NORMAL);
+			Logger.setFileOutput(FileOutputOption.COMBINED);
+		}
+
+		Logger.appInfo(Localization.getString(Strings.APP_NAME), Localization.getString(Strings.VERSION_NAME), Localization.getString(Strings.VERSION_CODE), Localization.getString(Strings.VERSION_DATE));
 	}
 }

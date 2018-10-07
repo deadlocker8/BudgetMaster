@@ -1,0 +1,20 @@
+color:
+  enable: true
+  info: "GREEN"
+  warn: "YELLOW"
+  error: "RED"
+  time: "BLUE"
+  detail: "CYAN"
+  message: "RESET"
+
+dateFormatterPattern: "dd.MM.YY HH:mm:ss"
+
+defaultOutLevel: "DEBUG"
+defaultErrLevel: "ERROR"
+
+showShortPackageName: false
+showClassName: true
+showMethodName: true
+showLineNumber: true
+
+ignoreStandardStream: true
