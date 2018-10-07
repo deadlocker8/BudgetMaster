@@ -4,11 +4,12 @@ import de.deadlocker8.budgetmaster.entities.*;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndAfterXTimes;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierDays;
+import de.tobias.utils.util.Localization;
+import de.tobias.utils.util.Localization.LocalizationDelegate;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.junit.Before;
 import org.junit.Test;
-import tools.Localization;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -26,8 +27,21 @@ public class DatabaseParser_v3Test
 	@Before
 	public void before()
 	{
-		Localization.init("languages/");
-		Localization.loadLanguage(Locale.ENGLISH);
+		Localization.setDelegate(new LocalizationDelegate()
+		{
+			@Override
+			public Locale getLocale()
+			{
+				return Locale.ENGLISH;
+			}
+
+			@Override
+			public String getBaseResource()
+			{
+				return "languages/";
+			}
+		});
+		Localization.load();
 	}
 
 	@Test

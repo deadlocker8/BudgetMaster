@@ -2,11 +2,10 @@ package de.deadlocker8.budgetmaster.database;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.stream.MalformedJsonException;
 import de.deadlocker8.budgetmaster.database.legacy.LegacyParser;
+import de.tobias.utils.util.Localization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import tools.Localization;
 
 public class DatabaseParser
 {

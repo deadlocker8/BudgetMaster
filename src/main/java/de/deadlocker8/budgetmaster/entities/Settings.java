@@ -2,7 +2,6 @@ package de.deadlocker8.budgetmaster.entities;
 
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import javafx.scene.paint.Color;
-import tools.ConvertTo;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

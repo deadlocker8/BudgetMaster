@@ -460,6 +460,10 @@ input[type="radio"]:not(:checked) + label::before, [type="radio"]:not(:checked) 
     color: #4CABD3;
 }
 
+.datePicker-fixed-width {
+    width: 30%;
+}
+
 .hidden {
     display: none;
 }

@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.repeating.modifier;
 
-import tools.Localization;
+
+import de.tobias.utils.util.Localization;
 
 public enum RepeatingModifierType
 {

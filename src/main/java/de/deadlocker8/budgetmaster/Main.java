@@ -4,11 +4,11 @@ import de.deadlocker8.budgetmaster.utils.Strings;
 import de.tobias.logger.*;
 import de.tobias.utils.application.ApplicationUtils;
 import de.tobias.utils.application.container.PathType;
+import de.tobias.utils.util.Localization;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import tools.Localization;
 
 import java.util.Arrays;
 import java.util.Locale;
@@ -23,8 +23,21 @@ public class Main implements ApplicationRunner
 
 		ProgramArgs.setArgs(Arrays.asList(args));
 
-		Localization.init("languages/");
-		Localization.loadLanguage(Locale.ENGLISH);
+		Localization.setDelegate(new Localization.LocalizationDelegate()
+		{
+			@Override
+			public Locale getLocale()
+			{
+				return Locale.ENGLISH;
+			}
+
+			@Override
+			public String getBaseResource()
+			{
+				return "languages/";
+			}
+		});
+		Localization.load();
 
 		SpringApplication.run(Main.class, args);
 	}

@@ -2,7 +2,7 @@
      <div class="container">
          <div class="section center-align">
              <a href="/previousMonth?target=${target}" class="waves-effect text-color"><i class="material-icons icon-chevron">chevron_left</i></a>
-             <a href="#modalDate" class="waves-effect headline-date modal-trigger text-color">${helpers.getDateStringWithMonthAndYear(fullDate)}</a>
+             <a href="#modalDate" class="waves-effect headline-date modal-trigger text-color datePicker-fixed-width">${helpers.getDateStringWithMonthAndYear(fullDate)}</a>
              <a href="/nextMonth?target=${target}" class="waves-effect text-color"><i class="material-icons icon-chevron">chevron_right</i></a>
              <a href="/today?target=${target}" class="waves-effect text-color"><i class="material-icons icon-today">event</i></a>
          </div>
