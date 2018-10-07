@@ -22,12 +22,25 @@ import java.util.Locale;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class DatabaseParser_v3Test implements LocalizationDelegate
+public class DatabaseParser_v3Test
 {
 	@Before
 	public void before()
 	{
-		Localization.setDelegate(this);
+		Localization.setDelegate(new LocalizationDelegate()
+		{
+			@Override
+			public Locale getLocale()
+			{
+				return Locale.ENGLISH;
+			}
+
+			@Override
+			public String getBaseResource()
+			{
+				return "languages/";
+			}
+		});
 		Localization.load();
 	}
 
@@ -162,17 +175,5 @@ public class DatabaseParser_v3Test implements LocalizationDelegate
 		{
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public Locale getLocale()
-	{
-		return Locale.ENGLISH;
-	}
-
-	@Override
-	public String getBaseResource()
-	{
-		return "language/";
 	}
 }
