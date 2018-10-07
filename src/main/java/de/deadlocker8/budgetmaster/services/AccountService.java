@@ -6,11 +6,11 @@ import de.deadlocker8.budgetmaster.entities.Account;
 import de.deadlocker8.budgetmaster.repositories.AccountRepository;
 import de.deadlocker8.budgetmaster.repositories.TransactionRepository;
 import de.deadlocker8.budgetmaster.utils.Strings;
+import de.tobias.utils.util.Localization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tools.Localization;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,7 +95,10 @@ public class AccountService implements Resetable
 		accountRepository.save(accountToSelect);
 
 		User user = userRepository.findByName("Default");
-		user.setSelectedAccount(accountToSelect);
-		userRepository.save(user);
+		if(user != null)
+		{
+			user.setSelectedAccount(accountToSelect);
+			userRepository.save(user);
+		}
 	}
 }

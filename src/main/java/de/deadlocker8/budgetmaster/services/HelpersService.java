@@ -13,12 +13,12 @@ import de.deadlocker8.budgetmaster.repositories.TagRepository;
 import de.deadlocker8.budgetmaster.utils.Colors;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.deadlocker8.budgetmaster.utils.Strings;
+import de.tobias.utils.util.ColorUtils;
+import de.tobias.utils.util.Localization;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tools.ConvertTo;
-import tools.Localization;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -161,23 +161,23 @@ public class HelpersService
 	public ArrayList<String> getCategoryColorList()
 	{
 		ArrayList<String> categoryColors = new ArrayList<>();
-		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase());
-		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_GREY).toLowerCase());
-		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_DARK_GREY).toLowerCase());
-		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_YELLOW).toLowerCase());
-		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_YELLOW).toLowerCase());
-		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_ORANGE).toLowerCase());
-		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_RED).toLowerCase());
-		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_DARK_RED).toLowerCase());
-		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_PINK).toLowerCase());
-		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_PURPLE).toLowerCase());
-		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_DARK_PURPLE).toLowerCase());
-		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_BLUE).toLowerCase());
-		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_SOFT_BLUE).toLowerCase());
-		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_BLUE).toLowerCase());
-		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREEN).toLowerCase());
-		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIME_GREEN).toLowerCase());
-		categoryColors.add(ConvertTo.toRGBHexWithoutOpacity(Colors.CATEGORIES_DARK_GREEN).toLowerCase());
+		categoryColors.add(ColorUtils.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase());
+		categoryColors.add(ColorUtils.toRGBHexWithoutOpacity(Colors.CATEGORIES_GREY).toLowerCase());
+		categoryColors.add(ColorUtils.toRGBHexWithoutOpacity(Colors.CATEGORIES_DARK_GREY).toLowerCase());
+		categoryColors.add(ColorUtils.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_YELLOW).toLowerCase());
+		categoryColors.add(ColorUtils.toRGBHexWithoutOpacity(Colors.CATEGORIES_YELLOW).toLowerCase());
+		categoryColors.add(ColorUtils.toRGBHexWithoutOpacity(Colors.CATEGORIES_ORANGE).toLowerCase());
+		categoryColors.add(ColorUtils.toRGBHexWithoutOpacity(Colors.CATEGORIES_RED).toLowerCase());
+		categoryColors.add(ColorUtils.toRGBHexWithoutOpacity(Colors.CATEGORIES_DARK_RED).toLowerCase());
+		categoryColors.add(ColorUtils.toRGBHexWithoutOpacity(Colors.CATEGORIES_PINK).toLowerCase());
+		categoryColors.add(ColorUtils.toRGBHexWithoutOpacity(Colors.CATEGORIES_PURPLE).toLowerCase());
+		categoryColors.add(ColorUtils.toRGBHexWithoutOpacity(Colors.CATEGORIES_DARK_PURPLE).toLowerCase());
+		categoryColors.add(ColorUtils.toRGBHexWithoutOpacity(Colors.CATEGORIES_BLUE).toLowerCase());
+		categoryColors.add(ColorUtils.toRGBHexWithoutOpacity(Colors.CATEGORIES_SOFT_BLUE).toLowerCase());
+		categoryColors.add(ColorUtils.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_BLUE).toLowerCase());
+		categoryColors.add(ColorUtils.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREEN).toLowerCase());
+		categoryColors.add(ColorUtils.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIME_GREEN).toLowerCase());
+		categoryColors.add(ColorUtils.toRGBHexWithoutOpacity(Colors.CATEGORIES_DARK_GREEN).toLowerCase());
 
 		return categoryColors;
 	}

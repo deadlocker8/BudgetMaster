@@ -13,7 +13,11 @@ import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.deadlocker8.budgetmaster.utils.Strings;
+import de.tobias.utils.util.Localization;
+import de.tobias.utils.util.RandomUtils;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -28,10 +32,6 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import tools.BASE58Type;
-import tools.ConvertTo;
-import tools.Localization;
-import tools.RandomCreations;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -59,6 +59,8 @@ public class SettingsController extends BaseController
 
 	@Autowired
 	private ImportService importService;
+
+	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
 	@RequestMapping("/settings")
 	public String settings(WebRequest request, Model model)
@@ -102,7 +104,7 @@ public class SettingsController extends BaseController
 			settingsRepository.delete(0);
 			settingsRepository.save(settings);
 
-			Localization.loadLanguage(settings.getLanguage().getLocale());
+			Localization.load();
 		}
 
 		return "redirect:/settings";
@@ -167,7 +169,7 @@ public class SettingsController extends BaseController
 	@RequestMapping("/settings/database/requestDelete")
 	public String requestDeleteDatabase(Model model)
 	{
-		String verificationCode = ConvertTo.toBase58(RandomCreations.generateRandomMixedCaseString(4, true), true, BASE58Type.UPPER);
+		String verificationCode = RandomUtils.generateRandomString(RandomUtils.RandomType.BASE_58, 4, RandomUtils.RandomStringPolicy.UPPER, RandomUtils.RandomStringPolicy.DIGIT);
 		model.addAttribute("deleteDatabase", true);
 		model.addAttribute("verificationCode", verificationCode);
 		return "settings";
