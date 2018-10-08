@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
-public class AboutController extends BaseController
+public class AboutController
 {
 	@RequestMapping("/about")
 	public String index()

@@ -4,6 +4,7 @@ import de.deadlocker8.budgetmaster.entities.*;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndAfterXTimes;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierDays;
+import de.tobias.logger.Logger;
 import de.tobias.utils.util.Localization;
 import de.tobias.utils.util.Localization.LocalizationDelegate;
 import org.joda.time.DateTime;
@@ -68,7 +69,7 @@ public class DatabaseParser_v3Test
 		}
 		catch(IOException | URISyntaxException e)
 		{
-			e.printStackTrace();
+			Logger.error(e);
 		}
 	}
 
@@ -87,7 +88,7 @@ public class DatabaseParser_v3Test
 		}
 		catch(IOException | URISyntaxException e)
 		{
-			e.printStackTrace();
+			Logger.error(e);
 		}
 	}
 
@@ -173,7 +174,7 @@ public class DatabaseParser_v3Test
 		}
 		catch(IOException | URISyntaxException e)
 		{
-			e.printStackTrace();
+			Logger.error(e);
 		}
 	}
 }

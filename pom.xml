@@ -115,7 +115,7 @@
         <dependency>
             <groupId>de.tobias</groupId>
             <artifactId>libUtils</artifactId>
-            <version>1.7.0</version>
+            <version>1.7.3</version>
         </dependency>
     </dependencies>
 

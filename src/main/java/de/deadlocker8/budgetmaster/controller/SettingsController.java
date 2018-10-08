@@ -13,11 +13,10 @@ import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.deadlocker8.budgetmaster.utils.Strings;
+import de.tobias.logger.Logger;
 import de.tobias.utils.util.Localization;
 import de.tobias.utils.util.RandomUtils;
 import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -40,7 +39,7 @@ import java.io.UnsupportedEncodingException;
 
 
 @Controller
-public class SettingsController extends BaseController
+public class SettingsController
 {
 	@Autowired
 	private SettingsRepository settingsRepository;
@@ -59,8 +58,6 @@ public class SettingsController extends BaseController
 
 	@Autowired
 	private ImportService importService;
-
-	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
 	@RequestMapping("/settings")
 	public String settings(WebRequest request, Model model)
@@ -137,7 +134,7 @@ public class SettingsController extends BaseController
 	@RequestMapping("/settings/database/requestExport")
 	public void downloadFile(HttpServletResponse response)
 	{
-		LOGGER.debug("Exporting database...");
+		Logger.debug("Exporting database...");
 		String data = databaseService.getDatabaseAsJSON();
 		try
 		{
@@ -153,16 +150,16 @@ public class SettingsController extends BaseController
 			{
 				out.write(dataBytes);
 				out.flush();
-				LOGGER.debug("Exporting database DONE");
+				Logger.debug("Exporting database DONE");
 			}
 			catch(IOException e)
 			{
-				e.printStackTrace();
+				Logger.error(e);
 			}
 		}
 		catch(UnsupportedEncodingException e)
 		{
-			e.printStackTrace();
+			Logger.error(e);
 		}
 	}
 
@@ -181,9 +178,9 @@ public class SettingsController extends BaseController
 	{
 		if(verificationUserInput.equals(verificationCode))
 		{
-			LOGGER.info("Deleting database...");
+			Logger.info("Deleting database...");
 			databaseService.reset();
-			LOGGER.info("Deleting database DONE.");
+			Logger.info("Deleting database DONE.");
 		}
 		else
 		{
@@ -219,7 +216,7 @@ public class SettingsController extends BaseController
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			Logger.error(e);
 
 			model.addAttribute("errorImportDatabase", e.getMessage());
 			return "settings";
