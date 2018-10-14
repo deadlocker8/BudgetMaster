@@ -128,7 +128,10 @@ public class CategoryController
 		}
 		else
 		{
-			category.setType(CategoryType.CUSTOM);
+			if(category.getType() == null)
+			{
+				category.setType(CategoryType.CUSTOM);
+			}
 			categoryRepository.save(category);
 		}
 

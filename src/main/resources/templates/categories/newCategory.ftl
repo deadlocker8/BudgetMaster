@@ -21,8 +21,9 @@
                     <form name="NewCategory" action="/categories/newCategory" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="ID" value="<#if category.getID()??>${category.getID()}</#if>">
+                        <input type="hidden" name="type" value="<#if category.getType()??>${category.getType()}</#if>">
 
-                        <#-- name -->
+                    <#-- name -->
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
                                 <input id="category-name" type="text" name="name" <@validation.validation "name"/> value="<#if category.getName()??>${category.getName()}</#if>">
