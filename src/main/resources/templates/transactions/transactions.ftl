@@ -48,7 +48,7 @@
                         <#list transactions as transaction>
                             <tr>
                                 <td>${helpers.getDateString(transaction.date)}</td>
-                                <td><i class="material-icons">repeat</i></td>
+                                <td><#if transaction.isRepeating()><i class="material-icons">repeat</i></#if></td>
                                 <td>
                                     <div class="category-circle" style="background-color: ${transaction.category.color}">
                                         <span style="color: ${transaction.category.getAppropriateTextColor()}">
