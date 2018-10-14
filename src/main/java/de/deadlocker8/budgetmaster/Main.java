@@ -5,6 +5,8 @@ import de.tobias.logger.*;
 import de.tobias.utils.application.ApplicationUtils;
 import de.tobias.utils.application.container.PathType;
 import de.tobias.utils.util.Localization;
+import de.tobias.utils.util.SystemUtils;
+import org.apache.tomcat.jni.Local;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,10 +21,6 @@ public class Main implements ApplicationRunner
 {
 	public static void main(String[] args)
 	{
-		Logger.init(ApplicationUtils.getApplication().getPath(PathType.LOG));
-
-		ProgramArgs.setArgs(Arrays.asList(args));
-
 		Localization.setDelegate(new Localization.LocalizationDelegate()
 		{
 			@Override
@@ -44,6 +42,11 @@ public class Main implements ApplicationRunner
 			}
 		});
 		Localization.load();
+
+		Logger.init(SystemUtils.getApplicationSupportDirectoryPath(Localization.getString("folder")));
+		Logger.setFileOutput(FileOutputOption.COMBINED);
+
+		ProgramArgs.setArgs(Arrays.asList(args));
 
 		SpringApplication.run(Main.class, args);
 	}
