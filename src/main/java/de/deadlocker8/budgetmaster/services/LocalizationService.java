@@ -31,4 +31,10 @@ public class LocalizationService implements  Localization.LocalizationDelegate
 	{
 		return "languages/";
 	}
+
+	@Override
+	public boolean useMessageFormatter()
+	{
+		return true;
+	}
 }

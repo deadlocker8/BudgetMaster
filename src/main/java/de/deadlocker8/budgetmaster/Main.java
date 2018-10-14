@@ -36,6 +36,12 @@ public class Main implements ApplicationRunner
 			{
 				return "languages/";
 			}
+
+			@Override
+			public boolean useMessageFormatter()
+			{
+				return true;
+			}
 		});
 		Localization.load();
 
