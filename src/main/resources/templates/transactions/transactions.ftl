@@ -25,7 +25,7 @@
                             <div class="icon-block">
                                 <h1 class="center ${redTextColor} budget-headline-icon"><i class="material-icons icon-budget">file_upload</i></h1>
                                 <h5 class="center budget">${helpers.getCurrencyString(paymentSum)}</h5>
-                                <h5 class="center budget-headline">${locale.getString("title.transactions")}</h5>
+                                <h5 class="center budget-headline">${locale.getString("title.expenditures")}</h5>
                             </div>
                         </div>
                         <div class="col s4">

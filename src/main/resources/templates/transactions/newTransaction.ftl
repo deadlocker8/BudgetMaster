@@ -29,9 +29,13 @@
                                 <div class="switch">
                                     <label>
                                         ${locale.getString("title.income")}
-                                        <input type="checkbox" name="isPayment" <#if transaction.getAmount()?? && transaction.getAmount() < 0>checked</#if>>
+                                        <#if transaction.getAmount()??>
+                                            <input type="checkbox" name="isPayment" <#if transaction.getAmount() < 0>checked</#if>>
+                                        <#else>
+                                            <input type="checkbox" name="isPayment" checked>
+                                        </#if>
                                         <span class="lever"></span>
-                                        ${locale.getString("title.transaction")}
+                                        ${locale.getString("title.expenditure")}
                                     </label>
                                 </div>
                             </div>
