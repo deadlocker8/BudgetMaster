@@ -109,13 +109,13 @@
         <dependency>
             <groupId>de.tobias</groupId>
             <artifactId>libLogger-slf4j</artifactId>
-            <version>1.0.4</version>
+            <version>1.0.6</version>
         </dependency>
 
         <dependency>
             <groupId>de.tobias</groupId>
             <artifactId>libUtils</artifactId>
-            <version>1.7.3</version>
+            <version>1.7.4</version>
         </dependency>
     </dependencies>
 
