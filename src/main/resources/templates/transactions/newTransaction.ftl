@@ -160,7 +160,8 @@
                                     <#list helpers.getRepeatingModifierTypes() as modifierType>
                                         <#assign modifierName=locale.getString(modifierType.getLocalizationKey())>
                                         <#if transaction.getRepeatingOption()??>
-                                            <#if transaction.getRepeatingOption().getModifier().getLocalizationKey() == modifierName>
+                                            ${transaction.getRepeatingOption().getModifier().getLocalizationKey()}
+                                            <#if locale.getString(transaction.getRepeatingOption().getModifier().getLocalizationKey()) == modifierName>
                                                 <option selected value="${modifierName}">${modifierName}</option>
                                             <#else>
                                                 <option value="${modifierName}">${modifierName}</option>
