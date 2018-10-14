@@ -22,7 +22,7 @@ public class UserService
 		if(userRepository.findAll().size() == 0)
 		{
 			BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-			String encryptedPassword = bCryptPasswordEncoder.encode("123");
+			String encryptedPassword = bCryptPasswordEncoder.encode("BudgetMaster");
 			User user = new User("Default", encryptedPassword);
 			userRepository.save(user);
 			Logger.info("Created default user");
