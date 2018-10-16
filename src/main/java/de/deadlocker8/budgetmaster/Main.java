@@ -1,17 +1,22 @@
 package de.deadlocker8.budgetmaster;
 
 import de.deadlocker8.budgetmaster.utils.Strings;
-import de.tobias.logger.*;
-import de.tobias.utils.application.ApplicationUtils;
-import de.tobias.utils.application.container.PathType;
+import de.tobias.logger.FileOutputOption;
+import de.tobias.logger.LogLevel;
+import de.tobias.logger.LogLevelFilter;
+import de.tobias.logger.Logger;
+import de.tobias.utils.io.PathUtils;
 import de.tobias.utils.util.Localization;
 import de.tobias.utils.util.SystemUtils;
-import org.apache.tomcat.jni.Local;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -43,10 +48,29 @@ public class Main implements ApplicationRunner
 		});
 		Localization.load();
 
-		Logger.init(SystemUtils.getApplicationSupportDirectoryPath(Localization.getString("folder")));
+		Path applicationSupportFolder = SystemUtils.getApplicationSupportDirectoryPath(Localization.getString("folder"));
+		PathUtils.createDirectoriesIfNotExists(applicationSupportFolder);
+
+		Logger.init(applicationSupportFolder);
 		Logger.setFileOutput(FileOutputOption.COMBINED);
+		Logger.appInfo(Localization.getString(Strings.APP_NAME), Localization.getString(Strings.VERSION_NAME), Localization.getString(Strings.VERSION_CODE), Localization.getString(Strings.VERSION_DATE));
 
 		ProgramArgs.setArgs(Arrays.asList(args));
+
+		Path settingsPath = applicationSupportFolder.resolve("settings.properties");
+		if(Files.notExists(settingsPath))
+		{
+			try
+			{
+				Logger.warning("BudgetMaster settings file ({0}) is missing. A default file will be created. Please fill in your settings.", settingsPath);
+				Files.copy(Main.class.getClassLoader().getResourceAsStream("config/templates/settings.properties"), settingsPath, StandardCopyOption.REPLACE_EXISTING);
+				System.exit(1);
+			}
+			catch(IOException e)
+			{
+				Logger.error(e);
+			}
+		}
 
 		SpringApplication.run(Main.class, args);
 	}
@@ -77,7 +101,5 @@ public class Main implements ApplicationRunner
 			Logger.setLevelFilter(LogLevelFilter.NORMAL);
 			Logger.setFileOutput(FileOutputOption.COMBINED);
 		}
-
-		Logger.appInfo(Localization.getString(Strings.APP_NAME), Localization.getString(Strings.VERSION_NAME), Localization.getString(Strings.VERSION_CODE), Localization.getString(Strings.VERSION_DATE));
 	}
 }
