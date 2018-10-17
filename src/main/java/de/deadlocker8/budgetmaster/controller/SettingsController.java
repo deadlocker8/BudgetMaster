@@ -13,7 +13,7 @@ import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.deadlocker8.budgetmaster.utils.Strings;
-import de.tobias.logger.Logger;
+import de.thecodelabs.logger.Logger;
 import de.tobias.utils.util.Localization;
 import de.tobias.utils.util.RandomUtils;
 import org.joda.time.DateTime;

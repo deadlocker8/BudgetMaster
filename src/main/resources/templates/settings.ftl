@@ -108,7 +108,7 @@
                                             </div>
                                         </td>
                                         <td>${locale.getString("settings.updates.current.version")}</td>
-                                        <td>v${locale.getString("version.name")} (${locale.getString("version.code")})</td>
+                                        <td>v${build.getVersionName()} (${build.getVersionCode()})</td>
                                     </tr>
                                     <tr>
                                         <td>${locale.getString("settings.updates.latest.version")}</td>

@@ -2,7 +2,7 @@ package de.deadlocker8.budgetmaster.services;
 
 import de.deadlocker8.budgetmaster.entities.Settings;
 import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
-import de.tobias.logger.Logger;
+import de.thecodelabs.logger.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

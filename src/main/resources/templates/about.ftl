@@ -18,15 +18,15 @@
                     <div class="hide-on-small-only"><br><br></div>
                     <div class="row">
                         <div class="col s4 m3 offset-m2 l2 offset-l3 bold">${locale.getString("about.version")}</div>
-                        <div class="col s8 m5 l4">${locale.getString("version.name")} (${locale.getString("version.code")})</div>
+                        <div class="col s8 m5 l4">${build.getVersionName()} (${build.getVersionCode()})</div>
                     </div>
                     <div class="row">
                         <div class="col s4 m3 offset-m2 l2 offset-l3 bold">${locale.getString("about.date")}</div>
-                        <div class="col s8 m5 l4">${locale.getString("version.date")}</div>
+                        <div class="col s8 m5 l4">${build.getVersionDate()}</div>
                     </div>
                     <div class="row">
                         <div class="col s4 m3 offset-m2 l2 offset-l3 bold">${locale.getString("about.author")}</div>
-                        <div class="col s8 m5 l4">${locale.getString("author")}</div>
+                        <div class="col s8 m5 l4">${build.getAuthor()}</div>
                     </div>
                     <div class="row">
                         <div class="col s4 m3 offset-m2 l2 offset-l3 bold">${locale.getString("about.roadmap")}</div>

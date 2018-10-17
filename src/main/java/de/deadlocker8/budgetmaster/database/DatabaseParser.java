@@ -3,7 +3,7 @@ package de.deadlocker8.budgetmaster.database;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import de.deadlocker8.budgetmaster.database.legacy.LegacyParser;
-import de.tobias.logger.Logger;
+import de.thecodelabs.logger.Logger;
 import de.tobias.utils.util.Localization;
 
 public class DatabaseParser

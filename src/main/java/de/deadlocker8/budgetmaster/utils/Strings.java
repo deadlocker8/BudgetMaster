@@ -2,12 +2,6 @@ package de.deadlocker8.budgetmaster.utils;
 
 public class Strings 
 {    
-    //APP_INFO
-    public static final String APP_NAME = "app.name";
-    public static final String VERSION_CODE = "version.code";
-    public static final String VERSION_NAME = "version.name";
-    public static final String VERSION_DATE = "version.date";
-
     //MISC
     public static final String CATEGORY_NONE = "category.none";
     public static final String CATEGORY_REST = "category.rest";

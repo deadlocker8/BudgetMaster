@@ -2,7 +2,7 @@ package de.deadlocker8.budgetmaster.authentication;
 
 import de.deadlocker8.budgetmaster.ProgramArgs;
 import de.deadlocker8.budgetmaster.services.AccountService;
-import de.tobias.logger.Logger;
+import de.thecodelabs.logger.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

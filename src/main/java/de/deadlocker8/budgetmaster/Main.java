@@ -1,10 +1,10 @@
 package de.deadlocker8.budgetmaster;
 
 import de.deadlocker8.budgetmaster.utils.Strings;
-import de.tobias.logger.FileOutputOption;
-import de.tobias.logger.LogLevel;
-import de.tobias.logger.LogLevelFilter;
-import de.tobias.logger.Logger;
+import de.thecodelabs.logger.FileOutputOption;
+import de.thecodelabs.logger.LogLevel;
+import de.thecodelabs.logger.LogLevelFilter;
+import de.thecodelabs.logger.Logger;
 import de.tobias.utils.io.PathUtils;
 import de.tobias.utils.util.Localization;
 import de.tobias.utils.util.SystemUtils;
@@ -53,7 +53,9 @@ public class Main implements ApplicationRunner
 
 		Logger.init(applicationSupportFolder);
 		Logger.setFileOutput(FileOutputOption.COMBINED);
-		Logger.appInfo(Localization.getString(Strings.APP_NAME), Localization.getString(Strings.VERSION_NAME), Localization.getString(Strings.VERSION_CODE), Localization.getString(Strings.VERSION_DATE));
+
+		Build build = Build.getInstance();
+		Logger.appInfo(build.getAppName(), build.getVersionName(), build.getVersionCode(), build.getVersionDate());
 
 		ProgramArgs.setArgs(Arrays.asList(args));
 

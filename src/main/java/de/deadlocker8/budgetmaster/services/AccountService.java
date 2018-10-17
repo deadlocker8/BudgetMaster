@@ -6,7 +6,7 @@ import de.deadlocker8.budgetmaster.entities.Account;
 import de.deadlocker8.budgetmaster.repositories.AccountRepository;
 import de.deadlocker8.budgetmaster.repositories.TransactionRepository;
 import de.deadlocker8.budgetmaster.utils.Strings;
-import de.tobias.logger.Logger;
+import de.thecodelabs.logger.Logger;
 import de.tobias.utils.util.Localization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
