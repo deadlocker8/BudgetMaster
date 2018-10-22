@@ -6,8 +6,9 @@ import de.deadlocker8.budgetmaster.entities.Account;
 import de.deadlocker8.budgetmaster.repositories.AccountRepository;
 import de.deadlocker8.budgetmaster.repositories.TransactionRepository;
 import de.deadlocker8.budgetmaster.utils.Strings;
-import de.thecodelabs.logger.Logger;
 import de.tobias.utils.util.Localization;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.util.List;
 @Service
 public class AccountService implements Resetable
 {
+	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private AccountRepository accountRepository;
 	private TransactionRepository transactionRepository;
 	private UserRepository userRepository;
@@ -70,7 +72,7 @@ public class AccountService implements Resetable
 			Account account = new Account(Localization.getString(Strings.ACCOUNT_DEFAULT_NAME));
 			account = accountRepository.save(account);
 			selectAccount(account.getID());
-			Logger.debug("Created default account");
+			LOGGER.debug("Created default account");
 		}
 	}
 

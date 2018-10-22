@@ -3,11 +3,13 @@ package de.deadlocker8.budgetmaster.database;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import de.deadlocker8.budgetmaster.database.legacy.LegacyParser;
-import de.thecodelabs.logger.Logger;
 import de.tobias.utils.util.Localization;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DatabaseParser
 {
+	final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private String jsonString;
 
 	public DatabaseParser(String json)
@@ -27,19 +29,19 @@ public class DatabaseParser
 			}
 
 			int version = root.get("VERSION").getAsInt();
-			Logger.info("Parsing Budgetmaster database with version " + version);
+			LOGGER.info("Parsing Budgetmaster database with version " + version);
 
 			if(version == 2)
 			{
 				Database database = new LegacyParser(jsonString).parseDatabaseFromJSON();
-				Logger.debug("Parsed database with " + database.getTransactions().size() + " transactions, " + database.getCategories().size() + " categories and " + database.getAccounts().size() + " accounts");
+				LOGGER.debug("Parsed database with " + database.getTransactions().size() + " transactions, " + database.getCategories().size() + " categories and " + database.getAccounts().size() + " accounts");
 				return database;
 			}
 
 			if(version == 3)
 			{
 				Database database = new DatabaseParser_v3(jsonString).parseDatabaseFromJSON();
-				Logger.debug("Parsed database with " + database.getTransactions().size() + " transactions, " + database.getCategories().size() + " categories and " + database.getAccounts().size() + " accounts");
+				LOGGER.debug("Parsed database with " + database.getTransactions().size() + " transactions, " + database.getCategories().size() + " categories and " + database.getAccounts().size() + " accounts");
 				return database;
 			}
 

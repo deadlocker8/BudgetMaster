@@ -8,12 +8,15 @@ import de.deadlocker8.budgetmaster.repeating.modifier.*;
 import de.tobias.utils.util.Localization;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseParser_v3
 {
+	final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private String jsonString;
 	private List<Category> categories;
 	private List<Account> accounts;

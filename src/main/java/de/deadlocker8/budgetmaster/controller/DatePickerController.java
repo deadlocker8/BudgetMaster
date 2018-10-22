@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 @Controller
-public class DatePickerController
+public class DatePickerController extends BaseController
 {
 	@Autowired
 	private SettingsRepository settingsRepository;

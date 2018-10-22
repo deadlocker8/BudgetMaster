@@ -10,6 +10,8 @@ import de.deadlocker8.budgetmaster.utils.Strings;
 import de.tobias.utils.util.Localization;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ import java.util.List;
 @Service
 public class TransactionService implements Resetable
 {
+	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private TransactionRepository transactionRepository;
 	private RepeatingOptionRepository repeatingOptionRepository;
 	private CategoryRepository categoryRepository;

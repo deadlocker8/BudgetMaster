@@ -5,9 +5,10 @@ import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.entities.Account;
 import de.deadlocker8.budgetmaster.entities.Category;
 import de.deadlocker8.budgetmaster.entities.Transaction;
-import de.thecodelabs.logger.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.util.List;
 @Service
 public class DatabaseService
 {
+	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private AccountService accountService;
 	private CategoryService categoryService;
 	private TransactionService transactionService;
@@ -41,34 +43,34 @@ public class DatabaseService
 
 	private void resetAccounts()
 	{
-		Logger.info("Resetting accounts...");
+		LOGGER.info("Resetting accounts...");
 		accountService.deleteAll();
 		accountService.createDefaults();
-		Logger.info("All accounts reset.");
+		LOGGER.info("All accounts reset.");
 	}
 
 	private void resetCategories()
 	{
-		Logger.info("Resetting categories...");
+		LOGGER.info("Resetting categories...");
 		categoryService.deleteAll();
 		categoryService.createDefaults();
-		Logger.info("All categories reset.");
+		LOGGER.info("All categories reset.");
 	}
 
 	private void resetTransactions()
 	{
-		Logger.info("Resetting transactions...");
+		LOGGER.info("Resetting transactions...");
 		transactionService.deleteAll();
 		transactionService.createDefaults();
-		Logger.info("All transactions reset.");
+		LOGGER.info("All transactions reset.");
 	}
 
 	private void resetTags()
 	{
-		Logger.info("Resetting tags...");
+		LOGGER.info("Resetting tags...");
 		tagService.deleteAll();
 		tagService.createDefaults();
-		Logger.info("All tags reset.");
+		LOGGER.info("All tags reset.");
 	}
 
 	public String getDatabaseAsJSON()

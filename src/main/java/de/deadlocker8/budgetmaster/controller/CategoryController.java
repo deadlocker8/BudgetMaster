@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 
 @Controller
-public class CategoryController
+public class CategoryController extends BaseController
 {
 	@Autowired
 	private CategoryRepository categoryRepository;

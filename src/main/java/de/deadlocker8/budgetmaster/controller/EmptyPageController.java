@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
-public class EmptyPageController
+public class EmptyPageController extends BaseController
 {
 	@RequestMapping("/reports")
 	public String reports(Model model)

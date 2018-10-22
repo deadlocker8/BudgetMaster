@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
-public class TeapotController
+public class TeapotController extends BaseController
 {
 	@RequestMapping("/418")
 	public String index()

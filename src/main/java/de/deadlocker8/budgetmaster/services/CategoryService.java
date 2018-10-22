@@ -5,8 +5,9 @@ import de.deadlocker8.budgetmaster.entities.CategoryType;
 import de.deadlocker8.budgetmaster.entities.Transaction;
 import de.deadlocker8.budgetmaster.repositories.CategoryRepository;
 import de.deadlocker8.budgetmaster.utils.Strings;
-import de.thecodelabs.logger.Logger;
 import de.tobias.utils.util.Localization;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.List;
 @Service
 public class CategoryService implements Resetable
 {
+	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private CategoryRepository categoryRepository;
 
 	@Autowired
@@ -57,13 +59,13 @@ public class CategoryService implements Resetable
 		if(categoryRepository.findByType(CategoryType.NONE) == null)
 		{
 			categoryRepository.save(new Category(Localization.getString(Strings.CATEGORY_NONE), "#FFFFFF", CategoryType.NONE));
-			Logger.debug("Created default category NONE");
+			LOGGER.debug("Created default category NONE");
 		}
 
 		if(categoryRepository.findByType(CategoryType.REST) == null)
 		{
 			categoryRepository.save(new Category(Localization.getString(Strings.CATEGORY_REST), "#FFFF00", CategoryType.REST));
-			Logger.debug("Created default category REST");
+			LOGGER.debug("Created default category REST");
 		}
 	}
 }

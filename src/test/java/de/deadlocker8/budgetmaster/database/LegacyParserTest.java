@@ -7,7 +7,6 @@ import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndDate;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndNever;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierDays;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierMonths;
-import de.thecodelabs.logger.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.junit.Test;
@@ -45,7 +44,7 @@ public class LegacyParserTest
 		}
 		catch(IOException | URISyntaxException e)
 		{
-			Logger.error(e);
+			e.printStackTrace();
 		}
 	}
 
@@ -63,7 +62,7 @@ public class LegacyParserTest
 		}
 		catch(IOException | URISyntaxException e)
 		{
-			Logger.error(e);
+			e.printStackTrace();
 		}
 	}
 
@@ -143,7 +142,7 @@ public class LegacyParserTest
 		}
 		catch(IOException | URISyntaxException e)
 		{
-			Logger.error(e);
+			e.printStackTrace();
 		}
 	}
 }
