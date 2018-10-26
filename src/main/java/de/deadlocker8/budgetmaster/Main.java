@@ -50,10 +50,6 @@ public class Main implements ApplicationRunner
 		Path applicationSupportFolder = SystemUtils.getApplicationSupportDirectoryPath(Localization.getString("folder"));
 		PathUtils.createDirectoriesIfNotExists(applicationSupportFolder);
 
-
-		Build build = Build.getInstance();
-		logAppInfo(build.getAppName(), build.getVersionName(), build.getVersionCode(), build.getVersionDate());
-
 		ProgramArgs.setArgs(Arrays.asList(args));
 
 		Path settingsPath = applicationSupportFolder.resolve("settings.properties");
@@ -71,12 +67,15 @@ public class Main implements ApplicationRunner
 			}
 		}
 
-		SpringApplication.run(Main.class, args);
+		Path logPath = applicationSupportFolder.resolve("error.log");
+		SpringApplication.run(Main.class, "--logging.file=" + logPath.toString());
 	}
 
 	@Override
 	public void run(ApplicationArguments args)
 	{
+		Build build = Build.getInstance();
+		logAppInfo(build.getAppName(), build.getVersionName(), build.getVersionCode(), build.getVersionDate());
 	}
 
 	private static void logAppInfo(String appName, String versionName, String versionCode, String versionDate) {
