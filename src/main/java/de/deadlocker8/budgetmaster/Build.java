@@ -28,7 +28,7 @@ public class Build
 	{
 		if(instance == null)
 		{
-			instance = Storage.load(Build.class.getClassLoader().getResourceAsStream("build.properties"), StorageTypes.PROPERTIES, Build.class);
+			instance = Storage.load(Build.class.getClassLoader().getResourceAsStream("application.properties"), StorageTypes.PROPERTIES, Build.class);
 		}
 		return instance;
 	}
