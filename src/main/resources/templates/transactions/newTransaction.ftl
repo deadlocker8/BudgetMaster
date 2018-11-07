@@ -71,7 +71,7 @@
                                             </#if>
                                         <#elseif category.getType() == "NONE">
                                             <option selected value="${category.getID()}">${category.getName()}</option>
-                                        <#else>
+                                        <#elseif category.getType() != "REST">
                                             <option value="${category.getID()}">${category.getName()}</option>
                                         </#if>
                                     </#list>

@@ -76,6 +76,9 @@ public class Main implements ApplicationRunner
 	{
 		Build build = Build.getInstance();
 		logAppInfo(build.getAppName(), build.getVersionName(), build.getVersionCode(), build.getVersionDate());
+		LOGGER.info("=============================");
+		LOGGER.info("+++ BUDGETMASTER STARTED +++");
+		LOGGER.info("=============================");
 	}
 
 	private static void logAppInfo(String appName, String versionName, String versionCode, String versionDate) {
