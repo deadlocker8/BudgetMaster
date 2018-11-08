@@ -87,7 +87,11 @@
                 <div id="modalConfirmDelete" class="modal background-color">
                     <div class="modal-content">
                         <h4>${locale.getString("info.title.transaction.delete")}</h4>
-                        <p>${locale.getString("info.text.transaction.delete", currentTransaction.name)}</p>
+                        <#if currentTransaction.isRepeating()>
+                            <p>${locale.getString("info.text.transaction.repeating.delete", currentTransaction.name)}</p>
+                        <#else>
+                            <p>${locale.getString("info.text.transaction.delete", currentTransaction.name)}</p>
+                        </#if>
                     </div>
                     <div class="modal-footer background-color">
                         <a href="/transactions" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
