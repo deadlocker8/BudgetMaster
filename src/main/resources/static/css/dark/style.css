@@ -323,6 +323,11 @@ main {
     color: #FFFFFF;
 }
 
+.headline-date:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
 .budget-headline-icon {
     margin-top: 0;
 }
