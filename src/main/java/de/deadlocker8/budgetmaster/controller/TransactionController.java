@@ -59,7 +59,7 @@ public class TransactionController extends BaseController
 	{
 		DateTime date = getDateTimeFromCookie(cookieDate);
 
-		repeatingTransactionUpdater.updateRepeatingTransactions(date);
+		repeatingTransactionUpdater.updateRepeatingTransactions(date.dayOfMonth().withMaximumValue());
 
 		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear(), getSettings().isRestActivated());
 		int incomeSum = helpers.getIncomeSumForTransactionList(transactions);
