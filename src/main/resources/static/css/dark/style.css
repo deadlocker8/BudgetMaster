@@ -131,7 +131,7 @@ main {
 }
 
 .btn, .btn-flat {
-    text-transform: capitalize;
+    text-transform: none;
 }
 
 .btn:hover {
