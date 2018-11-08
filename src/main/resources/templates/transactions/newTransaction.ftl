@@ -9,6 +9,8 @@
         <#import "../navbar.ftl" as navbar>
         <@navbar.navbar "transactions"/>
 
+        <#import "../categories/categoriesFunctions.ftl" as categoriesFunctions>
+
         <main>
             <div class="card main-card background-color">
                 <div class="container">
@@ -63,16 +65,18 @@
                             <div class="input-field col s12 m12 l8 offset-l2">
                                 <select id="transaction-category" name="category" <@validation.validation "category"/>>
                                     <#list categories as category>
+                                        <#assign categoryName=categoriesFunctions.getCategoryName(category)>
+
                                         <#if transaction.getCategory()??>
                                             <#if transaction.getCategory().getID() == category.getID()>
-                                                <option selected value="${category.getID()}">${category.getName()}</option>
+                                                <option selected value="${category.getID()}">${categoryName}</option>
                                             <#elseif category.getType() != "REST">
-                                                <option value="${category.getID()}">${category.getName()}</option>
+                                                <option value="${category.getID()}">${categoryName}</option>
                                             </#if>
                                         <#elseif category.getType() == "NONE">
-                                            <option selected value="${category.getID()}">${category.getName()}</option>
+                                            <option selected value="${category.getID()}">${categoryName}</option>
                                         <#elseif category.getType() != "REST">
-                                            <option value="${category.getID()}">${category.getName()}</option>
+                                            <option value="${category.getID()}">${categoryName}</option>
                                         </#if>
                                     </#list>
                                 </select>

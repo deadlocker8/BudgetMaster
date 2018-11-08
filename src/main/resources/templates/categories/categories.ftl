@@ -8,6 +8,8 @@
         <#import "../navbar.ftl" as navbar>
         <@navbar.navbar "categories"/>
 
+        <#import "categoriesFunctions.ftl" as categoriesFunctions>
+
         <main>
             <div class="card main-card background-color">
                 <div class="container">
@@ -21,18 +23,19 @@
                 <div class="container">
                     <table class="bordered">
                         <#list categories as category>
-                        <tr>
+                            <#assign categoryName=categoriesFunctions.getCategoryName(category)>
+                            <tr>
                             <td>
                                 <div class="category-circle" style="background-color: ${category.color}">
                                     <span style="color: ${category.getAppropriateTextColor()}">
-                                        ${category.name?capitalize[0]}
+                                        ${categoryName?capitalize[0]}
                                     </span>
                                 </div>
                             </td>
-                            <td>${category.name}</td>
+                            <td>${categoryName}</td>
                             <td>
                                 <a href="/categories/${category.ID}/edit" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
-                                <#if (category.type.name() == "CUSTOM")>
+                                <#if (category.getType().name() == "CUSTOM")>
                                     <a href="/categories/${category.ID}/requestDelete" class="btn-flat no-padding text-color"><i class="material-icons left">delete</i></a>
                                 </#if>
                             </td>

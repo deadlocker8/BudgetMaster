@@ -9,6 +9,8 @@
         <#import "../navbar.ftl" as navbar>
         <@navbar.navbar "categories"/>
 
+        <#import "categoriesFunctions.ftl" as categoriesFunctions>
+
         <main>
             <div class="card main-card background-color">
                 <div class="container">
@@ -23,10 +25,12 @@
                         <input type="hidden" name="ID" value="<#if category.getID()??>${category.getID()}</#if>">
                         <input type="hidden" name="type" value="<#if category.getType()??>${category.getType()}</#if>">
 
-                    <#-- name -->
+                        <#-- name -->
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
-                                <input id="category-name" type="text" name="name" <@validation.validation "name"/> value="<#if category.getName()??>${category.getName()}</#if>">
+                                <#assign categoryName=categoriesFunctions.getCategoryName(category)>
+
+                                <input id="category-name" type="text" name="name" <@validation.validation "name"/> value="${categoryName}">
                                 <label for="category-name">${locale.getString("category.new.label.name")}</label>
                             </div>
                         </div>
