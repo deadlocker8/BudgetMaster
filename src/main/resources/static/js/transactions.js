@@ -81,6 +81,14 @@ $( document ).ready(function() {
             pickerEndDate.set('select', selectedDate);
         }
         pickerEndDate.set('min', selectedDate);
+
+        pickerEndDate.on({
+            set: function() {
+                // select corresponding radio button
+                var endDate = document.getElementById("repeating-end-date");
+                endDate.checked = true;
+            }
+        })
     }
 
     if($('#transaction-amount').length)
@@ -102,6 +110,10 @@ $( document ).ready(function() {
     {
         $(transactionRepeatingEndAfterXTimesInputID).on('change keydown paste input', function() {
             validateNumber($(this).val(), transactionRepeatingEndAfterXTimesInputID.substr(1), null, numberValidationMessage);
+
+            // select corresponding radio button
+            var endAfterXTimes = document.getElementById("repeating-end-after-x-times");
+            endAfterXTimes.checked = true;
         });
     }
 
