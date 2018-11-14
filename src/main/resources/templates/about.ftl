@@ -30,11 +30,11 @@
                     </div>
                     <div class="row">
                         <div class="col s4 m3 offset-m2 l2 offset-l3 bold">${locale.getString("about.roadmap")}</div>
-                        <div class="col s8 m5 l4"><a href="${locale.getString("roadmap.url")}">${locale.getString("about.roadmap.link")}</a></div>
+                        <div class="col s8 m5 l4"><a target="_blank" href="${locale.getString("roadmap.url")}">${locale.getString("about.roadmap.link")}</a></div>
                     </div>
                     <div class="row">
                         <div class="col s4 m3 offset-m2 l2 offset-l3 bold">${locale.getString("about.sourcecode")}</div>
-                        <div class="col s8 m5 l4 break-all"><a href="${locale.getString("github.url")}">${locale.getString("github.url")}</a></div>
+                        <div class="col s8 m5 l4 break-all"><a target="_blank" href="${locale.getString("github.url")}">${locale.getString("github.url")}</a></div>
                     </div>
                     <div class="row">
                         <div class="col s4 m3 offset-m2 l2 offset-l3 bold">${locale.getString("about.credits")}</div>
