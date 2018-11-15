@@ -46,7 +46,7 @@ public class HelpersService
 	private AccountService accountService;
 
 	@Autowired
-	private TransactionRepository transactionRepository;
+	private TransactionService transactionService;
 
 	public String getCurrencyString(int amount)
 	{
@@ -234,9 +234,15 @@ public class HelpersService
 		return sum;
 	}
 
+	public DateTime getCurrentDate()
+	{
+		return DateTime.now();
+	}
+
 	public int getAccountBudget()
 	{
-		List<Transaction> transactions = transactionRepository.findAllByAccount(getCurrentAccount());
+		List<Transaction> transactions = transactionService.getTransactionsForAccountUntilDate(getCurrentAccount(), getCurrentDate());
+
 		int sum = 0;
 		for(Transaction transaction : transactions)
 		{

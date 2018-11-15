@@ -422,6 +422,10 @@ input[type="radio"]:not(:checked) + label::before, [type="radio"]:not(:checked) 
     font-size: 20px !important;
 }
 
+.account-budget-date {
+    font-size: 12px !important;
+}
+
 .account-navbar {
     padding: 5px 32px 12px 32px;
 }

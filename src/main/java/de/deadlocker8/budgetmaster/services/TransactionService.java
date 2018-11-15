@@ -76,6 +76,12 @@ public class TransactionService implements Resetable
 		return transactionRepository.findAllByAccountAndDateBetweenOrderByDateDesc(account, startDate, endDate);
 	}
 
+	public List<Transaction> getTransactionsForAccountUntilDate(Account account, DateTime date)
+	{
+		DateTime startDate = DateTime.now().withYear(1900).withMonthOfYear(1).withDayOfMonth(1);
+		return transactionRepository.findAllByAccountAndDateBetweenOrderByDateDesc(account, startDate, date);
+	}
+
 	private int getRest(Account account, DateTime endDate)
 	{
 		DateTime startDate = DateTime.now().withYear(2000).withMonthOfYear(1).withDayOfMonth(1);

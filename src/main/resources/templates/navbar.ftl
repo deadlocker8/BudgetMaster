@@ -63,6 +63,7 @@
     <#else>
         <div class="account-budget ${greenTextColor}">${helpers.getCurrencyString(accountBudget)}</div>
     </#if>
+    <div class="account-budget-date text-color">(${locale.getString("account.budget.asof")}: ${helpers.getDateString(helpers.getCurrentDate())})</div>
 </div>
 </#macro>
 
