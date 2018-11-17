@@ -309,7 +309,7 @@ main {
 }
 
 .stripe {
-    width: 6px;
+    width: 8px;
     margin-right: 26px;
     height: 48px;
     display: inline-block;
@@ -317,7 +317,7 @@ main {
 }
 
 .stripe-level-2 {
-    width: 12px;
+    width: 16px;
     margin-right: 52px;
     height: 48px;
     display: inline-block;
