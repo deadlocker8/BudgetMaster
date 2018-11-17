@@ -215,9 +215,12 @@
                     <form id="form-database-import" method="POST" action="/settings/database/upload" enctype="multipart/form-data" accept-charset="UTF-8">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <div class="file-field input-field">
-                            <div class="btn waves-effect waves-light budgetmaster-blue">
+                            <div class="btn budgetmaster-blue">
                                 <i class="material-icons">cloud_upload</i>
                                 <input type="file" accept=".json" name="file">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text">
                             </div>
                         </div>
                     </form>
