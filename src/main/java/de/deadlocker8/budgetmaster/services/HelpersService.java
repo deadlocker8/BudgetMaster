@@ -4,6 +4,7 @@ import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.entities.*;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierType;
 import de.deadlocker8.budgetmaster.repositories.AccountRepository;
+import de.deadlocker8.budgetmaster.repositories.CategoryRepository;
 import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
 import de.deadlocker8.budgetmaster.repositories.TagRepository;
 import de.deadlocker8.budgetmaster.utils.Colors;
@@ -43,6 +44,9 @@ public class HelpersService
 
 	@Autowired
 	private TransactionService transactionService;
+
+	@Autowired
+	private CategoryRepository categoryRepository;
 
 	public String getCurrencyString(int amount)
 	{
@@ -270,5 +274,10 @@ public class HelpersService
 		}
 
 		return accountMatches;
+	}
+
+	public int getIDOfNoCatgeory()
+	{
+		return categoryRepository.findByType(CategoryType.NONE).getID();
 	}
 }

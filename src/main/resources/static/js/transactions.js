@@ -154,6 +154,8 @@ $( document ).ready(function() {
             return false;
         }
     });
+
+    beautifyCategorySelect();
 });
 
 var transactionRepeatingModifierID = "#transaction-repeating-modifier";
@@ -283,4 +285,41 @@ function validateForm()
     }
 
     return true;
+}
+
+function beautifyCategorySelect() {
+    var counter = 0;
+
+    $("#categoryWrapper ul.dropdown-content.select-dropdown li span").each(function () {
+        var categoryInfos = $(this).text().split("@@@");
+        var categoryName = categoryInfos[0];
+        var firstLetter = capitalizeFirstLetter(categoryName);
+        var categoryColor = categoryInfos[1];
+        var appropriateTextColor = categoryInfos[2];
+
+        $(this).text(categoryName);
+        $(this).data("infos", categoryInfos);
+        $(this).addClass("category-select");
+        $(this).parent().prepend('<div class="category-circle-small category-select" id="category-' + counter + '" style="background-color: ' + categoryColor + '"><span style="color: ' + appropriateTextColor + '"></span></div>');
+        $('#categoryWrapper').parent().append('<style>#category-' + counter + ':after{content: "' + firstLetter + '";}</style>');
+
+        counter++;
+    });
+
+    // select current category from code again in order to avoid showing the full infos text (e.g. Test@@@#FFFFFF@#000000@@@1) in the input field by materialize
+    if(typeof selectedCategory !== 'undefined')
+    {
+        $("#categoryWrapper ul.dropdown-content.select-dropdown li span.category-select").each(function () {
+            var categoryID = $(this).data("infos")[3];
+            if(categoryID === selectedCategory)
+            {
+                $(this).parent().trigger("click");
+            }
+        });
+    }
+}
+
+function capitalizeFirstLetter(text)
+{
+    return text.charAt(0).toUpperCase();
 }

@@ -4,6 +4,7 @@
         <@header.header "BudgetMaster"/>
         <@header.style "transactions"/>
         <@header.style "datepicker"/>
+        <@header.style "categories"/>
     </head>
     <body class="budgetmaster-blue-light">
         <#import "../navbar.ftl" as navbar>
@@ -62,21 +63,21 @@
 
                         <#-- category -->
                         <div class="row">
-                            <div class="input-field col s12 m12 l8 offset-l2">
+                            <div class="input-field col s12 m12 l8 offset-l2" id="categoryWrapper">
                                 <select id="transaction-category" name="category" <@validation.validation "category"/>>
                                     <#list categories as category>
-                                        <#assign categoryName=categoriesFunctions.getCategoryName(category)>
+                                        <#assign categoryInfos=categoriesFunctions.getCategoryName(category) + "@@@" + category.getColor() + "@@@" + category.getAppropriateTextColor() + "@@@" + category.getID()>
 
                                         <#if transaction.getCategory()??>
                                             <#if transaction.getCategory().getID() == category.getID()>
-                                                <option selected value="${category.getID()}">${categoryName}</option>
+                                                <option selected value="${category.getID()}">${categoryInfos}</option>
                                             <#elseif category.getType() != "REST">
-                                                <option value="${category.getID()}">${categoryName}</option>
+                                                <option value="${category.getID()}">${categoryInfos}</option>
                                             </#if>
                                         <#elseif category.getType() == "NONE">
-                                            <option selected value="${category.getID()}">${categoryName}</option>
+                                            <option selected value="${category.getID()}">${categoryInfos}</option>
                                         <#elseif category.getType() != "REST">
-                                            <option value="${category.getID()}">${categoryName}</option>
+                                            <option value="${category.getID()}">${categoryInfos}</option>
                                         </#if>
                                     </#list>
                                 </select>
@@ -303,6 +304,15 @@
                     '${tag.getName()}': null,
                 </#list>
             }
+        </script>
+
+        <#-- pass selected account to JS in order to select current value for materialize select -->
+        <script>
+            <#if transaction.getCategory()??>
+                selectedCategory = "${transaction.getCategory().getID()}";
+            <#else>
+                selectedCategory = "${helpers.getIDOfNoCatgeory()}";
+            </#if>
         </script>
 
         <!-- Scripts-->
