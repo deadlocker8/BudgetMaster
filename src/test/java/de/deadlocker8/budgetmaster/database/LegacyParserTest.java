@@ -72,7 +72,7 @@ public class LegacyParserTest
 		try
 		{
 			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("LegacyParserTest.json").toURI())));
-			Account account = new Account("LEGACY_IMPORT");
+			Account account = new Account("LEGACY_IMPORT", AccountType.CUSTOM);
 
 			List<Tag> tags = new ArrayList<>();
 			tags.add(new Tag("0815"));

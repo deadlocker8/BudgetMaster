@@ -24,11 +24,18 @@
   "accounts": [
     {
       "ID": 1,
-      "name": "Default"
+      "name": "Placeholder",
+      "type": "ALL"
+    },
+    {
+      "ID": 2,
+      "name": "Default",
+      "type": "CUSTOM"
     },
 	 {
-      "ID": 2,
-      "name": "Second Account"
+      "ID": 3,
+      "name": "Second Account",
+      "type": "CUSTOM"
     }
   ],
   "transactions": [
@@ -37,7 +44,7 @@
       "amount": 35000,
       "date": "2018-03-13",
       "account": {
-        "ID": 1,
+        "ID": 2,
         "name": "Default"
       },
       "category": {
@@ -55,7 +62,7 @@
       "amount": -2000,
       "date": "2018-06-15",
       "account": {
-        "ID": 2,
+        "ID": 3,
         "name": "Second Account"
       },
       "category": {
@@ -78,7 +85,7 @@
       "amount": -12300,
       "date": "2018-03-13",
       "account": {
-        "ID": 1,
+        "ID": 2,
         "name": "Default"
       },
       "category": {
@@ -110,7 +117,7 @@
       "amount": -12300,
       "date": "2018-03-23",
       "account": {
-        "ID": 1,
+        "ID": 2,
         "name": "Default"
       },
       "category": {
@@ -142,7 +149,7 @@
       "amount": -12300,
       "date": "2018-04-02",
       "account": {
-        "ID": 1,
+        "ID": 2,
         "name": "Default"
       },
       "category": {

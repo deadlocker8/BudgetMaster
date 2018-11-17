@@ -81,9 +81,10 @@ public class DatabaseParser_v3Test
 			DatabaseParser_v3 importer = new DatabaseParser_v3(json);
 			Database database = importer.parseDatabaseFromJSON();
 
-			assertEquals(2, database.getAccounts().size());
-			assertEquals("Default", database.getAccounts().get(0).getName());
-			assertEquals("Second Account", database.getAccounts().get(1).getName());
+			assertEquals(3, database.getAccounts().size());
+			assertEquals("Placeholder", database.getAccounts().get(0).getName());
+			assertEquals("Default", database.getAccounts().get(1).getName());
+			assertEquals("Second Account", database.getAccounts().get(2).getName());
 		}
 		catch(IOException | URISyntaxException e)
 		{
@@ -100,11 +101,11 @@ public class DatabaseParser_v3Test
 			DatabaseParser_v3 importer = new DatabaseParser_v3(json);
 			Database database = importer.parseDatabaseFromJSON();
 
-			Account account1 = new Account("Default");
-			account1.setID(1);
+			Account account1 = new Account("Default", AccountType.CUSTOM);
+			account1.setID(2);
 
-			Account account2 = new Account("Second Account");
-			account2.setID(2);
+			Account account2 = new Account("Second Account", AccountType.CUSTOM);
+			account2.setID(3);
 
 			Category categoryNone = new Category("Keine Kategorie", "#FFFFFF", CategoryType.NONE);
 			categoryNone.setID(1);

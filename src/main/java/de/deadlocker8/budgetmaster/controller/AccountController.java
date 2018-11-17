@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.controller;
 
 import de.deadlocker8.budgetmaster.entities.Account;
+import de.deadlocker8.budgetmaster.entities.AccountType;
 import de.deadlocker8.budgetmaster.repositories.AccountRepository;
 import de.deadlocker8.budgetmaster.services.AccountService;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
@@ -56,7 +57,7 @@ public class AccountController extends BaseController
 	@RequestMapping("/accounts/{ID}/delete")
 	public String deleteAccountAndReferringTransactions(Model model, @PathVariable("ID") Integer ID)
 	{
-		if(accountRepository.findAll().size() > 1)
+		if(accountRepository.findAllByType(AccountType.CUSTOM).size() > 1)
 		{
 			accountService.deleteAccount(ID);
 			return "redirect:/accounts";
@@ -110,6 +111,7 @@ public class AccountController extends BaseController
 		}
 		else
 		{
+			account.setType(AccountType.CUSTOM);
 			if(account.getID() == null)
 			{
 				// new account

@@ -30,7 +30,9 @@
                                     <td>
                                         <select class="account-destination">
                                             <#list availableAccounts as account>
-                                                <option value="${account.getID()}">${account.getName()}</option>
+                                                <#if (account.getType().name() == "CUSTOM")>
+                                                    <option value="${account.getID()}">${account.getName()}</option>
+                                                </#if>
                                             </#list>
                                         </select>
                                     </td>

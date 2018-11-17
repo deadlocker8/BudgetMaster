@@ -27,9 +27,13 @@ public class Account
 
 	private boolean isSelected;
 
-	public Account(String name)
+	@Expose
+	private AccountType type;
+
+	public Account(String name, AccountType type)
 	{
 		this.name = name;
+		this.type = type;
 		this.isSelected = false;
 	}
 
@@ -77,6 +81,16 @@ public class Account
 		isSelected = selected;
 	}
 
+	public AccountType getType()
+	{
+		return type;
+	}
+
+	public void setType(AccountType type)
+	{
+		this.type = type;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -85,6 +99,7 @@ public class Account
 				", name='" + name + '\'' +
 				", referringTransactions=" + referringTransactions +
 				", isSelected=" + isSelected +
+				", type=" + type +
 				'}';
 	}
 
@@ -96,13 +111,13 @@ public class Account
 		Account account = (Account) o;
 		return isSelected == account.isSelected &&
 				Objects.equals(ID, account.ID) &&
-				Objects.equals(name, account.name);
+				Objects.equals(name, account.name) &&
+				type == account.type;
 	}
 
 	@Override
 	public int hashCode()
 	{
-
-		return Objects.hash(ID, name, isSelected);
+		return Objects.hash(ID, name, isSelected, type);
 	}
 }

@@ -50,10 +50,14 @@
 
 <#macro itemAccountSelect>
 <div class="account-navbar center-align">
-    <div class="input-field no-margin">
+    <div class="input-field no-margin" id="selectWrapper">
         <select id="selectAccount">
             <#list helpers.getAllAccounts() as account>
-                <option <#if account.isSelected()>selected</#if> value="${account.getID()}">${account.getName()}</option>
+                <#if (account.getType().name() == "ALL")>
+                    <option <#if account.isSelected()>selected</#if> value="${account.getID()}">${locale.getString("account.all")}</option>
+                <#else>
+                    <option <#if account.isSelected()>selected</#if> value="${account.getID()}">${account.getName()}</option>
+                </#if>
             </#list>
         </select>
     </div>

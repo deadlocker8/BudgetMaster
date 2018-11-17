@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.services;
 
 import de.deadlocker8.budgetmaster.entities.Account;
+import de.deadlocker8.budgetmaster.entities.AccountType;
 import de.deadlocker8.budgetmaster.entities.CategoryType;
 import de.deadlocker8.budgetmaster.entities.Transaction;
 import de.deadlocker8.budgetmaster.repositories.CategoryRepository;
@@ -24,13 +25,16 @@ public class TransactionService implements Resetable
 	private TransactionRepository transactionRepository;
 	private RepeatingOptionRepository repeatingOptionRepository;
 	private CategoryRepository categoryRepository;
+	private AccountService accountService;
+
 
 	@Autowired
-	public TransactionService(TransactionRepository transactionRepository, RepeatingOptionRepository repeatingOptionRepository, CategoryRepository categoryRepository)
+	public TransactionService(TransactionRepository transactionRepository, RepeatingOptionRepository repeatingOptionRepository, CategoryRepository categoryRepository, AccountService accountService)
 	{
 		this.transactionRepository = transactionRepository;
 		this.repeatingOptionRepository = repeatingOptionRepository;
 		this.categoryRepository = categoryRepository;
+		this.accountService = accountService;
 	}
 
 	public TransactionRepository getRepository()
@@ -56,8 +60,7 @@ public class TransactionService implements Resetable
 	private List<Transaction> getTransactionsForMonthAndYearWithRest(Account account, int month, int year)
 	{
 		DateTime startDate = DateTime.now().withYear(year).withMonthOfYear(month).minusMonths(1).dayOfMonth().withMaximumValue();
-		DateTime endDate = DateTime.now().withYear(year).withMonthOfYear(month).dayOfMonth().withMaximumValue();
-		List<Transaction> transactions = transactionRepository.findAllByAccountAndDateBetweenOrderByDateDesc(account, startDate, endDate);
+		List<Transaction> transactions = getTransactionsForMonthAndYearWithoutRest(account, month, year);
 
 		Transaction transactionRest = new Transaction();
 		transactionRest.setCategory(categoryRepository.findByType(CategoryType.REST));
@@ -73,12 +76,24 @@ public class TransactionService implements Resetable
 	{
 		DateTime startDate = DateTime.now().withYear(year).withMonthOfYear(month).minusMonths(1).dayOfMonth().withMaximumValue();
 		DateTime endDate = DateTime.now().withYear(year).withMonthOfYear(month).dayOfMonth().withMaximumValue();
+
+		if(account.getType().equals(AccountType.ALL))
+		{
+			return transactionRepository.findAllByDateBetweenOrderByDateDesc(startDate, endDate);
+		}
+
 		return transactionRepository.findAllByAccountAndDateBetweenOrderByDateDesc(account, startDate, endDate);
 	}
 
 	public List<Transaction> getTransactionsForAccountUntilDate(Account account, DateTime date)
 	{
 		DateTime startDate = DateTime.now().withYear(1900).withMonthOfYear(1).withDayOfMonth(1);
+
+		if(account.getType().equals(AccountType.ALL))
+		{
+			return transactionRepository.findAllByDateBetweenOrderByDateDesc(startDate, date);
+		}
+
 		return transactionRepository.findAllByAccountAndDateBetweenOrderByDateDesc(account, startDate, date);
 	}
 

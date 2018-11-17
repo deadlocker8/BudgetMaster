@@ -7,13 +7,21 @@ $( document ).ready(function() {
 
     $('select').material_select();
 
+    $("#selectWrapper ul.dropdown-content.select-dropdown li span").each(function () {
+        if($(this).text() === accountPlaceholderName)
+        {
+            $(this).addClass("all-account-placeholder");
+        }
+    });
+
     $("#selectAccount").on('change', function()
     {
         var accountID = $(this).val();
         window.location = "/account/" + accountID + "/select";
     });
 
-    if($("#login-password").length) {
+    if($("#login-password").length)
+    {
         document.getElementById("login-password").focus();
     }
 });

@@ -372,6 +372,10 @@ input[type="radio"]:checked + label::after, [type="radio"].with-gap:checked + la
     padding: 5px 32px 12px 32px;
 }
 
+.all-account-placeholder {
+    font-weight: bold;
+}
+
 .login-button {
     text-transform: none;
 }

@@ -20,13 +20,15 @@
                 <div class="container">
                     <table class="bordered">
                         <#list accounts as account>
-                        <tr>
-                            <td>${account.getName()}</td>
-                            <td>
-                                <a href="/accounts/${account.getID()}/edit" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
-                                <a href="/accounts/${account.getID()}/requestDelete" class="btn-flat no-padding text-color"><i class="material-icons left">delete</i></a>
-                            </td>
-                        </tr>
+                            <#if (account.getType().name() == "CUSTOM")>
+                                <tr>
+                                    <td>${account.getName()}</td>
+                                    <td>
+                                        <a href="/accounts/${account.getID()}/edit" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
+                                        <a href="/accounts/${account.getID()}/requestDelete" class="btn-flat no-padding text-color"><i class="material-icons left">delete</i></a>
+                                    </td>
+                                </tr>
+                            </#if>
                         </#list>
                     </table>
                     <#if accounts?size == 0>

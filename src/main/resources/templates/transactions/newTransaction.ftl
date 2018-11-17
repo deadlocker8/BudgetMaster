@@ -123,13 +123,15 @@
                             <div class="input-field col s12 m12 l8 offset-l2">
                                 <select id="transaction-account" name="account" <@validation.validation "account"/>>
                                     <#list accounts as account>
-                                        <#if transaction.getAccount()?? && transaction.getAccount() == account>
-                                            <option selected value="${account.getID()}">${account.getName()}</option>
-                                        <#else>
-                                            <#if account == helpers.getCurrentAccount()>
+                                        <#if (account.getType().name() == "CUSTOM")>
+                                            <#if transaction.getAccount()?? && transaction.getAccount() == account>
                                                 <option selected value="${account.getID()}">${account.getName()}</option>
                                             <#else>
-                                                <option value="${account.getID()}">${account.getName()}</option>
+                                                <#if account == helpers.getCurrentAccount()>
+                                                    <option selected value="${account.getID()}">${account.getName()}</option>
+                                                <#else>
+                                                    <option value="${account.getID()}">${account.getName()}</option>
+                                                </#if>
                                             </#if>
                                         </#if>
                                     </#list>

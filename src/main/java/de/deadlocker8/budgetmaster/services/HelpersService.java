@@ -1,13 +1,9 @@
 package de.deadlocker8.budgetmaster.services;
 
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
-import de.deadlocker8.budgetmaster.entities.Account;
-import de.deadlocker8.budgetmaster.entities.Transaction;
-import de.deadlocker8.budgetmaster.entities.Settings;
-import de.deadlocker8.budgetmaster.entities.Tag;
+import de.deadlocker8.budgetmaster.entities.*;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierType;
 import de.deadlocker8.budgetmaster.repositories.AccountRepository;
-import de.deadlocker8.budgetmaster.repositories.TransactionRepository;
 import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
 import de.deadlocker8.budgetmaster.repositories.TagRepository;
 import de.deadlocker8.budgetmaster.utils.Colors;
@@ -199,7 +195,7 @@ public class HelpersService
 		// select random account if no account is selected
 		if(selectedAccount == null)
 		{
-			Account account = accountRepository.findAll().get(0);
+			Account account = accountRepository.findAllByType(AccountType.CUSTOM).get(0);
 			accountService.selectAccount(account.getID());
 			selectedAccount = accountRepository.findByIsSelected(true);
 		}
@@ -267,7 +263,10 @@ public class HelpersService
 		List<AccountMatch> accountMatches = new ArrayList<>();
 		for(Account account : accounts)
 		{
-			accountMatches.add(new AccountMatch(account));
+			if(account.getType().equals(AccountType.CUSTOM))
+			{
+				accountMatches.add(new AccountMatch(account));
+			}
 		}
 
 		return accountMatches;

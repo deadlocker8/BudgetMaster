@@ -49,6 +49,7 @@ public class DatabaseParser
 		}
 		catch(Exception e)
 		{
+			e.printStackTrace();
 			throw new IllegalArgumentException(Localization.getString("error.database.import.invalid.json"));
 		}
 	}

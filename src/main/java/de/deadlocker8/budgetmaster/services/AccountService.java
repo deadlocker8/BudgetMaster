@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmaster.services;
 import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
 import de.deadlocker8.budgetmaster.entities.Account;
+import de.deadlocker8.budgetmaster.entities.AccountType;
 import de.deadlocker8.budgetmaster.repositories.AccountRepository;
 import de.deadlocker8.budgetmaster.repositories.TransactionRepository;
 import de.deadlocker8.budgetmaster.utils.Strings;
@@ -69,7 +70,11 @@ public class AccountService implements Resetable
 	{
 		if(accountRepository.findAll().size() == 0)
 		{
-			Account account = new Account(Localization.getString(Strings.ACCOUNT_DEFAULT_NAME));
+			Account placeholder = new Account("Placeholder", AccountType.ALL);
+			accountRepository.save(placeholder);
+			LOGGER.debug("Created placeholder account");
+
+			Account account = new Account(Localization.getString(Strings.ACCOUNT_DEFAULT_NAME), AccountType.CUSTOM);
 			account = accountRepository.save(account);
 			selectAccount(account.getID());
 			LOGGER.debug("Created default account");

@@ -5,10 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import de.deadlocker8.budgetmaster.database.Database;
-import de.deadlocker8.budgetmaster.entities.Account;
-import de.deadlocker8.budgetmaster.entities.Category;
-import de.deadlocker8.budgetmaster.entities.CategoryType;
-import de.deadlocker8.budgetmaster.entities.Transaction;
+import de.deadlocker8.budgetmaster.entities.*;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndDate;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndNever;
@@ -34,7 +31,7 @@ public class LegacyParser
 	public LegacyParser(String json)
 	{
 		this.jsonString = json;
-		this.account = new Account("LEGACY_IMPORT");
+		this.account = new Account("LEGACY_IMPORT", AccountType.CUSTOM);
 	}
 
 	public Database parseDatabaseFromJSON()

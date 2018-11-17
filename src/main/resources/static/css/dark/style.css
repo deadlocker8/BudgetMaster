@@ -430,6 +430,10 @@ input[type="radio"]:not(:checked) + label::before, [type="radio"]:not(:checked) 
     padding: 5px 32px 12px 32px;
 }
 
+.all-account-placeholder {
+    font-weight: bold;
+}
+
 .login-button {
     text-transform: none;
 }

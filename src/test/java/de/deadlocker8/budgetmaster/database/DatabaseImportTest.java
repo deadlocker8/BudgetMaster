@@ -215,6 +215,12 @@ public class DatabaseImportTest
 				}
 
 				@Override
+				public List<Transaction> findAllByDateBetweenOrderByDateDesc(DateTime startDate, DateTime endDate)
+				{
+					return null;
+				}
+
+				@Override
 				public List<Transaction> findAllByAccount(Account account)
 				{
 					return null;
@@ -589,7 +595,7 @@ public class DatabaseImportTest
 		transaction1.setAmount(200);
 		transaction1.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
 		transaction1.setCategory(category1);
-		transaction1.setAccount(new Account("Account"));
+		transaction1.setAccount(new Account("Account", AccountType.CUSTOM));
 		transactionList.add(transaction1);
 
 		Transaction transaction2 = new Transaction();
@@ -597,7 +603,7 @@ public class DatabaseImportTest
 		transaction2.setAmount(-525);
 		transaction2.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
 		transaction2.setCategory(category2);
-		transaction2.setAccount(new Account("Account"));
+		transaction2.setAccount(new Account("Account", AccountType.CUSTOM));
 		transactionList.add(transaction2);
 
 		List<Transaction> alreadyUpdatedTransactions = new ArrayList<>();
