@@ -99,6 +99,14 @@ main {
     color: rgba(0, 0, 0, 0.87);
 }
 
+.budgetmaster-update {
+    background-color: #fcf7b6;
+}
+
+.budgetmaster-text-update {
+    color: #212121 !important;
+}
+
 .side-nav, .side-nav-sub{
     background-color: #444444;
 }
@@ -109,9 +117,18 @@ main {
 
 .side-nav li > a:hover, .side-nav-sub li > a:hover {
     background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #FFFFFF !important;
 }
 
 .side-nav li > a > i, .side-nav-sub li > a > i{
+    color: #FFFFFF !important;
+}
+
+.side-nav li > a #icon-update {
+    color: #212121 !important;
+}
+
+.side-nav li > a:hover #icon-update {
     color: #FFFFFF !important;
 }
 

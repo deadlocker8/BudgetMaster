@@ -280,4 +280,9 @@ public class HelpersService
 	{
 		return categoryRepository.findByType(CategoryType.NONE).getID();
 	}
+
+	public boolean isUpdateAvailable()
+	{
+		return true;
+	}
 }

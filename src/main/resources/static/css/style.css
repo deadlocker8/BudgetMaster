@@ -98,6 +98,10 @@ main {
     color: rgba(0,0,0,0.87);
 }
 
+.budgetmaster-update {
+    background-color: #fcf7b6;
+}
+
 .side-nav li.active {
     background-color: rgba(0, 0, 0, 0.15);
 }

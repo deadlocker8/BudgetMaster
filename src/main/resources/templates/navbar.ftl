@@ -25,6 +25,11 @@
 
         <@itemDivider/>
         <@itemWithIcon "logout", "javascript:\" onclick=\"$('#logout-form').submit();\"", locale.getString("menu.logout") "lock", "budgetmaster-red", activeID/>
+
+        <#if helpers.isUpdateAvailable()>
+            <@itemDivider/>
+            <@itemUpdate "/update", locale.getString("menu.update"), "system_update"/>
+        </#if>
     </ul>
     <a href="#" data-activates="slide-out" id="mobile-menu" class="mobile-menu"><i class="material-icons left mobile-menu-icon">menu</i>Menü</a>
     <div class="hide-on-large-only"><br></div>
@@ -80,7 +85,11 @@
         <li class="active"><a href="${link}" class="waves-effect no-padding"><div class="stripe ${activeColor}"></div><i class="material-icons">${icon}</i>${text}</a></li>
     <#else>
         <li><a href="${link}" class="waves-effect"><i class="material-icons">${icon}</i>${text}</a></li>
-</#if>
+    </#if>
+</#macro>
+
+<#macro itemUpdate link text icon>
+    <li><a href="${link}" class="waves-effect budgetmaster-update budgetmaster-text-update"><i class="material-icons" id="icon-update">${icon}</i>${text}</a></li>
 </#macro>
 
 <#macro subListStart ID text icon activeColor activeID>
