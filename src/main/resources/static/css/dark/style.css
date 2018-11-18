@@ -40,7 +40,7 @@ main {
 }
 
 .budgetmaster-green {
-    background-color: #5cb85c;
+    background-color: #5cb85c !important;
 }
 
 .budgetmaster-green-text {
@@ -56,7 +56,7 @@ main {
 }
 
 .budgetmaster-red {
-    background-color: #D82C29;
+    background-color: #D82C29 !important;
 }
 
 .budgetmaster-red-text {
@@ -72,7 +72,7 @@ main {
 }
 
 .budgetmaster-grey {
-    background-color: #CCCCCC;
+    background-color: #CCCCCC !important;
 }
 
 .budgetmaster-grey-text {
@@ -96,6 +96,10 @@ main {
 }
 
 .budgetmaster-text-black {
+    color: rgba(0, 0, 0, 0.87);
+}
+
+.budgetmaster-text-isPayment {
     color: rgba(0, 0, 0, 0.87);
 }
 

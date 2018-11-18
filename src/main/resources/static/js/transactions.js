@@ -155,6 +155,34 @@ $( document ).ready(function() {
         }
     });
 
+    $('#buttonIncome').click(function()
+    {
+        $(this).removeClass("budgetmaster-grey");
+        $(this).removeClass("budgetmaster-text-isPayment");
+        $(this).addClass("budgetmaster-green");
+
+        var buttonExpenditure = $('#buttonExpenditure');
+        buttonExpenditure.removeClass("budgetmaster-red");
+        buttonExpenditure.addClass("budgetmaster-grey");
+        buttonExpenditure.addClass("budgetmaster-text-isPayment");
+
+        document.getElementById("input-isPayment").value = 0;
+    });
+
+    $('#buttonExpenditure').click(function()
+    {
+        $(this).removeClass("budgetmaster-grey");
+        $(this).removeClass("budgetmaster-text-isPayment");
+        $(this).addClass("budgetmaster-red");
+
+        var buttonIncome = $('#buttonIncome');
+        buttonIncome.removeClass("budgetmaster-green");
+        buttonIncome.addClass("budgetmaster-grey");
+        buttonIncome.addClass("budgetmaster-text-isPayment");
+
+        document.getElementById("input-isPayment").value = 1;
+    });
+
     beautifyCategorySelect();
 });
 

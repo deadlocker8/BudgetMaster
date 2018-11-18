@@ -29,17 +29,27 @@
                         <#-- isPayment switch -->
                         <div class="row">
                             <div class="col s12 m12 l8 offset-l2 center-align">
-                                <div class="switch">
-                                    <label>
-                                        ${locale.getString("title.income")}
-                                        <#if transaction.getAmount()??>
-                                            <input type="checkbox" name="isPayment" <#if transaction.getAmount() < 0>checked</#if>>
+                                <div class="row hide-on-small-only">
+                                    <div class="col m6 l4 offset-l2 right-align">
+                                        <#assign isPayment = 1>
+
+                                        <#if transaction.getAmount()?? && (transaction.getAmount() > 0)>
+                                            <#assign colorButtonIncome = "budgetmaster-green">
+                                            <#assign isPayment = 0>
                                         <#else>
-                                            <input type="checkbox" name="isPayment" checked>
+                                            <#assign colorButtonIncome = "budgetmaster-grey budgetmaster-text-isPayment">
                                         </#if>
-                                        <span class="lever"></span>
-                                        ${locale.getString("title.expenditure")}
-                                    </label>
+                                        <a class="waves-effect waves-light btn ${colorButtonIncome}" id="buttonIncome"><i class="material-icons left">file_download</i>${locale.getString("title.income")}</a>
+                                    </div>
+                                    <div class="col m6 l4 left-align">
+                                        <#if transaction.getAmount()?? && (transaction.getAmount() > 0)>
+                                            <#assign colorButtonExpenditure = "budgetmaster-grey budgetmaster-text-isPayment">
+                                        <#else>
+                                            <#assign colorButtonExpenditure = "budgetmaster-red">
+                                        </#if>
+                                        <a class="waves-effect waves-light btn ${colorButtonExpenditure}" id="buttonExpenditure"><i class="material-icons left">file_upload</i>${locale.getString("title.expenditure")}</a>
+                                    </div>
+                                    <input type="hidden" name="isPayment" id="input-isPayment" value="${isPayment}">
                                 </div>
                             </div>
                         </div>
