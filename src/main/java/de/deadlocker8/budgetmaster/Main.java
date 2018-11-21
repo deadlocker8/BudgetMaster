@@ -1,8 +1,8 @@
 package de.deadlocker8.budgetmaster;
 
-import de.tobias.utils.io.PathUtils;
-import de.tobias.utils.util.Localization;
-import de.tobias.utils.util.SystemUtils;
+import de.thecodelabs.utils.io.PathUtils;
+import de.thecodelabs.utils.util.Localization;
+import de.thecodelabs.utils.util.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;

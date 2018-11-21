@@ -3,7 +3,7 @@ package de.deadlocker8.budgetmaster.database;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import de.deadlocker8.budgetmaster.database.legacy.LegacyParser;
-import de.tobias.utils.util.Localization;
+import de.thecodelabs.utils.util.Localization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.utils;
 
-import de.tobias.utils.util.Localization;
-import de.tobias.utils.util.SystemUtils;
+import de.thecodelabs.utils.util.Localization;
+import de.thecodelabs.utils.util.SystemUtils;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.services;
 
-import de.tobias.utils.util.Localization;
+import de.thecodelabs.utils.util.Localization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

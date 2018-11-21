@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.utils;
 
-import de.tobias.utils.util.Localization;
+import de.thecodelabs.utils.util.Localization;
 
 public class Notification
 {

@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.entities;
 
 import com.google.gson.annotations.Expose;
-import de.tobias.utils.util.ColorUtils;
+import de.thecodelabs.utils.util.ColorUtils;
 import javafx.scene.paint.Color;
 
 import javax.persistence.*;

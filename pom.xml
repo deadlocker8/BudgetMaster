@@ -56,7 +56,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <jlibs.version>2.0.1</jlibs.version>
+        <jlibs.version>2.0.4</jlibs.version>
+        <versionizer.version>1.0.2</versionizer.version>
 
         <app.versionDate>${maven.build.timestamp}</app.versionDate>
         <maven.build.timestamp.format>dd.MM.yy</maven.build.timestamp.format>
@@ -108,7 +109,7 @@
         </dependency>
 
         <dependency>
-            <groupId>de.tobias</groupId>
+            <groupId>de.thecodelabs</groupId>
             <artifactId>libUtils</artifactId>
         </dependency>
 

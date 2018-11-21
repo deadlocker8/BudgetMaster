@@ -5,7 +5,7 @@ import de.deadlocker8.budgetmaster.entities.CategoryType;
 import de.deadlocker8.budgetmaster.entities.Transaction;
 import de.deadlocker8.budgetmaster.repositories.CategoryRepository;
 import de.deadlocker8.budgetmaster.utils.Strings;
-import de.tobias.utils.util.Localization;
+import de.thecodelabs.utils.util.Localization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

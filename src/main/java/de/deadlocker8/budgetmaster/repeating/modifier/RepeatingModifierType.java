@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.repeating.modifier;
 
 
-import de.tobias.utils.util.Localization;
+import de.thecodelabs.utils.util.Localization;
 
 public enum RepeatingModifierType
 {

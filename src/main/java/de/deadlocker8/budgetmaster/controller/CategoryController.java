@@ -8,7 +8,7 @@ import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.utils.Colors;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import de.deadlocker8.budgetmaster.validators.CategoryValidator;
-import de.tobias.utils.util.ColorUtils;
+import de.thecodelabs.utils.util.ColorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

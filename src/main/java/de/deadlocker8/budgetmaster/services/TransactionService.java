@@ -8,7 +8,7 @@ import de.deadlocker8.budgetmaster.repositories.CategoryRepository;
 import de.deadlocker8.budgetmaster.repositories.RepeatingOptionRepository;
 import de.deadlocker8.budgetmaster.repositories.TransactionRepository;
 import de.deadlocker8.budgetmaster.utils.Strings;
-import de.tobias.utils.util.Localization;
+import de.thecodelabs.utils.util.Localization;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
