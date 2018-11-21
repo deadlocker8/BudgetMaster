@@ -112,7 +112,7 @@
                                     </tr>
                                     <tr>
                                         <td>${locale.getString("settings.updates.latest.version")}</td>
-                                        <td>${availableVersion}</td>
+                                        <td>${helpers.getAvailableVersionString()}</td>
                                     </tr>
                                     <tr>
                                         <td colspan="2">
@@ -240,6 +240,19 @@
                 </div>
                 <div class="modal-footer background-color">
                     <a href="/settings" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("ok")}</a>
+                </div>
+            </div>
+        </#if>
+
+        <#if performUpdate??>
+            <div id="modelPerformUpdate" class="modal background-color">
+                <div class="modal-content">
+                    <h4>${locale.getString("info.title.update")}</h4>
+                    <p>${updateString}</p>
+                </div>
+                <div class="modal-footer background-color">
+                    <a href="/settings" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
+                    <a href="/performUpdate" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("settings.update.start")}</a>
                 </div>
             </div>
         </#if>

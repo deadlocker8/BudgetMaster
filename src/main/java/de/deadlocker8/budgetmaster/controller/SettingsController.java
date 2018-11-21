@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.controller;
 
+import de.deadlocker8.budgetmaster.Build;
 import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
 import de.deadlocker8.budgetmaster.database.Database;
@@ -16,6 +17,7 @@ import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.RandomUtils;
+import de.thecodelabs.versionizer.UpdateItem;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,7 +73,6 @@ public class SettingsController extends BaseController
 	{
 		model.addAttribute("settings", settingsRepository.findOne(0));
 		request.removeAttribute("database", WebRequest.SCOPE_SESSION);
-		model.addAttribute("availableVersion", budgetMasterUpdateService.getAvailableVersion());
 		return "settings";
 	}
 
@@ -240,10 +241,11 @@ public class SettingsController extends BaseController
 	}
 
 	@RequestMapping("/settings/database/import")
-	public String importDatabase(WebRequest request, @ModelAttribute("Import") AccountMatchList accountMatchList)
+	public String importDatabase(WebRequest request, @ModelAttribute("Import") AccountMatchList accountMatchList, Model model)
 	{
 		importService.importDatabase((Database)request.getAttribute("database", WebRequest.SCOPE_SESSION), accountMatchList);
 		request.removeAttribute("database", RequestAttributes.SCOPE_SESSION);
+
 		return "settings";
 	}
 
@@ -252,5 +254,38 @@ public class SettingsController extends BaseController
 	{
 		budgetMasterUpdateService.getUpdateService().fetchCurrentVersion();
 		return "redirect:/settings";
+	}
+
+	@RequestMapping("/update")
+	public String update(Model model)
+	{
+		model.addAttribute("performUpdate", true);
+		model.addAttribute("updateString", Localization.getString("info.text.update", Build.getInstance().getVersionName(), budgetMasterUpdateService.getAvailableVersionString()));
+		return "settings";
+	}
+
+	@RequestMapping("/performUpdate")
+	public String performUpdate()
+	{
+		if(budgetMasterUpdateService.isRunningFromSource())
+		{
+			LOGGER.debug("Running from source code: Skipping update check");
+			return "redirect:/settings";
+		}
+
+		UpdateItem.Entry entry = new UpdateItem.Entry(budgetMasterUpdateService.getAvailableVersion(), budgetMasterUpdateService.getExecutablePath(), budgetMasterUpdateService.getFileType());
+		try
+		{
+			budgetMasterUpdateService.getUpdateService().runVersionizerInstance(entry);
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+
+		LOGGER.info("Stopping BudgetMaster for update to version " + budgetMasterUpdateService.getAvailableVersionString());
+		System.exit(0);
+
+		return "";
 	}
 }

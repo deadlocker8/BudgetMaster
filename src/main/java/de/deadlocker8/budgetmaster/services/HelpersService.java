@@ -296,4 +296,9 @@ public class HelpersService
 			return false;
 		 }
 	}
+
+	public String getAvailableVersionString()
+	{
+		return budgetMasterUpdateService.getAvailableVersionString();
+	}
 }
