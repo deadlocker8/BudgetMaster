@@ -22,3 +22,8 @@ Manage your monthly budget easily with BudgetMaster
 ### [Dark Theme](https://github.com/deadlocker8/BudgetMaster/wiki/Screenshots-Dark-Theme)
 
 ![dark_theme_home](/build/screenshots/dark/home.png)
+
+### Build from source
+
+`mvn package -f pom.xml`
+
