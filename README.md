@@ -15,15 +15,10 @@ Manage your monthly budget easily with BudgetMaster
 
 ## Screenshots
 
-### Light Theme
+### [Light Theme](https://github.com/deadlocker8/BudgetMaster/wiki/Screenshots-Light-Theme)
 
 ![light_theme_home](/build/screenshots/light/home.png)
 
-[ScreenshotsLight Theme](https://github.com/deadlocker8/BudgetMaster/wiki/Screenshots-Light-Theme)
-
-### Dark Theme
+### [Dark Theme](https://github.com/deadlocker8/BudgetMaster/wiki/Screenshots-Dark-Theme)
 
 ![dark_theme_home](/build/screenshots/dark/home.png)
-
-[ScreenshotsLight Theme](https://github.com/deadlocker8/BudgetMaster/wiki/Screenshots-Dark-Theme)
-
