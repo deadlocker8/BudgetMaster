@@ -328,8 +328,8 @@ function beautifyCategorySelect() {
         $(this).text(categoryName);
         $(this).data("infos", categoryInfos);
         $(this).addClass("category-select");
-        $(this).parent().prepend('<div class="category-circle-small category-select" id="category-' + counter + '" style="background-color: ' + categoryColor + '"><span style="color: ' + appropriateTextColor + '"></span></div>');
-        $('#categoryWrapper').parent().append('<style>#category-' + counter + ':after{content: "' + firstLetter + '";}</style>');
+        $(this).parent().prepend('<div class="category-circle-small category-select" id="category-' + counter + '" style="background-color: ' + categoryColor + '"><span></span></div>');
+        $('#categoryWrapper').parent().append('<style>#category-' + counter + ':after{content: "' + firstLetter + '"; color: ' + appropriateTextColor + ';}</style>');
 
         counter++;
     });
