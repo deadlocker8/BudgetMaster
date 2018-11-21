@@ -9,6 +9,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,6 +19,7 @@ import java.util.Arrays;
 import java.util.Locale;
 
 
+@EnableScheduling
 @SpringBootApplication
 public class Main implements ApplicationRunner
 {
@@ -81,7 +83,8 @@ public class Main implements ApplicationRunner
 		LOGGER.info("=============================");
 	}
 
-	private static void logAppInfo(String appName, String versionName, String versionCode, String versionDate) {
+	private static void logAppInfo(String appName, String versionName, String versionCode, String versionDate)
+	{
 		LOGGER.info(appName + " - v" + versionName + " - (versioncode: " + versionCode + ") from " + versionDate + ")");
 	}
 }

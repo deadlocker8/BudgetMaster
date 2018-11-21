@@ -101,22 +101,22 @@
                                             <div class="switch">
                                                 <label>
                                                 ${locale.getString("settings.updates.automatic.deactivated")}
-                                                    <input type="checkbox" name="autoUpdateCheckEnabled" <#if settings.isUseDarkTheme()>checked</#if>>
+                                                    <input type="checkbox" name="autoUpdateCheckEnabled" <#if settings.isAutoUpdateCheckEnabled()>checked</#if>>
                                                     <span class="lever"></span>
                                                 ${locale.getString("settings.updates.automatic.activated")}
                                                 </label>
                                             </div>
                                         </td>
                                         <td>${locale.getString("settings.updates.current.version")}</td>
-                                        <td>v${build.getVersionName()} (${build.getVersionCode()})</td>
+                                        <td>v${build.getVersionName()}</td>
                                     </tr>
                                     <tr>
                                         <td>${locale.getString("settings.updates.latest.version")}</td>
-                                        <td>v2.0.0</td>
+                                        <td>${availableVersion}</td>
                                     </tr>
                                     <tr>
                                         <td colspan="2">
-                                            <a href="/updateSearch" class="waves-effect waves-light btn budgetmaster-blue-light"><i class="material-icons left">refresh</i>${locale.getString("settings.updates.search")}</a>
+                                            <a href="/updateSearch" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">refresh</i>${locale.getString("settings.updates.search")}</a>
                                         </td>
                                     </tr>
                                 </table>

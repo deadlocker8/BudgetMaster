@@ -11,6 +11,7 @@ import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
 import de.deadlocker8.budgetmaster.services.DatabaseService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.services.ImportService;
+import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
@@ -60,6 +61,9 @@ public class SettingsController extends BaseController
 	@Autowired
 	private ImportService importService;
 
+	@Autowired
+	private BudgetMasterUpdateService budgetMasterUpdateService;
+
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
 	@RequestMapping("/settings")
@@ -67,6 +71,7 @@ public class SettingsController extends BaseController
 	{
 		model.addAttribute("settings", settingsRepository.findOne(0));
 		request.removeAttribute("database", WebRequest.SCOPE_SESSION);
+		model.addAttribute("availableVersion", budgetMasterUpdateService.getAvailableVersion());
 		return "settings";
 	}
 
@@ -240,5 +245,12 @@ public class SettingsController extends BaseController
 		importService.importDatabase((Database)request.getAttribute("database", WebRequest.SCOPE_SESSION), accountMatchList);
 		request.removeAttribute("database", RequestAttributes.SCOPE_SESSION);
 		return "settings";
+	}
+
+	@RequestMapping("/updateSearch")
+	public String updateSearch()
+	{
+		budgetMasterUpdateService.getUpdateService().fetchCurrentVersion();
+		return "redirect:/settings";
 	}
 }

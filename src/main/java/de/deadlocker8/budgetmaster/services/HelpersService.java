@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.services;
 
+import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.entities.*;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierType;
@@ -47,6 +48,9 @@ public class HelpersService
 
 	@Autowired
 	private CategoryRepository categoryRepository;
+
+	@Autowired
+	private BudgetMasterUpdateService budgetMasterUpdateService;
 
 	public String getCurrencyString(int amount)
 	{
@@ -283,6 +287,13 @@ public class HelpersService
 
 	public boolean isUpdateAvailable()
 	{
-		return true;
+		 try
+		 {
+		 	return budgetMasterUpdateService.getUpdateService().isUpdateAvailable();
+		 }
+		 catch(NullPointerException e)
+		 {
+			return false;
+		 }
 	}
 }

@@ -1,0 +1,5 @@
+{
+    "url": "https://maven.thecodelabs.de/artifactory",
+    "repository.releases": "TheCodeLabs-release",
+    "repository.snapshots": "TheCodeLabs-snapshots"
+}
