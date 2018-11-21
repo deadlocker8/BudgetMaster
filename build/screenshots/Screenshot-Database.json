@@ -1,0 +1,238 @@
+{
+  "TYPE": "BUDGETMASTER_DATABASE",
+  "VERSION": 3,
+  "categories": [
+    {
+      "ID": 1,
+      "name": "No Category",
+      "color": "#FFFFFF",
+      "type": "NONE"
+    },
+    {
+      "ID": 2,
+      "name": "Rest",
+      "color": "#FFFF00",
+      "type": "REST"
+    },
+    {
+      "ID": 3,
+      "name": "Salary",
+      "color": "#4cd964",
+      "type": "CUSTOM"
+    },
+    {
+      "ID": 4,
+      "name": "Misc",
+      "color": "#333333",
+      "type": "CUSTOM"
+    },
+    {
+      "ID": 5,
+      "name": "Mobile Phone/Internet",
+      "color": "#5ac8fa",
+      "type": "CUSTOM"
+    },
+    {
+      "ID": 6,
+      "name": "Electricity/Gas",
+      "color": "#888888",
+      "type": "CUSTOM"
+    },
+    {
+      "ID": 7,
+      "name": "Car",
+      "color": "#007afa",
+      "type": "CUSTOM"
+    },
+    {
+      "ID": 8,
+      "name": "Cash",
+      "color": "#ff5197",
+      "type": "CUSTOM"
+    },
+    {
+      "ID": 9,
+      "name": "Electronics",
+      "color": "#ff9500",
+      "type": "CUSTOM"
+    },
+    {
+      "ID": 10,
+      "name": "Rent",
+      "color": "#9b59b6",
+      "type": "CUSTOM"
+    }
+  ],
+  "accounts": [
+    {
+      "ID": 1,
+      "name": "Placeholder",
+      "type": "ALL"
+    },
+    {
+      "ID": 2,
+      "name": "Default Account",
+      "type": "CUSTOM"
+    },
+    {
+      "ID": 3,
+      "name": "Savings Bank",
+      "type": "CUSTOM"
+    }
+  ],
+  "transactions": [
+    {
+      "ID": 10,
+      "amount": -6500,
+      "date": "2018-08-21",
+      "account": {
+        "ID": 2,
+        "name": "Default Account",
+        "type": "CUSTOM"
+      },
+      "category": {
+        "ID": 6,
+        "name": "Electricity/Gas",
+        "color": "#888888",
+        "type": "CUSTOM"
+      },
+      "name": "Electricity",
+      "description": "",
+      "tags": [],
+      "repeatingOption": {
+        "ID": 3,
+        "startDate": "2018-08-21",
+        "modifier": {
+          "ID": 3,
+          "quantity": 1,
+          "localizationKey": "repeating.modifier.months"
+        },
+        "endOption": {
+          "ID": 3,
+          "localizationKey": "repeating.end.key.never"
+        }
+      }
+    },
+    {
+      "ID": 11,
+      "amount": -2764,
+      "date": "2018-08-17",
+      "account": {
+        "ID": 2,
+        "name": "Default Account",
+        "type": "CUSTOM"
+      },
+      "category": {
+        "ID": 5,
+        "name": "Mobile Phone/Internet",
+        "color": "#5ac8fa",
+        "type": "CUSTOM"
+      },
+      "name": "Internet and Phone \t",
+      "description": "",
+      "tags": [],
+      "repeatingOption": {
+        "ID": 5,
+        "startDate": "2018-08-17",
+        "modifier": {
+          "ID": 5,
+          "quantity": 1,
+          "localizationKey": "repeating.modifier.months"
+        },
+        "endOption": {
+          "ID": 5,
+          "localizationKey": "repeating.end.key.never"
+        }
+      }
+    },
+    {
+      "ID": 13,
+      "amount": -450,
+      "date": "2018-08-14",
+      "account": {
+        "ID": 2,
+        "name": "Default Account",
+        "type": "CUSTOM"
+      },
+      "category": {
+        "ID": 4,
+        "name": "Misc",
+        "color": "#333333",
+        "type": "CUSTOM"
+      },
+      "name": "Pizza",
+      "description": "",
+      "tags": []
+    },
+    {
+      "ID": 14,
+      "amount": -5223,
+      "date": "2018-08-04",
+      "account": {
+        "ID": 2,
+        "name": "Default Account",
+        "type": "CUSTOM"
+      },
+      "category": {
+        "ID": 7,
+        "name": "Car",
+        "color": "#007afa",
+        "type": "CUSTOM"
+      },
+      "name": "Fuel",
+      "description": "",
+      "tags": []
+    },
+    {
+      "ID": 15,
+      "amount": -27738,
+      "date": "2018-07-14",
+      "account": {
+        "ID": 2,
+        "name": "Default Account",
+        "type": "CUSTOM"
+      },
+      "category": {
+        "ID": 1,
+        "name": "No Category",
+        "color": "#FFFFFF",
+        "type": "NONE"
+      },
+      "name": "Payment",
+      "description": "",
+      "tags": []
+    },
+    {
+      "ID": 17,
+      "amount": 150000,
+      "date": "2018-08-01",
+      "account": {
+        "ID": 2,
+        "name": "Default Account",
+        "type": "CUSTOM"
+      },
+      "category": {
+        "ID": 3,
+        "name": "Salary",
+        "color": "#4cd964",
+        "type": "CUSTOM"
+      },
+      "name": "Salary",
+      "description": "Lorem Ipsum dolor sit amet",
+      "tags": [],
+      "repeatingOption": {
+        "ID": 4,
+        "startDate": "2018-08-01",
+        "modifier": {
+          "ID": 4,
+          "quantity": 1,
+          "localizationKey": "repeating.modifier.months"
+        },
+        "endOption": {
+          "ID": 4,
+          "localizationKey": "repeating.end.key.never"
+        }
+      }
+    }
+  ]
+}
