@@ -50,14 +50,17 @@ public class ImportService
 
 		for(Category category : database.getCategories())
 		{
-			if(!category.getType().equals(CategoryType.CUSTOM))
+			Category existingCategory;
+			if(category.getType().equals(CategoryType.NONE) || category.getType().equals(CategoryType.REST))
 			{
-				continue;
+				existingCategory = categoryRepository.findByType(category.getType());
+			}
+			else
+			{
+				existingCategory = categoryRepository.findByNameAndColorAndType(category.getName(), category.getColor(), category.getType());
 			}
 
 			int newCategoryID = -1;
-
-			Category existingCategory = categoryRepository.findByNameAndColorAndType(category.getName(), category.getColor(), category.getType());
 			if(existingCategory == null)
 			{
 				//category does not exist --> create it
