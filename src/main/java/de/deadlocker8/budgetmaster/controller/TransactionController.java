@@ -197,7 +197,7 @@ public class TransactionController extends BaseController
 			model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
 			model.addAttribute("accounts", accountRepository.findAllByOrderByNameAsc());
 			model.addAttribute("transaction", transaction);
-			return "transactions/newTransactiob";
+			return "transactions/newTransaction";
 		}
 
 		transactionRepository.save(transaction);
