@@ -112,16 +112,21 @@ public class TransactionService implements Resetable
 	{
 		if(isDeletable(ID))
 		{
-			Transaction transactionToDelete = transactionRepository.findOne(ID);
-			// handle repeating transactions
-			if(transactionToDelete.getRepeatingOption() != null)
-			{
-				repeatingOptionRepository.delete(transactionToDelete.getRepeatingOption().getID());
-			}
-			else
-			{
-				transactionRepository.delete(ID);
-			}
+			deleteTransactionInRepo(ID);
+		}
+	}
+
+	private void deleteTransactionInRepo(Integer ID)
+	{
+		Transaction transactionToDelete = transactionRepository.findOne(ID);
+		// handle repeating transactions
+		if(transactionToDelete.getRepeatingOption() != null)
+		{
+			repeatingOptionRepository.delete(transactionToDelete.getRepeatingOption().getID());
+		}
+		else
+		{
+			transactionRepository.delete(ID);
 		}
 	}
 
@@ -134,7 +139,10 @@ public class TransactionService implements Resetable
 	@Override
 	public void deleteAll()
 	{
-		transactionRepository.deleteAll();
+		for(Transaction transaction : transactionRepository.findAll())
+		{
+			deleteTransactionInRepo(transaction.getID());
+		}
 	}
 
 	@Override

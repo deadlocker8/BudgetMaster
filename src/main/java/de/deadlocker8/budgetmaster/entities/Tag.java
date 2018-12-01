@@ -62,7 +62,10 @@ public class Tag
 	@Override
 	public String toString()
 	{
-		return "Tag{ID=" + ID +	", name='" + name + '}';
+		return "Tag{" +
+				"ID=" + ID +
+				", name='" + name + '\'' +
+				'}';
 	}
 
 	@Override
@@ -78,7 +81,6 @@ public class Tag
 	@Override
 	public int hashCode()
 	{
-
 		return Objects.hash(ID, name);
 	}
 }
