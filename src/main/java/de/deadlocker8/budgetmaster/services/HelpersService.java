@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.math.RoundingMode;
 import java.net.URLEncoder;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -59,20 +60,22 @@ public class HelpersService
 
 	public String getCurrencyString(double amount)
 	{
-		return getAmountString(amount) + " " + settingsRepository.findOne(0).getCurrency();
+		return getAmountString(amount, true) + " " + settingsRepository.findOne(0).getCurrency();
 	}
 
 	public String getAmountString(int amount)
 	{
-		return getAmountString(Math.abs(amount) / 100.0);
+		return getAmountString(Math.abs(amount) / 100.0, false);
 	}
 
-	public String getAmountString(double amount)
+	public String getAmountString(double amount, boolean useGrouping)
 	{
 		Settings settings = settingsRepository.findOne(0);
 		NumberFormat format = NumberFormat.getNumberInstance(settings.getLanguage().getLocale());
 		format.setMaximumFractionDigits(2);
 		format.setMinimumFractionDigits(2);
+		format.setRoundingMode(RoundingMode.HALF_UP);
+		format.setGroupingUsed(useGrouping);
 		return String.valueOf(format.format(amount));
 	}
 
