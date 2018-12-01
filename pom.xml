@@ -57,7 +57,7 @@
         <java.version>1.8</java.version>
 
         <jlibs.version>2.0.4</jlibs.version>
-        <versionizer.version>1.0.2</versionizer.version>
+        <versionizer.version>1.0.3</versionizer.version>
 
         <app.versionDate>${maven.build.timestamp}</app.versionDate>
         <maven.build.timestamp.format>dd.MM.yy</maven.build.timestamp.format>
