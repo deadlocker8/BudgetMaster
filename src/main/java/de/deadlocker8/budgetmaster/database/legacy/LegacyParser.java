@@ -198,7 +198,7 @@ public class LegacyParser
 		}
 		else
 		{
-			repeatingOption.setModifier(new RepeatingModifierMonths(repeatMonthDay));
+			repeatingOption.setModifier(new RepeatingModifierMonths(1));
 		}
 
 		return repeatingOption;
