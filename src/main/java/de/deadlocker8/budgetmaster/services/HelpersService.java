@@ -64,7 +64,7 @@ public class HelpersService
 
 	public String getAmountString(int amount)
 	{
-		return getAmountString(amount / 100.0);
+		return getAmountString(Math.abs(amount) / 100.0);
 	}
 
 	public String getAmountString(double amount)
