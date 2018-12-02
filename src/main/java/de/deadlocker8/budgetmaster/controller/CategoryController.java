@@ -34,7 +34,6 @@ public class CategoryController extends BaseController
 	@RequestMapping("/categories")
 	public String categories(Model model)
 	{
-		helpers.test();
 		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
 		return "categories/categories";
 	}
