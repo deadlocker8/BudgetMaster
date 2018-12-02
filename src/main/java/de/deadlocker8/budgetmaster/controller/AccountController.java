@@ -42,14 +42,14 @@ public class AccountController extends BaseController
 	@RequestMapping("/accounts")
 	public String accounts(HttpServletRequest request, Model model)
 	{
-		model.addAttribute("accounts", accountRepository.findAllByOrderByNameAsc());
+		model.addAttribute("accounts", accountService.getAllAccountsAsc());
 		return "accounts/accounts";
 	}
 
 	@RequestMapping("/accounts/{ID}/requestDelete")
 	public String requestDeleteAccount(Model model, @PathVariable("ID") Integer ID)
 	{
-		model.addAttribute("accounts", accountRepository.findAllByOrderByNameAsc());
+		model.addAttribute("accounts", accountService.getAllAccountsAsc());
 		model.addAttribute("currentAccount", accountRepository.getOne(ID));
 		return "accounts/accounts";
 	}
@@ -63,7 +63,7 @@ public class AccountController extends BaseController
 			return "redirect:/accounts";
 		}
 
-		model.addAttribute("accounts", accountRepository.findAllByOrderByNameAsc());
+		model.addAttribute("accounts", accountService.getAllAccountsAsc());
 		model.addAttribute("currentAccount", accountRepository.getOne(ID));
 		model.addAttribute("accountNotDeletable", true);
 		return "accounts/accounts";

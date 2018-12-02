@@ -7,8 +7,8 @@ import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.DatabaseParser;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
 import de.deadlocker8.budgetmaster.entities.Settings;
-import de.deadlocker8.budgetmaster.repositories.AccountRepository;
 import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
+import de.deadlocker8.budgetmaster.services.AccountService;
 import de.deadlocker8.budgetmaster.services.DatabaseService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.services.ImportService;
@@ -58,7 +58,7 @@ public class SettingsController extends BaseController
 	private DatabaseService databaseService;
 
 	@Autowired
-	private AccountRepository accountRepository;
+	private AccountService accountService;
 
 	@Autowired
 	private ImportService importService;
@@ -236,7 +236,7 @@ public class SettingsController extends BaseController
 	public String openAccountMatcher(WebRequest request, Model model)
 	{
 		model.addAttribute("database", request.getAttribute("database", WebRequest.SCOPE_SESSION));
-		model.addAttribute("availableAccounts", accountRepository.findAllByOrderByNameAsc());
+		model.addAttribute("availableAccounts", accountService.getAllAccountsAsc());
 		return "import";
 	}
 

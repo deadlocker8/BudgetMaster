@@ -196,7 +196,7 @@ public class HelpersService
 
 	public List<Account> getAllAccounts()
 	{
-		return accountRepository.findAllByOrderByNameAsc();
+		return accountService.getAllAccountsAsc();
 	}
 
 	public Account getCurrentAccount()

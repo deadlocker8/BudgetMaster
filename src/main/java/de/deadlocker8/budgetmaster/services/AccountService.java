@@ -39,6 +39,13 @@ public class AccountService implements Resetable
 		return accountRepository;
 	}
 
+	public List<Account> getAllAccountsAsc()
+	{
+		List<Account> accounts = accountRepository.findAllByType(AccountType.ALL);
+		accounts.addAll(accountRepository.findAllByTypeOrderByNameAsc(AccountType.CUSTOM));
+		return accounts;
+	}
+
 	public void deleteAccount(int ID)
 	{
 		Account accountToDelete = accountRepository.findOne(ID);

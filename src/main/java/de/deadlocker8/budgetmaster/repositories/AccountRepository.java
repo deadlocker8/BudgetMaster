@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface AccountRepository extends JpaRepository<Account, Integer>
 {
-	List<Account> findAllByOrderByNameAsc();
+	List<Account> findAllByTypeOrderByNameAsc(AccountType accountType);
 
 	Account findByName(String name);
 
