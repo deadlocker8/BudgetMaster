@@ -304,4 +304,19 @@ public class HelpersService
 	{
 		return budgetMasterUpdateService.getAvailableVersionString();
 	}
+
+	public void test()
+	{
+		for(int i = 0; i < 1010; i++)
+		{
+			Transaction transaction = new Transaction();
+			transaction.setAccount(getCurrentAccount());
+			transaction.setDate(DateTime.now());
+			transaction.setAmount(100);
+			transaction.setCategory(categoryRepository.findByType(CategoryType.NONE));
+			transaction.setName("Eimer");
+
+			transactionService.getRepository().save(transaction);
+		}
+	}
 }

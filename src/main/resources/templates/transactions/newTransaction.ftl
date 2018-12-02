@@ -23,7 +23,7 @@
                     <#import "../validation.ftl" as validation>
                     <form name="NewTransaction" action="/transactions/newTransaction" method="post" onsubmit="return validateForm()">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <input type="hidden" name="ID" value="<#if transaction.getID()??>${transaction.getID()}</#if>">
+                        <input type="hidden" name="ID" value="<#if transaction.getID()??>${transaction.getID()?c}</#if>">
                         <input type="hidden" name="isRepeating" value="${transaction.isRepeating()?c}">
 
                         <#-- isPayment switch -->
@@ -76,18 +76,18 @@
                             <div class="input-field col s12 m12 l8 offset-l2" id="categoryWrapper">
                                 <select id="transaction-category" name="category" <@validation.validation "category"/>>
                                     <#list categories as category>
-                                        <#assign categoryInfos=categoriesFunctions.getCategoryName(category) + "@@@" + category.getColor() + "@@@" + category.getAppropriateTextColor() + "@@@" + category.getID()>
+                                        <#assign categoryInfos=categoriesFunctions.getCategoryName(category) + "@@@" + category.getColor() + "@@@" + category.getAppropriateTextColor() + "@@@" + category.getID()?c>
 
                                         <#if transaction.getCategory()??>
-                                            <#if transaction.getCategory().getID() == category.getID()>
-                                                <option selected value="${category.getID()}">${categoryInfos}</option>
+                                            <#if transaction.getCategory().getID()?c == category.getID()?c>
+                                                <option selected value="${category.getID()?c}">${categoryInfos}</option>
                                             <#elseif category.getType() != "REST">
-                                                <option value="${category.getID()}">${categoryInfos}</option>
+                                                <option value="${category.getID()?c}">${categoryInfos}</option>
                                             </#if>
                                         <#elseif category.getType() == "NONE">
-                                            <option selected value="${category.getID()}">${categoryInfos}</option>
+                                            <option selected value="${category.getID()?c}">${categoryInfos}</option>
                                         <#elseif category.getType() != "REST">
-                                            <option value="${category.getID()}">${categoryInfos}</option>
+                                            <option value="${category.getID()?c}">${categoryInfos}</option>
                                         </#if>
                                     </#list>
                                 </select>
@@ -136,12 +136,12 @@
                                     <#list accounts as account>
                                         <#if (account.getType().name() == "CUSTOM")>
                                             <#if transaction.getAccount()?? && transaction.getAccount() == account>
-                                                <option selected value="${account.getID()}">${account.getName()}</option>
+                                                <option selected value="${account.getID()?c}">${account.getName()}</option>
                                             <#else>
                                                 <#if account == helpers.getCurrentAccount()>
-                                                    <option selected value="${account.getID()}">${account.getName()}</option>
+                                                    <option selected value="${account.getID()?c}">${account.getName()}</option>
                                                 <#else>
-                                                    <option value="${account.getID()}">${account.getName()}</option>
+                                                    <option value="${account.getID()?c}">${account.getName()}</option>
                                                 </#if>
                                             </#if>
                                         </#if>
@@ -319,9 +319,9 @@
         <#-- pass selected account to JS in order to select current value for materialize select -->
         <script>
             <#if transaction.getCategory()??>
-                selectedCategory = "${transaction.getCategory().getID()}";
+                selectedCategory = "${transaction.getCategory().getID()?c}";
             <#else>
-                selectedCategory = "${helpers.getIDOfNoCatgeory()}";
+                selectedCategory = "${helpers.getIDOfNoCatgeory()?c}";
             </#if>
         </script>
 

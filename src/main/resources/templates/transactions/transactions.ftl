@@ -69,8 +69,8 @@
                                 </#if>
                                 <td>
                                     <#if (transaction.category.type.name() != "REST")>
-                                        <a href="/transactions/${transaction.ID}/edit" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
-                                        <a href="/transactions/${transaction.ID}/requestDelete" class="btn-flat no-padding text-color"><i class="material-icons left">delete</i></a>
+                                        <a href="/transactions/${transaction.ID?c}/edit" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
+                                        <a href="/transactions/${transaction.ID?c}/requestDelete" class="btn-flat no-padding text-color"><i class="material-icons left">delete</i></a>
                                     </#if>
                                 </td>
                             </tr>
@@ -95,7 +95,7 @@
                     </div>
                     <div class="modal-footer background-color">
                         <a href="/transactions" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
-                        <a href="/transactions/${currentTransaction.ID}/delete" class="modal-action modal-close waves-effectwaves-light green btn-flat white-text">${locale.getString("delete")}</a>
+                        <a href="/transactions/${currentTransaction.ID?c}/delete" class="modal-action modal-close waves-effectwaves-light green btn-flat white-text">${locale.getString("delete")}</a>
                     </div>
                 </div>
             </#if>

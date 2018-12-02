@@ -24,8 +24,8 @@
                                 <tr>
                                     <td>${account.getName()}</td>
                                     <td>
-                                        <a href="/accounts/${account.getID()}/edit" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
-                                        <a href="/accounts/${account.getID()}/requestDelete" class="btn-flat no-padding text-color"><i class="material-icons left">delete</i></a>
+                                        <a href="/accounts/${account.getID()?c}/edit" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
+                                        <a href="/accounts/${account.getID()?c}/requestDelete" class="btn-flat no-padding text-color"><i class="material-icons left">delete</i></a>
                                     </td>
                                 </tr>
                             </#if>
@@ -47,7 +47,7 @@
                 </div>
                 <div class="modal-footer background-color">
                     <a href="/accounts" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
-                    <a href="/accounts/${currentAccount.getID()}/delete" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("info.button.account.delete")}</a>
+                    <a href="/accounts/${currentAccount.getID()?c}/delete" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("info.button.account.delete")}</a>
                 </div>
             </div>
         </#if>

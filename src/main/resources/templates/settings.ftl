@@ -18,7 +18,7 @@
                     <#import "validation.ftl" as validation>
                     <form name="Settings" action="/settings/save" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <input type="hidden" name="ID" value="${settings.getID()}">
+                        <input type="hidden" name="ID" value="${settings.getID()?c}">
 
                         <#-- password -->
                         <div class="row">

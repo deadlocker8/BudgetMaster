@@ -24,14 +24,14 @@
                             <#list helpers.getAccountMatches(database.getAccounts()) as accountMatch>
                                 <tr>
                                     <td class="import-text">${locale.getString("info.database.import.source")}</td>
-                                    <td class="account-source-id hidden"><#if accountMatch.getAccountSource().getID()??>${accountMatch.getAccountSource().getID()}<#else>-1</#if> </td>
+                                    <td class="account-source-id hidden"><#if accountMatch.getAccountSource().getID()??>${accountMatch.getAccountSource().getID()?c}<#else>-1</#if> </td>
                                     <td class="account-source">${accountMatch.getAccountSource().getName()}</td>
                                     <td class="import-text">${locale.getString("info.database.import.destination")}</td>
                                     <td>
                                         <select class="account-destination">
                                             <#list availableAccounts as account>
                                                 <#if (account.getType().name() == "CUSTOM")>
-                                                    <option value="${account.getID()}">${account.getName()}</option>
+                                                    <option value="${account.getID()?c}">${account.getName()}</option>
                                                 </#if>
                                             </#list>
                                         </select>

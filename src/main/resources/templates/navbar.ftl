@@ -59,9 +59,9 @@
         <select id="selectAccount">
             <#list helpers.getAllAccounts() as account>
                 <#if (account.getType().name() == "ALL")>
-                    <option <#if account.isSelected()>selected</#if> value="${account.getID()}">${locale.getString("account.all")}</option>
+                    <option <#if account.isSelected()>selected</#if> value="${account.getID()?c}">${locale.getString("account.all")}</option>
                 <#else>
-                    <option <#if account.isSelected()>selected</#if> value="${account.getID()}">${account.getName()}</option>
+                    <option <#if account.isSelected()>selected</#if> value="${account.getID()?c}">${account.getName()}</option>
                 </#if>
             </#list>
         </select>

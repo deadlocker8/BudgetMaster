@@ -34,9 +34,9 @@
                             </td>
                             <td>${categoryName}</td>
                             <td>
-                                <a href="/categories/${category.ID}/edit" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
+                                <a href="/categories/${category.ID?c}/edit" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
                                 <#if (category.getType().name() == "CUSTOM")>
-                                    <a href="/categories/${category.ID}/requestDelete" class="btn-flat no-padding text-color"><i class="material-icons left">delete</i></a>
+                                    <a href="/categories/${category.ID?c}/requestDelete" class="btn-flat no-padding text-color"><i class="material-icons left">delete</i></a>
                                 </#if>
                             </td>
                         </tr>
@@ -57,7 +57,7 @@
                     </div>
                     <div class="modal-footer background-color">
                         <a href="/categories" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
-                        <a href="/categories/${currentCategory.ID}/delete" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("delete")}</a>
+                        <a href="/categories/${currentCategory.ID?c}/delete" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("delete")}</a>
                     </div>
                 </div>
             </#if>
