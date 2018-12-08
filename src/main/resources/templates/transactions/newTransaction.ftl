@@ -257,7 +257,7 @@
                                             <td class="cell">${locale.getString("repeating.end.afterXTimes.A")}</td>
                                             <td class="cell input-cell">
                                                 <div class="input-field no-margin">
-                                                    <input class="no-margin" id="transaction-repeating-end-after-x-times-input" type="text" value="<#if checked>${transaction.getRepeatingOption().getEndOption().getValue()}</#if>">
+                                                    <input class="no-margin input-min-width" id="transaction-repeating-end-after-x-times-input" type="text" value="<#if checked>${transaction.getRepeatingOption().getEndOption().getValue()}</#if>">
                                                     <label for="transaction-repeating-end-after-x-times-input"></label>
                                                 </div>
                                             </td>
@@ -280,7 +280,7 @@
                                             <td class="cell">${locale.getString("repeating.end.date")}</td>
                                             <td class="cell input-cell">
                                                 <div class="input-field no-margin">
-                                                    <input class="datepicker no-margin" id="transaction-repeating-end-date-input" type="text" value="<#if checked>${helpers.getLongDateString(transaction.getRepeatingOption().getEndOption().getValue())}<#else>${helpers.getLongDateString(currentDate)}</#if>">
+                                                    <input class="datepicker no-margin input-min-width" id="transaction-repeating-end-date-input" type="text" value="<#if checked>${helpers.getLongDateString(transaction.getRepeatingOption().getEndOption().getValue())}<#else>${helpers.getLongDateString(currentDate)}</#if>">
                                                     <label for="transaction-repeating-end-date-input"></label>
                                                 </div>
                                             </td>

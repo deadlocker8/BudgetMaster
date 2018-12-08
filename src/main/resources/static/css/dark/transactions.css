@@ -14,3 +14,7 @@
 .chips .chip.selected {
     background-color: #2E79B9;
 }
+
+.input-min-width {
+    min-width: 100px;
+}
