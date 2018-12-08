@@ -59,7 +59,7 @@ public class Main implements ApplicationRunner
 		{
 			try
 			{
-				LOGGER.warn("BudgetMaster settings file ({0}) is missing. A default file will be created. Please fill in your settings.", settingsPath);
+				LOGGER.warn("BudgetMaster settings file ({}) is missing. A default file will be created. Please fill in your settings.", settingsPath);
 				Files.copy(Main.class.getClassLoader().getResourceAsStream("config/templates/settings.properties"), settingsPath, StandardCopyOption.REPLACE_EXISTING);
 				System.exit(1);
 			}

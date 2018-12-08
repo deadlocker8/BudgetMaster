@@ -13,7 +13,8 @@ import java.nio.file.Path;
 public class PropertiesConfiguration
 {
 	@Bean
-	public PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+	public PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer()
+	{
 		PropertySourcesPlaceholderConfigurer properties = new PropertySourcesPlaceholderConfigurer();
 		Path settingsPath = SystemUtils.getApplicationSupportDirectoryPath(Localization.getString("folder"), "settings.properties");
 		properties.setLocation(new FileSystemResource(settingsPath.toString()));
