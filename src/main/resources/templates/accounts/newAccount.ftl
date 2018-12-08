@@ -32,11 +32,11 @@
 
                         <#-- buttons -->
                         <div class="row hide-on-small-only">
-                            <div class="col m6 l4 offset-l2 right-align">
+                            <div class="col s6 right-align">
                                 <a href="/accounts" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
                             </div>
 
-                            <div class="col m6 l4 left-align">
+                            <div class="col s6 left-align">
                                 <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action">
                                     <i class="material-icons left">save</i>${locale.getString("save")}
                                 </button>

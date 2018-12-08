@@ -28,9 +28,9 @@
 
                         <#-- isPayment switch -->
                         <div class="row">
-                            <div class="col s12 m12 l8 offset-l2 center-align">
+                            <div class="col s12 center-align">
                                 <div class="row hide-on-small-only">
-                                    <div class="col m6 l4 offset-l2 right-align">
+                                    <div class="col s6 right-align">
                                         <#assign isPayment = 1>
 
                                         <#if transaction.getAmount()?? && (transaction.getAmount() > 0)>
@@ -41,7 +41,7 @@
                                         </#if>
                                         <a class="waves-effect waves-light btn ${colorButtonIncome}" id="buttonIncome"><i class="material-icons left">file_download</i>${locale.getString("title.income")}</a>
                                     </div>
-                                    <div class="col m6 l4 left-align">
+                                    <div class="col s6 left-align">
                                         <#if transaction.getAmount()?? && (transaction.getAmount() > 0)>
                                             <#assign colorButtonExpenditure = "budgetmaster-grey budgetmaster-text-isPayment">
                                         <#else>
@@ -50,6 +50,33 @@
                                         <a class="waves-effect waves-light btn ${colorButtonExpenditure}" id="buttonExpenditure"><i class="material-icons left">file_upload</i>${locale.getString("title.expenditure")}</a>
                                     </div>
                                     <input type="hidden" name="isPayment" id="input-isPayment" value="${isPayment}">
+                                </div>
+
+                                <div class="hide-on-med-and-up">
+                                    <div class="row center-align">
+                                        <div class="col s12">
+                                            <#assign isPayment = 1>
+
+                                            <#if transaction.getAmount()?? && (transaction.getAmount() > 0)>
+                                                <#assign colorButtonIncome = "budgetmaster-green">
+                                                <#assign isPayment = 0>
+                                            <#else>
+                                                <#assign colorButtonIncome = "budgetmaster-grey budgetmaster-text-isPayment">
+                                            </#if>
+                                            <a class="waves-effect waves-light btn ${colorButtonIncome}" id="buttonIncome"><i class="material-icons left">file_download</i>${locale.getString("title.income")}</a>
+                                        </div>
+                                    </div>
+                                    <div class="row center-align">
+                                        <div class="col s12">
+                                            <#if transaction.getAmount()?? && (transaction.getAmount() > 0)>
+                                                <#assign colorButtonExpenditure = "budgetmaster-grey budgetmaster-text-isPayment">
+                                            <#else>
+                                                <#assign colorButtonExpenditure = "budgetmaster-red">
+                                            </#if>
+                                            <a class="waves-effect waves-light btn ${colorButtonExpenditure}" id="buttonExpenditure"><i class="material-icons left">file_upload</i>${locale.getString("title.expenditure")}</a>
+                                        </div>
+                                        <input type="hidden" name="isPayment" id="input-isPayment" value="${isPayment}">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -268,11 +295,11 @@
 
                         <#-- buttons -->
                         <div class="row hide-on-small-only">
-                            <div class="col m6 l4 offset-l2 right-align">
+                            <div class="col s6 right-align">
                                 <a href="/transactions" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
                             </div>
 
-                            <div class="col m6 l4 left-align">
+                            <div class="col s6 left-align">
                                 <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action">
                                     <i class="material-icons left">save</i>${locale.getString("save")}
                                 </button>
