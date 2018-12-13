@@ -9,6 +9,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.io.IOException;
@@ -21,7 +22,7 @@ import java.util.Locale;
 
 @EnableScheduling
 @SpringBootApplication
-public class Main implements ApplicationRunner
+public class Main extends SpringBootServletInitializer implements ApplicationRunner
 {
 	private final static Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
