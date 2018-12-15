@@ -26,7 +26,12 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 {
 	private final static Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
-	public static void main(String[] args)
+	static
+	{
+		prepare(new String[0]);
+	}
+
+	private static Path prepare(String[] args)
 	{
 		Localization.setDelegate(new Localization.LocalizationDelegate()
 		{
@@ -50,6 +55,8 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 		});
 		Localization.load();
 
+		ProgramArgs.setArgs(Arrays.asList(args));
+
 		Path applicationSupportFolder = SystemUtils.getApplicationSupportDirectoryPath(Localization.getString("folder"));
 		PathUtils.createDirectoriesIfNotExists(applicationSupportFolder);
 
@@ -70,6 +77,12 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 			}
 		}
 
+		return applicationSupportFolder;
+	}
+
+	public static void main(String[] args)
+	{
+		Path applicationSupportFolder = prepare(args);
 		Path logPath = applicationSupportFolder.resolve("error.log");
 		SpringApplication.run(Main.class, "--logging.file=" + logPath.toString());
 	}

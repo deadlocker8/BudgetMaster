@@ -9,6 +9,8 @@
     <version>2.0.1</version>
     <name>BudgetMaster</name>
 
+    <packaging>war</packaging>
+
     <repositories>
         <repository>
             <id>release</id>

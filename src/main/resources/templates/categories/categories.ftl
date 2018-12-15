@@ -3,6 +3,7 @@
         <#import "../header.ftl" as header>
         <@header.header "BudgetMaster"/>
         <@header.style "categories"/>
+        <#import "/spring.ftl" as s>
     </head>
     <body class="budgetmaster-blue-light">
         <#import "../navbar.ftl" as navbar>
@@ -18,7 +19,7 @@
                     </div>
                 </div>
                 <br>
-                <div class="center-align"><a href="/categories/newCategory" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.category.new")}</a></div>
+                <div class="center-align"><a href="<@s.url '/categories/newCategory'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.category.new")}</a></div>
                 <br>
                 <div class="container">
                     <table class="bordered">
@@ -34,9 +35,9 @@
                             </td>
                             <td>${categoryName}</td>
                             <td>
-                                <a href="/categories/${category.ID?c}/edit" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
+                                <a href="<@s.url '/categories/${category.ID?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
                                 <#if (category.getType().name() == "CUSTOM")>
-                                    <a href="/categories/${category.ID?c}/requestDelete" class="btn-flat no-padding text-color"><i class="material-icons left">delete</i></a>
+                                    <a href="<@s.url '/categories/${category.ID?c}/requestDelete'/>" class="btn-flat no-padding text-color"><i class="material-icons left">delete</i></a>
                                 </#if>
                             </td>
                         </tr>
@@ -56,8 +57,8 @@
                         <p>${locale.getString("info.text.category.delete", currentCategory.name)}</p>
                     </div>
                     <div class="modal-footer background-color">
-                        <a href="/categories" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
-                        <a href="/categories/${currentCategory.ID?c}/delete" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("delete")}</a>
+                        <a href="<@s.url '/categories'/>" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
+                        <a href="<@s.url '/categories/${currentCategory.ID?c}/delete'/>" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("delete")}</a>
                     </div>
                 </div>
             </#if>
@@ -66,6 +67,6 @@
         <!--  Scripts-->
         <#import "../scripts.ftl" as scripts>
         <@scripts.scripts/>
-        <script src="/js/categories.js"></script>
+        <script src="<@s.url '/js/categories.js'/>"></script>
     </body>
 </html>

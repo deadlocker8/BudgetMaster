@@ -2,6 +2,7 @@
     <head>
         <#import "header.ftl" as header>
         <@header.header "BudgetMaster"/>
+        <#import "/spring.ftl" as s>
     </head>
     <body class="budgetmaster-blue-light">
         <#import "navbar.ftl" as navbar>
@@ -17,7 +18,7 @@
                 </div>
                 <div class="container">
                     <#import "validation.ftl" as validation>
-                    <form name="Import" action="/settings/database/import" method="post" onsubmit="return validateForm()">
+                    <form name="Import" action="<@s.url '/settings/database/import'/>" method="post" onsubmit="return validateForm()">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                         <table class="bordered">
@@ -38,7 +39,7 @@
                                     </td>
                                     <td class="import-text">${locale.getString("info.database.import.or")}</td>
                                     <td>
-                                        <a href="/accounts/newAccount" class="btn waves-effect waves-light budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.account.new")}</a>
+                                        <a href="<@s.url '/accounts/newAccount'/>" class="btn waves-effect waves-light budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.account.new")}</a>
                                     </td>
                                 </tr>
                             </#list>
@@ -54,7 +55,7 @@
                         <#-- buttons -->
                         <div class="row">
                             <div class="col m6 l4 offset-l2 right-align">
-                                <a href="/settings" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
+                                <a href="<@s.url '/settings'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
                             </div>
 
                             <div class="col m6 l4 left-align">
@@ -71,6 +72,6 @@
         <!-- Scripts-->
         <#import "scripts.ftl" as scripts>
         <@scripts.scripts/>
-        <script src="/js/import.js"></script>
+        <script src="<@s.url '/js/import.js'/>"></script>
     </body>
 </html>

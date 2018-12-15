@@ -24,7 +24,7 @@
         <@itemWithIcon "about", "/about", locale.getString("menu.about"), "info", "budgetmaster-grey", activeID/>
 
         <@itemDivider/>
-        <@itemWithIcon "logout", "javascript:\" onclick=\"$('#logout-form').submit();\"", locale.getString("menu.logout") "lock", "budgetmaster-red", activeID/>
+        <@itemWithIconNoRootUrl "logout", "javascript:\" onclick=\"$('#logout-form').submit();\"", locale.getString("menu.logout") "lock", "budgetmaster-red", activeID/>
 
         <#if helpers.isUpdateAvailable()>
             <@itemDivider/>
@@ -35,7 +35,7 @@
     <div class="hide-on-large-only"><br></div>
 
     <#--logout form -->
-    <form class="hide" id="logout-form" action="/logout" method="post">
+    <form class="hide" id="logout-form" action="<@s.url '/logout'/>" method="post">
         <#if _csrf??>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <input type="hidden" name="mess" value=<%=n%>
@@ -46,7 +46,8 @@
 
 <#macro itemLogo>
     <#import "header.ftl" as header>
-    <li><a href="/" class="waves-effect" id="nav-logo-container"><@header.logo "nav-logo" ""/></a></li>
+    <#import "/spring.ftl" as s>
+    <li><a href="<@s.url '/'/>" class="waves-effect" id="nav-logo-container"><@header.logo "nav-logo" ""/></a></li>
 </#macro>
 
 <#macro itemDivider>
@@ -77,10 +78,20 @@
 </#macro>
 
 <#macro itemPlain ID link text activeID>
-    <li <#if activeID == ID>class="active"</#if>><a href="${link}" class="waves-effect"><span class="nav-margin">${text}</span></a></li>
+    <#import "/spring.ftl" as s>
+    <li <#if activeID == ID>class="active"</#if>><a href="<@s.url '${link}'/>" class="waves-effect"><span class="nav-margin">${text}</span></a></li>
 </#macro>
 
 <#macro itemWithIcon ID link text icon activeColor activeID>
+    <#import "/spring.ftl" as s>
+    <#if activeID == ID>
+        <li class="active"><a href="<@s.url '${link}'/>" class="waves-effect no-padding"><div class="stripe ${activeColor}"></div><i class="material-icons">${icon}</i>${text}</a></li>
+    <#else>
+        <li><a href="<@s.url '${link}'/>" class="waves-effect"><i class="material-icons">${icon}</i>${text}</a></li>
+    </#if>
+</#macro>
+
+<#macro itemWithIconNoRootUrl ID link text icon activeColor activeID>
     <#if activeID == ID>
         <li class="active"><a href="${link}" class="waves-effect no-padding"><div class="stripe ${activeColor}"></div><i class="material-icons">${icon}</i>${text}</a></li>
     <#else>
@@ -89,7 +100,8 @@
 </#macro>
 
 <#macro itemUpdate link text icon>
-    <li><a href="${link}" class="waves-effect budgetmaster-update budgetmaster-text-update"><i class="material-icons" id="icon-update">${icon}</i>${text}</a></li>
+    <#import "/spring.ftl" as s>
+    <li><a href="<@s.url '${link}'/>" class="waves-effect budgetmaster-update budgetmaster-text-update"><i class="material-icons" id="icon-update">${icon}</i>${text}</a></li>
 </#macro>
 
 <#macro subListStart ID text icon activeColor activeID>
@@ -97,9 +109,9 @@
     <ul class="collapsible collapsible-accordion no-padding side-nav-sub">
         <li>
             <#if activeID?starts_with(ID)>
-                <a href="/charts" class="collapsible-header no-padding active"><div class="stripe ${activeColor}"></div><i class="material-icons">${icon}</i>${text}</a>
+                <a href="<@s.url '/charts'/>" class="collapsible-header no-padding active"><div class="stripe ${activeColor}"></div><i class="material-icons">${icon}</i>${text}</a>
             <#else>
-                <a href="/charts" class="collapsible-header nav-padding"><i class="material-icons">${icon}</i>${text}</a>
+                <a href="<@s.url '/charts'/>" class="collapsible-header nav-padding"><i class="material-icons">${icon}</i>${text}</a>
             </#if>
             <div class="collapsible-body">
                 <ul class="side-nav-sub">

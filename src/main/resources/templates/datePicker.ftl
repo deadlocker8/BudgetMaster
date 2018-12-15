@@ -1,10 +1,11 @@
 <#macro datePicker fullDate target>
+    <#import "/spring.ftl" as s>
      <div class="container">
          <div class="section center-align">
-             <a href="/previousMonth?target=${target}" class="waves-effect text-color"><i class="material-icons icon-chevron">chevron_left</i></a>
+             <a href="<@s.url '/previousMonth?target=${target}'/>" class="waves-effect text-color"><i class="material-icons icon-chevron">chevron_left</i></a>
              <a href="#modalDate" class="waves-effect headline-date modal-trigger text-color datePicker-fixed-width">${helpers.getDateStringWithMonthAndYear(fullDate)}</a>
-             <a href="/nextMonth?target=${target}" class="waves-effect text-color"><i class="material-icons icon-chevron">chevron_right</i></a>
-             <a href="/today?target=${target}" class="waves-effect text-color"><i class="material-icons icon-today">event</i></a>
+             <a href="<@s.url '/nextMonth?target=${target}'/>" class="waves-effect text-color"><i class="material-icons icon-chevron">chevron_right</i></a>
+             <a href="<@s.url '/today?target=${target}'/>" class="waves-effect text-color"><i class="material-icons icon-today">event</i></a>
          </div>
      </div>
     <!-- modal to select specific month and year -->
@@ -30,7 +31,7 @@
         </div>
         <div class="modal-footer background-color">
             <a href="${target}" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
-            <a href="/setDate?target=${target}" id="buttonChooseDate" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("ok")}</a>
+            <a href="<@s.url '/setDate?target=${target}'/>" id="buttonChooseDate" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("ok")}</a>
         </div>
     </div>
 </#macro>

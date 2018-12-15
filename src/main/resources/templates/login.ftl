@@ -3,6 +3,7 @@
         <#import "header.ftl" as header>
         <@header.header "BudgetMaster"/>
         <@header.style "login"/>
+        <#import "/spring.ftl" as s>
     </head>
     <body class="budgetmaster-blue-light">
         <main>
@@ -13,7 +14,7 @@
                             <span class="card-title">
                                 <div id="logo-container" class="center-align"><@header.logo "logo" ""/></div>
                             </span>
-                            <form action="/login" method="post">
+                            <form action="<@s.url '/login'/>" method="post">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <input type="hidden" name="username" value="Default">
 

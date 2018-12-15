@@ -3,6 +3,7 @@
         <#import "../header.ftl" as header>
         <@header.header "BudgetMaster"/>
         <@header.style "categories"/>
+        <#import "/spring.ftl" as s>
     </head>
     <body class="budgetmaster-blue-light">
         <#import "../navbar.ftl" as navbar>
@@ -39,7 +40,7 @@
 
                     <#-- button new -->
                     <div class="row valign-wrapper">
-                        <div class="col s12 center-align"><a href="/transactions/newTransaction" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.transaction.new")}</a></div>
+                        <div class="col s12 center-align"><a href="<@s.url '/transactions/newTransaction'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.transaction.new")}</a></div>
                     </div>
 
                     <#-- transactions list -->
@@ -69,8 +70,8 @@
                                 </#if>
                                 <td>
                                     <#if (transaction.category.type.name() != "REST")>
-                                        <a href="/transactions/${transaction.ID?c}/edit" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
-                                        <a href="/transactions/${transaction.ID?c}/requestDelete" class="btn-flat no-padding text-color"><i class="material-icons left">delete</i></a>
+                                        <a href="<@s.url '/transactions/${transaction.ID?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
+                                        <a href="<@s.url '/transactions/${transaction.ID?c}/requestDelete'/>" class="btn-flat no-padding text-color"><i class="material-icons left">delete</i></a>
                                     </#if>
                                 </td>
                             </tr>
@@ -94,8 +95,8 @@
                         </#if>
                     </div>
                     <div class="modal-footer background-color">
-                        <a href="/transactions" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
-                        <a href="/transactions/${currentTransaction.ID?c}/delete" class="modal-action modal-close waves-effectwaves-light green btn-flat white-text">${locale.getString("delete")}</a>
+                        <a href="<@s.url '/transactions'/>" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
+                        <a href="<@s.url '/transactions/${currentTransaction.ID?c}/delete'/>" class="modal-action modal-close waves-effectwaves-light green btn-flat white-text">${locale.getString("delete")}</a>
                     </div>
                 </div>
             </#if>
@@ -104,8 +105,8 @@
         <!--  Scripts-->
         <#import "../scripts.ftl" as scripts>
         <@scripts.scripts/>
-        <script src="/js/transactions.js"></script>
-        <script src="/js/datePicker.js"></script>
+        <script src="<@s.url '/js/transactions.js'/>"></script>
+        <script src="<@s.url '/js/datePicker.js'/>"></script>
         <script>document.cookie = "currentDate=${helpers.getDateString(currentDate)}";</script>
     </body>
 </html>

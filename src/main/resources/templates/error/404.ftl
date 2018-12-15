@@ -3,6 +3,7 @@
         <#import "../header.ftl" as header>
         <@header.header "BudgetMaster - 404"/>
         <@header.style "login"/>
+        <#import "/spring.ftl" as s>
     </head>
     <body class="budgetmaster-blue-light">
         <main>
@@ -20,7 +21,7 @@
                                 </div>
                             </div>
                             <div class="center-align">
-                                <a href="/" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">home</i>${locale.getString("errorpages.home")}</a>
+                                <a href="<@s.url '/'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">home</i>${locale.getString("errorpages.home")}</a>
                             </div>
                         </div>
                     </div>

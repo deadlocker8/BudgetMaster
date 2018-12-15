@@ -2,6 +2,7 @@
     <head>
         <#import "../header.ftl" as header>
         <@header.header "BudgetMaster"/>
+        <#import "/spring.ftl" as s>
     </head>
     <body class="budgetmaster-blue-light">
         <#import "../navbar.ftl" as navbar>
@@ -16,7 +17,7 @@
                 </div>
                 <div class="container">
                     <#import "../validation.ftl" as validation>
-                    <form name="NewAccount" action="/accounts/newAccount" method="post">
+                    <form name="NewAccount" action="<@s.url '/accounts/newAccount'/>" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="ID" value="<#if account.getID()??>${account.getID()?c}</#if>">
                         <input type="hidden" name="isSelected" value="<#if account.isSelected()??>${account.isSelected()?c}</#if>">
@@ -33,7 +34,7 @@
                         <#-- buttons -->
                         <div class="row hide-on-small-only">
                             <div class="col s6 right-align">
-                                <a href="/accounts" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
+                                <a href="<@s.url '/accounts'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
                             </div>
 
                             <div class="col s6 left-align">
@@ -45,7 +46,7 @@
                         <div class="hide-on-med-and-up">
                             <div class="row center-align">
                                 <div class="col s12">
-                                    <a href="/accounts" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
+                                    <a href="<@s.url '/accounts'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
                                 </div>
                             </div>
                             <div class="row center-align">

@@ -17,7 +17,7 @@ $( document ).ready(function() {
     $("#selectAccount").on('change', function()
     {
         var accountID = $(this).val();
-        window.location = "/account/" + accountID + "/select";
+        window.location = rootURL + "/account/" + accountID + "/select";
     });
 
     if($("#login-password").length)

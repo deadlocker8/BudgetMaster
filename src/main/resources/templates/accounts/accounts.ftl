@@ -2,6 +2,7 @@
     <head>
         <#import "../header.ftl" as header>
         <@header.header "BudgetMaster"/>
+        <#import "/spring.ftl" as s>
     </head>
     <body class="budgetmaster-blue-light">
         <#import "../navbar.ftl" as navbar>
@@ -15,7 +16,7 @@
                     </div>
                 </div>
                 <br>
-                <div class="center-align"><a href="/accounts/newAccount" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.account.new")}</a></div>
+                <div class="center-align"><a href="<@s.url '/accounts/newAccount'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.account.new")}</a></div>
                 <br>
                 <div class="container">
                     <table class="bordered">
@@ -24,8 +25,8 @@
                                 <tr>
                                     <td>${account.getName()}</td>
                                     <td>
-                                        <a href="/accounts/${account.getID()?c}/edit" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
-                                        <a href="/accounts/${account.getID()?c}/requestDelete" class="btn-flat no-padding text-color"><i class="material-icons left">delete</i></a>
+                                        <a href="<@s.url '/accounts/${account.getID()?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
+                                        <a href="<@s.url '/accounts/${account.getID()?c}/requestDelete'/>" class="btn-flat no-padding text-color"><i class="material-icons left">delete</i></a>
                                     </td>
                                 </tr>
                             </#if>
@@ -46,8 +47,8 @@
                     <p>${locale.getString("info.text.account.delete", currentAccount.getName(), currentAccount.getReferringTransactions()?size)}</p>
                 </div>
                 <div class="modal-footer background-color">
-                    <a href="/accounts" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
-                    <a href="/accounts/${currentAccount.getID()?c}/delete" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("info.button.account.delete")}</a>
+                    <a href="<@s.url '/accounts'/>" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
+                    <a href="<@s.url '/accounts/${currentAccount.getID()?c}/delete'/>" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("info.button.account.delete")}</a>
                 </div>
             </div>
         </#if>
@@ -60,7 +61,7 @@
                     <p>${locale.getString("warning.text.account.delete", currentAccount.getName())}</p>
                 </div>
                 <div class="modal-footer background-color">
-                    <a href="/accounts" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("ok")}</a>
+                    <a href="<@s.url '/accounts'/>" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("ok")}</a>
                 </div>
             </div>
         </#if>
@@ -68,6 +69,6 @@
         <!--  Scripts-->
         <#import "../scripts.ftl" as scripts>
         <@scripts.scripts/>
-        <script src="/js/accounts.js"></script>
+        <script src="<@s.url '/js/accounts.js'/>"></script>
     </body>
 </html>

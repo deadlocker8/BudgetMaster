@@ -4,6 +4,7 @@
         <@header.header "BudgetMaster"/>
         <@header.style "spectrum"/>
         <@header.style "categories"/>
+        <#import "/spring.ftl" as s>
     </head>
     <body class="budgetmaster-blue-light">
         <#import "../navbar.ftl" as navbar>
@@ -20,7 +21,7 @@
                 </div>
                 <div class="container">
                     <#import "../validation.ftl" as validation>
-                    <form name="NewCategory" action="/categories/newCategory" method="post">
+                    <form name="NewCategory" action="<@s.url '/categories/newCategory'/>" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="ID" value="<#if category.getID()??>${category.getID()?c}</#if>">
                         <input type="hidden" name="type" value="<#if category.getType()??>${category.getType()}</#if>">
@@ -65,7 +66,7 @@
                         <#-- buttons -->
                         <div class="row hide-on-small-only">
                             <div class="col s6 right-align">
-                                <a href="/categories" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
+                                <a href="<@s.url '/categories'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
                             </div>
 
                             <div class="col s6 left-align">
@@ -77,7 +78,7 @@
                         <div class="hide-on-med-and-up">
                             <div class="row center-align">
                                 <div class="col s12">
-                                    <a href="/categories" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
+                                    <a href="<@s.url '/categories'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
                                 </div>
                             </div>
                             <div class="row center-align">
@@ -96,7 +97,7 @@
         <!-- Scripts-->
         <#import "../scripts.ftl" as scripts>
         <@scripts.scripts/>
-        <script src="/js/spectrum.js"></script>
-        <script src="/js/categories.js"></script>
+        <script src="<@s.url '/js/spectrum.js'/>"></script>
+        <script src="<@s.url '/js/categories.js'/>"></script>
     </body>
 </html>

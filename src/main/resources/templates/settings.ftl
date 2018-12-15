@@ -2,6 +2,7 @@
     <head>
         <#import "header.ftl" as header>
         <@header.header "BudgetMaster"/>
+        <#import "/spring.ftl" as s>
     </head>
     <body class="budgetmaster-blue-light">
         <#import "navbar.ftl" as navbar>
@@ -16,7 +17,7 @@
                 </div>
                 <div class="container">
                     <#import "validation.ftl" as validation>
-                    <form name="Settings" action="/settings/save" method="post">
+                    <form name="Settings" action="<@s.url '/settings/save'/>" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="ID" value="${settings.getID()?c}">
 
@@ -116,7 +117,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2">
-                                            <a href="/updateSearch" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">refresh</i>${locale.getString("settings.updates.search")}</a>
+                                            <a href="<@s.url '/updateSearch'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">refresh</i>${locale.getString("settings.updates.search")}</a>
                                         </td>
                                     </tr>
                                 </table>
@@ -145,34 +146,34 @@
                 </div>
                 <div class="row hide-on-small-only">
                     <div class="col m4 l4 center-align">
-                        <a href="/settings/database/requestImport" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">cloud_upload</i>${locale.getString("settings.database.import")}</a>
+                        <a href="<@s.url '/settings/database/requestImport'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">cloud_upload</i>${locale.getString("settings.database.import")}</a>
                     </div>
 
                     <div class="col m4 l4 center-align">
-                        <a href="/settings/database/requestExport" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">cloud_download</i>${locale.getString("settings.database.export")}</a>
+                        <a href="<@s.url '/settings/database/requestExport'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">cloud_download</i>${locale.getString("settings.database.export")}</a>
                     </div>
 
                     <div class="col m4 l4 center-align">
-                        <a href="/settings/database/requestDelete" class="waves-effect waves-light btn budgetmaster-red"><i class="material-icons left">delete_forever</i>${locale.getString("settings.database.delete")}</a>
+                        <a href="<@s.url '/settings/database/requestDelete'/>" class="waves-effect waves-light btn budgetmaster-red"><i class="material-icons left">delete_forever</i>${locale.getString("settings.database.delete")}</a>
                     </div>
                 </div>
 
                 <div class="hide-on-med-and-up">
                     <div class="row center-align">
                         <div class="col s12">
-                            <a href="/settings/database/requestImport" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">cloud_upload</i>${locale.getString("settings.database.import")}</a>
+                            <a href="<@s.url '/settings/database/requestImport'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">cloud_upload</i>${locale.getString("settings.database.import")}</a>
                         </div>
                     </div>
 
                     <div class="row center-align">
                         <div class="col s12">
-                            <a href="/settings/database/requestExport" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">cloud_download</i>${locale.getString("settings.database.export")}</a>
+                            <a href="<@s.url '/settings/database/requestExport'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">cloud_download</i>${locale.getString("settings.database.export")}</a>
                         </div>
                     </div>
 
                     <div class="row center-align">
                         <div class="col s12">
-                            <a href="/settings/database/requestDelete" class="waves-effect waves-light btn budgetmaster-red"><i class="material-icons left">delete_forever</i>${locale.getString("settings.database.delete")}</a>
+                            <a href="<@s.url '/settings/database/requestDelete'/>" class="waves-effect waves-light btn budgetmaster-red"><i class="material-icons left">delete_forever</i>${locale.getString("settings.database.delete")}</a>
                         </div>
                     </div>
                 </div>
@@ -186,7 +187,7 @@
                     <p>${locale.getString("info.header.text.database.delete")}</p>
                     <p>${locale.getString("info.text.database.delete", verificationCode)}</p>
 
-                    <form id="form-confirm-database-delete" action="/settings/database/delete" method="post">
+                    <form id="form-confirm-database-delete" action="<@s.url '/settings/database/delete'/>" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="verificationCode" value="${verificationCode}"/>
 
@@ -199,7 +200,7 @@
                     </form>
                 </div>
                 <div class="modal-footer background-color">
-                    <a href="/settings" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
+                    <a href="<@s.url '/settings'/>" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
                     <a class="modal-action modal-close waves-effect waves-light green btn-flat white-text" id="button-confirm-database-delete">${locale.getString("delete")}</a>
                 </div>
             </div>
@@ -210,7 +211,7 @@
                 <div class="modal-content">
                     <h4>${locale.getString("info.title.database.import.dialog")}</h4>
 
-                    <form id="form-database-import" method="POST" action="/settings/database/upload" enctype="multipart/form-data" accept-charset="UTF-8">
+                    <form id="form-database-import" method="POST" action="<@s.url '/settings/database/upload'/>" enctype="multipart/form-data" accept-charset="UTF-8">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <div class="file-field input-field">
                             <div class="btn budgetmaster-blue">
@@ -224,7 +225,7 @@
                     </form>
                 </div>
                 <div class="modal-footer background-color">
-                    <a href="/settings" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
+                    <a href="<@s.url '/settings'/>" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
                     <a class="modal-action modal-close waves-effect waves-light green btn-flat white-text" id="button-confirm-database-import">${locale.getString("settings.database.import")}</a>
                 </div>
             </div>
@@ -237,7 +238,7 @@
                     <p>${locale.getString("error.text.database.import", errorImportDatabase)}</p>
                 </div>
                 <div class="modal-footer background-color">
-                    <a href="/settings" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("ok")}</a>
+                    <a href="<@s.url '/settings'/>" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("ok")}</a>
                 </div>
             </div>
         </#if>
@@ -249,8 +250,8 @@
                     <p>${updateString}</p>
                 </div>
                 <div class="modal-footer background-color">
-                    <a href="/settings" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
-                    <a href="/performUpdate" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("settings.update.start")}</a>
+                    <a href="<@s.url '/settings'/>" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
+                    <a href="<@s.url '/performUpdate'/>" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("settings.update.start")}</a>
                 </div>
             </div>
         </#if>
@@ -258,7 +259,7 @@
         <!-- Scripts-->
         <#import "scripts.ftl" as scripts>
         <@scripts.scripts/>
-        <script src="/js/spectrum.js"></script>
-        <script src="/js/settings.js"></script>
+        <script src="<@s.url '/js/spectrum.js'/>"></script>
+        <script src="<@s.url '/js/settings.js'/>"></script>
     </body>
 </html>

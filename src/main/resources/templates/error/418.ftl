@@ -3,6 +3,7 @@
         <#import "../header.ftl" as header>
         <@header.header "BudgetMaster - 418"/>
         <@header.style "login"/>
+        <#import "/spring.ftl" as s>
     </head>
     <body class="budgetmaster-blue-light">
         <main>
@@ -15,14 +16,14 @@
                             </span>
                             <div class="row">
                                 <div class="col s12 center-align">
-                                    <img id="teapot" src="/images/teapot.png">
+                                    <img id="teapot" src="<@s.url '/images/teapot.png'/>">
                                     <h1>418</h1>
                                     <h5>${locale.getString("errorpages.418")}</h5>
                                     <div>${locale.getString("errorpages.418.credits")}</div>
                                 </div>
                             </div>
                             <div class="center-align">
-                                <a href="/" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">home</i>${locale.getString("errorpages.home")}</a>
+                                <a href="<@s.url '/'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">home</i>${locale.getString("errorpages.home")}</a>
                             </div>
                         </div>
                     </div>
