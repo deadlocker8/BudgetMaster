@@ -10,3 +10,6 @@ certs/
 build/[0-9]*.[0-9]*.[0-9]*
 /error.log
 /application.properties
+
+src/main/WEB-INF
+src/main/META-INF
