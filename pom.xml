@@ -9,8 +9,6 @@
     <version>2.0.1</version>
     <name>BudgetMaster</name>
 
-    <packaging>war</packaging>
-
     <repositories>
         <repository>
             <id>release</id>
@@ -161,6 +159,25 @@
                         <goals>
                             <goal>repackage</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.2.2</version>
+                <configuration>
+                    <webappDirectory>${basedir}/src/main</webappDirectory>
+                    <outputDirectory>${project.outputDirectory}</outputDirectory>
+                    <warName>${project.artifactName}</warName>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>war-packaging</id>
+                        <goals>
+                            <goal>war</goal>
+                        </goals>
+                        <phase>package</phase>
                     </execution>
                 </executions>
             </plugin>
