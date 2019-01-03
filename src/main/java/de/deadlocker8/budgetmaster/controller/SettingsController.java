@@ -40,6 +40,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 
 
 @Controller
@@ -216,7 +217,7 @@ public class SettingsController extends BaseController
 
 		try
 		{
-			String jsonString = new String(file.getBytes());
+			String jsonString = new String(file.getBytes(), Charset.forName("UTF-8"));
 			DatabaseParser importer = new DatabaseParser(jsonString);
 			Database database = importer.parseDatabaseFromJSON();
 
