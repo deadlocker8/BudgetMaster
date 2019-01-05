@@ -16,7 +16,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -57,10 +59,8 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 
 		ProgramArgs.setArgs(Arrays.asList(args));
 
-		Path applicationSupportFolder = SystemUtils.getApplicationSupportDirectoryPath(Localization.getString("folder"));
+		Path applicationSupportFolder = getApplicationSupportFolder();
 		PathUtils.createDirectoriesIfNotExists(applicationSupportFolder);
-
-		ProgramArgs.setArgs(Arrays.asList(args));
 
 		Path settingsPath = applicationSupportFolder.resolve("settings.properties");
 		if(Files.notExists(settingsPath))
@@ -80,11 +80,33 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 		return applicationSupportFolder;
 	}
 
+	public static Path getApplicationSupportFolder()
+	{
+		if(ProgramArgs.isDebug())
+		{
+			return SystemUtils.getApplicationSupportDirectoryPath(Localization.getString("folder"), "debug");
+		}
+
+		return SystemUtils.getApplicationSupportDirectoryPath(Localization.getString("folder"));
+	}
+
 	public static void main(String[] args)
 	{
 		Path applicationSupportFolder = prepare(args);
 		Path logPath = applicationSupportFolder.resolve("error.log");
-		SpringApplication.run(Main.class, "--logging.file=" + logPath.toString());
+
+		String loggingArgument = "--logging.file=" + logPath.toString();
+		List<String> arguments = new ArrayList<>(ProgramArgs.getArgs());
+		if(!arguments.contains(loggingArgument))
+		{
+			arguments.add(loggingArgument);
+		}
+
+		args = new String[arguments.size()];
+		args = arguments.toArray(args);
+		System.out.println(Arrays.toString(args));
+
+		SpringApplication.run(Main.class, args);
 	}
 
 	@Override
