@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmaster.database;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import de.deadlocker8.budgetmaster.database.legacy.LegacyParser;
+import de.deadlocker8.budgetmaster.entities.Category;
 import de.thecodelabs.utils.util.Localization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,10 +12,12 @@ public class DatabaseParser
 {
 	final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private String jsonString;
+	private Category categoryNone;
 
-	public DatabaseParser(String json)
+	public DatabaseParser(String json, Category categoryNone)
 	{
 		this.jsonString = json;
+		this.categoryNone = categoryNone;
 	}
 
 	public Database parseDatabaseFromJSON() throws IllegalArgumentException
@@ -33,7 +36,7 @@ public class DatabaseParser
 
 			if(version == 2)
 			{
-				Database database = new LegacyParser(jsonString).parseDatabaseFromJSON();
+				Database database = new LegacyParser(jsonString, categoryNone).parseDatabaseFromJSON();
 				LOGGER.debug("Parsed database with " + database.getTransactions().size() + " transactions, " + database.getCategories().size() + " categories and " + database.getAccounts().size() + " accounts");
 				return database;
 			}

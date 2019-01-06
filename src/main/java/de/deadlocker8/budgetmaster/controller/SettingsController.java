@@ -6,12 +6,10 @@ import de.deadlocker8.budgetmaster.authentication.UserRepository;
 import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.DatabaseParser;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
+import de.deadlocker8.budgetmaster.entities.CategoryType;
 import de.deadlocker8.budgetmaster.entities.Settings;
 import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
-import de.deadlocker8.budgetmaster.services.AccountService;
-import de.deadlocker8.budgetmaster.services.DatabaseService;
-import de.deadlocker8.budgetmaster.services.HelpersService;
-import de.deadlocker8.budgetmaster.services.ImportService;
+import de.deadlocker8.budgetmaster.services.*;
 import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.deadlocker8.budgetmaster.utils.Strings;
@@ -60,6 +58,9 @@ public class SettingsController extends BaseController
 
 	@Autowired
 	private AccountService accountService;
+
+	@Autowired
+	private CategoryService categoryService;
 
 	@Autowired
 	private ImportService importService;
@@ -218,7 +219,7 @@ public class SettingsController extends BaseController
 		try
 		{
 			String jsonString = new String(file.getBytes(), Charset.forName("UTF-8"));
-			DatabaseParser importer = new DatabaseParser(jsonString);
+			DatabaseParser importer = new DatabaseParser(jsonString, categoryService.getRepository().findByType(CategoryType.NONE));
 			Database database = importer.parseDatabaseFromJSON();
 
 			request.setAttribute("database", database, WebRequest.SCOPE_SESSION);

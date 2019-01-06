@@ -23,6 +23,8 @@ import static org.junit.Assert.assertTrue;
 
 public class LegacyParserTest
 {
+	private static final Category categoryNone = new Category("NONE", "#CCCCCC", CategoryType.NONE);
+
 	@Test
 	public void test_Categories()
 	{
@@ -30,7 +32,7 @@ public class LegacyParserTest
 		{
 			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("LegacyParserTest.json").toURI())));
 
-			LegacyParser importer = new LegacyParser(json);
+			LegacyParser importer = new LegacyParser(json, categoryNone);
 			Database database = importer.parseDatabaseFromJSON();
 
 			assertEquals(2, database.getCategories().size());
@@ -54,7 +56,7 @@ public class LegacyParserTest
 		try
 		{
 			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("LegacyParserTest.json").toURI())));
-			LegacyParser importer = new LegacyParser(json);
+			LegacyParser importer = new LegacyParser(json, categoryNone);
 			Database database = importer.parseDatabaseFromJSON();
 
 			assertEquals(1, database.getAccounts().size());
@@ -83,7 +85,7 @@ public class LegacyParserTest
 			Category category4 = new Category("Stuff", "#9B59B6", CategoryType.CUSTOM);
 			category4.setID(4);
 
-			LegacyParser importer = new LegacyParser(json);
+			LegacyParser importer = new LegacyParser(json, categoryNone);
 			Database database = importer.parseDatabaseFromJSON();
 
 			assertEquals(4, database.getTransactions().size());
@@ -104,6 +106,7 @@ public class LegacyParserTest
 			normalTransaction_2.setName("no category");
 			normalTransaction_2.setDescription("");
 			normalTransaction_2.setAccount(account);
+			normalTransaction_2.setCategory(categoryNone);
 			normalTransaction_2.setTags(new ArrayList<>());
 			assertTrue(database.getTransactions().contains(normalTransaction_2));
 

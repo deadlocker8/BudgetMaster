@@ -27,11 +27,13 @@ public class LegacyParser
 	private List<Category> categories;
 	private List<Tag> tags;
 	private List<TagMatch> tagMatches;
+	private Category categoryNone;
 
-	public LegacyParser(String json)
+	public LegacyParser(String json, Category categoryNone)
 	{
 		this.jsonString = json;
 		this.account = new Account("LEGACY_IMPORT", AccountType.CUSTOM);
+		this.categoryNone = categoryNone;
 	}
 
 	public Database parseDatabaseFromJSON()
@@ -57,6 +59,7 @@ public class LegacyParser
 			int ID = currentCategory.getAsJsonObject().get("ID").getAsInt();
 			String name = currentCategory.getAsJsonObject().get("name").getAsString();
 			String color = currentCategory.getAsJsonObject().get("color").getAsString();
+
 			if(name.equals("NONE") || name.equals("Übertrag")|| name.equals("Rest"))
 			{
 				continue;
@@ -214,7 +217,7 @@ public class LegacyParser
 			}
 		}
 
-		return null;
+		return categoryNone;
 	}
 
 	private Tag getTagByID(int ID)
