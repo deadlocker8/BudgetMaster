@@ -502,6 +502,10 @@ input[type="radio"]:not(:checked) + label::before, [type="radio"]:not(:checked) 
     width: 30%;
 }
 
+.transaction-name {
+    width: 50%;
+}
+
 .hidden {
     display: none;
 }

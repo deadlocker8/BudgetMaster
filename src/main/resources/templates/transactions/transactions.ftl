@@ -57,7 +57,7 @@
                                         </span>
                                     </div>
                                 </td>
-                                <td>
+                                <td class="transaction-name">
                                     <div>${transaction.name}</div>
                                     <#if transaction.description??>
                                         <div class="italic">${transaction.description}</div>
