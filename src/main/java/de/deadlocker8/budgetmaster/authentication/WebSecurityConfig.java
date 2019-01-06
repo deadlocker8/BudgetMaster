@@ -27,11 +27,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 {
 	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 	private final UserDetailsService userDetailsService;
+	private PreLoginUrlBlacklist preLoginUrlBlacklist;
 
 	@Autowired
 	public WebSecurityConfig(UserDetailsService userDetailsService)
 	{
 		this.userDetailsService = userDetailsService;
+		this.preLoginUrlBlacklist = new PreLoginUrlBlacklist();
 	}
 
 	@Bean
@@ -56,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 				.loginPage("/login")
 				.successHandler((req, res, auth) -> {
 					Object preLoginURL = req.getSession().getAttribute("preLoginURL");
-					if(preLoginURL == null || preLoginURL.toString().contains("login"))
+					if(preLoginURL == null || preLoginUrlBlacklist.isBlacklisted(preLoginURL.toString()))
 					{
 						preLoginURL = "/";
 					}
