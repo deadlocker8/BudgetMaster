@@ -1,19 +1,27 @@
-.picker__date-display {
+.datepicker-date-display {
     background-color: #2E79B9;
 }
 
-.picker__day--selected, .picker__day--selected:hover, .picker--focused .picker__day--selected {
+.datepicker-table td.is-selected {
     background-color: #2E79B9;
 }
 
-.picker__close, .picker__today, .picker__clear {
+.datepicker-cancel, .datepicker-done, .datepicker-clear {
     color: #2E79B9;
+    font-weight: bold;
 }
 
-.picker__nav--prev:hover, .picker__nav--next:hover {
+.datepicker-cancel:hover, .datepicker-done:hover, .datepicker-clear:hover {
+    background-color: rgba(46, 121, 185, 0.2);
+    color: #2E79B9;
+    font-weight: bold;
+}
+
+.datepicker-calendar .month-next:hover, .datepicker-calendar .month-prev:hover {
     background-color: rgba(46, 121, 185, 0.3);
 }
 
-.picker__day.picker__day--today {
+.datepicker-table td.is-today {
     color: #2E79B9;
+    font-weight: bold;
 }

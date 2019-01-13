@@ -3,11 +3,12 @@ $( document ).ready(function() {
 
     if($(".datepicker").length)
     {
-        var pickerStartDate = $('#transaction-datepicker').datepicker({
+        var pickerStartDate = M.Datepicker.init(document.getElementById('transaction-datepicker'), {
             yearRange: 25,
             firstDay: 1,
             showClearBtn: false,
             setDefaultDate: true,
+            defaultDate: startDate,
 
             i18n: {
                 // Strings and translations
@@ -32,20 +33,35 @@ $( document ).ready(function() {
             onSelect: function()
             {
                 var selectedDate = this.date;
+
                 if(pickerEndDate.date < selectedDate)
                 {
-                    pickerEndDate.setDate(selectedDate);
+                    pickerEndDate.destroy();
+                    pickerEndDate = createDatePickerEnd(selectedDate);
                 }
-
-                pickerEndDate.minDate(selectedDate);
             }
         });
 
-        var pickerEndDate = $('#transaction-repeating-end-date-input').datepicker({
+        // picker end date
+        var pickerEndDate = createDatePickerEnd(endDate);
+
+        var selectedDate = pickerStartDate.date;
+        if(pickerEndDate.date < selectedDate)
+        {
+            pickerEndDate.destroy();
+            pickerEndDate = createDatePickerEnd(selectedDate);
+        }
+    }
+
+    function createDatePickerEnd(minDate)
+    {
+        return M.Datepicker.init(document.getElementById('transaction-repeating-end-date-input'), {
             yearRange: 50,
             firstDay: 1,
             showClearBtn: false,
             setDefaultDate: true,
+            defaultDate: minDate,
+            minDate: minDate,
 
             i18n: {
                 // Strings and translations
@@ -74,14 +90,6 @@ $( document ).ready(function() {
                 endDate.checked = true;
             }
         });
-
-        // picker end date
-        var selectedDate = pickerStartDate.date;
-        if(pickerEndDate.date < selectedDate)
-        {
-            pickerEndDate.setDate(selectedDate);
-        }
-        pickerEndDate.minDate(selectedDate);
     }
 
     if($('#transaction-amount').length)

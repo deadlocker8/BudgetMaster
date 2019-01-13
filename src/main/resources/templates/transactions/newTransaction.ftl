@@ -126,7 +126,13 @@
                         <#-- date -->
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
-                                <input id="transaction-datepicker" type="text" class="datepicker" name="date" value="<#if transaction.getDate()??>${helpers.getLongDateString(transaction.getDate())}<#else>${helpers.getLongDateString(currentDate)}</#if>">
+                                <#if transaction.getDate()??>
+                                    <#assign startDate = helpers.getLongDateString(transaction.getDate())/>
+                                <#else>
+                                    <#assign startDate = helpers.getLongDateString(currentDate)/>
+                                </#if>
+
+                                <input id="transaction-datepicker" type="text" class="datepicker" name="date" value="${startDate}">
                                 <label for="transaction-datepicker">${locale.getString("transaction.new.label.date")}</label>
                             </div>
                         </div>
@@ -237,8 +243,10 @@
                         <#macro repeatingEndNever checked>
                             <div class="row valign-wrapper">
                                 <div class="col s1">
-                                    <input class="with-gap" name="repeatingEndType" type="radio" id="repeating-end-never" value="${locale.getString("repeating.end.key.never")}" <#if checked>checked</#if>/>
-                                    <label for="repeating-end-never"></label>
+                                    <label>
+                                        <input class="with-gap" name="repeatingEndType" type="radio" id="repeating-end-never" value="${locale.getString("repeating.end.key.never")}" <#if checked>checked</#if>/>
+                                        <span for="repeating-end-never"></span>
+                                    </label>
                                 </div>
                                 <div class="col s11">
                                     ${locale.getString("repeating.end.never")}
@@ -249,8 +257,10 @@
                         <#macro repeatingEndAfterXTimes checked>
                             <div class="row valign-wrapper">
                                 <div class="col s1">
-                                    <input class="with-gap" name="repeatingEndType" type="radio" id="repeating-end-after-x-times" value="${locale.getString("repeating.end.key.afterXTimes")}" <#if checked>checked</#if>/>
-                                    <label for="repeating-end-after-x-times"></label>
+                                    <label>
+                                        <input class="with-gap" name="repeatingEndType" type="radio" id="repeating-end-after-x-times" value="${locale.getString("repeating.end.key.afterXTimes")}" <#if checked>checked</#if>/>
+                                        <span for="repeating-end-after-x-times"></span>
+                                    </label>
                                 </div>
                                 <div class="col s11">
                                     <table class="table-repeating-end">
@@ -270,10 +280,18 @@
                         </#macro>
 
                         <#macro repeatingEndDate checked>
+                            <#if checked>
+                                <#assign endDate = helpers.getLongDateString(transaction.getRepeatingOption().getEndOption().getValue())/>
+                            <#else>
+                                <#assign endDate = helpers.getLongDateString(currentDate)/>
+                            </#if>
+
                             <div class="row valign-wrapper">
                                 <div class="col s1">
-                                    <input class="with-gap" name="repeatingEndType" type="radio" id="repeating-end-date" value="${locale.getString("repeating.end.key.date")}" <#if checked>checked</#if>/>
-                                    <label for="repeating-end-date"></label>
+                                    <label>
+                                        <input class="with-gap" name="repeatingEndType" type="radio" id="repeating-end-date" value="${locale.getString("repeating.end.key.date")}" <#if checked>checked</#if>/>
+                                        <span for="repeating-end-date"></span>
+                                    </label>
                                 </div>
                                 <div class="col s11">
                                     <table class="table-repeating-end">
@@ -281,7 +299,7 @@
                                             <td class="cell">${locale.getString("repeating.end.date")}</td>
                                             <td class="cell input-cell">
                                                 <div class="input-field no-margin">
-                                                    <input class="datepicker no-margin input-min-width" id="transaction-repeating-end-date-input" type="text" value="<#if checked>${helpers.getLongDateString(transaction.getRepeatingOption().getEndOption().getValue())}<#else>${helpers.getLongDateString(currentDate)}</#if>">
+                                                    <input class="datepicker no-margin input-min-width" id="transaction-repeating-end-date-input" type="text" value="${endDate}">
                                                     <label for="transaction-repeating-end-date-input"></label>
                                                 </div>
                                             </td>
@@ -325,11 +343,16 @@
             </div>
         </main>
 
-
         <!-- Pass localization to JS -->
         <#import "../datePicker.ftl" as datePicker>
         <@datePicker.datePickerLocalization/>
         <script>
+            startDate = "${startDate}".split(".");
+            startDate = new Date(startDate[2], startDate[1], startDate[0]);
+
+            endDate = "${endDate}".split(".");
+            endDate = new Date(endDate[2], endDate[1], endDate[0]);
+
             amountValidationMessage = "${locale.getString("warning.transaction.amount")}";
             numberValidationMessage = "${locale.getString("warning.transaction.number")}";
             tagsPlaceholder = "${locale.getString("tagfield.placeholder")}";
