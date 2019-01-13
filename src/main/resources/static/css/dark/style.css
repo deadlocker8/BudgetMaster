@@ -409,6 +409,7 @@ ul.dropdown-content.select-dropdown li.selected {
 }
 
 .caret {
+    fill: #FFFFFF !important;
     color: white !important;
 }
 
