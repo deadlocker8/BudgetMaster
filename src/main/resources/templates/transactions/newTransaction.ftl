@@ -263,7 +263,7 @@
                                     </label>
                                 </div>
                                 <div class="col s11">
-                                    <table class="table-repeating-end">
+                                    <table class="table-repeating-end no-border-table">
                                         <tr>
                                             <td class="cell">${locale.getString("repeating.end.afterXTimes.A")}</td>
                                             <td class="cell input-cell">
@@ -294,7 +294,7 @@
                                     </label>
                                 </div>
                                 <div class="col s11">
-                                    <table class="table-repeating-end">
+                                    <table class="table-repeating-end no-border-table">
                                         <tr>
                                             <td class="cell">${locale.getString("repeating.end.date")}</td>
                                             <td class="cell input-cell">
@@ -348,10 +348,10 @@
         <@datePicker.datePickerLocalization/>
         <script>
             startDate = "${startDate}".split(".");
-            startDate = new Date(startDate[2], startDate[1], startDate[0]);
+            startDate = new Date(startDate[2], startDate[1]-1, startDate[0]);
 
             endDate = "${endDate}".split(".");
-            endDate = new Date(endDate[2], endDate[1], endDate[0]);
+            endDate = new Date(endDate[2], endDate[1]-1, endDate[0]);
 
             amountValidationMessage = "${locale.getString("warning.transaction.amount")}";
             numberValidationMessage = "${locale.getString("warning.transaction.number")}";

@@ -184,7 +184,10 @@ $( document ).ready(function() {
         document.getElementById("input-isPayment").value = 1;
     });
 
-    beautifyCategorySelect();
+    if($("#transaction-category").length)
+    {
+        beautifyCategorySelect();
+    }
 });
 
 var transactionRepeatingModifierID = "#transaction-repeating-modifier";
@@ -244,7 +247,7 @@ function addTooltip(id, message)
     element.dataset.tooltip=message;
     element.dataset.position="bottom";
     element.dataset.delay="50";
-    $('#' + id).tooltip();
+    M.Tooltip.init(element);
 }
 
 function removeTooltip(id)
@@ -255,7 +258,12 @@ function removeTooltip(id)
     removeClass(element, "invalid");
     removeClass(element, "tooltipped");
     addClass(element, "valid");
-    $('#' + id).tooltip('remove');
+    var tooltip = M.Tooltip.getInstance(element);
+    if(tooltip !== undefined)
+    {
+        tooltip.destroy();
+    }
+
 }
 
 function validateForm()
@@ -264,7 +272,7 @@ function validateForm()
     validateAmount($('#transaction-amount').val());
 
     // handle tags
-    var tags = $('.chips-autocomplete').material_chip('data');
+    var tags = M.Chips.getInstance(document.querySelector('.chips-autocomplete')).chipsData;
     var parent = document.getElementById("hidden-transaction-tags");
     for(var i = 0; i < tags.length; i++)
     {
@@ -319,32 +327,59 @@ function validateForm()
 function beautifyCategorySelect() {
     var counter = 0;
 
-    $("#categoryWrapper ul.dropdown-content.select-dropdown li span").each(function () {
-        var categoryInfos = $(this).text().split("@@@");
-        var categoryName = categoryInfos[0];
-        var firstLetter = capitalizeFirstLetter(categoryName);
-        var categoryColor = categoryInfos[1];
-        var appropriateTextColor = categoryInfos[2];
+    var select = M.FormSelect.init(document.getElementById('transaction-category'), {
+        dropdownOptions: {
+            onCloseStart: function () {
+                var listItems = select.dropdownOptions.childNodes;
+                var selectedItem;
+                for(var i = 0; i < listItems.length; i++)
+                {
+                    var currentItem = listItems[i];
+                    if(currentItem.classList.contains("selected"))
+                    {
+                        selectedItem = currentItem.textContent;
+                        break;
+                    }
+                }
+                select.input.value = selectedItem;
+            }
+        }
+    });
 
-        $(this).text(categoryName);
-        $(this).data("infos", categoryInfos);
-        $(this).addClass("category-select");
-        $(this).parent().prepend('<div class="category-circle-small category-select" id="category-' + counter + '" style="background-color: ' + categoryColor + '"><span></span></div>');
+    select.dropdownOptions.childNodes.forEach(function (item) {
+        var currentSpan = jQuery(item.querySelector('span'));
+        var categoryInfo = currentSpan.text().split("@@@");
+        var categoryName = categoryInfo[0];
+        var firstLetter = capitalizeFirstLetter(categoryName);
+        var categoryColor = categoryInfo[1];
+        var appropriateTextColor = categoryInfo[2];
+
+        currentSpan.text(categoryName);
+        currentSpan.data("infos", categoryInfo);
+        currentSpan.addClass("category-select");
+        currentSpan.parent().prepend('<div class="category-circle-small category-select" id="category-' + counter + '" style="background-color: ' + categoryColor + '"><span></span></div>');
         $('#categoryWrapper').parent().append('<style>#category-' + counter + ':after{content: "' + firstLetter + '"; color: ' + appropriateTextColor + ';}</style>');
 
+        currentSpan.click(function () {
+            select.input.value = categoryName;
+        });
         counter++;
     });
 
     // select current category from code again in order to avoid showing the full infos text (e.g. Test@@@#FFFFFF@#000000@@@1) in the input field by materialize
     if(typeof selectedCategory !== 'undefined')
     {
-        $("#categoryWrapper ul.dropdown-content.select-dropdown li span.category-select").each(function () {
-            var categoryID = $(this).data("infos")[3];
+        var listItems = select.dropdownOptions.childNodes;
+        for(var i = 0; i < listItems.length; i++)
+        {
+            var currentSpan = jQuery(listItems[i].querySelector('span.category-select'));
+            var categoryID = currentSpan.data("infos")[3];
             if(categoryID === selectedCategory)
             {
-                $(this).parent().trigger("click");
+                currentSpan.trigger("click");
+                break;
             }
-        });
+        }
     }
 }
 
