@@ -510,6 +510,14 @@ input[type="radio"]:not(:checked) + span::before, [type="radio"]:not(:checked) +
     width: 50%;
 }
 
+.no-border-table tr {
+    border: none;
+}
+
+.bordered tr {
+    border-bottom: 1px solid #FFFFFF;
+}
+
 .hidden {
     display: none;
 }

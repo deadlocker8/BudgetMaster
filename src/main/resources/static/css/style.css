@@ -430,6 +430,14 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     width: 50%;
 }
 
+.no-border-table tr {
+    border: none;
+}
+
+.bordered tr {
+    border-bottom: 1px solid #212121;
+}
+
 .hidden {
     display: none;
 }

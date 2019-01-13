@@ -96,7 +96,7 @@
 
                         <div class="row">
                             <div class="col s12 m12 l8 offset-l2">
-                                <table>
+                                <table class="no-border-table">
                                     <tr>
                                         <td rowspan="2">
                                             <div class="switch">

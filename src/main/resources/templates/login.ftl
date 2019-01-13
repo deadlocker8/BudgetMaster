@@ -28,7 +28,7 @@
                                 <#if isError??>
                                     <div class="row no-margin-bottom">
                                         <div class="col s12 center-align">
-                                            <table class="${redTextColor} login-message">
+                                            <table class="${redTextColor} login-message no-border-table">
                                                 <tr>
                                                     <td><i class="material-icons">warning</i></td>
                                                     <td>${locale.getString("warning.wrong.password")}</td>
@@ -41,7 +41,7 @@
                                 <#if isLogout??>
                                     <div class="row no-margin-bottom">
                                         <div class="col s12 center-align">
-                                            <table class="${greenTextColor} login-message">
+                                            <table class="${greenTextColor} login-message no-border-table">
                                                 <tr>
                                                     <td><i class="material-icons">info_outline</i></td>
                                                     <td>${locale.getString("logout.success")}</td>
