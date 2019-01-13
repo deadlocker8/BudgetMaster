@@ -104,7 +104,6 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 
 		args = new String[arguments.size()];
 		args = arguments.toArray(args);
-		System.out.println(Arrays.toString(args));
 
 		SpringApplication.run(Main.class, args);
 	}

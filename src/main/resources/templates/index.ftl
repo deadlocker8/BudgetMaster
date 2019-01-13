@@ -52,10 +52,10 @@
                     <div class="row home-menu-flex">
                 </div>
                         <div class="col s12 m6 l4 center-align home-menu-cell">
-                            <a class="home-menu-link budgetmaster-text-black home-menu-disabled">
+                            <a href="<@s.url '/reports'/>" class="home-menu-link budgetmaster-text-black">
                                 <h1 class="center budgetmaster-green-text"><i class="material-icons icon-budget">description</i></h1>
                                 <h3 class="center budget">${locale.getString("menu.reports")}</h3>
-                                <p class="home-menu-disabled ">${locale.getString("home.menu.reports")}</p>
+                                <p class="text-grey">${locale.getString("home.menu.reports")}</p>
                             </a>
                         </div>
                 <div class="hide-on-small-only hide-on-large-only">

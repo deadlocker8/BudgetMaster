@@ -8,13 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class EmptyPageController extends BaseController
 {
-	@RequestMapping("/reports")
-	public String reports(Model model)
-	{
-		model.addAttribute("active", "reports");
-		return "comingSoon";
-	}
-
 	@RequestMapping("/charts")
 	public String charts(Model model)
 	{

@@ -59,7 +59,7 @@ public class TransactionController extends BaseController
 	@RequestMapping("/transactions")
 	public String transactions(Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
 	{
-		DateTime date = getDateTimeFromCookie(cookieDate);
+		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
 
 		repeatingTransactionUpdater.updateRepeatingTransactions(date.dayOfMonth().withMaximumValue());
 
@@ -85,7 +85,7 @@ public class TransactionController extends BaseController
 			return "redirect:/transactions";
 		}
 
-		DateTime date = getDateTimeFromCookie(cookieDate);
+		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
 		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear(), getSettings().isRestActivated());
 		int incomeSum = helpers.getIncomeSumForTransactionList(transactions);
 		int paymentSum = helpers.getPaymentSumForTransactionList(transactions);
@@ -111,7 +111,7 @@ public class TransactionController extends BaseController
 	@RequestMapping("/transactions/newTransaction")
 	public String newTransaction(Model model, @CookieValue("currentDate") String cookieDate)
 	{
-		DateTime date = getDateTimeFromCookie(cookieDate);
+		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
 		Transaction emptyTransaction = new Transaction();
 		model.addAttribute("currentDate", date);
 		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
@@ -131,7 +131,7 @@ public class TransactionController extends BaseController
 					   @RequestParam(value = "repeatingEndType", required = false) String repeatingEndType,
 					   @RequestParam(value = "repeatingEndValue", required = false) String repeatingEndValue)
 	{
-		DateTime date = getDateTimeFromCookie(cookieDate);
+		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
 
 		// handle repeating transactions
 		if(transaction.getID() != null && isRepeating)
@@ -221,7 +221,7 @@ public class TransactionController extends BaseController
 			transaction = transaction.getRepeatingOption().getReferringTransactions().get(0);
 		}
 
-		DateTime date = getDateTimeFromCookie(cookieDate);
+		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
 		model.addAttribute("currentDate", date);
 		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
 		model.addAttribute("accounts", accountService.getAllAccountsAsc());
@@ -232,18 +232,6 @@ public class TransactionController extends BaseController
 	private Settings getSettings()
 	{
 		return settingsRepository.findOne(0);
-	}
-
-	private DateTime getDateTimeFromCookie(String cookieDate)
-	{
-		if(cookieDate == null)
-		{
-			return DateTime.now();
-		}
-		else
-		{
-			return DateTime.parse(cookieDate, DateTimeFormat.forPattern("dd.MM.yy").withLocale(getSettings().getLanguage().getLocale()));
-		}
 	}
 
 	private Transaction addTagForTransaction(String name, Transaction transaction)
