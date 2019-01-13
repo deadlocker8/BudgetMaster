@@ -111,43 +111,47 @@ main {
     color: #212121 !important;
 }
 
-.side-nav, .side-nav-sub{
+.sidenav {
+    width: 350px;
+}
+
+.sidenav, .sidenav-sub{
     background-color: #444444;
 }
 
-.side-nav li > a, .side-nav-sub li > a {
+.sidenav li > a, .sidenav-sub li > a {
     color: #FFFFFF;
 }
 
-.side-nav li > a:hover, .side-nav-sub li > a:hover {
+.sidenav li > a:hover, .sidenav-sub li > a:hover {
     background-color: rgba(255, 255, 255, 0.1) !important;
     color: #FFFFFF !important;
 }
 
-.side-nav li > a > i, .side-nav-sub li > a > i{
+.sidenav li > a > i, .sidenav-sub li > a > i{
     color: #FFFFFF !important;
 }
 
-.side-nav li > a #icon-update {
+.sidenav li > a #icon-update {
     color: #212121 !important;
 }
 
-.side-nav li > a:hover #icon-update {
+.sidenav li > a:hover #icon-update {
     color: #FFFFFF !important;
 }
 
-.side-nav li.active {
+.sidenav li.active {
     background-color: rgba(255, 255, 255, 0.25);
 }
 
 /*active nav bar sub list items*/
-.side-nav .collapsible-body > ul:not(.collapsible) > li.active, .side-nav.fixed .collapsible-body > ul:not(.collapsible) > li.active {
+.sidenav .collapsible-body > ul:not(.collapsible) > li.active, .sidenav.fixed .collapsible-body > ul:not(.collapsible) > li.active {
     background-color: rgba(255, 255, 255, 0.35);
 }
 
 /*text color for active nav bar sub list items*/
-.side-nav .collapsible-body > ul:not(.collapsible) > li.active a,
-.side-nav.fixed .collapsible-body > ul:not(.collapsible) > li.active a {
+.sidenav .collapsible-body > ul:not(.collapsible) > li.active a,
+.sidenav.fixed .collapsible-body > ul:not(.collapsible) > li.active a {
     color: rgba(255, 255, 255, 0.87);
 }
 

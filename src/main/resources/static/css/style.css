@@ -106,18 +106,22 @@ main {
     background-color: #F7EB84;
 }
 
-.side-nav li.active {
+.sidenav {
+    width: 350px;
+}
+
+.sidenav li.active {
     background-color: rgba(0, 0, 0, 0.15);
 }
 
 /*active nav bar sub list items*/
-.side-nav .collapsible-body > ul:not(.collapsible) > li.active, .side-nav.fixed .collapsible-body > ul:not(.collapsible) > li.active {
+.sidenav .collapsible-body > ul:not(.collapsible) > li.active, .sidenav.fixed .collapsible-body > ul:not(.collapsible) > li.active {
     background-color: rgba(0, 0, 0, 0.25);
 }
 
 /*text color for active nav bar sub list items*/
-.side-nav .collapsible-body > ul:not(.collapsible) > li.active a,
-.side-nav.fixed .collapsible-body > ul:not(.collapsible) > li.active a {
+.sidenav .collapsible-body > ul:not(.collapsible) > li.active a,
+.sidenav.fixed .collapsible-body > ul:not(.collapsible) > li.active a {
     color: rgba(0, 0, 0, 0.87);
 }
 

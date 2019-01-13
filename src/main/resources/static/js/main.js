@@ -1,11 +1,9 @@
 $( document ).ready(function() {
-    $("#mobile-menu").sideNav({
-        menuWidth: 350 // Default is 300
-    });
+    $('.sidenav').sidenav();
 
     $('.modal').modal();
 
-    $('select').material_select();
+    $('select').formSelect();
 
     $("#selectWrapper ul.dropdown-content.select-dropdown li span").each(function () {
         if($(this).text() === accountPlaceholderName)

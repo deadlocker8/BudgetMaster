@@ -3,92 +3,85 @@ $( document ).ready(function() {
 
     if($(".datepicker").length)
     {
-        var pickerStartDate = $('#transaction-datepicker').pickadate({
-            selectMonths: true,
-            selectYears: 100,
+        var pickerStartDate = $('#transaction-datepicker').datepicker({
+            yearRange: 25,
             firstDay: 1,
+            showClearBtn: false,
+            setDefaultDate: true,
 
-            // Strings and translations
-            monthsFull: monthNames,
-            monthsShort: monthNamesShort,
-            weekdaysFull: weekDays,
-            weekdaysShort: weekDaysShort,
-            weekdaysLetter: weekDaysLetters,
+            i18n: {
+                // Strings and translations
+                months: monthNames,
+                monthsShort: monthNamesShort,
+                weekdays: weekDays,
+                weekdaysShort: weekDaysShort,
+                weekdaysAbbrev: weekDaysLetters,
 
-            // Buttons
-            today: buttonToday,
-            clear: buttonClear,
-            close: buttonClose,
+                // Buttons
+                done: buttonClose,
 
-            // Accessibility labels
-            labelMonthNext: '',
-            labelMonthPrev: '',
-            labelMonthSelect: '',
-            labelYearSelect: '',
+                // Accessibility labels
+                labelMonthNext: '>',
+                labelMonthPrev: '<'
+            },
 
             // Formats
             format: 'dd.mm.yyyy',
             formatSubmit: 'dd.mm.yyyy',
 
-            onSet: function()
+            onSelect: function()
             {
-                var selectedDate = this.get('select').obj;
-                if(pickerEndDate.get('select').obj < selectedDate)
+                var selectedDate = this.date;
+                if(pickerEndDate.date < selectedDate)
                 {
-                    pickerEndDate.set('select', selectedDate);
+                    pickerEndDate.setDate(selectedDate);
                 }
 
-                pickerEndDate.set('min', selectedDate);
+                pickerEndDate.minDate(selectedDate);
             }
         });
 
-        pickerStartDate = pickerStartDate.pickadate('picker');
-
-        var pickerEndDate = $('#transaction-repeating-end-date-input').pickadate({
-            selectMonths: true,
-            selectYears: 100,
+        var pickerEndDate = $('#transaction-repeating-end-date-input').datepicker({
+            yearRange: 50,
             firstDay: 1,
+            showClearBtn: false,
+            setDefaultDate: true,
 
-            // Strings and translations
-            monthsFull: monthNames,
-            monthsShort: monthNamesShort,
-            weekdaysFull: weekDays,
-            weekdaysShort: weekDaysShort,
-            weekdaysLetter: weekDaysLetters,
+            i18n: {
+                // Strings and translations
+                months: monthNames,
+                monthsShort: monthNamesShort,
+                weekdays: weekDays,
+                weekdaysShort: weekDaysShort,
+                weekdaysAbbrev: weekDaysLetters,
 
-            // Buttons
-            today: buttonToday,
-            clear: buttonClear,
-            close: buttonClose,
+                // Buttons
+                done: buttonClose,
 
-            // Accessibility labels
-            labelMonthNext: '',
-            labelMonthPrev: '',
-            labelMonthSelect: '',
-            labelYearSelect: '',
+                // Accessibility labels
+                labelMonthNext: '>',
+                labelMonthPrev: '<'
+            },
 
             // Formats
             format: 'dd.mm.yyyy',
-            formatSubmit: 'dd.mm.yyyy'
-        });
+            formatSubmit: 'dd.mm.yyyy',
 
-        pickerEndDate = pickerEndDate.pickadate('picker');
-
-        // picker end date
-        var selectedDate = pickerStartDate.get('select').obj;
-        if(pickerEndDate.get('select').obj < selectedDate)
-        {
-            pickerEndDate.set('select', selectedDate);
-        }
-        pickerEndDate.set('min', selectedDate);
-
-        pickerEndDate.on({
-            set: function() {
+            onSelect: function ()
+            {
                 // select corresponding radio button
                 var endDate = document.getElementById("repeating-end-date");
                 endDate.checked = true;
             }
-        })
+        });
+
+        // picker end date
+        var selectedDate = pickerStartDate.date;
+        if(pickerEndDate.date < selectedDate)
+        {
+            pickerEndDate.setDate(selectedDate);
+        }
+        pickerEndDate.minDate(selectedDate);
     }
 
     if($('#transaction-amount').length)
@@ -119,7 +112,7 @@ $( document ).ready(function() {
 
     if($(".chips-autocomplete").length)
     {
-        $('.chips-autocomplete').material_chip({
+        $('.chips-autocomplete').chips({
             autocompleteOptions: {
                 data: tagAutoComplete,
                 limit: Infinity,

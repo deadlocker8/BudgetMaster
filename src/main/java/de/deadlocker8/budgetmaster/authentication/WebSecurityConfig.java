@@ -50,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 				.and()
 
 				.authorizeRequests()
-				.antMatchers("/css/**", "/js/**", "/fontawesome-5.0.10/**", "/images/**", "/jquery/**", "/materialize-0.100.2/**").permitAll()
+				.antMatchers("/css/**", "/js/**", "/fontawesome-5.0.10/**", "/images/**", "/jquery/**", "/materialize-v1.0.0/**").permitAll()
 				.antMatchers("/**").authenticated()
 				.antMatchers("/login").permitAll()
 				.and()

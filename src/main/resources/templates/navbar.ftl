@@ -1,5 +1,5 @@
 <#macro navbar activeID>
-    <ul id="slide-out" class="side-nav fixed">
+    <ul id="slide-out" class="sidenav sidenav-fixed">
         <@itemLogo/>
         <@itemDivider/>
         <@itemAccountSelect/>
@@ -31,7 +31,7 @@
             <@itemUpdate "/update", locale.getString("menu.update"), "system_update"/>
         </#if>
     </ul>
-    <a href="#" data-activates="slide-out" id="mobile-menu" class="mobile-menu"><i class="material-icons left mobile-menu-icon">menu</i>Menü</a>
+    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons left mobile-menu-icon">menu</i>Menü</a>
     <div class="hide-on-large-only"><br></div>
 
     <#--logout form -->
@@ -106,7 +106,7 @@
 
 <#macro subListStart ID text icon activeColor activeID>
 <li>
-    <ul class="collapsible collapsible-accordion no-padding side-nav-sub">
+    <ul class="collapsible collapsible-accordion no-padding sidenav-sub">
         <li>
             <#if activeID?starts_with(ID)>
                 <a href="<@s.url '/charts'/>" class="collapsible-header no-padding active"><div class="stripe ${activeColor}"></div><i class="material-icons">${icon}</i>${text}</a>
@@ -114,7 +114,7 @@
                 <a href="<@s.url '/charts'/>" class="collapsible-header nav-padding"><i class="material-icons">${icon}</i>${text}</a>
             </#if>
             <div class="collapsible-body">
-                <ul class="side-nav-sub">
+                <ul class="sidenav-sub">
 </#macro>
 
 <#macro subListEnd>
