@@ -221,6 +221,10 @@ main {
     box-shadow: 0 1px 0 0 #CCCCCC !important;
 }
 
+textarea {
+    color: #FFFFFF;
+}
+
 /* label focus color */
 .input-field textarea:focus + label {
     color: #2E79B9 !important;
