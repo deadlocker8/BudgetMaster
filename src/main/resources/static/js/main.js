@@ -3,6 +3,8 @@ $( document ).ready(function() {
 
     $('.modal').modal();
 
+    $('.tooltipped').tooltip();
+
     $('select').formSelect();
 
     $("#selectWrapper ul.dropdown-content.select-dropdown li span").each(function () {
