@@ -31,5 +31,13 @@
 
 .datepicker-table td.is-today {
     color: #2E79B9;
+}
+
+.datepicker-table td.is-today .datepicker-day-button{
     font-weight: bold;
 }
+
+.datepicker-table td.is-selected .datepicker-day-button {
+    color: #FFFFFF;
+}
+
