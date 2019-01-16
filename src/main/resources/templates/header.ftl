@@ -17,6 +17,7 @@
         <@style "style"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <#global locale = static["de.thecodelabs.utils.util.Localization"]>
+        <#global programArgs = static["de.deadlocker8.budgetmaster.ProgramArgs"]>
 
         <#if helpers.getSettings().isUseDarkTheme()>
                 <#global greenTextColor="text-green"/>

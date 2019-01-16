@@ -30,6 +30,11 @@
             <@itemDivider/>
             <@itemUpdate "/update", locale.getString("menu.update"), "system_update"/>
         </#if>
+
+        <#if programArgs.isDebug()>
+            <@itemDivider/>
+            <@itemDebug "DEBUG MODE" "bug_report"/>
+        </#if>
     </ul>
     <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons left mobile-menu-icon">menu</i>Menü</a>
     <div class="hide-on-large-only"><br></div>
@@ -102,6 +107,10 @@
 <#macro itemUpdate link text icon>
     <#import "/spring.ftl" as s>
     <li><a href="<@s.url '${link}'/>" class="waves-effect budgetmaster-update budgetmaster-text-update"><i class="material-icons" id="icon-update">${icon}</i>${text}</a></li>
+</#macro>
+
+<#macro itemDebug text icon>
+    <li><a class="waves-effect budgetmaster-red budgetmaster-text-update"><i class="material-icons" id="icon-update">${icon}</i>${text}</a></li>
 </#macro>
 
 <#macro subListStart ID text icon activeColor activeID>
