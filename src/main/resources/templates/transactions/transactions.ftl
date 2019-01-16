@@ -77,8 +77,16 @@
                             </tr>
                         </#list>
                     </table>
-                    <#if transactions?size == 0>
-                        <div class="headline center-align">${locale.getString("placeholder")}</div>
+
+                    <#-- show placeholde text if no transactions are present in the current month or REST ist the only transaction -->
+                    <#assign isOnlyRest = transactions?size == 1 && transactions[0].category.type.name() == "REST"/>
+                    <#if isOnlyRest>
+                        <br>
+                    </#if>
+
+                    <#if transactions?size == 0 || isOnlyRest>
+                        <div class="headline center-align">${locale.getString("placeholder.seems.empty")}</div>
+                        <div class="headline-advice center-align">${locale.getString("placeholder.advice", locale.getString("menu.transactions"))}</div>
                     </#if>
                 </div>
             </div>

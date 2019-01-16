@@ -346,6 +346,12 @@ textarea {
     color: #FFFFFF;
 }
 
+.headline-advice {
+    color: #FFFFFF;
+    opacity: 0.7;
+    margin-top: 0.5rem;
+}
+
 .headline-date {
     font-size: 4vmin;
     text-transform: capitalize;
@@ -521,6 +527,10 @@ input[type="radio"]:not(:checked) + span::before, [type="radio"]:not(:checked) +
 
 .bordered tr {
     border-bottom: 1px solid #FFFFFF;
+}
+
+.placeholder-image {
+    width: 17vmin;
 }
 
 .hidden {
