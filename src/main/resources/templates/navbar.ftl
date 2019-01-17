@@ -36,7 +36,7 @@
             <@itemDebug "DEBUG MODE" "bug_report"/>
         </#if>
     </ul>
-    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons left mobile-menu-icon">menu</i>Menü</a>
+    <a href="#" data-target="slide-out" class="sidenav-trigger white-text"><i class="material-icons left mobile-menu-icon">menu</i>Menü</a>
     <div class="hide-on-large-only"><br></div>
 
     <#--logout form -->
