@@ -121,6 +121,7 @@ main {
 
 .sidenav li > a, .sidenav-sub li > a {
     color: #FFFFFF;
+    font-weight: 600;
 }
 
 .sidenav li > a:hover, .sidenav-sub li > a:hover {
@@ -157,6 +158,7 @@ main {
 
 .btn, .btn-flat {
     text-transform: none;
+    font-weight: 600;
 }
 
 .btn:hover {

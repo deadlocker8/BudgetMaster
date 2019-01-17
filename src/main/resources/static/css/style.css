@@ -125,8 +125,13 @@ main {
     color: rgba(0, 0, 0, 0.87);
 }
 
+.sidenav li > a, .sidenav-sub li > a {
+    font-weight: 600;
+}
+
 .btn, .btn-flat {
     text-transform: none;
+    font-weight: 600;
 }
 
 .btn:hover {
