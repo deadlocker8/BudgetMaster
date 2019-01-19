@@ -1,11 +1,11 @@
 <html>
     <head>
-        <#import "header.ftl" as header>
+        <#import "../helpers/header.ftl" as header>
         <@header.header "BudgetMaster"/>
         <#import "/spring.ftl" as s>
     </head>
     <body class="budgetmaster-blue-light">
-        <#import "navbar.ftl" as navbar>
+        <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "settings"/>
 
         <main>
@@ -17,7 +17,7 @@
                     </div>
                 </div>
                 <div class="container">
-                    <#import "validation.ftl" as validation>
+                    <#import "../helpers/validation.ftl" as validation>
                     <form name="Import" action="<@s.url '/settings/database/import'/>" method="post" onsubmit="return validateForm()">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
@@ -70,7 +70,7 @@
         </main>
 
         <!-- Scripts-->
-        <#import "scripts.ftl" as scripts>
+        <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
         <script src="<@s.url '/js/import.js'/>"></script>
     </body>

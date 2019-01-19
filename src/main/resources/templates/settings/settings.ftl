@@ -1,11 +1,11 @@
 <html>
     <head>
-        <#import "header.ftl" as header>
+        <#import "../helpers/header.ftl" as header>
         <@header.header "BudgetMaster"/>
         <#import "/spring.ftl" as s>
     </head>
     <body class="budgetmaster-blue-light">
-        <#import "navbar.ftl" as navbar>
+        <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "settings"/>
 
         <main>
@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="container">
-                    <#import "validation.ftl" as validation>
+                    <#import "../helpers/validation.ftl" as validation>
                     <form name="Settings" action="<@s.url '/settings/save'/>" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="ID" value="${settings.getID()?c}">
@@ -257,7 +257,7 @@
         </#if>
 
         <!-- Scripts-->
-        <#import "scripts.ftl" as scripts>
+        <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
         <script src="<@s.url '/js/spectrum.js'/>"></script>
         <script src="<@s.url '/js/settings.js'/>"></script>

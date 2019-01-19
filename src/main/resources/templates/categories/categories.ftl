@@ -1,12 +1,12 @@
 <html>
     <head>
-        <#import "../header.ftl" as header>
+        <#import "../helpers/header.ftl" as header>
         <@header.header "BudgetMaster"/>
         <@header.style "categories"/>
         <#import "/spring.ftl" as s>
     </head>
     <body class="budgetmaster-blue-light">
-        <#import "../navbar.ftl" as navbar>
+        <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "categories"/>
 
         <#import "categoriesFunctions.ftl" as categoriesFunctions>
@@ -65,7 +65,7 @@
         </main>
 
         <!--  Scripts-->
-        <#import "../scripts.ftl" as scripts>
+        <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
         <script src="<@s.url '/js/categories.js'/>"></script>
     </body>

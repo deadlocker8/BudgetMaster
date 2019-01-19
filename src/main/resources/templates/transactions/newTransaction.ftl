@@ -1,6 +1,6 @@
 <html>
     <head>
-        <#import "../header.ftl" as header>
+        <#import "../helpers/header.ftl" as header>
         <@header.header "BudgetMaster"/>
         <@header.style "transactions"/>
         <@header.style "datepicker"/>
@@ -8,7 +8,7 @@
         <#import "/spring.ftl" as s>
     </head>
     <body class="budgetmaster-blue-light">
-        <#import "../navbar.ftl" as navbar>
+        <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "transactions"/>
 
         <#import "../categories/categoriesFunctions.ftl" as categoriesFunctions>
@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <div class="container">
-                    <#import "../validation.ftl" as validation>
+                    <#import "../helpers/validation.ftl" as validation>
                     <form name="NewTransaction" action="<@s.url '/transactions/newTransaction'/>" method="post" onsubmit="return validateForm()">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="ID" value="<#if transaction.getID()??>${transaction.getID()?c}</#if>">
@@ -344,7 +344,7 @@
         </main>
 
         <!-- Pass localization to JS -->
-        <#import "../datePicker.ftl" as datePicker>
+        <#import "../helpers/datePicker.ftl" as datePicker>
         <@datePicker.datePickerLocalization/>
         <script>
             startDate = "${startDate}".split(".");
@@ -377,7 +377,7 @@
         </script>
 
         <!-- Scripts-->
-        <#import "../scripts.ftl" as scripts>
+        <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
         <script src="<@s.url '/js/spectrum.js'/>"></script>
         <script src="<@s.url '/js/transactions.js'/>"></script>

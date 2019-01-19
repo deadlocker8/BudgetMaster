@@ -1,10 +1,10 @@
 <html>
     <head>
-        <#import "header.ftl" as header>
+        <#import "../helpers/header.ftl" as header>
         <@header.header "BudgetMaster"/>
     </head>
     <body class="budgetmaster-blue-light">
-        <#import "navbar.ftl" as navbar>
+        <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar active/>
 
         <main>
@@ -18,7 +18,7 @@
         </main>
 
         <!--  Scripts-->
-        <#import "scripts.ftl" as scripts>
+        <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
     </body>
 </html>

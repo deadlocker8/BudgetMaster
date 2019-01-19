@@ -1,16 +1,16 @@
 <html>
     <head>
-        <#import "../header.ftl" as header>
+        <#import "../helpers/header.ftl" as header>
         <@header.header "BudgetMaster"/>
         <#import "/spring.ftl" as s>
     </head>
     <body class="budgetmaster-blue-light">
-        <#import "../navbar.ftl" as navbar>
+        <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "reports"/>
 
         <main>
             <div class="card main-card background-color">
-                <#import "../datePicker.ftl" as datePicker>
+                <#import "../helpers/datePicker.ftl" as datePicker>
                 <@datePicker.datePicker currentDate springMacroRequestContext.getRequestUri()/>
                 <div class="container">
                     <div class="row">
@@ -28,7 +28,7 @@
         </main>
 
         <!--  Scripts-->
-        <#import "../scripts.ftl" as scripts>
+        <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
         <script src="<@s.url '/js/datePicker.js'/>"></script>
         <script>document.cookie = "currentDate=${helpers.getDateString(currentDate)}";</script>

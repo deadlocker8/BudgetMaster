@@ -1,6 +1,6 @@
 <html>
     <head>
-        <#import "../header.ftl" as header>
+        <#import "../helpers/header.ftl" as header>
         <@header.header "BudgetMaster - 418"/>
         <@header.style "login"/>
         <#import "/spring.ftl" as s>
@@ -32,7 +32,7 @@
         </main>
 
         <!--  Scripts-->
-        <#import "../scripts.ftl" as scripts>
+        <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
     </body>
 </html>
