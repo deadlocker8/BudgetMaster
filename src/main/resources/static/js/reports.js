@@ -12,7 +12,6 @@ $(document).ready(function () {
     $('.columnName-checkbox').each(function (i, obj) {
        updateRow(obj);
     });
-
 });
 
 function updateRow(item)
@@ -25,4 +24,14 @@ function updateRow(item)
     {
         $(item).parent().parent().addClass('columnName-disabled');
     }
+}
+
+function validateForm()
+{
+    $('.columnName-checkbox').each(function (i, obj) {
+        var positionInput = document.getElementsByName("columns['" + obj.dataset.key + "'].position")[0];
+        positionInput.value = i;
+    });
+
+    return true;
 }

@@ -17,121 +17,77 @@
                 <br>
 
                 <div class="container">
-                    <#-- settings -->
-                    <div class="row">
-                        <div class="col s12 center-align">
-                            <div class="headline-small">${locale.getString("report.settings")}</div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col s12 m8 offset-m2">
-                            <div class="report-checkbox-container">
-                                <label>
-                                    <input type="checkbox" id="report-checkbox-include-budget"/>
-                                    <span class="columnName-label">${locale.getString('report.checkbox.include.budget')}</span>
-                                </label>
-                            </div>
-                            <div class="report-checkbox-container">
-                                <label>
-                                    <input type="checkbox" id="report-checkbox-split-tables">
-                                    <span class="columnName-label">${locale.getString('report.checkbox.split.tables')}</span>
-                                </label>
-                            </div>
-                            <div class="report-checkbox-container">
-                                <label>
-                                    <input type="checkbox" id="report-checkbox-include-categorybudgets"/>
-                                    <span class="columnName-label">${locale.getString('report.checkbox.inclue.categorybudgets')}</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <br>
+                    <form name="NewReportSettings" action="<@s.url '/reports/generate'/>" method="post" onsubmit="return validateForm()">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <input type="hidden" name="date" value="${helpers.getLongDateString(currentDate)}"/>
 
-                    <#-- columns -->
-                    <div class="row no-margin">
-                        <div class="col s12 center-align">
-                            <div class="headline-small">${locale.getString("report.columns")}</div>
-                            <table class="no-border-table table-advice">
-                                <tr>
-                                    <td><i class="material-icons">info_outline</i></td>
-                                    <td>${locale.getString("report.columns.advice")}</td>
-                                </tr>
-                            </table>
+                        <#-- settings -->
+                        <div class="row">
+                            <div class="col s12 center-align">
+                                <div class="headline-small">${locale.getString("report.settings")}</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col s12 m8 offset-m2">
-                            <div id="columnNames">
-                                <div class="columnName">
+                        <div class="row">
+                            <div class="col s12 m8 offset-m2">
+                                <div class="report-checkbox-container">
                                     <label>
-                                        <input type="checkbox" class="columnName-checkbox"/>
-                                        <span class="columnName-label">${locale.getString('report.position')}</span>
+                                        <input type="checkbox" name="includeBudget" <#if reportSettings.includeBudget>checked="checked"</#if>>
+                                        <span class="columnName-label">${locale.getString('report.checkbox.include.budget')}</span>
                                     </label>
                                 </div>
-                                <div class="columnName">
+                                <div class="report-checkbox-container">
                                     <label>
-                                        <input type="checkbox" class="columnName-checkbox"/>
-                                        <span class="columnName-label">${locale.getString('report.date')}</span>
+                                        <input type="checkbox" name="splitTables" <#if reportSettings.splitTables>checked="checked"</#if>>
+                                        <span class="columnName-label">${locale.getString('report.checkbox.split.tables')}</span>
                                     </label>
                                 </div>
-                                <div class="columnName">
+                                <div class="report-checkbox-container">
                                     <label>
-                                        <input type="checkbox" class="columnName-checkbox"/>
-                                        <span class="columnName-label">${locale.getString('report.repeating')}</span>
-                                    </label>
-                                </div>
-                                <div class="columnName">
-                                    <label>
-                                        <input type="checkbox" class="columnName-checkbox"/>
-                                        <span class="columnName-label">${locale.getString('report.category')}</span>
-                                    </label>
-                                </div>
-                                <div class="columnName">
-                                    <label>
-                                        <input type="checkbox" class="columnName-checkbox"/>
-                                        <span class="columnName-label">${locale.getString('report.name')}</span>
-                                    </label>
-                                </div>
-                                <div class="columnName">
-                                    <label>
-                                        <input type="checkbox" class="columnName-checkbox"/>
-                                        <span class="columnName-label">${locale.getString('report.description')}</span>
-                                    </label>
-                                </div>
-                                <div class="columnName">
-                                    <label>
-                                        <input type="checkbox" class="columnName-checkbox"/>
-                                        <span class="columnName-label text-color">${locale.getString('report.tags')}</span>
-                                    </label>
-                                </div>
-                                <div class="columnName">
-                                    <label>
-                                        <input type="checkbox" class="columnName-checkbox"/>
-                                        <span class="columnName-label text-color">${locale.getString('report.account')}</span>
-                                    </label>
-                                </div>
-                                <div class="columnName">
-                                    <label>
-                                        <input type="checkbox" class="columnName-checkbox"/>
-                                        <span class="columnName-label text-color">${locale.getString('report.rating')}</span>
-                                    </label>
-                                </div>
-                                <div class="columnName">
-                                    <label>
-                                        <input type="checkbox" class="columnName-checkbox"/>
-                                        <span class="columnName-label text-color">${locale.getString('report.amount')}</span>
+                                        <input type="checkbox" name="includeCategorybudgets" <#if reportSettings.includeCategoryBudgets>checked="checked"</#if>/>
+                                        <span class="columnName-label">${locale.getString('report.checkbox.inclue.categorybudgets')}</span>
                                     </label>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <br>
 
-                <#-- button new -->
-                    <div class="row valign-wrapper">
-                        <div class="col s12 center-align"><a href="<@s.url '/reports/generate'/>"
-                                                             class="waves-effect waves-light btn budgetmaster-blue"><i
-                                class="material-icons left">save</i>${locale.getString("report.button.generate")}</a></div>
-                    </div>
+                        <#-- columns -->
+                        <div class="row no-margin">
+                            <div class="col s12 center-align">
+                                <div class="headline-small">${locale.getString("report.columns")}</div>
+                                <table class="no-border-table table-advice">
+                                    <tr>
+                                        <td><i class="material-icons">info_outline</i></td>
+                                        <td>${locale.getString("report.columns.advice")}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m8 offset-m2">
+                                <div id="columnNames">
+                                    <#list reportSettings.columns as key, value>
+                                        <div class="columnName">
+                                            <label>
+                                                <input type="checkbox" class="columnName-checkbox" data-key="${key}" name="columns['${key}'].activated"/>
+                                                <span class="columnName-label">${locale.getString(key)}</span>
+                                            </label>
+                                            <input type="hidden" name="columns['${key}'].position" value=""/>
+                                        </div>
+                                    </#list>
+                                </div>
+                            </div>
+                        </div>
+
+                        <#-- button new -->
+                        <div class="row valign-wrapper">
+                            <div class="col s12 center-align">
+                                <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="buttonSave">
+                                    <i class="material-icons left">save</i>${locale.getString("report.button.generate")}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </main>

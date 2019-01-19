@@ -44,4 +44,29 @@ public class Strings
     public static final String WARNING_SETTINGS_PASSWORD_LENGTH = "warning.settings.password.length";
     public static final String WARNING_SETTINGS_PASSWORD_CONFIRMATION_EMPTY = "warning.settings.password.confirmation.empty";
     public static final String WARNING_SETTINGS_PASSWORD_CONFIRMATION_WRONG = "warning.settings.password.confirmation.wrong";
+
+    //REPORT
+    public static final String REPORT_FOOTER_LEFT = "report.footer.left";
+    public static final String REPORT_FOOTER_CENTER = "report.footer.center";
+    public static final String REPORT_POSITION = "report.position";
+    public static final String REPORT_DATE = "report.date";
+    public static final String REPORT_REPEATING = "report.repeating";
+    public static final String REPORT_CATEGORY = "report.category";
+    public static final String REPORT_NAME = "report.name";
+    public static final String REPORT_DESCRIPTION = "report.description";
+    public static final String REPORT_TAGS = "report.tags";
+    public static final String REPORT_ACCOUNT = "report.account";
+    public static final String REPORT_RATING = "report.rating";
+    public static final String REPORT_AMOUNT = "report.amount";
+    public static final String REPORT_HEADLINE = "report.headline";
+    public static final String REPORT_HEADLINE_PAYMENTS_OVERVIEW = "report.headline.payments.overview";
+    public static final String REPORT_SUM_TOTAL = "report.sum.total";
+    public static final String REPORT_SUM = "report.sum";
+    public static final String REPORT_REPEATING_YES ="report.repeating.yes";
+    public static final String REPORT_REPEATING_NO ="report.repeating.no";
+    public static final String REPORT_INITIAL_FILENAME ="report.initial.filename";
+    public static final String REPORT_BUDGET = "report.budget";
+    public static final String REPORT_INCOMES = "report.incomes";
+    public static final String REPORT_PAYMENTS = "report.payments";
+    public static final String REPORT_BUDGET_REST = "report.budget.rest";
 }
