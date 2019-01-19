@@ -1,6 +1,8 @@
 package de.deadlocker8.budgetmaster.entities;
 
 import com.google.gson.annotations.Expose;
+import de.deadlocker8.budgetmaster.entities.account.Account;
+import de.deadlocker8.budgetmaster.entities.category.Category;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;

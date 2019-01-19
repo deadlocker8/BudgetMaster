@@ -2,8 +2,8 @@ package de.deadlocker8.budgetmaster.services;
 
 import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
-import de.deadlocker8.budgetmaster.entities.Account;
-import de.deadlocker8.budgetmaster.entities.AccountType;
+import de.deadlocker8.budgetmaster.entities.account.Account;
+import de.deadlocker8.budgetmaster.entities.account.AccountType;
 import de.deadlocker8.budgetmaster.repositories.AccountRepository;
 import de.deadlocker8.budgetmaster.repositories.TransactionRepository;
 import de.deadlocker8.budgetmaster.utils.Strings;

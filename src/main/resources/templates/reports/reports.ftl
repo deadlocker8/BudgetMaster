@@ -19,6 +19,7 @@
                 <div class="container">
                     <form name="NewReportSettings" action="<@s.url '/reports/generate'/>" method="post" onsubmit="return validateForm()">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <input type="hidden" name="ID" value="${reportSettings.getID()?c}"/>
                         <input type="hidden" name="date" value="${helpers.getLongDateString(currentDate)}"/>
 
                         <#-- settings -->
@@ -43,7 +44,7 @@
                                 </div>
                                 <div class="report-checkbox-container">
                                     <label>
-                                        <input type="checkbox" name="includeCategorybudgets" <#if reportSettings.includeCategoryBudgets>checked="checked"</#if>/>
+                                        <input type="checkbox" name="includeCategoryBudgets" <#if reportSettings.includeCategoryBudgets>checked="checked"</#if>/>
                                         <span class="columnName-label">${locale.getString('report.checkbox.inclue.categorybudgets')}</span>
                                     </label>
                                 </div>
@@ -66,13 +67,15 @@
                         <div class="row">
                             <div class="col s12 m8 offset-m2">
                                 <div id="columnNames">
-                                    <#list reportSettings.columns as key, value>
+                                    <#list reportSettings.getColumnsSorted() as column>
                                         <div class="columnName">
                                             <label>
-                                                <input type="checkbox" class="columnName-checkbox" data-key="${key}" name="columns['${key}'].activated"/>
-                                                <span class="columnName-label">${locale.getString(key)}</span>
+                                                <input type="checkbox" class="columnName-checkbox" data-index="${column?index}" name="columns['${column?index}'].activated" <#if column.isActivated()>checked="checked"</#if>/>
+                                                <span class="columnName-label">${locale.getString(column.getKey())}</span>
                                             </label>
-                                            <input type="hidden" name="columns['${key}'].position" value=""/>
+                                            <input type="hidden" name="columns['${column?index}'].ID" value="${column.getID()}"/>
+                                            <input type="hidden" name="columns['${column?index}'].key" value="${column.getKey()}"/>
+                                            <input type="hidden" name="columns['${column?index}'].position" value=""/>
                                         </div>
                                     </#list>
                                 </div>

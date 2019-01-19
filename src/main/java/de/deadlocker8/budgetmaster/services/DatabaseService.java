@@ -2,8 +2,8 @@ package de.deadlocker8.budgetmaster.services;
 
 import com.google.gson.*;
 import de.deadlocker8.budgetmaster.database.Database;
-import de.deadlocker8.budgetmaster.entities.Account;
-import de.deadlocker8.budgetmaster.entities.Category;
+import de.deadlocker8.budgetmaster.entities.account.Account;
+import de.deadlocker8.budgetmaster.entities.category.Category;
 import de.deadlocker8.budgetmaster.entities.Transaction;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import org.joda.time.DateTime;

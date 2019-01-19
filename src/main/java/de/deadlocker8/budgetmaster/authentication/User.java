@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.authentication;
 
-import de.deadlocker8.budgetmaster.entities.Account;
+import de.deadlocker8.budgetmaster.entities.account.Account;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

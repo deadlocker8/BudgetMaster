@@ -29,7 +29,7 @@ function updateRow(item)
 function validateForm()
 {
     $('.columnName-checkbox').each(function (i, obj) {
-        var positionInput = document.getElementsByName("columns['" + obj.dataset.key + "'].position")[0];
+        var positionInput = document.getElementsByName("columns['" + obj.dataset.index + "'].position")[0];
         positionInput.value = i;
     });
 

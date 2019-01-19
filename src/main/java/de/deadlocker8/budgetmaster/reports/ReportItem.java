@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.reports;
 
 
-import de.deadlocker8.budgetmaster.entities.Category;
+import de.deadlocker8.budgetmaster.entities.category.Category;
 
 public class ReportItem
 {

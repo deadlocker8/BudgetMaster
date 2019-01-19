@@ -1,51 +1,57 @@
-package de.deadlocker8.budgetmaster.reports;
+package de.deadlocker8.budgetmaster.entities.report;
 
 import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
+@Entity
 public class ReportSettings
 {
+	@Id
+	private Integer ID;
+
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private DateTime date;
+
 	private boolean includeBudget;
 	private boolean splitTables;
 	private boolean includeCategoryBudgets;
 
-	private Map<String, ReportColumn> columns;
+	@OneToMany
+	private List<ReportColumn> columns;
 
+	public static ReportSettings getDefault()
+	{
+		return new ReportSettings(DateTime.now(), true, true, true);
+	}
 
-	public ReportSettings(DateTime date, boolean includeBudget, boolean splitTables, boolean includeCategoryBudgets)
+	private ReportSettings(DateTime date, boolean includeBudget, boolean splitTables, boolean includeCategoryBudgets)
 	{
 		this.date = date;
 		this.includeBudget = includeBudget;
 		this.splitTables = splitTables;
 		this.includeCategoryBudgets = includeCategoryBudgets;
-
-		initColumns();
+		this.columns = new ArrayList<>();
 	}
 
 	public ReportSettings()
 	{
-		initColumns();
 	}
 
-	private void initColumns()
+	public Integer getID()
 	{
-		this.columns = new HashMap<>();
+		return ID;
+	}
 
-		this.columns.put("report.position", new ReportColumn());
-		this.columns.put("report.date", new ReportColumn());
-		this.columns.put("report.repeating", new ReportColumn());
-		this.columns.put("report.name", new ReportColumn());
-		this.columns.put("report.category", new ReportColumn());
-		this.columns.put("report.description", new ReportColumn());
-		this.columns.put("report.tags", new ReportColumn());
-		this.columns.put("report.account", new ReportColumn());
-		this.columns.put("report.rating", new ReportColumn());
-		this.columns.put("report.amount", new ReportColumn());
+	public void setID(Integer ID)
+	{
+		this.ID = ID;
 	}
 
 	public DateTime getDate()
@@ -88,12 +94,18 @@ public class ReportSettings
 		this.includeCategoryBudgets = includeCategoryBudgets;
 	}
 
-	public Map<String, ReportColumn> getColumns()
+	public List<ReportColumn> getColumnsSorted()
 	{
-		return this.columns;
+		columns.sort(Comparator.comparing(ReportColumn::getPosition));
+		return columns;
 	}
 
-	public void setColumns(Map<String, ReportColumn> columns)
+	public List<ReportColumn> getColumns()
+	{
+		return columns;
+	}
+
+	public void setColumns(List<ReportColumn> columns)
 	{
 		this.columns = columns;
 	}

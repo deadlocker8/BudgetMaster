@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.controller;
 
-import de.deadlocker8.budgetmaster.entities.Category;
-import de.deadlocker8.budgetmaster.entities.CategoryType;
+import de.deadlocker8.budgetmaster.entities.category.Category;
+import de.deadlocker8.budgetmaster.entities.category.CategoryType;
 import de.deadlocker8.budgetmaster.repositories.CategoryRepository;
 import de.deadlocker8.budgetmaster.services.CategoryService;
 import de.deadlocker8.budgetmaster.services.HelpersService;

@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.repositories;
 
-import de.deadlocker8.budgetmaster.entities.Account;
+import de.deadlocker8.budgetmaster.entities.account.Account;
 import de.deadlocker8.budgetmaster.entities.Transaction;
 import org.joda.time.DateTime;
 import org.springframework.data.jpa.repository.JpaRepository;

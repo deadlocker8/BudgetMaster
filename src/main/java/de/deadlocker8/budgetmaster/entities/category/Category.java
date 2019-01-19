@@ -1,6 +1,7 @@
-package de.deadlocker8.budgetmaster.entities;
+package de.deadlocker8.budgetmaster.entities.category;
 
 import com.google.gson.annotations.Expose;
+import de.deadlocker8.budgetmaster.entities.Transaction;
 import de.thecodelabs.utils.util.ColorUtils;
 import javafx.scene.paint.Color;
 

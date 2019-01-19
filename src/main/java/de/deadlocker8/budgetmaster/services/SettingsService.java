@@ -20,7 +20,7 @@ public class SettingsService
 		createDefaultSettingsIfNotExists();
 	}
 
-	public void createDefaultSettingsIfNotExists()
+	private void createDefaultSettingsIfNotExists()
 	{
 		if(settingsRepository.findOne(0) == null)
 		{

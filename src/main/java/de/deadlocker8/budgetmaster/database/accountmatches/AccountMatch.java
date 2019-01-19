@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.database.accountmatches;
 
-import de.deadlocker8.budgetmaster.entities.Account;
+import de.deadlocker8.budgetmaster.entities.account.Account;
 
 public class AccountMatch
 {
