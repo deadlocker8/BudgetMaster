@@ -6,6 +6,9 @@ public class Strings
     public static final String CATEGORY_NONE = "category.none";
     public static final String CATEGORY_REST = "category.rest";
     public static final String VERSION = "version";
+    public static final String TITLE_INCOMES = "title.incomes";
+    public static final String TITLE_EXPENDITURES = "title.expenditures";
+    public static final String TITLE_CATEGORY_BUDGETS = "title.category.budgets";
 
     //ACCOUNT
     public static final String ACCOUNT_DEFAULT_NAME = "account.default.name";
@@ -59,7 +62,7 @@ public class Strings
     public static final String REPORT_RATING = "report.rating";
     public static final String REPORT_AMOUNT = "report.amount";
     public static final String REPORT_HEADLINE = "report.headline";
-    public static final String REPORT_HEADLINE_PAYMENTS_OVERVIEW = "report.headline.payments.overview";
+    public static final String REPORT_HEADLINE_TRANSACTIONS_OVERVIEW = "report.headline.transactions.overview";
     public static final String REPORT_SUM_TOTAL = "report.sum.total";
     public static final String REPORT_SUM = "report.sum";
     public static final String REPORT_REPEATING_YES ="report.repeating.yes";
@@ -67,6 +70,6 @@ public class Strings
     public static final String REPORT_INITIAL_FILENAME ="report.initial.filename";
     public static final String REPORT_BUDGET = "report.budget";
     public static final String REPORT_INCOMES = "report.incomes";
-    public static final String REPORT_PAYMENTS = "report.payments";
+    public static final String REPORT_PAYMENTS = "report.expenditures";
     public static final String REPORT_BUDGET_REST = "report.budget.rest";
 }

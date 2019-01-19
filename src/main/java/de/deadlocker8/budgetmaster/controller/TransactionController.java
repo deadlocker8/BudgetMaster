@@ -65,7 +65,7 @@ public class TransactionController extends BaseController
 
 		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear(), getSettings().isRestActivated());
 		int incomeSum = helpers.getIncomeSumForTransactionList(transactions);
-		int paymentSum = helpers.getPaymentSumForTransactionList(transactions);
+		int paymentSum = helpers.getExpenditureSumForTransactionList(transactions);
 		int rest = incomeSum + paymentSum;
 
 		model.addAttribute("transactions", transactions);
@@ -88,7 +88,7 @@ public class TransactionController extends BaseController
 		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
 		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear(), getSettings().isRestActivated());
 		int incomeSum = helpers.getIncomeSumForTransactionList(transactions);
-		int paymentSum = helpers.getPaymentSumForTransactionList(transactions);
+		int paymentSum = helpers.getExpenditureSumForTransactionList(transactions);
 		int rest = incomeSum + paymentSum;
 
 		model.addAttribute("transactions", transactions);

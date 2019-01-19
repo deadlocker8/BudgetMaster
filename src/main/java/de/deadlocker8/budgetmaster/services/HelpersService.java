@@ -231,7 +231,7 @@ public class HelpersService
 		return sum;
 	}
 
-	public int getPaymentSumForTransactionList(List<Transaction> transactions)
+	public int getExpenditureSumForTransactionList(List<Transaction> transactions)
 	{
 		int sum = 0;
 		for(Transaction transaction : transactions)

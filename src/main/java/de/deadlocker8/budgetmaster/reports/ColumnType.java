@@ -26,6 +26,19 @@ public enum ColumnType
 		this.proportion = proportion;
 	}
 
+	public static ColumnType getByName(String name)
+	{
+		for(ColumnType type : ColumnType.values())
+		{
+			if(type.name.equalsIgnoreCase(name))
+			{
+				return type;
+			}
+		}
+
+		return null;
+	}
+
 	public String getName()
 	{
 		return Localization.getString(name);

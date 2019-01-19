@@ -9,6 +9,7 @@ import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class ReportSettings
@@ -96,8 +97,12 @@ public class ReportSettings
 
 	public List<ReportColumn> getColumnsSorted()
 	{
-		columns.sort(Comparator.comparing(ReportColumn::getPosition));
-		return columns;
+		return columns.stream().sorted(Comparator.comparing(ReportColumn::getPosition)).collect(Collectors.toList());
+	}
+
+	public List<ReportColumn> getColumnsSortedAndFiltered()
+	{
+		return columns.stream().filter(ReportColumn::isActivated).sorted(Comparator.comparing(ReportColumn::getPosition)).collect(Collectors.toList());
 	}
 
 	public List<ReportColumn> getColumns()
