@@ -32,36 +32,29 @@ $( document ).ready(function() {
 
             onSelect: function()
             {
-                var selectedDate = this.date;
-
-                if(pickerEndDate.date < selectedDate)
-                {
-                    pickerEndDate.destroy();
-                    pickerEndDate = createDatePickerEnd(selectedDate);
-                }
+                pickerEndDate.destroy();
+                pickerEndDate = createDatePickerEnd(this.date, pickerEndDate.date);
             }
         });
 
         // picker end date
-        var pickerEndDate = createDatePickerEnd(endDate);
-
-        var selectedDate = pickerStartDate.date;
-        if(pickerEndDate.date < selectedDate)
-        {
-            pickerEndDate.destroy();
-            pickerEndDate = createDatePickerEnd(selectedDate);
-        }
+        var pickerEndDate = createDatePickerEnd(pickerStartDate.date, endDate);
     }
 
-    function createDatePickerEnd(minDate)
+    function createDatePickerEnd(minDate, selectedDate)
     {
+        if(selectedDate < minDate)
+        {
+            selectedDate = minDate;
+        }
+
         return M.Datepicker.init(document.getElementById('transaction-repeating-end-date-input'), {
             yearRange: 50,
             firstDay: 1,
             showClearBtn: false,
             setDefaultDate: true,
-            defaultDate: minDate,
             minDate: minDate,
+            defaultDate: selectedDate,
 
             i18n: {
                 // Strings and translations
