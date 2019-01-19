@@ -2,6 +2,7 @@
     <head>
         <#import "../helpers/header.ftl" as header>
         <@header.header "BudgetMaster"/>
+        <@header.style "reports"/>
         <#import "/spring.ftl" as s>
     </head>
     <body class="budgetmaster-blue-light">
@@ -12,16 +13,93 @@
             <div class="card main-card background-color">
                 <#import "../helpers/datePicker.ftl" as datePicker>
                 <@datePicker.datePicker currentDate springMacroRequestContext.getRequestUri()/>
+
+                <br>
+
                 <div class="container">
                     <div class="row">
-                        <div class="col s4">
-
+                        <div class="col s12 center-align">
+                            <div class="headline">${locale.getString("report.columns")}</div>
+                            <table class="no-border-table table-advice">
+                                <tr>
+                                    <td><i class="material-icons">info_outline</i></td>
+                                    <td>${locale.getString("report.columns.advice")}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m6 offset-m3">
+                            <div id="columnNames">
+                                <div class="columnName">
+                                    <label>
+                                        <input type="checkbox" class="columnName-checkbox"/>
+                                        <span class="columnName-label">${locale.getString('report.position')}</span>
+                                    </label>
+                                </div>
+                                <div class="columnName">
+                                    <label>
+                                        <input type="checkbox" class="columnName-checkbox"/>
+                                        <span class="columnName-label">${locale.getString('report.date')}</span>
+                                    </label>
+                                </div>
+                                <div class="columnName">
+                                    <label>
+                                        <input type="checkbox" class="columnName-checkbox"/>
+                                        <span class="columnName-label">${locale.getString('report.repeating')}</span>
+                                    </label>
+                                </div>
+                                <div class="columnName">
+                                    <label>
+                                        <input type="checkbox" class="columnName-checkbox"/>
+                                        <span class="columnName-label">${locale.getString('report.category')}</span>
+                                    </label>
+                                </div>
+                                <div class="columnName">
+                                    <label>
+                                        <input type="checkbox" class="columnName-checkbox"/>
+                                        <span class="columnName-label">${locale.getString('report.name')}</span>
+                                    </label>
+                                </div>
+                                <div class="columnName">
+                                    <label>
+                                        <input type="checkbox" class="columnName-checkbox"/>
+                                        <span class="columnName-label">${locale.getString('report.description')}</span>
+                                    </label>
+                                </div>
+                                <div class="columnName">
+                                    <label>
+                                        <input type="checkbox" class="columnName-checkbox"/>
+                                        <span class="columnName-label text-color">${locale.getString('report.tags')}</span>
+                                    </label>
+                                </div>
+                                <div class="columnName">
+                                    <label>
+                                        <input type="checkbox" class="columnName-checkbox"/>
+                                        <span class="columnName-label text-color">${locale.getString('report.account')}</span>
+                                    </label>
+                                </div>
+                                <div class="columnName">
+                                    <label>
+                                        <input type="checkbox" class="columnName-checkbox"/>
+                                        <span class="columnName-label text-color">${locale.getString('report.rating')}</span>
+                                    </label>
+                                </div>
+                                <div class="columnName">
+                                    <label>
+                                        <input type="checkbox" class="columnName-checkbox"/>
+                                        <span class="columnName-label text-color">${locale.getString('report.amount')}</span>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <#-- button new -->
+                <#-- button new -->
                     <div class="row valign-wrapper">
-                        <div class="col s12 center-align"><a href="<@s.url '/reports/generate'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">save</i>${locale.getString("report.generate")}</a></div>
+                        <div class="col s12 center-align"><a href="<@s.url '/reports/generate'/>"
+                                                             class="waves-effect waves-light btn budgetmaster-blue"><i
+                                class="material-icons left">save</i>${locale.getString("report.generate")}</a></div>
                     </div>
                 </div>
             </div>
@@ -30,6 +108,8 @@
         <!--  Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
+        <script src="<@s.url '/sortable-1.8.1/Sortable.min.js'/>"></script>
+        <script src="<@s.url '/js/reports.js'/>"></script>
         <script src="<@s.url '/js/datePicker.js'/>"></script>
         <script>document.cookie = "currentDate=${helpers.getDateString(currentDate)}";</script>
     </body>

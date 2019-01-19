@@ -434,6 +434,12 @@ ul.dropdown-content.select-dropdown li.selected {
     background-color: #2E79B9;
 }
 
+/* normal checkbox*/
+input[type="checkbox"]:checked + span:not(.lever)::before {
+    border-right: 2px solid #2E79B9;
+    border-bottom: 2px solid #2E79B9;
+}
+
 /* chips autocomplete dropdown */
 .autocomplete-content li span {
     color: #2E79B9;
