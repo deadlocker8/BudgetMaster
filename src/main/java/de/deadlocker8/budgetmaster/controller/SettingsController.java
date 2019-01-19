@@ -75,7 +75,7 @@ public class SettingsController extends BaseController
 	{
 		model.addAttribute("settings", settingsRepository.findOne(0));
 		request.removeAttribute("database", WebRequest.SCOPE_SESSION);
-		return "settings";
+		return "settings/settings";
 	}
 
 	@RequestMapping(value = "/settings/save", method = RequestMethod.POST)
@@ -96,7 +96,7 @@ public class SettingsController extends BaseController
 		{
 			model.addAttribute("error", bindingResult);
 			model.addAttribute("settings", settings);
-			return "settings";
+			return "settings/settings";
 		}
 		else
 		{
@@ -180,7 +180,7 @@ public class SettingsController extends BaseController
 		String verificationCode = RandomUtils.generateRandomString(RandomUtils.RandomType.BASE_58, 4, RandomUtils.RandomStringPolicy.UPPER, RandomUtils.RandomStringPolicy.DIGIT);
 		model.addAttribute("deleteDatabase", true);
 		model.addAttribute("verificationCode", verificationCode);
-		return "settings";
+		return "settings/settings";
 	}
 
 	@RequestMapping(value = "/settings/database/delete", method = RequestMethod.POST)
@@ -198,14 +198,14 @@ public class SettingsController extends BaseController
 			return "redirect:/settings/database/requestDelete";
 		}
 
-		return "settings";
+		return "settings/settings";
 	}
 
 	@RequestMapping("/settings/database/requestImport")
 	public String requestImportDatabase(Model model)
 	{
 		model.addAttribute("importDatabase", true);
-		return "settings";
+		return "settings/settings";
 	}
 
 	@RequestMapping("/settings/database/upload")
@@ -230,7 +230,7 @@ public class SettingsController extends BaseController
 			e.printStackTrace();
 
 			model.addAttribute("errorImportDatabase", e.getMessage());
-			return "settings";
+			return "settings/settings";
 		}
 	}
 
@@ -239,7 +239,7 @@ public class SettingsController extends BaseController
 	{
 		model.addAttribute("database", request.getAttribute("database", WebRequest.SCOPE_SESSION));
 		model.addAttribute("availableAccounts", accountService.getAllAccountsAsc());
-		return "import";
+		return "settings/import";
 	}
 
 	@RequestMapping("/settings/database/import")
@@ -248,7 +248,7 @@ public class SettingsController extends BaseController
 		importService.importDatabase((Database)request.getAttribute("database", WebRequest.SCOPE_SESSION), accountMatchList);
 		request.removeAttribute("database", RequestAttributes.SCOPE_SESSION);
 
-		return "settings";
+		return "settings/settings";
 	}
 
 	@RequestMapping("/updateSearch")
@@ -263,7 +263,7 @@ public class SettingsController extends BaseController
 	{
 		model.addAttribute("performUpdate", true);
 		model.addAttribute("updateString", Localization.getString("info.text.update", Build.getInstance().getVersionName(), budgetMasterUpdateService.getAvailableVersionString()));
-		return "settings";
+		return "settings/settings";
 	}
 
 	@RequestMapping("/performUpdate")

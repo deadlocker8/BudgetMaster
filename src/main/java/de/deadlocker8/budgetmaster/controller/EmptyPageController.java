@@ -12,6 +12,6 @@ public class EmptyPageController extends BaseController
 	public String charts(Model model)
 	{
 		model.addAttribute("active", "charts");
-		return "comingSoon";
+		return "placeholder/comingSoon";
 	}
 }

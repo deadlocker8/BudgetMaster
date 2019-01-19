@@ -24,12 +24,6 @@ public class ProgramArgs
 
 	public static boolean isDebug()
 	{
-		if(ProgramArgs.getArgs().contains("--debugFolder"))
-		{
-			LOGGER.info("Starting in DEBUG Mode");
-			return true;
-		}
-
-		return false;
+		return ProgramArgs.getArgs().contains("--debugFolder");
 	}
 }

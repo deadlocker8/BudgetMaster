@@ -84,6 +84,7 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 	{
 		if(ProgramArgs.isDebug())
 		{
+			LOGGER.info("Starting in DEBUG Mode");
 			return SystemUtils.getApplicationSupportDirectoryPath(Localization.getString("folder"), "debug");
 		}
 
