@@ -17,9 +17,40 @@
                 <br>
 
                 <div class="container">
+                    <#-- settings -->
                     <div class="row">
                         <div class="col s12 center-align">
-                            <div class="headline">${locale.getString("report.columns")}</div>
+                            <div class="headline-small">${locale.getString("report.settings")}</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m8 offset-m2">
+                            <div class="report-checkbox-container">
+                                <label>
+                                    <input type="checkbox" id="report-checkbox-include-budget"/>
+                                    <span class="columnName-label">${locale.getString('report.checkbox.include.budget')}</span>
+                                </label>
+                            </div>
+                            <div class="report-checkbox-container">
+                                <label>
+                                    <input type="checkbox" id="report-checkbox-split-tables">
+                                    <span class="columnName-label">${locale.getString('report.checkbox.split.tables')}</span>
+                                </label>
+                            </div>
+                            <div class="report-checkbox-container">
+                                <label>
+                                    <input type="checkbox" id="report-checkbox-include-categorybudgets"/>
+                                    <span class="columnName-label">${locale.getString('report.checkbox.inclue.categorybudgets')}</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+
+                    <#-- columns -->
+                    <div class="row no-margin">
+                        <div class="col s12 center-align">
+                            <div class="headline-small">${locale.getString("report.columns")}</div>
                             <table class="no-border-table table-advice">
                                 <tr>
                                     <td><i class="material-icons">info_outline</i></td>
@@ -29,7 +60,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col s12 m6 offset-m3">
+                        <div class="col s12 m8 offset-m2">
                             <div id="columnNames">
                                 <div class="columnName">
                                     <label>
@@ -99,7 +130,7 @@
                     <div class="row valign-wrapper">
                         <div class="col s12 center-align"><a href="<@s.url '/reports/generate'/>"
                                                              class="waves-effect waves-light btn budgetmaster-blue"><i
-                                class="material-icons left">save</i>${locale.getString("report.generate")}</a></div>
+                                class="material-icons left">save</i>${locale.getString("report.button.generate")}</a></div>
                     </div>
                 </div>
             </div>
