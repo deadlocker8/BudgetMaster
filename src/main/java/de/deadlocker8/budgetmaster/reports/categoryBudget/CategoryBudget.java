@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.reports;
+package de.deadlocker8.budgetmaster.reports.categoryBudget;
 
 import de.deadlocker8.budgetmaster.entities.category.Category;
 

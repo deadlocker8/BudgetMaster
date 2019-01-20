@@ -6,6 +6,7 @@ import de.deadlocker8.budgetmaster.entities.Tag;
 import de.deadlocker8.budgetmaster.entities.Transaction;
 import de.deadlocker8.budgetmaster.entities.report.ReportColumn;
 import de.deadlocker8.budgetmaster.reports.*;
+import de.deadlocker8.budgetmaster.reports.categoryBudget.CategoryBudget;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;

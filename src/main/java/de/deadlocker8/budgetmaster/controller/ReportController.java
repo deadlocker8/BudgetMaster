@@ -9,6 +9,8 @@ import de.deadlocker8.budgetmaster.entities.report.ReportSettings;
 import de.deadlocker8.budgetmaster.reports.Budget;
 import de.deadlocker8.budgetmaster.reports.ReportConfiguration;
 import de.deadlocker8.budgetmaster.reports.ReportConfigurationBuilder;
+import de.deadlocker8.budgetmaster.reports.categoryBudget.CategoryBudgetHandler;
+import de.deadlocker8.budgetmaster.services.CategoryService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.services.SettingsService;
 import de.deadlocker8.budgetmaster.services.TransactionService;
@@ -49,6 +51,9 @@ public class ReportController extends BaseController
 
 	@Autowired
 	private TransactionService transactionService;
+
+	@Autowired
+	private CategoryService categoryService;
 
 	@Autowired
 	private HelpersService helpers;
@@ -92,7 +97,7 @@ public class ReportController extends BaseController
 				.setReportSettings(reportSettings)
 				.setTransactions(transactions)
 				.setAccountName(accountName)
-				.setCategoryBudgets(new ArrayList<>())
+				.setCategoryBudgets(CategoryBudgetHandler.getCategoryBudgets(transactions, categoryService.getRepository().findAll()))
 				.createReportConfiguration();
 
 		String month = reportSettings.getDate().toString("MM");
