@@ -64,7 +64,7 @@ public class ReportController extends BaseController
 	}
 
 	@RequestMapping(value = "/reports/generate", method = RequestMethod.POST)
-	public String post(HttpServletResponse response,
+	public void post(HttpServletResponse response,
 					   @ModelAttribute("NewReportSettings") ReportSettings reportSettings)
 	{
 		//save new report settings
@@ -126,7 +126,5 @@ public class ReportController extends BaseController
 		{
 			e.printStackTrace();
 		}
-
-		return "redirect:/reports";
 	}
 }
