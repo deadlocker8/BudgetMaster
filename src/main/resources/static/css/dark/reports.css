@@ -1,7 +1,6 @@
 .headline-small {
     font-size: 1.5rem;
     text-transform: initial;
-    color: #212121;
 }
 
 .report-checkbox-container {
@@ -24,6 +23,10 @@
     background-color: #CCCCCC;
 }
 
+.columnName-checkbox-label {
+    font-weight: 600;
+}
+
 .columnName-label {
     color: #212121;
     font-weight: 600;
@@ -33,8 +36,20 @@
     background-color: #999999;
 }
 
-.columnName-disabled .columnName-label{
+.columnName-disabled .columnName-label {
     color: #666666;
+}
+
+.report-checkbox-container input[type="checkbox"] + span:not(.lever)::before,
+.report-checkbox-container input[type="checkbox"]:not(.filled-in) + span:not(.lever)::after {
+    border-color: rgba(255, 255, 255, 0.7);
+}
+
+.report-checkbox-container input[type="checkbox"]:checked + span:not(.lever)::before {
+    border-top: 2px solid transparent;
+    border-left: 2px solid transparent;
+    border-right: 2px solid #2E79B9;
+    border-bottom: 2px solid #2E79B9;
 }
 
 .table-advice {

@@ -1,7 +1,6 @@
 .headline-small {
     font-size: 1.5rem;
     text-transform: initial;
-    color: #212121;
 }
 
 .report-checkbox-container {
@@ -22,6 +21,10 @@
     padding: 0.5rem 1rem;
     border-bottom: 1px solid rgba(0, 0, 0, 0.25);
     background-color: #FFFFFF;
+}
+
+.columnName-checkbox-label {
+    font-weight: 600;
 }
 
 .columnName-label {

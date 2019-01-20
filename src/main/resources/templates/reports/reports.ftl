@@ -26,7 +26,7 @@
                         <#-- settings -->
                         <div class="row">
                             <div class="col s12 center-align">
-                                <div class="headline-small">${locale.getString("report.settings")}</div>
+                                <div class="headline-small text-color">${locale.getString("report.settings")}</div>
                             </div>
                         </div>
                         <div class="row">
@@ -34,19 +34,19 @@
                                 <div class="report-checkbox-container">
                                     <label>
                                         <input type="checkbox" name="includeBudget" <#if reportSettings.includeBudget>checked="checked"</#if>>
-                                        <span class="columnName-label">${locale.getString('report.checkbox.include.budget')}</span>
+                                        <span class="columnName-checkbox-label text-color">${locale.getString('report.checkbox.include.budget')}</span>
                                     </label>
                                 </div>
                                 <div class="report-checkbox-container">
                                     <label>
                                         <input type="checkbox" name="splitTables" <#if reportSettings.splitTables>checked="checked"</#if>>
-                                        <span class="columnName-label">${locale.getString('report.checkbox.split.tables')}</span>
+                                        <span class="columnName-checkbox-label text-color">${locale.getString('report.checkbox.split.tables')}</span>
                                     </label>
                                 </div>
                                 <div class="report-checkbox-container">
                                     <label>
                                         <input type="checkbox" name="includeCategoryBudgets" <#if reportSettings.includeCategoryBudgets>checked="checked"</#if>/>
-                                        <span class="columnName-label">${locale.getString('report.checkbox.inclue.categorybudgets')}</span>
+                                        <span class="columnName-checkbox-label text-color">${locale.getString('report.checkbox.inclue.categorybudgets')}</span>
                                     </label>
                                 </div>
                             </div>
@@ -56,7 +56,7 @@
                         <#-- columns -->
                         <div class="row no-margin">
                             <div class="col s12 center-align">
-                                <div class="headline-small">${locale.getString("report.columns")}</div>
+                                <div class="headline-small text-color">${locale.getString("report.columns")}</div>
                                 <table class="no-border-table table-advice">
                                     <tr>
                                         <td><i class="material-icons">info_outline</i></td>
