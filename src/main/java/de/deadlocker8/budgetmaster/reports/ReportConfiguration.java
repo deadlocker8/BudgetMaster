@@ -3,16 +3,16 @@ package de.deadlocker8.budgetmaster.reports;
 import de.deadlocker8.budgetmaster.entities.Transaction;
 import de.deadlocker8.budgetmaster.entities.report.ReportSettings;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ReportConfiguration
 {
-	private ArrayList<Transaction> transactions;
-	private ArrayList<CategoryBudget> categoryBudgets;
+	private List<Transaction> transactions;
+	private List<CategoryBudget> categoryBudgets;
 	private ReportSettings reportSettings;
 	private Budget budget;
 
-	public ReportConfiguration(ArrayList<Transaction> transactions, ArrayList<CategoryBudget> categoryBudgets, ReportSettings reportSettings, Budget budget)
+	public ReportConfiguration(List<Transaction> transactions, List<CategoryBudget> categoryBudgets, ReportSettings reportSettings, Budget budget)
 	{
 		this.transactions = transactions;
 		this.categoryBudgets = categoryBudgets;
@@ -20,12 +20,12 @@ public class ReportConfiguration
 		this.budget = budget;
 	}
 
-	public ArrayList<Transaction> getTransactions()
+	public List<Transaction> getTransactions()
 	{
 		return transactions;
 	}
 
-	public ArrayList<CategoryBudget> getCategoryBudgets()
+	public List<CategoryBudget> getCategoryBudgets()
 	{
 		return categoryBudgets;
 	}

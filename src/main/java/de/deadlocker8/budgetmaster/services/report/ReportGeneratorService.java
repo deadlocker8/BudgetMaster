@@ -45,8 +45,6 @@ public class ReportGeneratorService
 	{
 		List<ReportColumn> columns = reportConfiguration.getReportSettings().getColumnsSortedAndFiltered();
 		int numberOfColumns = columns.size();
-		int totalIncome = 0;
-		int totalPayment = 0;
 
 		if(numberOfColumns > 0)
 		{
@@ -73,30 +71,25 @@ public class ReportGeneratorService
 				table.addCell(cell);
 			}
 
+			int index = 0;
 			for(Transaction currentItem : reportConfiguration.getTransactions())
 			{
-				if(currentItem.getAmount() > 0)
+				if(amountType.equals(AmountType.INCOME) && currentItem.getAmount() <= 0)
 				{
-					totalIncome += currentItem.getAmount();
-					if(amountType == AmountType.PAYMENT)
-					{
-						continue;
-					}
-				}
-				else
-				{
-					totalPayment += currentItem.getAmount();
-					if(amountType == AmountType.INCOME)
-					{
-						continue;
-					}
+					continue;
 				}
 
-				for(int i = 0; i < columns.size(); i++)
+				if(amountType.equals(AmountType.EXPENDITURE) && currentItem.getAmount() > 0)
 				{
-					ReportColumn column = columns.get(i);
+					continue;
+				}
+
+				index++;
+
+				for(ReportColumn column : columns)
+				{
 					ColumnType columnType = ColumnType.getByName(column.getKey());
-					PdfPCell cell = new PdfPCell(new Phrase(getProperty(currentItem, columnType, i), font));
+					PdfPCell cell = new PdfPCell(new Phrase(getProperty(currentItem, columnType, index), font));
 					cell.setBackgroundColor(getBaseColor(Color.WHITE));
 					cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -106,20 +99,18 @@ public class ReportGeneratorService
 
 			PdfPCell cellTotal;
 			String total = "";
+			String totalIncomeString = helpersService.getCurrencyString(reportConfiguration.getBudget().getIncomeSum());
+			String totalExpenditureString = helpersService.getCurrencyString(reportConfiguration.getBudget().getExpenditureSum());
 			switch(amountType)
 			{
 				case BOTH:
-					String totalIncomeString = helpersService.getCurrencyString(totalIncome);
-					String totalPaymentString = helpersService.getCurrencyString(totalPayment);
-					total = Localization.getString(Strings.REPORT_SUM_TOTAL, totalIncomeString, totalPaymentString);
+					total = Localization.getString(Strings.REPORT_SUM_TOTAL, totalIncomeString, totalExpenditureString);
 					break;
 				case INCOME:
-					total = Localization.getString(Strings.REPORT_SUM, helpersService.getCurrencyString(totalIncome));
+					total = Localization.getString(Strings.REPORT_SUM, totalIncomeString);
 					break;
-				case PAYMENT:
-					total = Localization.getString(Strings.REPORT_SUM, helpersService.getCurrencyString(totalPayment));
-					break;
-				default:
+				case EXPENDITURE:
+					total = Localization.getString(Strings.REPORT_SUM, totalExpenditureString);
 					break;
 			}
 
@@ -183,7 +174,7 @@ public class ReportGeneratorService
 			document.add(new Paragraph(Localization.getString(Strings.TITLE_EXPENDITURES), smallHeaderFont));
 			document.add(Chunk.NEWLINE);
 
-			table = generateTable(reportConfiguration,100, AmountType.PAYMENT);
+			table = generateTable(reportConfiguration,100, AmountType.EXPENDITURE);
 			if(table != null)
 			{
 				document.add(table);

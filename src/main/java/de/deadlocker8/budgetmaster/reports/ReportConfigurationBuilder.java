@@ -4,21 +4,22 @@ import de.deadlocker8.budgetmaster.entities.Transaction;
 import de.deadlocker8.budgetmaster.entities.report.ReportSettings;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ReportConfigurationBuilder
 {
-	private ArrayList<Transaction> transactions;
-	private ArrayList<CategoryBudget> categoryBudgets;
+	private List<Transaction> transactions;
+	private List<CategoryBudget> categoryBudgets;
 	private ReportSettings reportSettings;
 	private Budget budget;
 
-	public ReportConfigurationBuilder setReportItems(ArrayList<Transaction> transactions)
+	public ReportConfigurationBuilder setTransactions(List<Transaction> transactions)
 	{
 		this.transactions = transactions;
 		return this;
 	}
 
-	public ReportConfigurationBuilder setCategoryBudgets(ArrayList<CategoryBudget> categoryBudgets)
+	public ReportConfigurationBuilder setCategoryBudgets(List<CategoryBudget> categoryBudgets)
 	{
 		this.categoryBudgets = categoryBudgets;
 		return this;

@@ -83,9 +83,9 @@ public class ReportController extends BaseController
 
 		ReportConfiguration reportConfiguration = new ReportConfigurationBuilder()
 				.setBudget(budget)
-				.setCategoryBudgets(new ArrayList<>())
 				.setReportSettings(reportSettings)
-				.setReportItems(new ArrayList<>())
+				.setTransactions(transactions)
+				.setCategoryBudgets(new ArrayList<>())
 				.createReportConfiguration();
 
 		try

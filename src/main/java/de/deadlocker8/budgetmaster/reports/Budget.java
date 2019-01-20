@@ -2,21 +2,21 @@ package de.deadlocker8.budgetmaster.reports;
 
 public class Budget
 {
-	private double incomeSum;
-	private double expenditureSum;
+	private int incomeSum;
+	private int expenditureSum;
 
-	public Budget(double incomeSum, double expenditureSum)
+	public Budget(int incomeSum, int expenditureSum)
 	{
 		this.incomeSum = incomeSum;
 		this.expenditureSum = expenditureSum;
 	}
 
-	public double getIncomeSum()
+	public int getIncomeSum()
 	{
 		return incomeSum;
 	}
 
-	public double getExpenditureSum()
+	public int getExpenditureSum()
 	{
 		return expenditureSum;
 	}

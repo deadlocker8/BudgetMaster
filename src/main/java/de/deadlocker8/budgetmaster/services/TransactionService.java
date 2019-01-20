@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -67,6 +68,7 @@ public class TransactionService implements Resetable
 		transactionRest.setName(Localization.getString(Strings.CATEGORY_REST));
 		transactionRest.setDate(DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(1));
 		transactionRest.setAmount(getRest(account, startDate));
+		transactionRest.setTags(new ArrayList<>());
 		transactions.add(transactionRest);
 
 		return transactions;
