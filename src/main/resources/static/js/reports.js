@@ -2,7 +2,8 @@ $(document).ready(function () {
     var el = document.getElementById('columnNames');
     var sortable = Sortable.create(el, {
         animation: 150,
-        ghostClass: 'columnName-selected'
+        ghostClass: 'columnName-selected',
+        dragClass: 'columnName-selected'
     });
 
     $('.columnName-checkbox').click(function () {
