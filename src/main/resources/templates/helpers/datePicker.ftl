@@ -11,22 +11,17 @@
     <!-- modal to select specific month and year -->
     <div id="modalDate" class="modal modal-fixed-footer">
         <div class="modal-content background-color">
-            <h4>${locale.getString("title.datepicker")}</h4>
-            <div class="input-field col s12">
-                <select id="selectMonth">
-                    <#list helpers.getMonthList() as monthName>
-                        <option <#if currentDate.getMonthOfYear() == monthName?index + 1>selected</#if> value="${monthName?index + 1}">${monthName}</option>
-                    </#list>
-                </select>
-                <label for="selectMonth">${locale.getString("datepicker.label.month")}</label>
+
+            <#assign currentYear = currentDate.getYear()/>
+            <div id="global-datepicker-select-year">
+                <@datepickerGridYear currentYear-7 currentYear/>
             </div>
-            <div class="input-field col s12">
-                <select id="selectYear">
-                    <#list helpers.getYearList() as year>
-                        <option <#if currentDate.getYear() == year>selected</#if> value="${year?c}">${year?c}</option>
-                    </#list>
-                </select>
-                <label for="selectYear">${locale.getString("datepicker.label.year")}</label>
+
+            <div id="global-datepicker-select-month">
+                <h4>${locale.getString("title.datepicker.month")}</h4>
+                <#assign montList = helpers.getMonthList()/>
+                <#assign currentMonth = montList[currentDate.getMonthOfYear() - 1]/>
+                <@datepickerGrid montList currentMonth/>
             </div>
         </div>
         <div class="modal-footer background-color">
@@ -34,6 +29,38 @@
             <a href="<@s.url '/setDate?target=${target}'/>" id="buttonChooseDate" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("ok")}</a>
         </div>
     </div>
+</#macro>
+
+<#macro datepickerGridYear startYear currentYear>
+    <h4>${locale.getString("title.datepicker.year")}</h4>
+
+    <div class="hidden" id="currentYear">${currentYear?c}</div>
+
+    <div class="center-align">
+        <a class="waves-effect text-color global-datepicker-button" id="global-datepicker-previous"><i class="material-icons icon-chevron">chevron_left</i></a>
+        <a class="waves-effect text-color global-datepicker-button" id="global-datepicker-next"><i class="material-icons icon-chevron">chevron_right</i></a>
+    </div>
+
+    <#assign years = [] />
+    <#list startYear..startYear + 11 as i>
+        <#assign years = years + [i?c] />
+    </#list>
+    <@datepickerGrid years currentYear?c/>
+</#macro>
+
+<#macro datepickerGrid items currentItem>
+<table class="no-border-table global-datepicker-table">
+    <#list items as item>
+        <#if item?index == 0 || item?index == 3 || item?index == 6 || item?index == 9>
+            <tr>
+        </#if>
+        <td class="global-datepicker-item <#if item == currentItem>global-datepicker-selected</#if>">${item}</td>
+        <#if item?index == 2 || item?index == 5 || item?index == 8 || item?index == 11>
+            </tr>
+        </#if>
+    </#list>
+</table>
+
 </#macro>
 
 <#macro datePickerLocalization>

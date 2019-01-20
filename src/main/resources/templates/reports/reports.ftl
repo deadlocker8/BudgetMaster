@@ -3,6 +3,7 @@
         <#import "../helpers/header.ftl" as header>
         <@header.header "BudgetMaster"/>
         <@header.style "reports"/>
+        <@header.style "globalDatepicker"/>
         <#import "/spring.ftl" as s>
     </head>
     <body class="budgetmaster-blue-light">
@@ -100,7 +101,7 @@
         <@scripts.scripts/>
         <script src="<@s.url '/sortable-1.8.1/Sortable.min.js'/>"></script>
         <script src="<@s.url '/js/reports.js'/>"></script>
-        <script src="<@s.url '/js/datePicker.js'/>"></script>
+        <script src="<@s.url '/js/globalDatePicker.js'/>"></script>
         <script>document.cookie = "currentDate=${helpers.getDateString(currentDate)}";</script>
     </body>
 </html>
