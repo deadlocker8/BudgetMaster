@@ -8,13 +8,15 @@ import java.util.List;
 public class ReportConfiguration
 {
 	private List<Transaction> transactions;
+	private String accountName;
 	private List<CategoryBudget> categoryBudgets;
 	private ReportSettings reportSettings;
 	private Budget budget;
 
-	public ReportConfiguration(List<Transaction> transactions, List<CategoryBudget> categoryBudgets, ReportSettings reportSettings, Budget budget)
+	public ReportConfiguration(List<Transaction> transactions, String accountName, List<CategoryBudget> categoryBudgets, ReportSettings reportSettings, Budget budget)
 	{
 		this.transactions = transactions;
+		this.accountName = accountName;
 		this.categoryBudgets = categoryBudgets;
 		this.reportSettings = reportSettings;
 		this.budget = budget;
@@ -28,6 +30,11 @@ public class ReportConfiguration
 	public List<CategoryBudget> getCategoryBudgets()
 	{
 		return categoryBudgets;
+	}
+
+	public String getAccountName()
+	{
+		return accountName;
 	}
 
 	public ReportSettings getReportSettings()
@@ -45,6 +52,7 @@ public class ReportConfiguration
 	{
 		return "ReportConfiguration{" +
 				"transactions=" + transactions +
+				", accountName='" + accountName + '\'' +
 				", categoryBudgets=" + categoryBudgets +
 				", reportSettings=" + reportSettings +
 				", budget=" + budget +

@@ -37,6 +37,10 @@ public class ReportGeneratorService
 		Chunk chunk = new Chunk(Localization.getString(Strings.REPORT_HEADLINE, reportConfiguration.getReportSettings().getDate().toString("MMMM yyyy")), font);
 		Chapter chapter = new Chapter(new Paragraph(chunk), 1);
 		chapter.setNumberDepth(0);
+
+		Font fontAccount = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 14, Font.BOLD, BaseColor.BLACK);
+		Chunk chunkAccount = new Chunk(Localization.getString(Strings.REPORT_HEADLINE_ACCOUNT, reportConfiguration.getAccountName()), fontAccount);
+		chapter.add(chunkAccount);
 		chapter.add(Chunk.NEWLINE);
 		return chapter;
 	}

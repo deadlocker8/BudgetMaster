@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmaster.controller;
 import com.itextpdf.text.DocumentException;
 import de.deadlocker8.budgetmaster.entities.Transaction;
 import de.deadlocker8.budgetmaster.entities.account.Account;
+import de.deadlocker8.budgetmaster.entities.account.AccountType;
 import de.deadlocker8.budgetmaster.entities.report.ReportColumn;
 import de.deadlocker8.budgetmaster.entities.report.ReportSettings;
 import de.deadlocker8.budgetmaster.reports.Budget;
@@ -66,6 +67,7 @@ public class ReportController extends BaseController
 	public String post(HttpServletResponse response,
 					   @ModelAttribute("NewReportSettings") ReportSettings reportSettings)
 	{
+		//save new report settings
 		reportSettingsService.getRepository().delete(0);
 		for(ReportColumn reportColumn : reportSettings.getColumns())
 		{
@@ -74,10 +76,14 @@ public class ReportController extends BaseController
 		reportSettingsService.getRepository().save(reportSettings);
 
 
-		LOGGER.debug("Exporting month report...");
-
-		//TODO handle all accounts
+		//prepare generation
 		Account account = helpers.getCurrentAccount();
+		String accountName = account.getName();
+		if(account.getType().equals(AccountType.ALL))
+		{
+			accountName = Localization.getString("account.all");
+		}
+
 		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(account, reportSettings.getDate().getMonthOfYear(), reportSettings.getDate().getYear(), settingsService.getSettings().isRestActivated());
 		Budget budget = new Budget(helpers.getIncomeSumForTransactionList(transactions), helpers.getExpenditureSumForTransactionList(transactions));
 
@@ -85,13 +91,20 @@ public class ReportController extends BaseController
 				.setBudget(budget)
 				.setReportSettings(reportSettings)
 				.setTransactions(transactions)
+				.setAccountName(accountName)
 				.setCategoryBudgets(new ArrayList<>())
 				.createReportConfiguration();
 
+		String month = reportSettings.getDate().toString("MM");
+		String year = reportSettings.getDate().toString("YYYY");
+
+		LOGGER.debug("Exporting month report (month: {0}_{1}, account: {2})...", year, month, accountName);
+
+		//generate PDF
 		try
 		{
 			byte[] dataBytes = reportGeneratorService.generate(reportConfiguration);
-			String fileName = Localization.getString("report.initial.filename", reportSettings.getDate().toString("YYYY"), reportSettings.getDate().toString("MM"), account.getName());
+			String fileName = Localization.getString("report.initial.filename", year, month, account.getName());
 			response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
 
 			response.setContentType("application/pdf; charset=UTF-8");
