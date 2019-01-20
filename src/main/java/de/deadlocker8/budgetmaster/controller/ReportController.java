@@ -98,7 +98,7 @@ public class ReportController extends BaseController
 		String month = reportSettings.getDate().toString("MM");
 		String year = reportSettings.getDate().toString("YYYY");
 
-		LOGGER.debug("Exporting month report (month: {0}_{1}, account: {2})...", year, month, accountName);
+		LOGGER.debug("Exporting month report (month: " + year + "_" + month + ", account: " + accountName + ")...");
 
 		//generate PDF
 		try
