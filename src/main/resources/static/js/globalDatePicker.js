@@ -27,30 +27,35 @@ var year;
 
 function cleanup() {
     year = undefined;
-    $("#global-datepicker-select-year").show();
     $("#global-datepicker-select-month").hide();
+    $("#global-datepicker-select-year").show();
 }
 
 function updateYearGrid(modifier, currentYear) {
-    var items = $("#global-datepicker-select-year .global-datepicker-item");
-    var firstYear = parseInt(items[0].innerText);
-    var newFirstYear = firstYear + modifier;
+    $("#global-datepicker-select-year").fadeOut(200, function () {
+        var items = $("#global-datepicker-select-year .global-datepicker-item");
+        var firstYear = parseInt(items[0].innerText);
+        var newFirstYear = firstYear + modifier;
 
-    for (var i = 0; i < items.length; i++) {
-        items[i].innerText = newFirstYear + i;
-        if (items[i].innerText === currentYear) {
-            items[i].classList.add("global-datepicker-selected");
+        for (var i = 0; i < items.length; i++) {
+            items[i].innerText = newFirstYear + i;
+            if (items[i].innerText === currentYear) {
+                items[i].classList.add("global-datepicker-selected");
+            }
+            else {
+                items[i].classList.remove("global-datepicker-selected");
+            }
         }
-        else {
-            items[i].classList.remove("global-datepicker-selected");
-        }
-    }
+
+        $("#global-datepicker-select-year").fadeIn(200);
+    });
 }
 
 function selectYear(selectedYear) {
     year = selectedYear;
-    $("#global-datepicker-select-year").hide();
-    $("#global-datepicker-select-month").show();
+    $("#global-datepicker-select-year").fadeOut(200, function () {
+        $("#global-datepicker-select-month").fadeIn(200);
+    });
 }
 
 function selectMonth(selectedMonth) {

@@ -344,7 +344,7 @@
         </main>
 
         <!-- Pass localization to JS -->
-        <#import "../helpers/datePicker.ftl" as datePicker>
+        <#import "../helpers/globalDatePicker.ftl" as datePicker>
         <@datePicker.datePickerLocalization/>
         <script>
             startDate = "${startDate}".split(".");

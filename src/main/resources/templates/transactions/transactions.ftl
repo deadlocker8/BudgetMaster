@@ -12,7 +12,7 @@
 
         <main>
             <div class="card main-card background-color">
-                <#import "../helpers/datePicker.ftl" as datePicker>
+                <#import "../helpers/globalDatePicker.ftl" as datePicker>
                 <@datePicker.datePicker currentDate springMacroRequestContext.getRequestUri()/>
                 <div class="container">
                     <div class="row">
