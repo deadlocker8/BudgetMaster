@@ -9,6 +9,7 @@
     padding-bottom: 1.5rem;
     border: 2px solid rgba(0, 0, 0, 0);
     width: 33%;
+    font-size: 1.3rem;
 }
 
 .global-datepicker-table td:hover {
