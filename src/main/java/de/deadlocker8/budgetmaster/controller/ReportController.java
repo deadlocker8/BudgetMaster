@@ -109,7 +109,7 @@ public class ReportController extends BaseController
 		try
 		{
 			byte[] dataBytes = reportGeneratorService.generate(reportConfiguration);
-			String fileName = Localization.getString("report.initial.filename", year, month, account.getName());
+			String fileName = Localization.getString("report.initial.filename", year, month, accountName);
 			response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
 
 			response.setContentType("application/pdf; charset=UTF-8");
