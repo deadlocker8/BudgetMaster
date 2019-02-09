@@ -208,8 +208,8 @@ function validateAmount(text)
     else
     {
         removeTooltip(id);
-        var amount = parseInt(parseFloat(text.replace(",", ".")) * 100);
-        document.getElementById("hidden-" + id).value = amount;
+        var amount = parseFloat(text.replace(",", ".")) * 100;
+        document.getElementById("hidden-" + id).value = amount.toFixed(0);
     }
 }
 
