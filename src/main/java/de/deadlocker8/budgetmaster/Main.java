@@ -114,9 +114,18 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 	{
 		Build build = Build.getInstance();
 		logAppInfo(build.getAppName(), build.getVersionName(), build.getVersionCode(), build.getVersionDate());
-		LOGGER.info("=============================");
-		LOGGER.info("+++ BUDGETMASTER STARTED +++");
-		LOGGER.info("=============================");
+		if(ProgramArgs.isDebug())
+		{
+			LOGGER.info("==================================");
+			LOGGER.info("+++ BUDGETMASTER DEBUG STARTED +++");
+			LOGGER.info("==================================");
+		}
+		else
+		{
+			LOGGER.info("=============================");
+			LOGGER.info("+++ BUDGETMASTER STARTED +++");
+			LOGGER.info("=============================");
+		}
 	}
 
 	private static void logAppInfo(String appName, String versionName, String versionCode, String versionDate)

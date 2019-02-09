@@ -149,30 +149,36 @@ $( document ).ready(function() {
         }
     });
 
-    $('#buttonIncome').click(function()
+    $('.buttonIncome').click(function()
     {
-        $(this).removeClass("budgetmaster-grey");
-        $(this).removeClass("budgetmaster-text-isPayment");
-        $(this).addClass("budgetmaster-green");
+        $('.buttonIncome').each(function () {
+            $(this).removeClass("budgetmaster-grey");
+            $(this).removeClass("budgetmaster-text-isPayment");
+            $(this).addClass("budgetmaster-green");
+        });
 
-        var buttonExpenditure = $('#buttonExpenditure');
-        buttonExpenditure.removeClass("budgetmaster-red");
-        buttonExpenditure.addClass("budgetmaster-grey");
-        buttonExpenditure.addClass("budgetmaster-text-isPayment");
+        $('.buttonExpenditure').each(function () {
+            $(this).removeClass("budgetmaster-red");
+            $(this).addClass("budgetmaster-grey");
+            $(this).addClass("budgetmaster-text-isPayment");
+        });
 
         document.getElementById("input-isPayment").value = 0;
     });
 
-    $('#buttonExpenditure').click(function()
+    $('.buttonExpenditure').click(function()
     {
-        $(this).removeClass("budgetmaster-grey");
-        $(this).removeClass("budgetmaster-text-isPayment");
-        $(this).addClass("budgetmaster-red");
+        $('.buttonExpenditure').each(function () {
+            $(this).removeClass("budgetmaster-grey");
+            $(this).removeClass("budgetmaster-text-isPayment");
+            $(this).addClass("budgetmaster-red");
+        });
 
-        var buttonIncome = $('#buttonIncome');
-        buttonIncome.removeClass("budgetmaster-green");
-        buttonIncome.addClass("budgetmaster-grey");
-        buttonIncome.addClass("budgetmaster-text-isPayment");
+        $('.buttonIncome').each(function () {
+            $(this).removeClass("budgetmaster-green");
+            $(this).addClass("budgetmaster-grey");
+            $(this).addClass("budgetmaster-text-isPayment");
+        });
 
         document.getElementById("input-isPayment").value = 1;
     });

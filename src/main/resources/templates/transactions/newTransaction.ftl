@@ -40,7 +40,7 @@
                                         <#else>
                                             <#assign colorButtonIncome = "budgetmaster-grey budgetmaster-text-isPayment">
                                         </#if>
-                                        <a class="waves-effect waves-light btn ${colorButtonIncome}" id="buttonIncome"><i class="material-icons left">file_download</i>${locale.getString("title.income")}</a>
+                                        <a class="waves-effect waves-light btn ${colorButtonIncome} buttonIncome"><i class="material-icons left">file_download</i>${locale.getString("title.income")}</a>
                                     </div>
                                     <div class="col s6 left-align">
                                         <#if transaction.getAmount()?? && (transaction.getAmount() > 0)>
@@ -48,7 +48,7 @@
                                         <#else>
                                             <#assign colorButtonExpenditure = "budgetmaster-red">
                                         </#if>
-                                        <a class="waves-effect waves-light btn ${colorButtonExpenditure}" id="buttonExpenditure"><i class="material-icons left">file_upload</i>${locale.getString("title.expenditure")}</a>
+                                        <a class="waves-effect waves-light btn ${colorButtonExpenditure} buttonExpenditure"><i class="material-icons left">file_upload</i>${locale.getString("title.expenditure")}</a>
                                     </div>
                                     <input type="hidden" name="isPayment" id="input-isPayment" value="${isPayment}">
                                 </div>
@@ -64,7 +64,7 @@
                                             <#else>
                                                 <#assign colorButtonIncome = "budgetmaster-grey budgetmaster-text-isPayment">
                                             </#if>
-                                            <a class="waves-effect waves-light btn ${colorButtonIncome}" id="buttonIncome"><i class="material-icons left">file_download</i>${locale.getString("title.income")}</a>
+                                            <a class="waves-effect waves-light btn ${colorButtonIncome} buttonIncome"><i class="material-icons left">file_download</i>${locale.getString("title.income")}</a>
                                         </div>
                                     </div>
                                     <div class="row center-align">
@@ -74,7 +74,7 @@
                                             <#else>
                                                 <#assign colorButtonExpenditure = "budgetmaster-red">
                                             </#if>
-                                            <a class="waves-effect waves-light btn ${colorButtonExpenditure}" id="buttonExpenditure"><i class="material-icons left">file_upload</i>${locale.getString("title.expenditure")}</a>
+                                            <a class="waves-effect waves-light btn ${colorButtonExpenditure} buttonExpenditure"><i class="material-icons left">file_upload</i>${locale.getString("title.expenditure")}</a>
                                         </div>
                                         <input type="hidden" name="isPayment" id="input-isPayment" value="${isPayment}">
                                     </div>
