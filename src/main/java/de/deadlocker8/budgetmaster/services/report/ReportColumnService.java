@@ -1,15 +1,15 @@
 package de.deadlocker8.budgetmaster.services.report;
 
 import de.deadlocker8.budgetmaster.entities.report.ReportColumn;
+import de.deadlocker8.budgetmaster.entities.report.ReportSettings;
 import de.deadlocker8.budgetmaster.repositories.report.ReportColumnRepository;
-import de.deadlocker8.budgetmaster.services.Resetable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ReportColumnService implements Resetable
+public class ReportColumnService
 {
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private ReportColumnRepository reportColumnRepository;
@@ -18,8 +18,6 @@ public class ReportColumnService implements Resetable
 	public ReportColumnService(ReportColumnRepository reportColumnRepository)
 	{
 		this.reportColumnRepository = reportColumnRepository;
-
-		createDefaults();
 	}
 
 	public ReportColumnRepository getRepository()
@@ -27,13 +25,7 @@ public class ReportColumnService implements Resetable
 		return reportColumnRepository;
 	}
 
-	@Override
-	public void deleteAll()
-	{
-	}
-
-	@Override
-	public void createDefaults()
+	public void createDefaultsWithReportSettings(ReportSettings settings)
 	{
 		if(reportColumnRepository.findAllByOrderByPositionAsc().size() == 0)
 		{
@@ -47,6 +39,12 @@ public class ReportColumnService implements Resetable
 			reportColumnRepository.save(new ReportColumn("report.account", 7));
 			reportColumnRepository.save(new ReportColumn("report.rating", 8));
 			reportColumnRepository.save(new ReportColumn("report.amount", 9));
+
+			for(ReportColumn column : reportColumnRepository.findAll())
+			{
+				column.setReferringSettings(settings);
+				reportColumnRepository.save(column);
+			}
 
 			LOGGER.debug("Created default report columns");
 		}

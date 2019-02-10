@@ -2,7 +2,7 @@ package de.deadlocker8.budgetmaster.services;
 
 public interface Resetable
 {
-	public void deleteAll();
+	void deleteAll();
 
-	public void createDefaults();
+	void createDefaults();
 }

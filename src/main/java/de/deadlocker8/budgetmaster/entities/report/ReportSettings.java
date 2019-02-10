@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmaster.entities.report;
 import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -24,7 +25,7 @@ public class ReportSettings
 	private boolean splitTables;
 	private boolean includeCategoryBudgets;
 
-	@OneToMany
+	@OneToMany(mappedBy = "referringSettings", cascade = CascadeType.ALL)
 	private List<ReportColumn> columns;
 
 	public static ReportSettings getDefault()

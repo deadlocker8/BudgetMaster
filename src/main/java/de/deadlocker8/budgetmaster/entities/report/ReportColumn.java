@@ -14,8 +14,8 @@ public class ReportColumn
 	private boolean activated;
 	private int position;
 
-	@OneToMany(mappedBy = "columns", fetch = FetchType.LAZY)
-	private transient List<ReportSettings> referringSettings;
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private ReportSettings referringSettings;
 
 	public ReportColumn(String key, int position)
 	{
@@ -66,6 +66,16 @@ public class ReportColumn
 	public void setPosition(int position)
 	{
 		this.position = position;
+	}
+
+	public ReportSettings getReferringSettings()
+	{
+		return referringSettings;
+	}
+
+	public void setReferringSettings(ReportSettings referringSettings)
+	{
+		this.referringSettings = referringSettings;
 	}
 
 	@Override

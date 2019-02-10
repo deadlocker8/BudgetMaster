@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class ReportSettingsService
 {
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+
 	private ReportSettingsRepository reportSettingsRepository;
 	private ReportColumnService reportColumnService;
 
@@ -43,6 +44,7 @@ public class ReportSettingsService
 			reportSettingsRepository.save(reportSettings);
 			LOGGER.debug("Created default report settings");
 		}
+		reportColumnService.createDefaultsWithReportSettings(reportSettingsRepository.findOne(0));
 	}
 
 	public ReportSettings getReportSettings()
