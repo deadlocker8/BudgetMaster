@@ -11,6 +11,8 @@
         <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "transactions"/>
 
+        <#import "newTransactionMacros.ftl" as newTransactionMacros>
+
         <#import "../categories/categoriesFunctions.ftl" as categoriesFunctions>
 
         <main>
@@ -28,59 +30,7 @@
                         <input type="hidden" name="isRepeating" value="${transaction.isRepeating()?c}">
 
                         <#-- isPayment switch -->
-                        <div class="row">
-                            <div class="col s12 center-align">
-                                <div class="row hide-on-small-only">
-                                    <div class="col s6 right-align">
-                                        <#assign isPayment = 1>
-
-                                        <#if transaction.getAmount()?? && (transaction.getAmount() > 0)>
-                                            <#assign colorButtonIncome = "budgetmaster-green">
-                                            <#assign isPayment = 0>
-                                        <#else>
-                                            <#assign colorButtonIncome = "budgetmaster-grey budgetmaster-text-isPayment">
-                                        </#if>
-                                        <a class="waves-effect waves-light btn ${colorButtonIncome} buttonIncome"><i class="material-icons left">file_download</i>${locale.getString("title.income")}</a>
-                                    </div>
-                                    <div class="col s6 left-align">
-                                        <#if transaction.getAmount()?? && (transaction.getAmount() > 0)>
-                                            <#assign colorButtonExpenditure = "budgetmaster-grey budgetmaster-text-isPayment">
-                                        <#else>
-                                            <#assign colorButtonExpenditure = "budgetmaster-red">
-                                        </#if>
-                                        <a class="waves-effect waves-light btn ${colorButtonExpenditure} buttonExpenditure"><i class="material-icons left">file_upload</i>${locale.getString("title.expenditure")}</a>
-                                    </div>
-                                    <input type="hidden" name="isPayment" id="input-isPayment" value="${isPayment}">
-                                </div>
-
-                                <div class="hide-on-med-and-up">
-                                    <div class="row center-align">
-                                        <div class="col s12">
-                                            <#assign isPayment = 1>
-
-                                            <#if transaction.getAmount()?? && (transaction.getAmount() > 0)>
-                                                <#assign colorButtonIncome = "budgetmaster-green">
-                                                <#assign isPayment = 0>
-                                            <#else>
-                                                <#assign colorButtonIncome = "budgetmaster-grey budgetmaster-text-isPayment">
-                                            </#if>
-                                            <a class="waves-effect waves-light btn ${colorButtonIncome} buttonIncome"><i class="material-icons left">file_download</i>${locale.getString("title.income")}</a>
-                                        </div>
-                                    </div>
-                                    <div class="row center-align">
-                                        <div class="col s12">
-                                            <#if transaction.getAmount()?? && (transaction.getAmount() > 0)>
-                                                <#assign colorButtonExpenditure = "budgetmaster-grey budgetmaster-text-isPayment">
-                                            <#else>
-                                                <#assign colorButtonExpenditure = "budgetmaster-red">
-                                            </#if>
-                                            <a class="waves-effect waves-light btn ${colorButtonExpenditure} buttonExpenditure"><i class="material-icons left">file_upload</i>${locale.getString("title.expenditure")}</a>
-                                        </div>
-                                        <input type="hidden" name="isPayment" id="input-isPayment" value="${isPayment}">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <@newTransactionMacros.isExpenditureSwitch transaction/>
 
                         <#-- name -->
                         <div class="row">
