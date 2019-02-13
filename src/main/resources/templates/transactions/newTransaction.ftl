@@ -92,26 +92,7 @@
                         </div>
 
                         <#-- account -->
-                        <div class="row">
-                            <div class="input-field col s12 m12 l8 offset-l2">
-                                <select id="transaction-account" name="account" <@validation.validation "account"/>>
-                                    <#list accounts as account>
-                                        <#if (account.getType().name() == "CUSTOM")>
-                                            <#if transaction.getAccount()?? && transaction.getAccount() == account>
-                                                <option selected value="${account.getID()?c}">${account.getName()}</option>
-                                            <#else>
-                                                <#if account == helpers.getCurrentAccount()>
-                                                    <option selected value="${account.getID()?c}">${account.getName()}</option>
-                                                <#else>
-                                                    <option value="${account.getID()?c}">${account.getName()}</option>
-                                                </#if>
-                                            </#if>
-                                        </#if>
-                                    </#list>
-                                </select>
-                                <label for="transaction-account">${locale.getString("transaction.new.label.account")}</label>
-                            </div>
-                        </div>
+                        <@newTransactionMacros.account accounts transaction/>
 
                         <#-- repeating options -->
                         <div class="row">
