@@ -13,7 +13,6 @@
 
         <#import "newTransactionMacros.ftl" as newTransactionMacros>
 
-
         <main>
             <div class="card main-card background-color">
                 <div class="container">
@@ -108,145 +107,15 @@
                         </div>
 
                         <#-- repeating modifier -->
-                        <div class="row" id="transaction-repeating-modifier-row">
-                            <div class="input-field col s6 m6 l4 offset-l2">
-                                <input id="transaction-repeating-modifier" type="text" <@validation.validation "repeatingModifierNumber"/> value="<#if transaction.getRepeatingOption()??>${transaction.getRepeatingOption().getModifier().getQuantity()}</#if>">
-                                <label for="transaction-repeating-modifier">${locale.getString("transaction.new.label.repeating.all")}</label>
-                            </div>
-                            <input type="hidden" id="hidden-transaction-repeating-modifier" name="repeatingModifierNumber" value="<#if transaction.getRepeatingOption()??>${transaction.getRepeatingOption().getModifier().getQuantity()}</#if>">
-
-                            <div class="input-field col s6 m6 l4">
-                                <select id="transaction-repeating-modifier-type" name="repeatingModifierType">
-                                    <#list helpers.getRepeatingModifierTypes() as modifierType>
-                                        <#assign modifierName=locale.getString(modifierType.getLocalizationKey())>
-                                        <#if transaction.getRepeatingOption()??>
-                                            ${transaction.getRepeatingOption().getModifier().getLocalizationKey()}
-                                            <#if locale.getString(transaction.getRepeatingOption().getModifier().getLocalizationKey()) == modifierName>
-                                                <option selected value="${modifierName}">${modifierName}</option>
-                                            <#else>
-                                                <option value="${modifierName}">${modifierName}</option>
-                                            </#if>
-                                        <#else>
-                                            <option value="${modifierName}">${modifierName}</option>
-                                        </#if>
-                                    </#list>
-                                </select>
-                            </div>
-                        </div>
+                        <@newTransactionMacros.repeatingModifier transaction/>
 
                         <#-- repeating end option -->
-                        <div class="row" id="transaction-repeating-end">
-                            <div class="col s12 m12 l8 offset-l2">
-                                <div class="row">
-                                    <div class="col s12 left-align">
-                                        ${locale.getString("repeating.end")}
-                                    </div>
-                                </div>
-                                <@repeatingEndNever (transaction.getRepeatingOption()?? && transaction.getRepeatingOption().getEndOption().getLocalizationKey() == "repeating.end.key.never") || !transaction.getRepeatingOption()??/>
-                                <@repeatingEndAfterXTimes transaction.getRepeatingOption()?? && transaction.getRepeatingOption().getEndOption().getLocalizationKey() == "repeating.end.key.afterXTimes"/>
-                                <@repeatingEndDate transaction.getRepeatingOption()?? && transaction.getRepeatingOption().getEndOption().getLocalizationKey() == "repeating.end.key.date"/>
-                                <input type="hidden" id="hidden-transaction-repeating-end-value" name="repeatingEndValue" value="">
-                            </div>
-                        </div>
-
-                        <#macro repeatingEndNever checked>
-                            <div class="row valign-wrapper">
-                                <div class="col s1">
-                                    <label>
-                                        <input class="with-gap" name="repeatingEndType" type="radio" id="repeating-end-never" value="${locale.getString("repeating.end.key.never")}" <#if checked>checked</#if>/>
-                                        <span for="repeating-end-never"></span>
-                                    </label>
-                                </div>
-                                <div class="col s11">
-                                    ${locale.getString("repeating.end.never")}
-                                </div>
-                            </div>
-                        </#macro>
-
-                        <#macro repeatingEndAfterXTimes checked>
-                            <div class="row valign-wrapper">
-                                <div class="col s1">
-                                    <label>
-                                        <input class="with-gap" name="repeatingEndType" type="radio" id="repeating-end-after-x-times" value="${locale.getString("repeating.end.key.afterXTimes")}" <#if checked>checked</#if>/>
-                                        <span for="repeating-end-after-x-times"></span>
-                                    </label>
-                                </div>
-                                <div class="col s11">
-                                    <table class="table-repeating-end no-border-table">
-                                        <tr>
-                                            <td class="cell">${locale.getString("repeating.end.afterXTimes.A")}</td>
-                                            <td class="cell input-cell">
-                                                <div class="input-field no-margin">
-                                                    <input class="no-margin input-min-width" id="transaction-repeating-end-after-x-times-input" type="text" value="<#if checked>${transaction.getRepeatingOption().getEndOption().getValue()}</#if>">
-                                                    <label for="transaction-repeating-end-after-x-times-input"></label>
-                                                </div>
-                                            </td>
-                                            <td class="cell stretched-cell">${locale.getString("repeating.end.afterXTimes.B")}</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </#macro>
-
-                        <#macro repeatingEndDate checked>
-                            <#if checked>
-                                <#assign endDate = helpers.getLongDateString(transaction.getRepeatingOption().getEndOption().getValue())/>
-                            <#else>
-                                <#assign endDate = helpers.getLongDateString(currentDate)/>
-                            </#if>
-
-                            <div class="row valign-wrapper">
-                                <div class="col s1">
-                                    <label>
-                                        <input class="with-gap" name="repeatingEndType" type="radio" id="repeating-end-date" value="${locale.getString("repeating.end.key.date")}" <#if checked>checked</#if>/>
-                                        <span for="repeating-end-date"></span>
-                                    </label>
-                                </div>
-                                <div class="col s11">
-                                    <table class="table-repeating-end no-border-table">
-                                        <tr>
-                                            <td class="cell">${locale.getString("repeating.end.date")}</td>
-                                            <td class="cell input-cell">
-                                                <div class="input-field no-margin">
-                                                    <input class="datepicker no-margin input-min-width" id="transaction-repeating-end-date-input" type="text" value="${endDate}">
-                                                    <label for="transaction-repeating-end-date-input"></label>
-                                                </div>
-                                            </td>
-                                            <td class="cell stretched-cell"></td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </#macro>
+                        <@newTransactionMacros.repeatingEndOption transaction currentDate/>
 
                         <br>
 
                         <#-- buttons -->
-                        <div class="row hide-on-small-only">
-                            <div class="col s6 right-align">
-                                <a href="<@s.url '/transactions'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
-                            </div>
-
-                            <div class="col s6 left-align">
-                                <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action">
-                                    <i class="material-icons left">save</i>${locale.getString("save")}
-                                </button>
-                            </div>
-                        </div>
-                        <div class="hide-on-med-and-up">
-                            <div class="row center-align">
-                                <div class="col s12">
-                                    <a href="<@s.url '/categories'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
-                                </div>
-                            </div>
-                            <div class="row center-align">
-                                <div class="col s12">
-                                    <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="buttonSave">
-                                        <i class="material-icons left">save</i>${locale.getString("save")}
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                        <@newTransactionMacros.buttons/>
                     </form>
                 </div>
             </div>
