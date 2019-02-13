@@ -46,3 +46,38 @@
 <#macro buttonExpenditure color>
     <a class="waves-effect waves-light btn ${color} buttonExpenditure"><i class="material-icons left">file_upload</i>${locale.getString("title.expenditure")}</a>
 </#macro>
+
+
+<#import "../categories/categoriesFunctions.ftl" as categoriesFunctions>
+<#macro category categories transaction>
+    <div class="row">
+        <div class="input-field col s12 m12 l8 offset-l2" id="categoryWrapper">
+            <select id="transaction-category" name="category" <@validation.validation "category"/>>
+                <#list categories as category>
+                    <#assign categoryInfos=categoriesFunctions.getCategoryName(category) + "@@@" + category.getColor() + "@@@" + category.getAppropriateTextColor() + "@@@" + category.getID()?c>
+
+                    <#if category.getType() == "REST">
+                        <#continue>
+                    </#if>
+
+                    <#if transaction.getCategory()??>
+                        <#if transaction.getCategory().getID()?c == category.getID()?c>
+                            <option selected value="${category.getID()?c}">${categoryInfos}</option>
+                        <#else>
+                            <option value="${category.getID()?c}">${categoryInfos}</option>
+                        </#if>
+                        <#continue>
+                    </#if>
+
+                    <#if category.getType() == "NONE">
+                        <option selected value="${category.getID()?c}">${categoryInfos}</option>
+                        <#continue>
+                    </#if>
+
+                    <option value="${category.getID()?c}">${categoryInfos}</option>
+                </#list>
+            </select>
+            <label for="transaction-category">${locale.getString("transaction.new.label.category")}</label>
+        </div>
+    </div>
+</#macro>

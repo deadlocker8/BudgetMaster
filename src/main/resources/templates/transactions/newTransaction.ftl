@@ -13,7 +13,6 @@
 
         <#import "newTransactionMacros.ftl" as newTransactionMacros>
 
-        <#import "../categories/categoriesFunctions.ftl" as categoriesFunctions>
 
         <main>
             <div class="card main-card background-color">
@@ -50,28 +49,7 @@
                         </div>
 
                         <#-- category -->
-                        <div class="row">
-                            <div class="input-field col s12 m12 l8 offset-l2" id="categoryWrapper">
-                                <select id="transaction-category" name="category" <@validation.validation "category"/>>
-                                    <#list categories as category>
-                                        <#assign categoryInfos=categoriesFunctions.getCategoryName(category) + "@@@" + category.getColor() + "@@@" + category.getAppropriateTextColor() + "@@@" + category.getID()?c>
-
-                                        <#if transaction.getCategory()??>
-                                            <#if transaction.getCategory().getID()?c == category.getID()?c>
-                                                <option selected value="${category.getID()?c}">${categoryInfos}</option>
-                                            <#elseif category.getType() != "REST">
-                                                <option value="${category.getID()?c}">${categoryInfos}</option>
-                                            </#if>
-                                        <#elseif category.getType() == "NONE">
-                                            <option selected value="${category.getID()?c}">${categoryInfos}</option>
-                                        <#elseif category.getType() != "REST">
-                                            <option value="${category.getID()?c}">${categoryInfos}</option>
-                                        </#if>
-                                    </#list>
-                                </select>
-                                <label for="transaction-category">${locale.getString("transaction.new.label.category")}</label>
-                            </div>
-                        </div>
+                        <@newTransactionMacros.category categories transaction/>
 
                         <#-- date -->
                         <div class="row">
