@@ -6,14 +6,12 @@ import de.deadlocker8.budgetmaster.entities.account.Account;
 import de.deadlocker8.budgetmaster.entities.account.AccountType;
 import de.deadlocker8.budgetmaster.entities.report.ReportColumn;
 import de.deadlocker8.budgetmaster.entities.report.ReportSettings;
+import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
 import de.deadlocker8.budgetmaster.reports.Budget;
 import de.deadlocker8.budgetmaster.reports.ReportConfiguration;
 import de.deadlocker8.budgetmaster.reports.ReportConfigurationBuilder;
 import de.deadlocker8.budgetmaster.reports.categoryBudget.CategoryBudgetHandler;
-import de.deadlocker8.budgetmaster.services.CategoryService;
-import de.deadlocker8.budgetmaster.services.HelpersService;
-import de.deadlocker8.budgetmaster.services.SettingsService;
-import de.deadlocker8.budgetmaster.services.TransactionService;
+import de.deadlocker8.budgetmaster.services.*;
 import de.deadlocker8.budgetmaster.services.report.ReportColumnService;
 import de.deadlocker8.budgetmaster.services.report.ReportGeneratorService;
 import de.deadlocker8.budgetmaster.services.report.ReportSettingsService;
@@ -28,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
@@ -57,6 +56,9 @@ public class ReportController extends BaseController
 	@Autowired
 	private HelpersService helpers;
 
+	@Autowired
+	private FilterHelpersService filterHelpers;
+
 	@RequestMapping("/reports")
 	public String reports(Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
 	{
@@ -68,8 +70,8 @@ public class ReportController extends BaseController
 	}
 
 	@RequestMapping(value = "/reports/generate", method = RequestMethod.POST)
-	public void post(HttpServletResponse response,
-					   @ModelAttribute("NewReportSettings") ReportSettings reportSettings)
+	public void post(HttpServletRequest request, HttpServletResponse response,
+					 @ModelAttribute("NewReportSettings") ReportSettings reportSettings)
 	{
 		//save new report settings
 		reportSettingsService.getRepository().delete(0);
@@ -88,7 +90,8 @@ public class ReportController extends BaseController
 			accountName = Localization.getString("account.all");
 		}
 
-		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(account, reportSettings.getDate().getMonthOfYear(), reportSettings.getDate().getYear(), settingsService.getSettings().isRestActivated());
+		FilterConfiguration filterConfiguration = filterHelpers.getFilterConfiguration(request);
+		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(account, reportSettings.getDate().getMonthOfYear(), reportSettings.getDate().getYear(), settingsService.getSettings().isRestActivated(), filterConfiguration);
 		Budget budget = new Budget(helpers.getIncomeSumForTransactionList(transactions), helpers.getExpenditureSumForTransactionList(transactions));
 
 		ReportConfiguration reportConfiguration = new ReportConfigurationBuilder()

@@ -170,9 +170,9 @@ public class TransactionRepositoryTest
 	@Test
 	public void noMatchingCategory()
 	{
-		List<Category> categories = new ArrayList<>();
-		categories.add(categoryUnused);
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, null, categories, null);
+		List<Integer> categoryIDs = new ArrayList<>();
+		categoryIDs.add(categoryUnused.getID());
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, null, categoryIDs, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertFalse(results.contains(transaction1));
@@ -183,9 +183,9 @@ public class TransactionRepositoryTest
 	@Test
 	public void getByCategory()
 	{
-		List<Category> categories = new ArrayList<>();
-		categories.add(category1);
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, null, categories, null);
+		List<Integer> categoryIDs = new ArrayList<>();
+		categoryIDs.add(category1.getID());
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, null, categoryIDs, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertTrue(results.contains(transaction1));
@@ -218,9 +218,9 @@ public class TransactionRepositoryTest
 	@Test
 	public void getRepeatingExpenditureByCategoryAndName()
 	{
-		List<Category> categories = new ArrayList<>();
-		categories.add(category1);
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, false, true, true, categories, "Repeating");
+		List<Integer> categoryIDs = new ArrayList<>();
+		categoryIDs.add(category1.getID());
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, false, true, true, categoryIDs, "Repeating");
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertFalse(results.contains(transaction1));

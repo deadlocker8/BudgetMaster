@@ -1,17 +1,19 @@
 package de.deadlocker8.budgetmaster.services;
 
+import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
+import de.deadlocker8.budgetmaster.entities.Settings;
+import de.deadlocker8.budgetmaster.entities.Tag;
 import de.deadlocker8.budgetmaster.entities.account.Account;
 import de.deadlocker8.budgetmaster.entities.account.AccountType;
 import de.deadlocker8.budgetmaster.entities.category.CategoryType;
 import de.deadlocker8.budgetmaster.entities.transaction.Transaction;
-import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
-import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
-import de.deadlocker8.budgetmaster.entities.*;
+import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierType;
 import de.deadlocker8.budgetmaster.repositories.AccountRepository;
 import de.deadlocker8.budgetmaster.repositories.CategoryRepository;
 import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
 import de.deadlocker8.budgetmaster.repositories.TagRepository;
+import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
 import de.deadlocker8.budgetmaster.utils.Colors;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.deadlocker8.budgetmaster.utils.Strings;
@@ -252,7 +254,7 @@ public class HelpersService
 
 	public int getAccountBudget()
 	{
-		List<Transaction> transactions = transactionService.getTransactionsForAccountUntilDate(getCurrentAccount(), getCurrentDate());
+		List<Transaction> transactions = transactionService.getTransactionsForAccountUntilDate(getCurrentAccount(), getCurrentDate(), FilterConfiguration.DEFAULT);
 
 		int sum = 0;
 		for(Transaction transaction : transactions)

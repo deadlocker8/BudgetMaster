@@ -11,6 +11,7 @@ import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifier;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierType;
 import de.deadlocker8.budgetmaster.repositories.*;
 import de.deadlocker8.budgetmaster.services.AccountService;
+import de.deadlocker8.budgetmaster.services.FilterHelpersService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.services.TransactionService;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
@@ -58,14 +59,19 @@ public class TransactionController extends BaseController
 	@Autowired
 	private HelpersService helpers;
 
+	@Autowired
+	private FilterHelpersService filterHelpers;
+
+
 	@RequestMapping("/transactions")
 	public String transactions(HttpServletRequest request, Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
 	{
 		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
-
 		repeatingTransactionUpdater.updateRepeatingTransactions(date.dayOfMonth().withMaximumValue());
 
-		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear(), getSettings().isRestActivated());
+		FilterConfiguration filterConfiguration = filterHelpers.getFilterConfiguration(request);
+
+		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear(), getSettings().isRestActivated(), filterConfiguration);
 		int incomeSum = helpers.getIncomeSumForTransactionList(transactions);
 		int paymentSum = helpers.getExpenditureSumForTransactionList(transactions);
 		int rest = incomeSum + paymentSum;
@@ -75,7 +81,7 @@ public class TransactionController extends BaseController
 		model.addAttribute("paymentSum", paymentSum);
 		model.addAttribute("currentDate", date);
 		model.addAttribute("rest", rest);
-		model.addAttribute("isFilterActive", isFilterActive(request));
+		model.addAttribute("isFilterActive", filterConfiguration.isActive());
 
 		return "transactions/transactions";
 	}
@@ -89,7 +95,9 @@ public class TransactionController extends BaseController
 		}
 
 		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
-		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear(), getSettings().isRestActivated());
+		FilterConfiguration filterConfiguration = filterHelpers.getFilterConfiguration(request);
+
+		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear(), getSettings().isRestActivated(), filterConfiguration);
 		int incomeSum = helpers.getIncomeSumForTransactionList(transactions);
 		int paymentSum = helpers.getExpenditureSumForTransactionList(transactions);
 		int rest = incomeSum + paymentSum;
@@ -100,7 +108,7 @@ public class TransactionController extends BaseController
 		model.addAttribute("currentDate", date);
 		model.addAttribute("currentTransaction", transactionRepository.getOne(ID));
 		model.addAttribute("rest", rest);
-		model.addAttribute("isFilterActive", isFilterActive(request));
+		model.addAttribute("isFilterActive", filterConfiguration.isActive());
 
 
 		return "transactions/transactions";
@@ -260,16 +268,5 @@ public class TransactionController extends BaseController
 		Tag currentTag = tagRepository.findByName(name);
 		currentTag.getReferringTransactions().remove(transaction);
 		tagRepository.save(currentTag);
-	}
-
-	private boolean isFilterActive(HttpServletRequest request)
-	{
-		Object sessionFilterConfiguration = request.getSession().getAttribute("filterConfiguration");
-		if(sessionFilterConfiguration != null)
-		{
-			return ((FilterConfiguration)sessionFilterConfiguration).isActive();
-		}
-
-		return false;
 	}
 }

@@ -1,7 +1,6 @@
 package de.deadlocker8.budgetmaster.entities.transaction;
 
 import de.deadlocker8.budgetmaster.entities.account.Account;
-import de.deadlocker8.budgetmaster.entities.category.Category;
 import org.joda.time.DateTime;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -15,7 +14,7 @@ public class TransactionSpecifications
 															  Account account,
 															  final boolean isIncome, boolean isExpenditure,
 															  final Boolean isRepeating,
-															  final List<Category> categories,
+															  final List<Integer> categoryIDs,
 															  final String name)
 	{
 		return (transaction, query, builder) -> {
@@ -49,16 +48,20 @@ public class TransactionSpecifications
 				}
 			}
 
-			if(categories != null)
+			if(categoryIDs != null)
 			{
-				predicates.add(builder.and(transaction.get(Transaction_.category).in(categories)));
+				predicates.add(builder.and(transaction.get(Transaction_.category).get("ID").in(categoryIDs)));
 			}
 
 			if(name != null)
 			{
 				predicates.add(builder.and(builder.like(builder.lower(transaction.get(Transaction_.name)), "%"+name.toLowerCase()+"%")));
 			}
+
+			query.orderBy(builder.desc(transaction.get(Transaction_.date)));
+
 			Predicate[] predicatesArray = new Predicate[predicates.size()];
+
 			return builder.and(predicates.toArray(predicatesArray));
 		};
 	}
