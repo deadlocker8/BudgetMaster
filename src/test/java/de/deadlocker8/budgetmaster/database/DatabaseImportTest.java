@@ -20,6 +20,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
@@ -213,6 +214,36 @@ public class DatabaseImportTest
 		{
 			return new TransactionRepository()
 			{
+				@Override
+				public Transaction findOne(Specification<Transaction> specification)
+				{
+					return null;
+				}
+
+				@Override
+				public List<Transaction> findAll(Specification<Transaction> specification)
+				{
+					return null;
+				}
+
+				@Override
+				public Page<Transaction> findAll(Specification<Transaction> specification, Pageable pageable)
+				{
+					return null;
+				}
+
+				@Override
+				public List<Transaction> findAll(Specification<Transaction> specification, Sort sort)
+				{
+					return null;
+				}
+
+				@Override
+				public long count(Specification<Transaction> specification)
+				{
+					return 0;
+				}
+
 				@Override
 				public List<Transaction> findAllByAccountAndDateBetweenOrderByDateDesc(Account account, DateTime startDate, DateTime endDate)
 				{

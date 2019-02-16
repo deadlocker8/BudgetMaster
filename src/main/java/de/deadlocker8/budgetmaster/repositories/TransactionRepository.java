@@ -4,12 +4,13 @@ import de.deadlocker8.budgetmaster.entities.account.Account;
 import de.deadlocker8.budgetmaster.entities.transaction.Transaction;
 import org.joda.time.DateTime;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
 
-public interface TransactionRepository extends JpaRepository<Transaction, Integer>
+public interface TransactionRepository extends JpaRepository<Transaction, Integer>, JpaSpecificationExecutor<Transaction>
 {
 	List<Transaction> findAllByAccountAndDateBetweenOrderByDateDesc(Account account, DateTime startDate, DateTime endDate);
 
