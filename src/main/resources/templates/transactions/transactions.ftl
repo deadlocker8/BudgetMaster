@@ -42,7 +42,7 @@
                     </div>
 
                     <#-- buttons -->
-                    <@transactionsMacros.buttons true/>
+                    <@transactionsMacros.buttons isFilterActive/>
 
                     <#-- transactions list -->
                     <br>

@@ -6,18 +6,15 @@ import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
 import de.deadlocker8.budgetmaster.services.CategoryService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.services.TransactionService;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,12 +57,12 @@ public class FilterController extends BaseController
 	}
 
 	@RequestMapping("/filter/reset")
-	public String reset(Model model)
+	public String reset(WebRequest request, Model model)
 	{
 		FilterConfiguration filterConfiguration = FilterConfiguration.DEFAULT;
 		filterConfiguration.setFilterCategories(getFilterCategories());
-		model.addAttribute("filterConfiguration", filterConfiguration);
-		return "filter/filter";
+		request.setAttribute("filterConfiguration", filterConfiguration, WebRequest.SCOPE_SESSION);
+		return "redirect:/filter";
 	}
 
 	private List<FilterCategory> getFilterCategories()

@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmaster.controller;
 import de.deadlocker8.budgetmaster.entities.Settings;
 import de.deadlocker8.budgetmaster.entities.Tag;
 import de.deadlocker8.budgetmaster.entities.transaction.Transaction;
+import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.repeating.RepeatingTransactionUpdater;
 import de.deadlocker8.budgetmaster.repeating.endoption.*;
@@ -22,6 +23,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +59,7 @@ public class TransactionController extends BaseController
 	private HelpersService helpers;
 
 	@RequestMapping("/transactions")
-	public String transactions(Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
+	public String transactions(HttpServletRequest request, Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
 	{
 		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
 
@@ -73,12 +75,13 @@ public class TransactionController extends BaseController
 		model.addAttribute("paymentSum", paymentSum);
 		model.addAttribute("currentDate", date);
 		model.addAttribute("rest", rest);
+		model.addAttribute("isFilterActive", isFilterActive(request));
 
 		return "transactions/transactions";
 	}
 
 	@RequestMapping("/transactions/{ID}/requestDelete")
-	public String requestDeleteTransaction(Model model, @PathVariable("ID") Integer ID, @CookieValue("currentDate") String cookieDate)
+	public String requestDeleteTransaction(HttpServletRequest request, Model model, @PathVariable("ID") Integer ID, @CookieValue("currentDate") String cookieDate)
 	{
 		if(!transactionService.isDeletable(ID))
 		{
@@ -97,6 +100,8 @@ public class TransactionController extends BaseController
 		model.addAttribute("currentDate", date);
 		model.addAttribute("currentTransaction", transactionRepository.getOne(ID));
 		model.addAttribute("rest", rest);
+		model.addAttribute("isFilterActive", isFilterActive(request));
+
 
 		return "transactions/transactions";
 	}
@@ -255,5 +260,16 @@ public class TransactionController extends BaseController
 		Tag currentTag = tagRepository.findByName(name);
 		currentTag.getReferringTransactions().remove(transaction);
 		tagRepository.save(currentTag);
+	}
+
+	private boolean isFilterActive(HttpServletRequest request)
+	{
+		Object sessionFilterConfiguration = request.getSession().getAttribute("filterConfiguration");
+		if(sessionFilterConfiguration != null)
+		{
+			return ((FilterConfiguration)sessionFilterConfiguration).isActive();
+		}
+
+		return false;
 	}
 }

@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.filter;
 
 import java.util.List;
+import java.util.logging.Filter;
 
 public class FilterConfiguration
 {
@@ -73,6 +74,40 @@ public class FilterConfiguration
 	public void setFilterCategories(List<FilterCategory> filterCategories)
 	{
 		this.filterCategories = filterCategories;
+	}
+
+	public boolean isActive()
+	{
+		FilterConfiguration defaultConfiguration = FilterConfiguration.DEFAULT;
+		if(defaultConfiguration.isIncludeIncome() != isIncludeIncome())
+		{
+			return true;
+		}
+
+		if(defaultConfiguration.isIncludeExpenditure() != isIncludeExpenditure())
+		{
+			return true;
+		}
+
+		if(defaultConfiguration.isIncludeNotRepeating() != isIncludeNotRepeating())
+		{
+			return true;
+		}
+
+		if(defaultConfiguration.isIncludeRepeating() != isIncludeRepeating())
+		{
+			return true;
+		}
+
+		for(FilterCategory filterCategory : filterCategories)
+		{
+			if(!filterCategory.isInclude())
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	@Override
