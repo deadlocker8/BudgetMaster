@@ -6,6 +6,7 @@ import de.deadlocker8.budgetmaster.entities.category.Category;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import org.joda.time.DateTime;
 
+import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 import java.util.List;
@@ -20,6 +21,6 @@ public class Transaction_
 	public static volatile SingularAttribute<Transaction, Category> category;
 	public static volatile SingularAttribute<Transaction, String> name;
 	public static volatile SingularAttribute<Transaction, String> description;
-	public static volatile SingularAttribute<Transaction, List<Tag>> tags;
+	public static volatile ListAttribute<Transaction, List<Tag>> tags;
 	public static volatile SingularAttribute<Transaction, RepeatingOption> repeatingOption;
 }

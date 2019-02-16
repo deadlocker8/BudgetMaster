@@ -74,3 +74,40 @@
         </div>
     </div>
 </#macro>
+
+<#macro buttons isFilterActive>
+    <div class="row hide-on-small-only valign-wrapper">
+        <div class="col s6 right-align">
+            <@buttonNew/>
+        </div>
+
+        <div class="col s6 left-align">
+            <@buttonFilter isFilterActive/>
+        </div>
+    </div>
+
+    <div class="hide-on-med-and-up valign-wrapper">
+        <div class="row center-align">
+            <div class="col s12">
+                <@buttonNew/>
+            </div>
+        </div>
+        <div class="row center-align">
+            <div class="col s12">
+                <@buttonFilter isFilterActive/>
+            </div>
+        </div>
+    </div>
+</#macro>
+
+<#macro buttonNew>
+    <a href="<@s.url '/transactions/newTransaction'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.transaction.new")}</a>
+</#macro>
+
+<#macro buttonFilter isFilterActive>
+    <#if isFilterActive>
+        <a href="<@s.url '/filter'/>" class="waves-effect waves-light btn budgetmaster-red"><i class="fas fa-filter left"></i>${locale.getString("filter.active")}</a>
+    <#else>
+        <a href="<@s.url '/filter'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="fas fa-filter left"></i>${locale.getString("title.filter")}</a>
+    </#if>
+</#macro>

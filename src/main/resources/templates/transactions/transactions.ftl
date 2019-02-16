@@ -41,10 +41,8 @@
                         </div>
                     </div>
 
-                    <#-- button new -->
-                    <div class="row valign-wrapper">
-                        <div class="col s12 center-align"><a href="<@s.url '/transactions/newTransaction'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.transaction.new")}</a></div>
-                    </div>
+                    <#-- buttons -->
+                    <@transactionsMacros.buttons true/>
 
                     <#-- transactions list -->
                     <br>
