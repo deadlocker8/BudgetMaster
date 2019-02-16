@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.controller;
 
 import de.deadlocker8.budgetmaster.entities.category.Category;
+import de.deadlocker8.budgetmaster.entities.category.CategoryType;
 import de.deadlocker8.budgetmaster.filter.FilterCategory;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
 import de.deadlocker8.budgetmaster.services.CategoryService;
@@ -71,7 +72,10 @@ public class FilterController extends BaseController
 		List<FilterCategory> filterCategories = new ArrayList<>();
 		for(Category category : categories)
 		{
-			filterCategories.add(new FilterCategory(category.getID(), category.getName(), true));
+			if(!category.getType().equals(CategoryType.REST))
+			{
+				filterCategories.add(new FilterCategory(category.getID(), category.getName(), true));
+			}
 		}
 
 		return filterCategories;

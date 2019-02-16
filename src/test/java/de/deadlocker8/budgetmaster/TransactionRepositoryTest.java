@@ -26,7 +26,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @DataJpaTest
@@ -51,6 +52,9 @@ public class TransactionRepositoryTest
 	@Autowired
 	private RepeatingOptionRepository repeatingOptionRepository;
 	private RepeatingOption repeatingOption;
+
+	private DateTime startDate = new DateTime(2018, 1, 1, 12, 0, 0, 0);
+
 
 	@Before
 	public void init()
@@ -100,7 +104,7 @@ public class TransactionRepositoryTest
 	@Test
 	public void getIncomesAndExpenditures()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(true, true, null, null, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, null, null, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertTrue(results.contains(transaction1));
@@ -111,7 +115,7 @@ public class TransactionRepositoryTest
 	@Test
 	public void getIncomes()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(true, false, null, null, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, false, null, null, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertTrue(results.contains(transaction1));
@@ -122,7 +126,7 @@ public class TransactionRepositoryTest
 	@Test
 	public void getExpenditures()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(false, true, null, null, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, false, true, null, null, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertFalse(results.contains(transaction1));
@@ -133,7 +137,7 @@ public class TransactionRepositoryTest
 	@Test
 	public void incomesAndExpendituresFalse()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(false, false, null, null, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, false, false, null, null, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertTrue(results.contains(transaction1));
@@ -144,7 +148,7 @@ public class TransactionRepositoryTest
 	@Test
 	public void getRepeating()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(true, true, true, null, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, true, null, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertFalse(results.contains(transaction1));
@@ -155,7 +159,7 @@ public class TransactionRepositoryTest
 	@Test
 	public void noRepeating()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(true, true, false, null, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, false, null, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertTrue(results.contains(transaction1));
@@ -168,7 +172,7 @@ public class TransactionRepositoryTest
 	{
 		List<Category> categories = new ArrayList<>();
 		categories.add(categoryUnused);
-		Specification spec = TransactionSpecifications.withDynamicQuery(true, true, null, categories, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, null, categories, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertFalse(results.contains(transaction1));
@@ -181,7 +185,7 @@ public class TransactionRepositoryTest
 	{
 		List<Category> categories = new ArrayList<>();
 		categories.add(category1);
-		Specification spec = TransactionSpecifications.withDynamicQuery(true, true, null, categories, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, null, categories, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertTrue(results.contains(transaction1));
@@ -192,7 +196,7 @@ public class TransactionRepositoryTest
 	@Test
 	public void getByFullName()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(true, true, null, null, null, "Repeating");
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, null, null, "Repeating");
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertFalse(results.contains(transaction1));
@@ -203,7 +207,7 @@ public class TransactionRepositoryTest
 	@Test
 	public void getByPartialName()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(true, true, null, null, null, "tin");
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, null, null, "tin");
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertFalse(results.contains(transaction1));
@@ -216,7 +220,7 @@ public class TransactionRepositoryTest
 	{
 		List<Category> categories = new ArrayList<>();
 		categories.add(category1);
-		Specification spec = TransactionSpecifications.withDynamicQuery(false, true, true, categories, null, "Repeating");
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, false, true, true, categories, "Repeating");
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertFalse(results.contains(transaction1));
