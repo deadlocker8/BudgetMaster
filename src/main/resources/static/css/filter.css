@@ -1,0 +1,9 @@
+.collapsible-header-status {
+    position: absolute;
+    right: 15px;
+    font-weight: bold;
+}
+
+.collapsible-header {
+    position: relative;
+}
