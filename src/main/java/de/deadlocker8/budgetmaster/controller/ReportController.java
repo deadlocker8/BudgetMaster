@@ -60,12 +60,13 @@ public class ReportController extends BaseController
 	private FilterHelpersService filterHelpers;
 
 	@RequestMapping("/reports")
-	public String reports(Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
+	public String reports(HttpServletRequest request, Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
 	{
 		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
 
 		model.addAttribute("reportSettings", reportSettingsService.getReportSettings());
 		model.addAttribute("currentDate", date);
+		model.addAttribute("isFilterActive", filterHelpers.getFilterConfiguration(request).isActive());
 		return "reports/reports";
 	}
 

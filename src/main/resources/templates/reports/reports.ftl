@@ -10,6 +10,8 @@
         <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "reports"/>
 
+        <#import "../transactions/transactionsMacros.ftl" as transactionsMacros>
+
         <main>
             <div class="card main-card background-color">
                 <#import "../helpers/globalDatePicker.ftl" as datePicker>
@@ -22,6 +24,12 @@
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="ID" value="${reportSettings.getID()?c}"/>
                         <input type="hidden" name="date" value="${helpers.getLongDateString(currentDate)}"/>
+
+                        <div class="row">
+                            <div class="col s12 center-align">
+                                <@transactionsMacros.buttonFilter isFilterActive/>
+                            </div>
+                        </div>
 
                         <#-- settings -->
                         <div class="row">
@@ -83,7 +91,7 @@
                             </div>
                         </div>
 
-                        <#-- button new -->
+                        <#-- button generate -->
                         <div class="row valign-wrapper">
                             <div class="col s12 center-align">
                                 <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="buttonSave">
