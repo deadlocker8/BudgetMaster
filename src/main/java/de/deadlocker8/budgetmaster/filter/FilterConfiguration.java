@@ -10,6 +10,8 @@ public class FilterConfiguration
 	private boolean includeRepeating;
 	private List<FilterCategory> filterCategories;
 
+	public static final FilterConfiguration DEFAULT = new FilterConfiguration(true, true, true, true, null);
+
 	public FilterConfiguration()
 	{
 	}

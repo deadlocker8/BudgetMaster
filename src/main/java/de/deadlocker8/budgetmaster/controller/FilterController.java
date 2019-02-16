@@ -33,26 +33,10 @@ public class FilterController extends BaseController
 	private HelpersService helpers;
 
 	@RequestMapping("/filter")
-	public String filter(Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
+	public String filter(Model model)
 	{
-		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
-
-		model.addAttribute("currentDate", date);
-
-		List<Category> categories = categoryService.getRepository().findAllByOrderByNameAsc();
-		List<FilterCategory> filterCategories = new ArrayList<>();
-		for(Category category : categories)
-		{
-			filterCategories.add(new FilterCategory(category.getID(), category.getName(), false));
-		}
-
-		FilterConfiguration filterConfiguration = new FilterConfiguration();
-		filterConfiguration.setIncludeIncome(true);
-		filterConfiguration.setIncludeExpenditure(true);
-		filterConfiguration.setIncludeNotRepeating(true);
-		filterConfiguration.setIncludeRepeating(true);
-		filterConfiguration.setFilterCategories(filterCategories);
-
+		FilterConfiguration filterConfiguration = FilterConfiguration.DEFAULT;
+		filterConfiguration.setFilterCategories(getFilterCategories());
 		model.addAttribute("filterConfiguration", filterConfiguration);
 		return "filter/filter";
 	}
@@ -62,5 +46,26 @@ public class FilterController extends BaseController
 	{
 		System.out.println(filterConfiguration);
 		return "redirect:/filter";
+	}
+
+	@RequestMapping("/filter/reset")
+	public String reset(Model model)
+	{
+		FilterConfiguration filterConfiguration = FilterConfiguration.DEFAULT;
+		filterConfiguration.setFilterCategories(getFilterCategories());
+		model.addAttribute("filterConfiguration", filterConfiguration);
+		return "filter/filter";
+	}
+
+	private List<FilterCategory> getFilterCategories()
+	{
+		List<Category> categories = categoryService.getRepository().findAllByOrderByNameAsc();
+		List<FilterCategory> filterCategories = new ArrayList<>();
+		for(Category category : categories)
+		{
+			filterCategories.add(new FilterCategory(category.getID(), category.getName(), false));
+		}
+
+		return filterCategories;
 	}
 }

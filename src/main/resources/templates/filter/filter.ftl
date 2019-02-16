@@ -9,6 +9,9 @@
         <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar ""/>
 
+        <#import "filterMacros.ftl" as filterMacros>
+
+
         <main>
             <div class="card main-card background-color">
                 <div class="container">
@@ -93,14 +96,7 @@
                             </div>
                         </div>
 
-                        <#-- button save -->
-                        <div class="row valign-wrapper">
-                            <div class="col s12 center-align">
-                                <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="buttonSave">
-                                    <i class="fas fa-filter left"></i>${locale.getString("filter.apply")}
-                                </button>
-                            </div>
-                        </div>
+                        <@filterMacros.buttons/>
                     </form>
                 </div>
             </div>
