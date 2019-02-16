@@ -4,6 +4,7 @@ import com.google.gson.*;
 import de.deadlocker8.budgetmaster.entities.*;
 import de.deadlocker8.budgetmaster.entities.account.Account;
 import de.deadlocker8.budgetmaster.entities.category.Category;
+import de.deadlocker8.budgetmaster.entities.transaction.Transaction;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.repeating.endoption.*;
 import de.deadlocker8.budgetmaster.repeating.modifier.*;

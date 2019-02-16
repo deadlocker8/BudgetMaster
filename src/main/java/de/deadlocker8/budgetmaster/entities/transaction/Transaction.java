@@ -1,6 +1,7 @@
-package de.deadlocker8.budgetmaster.entities;
+package de.deadlocker8.budgetmaster.entities.transaction;
 
 import com.google.gson.annotations.Expose;
+import de.deadlocker8.budgetmaster.entities.Tag;
 import de.deadlocker8.budgetmaster.entities.account.Account;
 import de.deadlocker8.budgetmaster.entities.category.Category;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
@@ -195,7 +196,6 @@ public class Transaction
 	@Override
 	public int hashCode()
 	{
-
 		return Objects.hash(ID, amount, date, account, category, name, description, tags, repeatingOption);
 	}
 }

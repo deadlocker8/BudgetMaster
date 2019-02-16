@@ -3,7 +3,7 @@ package de.deadlocker8.budgetmaster.database;
 import com.google.gson.annotations.Expose;
 import de.deadlocker8.budgetmaster.entities.account.Account;
 import de.deadlocker8.budgetmaster.entities.category.Category;
-import de.deadlocker8.budgetmaster.entities.Transaction;
+import de.deadlocker8.budgetmaster.entities.transaction.Transaction;
 
 import java.util.List;
 

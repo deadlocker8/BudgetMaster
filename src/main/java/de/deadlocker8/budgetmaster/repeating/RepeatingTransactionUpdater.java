@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.repeating;
 
-import de.deadlocker8.budgetmaster.entities.Transaction;
+import de.deadlocker8.budgetmaster.entities.transaction.Transaction;
 import de.deadlocker8.budgetmaster.repositories.TransactionRepository;
 import de.deadlocker8.budgetmaster.repositories.RepeatingOptionRepository;
 import de.deadlocker8.budgetmaster.services.HelpersService;

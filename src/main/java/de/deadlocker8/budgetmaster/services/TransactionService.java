@@ -3,7 +3,7 @@ package de.deadlocker8.budgetmaster.services;
 import de.deadlocker8.budgetmaster.entities.account.Account;
 import de.deadlocker8.budgetmaster.entities.account.AccountType;
 import de.deadlocker8.budgetmaster.entities.category.CategoryType;
-import de.deadlocker8.budgetmaster.entities.Transaction;
+import de.deadlocker8.budgetmaster.entities.transaction.Transaction;
 import de.deadlocker8.budgetmaster.repositories.CategoryRepository;
 import de.deadlocker8.budgetmaster.repositories.RepeatingOptionRepository;
 import de.deadlocker8.budgetmaster.repositories.TransactionRepository;

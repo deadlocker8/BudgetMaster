@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.entities.account;
 
 import com.google.gson.annotations.Expose;
-import de.deadlocker8.budgetmaster.entities.Transaction;
+import de.deadlocker8.budgetmaster.entities.transaction.Transaction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
