@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.request.WebRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,18 +35,27 @@ public class FilterController extends BaseController
 	private HelpersService helpers;
 
 	@RequestMapping("/filter")
-	public String filter(Model model)
+	public String filter(HttpServletRequest request, Model model)
 	{
-		FilterConfiguration filterConfiguration = FilterConfiguration.DEFAULT;
-		filterConfiguration.setFilterCategories(getFilterCategories());
+		FilterConfiguration filterConfiguration;
+		Object sessionFilterConfiguration = request.getSession().getAttribute("filterConfiguration");
+		if(sessionFilterConfiguration == null)
+		{
+			filterConfiguration = FilterConfiguration.DEFAULT;
+			filterConfiguration.setFilterCategories(getFilterCategories());
+		}
+		else
+		{
+			filterConfiguration = (FilterConfiguration)sessionFilterConfiguration;
+		}
 		model.addAttribute("filterConfiguration", filterConfiguration);
 		return "filter/filter";
 	}
 
 	@RequestMapping(value = "/filter/apply", method = RequestMethod.POST)
-	public String post(HttpServletResponse response, @ModelAttribute("NewFilterConfiguration") FilterConfiguration filterConfiguration)
+	public String post(WebRequest request, @ModelAttribute("NewFilterConfiguration") FilterConfiguration filterConfiguration)
 	{
-		System.out.println(filterConfiguration);
+		request.setAttribute("filterConfiguration", filterConfiguration, WebRequest.SCOPE_SESSION);
 		return "redirect:/filter";
 	}
 
@@ -63,7 +74,7 @@ public class FilterController extends BaseController
 		List<FilterCategory> filterCategories = new ArrayList<>();
 		for(Category category : categories)
 		{
-			filterCategories.add(new FilterCategory(category.getID(), category.getName(), false));
+			filterCategories.add(new FilterCategory(category.getID(), category.getName(), true));
 		}
 
 		return filterCategories;

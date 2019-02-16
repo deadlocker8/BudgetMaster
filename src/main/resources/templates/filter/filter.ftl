@@ -25,7 +25,7 @@
                                         <div class="collapsible-header">
                                             <i class="fas fa-piggy-bank"></i>
                                             ${locale.getString("filter.type")}
-                                            <div class="collapsible-header-status">1/2</div>
+                                            <div class="collapsible-header-status"></div>
                                         </div>
                                         <div class="collapsible-body">
                                             <div class="row no-margin">
@@ -49,7 +49,7 @@
                                         <div class="collapsible-header">
                                             <i class="material-icons">repeat</i>
                                             ${locale.getString("filter.repeating")}
-                                            <div class="collapsible-header-status">1/2</div>
+                                            <div class="collapsible-header-status"></div>
                                         </div>
                                         <div class="collapsible-body">
                                             <div class="row no-margin">
@@ -73,7 +73,7 @@
                                         <div class="collapsible-header">
                                             <i class="material-icons">label</i>
                                             ${locale.getString("filter.categories")}
-                                            <div class="collapsible-header-status">1/2</div>
+                                            <div class="collapsible-header-status"></div>
                                         </div>
                                         <div class="collapsible-body">
                                             <div class="row no-margin">
@@ -81,7 +81,7 @@
                                                     <#list filterConfiguration.getFilterCategories() as filterCategory>
                                                         <div>
                                                             <label>
-                                                                <input type="checkbox" name="filterCategories['${filterCategory?index}'].include">
+                                                                <input type="checkbox" name="filterCategories['${filterCategory?index}'].include" <#if filterCategory.isInclude()>checked="checked"</#if>>
                                                                 <span class="text-color">${filterCategory.getName()}</span>
                                                             </label>
                                                             <input type="hidden" name="filterCategories['${filterCategory?index}'].ID" value="${filterCategory.getID()}"/>
