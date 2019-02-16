@@ -17,8 +17,8 @@
 
                         <div class="row">
                             <div class="s12">
-                                <ul class="collapsible">
-                                    <li>
+                                <ul class="collapsible" id="filterSettings">
+                                    <li id="section-type">
                                         <div class="collapsible-header">
                                             <i class="fas fa-piggy-bank"></i>
                                             ${locale.getString("filter.type")}
@@ -42,7 +42,7 @@
                                         </div>
                                     </li>
 
-                                    <li>
+                                    <li id="section-repeating">
                                         <div class="collapsible-header">
                                             <i class="material-icons">repeat</i>
                                             ${locale.getString("filter.repeating")}
@@ -66,7 +66,7 @@
                                         </div>
                                     </li>
 
-                                    <li>
+                                    <li id="section-categories">
                                         <div class="collapsible-header">
                                             <i class="material-icons">label</i>
                                             ${locale.getString("filter.categories")}
