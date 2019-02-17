@@ -128,13 +128,13 @@ public class TransactionService implements Resetable
 	{
 		Transaction transactionToDelete = transactionRepository.findOne(ID);
 		// handle repeating transactions
-		if(transactionToDelete.getRepeatingOption() != null)
+		if(transactionToDelete.getRepeatingOption() == null)
 		{
-			repeatingOptionRepository.delete(transactionToDelete.getRepeatingOption().getID());
+			transactionRepository.delete(ID);
 		}
 		else
 		{
-			transactionRepository.delete(ID);
+			repeatingOptionRepository.delete(transactionToDelete.getRepeatingOption().getID());
 		}
 	}
 
