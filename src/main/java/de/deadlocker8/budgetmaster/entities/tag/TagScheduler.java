@@ -25,7 +25,7 @@ public class TagScheduler
 		this.transactionRepository = transactionRepository;
 	}
 
-	@Scheduled(fixedRate = 60*1000)
+	@Scheduled(fixedRate = 15*60*1000)
 	public void tagCleaner()
 	{
 		LOGGER.debug("Cleaning Tags...");
