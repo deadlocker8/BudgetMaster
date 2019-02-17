@@ -2,7 +2,7 @@ package de.deadlocker8.budgetmaster.services;
 
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.entities.Settings;
-import de.deadlocker8.budgetmaster.entities.Tag;
+import de.deadlocker8.budgetmaster.entities.tag.Tag;
 import de.deadlocker8.budgetmaster.entities.account.Account;
 import de.deadlocker8.budgetmaster.entities.account.AccountType;
 import de.deadlocker8.budgetmaster.entities.category.CategoryType;

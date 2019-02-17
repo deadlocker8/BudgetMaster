@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.controller;
 
 import de.deadlocker8.budgetmaster.entities.Settings;
-import de.deadlocker8.budgetmaster.entities.Tag;
+import de.deadlocker8.budgetmaster.entities.tag.Tag;
 import de.deadlocker8.budgetmaster.entities.transaction.Transaction;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;

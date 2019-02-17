@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.entities.transaction;
 
 import com.google.gson.annotations.Expose;
-import de.deadlocker8.budgetmaster.entities.Tag;
+import de.deadlocker8.budgetmaster.entities.tag.Tag;
 import de.deadlocker8.budgetmaster.entities.account.Account;
 import de.deadlocker8.budgetmaster.entities.category.Category;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
@@ -40,8 +40,14 @@ public class Transaction
 	@Expose
 	private String description;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany
 	@Expose
+	@JoinTable(
+			name = "transaction_tags",
+			joinColumns = @JoinColumn(
+					name = "transaction_id", referencedColumnName = "ID"),
+			inverseJoinColumns = @JoinColumn(
+					name = "tags_id", referencedColumnName = "ID"))
 	private List<Tag> tags;
 
 	@ManyToOne(optional = true, cascade = CascadeType.ALL)

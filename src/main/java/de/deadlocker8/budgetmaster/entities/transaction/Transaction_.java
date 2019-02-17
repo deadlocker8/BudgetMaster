@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.entities.transaction;
 
-import de.deadlocker8.budgetmaster.entities.Tag;
+import de.deadlocker8.budgetmaster.entities.tag.Tag;
 import de.deadlocker8.budgetmaster.entities.account.Account;
 import de.deadlocker8.budgetmaster.entities.category.Category;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;

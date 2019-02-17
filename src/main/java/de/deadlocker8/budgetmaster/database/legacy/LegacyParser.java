@@ -237,14 +237,14 @@ public class LegacyParser
 		return null;
 	}
 
-	private List<de.deadlocker8.budgetmaster.entities.Tag> getTagsByPaymentID(int paymentID)
+	private List<de.deadlocker8.budgetmaster.entities.tag.Tag> getTagsByPaymentID(int paymentID)
 	{
-		List<de.deadlocker8.budgetmaster.entities.Tag> tags = new ArrayList<>();
+		List<de.deadlocker8.budgetmaster.entities.tag.Tag> tags = new ArrayList<>();
 		for(TagMatch tagMatch : tagMatches)
 		{
 			if(tagMatch.getPaymentID() == paymentID)
 			{
-				tags.add(new de.deadlocker8.budgetmaster.entities.Tag(tagMatch.getTagName()));
+				tags.add(new de.deadlocker8.budgetmaster.entities.tag.Tag(tagMatch.getTagName()));
 			}
 		}
 

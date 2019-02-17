@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.entities;
+package de.deadlocker8.budgetmaster.entities.tag;
 
 import com.google.gson.annotations.Expose;
 import de.deadlocker8.budgetmaster.entities.transaction.Transaction;
@@ -24,7 +24,7 @@ public class Tag
 	private String name;
 
 	@ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
-	private transient List<Transaction> referringTransactions;
+	private List<Transaction> referringTransactions;
 
 	public Tag()
 	{

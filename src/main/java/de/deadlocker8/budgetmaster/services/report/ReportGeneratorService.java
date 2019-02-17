@@ -2,7 +2,7 @@ package de.deadlocker8.budgetmaster.services.report;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
-import de.deadlocker8.budgetmaster.entities.Tag;
+import de.deadlocker8.budgetmaster.entities.tag.Tag;
 import de.deadlocker8.budgetmaster.entities.transaction.Transaction;
 import de.deadlocker8.budgetmaster.entities.report.ReportColumn;
 import de.deadlocker8.budgetmaster.reports.*;

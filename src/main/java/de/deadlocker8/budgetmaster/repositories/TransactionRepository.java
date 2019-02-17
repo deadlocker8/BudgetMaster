@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.repositories;
 
+import de.deadlocker8.budgetmaster.entities.tag.Tag;
 import de.deadlocker8.budgetmaster.entities.account.Account;
 import de.deadlocker8.budgetmaster.entities.transaction.Transaction;
 import org.joda.time.DateTime;
@@ -17,6 +18,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 	List<Transaction> findAllByDateBetweenOrderByDateDesc(DateTime startDate, DateTime endDate);
 
 	List<Transaction> findAllByAccount(Account account);
+
+	List<Transaction> findAllByTagsContaining(Tag tag);
 
 	@Query(value = "SELECT SUM(t.amount) FROM `transaction` as t WHERE t.account_id = ?1 AND t.date BETWEEN ?2 AND ?3", nativeQuery = true)
 	Integer getRest(int accountID, String startDate, String endDate);
