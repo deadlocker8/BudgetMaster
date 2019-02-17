@@ -29,7 +29,7 @@ public class Category
 	private CategoryType type;
 
 	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-	private transient List<Transaction> referringTransactions;
+	private List<Transaction> referringTransactions;
 
 	public Category(String name, String color, CategoryType type)
 	{
