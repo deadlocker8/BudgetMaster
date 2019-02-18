@@ -92,6 +92,22 @@
                                             </div>
                                         </div>
                                     </li>
+
+                                    <li id="section-name">
+                                        <div class="collapsible-header">
+                                            <i class="material-icons">subject</i>
+                                            ${locale.getString("filter.name")}
+                                            <div class="collapsible-header-status"></div>
+                                        </div>
+                                        <div class="collapsible-body">
+                                            <div class="row no-margin">
+                                                <div class="input-field col s12">
+                                                    <input id="filter-name" type="text" name="name" value="<#if filterConfiguration.getName()??>${filterConfiguration.getName()}</#if>">
+                                                    <label for="filter-name">${locale.getString("filter.name.contains")}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
                                 </ul>
                             </div>
                         </div>

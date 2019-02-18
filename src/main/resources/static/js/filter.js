@@ -5,6 +5,10 @@ $(document).ready(function () {
         updateStatus();
     });
 
+    $('#filter-name').on('input', function() {
+        updateStatus();
+    });
+
     updateStatus();
 });
 
@@ -12,6 +16,7 @@ function updateStatus() {
     updateStatusForSectionByCheckboxes('section-type');
     updateStatusForSectionByCheckboxes('section-repeating');
     updateStatusForSectionByCheckboxes('section-categories');
+    updateStatusForSectionName('section-name');
 }
 
 function updateStatusForSectionByCheckboxes(identifier) {
@@ -30,4 +35,15 @@ function getStatusByCheckboxes(item) {
     }
 
     return checkedCount + "/" + checkboxes.length;
+}
+function updateStatusForSectionName(identifier) {
+    var section = document.getElementById(identifier);
+    var nameValue = section.querySelector('#filter-name').value;
+    var statusText = '1/1';
+
+    if(nameValue.length === 0)
+    {
+        statusText = '0/1';
+    }
+    section.querySelector('.collapsible-header-status').innerText = statusText;
 }

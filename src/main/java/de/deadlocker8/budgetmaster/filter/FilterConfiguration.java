@@ -10,20 +10,22 @@ public class FilterConfiguration
 	private boolean includeNotRepeating;
 	private boolean includeRepeating;
 	private List<FilterCategory> filterCategories;
+	private String name;
 
-	public static final FilterConfiguration DEFAULT = new FilterConfiguration(true, true, true, true, null);
+	public static final FilterConfiguration DEFAULT = new FilterConfiguration(true, true, true, true, null, "");
 
 	public FilterConfiguration()
 	{
 	}
 
-	public FilterConfiguration(boolean includeIncome, boolean includeExpenditure, boolean includeNotRepeating, boolean includeRepeating, List<FilterCategory> filterCategories)
+	public FilterConfiguration(boolean includeIncome, boolean includeExpenditure, boolean includeNotRepeating, boolean includeRepeating, List<FilterCategory> filterCategories, String name)
 	{
 		this.includeIncome = includeIncome;
 		this.includeExpenditure = includeExpenditure;
 		this.includeNotRepeating = includeNotRepeating;
 		this.includeRepeating = includeRepeating;
 		this.filterCategories = filterCategories;
+		this.name = name;
 	}
 
 	public boolean isIncludeIncome()
@@ -85,6 +87,16 @@ public class FilterConfiguration
 		this.filterCategories = filterCategories;
 	}
 
+	public String getName()
+	{
+		return name;
+	}
+
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+
 	public List<Integer> getIncludedCategoryIDs()
 	{
 		if(filterCategories == null)
@@ -140,6 +152,11 @@ public class FilterConfiguration
 			}
 		}
 
+		if(!defaultConfiguration.getName().equals(name))
+		{
+			return true;
+		}
+
 		return false;
 	}
 
@@ -152,6 +169,7 @@ public class FilterConfiguration
 				", includeNotRepeating=" + includeNotRepeating +
 				", includeRepeating=" + includeRepeating +
 				", filterCategories=" + filterCategories +
+				", name='" + name + '\'' +
 				'}';
 	}
 }

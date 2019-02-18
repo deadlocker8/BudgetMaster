@@ -53,7 +53,7 @@ public class TransactionSpecifications
 				predicates.add(builder.and(transaction.get(Transaction_.category).get("ID").in(categoryIDs)));
 			}
 
-			if(name != null)
+			if(name != null && name.length() > 0)
 			{
 				predicates.add(builder.and(builder.like(builder.lower(transaction.get(Transaction_.name)), "%"+name.toLowerCase()+"%")));
 			}
