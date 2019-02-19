@@ -44,7 +44,7 @@ main {
 }
 
 .budgetmaster-green-text {
-   color: #5cb85c;
+    color: #5cb85c;
 }
 
 .budgetmaster-dark-green {
@@ -60,7 +60,7 @@ main {
 }
 
 .budgetmaster-red-text {
-   color: #D82C29;
+    color: #D82C29;
 }
 
 .budgetmaster-orange {
@@ -115,7 +115,7 @@ main {
     width: 350px;
 }
 
-.sidenav, .sidenav-sub{
+.sidenav, .sidenav-sub {
     background-color: #444444;
 }
 
@@ -129,7 +129,7 @@ main {
     color: #FFFFFF !important;
 }
 
-.sidenav li > a > i, .sidenav-sub li > a > i{
+.sidenav li > a > i, .sidenav-sub li > a > i {
     color: #FFFFFF !important;
 }
 
@@ -527,6 +527,23 @@ input[type="radio"]:not(:checked) + span::before, [type="radio"]:not(:checked) +
 
 .transaction-name {
     width: 50%;
+}
+
+.collapsible {
+    border-top: 1px solid #666666;
+    border-right: 1px solid #666666;
+    border-left: 1px solid #666666;
+}
+
+.collapsible-header {
+    background-color: #999999;
+    color: #212121;
+    border-bottom: 1px solid #666666;
+}
+
+.collapsible-body {
+    background-color: #565656;
+    border-bottom: 1px solid #666666;
 }
 
 .no-border-table tr {

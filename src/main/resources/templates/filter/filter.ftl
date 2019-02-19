@@ -20,7 +20,7 @@
 
                         <div class="row">
                             <div class="s12">
-                                <ul class="collapsible" id="filterSettings">
+                                <ul class="collapsible z-depth-2" id="filterSettings">
                                     <li id="section-type">
                                         <div class="collapsible-header">
                                             <i class="fas fa-piggy-bank"></i>
