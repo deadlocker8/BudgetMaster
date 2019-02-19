@@ -1,0 +1,23 @@
+.collapsible-header-status {
+    position: absolute;
+    right: 15px;
+    font-weight: bold;
+}
+
+.collapsible {
+    border-top: 1px solid #666666;
+    border-right: 1px solid #666666;
+    border-left: 1px solid #666666;
+}
+
+.collapsible-header {
+    background-color: #999999;
+    color: #212121;
+    border-bottom: 1px solid #666666;
+    position: relative;
+}
+
+.collapsible-body {
+    background-color: #565656;
+    border-bottom: 1px solid #666666;
+}
