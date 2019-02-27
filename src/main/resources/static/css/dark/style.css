@@ -436,8 +436,10 @@ ul.dropdown-content.select-dropdown li.selected {
 
 /* normal checkbox*/
 input[type="checkbox"]:checked + span:not(.lever)::before {
-    border-right: 2px solid #2E79B9;
-    border-bottom: 2px solid #2E79B9;
+    border-top: 3px solid transparent;
+    border-left: 3px solid transparent;
+    border-right: 3px solid #45A0EF;
+    border-bottom: 3px solid #45A0EF;
 }
 
 /* chips autocomplete dropdown */

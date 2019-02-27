@@ -42,14 +42,14 @@
 
 .report-checkbox-container input[type="checkbox"] + span:not(.lever)::before,
 .report-checkbox-container input[type="checkbox"]:not(.filled-in) + span:not(.lever)::after {
-    border-color: rgba(255, 255, 255, 0.7);
+    border: 2px solid rgba(255, 255, 255, 0.7);
 }
 
 .report-checkbox-container input[type="checkbox"]:checked + span:not(.lever)::before {
-    border-top: 2px solid transparent;
-    border-left: 2px solid transparent;
-    border-right: 2px solid #2E79B9;
-    border-bottom: 2px solid #2E79B9;
+    border-top: 3px solid transparent;
+    border-left: 3px solid transparent;
+    border-right: 3px solid #45A0EF;
+    border-bottom: 3px solid #45A0EF;
 }
 
 .table-advice {

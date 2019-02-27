@@ -5,19 +5,23 @@
 }
 
 .collapsible {
-    border-top: 1px solid #666666;
-    border-right: 1px solid #666666;
-    border-left: 1px solid #666666;
+    border-top: 1px solid #444444;
+    border-right: 1px solid #444444;
+    border-left: 1px solid #444444;
 }
 
 .collapsible-header {
-    background-color: #999999;
-    color: #212121;
-    border-bottom: 1px solid #666666;
+    background-color: #666666;
+    color: #ffffff;
+    border-bottom: 1px solid #444444;
     position: relative;
 }
 
 .collapsible-body {
-    background-color: #565656;
+    background-color: #444444;
     border-bottom: 1px solid #666666;
+}
+
+input[type="checkbox"]:not(:checked) + span:not(.lever)::before {
+    border: 2px solid rgba(255, 255, 255, 0.7);
 }
