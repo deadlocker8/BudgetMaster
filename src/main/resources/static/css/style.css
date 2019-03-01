@@ -425,16 +425,29 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     flex-wrap: wrap;
 }
 
-.home-menu-cell:hover {
-    background-color: #EEEEEE;
+.home-menu-flex .col {
+    margin-bottom: 2rem;
 }
 
 .home-menu-link {
     display: inline-block;
 }
 
+.home-menu-link-item {
+    font-size: 1.2rem;
+}
+
+.home-menu-link-item:hover {
+    background-color: #EEEEEE;
+}
+
 .home-menu-disabled * {
     color: #AAAAAA !important;
+}
+
+.home-menu-text {
+    padding-left: 16px;
+    margin-top: 2rem;
 }
 
 .import-text {

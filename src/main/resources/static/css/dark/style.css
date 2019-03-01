@@ -498,8 +498,8 @@ input[type="radio"]:not(:checked) + span::before, [type="radio"]:not(:checked) +
     flex-wrap: wrap;
 }
 
-.home-menu-cell:hover {
-    background-color: #333333;
+.home-menu-flex .col {
+    margin-bottom: 2rem;
 }
 
 .home-menu-link {
@@ -507,8 +507,22 @@ input[type="radio"]:not(:checked) + span::before, [type="radio"]:not(:checked) +
     color: #FFFFFF;
 }
 
+.home-menu-link-item {
+    font-size: 1.2rem;
+    color: #FFFFFF;
+}
+
+.home-menu-link-item:hover {
+    background-color: #333333;
+}
+
 .home-menu-disabled * {
     color: #777777 !important;
+}
+
+.home-menu-text {
+    padding-left: 16px;
+    margin-top: 2rem;
 }
 
 .modal-footer .btn-flat {

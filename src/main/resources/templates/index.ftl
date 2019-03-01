@@ -22,59 +22,77 @@
                     <div class="hide-on-small-only"><br></div>
 
                     <div class="row home-menu-flex">
-                        <div class="col s12 m6 l4 center-align home-menu-cell">
-                            <a href="<@s.url '/accounts'/>" class="home-menu-link budgetmaster-text-black">
-                                <h1 class="center budgetmaster-grey-text"><i class="material-icons icon-budget">account_balance</i></h1>
-                                <h3 class="center budget">${locale.getString("menu.accounts")}</h3>
-                                <p class="text-grey">${locale.getString("home.menu.accounts")}</p>
+                        <div class="col s12 m6 l4 home-menu-cell">
+                            <a href="<@s.url '/accounts'/>" class="home-menu-link btn-flat budget">
+                                <i class="material-icons icon-budget left">account_balance</i>
+                                ${locale.getString("menu.accounts")}
                             </a>
+                            <p class="text-grey home-menu-text">${locale.getString("home.menu.accounts")}</p>
+                            <div class="left-align">
+                                <a href="<@s.url '/accounts'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>Kontoverwaltung</a>
+                                <a href="<@s.url '/accounts/newAccount'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>Neues Konto anlegen</a>
+                            </div>
                         </div>
-                        <div class="col s12 m6 l4 center-align home-menu-cell">
-                            <a href="<@s.url '/transactions'/>" class="home-menu-link budgetmaster-text-black">
-                                <h1 class="center budgetmaster-baby-blue-text"><i class="material-icons icon-budget">list</i></h1>
-                                <h3 class="center budget">${locale.getString("menu.transactions")}</h3>
-                                <p class="text-grey">${locale.getString("home.menu.transactions")}</p>
+                        <div class="col s12 m6 l4 home-menu-cell">
+                            <a href="<@s.url '/transactions'/>" class="home-menu-link btn-flat budget">
+                                <i class="material-icons icon-budget left budgetmaster-baby-blue-text">list</i>
+                                ${locale.getString("menu.transactions")}
                             </a>
+                            <p class="text-grey home-menu-text">${locale.getString("home.menu.transactions")}</p>
+                            <div class="left-align">
+                                <a href="<@s.url '/transactions'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>Buchungsverwaltung</a>
+                                <a href="<@s.url '/transactions/newTransaction'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>Neue Buchung anlegen</a>
+                            </div>
                         </div>
                 <div class="hide-on-small-only hide-on-large-only">
                     </div>
                     <div class="row home-menu-flex">
                 </div>
-                        <div class="col s12 m6 l4 center-align home-menu-cell">
-                            <a class="home-menu-link budgetmaster-text-black home-menu-disabled">
-                                <h1 class="center budgetmaster-purple-text"><i class="material-icons icon-budget">show_chart</i></h1>
-                                <h3 class="center budget">${locale.getString("menu.charts")}</h3>
-                                <p class="home-menu-disabled ">${locale.getString("home.menu.charts")}</p>
+                        <div class="col s12 m6 l4 home-menu-cell home-menu-disabled">
+                            <a class="home-menu-link btn-flat budget">
+                                <i class="material-icons icon-budget left budgetmaster-purple-text">show_chart</i>
+                                ${locale.getString("menu.charts")}
                             </a>
+                            <p class="home-menu-text">${locale.getString("home.menu.charts")}</p>
                         </div>
                 <div class="hide-on-med-only">
                     </div>
                     <div class="row home-menu-flex">
                 </div>
-                        <div class="col s12 m6 l4 center-align home-menu-cell">
-                            <a href="<@s.url '/reports'/>" class="home-menu-link budgetmaster-text-black">
-                                <h1 class="center budgetmaster-green-text"><i class="material-icons icon-budget">description</i></h1>
-                                <h3 class="center budget">${locale.getString("menu.reports")}</h3>
-                                <p class="text-grey">${locale.getString("home.menu.reports")}</p>
+                        <div class="col s12 m6 l4 home-menu-cell">
+                            <a href="<@s.url '/reports'/>" class="home-menu-link btn-flat budget">
+                                <i class="material-icons icon-budget left budgetmaster-green-text">description</i>
+                                ${locale.getString("menu.reports")}
                             </a>
+                            <p class="text-grey home-menu-text">${locale.getString("home.menu.reports")}</p>
+                            <div class="left-align">
+                                <a href="<@s.url '/reports'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>Neuen Report erstellen</a>
+                            </div>
                         </div>
                 <div class="hide-on-small-only hide-on-large-only">
                     </div>
                     <div class="row home-menu-flex">
                 </div>
-                        <div class="col s12 m6 l4 center-align home-menu-cell">
-                            <a href="<@s.url '/categories'/>" class="home-menu-link budgetmaster-text-black">
-                                <h1 class="center budgetmaster-orange-text"><i class="material-icons icon-budget">label</i></h1>
-                                <h3 class="center budget">${locale.getString("menu.categories")}</h3>
-                                <p class="text-grey">${locale.getString("home.menu.categories")}</p>
+                        <div class="col s12 m6 l4 home-menu-cell">
+                            <a href="<@s.url '/categories'/>" class="home-menu-link btn-flat budget">
+                                <i class="material-icons icon-budget left budgetmaster-orange-text">label</i>
+                                ${locale.getString("menu.categories")}
                             </a>
+                            <p class="text-grey home-menu-text">${locale.getString("home.menu.categories")}</p>
+                            <div class="left-align">
+                                <a href="<@s.url '/categories'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>Kategorieverwaltung</a>
+                                <a href="<@s.url '/categories/newCategory'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>Neue Kategorie anlegen</a>
+                            </div>
                         </div>
-                        <div class="col s12 m6 l4 center-align home-menu-cell">
-                            <a href="<@s.url '/settings'/>" class="home-menu-link budgetmaster-text-black">
-                                <h1 class="center budgetmaster-red-text"><i class="material-icons icon-budget">settings</i></h1>
-                                <h3 class="center budget">${locale.getString("menu.settings")}</h3>
-                                <p class="text-grey">${locale.getString("home.menu.settings")}</p>
+                        <div class="col s12 m6 l4 home-menu-cell">
+                            <a href="<@s.url '/settings'/>" class="home-menu-link btn-flat budget">
+                                <i class="material-icons icon-budget left budgetmaster-red-text">settings</i>
+                                ${locale.getString("menu.settings")}
                             </a>
+                            <p class="text-grey home-menu-text">${locale.getString("home.menu.settings")}</p>
+                            <div class="left-align">
+                                <a href="<@s.url '/settings'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>Einstellungen</a>
+                            </div>
                         </div>
                     </div>
                 </div>
