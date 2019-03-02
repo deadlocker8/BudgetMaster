@@ -81,7 +81,7 @@ public class TransactionController extends BaseController
 		model.addAttribute("paymentSum", paymentSum);
 		model.addAttribute("currentDate", date);
 		model.addAttribute("rest", rest);
-		model.addAttribute("isFilterActive", filterConfiguration.isActive());
+		model.addAttribute("filterConfiguration", filterConfiguration);
 
 		return "transactions/transactions";
 	}
@@ -108,7 +108,7 @@ public class TransactionController extends BaseController
 		model.addAttribute("currentDate", date);
 		model.addAttribute("currentTransaction", transactionRepository.getOne(ID));
 		model.addAttribute("rest", rest);
-		model.addAttribute("isFilterActive", filterConfiguration.isActive());
+		model.addAttribute("filterConfiguration", filterConfiguration);
 
 
 		return "transactions/transactions";

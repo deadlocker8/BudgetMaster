@@ -106,8 +106,8 @@
 
 <#macro buttonFilter isFilterActive>
     <#if isFilterActive>
-        <a href="<@s.url '/filter'/>" class="waves-effect waves-light btn budgetmaster-red"><i class="fas fa-filter left"></i>${locale.getString("filter.active")}</a>
+        <a href="#modalFilter" class="modal-trigger waves-effect waves-light btn budgetmaster-red"><i class="fas fa-filter left"></i>${locale.getString("filter.active")}</a>
     <#else>
-        <a href="<@s.url '/filter'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="fas fa-filter left"></i>${locale.getString("title.filter")}</a>
+        <a href="#modalFilter" class="modal-trigger waves-effect waves-light btn budgetmaster-blue"><i class="fas fa-filter left"></i>${locale.getString("title.filter")}</a>
     </#if>
 </#macro>

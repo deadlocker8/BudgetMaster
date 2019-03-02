@@ -4,6 +4,7 @@
         <@header.header "BudgetMaster"/>
         <@header.style "reports"/>
         <@header.style "globalDatepicker"/>
+        <@header.style "filter"/>
         <#import "/spring.ftl" as s>
     </head>
     <body class="budgetmaster-blue-light">
@@ -11,6 +12,7 @@
         <@navbar.navbar "reports"/>
 
         <#import "../transactions/transactionsMacros.ftl" as transactionsMacros>
+        <#import "../filter/filterMacros.ftl" as filterMacros>
 
         <main>
             <div class="card main-card background-color">
@@ -27,7 +29,7 @@
 
                         <div class="row">
                             <div class="col s12 center-align">
-                                <@transactionsMacros.buttonFilter isFilterActive/>
+                                <@transactionsMacros.buttonFilter filterConfiguration.isActive()/>
                             </div>
                         </div>
 
@@ -102,6 +104,8 @@
                     </form>
                 </div>
             </div>
+
+            <@filterMacros.filterModal filterConfiguration/>
         </main>
 
         <!--  Scripts-->
@@ -110,6 +114,7 @@
         <script src="<@s.url '/sortable-1.8.1/Sortable.min.js'/>"></script>
         <script src="<@s.url '/js/reports.js'/>"></script>
         <script src="<@s.url '/js/globalDatePicker.js'/>"></script>
+        <script src="<@s.url '/js/filter.js'/>"></script>
         <script>document.cookie = "currentDate=${helpers.getDateString(currentDate)}";</script>
     </body>
 </html>

@@ -31,26 +31,19 @@ public class FilterController extends BaseController
 	@Autowired
 	private FilterHelpersService filterHelpers;
 
-	@RequestMapping("/filter")
-	public String filter(HttpServletRequest request, Model model)
-	{
-		model.addAttribute("filterConfiguration", filterHelpers.getFilterConfiguration(request));
-		return "filter/filter";
-	}
-
 	@RequestMapping(value = "/filter/apply", method = RequestMethod.POST)
 	public String post(WebRequest request, @ModelAttribute("NewFilterConfiguration") FilterConfiguration filterConfiguration)
 	{
 		request.setAttribute("filterConfiguration", filterConfiguration, WebRequest.SCOPE_SESSION);
-		return "redirect:/filter";
+		return "redirect:" + request.getHeader("Referer");
 	}
 
 	@RequestMapping("/filter/reset")
-	public String reset(WebRequest request, Model model)
+	public String reset(WebRequest request)
 	{
 		FilterConfiguration filterConfiguration = FilterConfiguration.DEFAULT;
 		filterConfiguration.setFilterCategories(filterHelpers.getFilterCategories());
 		request.setAttribute("filterConfiguration", filterConfiguration, WebRequest.SCOPE_SESSION);
-		return "redirect:/filter";
+		return "redirect:" + request.getHeader("Referer");
 	}
 }

@@ -66,7 +66,7 @@ public class ReportController extends BaseController
 
 		model.addAttribute("reportSettings", reportSettingsService.getReportSettings());
 		model.addAttribute("currentDate", date);
-		model.addAttribute("isFilterActive", filterHelpers.getFilterConfiguration(request).isActive());
+		model.addAttribute("filterConfiguration", filterHelpers.getFilterConfiguration(request));
 		return "reports/reports";
 	}
 

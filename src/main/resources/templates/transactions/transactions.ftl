@@ -4,6 +4,7 @@
         <@header.header "BudgetMaster"/>
         <@header.style "categories"/>
         <@header.style "globalDatepicker"/>
+        <@header.style "filter"/>
         <#import "/spring.ftl" as s>
     </head>
     <body class="budgetmaster-blue-light">
@@ -11,6 +12,7 @@
         <@navbar.navbar "transactions"/>
 
         <#import "transactionsMacros.ftl" as transactionsMacros>
+        <#import "../filter/filterMacros.ftl" as filterMacros>
 
         <main>
             <div class="card main-card background-color">
@@ -42,7 +44,7 @@
                     </div>
 
                     <#-- buttons -->
-                    <@transactionsMacros.buttons isFilterActive/>
+                    <@transactionsMacros.buttons filterConfiguration.isActive()/>
 
                     <#-- transactions list -->
                     <br>
@@ -71,6 +73,8 @@
             <#if currentTransaction??>
                 <@transactionsMacros.deleteModal currentTransaction/>
             </#if>
+
+            <@filterMacros.filterModal filterConfiguration/>
         </main>
 
         <!--  Scripts-->
@@ -78,6 +82,7 @@
         <@scripts.scripts/>
         <script src="<@s.url '/js/transactions.js'/>"></script>
         <script src="<@s.url '/js/globalDatePicker.js'/>"></script>
+        <script src="<@s.url '/js/filter.js'/>"></script>
         <script>document.cookie = "currentDate=${helpers.getDateString(currentDate)}";</script>
     </body>
 </html>
