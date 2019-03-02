@@ -420,13 +420,18 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     margin: auto
 }
 
+.btn-flat {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .home-menu-flex {
     display: flex;
     flex-wrap: wrap;
 }
 
 .home-menu-flex .col {
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
 }
 
 .home-menu-link {

@@ -29,8 +29,8 @@
                             </a>
                             <p class="text-grey home-menu-text">${locale.getString("home.menu.accounts")}</p>
                             <div class="left-align">
-                                <a href="<@s.url '/accounts'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>Kontoverwaltung</a>
-                                <a href="<@s.url '/accounts/newAccount'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>Neues Konto anlegen</a>
+                                <a href="<@s.url '/accounts'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>${locale.getString("home.menu.accounts.action.manage")}</a>
+                                <a href="<@s.url '/accounts/newAccount'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>${locale.getString("home.menu.accounts.action.new")}</a>
                             </div>
                         </div>
                         <div class="col s12 m6 l4 home-menu-cell">
@@ -40,8 +40,8 @@
                             </a>
                             <p class="text-grey home-menu-text">${locale.getString("home.menu.transactions")}</p>
                             <div class="left-align">
-                                <a href="<@s.url '/transactions'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>Buchungsverwaltung</a>
-                                <a href="<@s.url '/transactions/newTransaction'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>Neue Buchung anlegen</a>
+                                <a href="<@s.url '/transactions'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>${locale.getString("home.menu.transactions.action.manage")}</a>
+                                <a href="<@s.url '/transactions/newTransaction'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>${locale.getString("home.menu.transactions.action.new")}n</a>
                             </div>
                         </div>
                 <div class="hide-on-small-only hide-on-large-only">
@@ -66,7 +66,7 @@
                             </a>
                             <p class="text-grey home-menu-text">${locale.getString("home.menu.reports")}</p>
                             <div class="left-align">
-                                <a href="<@s.url '/reports'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>Neuen Report erstellen</a>
+                                <a href="<@s.url '/reports'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>${locale.getString("home.menu.reports.action.new")}</a>
                             </div>
                         </div>
                 <div class="hide-on-small-only hide-on-large-only">
@@ -80,8 +80,8 @@
                             </a>
                             <p class="text-grey home-menu-text">${locale.getString("home.menu.categories")}</p>
                             <div class="left-align">
-                                <a href="<@s.url '/categories'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>Kategorieverwaltung</a>
-                                <a href="<@s.url '/categories/newCategory'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>Neue Kategorie anlegen</a>
+                                <a href="<@s.url '/categories'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>${locale.getString("home.menu.categories.action.manage")}</a>
+                                <a href="<@s.url '/categories/newCategory'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>${locale.getString("home.menu.categories.action.new")}</a>
                             </div>
                         </div>
                         <div class="col s12 m6 l4 home-menu-cell">
@@ -91,7 +91,7 @@
                             </a>
                             <p class="text-grey home-menu-text">${locale.getString("home.menu.settings")}</p>
                             <div class="left-align">
-                                <a href="<@s.url '/settings'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>Einstellungen</a>
+                                <a href="<@s.url '/settings'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>${locale.getString("home.menu.settings.action.manage")}</a>
                             </div>
                         </div>
                     </div>

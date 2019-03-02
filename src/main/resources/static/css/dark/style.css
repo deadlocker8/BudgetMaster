@@ -493,13 +493,18 @@ input[type="radio"]:not(:checked) + span::before, [type="radio"]:not(:checked) +
     margin: auto
 }
 
+.btn-flat {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .home-menu-flex {
     display: flex;
     flex-wrap: wrap;
 }
 
 .home-menu-flex .col {
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
 }
 
 .home-menu-link {
