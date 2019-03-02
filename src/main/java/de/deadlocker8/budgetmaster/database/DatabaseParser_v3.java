@@ -3,7 +3,7 @@ package de.deadlocker8.budgetmaster.database;
 import com.google.gson.*;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.categories.Category;
-import de.deadlocker8.budgetmaster.entities.tag.Tag;
+import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.repeating.endoption.*;

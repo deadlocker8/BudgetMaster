@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.entities.tag;
+package de.deadlocker8.budgetmaster.tags;
 
 import com.google.gson.annotations.Expose;
 import de.deadlocker8.budgetmaster.transactions.Transaction;

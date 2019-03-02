@@ -1,6 +1,5 @@
-package de.deadlocker8.budgetmaster.entities.tag;
+package de.deadlocker8.budgetmaster.tags;
 
-import de.deadlocker8.budgetmaster.repositories.TagRepository;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

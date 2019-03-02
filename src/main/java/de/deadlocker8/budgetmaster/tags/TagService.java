@@ -1,6 +1,7 @@
-package de.deadlocker8.budgetmaster.services;
+package de.deadlocker8.budgetmaster.tags;
 
-import de.deadlocker8.budgetmaster.repositories.TagRepository;
+import de.deadlocker8.budgetmaster.services.Resetable;
+import de.deadlocker8.budgetmaster.tags.TagRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

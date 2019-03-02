@@ -3,9 +3,10 @@ package de.deadlocker8.budgetmaster.services;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
-import de.deadlocker8.budgetmaster.entities.tag.Tag;
+import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.filter.FilterObject;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
+import de.deadlocker8.budgetmaster.tags.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
