@@ -23,17 +23,38 @@ public class FilterHelpersService
 
 	public FilterConfiguration getFilterConfiguration(HttpServletRequest request)
 	{
-		FilterConfiguration filterConfiguration;
 		Object sessionFilterConfiguration = request.getSession().getAttribute("filterConfiguration");
 		if(sessionFilterConfiguration == null)
 		{
-			filterConfiguration = FilterConfiguration.DEFAULT;
+			FilterConfiguration filterConfiguration = FilterConfiguration.DEFAULT;
 			filterConfiguration.setFilterCategories(getFilterCategories());
 			filterConfiguration.setFilterTags(getFilterTags());
 			return filterConfiguration;
 		}
 
-		return (FilterConfiguration)sessionFilterConfiguration;
+		// update categories and tags
+		FilterConfiguration filterConfiguration = (FilterConfiguration)sessionFilterConfiguration;
+		filterConfiguration.setFilterCategories(updateObjects(filterConfiguration.getFilterCategories(), getFilterCategories()));
+		filterConfiguration.setFilterTags(updateObjects(filterConfiguration.getFilterTags(), getFilterTags()));
+
+		return filterConfiguration;
+	}
+
+	private List<FilterObject> updateObjects(List<FilterObject> oldObjects, List<FilterObject> newObjects)
+	{
+		for(FilterObject newObject : newObjects)
+		{
+			for(FilterObject existingObject : oldObjects)
+			{
+				if(existingObject.getID().equals(newObject.getID()))
+				{
+					newObject.setInclude(existingObject.isInclude());
+					break;
+				}
+			}
+		}
+
+		return newObjects;
 	}
 
 	public List<FilterObject> getFilterCategories()
