@@ -1,10 +1,10 @@
 package de.deadlocker8.budgetmaster.controller;
 
+import org.joda.time.DateTime;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -28,6 +28,8 @@ public class LoginController extends BaseController
 		{
 			request.getSession().setAttribute("preLoginURL", savedRequest.getRequestURL());
 		}
+
+		model.addAttribute("currentDate", DateTime.now());
 		return "login";
 	}
 }
