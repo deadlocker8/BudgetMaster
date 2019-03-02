@@ -43,6 +43,7 @@ public class FilterController extends BaseController
 	{
 		FilterConfiguration filterConfiguration = FilterConfiguration.DEFAULT;
 		filterConfiguration.setFilterCategories(filterHelpers.getFilterCategories());
+		filterConfiguration.setFilterTags(filterHelpers.getFilterTags());
 		request.setAttribute("filterConfiguration", filterConfiguration, WebRequest.SCOPE_SESSION);
 		return "redirect:" + request.getHeader("Referer");
 	}

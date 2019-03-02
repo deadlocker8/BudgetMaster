@@ -15,6 +15,7 @@ public class TransactionSpecifications
 															  final boolean isIncome, boolean isExpenditure,
 															  final Boolean isRepeating,
 															  final List<Integer> categoryIDs,
+															  final List<Integer> tagIDs,
 															  final String name)
 	{
 		return (transaction, query, builder) -> {
@@ -51,6 +52,11 @@ public class TransactionSpecifications
 			if(categoryIDs != null)
 			{
 				predicates.add(builder.and(transaction.get(Transaction_.category).get("ID").in(categoryIDs)));
+			}
+
+			if(tagIDs != null)
+			{
+//				predicates.add(builder.and(transaction.get(Transaction_.tags).in(tagIDs)));
 			}
 
 			if(name != null && name.length() > 0)

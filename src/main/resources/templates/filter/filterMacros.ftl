@@ -117,6 +117,30 @@
                                 </div>
                             </li>
 
+                            <li id="section-tags">
+                                <div class="collapsible-header">
+                                    <i class="material-icons">label</i>
+                                    ${locale.getString("filter.tags")}
+                                    <div class="collapsible-header-status"></div>
+                                </div>
+                                <div class="collapsible-body">
+                                    <div class="row no-margin">
+                                        <div class="col s12">
+                                            <#list filterConfiguration.getFilterTags() as filterTag>
+                                                <div>
+                                                    <label>
+                                                        <input type="checkbox" name="filterTags['${filterTag?index}'].include" <#if filterTag.isInclude()>checked="checked"</#if>>
+                                                        <span class="text-color">${filterTag.getName()}</span>
+                                                    </label>
+                                                    <input type="hidden" name="filterTags['${filterTag?index}'].ID" value="${filterTag.getID()}"/>
+                                                    <input type="hidden" name="filterTags['${filterTag?index}'].name" value="${filterTag.getName()}"/>
+                                                </div>
+                                            </#list>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
                             <li id="section-name">
                                 <div class="collapsible-header">
                                     <i class="material-icons">subject</i>

@@ -9,22 +9,24 @@ public class FilterConfiguration
 	private boolean includeExpenditure;
 	private boolean includeNotRepeating;
 	private boolean includeRepeating;
-	private List<FilterCategory> filterCategories;
+	private List<FilterObject> filterCategories;
+	private List<FilterObject> filterTags;
 	private String name;
 
-	public static final FilterConfiguration DEFAULT = new FilterConfiguration(true, true, true, true, null, "");
+	public static final FilterConfiguration DEFAULT = new FilterConfiguration(true, true, true, true, null, null, "");
 
 	public FilterConfiguration()
 	{
 	}
 
-	public FilterConfiguration(boolean includeIncome, boolean includeExpenditure, boolean includeNotRepeating, boolean includeRepeating, List<FilterCategory> filterCategories, String name)
+	public FilterConfiguration(boolean includeIncome, boolean includeExpenditure, boolean includeNotRepeating, boolean includeRepeating, List<FilterObject> filterCategories, List<FilterObject> filterTags, String name)
 	{
 		this.includeIncome = includeIncome;
 		this.includeExpenditure = includeExpenditure;
 		this.includeNotRepeating = includeNotRepeating;
 		this.includeRepeating = includeRepeating;
 		this.filterCategories = filterCategories;
+		this.filterTags = filterTags;
 		this.name = name;
 	}
 
@@ -77,14 +79,24 @@ public class FilterConfiguration
 		return isIncludeRepeating();
 	}
 
-	public List<FilterCategory> getFilterCategories()
+	public List<FilterObject> getFilterCategories()
 	{
 		return filterCategories;
 	}
 
-	public void setFilterCategories(List<FilterCategory> filterCategories)
+	public void setFilterCategories(List<FilterObject> filterCategories)
 	{
 		this.filterCategories = filterCategories;
+	}
+
+	public List<FilterObject> getFilterTags()
+	{
+		return filterTags;
+	}
+
+	public void setFilterTags(List<FilterObject> filterTags)
+	{
+		this.filterTags = filterTags;
 	}
 
 	public String getName()
@@ -97,28 +109,38 @@ public class FilterConfiguration
 		this.name = name;
 	}
 
-	public List<Integer> getIncludedCategoryIDs()
+	private List<Integer> getIncludedIDs(List<FilterObject> objects)
 	{
-		if(filterCategories == null)
+		if(objects == null)
 		{
 			return null;
 		}
 
-		List<Integer> includedCategoryIDs = new ArrayList<>();
-		for(FilterCategory filterCategory : filterCategories)
+		List<Integer> includedIDs = new ArrayList<>();
+		for(FilterObject filterObject : objects)
 		{
-			if(filterCategory.isInclude())
+			if(filterObject.isInclude())
 			{
-				includedCategoryIDs.add(filterCategory.getID());
+				includedIDs.add(filterObject.getID());
 			}
 		}
 
-		if(includedCategoryIDs.size() == filterCategories.size())
+		if(includedIDs.size() == objects.size())
 		{
 			return null;
 		}
 
-		return includedCategoryIDs;
+		return includedIDs;
+	}
+
+	public List<Integer> getIncludedCategoryIDs()
+	{
+		return getIncludedIDs(filterCategories);
+	}
+
+	public List<Integer> getIncludedTagIDs()
+	{
+		return getIncludedIDs(filterTags);
 	}
 
 	public boolean isActive()
@@ -144,9 +166,17 @@ public class FilterConfiguration
 			return true;
 		}
 
-		for(FilterCategory filterCategory : filterCategories)
+		for(FilterObject filterCategory : filterCategories)
 		{
 			if(!filterCategory.isInclude())
+			{
+				return true;
+			}
+		}
+
+		for(FilterObject filterTag : filterTags)
+		{
+			if(!filterTag.isInclude())
 			{
 				return true;
 			}
@@ -169,6 +199,7 @@ public class FilterConfiguration
 				", includeNotRepeating=" + includeNotRepeating +
 				", includeRepeating=" + includeRepeating +
 				", filterCategories=" + filterCategories +
+				", filterTags=" + filterTags +
 				", name='" + name + '\'' +
 				'}';
 	}

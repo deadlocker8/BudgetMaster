@@ -4,15 +4,13 @@ import de.deadlocker8.budgetmaster.entities.account.Account;
 import de.deadlocker8.budgetmaster.entities.account.AccountType;
 import de.deadlocker8.budgetmaster.entities.category.Category;
 import de.deadlocker8.budgetmaster.entities.category.CategoryType;
+import de.deadlocker8.budgetmaster.entities.tag.Tag;
 import de.deadlocker8.budgetmaster.entities.transaction.Transaction;
 import de.deadlocker8.budgetmaster.entities.transaction.TransactionSpecifications;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndAfterXTimes;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierDays;
-import de.deadlocker8.budgetmaster.repositories.AccountRepository;
-import de.deadlocker8.budgetmaster.repositories.CategoryRepository;
-import de.deadlocker8.budgetmaster.repositories.RepeatingOptionRepository;
-import de.deadlocker8.budgetmaster.repositories.TransactionRepository;
+import de.deadlocker8.budgetmaster.repositories.*;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.junit.Before;
@@ -50,6 +48,10 @@ public class TransactionRepositoryTest
 	private Account account;
 
 	@Autowired
+	private TagRepository tagRepository;
+	private Tag tag1;
+
+	@Autowired
 	private RepeatingOptionRepository repeatingOptionRepository;
 	private RepeatingOption repeatingOption;
 
@@ -64,6 +66,8 @@ public class TransactionRepositoryTest
 		categoryUnused = categoryRepository.save(new Category("CategoryUnused", "#00ff00", CategoryType.CUSTOM));
 		category1 = categoryRepository.save(new Category("Category1", "#ff0000", CategoryType.CUSTOM));
 		category2 = categoryRepository.save(new Category("Category2", "#ff0000", CategoryType.CUSTOM));
+
+		tag1 = tagRepository.save(new Tag("MyAwesomeTag"));
 
 		transaction1 = new Transaction();
 		transaction1.setName("Test");
@@ -97,14 +101,16 @@ public class TransactionRepositoryTest
 		repeatingTransaction.setDescription("");
 		repeatingTransaction.setAccount(account);
 		repeatingTransaction.setRepeatingOption(repeatingOption);
-		repeatingTransaction.setTags(new ArrayList<>());
+		ArrayList<Tag> tags = new ArrayList<>();
+		tags.add(tag1);
+		repeatingTransaction.setTags(tags);
 		repeatingTransaction = transactionRepository.save(repeatingTransaction);
 	}
 
 	@Test
 	public void getIncomesAndExpenditures()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, null, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, null, null, null, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertTrue(results.contains(transaction1));
@@ -115,7 +121,7 @@ public class TransactionRepositoryTest
 	@Test
 	public void getIncomes()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, false, null, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, false, null, null, null, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertTrue(results.contains(transaction1));
@@ -126,7 +132,7 @@ public class TransactionRepositoryTest
 	@Test
 	public void getExpenditures()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, false, true, null, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, false, true, null, null, null, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertFalse(results.contains(transaction1));
@@ -137,7 +143,7 @@ public class TransactionRepositoryTest
 	@Test
 	public void incomesAndExpendituresFalse()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, false, false, null, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, false, false, null, null, null, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertTrue(results.contains(transaction1));
@@ -148,7 +154,7 @@ public class TransactionRepositoryTest
 	@Test
 	public void getRepeating()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, true, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, true, null, null, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertFalse(results.contains(transaction1));
@@ -159,7 +165,7 @@ public class TransactionRepositoryTest
 	@Test
 	public void noRepeating()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, false, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, false, null, null, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertTrue(results.contains(transaction1));
@@ -172,7 +178,7 @@ public class TransactionRepositoryTest
 	{
 		List<Integer> categoryIDs = new ArrayList<>();
 		categoryIDs.add(categoryUnused.getID());
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, null, categoryIDs, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, null, categoryIDs, null, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertFalse(results.contains(transaction1));
@@ -185,7 +191,7 @@ public class TransactionRepositoryTest
 	{
 		List<Integer> categoryIDs = new ArrayList<>();
 		categoryIDs.add(category1.getID());
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, null, categoryIDs, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, null, categoryIDs, null, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertTrue(results.contains(transaction1));
@@ -196,7 +202,7 @@ public class TransactionRepositoryTest
 	@Test
 	public void getByFullName()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, null, null, "Repeating");
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, null, null, null, "Repeating");
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertFalse(results.contains(transaction1));
@@ -207,7 +213,7 @@ public class TransactionRepositoryTest
 	@Test
 	public void getByPartialName()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, null, null, "tin");
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, null, null, null, "tin");
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertFalse(results.contains(transaction1));
@@ -216,11 +222,15 @@ public class TransactionRepositoryTest
 	}
 
 	@Test
-	public void getRepeatingExpenditureByCategoryAndName()
+	public void getRepeatingExpenditureByCategoryAndTagsAndName()
 	{
 		List<Integer> categoryIDs = new ArrayList<>();
 		categoryIDs.add(category1.getID());
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, false, true, true, categoryIDs, "Repeating");
+
+		List<Integer> tagIDs = new ArrayList<>();
+		tagIDs.add(tag1.getID());
+
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, false, true, true, categoryIDs, tagIDs, "Repeating");
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertFalse(results.contains(transaction1));

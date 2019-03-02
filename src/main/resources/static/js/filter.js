@@ -16,6 +16,7 @@ function updateStatus() {
     updateStatusForSectionByCheckboxes('section-type');
     updateStatusForSectionByCheckboxes('section-repeating');
     updateStatusForSectionByCheckboxes('section-categories');
+    updateStatusForSectionByCheckboxes('section-tags');
     updateStatusForSectionName('section-name');
 }
 
