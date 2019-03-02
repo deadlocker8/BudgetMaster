@@ -1,10 +1,8 @@
-package de.deadlocker8.budgetmaster.services;
+package de.deadlocker8.budgetmaster.accounts;
 
 import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
-import de.deadlocker8.budgetmaster.entities.account.Account;
-import de.deadlocker8.budgetmaster.entities.account.AccountType;
-import de.deadlocker8.budgetmaster.repositories.AccountRepository;
+import de.deadlocker8.budgetmaster.services.Resetable;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;

@@ -1,11 +1,7 @@
-package de.deadlocker8.budgetmaster.controller;
+package de.deadlocker8.budgetmaster.accounts;
 
-import de.deadlocker8.budgetmaster.entities.account.Account;
-import de.deadlocker8.budgetmaster.entities.account.AccountType;
-import de.deadlocker8.budgetmaster.repositories.AccountRepository;
-import de.deadlocker8.budgetmaster.services.AccountService;
+import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
-import de.deadlocker8.budgetmaster.validators.AccountValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

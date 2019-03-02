@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.entities.account;
+package de.deadlocker8.budgetmaster.accounts;
 
 import com.google.gson.annotations.Expose;
 import de.deadlocker8.budgetmaster.transactions.Transaction;

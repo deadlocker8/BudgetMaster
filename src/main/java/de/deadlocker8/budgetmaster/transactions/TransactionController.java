@@ -11,7 +11,7 @@ import de.deadlocker8.budgetmaster.repeating.endoption.*;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifier;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierType;
 import de.deadlocker8.budgetmaster.repositories.*;
-import de.deadlocker8.budgetmaster.services.AccountService;
+import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.services.FilterHelpersService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;

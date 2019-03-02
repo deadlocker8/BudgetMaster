@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.validators;
+package de.deadlocker8.budgetmaster.accounts;
 
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.utils.Strings;

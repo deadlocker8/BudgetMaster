@@ -1,8 +1,8 @@
 package de.deadlocker8.budgetmaster.database;
 
 import de.deadlocker8.budgetmaster.database.legacy.LegacyParser;
-import de.deadlocker8.budgetmaster.entities.account.Account;
-import de.deadlocker8.budgetmaster.entities.account.AccountType;
+import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.entities.tag.Tag;

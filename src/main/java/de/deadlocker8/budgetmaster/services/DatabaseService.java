@@ -1,9 +1,10 @@
 package de.deadlocker8.budgetmaster.services;
 
 import com.google.gson.*;
+import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.database.Database;
-import de.deadlocker8.budgetmaster.entities.account.Account;
+import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
