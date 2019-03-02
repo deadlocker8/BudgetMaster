@@ -35,6 +35,17 @@
     </button>
 </#macro>
 
+<#macro buttonsAllOrNone>
+    <div class="row no-margin">
+        <div class="col s6 right-align">
+            <a class="waves-effect waves-light btn budgetmaster-blue filter-button-all">${locale.getString("filter.tags.button.all")}</a>
+        </div>
+        <div class="col s6">
+            <a class="waves-effect waves-light btn budgetmaster-blue filter-button-none">${locale.getString("filter.tags.button.none")}</a>
+        </div>
+    </div>
+</#macro>
+
 <#macro filterModal filterConfiguration>
     <div id="modalFilter" class="modal background-color">
         <div class="modal-content">
@@ -100,6 +111,7 @@
                                     <div class="collapsible-header-status"></div>
                                 </div>
                                 <div class="collapsible-body">
+                                    <@buttonsAllOrNone/>
                                     <div class="row no-margin">
                                         <div class="col s12">
                                             <#list filterConfiguration.getFilterCategories() as filterCategory>
@@ -119,11 +131,12 @@
 
                             <li id="section-tags">
                                 <div class="collapsible-header">
-                                    <i class="material-icons">label</i>
+                                    <i class="material-icons">local_offer</i>
                                     ${locale.getString("filter.tags")}
                                     <div class="collapsible-header-status"></div>
                                 </div>
                                 <div class="collapsible-body">
+                                    <@buttonsAllOrNone/>
                                     <div class="row no-margin">
                                         <div class="col s12">
                                             <#list filterConfiguration.getFilterTags() as filterTag>
