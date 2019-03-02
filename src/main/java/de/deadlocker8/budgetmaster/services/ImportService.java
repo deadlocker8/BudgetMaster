@@ -60,7 +60,7 @@ public class ImportService
 				existingCategory = categoryRepository.findByNameAndColorAndType(category.getName(), category.getColor(), category.getType());
 			}
 
-			int newCategoryID = -1;
+			int newCategoryID;
 			if(existingCategory == null)
 			{
 				//category does not exist --> create it

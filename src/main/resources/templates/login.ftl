@@ -11,9 +11,9 @@
                 <div class="col l4 offset-l4 m6 offset-m3 s10 offset-s1">
                     <div class="card" id="card-login">
                         <div class="card-content">
-                            <span class="card-title">
+                            <div class="card-title">
                                 <div id="logo-container" class="center-align"><@header.logo "logo" ""/></div>
-                            </span>
+                            </div>
                             <form action="<@s.url '/login'/>" method="post">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <input type="hidden" name="username" value="Default">

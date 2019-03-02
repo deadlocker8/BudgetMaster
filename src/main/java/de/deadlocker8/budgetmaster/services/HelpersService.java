@@ -161,12 +161,7 @@ public class HelpersService
 		return years;
 	}
 
-	/**
-	 * Replaces line breaks and tabs with spaces
-	 *
-	 * @param text
-	 * @return String
-	 */
+	 // Replaces line breaks and tabs with spaces
 	public String getFlatText(String text)
 	{
 		text = text.replace("\n", " ");

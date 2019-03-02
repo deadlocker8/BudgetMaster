@@ -45,6 +45,7 @@ public class ReportGeneratorService
 		return chapter;
 	}
 
+	@SuppressWarnings({"SameParameterValue", "ConstantConditions"})
 	private PdfPTable generateTable(ReportConfiguration reportConfiguration, int tableWidth, AmountType amountType)
 	{
 		List<ReportColumn> columns = reportConfiguration.getReportSettings().getColumnsSortedAndFiltered();
@@ -278,6 +279,7 @@ public class ReportGeneratorService
 		}
 	}
 
+	@SuppressWarnings("SameParameterValue")
 	private BaseColor getBaseColor(Color color)
 	{
 		return new BaseColor((float) color.getRed(), (float) color.getGreen(), (float) color.getBlue());

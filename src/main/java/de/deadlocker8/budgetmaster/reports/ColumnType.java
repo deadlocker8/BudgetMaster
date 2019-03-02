@@ -20,7 +20,7 @@ public enum ColumnType
 	private String name;
 	private float proportion;
 
-	private ColumnType(String name, float proportion)
+	ColumnType(String name, float proportion)
 	{
 		this.name = name;
 		this.proportion = proportion;

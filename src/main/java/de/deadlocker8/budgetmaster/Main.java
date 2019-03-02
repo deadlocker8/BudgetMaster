@@ -33,6 +33,7 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 		prepare(new String[0]);
 	}
 
+	@SuppressWarnings("ConstantConditions")
 	private static Path prepare(String[] args)
 	{
 		Localization.setDelegate(new Localization.LocalizationDelegate()

@@ -2,7 +2,6 @@ package de.deadlocker8.budgetmaster.repeating.endoption;
 
 import com.google.gson.annotations.Expose;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.List;

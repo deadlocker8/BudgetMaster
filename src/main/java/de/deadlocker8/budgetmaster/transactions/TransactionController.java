@@ -134,6 +134,7 @@ public class TransactionController extends BaseController
 		return "transactions/newTransaction";
 	}
 
+	@SuppressWarnings("ConstantConditions")
 	@RequestMapping(value = "/transactions/newTransaction", method = RequestMethod.POST)
 	public String post(Model model, @CookieValue("currentDate") String cookieDate,
 					   @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
@@ -176,6 +177,7 @@ public class TransactionController extends BaseController
 			transaction.setTags(new ArrayList<>());
 			for(Tag currentTag : tags)
 			{
+				//noinspection ConstantConditions
 				transaction = addTagForTransaction(currentTag.getName(), transaction);
 			}
 		}
