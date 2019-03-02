@@ -29,13 +29,15 @@
                                     <td class="account-source">${accountMatch.getAccountSource().getName()}</td>
                                     <td class="import-text">${locale.getString("info.database.import.destination")}</td>
                                     <td>
-                                        <select class="account-destination">
-                                            <#list availableAccounts as account>
-                                                <#if (account.getType().name() == "CUSTOM")>
-                                                    <option value="${account.getID()?c}">${account.getName()}</option>
-                                                </#if>
-                                            </#list>
-                                        </select>
+                                        <div class="input-field no-margin">
+                                            <select class="account-destination">
+                                                <#list availableAccounts as account>
+                                                    <#if (account.getType().name() == "CUSTOM")>
+                                                        <option value="${account.getID()?c}">${account.getName()}</option>
+                                                    </#if>
+                                                </#list>
+                                            </select>
+                                        </div>
                                     </td>
                                     <td class="import-text">${locale.getString("info.database.import.or")}</td>
                                     <td>
