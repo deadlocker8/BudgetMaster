@@ -1,10 +1,10 @@
-package de.deadlocker8.budgetmaster.services.report;
+package de.deadlocker8.budgetmaster.reports;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import de.deadlocker8.budgetmaster.entities.tag.Tag;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
-import de.deadlocker8.budgetmaster.entities.report.ReportColumn;
+import de.deadlocker8.budgetmaster.reports.columns.ReportColumn;
 import de.deadlocker8.budgetmaster.reports.*;
 import de.deadlocker8.budgetmaster.reports.categoryBudget.CategoryBudget;
 import de.deadlocker8.budgetmaster.services.HelpersService;

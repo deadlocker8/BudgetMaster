@@ -1,5 +1,6 @@
-package de.deadlocker8.budgetmaster.entities.report;
+package de.deadlocker8.budgetmaster.reports.settings;
 
+import de.deadlocker8.budgetmaster.reports.columns.ReportColumn;
 import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 

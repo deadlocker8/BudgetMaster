@@ -1,8 +1,8 @@
-package de.deadlocker8.budgetmaster.services.report;
+package de.deadlocker8.budgetmaster.reports.columns;
 
-import de.deadlocker8.budgetmaster.entities.report.ReportColumn;
-import de.deadlocker8.budgetmaster.entities.report.ReportSettings;
-import de.deadlocker8.budgetmaster.repositories.report.ReportColumnRepository;
+import de.deadlocker8.budgetmaster.reports.columns.ReportColumn;
+import de.deadlocker8.budgetmaster.reports.settings.ReportSettings;
+import de.deadlocker8.budgetmaster.reports.columns.ReportColumnRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

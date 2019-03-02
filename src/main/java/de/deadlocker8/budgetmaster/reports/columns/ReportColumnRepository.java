@@ -1,6 +1,5 @@
-package de.deadlocker8.budgetmaster.repositories.report;
+package de.deadlocker8.budgetmaster.reports.columns;
 
-import de.deadlocker8.budgetmaster.entities.report.ReportColumn;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

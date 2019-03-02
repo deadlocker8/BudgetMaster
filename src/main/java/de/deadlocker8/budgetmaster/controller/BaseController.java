@@ -5,5 +5,5 @@ import org.slf4j.LoggerFactory;
 
 public abstract class BaseController
 {
-	final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	public final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 }

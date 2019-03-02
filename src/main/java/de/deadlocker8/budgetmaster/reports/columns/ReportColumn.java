@@ -1,7 +1,8 @@
-package de.deadlocker8.budgetmaster.entities.report;
+package de.deadlocker8.budgetmaster.reports.columns;
+
+import de.deadlocker8.budgetmaster.reports.settings.ReportSettings;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 public class ReportColumn
