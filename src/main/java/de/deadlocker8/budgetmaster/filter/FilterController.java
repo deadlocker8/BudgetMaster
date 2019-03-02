@@ -1,8 +1,7 @@
-package de.deadlocker8.budgetmaster.controller;
+package de.deadlocker8.budgetmaster.filter;
 
-import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
+import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
-import de.deadlocker8.budgetmaster.services.FilterHelpersService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;

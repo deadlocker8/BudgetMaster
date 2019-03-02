@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.services;
+package de.deadlocker8.budgetmaster.filter;
 
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryService;

@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmaster.reports;
 import com.itextpdf.text.DocumentException;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.controller.BaseController;
+import de.deadlocker8.budgetmaster.filter.FilterHelpersService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.accounts.Account;

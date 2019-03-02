@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.services;
+package de.deadlocker8.budgetmaster.database;
 
 import com.google.gson.*;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
