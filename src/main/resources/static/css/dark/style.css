@@ -525,6 +525,11 @@ input[type="radio"]:not(:checked) + span::before, [type="radio"]:not(:checked) +
     color: #777777 !important;
 }
 
+/* mark navbar entry "chart" as not available */
+.home-menu-disabled > li > a > i {
+    color: #777777 !important;
+}
+
 .home-menu-text {
     padding-left: 16px;
     margin-top: 2rem;

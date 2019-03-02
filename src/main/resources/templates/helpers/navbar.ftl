@@ -115,7 +115,7 @@
 
 <#macro subListStart ID text icon activeColor activeID>
 <li>
-    <ul class="collapsible collapsible-accordion no-padding sidenav-sub">
+    <ul class="collapsible collapsible-accordion no-padding sidenav-sub home-menu-disabled">
         <li>
             <#if activeID?starts_with(ID)>
                 <a href="<@s.url '/charts'/>" class="collapsible-header no-padding active"><div class="stripe ${activeColor}"></div><i class="material-icons">${icon}</i>${text}</a>

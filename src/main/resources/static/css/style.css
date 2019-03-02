@@ -450,6 +450,11 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     color: #AAAAAA !important;
 }
 
+/* mark navbar entry "chart" as not available */
+.home-menu-disabled > li > a > i {
+    color: #AAAAAA !important;
+}
+
 .home-menu-text {
     padding-left: 16px;
     margin-top: 2rem;
