@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.controller;
 
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
-import de.deadlocker8.budgetmaster.services.CategoryService;
+import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.services.FilterHelpersService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;

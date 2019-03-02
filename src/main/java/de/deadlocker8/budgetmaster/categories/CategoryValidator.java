@@ -1,6 +1,5 @@
-package de.deadlocker8.budgetmaster.validators;
+package de.deadlocker8.budgetmaster.categories;
 
-import de.deadlocker8.budgetmaster.entities.category.Category;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;

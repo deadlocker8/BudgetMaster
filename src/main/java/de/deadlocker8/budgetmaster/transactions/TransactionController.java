@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.transactions;
 
+import de.deadlocker8.budgetmaster.categories.CategoryRepository;
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.entities.Settings;
 import de.deadlocker8.budgetmaster.entities.tag.Tag;

@@ -1,7 +1,7 @@
-package de.deadlocker8.budgetmaster.repositories;
+package de.deadlocker8.budgetmaster.categories;
 
-import de.deadlocker8.budgetmaster.entities.category.Category;
-import de.deadlocker8.budgetmaster.entities.category.CategoryType;
+import de.deadlocker8.budgetmaster.categories.Category;
+import de.deadlocker8.budgetmaster.categories.CategoryType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

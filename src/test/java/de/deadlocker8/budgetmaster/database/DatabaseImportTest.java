@@ -2,11 +2,11 @@ package de.deadlocker8.budgetmaster.database;
 
 import de.deadlocker8.budgetmaster.entities.account.Account;
 import de.deadlocker8.budgetmaster.entities.account.AccountType;
-import de.deadlocker8.budgetmaster.entities.category.Category;
-import de.deadlocker8.budgetmaster.entities.category.CategoryType;
+import de.deadlocker8.budgetmaster.categories.Category;
+import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.entities.tag.Tag;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
-import de.deadlocker8.budgetmaster.repositories.CategoryRepository;
+import de.deadlocker8.budgetmaster.categories.CategoryRepository;
 import de.deadlocker8.budgetmaster.repositories.TagRepository;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import de.deadlocker8.budgetmaster.services.ImportService;

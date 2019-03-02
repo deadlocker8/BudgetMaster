@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.controller;
 
 import com.itextpdf.text.DocumentException;
+import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.entities.account.Account;
 import de.deadlocker8.budgetmaster.entities.account.AccountType;

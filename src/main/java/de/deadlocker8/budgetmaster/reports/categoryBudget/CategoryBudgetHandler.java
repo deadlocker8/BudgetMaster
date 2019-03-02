@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.reports.categoryBudget;
 
 import de.deadlocker8.budgetmaster.transactions.Transaction;
-import de.deadlocker8.budgetmaster.entities.category.Category;
+import de.deadlocker8.budgetmaster.categories.Category;
 
 import java.util.*;
 

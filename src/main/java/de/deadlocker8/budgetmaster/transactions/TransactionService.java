@@ -2,14 +2,11 @@ package de.deadlocker8.budgetmaster.transactions;
 
 import de.deadlocker8.budgetmaster.entities.account.Account;
 import de.deadlocker8.budgetmaster.entities.account.AccountType;
-import de.deadlocker8.budgetmaster.entities.category.CategoryType;
+import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.services.Resetable;
-import de.deadlocker8.budgetmaster.transactions.Transaction;
-import de.deadlocker8.budgetmaster.transactions.TransactionSpecifications;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
-import de.deadlocker8.budgetmaster.repositories.CategoryRepository;
+import de.deadlocker8.budgetmaster.categories.CategoryRepository;
 import de.deadlocker8.budgetmaster.repositories.RepeatingOptionRepository;
-import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
 import org.joda.time.DateTime;
