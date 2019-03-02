@@ -1,7 +1,7 @@
-package de.deadlocker8.budgetmaster.services;
+package de.deadlocker8.budgetmaster.settings;
 
-import de.deadlocker8.budgetmaster.entities.Settings;
-import de.deadlocker8.budgetmaster.repositories.SettingsRepository;
+import de.deadlocker8.budgetmaster.settings.Settings;
+import de.deadlocker8.budgetmaster.settings.SettingsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

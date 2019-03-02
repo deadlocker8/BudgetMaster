@@ -2,7 +2,7 @@ package de.deadlocker8.budgetmaster.update;
 
 import de.deadlocker8.budgetmaster.Build;
 import de.deadlocker8.budgetmaster.Main;
-import de.deadlocker8.budgetmaster.services.SettingsService;
+import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.thecodelabs.storage.settings.Storage;
 import de.thecodelabs.storage.settings.StorageTypes;
 import de.thecodelabs.versionizer.VersionizerItem;

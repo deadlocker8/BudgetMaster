@@ -1,6 +1,5 @@
 package de.deadlocker8.budgetmaster.tags;
 
-import de.deadlocker8.budgetmaster.tags.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

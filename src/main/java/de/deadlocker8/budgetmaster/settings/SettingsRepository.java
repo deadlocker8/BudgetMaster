@@ -1,6 +1,6 @@
-package de.deadlocker8.budgetmaster.repositories;
+package de.deadlocker8.budgetmaster.settings;
 
-import de.deadlocker8.budgetmaster.entities.Settings;
+import de.deadlocker8.budgetmaster.settings.Settings;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
