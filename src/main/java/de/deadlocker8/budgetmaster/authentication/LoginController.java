@@ -1,5 +1,6 @@
-package de.deadlocker8.budgetmaster.controller;
+package de.deadlocker8.budgetmaster.authentication;
 
+import de.deadlocker8.budgetmaster.controller.BaseController;
 import org.joda.time.DateTime;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 import org.springframework.stereotype.Controller;
