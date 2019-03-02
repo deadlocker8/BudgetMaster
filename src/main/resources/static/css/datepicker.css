@@ -6,6 +6,10 @@
     background-color: #2E79B9;
 }
 
+.datepicker-day-button:focus {
+    background-color: rgba(46, 121, 185, 0.3);
+}
+
 .datepicker-cancel, .datepicker-done, .datepicker-clear {
     color: #2E79B9;
     font-weight: bold;

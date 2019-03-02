@@ -1,9 +1,13 @@
+.datepicker-calendar-container {
+    background-color: #333333;
+}
+
 .datepicker-row {
-    color: #212121;
+    color: #FFFFFF;
 }
 
 .datepicker-controls .select-wrapper input {
-    color: #212121;
+    color: #FFFFFF;
 }
 
 .datepicker-date-display {
@@ -12,6 +16,10 @@
 
 .datepicker-table td.is-selected {
     background-color: #2E79B9;
+}
+
+.datepicker-day-button:focus {
+    background-color: rgba(46, 121, 185, 0.3);
 }
 
 .datepicker-cancel, .datepicker-done, .datepicker-clear {
@@ -27,6 +35,10 @@
 
 .datepicker-calendar .month-next:hover, .datepicker-calendar .month-prev:hover {
     background-color: rgba(46, 121, 185, 0.3);
+}
+
+.month-next svg, .month-prev svg {
+    fill: #FFFFFF;
 }
 
 .datepicker-table td.is-today {
