@@ -6,7 +6,7 @@ import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.services.Resetable;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
 import de.deadlocker8.budgetmaster.categories.CategoryRepository;
-import de.deadlocker8.budgetmaster.repositories.RepeatingOptionRepository;
+import de.deadlocker8.budgetmaster.repeating.RepeatingOptionRepository;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
 import org.joda.time.DateTime;
