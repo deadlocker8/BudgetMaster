@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.controller;
 
 import com.itextpdf.text.DocumentException;
-import de.deadlocker8.budgetmaster.entities.transaction.Transaction;
+import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.entities.account.Account;
 import de.deadlocker8.budgetmaster.entities.account.AccountType;
 import de.deadlocker8.budgetmaster.entities.report.ReportColumn;
@@ -15,6 +15,7 @@ import de.deadlocker8.budgetmaster.services.*;
 import de.deadlocker8.budgetmaster.services.report.ReportColumnService;
 import de.deadlocker8.budgetmaster.services.report.ReportGeneratorService;
 import de.deadlocker8.budgetmaster.services.report.ReportSettingsService;
+import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.thecodelabs.utils.util.Localization;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;

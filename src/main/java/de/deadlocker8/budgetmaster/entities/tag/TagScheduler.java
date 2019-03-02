@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.entities.tag;
 
 import de.deadlocker8.budgetmaster.repositories.TagRepository;
-import de.deadlocker8.budgetmaster.repositories.TransactionRepository;
+import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

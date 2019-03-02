@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.entities.transaction;
+package de.deadlocker8.budgetmaster.transactions;
 
 import de.deadlocker8.budgetmaster.entities.tag.Tag;
 import de.deadlocker8.budgetmaster.entities.account.Account;

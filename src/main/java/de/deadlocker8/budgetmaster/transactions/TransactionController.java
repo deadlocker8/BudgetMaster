@@ -1,8 +1,8 @@
-package de.deadlocker8.budgetmaster.controller;
+package de.deadlocker8.budgetmaster.transactions;
 
+import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.entities.Settings;
 import de.deadlocker8.budgetmaster.entities.tag.Tag;
-import de.deadlocker8.budgetmaster.entities.transaction.Transaction;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.repeating.RepeatingTransactionUpdater;
@@ -13,9 +13,7 @@ import de.deadlocker8.budgetmaster.repositories.*;
 import de.deadlocker8.budgetmaster.services.AccountService;
 import de.deadlocker8.budgetmaster.services.FilterHelpersService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
-import de.deadlocker8.budgetmaster.services.TransactionService;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
-import de.deadlocker8.budgetmaster.validators.TransactionValidator;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;

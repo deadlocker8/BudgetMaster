@@ -5,7 +5,7 @@ import de.deadlocker8.budgetmaster.authentication.UserRepository;
 import de.deadlocker8.budgetmaster.entities.account.Account;
 import de.deadlocker8.budgetmaster.entities.account.AccountType;
 import de.deadlocker8.budgetmaster.repositories.AccountRepository;
-import de.deadlocker8.budgetmaster.repositories.TransactionRepository;
+import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
 import org.slf4j.Logger;

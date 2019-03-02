@@ -1,10 +1,10 @@
 package de.deadlocker8.budgetmaster.repeating;
 
-import de.deadlocker8.budgetmaster.entities.transaction.Transaction;
-import de.deadlocker8.budgetmaster.repositories.TransactionRepository;
+import de.deadlocker8.budgetmaster.transactions.Transaction;
+import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import de.deadlocker8.budgetmaster.repositories.RepeatingOptionRepository;
 import de.deadlocker8.budgetmaster.services.HelpersService;
-import de.deadlocker8.budgetmaster.services.TransactionService;
+import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
