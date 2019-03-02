@@ -21,10 +21,23 @@ public class AccountController extends BaseController
 	@Autowired
 	private AccountService accountService;
 
-	@RequestMapping(value = "/account/{ID}/select")
+	@RequestMapping(value = "/accounts/{ID}/select")
 	public String selectAccount(HttpServletRequest request, @PathVariable("ID") Integer ID)
 	{
 		accountService.selectAccount(ID);
+
+		String referer = request.getHeader("Referer");
+		if(referer.contains("database/import"))
+		{
+			return "redirect:/settings";
+		}
+		return "redirect:" + referer;
+	}
+
+	@RequestMapping(value = "/accounts/{ID}/setAsDefault")
+	public String setAsDefault(HttpServletRequest request, @PathVariable("ID") Integer ID)
+	{
+		accountService.setAsDefaultAccount(ID);
 
 		String referer = request.getHeader("Referer");
 		if(referer.contains("database/import"))

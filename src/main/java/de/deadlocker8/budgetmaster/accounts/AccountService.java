@@ -56,6 +56,11 @@ public class AccountService implements Resetable
 		Account newSelectedAccount = accounts.get(0);
 		selectAccount(newSelectedAccount.getID());
 
+		if(accountToDelete.isDefault())
+		{
+			setAsDefaultAccount(accountRepository.findAllByType(AccountType.CUSTOM).get(0).getID());
+		}
+
 		accountRepository.delete(ID);
 	}
 
@@ -79,11 +84,19 @@ public class AccountService implements Resetable
 			accountRepository.save(placeholder);
 			LOGGER.debug("Created placeholder account");
 
-			Account account = new Account(Localization.getString(Strings.ACCOUNT_DEFAULT_NAME), AccountType.CUSTOM);
-			account = accountRepository.save(account);
+			Account account =  accountRepository.save(new Account(Localization.getString(Strings.ACCOUNT_DEFAULT_NAME), AccountType.CUSTOM));
 			selectAccount(account.getID());
+			setAsDefaultAccount(account.getID());
 			LOGGER.debug("Created default account");
 		}
+
+		Account defaultAccount = accountRepository.findByIsDefault(true);
+		if(defaultAccount == null)
+		{
+			Account account = accountRepository.findAllByType(AccountType.CUSTOM).get(0);
+			setAsDefaultAccount(account.getID());
+		}
+		setAsDefaultAccount(accountRepository.findByIsDefault(true).getID());
 	}
 
 	private void deselectAllAccounts()
@@ -109,6 +122,25 @@ public class AccountService implements Resetable
 		{
 			user.setSelectedAccount(accountToSelect);
 			userRepository.save(user);
+		}
+	}
+
+	public void setAsDefaultAccount(int ID)
+	{
+		unsetDefaultForAllAccounts();
+
+		Account accountToSelect = accountRepository.findOne(ID);
+		accountToSelect.setDefault(true);
+		accountRepository.save(accountToSelect);
+	}
+
+	private void unsetDefaultForAllAccounts()
+	{
+		List<Account> accounts = accountRepository.findAll();
+		for(Account currentAccount : accounts)
+		{
+			currentAccount.setDefault(false);
+			accountRepository.save(currentAccount);
 		}
 	}
 }

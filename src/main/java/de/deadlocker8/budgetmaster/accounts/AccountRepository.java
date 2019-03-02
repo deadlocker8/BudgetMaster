@@ -14,4 +14,6 @@ public interface AccountRepository extends JpaRepository<Account, Integer>
 	List<Account> findAllByType(AccountType accountType);
 
 	Account findByIsSelected(boolean isSelected);
+
+	Account findByIsDefault(boolean isDefault);
 }

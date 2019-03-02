@@ -23,6 +23,9 @@
                         <#list accounts as account>
                             <#if (account.getType().name() == "CUSTOM")>
                                 <tr>
+                                    <td>
+                                        <a href="<@s.url '/accounts/${account.getID()?c}/setAsDefault'/>" class="btn-flat no-padding text-color tooltipped" data-position="left" data-tooltip="${locale.getString("account.tooltip.default")}"><i class="material-icons left"><#if account.isDefault()>star<#else>star_border</#if></i></a>
+                                    </td>
                                     <td>${account.getName()}</td>
                                     <td>
                                         <a href="<@s.url '/accounts/${account.getID()?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>

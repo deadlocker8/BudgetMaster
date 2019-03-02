@@ -98,7 +98,7 @@
                         <#continue>
                     </#if>
 
-                    <#if account == helpers.getCurrentAccount()>
+                    <#if account == helpers.getCurrentAccountOrDefault()>
                         <option selected value="${account.getID()?c}">${account.getName()}</option>
                         <#continue>
                     </#if>

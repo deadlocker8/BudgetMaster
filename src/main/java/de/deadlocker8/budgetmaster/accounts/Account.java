@@ -19,23 +19,26 @@ public class Account
 
 	@NotNull
 	@Size(min = 1)
-	@Column(unique=true)
+	@Column(unique = true)
 	@Expose
 	private String name;
 
 	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
 	private List<Transaction> referringTransactions;
 
-	private boolean isSelected;
+	private Boolean isSelected = false;
+	private Boolean isDefault = false;
 
 	@Expose
 	private AccountType type;
+
 
 	public Account(String name, AccountType type)
 	{
 		this.name = name;
 		this.type = type;
 		this.isSelected = false;
+		this.isDefault = false;
 	}
 
 	public Account()
@@ -72,14 +75,24 @@ public class Account
 		this.referringTransactions = referringTransactions;
 	}
 
-	public boolean isSelected()
+	public Boolean isSelected()
 	{
 		return isSelected;
 	}
 
-	public void setSelected(boolean selected)
+	public void setSelected(Boolean selected)
 	{
 		isSelected = selected;
+	}
+
+	public Boolean isDefault()
+	{
+		return isDefault;
+	}
+
+	public void setDefault(Boolean aDefault)
+	{
+		isDefault = aDefault;
 	}
 
 	public AccountType getType()
@@ -100,6 +113,7 @@ public class Account
 				", name='" + name + '\'' +
 				", referringTransactions=" + referringTransactions +
 				", isSelected=" + isSelected +
+				", isDefault=" + isDefault +
 				", type=" + type +
 				'}';
 	}
@@ -111,6 +125,7 @@ public class Account
 		if(o == null || getClass() != o.getClass()) return false;
 		Account account = (Account) o;
 		return isSelected == account.isSelected &&
+				isDefault == account.isDefault &&
 				Objects.equals(ID, account.ID) &&
 				Objects.equals(name, account.name) &&
 				type == account.type;
@@ -119,6 +134,6 @@ public class Account
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, name, isSelected, type);
+		return Objects.hash(ID, name, isSelected, isDefault, type);
 	}
 }

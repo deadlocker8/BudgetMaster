@@ -210,11 +210,20 @@ public class HelpersService
 		// select random account if no account is selected
 		if(selectedAccount == null)
 		{
-			Account account = accountRepository.findAllByType(AccountType.CUSTOM).get(0);
-			accountService.selectAccount(account.getID());
-			selectedAccount = accountRepository.findByIsSelected(true);
+			selectedAccount = accountRepository.findByIsDefault(true);
+			accountService.selectAccount(selectedAccount.getID());
 		}
 
+		return selectedAccount;
+	}
+
+	public Account getCurrentAccountOrDefault()
+	{
+		Account selectedAccount = getCurrentAccount();
+		if(selectedAccount.getType().equals(AccountType.ALL))
+		{
+			return accountService.getRepository().findByIsDefault(true);
+		}
 		return selectedAccount;
 	}
 
