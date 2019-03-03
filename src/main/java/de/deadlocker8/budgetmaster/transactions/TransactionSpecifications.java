@@ -1,11 +1,14 @@
 package de.deadlocker8.budgetmaster.transactions;
 
 import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.tags.Tag;
+import de.deadlocker8.budgetmaster.tags.Tag_;
 import org.joda.time.DateTime;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class TransactionSpecifications
@@ -56,12 +59,19 @@ public class TransactionSpecifications
 
 			if(tagIDs != null)
 			{
-//				predicates.add(builder.and(transaction.get(Transaction_.tags).in(tagIDs)));
+				Join<Transaction, Tag> join = transaction.join(Transaction_.tags);
+				Predicate actorIdPredicate = builder.disjunction();
+				for(Integer tagID : tagIDs)
+				{
+					actorIdPredicate.getExpressions().add(builder.equal(join.get(Tag_.ID), tagID));
+				}
+
+				predicates.add(actorIdPredicate);
 			}
 
 			if(name != null && name.length() > 0)
 			{
-				predicates.add(builder.and(builder.like(builder.lower(transaction.get(Transaction_.name)), "%"+name.toLowerCase()+"%")));
+				predicates.add(builder.and(builder.like(builder.lower(transaction.get(Transaction_.name)), "%" + name.toLowerCase() + "%")));
 			}
 
 			query.orderBy(builder.desc(transaction.get(Transaction_.date)));

@@ -142,7 +142,6 @@ $( document ).ready(function() {
 
     // prevent form submit on enter (otherwise tag functionality will be hard to use)
     $(document).on("keypress", 'form', function (e) {
-
         var code = e.keyCode || e.which;
         if((code === 13) &&  e.target.nodeName!=='TEXTAREA') {
             e.preventDefault();

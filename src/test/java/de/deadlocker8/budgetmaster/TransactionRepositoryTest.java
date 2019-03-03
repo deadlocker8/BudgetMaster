@@ -54,6 +54,8 @@ public class TransactionRepositoryTest
 	@Autowired
 	private TagRepository tagRepository;
 	private Tag tag1;
+	private Tag tag2;
+	private Tag tagUnused;
 
 	@Autowired
 	private RepeatingOptionRepository repeatingOptionRepository;
@@ -72,6 +74,8 @@ public class TransactionRepositoryTest
 		category2 = categoryRepository.save(new Category("Category2", "#ff0000", CategoryType.CUSTOM));
 
 		tag1 = tagRepository.save(new Tag("MyAwesomeTag"));
+		tag2 = tagRepository.save(new Tag("TagMaster_2"));
+		tagUnused = tagRepository.save(new Tag("Unused"));
 
 		transaction1 = new Transaction();
 		transaction1.setName("Test");
@@ -79,6 +83,9 @@ public class TransactionRepositoryTest
 		transaction1.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
 		transaction1.setCategory(category1);
 		transaction1.setAccount(account);
+		ArrayList<Tag> tags = new ArrayList<>();
+		tags.add(tag1);
+		transaction1.setTags(tags);
 		transaction1 = transactionRepository.save(transaction1);
 
 		transaction2 = new Transaction();
@@ -105,9 +112,9 @@ public class TransactionRepositoryTest
 		repeatingTransaction.setDescription("");
 		repeatingTransaction.setAccount(account);
 		repeatingTransaction.setRepeatingOption(repeatingOption);
-		ArrayList<Tag> tags = new ArrayList<>();
-		tags.add(tag1);
-		repeatingTransaction.setTags(tags);
+		ArrayList<Tag> tags2 = new ArrayList<>();
+		tags2.add(tag2);
+		repeatingTransaction.setTags(tags2);
 		repeatingTransaction = transactionRepository.save(repeatingTransaction);
 	}
 
@@ -226,6 +233,50 @@ public class TransactionRepositoryTest
 	}
 
 	@Test
+	public void getByTags()
+	{
+		List<Integer> tagIDs = new ArrayList<>();
+		tagIDs.add(tag1.getID());
+
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, null, null, tagIDs, null);
+
+		List<Transaction> results = transactionRepository.findAll(spec);
+		assertTrue(results.contains(transaction1));
+		assertFalse(results.contains(transaction2));
+		assertFalse(results.contains(repeatingTransaction));
+	}
+
+	@Test
+	public void getByMultipleTags()
+	{
+		List<Integer> tagIDs = new ArrayList<>();
+		tagIDs.add(tag1.getID());
+		tagIDs.add(tag2.getID());
+
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, null, null, tagIDs, null);
+
+		List<Transaction> results = transactionRepository.findAll(spec);
+		assertTrue(results.contains(transaction1));
+		assertFalse(results.contains(transaction2));
+		assertTrue(results.contains(repeatingTransaction));
+	}
+
+
+	@Test
+	public void getByUnusedTags()
+	{
+		List<Integer> tagIDs = new ArrayList<>();
+		tagIDs.add(tagUnused.getID());
+
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, null, null, tagIDs, null);
+
+		List<Transaction> results = transactionRepository.findAll(spec);
+		assertFalse(results.contains(transaction1));
+		assertFalse(results.contains(transaction2));
+		assertFalse(results.contains(repeatingTransaction));
+	}
+
+	@Test
 	public void getRepeatingExpenditureByCategoryAndTagsAndName()
 	{
 		List<Integer> categoryIDs = new ArrayList<>();
@@ -233,6 +284,7 @@ public class TransactionRepositoryTest
 
 		List<Integer> tagIDs = new ArrayList<>();
 		tagIDs.add(tag1.getID());
+		tagIDs.add(tag2.getID());
 
 		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, false, true, true, categoryIDs, tagIDs, "Repeating");
 
