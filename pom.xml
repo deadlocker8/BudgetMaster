@@ -58,6 +58,10 @@
 
         <jlibs.version>2.0.4</jlibs.version>
         <versionizer.version>1.0.3</versionizer.version>
+        <webjars-locator.version>0.36</webjars-locator.version>
+        <jquery.version>3.3.1</jquery.version>
+        <materializecss.version>1.0.0</materializecss.version>
+        <fontawesome.version>5.0.10</fontawesome.version>
 
         <app.versionDate>${maven.build.timestamp}</app.versionDate>
         <maven.build.timestamp.format>dd.MM.yy</maven.build.timestamp.format>
@@ -148,6 +152,28 @@
             <groupId>com.itextpdf</groupId>
             <artifactId>itextpdf</artifactId>
             <version>5.5.13</version>
+        </dependency>
+
+        <!--Webjars-->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>webjars-locator</artifactId>
+            <version>${webjars-locator.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery</artifactId>
+            <version>${jquery.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>materializecss</artifactId>
+            <version>${materializecss.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>font-awesome</artifactId>
+            <version>${fontawesome.version}</version>
         </dependency>
     </dependencies>
 
