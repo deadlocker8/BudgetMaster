@@ -51,7 +51,7 @@
                     <br>
                     <div class="row">
                         <div class="col s12">
-                            <table class="bordered">
+                            <table class="bordered responsive-table">
                                 <#list transactions as transaction>
                                     <tr>
                                         <td>${helpers.getDateStringWithoutYear(transaction.date)}</td>

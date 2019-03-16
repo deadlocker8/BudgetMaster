@@ -2,7 +2,7 @@
 
 <#macro transactionRepeating transaction>
     <td>
-        <#if transaction.isRepeating()><i class="material-icons">repeat</i></#if>
+        <i class="material-icons <#if !transaction.isRepeating()>invisible</#if>">repeat</i>
     </td>
 </#macro>
 
@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="hide-on-large-only">
-            <div class="category-circle-small no-margin" style="background-color: ${transaction.category.color}">
+            <div class="category-circle-small" style="background-color: ${transaction.category.color}">
                 <span style="color: ${transaction.category.getAppropriateTextColor()}">
                     ${transaction.category.name?capitalize[0]}
                 </span>
@@ -28,7 +28,7 @@
 <#macro transactionNameAndDescription transaction>
     <td class="transaction-name">
         <div class="ellipsis">${transaction.name}</div>
-        <div class="hide-on-small-only">
+        <div class="hide-on-med-and-down">
             <#if transaction.description??>
                 <div class="italic">${transaction.description}</div>
             </#if>

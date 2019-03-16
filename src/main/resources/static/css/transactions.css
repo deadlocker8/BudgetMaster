@@ -22,3 +22,11 @@
 .transaction-container {
     width: 90%;
 }
+
+.transaction-container .responsive-table td {
+    text-align: center;
+}
+
+.transaction-container .category-circle-small {
+    margin: auto;
+}
