@@ -66,7 +66,7 @@
 
         <app.versionDate>${maven.build.timestamp}</app.versionDate>
         <maven.build.timestamp.format>dd.MM.yy</maven.build.timestamp.format>
-        <app.versionCode>17</app.versionCode>
+        <app.versionCode>18</app.versionCode>
         <app.author>Robert Goldmann</app.author>
 
         <project.outputDirectory>build/${project.version}</project.outputDirectory>
