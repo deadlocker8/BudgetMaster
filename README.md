@@ -2,7 +2,7 @@
 Manage your monthly budget easily with BudgetMaster
 
 - __start:__ 17.12.16
-- __current release:__ v2.0.1 (15) from 18.12.18
+- __current release:__ v2.1.0 (16) from 16.03.19
 
 ## Available Languages
 - English [Roadmap](https://deadlocker.thecodelabs.de/roadmap/php/index.php?id=1)
