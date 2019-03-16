@@ -8,28 +8,39 @@
 
 <#macro transactionCategory transaction>
     <td>
-        <div class="category-circle" style="background-color: ${transaction.category.color}">
-            <span style="color: ${transaction.category.getAppropriateTextColor()}">
-                ${transaction.category.name?capitalize[0]}
-            </span>
+        <div class="hide-on-med-and-down">
+            <div class="category-circle" style="background-color: ${transaction.category.color}">
+                <span style="color: ${transaction.category.getAppropriateTextColor()}">
+                    ${transaction.category.name?capitalize[0]}
+                </span>
+            </div>
+        </div>
+        <div class="hide-on-large-only">
+            <div class="category-circle-small no-margin" style="background-color: ${transaction.category.color}">
+                <span style="color: ${transaction.category.getAppropriateTextColor()}">
+                    ${transaction.category.name?capitalize[0]}
+                </span>
+            </div>
         </div>
     </td>
 </#macro>
 
 <#macro transactionNameAndDescription transaction>
     <td class="transaction-name">
-        <div>${transaction.name}</div>
-        <#if transaction.description??>
-            <div class="italic">${transaction.description}</div>
-        </#if>
+        <div class="ellipsis">${transaction.name}</div>
+        <div class="hide-on-small-only">
+            <#if transaction.description??>
+                <div class="italic">${transaction.description}</div>
+            </#if>
+        </div>
     </td>
 </#macro>
 
 <#macro transactionAmount amount>
     <#if amount <= 0>
-        <td class="bold ${redTextColor}">${helpers.getCurrencyString(amount)}</td>
+        <td class="bold ${redTextColor} no-wrap">${helpers.getCurrencyString(amount)}</td>
     <#else>
-        <td class="bold ${greenTextColor}">${helpers.getCurrencyString(amount)}</td>
+        <td class="bold ${greenTextColor} no-wrap">${helpers.getCurrencyString(amount)}</td>
     </#if>
 </#macro>
 

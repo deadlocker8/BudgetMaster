@@ -18,3 +18,7 @@
 .input-min-width {
     min-width: 100px;
 }
+
+.transaction-container {
+    width: 90%;
+}

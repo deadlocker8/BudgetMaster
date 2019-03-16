@@ -480,6 +480,14 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     border-bottom: 1px solid #212121;
 }
 
+.ellipsis {
+    text-overflow: ellipsis;
+}
+
+.no-wrap {
+    white-space: nowrap;
+}
+
 .hidden {
     display: none;
 }
@@ -526,6 +534,10 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
 
     .budget {
         font-size: 3.8vmin;
+    }
+
+    .container, .transaction-container {
+        width: 100% !important;
     }
 }
 

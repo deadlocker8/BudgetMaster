@@ -567,6 +567,14 @@ input[type="radio"]:not(:checked) + span::before, [type="radio"]:not(:checked) +
     width: 17vmin;
 }
 
+.ellipsis {
+    text-overflow: ellipsis;
+}
+
+.no-wrap {
+    white-space: nowrap;
+}
+
 .hidden {
     display: none;
 }
@@ -613,6 +621,10 @@ input[type="radio"]:not(:checked) + span::before, [type="radio"]:not(:checked) +
 
     .budget {
         font-size: 3.8vmin;
+    }
+
+    .container, .transaction-container {
+        width: 100% !important;
     }
 }
 

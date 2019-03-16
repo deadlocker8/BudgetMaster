@@ -3,6 +3,7 @@
         <#import "../helpers/header.ftl" as header>
         <@header.header "BudgetMaster"/>
         <@header.style "categories"/>
+        <@header.style "transactions"/>
         <@header.style "globalDatepicker"/>
         <@header.style "filter"/>
         <#import "/spring.ftl" as s>
@@ -18,7 +19,7 @@
             <div class="card main-card background-color">
                 <#import "../helpers/globalDatePicker.ftl" as datePicker>
                 <@datePicker.datePicker currentDate springMacroRequestContext.getRequestUri()/>
-                <div class="container">
+                <div class="container transaction-container">
                     <div class="row">
                         <div class="col s4">
                             <div class="icon-block">
@@ -53,7 +54,7 @@
                             <table class="bordered">
                                 <#list transactions as transaction>
                                     <tr>
-                                        <td>${helpers.getDateString(transaction.date)}</td>
+                                        <td>${helpers.getDateStringWithoutYear(transaction.date)}</td>
                                         <@transactionsMacros.transactionRepeating transaction/>
                                         <@transactionsMacros.transactionCategory transaction/>
                                         <@transactionsMacros.transactionNameAndDescription transaction/>
