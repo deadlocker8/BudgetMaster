@@ -23,14 +23,21 @@
     width: 90%;
 }
 
-.transaction-name {
-    width: 50%;
-}
-
-.transaction-table-cell {
-    text-align: left;
-}
-
-.transaction-container .category-circle-small {
+.transaction-container .category-circle,
+.transaction-container .category-circle-small{
     margin: auto;
+}
+
+.transaction-row {
+    margin-bottom: 5px;
+    margin-top: 20px;
+}
+
+.transaction-text {
+    font-size: 1.2rem;
+}
+
+.transaction-buttons .btn-flat {
+    height: auto;
+    line-height: inherit;
 }

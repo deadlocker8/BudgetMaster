@@ -1,13 +1,13 @@
 <#import "/spring.ftl" as s>
 
 <#macro transactionRepeating transaction>
-    <td class="transaction-table-cell">
+    <div class="col s1 l1">
         <i class="material-icons <#if !transaction.isRepeating()>invisible</#if>">repeat</i>
-    </td>
+    </div>
 </#macro>
 
 <#macro transactionCategory transaction>
-    <td>
+    <div class="col s3 l1 center-align">
         <div class="hide-on-med-and-down">
             <div class="category-circle" style="background-color: ${transaction.category.color}">
                 <span style="color: ${transaction.category.getAppropriateTextColor()}">
@@ -22,35 +22,35 @@
                 </span>
             </div>
         </div>
-    </td>
+    </div>
 </#macro>
 
 <#macro transactionNameAndDescription transaction>
-    <td class="transaction-name transaction-table-cell">
-        <div class="ellipsis">${transaction.name}</div>
+    <div class="col s5 l7">
+        <div class="truncate transaction-text">${transaction.name}</div>
         <div class="hide-on-med-and-down">
             <#if transaction.description??>
                 <div class="italic">${transaction.description}</div>
             </#if>
         </div>
-    </td>
+    </div>
 </#macro>
 
 <#macro transactionAmount amount>
     <#if amount <= 0>
-        <td class="transaction-table-cell bold ${redTextColor} no-wrap">${helpers.getCurrencyString(amount)}</td>
+        <div class="col s4 bold ${redTextColor} no-wrap right-align transaction-text">${helpers.getCurrencyString(amount)}</div>
     <#else>
-        <td class="transaction-table-cell bold ${greenTextColor} no-wrap">${helpers.getCurrencyString(amount)}</td>
+        <div class="col s4 bold ${greenTextColor} no-wrap right-align transaction-text">${helpers.getCurrencyString(amount)}</div>
     </#if>
 </#macro>
 
 <#macro transactionButtons transaction>
-    <td class="transaction-table-cell">
-        <#if (transaction.category.type.name() != "REST")>
-            <a href="<@s.url '/transactions/${transaction.ID?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
-            <a href="<@s.url '/transactions/${transaction.ID?c}/requestDelete'/>" class="btn-flat no-padding text-color"><i class="material-icons left">delete</i></a>
-        </#if>
-    </td>
+        <div class="col s8 l10 right-align transaction-buttons">
+            <#if (transaction.category.type.name() != "REST")>
+                <a href="<@s.url '/transactions/${transaction.ID?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
+                <a href="<@s.url '/transactions/${transaction.ID?c}/requestDelete'/>" class="btn-flat no-padding text-color"><i class="material-icons left no-margin">delete</i></a>
+            </#if>
+        </div>
 </#macro>
 
 <#macro placeholder transactions>

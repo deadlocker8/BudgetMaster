@@ -493,7 +493,7 @@ input[type="radio"]:not(:checked) + span::before, [type="radio"]:not(:checked) +
     margin: auto
 }
 
-.btn-flat {
+.btn-flat, .btn {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
@@ -563,10 +563,6 @@ input[type="radio"]:not(:checked) + span::before, [type="radio"]:not(:checked) +
     width: 17vmin;
 }
 
-.ellipsis {
-    text-overflow: ellipsis;
-}
-
 .no-wrap {
     white-space: nowrap;
 }
@@ -607,14 +603,6 @@ input[type="radio"]:not(:checked) + span::before, [type="radio"]:not(:checked) +
     .budget {
         font-size: 3.5vmin;
     }
-
-    .transaction-table-cell {
-        text-align: center !important;
-    }
-
-    .transaction-name {
-        width: 100% !important;
-    }
 }
 
 @media all and (max-width: 599px) and (min-width: 320px) {
@@ -632,14 +620,6 @@ input[type="radio"]:not(:checked) + span::before, [type="radio"]:not(:checked) +
     }
 
     .container, .transaction-container {
-        width: 100% !important;
-    }
-
-    .transaction-table-cell {
-        text-align: center !important;
-    }
-
-    .transaction-name {
         width: 100% !important;
     }
 }

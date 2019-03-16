@@ -49,22 +49,21 @@
 
                     <#-- transactions list -->
                     <br>
-                    <div class="row">
-                        <div class="col s12">
-                            <table class="bordered responsive-table">
-                                <#list transactions as transaction>
-                                    <tr>
-                                        <td class="transaction-table-cell">${helpers.getDateStringWithoutYear(transaction.date)}</td>
-                                        <@transactionsMacros.transactionRepeating transaction/>
-                                        <@transactionsMacros.transactionCategory transaction/>
-                                        <@transactionsMacros.transactionNameAndDescription transaction/>
-                                        <@transactionsMacros.transactionAmount transaction.getAmount()/>
-                                        <@transactionsMacros.transactionButtons transaction/>
-                                    </tr>
-                                </#list>
-                            </table>
+                    <#list transactions as transaction>
+                        <div class="row valign-wrapper transaction-row">
+                            <div class="col s3 l1 center-align bold transaction-text">
+                                ${helpers.getDateStringWithoutYear(transaction.date)}
+                            </div>
+                            <@transactionsMacros.transactionRepeating transaction/>
+                            <@transactionsMacros.transactionButtons transaction/>
                         </div>
-                    </div>
+                        <div class="row valign-wrapper">
+                            <@transactionsMacros.transactionCategory transaction/>
+                            <@transactionsMacros.transactionNameAndDescription transaction/>
+                            <@transactionsMacros.transactionAmount transaction.getAmount()/>
+                        </div>
+                        <hr>
+                    </#list>
 
                     <#-- show placeholde text if no transactions are present in the current month or REST ist the only transaction -->
                     <@transactionsMacros.placeholder transactions/>
