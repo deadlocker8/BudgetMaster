@@ -54,7 +54,7 @@
                             <table class="bordered responsive-table">
                                 <#list transactions as transaction>
                                     <tr>
-                                        <td>${helpers.getDateStringWithoutYear(transaction.date)}</td>
+                                        <td class="transaction-table-cell">${helpers.getDateStringWithoutYear(transaction.date)}</td>
                                         <@transactionsMacros.transactionRepeating transaction/>
                                         <@transactionsMacros.transactionCategory transaction/>
                                         <@transactionsMacros.transactionNameAndDescription transaction/>

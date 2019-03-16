@@ -468,10 +468,6 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     width: 30%;
 }
 
-.transaction-name {
-    width: 50%;
-}
-
 .no-border-table tr {
     border: none;
 }
@@ -524,6 +520,14 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     .budget {
         font-size: 3.5vmin;
     }
+
+    .transaction-table-cell {
+        text-align: center !important;
+    }
+
+    .transaction-name {
+        width: 100% !important;
+    }
 }
 
 @media all and (max-width: 599px) and (min-width: 320px) {
@@ -541,6 +545,14 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     }
 
     .container, .transaction-container {
+        width: 100% !important;
+    }
+
+    .transaction-table-cell {
+        text-align: center !important;
+    }
+
+    .transaction-name {
         width: 100% !important;
     }
 }

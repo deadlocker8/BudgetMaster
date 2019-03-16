@@ -23,8 +23,12 @@
     width: 90%;
 }
 
-.transaction-container .responsive-table td {
-    text-align: center;
+.transaction-name {
+    width: 50%;
+}
+
+.transaction-table-cell {
+    text-align: left;
 }
 
 .transaction-container .category-circle-small {

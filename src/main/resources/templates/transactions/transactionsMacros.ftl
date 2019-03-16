@@ -1,7 +1,7 @@
 <#import "/spring.ftl" as s>
 
 <#macro transactionRepeating transaction>
-    <td>
+    <td class="transaction-table-cell">
         <i class="material-icons <#if !transaction.isRepeating()>invisible</#if>">repeat</i>
     </td>
 </#macro>
@@ -26,7 +26,7 @@
 </#macro>
 
 <#macro transactionNameAndDescription transaction>
-    <td class="transaction-name">
+    <td class="transaction-name transaction-table-cell">
         <div class="ellipsis">${transaction.name}</div>
         <div class="hide-on-med-and-down">
             <#if transaction.description??>
@@ -38,14 +38,14 @@
 
 <#macro transactionAmount amount>
     <#if amount <= 0>
-        <td class="bold ${redTextColor} no-wrap">${helpers.getCurrencyString(amount)}</td>
+        <td class="transaction-table-cell bold ${redTextColor} no-wrap">${helpers.getCurrencyString(amount)}</td>
     <#else>
-        <td class="bold ${greenTextColor} no-wrap">${helpers.getCurrencyString(amount)}</td>
+        <td class="transaction-table-cell bold ${greenTextColor} no-wrap">${helpers.getCurrencyString(amount)}</td>
     </#if>
 </#macro>
 
 <#macro transactionButtons transaction>
-    <td>
+    <td class="transaction-table-cell">
         <#if (transaction.category.type.name() != "REST")>
             <a href="<@s.url '/transactions/${transaction.ID?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
             <a href="<@s.url '/transactions/${transaction.ID?c}/requestDelete'/>" class="btn-flat no-padding text-color"><i class="material-icons left">delete</i></a>
