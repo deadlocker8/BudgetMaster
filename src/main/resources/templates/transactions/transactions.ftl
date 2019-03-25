@@ -50,17 +50,31 @@
                     <#-- transactions list -->
                     <br>
                     <#list transactions as transaction>
-                        <div class="row valign-wrapper transaction-row">
-                            <div class="col s3 l1 center-align bold transaction-text">
-                                ${helpers.getDateStringWithoutYear(transaction.date)}
+                        <div class="hide-on-large-only">
+                            <div class="row valign-wrapper transaction-row">
+                                <div class="col s3 center-align bold transaction-text">
+                                    ${helpers.getDateStringWithoutYear(transaction.date)}
+                                </div>
+                                <@transactionsMacros.transactionRepeating transaction/>
+                                <@transactionsMacros.transactionButtons transaction/>
                             </div>
-                            <@transactionsMacros.transactionRepeating transaction/>
-                            <@transactionsMacros.transactionButtons transaction/>
+                            <div class="row valign-wrapper">
+                                <@transactionsMacros.transactionCategory transaction "center-align"/>
+                                <@transactionsMacros.transactionNameAndDescription transaction/>
+                                <@transactionsMacros.transactionAmount transaction.getAmount()/>
+                            </div>
                         </div>
-                        <div class="row valign-wrapper">
-                            <@transactionsMacros.transactionCategory transaction/>
-                            <@transactionsMacros.transactionNameAndDescription transaction/>
-                            <@transactionsMacros.transactionAmount transaction.getAmount()/>
+                        <div class="hide-on-med-and-down">
+                            <div class="row valign-wrapper transaction-row">
+                                <div class="col l1 xl1 bold transaction-text">
+                                    ${helpers.getDateStringWithoutYear(transaction.date)}
+                                </div>
+                                <@transactionsMacros.transactionCategory transaction "left-align"/>
+                                <@transactionsMacros.transactionRepeating transaction/>
+                                <@transactionsMacros.transactionNameAndDescription transaction/>
+                                <@transactionsMacros.transactionAmount transaction.getAmount()/>
+                                <@transactionsMacros.transactionButtons transaction/>
+                            </div>
                         </div>
                         <hr>
                     </#list>
