@@ -51,8 +51,6 @@
 </#macro>
 
 <#macro itemLogo>
-    <#import "header.ftl" as header>
-    <#import "/spring.ftl" as s>
     <li><a href="<@s.url '/'/>" class="waves-effect" id="nav-logo-container"><@header.logo "nav-logo" ""/></a></li>
 </#macro>
 
@@ -87,12 +85,10 @@
 </#macro>
 
 <#macro itemPlain ID link text activeID>
-    <#import "/spring.ftl" as s>
     <li <#if activeID == ID>class="active"</#if>><a href="<@s.url '${link}'/>" class="waves-effect"><span class="nav-margin">${text}</span></a></li>
 </#macro>
 
 <#macro itemWithIcon ID link text icon activeColor activeID>
-    <#import "/spring.ftl" as s>
     <#if activeID == ID>
         <li class="active"><a href="<@s.url '${link}'/>" class="waves-effect no-padding"><div class="stripe ${activeColor}"></div><i class="material-icons">${icon}</i>${text}</a></li>
     <#else>
@@ -109,7 +105,6 @@
 </#macro>
 
 <#macro itemUpdate link text icon>
-    <#import "/spring.ftl" as s>
     <li><a href="<@s.url '${link}'/>" class="waves-effect budgetmaster-update budgetmaster-text-update"><i class="material-icons" id="icon-update">${icon}</i>${text}</a></li>
 </#macro>
 
