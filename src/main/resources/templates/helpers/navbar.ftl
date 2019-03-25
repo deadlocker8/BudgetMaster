@@ -1,3 +1,5 @@
+<#import "/spring.ftl" as s>
+
 <#macro navbar activeID>
     <ul id="slide-out" class="sidenav sidenav-fixed">
         <@itemLogo/>
@@ -5,7 +7,6 @@
         <@itemAccountSelect/>
         <@itemDivider/>
         <@itemWithIcon "home", "/", locale.getString("menu.home"), "home", "budgetmaster-blue", activeID/>
-        <@itemWithIcon "accounts", "/accounts", locale.getString("menu.accounts"), "account_balance", "budgetmaster-grey", activeID/>
         <@itemWithIcon "transactions", "/transactions", locale.getString("menu.transactions"), "list", "budgetmaster-baby-blue", activeID/>
         <@subListStart "chart" locale.getString("menu.charts"), "show_chart" "budgetmaster-purple", activeID/>
             <#-- disabled until future versions -->
@@ -72,6 +73,9 @@
             </#list>
         </select>
     </div>
+
+    <a href="<@s.url '/accounts'/>">${locale.getString("home.menu.accounts.action.manage")}</a>
+
     <#assign accountBudget = helpers.getAccountBudget()/>
     <#if accountBudget <= 0>
         <div class="account-budget ${redTextColor}">${helpers.getCurrencyString(accountBudget)}</div>
