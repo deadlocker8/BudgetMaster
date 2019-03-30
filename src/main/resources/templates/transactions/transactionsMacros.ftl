@@ -1,13 +1,13 @@
 <#import "/spring.ftl" as s>
 
 <#macro transactionRepeating transaction>
-    <div class="col s1 l1">
+    <div class="col s1 l1 xl1">
         <i class="material-icons <#if !transaction.isRepeating()>invisible</#if>">repeat</i>
     </div>
 </#macro>
 
-<#macro transactionCategory transaction>
-    <div class="col s3 l1 center-align">
+<#macro transactionCategory transaction alignment>
+    <div class="col s3 l1 xl1 ${alignment}">
         <div class="hide-on-med-and-down">
             <div class="category-circle" style="background-color: ${transaction.category.color}">
                 <span style="color: ${transaction.category.getAppropriateTextColor()}">
@@ -26,7 +26,7 @@
 </#macro>
 
 <#macro transactionNameAndDescription transaction>
-    <div class="col s5 l7">
+    <div class="col s5 l4 xl5">
         <div class="truncate transaction-text">${transaction.name}</div>
         <div class="hide-on-med-and-down">
             <#if transaction.description??>
@@ -38,14 +38,14 @@
 
 <#macro transactionAmount amount>
     <#if amount <= 0>
-        <div class="col s4 bold ${redTextColor} no-wrap right-align transaction-text">${helpers.getCurrencyString(amount)}</div>
+        <div class="col s4 l3 xl3 bold ${redTextColor} no-wrap right-align transaction-text">${helpers.getCurrencyString(amount)}</div>
     <#else>
-        <div class="col s4 bold ${greenTextColor} no-wrap right-align transaction-text">${helpers.getCurrencyString(amount)}</div>
+        <div class="col s4 l3 xl3 bold ${greenTextColor} no-wrap right-align transaction-text">${helpers.getCurrencyString(amount)}</div>
     </#if>
 </#macro>
 
 <#macro transactionButtons transaction>
-        <div class="col s8 l10 right-align transaction-buttons">
+        <div class="col s8 l2 xl1 right-align transaction-buttons no-wrap">
             <#if (transaction.category.type.name() != "REST")>
                 <a href="<@s.url '/transactions/${transaction.ID?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
                 <a href="<@s.url '/transactions/${transaction.ID?c}/requestDelete'/>" class="btn-flat no-padding text-color"><i class="material-icons left no-margin">delete</i></a>

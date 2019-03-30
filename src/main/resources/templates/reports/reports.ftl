@@ -17,7 +17,7 @@
         <main>
             <div class="card main-card background-color">
                 <#import "../helpers/globalDatePicker.ftl" as datePicker>
-                <@datePicker.datePicker currentDate springMacroRequestContext.getRequestUri()/>
+                <@datePicker.datePicker currentDate "/transactions"/>
 
                 <br>
 

@@ -77,13 +77,8 @@ public class ReportController extends BaseController
 					 @ModelAttribute("NewReportSettings") ReportSettings reportSettings)
 	{
 		//save new report settings
-		reportSettingsService.getRepository().delete(0);
-		for(ReportColumn reportColumn : reportSettings.getColumns())
-		{
-			reportColumnService.getRepository().save(reportColumn);
-		}
+		reportSettings.getColumns().forEach(column -> column.setReferringSettings(reportSettings));
 		reportSettingsService.getRepository().save(reportSettings);
-
 
 		//prepare generation
 		Account account = helpers.getCurrentAccount();
