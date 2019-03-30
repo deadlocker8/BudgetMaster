@@ -155,11 +155,17 @@ public class ReportGeneratorService
 
 			Budget budget = reportConfiguration.getBudget();
 
+			Paragraph paragraph = new Paragraph();
+			paragraph.add(new Chunk(Localization.getString(Strings.REPORT_INCOMES) + helpersService.getCurrencyString(budget.getIncomeSum()), fontGreen));
+			paragraph.add(new Chunk("     "));
+			paragraph.add(new Chunk(Localization.getString(Strings.REPORT_PAYMENTS) + helpersService.getCurrencyString(budget.getExpenditureSum()), fontRed));
+			paragraph.add(new Chunk("     "));
+			paragraph.add(new Chunk(Localization.getString(Strings.REPORT_BUDGET_REST) + helpersService.getCurrencyString(budget.getIncomeSum() + budget.getExpenditureSum()), fontBlack));
+			paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
+
 			document.add(new Paragraph(Localization.getString(Strings.REPORT_BUDGET), headerFont));
 			document.add(Chunk.NEWLINE);
-			document.add(new Paragraph(Localization.getString(Strings.REPORT_INCOMES) + helpersService.getCurrencyString(budget.getIncomeSum()), fontGreen));
-			document.add(new Paragraph(Localization.getString(Strings.REPORT_PAYMENTS) + helpersService.getCurrencyString(budget.getExpenditureSum()), fontRed));
-			document.add(new Paragraph(Localization.getString(Strings.REPORT_BUDGET_REST) + helpersService.getCurrencyString(budget.getIncomeSum() + budget.getExpenditureSum()), fontBlack));
+			document.add(paragraph);
 			document.add(Chunk.NEWLINE);
 		}
 
