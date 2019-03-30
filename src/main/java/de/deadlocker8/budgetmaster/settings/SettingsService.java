@@ -1,5 +1,7 @@
 package de.deadlocker8.budgetmaster.settings;
 
+import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.accounts.AccountType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,18 @@ public class SettingsService
 			settingsRepository.save(Settings.getDefault());
 			LOGGER.debug("Created default settings");
 		}
+
+		Settings settings = settingsRepository.findOne(0);
+		if(settings.isBackupReminderActivated() == null)
+		{
+			settings.setBackupReminderActivated(true);
+		}
+		if(settings.isBackupReminderShownThisMonth() == null)
+		{
+			settings.setBackupReminderShownThisMonth(false);
+		}
+		settingsRepository.delete(0);
+		settingsRepository.save(settings);
 	}
 
 	public Settings getSettings()

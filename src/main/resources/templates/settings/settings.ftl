@@ -22,6 +22,7 @@
                     <form name="Settings" action="<@s.url '/settings/save'/>" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="ID" value="${settings.getID()?c}">
+                        <input type="hidden" name="backupReminderShownThisMonth" value="${settings.isBackupReminderShownThisMonth()?c}">
 
                         <#-- password -->
                         <div class="row">
@@ -47,31 +48,8 @@
                             </div>
                         </div>
 
-                        <#-- rest and dark theme switch -->
-                        <div class="row">
-                            <div class="col s6 l4 offset-l2 center-align">
-                                ${locale.getString("settings.rest")}
-                                <div class="switch">
-                                    <label>
-                                    ${locale.getString("settings.rest.deactivated")}
-                                        <input type="checkbox" name="restActivated" <#if settings.isRestActivated()>checked</#if>>
-                                        <span class="lever"></span>
-                                    ${locale.getString("settings.rest.activated")}
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col s6 l4 center-align">
-                                ${locale.getString("settings.darkTheme")}
-                                <div class="switch">
-                                    <label>
-                                    ${locale.getString("settings.darkTheme.deactivated")}
-                                        <input type="checkbox" name="useDarkTheme" <#if settings.isUseDarkTheme()>checked</#if>>
-                                        <span class="lever"></span>
-                                    ${locale.getString("settings.darkTheme.activated")}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+                        <#-- rest, dark theme and backup reminder switch -->
+                        <@settingsMacros.switches settings/>
 
                         <#-- language -->
                         <div class="row">

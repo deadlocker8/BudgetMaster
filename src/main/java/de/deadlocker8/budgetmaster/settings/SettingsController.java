@@ -86,6 +86,7 @@ public class SettingsController extends BaseController
 					   @RequestParam(value = "passwordConfirmation") String passwordConfirmation,
 					   @RequestParam(value = "languageType") String languageType)
 	{
+		System.out.println(settings);
 		settings.setLanguage(LanguageType.fromName(languageType));
 
 		FieldError error = validatePassword(password, passwordConfirmation);

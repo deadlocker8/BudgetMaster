@@ -15,7 +15,8 @@ public class Settings
 	private boolean restActivated;
 	private boolean useDarkTheme;
 	private boolean autoUpdateCheckEnabled;
-
+	private Boolean backupReminderActivated;
+	private Boolean backupReminderShownThisMonth;
 
 	public Settings()
 	{
@@ -29,6 +30,8 @@ public class Settings
 		defaultSettings.setRestActivated(true);
 		defaultSettings.setUseDarkTheme(false);
 		defaultSettings.setAutoUpdateCheckEnabled(true);
+		defaultSettings.setBackupReminderActivated(true);
+		defaultSettings.setBackupReminderShownThisMonth(false);
 
 		return defaultSettings;
 	}
@@ -88,6 +91,26 @@ public class Settings
 		this.autoUpdateCheckEnabled = autoUpdateCheckEnabled;
 	}
 
+	public Boolean isBackupReminderActivated()
+	{
+		return backupReminderActivated;
+	}
+
+	public void setBackupReminderActivated(Boolean backupReminderActivated)
+	{
+		this.backupReminderActivated = backupReminderActivated;
+	}
+
+	public Boolean isBackupReminderShownThisMonth()
+	{
+		return backupReminderShownThisMonth;
+	}
+
+	public void setBackupReminderShownThisMonth(Boolean backupReminderShownThisMonth)
+	{
+		this.backupReminderShownThisMonth = backupReminderShownThisMonth;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -98,6 +121,8 @@ public class Settings
 				", restActivated=" + restActivated +
 				", useDarkTheme=" + useDarkTheme +
 				", autoUpdateCheckEnabled=" + autoUpdateCheckEnabled +
+				", backupReminderActivated=" + backupReminderActivated +
+				", backupReminderShownThisMonth=" + backupReminderShownThisMonth +
 				'}';
 	}
 }
