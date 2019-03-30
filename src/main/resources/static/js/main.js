@@ -3,6 +3,11 @@ $( document ).ready(function() {
 
     $('.modal').modal();
 
+    if($("#modalBackupReminder").length)
+    {
+        $('#modalBackupReminder').modal('open');
+    }
+
     $('.tooltipped').tooltip();
 
     $('select').formSelect();

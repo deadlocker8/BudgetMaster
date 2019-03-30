@@ -1,7 +1,6 @@
 package de.deadlocker8.budgetmaster.settings;
 
-import de.deadlocker8.budgetmaster.accounts.Account;
-import de.deadlocker8.budgetmaster.accounts.AccountType;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +28,13 @@ public class SettingsService
 		}
 
 		Settings settings = settingsRepository.findOne(0);
-		if(settings.isBackupReminderActivated() == null)
+		if(settings.getBackupReminderActivated() == null)
 		{
 			settings.setBackupReminderActivated(true);
 		}
-		if(settings.isBackupReminderShownThisMonth() == null)
+		if(settings.getLastBackupReminderDate() == null)
 		{
-			settings.setBackupReminderShownThisMonth(false);
+			settings.setLastBackupReminderDate(DateTime.now().minusMonths(1));
 		}
 		settingsRepository.delete(0);
 		settingsRepository.save(settings);
@@ -44,5 +43,13 @@ public class SettingsService
 	public Settings getSettings()
 	{
 		return settingsRepository.findOne(0);
+	}
+
+	public void updateLastBackupReminderDate()
+	{
+		Settings settings = getSettings();
+		settings.setLastBackupReminderDate(DateTime.now());
+		settingsRepository.delete(0);
+		settingsRepository.save(settings);
 	}
 }

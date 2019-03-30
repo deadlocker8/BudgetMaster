@@ -14,7 +14,7 @@
         </div>
         <div class="row">
             <div class="col s12 center-align">
-                <@switch "backupReminder" "backupReminderActivated" settings.isBackupReminderActivated()/>
+                <@switch "backupReminder" "backupReminderActivated" settings.getBackupReminderActivated()/>
             </div>
         </div>
     </div>
@@ -27,7 +27,7 @@
                 <@switch "darkTheme" "useDarkTheme" settings.isUseDarkTheme()/>
             </div>
             <div class="col l2 center-align">
-                <@switch "backupReminder" "backupReminderActivated" settings.isBackupReminderActivated()/>
+                <@switch "backupReminder" "backupReminderActivated" settings.getBackupReminderActivated()/>
             </div>
         </div>
     </div>

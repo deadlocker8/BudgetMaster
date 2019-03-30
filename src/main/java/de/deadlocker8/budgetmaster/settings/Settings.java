@@ -1,6 +1,8 @@
 package de.deadlocker8.budgetmaster.settings;
 
 import de.deadlocker8.budgetmaster.utils.LanguageType;
+import org.joda.time.DateTime;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -15,8 +17,10 @@ public class Settings
 	private boolean restActivated;
 	private boolean useDarkTheme;
 	private boolean autoUpdateCheckEnabled;
+
 	private Boolean backupReminderActivated;
-	private Boolean backupReminderShownThisMonth;
+	@DateTimeFormat(pattern = "dd.MM.yyyy")
+	private DateTime lastBackupReminderDate;
 
 	public Settings()
 	{
@@ -31,7 +35,7 @@ public class Settings
 		defaultSettings.setUseDarkTheme(false);
 		defaultSettings.setAutoUpdateCheckEnabled(true);
 		defaultSettings.setBackupReminderActivated(true);
-		defaultSettings.setBackupReminderShownThisMonth(false);
+		defaultSettings.setLastBackupReminderDate(DateTime.now().minusMonths(1));
 
 		return defaultSettings;
 	}
@@ -91,7 +95,7 @@ public class Settings
 		this.autoUpdateCheckEnabled = autoUpdateCheckEnabled;
 	}
 
-	public Boolean isBackupReminderActivated()
+	public Boolean getBackupReminderActivated()
 	{
 		return backupReminderActivated;
 	}
@@ -101,14 +105,19 @@ public class Settings
 		this.backupReminderActivated = backupReminderActivated;
 	}
 
-	public Boolean isBackupReminderShownThisMonth()
+	public DateTime getLastBackupReminderDate()
 	{
-		return backupReminderShownThisMonth;
+		return lastBackupReminderDate;
 	}
 
-	public void setBackupReminderShownThisMonth(Boolean backupReminderShownThisMonth)
+	public void setLastBackupReminderDate(DateTime lastBackupReminderDate)
 	{
-		this.backupReminderShownThisMonth = backupReminderShownThisMonth;
+		this.lastBackupReminderDate = lastBackupReminderDate;
+	}
+
+	public boolean needToShowBackupReminder()
+	{
+		return lastBackupReminderDate.getMonthOfYear() != DateTime.now().getMonthOfYear();
 	}
 
 	@Override
@@ -122,7 +131,7 @@ public class Settings
 				", useDarkTheme=" + useDarkTheme +
 				", autoUpdateCheckEnabled=" + autoUpdateCheckEnabled +
 				", backupReminderActivated=" + backupReminderActivated +
-				", backupReminderShownThisMonth=" + backupReminderShownThisMonth +
+				", lastBackupReminderDate=" + lastBackupReminderDate +
 				'}';
 	}
 }

@@ -22,7 +22,7 @@
                     <form name="Settings" action="<@s.url '/settings/save'/>" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="ID" value="${settings.getID()?c}">
-                        <input type="hidden" name="backupReminderShownThisMonth" value="${settings.isBackupReminderShownThisMonth()?c}">
+                        <input type="hidden" name="lastBackupReminderDate" value="${helpers.getLongDateString(settings.getLastBackupReminderDate())}">
 
                         <#-- password -->
                         <div class="row">
