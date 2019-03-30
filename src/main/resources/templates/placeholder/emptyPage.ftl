@@ -5,7 +5,7 @@
     </head>
     <body class="budgetmaster-blue-light">
         <#import "../helpers/navbar.ftl" as navbar>
-        <@navbar.navbar active/>
+        <@navbar.navbar active settings/>
 
         <!--  Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>

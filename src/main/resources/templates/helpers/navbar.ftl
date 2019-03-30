@@ -1,6 +1,6 @@
 <#import "/spring.ftl" as s>
 
-<#macro navbar activeID>
+<#macro navbar activeID settings>
     <ul id="slide-out" class="sidenav sidenav-fixed">
         <@itemLogo/>
         <@itemDivider/>
@@ -48,6 +48,7 @@
         </#if>
     </form>
 
+    <@backupReminder settings/>
 </#macro>
 
 <#macro itemLogo>

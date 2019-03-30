@@ -9,7 +9,7 @@
     </head>
     <body class="budgetmaster-blue-light">
         <#import "../helpers/navbar.ftl" as navbar>
-        <@navbar.navbar "reports"/>
+        <@navbar.navbar "reports" settings/>
 
         <#import "../transactions/transactionsMacros.ftl" as transactionsMacros>
         <#import "../filter/filterMacros.ftl" as filterMacros>

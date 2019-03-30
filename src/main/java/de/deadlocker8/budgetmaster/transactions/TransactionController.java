@@ -83,6 +83,7 @@ public class TransactionController extends BaseController
 		model.addAttribute("currentDate", date);
 		model.addAttribute("rest", rest);
 		model.addAttribute("filterConfiguration", filterConfiguration);
+		model.addAttribute("settings", settingsRepository.findOne(0));
 
 		return "transactions/transactions";
 	}
@@ -110,7 +111,7 @@ public class TransactionController extends BaseController
 		model.addAttribute("currentTransaction", transactionRepository.getOne(ID));
 		model.addAttribute("rest", rest);
 		model.addAttribute("filterConfiguration", filterConfiguration);
-
+		model.addAttribute("settings", settingsRepository.findOne(0));
 
 		return "transactions/transactions";
 	}
@@ -131,6 +132,7 @@ public class TransactionController extends BaseController
 		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
 		model.addAttribute("accounts", accountService.getAllAccountsAsc());
 		model.addAttribute("transaction", emptyTransaction);
+		model.addAttribute("settings", settingsRepository.findOne(0));
 		return "transactions/newTransaction";
 	}
 
@@ -215,6 +217,7 @@ public class TransactionController extends BaseController
 			model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
 			model.addAttribute("accounts", accountService.getAllAccountsAsc());
 			model.addAttribute("transaction", transaction);
+			model.addAttribute("settings", settingsRepository.findOne(0));
 			return "transactions/newTransaction";
 		}
 
@@ -242,6 +245,7 @@ public class TransactionController extends BaseController
 		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
 		model.addAttribute("accounts", accountService.getAllAccountsAsc());
 		model.addAttribute("transaction", transaction);
+		model.addAttribute("settings", settingsRepository.findOne(0));
 		return "transactions/newTransaction";
 	}
 

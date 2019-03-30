@@ -6,7 +6,7 @@
     </head>
     <body class="budgetmaster-blue-light">
         <#import "../helpers/navbar.ftl" as navbar>
-        <@navbar.navbar "settings"/>
+        <@navbar.navbar "settings" settings/>
 
         <#import "settingsMacros.ftl" as settingsMacros>
 

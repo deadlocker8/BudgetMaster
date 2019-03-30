@@ -6,8 +6,7 @@
     </head>
     <body class="budgetmaster-blue-light">
         <#import "helpers/navbar.ftl" as navbar>
-        <@navbar.navbar "home"/>
-        <@navbar.backupReminder settings/>
+        <@navbar.navbar "home" settings/>
 
         <main>
             <div class="card main-card background-color">

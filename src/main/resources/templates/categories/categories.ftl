@@ -7,7 +7,7 @@
     </head>
     <body class="budgetmaster-blue-light">
         <#import "../helpers/navbar.ftl" as navbar>
-        <@navbar.navbar "categories"/>
+        <@navbar.navbar "categories" settings/>
 
         <#import "categoriesFunctions.ftl" as categoriesFunctions>
 

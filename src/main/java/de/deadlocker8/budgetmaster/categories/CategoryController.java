@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.categories;
 
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.services.HelpersService;
+import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.utils.Colors;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import de.thecodelabs.utils.util.ColorUtils;
@@ -27,10 +28,14 @@ public class CategoryController extends BaseController
 	@Autowired
 	private HelpersService helpers;
 
+	@Autowired
+	SettingsService settingsService;
+
 	@RequestMapping("/categories")
 	public String categories(Model model)
 	{
 		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
+		model.addAttribute("settings", settingsService.getSettings());
 		return "categories/categories";
 	}
 
@@ -44,6 +49,7 @@ public class CategoryController extends BaseController
 
 		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
 		model.addAttribute("currentCategory", categoryRepository.getOne(ID));
+		model.addAttribute("settings", settingsService.getSettings());
 		return "categories/categories";
 	}
 
@@ -71,6 +77,7 @@ public class CategoryController extends BaseController
 		model.addAttribute("customColor", "#FFFFFF");
 		Category emptyCategory = new Category(null, ColorUtils.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase(), CategoryType.CUSTOM);
 		model.addAttribute("category", emptyCategory);
+		model.addAttribute("settings", settingsService.getSettings());
 		return "categories/newCategory";
 	}
 
@@ -93,6 +100,7 @@ public class CategoryController extends BaseController
 		}
 
 		model.addAttribute("category", category);
+		model.addAttribute("settings", settingsService.getSettings());
 		return "categories/newCategory";
 	}
 
@@ -120,6 +128,7 @@ public class CategoryController extends BaseController
 				category.setColor(ColorUtils.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase());
 			}
 			model.addAttribute("category", category);
+			model.addAttribute("settings", settingsService.getSettings());
 			return "categories/newCategory";
 		}
 		else

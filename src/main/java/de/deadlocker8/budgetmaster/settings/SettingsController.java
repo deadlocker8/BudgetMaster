@@ -86,7 +86,6 @@ public class SettingsController extends BaseController
 					   @RequestParam(value = "passwordConfirmation") String passwordConfirmation,
 					   @RequestParam(value = "languageType") String languageType)
 	{
-		System.out.println(settings);
 		settings.setLanguage(LanguageType.fromName(languageType));
 
 		FieldError error = validatePassword(password, passwordConfirmation);
@@ -183,11 +182,12 @@ public class SettingsController extends BaseController
 		String verificationCode = RandomUtils.generateRandomString(RandomUtils.RandomType.BASE_58, 4, RandomUtils.RandomStringPolicy.UPPER, RandomUtils.RandomStringPolicy.DIGIT);
 		model.addAttribute("deleteDatabase", true);
 		model.addAttribute("verificationCode", verificationCode);
+		model.addAttribute("settings", settingsRepository.findOne(0));
 		return "settings/settings";
 	}
 
 	@RequestMapping(value = "/settings/database/delete", method = RequestMethod.POST)
-	public String deleteDatabase(@RequestParam("verificationCode") String verificationCode,
+	public String deleteDatabase(Model model, @RequestParam("verificationCode") String verificationCode,
 								  @RequestParam("verificationUserInput") String verificationUserInput)
 	{
 		if(verificationUserInput.equals(verificationCode))
@@ -201,6 +201,7 @@ public class SettingsController extends BaseController
 			return "redirect:/settings/database/requestDelete";
 		}
 
+		model.addAttribute("settings", settingsRepository.findOne(0));
 		return "settings/settings";
 	}
 
@@ -208,6 +209,7 @@ public class SettingsController extends BaseController
 	public String requestImportDatabase(Model model)
 	{
 		model.addAttribute("importDatabase", true);
+		model.addAttribute("settings", settingsRepository.findOne(0));
 		return "settings/settings";
 	}
 
@@ -233,6 +235,7 @@ public class SettingsController extends BaseController
 			e.printStackTrace();
 
 			model.addAttribute("errorImportDatabase", e.getMessage());
+			model.addAttribute("settings", settingsRepository.findOne(0));
 			return "settings/settings";
 		}
 	}
@@ -242,6 +245,7 @@ public class SettingsController extends BaseController
 	{
 		model.addAttribute("database", request.getAttribute("database", WebRequest.SCOPE_SESSION));
 		model.addAttribute("availableAccounts", accountService.getAllAccountsAsc());
+		model.addAttribute("settings", settingsRepository.findOne(0));
 		return "settings/import";
 	}
 
@@ -250,7 +254,7 @@ public class SettingsController extends BaseController
 	{
 		importService.importDatabase((Database)request.getAttribute("database", WebRequest.SCOPE_SESSION), accountMatchList);
 		request.removeAttribute("database", RequestAttributes.SCOPE_SESSION);
-
+		model.addAttribute("settings", settingsRepository.findOne(0));
 		return "settings/settings";
 	}
 
@@ -266,6 +270,7 @@ public class SettingsController extends BaseController
 	{
 		model.addAttribute("performUpdate", true);
 		model.addAttribute("updateString", Localization.getString("info.text.update", Build.getInstance().getVersionName(), budgetMasterUpdateService.getAvailableVersionString()));
+		model.addAttribute("settings", settingsRepository.findOne(0));
 		return "settings/settings";
 	}
 

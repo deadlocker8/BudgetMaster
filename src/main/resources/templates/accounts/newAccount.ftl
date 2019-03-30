@@ -6,7 +6,7 @@
     </head>
     <body class="budgetmaster-blue-light">
         <#import "../helpers/navbar.ftl" as navbar>
-        <@navbar.navbar "accounts"/>
+        <@navbar.navbar "accounts" settings/>
 
         <main>
             <div class="card main-card background-color">

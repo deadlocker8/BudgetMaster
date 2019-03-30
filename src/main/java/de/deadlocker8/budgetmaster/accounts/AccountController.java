@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.accounts;
 
 import de.deadlocker8.budgetmaster.controller.BaseController;
+import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +22,11 @@ public class AccountController extends BaseController
 	@Autowired
 	private AccountService accountService;
 
+	@Autowired
+	private SettingsService settingsService;
+
 	@RequestMapping(value = "/accounts/{ID}/select")
+
 	public String selectAccount(HttpServletRequest request, @PathVariable("ID") Integer ID)
 	{
 		accountService.selectAccount(ID);
@@ -33,7 +38,6 @@ public class AccountController extends BaseController
 		}
 		return "redirect:" + referer;
 	}
-
 	@RequestMapping(value = "/accounts/{ID}/setAsDefault")
 	public String setAsDefault(HttpServletRequest request, @PathVariable("ID") Integer ID)
 	{
@@ -51,6 +55,7 @@ public class AccountController extends BaseController
 	public String accounts(HttpServletRequest request, Model model)
 	{
 		model.addAttribute("accounts", accountService.getAllAccountsAsc());
+		model.addAttribute("settings", settingsService.getSettings());
 		return "accounts/accounts";
 	}
 
@@ -59,6 +64,7 @@ public class AccountController extends BaseController
 	{
 		model.addAttribute("accounts", accountService.getAllAccountsAsc());
 		model.addAttribute("currentAccount", accountRepository.getOne(ID));
+		model.addAttribute("settings", settingsService.getSettings());
 		return "accounts/accounts";
 	}
 
@@ -74,6 +80,7 @@ public class AccountController extends BaseController
 		model.addAttribute("accounts", accountService.getAllAccountsAsc());
 		model.addAttribute("currentAccount", accountRepository.getOne(ID));
 		model.addAttribute("accountNotDeletable", true);
+		model.addAttribute("settings", settingsService.getSettings());
 		return "accounts/accounts";
 	}
 
@@ -82,6 +89,7 @@ public class AccountController extends BaseController
 	{
 		Account emptyAccount = new Account();
 		model.addAttribute("account", emptyAccount);
+		model.addAttribute("settings", settingsService.getSettings());
 		return "accounts/newAccount";
 	}
 
@@ -95,6 +103,7 @@ public class AccountController extends BaseController
 		}
 
 		model.addAttribute("account", account);
+		model.addAttribute("settings", settingsService.getSettings());
 		return "accounts/newAccount";
 	}
 
@@ -115,6 +124,7 @@ public class AccountController extends BaseController
 		{
 			model.addAttribute("error", bindingResult);
 			model.addAttribute("account", account);
+			model.addAttribute("settings", settingsService.getSettings());
 			return "accounts/newAccount";
 		}
 		else
