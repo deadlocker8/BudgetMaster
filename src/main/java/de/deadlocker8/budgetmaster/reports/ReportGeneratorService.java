@@ -64,6 +64,7 @@ public class ReportGeneratorService
 			PdfPTable table = new PdfPTable(proportions);
 			table.setWidthPercentage(tableWidth);
 			Font font = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 8, Font.NORMAL, GrayColor.BLACK);
+			Font fontBold = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 8, Font.BOLD, GrayColor.BLACK);
 
 			// add table header
 			for(ReportColumn column : columns)
@@ -120,7 +121,7 @@ public class ReportGeneratorService
 					break;
 			}
 
-			cellTotal = new PdfPCell(new Phrase(total, font));
+			cellTotal = new PdfPCell(new Phrase(total, fontBold));
 			cellTotal.setBackgroundColor(getBaseColor(Color.WHITE));
 			cellTotal.setColspan(numberOfColumns);
 			cellTotal.setHorizontalAlignment(Element.ALIGN_RIGHT);
