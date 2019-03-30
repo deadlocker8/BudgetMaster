@@ -117,7 +117,11 @@ public class Settings
 
 	public boolean needToShowBackupReminder()
 	{
-		return lastBackupReminderDate.getMonthOfYear() != DateTime.now().getMonthOfYear();
+		if(backupReminderActivated)
+		{
+			return lastBackupReminderDate.getMonthOfYear() != DateTime.now().getMonthOfYear();
+		}
+		return false;
 	}
 
 	@Override
