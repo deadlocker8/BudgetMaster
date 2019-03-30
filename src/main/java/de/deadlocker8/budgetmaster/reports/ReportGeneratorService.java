@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.reports;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
+import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.reports.columns.ReportColumn;
@@ -179,7 +180,7 @@ public class ReportGeneratorService
 			document.add(new Paragraph(Localization.getString(Strings.TITLE_EXPENDITURES), smallHeaderFont));
 			document.add(Chunk.NEWLINE);
 
-			table = generateTable(reportConfiguration,100, AmountType.EXPENDITURE);
+			table = generateTable(reportConfiguration, 100, AmountType.EXPENDITURE);
 			if(table != null)
 			{
 				document.add(table);
@@ -249,6 +250,12 @@ public class ReportGeneratorService
 	{
 		switch(columnType)
 		{
+			case ACCOUNT:
+				if(transaction.getCategory().getType().equals(CategoryType.REST))
+				{
+					return null;
+				}
+				return transaction.getAccount().getName();
 			case AMOUNT:
 				return helpersService.getCurrencyString(transaction.getAmount());
 			case CATEGORY:
