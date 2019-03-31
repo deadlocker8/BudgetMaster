@@ -480,6 +480,10 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     white-space: nowrap;
 }
 
+.settings-switch {
+    margin-bottom: 20px;
+}
+
 .invisible {
     opacity: 0;
 }

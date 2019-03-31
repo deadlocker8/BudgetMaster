@@ -111,6 +111,11 @@ public class SettingsController extends BaseController
 				userRepository.save(user);
 			}
 
+			if(settings.getBackupReminderActivated() == null)
+			{
+				settings.setBackupReminderActivated(false);
+			}
+
 			settingsRepository.delete(0);
 			settingsRepository.save(settings);
 

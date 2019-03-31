@@ -1,34 +1,15 @@
 <#import "/spring.ftl" as s>
 
 <#macro switches settings>
-    <div class="hide-on-med-and-up">
-        <div class="row">
-            <div class="col s12 center-align">
-                <@switch "rest" "restActivated" settings.isRestActivated()/>
-            </div>
+    <div class="row">
+        <div class="col s12 l2 offset-l3 center-align settings-switch">
+            <@switch "rest" "restActivated" settings.isRestActivated()/>
         </div>
-        <div class="row">
-            <div class="col s12 center-align">
-                <@switch "darkTheme" "useDarkTheme" settings.isUseDarkTheme()/>
-            </div>
+        <div class="col s12 l2 center-align settings-switch">
+            <@switch "darkTheme" "useDarkTheme" settings.isUseDarkTheme()/>
         </div>
-        <div class="row">
-            <div class="col s12 center-align">
-                <@switch "backupReminder" "backupReminderActivated" settings.getBackupReminderActivated()/>
-            </div>
-        </div>
-    </div>
-    <div class="hide-on-small-only">
-        <div class="row">
-            <div class="col l2 offset-l3 center-align">
-                <@switch "rest" "restActivated" settings.isRestActivated()/>
-            </div>
-            <div class="col l2 center-align">
-                <@switch "darkTheme" "useDarkTheme" settings.isUseDarkTheme()/>
-            </div>
-            <div class="col l2 center-align">
-                <@switch "backupReminder" "backupReminderActivated" settings.getBackupReminderActivated()/>
-            </div>
+        <div class="col s12 l2 center-align settings-switch">
+            <@switch "backupReminder" "backupReminderActivated" settings.getBackupReminderActivated()/>
         </div>
     </div>
 </#macro>
@@ -43,7 +24,6 @@
             ${locale.getString("settings.${localizationKey}.activated")}
         </label>
     </div>
-    <input type="hidden" value="false" name="_backupReminderActivated"/>
 </#macro>
 
 <#macro databaseNormal>

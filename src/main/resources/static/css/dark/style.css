@@ -567,6 +567,10 @@ input[type="radio"]:not(:checked) + span::before, [type="radio"]:not(:checked) +
     white-space: nowrap;
 }
 
+.settings-switch {
+    margin-bottom: 20px;
+}
+
 .invisible {
     opacity: 0;
 }
