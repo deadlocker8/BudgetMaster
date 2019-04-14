@@ -69,7 +69,7 @@
                 <div class="input-field">
                     <input id="search" class="text-color" name="searchText" type="search">
                     <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-                    <i class="material-icons">close</i>
+                    <i id="buttonClearSearch" class="material-icons">close</i>
                 </div>
             </form>
         </div>

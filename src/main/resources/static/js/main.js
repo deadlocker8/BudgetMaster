@@ -29,6 +29,11 @@ $( document ).ready(function() {
     {
         document.getElementById("login-password").focus();
     }
+
+    $("#buttonClearSearch").click(function()
+    {
+        document.getElementById("search").value = "";
+    });
 });
 
 function addClass(element, className)
