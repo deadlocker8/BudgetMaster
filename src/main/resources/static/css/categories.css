@@ -44,6 +44,10 @@
     border: 3px dashed black;
 }
 
+.modal {
+    overflow-y: visible !important;
+}
+
 /*style spectrum color picker*/
 
 /*hide spectrum color picker arrow*/
