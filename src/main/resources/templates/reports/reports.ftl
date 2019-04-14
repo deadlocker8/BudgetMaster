@@ -17,7 +17,7 @@
         <main>
             <div class="card main-card background-color">
                 <#import "../helpers/globalDatePicker.ftl" as datePicker>
-                <@datePicker.datePicker currentDate "/transactions"/>
+                <@datePicker.datePicker currentDate "/reports"/>
 
                 <br>
 
