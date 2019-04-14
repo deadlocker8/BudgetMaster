@@ -26,6 +26,11 @@ $( document ).ready(function() {
             }
         });
     }
+
+    $('#buttonDeleteCategory').click(function()
+    {
+        document.getElementById("formDestinationCategory").submit();
+    });
 });
 
 function removeActive()

@@ -33,7 +33,7 @@ public class CategoryService implements Resetable
 		return categoryRepository;
 	}
 
-	public void deleteCategory(int ID)
+	public void deleteCategory(int ID, Category newCategory)
 	{
 		Category categoryToDelete = categoryRepository.findOne(ID);
 		List<Transaction> referringTransactions = categoryToDelete.getReferringTransactions();
@@ -41,7 +41,7 @@ public class CategoryService implements Resetable
 		{
 			for(Transaction transaction : referringTransactions)
 			{
-				transaction.setCategory(categoryRepository.findByType(CategoryType.NONE));
+				transaction.setCategory(newCategory);
 			}
 		}
 

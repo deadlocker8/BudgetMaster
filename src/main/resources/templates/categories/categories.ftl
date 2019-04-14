@@ -10,6 +10,7 @@
         <@navbar.navbar "categories" settings/>
 
         <#import "categoriesFunctions.ftl" as categoriesFunctions>
+        <#import "../transactions/newTransactionMacros.ftl" as newTransactionMacros>
 
         <main>
             <div class="card main-card background-color">
@@ -55,18 +56,34 @@
                     <div class="modal-content">
                         <h4>${locale.getString("info.title.category.delete")}</h4>
                         <p>${locale.getString("info.text.category.delete", currentCategory.name)}</p>
+                        <p>${locale.getString("info.text.category.delete.move")}</p>
+
+                        <form name="DestinationCategory" id="formDestinationCategory" action="<@s.url '/categories/${currentCategory.ID?c}/delete'/>" method="post">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            <#import "../helpers/validation.ftl" as validation>
+                            <@newTransactionMacros.categorySelect availableCategories preselectedCategory "col s12 m12 l8 offset-l2" locale.getString("info.title.category.delete.move")/>
+                        </form>
                     </div>
+
                     <div class="modal-footer background-color">
                         <a href="<@s.url '/categories'/>" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
-                        <a href="<@s.url '/categories/${currentCategory.ID?c}/delete'/>" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("delete")}</a>
+                        <a id="buttonDeleteCategory" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("delete")}</a>
                     </div>
                 </div>
             </#if>
         </main>
 
         <!--  Scripts-->
+        <#-- pass selected account to JS in order to select current value for materialize select -->
+        <script>
+            <#if preselectedCategory??>
+                selectedCategory = "${preselectedCategory.getID()?c}";
+            </#if>
+        </script>
+
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
         <script src="<@s.url '/js/categories.js'/>"></script>
+        <script src="<@s.url '/js/categorySelect.js'/>"></script>
     </body>
 </html>

@@ -48,7 +48,7 @@
                         </div>
 
                         <#-- category -->
-                        <@newTransactionMacros.category categories transaction/>
+                        <@newTransactionMacros.categorySelect categories transaction.getCategory() "col s12 m12 l8 offset-l2" locale.getString("transaction.new.label.category")/>
 
                         <#-- date -->
                         <div class="row">
@@ -159,5 +159,6 @@
         <@scripts.scripts/>
         <script src="<@s.url '/js/spectrum.js'/>"></script>
         <script src="<@s.url '/js/transactions.js'/>"></script>
+        <script src="<@s.url '/js/categorySelect.js'/>"></script>
     </body>
 </html>

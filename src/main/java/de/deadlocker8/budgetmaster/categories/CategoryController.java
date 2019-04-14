@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Controller
 public class CategoryController extends BaseController
@@ -47,18 +50,24 @@ public class CategoryController extends BaseController
 			return "redirect:/categories";
 		}
 
-		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
+		List<Category> allCategories = categoryService.getRepository().findAllByOrderByNameAsc();
+		List<Category> availableCategories = allCategories.stream().filter(category -> !category.getID().equals(ID)).collect(Collectors.toList());
+
+		model.addAttribute("categories", allCategories);
+		model.addAttribute("availableCategories", availableCategories);
+		model.addAttribute("preselectedCategory", categoryService.getRepository().findByType(CategoryType.NONE));
+
 		model.addAttribute("currentCategory", categoryRepository.getOne(ID));
 		model.addAttribute("settings", settingsService.getSettings());
 		return "categories/categories";
 	}
 
-	@RequestMapping("/categories/{ID}/delete")
-	public String deleteCategory(Model model, @PathVariable("ID") Integer ID)
+	@RequestMapping(value = "/categories/{ID}/delete", method = RequestMethod.POST)
+	public String deleteCategory(Model model, @PathVariable("ID") Integer ID, @ModelAttribute("DestinationCategory") DestinationCategory destinationCategory)
 	{
 		if(isDeletable(ID))
 		{
-			categoryService.deleteCategory(ID);
+			categoryService.deleteCategory(ID, destinationCategory.getCategory());
 		}
 
 		return "redirect:/categories";
