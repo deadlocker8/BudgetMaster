@@ -4,6 +4,8 @@
     <ul id="slide-out" class="sidenav sidenav-fixed">
         <@itemLogo/>
         <@itemDivider/>
+        <@itemSearch/>
+        <@itemDivider/>
         <@itemAccountSelect/>
         <@itemDivider/>
         <@itemWithIcon "home", "/", locale.getString("menu.home"), "home", "budgetmaster-blue", activeID/>
@@ -57,6 +59,21 @@
 
 <#macro itemDivider>
     <li><div class="divider no-margin"></div></li>
+</#macro>
+
+<#macro itemSearch>
+    <nav class="searchWrapper">
+        <div class="nav-wrapper">
+            <form name="NewSearch" action="<@s.url '/search'/>" method="post">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <div class="input-field">
+                    <input id="search" class="text-color" name="searchText" type="search">
+                    <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                    <i class="material-icons">close</i>
+                </div>
+            </form>
+        </div>
+    </nav>
 </#macro>
 
 <#macro itemAccountSelect>

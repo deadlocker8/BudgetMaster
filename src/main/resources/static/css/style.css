@@ -129,6 +129,16 @@ main {
     font-weight: 600;
 }
 
+.searchWrapper {
+    background-color: #FFFFFF;
+    box-shadow: none;
+}
+
+.searchWrapper .input-field i,
+.searchWrapper .input-field label.active i{
+    color: #212121;
+}
+
 .btn, .btn-flat {
     text-transform: none;
     font-weight: 600;

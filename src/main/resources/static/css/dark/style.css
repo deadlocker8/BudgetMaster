@@ -115,8 +115,9 @@ main {
     width: 350px;
 }
 
-.sidenav, .sidenav-sub {
+.sidenav, .sidenav-sub, .searchWrapper {
     background-color: #444444;
+    box-shadow: none;
 }
 
 .sidenav li > a, .sidenav-sub li > a {
