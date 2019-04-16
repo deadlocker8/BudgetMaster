@@ -268,7 +268,7 @@ public class ReportGeneratorService
 			case CATEGORY:
 				return transaction.getCategory().getName();
 			case DATE:
-				return transaction.getDate().toString("dd.MM.YYYY");
+				return transaction.getDate().toString("dd.MM.");
 			case DESCRIPTION:
 				return transaction.getDescription();
 			case TAGS:
