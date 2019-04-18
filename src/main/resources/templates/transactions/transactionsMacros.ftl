@@ -89,7 +89,7 @@
 <#macro buttons isFilterActive>
     <div class="row hide-on-small-only valign-wrapper">
         <div class="col s6 right-align transactions-buttons-col">
-            <@buttonNew/>
+            <@buttonNew "new-transaction-button-list"/>
         </div>
         <div class="col s6 left-align">
             <@buttonFilter isFilterActive/>
@@ -98,35 +98,35 @@
 
     <div class="hide-on-med-and-up center-align">
         <div class="row center-align">
-            <div class="col s12 transactions-buttons-col">
-                <@buttonNew/>
+            <div class="row center-align">
+                <div class="col s12">
+                    <@buttonFilter isFilterActive/>
+                </div>
             </div>
-        </div>
-        <div class="row center-align">
-            <div class="col s12">
-                <@buttonFilter isFilterActive/>
+            <div class="col s12 transactions-buttons-col">
+                <@buttonNew ""/>
             </div>
         </div>
     </div>
 </#macro>
 
-<#macro buttonNew>
+<#macro buttonNew listClasses>
     <div class="fixed-action-btn new-transaction-button">
         <a class="btn-floating btn-large btn waves-effect waves-light budgetmaster-blue">
             <i class="large material-icons">add</i>
         </a>
-        <ul>
+        <ul class="${listClasses}">
             <li>
-                <a href="<@s.url '/transactions/newTransaction'/>" class="btn-floating red"><i class="material-icons">swap_horiz</i></a>
-                <a href="<@s.url '/transactions/newTransaction'/>" class="btn-floating mobile-fab-tip no-wrap">Transfer</a>
+                <a href="<@s.url '/transactions/newTransaction'/>" class="btn-floating btn budgetmaster-dark-green"><i class="material-icons">swap_horiz</i></a>
+                <a href="<@s.url '/transactions/newTransaction'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new.transfer")}</a>
             </li>
             <li>
-                <a href="<@s.url '/transactions/newTransaction'/>" class="btn-floating blue"><i class="material-icons">repeat</i></a>
-                <a href="<@s.url '/transactions/newTransaction'/>" class="btn-floating mobile-fab-tip no-wrap">Repeating</a>
+                <a href="<@s.url '/transactions/newTransaction'/>" class="btn-floating btn budgetmaster-blue"><i class="material-icons">repeat</i></a>
+                <a href="<@s.url '/transactions/newTransaction'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new.repeating")}</a>
             </li>
             <li>
-                <a href="<@s.url '/transactions/newTransaction'/>" class="btn-floating amber darken-1"><i class="material-icons">payment</i></a>
-                <a href="<@s.url '/transactions/newTransaction'/>" class="btn-floating mobile-fab-tip no-wrap">${locale.getString("title.transaction.new")}</a>
+                <a href="<@s.url '/transactions/newTransaction'/>" class="btn-floating btn budgetmaster-orange"><i class="material-icons">payment</i></a>
+                <a href="<@s.url '/transactions/newTransaction'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new.normal")}</a>
             </li>
         </ul>
     </div>

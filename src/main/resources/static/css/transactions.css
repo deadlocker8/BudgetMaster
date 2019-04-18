@@ -53,16 +53,20 @@
     right: 0;
     left: 0;
     top: 0;
-    margin: auto;
+}
+
+.new-transaction-button-list {
+    left: auto !important;
+    right: 8px !important;
 }
 
 .mobile-fab-tip {
     position: absolute;
-    right: 60px;
     padding: 0 0.5rem;
+    margin-left: 0.4rem;
     text-align: right;
     background-color: #323232;
     border-radius: 2px;
-    color: #FFF;
+    color: #FFFFFF;
     width: auto;
 }
