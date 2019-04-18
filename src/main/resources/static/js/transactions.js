@@ -182,6 +182,11 @@ $( document ).ready(function() {
 
         document.getElementById("input-isPayment").value = 1;
     });
+
+    M.FloatingActionButton.init(document.querySelectorAll('.fixed-action-btn'), {
+        direction: 'bottom',
+        hoverEnabled: false
+    });
 });
 
 var transactionRepeatingModifierID = "#transaction-repeating-modifier";
@@ -257,7 +262,6 @@ function removeTooltip(id)
     {
         tooltip.destroy();
     }
-
 }
 
 function validateForm()

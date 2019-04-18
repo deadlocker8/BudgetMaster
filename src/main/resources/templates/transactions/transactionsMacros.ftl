@@ -88,18 +88,17 @@
 
 <#macro buttons isFilterActive>
     <div class="row hide-on-small-only valign-wrapper">
-        <div class="col s6 right-align">
+        <div class="col s6 right-align transactions-buttons-col">
             <@buttonNew/>
         </div>
-
         <div class="col s6 left-align">
             <@buttonFilter isFilterActive/>
         </div>
     </div>
 
-    <div class="hide-on-med-and-up valign-wrapper">
+    <div class="hide-on-med-and-up center-align">
         <div class="row center-align">
-            <div class="col s12">
+            <div class="col s12 transactions-buttons-col">
                 <@buttonNew/>
             </div>
         </div>
@@ -112,7 +111,25 @@
 </#macro>
 
 <#macro buttonNew>
-    <a href="<@s.url '/transactions/newTransaction'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.transaction.new")}</a>
+    <div class="fixed-action-btn new-transaction-button">
+        <a class="btn-floating btn-large btn waves-effect waves-light budgetmaster-blue">
+            <i class="large material-icons">add</i>
+        </a>
+        <ul>
+            <li>
+                <a href="<@s.url '/transactions/newTransaction'/>" class="btn-floating red"><i class="material-icons">swap_horiz</i></a>
+                <a href="<@s.url '/transactions/newTransaction'/>" class="btn-floating mobile-fab-tip no-wrap">Transfer</a>
+            </li>
+            <li>
+                <a href="<@s.url '/transactions/newTransaction'/>" class="btn-floating blue"><i class="material-icons">repeat</i></a>
+                <a href="<@s.url '/transactions/newTransaction'/>" class="btn-floating mobile-fab-tip no-wrap">Repeating</a>
+            </li>
+            <li>
+                <a href="<@s.url '/transactions/newTransaction'/>" class="btn-floating amber darken-1"><i class="material-icons">payment</i></a>
+                <a href="<@s.url '/transactions/newTransaction'/>" class="btn-floating mobile-fab-tip no-wrap">${locale.getString("title.transaction.new")}</a>
+            </li>
+        </ul>
+    </div>
 </#macro>
 
 <#macro buttonFilter isFilterActive>
