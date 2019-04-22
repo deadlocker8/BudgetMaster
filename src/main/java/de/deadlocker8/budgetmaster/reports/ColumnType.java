@@ -9,20 +9,21 @@ public enum ColumnType
 	POSITION(Strings.REPORT_POSITION, 1),
 	DATE(Strings.REPORT_DATE, 2),
 	REPEATING(Strings.REPORT_REPEATING, 1),
+	TRANSFER(Strings.REPORT_TRANSFER, 1),
 	CATEGORY(Strings.REPORT_CATEGORY, 3),
 	NAME(Strings.REPORT_NAME, 3),
-	DESCRIPTION(Strings.REPORT_DESCRIPTION, 3), 
+	DESCRIPTION(Strings.REPORT_DESCRIPTION, 3),
 	TAGS(Strings.REPORT_TAGS, 3),
 	ACCOUNT(Strings.REPORT_ACCOUNT, 2),
 	RATING(Strings.REPORT_RATING, 1),
 	AMOUNT(Strings.REPORT_AMOUNT, 2);
-	
-	private String name;
+
+	private String key;
 	private float proportion;
 
 	ColumnType(String name, float proportion)
 	{
-		this.name = name;
+		this.key = name;
 		this.proportion = proportion;
 	}
 
@@ -30,7 +31,7 @@ public enum ColumnType
 	{
 		for(ColumnType type : ColumnType.values())
 		{
-			if(type.name.equalsIgnoreCase(name))
+			if(type.key.equalsIgnoreCase(name))
 			{
 				return type;
 			}
@@ -41,7 +42,12 @@ public enum ColumnType
 
 	public String getName()
 	{
-		return Localization.getString(name);
+		return Localization.getString(key);
+	}
+
+	public String getKey()
+	{
+		return key;
 	}
 
 	public float getProportion()

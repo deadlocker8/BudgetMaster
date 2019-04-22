@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.reports.columns;
 
+import de.deadlocker8.budgetmaster.reports.ColumnType;
 import de.deadlocker8.budgetmaster.reports.settings.ReportSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,18 +26,18 @@ public class ReportColumnService
 
 	public void createDefaultsWithReportSettings(ReportSettings settings)
 	{
-		if(reportColumnRepository.findAllByOrderByPositionAsc().size() == 0)
+		if(reportColumnRepository.findAllByOrderByPositionAsc().size() != ColumnType.values().length)
 		{
-			reportColumnRepository.save(new ReportColumn("report.position", 0));
-			reportColumnRepository.save(new ReportColumn("report.date", 1));
-			reportColumnRepository.save(new ReportColumn("report.repeating", 2));
-			reportColumnRepository.save(new ReportColumn("report.name", 3));
-			reportColumnRepository.save(new ReportColumn("report.category", 4));
-			reportColumnRepository.save(new ReportColumn("report.description", 5));
-			reportColumnRepository.save(new ReportColumn("report.tags", 6));
-			reportColumnRepository.save(new ReportColumn("report.account", 7));
-			reportColumnRepository.save(new ReportColumn("report.rating", 8));
-			reportColumnRepository.save(new ReportColumn("report.amount", 9));
+			reportColumnRepository.deleteAllInBatch();
+
+			for(int i = 0; i < ColumnType.values().length; i++)
+			{
+				ColumnType currentType = ColumnType.values()[i];
+				if(reportColumnRepository.findByKey(currentType.getKey()) == null)
+				{
+					reportColumnRepository.save(new ReportColumn(currentType.getKey(), i));
+				}
+			}
 
 			for(ReportColumn column : reportColumnRepository.findAll())
 			{

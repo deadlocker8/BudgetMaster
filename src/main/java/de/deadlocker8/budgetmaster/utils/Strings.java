@@ -54,6 +54,7 @@ public class Strings
     public static final String REPORT_POSITION = "report.position";
     public static final String REPORT_DATE = "report.date";
     public static final String REPORT_REPEATING = "report.repeating";
+    public static final String REPORT_TRANSFER = "report.transfer";
     public static final String REPORT_CATEGORY = "report.category";
     public static final String REPORT_NAME = "report.name";
     public static final String REPORT_DESCRIPTION = "report.description";

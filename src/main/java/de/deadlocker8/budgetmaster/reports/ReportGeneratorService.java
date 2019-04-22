@@ -288,6 +288,15 @@ public class ReportGeneratorService
 				{
 					return Localization.getString(Strings.REPORT_REPEATING_NO);
 				}
+			case TRANSFER:
+				if(transaction.isTransfer())
+				{
+					return Localization.getString(Strings.REPORT_REPEATING_YES);
+				}
+				else
+				{
+					return Localization.getString(Strings.REPORT_REPEATING_NO);
+				}
 			default:
 				return null;
 		}
