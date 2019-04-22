@@ -236,8 +236,12 @@ public class HelpersService
 	{
 		int sum = 0;
 		for(Transaction transaction : transactions)
-
 		{
+			if(transaction.isTransfer())
+			{
+				continue;
+			}
+
 			if(transaction.getAmount() > 0)
 			{
 				sum += transaction.getAmount();
@@ -251,6 +255,11 @@ public class HelpersService
 		int sum = 0;
 		for(Transaction transaction : transactions)
 		{
+			if(transaction.isTransfer())
+			{
+				continue;
+			}
+
 			if(transaction.getAmount() < 0)
 			{
 				sum += transaction.getAmount();
