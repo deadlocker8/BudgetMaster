@@ -117,16 +117,16 @@
         </a>
         <ul class="${listClasses}">
             <li>
-                <a href="<@s.url '/transactions/newTransaction'/>" class="btn-floating btn budgetmaster-dark-green"><i class="material-icons">swap_horiz</i></a>
-                <a href="<@s.url '/transactions/newTransaction'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new.transfer")}</a>
+                <a href="<@s.url '/transactions/newTransaction/transfer'/>" class="btn-floating btn budgetmaster-dark-green"><i class="material-icons">swap_horiz</i></a>
+                <a href="<@s.url '/transactions/newTransaction/transfer'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new.transfer")}</a>
             </li>
             <li>
-                <a href="<@s.url '/transactions/newTransaction'/>" class="btn-floating btn budgetmaster-blue"><i class="material-icons">repeat</i></a>
-                <a href="<@s.url '/transactions/newTransaction'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new.repeating")}</a>
+                <a href="<@s.url '/transactions/newTransaction/repeating'/>" class="btn-floating btn budgetmaster-blue"><i class="material-icons">repeat</i></a>
+                <a href="<@s.url '/transactions/newTransaction/repeating'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new.repeating")}</a>
             </li>
             <li>
-                <a href="<@s.url '/transactions/newTransaction'/>" class="btn-floating btn budgetmaster-orange"><i class="material-icons">payment</i></a>
-                <a href="<@s.url '/transactions/newTransaction'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new.normal")}</a>
+                <a href="<@s.url '/transactions/newTransaction/normal'/>" class="btn-floating btn budgetmaster-orange"><i class="material-icons">payment</i></a>
+                <a href="<@s.url '/transactions/newTransaction/normal'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new.normal")}</a>
             </li>
         </ul>
     </div>

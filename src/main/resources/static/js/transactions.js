@@ -270,53 +270,59 @@ function validateForm()
     validateAmount($('#transaction-amount').val());
 
     // handle tags
-    var tags = M.Chips.getInstance(document.querySelector('.chips-autocomplete')).chipsData;
-    var parent = document.getElementById("hidden-transaction-tags");
-    for(var i = 0; i < tags.length; i++)
+    if($(".chips-autocomplete").length)
     {
-        var input = document.createElement("input");
-        input.setAttribute("type", "hidden");
-        input.setAttribute("name", "tags[" + i + "].name");
-        input.setAttribute("value", tags[i].tag);
-        parent.appendChild(input);
+        var tags = M.Chips.getInstance(document.querySelector('.chips-autocomplete')).chipsData;
+        var parent = document.getElementById("hidden-transaction-tags");
+        for (var i = 0; i < tags.length; i++)
+        {
+            var input = document.createElement("input");
+            input.setAttribute("type", "hidden");
+            input.setAttribute("name", "tags[" + i + "].name");
+            input.setAttribute("value", tags[i].tag);
+            parent.appendChild(input);
+        }
     }
 
-    if(document.getElementById("enableRepeating").checked)
+    if($("#enableRepeating").length)
     {
-        if(!validateNumber($(transactionRepeatingModifierID).val(), transactionRepeatingModifierID.substr(1), "hidden-" + transactionRepeatingModifierID.substr(1), numberValidationMessage))
+        if(document.getElementById("enableRepeating").checked)
         {
-            return false;
-        }
-
-        // handle repeating end
-        var endNever = document.getElementById("repeating-end-never");
-        var endAfterXTimes = document.getElementById("repeating-end-after-x-times");
-        var endDate = document.getElementById("repeating-end-date");
-        var endInput = document.getElementById("hidden-transaction-repeating-end-value");
-
-        if(endNever.checked)
-        {
-            return true;
-        }
-
-        if(endAfterXTimes.checked)
-        {
-            if(!validateNumber($(transactionRepeatingEndAfterXTimesInputID).val(), transactionRepeatingEndAfterXTimesInputID.substr(1), null, numberValidationMessage))
+            if(!validateNumber($(transactionRepeatingModifierID).val(), transactionRepeatingModifierID.substr(1), "hidden-" + transactionRepeatingModifierID.substr(1), numberValidationMessage))
             {
                 return false;
             }
 
-            endInput.value = $(transactionRepeatingEndAfterXTimesInputID).val();
-        }
+            // handle repeating end
+            var endNever = document.getElementById("repeating-end-never");
+            var endAfterXTimes = document.getElementById("repeating-end-after-x-times");
+            var endDate = document.getElementById("repeating-end-date");
+            var endInput = document.getElementById("hidden-transaction-repeating-end-value");
 
-        if(endDate.checked)
-        {
-            endInput.value = $("#transaction-repeating-end-date-input").val();
+            if(endNever.checked)
+            {
+                return true;
+            }
+
+            if(endAfterXTimes.checked)
+            {
+                if(!validateNumber($(transactionRepeatingEndAfterXTimesInputID).val(), transactionRepeatingEndAfterXTimesInputID.substr(1), null, numberValidationMessage))
+                {
+                    return false;
+                }
+
+                endInput.value = $(transactionRepeatingEndAfterXTimesInputID).val();
+            }
+
+            if(endDate.checked)
+            {
+                endInput.value = $("#transaction-repeating-end-date-input").val();
+            }
         }
-    }
-    else
-    {
-        document.getElementById("hidden-" + transactionRepeatingModifierID.substr(1)).value = -1;
+        else
+        {
+            document.getElementById("hidden-" + transactionRepeatingModifierID.substr(1)).value = -1;
+        }
     }
 
     return true;

@@ -124,8 +124,8 @@ public class TransactionController extends BaseController
 		return "redirect:/transactions";
 	}
 
-	@RequestMapping("/transactions/newTransaction")
-	public String newTransaction(Model model, @CookieValue("currentDate") String cookieDate)
+	@RequestMapping("/transactions/newTransaction/normal")
+	public String newTransactionNormal(Model model, @CookieValue("currentDate") String cookieDate)
 	{
 		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
 		Transaction emptyTransaction = new Transaction();
@@ -135,11 +135,79 @@ public class TransactionController extends BaseController
 		model.addAttribute("accounts", accountService.getAllAccountsAsc());
 		model.addAttribute("transaction", emptyTransaction);
 		model.addAttribute("settings", settingsRepository.findOne(0));
-		return "transactions/newTransaction";
+		return "transactions/newTransactionNormal";
+	}
+
+	@RequestMapping("/transactions/newTransaction/repeating")
+	public String newTransactionRepeating(Model model, @CookieValue("currentDate") String cookieDate)
+	{
+		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
+		Transaction emptyTransaction = new Transaction();
+		emptyTransaction.setCategory(categoryRepository.findByType(CategoryType.NONE));
+		model.addAttribute("currentDate", date);
+		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
+		model.addAttribute("accounts", accountService.getAllAccountsAsc());
+		model.addAttribute("transaction", emptyTransaction);
+		model.addAttribute("settings", settingsRepository.findOne(0));
+		return "transactions/newTransactionRepeating";
 	}
 
 	@SuppressWarnings("ConstantConditions")
-	@RequestMapping(value = "/transactions/newTransaction", method = RequestMethod.POST)
+	@RequestMapping(value = "/transactions/newTransaction/normal", method = RequestMethod.POST)
+	public String post(Model model, @CookieValue("currentDate") String cookieDate,
+					   @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
+					   @RequestParam(value = "isRepeating", required = false) boolean isRepeating,
+					   @RequestParam(value = "isPayment", required = false) boolean isPayment)
+	{
+		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
+
+		TransactionValidator transactionValidator = new TransactionValidator();
+		transactionValidator.validate(transaction, bindingResult);
+
+		if(transaction.getAmount() == null)
+		{
+			transaction.setAmount(0);
+		}
+
+		if(isPayment)
+		{
+			transaction.setAmount(-Math.abs(transaction.getAmount()));
+		}
+		else
+		{
+			transaction.setAmount(Math.abs(transaction.getAmount()));
+		}
+
+		List<Tag> tags = transaction.getTags();
+		if(tags != null)
+		{
+			transaction.setTags(new ArrayList<>());
+			for(Tag currentTag : tags)
+			{
+				//noinspection ConstantConditions
+				transaction = addTagForTransaction(currentTag.getName(), transaction);
+			}
+		}
+
+		transaction.setRepeatingOption(null);
+
+		if(bindingResult.hasErrors())
+		{
+			model.addAttribute("error", bindingResult);
+			model.addAttribute("currentDate", date);
+			model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
+			model.addAttribute("accounts", accountService.getAllAccountsAsc());
+			model.addAttribute("transaction", transaction);
+			model.addAttribute("settings", settingsRepository.findOne(0));
+			return "transactions/newTransactionNormal";
+		}
+
+		transactionRepository.save(transaction);
+		return "redirect:/transactions";
+	}
+
+	@SuppressWarnings("ConstantConditions")
+	@RequestMapping(value = "/transactions/newTransaction/repeating", method = RequestMethod.POST)
 	public String post(Model model, @CookieValue("currentDate") String cookieDate,
 					   @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
 					   @RequestParam(value = "isRepeating", required = false) boolean isRepeating,
@@ -220,12 +288,13 @@ public class TransactionController extends BaseController
 			model.addAttribute("accounts", accountService.getAllAccountsAsc());
 			model.addAttribute("transaction", transaction);
 			model.addAttribute("settings", settingsRepository.findOne(0));
-			return "transactions/newTransaction";
+			return "transactions/newTransactionNormal";
 		}
 
 		transactionRepository.save(transaction);
 		return "redirect:/transactions";
 	}
+
 
 	@RequestMapping("/transactions/{ID}/edit")
 	public String editTransaction(Model model, @CookieValue("currentDate") String cookieDate, @PathVariable("ID") Integer ID)
@@ -248,7 +317,7 @@ public class TransactionController extends BaseController
 		model.addAttribute("accounts", accountService.getAllAccountsAsc());
 		model.addAttribute("transaction", transaction);
 		model.addAttribute("settings", settingsRepository.findOne(0));
-		return "transactions/newTransaction";
+		return "transactions/newTransactionNormal";
 	}
 
 	private Settings getSettings()

@@ -17,12 +17,12 @@
             <div class="card main-card background-color">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="headline"><#if transaction.getID()??>${locale.getString("title.transaction.edit")}<#else>${locale.getString("title.transaction.new")}</#if></div>
+                        <div class="headline"><#if transaction.getID()??>${locale.getString("title.transaction.edit")}<#else>${locale.getString("title.transaction.new", locale.getString("title.transaction.new.normal"))}</#if></div>
                     </div>
                 </div>
                 <div class="container">
                     <#import "../helpers/validation.ftl" as validation>
-                    <form name="NewTransaction" action="<@s.url '/transactions/newTransaction'/>" method="post" onsubmit="return validateForm()">
+                    <form name="NewTransaction" action="<@s.url '/transactions/newTransaction/normal'/>" method="post" onsubmit="return validateForm()">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="ID" value="<#if transaction.getID()??>${transaction.getID()?c}</#if>">
                         <input type="hidden" name="isRepeating" value="${transaction.isRepeating()?c}">
@@ -51,8 +51,6 @@
                         <#-- account -->
                         <@newTransactionMacros.account accounts transaction/>
 
-                        <#-- repeating options -->
-                        <@newTransactionMacros.transactionRepeating transaction currentDate/>
                         <br>
                         <#-- buttons -->
                         <@newTransactionMacros.buttons/>
