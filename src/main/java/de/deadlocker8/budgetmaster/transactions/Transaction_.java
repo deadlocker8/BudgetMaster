@@ -23,4 +23,5 @@ public class Transaction_
 	public static volatile SingularAttribute<Transaction, String> description;
 	public static volatile ListAttribute<Transaction, Tag> tags;
 	public static volatile SingularAttribute<Transaction, RepeatingOption> repeatingOption;
+	public static volatile SingularAttribute<Transaction, Account> transferAccount;
 }

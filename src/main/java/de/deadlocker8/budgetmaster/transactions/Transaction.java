@@ -54,6 +54,10 @@ public class Transaction
 	@Expose
 	private RepeatingOption repeatingOption;
 
+	@OneToOne(optional = true)
+	@Expose
+	private Account transferAccount;
+
 	public Transaction()
 	{
 	}
@@ -69,6 +73,7 @@ public class Transaction
 		this.description = transaction.getDescription();
 		this.tags = new ArrayList<>(transaction.getTags());
 		this.repeatingOption = transaction.getRepeatingOption();
+		this.transferAccount = transaction.getTransferAccount();
 	}
 
 	public Integer getID()
@@ -166,6 +171,21 @@ public class Transaction
 		return repeatingOption != null;
 	}
 
+	public Account getTransferAccount()
+	{
+		return transferAccount;
+	}
+
+	public void setTransferAccount(Account transferAccount)
+	{
+		this.transferAccount = transferAccount;
+	}
+
+	public boolean isTransfer()
+	{
+		return transferAccount != null;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -179,6 +199,7 @@ public class Transaction
 				", description='" + description + '\'' +
 				", tags=" + tags +
 				", repeatingOption=" + repeatingOption +
+				", transferAccount=" + transferAccount +
 				'}';
 	}
 
@@ -196,12 +217,13 @@ public class Transaction
 				Objects.equals(name, transaction.name) &&
 				Objects.equals(description, transaction.description) &&
 				Objects.equals(tags, transaction.tags) &&
-				Objects.equals(repeatingOption, transaction.repeatingOption);
+				Objects.equals(repeatingOption, transaction.repeatingOption) &&
+				Objects.equals(transferAccount, transaction.transferAccount);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, amount, date, account, category, name, description, tags, repeatingOption);
+		return Objects.hash(ID, amount, date, account, category, name, description, tags, repeatingOption, transferAccount);
 	}
 }

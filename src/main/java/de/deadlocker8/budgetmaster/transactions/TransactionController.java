@@ -262,6 +262,11 @@ public class TransactionController extends BaseController
 		{
 			return "transactions/newTransactionRepeating";
 		}
+
+		if(transaction.isTransfer())
+		{
+			return "transactions/newTransactionTransfer";
+		}
 		return "transactions/newTransactionNormal";
 	}
 
