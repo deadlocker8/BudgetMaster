@@ -105,6 +105,15 @@
             <label for="transaction-category">${labelText}</label>
         </div>
     </div>
+
+    <#-- pass selected category to JS in order to select current value for materialize select -->
+    <script>
+        <#if transaction.getCategory()??>
+        selectedCategory = "${transaction.getCategory().getID()?c}";
+        <#else>
+        selectedCategory = "${helpers.getIDOfNoCatgeory()?c}";
+        </#if>
+    </script>
 </#macro>
 
 <#macro transactionStartDate transaction currentDate>
@@ -165,21 +174,16 @@
     </script>
 </#macro>
 
-<#macro account accounts transaction>
+<#macro account accounts selectedAccount id name>
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
-            <select id="transaction-account" name="account" <@validation.validation "account"/>>
+            <select id="${id}" name="${name}" <@validation.validation "account"/>>
                 <#list accounts as account>
                     <#if (account.getType().name() != "CUSTOM")>
                         <#continue>
                     </#if>
 
-                    <#if transaction.getAccount()?? && transaction.getAccount() == account>
-                        <option selected value="${account.getID()?c}">${account.getName()}</option>
-                        <#continue>
-                    </#if>
-
-                    <#if account == helpers.getCurrentAccountOrDefault()>
+                    <#if selectedAccount == account>
                         <option selected value="${account.getID()?c}">${account.getName()}</option>
                         <#continue>
                     </#if>
@@ -187,18 +191,9 @@
                     <option value="${account.getID()?c}">${account.getName()}</option>
                 </#list>
             </select>
-            <label for="transaction-account">${locale.getString("transaction.new.label.account")}</label>
+            <label for="${id}">${locale.getString("transaction.new.label.account")}</label>
         </div>
     </div>
-
-    <#-- pass selected account to JS in order to select current value for materialize select -->
-    <script>
-        <#if transaction.getCategory()??>
-            selectedCategory = "${transaction.getCategory().getID()?c}";
-        <#else>
-            selectedCategory = "${helpers.getIDOfNoCatgeory()?c}";
-        </#if>
-    </script>
 </#macro>
 
 <#macro transactionRepeating transaction currentDate>

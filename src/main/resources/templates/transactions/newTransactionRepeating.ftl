@@ -50,7 +50,11 @@
                         <@newTransactionMacros.transactionTags transaction/>
 
                         <#-- account -->
-                        <@newTransactionMacros.account accounts transaction/>
+                        <#if transaction.getAccount()??>
+                            <@newTransactionMacros.account accounts transaction.getAccount() "transaction-account" "account"/>
+                        <#else>
+                            <@newTransactionMacros.account accounts helpers.getCurrentAccountOrDefault() "transaction-account" "account"/>
+                        </#if>
 
                         <#-- repeating options -->
                         <@newTransactionMacros.transactionRepeating transaction currentDate/>
