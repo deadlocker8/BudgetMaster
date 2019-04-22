@@ -108,12 +108,17 @@ public class ImportService
 	private void importAccounts(Database database, AccountMatchList accountMatchList)
 	{
 		List<Transaction> alreadyUpdatedTransactions = new ArrayList<>();
+		List<Transaction> alreadyUpdatedTransferTransactions = new ArrayList<>();
 		for(AccountMatch accountMatch : accountMatchList.getAccountMatches())
 		{
 			List<Transaction> transactions = new ArrayList<>(database.getTransactions());
 			transactions.removeAll(alreadyUpdatedTransactions);
 
+			List<Transaction> transferTransactions = new ArrayList<>(database.getTransactions());
+			transferTransactions.removeAll(alreadyUpdatedTransferTransactions);
+
 			alreadyUpdatedTransactions.addAll(updateAccountsForTransactions(transactions, accountMatch.getAccountSource().getID(), accountMatch.getAccountDestination().getID()));
+			alreadyUpdatedTransferTransactions.addAll(updateTransferAccountsForTransactions(transferTransactions, accountMatch.getAccountSource().getID(), accountMatch.getAccountDestination().getID()));
 		}
 	}
 
@@ -131,6 +136,21 @@ public class ImportService
 			else if(transaction.getAccount().getID() == oldAccountID)
 			{
 				transaction.getAccount().setID(newAccountID);
+				updatedTransactions.add(transaction);
+			}
+		}
+
+		return updatedTransactions;
+	}
+
+	private List<Transaction> updateTransferAccountsForTransactions(List<Transaction> transactions, int oldAccountID, int newAccountID)
+	{
+		List<Transaction> updatedTransactions = new ArrayList<>();
+		for(Transaction transaction : transactions)
+		{
+			if(transaction.getTransferAccount() != null && transaction.getTransferAccount().getID() == oldAccountID)
+			{
+				transaction.getTransferAccount().setID(newAccountID);
 				updatedTransactions.add(transaction);
 			}
 		}

@@ -175,6 +175,29 @@
           "localizationKey": "repeating.end.key.afterXTimes"
         }
       }
+    },
+    {
+      "ID": 16,
+      "amount": -250,
+      "date": "2018-06-15",
+      "account": {
+        "ID": 3,
+        "name": "Second Account"
+      },
+      "category": {
+        "ID": 3,
+        "name": "0815",
+        "color": "#ffcc00",
+        "type": "CUSTOM"
+      },
+      "name": "Transfer",
+      "description": "",
+      "tags": [],
+      "transferAccount": {
+        "ID": 2,
+        "name": "Default",
+        "type": "CUSTOM"
+      }
     }
   ]
 }

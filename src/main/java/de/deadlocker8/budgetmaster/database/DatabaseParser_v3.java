@@ -86,6 +86,13 @@ public class DatabaseParser_v3
 			int accountID = currentTransaction.getAsJsonObject().get("account").getAsJsonObject().get("ID").getAsInt();
 			transaction.setAccount(getAccountByID(accountID));
 
+			JsonElement transferAccount = currentTransaction.getAsJsonObject().get("transferAccount");
+			if(transferAccount != null)
+			{
+				int transferAccountID = transferAccount.getAsJsonObject().get("ID").getAsInt();
+				transaction.setTransferAccount(getAccountByID(transferAccountID));
+			}
+
 			String date = currentTransaction.getAsJsonObject().get("date").getAsString();
 			DateTime parsedDate = DateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd"));
 			transaction.setDate(parsedDate);

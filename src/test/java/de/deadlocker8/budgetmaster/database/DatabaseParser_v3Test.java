@@ -118,7 +118,7 @@ public class DatabaseParser_v3Test
 			Category category3 = new Category("0815", "#ffcc00", CategoryType.CUSTOM);
 			category3.setID(3);
 
-			assertEquals(5, database.getTransactions().size());
+			assertEquals(6, database.getTransactions().size());
 
 			Transaction normalTransaction_1 = new Transaction();
 			normalTransaction_1.setAmount(35000);
@@ -176,6 +176,17 @@ public class DatabaseParser_v3Test
 			repeatingTransaction_2.setRepeatingOption(repeatingOption_2);
 			repeatingTransaction_2.setTags(new ArrayList<>());
 			assertTrue(database.getTransactions().contains(repeatingTransaction_2));
+
+			Transaction transferTransaction = new Transaction();
+			transferTransaction.setAmount(-250);
+			transferTransaction.setDate(DateTime.parse("2018-06-15", DateTimeFormat.forPattern("yyyy-MM-dd")));
+			transferTransaction.setName("Transfer");
+			transferTransaction.setDescription("");
+			transferTransaction.setAccount(account2);
+			transferTransaction.setTransferAccount(account1);
+			transferTransaction.setCategory(category3);
+			transferTransaction.setTags(new ArrayList<>());
+			assertTrue(database.getTransactions().contains(transferTransaction));
 		}
 		catch(IOException | URISyntaxException e)
 		{
