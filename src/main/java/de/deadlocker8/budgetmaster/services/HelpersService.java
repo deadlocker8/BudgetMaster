@@ -280,6 +280,11 @@ public class HelpersService
 		int sum = 0;
 		for(Transaction transaction : transactions)
 		{
+			if(transaction.isTransfer())
+			{
+				continue;
+			}
+
 			sum += transaction.getAmount();
 		}
 
