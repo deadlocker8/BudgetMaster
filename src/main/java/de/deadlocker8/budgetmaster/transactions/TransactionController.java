@@ -212,7 +212,6 @@ public class TransactionController extends BaseController
 					   @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
 					   @RequestParam(value = "isRepeating", required = false) boolean isRepeating,
 					   @RequestParam(value = "isPayment", required = false) boolean isPayment,
-					   @RequestParam(value = "enableRepeating", required = false) boolean enableRepeating,
 					   @RequestParam(value = "repeatingModifierNumber", required = false) int repeatingModifierNumber,
 					   @RequestParam(value = "repeatingModifierType", required = false) String repeatingModifierType,
 					   @RequestParam(value = "repeatingEndType", required = false) String repeatingEndType,
@@ -254,30 +253,27 @@ public class TransactionController extends BaseController
 			}
 		}
 
-		RepeatingOption repeatingOption = null;
-		if(enableRepeating)
+		RepeatingOption repeatingOption;
+		RepeatingModifierType type = RepeatingModifierType.getByLocalization(repeatingModifierType);
+		RepeatingModifier repeatingModifier = RepeatingModifier.fromModifierType(type, repeatingModifierNumber);
+
+		RepeatingEnd repeatingEnd = null;
+		RepeatingEndType endType = RepeatingEndType.getByLocalization(repeatingEndType);
+		switch(endType)
 		{
-			RepeatingModifierType type = RepeatingModifierType.getByLocalization(repeatingModifierType);
-			RepeatingModifier repeatingModifier = RepeatingModifier.fromModifierType(type, repeatingModifierNumber);
-
-			RepeatingEnd repeatingEnd = null;
-			RepeatingEndType endType = RepeatingEndType.getByLocalization(repeatingEndType);
-			switch(endType)
-			{
-				case NEVER:
-					repeatingEnd = new RepeatingEndNever();
-					break;
-				case AFTER_X_TIMES:
-					repeatingEnd = new RepeatingEndAfterXTimes(Integer.parseInt(repeatingEndValue));
-					break;
-				case DATE:
-					DateTime endDate = DateTime.parse(repeatingEndValue, DateTimeFormat.forPattern("dd.MM.yy").withLocale(getSettings().getLanguage().getLocale()));
-					repeatingEnd = new RepeatingEndDate(endDate);
-					break;
-			}
-
-			repeatingOption = new RepeatingOption(transaction.getDate(), repeatingModifier, repeatingEnd);
+			case NEVER:
+				repeatingEnd = new RepeatingEndNever();
+				break;
+			case AFTER_X_TIMES:
+				repeatingEnd = new RepeatingEndAfterXTimes(Integer.parseInt(repeatingEndValue));
+				break;
+			case DATE:
+				DateTime endDate = DateTime.parse(repeatingEndValue, DateTimeFormat.forPattern("dd.MM.yy").withLocale(getSettings().getLanguage().getLocale()));
+				repeatingEnd = new RepeatingEndDate(endDate);
+				break;
 		}
+
+		repeatingOption = new RepeatingOption(transaction.getDate(), repeatingModifier, repeatingEnd);
 		transaction.setRepeatingOption(repeatingOption);
 
 		if(bindingResult.hasErrors())

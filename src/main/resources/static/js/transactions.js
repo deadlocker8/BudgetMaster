@@ -124,22 +124,6 @@ $( document ).ready(function() {
         });
     }
 
-    $('#enableRepeating').change(function(){
-        if($(this).is(":checked"))
-        {
-            $('#transaction-repeating-modifier-row').show();
-            $('#transaction-repeating-end').show();
-        }
-        else
-        {
-            $('#transaction-repeating-modifier-row').hide();
-            $('#transaction-repeating-end').hide();
-        }
-    });
-
-    // fire change listener on page load
-    $('#enableRepeating').trigger("change");
-
     // prevent form submit on enter (otherwise tag functionality will be hard to use)
     $(document).on("keypress", 'form', function (e) {
         var code = e.keyCode || e.which;
@@ -284,44 +268,37 @@ function validateForm()
         }
     }
 
-    if($("#enableRepeating").length)
+    if($(transactionRepeatingModifierID).length)
     {
-        if(document.getElementById("enableRepeating").checked)
+        if(!validateNumber($(transactionRepeatingModifierID).val(), transactionRepeatingModifierID.substr(1), "hidden-" + transactionRepeatingModifierID.substr(1), numberValidationMessage))
         {
-            if(!validateNumber($(transactionRepeatingModifierID).val(), transactionRepeatingModifierID.substr(1), "hidden-" + transactionRepeatingModifierID.substr(1), numberValidationMessage))
+            return false;
+        }
+
+        // handle repeating end
+        var endNever = document.getElementById("repeating-end-never");
+        var endAfterXTimes = document.getElementById("repeating-end-after-x-times");
+        var endDate = document.getElementById("repeating-end-date");
+        var endInput = document.getElementById("hidden-transaction-repeating-end-value");
+
+        if(endNever.checked)
+        {
+            return true;
+        }
+
+        if(endAfterXTimes.checked)
+        {
+            if(!validateNumber($(transactionRepeatingEndAfterXTimesInputID).val(), transactionRepeatingEndAfterXTimesInputID.substr(1), null, numberValidationMessage))
             {
                 return false;
             }
 
-            // handle repeating end
-            var endNever = document.getElementById("repeating-end-never");
-            var endAfterXTimes = document.getElementById("repeating-end-after-x-times");
-            var endDate = document.getElementById("repeating-end-date");
-            var endInput = document.getElementById("hidden-transaction-repeating-end-value");
-
-            if(endNever.checked)
-            {
-                return true;
-            }
-
-            if(endAfterXTimes.checked)
-            {
-                if(!validateNumber($(transactionRepeatingEndAfterXTimesInputID).val(), transactionRepeatingEndAfterXTimesInputID.substr(1), null, numberValidationMessage))
-                {
-                    return false;
-                }
-
-                endInput.value = $(transactionRepeatingEndAfterXTimesInputID).val();
-            }
-
-            if(endDate.checked)
-            {
-                endInput.value = $("#transaction-repeating-end-date-input").val();
-            }
+            endInput.value = $(transactionRepeatingEndAfterXTimesInputID).val();
         }
-        else
+
+        if(endDate.checked)
         {
-            document.getElementById("hidden-" + transactionRepeatingModifierID.substr(1)).value = -1;
+            endInput.value = $("#transaction-repeating-end-date-input").val();
         }
     }
 
