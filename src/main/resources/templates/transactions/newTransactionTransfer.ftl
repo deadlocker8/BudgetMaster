@@ -50,16 +50,16 @@
 
                         <#-- account -->
                         <#if transaction.getAccount()??>
-                            <@newTransactionMacros.account accounts transaction.getAccount() "transaction-account" "account"/>
+                            <@newTransactionMacros.account accounts transaction.getAccount() "transaction-account" "account" locale.getString("transaction.new.label.account")/>
                         <#else>
-                            <@newTransactionMacros.account accounts helpers.getCurrentAccountOrDefault() "transaction-account" "account"/>
+                            <@newTransactionMacros.account accounts helpers.getCurrentAccountOrDefault() "transaction-account" "account" locale.getString("transaction.new.label.account")/>
                         </#if>
 
                         <#-- transfer account -->
                         <#if transaction.getTransferAccount()??>
-                            <@newTransactionMacros.account accounts transaction.getTransferAccount() "transaction-transfer-account" "transferAccount"/>
+                            <@newTransactionMacros.account accounts transaction.getTransferAccount() "transaction-transfer-account" "transferAccount" locale.getString("transaction.new.label.transfer.account")/>
                         <#else>
-                            <@newTransactionMacros.account accounts helpers.getCurrentAccountOrDefault() "transaction-transfer-account" "transferAccount"/>
+                            <@newTransactionMacros.account accounts helpers.getCurrentAccountOrDefault() "transaction-transfer-account" "transferAccount" locale.getString("transaction.new.label.transfer.account")/>
                         </#if>
 
                         <br>

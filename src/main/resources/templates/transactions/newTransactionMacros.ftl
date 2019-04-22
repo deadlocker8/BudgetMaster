@@ -174,7 +174,7 @@
     </script>
 </#macro>
 
-<#macro account accounts selectedAccount id name>
+<#macro account accounts selectedAccount id name label>
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
             <select id="${id}" name="${name}" <@validation.validation "account"/>>
@@ -191,7 +191,7 @@
                     <option value="${account.getID()?c}">${account.getName()}</option>
                 </#list>
             </select>
-            <label for="${id}">${locale.getString("transaction.new.label.account")}</label>
+            <label for="${id}">${label}</label>
         </div>
     </div>
 </#macro>
