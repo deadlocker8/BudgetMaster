@@ -19,8 +19,7 @@ public class TransactionSpecifications
 															  final Boolean isRepeating,
 															  final List<Integer> categoryIDs,
 															  final List<Integer> tagIDs,
-															  final String name,
-															  final boolean includeTransferBackReference)
+															  final String name)
 	{
 		return (transaction, query, builder) -> {
 			List<Predicate> predicates = new ArrayList<>();
@@ -57,16 +56,11 @@ public class TransactionSpecifications
 
 			if(isTransfer)
 			{
-				if(includeTransferBackReference)
+				transferBackReference = builder.equal(transaction.get(Transaction_.transferAccount), account);
+
+				if(!isIncome && !isExpenditure)
 				{
-					transferBackReference = builder.equal(transaction.get(Transaction_.transferAccount), account);
-				}
-				else
-				{
-					if(!isIncome && !isExpenditure)
-					{
-						predicates.add(builder.and(builder.isNotNull(transaction.get(Transaction_.transferAccount))));
-					}
+					predicates.add(builder.and(builder.isNotNull(transaction.get(Transaction_.transferAccount))));
 				}
 			}
 			else
