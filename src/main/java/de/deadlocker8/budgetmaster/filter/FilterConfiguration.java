@@ -7,22 +7,24 @@ public class FilterConfiguration
 {
 	private boolean includeIncome;
 	private boolean includeExpenditure;
+	private boolean includeTransfer;
 	private boolean includeNotRepeating;
 	private boolean includeRepeating;
 	private List<FilterObject> filterCategories;
 	private List<FilterObject> filterTags;
 	private String name;
 
-	public static final FilterConfiguration DEFAULT = new FilterConfiguration(true, true, true, true, null, null, "");
+	public static final FilterConfiguration DEFAULT = new FilterConfiguration(true, true, true, true, true, null, null, "");
 
 	public FilterConfiguration()
 	{
 	}
 
-	public FilterConfiguration(boolean includeIncome, boolean includeExpenditure, boolean includeNotRepeating, boolean includeRepeating, List<FilterObject> filterCategories, List<FilterObject> filterTags, String name)
+	public FilterConfiguration(boolean includeIncome, boolean includeExpenditure, boolean includeTransfer, boolean includeNotRepeating, boolean includeRepeating, List<FilterObject> filterCategories, List<FilterObject> filterTags, String name)
 	{
 		this.includeIncome = includeIncome;
 		this.includeExpenditure = includeExpenditure;
+		this.includeTransfer = includeTransfer;
 		this.includeNotRepeating = includeNotRepeating;
 		this.includeRepeating = includeRepeating;
 		this.filterCategories = filterCategories;
@@ -48,6 +50,16 @@ public class FilterConfiguration
 	public void setIncludeExpenditure(boolean includeExpenditure)
 	{
 		this.includeExpenditure = includeExpenditure;
+	}
+
+	public boolean isIncludeTransfer()
+	{
+		return includeTransfer;
+	}
+
+	public void setIncludeTransfer(boolean includeTransfer)
+	{
+		this.includeTransfer = includeTransfer;
 	}
 
 	public boolean isIncludeNotRepeating()
@@ -156,6 +168,11 @@ public class FilterConfiguration
 			return true;
 		}
 
+		if(defaultConfiguration.isIncludeTransfer() != isIncludeTransfer())
+		{
+			return true;
+		}
+
 		if(defaultConfiguration.isIncludeNotRepeating() != isIncludeNotRepeating())
 		{
 			return true;
@@ -197,6 +214,7 @@ public class FilterConfiguration
 				"includeIncome=" + includeIncome +
 				", includeExpenditure=" + includeExpenditure +
 				", includeNotRepeating=" + includeNotRepeating +
+				", includeTransfer=" + includeTransfer +
 				", includeRepeating=" + includeRepeating +
 				", filterCategories=" + filterCategories +
 				", filterTags=" + filterTags +

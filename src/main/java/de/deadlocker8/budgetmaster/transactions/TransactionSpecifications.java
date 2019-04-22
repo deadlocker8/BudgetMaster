@@ -15,7 +15,7 @@ public class TransactionSpecifications
 {
 	public static Specification<Transaction> withDynamicQuery(final DateTime startDate, final DateTime endDate,
 															  Account account,
-															  final boolean isIncome, boolean isExpenditure,
+															  final boolean isIncome, boolean isExpenditure, boolean isTransfer,
 															  final Boolean isRepeating,
 															  final List<Integer> categoryIDs,
 															  final List<Integer> tagIDs,
@@ -50,6 +50,18 @@ public class TransactionSpecifications
 				{
 					predicates.add(builder.and(builder.isNull(transaction.get(Transaction_.repeatingOption))));
 				}
+			}
+
+			if(isTransfer)
+			{
+				if(!isIncome && !isExpenditure)
+				{
+					predicates.add(builder.and(builder.isNotNull(transaction.get(Transaction_.transferAccount))));
+				}
+			}
+			else
+			{
+				predicates.add(builder.and(builder.isNull(transaction.get(Transaction_.transferAccount))));
 			}
 
 			if(categoryIDs != null)

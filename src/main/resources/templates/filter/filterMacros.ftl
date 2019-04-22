@@ -64,16 +64,22 @@
                                 </div>
                                 <div class="collapsible-body">
                                     <div class="row no-margin">
-                                        <div class="col s6 m6 l6">
+                                        <div class="col s12 m4 l4">
                                             <label>
                                                 <input type="checkbox" name="includeIncome" <#if filterConfiguration.isIncludeIncome()>checked="checked"</#if>>
                                                 <span class="text-color">${locale.getString('filter.type.income')}</span>
                                             </label>
                                         </div>
-                                        <div class="col s6 m6 l6">
+                                        <div class="col s12 m4 l4">
                                             <label>
                                                 <input type="checkbox" name="includeExpenditure" <#if filterConfiguration.isIncludeExpenditure()>checked="checked"</#if>>
                                                 <span class="text-color">${locale.getString('filter.type.expenditure')}</span>
+                                            </label>
+                                        </div>
+                                        <div class="col s12 m4 l4">
+                                            <label>
+                                                <input type="checkbox" name="includeTransfer" <#if filterConfiguration.isIncludeTransfer()>checked="checked"</#if>>
+                                                <span class="text-color">${locale.getString('filter.type.transfer')}</span>
                                             </label>
                                         </div>
                                     </div>

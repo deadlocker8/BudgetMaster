@@ -2,11 +2,11 @@ package de.deadlocker8.budgetmaster.transactions;
 
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
-import de.deadlocker8.budgetmaster.categories.CategoryType;
-import de.deadlocker8.budgetmaster.services.Resetable;
-import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
 import de.deadlocker8.budgetmaster.categories.CategoryRepository;
+import de.deadlocker8.budgetmaster.categories.CategoryType;
+import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOptionRepository;
+import de.deadlocker8.budgetmaster.services.Resetable;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
 import org.joda.time.DateTime;
@@ -95,11 +95,11 @@ public class TransactionService implements Resetable
 
 		if(account.getType().equals(AccountType.ALL))
 		{
-			Specification spec = TransactionSpecifications.withDynamicQuery(startDate, endDate, null, filterConfiguration.isIncludeIncome(), filterConfiguration.isIncludeExpenditure(), filterConfiguration.isIncludeRepeatingAndNotRepeating(), filterConfiguration.getIncludedCategoryIDs(), filterConfiguration.getIncludedTagIDs(), filterConfiguration.getName());
+			Specification spec = TransactionSpecifications.withDynamicQuery(startDate, endDate, null, filterConfiguration.isIncludeIncome(), filterConfiguration.isIncludeExpenditure(), filterConfiguration.isIncludeTransfer(), filterConfiguration.isIncludeRepeatingAndNotRepeating(), filterConfiguration.getIncludedCategoryIDs(), filterConfiguration.getIncludedTagIDs(), filterConfiguration.getName());
 			return transactionRepository.findAll(spec);
 		}
 
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, endDate, account, filterConfiguration.isIncludeIncome(), filterConfiguration.isIncludeExpenditure(), filterConfiguration.isIncludeRepeatingAndNotRepeating(), filterConfiguration.getIncludedCategoryIDs(), filterConfiguration.getIncludedTagIDs(), filterConfiguration.getName());
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, endDate, account, filterConfiguration.isIncludeIncome(), filterConfiguration.isIncludeExpenditure(), filterConfiguration.isIncludeTransfer(), filterConfiguration.isIncludeRepeatingAndNotRepeating(), filterConfiguration.getIncludedCategoryIDs(), filterConfiguration.getIncludedTagIDs(), filterConfiguration.getName());
 		return transactionRepository.findAll(spec);
 	}
 
