@@ -143,7 +143,6 @@ public class TransactionController extends BaseController
 	@RequestMapping(value = "/transactions/newTransaction/normal", method = RequestMethod.POST)
 	public String post(Model model, @CookieValue("currentDate") String cookieDate,
 					   @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
-					   @RequestParam(value = "isRepeating", required = false) boolean isRepeating,
 					   @RequestParam(value = "isPayment", required = false) boolean isPayment)
 	{
 		DateTime date = helpers.getDateTimeFromCookie(cookieDate);

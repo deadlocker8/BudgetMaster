@@ -26,7 +26,6 @@
                     <form name="NewTransaction" action="<@s.url '/transactions/newTransaction/normal'/>" method="post" onsubmit="return validateForm()">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="ID" value="<#if transaction.getID()??>${transaction.getID()?c}</#if>">
-                        <input type="hidden" name="isRepeating" value="${transaction.isRepeating()?c}">
 
                         <#-- isPayment switch -->
                         <@newTransactionMacros.isExpenditureSwitch transaction/>
