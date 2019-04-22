@@ -20,6 +20,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 
 	List<Transaction> findAllByTagsContaining(Tag tag);
 
-	@Query(value = "SELECT SUM(t.amount) FROM `transaction` as t WHERE t.account_id = ?1 AND t.date BETWEEN ?2 AND ?3", nativeQuery = true)
+	@Query(value = "SELECT SUM(t.amount) FROM `transaction` as t WHERE t.account_id = ?1 AND t.transfer_account_id IS NULL AND t.date BETWEEN ?2 AND ?3", nativeQuery = true)
 	Integer getRest(int accountID, String startDate, String endDate);
 }
