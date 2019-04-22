@@ -55,6 +55,13 @@
                             <@newTransactionMacros.account accounts helpers.getCurrentAccountOrDefault() "transaction-account" "account"/>
                         </#if>
 
+                        <#-- transfer account -->
+                        <#if transaction.getTransferAccount()??>
+                            <@newTransactionMacros.account accounts transaction.getTransferAccount() "transaction-transfer-account" "transferAccount"/>
+                        <#else>
+                            <@newTransactionMacros.account accounts helpers.getCurrentAccountOrDefault() "transaction-transfer-account" "transferAccount"/>
+                        </#if>
+
                         <br>
                         <#-- buttons -->
                         <@newTransactionMacros.buttons/>

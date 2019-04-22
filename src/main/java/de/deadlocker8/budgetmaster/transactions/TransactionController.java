@@ -128,9 +128,9 @@ public class TransactionController extends BaseController
 	}
 
 	@RequestMapping(value = "/transactions/newTransaction/normal", method = RequestMethod.POST)
-	public String post(Model model, @CookieValue("currentDate") String cookieDate,
-					   @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
-					   @RequestParam(value = "isPayment", required = false) boolean isPayment)
+	public String postNormal(Model model, @CookieValue("currentDate") String cookieDate,
+							 @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
+							 @RequestParam(value = "isPayment", required = false) boolean isPayment)
 	{
 		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
 
@@ -147,14 +147,14 @@ public class TransactionController extends BaseController
 
 	@SuppressWarnings("ConstantConditions")
 	@RequestMapping(value = "/transactions/newTransaction/repeating", method = RequestMethod.POST)
-	public String post(Model model, @CookieValue("currentDate") String cookieDate,
-					   @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
-					   @RequestParam(value = "isRepeating", required = false) boolean isRepeating,
-					   @RequestParam(value = "isPayment", required = false) boolean isPayment,
-					   @RequestParam(value = "repeatingModifierNumber", required = false) int repeatingModifierNumber,
-					   @RequestParam(value = "repeatingModifierType", required = false) String repeatingModifierType,
-					   @RequestParam(value = "repeatingEndType", required = false) String repeatingEndType,
-					   @RequestParam(value = "repeatingEndValue", required = false) String repeatingEndValue)
+	public String postRepeating(Model model, @CookieValue("currentDate") String cookieDate,
+								@ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
+								@RequestParam(value = "isRepeating", required = false) boolean isRepeating,
+								@RequestParam(value = "isPayment", required = false) boolean isPayment,
+								@RequestParam(value = "repeatingModifierNumber", required = false) int repeatingModifierNumber,
+								@RequestParam(value = "repeatingModifierType", required = false) String repeatingModifierType,
+								@RequestParam(value = "repeatingEndType", required = false) String repeatingEndType,
+								@RequestParam(value = "repeatingEndValue", required = false) String repeatingEndValue)
 	{
 		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
 
@@ -194,6 +194,24 @@ public class TransactionController extends BaseController
 		transaction.setRepeatingOption(repeatingOption);
 
 		return handleRedirect(model, transaction, bindingResult, date, "transactions/newTransactionRepeating");
+	}
+
+	@RequestMapping(value = "/transactions/newTransaction/transfer", method = RequestMethod.POST)
+	public String postTransfer(Model model, @CookieValue("currentDate") String cookieDate,
+							   @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
+							   @RequestParam(value = "isPayment", required = false) boolean isPayment)
+	{
+		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
+
+		TransactionValidator transactionValidator = new TransactionValidator();
+		transactionValidator.validate(transaction, bindingResult);
+
+		handleAmount(transaction, isPayment);
+		handleTags(transaction);
+
+		transaction.setRepeatingOption(null);
+
+		return handleRedirect(model, transaction, bindingResult, date, "transactions/newTransactionTransfer");
 	}
 
 	private void handleAmount(Transaction transaction, boolean isPayment)
