@@ -17,7 +17,8 @@
             <div class="card main-card background-color">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="headline"><#if transaction.getID()??>${locale.getString("title.transaction.edit")}<#else>${locale.getString("title.transaction.new", locale.getString("title.transaction.new.repeating.long"))}</#if></div>
+                        <#assign title = locale.getString("title.transaction.new.repeating.long")/>
+                        <div class="headline"><#if transaction.getID()??>${locale.getString("title.transaction.edit", title)}<#else>${locale.getString("title.transaction.new", title)}</#if></div>
                     </div>
                 </div>
                 <div class="container">

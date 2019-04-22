@@ -313,6 +313,11 @@ public class TransactionController extends BaseController
 		model.addAttribute("accounts", accountService.getAllAccountsAsc());
 		model.addAttribute("transaction", transaction);
 		model.addAttribute("settings", settingsRepository.findOne(0));
+
+		if(transaction.isRepeating())
+		{
+			return "transactions/newTransactionRepeating";
+		}
 		return "transactions/newTransactionNormal";
 	}
 
