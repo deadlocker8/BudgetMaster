@@ -1,21 +1,21 @@
 package de.deadlocker8.budgetmaster.transactions;
 
+import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.categories.CategoryRepository;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.controller.BaseController;
-import de.deadlocker8.budgetmaster.repeating.RepeatingOptionRepository;
-import de.deadlocker8.budgetmaster.settings.Settings;
-import de.deadlocker8.budgetmaster.settings.SettingsRepository;
-import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
+import de.deadlocker8.budgetmaster.filter.FilterHelpersService;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
+import de.deadlocker8.budgetmaster.repeating.RepeatingOptionRepository;
 import de.deadlocker8.budgetmaster.repeating.RepeatingTransactionUpdater;
 import de.deadlocker8.budgetmaster.repeating.endoption.*;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifier;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierType;
-import de.deadlocker8.budgetmaster.accounts.AccountService;
-import de.deadlocker8.budgetmaster.filter.FilterHelpersService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
+import de.deadlocker8.budgetmaster.settings.Settings;
+import de.deadlocker8.budgetmaster.settings.SettingsRepository;
+import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.TagRepository;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import org.joda.time.DateTime;
@@ -72,20 +72,7 @@ public class TransactionController extends BaseController
 		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
 		repeatingTransactionUpdater.updateRepeatingTransactions(date.dayOfMonth().withMaximumValue());
 
-		FilterConfiguration filterConfiguration = filterHelpers.getFilterConfiguration(request);
-
-		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear(), getSettings().isRestActivated(), filterConfiguration);
-		int incomeSum = helpers.getIncomeSumForTransactionList(transactions);
-		int paymentSum = helpers.getExpenditureSumForTransactionList(transactions);
-		int rest = incomeSum + paymentSum;
-
-		model.addAttribute("transactions", transactions);
-		model.addAttribute("incomeSum", incomeSum);
-		model.addAttribute("paymentSum", paymentSum);
-		model.addAttribute("currentDate", date);
-		model.addAttribute("rest", rest);
-		model.addAttribute("filterConfiguration", filterConfiguration);
-		model.addAttribute("settings", settingsRepository.findOne(0));
+		prepareModelTransactions(request, model, date);
 
 		return "transactions/transactions";
 	}
@@ -99,6 +86,14 @@ public class TransactionController extends BaseController
 		}
 
 		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
+		prepareModelTransactions(request, model, date);
+		model.addAttribute("currentTransaction", transactionRepository.getOne(ID));
+
+		return "transactions/transactions";
+	}
+
+	private void prepareModelTransactions(HttpServletRequest request, Model model, DateTime date)
+	{
 		FilterConfiguration filterConfiguration = filterHelpers.getFilterConfiguration(request);
 
 		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear(), getSettings().isRestActivated(), filterConfiguration);
@@ -110,16 +105,13 @@ public class TransactionController extends BaseController
 		model.addAttribute("incomeSum", incomeSum);
 		model.addAttribute("paymentSum", paymentSum);
 		model.addAttribute("currentDate", date);
-		model.addAttribute("currentTransaction", transactionRepository.getOne(ID));
 		model.addAttribute("rest", rest);
 		model.addAttribute("filterConfiguration", filterConfiguration);
 		model.addAttribute("settings", settingsRepository.findOne(0));
-
-		return "transactions/transactions";
 	}
 
 	@RequestMapping("/transactions/{ID}/delete")
-	public String deleteTransaction(Model model, @PathVariable("ID") Integer ID)
+	public String deleteTransaction(@PathVariable("ID") Integer ID)
 	{
 		transactionService.deleteTransaction(ID);
 		return "redirect:/transactions";
@@ -131,15 +123,10 @@ public class TransactionController extends BaseController
 		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
 		Transaction emptyTransaction = new Transaction();
 		emptyTransaction.setCategory(categoryRepository.findByType(CategoryType.NONE));
-		model.addAttribute("currentDate", date);
-		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
-		model.addAttribute("accounts", accountService.getAllAccountsAsc());
-		model.addAttribute("transaction", emptyTransaction);
-		model.addAttribute("settings", settingsRepository.findOne(0));
+		prepareModelNewOrEdit(model, date, emptyTransaction);
 		return "transactions/newTransaction" + StringUtils.capitalize(type);
 	}
 
-	@SuppressWarnings("ConstantConditions")
 	@RequestMapping(value = "/transactions/newTransaction/normal", method = RequestMethod.POST)
 	public String post(Model model, @CookieValue("currentDate") String cookieDate,
 					   @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
@@ -150,46 +137,12 @@ public class TransactionController extends BaseController
 		TransactionValidator transactionValidator = new TransactionValidator();
 		transactionValidator.validate(transaction, bindingResult);
 
-		if(transaction.getAmount() == null)
-		{
-			transaction.setAmount(0);
-		}
-
-		if(isPayment)
-		{
-			transaction.setAmount(-Math.abs(transaction.getAmount()));
-		}
-		else
-		{
-			transaction.setAmount(Math.abs(transaction.getAmount()));
-		}
-
-		List<Tag> tags = transaction.getTags();
-		if(tags != null)
-		{
-			transaction.setTags(new ArrayList<>());
-			for(Tag currentTag : tags)
-			{
-				//noinspection ConstantConditions
-				transaction = addTagForTransaction(currentTag.getName(), transaction);
-			}
-		}
+		handleAmount(transaction, isPayment);
+		handleTags(transaction);
 
 		transaction.setRepeatingOption(null);
 
-		if(bindingResult.hasErrors())
-		{
-			model.addAttribute("error", bindingResult);
-			model.addAttribute("currentDate", date);
-			model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
-			model.addAttribute("accounts", accountService.getAllAccountsAsc());
-			model.addAttribute("transaction", transaction);
-			model.addAttribute("settings", settingsRepository.findOne(0));
-			return "transactions/newTransactionNormal";
-		}
-
-		transactionRepository.save(transaction);
-		return "redirect:/transactions";
+		return handleRedirect(model, transaction, bindingResult, date, "transactions/newTransactionNormal");
 	}
 
 	@SuppressWarnings("ConstantConditions")
@@ -214,30 +167,8 @@ public class TransactionController extends BaseController
 		TransactionValidator transactionValidator = new TransactionValidator();
 		transactionValidator.validate(transaction, bindingResult);
 
-		if(transaction.getAmount() == null)
-		{
-			transaction.setAmount(0);
-		}
-
-		if(isPayment)
-		{
-			transaction.setAmount(-Math.abs(transaction.getAmount()));
-		}
-		else
-		{
-			transaction.setAmount(Math.abs(transaction.getAmount()));
-		}
-
-		List<Tag> tags = transaction.getTags();
-		if(tags != null)
-		{
-			transaction.setTags(new ArrayList<>());
-			for(Tag currentTag : tags)
-			{
-				//noinspection ConstantConditions
-				transaction = addTagForTransaction(currentTag.getName(), transaction);
-			}
-		}
+		handleAmount(transaction, isPayment);
+		handleTags(transaction);
 
 		RepeatingOption repeatingOption;
 		RepeatingModifierType type = RepeatingModifierType.getByLocalization(repeatingModifierType);
@@ -262,21 +193,52 @@ public class TransactionController extends BaseController
 		repeatingOption = new RepeatingOption(transaction.getDate(), repeatingModifier, repeatingEnd);
 		transaction.setRepeatingOption(repeatingOption);
 
+		return handleRedirect(model, transaction, bindingResult, date, "transactions/newTransactionRepeating");
+	}
+
+	private void handleAmount(Transaction transaction, boolean isPayment)
+	{
+		if(transaction.getAmount() == null)
+		{
+			transaction.setAmount(0);
+		}
+
+		if(isPayment)
+		{
+			transaction.setAmount(-Math.abs(transaction.getAmount()));
+		}
+		else
+		{
+			transaction.setAmount(Math.abs(transaction.getAmount()));
+		}
+	}
+
+	private void handleTags(Transaction transaction)
+	{
+		List<Tag> tags = transaction.getTags();
+		if(tags != null)
+		{
+			transaction.setTags(new ArrayList<>());
+			for(Tag currentTag : tags)
+			{
+				//noinspection ConstantConditions
+				transaction = addTagForTransaction(currentTag.getName(), transaction);
+			}
+		}
+	}
+
+	private String handleRedirect(Model model, @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult, DateTime date, String url)
+	{
 		if(bindingResult.hasErrors())
 		{
 			model.addAttribute("error", bindingResult);
-			model.addAttribute("currentDate", date);
-			model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
-			model.addAttribute("accounts", accountService.getAllAccountsAsc());
-			model.addAttribute("transaction", transaction);
-			model.addAttribute("settings", settingsRepository.findOne(0));
-			return "transactions/newTransactionNormal";
+			prepareModelNewOrEdit(model, date, transaction);
+			return url;
 		}
 
 		transactionRepository.save(transaction);
 		return "redirect:/transactions";
 	}
-
 
 	@RequestMapping("/transactions/{ID}/edit")
 	public String editTransaction(Model model, @CookieValue("currentDate") String cookieDate, @PathVariable("ID") Integer ID)
@@ -294,17 +256,22 @@ public class TransactionController extends BaseController
 		}
 
 		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
-		model.addAttribute("currentDate", date);
-		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
-		model.addAttribute("accounts", accountService.getAllAccountsAsc());
-		model.addAttribute("transaction", transaction);
-		model.addAttribute("settings", settingsRepository.findOne(0));
+		prepareModelNewOrEdit(model, date, transaction);
 
 		if(transaction.isRepeating())
 		{
 			return "transactions/newTransactionRepeating";
 		}
 		return "transactions/newTransactionNormal";
+	}
+
+	private void prepareModelNewOrEdit(Model model, DateTime date, Transaction emptyTransaction)
+	{
+		model.addAttribute("currentDate", date);
+		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
+		model.addAttribute("accounts", accountService.getAllAccountsAsc());
+		model.addAttribute("transaction", emptyTransaction);
+		model.addAttribute("settings", settingsRepository.findOne(0));
 	}
 
 	private Settings getSettings()
@@ -326,12 +293,5 @@ public class TransactionController extends BaseController
 		}
 
 		return transaction;
-	}
-
-	private void removeTagForTransaction(String name, Transaction transaction)
-	{
-		Tag currentTag = tagRepository.findByName(name);
-		currentTag.getReferringTransactions().remove(transaction);
-		tagRepository.save(currentTag);
 	}
 }

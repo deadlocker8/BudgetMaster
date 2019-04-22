@@ -32,13 +32,19 @@ $( document ).ready(function() {
 
             onSelect: function()
             {
-                pickerEndDate.destroy();
-                pickerEndDate = createDatePickerEnd(this.date, pickerEndDate.date);
+                if(typeof pickerEndDate !== "undefined")
+                {
+                    pickerEndDate.destroy();
+                    pickerEndDate = createDatePickerEnd(this.date, pickerEndDate.date);
+                }
             }
         });
 
         // picker end date
-        var pickerEndDate = createDatePickerEnd(pickerStartDate.date, endDate);
+        if(typeof endDate !== "undefined")
+        {
+            var pickerEndDate = createDatePickerEnd(pickerStartDate.date, endDate);
+        }
     }
 
     function createDatePickerEnd(minDate, selectedDate)
