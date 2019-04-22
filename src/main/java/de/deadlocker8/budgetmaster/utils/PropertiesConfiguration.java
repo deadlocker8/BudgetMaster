@@ -12,7 +12,7 @@ import java.nio.file.Path;
 public class PropertiesConfiguration
 {
 	@Bean
-	public PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer()
+	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer()
 	{
 		PropertySourcesPlaceholderConfigurer properties = new PropertySourcesPlaceholderConfigurer();
 		Path settingsPath = Main.getApplicationSupportFolder().resolve("settings.properties");
