@@ -19,11 +19,14 @@ public class TransactionSpecifications
 															  final Boolean isRepeating,
 															  final List<Integer> categoryIDs,
 															  final List<Integer> tagIDs,
-															  final String name)
+															  final String name,
+															  final boolean includeTransferBackReference)
 	{
 		return (transaction, query, builder) -> {
 			List<Predicate> predicates = new ArrayList<>();
 			predicates.add(builder.and(builder.between(transaction.get(Transaction_.date), startDate, endDate)));
+
+			Predicate transferBackReference = null;
 
 			if(account != null)
 			{
@@ -54,9 +57,16 @@ public class TransactionSpecifications
 
 			if(isTransfer)
 			{
-				if(!isIncome && !isExpenditure)
+				if(includeTransferBackReference)
 				{
-					predicates.add(builder.and(builder.isNotNull(transaction.get(Transaction_.transferAccount))));
+					transferBackReference = builder.equal(transaction.get(Transaction_.transferAccount), account);
+				}
+				else
+				{
+					if(!isIncome && !isExpenditure)
+					{
+						predicates.add(builder.and(builder.isNotNull(transaction.get(Transaction_.transferAccount))));
+					}
 				}
 			}
 			else
@@ -90,7 +100,12 @@ public class TransactionSpecifications
 
 			Predicate[] predicatesArray = new Predicate[predicates.size()];
 
-			return builder.and(predicates.toArray(predicatesArray));
+			if(transferBackReference == null)
+			{
+				return builder.and(predicates.toArray(predicatesArray));
+			}
+
+			return builder.or(builder.and(predicates.toArray(predicatesArray)), transferBackReference);
 		};
 	}
 }

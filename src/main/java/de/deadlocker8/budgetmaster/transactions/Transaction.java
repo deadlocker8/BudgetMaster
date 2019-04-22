@@ -189,7 +189,7 @@ public class Transaction
 	@Override
 	public String toString()
 	{
-		return "Transaction{" +
+		String value = "Transaction{" +
 				"ID=" + ID +
 				", amount=" + amount +
 				", date=" + date +
@@ -198,9 +198,18 @@ public class Transaction
 				", name='" + name + '\'' +
 				", description='" + description + '\'' +
 				", tags=" + tags +
-				", repeatingOption=" + repeatingOption +
-				", transferAccount=" + transferAccount +
-				'}';
+				", repeatingOption=" + repeatingOption;
+		if(transferAccount == null)
+		{
+			value += ", transferAccount=null";
+		}
+		else
+		{
+			value += ", transferAccount=Account[ID=" + transferAccount.getID() + ", name=" + transferAccount.getName() + "]";
+		}
+
+		value += '}';
+		return value;
 	}
 
 	@Override
