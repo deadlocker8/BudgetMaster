@@ -49,6 +49,30 @@
     <a class="waves-effect waves-light btn ${color} buttonExpenditure"><i class="material-icons left">file_upload</i>${locale.getString("title.expenditure")}</a>
 </#macro>
 
+<#macro transactionName transaction>
+    <div class="row">
+        <div class="input-field col s12 m12 l8 offset-l2">
+            <input id="transaction-name" type="text" name="name" <@validation.validation "name"/> value="<#if transaction.getName()??>${transaction.getName()}</#if>">
+            <label for="transaction-name">${locale.getString("transaction.new.label.name")}</label>
+        </div>
+    </div>
+</#macro>
+
+<#macro transactionAmount transaction>
+    <div class="row">
+        <div class="input-field col s12 m12 l8 offset-l2">
+            <input id="transaction-amount" type="text" <@validation.validation "amount"/> value="<#if transaction.getAmount()??>${helpers.getAmountString(transaction.getAmount())}</#if>">
+            <label for="transaction-amount">${locale.getString("transaction.new.label.amount")}</label>
+        </div>
+        <input type="hidden" id="hidden-transaction-amount" name="amount" value="<#if transaction.getAmount()??>${transaction.getAmount()}</#if>">
+    </div>
+
+    <script>
+        amountValidationMessage = "${locale.getString("warning.transaction.amount")}";
+        numberValidationMessage = "${locale.getString("warning.transaction.number")}";
+    </script>
+</#macro>
+
 <#import "../categories/categoriesFunctions.ftl" as categoriesFunctions>
 <#macro categorySelect categories selectedCategory inputClasses labelText>
     <div class="row">
@@ -83,6 +107,64 @@
     </div>
 </#macro>
 
+<#macro transactionStartDate transaction currentDate>
+    <div class="row">
+        <div class="input-field col s12 m12 l8 offset-l2">
+            <#if transaction.getDate()??>
+                <#assign startDate = helpers.getLongDateString(transaction.getDate())/>
+            <#else>
+                <#assign startDate = helpers.getLongDateString(currentDate)/>
+            </#if>
+
+            <input id="transaction-datepicker" type="text" class="datepicker" name="date" value="${startDate}">
+            <label for="transaction-datepicker">${locale.getString("transaction.new.label.date")}</label>
+        </div>
+    </div>
+
+     <script>
+        startDate = "${startDate}".split(".");
+        startDate = new Date(startDate[2], startDate[1]-1, startDate[0]);
+    </script>
+</#macro>
+
+<#macro transactionDescription transaction>
+    <div class="row">
+        <div class="input-field col s12 m12 l8 offset-l2">
+            <textarea id="transaction-description" class="materialize-textarea" name="description" <@validation.validation "description"/>><#if transaction.getDescription()??>${transaction.getDescription()}</#if></textarea>
+            <label for="transaction-description">${locale.getString("transaction.new.label.description")}</label>
+        </div>
+    </div>
+</#macro>
+
+<#macro transactionTags transaction>
+    <div class="row">
+        <div class="col s12 m12 l8 offset-l2">
+            <label class="chips-label" for="transaction-chips">${locale.getString("transaction.new.label.tags")}</label>
+            <div id="transaction-chips" class="chips chips-placeholder chips-autocomplete"></div>
+        </div>
+        <div id="hidden-transaction-tags"></div>
+        <script>
+            var initialTags = [
+                <#if transaction.getTags()??>
+                <#list transaction.getTags() as tag>
+                {tag: '${tag.getName()}'},
+                </#list>
+                </#if>
+            ];
+        </script>
+    </div>
+
+    <!-- Tag autocomplete -->
+    <script>
+        tagsPlaceholder = "${locale.getString("tagfield.placeholder")}";
+        tagAutoComplete = {
+            <#list helpers.getAllTags() as tag>
+            '${tag.getName()}': null,
+            </#list>
+        }
+    </script>
+</#macro>
+
 <#macro account accounts transaction>
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
@@ -108,6 +190,33 @@
             <label for="transaction-account">${locale.getString("transaction.new.label.account")}</label>
         </div>
     </div>
+
+    <#-- pass selected account to JS in order to select current value for materialize select -->
+    <script>
+        <#if transaction.getCategory()??>
+            selectedCategory = "${transaction.getCategory().getID()?c}";
+        <#else>
+            selectedCategory = "${helpers.getIDOfNoCatgeory()?c}";
+        </#if>
+    </script>
+</#macro>
+
+<#macro transactionRepeating transaction currentDate>
+    <div class="row">
+        <div class="col s12 m12 l8 offset-l2">
+            <div class="switch">
+                <label>
+                    <input type="checkbox" id="enableRepeating" name="enableRepeating" <#if transaction.getRepeatingOption()??>checked</#if>>
+                    <span class="lever"></span>
+                    ${locale.getString("transaction.new.label.repeating")}
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <@newTransactionMacros.repeatingModifier transaction/>
+
+    <@newTransactionMacros.repeatingEndOption transaction currentDate/>
 </#macro>
 
 <#macro repeatingModifier transaction>
@@ -199,6 +308,11 @@
     <#else>
         <#global endDate = helpers.getLongDateString(currentDate)/>
     </#if>
+
+    <script>
+        endDate = "${endDate}".split(".");
+        endDate = new Date(endDate[2], endDate[1]-1, endDate[0]);
+    </script>
 
     <div class="row valign-wrapper">
         <div class="col s1">
