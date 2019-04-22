@@ -108,8 +108,8 @@
 
     <#-- pass selected category to JS in order to select current value for materialize select -->
     <script>
-        <#if transaction.getCategory()??>
-        selectedCategory = "${transaction.getCategory().getID()?c}";
+        <#if selectedCategory??>
+        selectedCategory = "${selectedCategory.getID()?c}";
         <#else>
         selectedCategory = "${helpers.getIDOfNoCatgeory()?c}";
         </#if>
