@@ -23,6 +23,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -124,8 +125,8 @@ public class TransactionController extends BaseController
 		return "redirect:/transactions";
 	}
 
-	@RequestMapping("/transactions/newTransaction/normal")
-	public String newTransactionNormal(Model model, @CookieValue("currentDate") String cookieDate)
+	@RequestMapping("/transactions/newTransaction/{type}")
+	public String newTransaction(Model model, @CookieValue("currentDate") String cookieDate, @PathVariable String type)
 	{
 		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
 		Transaction emptyTransaction = new Transaction();
@@ -135,21 +136,7 @@ public class TransactionController extends BaseController
 		model.addAttribute("accounts", accountService.getAllAccountsAsc());
 		model.addAttribute("transaction", emptyTransaction);
 		model.addAttribute("settings", settingsRepository.findOne(0));
-		return "transactions/newTransactionNormal";
-	}
-
-	@RequestMapping("/transactions/newTransaction/repeating")
-	public String newTransactionRepeating(Model model, @CookieValue("currentDate") String cookieDate)
-	{
-		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
-		Transaction emptyTransaction = new Transaction();
-		emptyTransaction.setCategory(categoryRepository.findByType(CategoryType.NONE));
-		model.addAttribute("currentDate", date);
-		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
-		model.addAttribute("accounts", accountService.getAllAccountsAsc());
-		model.addAttribute("transaction", emptyTransaction);
-		model.addAttribute("settings", settingsRepository.findOne(0));
-		return "transactions/newTransactionRepeating";
+		return "transactions/newTransaction" + StringUtils.capitalize(type);
 	}
 
 	@SuppressWarnings("ConstantConditions")
