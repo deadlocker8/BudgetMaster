@@ -55,7 +55,7 @@
                                 <div class="col s3 center-align bold transaction-text">
                                     ${helpers.getDateStringWithoutYear(transaction.date)}
                                 </div>
-                                <@transactionsMacros.transactionRepeating transaction/>
+                                <@transactionsMacros.transactionType transaction/>
                                 <@transactionsMacros.transactionButtons transaction/>
                             </div>
                             <div class="row valign-wrapper">
@@ -70,7 +70,7 @@
                                     ${helpers.getDateStringWithoutYear(transaction.date)}
                                 </div>
                                 <@transactionsMacros.transactionCategory transaction "left-align"/>
-                                <@transactionsMacros.transactionRepeating transaction/>
+                                <@transactionsMacros.transactionType transaction/>
                                 <@transactionsMacros.transactionNameAndDescription transaction/>
                                 <@transactionsMacros.transactionAmount transaction.getAmount()/>
                                 <@transactionsMacros.transactionButtons transaction/>

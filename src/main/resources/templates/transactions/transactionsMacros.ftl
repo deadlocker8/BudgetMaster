@@ -1,8 +1,14 @@
 <#import "/spring.ftl" as s>
 
-<#macro transactionRepeating transaction>
+<#macro transactionType transaction>
     <div class="col s1 l1 xl1">
-        <i class="material-icons <#if !transaction.isRepeating()>invisible</#if>">repeat</i>
+        <#if transaction.isRepeating()>
+            <i class="material-icons ">repeat</i>
+        <#elseif transaction.isTransfer()>
+            <i class="material-icons">swap_horiz</i>
+        <#else>
+            <i class="material-icons invisible">repeat</i>
+        </#if>
     </div>
 </#macro>
 
