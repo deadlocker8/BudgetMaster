@@ -44,7 +44,7 @@
 
 .transactions-buttons-col {
     position: relative;
-    height: 56px;
+    height: 36px;
 }
 
 .new-transaction-button {
@@ -53,11 +53,20 @@
     right: 0;
     left: 0;
     top: 0;
+    padding: 0 !important;
 }
 
 .new-transaction-button-list {
+    top: auto !important;
+}
+
+.new-transaction-button-list-large {
     left: auto !important;
     right: 8px !important;
+}
+
+.new-transaction-button-list li .btn-floating {
+    border-radius: 0;
 }
 
 .mobile-fab-tip {
@@ -69,4 +78,17 @@
     border-radius: 2px;
     color: #FFFFFF;
     width: auto;
+}
+
+#button-new-transaction {
+    height: 36px;
+    width: auto;
+    border-radius: 0;
+    line-height: 36px;
+    padding: 0 16px;
+    font-size: 14px;
+}
+
+#button-new-transaction i {
+    line-height: 36px;
 }

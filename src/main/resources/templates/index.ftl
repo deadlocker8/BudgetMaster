@@ -41,7 +41,7 @@
                             <p class="text-grey home-menu-text">${locale.getString("home.menu.transactions")}</p>
                             <div class="left-align">
                                 <a href="<@s.url '/transactions'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>${locale.getString("home.menu.transactions.action.manage")}</a>
-                                <a href="<@s.url '/transactions/newTransaction/normal'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>${locale.getString("home.menu.transactions.action.new")}n</a>
+                                <a href="<@s.url '/transactions/newTransaction/normal'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>${locale.getString("home.menu.transactions.action.new")}</a>
                             </div>
                         </div>
                 <div class="hide-on-small-only hide-on-large-only">
