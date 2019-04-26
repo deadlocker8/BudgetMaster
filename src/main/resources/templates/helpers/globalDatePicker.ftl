@@ -3,7 +3,7 @@
      <div class="container">
          <div class="section center-align">
              <a href="<@s.url '/previousMonth?target=${target}'/>" class="waves-effect text-color"><i class="material-icons icon-chevron">chevron_left</i></a>
-             <a href="#modalDate" class="waves-effect headline-date modal-trigger text-color datePicker-fixed-width">${helpers.getDateStringWithMonthAndYear(fullDate)}</a>
+             <a href="#modalDate" class="waves-effect headline-date modal-trigger text-color datePicker-fixed-width">${dateService.getDateStringWithMonthAndYear(fullDate)}</a>
              <a href="<@s.url '/nextMonth?target=${target}'/>" class="waves-effect text-color"><i class="material-icons icon-chevron">chevron_right</i></a>
              <a href="<@s.url '/today?target=${target}'/>" class="waves-effect text-color"><i class="material-icons icon-today">event</i></a>
          </div>
@@ -19,7 +19,7 @@
 
             <div id="global-datepicker-select-month">
                 <h4>${locale.getString("title.datepicker.month")}</h4>
-                <#assign montList = helpers.getMonthList()/>
+                <#assign montList = localizesMonthNames/>
                 <#assign currentMonth = montList[currentDate.getMonthOfYear() - 1]/>
                 <@datepickerGrid montList currentMonth/>
             </div>
@@ -68,7 +68,7 @@
     <script>
         <#assign monthNames = "">
         <#assign monthNamesShort = "">
-        <#list helpers.getMonthList() as monthName>
+        <#list localizesMonthNames as monthName>
             <#assign monthNames += "'" + monthName + "', ">
             <#assign monthNamesShort += "'" + monthName[0..2] + "', ">
         </#list>
@@ -76,13 +76,13 @@
         <#assign weekDays = "">
         <#assign weekDaysShort = "">
         <#assign weekDaysLetters = "">
-        <#list helpers.getWeekDays() as weekDay>
+        <#list localizedWeekdays as weekDay>
             <#assign weekDays += "'" + weekDay + "', ">
             <#assign weekDaysShort += "'" + weekDay[0..1] + "', ">
             <#assign weekDaysLetters += "'" + weekDay[0] + "', ">
         </#list>
 
-        monthNames = [${monthNames}];
+        monthNames = [${localizedMonthNames}];
         monthNamesShort = [${monthNamesShort}];
         weekDays = [${weekDays}];
         weekDaysShort = [${weekDaysShort}];

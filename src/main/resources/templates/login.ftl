@@ -68,6 +68,6 @@
         <!--  Scripts-->
         <#import "helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
-        <script>document.cookie = "currentDate=${helpers.getDateString(currentDate)}";</script>
+        <script>document.cookie = "currentDate=${dateService.getDateStringNormal(currentDate)}";</script>
     </body>
 </html>

@@ -13,15 +13,6 @@ public class Strings
     //ACCOUNT
     public static final String ACCOUNT_DEFAULT_NAME = "account.default.name";
 
-    //WEEK_DAYS
-    public static final String MONDAY ="monday";
-    public static final String TUESDAY ="tuesday";
-    public static final String WEDNESDAY ="wednesday";
-    public static final String THURSDAY ="thursday";
-    public static final String FRIDAY ="friday";
-    public static final String SATURDAY ="saturday";
-    public static final String SUNDAY ="sunday";
-
     //MONTH_NAMES
     public static final String MONTH_JANUARY ="month.january";
     public static final String MONTH_FEBRUARY ="month.february";

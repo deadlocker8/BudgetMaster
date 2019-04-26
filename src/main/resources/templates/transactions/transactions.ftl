@@ -53,7 +53,7 @@
                         <div class="hide-on-large-only">
                             <div class="row valign-wrapper transaction-row">
                                 <div class="col s3 center-align bold transaction-text">
-                                    ${helpers.getDateStringWithoutYear(transaction.date)}
+                                    ${dateService.getDateStringWithoutYear(transaction.date)}
                                 </div>
                                 <@transactionsMacros.transactionType transaction/>
                                 <@transactionsMacros.transactionButtons transaction/>
@@ -67,7 +67,7 @@
                         <div class="hide-on-med-and-down">
                             <div class="row valign-wrapper transaction-row">
                                 <div class="col l1 xl1 bold transaction-text">
-                                    ${helpers.getDateStringWithoutYear(transaction.date)}
+                                    ${dateService.getDateStringWithoutYear(transaction.date)}
                                 </div>
                                 <@transactionsMacros.transactionCategory transaction "left-align"/>
                                 <@transactionsMacros.transactionType transaction/>
@@ -97,6 +97,6 @@
         <script src="<@s.url '/js/transactions.js'/>"></script>
         <script src="<@s.url '/js/globalDatePicker.js'/>"></script>
         <script src="<@s.url '/js/filter.js'/>"></script>
-        <script>document.cookie = "currentDate=${helpers.getDateString(currentDate)}";</script>
+        <script>document.cookie = "currentDate=${dateService.getDateStringNormal(currentDate)}";</script>
     </body>
 </html>

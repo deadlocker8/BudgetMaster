@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.controller;
 
+import de.deadlocker8.budgetmaster.services.DateService;
 import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsRepository;
 import de.deadlocker8.budgetmaster.services.HelpersService;
@@ -24,6 +25,9 @@ public class DatePickerController extends BaseController
 	@Autowired
 	private HelpersService helpers;
 
+	@Autowired
+	private DateService dateService;
+
 	@RequestMapping(value = "/previousMonth")
 	public String previousMonth(HttpServletResponse response, @CookieValue("currentDate") String date, @RequestParam("target") String target)
 	{
@@ -31,7 +35,7 @@ public class DatePickerController extends BaseController
 		DateTime currentDate = DateTime.parse(date, DateTimeFormat.forPattern("dd.MM.yy").withLocale(settings.getLanguage().getLocale()));
 		currentDate = currentDate.minusMonths(1);
 
-		response.addCookie(new Cookie("currentDate", helpers.getDateString(currentDate)));
+		response.addCookie(new Cookie("currentDate", dateService.getDateStringNormal(currentDate)));
 		return "redirect:" + target;
 	}
 
@@ -42,7 +46,7 @@ public class DatePickerController extends BaseController
 		DateTime currentDate = DateTime.parse(date, DateTimeFormat.forPattern("dd.MM.yy").withLocale(settings.getLanguage().getLocale()));
 		currentDate = currentDate.plusMonths(1);
 
-		response.addCookie(new Cookie("currentDate", helpers.getDateString(currentDate)));
+		response.addCookie(new Cookie("currentDate", dateService.getDateStringNormal(currentDate)));
 		return "redirect:" + target;
 	}
 
@@ -52,7 +56,7 @@ public class DatePickerController extends BaseController
 		Settings settings = settingsRepository.findOne(0);
 		DateTime currentDate = DateTime.parse(date, DateTimeFormat.forPattern("dd.MM.yy").withLocale(settings.getLanguage().getLocale()));
 
-		response.addCookie(new Cookie("currentDate", helpers.getDateString(currentDate)));
+		response.addCookie(new Cookie("currentDate", dateService.getDateStringNormal(currentDate)));
 		return "redirect:" + target;
 	}
 
@@ -60,7 +64,7 @@ public class DatePickerController extends BaseController
 	public String today(HttpServletResponse response, @RequestParam("target") String target)
 	{
 		DateTime currentDate = DateTime.now();
-		response.addCookie(new Cookie("currentDate", helpers.getDateString(currentDate)));
+		response.addCookie(new Cookie("currentDate", dateService.getDateStringNormal(currentDate)));
 		return "redirect:" + target;
 	}
 }

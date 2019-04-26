@@ -20,9 +20,7 @@ import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
 import de.deadlocker8.budgetmaster.utils.Colors;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
-import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.ColorUtils;
-import de.thecodelabs.utils.util.Localization;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,67 +102,6 @@ public class HelpersService
 	public List<LanguageType> getAvailableLanguages()
 	{
 		return Arrays.asList(LanguageType.values());
-	}
-
-	public String getDateString(DateTime date)
-	{
-		return date.toString(DateTimeFormat.forPattern("dd.MM.yy").withLocale(settingsRepository.findOne(0).getLanguage().getLocale()));
-	}
-
-	public String getDateStringWithoutYear(DateTime date)
-	{
-		return date.toString(DateTimeFormat.forPattern("dd.MM.").withLocale(settingsRepository.findOne(0).getLanguage().getLocale()));
-	}
-
-	public String getLongDateString(DateTime date)
-	{
-		return date.toString(DateTimeFormat.forPattern("dd.MM.yyyy").withLocale(settingsRepository.findOne(0).getLanguage().getLocale()));
-	}
-
-	public String getDateStringWithMonthAndYear(DateTime date)
-	{
-		return date.toString(DateTimeFormat.forPattern("MMMM yyyy").withLocale(settingsRepository.findOne(0).getLanguage().getLocale()));
-	}
-
-	public ArrayList<String> getWeekDays()
-	{
-		ArrayList<String> weekDays = new ArrayList<>();
-		weekDays.add(Localization.getString(Strings.SUNDAY));
-		weekDays.add(Localization.getString(Strings.MONDAY));
-		weekDays.add(Localization.getString(Strings.TUESDAY));
-		weekDays.add(Localization.getString(Strings.WEDNESDAY));
-		weekDays.add(Localization.getString(Strings.THURSDAY));
-		weekDays.add(Localization.getString(Strings.FRIDAY));
-		weekDays.add(Localization.getString(Strings.SATURDAY));
-		return weekDays;
-	}
-
-	public ArrayList<String> getMonthList()
-	{
-		ArrayList<String> monthNames = new ArrayList<>();
-		monthNames.add(Localization.getString(Strings.MONTH_JANUARY));
-		monthNames.add(Localization.getString(Strings.MONTH_FEBRUARY));
-		monthNames.add(Localization.getString(Strings.MONTH_MARCH));
-		monthNames.add(Localization.getString(Strings.MONTH_APRIL));
-		monthNames.add(Localization.getString(Strings.MONTH_MAY));
-		monthNames.add(Localization.getString(Strings.MONTH_JUNE));
-		monthNames.add(Localization.getString(Strings.MONTH_JULY));
-		monthNames.add(Localization.getString(Strings.MONTH_AUGUST));
-		monthNames.add(Localization.getString(Strings.MONTH_SEPTEMBER));
-		monthNames.add(Localization.getString(Strings.MONTH_OCTOBER));
-		monthNames.add(Localization.getString(Strings.MONTH_NOVEMBER));
-		monthNames.add(Localization.getString(Strings.MONTH_DECEMBER));
-		return monthNames;
-	}
-
-	public ArrayList<Integer> getYearList()
-	{
-		ArrayList<Integer> years = new ArrayList<>();
-		for(int i = 2000; i < 2100; i++)
-		{
-			years.add(i);
-		}
-		return years;
 	}
 
 	 // Replaces line breaks and tabs with spaces

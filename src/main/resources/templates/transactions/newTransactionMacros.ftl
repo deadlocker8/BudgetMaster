@@ -120,9 +120,9 @@
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
             <#if transaction.getDate()??>
-                <#assign startDate = helpers.getLongDateString(transaction.getDate())/>
+                <#assign startDate = dateService.getLongDateString(transaction.getDate())/>
             <#else>
-                <#assign startDate = helpers.getLongDateString(currentDate)/>
+                <#assign startDate = dateService.getLongDateString(currentDate)/>
             </#if>
 
             <input id="transaction-datepicker" type="text" class="datepicker" name="date" value="${startDate}">
@@ -293,9 +293,9 @@
 
 <#macro repeatingEndDate checked transaction currentDate>
     <#if checked>
-        <#global endDate = helpers.getLongDateString(transaction.getRepeatingOption().getEndOption().getValue())/>
+        <#global endDate = dateService.getLongDateString(transaction.getRepeatingOption().getEndOption().getValue())/>
     <#else>
-        <#global endDate = helpers.getLongDateString(currentDate)/>
+        <#global endDate = dateService.getLongDateString(currentDate)/>
     </#if>
 
     <script>

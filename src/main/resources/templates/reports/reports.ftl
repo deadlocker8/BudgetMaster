@@ -25,7 +25,7 @@
                     <form name="NewReportSettings" action="<@s.url '/reports/generate'/>" method="post" onsubmit="return validateForm()">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="ID" value="${reportSettings.getID()?c}"/>
-                        <input type="hidden" name="date" value="${helpers.getLongDateString(currentDate)}"/>
+                        <input type="hidden" name="date" value="${dateService.getLongDateString(currentDate)}"/>
 
                         <div class="row">
                             <div class="col s12 center-align">
@@ -115,6 +115,6 @@
         <script src="<@s.url '/js/reports.js'/>"></script>
         <script src="<@s.url '/js/globalDatePicker.js'/>"></script>
         <script src="<@s.url '/js/filter.js'/>"></script>
-        <script>document.cookie = "currentDate=${helpers.getDateString(currentDate)}";</script>
+        <script>document.cookie = "currentDate=${dateService.getDateStringNormal(currentDate)}";</script>
     </body>
 </html>
