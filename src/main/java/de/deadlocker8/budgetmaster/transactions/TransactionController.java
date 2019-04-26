@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.transactions;
 
+import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.categories.CategoryRepository;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
@@ -97,15 +98,12 @@ public class TransactionController extends BaseController
 		FilterConfiguration filterConfiguration = filterHelpers.getFilterConfiguration(request);
 
 		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear(), getSettings().isRestActivated(), filterConfiguration);
-		int incomeSum = helpers.getIncomeSumForTransactionList(transactions);
-		int paymentSum = helpers.getExpenditureSumForTransactionList(transactions);
-		int rest = incomeSum + paymentSum;
+		Account currentAccount = helpers.getCurrentAccount();
 
 		model.addAttribute("transactions", transactions);
-		model.addAttribute("incomeSum", incomeSum);
-		model.addAttribute("paymentSum", paymentSum);
+		model.addAttribute("account", currentAccount);
+		model.addAttribute("budget", helpers.getBudget(transactions, currentAccount));
 		model.addAttribute("currentDate", date);
-		model.addAttribute("rest", rest);
 		model.addAttribute("filterConfiguration", filterConfiguration);
 		model.addAttribute("settings", settingsRepository.findOne(0));
 	}

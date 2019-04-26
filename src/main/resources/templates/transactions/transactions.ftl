@@ -24,21 +24,21 @@
                         <div class="col s4">
                             <div class="icon-block">
                                 <h1 class="center text-green budget-headline-icon"><i class="material-icons icon-budget">file_download</i></h1>
-                                <h5 class="center budget">${helpers.getCurrencyString(incomeSum)}</h5>
+                                <h5 class="center budget">${helpers.getCurrencyString(budget.getIncomeSum())}</h5>
                                 <h5 class="center budget-headline">${locale.getString("title.incomes")}</h5>
                             </div>
                         </div>
                         <div class="col s4">
                             <div class="icon-block">
                                 <h1 class="center ${redTextColor} budget-headline-icon"><i class="material-icons icon-budget">file_upload</i></h1>
-                                <h5 class="center budget">${helpers.getCurrencyString(paymentSum)}</h5>
+                                <h5 class="center budget">${helpers.getCurrencyString(budget.getExpenditureSum())}</h5>
                                 <h5 class="center budget-headline">${locale.getString("title.expenditures")}</h5>
                             </div>
                         </div>
                         <div class="col s4">
                             <div class="icon-block">
                                 <h1 class="center budgetmaster-blue-text budget-headline-icon"><i class="fas fa-piggy-bank icon-budget"></i></h1>
-                                <h5 class="center budget">${helpers.getCurrencyString(rest)}</h5>
+                                <h5 class="center budget">${helpers.getCurrencyString(budget.getRest())}</h5>
                                 <h5 class="center budget-headline">${locale.getString("title.rest")}</h5>
                             </div>
                         </div>
@@ -61,7 +61,7 @@
                             <div class="row valign-wrapper">
                                 <@transactionsMacros.transactionCategory transaction "center-align"/>
                                 <@transactionsMacros.transactionNameAndDescription transaction/>
-                                <@transactionsMacros.transactionAmount transaction.getAmount()/>
+                                <@transactionsMacros.transactionAmount transaction account/>
                             </div>
                         </div>
                         <div class="hide-on-med-and-down">
@@ -72,7 +72,7 @@
                                 <@transactionsMacros.transactionCategory transaction "left-align"/>
                                 <@transactionsMacros.transactionType transaction/>
                                 <@transactionsMacros.transactionNameAndDescription transaction/>
-                                <@transactionsMacros.transactionAmount transaction.getAmount()/>
+                                <@transactionsMacros.transactionAmount transaction account/>
                                 <@transactionsMacros.transactionButtons transaction/>
                             </div>
                         </div>

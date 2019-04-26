@@ -42,7 +42,8 @@
     </div>
 </#macro>
 
-<#macro transactionAmount amount>
+<#macro transactionAmount transaction account>
+    <#assign amount = helpers.getAmount(transaction, account)/>
     <#if amount <= 0>
         <div class="col s4 l3 xl3 bold ${redTextColor} no-wrap right-align transaction-text">${helpers.getCurrencyString(amount)}</div>
     <#else>

@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.services;
 
 import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
+import de.deadlocker8.budgetmaster.reports.Budget;
 import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.tags.Tag;
@@ -232,40 +233,40 @@ public class HelpersService
 		return selectedAccount;
 	}
 
-	public int getIncomeSumForTransactionList(List<Transaction> transactions)
+	public Budget getBudget(List<Transaction> transactions, Account account)
 	{
-		int sum = 0;
+		int incomeSum = 0;
+		int expenditureSum = 0;
 		for(Transaction transaction : transactions)
 		{
-			if(transaction.isTransfer())
-			{
-				continue;
-			}
+			int currentAmount = getAmount(transaction, account);
 
-			if(transaction.getAmount() > 0)
+			if(currentAmount > 0)
 			{
-				sum += transaction.getAmount();
+				incomeSum += currentAmount;
+			}
+			else
+			{
+				expenditureSum += currentAmount;
 			}
 		}
-		return sum;
+		return new Budget(incomeSum, expenditureSum);
 	}
 
-	public int getExpenditureSumForTransactionList(List<Transaction> transactions)
+	public int getAmount(Transaction transaction, Account account)
 	{
-		int sum = 0;
-		for(Transaction transaction : transactions)
+		// All accounts
+		if(account.getType().equals(AccountType.ALL))
 		{
-			if(transaction.isTransfer())
-			{
-				continue;
-			}
-
-			if(transaction.getAmount() < 0)
-			{
-				sum += transaction.getAmount();
-			}
+			return transaction.getAmount();
 		}
-		return sum;
+
+		if(transaction.getTransferAccount() != null && transaction.getTransferAccount().getID().equals(account.getID()))
+		{
+			return -transaction.getAmount();
+		}
+
+		return transaction.getAmount();
 	}
 
 	public DateTime getCurrentDate()
@@ -275,17 +276,13 @@ public class HelpersService
 
 	public int getAccountBudget()
 	{
-		List<Transaction> transactions = transactionService.getTransactionsForAccountUntilDate(getCurrentAccount(), getCurrentDate(), FilterConfiguration.DEFAULT);
+		Account currentAccount = getCurrentAccount();
+		List<Transaction> transactions = transactionService.getTransactionsForAccountUntilDate(currentAccount, getCurrentDate(), FilterConfiguration.DEFAULT);
 
 		int sum = 0;
 		for(Transaction transaction : transactions)
 		{
-			if(transaction.isTransfer())
-			{
-				continue;
-			}
-
-			sum += transaction.getAmount();
+			sum += getAmount(transaction, currentAccount);
 		}
 
 		return sum;

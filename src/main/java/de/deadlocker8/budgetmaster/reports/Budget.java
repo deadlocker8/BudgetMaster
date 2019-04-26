@@ -21,6 +21,11 @@ public class Budget
 		return expenditureSum;
 	}
 
+	public int getRest()
+	{
+		return incomeSum + expenditureSum;
+	}
+
 	@Override
 	public String toString()
 	{

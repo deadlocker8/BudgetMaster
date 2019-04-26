@@ -8,7 +8,6 @@ import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
-import de.deadlocker8.budgetmaster.reports.columns.ReportColumn;
 import de.deadlocker8.budgetmaster.reports.settings.ReportSettings;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
 import de.deadlocker8.budgetmaster.reports.categoryBudget.CategoryBudgetHandler;
@@ -90,7 +89,7 @@ public class ReportController extends BaseController
 
 		FilterConfiguration filterConfiguration = filterHelpers.getFilterConfiguration(request);
 		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(account, reportSettings.getDate().getMonthOfYear(), reportSettings.getDate().getYear(), settingsService.getSettings().isRestActivated(), filterConfiguration);
-		Budget budget = new Budget(helpers.getIncomeSumForTransactionList(transactions), helpers.getExpenditureSumForTransactionList(transactions));
+		Budget budget = helpers.getBudget(transactions, account);
 
 		ReportConfiguration reportConfiguration = new ReportConfigurationBuilder()
 				.setBudget(budget)
