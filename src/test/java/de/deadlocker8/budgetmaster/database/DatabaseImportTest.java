@@ -269,7 +269,19 @@ public class DatabaseImportTest
 				}
 
 				@Override
-				public Integer getRest(int accountID, String startDate, String endDate)
+				public Integer getRestForNormalAndRepeating(int accountID, String startDate, String endDate)
+				{
+					return null;
+				}
+
+				@Override
+				public Integer getRestForTransferSource(int accountID, String startDate, String endDate)
+				{
+					return null;
+				}
+
+				@Override
+				public Integer getRestForTransferDestination(int accountID, String startDate, String endDate)
 				{
 					return null;
 				}

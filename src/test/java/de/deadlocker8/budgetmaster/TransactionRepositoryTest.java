@@ -226,6 +226,19 @@ public class TransactionRepositoryTest
 	}
 
 	@Test
+	public void getTransferBackReferences_WithStartDate()
+	{
+		DateTime startDate2019 = new DateTime(2019, 1, 1, 12, 0, 0, 0);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate2019, DateTime.now(), account2, false, false, true, null, null, null, null);
+
+		List<Transaction> results = transactionRepository.findAll(spec);
+		assertFalse(results.contains(transaction1));
+		assertFalse(results.contains(transaction2));
+		assertFalse(results.contains(repeatingTransaction));
+		assertFalse(results.contains(transferTransaction));
+	}
+
+	@Test
 	public void getRepeating()
 	{
 		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, false, true, null, null, null);

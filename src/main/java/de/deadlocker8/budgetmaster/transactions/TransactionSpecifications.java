@@ -23,7 +23,7 @@ public class TransactionSpecifications
 	{
 		return (transaction, query, builder) -> {
 			List<Predicate> predicates = new ArrayList<>();
-			predicates.add(builder.and(builder.between(transaction.get(Transaction_.date), startDate, endDate)));
+			Predicate dateConstraint = builder.between(transaction.get(Transaction_.date), startDate, endDate);
 
 			Predicate transferBackReference = null;
 
@@ -99,7 +99,7 @@ public class TransactionSpecifications
 				return builder.and(predicates.toArray(predicatesArray));
 			}
 
-			return builder.or(builder.and(predicates.toArray(predicatesArray)), transferBackReference);
+			return builder.and(dateConstraint, builder.or(builder.and(predicates.toArray(predicatesArray)), transferBackReference));
 		};
 	}
 }
