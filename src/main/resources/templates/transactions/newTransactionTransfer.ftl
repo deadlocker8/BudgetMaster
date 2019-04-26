@@ -26,9 +26,7 @@
                     <form name="NewTransaction" action="<@s.url '/transactions/newTransaction/transfer'/>" method="post" onsubmit="return validateForm()">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="ID" value="<#if transaction.getID()??>${transaction.getID()?c}</#if>">
-
-                        <#-- isPayment switch -->
-                        <@newTransactionMacros.isExpenditureSwitch transaction/>
+                        <input type="hidden" name="isPayment" value="true">
 
                         <#-- name -->
                         <@newTransactionMacros.transactionName transaction/>
