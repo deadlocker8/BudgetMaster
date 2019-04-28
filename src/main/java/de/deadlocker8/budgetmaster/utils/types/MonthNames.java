@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster;
+package de.deadlocker8.budgetmaster.utils.types;
 
 import de.thecodelabs.utils.util.Localization;
 

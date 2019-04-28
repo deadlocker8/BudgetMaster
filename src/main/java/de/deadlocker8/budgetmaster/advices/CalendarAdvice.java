@@ -1,13 +1,11 @@
 package de.deadlocker8.budgetmaster.advices;
 
-import de.deadlocker8.budgetmaster.MonthNames;
-import de.deadlocker8.budgetmaster.WeekDay;
+import de.deadlocker8.budgetmaster.utils.types.MonthNames;
+import de.deadlocker8.budgetmaster.utils.types.WeekDay;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @ControllerAdvice
 public class CalendarAdvice

@@ -1,9 +1,7 @@
-package de.deadlocker8.budgetmaster;
+package de.deadlocker8.budgetmaster.utils.types;
 
-import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
