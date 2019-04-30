@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.database;
+package de.deadlocker8.budgetmaster.unit.database;
 
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountType;

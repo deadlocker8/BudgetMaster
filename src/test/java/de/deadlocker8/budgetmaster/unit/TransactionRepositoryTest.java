@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster;
+package de.deadlocker8.budgetmaster.unit;
 
 import de.deadlocker8.budgetmaster.accounts.AccountRepository;
 import de.deadlocker8.budgetmaster.categories.CategoryRepository;

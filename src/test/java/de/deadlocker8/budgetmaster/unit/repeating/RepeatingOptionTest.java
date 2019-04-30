@@ -1,5 +1,6 @@
-package de.deadlocker8.budgetmaster.repeating;
+package de.deadlocker8.budgetmaster.unit.repeating;
 
+import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndAfterXTimes;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndDate;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndNever;

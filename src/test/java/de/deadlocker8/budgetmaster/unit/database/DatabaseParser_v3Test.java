@@ -1,9 +1,11 @@
-package de.deadlocker8.budgetmaster.database;
+package de.deadlocker8.budgetmaster.unit.database;
 
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
+import de.deadlocker8.budgetmaster.database.Database;
+import de.deadlocker8.budgetmaster.database.DatabaseParser_v3;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;

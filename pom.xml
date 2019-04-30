@@ -63,6 +63,8 @@
         <materializecss.version>1.0.0</materializecss.version>
         <fontawesome.version>5.0.10</fontawesome.version>
         <sortablejs.version>1.8.1</sortablejs.version>
+        <webdrivermanager.version>2.2.1</webdrivermanager.version>
+        <selenium.version>3.141.59</selenium.version>
 
         <app.versionDate>${maven.build.timestamp}</app.versionDate>
         <maven.build.timestamp.format>dd.MM.yy</maven.build.timestamp.format>
@@ -180,6 +182,24 @@
             <groupId>org.webjars.npm</groupId>
             <artifactId>sortablejs</artifactId>
             <version>${sortablejs.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>${webdrivermanager.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-api</artifactId>
+            <version>${selenium.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-firefox-driver</artifactId>
+            <version>${selenium.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
