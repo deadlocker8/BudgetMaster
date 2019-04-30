@@ -9,6 +9,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -16,22 +17,28 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+
 public class LoginControllerTest
 {
 	private WebDriver driver;
+	private String baseUrl = "https://localhost:";
+
+	@LocalServerPort
+	int port;
 
 	@Before
 	public void before()
 	{
 		WebDriverManager.firefoxdriver().setup();
 		driver = new FirefoxDriver();
+		baseUrl += port;
 	}
 
 	@Test
 	public void getSearchPage()
 	{
-		driver.get("https://localhost:9000");
+		driver.get(baseUrl);
 		WebElement input = driver.findElement(By.id("login-password"));
 		assertNotNull(input);
 
