@@ -19,7 +19,7 @@
 
             <div id="global-datepicker-select-month">
                 <h4>${locale.getString("title.datepicker.month")}</h4>
-                <#assign montList = localizesMonthNames/>
+                <#assign montList = localizedMonthNames/>
                 <#assign currentMonth = montList[currentDate.getMonthOfYear() - 1]/>
                 <@datepickerGrid montList currentMonth/>
             </div>
@@ -68,7 +68,7 @@
     <script>
         <#assign monthNames = "">
         <#assign monthNamesShort = "">
-        <#list localizesMonthNames as monthName>
+        <#list localizedMonthNames as monthName>
             <#assign monthNames += "'" + monthName + "', ">
             <#assign monthNamesShort += "'" + monthName[0..2] + "', ">
         </#list>
@@ -82,7 +82,7 @@
             <#assign weekDaysLetters += "'" + weekDay[0] + "', ">
         </#list>
 
-        monthNames = [${localizedMonthNames}];
+        monthNames = [${monthNames}];
         monthNamesShort = [${monthNamesShort}];
         weekDays = [${weekDays}];
         weekDaysShort = [${weekDaysShort}];

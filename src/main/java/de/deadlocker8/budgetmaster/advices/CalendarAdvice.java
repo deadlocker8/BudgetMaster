@@ -16,7 +16,7 @@ public class CalendarAdvice
 		return WeekDay.getLocalizedStrings();
 	}
 
-	@ModelAttribute("localizesMonthNames")
+	@ModelAttribute("localizedMonthNames")
 	public List<String> getMonthNames()
 	{
 		return MonthNames.getLocalizedStrings();
