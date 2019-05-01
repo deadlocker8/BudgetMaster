@@ -28,6 +28,10 @@
     margin: auto;
 }
 
+.transaction-line-height {
+    line-height: 50px;
+}
+
 .transaction-row {
     margin-bottom: 5px;
     margin-top: 20px;
