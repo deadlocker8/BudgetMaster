@@ -13,8 +13,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class SearchController extends BaseController
 {
+	private final HelpersService helpers;
+
 	@Autowired
-	private HelpersService helpers;
+	public SearchController(HelpersService helpers)
+	{
+		this.helpers = helpers;
+	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	public String post(Model model, @ModelAttribute("NewSearch") Search search)

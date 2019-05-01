@@ -10,8 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class AboutController extends BaseController
 {
+	private final SettingsService settingsService;
+
 	@Autowired
-	private SettingsService settingsService;
+	public AboutController(SettingsService settingsService)
+	{
+		this.settingsService = settingsService;
+	}
 
 	@RequestMapping("/about")
 	public String index(Model model)

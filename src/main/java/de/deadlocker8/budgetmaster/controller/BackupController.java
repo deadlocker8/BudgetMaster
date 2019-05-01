@@ -12,8 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class BackupController extends BaseController
 {
+	private final SettingsService settingsService;
+
 	@Autowired
-	private SettingsService settingsService;
+	public BackupController(SettingsService settingsService)
+	{
+		this.settingsService = settingsService;
+	}
 
 	@RequestMapping("/backupReminder/cancel")
 	public String cancel(HttpServletRequest request, Model model)

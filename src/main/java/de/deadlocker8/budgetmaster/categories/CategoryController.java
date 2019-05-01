@@ -22,17 +22,19 @@ import java.util.stream.Collectors;
 @Controller
 public class CategoryController extends BaseController
 {
-	@Autowired
-	private CategoryRepository categoryRepository;
+	private final CategoryRepository categoryRepository;
+	private final CategoryService categoryService;
+	private final HelpersService helpers;
+	private final SettingsService settingsService;
 
 	@Autowired
-	private CategoryService categoryService;
-
-	@Autowired
-	private HelpersService helpers;
-
-	@Autowired
-	SettingsService settingsService;
+	public CategoryController(CategoryRepository categoryRepository, CategoryService categoryService, HelpersService helpers, SettingsService settingsService)
+	{
+		this.categoryRepository = categoryRepository;
+		this.categoryService = categoryService;
+		this.helpers = helpers;
+		this.settingsService = settingsService;
+	}
 
 	@RequestMapping("/categories")
 	public String categories(Model model)

@@ -3,7 +3,6 @@ package de.deadlocker8.budgetmaster.controller;
 import de.deadlocker8.budgetmaster.services.DateService;
 import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsRepository;
-import de.deadlocker8.budgetmaster.services.HelpersService;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +18,15 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class DatePickerController extends BaseController
 {
-	@Autowired
-	private SettingsRepository settingsRepository;
+	private final SettingsRepository settingsRepository;
+	private final DateService dateService;
 
 	@Autowired
-	private HelpersService helpers;
-
-	@Autowired
-	private DateService dateService;
+	public DatePickerController(SettingsRepository settingsRepository, DateService dateService)
+	{
+		this.settingsRepository = settingsRepository;
+		this.dateService = dateService;
+	}
 
 	@RequestMapping(value = "/previousMonth")
 	public String previousMonth(HttpServletResponse response, @CookieValue("currentDate") String date, @RequestParam("target") String target)

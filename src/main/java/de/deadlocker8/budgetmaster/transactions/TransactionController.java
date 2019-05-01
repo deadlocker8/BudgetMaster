@@ -8,7 +8,6 @@ import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
 import de.deadlocker8.budgetmaster.filter.FilterHelpersService;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
-import de.deadlocker8.budgetmaster.repeating.RepeatingOptionRepository;
 import de.deadlocker8.budgetmaster.repeating.RepeatingTransactionUpdater;
 import de.deadlocker8.budgetmaster.repeating.endoption.*;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifier;
@@ -36,35 +35,29 @@ import java.util.List;
 @Controller
 public class TransactionController extends BaseController
 {
-	@Autowired
-	private TransactionRepository transactionRepository;
+	private final TransactionRepository transactionRepository;
+	private final TransactionService transactionService;
+	private final CategoryRepository categoryRepository;
+	private final AccountService accountService;
+	private final SettingsRepository settingsRepository;
+	private final TagRepository tagRepository;
+	private final RepeatingTransactionUpdater repeatingTransactionUpdater;
+	private final HelpersService helpers;
+	private final FilterHelpersService filterHelpers;
 
 	@Autowired
-	private TransactionService transactionService;
-
-	@Autowired
-	private CategoryRepository categoryRepository;
-
-	@Autowired
-	private AccountService accountService;
-
-	@Autowired
-	private SettingsRepository settingsRepository;
-
-	@Autowired
-	private TagRepository tagRepository;
-
-	@Autowired
-	private RepeatingOptionRepository repeatingOptionRepository;
-
-	@Autowired
-	private RepeatingTransactionUpdater repeatingTransactionUpdater;
-
-	@Autowired
-	private HelpersService helpers;
-
-	@Autowired
-	private FilterHelpersService filterHelpers;
+	public TransactionController(TransactionRepository transactionRepository, TransactionService transactionService, CategoryRepository categoryRepository, AccountService accountService, SettingsRepository settingsRepository, TagRepository tagRepository, RepeatingTransactionUpdater repeatingTransactionUpdater, HelpersService helpers, FilterHelpersService filterHelpers)
+	{
+		this.transactionRepository = transactionRepository;
+		this.transactionService = transactionService;
+		this.categoryRepository = categoryRepository;
+		this.accountService = accountService;
+		this.settingsRepository = settingsRepository;
+		this.tagRepository = tagRepository;
+		this.repeatingTransactionUpdater = repeatingTransactionUpdater;
+		this.helpers = helpers;
+		this.filterHelpers = filterHelpers;
+	}
 
 
 	@RequestMapping("/transactions")

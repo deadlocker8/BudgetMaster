@@ -5,13 +5,13 @@ import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
+import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.DatabaseParser;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
-import de.deadlocker8.budgetmaster.categories.CategoryType;
-import de.deadlocker8.budgetmaster.services.*;
+import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.deadlocker8.budgetmaster.utils.Strings;
@@ -46,31 +46,26 @@ import java.nio.charset.Charset;
 @Controller
 public class SettingsController extends BaseController
 {
-	@Autowired
-	private SettingsRepository settingsRepository;
-
-	@Autowired
-	private UserRepository userRepository;
-
-	@Autowired
-	private HelpersService helpers;
-
-	@Autowired
-	private DatabaseService databaseService;
-
-	@Autowired
-	private AccountService accountService;
-
-	@Autowired
-	private CategoryService categoryService;
-
-	@Autowired
-	private ImportService importService;
-
-	@Autowired
-	private BudgetMasterUpdateService budgetMasterUpdateService;
-
+	private final SettingsRepository settingsRepository;
+	private final UserRepository userRepository;
+	private final DatabaseService databaseService;
+	private final AccountService accountService;
+	private final CategoryService categoryService;
+	private final ImportService importService;
+	private final BudgetMasterUpdateService budgetMasterUpdateService;
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+
+	@Autowired
+	public SettingsController(SettingsRepository settingsRepository, UserRepository userRepository, DatabaseService databaseService, AccountService accountService, CategoryService categoryService, ImportService importService, BudgetMasterUpdateService budgetMasterUpdateService)
+	{
+		this.settingsRepository = settingsRepository;
+		this.userRepository = userRepository;
+		this.databaseService = databaseService;
+		this.accountService = accountService;
+		this.categoryService = categoryService;
+		this.importService = importService;
+		this.budgetMasterUpdateService = budgetMasterUpdateService;
+	}
 
 	@RequestMapping("/settings")
 	public String settings(WebRequest request, Model model)
@@ -193,7 +188,7 @@ public class SettingsController extends BaseController
 
 	@RequestMapping(value = "/settings/database/delete", method = RequestMethod.POST)
 	public String deleteDatabase(Model model, @RequestParam("verificationCode") String verificationCode,
-								  @RequestParam("verificationUserInput") String verificationUserInput)
+								 @RequestParam("verificationUserInput") String verificationUserInput)
 	{
 		if(verificationUserInput.equals(verificationCode))
 		{
@@ -257,7 +252,7 @@ public class SettingsController extends BaseController
 	@RequestMapping("/settings/database/import")
 	public String importDatabase(WebRequest request, @ModelAttribute("Import") AccountMatchList accountMatchList, Model model)
 	{
-		importService.importDatabase((Database)request.getAttribute("database", WebRequest.SCOPE_SESSION), accountMatchList);
+		importService.importDatabase((Database) request.getAttribute("database", WebRequest.SCOPE_SESSION), accountMatchList);
 		request.removeAttribute("database", RequestAttributes.SCOPE_SESSION);
 		model.addAttribute("settings", settingsRepository.findOne(0));
 		return "settings/settings";

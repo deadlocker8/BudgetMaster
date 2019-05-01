@@ -1,9 +1,6 @@
 package de.deadlocker8.budgetmaster.filter;
 
 import de.deadlocker8.budgetmaster.controller.BaseController;
-import de.deadlocker8.budgetmaster.categories.CategoryService;
-import de.deadlocker8.budgetmaster.services.HelpersService;
-import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,17 +12,13 @@ import org.springframework.web.context.request.WebRequest;
 @Controller
 public class FilterController extends BaseController
 {
-	@Autowired
-	private TransactionService transactionService;
+	private final FilterHelpersService filterHelpers;
 
 	@Autowired
-	private CategoryService categoryService;
-
-	@Autowired
-	private HelpersService helpers;
-
-	@Autowired
-	private FilterHelpersService filterHelpers;
+	public FilterController(FilterHelpersService filterHelpers)
+	{
+		this.filterHelpers = filterHelpers;
+	}
 
 	@RequestMapping(value = "/filter/apply", method = RequestMethod.POST)
 	public String post(WebRequest request, @ModelAttribute("NewFilterConfiguration") FilterConfiguration filterConfiguration)

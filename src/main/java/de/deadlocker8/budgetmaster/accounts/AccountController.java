@@ -16,14 +16,17 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class AccountController extends BaseController
 {
-	@Autowired
-	private AccountRepository accountRepository;
+	private final AccountRepository accountRepository;
+	private final AccountService accountService;
+	private final SettingsService settingsService;
 
 	@Autowired
-	private AccountService accountService;
-
-	@Autowired
-	private SettingsService settingsService;
+	public AccountController(AccountRepository accountRepository, AccountService accountService, SettingsService settingsService)
+	{
+		this.accountRepository = accountRepository;
+		this.accountService = accountService;
+		this.settingsService = settingsService;
+	}
 
 	@RequestMapping(value = "/accounts/{ID}/select")
 

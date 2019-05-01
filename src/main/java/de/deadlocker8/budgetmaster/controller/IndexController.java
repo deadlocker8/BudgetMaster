@@ -10,8 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class IndexController extends BaseController
 {
+	private final SettingsService settingsService;
+
 	@Autowired
-	private SettingsService settingsService;
+	public IndexController(SettingsService settingsService)
+	{
+		this.settingsService = settingsService;
+	}
 
 	@RequestMapping("/")
 	public String index(Model model)

@@ -10,8 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class EmptyPageController extends BaseController
 {
+	private final SettingsService settingsService;
+
 	@Autowired
-	SettingsService settingsService;
+	public EmptyPageController(SettingsService settingsService)
+	{
+		this.settingsService = settingsService;
+	}
 
 	@RequestMapping("/charts")
 	public String charts(Model model)

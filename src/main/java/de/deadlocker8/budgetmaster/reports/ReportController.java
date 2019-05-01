@@ -1,19 +1,18 @@
 package de.deadlocker8.budgetmaster.reports;
 
 import com.itextpdf.text.DocumentException;
-import de.deadlocker8.budgetmaster.categories.CategoryService;
-import de.deadlocker8.budgetmaster.controller.BaseController;
-import de.deadlocker8.budgetmaster.filter.FilterHelpersService;
-import de.deadlocker8.budgetmaster.settings.SettingsService;
-import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
-import de.deadlocker8.budgetmaster.reports.settings.ReportSettings;
+import de.deadlocker8.budgetmaster.categories.CategoryService;
+import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
+import de.deadlocker8.budgetmaster.filter.FilterHelpersService;
 import de.deadlocker8.budgetmaster.reports.categoryBudget.CategoryBudgetHandler;
-import de.deadlocker8.budgetmaster.services.*;
-import de.deadlocker8.budgetmaster.reports.columns.ReportColumnService;
+import de.deadlocker8.budgetmaster.reports.settings.ReportSettings;
 import de.deadlocker8.budgetmaster.reports.settings.ReportSettingsService;
+import de.deadlocker8.budgetmaster.services.HelpersService;
+import de.deadlocker8.budgetmaster.settings.SettingsService;
+import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.thecodelabs.utils.util.Localization;
 import org.joda.time.DateTime;
@@ -35,29 +34,25 @@ import java.util.List;
 @Controller
 public class ReportController extends BaseController
 {
-	@Autowired
-	private SettingsService settingsService;
+	private final SettingsService settingsService;
+	private final ReportSettingsService reportSettingsService;
+	private final ReportGeneratorService reportGeneratorService;
+	private final TransactionService transactionService;
+	private final CategoryService categoryService;
+	private final HelpersService helpers;
+	private final FilterHelpersService filterHelpers;
 
 	@Autowired
-	private ReportSettingsService reportSettingsService;
-
-	@Autowired
-	private ReportColumnService reportColumnService;
-
-	@Autowired
-	private ReportGeneratorService reportGeneratorService;
-
-	@Autowired
-	private TransactionService transactionService;
-
-	@Autowired
-	private CategoryService categoryService;
-
-	@Autowired
-	private HelpersService helpers;
-
-	@Autowired
-	private FilterHelpersService filterHelpers;
+	public ReportController(SettingsService settingsService, ReportSettingsService reportSettingsService, ReportGeneratorService reportGeneratorService, TransactionService transactionService, CategoryService categoryService, HelpersService helpers, FilterHelpersService filterHelpers)
+	{
+		this.settingsService = settingsService;
+		this.reportSettingsService = reportSettingsService;
+		this.reportGeneratorService = reportGeneratorService;
+		this.transactionService = transactionService;
+		this.categoryService = categoryService;
+		this.helpers = helpers;
+		this.filterHelpers = filterHelpers;
+	}
 
 	@RequestMapping("/reports")
 	public String reports(HttpServletRequest request, Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
