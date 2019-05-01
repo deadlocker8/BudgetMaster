@@ -9,7 +9,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -22,7 +21,7 @@ import static org.junit.Assert.assertNotNull;
 public class LoginControllerTest
 {
 	private WebDriver driver;
-	private String baseUrl = "http://localhost:";
+	private String baseUrl = "https://localhost:";
 
 	@LocalServerPort
 	int port;
@@ -31,9 +30,7 @@ public class LoginControllerTest
 	public void before()
 	{
 		WebDriverManager.firefoxdriver().setup();
-		FirefoxOptions options = new FirefoxOptions();
-		options.setHeadless(true);
-		driver = new FirefoxDriver(options);
+		driver = new FirefoxDriver();
 		baseUrl += port;
 	}
 
