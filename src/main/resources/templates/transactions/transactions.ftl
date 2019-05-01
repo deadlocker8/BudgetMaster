@@ -66,7 +66,7 @@
                         </div>
                         <div class="hide-on-med-and-down">
                             <div class="row valign-wrapper transaction-row">
-                                <div class="col l1 xl1 bold transaction-text">
+                                <div class="col l1 xl1 bold transaction-text transaction-line-height">
                                     ${dateService.getDateStringWithoutYear(transaction.date)}
                                 </div>
                                 <@transactionsMacros.transactionCategory transaction "left-align"/>
