@@ -32,9 +32,13 @@
     line-height: 50px;
 }
 
-.transaction-row {
-    margin-bottom: 5px;
-    margin-top: 20px;
+.transaction-row-top {
+    padding-top: 14px;
+}
+
+.transaction-row-bottom {
+    padding-bottom: 5px;
+    margin-bottom: 0;
 }
 
 .transaction-text {

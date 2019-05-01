@@ -57,14 +57,13 @@ public class TransactionController extends BaseController
 		this.filterHelpers = filterHelpers;
 	}
 
-
 	@RequestMapping("/transactions")
 	public String transactions(HttpServletRequest request, Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
 	{
 		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
 		repeatingTransactionUpdater.updateRepeatingTransactions(date.dayOfMonth().withMaximumValue());
 
-		prepareModelTransactions(request, model, date);
+		prepareModelTransactions(filterHelpers.getFilterConfiguration(request), model, date);
 
 		return "transactions/transactions";
 	}
@@ -78,16 +77,14 @@ public class TransactionController extends BaseController
 		}
 
 		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
-		prepareModelTransactions(request, model, date);
+		prepareModelTransactions(filterHelpers.getFilterConfiguration(request), model, date);
 		model.addAttribute("currentTransaction", transactionService.getRepository().getOne(ID));
 
 		return "transactions/transactions";
 	}
 
-	private void prepareModelTransactions(HttpServletRequest request, Model model, DateTime date)
+	private void prepareModelTransactions(FilterConfiguration filterConfiguration, Model model, DateTime date)
 	{
-		FilterConfiguration filterConfiguration = filterHelpers.getFilterConfiguration(request);
-
 		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear(), settingsService.getSettings().isRestActivated(), filterConfiguration);
 		Account currentAccount = helpers.getCurrentAccount();
 
@@ -302,5 +299,20 @@ public class TransactionController extends BaseController
 		}
 
 		return transaction;
+	}
+
+	@RequestMapping("/transactions/{ID}/highlight")
+	public String highlight(Model model, @PathVariable("ID") Integer ID)
+	{
+		Transaction transaction = transactionService.getRepository().getOne(ID);
+		repeatingTransactionUpdater.updateRepeatingTransactions(transaction.getDate().dayOfMonth().withMaximumValue());
+
+		FilterConfiguration filterConfiguration = FilterConfiguration.DEFAULT;
+		filterConfiguration.setFilterCategories(filterHelpers.getFilterCategories());
+		filterConfiguration.setFilterTags(filterHelpers.getFilterTags());
+
+		prepareModelTransactions(filterConfiguration, model, transaction.getDate());
+		model.addAttribute("highlightID", ID);
+		return "transactions/transactions";
 	}
 }

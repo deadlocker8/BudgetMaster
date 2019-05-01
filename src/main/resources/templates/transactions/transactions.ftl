@@ -50,22 +50,24 @@
                     <#-- transactions list -->
                     <br>
                     <#list transactions as transaction>
-                        <div class="hide-on-large-only">
-                            <div class="row valign-wrapper transaction-row">
+                        <#assign shouldHighlight = highlightID?? && transaction.getID()?? && transaction.getID()==highlightID/>
+
+                        <div class="hide-on-large-only transaction-row-top <#if shouldHighlight>budgetmaster-blue-light</#if>">
+                            <div class="row valign-wrapper transaction-row-bottom">
                                 <div class="col s3 center-align bold transaction-text">
                                     ${dateService.getDateStringWithoutYear(transaction.date)}
                                 </div>
                                 <@transactionsMacros.transactionType transaction/>
                                 <@transactionsMacros.transactionButtons transaction/>
                             </div>
-                            <div class="row valign-wrapper">
+                            <div class="row valign-wrapper transaction-row-bottom">
                                 <@transactionsMacros.transactionCategory transaction "center-align"/>
                                 <@transactionsMacros.transactionNameAndDescription transaction/>
                                 <@transactionsMacros.transactionAmount transaction account/>
                             </div>
                         </div>
-                        <div class="hide-on-med-and-down">
-                            <div class="row valign-wrapper transaction-row">
+                        <div class="hide-on-med-and-down transaction-row-top transaction-row-bottom <#if shouldHighlight>budgetmaster-blue-light</#if>">
+                            <div class="row valign-wrapper no-margin-bottom">
                                 <div class="col l1 xl1 bold transaction-text transaction-line-height">
                                     ${dateService.getDateStringWithoutYear(transaction.date)}
                                 </div>

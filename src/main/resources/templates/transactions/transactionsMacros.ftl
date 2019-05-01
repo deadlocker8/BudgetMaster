@@ -62,7 +62,7 @@
 
 <#macro transactionLinks transaction>
     <div class="col s8 l2 xl1 right-align transaction-buttons no-wrap">
-        <a href="<@s.url '/transactions/${transaction.ID?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left">open_in_new</i></a>
+        <a href="<@s.url '/transactions/${transaction.ID?c}/highlight'/>" class="btn-flat no-padding text-color"><i class="material-icons left">open_in_new</i></a>
         <a href="<@s.url '/transactions/${transaction.ID?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left no-margin">edit</i></a>
     </div>
 </#macro>
