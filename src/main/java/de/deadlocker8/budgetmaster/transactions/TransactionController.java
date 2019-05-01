@@ -2,7 +2,7 @@ package de.deadlocker8.budgetmaster.transactions;
 
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
-import de.deadlocker8.budgetmaster.categories.CategoryRepository;
+import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
@@ -13,10 +13,10 @@ import de.deadlocker8.budgetmaster.repeating.endoption.*;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifier;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierType;
 import de.deadlocker8.budgetmaster.services.HelpersService;
-import de.deadlocker8.budgetmaster.settings.Settings;
-import de.deadlocker8.budgetmaster.settings.SettingsRepository;
+import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.TagRepository;
+import de.deadlocker8.budgetmaster.tags.TagService;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -36,22 +36,22 @@ import java.util.List;
 public class TransactionController extends BaseController
 {
 	private final TransactionService transactionService;
-	private final CategoryRepository categoryRepository;
+	private final CategoryService categoryService;
 	private final AccountService accountService;
-	private final SettingsRepository settingsRepository;
-	private final TagRepository tagRepository;
+	private final SettingsService settingsService;
+	private final TagService tagService;
 	private final RepeatingTransactionUpdater repeatingTransactionUpdater;
 	private final HelpersService helpers;
 	private final FilterHelpersService filterHelpers;
 
 	@Autowired
-	public TransactionController(TransactionService transactionService, CategoryRepository categoryRepository, AccountService accountService, SettingsRepository settingsRepository, TagRepository tagRepository, RepeatingTransactionUpdater repeatingTransactionUpdater, HelpersService helpers, FilterHelpersService filterHelpers)
+	public TransactionController(TransactionService transactionService, CategoryService categoryService, AccountService accountService, SettingsService settingsService, TagService tagService, RepeatingTransactionUpdater repeatingTransactionUpdater, HelpersService helpers, FilterHelpersService filterHelpers)
 	{
 		this.transactionService = transactionService;
-		this.categoryRepository = categoryRepository;
+		this.categoryService = categoryService;
 		this.accountService = accountService;
-		this.settingsRepository = settingsRepository;
-		this.tagRepository = tagRepository;
+		this.settingsService = settingsService;
+		this.tagService = tagService;
 		this.repeatingTransactionUpdater = repeatingTransactionUpdater;
 		this.helpers = helpers;
 		this.filterHelpers = filterHelpers;
@@ -88,7 +88,7 @@ public class TransactionController extends BaseController
 	{
 		FilterConfiguration filterConfiguration = filterHelpers.getFilterConfiguration(request);
 
-		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear(), getSettings().isRestActivated(), filterConfiguration);
+		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear(), settingsService.getSettings().isRestActivated(), filterConfiguration);
 		Account currentAccount = helpers.getCurrentAccount();
 
 		model.addAttribute("transactions", transactions);
@@ -96,7 +96,7 @@ public class TransactionController extends BaseController
 		model.addAttribute("budget", helpers.getBudget(transactions, currentAccount));
 		model.addAttribute("currentDate", date);
 		model.addAttribute("filterConfiguration", filterConfiguration);
-		model.addAttribute("settings", settingsRepository.findOne(0));
+		model.addAttribute("settings", settingsService.getSettings());
 	}
 
 	@RequestMapping("/transactions/{ID}/delete")
@@ -111,7 +111,7 @@ public class TransactionController extends BaseController
 	{
 		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
 		Transaction emptyTransaction = new Transaction();
-		emptyTransaction.setCategory(categoryRepository.findByType(CategoryType.NONE));
+		emptyTransaction.setCategory(categoryService.getRepository().findByType(CategoryType.NONE));
 		prepareModelNewOrEdit(model, date, emptyTransaction);
 		return "transactions/newTransaction" + StringUtils.capitalize(type);
 	}
@@ -174,7 +174,7 @@ public class TransactionController extends BaseController
 				repeatingEnd = new RepeatingEndAfterXTimes(Integer.parseInt(repeatingEndValue));
 				break;
 			case DATE:
-				DateTime endDate = DateTime.parse(repeatingEndValue, DateTimeFormat.forPattern("dd.MM.yy").withLocale(getSettings().getLanguage().getLocale()));
+				DateTime endDate = DateTime.parse(repeatingEndValue, DateTimeFormat.forPattern("dd.MM.yy").withLocale(settingsService.getSettings().getLanguage().getLocale()));
 				repeatingEnd = new RepeatingEndDate(endDate);
 				break;
 		}
@@ -280,19 +280,16 @@ public class TransactionController extends BaseController
 	private void prepareModelNewOrEdit(Model model, DateTime date, Transaction emptyTransaction)
 	{
 		model.addAttribute("currentDate", date);
-		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
+		model.addAttribute("categories", categoryService.getRepository().findAllByOrderByNameAsc());
 		model.addAttribute("accounts", accountService.getAllAccountsAsc());
 		model.addAttribute("transaction", emptyTransaction);
-		model.addAttribute("settings", settingsRepository.findOne(0));
-	}
-
-	private Settings getSettings()
-	{
-		return settingsRepository.findOne(0);
+		model.addAttribute("settings", settingsService.getSettings());
 	}
 
 	private Transaction addTagForTransaction(String name, Transaction transaction)
 	{
+		TagRepository tagRepository = tagService.getRepository();
+
 		if(tagRepository.findByName(name) == null)
 		{
 			tagRepository.save(new Tag(name));
