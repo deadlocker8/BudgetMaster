@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmaster.integration;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
@@ -18,6 +19,7 @@ import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Ignore
 public class LoginControllerTest
 {
 	private WebDriver driver;
@@ -35,6 +37,7 @@ public class LoginControllerTest
 	}
 
 	@Test
+
 	public void getSearchPage()
 	{
 		driver.get(baseUrl);

@@ -10,6 +10,6 @@ import javax.persistence.metamodel.StaticMetamodel;
 public class Tag_
 {
 	public static volatile SingularAttribute<Tag, Integer> ID;
-	public static volatile SingularAttribute<Tag, Integer> name;
+	public static volatile SingularAttribute<Tag, String> name;
 	public static volatile ListAttribute<Tag, Transaction> referringTransactions;
 }

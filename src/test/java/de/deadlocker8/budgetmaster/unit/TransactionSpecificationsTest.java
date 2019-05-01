@@ -33,7 +33,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @DataJpaTest
-public class TransactionRepositoryTest
+public class TransactionSpecificationsTest
 {
 	@Autowired
 	private TransactionRepository transactionRepository;

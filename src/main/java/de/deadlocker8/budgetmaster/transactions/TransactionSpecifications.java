@@ -76,13 +76,13 @@ public class TransactionSpecifications
 			if(tagIDs != null)
 			{
 				Join<Transaction, Tag> join = transaction.join(Transaction_.tags);
-				Predicate actorIdPredicate = builder.disjunction();
+				Predicate tagPredicate = builder.disjunction();
 				for(Integer tagID : tagIDs)
 				{
-					actorIdPredicate.getExpressions().add(builder.equal(join.get(Tag_.ID), tagID));
+					tagPredicate.getExpressions().add(builder.equal(join.get(Tag_.ID), tagID));
 				}
 
-				predicates.add(actorIdPredicate);
+				predicates.add(tagPredicate);
 			}
 
 			if(name != null && name.length() > 0)
