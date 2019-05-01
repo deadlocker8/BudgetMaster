@@ -35,7 +35,6 @@ import java.util.List;
 @Controller
 public class TransactionController extends BaseController
 {
-	private final TransactionRepository transactionRepository;
 	private final TransactionService transactionService;
 	private final CategoryRepository categoryRepository;
 	private final AccountService accountService;
@@ -46,9 +45,8 @@ public class TransactionController extends BaseController
 	private final FilterHelpersService filterHelpers;
 
 	@Autowired
-	public TransactionController(TransactionRepository transactionRepository, TransactionService transactionService, CategoryRepository categoryRepository, AccountService accountService, SettingsRepository settingsRepository, TagRepository tagRepository, RepeatingTransactionUpdater repeatingTransactionUpdater, HelpersService helpers, FilterHelpersService filterHelpers)
+	public TransactionController(TransactionService transactionService, CategoryRepository categoryRepository, AccountService accountService, SettingsRepository settingsRepository, TagRepository tagRepository, RepeatingTransactionUpdater repeatingTransactionUpdater, HelpersService helpers, FilterHelpersService filterHelpers)
 	{
-		this.transactionRepository = transactionRepository;
 		this.transactionService = transactionService;
 		this.categoryRepository = categoryRepository;
 		this.accountService = accountService;
@@ -81,7 +79,7 @@ public class TransactionController extends BaseController
 
 		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
 		prepareModelTransactions(request, model, date);
-		model.addAttribute("currentTransaction", transactionRepository.getOne(ID));
+		model.addAttribute("currentTransaction", transactionService.getRepository().getOne(ID));
 
 		return "transactions/transactions";
 	}
@@ -245,14 +243,14 @@ public class TransactionController extends BaseController
 			return url;
 		}
 
-		transactionRepository.save(transaction);
+		transactionService.getRepository().save(transaction);
 		return "redirect:/transactions";
 	}
 
 	@RequestMapping("/transactions/{ID}/edit")
 	public String editTransaction(Model model, @CookieValue("currentDate") String cookieDate, @PathVariable("ID") Integer ID)
 	{
-		Transaction transaction = transactionRepository.findOne(ID);
+		Transaction transaction = transactionService.getRepository().findOne(ID);
 		if(transaction == null)
 		{
 			throw new ResourceNotFoundException();
