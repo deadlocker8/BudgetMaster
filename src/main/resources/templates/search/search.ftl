@@ -18,7 +18,7 @@
             <div class="card main-card background-color">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="headline">${locale.getString("menu.search.results")}</div>
+                        <div class="headline">${locale.getString("menu.search.results")} (${page.getTotalElements()})</div>
                     </div>
                 </div>
                 <form id="searchForm" action="<@s.url '/search'/>" method="get">
