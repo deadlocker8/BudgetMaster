@@ -46,28 +46,36 @@
 
                     <div class="row">
                         <div class="col s8 offset-s2 m4 offset-m2 l3 offset-l3">
-                            <label>
-                                <input type="checkbox" name="searchName" <#if search.isSearchName()>checked="checked"</#if>>
-                                <span class="text-color">${locale.getString('search.in.name')}</span>
-                            </label>
+                            <div class="search-checkbox-container">
+                                <label>
+                                    <input type="checkbox" name="searchName" <#if search.isSearchName()>checked="checked"</#if>>
+                                    <span class="text-color">${locale.getString('search.in.name')}</span>
+                                </label>
+                            </div>
                         </div>
                         <div class="col s8 offset-s2 m6 l6">
-                            <label>
-                                <input type="checkbox" name="searchDescription" <#if search.isSearchDescription()>checked="checked"</#if>>
-                                <span class="text-color">${locale.getString('search.in.description')}</span>
-                            </label>
+                            <div class="search-checkbox-container">
+                                <label>
+                                    <input type="checkbox" name="searchDescription" <#if search.isSearchDescription()>checked="checked"</#if>>
+                                    <span class="text-color">${locale.getString('search.in.description')}</span>
+                                </label>
+                            </div>
                         </div>
                         <div class="col s8 offset-s2 m4 offset-m2 l3 offset-l3">
-                            <label>
-                                <input type="checkbox" name="searchCategory" <#if search.isSearchCategory()>checked="checked"</#if>>
-                                <span class="text-color">${locale.getString('search.in.category')}</span>
-                            </label>
+                            <div class="search-checkbox-container">
+                                <label>
+                                    <input type="checkbox" name="searchCategory" <#if search.isSearchCategory()>checked="checked"</#if>>
+                                    <span class="text-color">${locale.getString('search.in.category')}</span>
+                                </label>
+                            </div>
                         </div>
                         <div class="col s8 offset-s2 m6 l6">
-                            <label>
-                                <input type="checkbox" name="searchTags" <#if search.isSearchTags()>checked="checked"</#if>>
-                                <span class="text-color">${locale.getString('search.in.tags')}</span>
-                            </label>
+                            <div class="search-checkbox-container">
+                                <label>
+                                    <input type="checkbox" name="searchTags" <#if search.isSearchTags()>checked="checked"</#if>>
+                                    <span class="text-color">${locale.getString('search.in.tags')}</span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </form>

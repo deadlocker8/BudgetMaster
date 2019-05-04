@@ -1,3 +1,15 @@
 .search-result {
     background-color: #fafafa;
 }
+
+.search-checkbox-container input[type="checkbox"] + span:not(.lever)::before,
+.search-checkbox-container input[type="checkbox"]:not(.filled-in) + span:not(.lever)::after {
+    border: 2px solid rgba(255, 255, 255, 0.7);
+}
+
+.search-checkbox-container input[type="checkbox"]:checked + span:not(.lever)::before {
+    border-top: 3px solid transparent;
+    border-left: 3px solid transparent;
+    border-right: 3px solid #45A0EF;
+    border-bottom: 3px solid #45A0EF;
+}
