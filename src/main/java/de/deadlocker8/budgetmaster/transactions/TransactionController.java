@@ -305,6 +305,7 @@ public class TransactionController extends BaseController
 	public String highlight(Model model, @PathVariable("ID") Integer ID)
 	{
 		Transaction transaction = transactionService.getRepository().getOne(ID);
+		accountService.selectAccount(transaction.getAccount().getID());
 		repeatingTransactionUpdater.updateRepeatingTransactions(transaction.getDate().dayOfMonth().withMaximumValue());
 
 		FilterConfiguration filterConfiguration = FilterConfiguration.DEFAULT;
