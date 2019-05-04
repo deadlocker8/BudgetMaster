@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 public class UserService
 {
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	public static final String DEFAULT_PASSWORD = "BudgetMaster";
 
 	@Autowired
 	public UserService(UserRepository userRepository, AccountService accountService)
@@ -25,7 +26,7 @@ public class UserService
 		if(userRepository.findAll().size() == 0)
 		{
 			BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-			String encryptedPassword = bCryptPasswordEncoder.encode("BudgetMaster");
+			String encryptedPassword = bCryptPasswordEncoder.encode(DEFAULT_PASSWORD);
 			User user = new User("Default", encryptedPassword);
 			userRepository.save(user);
 			LOGGER.info("Created default user");
