@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.integration;
 
 import de.deadlocker8.budgetmaster.Main;
+import de.thecodelabs.utils.util.Localization;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,9 +44,9 @@ public class LoginControllerTest
 		assertNotNull(input);
 
 		WebElement label = driver.findElement(By.cssSelector(".input-field label"));
-		assertEquals("Password", label.getText());
+		assertEquals(Localization.getString("login.password"), label.getText());
 
 		WebElement button = driver.findElement(By.tagName("button"));
-		assertEquals("Login", IntegrationTestHelper.getTextNode(button));
+		assertEquals(Localization.getString("login.button"), IntegrationTestHelper.getTextNode(button));
 	}
 }
