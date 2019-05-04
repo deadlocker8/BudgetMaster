@@ -31,8 +31,8 @@
     </div>
 </#macro>
 
-<#macro transactionNameAndDescription transaction>
-    <div class="col s5 l4 xl5">
+<#macro transactionNameAndDescription transaction size>
+    <div class="col ${size}">
         <div class="truncate transaction-text">${transaction.name}</div>
         <div class="hide-on-med-and-down">
             <#if transaction.description??>
@@ -42,12 +42,12 @@
     </div>
 </#macro>
 
-<#macro transactionAmount transaction account>
+<#macro transactionAmount transaction account size>
     <#assign amount = helpers.getAmount(transaction, account)/>
     <#if amount <= 0>
-        <div class="col s4 l3 xl3 bold ${redTextColor} no-wrap right-align transaction-text">${helpers.getCurrencyString(amount)}</div>
+        <div class="col ${size} bold ${redTextColor} no-wrap right-align transaction-text">${helpers.getCurrencyString(amount)}</div>
     <#else>
-        <div class="col s4 l3 xl3 bold ${greenTextColor} no-wrap right-align transaction-text">${helpers.getCurrencyString(amount)}</div>
+        <div class="col ${size} bold ${greenTextColor} no-wrap right-align transaction-text">${helpers.getCurrencyString(amount)}</div>
     </#if>
 </#macro>
 
@@ -60,8 +60,14 @@
         </div>
 </#macro>
 
+<#macro transactionAccount transaction>
+    <div class="col s4 l2 xl2 truncate">
+        ${transaction.getAccount().getName()}
+    </div>
+</#macro>
+
 <#macro transactionLinks transaction>
-    <div class="col s8 l2 xl1 right-align transaction-buttons no-wrap">
+    <div class="col s4 l2 xl1 right-align transaction-buttons no-wrap">
         <a href="<@s.url '/transactions/${transaction.ID?c}/highlight'/>" class="btn-flat no-padding text-color"><i class="material-icons left">open_in_new</i></a>
         <a href="<@s.url '/transactions/${transaction.ID?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left no-margin">edit</i></a>
     </div>

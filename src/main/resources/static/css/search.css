@@ -15,11 +15,11 @@
 }
 
 .pagination li a {
-    color: #FFFFFF;
+    color: #212121;
 }
 
 .pagination li.active {
-    background-color: #212121;
+    background-color: #2E79B9;
 }
 
 .page-link:hover {

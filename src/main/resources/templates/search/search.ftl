@@ -39,12 +39,13 @@
                                             ${dateService.getDateStringWithoutYear(transaction.date)}
                                         </div>
                                         <@transactionsMacros.transactionType transaction/>
+                                        <@transactionsMacros.transactionAccount transaction/>
                                         <@transactionsMacros.transactionLinks transaction/>
                                     </div>
                                     <div class="row valign-wrapper no-margin-bottom">
                                         <@transactionsMacros.transactionCategory transaction "center-align"/>
-                                        <@transactionsMacros.transactionNameAndDescription transaction/>
-                                        <@transactionsMacros.transactionAmount transaction transaction.getAccount()/>
+                                        <@transactionsMacros.transactionNameAndDescription transaction "s5"/>
+                                        <@transactionsMacros.transactionAmount transaction transaction.getAccount() "s4"/>
                                     </div>
                                 </div>
                                 <div class="hide-on-med-and-down">
@@ -54,8 +55,9 @@
                                         </div>
                                         <@transactionsMacros.transactionCategory transaction "left-align"/>
                                         <@transactionsMacros.transactionType transaction/>
-                                        <@transactionsMacros.transactionNameAndDescription transaction/>
-                                        <@transactionsMacros.transactionAmount transaction transaction.getAccount()/>
+                                        <@transactionsMacros.transactionAccount transaction/>
+                                        <@transactionsMacros.transactionNameAndDescription transaction "l3 xl4"/>
+                                        <@transactionsMacros.transactionAmount transaction transaction.getAccount() "l2 xl2"/>
                                         <@transactionsMacros.transactionLinks transaction/>
                                     </div>
                                 </div>

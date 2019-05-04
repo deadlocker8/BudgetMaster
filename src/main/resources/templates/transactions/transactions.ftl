@@ -62,8 +62,8 @@
                             </div>
                             <div class="row valign-wrapper transaction-row-bottom">
                                 <@transactionsMacros.transactionCategory transaction "center-align"/>
-                                <@transactionsMacros.transactionNameAndDescription transaction/>
-                                <@transactionsMacros.transactionAmount transaction account/>
+                                <@transactionsMacros.transactionNameAndDescription transaction "s5"/>
+                                <@transactionsMacros.transactionAmount transaction account "s4"/>
                             </div>
                         </div>
                         <div class="hide-on-med-and-down transaction-row-top transaction-row-bottom <#if shouldHighlight>budgetmaster-blue-light</#if>">
@@ -73,8 +73,8 @@
                                 </div>
                                 <@transactionsMacros.transactionCategory transaction "left-align"/>
                                 <@transactionsMacros.transactionType transaction/>
-                                <@transactionsMacros.transactionNameAndDescription transaction/>
-                                <@transactionsMacros.transactionAmount transaction account/>
+                                <@transactionsMacros.transactionNameAndDescription transaction "l4 xl5"/>
+                                <@transactionsMacros.transactionAmount transaction account "l3 xl3"/>
                                 <@transactionsMacros.transactionButtons transaction/>
                             </div>
                         </div>
