@@ -37,7 +37,7 @@ public class LoginControllerTest
 	}
 
 	@Test
-	public void getSearchPage()
+	public void getLoginPage()
 	{
 		driver.get(url);
 		WebElement input = driver.findElement(By.id("login-password"));
