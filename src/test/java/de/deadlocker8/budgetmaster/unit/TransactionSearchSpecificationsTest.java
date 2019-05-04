@@ -127,7 +127,7 @@ public class TransactionSearchSpecificationsTest
 	@Test
 	public void getMatches_OnlyName()
 	{
-		Search search = new Search("Test", true, false, false, false);
+		Search search = new Search("Test", true, false, false, false, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
@@ -140,7 +140,7 @@ public class TransactionSearchSpecificationsTest
 	@Test
 	public void getMatches_PartialName()
 	{
-		Search search = new Search("es", true, false, false, false);
+		Search search = new Search("es", true, false, false, false, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
@@ -153,7 +153,7 @@ public class TransactionSearchSpecificationsTest
 	@Test
 	public void getMatches_IgnoreCase()
 	{
-		Search search = new Search("tEST", true, true, true, true);
+		Search search = new Search("tEST", true, true, true, true, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
@@ -166,7 +166,7 @@ public class TransactionSearchSpecificationsTest
 	@Test
 	public void getMatches_OnlyDescription()
 	{
-		Search search = new Search("What", true, true, true, true);
+		Search search = new Search("What", true, true, true, true, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
@@ -179,7 +179,7 @@ public class TransactionSearchSpecificationsTest
 	@Test
 	public void getMatches_OnlyCategory()
 	{
-		Search search = new Search(category2.getName(), false, false, true, false);
+		Search search = new Search(category2.getName(), false, false, true, false, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
@@ -192,7 +192,7 @@ public class TransactionSearchSpecificationsTest
 	@Test
 	public void getMatches_Order()
 	{
-		Search search = new Search("", true, true, true, true);
+		Search search = new Search("", true, true, true, true, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
@@ -208,7 +208,7 @@ public class TransactionSearchSpecificationsTest
 	@Test
 	public void getMatches_Mixed()
 	{
-		Search search = new Search("e", true, true, true, true);
+		Search search = new Search("e", true, true, true, true, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
@@ -221,7 +221,7 @@ public class TransactionSearchSpecificationsTest
 	@Test
 	public void getMatches_NoMatches()
 	{
-		Search search = new Search("asuzgdzasuiduzasds", true, true, true,true);
+		Search search = new Search("asuzgdzasuiduzasds", true, true, true,true, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
@@ -231,7 +231,7 @@ public class TransactionSearchSpecificationsTest
 	@Test
 	public void getMatches_SearchNothing()
 	{
-		Search search = new Search("egal", false, false, false,false);
+		Search search = new Search("egal", false, false, false,false, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);

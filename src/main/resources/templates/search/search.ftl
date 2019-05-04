@@ -21,16 +21,17 @@
                         <div class="headline">${locale.getString("menu.search.results")}</div>
                     </div>
                 </div>
-                <form name="NewSearch" action="<@s.url '/search'/>" method="post">
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-
+                <form id="searchForm" action="<@s.url '/search'/>" method="get">
                     <@searchMacros.searchTextAndButton search/>
                     <@searchMacros.checkboxes search/>
+                    <input type="hidden" name="page" id="inputPageNumber" value="${page.getNumber()}"/>
                 </form>
+
+                <@searchMacros.pagination page/>
 
                 <div class="row search-container">
                     <div class="col s12">
-                        <#list transactions as transaction>
+                        <#list page.getContent() as transaction>
                             <div class="card-panel search-result">
                                 <div class="hide-on-large-only">
                                     <div class="row valign-wrapper">
@@ -62,7 +63,7 @@
                         </#list>
 
                         <#-- placeholder -->
-                        <#if transactions?size == 0>
+                        <#if page.getContent()?size == 0>
                             <div class="row">
                                 <div class="col s12">
                                     <br><br>
@@ -78,5 +79,6 @@
         <!--  Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
+        <script src="<@s.url '/js/search.js'/>"></script>
     </body>
 </html>

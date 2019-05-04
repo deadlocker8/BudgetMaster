@@ -13,3 +13,15 @@
     border-right: 3px solid #45A0EF;
     border-bottom: 3px solid #45A0EF;
 }
+
+.pagination li a {
+    color: #FFFFFF;
+}
+
+.pagination li.active {
+    background-color: #212121;
+}
+
+.page-link:hover {
+    cursor: pointer;
+}
