@@ -139,6 +139,10 @@ main {
     color: #212121;
 }
 
+.sidenav #buttonSearch {
+    right: 3rem;
+}
+
 .btn, .btn-flat {
     text-transform: none;
     font-weight: 600;

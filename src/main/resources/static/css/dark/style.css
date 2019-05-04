@@ -120,6 +120,10 @@ main {
     box-shadow: none;
 }
 
+.sidenav #buttonSearch {
+    right: 3rem;
+}
+
 .sidenav li > a, .sidenav-sub li > a {
     color: #FFFFFF;
     font-weight: 600;

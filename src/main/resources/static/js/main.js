@@ -30,6 +30,11 @@ $( document ).ready(function() {
         document.getElementById("login-password").focus();
     }
 
+    $("#buttonSearch").click(function()
+    {
+        document.getElementById("navbarSearchForm").submit();
+    });
+
     $("#buttonClearSearch").click(function()
     {
         document.getElementById("search").value = "";
