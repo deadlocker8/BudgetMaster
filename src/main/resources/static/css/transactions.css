@@ -15,6 +15,10 @@
     background-color: #2E79B9;
 }
 
+.chips .input {
+    width: auto !important;
+}
+
 .input-min-width {
     min-width: 100px;
 }
