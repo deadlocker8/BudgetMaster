@@ -64,7 +64,13 @@
 <#macro itemSearch>
     <nav class="searchWrapper">
         <div class="nav-wrapper">
-            <form name="NewSearch" action="<@s.url '/search'/>" method="get">
+            <form name="NewSearch" action="<@s.url '/search'/>" method="post">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <input type="hidden" name="searchName" value="true">
+                <input type="hidden" name="searchDescription" value="true">
+                <input type="hidden" name="searchCategory" value="true">
+                <input type="hidden" name="searchTags" value="true">
+
                 <div class="input-field">
                     <input id="search" class="text-color" name="searchText" type="search">
                     <label class="label-icon" for="search"><i class="material-icons">search</i></label>

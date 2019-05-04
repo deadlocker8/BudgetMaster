@@ -10,6 +10,7 @@ import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOptionRepository;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndAfterXTimes;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierDays;
+import de.deadlocker8.budgetmaster.search.Search;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.TagRepository;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
@@ -126,7 +127,8 @@ public class TransactionSearchSpecificationsTest
 	@Test
 	public void getMatches_OnlyName()
 	{
-		Specification spec = TransactionSearchSpecifications.withDynamicQuery("Test");
+		Search search = new Search("Test", true, false, false, false);
+		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertTrue(results.contains(transaction1));
@@ -138,7 +140,8 @@ public class TransactionSearchSpecificationsTest
 	@Test
 	public void getMatches_PartialName()
 	{
-		Specification spec = TransactionSearchSpecifications.withDynamicQuery("es");
+		Search search = new Search("es", true, false, false, false);
+		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertTrue(results.contains(transaction1));
@@ -150,7 +153,8 @@ public class TransactionSearchSpecificationsTest
 	@Test
 	public void getMatches_IgnoreCase()
 	{
-		Specification spec = TransactionSearchSpecifications.withDynamicQuery("tEST");
+		Search search = new Search("tEST", true, true, true, true);
+		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertTrue(results.contains(transaction1));
@@ -162,7 +166,8 @@ public class TransactionSearchSpecificationsTest
 	@Test
 	public void getMatches_OnlyDescription()
 	{
-		Specification spec = TransactionSearchSpecifications.withDynamicQuery("What");
+		Search search = new Search("What", true, true, true, true);
+		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertTrue(results.contains(transaction1));
@@ -174,7 +179,8 @@ public class TransactionSearchSpecificationsTest
 	@Test
 	public void getMatches_OnlyCategory()
 	{
-		Specification spec = TransactionSearchSpecifications.withDynamicQuery(category2.getName());
+		Search search = new Search(category2.getName(), false, false, true, false);
+		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertFalse(results.contains(transaction1));
@@ -186,7 +192,8 @@ public class TransactionSearchSpecificationsTest
 	@Test
 	public void getMatches_Order()
 	{
-		Specification spec = TransactionSearchSpecifications.withDynamicQuery("");
+		Search search = new Search("", true, true, true, true);
+		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		List<Transaction> expected = new ArrayList<>();
@@ -201,7 +208,8 @@ public class TransactionSearchSpecificationsTest
 	@Test
 	public void getMatches_Mixed()
 	{
-		Specification spec = TransactionSearchSpecifications.withDynamicQuery("e");
+		Search search = new Search("e", true, true, true, true);
+		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertTrue(results.contains(transaction1));
@@ -213,7 +221,18 @@ public class TransactionSearchSpecificationsTest
 	@Test
 	public void getMatches_NoMatches()
 	{
-		Specification spec = TransactionSearchSpecifications.withDynamicQuery("asuzgdzasuiduzasds");
+		Search search = new Search("asuzgdzasuiduzasds", true, true, true,true);
+		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
+
+		List<Transaction> results = transactionRepository.findAll(spec);
+		assertEquals(0, results.size());
+	}
+
+	@Test
+	public void getMatches_SearchNothing()
+	{
+		Search search = new Search("egal", false, false, false,false);
+		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertEquals(0, results.size());

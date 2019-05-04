@@ -24,7 +24,9 @@
 }
 
 .transaction-container .category-circle,
-.transaction-container .category-circle-small {
+.transaction-container .category-circle-small,
+.search-container .category-circle,
+.search-container .category-circle-small {
     margin: auto;
 }
 

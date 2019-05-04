@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,13 +28,14 @@ public class SearchController extends BaseController
 		this.transactionService = transactionService;
 	}
 
-	@RequestMapping(value = "/search", method = RequestMethod.GET)
-	public String search(Model model, @RequestParam(defaultValue = "") String searchText)
+	@RequestMapping(value = "/search", method = RequestMethod.POST)
+	public String search(Model model, @ModelAttribute("NewSearch") Search search)
 	{
-		Specification<Transaction> specification = TransactionSearchSpecifications.withDynamicQuery(searchText);
+		System.out.println(search);
+		Specification<Transaction> specification = TransactionSearchSpecifications.withDynamicQuery(search);
 		List<Transaction> transactions = transactionService.getRepository().findAll(specification);
 		model.addAttribute("transactions", transactions);
-		model.addAttribute("searchText", searchText);
+		model.addAttribute("search", search);
 		return "search/search";
 	}
 }
