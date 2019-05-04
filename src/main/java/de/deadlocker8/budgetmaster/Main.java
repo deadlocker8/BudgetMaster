@@ -83,13 +83,29 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 
 	public static Path getApplicationSupportFolder()
 	{
-		if(ProgramArgs.isDebug())
+		if(System.getProperties().contains("test"))
 		{
-			LOGGER.info("Starting in DEBUG Mode");
-			return SystemUtils.getApplicationSupportDirectoryPath(Localization.getString("folder"), "debug");
+			RunMode.currentRunMode = RunMode.TEST;
+		}
+		else if(ProgramArgs.isDebug())
+		{
+			RunMode.currentRunMode = RunMode.DEBUG;
 		}
 
-		return SystemUtils.getApplicationSupportDirectoryPath(Localization.getString("folder"));
+		switch(RunMode.currentRunMode)
+		{
+			case NORMAL:
+				LOGGER.info("Starting in NORMAL Mode");
+				return SystemUtils.getApplicationSupportDirectoryPath(Localization.getString("folder"));
+			case DEBUG:
+				LOGGER.info("Starting in DEBUG Mode");
+				return SystemUtils.getApplicationSupportDirectoryPath(Localization.getString("folder"), "debug");
+			case TEST:
+				LOGGER.info("Starting in TEST Mode");
+				return SystemUtils.getApplicationSupportDirectoryPath(Localization.getString("folder"), "test");
+			default:
+				return null;
+		}
 	}
 
 	public static void main(String[] args)
@@ -115,17 +131,24 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 	{
 		Build build = Build.getInstance();
 		logAppInfo(build.getAppName(), build.getVersionName(), build.getVersionCode(), build.getVersionDate());
-		if(ProgramArgs.isDebug())
+
+		switch(RunMode.currentRunMode)
 		{
-			LOGGER.info("==================================");
-			LOGGER.info("+++ BUDGETMASTER DEBUG STARTED +++");
-			LOGGER.info("==================================");
-		}
-		else
-		{
-			LOGGER.info("=============================");
-			LOGGER.info("+++ BUDGETMASTER STARTED +++");
-			LOGGER.info("=============================");
+			case NORMAL:
+				LOGGER.info("=============================");
+				LOGGER.info("+++ BUDGETMASTER STARTED +++");
+				LOGGER.info("=============================");
+				break;
+			case DEBUG:
+				LOGGER.info("==================================");
+				LOGGER.info("+++ BUDGETMASTER DEBUG STARTED +++");
+				LOGGER.info("==================================");
+				break;
+			case TEST:
+				LOGGER.info("=================================");
+				LOGGER.info("+++ BUDGETMASTER TEST STARTED +++");
+				LOGGER.info("=================================");
+				break;
 		}
 	}
 

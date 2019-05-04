@@ -272,6 +272,10 @@
                 <configuration>
                     <junitArtifactName>junit:junit</junitArtifactName>
                     <argLine>-Dfile.encoding=UTF-8</argLine>
+
+                    <systemPropertyVariables>
+                        <test>true</test>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
 

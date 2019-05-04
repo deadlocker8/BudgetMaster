@@ -29,7 +29,7 @@ public class ImportTest
 	@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 	@Autowired
 	private WebDriver driver;
-	private final static String BASE_URL = "https://localhost:";
+	private final static String BASE_URL = "http://localhost:";
 	private String url;
 
 	@LocalServerPort
