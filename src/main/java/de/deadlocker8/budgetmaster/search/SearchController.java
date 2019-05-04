@@ -31,7 +31,6 @@ public class SearchController extends BaseController
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	public String search(Model model, @ModelAttribute("NewSearch") Search search)
 	{
-		System.out.println(search);
 		Specification<Transaction> specification = TransactionSearchSpecifications.withDynamicQuery(search);
 		List<Transaction> transactions = transactionService.getRepository().findAll(specification);
 		model.addAttribute("transactions", transactions);

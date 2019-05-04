@@ -112,6 +112,16 @@
                                 </div>
                             </div>
                         </#list>
+
+                        <#-- placeholder -->
+                        <#if transactions?size == 0>
+                            <div class="row">
+                                <div class="col s12">
+                                    <br><br>
+                                    <div class="headline-advice center-align">${locale.getString("search.placeholder")}</div>
+                                </div>
+                            </div>
+                        </#if>
                     </div>
                 </div>
             </div>
