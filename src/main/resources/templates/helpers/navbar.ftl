@@ -34,6 +34,11 @@
             <@itemUpdate "/update", locale.getString("menu.update"), "system_update"/>
         </#if>
 
+        <#if programArgs.isTest()>
+            <@itemDivider/>
+            <@itemDebug "TEST MODE" "report_problem"/>
+        </#if>
+
         <#if programArgs.isDebug()>
             <@itemDivider/>
             <@itemDebug "DEBUG MODE" "bug_report"/>
