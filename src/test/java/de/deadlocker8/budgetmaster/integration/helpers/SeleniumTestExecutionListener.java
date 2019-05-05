@@ -45,7 +45,7 @@ public class SeleniumTestExecutionListener extends AbstractTestExecutionListener
 		{
 
 			FirefoxOptions options = new FirefoxOptions();
-//			options.setHeadless(true);
+			options.setHeadless(true);
 			webDriver = new FirefoxDriver(options);
 
 			ConfigurableApplicationContext configurableApplicationContext = (ConfigurableApplicationContext) context;

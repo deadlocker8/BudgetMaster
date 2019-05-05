@@ -129,4 +129,6 @@ public class SearchTest
 		results = driver.findElements(By.cssSelector(".search-container .card-panel"));
 		assertEquals(4, results.size());
 	}
+
+	//TODO: test highlight, browser back, checkboxes
 }
