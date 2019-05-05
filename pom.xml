@@ -280,7 +280,7 @@
                     <argLine>-Dfile.encoding=UTF-8</argLine>
 
                     <systemPropertyVariables>
-                        <test>true</test>
+                        <testProfile>true</testProfile>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
