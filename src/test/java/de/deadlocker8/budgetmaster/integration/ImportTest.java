@@ -2,6 +2,8 @@ package de.deadlocker8.budgetmaster.integration;
 
 import de.deadlocker8.budgetmaster.Main;
 import de.deadlocker8.budgetmaster.authentication.UserService;
+import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
+import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
@@ -9,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.util.Arrays;

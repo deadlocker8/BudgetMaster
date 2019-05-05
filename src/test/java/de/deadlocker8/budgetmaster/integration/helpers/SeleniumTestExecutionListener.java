@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.integration;
+package de.deadlocker8.budgetmaster.integration.helpers;
 
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -45,7 +45,7 @@ public class SeleniumTestExecutionListener extends AbstractTestExecutionListener
 		{
 
 			FirefoxOptions options = new FirefoxOptions();
-			options.setHeadless(true);
+//			options.setHeadless(true);
 			webDriver = new FirefoxDriver(options);
 
 			ConfigurableApplicationContext configurableApplicationContext = (ConfigurableApplicationContext) context;

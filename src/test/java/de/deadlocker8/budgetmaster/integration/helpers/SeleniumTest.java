@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.integration;
+package de.deadlocker8.budgetmaster.integration.helpers;
 
 import org.springframework.test.context.TestExecutionListeners;
 

@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.integration;
+package de.deadlocker8.budgetmaster.integration.helpers;
 
 import de.thecodelabs.utils.util.Localization;
 import org.openqa.selenium.By;
@@ -10,9 +10,9 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-class IntegrationTestHelper
+public class IntegrationTestHelper
 {
-	static String getTextNode(WebElement e)
+	public static String getTextNode(WebElement e)
 	{
 		String text = e.getText().trim();
 		List<WebElement> children = e.findElements(By.xpath("./*"));
@@ -27,7 +27,7 @@ class IntegrationTestHelper
 	private WebDriver driver;
 	private String url;
 
-	IntegrationTestHelper(WebDriver driver, int port)
+	public IntegrationTestHelper(WebDriver driver, int port)
 	{
 		this.driver = driver;
 		this.url = BASE_URL + port;
@@ -38,12 +38,12 @@ class IntegrationTestHelper
 		return url;
 	}
 
-	void start()
+	public void start()
 	{
 		driver.get(url);
 	}
 
-	void login(String password)
+	public void login(String password)
 	{
 		WebElement inputPassword = driver.findElement(By.id("login-password"));
 		inputPassword.sendKeys(password);
@@ -51,7 +51,7 @@ class IntegrationTestHelper
 		buttonLogin.click();
 	}
 
-	void hideBackupReminder()
+	public void hideBackupReminder()
 	{
 		try
 		{
@@ -63,7 +63,7 @@ class IntegrationTestHelper
 		}
 	}
 
-	void uploadDatabase(String path, List<String> sourceAccounts, List<String> destinationAccounts)
+	public void uploadDatabase(String path, List<String> sourceAccounts, List<String> destinationAccounts)
 	{
 		if(path.startsWith("\\"))
 		{
@@ -92,6 +92,10 @@ class IntegrationTestHelper
 		driver.findElement(By.id("buttonImport")).click();
 
 		assertEquals(Localization.getString("menu.settings"), IntegrationTestHelper.getTextNode(driver.findElement(By.className("headline"))));
+
+		// open transactions page in order to update repeating transactions
+		driver.get(url + "/transactions");
+		start();
 	}
 
 	private void createAccountOnImport(String accountName)

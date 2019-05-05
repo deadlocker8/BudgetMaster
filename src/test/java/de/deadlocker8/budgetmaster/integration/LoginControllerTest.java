@@ -2,6 +2,8 @@ package de.deadlocker8.budgetmaster.integration;
 
 import de.deadlocker8.budgetmaster.Main;
 import de.deadlocker8.budgetmaster.authentication.UserService;
+import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
+import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
 import de.thecodelabs.utils.util.Localization;
 import org.junit.Test;
 import org.junit.runner.RunWith;
