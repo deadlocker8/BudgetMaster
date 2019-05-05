@@ -1,9 +1,9 @@
 <#macro style name>
         <#import "/spring.ftl" as s>
         <#if helpers.getSettings().isUseDarkTheme()>
-                <link type="text/css" rel="stylesheet" href=<@s.url '${"/css/dark/" + name + ".css"}'/>/>
+                <link type="text/css" rel="stylesheet" href="<@s.url '${"/css/dark/" + name + ".css"}'/>"/>
         <#else>
-                <link type="text/css" rel="stylesheet" href=<@s.url '${"/css/" + name + ".css"}'/>/>
+                <link type="text/css" rel="stylesheet" href="<@s.url '${"/css/" + name + ".css"}'/>"/>
         </#if>
 </#macro>
 

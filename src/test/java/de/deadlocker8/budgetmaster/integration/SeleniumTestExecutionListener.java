@@ -31,9 +31,9 @@ public class SeleniumTestExecutionListener extends AbstractTestExecutionListener
 	@Override
 	public void prepareTestInstance(TestContext testContext)
 	{
-		if(!System.getProperties().contains("test"))
+		if(!System.getProperties().containsKey("testProfile"))
 		{
-			throw new RuntimeException("Test profile not activated. Skipping tests. (Set -Dtest=true in your VM arguments)");
+			throw new RuntimeException("Test profile not activated. Skipping tests. (Set -DtestProfile=true in your VM arguments)");
 		}
 
 		if(webDriver != null)

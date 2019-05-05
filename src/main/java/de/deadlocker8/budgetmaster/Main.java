@@ -83,7 +83,7 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 
 	public static Path getApplicationSupportFolder()
 	{
-		if(System.getProperties().contains("test"))
+		if(System.getProperties().containsKey("testProfile"))
 		{
 			RunMode.currentRunMode = RunMode.TEST;
 		}

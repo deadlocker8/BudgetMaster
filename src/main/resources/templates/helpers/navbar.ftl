@@ -164,7 +164,7 @@
                 <p>${locale.getString("info.text.backup.reminder")}</p>
             </div>
             <div class="modal-footer background-color">
-                <a href="<@s.url '/backupReminder/cancel'/>" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
+                <a href="<@s.url '/backupReminder/cancel'/>" id="buttonCloseReminder" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
                 <a href="<@s.url '/backupReminder/settings'/>" class="modal-action modal-close waves-effectwaves-light green btn-flat white-text">${locale.getString("info.button.backup.reminder")}</a>
             </div>
         </div>
