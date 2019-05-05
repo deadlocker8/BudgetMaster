@@ -31,7 +31,7 @@
                                             <table class="${redTextColor} login-message no-border-table">
                                                 <tr>
                                                     <td><i class="material-icons">warning</i></td>
-                                                    <td>${locale.getString("warning.wrong.password")}</td>
+                                                    <td id="loginMessage">${locale.getString("warning.wrong.password")}</td>
                                                 </tr>
                                             </table>
                                         </div>
@@ -44,7 +44,7 @@
                                             <table class="${greenTextColor} login-message no-border-table">
                                                 <tr>
                                                     <td><i class="material-icons">info_outline</i></td>
-                                                    <td>${locale.getString("logout.success")}</td>
+                                                    <td id="loginMessage">${locale.getString("logout.success")}</td>
                                                 </tr>
                                             </table>
                                         </div>

@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.integration;
 
 import de.deadlocker8.budgetmaster.Main;
+import de.deadlocker8.budgetmaster.authentication.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
@@ -11,14 +12,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @SeleniumTest
-@Transactional
 public class ImportTest
 {
 	@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
@@ -33,7 +32,7 @@ public class ImportTest
 	{
 		IntegrationTestHelper helper = new IntegrationTestHelper(driver, port);
 		helper.start();
-		helper.login();
+		helper.login(UserService.DEFAULT_PASSWORD);
 		helper.hideBackupReminder();
 
 		String path = getClass().getClassLoader().getResource("SearchDatabase.json").getFile().replace("/", File.separator);

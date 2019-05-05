@@ -1,17 +1,14 @@
 package de.deadlocker8.budgetmaster.integration;
 
-import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.thecodelabs.utils.util.Localization;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.io.File;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 class IntegrationTestHelper
 {
@@ -36,15 +33,20 @@ class IntegrationTestHelper
 		this.url = BASE_URL + port;
 	}
 
+	public String getUrl()
+	{
+		return url;
+	}
+
 	void start()
 	{
 		driver.get(url);
 	}
 
-	void login()
+	void login(String password)
 	{
 		WebElement inputPassword = driver.findElement(By.id("login-password"));
-		inputPassword.sendKeys(UserService.DEFAULT_PASSWORD);
+		inputPassword.sendKeys(password);
 		WebElement buttonLogin = driver.findElement(By.tagName("button"));
 		buttonLogin.click();
 	}
