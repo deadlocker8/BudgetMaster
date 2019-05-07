@@ -2,8 +2,8 @@ package de.deadlocker8.budgetmaster.categories;
 
 import com.google.gson.annotations.Expose;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
+import de.thecodelabs.utils.util.Color;
 import de.thecodelabs.utils.util.ColorUtils;
-import javafx.scene.paint.Color;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -94,7 +94,7 @@ public class Category
 
 	public String getAppropriateTextColor()
 	{
-		return ColorUtils.toRGBHexWithoutOpacity(ColorUtils.getAppropriateTextColor(Color.web(color)));
+		return ColorUtils.toRGBHexWithoutOpacity(ColorUtils.getAppropriateTextColor(new Color(color)));
 	}
 
 	@Override
