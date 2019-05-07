@@ -2,6 +2,8 @@ package de.deadlocker8.budgetmaster.transactions;
 
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.search.Search;
+import de.deadlocker8.budgetmaster.tags.Tag;
+import de.deadlocker8.budgetmaster.tags.Tag_;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Join;
@@ -35,11 +37,11 @@ public class TransactionSearchSpecifications
 				predicates.add(builder.like(builder.lower(categoryJoin.get("name").as(String.class)), pattern));
 			}
 
-//			if(search.isSearchTags())
-//			{
-//				Join<Transaction, Tag> tagJoin = transaction.join(Transaction_.tags, JoinType.INNER);
-//				predicates.add(builder.like(builder.lower(tagJoin.get(Tag_.name)), pattern));
-//			}
+			if(search.isSearchTags())
+			{
+				final Join<Transaction, Tag> tagJoin = transaction.join(Transaction_.tags, JoinType.LEFT);
+				predicates.add(builder.like(builder.lower(tagJoin.get(Tag_.name).as(String.class)), pattern));
+			}
 
 			query.orderBy(builder.desc(transaction.get(Transaction_.date)));
 			Predicate[] predicatesArray = new Predicate[predicates.size()];

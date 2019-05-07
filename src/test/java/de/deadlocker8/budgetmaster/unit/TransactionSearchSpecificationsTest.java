@@ -237,4 +237,30 @@ public class TransactionSearchSpecificationsTest
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertEquals(0, results.size());
 	}
+
+	@Test
+	public void getMatches_SearchTagsEquals()
+	{
+		Search search = new Search("MyAwesomeTag", false, false, false,true, 0);
+		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
+
+		List<Transaction> results = transactionRepository.findAll(spec);
+		assertTrue(results.contains(transaction1));
+		assertFalse(results.contains(transaction2));
+		assertFalse(results.contains(repeatingTransaction));
+		assertFalse(results.contains(transferTransaction));
+	}
+
+	@Test
+	public void getMatches_SearchTagsLike()
+	{
+		Search search = new Search("Awesome", false, false, false,true, 0);
+		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
+
+		List<Transaction> results = transactionRepository.findAll(spec);
+		assertTrue(results.contains(transaction1));
+		assertFalse(results.contains(transaction2));
+		assertFalse(results.contains(repeatingTransaction));
+		assertFalse(results.contains(transferTransaction));
+	}
 }
