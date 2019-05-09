@@ -9,8 +9,8 @@ import de.deadlocker8.budgetmaster.reports.columns.ReportColumn;
 import de.deadlocker8.budgetmaster.reports.categoryBudget.CategoryBudget;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.utils.Strings;
+import de.thecodelabs.utils.util.Color;
 import de.thecodelabs.utils.util.Localization;
-import javafx.scene.paint.Color;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -305,6 +305,6 @@ public class ReportGeneratorService
 	@SuppressWarnings("SameParameterValue")
 	private BaseColor getBaseColor(Color color)
 	{
-		return new BaseColor((float) color.getRed(), (float) color.getGreen(), (float) color.getBlue());
+		return new BaseColor((float) (color.getRed() / 255.0), (float) (color.getGreen() / 255.0), (float) (color.getBlue() / 255.0));
 	}
 }
