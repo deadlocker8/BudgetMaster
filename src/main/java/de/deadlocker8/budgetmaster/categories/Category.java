@@ -94,7 +94,7 @@ public class Category
 
 	public String getAppropriateTextColor()
 	{
-		return ColorUtils.toRGBHexWithoutOpacity(ColorUtils.getAppropriateTextColor(new Color(color)));
+		return ColorUtils.getAppropriateTextColor(new Color(color)).toRGBHexWithoutOpacity();
 	}
 
 	@Override
