@@ -181,7 +181,28 @@ $( document ).ready(function() {
         direction: 'bottom',
         hoverEnabled: false
     });
+
+    // scroll to highlighted transaction
+    var highlightedSmall = document.getElementById("highlighted-small");
+    var highlightedLarge = document.getElementById("highlighted-large");
+    if(highlightedSmall !== undefined && !isHidden(highlightedSmall))
+    {
+        $('html, body').animate({
+            scrollTop: $(highlightedSmall).offset().top
+        }, 500);
+    }
+    else if(highlightedLarge !== undefined && !isHidden(highlightedLarge))
+    {
+        $('html, body').animate({
+            scrollTop: $(highlightedLarge).offset().top
+        }, 500);
+    }
 });
+
+function isHidden(el) {
+    var style = window.getComputedStyle(el);
+    return (style.display === 'none' || style.display === 'none !important')
+}
 
 var transactionRepeatingModifierID = "#transaction-repeating-modifier";
 var transactionRepeatingEndAfterXTimesInputID = "#transaction-repeating-end-after-x-times-input";
