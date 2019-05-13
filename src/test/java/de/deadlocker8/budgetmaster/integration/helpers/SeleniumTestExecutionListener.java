@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.integration;
+package de.deadlocker8.budgetmaster.integration.helpers;
 
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -31,6 +31,11 @@ public class SeleniumTestExecutionListener extends AbstractTestExecutionListener
 	@Override
 	public void prepareTestInstance(TestContext testContext)
 	{
+		if(!System.getProperties().containsKey("testProfile"))
+		{
+			throw new RuntimeException("Test profile not activated. Skipping tests. (Set -DtestProfile=true in your VM arguments)");
+		}
+
 		if(webDriver != null)
 		{
 			return;

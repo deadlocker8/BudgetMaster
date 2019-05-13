@@ -41,7 +41,7 @@
                                     </td>
                                     <td class="import-text">${locale.getString("info.database.import.or")}</td>
                                     <td>
-                                        <a href="<@s.url '/accounts/newAccount'/>" class="btn waves-effect waves-light budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.account.new")}</a>
+                                        <a href="<@s.url '/accounts/newAccount'/>" class="btn waves-effect waves-light budgetmaster-blue button-new-account"><i class="material-icons left">add</i>${locale.getString("title.account.new")}</a>
                                     </td>
                                 </tr>
                             </#list>
@@ -61,7 +61,7 @@
                             </div>
 
                             <div class="col m6 l4 left-align">
-                                <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action">
+                                <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action" id="buttonImport">
                                     <i class="material-icons left">unarchive</i>${locale.getString("settings.database.import")}
                                 </button>
                             </div>

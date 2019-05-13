@@ -195,6 +195,12 @@
             <version>${selenium.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-support</artifactId>
+            <version>${selenium.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -272,6 +278,10 @@
                 <configuration>
                     <junitArtifactName>junit:junit</junitArtifactName>
                     <argLine>-Dfile.encoding=UTF-8</argLine>
+
+                    <systemPropertyVariables>
+                        <testProfile>true</testProfile>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
 

@@ -26,4 +26,9 @@ public class ProgramArgs
 	{
 		return ProgramArgs.getArgs().contains("--debugFolder");
 	}
+
+	public static boolean isTest()
+	{
+		return RunMode.currentRunMode.equals(RunMode.TEST);
+	}
 }

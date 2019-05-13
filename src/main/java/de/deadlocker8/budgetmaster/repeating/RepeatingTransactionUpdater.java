@@ -13,17 +13,15 @@ import java.util.List;
 @Service
 public class RepeatingTransactionUpdater
 {
-	@Autowired
-	private TransactionRepository transactionRepository;
+	private final TransactionService transactionService;
+	private final RepeatingOptionRepository repeatingOptionRepository;
 
 	@Autowired
-	private TransactionService transactionService;
-
-	@Autowired
-	private RepeatingOptionRepository repeatingOptionRepository;
-
-	@Autowired
-	private HelpersService helpers;
+	public RepeatingTransactionUpdater(TransactionService transactionService, RepeatingOptionRepository repeatingOptionRepository)
+	{
+		this.transactionService = transactionService;
+		this.repeatingOptionRepository = repeatingOptionRepository;
+	}
 
 	public void updateRepeatingTransactions(DateTime now)
 	{
@@ -39,7 +37,7 @@ public class RepeatingTransactionUpdater
 					Transaction newTransaction = new Transaction(transactions.get(0));
 					newTransaction.setID(null);
 					newTransaction.setDate(currentDate);
-					transactionRepository.save(newTransaction);
+					transactionService.getRepository().save(newTransaction);
 				}
 			}
 		}
