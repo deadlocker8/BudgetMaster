@@ -1,11 +1,14 @@
 package de.deadlocker8.budgetmaster.integration.helpers;
 
 import de.thecodelabs.utils.util.Localization;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.junit.rules.TestName;
+import org.openqa.selenium.*;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -23,7 +26,7 @@ public class IntegrationTestHelper
 		return text;
 	}
 
-	private final static String BASE_URL = "https://localhost:";
+	private final static String BASE_URL = "http://localhost:";
 	private WebDriver driver;
 	private String url;
 
@@ -123,8 +126,31 @@ public class IntegrationTestHelper
 			assertEquals(sourceAccounts.get(i), IntegrationTestHelper.getTextNode(sourceAccount));
 
 			row.findElement(By.className("select-dropdown")).click();
-			WebElement accountToSelect = row.findElement(By.xpath("//form/table/tbody/tr[" + (i+1) + "]/td[5]/div/div/ul/li/span[text()='" + account + "']"));
+			WebElement accountToSelect = row.findElement(By.xpath("//form/table/tbody/tr[" + (i + 1) + "]/td[5]/div/div/ul/li/span[text()='" + account + "']"));
 			accountToSelect.click();
+		}
+	}
+
+	public static void saveScreenshots(WebDriver webDriver, TestName testName, Class testClass)
+	{
+		File screenshot = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
+
+		String className = testClass.getSimpleName();
+		String methodName = testName.getMethodName();
+		final Path destination = Paths.get("screenshots", className + "_" + methodName + "_" + screenshot.getName());
+
+		try
+		{
+			if(Files.notExists(destination.getParent()))
+			{
+				Files.createDirectories(destination.getParent());
+			}
+
+			Files.copy(screenshot.toPath(), destination);
+		}
+		catch(IOException e)
+		{
+			throw new RuntimeException(e);
 		}
 	}
 }

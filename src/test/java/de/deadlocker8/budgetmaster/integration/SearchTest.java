@@ -7,7 +7,11 @@ import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
 import de.thecodelabs.utils.util.Localization;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -39,6 +43,25 @@ public class SearchTest
 	@LocalServerPort
 	int port;
 
+	@Rule
+	public TestName name = new TestName();
+
+	@Rule
+	public TestWatcher testWatcher = new TestWatcher()
+	{
+		@Override
+		protected void finished(Description description)
+		{
+			driver.quit();
+		}
+
+		@Override
+		protected void failed(Throwable e, Description description)
+		{
+			IntegrationTestHelper.saveScreenshots(driver, name, SearchTest.class);
+		}
+	};
+
 	@Before
 	public void prepare()
 	{
@@ -59,11 +82,6 @@ public class SearchTest
 		WebElement inputSearch = driver.findElement(By.id("search"));
 		inputSearch.sendKeys("e");
 		driver.findElement(By.id("buttonSearch")).click();
-	}
-
-	@After
-	public void adftet() {
-		driver.quit();
 	}
 
 	@Test
