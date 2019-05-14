@@ -3,7 +3,7 @@ package de.deadlocker8.budgetmaster.categories;
 import com.google.gson.annotations.Expose;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.thecodelabs.utils.util.Color;
-import de.thecodelabs.utils.util.ColorUtils;
+import de.thecodelabs.utils.util.ColorUtilsNonJavaFX;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -94,7 +94,7 @@ public class Category
 
 	public String getAppropriateTextColor()
 	{
-		return ColorUtils.getAppropriateTextColor(new Color(color)).toRGBHexWithoutOpacity();
+		return ColorUtilsNonJavaFX.getAppropriateTextColor(new Color(color)).toRGBHexWithoutOpacity();
 	}
 
 	@Override

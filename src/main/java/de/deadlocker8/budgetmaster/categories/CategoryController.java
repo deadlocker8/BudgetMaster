@@ -5,7 +5,7 @@ import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.utils.Colors;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
-import de.thecodelabs.utils.util.ColorUtils;
+import de.thecodelabs.utils.util.ColorUtilsNonJavaFX;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -86,7 +86,7 @@ public class CategoryController extends BaseController
 	{
 		//add custom color (defaults to white here because we are adding a new category instead of editing an existing)
 		model.addAttribute("customColor", "#FFFFFF");
-		Category emptyCategory = new Category(null, ColorUtils.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase(), CategoryType.CUSTOM);
+		Category emptyCategory = new Category(null, ColorUtilsNonJavaFX.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase(), CategoryType.CUSTOM);
 		model.addAttribute("category", emptyCategory);
 		model.addAttribute("settings", settingsService.getSettings());
 		return "categories/newCategory";
@@ -136,7 +136,7 @@ public class CategoryController extends BaseController
 
 			if(category.getColor() == null)
 			{
-				category.setColor(ColorUtils.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase());
+				category.setColor(ColorUtilsNonJavaFX.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase());
 			}
 			model.addAttribute("category", category);
 			model.addAttribute("settings", settingsService.getSettings());
