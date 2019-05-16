@@ -5,7 +5,7 @@ Manage your monthly budget easily with BudgetMaster
 - __current release:__ v2.1.2 (18) from 26.03.19
 
 ## Key Features
-- Keep your data private - Host your own BudgetMaster Server or use it as a standalone app. All data remains on your machines.
+- Keep your data private - Host your own BudgetMaster server or use it in standalone mode. All data remains on your machines.
 - Track transactions - Track your incomes and expenditures in transactions with name, description, tags, etc.
 - Schedule transactions - Repeat recurring transactions automatically.
 - Multi Bank - Organize your transactions into multiple accounts.
