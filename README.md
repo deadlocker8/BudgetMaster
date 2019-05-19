@@ -12,7 +12,7 @@ Manage your monthly budget easily with BudgetMaster
 - Categories - Group your transactions into categories.
 - Data Backup - Backup your complete database or generate month reports as PDF.
 - Modern UI - Responsive material design featuring light and dark mode.
-- Password protected - Your data can only be accessed by entering the correct password.
+- Password protected website - Your data can only be accessed by entering the correct password. (Note: The database is not encrypted)
 - Localization - English and German supported.
 - Search and Filter - Search for individual transactions or filter your view.
 
