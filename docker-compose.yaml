@@ -1,0 +1,11 @@
+version: '3.3'
+services:
+    budgetmaster:
+        image: deadlocker/budgetmaster:latest
+        restart: always
+        volumes:
+            - "./data:/root/.Deadlocker/BudgetMaster"
+        expose:
+            - "8080"
+        ports:
+            - "8080:8080"
