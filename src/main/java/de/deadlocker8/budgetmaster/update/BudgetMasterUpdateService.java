@@ -5,6 +5,7 @@ import de.deadlocker8.budgetmaster.Main;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.thecodelabs.storage.settings.Storage;
 import de.thecodelabs.storage.settings.StorageTypes;
+import de.thecodelabs.utils.util.SystemUtils;
 import de.thecodelabs.versionizer.VersionizerItem;
 import de.thecodelabs.versionizer.config.Artifact;
 import de.thecodelabs.versionizer.config.Repository;
@@ -21,6 +22,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.nio.file.Paths;
 
 @Service
 public class BudgetMasterUpdateService
@@ -50,6 +52,9 @@ public class BudgetMasterUpdateService
 		executablePath = null;
 		updateStrategy = UpdateService.Strategy.JAR;
 		fileType = RemoteFile.FileType.JAR;
+
+		SystemUtils.setIsJarHook(new IsJarFileHook());
+		SystemUtils.setIsExeHook(new IsExeFileHook());
 
 		if(source != null)
 		{
@@ -86,6 +91,7 @@ public class BudgetMasterUpdateService
 		artifact.setVersion(Build.getInstance().getVersionName());
 		artifact.setGroupId("de.deadlocker8");
 		artifact.setArtifactId("BudgetMaster");
+		artifact.setArtifactType(Artifact.ArtifactType.RUNTIME);
 		return artifact;
 	}
 
@@ -95,8 +101,13 @@ public class BudgetMasterUpdateService
 		ClassLoader classLoader = Main.class.getClassLoader();
 		Repository repository = Storage.load(classLoader.getResourceAsStream("repositories.json"), StorageTypes.JSON, Repository.class);
 
-		VersionizerItem versionizerItem = new VersionizerItem(repository, artifact, executablePath);
-		return UpdateService.startVersionizer(versionizerItem, updateStrategy, UpdateService.InteractionType.HEADLESS, UpdateService.RepositoryType.RELEASE);
+		VersionizerItem versionizerItem = new VersionizerItem(repository, executablePath);
+		UpdateService updateService = UpdateService.startVersionizer(versionizerItem, updateStrategy, UpdateService.InteractionType.HEADLESS, UpdateService.RepositoryType.RELEASE);
+		if(executablePath != null)
+		{
+			updateService.addArtifact(artifact, Paths.get(executablePath));
+		}
+		return updateService;
 	}
 
 	public UpdateService getUpdateService()

@@ -283,7 +283,7 @@ public class SettingsController extends BaseController
 			return "redirect:/settings";
 		}
 
-		UpdateItem.Entry entry = new UpdateItem.Entry(budgetMasterUpdateService.getAvailableVersion(), budgetMasterUpdateService.getExecutablePath(), budgetMasterUpdateService.getFileType());
+		UpdateItem.Entry entry = new UpdateItem.Entry(budgetMasterUpdateService.getAvailableVersion());
 		try
 		{
 			budgetMasterUpdateService.getUpdateService().runVersionizerInstance(entry);
