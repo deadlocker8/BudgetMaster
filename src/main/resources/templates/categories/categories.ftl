@@ -52,7 +52,7 @@
 
             <#if currentCategory??>
                 <!-- confirm delete modal -->
-                <div id="modalConfirmDelete" class="modal background-color">
+                <div id="modalConfirmDelete" class="modal categoryDeleteModal background-color">
                     <div class="modal-content">
                         <h4>${locale.getString("info.title.category.delete")}</h4>
                         <p>${locale.getString("info.text.category.delete", currentCategory.name)}</p>

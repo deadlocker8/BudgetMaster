@@ -44,7 +44,7 @@
     border: 3px dashed black;
 }
 
-.modal {
+.categoryDeleteModal {
     overflow-y: visible !important;
 }
 
