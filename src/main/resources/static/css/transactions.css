@@ -61,6 +61,10 @@
     height: 36px;
 }
 
+.transaction-date {
+    min-width: 5.5rem;
+}
+
 .new-transaction-button {
     position: absolute;
     display: inline-block;
