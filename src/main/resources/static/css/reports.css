@@ -5,6 +5,7 @@
 
 .report-checkbox-container {
     margin-bottom: 0.5rem;
+    display: inline-table;
 }
 
 #columnNames {
