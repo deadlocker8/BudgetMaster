@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.services;
 
 import de.deadlocker8.budgetmaster.accounts.AccountService;
+import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.reports.Budget;
 import de.deadlocker8.budgetmaster.settings.Settings;
@@ -281,5 +282,10 @@ public class HelpersService
 		{
 			return DateTime.parse(cookieDate, DateTimeFormat.forPattern("dd.MM.yy").withLocale(getSettings().getLanguage().getLocale()));
 		}
+	}
+
+	public Long getUsageCountForCategory(Category category)
+	{
+		return transactionService.getRepository().countByCategory(category);
 	}
 }

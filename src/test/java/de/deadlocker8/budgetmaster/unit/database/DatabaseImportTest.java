@@ -227,6 +227,12 @@ public class DatabaseImportTest
 				}
 
 				@Override
+				public Long countByCategory(Category category)
+				{
+					return null;
+				}
+
+				@Override
 				public Page<Transaction> findAll(Specification<Transaction> specification, Pageable pageable)
 				{
 					return null;
