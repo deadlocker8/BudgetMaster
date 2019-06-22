@@ -24,6 +24,7 @@
         <@itemWithIcon "settings", "/settings", locale.getString("menu.settings"), "settings", "budgetmaster-red", activeID/>
 
         <@itemDivider/>
+        <@itemWithIcon "hotkeys", "/hotkeys", locale.getString("menu.hotkeys"), "keyboard", "budgetmaster-grey", activeID/>
         <@itemWithIcon "about", "/about", locale.getString("menu.about"), "info", "budgetmaster-grey", activeID/>
 
         <@itemDivider/>
