@@ -94,7 +94,7 @@ public class TransactionSpecificationsTest
 		transaction2 = new Transaction();
 		transaction2.setName("Test_2");
 		transaction2.setAmount(-525);
-		transaction2.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		transaction2.setDate(new DateTime(2018, 12, 3, 12, 0, 0, 0));
 		transaction2.setCategory(category2);
 		transaction2.setAccount(account);
 		transaction2 = transactionRepository.save(transaction2);
@@ -375,6 +375,19 @@ public class TransactionSpecificationsTest
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertFalse(results.contains(transaction1));
+		assertFalse(results.contains(transaction2));
+		assertTrue(results.contains(repeatingTransaction));
+		assertFalse(results.contains(transferTransaction));
+	}
+
+	@Test
+	public void getFromAllAccountsExceptTransfersWithSpecificEndDate()
+	{
+		DateTime endDate = new DateTime(2018, 11, 30, 12, 0, 0, 0);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, endDate, null, true, true, false, null, null, null, null);
+
+		List<Transaction> results = transactionRepository.findAll(spec);
+		assertTrue(results.contains(transaction1));
 		assertFalse(results.contains(transaction2));
 		assertTrue(results.contains(repeatingTransaction));
 		assertFalse(results.contains(transferTransaction));

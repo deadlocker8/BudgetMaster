@@ -96,7 +96,7 @@ public class TransactionSpecifications
 
 			if(transferBackReference == null)
 			{
-				return builder.and(predicates.toArray(predicatesArray));
+				return builder.and(dateConstraint, builder.or(builder.and(predicates.toArray(predicatesArray))));
 			}
 
 			return builder.and(dateConstraint, builder.or(builder.and(predicates.toArray(predicatesArray)), transferBackReference));

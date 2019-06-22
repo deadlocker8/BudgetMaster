@@ -36,7 +36,7 @@
                                 <div class="hide-on-large-only">
                                     <div class="row valign-wrapper">
                                         <div class="col s3 center-align bold transaction-text">
-                                            ${dateService.getDateStringWithoutYear(transaction.date)}
+                                            ${dateService.getDateStringNormal(transaction.date)}
                                         </div>
                                         <@transactionsMacros.transactionType transaction/>
                                         <@transactionsMacros.transactionAccount transaction/>
@@ -50,8 +50,8 @@
                                 </div>
                                 <div class="hide-on-med-and-down">
                                     <div class="row valign-wrapper no-margin-bottom">
-                                        <div class="col l1 xl1 bold transaction-text transaction-line-height">
-                                            ${dateService.getDateStringWithoutYear(transaction.date)}
+                                        <div class="col l2 xl1 bold transaction-text transaction-line-height transaction-date">
+                                            ${dateService.getDateStringNormal(transaction.date)}
                                         </div>
                                         <@transactionsMacros.transactionCategory transaction "left-align"/>
                                         <@transactionsMacros.transactionType transaction/>
