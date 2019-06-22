@@ -18,7 +18,7 @@
                 <div class="container">
                     <div class="section center-align">
                         <#assign title = locale.getString("title.transaction.new.normal")/>
-                        <div class="headline"><#if transaction.getID()??>${locale.getString("title.transaction.edit", title)}<#else>${locale.getString("title.transaction.new", locale.getString("title.transaction.new.normal", title))}</#if></div>
+                        <div class="headline"><#if transaction.getID()??>${locale.getString("title.transaction.edit", title)}<#else>${locale.getString("title.transaction.new", title)}</#if></div>
                     </div>
                 </div>
                 <div class="container">
