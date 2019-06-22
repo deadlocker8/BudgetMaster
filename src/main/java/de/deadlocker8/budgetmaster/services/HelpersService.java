@@ -105,11 +105,6 @@ public class HelpersService
 		return Arrays.asList(LanguageType.values());
 	}
 
-	public List<Integer> getAvailableNumberOfSearchResultsPerPage()
-	{
-		return Arrays.asList(10, 20, 25, 30, 50, 100);
-	}
-
 	 // Replaces line breaks and tabs with spaces
 	public String getFlatText(String text)
 	{

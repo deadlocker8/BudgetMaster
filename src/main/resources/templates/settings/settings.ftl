@@ -108,7 +108,7 @@
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
                                 <select id="settings-search-items-per-page" name="searchItemsPerPage" <@validation.validation "searchItemsPerPage"/>>
-                                    <#list helpers.getAvailableNumberOfSearchResultsPerPage() as number>
+                                    <#list searchResultsPerPageOptions as number>
                                         <#if settings.getSearchItemsPerPage() == number>
                                             <option selected value="${number}">${number}</option>
                                         <#else>

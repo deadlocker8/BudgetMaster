@@ -41,6 +41,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.List;
 
 
 @Controller
@@ -54,6 +56,7 @@ public class SettingsController extends BaseController
 	private final ImportService importService;
 	private final BudgetMasterUpdateService budgetMasterUpdateService;
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	private final List<Integer> SEARCH_RESULTS_PER_PAGE_OPTIONS = Arrays.asList(10, 20, 25, 30, 50, 100);
 
 	@Autowired
 	public SettingsController(SettingsRepository settingsRepository, UserRepository userRepository, DatabaseService databaseService, AccountService accountService, CategoryService categoryService, ImportService importService, BudgetMasterUpdateService budgetMasterUpdateService)
@@ -71,6 +74,7 @@ public class SettingsController extends BaseController
 	public String settings(WebRequest request, Model model)
 	{
 		model.addAttribute("settings", settingsRepository.findOne(0));
+		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
 		request.removeAttribute("database", WebRequest.SCOPE_SESSION);
 		return "settings/settings";
 	}
