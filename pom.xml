@@ -63,6 +63,7 @@
         <materializecss.version>1.0.0</materializecss.version>
         <fontawesome.version>5.0.10</fontawesome.version>
         <sortablejs.version>1.8.1</sortablejs.version>
+        <mousetrap.version>1.6.1</mousetrap.version>
         <webdrivermanager.version>2.2.1</webdrivermanager.version>
         <selenium.version>3.141.59</selenium.version>
 
@@ -182,6 +183,11 @@
             <groupId>org.webjars.npm</groupId>
             <artifactId>sortablejs</artifactId>
             <version>${sortablejs.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>mousetrap</artifactId>
+            <version>${mousetrap.version}</version>
         </dependency>
 
         <!-- selenium -->

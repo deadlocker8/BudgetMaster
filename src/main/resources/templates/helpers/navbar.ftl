@@ -76,7 +76,7 @@
                 <input type="hidden" name="searchTags" value="true">
 
                 <div class="input-field">
-                    <input id="search" class="text-color" name="searchText" type="search">
+                    <input id="search" class="text-color mousetrap" name="searchText" type="search">
                     <label class="label-icon" for="search"><i class="material-icons">search</i></label>
                     <i id="buttonSearch" class="material-icons">send</i>
                     <i id="buttonClearSearch" class="material-icons">close</i>

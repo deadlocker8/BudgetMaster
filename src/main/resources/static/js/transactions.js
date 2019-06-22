@@ -1,6 +1,12 @@
 $( document ).ready(function() {
     $('#modalConfirmDelete').modal('open');
 
+    // open filter modal if corresponding anchor is in url (originating from hotkeys.js)
+    if(window.location.href.endsWith('#modalFilter'))
+    {
+        $('#modalFilter').modal('open');
+    }
+
     if($(".datepicker").length)
     {
         var pickerStartDate = M.Datepicker.init(document.getElementById('transaction-datepicker'), {
@@ -185,13 +191,13 @@ $( document ).ready(function() {
     // scroll to highlighted transaction
     var highlightedSmall = document.getElementById("highlighted-small");
     var highlightedLarge = document.getElementById("highlighted-large");
-    if(highlightedSmall !== undefined && !isHidden(highlightedSmall))
+    if(highlightedSmall !== undefined  && highlightedSmall != null && !isHidden(highlightedSmall))
     {
         $('html, body').animate({
             scrollTop: $(highlightedSmall).offset().top
         }, 500);
     }
-    else if(highlightedLarge !== undefined && !isHidden(highlightedLarge))
+    else if(highlightedLarge !== undefined && highlightedLarge != null && !isHidden(highlightedLarge))
     {
         $('html, body').animate({
             scrollTop: $(highlightedLarge).offset().top
