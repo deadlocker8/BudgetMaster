@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.search;
 
 import de.deadlocker8.budgetmaster.controller.BaseController;
+import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionSearchSpecifications;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
@@ -22,14 +23,14 @@ import java.util.List;
 @Controller
 public class SearchController extends BaseController
 {
-	private static final int ITEMS_PER_PAGE = 10;
-
 	private final TransactionService transactionService;
+	private final SettingsService settingsService;
 
 	@Autowired
-	public SearchController(TransactionService transactionService)
+	public SearchController(TransactionService transactionService, SettingsService settingsService)
 	{
 		this.transactionService = transactionService;
+		this.settingsService = settingsService;
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
@@ -41,7 +42,8 @@ public class SearchController extends BaseController
 		}
 
 		Specification<Transaction> specification = TransactionSearchSpecifications.withDynamicQuery(search);
-		Page<Transaction> resultPage = transactionService.getRepository().findAll(specification, new PageRequest(search.getPage(), ITEMS_PER_PAGE));
+		System.out.println(settingsService.getSettings());
+		Page<Transaction> resultPage = transactionService.getRepository().findAll(specification, new PageRequest(search.getPage(), settingsService.getSettings().getSearchItemsPerPage()));
 		model.addAttribute("page", resultPage);
 		model.addAttribute("search", search);
 		return "search/search";

@@ -22,6 +22,8 @@ public class Settings
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private DateTime lastBackupReminderDate;
 
+	private Integer searchItemsPerPage;
+
 	public Settings()
 	{
 	}
@@ -36,6 +38,7 @@ public class Settings
 		defaultSettings.setAutoUpdateCheckEnabled(true);
 		defaultSettings.setBackupReminderActivated(true);
 		defaultSettings.setLastBackupReminderDate(DateTime.now().minusMonths(1));
+		defaultSettings.setSearchItemsPerPage(10);
 
 		return defaultSettings;
 	}
@@ -124,6 +127,16 @@ public class Settings
 		return false;
 	}
 
+	public Integer getSearchItemsPerPage()
+	{
+		return searchItemsPerPage;
+	}
+
+	public void setSearchItemsPerPage(Integer searchItemsPerPage)
+	{
+		this.searchItemsPerPage = searchItemsPerPage;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -136,6 +149,7 @@ public class Settings
 				", autoUpdateCheckEnabled=" + autoUpdateCheckEnabled +
 				", backupReminderActivated=" + backupReminderActivated +
 				", lastBackupReminderDate=" + lastBackupReminderDate +
+				", searchItemsPerPage=" + searchItemsPerPage +
 				'}';
 	}
 }

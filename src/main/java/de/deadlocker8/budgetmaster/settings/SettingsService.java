@@ -27,14 +27,19 @@ public class SettingsService
 			LOGGER.debug("Created default settings");
 		}
 
+		Settings defaultSettings = Settings.getDefault();
 		Settings settings = settingsRepository.findOne(0);
 		if(settings.getBackupReminderActivated() == null)
 		{
-			settings.setBackupReminderActivated(true);
+			settings.setBackupReminderActivated(defaultSettings.getBackupReminderActivated());
 		}
 		if(settings.getLastBackupReminderDate() == null)
 		{
-			settings.setLastBackupReminderDate(DateTime.now().minusMonths(1));
+			settings.setLastBackupReminderDate(defaultSettings.getLastBackupReminderDate());
+		}
+		if(settings.getSearchItemsPerPage() == null)
+		{
+			settings.setSearchItemsPerPage(defaultSettings.getSearchItemsPerPage());
 		}
 		settingsRepository.delete(0);
 		settingsRepository.save(settings);
