@@ -104,6 +104,22 @@
                             </div>
                         </div>
 
+                        <#-- search items per page -->
+                        <div class="row">
+                            <div class="input-field col s12 m12 l8 offset-l2">
+                                <select id="settings-search-items-per-page" name="searchItemsPerPage" <@validation.validation "searchItemsPerPage"/>>
+                                    <#list helpers.getAvailableNumberOfSearchResultsPerPage() as number>
+                                        <#if settings.getSearchItemsPerPage() == number>
+                                            <option selected value="${number}">${number}</option>
+                                        <#else>
+                                            <option value="${number}">${number}</option>
+                                        </#if>
+                                    </#list>
+                                </select>
+                                <label for="settings-search-items-per-page">${locale.getString("settings.search.itemsPerPage")}</label>
+                            </div>
+                        </div>
+
                         <br>
 
                         <#-- buttons -->
