@@ -22,15 +22,15 @@
                 <br>
                 <div class="container">
                     <table class="bordered">
+                        <thead>
+                            <tr>
+                                <th>${locale.getString("chart.new.label.name")}</th>
+                                <th>${locale.getString("chart.type")}</th>
+                                <th>${locale.getString("chart.actions")}</th>
+                            </tr>
+                        </thead>
                         <#list charts as chart>
                             <#assign chartName=chartFunctions.getChartName(chart)>
-                            <thead>
-                                <tr>
-                                    <th>${locale.getString("chart.new.label.name")}</th>
-                                    <th>${locale.getString("chart.type")}</th>
-                                    <th>${locale.getString("chart.actions")}</th>
-                                </tr>
-                            </thead>
                             <tr>
                                 <td>${chartName}</td>
                                 <td>

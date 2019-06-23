@@ -38,6 +38,8 @@ public class Strings
     public static final String WARNING_SETTINGS_PASSWORD_LENGTH = "warning.settings.password.length";
     public static final String WARNING_SETTINGS_PASSWORD_CONFIRMATION_EMPTY = "warning.settings.password.confirmation.empty";
     public static final String WARNING_SETTINGS_PASSWORD_CONFIRMATION_WRONG = "warning.settings.password.confirmation.wrong";
+    public static final String WARNING_EMPTY_CHART_NAME = "warning.empty.chart.name";
+    public static final String WARNING_EMPTY_CHART_SCRIPT = "warning.empty.chart.script";
 
     //REPORT
     public static final String REPORT_FOOTER_LEFT = "report.footer.left";
