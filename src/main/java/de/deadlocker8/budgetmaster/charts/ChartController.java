@@ -23,7 +23,7 @@ public class ChartController extends BaseController
 		this.settingsService = settingsService;
 	}
 
-	@RequestMapping("/charts/edit")
+	@RequestMapping("/charts/chartList")
 	public String chartList(Model model)
 	{
 		model.addAttribute("charts", chartService.getRepository().findAllByOrderByNameAsc());

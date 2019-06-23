@@ -48,12 +48,17 @@
                     </div>
                     <div class="row home-menu-flex">
                 </div>
-                        <div class="col s12 m6 l4 home-menu-cell home-menu-disabled">
-                            <a class="home-menu-link btn-flat budget">
+                        <div class="col s12 m6 l4 home-menu-cell">
+                            <a href="<@s.url '/charts'/>" class="home-menu-link btn-flat budget">
                                 <i class="material-icons icon-budget left budgetmaster-purple-text">show_chart</i>
                                 ${locale.getString("menu.charts")}
                             </a>
-                            <p class="home-menu-text">${locale.getString("home.menu.charts")}</p>
+                            <p class="text-grey home-menu-text">${locale.getString("home.menu.charts")}</p>
+                            <div class="left-align">
+                                <a href="<@s.url '/charts/chartList'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>${locale.getString("home.menu.charts.action.manage")}</a>
+                                <a href="<@s.url '/charts'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>${locale.getString("home.menu.charts.action.show")}</a>
+                            </div>
+
                         </div>
                 <div class="hide-on-med-only">
                     </div>

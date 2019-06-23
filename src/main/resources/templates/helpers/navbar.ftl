@@ -10,15 +10,7 @@
         <@itemDivider/>
         <@itemWithIcon "home", "/", locale.getString("menu.home"), "home", "budgetmaster-blue", activeID/>
         <@itemWithIcon "transactions", "/transactions", locale.getString("menu.transactions"), "list", "budgetmaster-baby-blue", activeID/>
-        <@subListStart "chart" locale.getString("menu.charts"), "show_chart" "budgetmaster-purple", activeID/>
-            <#-- disabled until future versions -->
-            <#--<@itemPlain "chartCategories", "", locale.getString("menu.charts.chartCategories"), activeID/>-->
-            <#--<@itemPlain "chartMonth", "", locale.getString("menu.charts.chartMonth"), activeID/>-->
-            <#--<@itemPlain "chartTags", "", locale.getString("menu.charts.chartTags"), activeID/>-->
-            <#--<@itemPlain "chartCategoryBudget", "", locale.getString("menu.charts.chartCategoryBudget"), activeID/>-->
-            <#--<@itemPlain "chartHistogram", "", locale.getString("menu.charts.chartHistogram"), activeID/>-->
-        <@subListEnd/>
-
+        <@itemWithIcon "charts" "/charts" locale.getString("menu.charts"), "show_chart" "budgetmaster-purple", activeID/>
         <@itemWithIcon "reports", "/reports", locale.getString("menu.reports"), "description", "budgetmaster-green", activeID/>
         <@itemWithIcon "categories", "/categories", locale.getString("menu.categories"), "label", "budgetmaster-orange", activeID/>
         <@itemWithIcon "settings", "/settings", locale.getString("menu.settings"), "settings", "budgetmaster-red", activeID/>
@@ -139,27 +131,6 @@
 
 <#macro itemDebug text icon>
     <li><a class="waves-effect budgetmaster-red budgetmaster-text-update"><i class="material-icons" id="icon-update">${icon}</i>${text}</a></li>
-</#macro>
-
-<#macro subListStart ID text icon activeColor activeID>
-<li>
-    <ul class="collapsible collapsible-accordion no-padding sidenav-sub home-menu-disabled">
-        <li>
-            <#if activeID?starts_with(ID)>
-                <a href="<@s.url '/charts'/>" class="collapsible-header no-padding active"><div class="stripe ${activeColor}"></div><i class="material-icons">${icon}</i>${text}</a>
-            <#else>
-                <a href="<@s.url '/charts'/>" class="collapsible-header nav-padding"><i class="material-icons">${icon}</i>${text}</a>
-            </#if>
-            <div class="collapsible-body">
-                <ul class="sidenav-sub">
-</#macro>
-
-<#macro subListEnd>
-                </ul>
-            </div>
-        </li>
-    </ul>
-</li>
 </#macro>
 
 <#macro backupReminder settings>
