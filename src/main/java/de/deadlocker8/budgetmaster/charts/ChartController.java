@@ -1,13 +1,16 @@
 package de.deadlocker8.budgetmaster.charts;
 
+import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
+import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -39,6 +42,20 @@ public class ChartController extends BaseController
 	{
 		Chart emptyChart = new Chart(null, null, ChartType.CUSTOM);
 		model.addAttribute("chart", emptyChart);
+		model.addAttribute("settings", settingsService.getSettings());
+		return "charts/newChart";
+	}
+
+	@RequestMapping("/charts/{ID}/edit")
+	public String editChart(Model model, @PathVariable("ID") Integer ID)
+	{
+		Chart chart = chartService.getRepository().findOne(ID);
+		if(chart == null)
+		{
+			throw new ResourceNotFoundException();
+		}
+
+		model.addAttribute("chart", chart);
 		model.addAttribute("settings", settingsService.getSettings());
 		return "charts/newChart";
 	}
