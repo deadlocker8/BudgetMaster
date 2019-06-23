@@ -42,7 +42,7 @@
                         <#-- buttons -->
                         <div class="row hide-on-small-only">
                             <div class="col s6 right-align">
-                                <a href="<@s.url '/charts/chartList'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
+                                <a href="<@s.url '/charts/manage'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
                             </div>
 
                             <div class="col s6 left-align">
@@ -54,7 +54,7 @@
                         <div class="hide-on-med-and-up">
                             <div class="row center-align">
                                 <div class="col s12">
-                                    <a href="<@s.url '/charts/chartList'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
+                                    <a href="<@s.url '/charts/manage'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
                                 </div>
                             </div>
                             <div class="row center-align">

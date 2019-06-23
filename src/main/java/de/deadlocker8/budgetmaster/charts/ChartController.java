@@ -26,12 +26,12 @@ public class ChartController extends BaseController
 		this.settingsService = settingsService;
 	}
 
-	@RequestMapping("/charts/chartList")
-	public String chartList(Model model)
+	@RequestMapping("/charts/manage")
+	public String manage(Model model)
 	{
 		model.addAttribute("charts", chartService.getRepository().findAllByOrderByNameAsc());
 		model.addAttribute("settings", settingsService.getSettings());
-		return "charts/chartList";
+		return "charts/manage";
 	}
 
 	@RequestMapping("/charts/newChart")
@@ -65,6 +65,6 @@ public class ChartController extends BaseController
 			chartService.getRepository().save(chart);
 		}
 
-		return "redirect:/charts/chartList";
+		return "redirect:/charts/manage";
 	}
 }
