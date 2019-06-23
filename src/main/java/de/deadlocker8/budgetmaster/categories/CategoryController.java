@@ -22,15 +22,13 @@ import java.util.stream.Collectors;
 @Controller
 public class CategoryController extends BaseController
 {
-	private final CategoryRepository categoryRepository;
 	private final CategoryService categoryService;
 	private final HelpersService helpers;
 	private final SettingsService settingsService;
 
 	@Autowired
-	public CategoryController(CategoryRepository categoryRepository, CategoryService categoryService, HelpersService helpers, SettingsService settingsService)
+	public CategoryController(CategoryService categoryService, HelpersService helpers, SettingsService settingsService)
 	{
-		this.categoryRepository = categoryRepository;
 		this.categoryService = categoryService;
 		this.helpers = helpers;
 		this.settingsService = settingsService;
@@ -39,7 +37,7 @@ public class CategoryController extends BaseController
 	@RequestMapping("/categories")
 	public String categories(Model model)
 	{
-		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
+		model.addAttribute("categories", categoryService.getRepository().findAllByOrderByNameAsc());
 		model.addAttribute("settings", settingsService.getSettings());
 		return "categories/categories";
 	}
@@ -59,7 +57,7 @@ public class CategoryController extends BaseController
 		model.addAttribute("availableCategories", availableCategories);
 		model.addAttribute("preselectedCategory", categoryService.getRepository().findByType(CategoryType.NONE));
 
-		model.addAttribute("currentCategory", categoryRepository.getOne(ID));
+		model.addAttribute("currentCategory", categoryService.getRepository().getOne(ID));
 		model.addAttribute("settings", settingsService.getSettings());
 		return "categories/categories";
 	}
@@ -77,7 +75,7 @@ public class CategoryController extends BaseController
 
 	private boolean isDeletable(Integer ID)
 	{
-		Category categoryToDelete = categoryRepository.getOne(ID);
+		Category categoryToDelete = categoryService.getRepository().getOne(ID);
 		return categoryToDelete != null && categoryToDelete.getType() == CategoryType.CUSTOM;
 	}
 
@@ -95,7 +93,7 @@ public class CategoryController extends BaseController
 	@RequestMapping("/categories/{ID}/edit")
 	public String editCategory(Model model, @PathVariable("ID") Integer ID)
 	{
-		Category category = categoryRepository.findOne(ID);
+		Category category = categoryService.getRepository().findOne(ID);
 		if(category == null)
 		{
 			throw new ResourceNotFoundException();
@@ -148,7 +146,7 @@ public class CategoryController extends BaseController
 			{
 				category.setType(CategoryType.CUSTOM);
 			}
-			categoryRepository.save(category);
+			categoryService.getRepository().save(category);
 		}
 
 		return "redirect:/categories";
