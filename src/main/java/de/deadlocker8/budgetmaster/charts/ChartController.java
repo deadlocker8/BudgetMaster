@@ -1,6 +1,5 @@
 package de.deadlocker8.budgetmaster.charts;
 
-import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
@@ -83,5 +82,36 @@ public class ChartController extends BaseController
 		}
 
 		return "redirect:/charts/manage";
+	}
+
+	@RequestMapping("/charts/{ID}/requestDelete")
+	public String requestDeleteChart(Model model, @PathVariable("ID") Integer ID)
+	{
+		if(!isDeletable(ID))
+		{
+			return "redirect:/charts/manage";
+		}
+
+		model.addAttribute("charts", chartService.getRepository().findAllByOrderByNameAsc());
+		model.addAttribute("currentChart", chartService.getRepository().getOne(ID));
+		model.addAttribute("settings", settingsService.getSettings());
+		return "charts/manage";
+	}
+
+	@RequestMapping(value = "/charts/{ID}/delete")
+	public String deleteChart(Model model, @PathVariable("ID") Integer ID)
+	{
+		if(isDeletable(ID))
+		{
+			chartService.getRepository().delete(ID);
+		}
+
+		return "redirect:/charts/manage";
+	}
+
+	private boolean isDeletable(Integer ID)
+	{
+		Chart chartToDelete = chartService.getRepository().getOne(ID);
+		return chartToDelete != null && chartToDelete.getType() == ChartType.CUSTOM;
 	}
 }

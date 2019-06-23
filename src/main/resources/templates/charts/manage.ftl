@@ -55,24 +55,16 @@
                 </div>
             </div>
 
-            <#if currentCategory??>
+            <#if currentChart??>
                 <!-- confirm delete modal -->
-                <div id="modalConfirmDelete" class="modal categoryDeleteModal background-color">
+                <div id="modalConfirmDelete" class="modal background-color">
                     <div class="modal-content">
-                        <h4>${locale.getString("info.title.category.delete")}</h4>
-                        <p>${locale.getString("info.text.category.delete", currentCategory.name)}</p>
-                        <p>${locale.getString("info.text.category.delete.move")}</p>
-
-                        <form name="DestinationCategory" id="formDestinationCategory" action="<@s.url '/categories/${currentCategory.ID?c}/delete'/>" method="post">
-                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                            <#import "../helpers/validation.ftl" as validation>
-                            <@newTransactionMacros.categorySelect availableCategories preselectedCategory "col s12 m12 l8 offset-l2" locale.getString("info.title.category.delete.move")/>
-                        </form>
+                        <h4>${locale.getString("info.title.chart.delete")}</h4>
+                        <p>${locale.getString("info.text.chart.delete", currentChart.getName())}</p>
                     </div>
-
                     <div class="modal-footer background-color">
-                        <a href="<@s.url '/categories'/>" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
-                        <a id="buttonDeleteCategory" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("delete")}</a>
+                        <a href="<@s.url '/charts/manage'/>" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
+                        <a href="<@s.url '/charts/${currentChart.getID()?c}/delete'/>" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("info.title.chart.delete")}</a>
                     </div>
                 </div>
             </#if>
@@ -80,5 +72,6 @@
 
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
+        <script src="<@s.url '/js/charts.js'/>"></script>
     </body>
 </html>
