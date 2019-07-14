@@ -74,10 +74,20 @@ public class ChartController extends BaseController
 		}
 		else
 		{
+			Chart existingChart = chartService.getRepository().getOne(chart.getID());
+			if(existingChart != null)
+			{
+				if(existingChart.getType() != ChartType.CUSTOM)
+				{
+					return "error/400";
+				}
+			}
+
 			if(chart.getType() == null)
 			{
 				chart.setType(ChartType.CUSTOM);
 			}
+
 			chartService.getRepository().save(chart);
 		}
 

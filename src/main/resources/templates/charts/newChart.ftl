@@ -39,6 +39,20 @@
 
                         <br>
 
+                        <#-- info message if chart is not editable -->
+                        <#if (chart.getType().name() == "DEFAULT")>
+                            <div class="row no-margin-bottom">
+                                <div class="col s12 center-align">
+                                    <table class="text-color login-message no-border-table">
+                                        <tr>
+                                            <td><i class="material-icons">info</i></td>
+                                            <td id="loginMessage">${locale.getString("chart.new.info.default")}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </#if>
+
                         <#-- buttons -->
                         <div class="row hide-on-small-only">
                             <div class="col s6 right-align">
@@ -46,7 +60,7 @@
                             </div>
 
                             <div class="col s6 left-align">
-                                <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action">
+                                <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action" <#if (chart.getType().name() == "DEFAULT")>disabled</#if>>
                                     <i class="material-icons left">save</i>${locale.getString("save")}
                                 </button>
                             </div>
@@ -59,7 +73,7 @@
                             </div>
                             <div class="row center-align">
                                 <div class="col s12">
-                                    <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="buttonSave">
+                                    <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="buttonSave" <#if (chart.getType().name() == "DEFAULT")>disabled</#if>>
                                         <i class="material-icons left">save</i>${locale.getString("save")}
                                     </button>
                                 </div>

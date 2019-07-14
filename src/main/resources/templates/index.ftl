@@ -56,6 +56,7 @@
                             <p class="text-grey home-menu-text">${locale.getString("home.menu.charts")}</p>
                             <div class="left-align">
                                 <a href="<@s.url '/charts/manage'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>${locale.getString("home.menu.charts.action.manage")}</a>
+                                <br>
                                 <a href="<@s.url '/charts'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>${locale.getString("home.menu.charts.action.show")}</a>
                             </div>
 
