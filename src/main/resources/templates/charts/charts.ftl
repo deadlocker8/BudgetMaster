@@ -3,6 +3,7 @@
         <#import "../helpers/header.ftl" as header>
         <@header.header "BudgetMaster"/>
         <@header.style "datepicker"/>
+        <@header.style "filter"/>
         <#import "/spring.ftl" as s>
     </head>
     <body class="budgetmaster-blue-light">
@@ -10,6 +11,8 @@
         <@navbar.navbar "charts" settings/>
 
         <#import "chartFunctions.ftl" as chartFunctions>
+        <#import "../transactions/transactionsMacros.ftl" as transactionsMacros>
+        <#import "../filter/filterMacros.ftl" as filterMacros>
 
         <main>
             <div class="card main-card background-color">
@@ -19,7 +22,7 @@
                     </div>
                 </div>
                 <div class="container">
-                    <form name="ChartSettings" action="<@s.url '/charts/showChart'/>" method="post">
+                    <form name="NewChartSettings" action="<@s.url '/charts/showChart'/>" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                         <!-- STEP 1 -->
@@ -30,9 +33,14 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2 no-margin-top">
-                                <select name="chart">
+                                <select name="chartID">
                                     <#list charts as chart>
                                         <#assign chartName=chartFunctions.getChartName(chart)>
+                                        <#if chartSettings.getChartID() == chart.getID()>
+                                            <option selected value="${chart.getID()?c}">${chartName}</option>
+                                            <#continue>
+                                        </#if>
+
                                         <option value="${chart.getID()?c}">${chartName}</option>
                                     </#list>
                                 </select>
@@ -48,14 +56,14 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s6 m6 l4 offset-l2">
-                                <#assign startDate = dateService.getLongDateString(defaultStartDate)/>
+                                <#assign startDate = dateService.getLongDateString(chartSettings.getStartDate())/>
 
                                 <input id="chart-datepicker" type="text" class="datepicker" name="startDate" value="${startDate}">
                                 <label for="chart-datepicker">${locale.getString("chart.steps.second.label.start")}</label>
                             </div>
 
                             <div class="input-field col s6 m6 l4 ">
-                                <#assign endDate = dateService.getLongDateString(defaultEndDate)/>
+                                <#assign endDate = dateService.getLongDateString(chartSettings.getEndDate())/>
 
                                 <input id="chart-datepicker-end" type="text" class="datepicker" name="endDate" value="${endDate}">
                                 <label for="chart-datepicker-end">${locale.getString("chart.steps.second.label.end")}</label>
@@ -77,22 +85,21 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="input-field col s12 m12 l8 offset-l2 no-margin-top">
-                                <input id="chart-name" type="text" name="name" value="">
-                                <label for="chart-name">${locale.getString("chart.new.label.name")}</label>
+                            <div class="col s12 m12 l8 offset-l2 no-margin-top center-align">
+                                <@transactionsMacros.buttonFilter chartSettings.getFilterConfiguration().isActive()/>
                             </div>
                         </div>
+
+                        <@filterMacros.filterModalCharts chartSettings.getFilterConfiguration()/>
 
                         <br>
 
                         <#-- buttons -->
-                        <div class="hide-on-med-and-up">
-                            <div class="row center-align">
-                                <div class="col s12">
-                                    <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="buttonSave">
-                                        <i class="material-icons left">show_chart</i>${locale.getString("chart.show")}
-                                    </button>
-                                </div>
+                        <div class="row center-align">
+                            <div class="col s12">
+                                <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="buttonSave">
+                                    <i class="material-icons left">show_chart</i>${locale.getString("chart.show")}
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -108,5 +115,6 @@
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
         <script src="<@s.url '/js/charts.js'/>"></script>
+        <script src="<@s.url '/js/filter.js'/>"></script>
     </body>
 </html>

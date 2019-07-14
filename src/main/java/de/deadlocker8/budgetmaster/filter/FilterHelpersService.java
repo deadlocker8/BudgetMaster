@@ -33,12 +33,13 @@ public class FilterHelpersService
 			filterConfiguration.setFilterTags(getFilterTags());
 			return filterConfiguration;
 		}
+		return updateCategoriesAndTags((FilterConfiguration) sessionFilterConfiguration);
+	}
 
-		// update categories and tags
-		FilterConfiguration filterConfiguration = (FilterConfiguration)sessionFilterConfiguration;
+	public FilterConfiguration updateCategoriesAndTags(FilterConfiguration filterConfiguration)
+	{
 		filterConfiguration.setFilterCategories(updateObjects(filterConfiguration.getFilterCategories(), getFilterCategories()));
 		filterConfiguration.setFilterTags(updateObjects(filterConfiguration.getFilterTags(), getFilterTags()));
-
 		return filterConfiguration;
 	}
 

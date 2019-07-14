@@ -1,10 +1,11 @@
 package de.deadlocker8.budgetmaster.charts;
 
 import de.deadlocker8.budgetmaster.controller.BaseController;
+import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
+import de.deadlocker8.budgetmaster.filter.FilterHelpersService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,29 +15,40 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 public class ChartController extends BaseController
 {
 	private final ChartService chartService;
 	private final HelpersService helpers;
 	private final SettingsService settingsService;
+	private final FilterHelpersService filterHelpersService;
 
 	@Autowired
-	public ChartController(ChartService chartService, HelpersService helpers, SettingsService settingsService)
+	public ChartController(ChartService chartService, HelpersService helpers, SettingsService settingsService, FilterHelpersService filterHelpersService)
 	{
 		this.chartService = chartService;
 		this.helpers = helpers;
 		this.settingsService = settingsService;
+		this.filterHelpersService = filterHelpersService;
 	}
 
 	@RequestMapping("/charts")
 	public String charts(Model model)
 	{
-		model.addAttribute("charts", chartService.getRepository().findAllByOrderByNameAsc());
+		List<Chart> charts = chartService.getRepository().findAllByOrderByNameAsc();
+
+		FilterConfiguration defaultFilterConfiguration = FilterConfiguration.DEFAULT;
+		defaultFilterConfiguration.setFilterCategories(filterHelpersService.getFilterCategories());
+		defaultFilterConfiguration.setFilterTags(filterHelpersService.getFilterTags());
+
+		ChartSettings defaultChartSettings = ChartSettings.getDefault(charts.get(0).getID(), defaultFilterConfiguration);
+
+		model.addAttribute("chartSettings", defaultChartSettings);
+		model.addAttribute("charts", charts);
 		model.addAttribute("settings", settingsService.getSettings());
-		DateTime now = DateTime.now();
-		model.addAttribute("defaultStartDate", now.withDayOfMonth(1));
-		model.addAttribute("defaultEndDate", now.dayOfMonth().withMaximumValue());
 		return "charts/charts";
 	}
 
@@ -135,5 +147,18 @@ public class ChartController extends BaseController
 	{
 		Chart chartToDelete = chartService.getRepository().getOne(ID);
 		return chartToDelete != null && chartToDelete.getType() == ChartType.CUSTOM;
+	}
+
+	@RequestMapping(value = "/charts/showChart", method = RequestMethod.POST)
+	public String showChart(Model model, @ModelAttribute("NewChartSettings") ChartSettings chartSettings, BindingResult bindingResult)
+	{
+		chartSettings.setFilterConfiguration(filterHelpersService.updateCategoriesAndTags(chartSettings.getFilterConfiguration()));
+
+		model.addAttribute("chartSettings", chartSettings);
+		model.addAttribute("charts", chartService.getRepository().findAllByOrderByNameAsc());
+		model.addAttribute("settings", settingsService.getSettings());
+		//TODO: load chart from database
+
+		return "charts/charts";
 	}
 }
