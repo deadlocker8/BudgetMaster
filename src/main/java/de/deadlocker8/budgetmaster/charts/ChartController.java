@@ -28,6 +28,14 @@ public class ChartController extends BaseController
 		this.settingsService = settingsService;
 	}
 
+	@RequestMapping("/charts")
+	public String charts(Model model)
+	{
+		model.addAttribute("charts", chartService.getRepository().findAllByOrderByNameAsc());
+		model.addAttribute("settings", settingsService.getSettings());
+		return "charts/charts";
+	}
+
 	@RequestMapping("/charts/manage")
 	public String manage(Model model)
 	{
