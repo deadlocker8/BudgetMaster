@@ -4,6 +4,7 @@ import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +34,9 @@ public class ChartController extends BaseController
 	{
 		model.addAttribute("charts", chartService.getRepository().findAllByOrderByNameAsc());
 		model.addAttribute("settings", settingsService.getSettings());
+		DateTime now = DateTime.now();
+		model.addAttribute("defaultStartDate", now.withDayOfMonth(1));
+		model.addAttribute("defaultEndDate", now.dayOfMonth().withMaximumValue());
 		return "charts/charts";
 	}
 
