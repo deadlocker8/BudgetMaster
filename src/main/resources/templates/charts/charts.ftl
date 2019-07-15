@@ -110,6 +110,10 @@
         <!-- Pass localization to JS -->
         <#import "../helpers/globalDatePicker.ftl" as datePicker>
         <@datePicker.datePickerLocalization/>
+        <script>
+            filterActive = "${locale.getString("filter.active")}"
+            filterNotActive = "${locale.getString("title.filter")}"
+        </script>
 
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>

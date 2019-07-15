@@ -51,7 +51,7 @@
 </#macro>
 
 <#macro buttonReset>
-    <a href="<@s.url '/filter/reset'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">settings_backup_restore</i>${locale.getString("filter.reset")}</a>
+    <a href="<@s.url '/filter/reset'/>" id="button-filter-reset" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">settings_backup_restore</i>${locale.getString("filter.reset")}</a>
 </#macro>
 
 <#macro buttonApply>
@@ -61,7 +61,7 @@
 </#macro>
 
 <#macro buttonClose>
-    <a class="modal-action modal-close waves-effect waves-light budgetmaster-blue btn-flat white-text"><i class="fas fa-filter left"></i>${locale.getString("filter.apply")}</a>
+    <a id="filter-button-close" class="waves-effect waves-light budgetmaster-blue btn white-text"><i class="fas fa-filter left"></i>${locale.getString("filter.apply")}</a>
 </#macro>
 
 <#macro buttonsAllOrNone>
@@ -99,7 +99,7 @@
             <@buttonsCharts/>
         </div>
         <div class="modal-footer background-color">
-            <a href="" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
+            <a class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
         </div>
     </div>
 </#macro>

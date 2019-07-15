@@ -4,6 +4,11 @@ $( document ).ready(function() {
         $('#modalConfirmDelete').modal('open');
     }
 
+    if($("#modalFilter").length)
+    {
+       var modalFilter =  $('#modalFilter').modal();
+    }
+
     if($(".datepicker").length)
     {
         var pickerStartDate = M.Datepicker.init(document.getElementById('chart-datepicker'), {
@@ -86,4 +91,31 @@ $( document ).ready(function() {
             formatSubmit: 'dd.mm.yyyy'
         });
     }
+
+    $("#filter-button-close").click(function()
+    {
+        var filterButton = document.getElementById("modalFilterTrigger");
+
+        if(isDefaultFilter())
+        {
+            filterButton.classList.toggle("budgetmaster-blue", true);
+            filterButton.classList.toggle("budgetmaster-red", false);
+            filterButton.childNodes[1].nodeValue = filterNotActive;
+        }
+        else
+        {
+            filterButton.classList.toggle("budgetmaster-blue", false);
+            filterButton.classList.toggle("budgetmaster-red", true);
+            filterButton.childNodes[1].nodeValue = filterActive;
+        }
+
+        modalFilter.modal('close');
+    });
 });
+
+function isDefaultFilter()
+{
+    var allCheckBoxesChecked = $("#filterSettings input[type=checkbox]:checked").length === $("#filterSettings input[type=checkbox]").length;
+    var textInputEmpty = $("#filter-name").val().length === 0;
+    return allCheckBoxesChecked && textInputEmpty
+}
