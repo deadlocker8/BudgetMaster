@@ -52,7 +52,7 @@
                     <#list transactions as transaction>
                         <#assign shouldHighlight = highlightID?? && transaction.getID()?? && transaction.getID()==highlightID/>
 
-                        <div class="hide-on-large-only transaction-row-top <#if shouldHighlight>budgetmaster-blue-light" id="highlighted-small"<#else>"</#if>>
+                        <div class="hide-on-large-only transaction-row-top <#if transaction.isFuture()>transaction-row-transparent</#if> <#if shouldHighlight>budgetmaster-blue-light transaction-row-transparent-override" id="highlighted-small"<#else>"</#if>>
                             <div class="row valign-wrapper transaction-row-bottom">
                                 <div class="col s3 center-align bold transaction-text">
                                     ${dateService.getDateStringWithoutYear(transaction.date)}
@@ -66,7 +66,7 @@
                                 <@transactionsMacros.transactionAmount transaction account "s4"/>
                             </div>
                         </div>
-                        <div class="hide-on-med-and-down transaction-row-top transaction-row-bottom <#if shouldHighlight>budgetmaster-blue-light" id="highlighted-large"<#else>"</#if>>
+                        <div class="hide-on-med-and-down transaction-row-top transaction-row-bottom <#if transaction.isFuture()>transaction-row-transparent</#if> <#if shouldHighlight>budgetmaster-blue-light transaction-row-transparent-override" id="highlighted-large"<#else>"</#if>>
                             <div class="row valign-wrapper no-margin-bottom">
                                 <div class="col l1 xl1 bold transaction-text transaction-line-height">
                                     ${dateService.getDateStringWithoutYear(transaction.date)}
