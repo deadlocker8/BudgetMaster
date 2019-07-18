@@ -2,10 +2,7 @@ package de.deadlocker8.budgetmaster.charts;
 
 import com.google.gson.annotations.Expose;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
@@ -23,6 +20,7 @@ public class Chart
 	@Expose
 	private String name;
 	@Expose
+	@Column(columnDefinition="TEXT")
 	private String script;
 	@Expose
 	private ChartType type;
