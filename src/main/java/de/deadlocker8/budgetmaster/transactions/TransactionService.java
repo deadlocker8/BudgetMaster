@@ -86,7 +86,7 @@ public class TransactionService implements Resetable
 		return getTransactionsForAccount(account, startDate, date, filterConfiguration);
 	}
 
-	private List<Transaction> getTransactionsForAccount(Account account, DateTime startDate, DateTime endDate, FilterConfiguration filterConfiguration)
+	public List<Transaction> getTransactionsForAccount(Account account, DateTime startDate, DateTime endDate, FilterConfiguration filterConfiguration)
 	{
 		if(filterConfiguration == null)
 		{

@@ -32,7 +32,7 @@
                         </div>
 
                         <!-- info message with link to wiki on how to create custom charts -->
-                        <#if (chart.getType().name() == "CUSTOM")>
+                        <#if chart.getType().name() == "CUSTOM">
                             <@chartFunctions.infoMessage locale.getString("chart.new.info.wiki")/>
                         </#if>
 
@@ -47,7 +47,7 @@
                         <br>
 
                         <#-- info message if chart is not editable -->
-                        <#if (chart.getType().name() == "DEFAULT")>
+                        <#if chart.getType().name() == "DEFAULT">
                             <@chartFunctions.infoMessage locale.getString("chart.new.info.default")/>
                         </#if>
 

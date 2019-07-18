@@ -72,9 +72,9 @@
 
                         <script>
                             startDate = "${startDate}".split(".");
-                            startDate = new Date(startDate[2], startDate[1]-1, startDate[0]);
+                            startDate = new Date(startDate[2], startDate[1] - 1, startDate[0]);
                             endDate = "${endDate}".split(".");
-                            endDate = new Date(endDate[2], endDate[1]-1, endDate[0]);
+                            endDate = new Date(endDate[2], endDate[1] - 1, endDate[0]);
                         </script>
 
 
@@ -97,28 +97,39 @@
                         <#-- buttons -->
                         <div class="row center-align">
                             <div class="col s12">
-                                <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="buttonSave">
+                                <button class="btn waves-effect waves-light budgetmaster-blue" type="submit"
+                                        name="buttonSave">
                                     <i class="material-icons left">show_chart</i>${locale.getString("chart.show")}
                                 </button>
                             </div>
                         </div>
                     </form>
                 </div>
-            </div>
+
+                <div class="container">
+                    <div id="chart-canvas"></div>
+                </div>
         </main>
 
         <!-- Pass localization to JS -->
         <#import "../helpers/globalDatePicker.ftl" as datePicker>
         <@datePicker.datePickerLocalization/>
         <script>
-            filterActive = "${locale.getString("filter.active")}"
-            filterNotActive = "${locale.getString("title.filter")}"
+            filterActive = "${locale.getString("filter.active")}";
+            filterNotActive = "${locale.getString("title.filter")}";
         </script>
 
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
+        <script src="<@s.url '/webjars/plotly/1.48.3/dist/plotly.min.js'/>"></script>
         <script src="<@s.url '/js/charts.js'/>"></script>
         <script src="<@s.url '/js/filter.js'/>"></script>
+
+        <#if chart??>
+            <script>
+                ${chart.getScript()?replace("var transactionData = []", "var transactionData = ${transactionData};")}
+            </script>
+        </#if>
     </body>
 </html>
