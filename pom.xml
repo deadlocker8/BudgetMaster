@@ -64,6 +64,7 @@
         <fontawesome.version>5.0.10</fontawesome.version>
         <sortablejs.version>1.8.1</sortablejs.version>
         <mousetrap.version>1.6.1</mousetrap.version>
+        <plotly.version>1.48.3</plotly.version>
         <webdrivermanager.version>2.2.1</webdrivermanager.version>
         <selenium.version>3.141.59</selenium.version>
 
@@ -188,6 +189,11 @@
             <groupId>org.webjars.npm</groupId>
             <artifactId>mousetrap</artifactId>
             <version>${mousetrap.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars.bower</groupId>
+            <artifactId>plotly.js</artifactId>
+            <version>${plotly.version}</version>
         </dependency>
 
         <!-- selenium -->
