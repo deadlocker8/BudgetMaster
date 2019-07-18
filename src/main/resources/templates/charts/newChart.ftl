@@ -8,6 +8,8 @@
         <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "charts" settings/>
 
+        <#import "chartFunctions.ftl" as chartFunctions>
+
         <main>
             <div class="card main-card background-color">
                 <div class="container">
@@ -29,10 +31,15 @@
                             </div>
                         </div>
 
+                        <!-- info message with link to wiki on how to create custom charts -->
+                        <#if (chart.getType().name() == "CUSTOM")>
+                            <@chartFunctions.infoMessage locale.getString("chart.new.info.wiki")/>
+                        </#if>
+
                         <#-- script -->
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
-                                <textarea id="chart-script" name="script" <@validation.validation "script" "materialize-textarea"/>><#if chart.getScript()??>${chart.getScript()}</#if></textarea>
+                                <textarea id="chart-script" name="script" <@validation.validation "script" "materialize-textarea"/>><#if chart.getScript()??>${chart.getScript()}<#else>${locale.getString("chart.script.default")}</#if></textarea>
                                 <label for="chart-script">${locale.getString("chart.new.label.script")}</label>
                             </div>
                         </div>
@@ -41,16 +48,7 @@
 
                         <#-- info message if chart is not editable -->
                         <#if (chart.getType().name() == "DEFAULT")>
-                            <div class="row no-margin-bottom">
-                                <div class="col s12 center-align">
-                                    <table class="text-color login-message no-border-table">
-                                        <tr>
-                                            <td><i class="material-icons">info</i></td>
-                                            <td id="loginMessage">${locale.getString("chart.new.info.default")}</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
+                            <@chartFunctions.infoMessage locale.getString("chart.new.info.default")/>
                         </#if>
 
                         <#-- buttons -->
