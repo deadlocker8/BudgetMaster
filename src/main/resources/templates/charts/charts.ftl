@@ -22,7 +22,7 @@
                     </div>
                 </div>
                 <div class="container">
-                    <form name="NewChartSettings" action="<@s.url '/charts/showChart'/>" method="post">
+                    <form name="NewChartSettings" action="<@s.url '/charts'/>" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                         <!-- STEP 1 -->

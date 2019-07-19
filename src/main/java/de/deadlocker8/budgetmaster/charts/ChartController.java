@@ -63,6 +63,23 @@ public class ChartController extends BaseController
 		return "charts/charts";
 	}
 
+	@RequestMapping(value = "/charts", method = RequestMethod.POST)
+	public String showChart(Model model, @ModelAttribute("NewChartSettings") ChartSettings chartSettings)
+	{
+		chartSettings.setFilterConfiguration(filterHelpersService.updateCategoriesAndTags(chartSettings.getFilterConfiguration()));
+		Chart chart = chartService.getRepository().findOne(chartSettings.getChartID());
+
+		List<Transaction> transactions = transactionService.getTransactionsForAccount(helpers.getCurrentAccount(), chartSettings.getStartDate(), chartSettings.getEndDate(), chartSettings.getFilterConfiguration());
+		String transactionJson = GSON.toJson(transactions);
+
+		model.addAttribute("chartSettings", chartSettings);
+		model.addAttribute("charts", chartService.getRepository().findAllByOrderByNameAsc());
+		model.addAttribute("settings", settingsService.getSettings());
+		model.addAttribute("chart", chart);
+		model.addAttribute("transactionData", transactionJson);
+		return "charts/charts";
+	}
+
 	@RequestMapping("/charts/manage")
 	public String manage(Model model)
 	{
@@ -163,22 +180,5 @@ public class ChartController extends BaseController
 	{
 		Chart chartToDelete = chartService.getRepository().getOne(ID);
 		return chartToDelete != null && chartToDelete.getType() == ChartType.CUSTOM;
-	}
-
-	@RequestMapping(value = "/charts/showChart", method = RequestMethod.POST)
-	public String showChart(Model model, @ModelAttribute("NewChartSettings") ChartSettings chartSettings)
-	{
-		chartSettings.setFilterConfiguration(filterHelpersService.updateCategoriesAndTags(chartSettings.getFilterConfiguration()));
-		Chart chart = chartService.getRepository().findOne(chartSettings.getChartID());
-
-		List<Transaction> transactions = transactionService.getTransactionsForAccount(helpers.getCurrentAccount(), chartSettings.getStartDate(), chartSettings.getEndDate(), chartSettings.getFilterConfiguration());
-		String transactionJson = GSON.toJson(transactions);
-
-		model.addAttribute("chartSettings", chartSettings);
-		model.addAttribute("charts", chartService.getRepository().findAllByOrderByNameAsc());
-		model.addAttribute("settings", settingsService.getSettings());
-		model.addAttribute("chart", chart);
-		model.addAttribute("transactionData", transactionJson);
-		return "charts/charts";
 	}
 }
