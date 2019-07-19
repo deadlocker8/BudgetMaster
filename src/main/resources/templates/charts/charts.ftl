@@ -156,7 +156,7 @@
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
-        <script src="<@s.url '/webjars/plotly/1.48.3/dist/plotly.min.js'/>"></script>
+        <script src="<@s.url '/js/plotly.min.js'/>"></script>
         <script src="<@s.url '/webjars/momentjs/2.24.0/min/moment.min.js'/>"></script>
         <script src="<@s.url '/js/charts.js'/>"></script>
         <script src="<@s.url '/js/filter.js'/>"></script>

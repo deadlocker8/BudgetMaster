@@ -28,7 +28,11 @@ import java.util.List;
 @Controller
 public class ChartController extends BaseController
 {
-	private static final Gson GSON = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().registerTypeAdapter(DateTime.class, (JsonSerializer<DateTime>) (json, typeOfSrc, context) -> new JsonPrimitive(ISODateTimeFormat.date().print(json))).create();
+	private static final Gson GSON = new GsonBuilder()
+			.excludeFieldsWithoutExposeAnnotation()
+			.setPrettyPrinting()
+			.registerTypeAdapter(DateTime.class, (JsonSerializer<DateTime>) (json, typeOfSrc, context) -> new JsonPrimitive(ISODateTimeFormat.date().print(json)))
+			.create();
 
 	private final ChartService chartService;
 	private final HelpersService helpers;
