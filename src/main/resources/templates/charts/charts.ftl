@@ -21,6 +21,9 @@
                         <div class="headline">${locale.getString("title.charts")}</div>
                     </div>
                 </div>
+                <br>
+                <div class="center-align"><a href="<@s.url '/charts/manage'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">edit</i>${locale.getString("home.menu.charts.action.manage")}</a></div>
+                <br>
                 <div class="container">
                     <form name="NewChartSettings" action="<@s.url '/charts'/>" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
