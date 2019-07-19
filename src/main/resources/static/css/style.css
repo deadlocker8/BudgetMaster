@@ -503,6 +503,10 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     margin-bottom: 20px;
 }
 
+.step-name {
+    margin-left: 1em;
+}
+
 .invisible {
     opacity: 0;
 }

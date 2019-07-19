@@ -28,74 +28,86 @@
                     <form name="NewChartSettings" action="<@s.url '/charts'/>" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
-                        <!-- STEP 1 -->
-                        <div class="row no-margin-bottom">
-                            <div class="col s12 m12 l8 offset-l2">
-                                ${locale.getString("chart.steps.first")}
-                            </div>
-                        </div>
                         <div class="row">
-                            <div class="input-field col s12 m12 l8 offset-l2 no-margin-top">
-                                <select name="chartID">
-                                    <#list charts as chart>
-                                        <#assign chartName=chartFunctions.getChartName(chart)>
-                                        <#if chartSettings.getChartID() == chart.getID()>
-                                            <option selected value="${chart.getID()?c}">${chartName}</option>
-                                            <#continue>
-                                        </#if>
+                            <div class="s12">
+                                <ul class="collapsible z-depth-2">
 
-                                        <option value="${chart.getID()?c}">${chartName}</option>
-                                    </#list>
-                                </select>
-                            </div>
-                        </div>
+                                    <!-- STEP 1 -->
+                                    <li <#if !chart??>class="active"</#if>>
+                                        <div class="collapsible-header">
+                                            <span class="bold">${locale.getString("chart.steps.first.step")}</span>
+                                            <span class="step-name">${locale.getString("chart.steps.first")}</span>
+                                        </div>
+                                        <div class="collapsible-body">
+                                            <div class="row">
+                                                <div class="input-field col s12 m12 l8 offset-l2 no-margin-top">
+                                                    <select name="chartID">
+                                                        <#list charts as chart>
+                                                            <#assign chartName=chartFunctions.getChartName(chart)>
+                                                            <#if chartSettings.getChartID() == chart.getID()>
+                                                                <option selected value="${chart.getID()?c}">${chartName}</option>
+                                                                <#continue>
+                                                            </#if>
 
+                                                            <option value="${chart.getID()?c}">${chartName}</option>
+                                                        </#list>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
 
-                        <!-- STEP 2 -->
-                        <div class="row no-margin-bottom">
-                            <div class="col s12 m12 l8 offset-l2">
-                                ${locale.getString("chart.steps.second")}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s6 m6 l4 offset-l2">
-                                <#assign startDate = dateService.getLongDateString(chartSettings.getStartDate())/>
+                                    <!-- STEP 2 -->
+                                    <li>
+                                        <div class="collapsible-header">
+                                            <span class="bold">${locale.getString("chart.steps.second.step")}</span>
+                                            <span class="step-name">${locale.getString("chart.steps.second")}</span>
+                                        </div>
+                                        <div class="collapsible-body">
+                                            <div class="row">
+                                                <div class="input-field col s6 m6 l4 offset-l2">
+                                                    <#assign startDate = dateService.getLongDateString(chartSettings.getStartDate())/>
 
-                                <input id="chart-datepicker" type="text" class="datepicker" name="startDate" value="${startDate}">
-                                <label for="chart-datepicker">${locale.getString("chart.steps.second.label.start")}</label>
-                            </div>
+                                                    <input id="chart-datepicker" type="text" class="datepicker" name="startDate" value="${startDate}">
+                                                    <label for="chart-datepicker">${locale.getString("chart.steps.second.label.start")}</label>
+                                                </div>
 
-                            <div class="input-field col s6 m6 l4 ">
-                                <#assign endDate = dateService.getLongDateString(chartSettings.getEndDate())/>
+                                                <div class="input-field col s6 m6 l4 ">
+                                                    <#assign endDate = dateService.getLongDateString(chartSettings.getEndDate())/>
 
-                                <input id="chart-datepicker-end" type="text" class="datepicker" name="endDate" value="${endDate}">
-                                <label for="chart-datepicker-end">${locale.getString("chart.steps.second.label.end")}</label>
-                            </div>
-                        </div>
+                                                    <input id="chart-datepicker-end" type="text" class="datepicker" name="endDate" value="${endDate}">
+                                                    <label for="chart-datepicker-end">${locale.getString("chart.steps.second.label.end")}</label>
+                                                </div>
+                                            </div>
 
-                        <script>
-                            startDate = "${startDate}".split(".");
-                            startDate = new Date(startDate[2], startDate[1] - 1, startDate[0]);
-                            endDate = "${endDate}".split(".");
-                            endDate = new Date(endDate[2], endDate[1] - 1, endDate[0]);
-                        </script>
+                                            <script>
+                                                startDate = "${startDate}".split(".");
+                                                startDate = new Date(startDate[2], startDate[1] - 1, startDate[0]);
+                                                endDate = "${endDate}".split(".");
+                                                endDate = new Date(endDate[2], endDate[1] - 1, endDate[0]);
+                                            </script>
+                                        </div>
+                                    </li>
 
-
-                        <!-- STEP 3 -->
-                        <div class="row no-margin-bottom">
-                            <div class="col s12 m12 l8 offset-l2">
-                                ${locale.getString("chart.steps.third")}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col s12 m12 l8 offset-l2 no-margin-top center-align">
-                                <@transactionsMacros.buttonFilter chartSettings.getFilterConfiguration().isActive()/>
+                                    <!-- STEP 3 -->
+                                    <li>
+                                        <div class="collapsible-header">
+                                            <span class="bold">${locale.getString("chart.steps.third.step")}</span>
+                                            <span class="step-name">${locale.getString("chart.steps.third")}</span>
+                                        </div>
+                                        <div class="collapsible-body">
+                                            <div class="row">
+                                                <div class="col s12 m12 l8 offset-l2 no-margin-top center-align">
+                                                    <@transactionsMacros.buttonFilter chartSettings.getFilterConfiguration().isActive()/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
 
                         <@filterMacros.filterModalCharts chartSettings.getFilterConfiguration()/>
-
-                        <br>
 
                         <#-- buttons -->
                         <div class="row center-align">
