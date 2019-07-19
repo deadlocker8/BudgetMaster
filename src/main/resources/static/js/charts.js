@@ -92,30 +92,47 @@ $( document ).ready(function() {
         });
     }
 
-    $("#filter-button-close").click(function()
+    $(".filter-button-close").click(function()
     {
-        var filterButton = document.getElementById("modalFilterTrigger");
+        applyFilter(modalFilter);
+    });
 
-        if(isDefaultFilter())
-        {
-            filterButton.classList.toggle("budgetmaster-blue", true);
-            filterButton.classList.toggle("budgetmaster-red", false);
-            filterButton.childNodes[1].nodeValue = filterNotActive;
-        }
-        else
-        {
-            filterButton.classList.toggle("budgetmaster-blue", false);
-            filterButton.classList.toggle("budgetmaster-red", true);
-            filterButton.childNodes[1].nodeValue = filterActive;
-        }
-
-        modalFilter.modal('close');
+    $(".filter-button-reset").click(function()
+    {
+        resetFilter();
+        applyFilter(modalFilter);
     });
 });
+
+function applyFilter(modal)
+{
+    var filterButton = document.getElementById("modalFilterTrigger");
+
+    if(isDefaultFilter())
+    {
+        filterButton.classList.toggle("budgetmaster-blue", true);
+        filterButton.classList.toggle("budgetmaster-red", false);
+        filterButton.childNodes[1].nodeValue = filterNotActive;
+    }
+    else
+    {
+        filterButton.classList.toggle("budgetmaster-blue", false);
+        filterButton.classList.toggle("budgetmaster-red", true);
+        filterButton.childNodes[1].nodeValue = filterActive;
+    }
+
+    modal.modal('close');
+}
 
 function isDefaultFilter()
 {
     var allCheckBoxesChecked = $("#filterSettings input[type=checkbox]:checked").length === $("#filterSettings input[type=checkbox]").length;
     var textInputEmpty = $("#filter-name").val().length === 0;
     return allCheckBoxesChecked && textInputEmpty
+}
+
+function resetFilter()
+{
+    $("#filterSettings input[type=checkbox]").prop('checked', true);
+    $("#filter-name").val('');
 }
