@@ -581,10 +581,6 @@ input[type="radio"]:not(:checked) + span::before, [type="radio"]:not(:checked) +
     margin-bottom: 20px;
 }
 
-.step-name {
-    margin-left: 1em;
-}
-
 .invisible {
     opacity: 0;
 }

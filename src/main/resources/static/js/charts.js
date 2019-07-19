@@ -102,6 +102,11 @@ $( document ).ready(function() {
         resetFilter();
         applyFilter(modalFilter);
     });
+
+    $(".quick-date").click(function()
+    {
+        handleQuickDate(this, pickerStartDate, pickerEndDate);
+    });
 });
 
 function applyFilter(modal)
@@ -135,4 +140,49 @@ function resetFilter()
 {
     $("#filterSettings input[type=checkbox]").prop('checked', true);
     $("#filter-name").val('');
+}
+
+function handleQuickDate(element, pickerStartDate, pickerEndDate)
+{
+    var quickType = element.dataset.quick;
+    var startDate;
+    var endDate;
+
+    switch(quickType) {
+        case '0':
+            startDate = moment().startOf('isoWeek');
+            endDate = moment().endOf('isoWeek');
+            break;
+        case '1':
+            startDate = moment().startOf('month');
+            endDate = moment().endOf('month');
+            break;
+        case '2':
+            startDate = moment().startOf('year');
+            endDate = moment().endOf('year');
+            break;
+        case '3':
+            startDate = moment().subtract(7, 'days');
+            endDate = moment();
+            break;
+        case '4':
+            startDate = moment().subtract(30, 'days');
+            endDate = moment();
+            break;
+        case '5':
+            startDate = moment().subtract(365, 'days');
+            endDate = moment();
+            break;
+    }
+
+    setDateRange(startDate, endDate, pickerStartDate, pickerEndDate);
+}
+
+function setDateRange(startDate, endDate, pickerStartDate, pickerEndDate)
+{
+    pickerStartDate.setDate(startDate.toDate());
+    pickerStartDate.setInputValue();
+
+    pickerEndDate.setDate(endDate.toDate());
+    pickerEndDate.setInputValue();
 }

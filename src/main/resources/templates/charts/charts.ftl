@@ -4,6 +4,7 @@
         <@header.header "BudgetMaster"/>
         <@header.style "datepicker"/>
         <@header.style "filter"/>
+        <@header.style "charts"/>
         <#import "/spring.ftl" as s>
     </head>
     <body class="budgetmaster-blue-light">
@@ -39,7 +40,7 @@
                                             <span class="step-name">${locale.getString("chart.steps.first")}</span>
                                         </div>
                                         <div class="collapsible-body">
-                                            <div class="row">
+                                            <div class="row no-margin-bottom">
                                                 <div class="input-field col s12 m12 l8 offset-l2 no-margin-top">
                                                     <select name="chartID">
                                                         <#list charts as chart>
@@ -64,7 +65,7 @@
                                             <span class="step-name">${locale.getString("chart.steps.second")}</span>
                                         </div>
                                         <div class="collapsible-body">
-                                            <div class="row">
+                                            <div class="row no-margin-bottom">
                                                 <div class="input-field col s6 m6 l4 offset-l2">
                                                     <#assign startDate = dateService.getLongDateString(chartSettings.getStartDate())/>
 
@@ -77,6 +78,24 @@
 
                                                     <input id="chart-datepicker-end" type="text" class="datepicker" name="endDate" value="${endDate}">
                                                     <label for="chart-datepicker-end">${locale.getString("chart.steps.second.label.end")}</label>
+                                                </div>
+                                            </div>
+                                            <div class="row no-margin-bottom">
+                                                <div class="col s12 m12 l8 offset-l2 no-margin-top">
+                                                    <table class="no-border-table">
+                                                        <tr>
+                                                            <td class="quick-date" data-quick="0">${locale.getString("chart.quick.this.week")}</td>
+                                                            <td class="quick-date" data-quick="1">${locale.getString("chart.quick.this.month")}</td>
+                                                            <td class="quick-date" data-quick="2">${locale.getString("chart.quick.this.year")}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="quick-date" data-quick="3">${locale.getString("chart.quick.last.week.days")}</td>
+                                                            <td class="quick-date" data-quick="4">${locale.getString("chart.quick.last.month.days")}</td>
+                                                            <td class="quick-date" data-quick="5">${locale.getString("chart.quick.last.year.days")}</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="col s12 m12 l8 offset-l2 no-margin-top quick-date-container">
                                                 </div>
                                             </div>
 
@@ -96,7 +115,7 @@
                                             <span class="step-name">${locale.getString("chart.steps.third")}</span>
                                         </div>
                                         <div class="collapsible-body">
-                                            <div class="row">
+                                            <div class="row no-margin-bottom">
                                                 <div class="col s12 m12 l8 offset-l2 no-margin-top center-align">
                                                     <@transactionsMacros.buttonFilter chartSettings.getFilterConfiguration().isActive()/>
                                                 </div>
@@ -138,6 +157,7 @@
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
         <script src="<@s.url '/webjars/plotly/1.48.3/dist/plotly.min.js'/>"></script>
+        <script src="<@s.url '/webjars/momentjs/2.24.0/min/moment.min.js'/>"></script>
         <script src="<@s.url '/js/charts.js'/>"></script>
         <script src="<@s.url '/js/filter.js'/>"></script>
 
