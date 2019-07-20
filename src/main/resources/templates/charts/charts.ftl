@@ -140,7 +140,7 @@
                     </form>
                 </div>
 
-                <div class="container">
+                <div class="container-chart">
                     <div id="chart-canvas"></div>
                 </div>
         </main>

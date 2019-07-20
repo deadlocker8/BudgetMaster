@@ -12,3 +12,12 @@
     cursor: pointer;
     text-decoration: underline #2E79B9;
 }
+
+.container-chart {
+    width: 90%;
+    margin: auto;
+}
+
+#chart-canvas {
+    height: 40em;
+}
