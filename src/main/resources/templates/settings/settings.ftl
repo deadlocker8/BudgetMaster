@@ -164,7 +164,7 @@
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
-        <script src="<@s.url '/js/spectrum.js'/>"></script>
+        <script src="<@s.url '/js/libs/spectrum.js'/>"></script>
         <script src="<@s.url '/js/settings.js'/>"></script>
     </body>
 </html>
