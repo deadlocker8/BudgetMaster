@@ -112,6 +112,10 @@ main {
     color: #212121 !important;
 }
 
+.sidenav-trigger, .sidenav-trigger i {
+    font-size: 1.5em;
+}
+
 .sidenav {
     width: 350px;
 }

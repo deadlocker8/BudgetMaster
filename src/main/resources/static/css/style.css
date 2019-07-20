@@ -107,6 +107,10 @@ main {
     background-color: #F7EB84;
 }
 
+.sidenav-trigger, .sidenav-trigger i {
+    font-size: 1.5em;
+}
+
 .sidenav {
     width: 350px;
 }
