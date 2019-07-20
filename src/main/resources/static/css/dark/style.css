@@ -116,6 +116,11 @@ main {
     width: 350px;
 }
 
+ul.sidenav.sidenav-fixed > li:last-child
+{
+    margin-bottom: 160px;
+}
+
 .sidenav, .sidenav-sub, .searchWrapper {
     background-color: #444444;
     box-shadow: none;

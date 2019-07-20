@@ -111,6 +111,11 @@ main {
     width: 350px;
 }
 
+ul.sidenav.sidenav-fixed > li:last-child
+{
+    margin-bottom: 160px;
+}
+
 .sidenav li.active {
     background-color: rgba(0, 0, 0, 0.15);
 }
