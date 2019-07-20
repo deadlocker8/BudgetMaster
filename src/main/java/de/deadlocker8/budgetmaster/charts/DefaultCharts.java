@@ -10,12 +10,17 @@ import java.util.List;
 
 public class DefaultCharts
 {
-	private static final Chart CHART_TEST = new Chart("charts.default.accountsum", getChartFromFile("charts/AccountSumPerDay.js"), ChartType.DEFAULT);
+	private static final Chart CHART_ACCOUNT_SUM_PER_DAY = new Chart("charts.default.accountSumPerDay", getChartFromFile("charts/AccountSumPerDay.js"), ChartType.DEFAULT);
+	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_BAR = new Chart("charts.default.incomesAndExpendituresPerMonthBar", getChartFromFile("charts/IncomesAndExpendituresPerMonthBar.js"), ChartType.DEFAULT);
+	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_LINE = new Chart("charts.default.incomesAndExpendituresPerMonthLine", getChartFromFile("charts/IncomesAndExpendituresPerMonthLine.js"), ChartType.DEFAULT);
+
 
 	public static List<Chart> getDefaultCharts()
 	{
 		List<Chart> charts = new ArrayList<>();
-		charts.add(CHART_TEST);
+		charts.add(CHART_ACCOUNT_SUM_PER_DAY);
+		charts.add(CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_BAR);
+		charts.add(CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_LINE);
 
 		charts.sort(Comparator.comparing(Chart::getName));
 		return charts;
