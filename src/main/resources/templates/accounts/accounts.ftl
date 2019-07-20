@@ -29,7 +29,7 @@
                                     <td>${account.getName()}</td>
                                     <td>
                                         <a href="<@s.url '/accounts/${account.getID()?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
-                                        <a href="<@s.url '/accounts/${account.getID()?c}/requestDelete'/>" class="btn-flat no-padding text-color"><i class="material-icons left">delete</i></a>
+                                        <a href="<@s.url '/accounts/${account.getID()?c}/requestDelete'/>" class="btn-flat no-padding text-color"><i class="material-icons left no-margin">delete</i></a>
                                     </td>
                                 </tr>
                             </#if>
