@@ -10,7 +10,7 @@ import java.util.List;
 
 public class DefaultCharts
 {
-	private static final Chart CHART_TEST = new Chart("charts.default.test", getChartFromFile("charts/AccountSumPerDay.js"), ChartType.DEFAULT);
+	private static final Chart CHART_TEST = new Chart("charts.default.accountsum", getChartFromFile("charts/AccountSumPerDay.js"), ChartType.DEFAULT);
 
 	public static List<Chart> getDefaultCharts()
 	{

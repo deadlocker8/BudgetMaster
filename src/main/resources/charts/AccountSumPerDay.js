@@ -52,12 +52,13 @@ var plotlyData = [
 ];
 
 // Add your Plotly layout settings here (optional)
+// Note: All variables starting with "localized" are only available inside default charts.
 var plotlyLayout = {
     title: {
-        text: 'Account sum per day',
+        text: localizedTitle,
     },
     yaxis: {
-        title: 'Sum in €',
+        title: localizedAxisY + localizedCurrency,
         rangemode: 'tozero',
         tickformat: '.2f',
         showline: true
