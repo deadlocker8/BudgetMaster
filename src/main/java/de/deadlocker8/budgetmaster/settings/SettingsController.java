@@ -97,6 +97,7 @@ public class SettingsController extends BaseController
 		{
 			model.addAttribute("error", bindingResult);
 			model.addAttribute("settings", settings);
+			model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
 			return "settings/settings";
 		}
 		else
@@ -187,6 +188,7 @@ public class SettingsController extends BaseController
 		model.addAttribute("deleteDatabase", true);
 		model.addAttribute("verificationCode", verificationCode);
 		model.addAttribute("settings", settingsRepository.findOne(0));
+		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
 		return "settings/settings";
 	}
 
@@ -206,6 +208,7 @@ public class SettingsController extends BaseController
 		}
 
 		model.addAttribute("settings", settingsRepository.findOne(0));
+		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
 		return "settings/settings";
 	}
 
@@ -214,6 +217,7 @@ public class SettingsController extends BaseController
 	{
 		model.addAttribute("importDatabase", true);
 		model.addAttribute("settings", settingsRepository.findOne(0));
+		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
 		return "settings/settings";
 	}
 
@@ -240,6 +244,7 @@ public class SettingsController extends BaseController
 
 			model.addAttribute("errorImportDatabase", e.getMessage());
 			model.addAttribute("settings", settingsRepository.findOne(0));
+			model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
 			return "settings/settings";
 		}
 	}
@@ -259,6 +264,7 @@ public class SettingsController extends BaseController
 		importService.importDatabase((Database) request.getAttribute("database", WebRequest.SCOPE_SESSION), accountMatchList);
 		request.removeAttribute("database", RequestAttributes.SCOPE_SESSION);
 		model.addAttribute("settings", settingsRepository.findOne(0));
+		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
 		return "settings/settings";
 	}
 
@@ -275,6 +281,7 @@ public class SettingsController extends BaseController
 		model.addAttribute("performUpdate", true);
 		model.addAttribute("updateString", Localization.getString("info.text.update", Build.getInstance().getVersionName(), budgetMasterUpdateService.getAvailableVersionString()));
 		model.addAttribute("settings", settingsRepository.findOne(0));
+		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
 		return "settings/settings";
 	}
 
