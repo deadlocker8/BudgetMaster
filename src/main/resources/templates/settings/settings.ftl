@@ -96,7 +96,7 @@
                                         <td>${helpers.getAvailableVersionString()}</td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2">
+                                        <td colspan="4" class="center-align">
                                             <a href="<@s.url '/updateSearch'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">refresh</i>${locale.getString("settings.updates.search")}</a>
                                         </td>
                                     </tr>
