@@ -1,27 +1,53 @@
-Mousetrap.bind('n', function () {
-    window.location.href = rootURL + '/transactions/newTransaction/normal';
+Mousetrap.bind('n', function()
+{
+    if(!isSearchFocused())
+    {
+        window.location.href = rootURL + '/transactions/newTransaction/normal';
+    }
 });
 
-Mousetrap.bind('r', function () {
-    window.location.href = rootURL + '/transactions/newTransaction/repeating';
+Mousetrap.bind('r', function()
+{
+    if(!isSearchFocused())
+    {
+        window.location.href = rootURL + '/transactions/newTransaction/repeating';
+    }
 });
 
-Mousetrap.bind('t', function () {
-    window.location.href = rootURL + '/transactions/newTransaction/transfer';
+Mousetrap.bind('t', function()
+{
+    if(!isSearchFocused())
+    {
+        window.location.href = rootURL + '/transactions/newTransaction/transfer';
+    }
 });
 
-Mousetrap.bind('f', function () {
-    window.location.href = rootURL + '/transactions#modalFilter';
+Mousetrap.bind('f', function()
+{
+    if(!isSearchFocused())
+    {
+        window.location.href = rootURL + '/transactions#modalFilter';
+    }
 });
 
-Mousetrap.bind('s', function () {
-    document.getElementById('search').focus();
+Mousetrap.bind('s', function()
+{
+    if(!isSearchFocused())
+    {
+        document.getElementById('search').focus();
+    }
 });
 
-Mousetrap.bind('esc', function () {
-    var searchElement = document.getElementById('search');
-    var isSearchFocused = (document.activeElement === searchElement);
-    if (isSearchFocused) {
+Mousetrap.bind('esc', function()
+{
+    if(isSearchFocused())
+    {
         document.getElementById('nav-logo-container').focus();
     }
 });
+
+function isSearchFocused()
+{
+    var searchElement = document.getElementById('search');
+    return document.activeElement === searchElement;
+}
