@@ -164,9 +164,10 @@
         <#if chart??>
             <script>
                 <#if chart.getType().name() == "DEFAULT">
-                    localizedTitle = "${locale.getString(chart.getName())}";
-                    localizedAxisY = "${locale.getString(chart.getName() + ".axis.x")}";
-                    localizedCurrency = "${settings.getCurrency()}";
+                    localizedLocale = '${locale.getString("locale")}';
+                    localizedTitle = '${locale.getString(chart.getName())}';
+                    localizedCurrency = '${settings.getCurrency()}';
+                    localizedData = JSON.parse('${locale.getString(chart.getName() + ".localization")}');
                 </#if>
 
                 ${chart.getScript()?replace("var transactionData = []", "var transactionData = ${transactionData};")}

@@ -6,6 +6,8 @@
  */
 var transactionData = [];
 
+// Note: All variables starting with "localized" are only available inside default charts.
+
 // group transactions by date
 var groups = transactionData.reverse().reduce((groups, transaction) => {
     var date = transaction.date;
@@ -52,13 +54,12 @@ var plotlyData = [
 ];
 
 // Add your Plotly layout settings here (optional)
-// Note: All variables starting with "localized" are only available inside default charts.
 var plotlyLayout = {
     title: {
         text: localizedTitle,
     },
     yaxis: {
-        title: localizedAxisY + localizedCurrency,
+        title: localizedData['axisY'] + localizedCurrency,
         rangemode: 'tozero',
         tickformat: '.2f',
         showline: true
