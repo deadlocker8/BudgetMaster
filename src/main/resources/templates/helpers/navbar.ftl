@@ -20,7 +20,7 @@
         <@itemWithIcon "about", "/about", locale.getString("menu.about"), "info", "budgetmaster-grey", activeID/>
 
         <@itemDivider/>
-        <@itemWithIconNoRootUrl "logout", "javascript:\" onclick=\"$('#logout-form').submit();\"", locale.getString("menu.logout") "lock", "budgetmaster-red", activeID/>
+        <@itemLogout locale.getString("menu.logout") "lock"/>
 
         <#if helpers.isUpdateAvailable()>
             <@itemDivider/>
@@ -117,12 +117,8 @@
     </#if>
 </#macro>
 
-<#macro itemWithIconNoRootUrl ID link text icon activeColor activeID>
-    <#if activeID == ID>
-        <li class="active"><a href="${link}" class="waves-effect no-padding"><div class="stripe ${activeColor}"></div><i class="material-icons">${icon}</i>${text}</a></li>
-    <#else>
-        <li><a href="${link}" class="waves-effect"><i class="material-icons">${icon}</i>${text}</a></li>
-    </#if>
+<#macro itemLogout text icon>
+    <li><a class="waves-effect" id="button-logout"><i class="material-icons">${icon}</i>${text}</a></li>
 </#macro>
 
 <#macro itemUpdate link text icon>

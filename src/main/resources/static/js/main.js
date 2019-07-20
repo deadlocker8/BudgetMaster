@@ -1,5 +1,10 @@
 $(document).ready(function()
 {
+    $('#button-logout').click(function()
+    {
+        document.getElementById('logout-form').submit();
+    });
+
     $('.sidenav').sidenav();
 
     $('.modal').modal();
