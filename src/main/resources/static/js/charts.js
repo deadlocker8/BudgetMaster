@@ -1,4 +1,5 @@
-$( document ).ready(function() {
+$(document).ready(function()
+{
     if($("#modalConfirmDelete").length)
     {
         $('#modalConfirmDelete').modal('open');
@@ -6,7 +7,7 @@ $( document ).ready(function() {
 
     if($("#modalFilter").length)
     {
-       var modalFilter =  $('#modalFilter').modal();
+        var modalFilter = $('#modalFilter').modal();
     }
 
     if($(".datepicker").length)
@@ -118,8 +119,7 @@ function applyFilter(modal)
         filterButton.classList.toggle("budgetmaster-blue", true);
         filterButton.classList.toggle("budgetmaster-red", false);
         filterButton.childNodes[1].nodeValue = filterNotActive;
-    }
-    else
+    } else
     {
         filterButton.classList.toggle("budgetmaster-blue", false);
         filterButton.classList.toggle("budgetmaster-red", true);
@@ -148,7 +148,8 @@ function handleQuickDate(element, pickerStartDate, pickerEndDate)
     var startDate;
     var endDate;
 
-    switch(quickType) {
+    switch(quickType)
+    {
         case '0':
             startDate = moment().startOf('isoWeek');
             endDate = moment().endOf('isoWeek');

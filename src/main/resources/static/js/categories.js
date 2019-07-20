@@ -1,4 +1,5 @@
-$( document ).ready(function() {
+$(document).ready(function()
+{
     $('#modalConfirmDelete').modal('open');
 
     $('.category-color').click(function()
@@ -15,13 +16,15 @@ $( document ).ready(function() {
             showInput: true,
             showButtons: false,
             preferredFormat: "hex",
-            hide: function (color) {
+            hide: function(color)
+            {
                 removeActive();
                 addClass(document.getElementById("customColorPickerContainer"), "category-color-active");
                 document.getElementById("customColorPickerContainer").style.backgroundColor = color.toHexString();
                 document.getElementById("categoryColor").value = color.toHexString();
             },
-            move: function (color) {
+            move: function(color)
+            {
                 document.getElementById("customColorPickerContainer").style.backgroundColor = color.toHexString();
             }
         });
@@ -36,7 +39,7 @@ $( document ).ready(function() {
 function removeActive()
 {
     var colors = document.getElementsByClassName("category-color");
-    for(var i=0; i < colors.length; i++)
+    for(var i = 0; i < colors.length; i++)
     {
         removeClass(colors[i], "category-color-active");
     }

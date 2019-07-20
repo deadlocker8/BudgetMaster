@@ -1,8 +1,11 @@
-$( document ).ready(function() {
+$(document).ready(function()
+{
     // prevent form submit on enter
-    $(document).on("keypress", 'form', function (e) {
+    $(document).on("keypress", 'form', function(e)
+    {
         var code = e.keyCode || e.which;
-        if (code === 13) {
+        if(code === 13)
+        {
             e.preventDefault();
             return false;
         }
@@ -13,7 +16,7 @@ function validateForm()
 {
     // handle account matches
     var accountSourcesIDs = $('.account-source-id');
-    var accountSourcesNames= $('.account-source');
+    var accountSourcesNames = $('.account-source');
 
     var accountDestinations = $('select.account-destination');
     var parent = document.getElementById("hidden-account-matches");
