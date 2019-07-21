@@ -30,11 +30,12 @@ Mousetrap.bind('f', function()
     }
 });
 
-Mousetrap.bind('s', function()
+Mousetrap.bind('s', function(e)
 {
     if(!isSearchFocused())
     {
         document.getElementById('search').focus();
+        e.preventDefault();
     }
 });
 
