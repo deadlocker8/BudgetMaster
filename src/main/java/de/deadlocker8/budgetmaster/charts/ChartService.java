@@ -37,15 +37,20 @@ public class ChartService implements Resetable
 	public void createDefaults()
 	{
 		List<Chart> defaultCharts = DefaultCharts.getDefaultCharts();
-		if(chartRepository.findAllByType(ChartType.DEFAULT).size() != defaultCharts.size())
+		for(Chart chart : defaultCharts)
 		{
-			for(Chart chart : defaultCharts)
+			Chart currentChart = chartRepository.findByName(chart.getName());
+			if(currentChart == null)
 			{
-				if(chartRepository.findByName(chart.getName()) == null)
-				{
-					chartRepository.save(chart);
-					LOGGER.debug("Created default chart '" + chart.getName() + "'");
-				}
+				chartRepository.save(chart);
+				LOGGER.debug("Created default chart '" + chart.getName() + "'");
+			}
+			else if(currentChart.getVersion() < chart.getVersion())
+			{
+				LOGGER.debug("Update default chart '" + chart.getName() + "' from version " + currentChart.getVersion() + " to " + chart.getVersion());
+				currentChart.setVersion(chart.getVersion());
+				currentChart.setScript(chart.getScript());
+				chartRepository.save(currentChart);
 			}
 		}
 	}

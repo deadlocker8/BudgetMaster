@@ -1,18 +1,25 @@
 package de.deadlocker8.budgetmaster.charts;
 
+import de.thecodelabs.utils.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 public class DefaultCharts
 {
-	private static final Chart CHART_ACCOUNT_SUM_PER_DAY = new Chart("charts.default.accountSumPerDay", getChartFromFile("charts/AccountSumPerDay.js"), ChartType.DEFAULT);
-	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_BAR = new Chart("charts.default.incomesAndExpendituresPerMonthBar", getChartFromFile("charts/IncomesAndExpendituresPerMonthBar.js"), ChartType.DEFAULT);
-	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_LINE = new Chart("charts.default.incomesAndExpendituresPerMonthLine", getChartFromFile("charts/IncomesAndExpendituresPerMonthLine.js"), ChartType.DEFAULT);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultCharts.class);
+
+	private static final Chart CHART_ACCOUNT_SUM_PER_DAY = new Chart("charts.default.accountSumPerDay", getChartFromFile("charts/AccountSumPerDay.js"), ChartType.DEFAULT, 1);
+	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_BAR = new Chart("charts.default.incomesAndExpendituresPerMonthBar", getChartFromFile("charts/IncomesAndExpendituresPerMonthBar.js"), ChartType.DEFAULT, 1);
+	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_LINE = new Chart("charts.default.incomesAndExpendituresPerMonthLine", getChartFromFile("charts/IncomesAndExpendituresPerMonthLine.js"), ChartType.DEFAULT, 1);
 
 
 	public static List<Chart> getDefaultCharts()
@@ -28,10 +35,16 @@ public class DefaultCharts
 
 	private static String getChartFromFile(String filePath)
 	{
-		InputStream stream = DefaultCharts.class.getClassLoader().getResourceAsStream(filePath);
+		URL url = DefaultCharts.class.getClassLoader().getResource(filePath);
+		if(url == null)
+		{
+			LOGGER.warn("Couldn't add default chart '" + filePath + "' due to missing file");
+			return "";
+		}
+
 		try
 		{
-			return readFromInputStream(stream);
+			return IOUtils.readURL(url);
 		}
 		catch(IOException e)
 		{
@@ -39,19 +52,5 @@ public class DefaultCharts
 		}
 
 		return "";
-	}
-
-	private static String readFromInputStream(InputStream inputStream) throws IOException
-	{
-		StringBuilder resultStringBuilder = new StringBuilder();
-		try(BufferedReader br = new BufferedReader(new InputStreamReader(inputStream)))
-		{
-			String line;
-			while((line = br.readLine()) != null)
-			{
-				resultStringBuilder.append(line).append("\n");
-			}
-		}
-		return resultStringBuilder.toString();
 	}
 }
