@@ -28,12 +28,12 @@ for (var key in groups) {
         var group = groups[key];
 
         // extract all amount values
-        var amounts = group.map(transaction => transaction.amount)
+        var amounts = group.map(transaction => transaction.amount);
 
         // sum up all amounts
         var currentSum = amounts.reduce((a, b) => a + b, 0);
 
-        // add su of current date to previous sum
+        // add sum of current date to previous sum
         currentSum = previousSum + currentSum;
 
         // save current sum for next loop cycle
