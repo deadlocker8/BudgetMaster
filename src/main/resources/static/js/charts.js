@@ -163,15 +163,23 @@ function handleQuickDate(element, pickerStartDate, pickerEndDate)
             endDate = moment().endOf('year');
             break;
         case '3':
+            startDate = moment("2000-01-01");
+            endDate = moment("2100-01-01");
+            break;
+        case '4':
             startDate = moment().subtract(7, 'days');
             endDate = moment();
             break;
-        case '4':
+        case '5':
             startDate = moment().subtract(30, 'days');
             endDate = moment();
             break;
-        case '5':
+        case '6':
             startDate = moment().subtract(365, 'days');
+            endDate = moment();
+            break;
+        case '7':
+            startDate = moment().subtract(3, 'months');
             endDate = moment();
             break;
     }
