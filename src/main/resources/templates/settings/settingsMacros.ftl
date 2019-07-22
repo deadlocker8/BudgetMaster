@@ -2,21 +2,28 @@
 
 <#macro switches settings>
     <div class="row">
-        <div class="col s12 l2 offset-l3 center-align settings-switch">
-            <@switch "rest" "restActivated" settings.isRestActivated()/>
-        </div>
-        <div class="col s12 l2 center-align settings-switch">
-            <@switch "darkTheme" "useDarkTheme" settings.isUseDarkTheme()/>
-        </div>
-        <div class="col s12 l2 center-align settings-switch">
-            <@switch "backupReminder" "backupReminderActivated" settings.getBackupReminderActivated()/>
+        <div class="col s12">
+            <div class="table-container">
+                <div class="table-cell">
+                    <div class="switch-cell-margin">${locale.getString("settings.rest")}</div>
+                    <div class="switch-cell-margin">${locale.getString("settings.darkTheme")}</div>
+                    <div class="switch-cell-margin">${locale.getString("settings.backupReminder")}</div>
+                    <div class="switch-cell-margin">${locale.getString("settings.updates.automatic")}</div>
+                </div>
+                <div class="table-cell table-cell-spacer"></div>
+                <div class="table-cell">
+                    <@switch "rest" "restActivated" settings.isRestActivated()/>
+                    <@switch "darkTheme" "useDarkTheme" settings.isUseDarkTheme()/>
+                    <@switch "backupReminder" "backupReminderActivated" settings.getBackupReminderActivated()/>
+                    <@switch "updates.automatic" "autoUpdateCheckEnabled" settings.isAutoUpdateCheckEnabled()/>
+                </div>
+            </div>
         </div>
     </div>
 </#macro>
 
 <#macro switch localizationKey name isActive>
-    ${locale.getString("settings.${localizationKey}")}
-    <div class="switch">
+    <div class="switch switch-cell-margin">
         <label>
             ${locale.getString("settings.${localizationKey}.deactivated")}
             <input type="checkbox" name="${name}" <#if isActive>checked</#if>/>

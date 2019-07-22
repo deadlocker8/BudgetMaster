@@ -2,6 +2,7 @@
     <head>
         <#import "../helpers/header.ftl" as header>
         <@header.header "BudgetMaster"/>
+        <@header.style "settings"/>
         <#import "/spring.ftl" as s>
     </head>
     <body class="budgetmaster-blue-light">
@@ -67,43 +68,6 @@
                             </div>
                         </div>
 
-                        <#-- updates -->
-                        <div class="row">
-                            <div class="col s12 m12 l8 offset-l2">
-                                ${locale.getString("settings.updates")}
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col s12 m12 l8 offset-l2">
-                                <table class="no-border-table">
-                                    <tr>
-                                        <td rowspan="2">
-                                            <div class="switch">
-                                                <label>
-                                                ${locale.getString("settings.updates.automatic.deactivated")}
-                                                    <input type="checkbox" name="autoUpdateCheckEnabled" <#if settings.isAutoUpdateCheckEnabled()>checked</#if>>
-                                                    <span class="lever"></span>
-                                                ${locale.getString("settings.updates.automatic.activated")}
-                                                </label>
-                                            </div>
-                                        </td>
-                                        <td>${locale.getString("settings.updates.current.version")}</td>
-                                        <td>v${build.getVersionName()}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>${locale.getString("settings.updates.latest.version")}</td>
-                                        <td>${helpers.getAvailableVersionString()}</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="4" class="center-align">
-                                            <a href="<@s.url '/updateSearch'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">refresh</i>${locale.getString("settings.updates.search")}</a>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-
                         <#-- search items per page -->
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
@@ -131,6 +95,37 @@
                             </div>
                         </div>
                     </form>
+                </div>
+
+                <hr>
+
+                <#-- updates -->
+                <div class="container">
+                    <div class="section center-align">
+                        <div class="headline">${locale.getString("settings.updates")}</div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s12 m12 l8 offset-l2 center-align">
+                        <div class="table-container">
+                            <div class="table-cell">
+                                <div class="right-align" style="margin-bottom: 1em;">${locale.getString("settings.updates.current.version")}</div>
+                                <div class="right-align">${locale.getString("settings.updates.latest.version")}</div>
+                            </div>
+
+                            <div class="table-cell table-cell-spacer"></div>
+
+                            <div class="table-cell">
+                                <div class="left-align" style="margin-bottom: 1em; margin-right: 5em">v${build.getVersionName()}</div>
+                                <div class="left-align">${helpers.getAvailableVersionString()}</div>
+                            </div>
+
+                            <div class="table-cell table-cell-valign">
+                                <a href="<@s.url '/updateSearch'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">refresh</i>${locale.getString("settings.updates.search")}</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <hr>
