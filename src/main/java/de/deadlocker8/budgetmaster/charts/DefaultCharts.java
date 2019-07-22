@@ -17,9 +17,17 @@ public class DefaultCharts
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultCharts.class);
 
-	private static final Chart CHART_ACCOUNT_SUM_PER_DAY = new Chart("charts.default.accountSumPerDay", getChartFromFile("charts/AccountSumPerDay.js"), ChartType.DEFAULT, 1);
-	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_BAR = new Chart("charts.default.incomesAndExpendituresPerMonthBar", getChartFromFile("charts/IncomesAndExpendituresPerMonthBar.js"), ChartType.DEFAULT, 1);
-	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_LINE = new Chart("charts.default.incomesAndExpendituresPerMonthLine", getChartFromFile("charts/IncomesAndExpendituresPerMonthLine.js"), ChartType.DEFAULT, 1);
+	private static final Chart CHART_ACCOUNT_SUM_PER_DAY = new Chart("charts.default.accountSumPerDay",
+			getChartFromFile("charts/AccountSumPerDay.js"),
+			ChartType.DEFAULT, 1);
+
+	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_BAR = new Chart("charts.default.incomesAndExpendituresPerMonthBar",
+			getChartFromFile("charts/IncomesAndExpendituresPerMonthBar.js"),
+			ChartType.DEFAULT, 2);
+
+	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_LINE = new Chart("charts.default.incomesAndExpendituresPerMonthLine",
+			getChartFromFile("charts/IncomesAndExpendituresPerMonthLine.js"),
+			ChartType.DEFAULT, 2);
 
 
 	public static List<Chart> getDefaultCharts()

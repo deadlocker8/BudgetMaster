@@ -18,7 +18,7 @@ for(var i = 0; i < transactionData.length; i++)
     var transaction = transactionData[i];
 
     // create new sums if month is not already in list
-    var date = moment(transaction.date).startOf('month').format('MMMM YY');
+    var date = moment(transaction.date).startOf('month').format('MMM YY');
     if(!dates.includes(date))
     {
         dates.push(date);
