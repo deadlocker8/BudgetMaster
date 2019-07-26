@@ -29,6 +29,10 @@ public class DefaultCharts
 			getChartFromFile("charts/IncomesAndExpendituresPerMonthLine.js"),
 			ChartType.DEFAULT, 2);
 
+	private static final Chart CHART_INCOMES_AND_EXPENDITURES_BY_CATEGORY_BAR = new Chart("charts.default.incomesAndExpendituresByCategoryBar",
+			getChartFromFile("charts/IncomesAndExpendituresByCategoryBar.js"),
+			ChartType.DEFAULT, 11);
+
 
 	public static List<Chart> getDefaultCharts()
 	{
@@ -36,6 +40,7 @@ public class DefaultCharts
 		charts.add(CHART_ACCOUNT_SUM_PER_DAY);
 		charts.add(CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_BAR);
 		charts.add(CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_LINE);
+		charts.add(CHART_INCOMES_AND_EXPENDITURES_BY_CATEGORY_BAR);
 
 		charts.sort(Comparator.comparing(Chart::getName));
 		return charts;

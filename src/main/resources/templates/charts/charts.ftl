@@ -172,7 +172,7 @@
                     localizedData = JSON.parse('${locale.getString(chart.getName() + ".localization")}');
                 </#if>
 
-                ${chart.getScript()?replace("var transactionData = []", "var transactionData = ${transactionData};")}
+                ${chart.getScript()?replace("var transactionData = [];", "var transactionData = ${transactionData};")}
             </script>
         </#if>
     </body>
