@@ -12,11 +12,13 @@ transactionData = transactionData.reverse();
 
 moment.locale('de');
 
-
 const NAME = 0;
 const COLOR = 1;
 const INCOME = 2;
 const EXPENDITURE = 3;
+
+var categoryNames = Array.from(new Set(transactionData.map(t => t.category.name)));
+var categoryColors = Array.from(new Set(transactionData.map(t => t.category.color)));
 
 var dates = [];
 var values = [];
@@ -26,11 +28,15 @@ for(var i = 0; i < transactionData.length; i++)
     var transaction = transactionData[i];
 
     var date = moment(transaction.date).startOf('month').format('MMM YY');
+    var date = moment(transaction.date).startOf('month').format('MMM YY');
     if(!dates.includes(date))
     {
         dates.push(date);
         values.push([
-            [], [], [], []  // NAME, COLOR, INCOME, EXPENDITURE
+            categoryNames, // NAME
+            categoryColors, // COLOR
+            new Array(categoryNames.length).fill(0), // INCOME
+            new Array(categoryNames.length).fill(0)  // EXPENDITURE
         ]);
     }
 
@@ -122,6 +128,8 @@ for(var i = 0; i < dates.length; i++)
             name: currentValues[NAME][j],
             xaxis: 'x' + (i + 1),  // for grouping incomes and expenditure bar by month
             barmode: 'stack',
+            showlegend: i === 0,
+            legendgroup: currentValues[NAME][j],
             marker: {
                 color: currentValues[COLOR][j]  // use the category's color
             }
