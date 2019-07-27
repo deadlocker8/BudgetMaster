@@ -2,7 +2,7 @@
     <head>
         <#import "../helpers/header.ftl" as header>
         <@header.header "BudgetMaster"/>
-        <@header.style "spectrum"/>
+        <@header.style "libs/spectrum"/>
         <@header.style "categories"/>
         <#import "/spring.ftl" as s>
     </head>
