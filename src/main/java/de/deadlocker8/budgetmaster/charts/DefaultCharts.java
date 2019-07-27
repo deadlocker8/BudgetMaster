@@ -23,15 +23,19 @@ public class DefaultCharts
 
 	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_BAR = new Chart("charts.default.incomesAndExpendituresPerMonthBar",
 			getChartFromFile("charts/IncomesAndExpendituresPerMonthBar.js"),
-			ChartType.DEFAULT, 2);
+			ChartType.DEFAULT, 3);
 
 	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_LINE = new Chart("charts.default.incomesAndExpendituresPerMonthLine",
 			getChartFromFile("charts/IncomesAndExpendituresPerMonthLine.js"),
-			ChartType.DEFAULT, 2);
+			ChartType.DEFAULT, 3);
 
 	private static final Chart CHART_INCOMES_AND_EXPENDITURES_BY_CATEGORY_BAR = new Chart("charts.default.incomesAndExpendituresByCategoryBar",
 			getChartFromFile("charts/IncomesAndExpendituresByCategoryBar.js"),
-			ChartType.DEFAULT, 11);
+			ChartType.DEFAULT, 12);
+
+	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_BY_CATEGORIES = new Chart("charts.default.incomesAndExpendituresPerMonthByCategories",
+		getChartFromFile("charts/IncomesAndExpendituresPerMonthByCategories.js"),
+		ChartType.DEFAULT, 3);
 
 
 	public static List<Chart> getDefaultCharts()
@@ -41,6 +45,7 @@ public class DefaultCharts
 		charts.add(CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_BAR);
 		charts.add(CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_LINE);
 		charts.add(CHART_INCOMES_AND_EXPENDITURES_BY_CATEGORY_BAR);
+		charts.add(CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_BY_CATEGORIES);
 
 		charts.sort(Comparator.comparing(Chart::getName));
 		return charts;
