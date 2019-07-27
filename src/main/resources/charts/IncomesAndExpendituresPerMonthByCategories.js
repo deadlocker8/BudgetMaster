@@ -112,12 +112,20 @@ for(var i = 0; i < dates.length; i++)
     for(var j = 0; j < values[i][NAME].length; j++)
     {
         var currentValues = values[i];
+        var currentName = currentValues[NAME][j];
 
         var percentageIncome = (100 / totalIncomeSums[i]) * currentValues[INCOME][j];
-        var textIncome = prepareHoverText(percentageIncome, currentValues[INCOME][j]);
+        var textIncome = prepareHoverText(currentName, percentageIncome, currentValues[INCOME][j]);
 
         var percentageExpenditure = (100 / totalExpenditureSums[i]) * currentValues[EXPENDITURE][j];
-        var textExpenditure = prepareHoverText(percentageExpenditure, currentValues[EXPENDITURE][j]);
+        var textExpenditure = prepareHoverText(currentName, percentageExpenditure, currentValues[EXPENDITURE][j]);
+
+        // add border if category color is white
+        var borderWidth = 0;
+        if(currentValues[COLOR][j] === '#FFFFFF')
+        {
+            borderWidth = 1;
+        }
 
         plotlyData.push({
             x: [localizedData['label2'], localizedData['label1']],
@@ -125,13 +133,17 @@ for(var i = 0; i < dates.length; i++)
             type: 'bar',
             hoverinfo: 'text',
             text: [textIncome, textExpenditure],
-            name: currentValues[NAME][j],
+            name: currentName,
             xaxis: 'x' + (i + 1),  // for grouping incomes and expenditure bar by month
             barmode: 'stack',
             showlegend: i === 0,
-            legendgroup: currentValues[NAME][j],
+            legendgroup: currentName,
             marker: {
-                color: currentValues[COLOR][j]  // use the category's color
+                color: currentValues[COLOR][j],  // use the category's color
+                line: {
+                    color: '#212121',
+                    width: borderWidth
+                }
             }
         });
     }
@@ -167,8 +179,8 @@ var plotlyConfig = {
 Plotly.newPlot('chart-canvas', plotlyData, plotlyLayout, plotlyConfig);
 
 
-function prepareHoverText(percentage, value)
+function prepareHoverText(categoryName, percentage, value)
 {
     value = value / 100;
-    return percentage.toFixed(1) + '% (' + value.toFixed(1) + ' ' + localizedCurrency + ')';
+    return categoryName + ' ' + percentage.toFixed(1) + '% (' + value.toFixed(1) + ' ' + localizedCurrency + ')';
 }

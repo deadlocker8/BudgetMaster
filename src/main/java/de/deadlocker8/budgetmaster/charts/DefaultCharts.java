@@ -31,11 +31,11 @@ public class DefaultCharts
 
 	private static final Chart CHART_INCOMES_AND_EXPENDITURES_BY_CATEGORY_BAR = new Chart("charts.default.incomesAndExpendituresByCategoryBar",
 			getChartFromFile("charts/IncomesAndExpendituresByCategoryBar.js"),
-			ChartType.DEFAULT, 12);
+			ChartType.DEFAULT, 21);
 
 	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_BY_CATEGORIES = new Chart("charts.default.incomesAndExpendituresPerMonthByCategories",
 		getChartFromFile("charts/IncomesAndExpendituresPerMonthByCategories.js"),
-		ChartType.DEFAULT, 4);
+		ChartType.DEFAULT, 8);
 
 
 	public static List<Chart> getDefaultCharts()

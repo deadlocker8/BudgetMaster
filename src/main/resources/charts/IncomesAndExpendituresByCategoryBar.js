@@ -9,6 +9,7 @@ var transactionData = [];
 // Note: All variables starting with "localized" are only available inside default charts.
 
 var categoryNames = [];
+var colors = [];
 var incomes = [];
 var expenditures = [];
 
@@ -21,6 +22,7 @@ for(var i = 0; i < transactionData.length; i++)
     if(!categoryNames.includes(categoryName))
     {
         categoryNames.push(categoryName);
+        colors.push(transaction.category.color);
         incomes.push(0);
         expenditures.push(0);
     }
@@ -61,11 +63,20 @@ var plotlyData = [];
 
 for(var j = 0; j < categoryNames.length; j++)
 {
+    var currentName = categoryNames[j];
+
     var percentageIncome = (100 / totalIncomes) * incomes[j];
     var percentageExpenditure = (100 / totalExpenditures) * expenditures[j];
 
-    var textIncome = prepareHoverText(percentageIncome, incomes[j]);
-    var textExpenditure = prepareHoverText(percentageExpenditure, expenditures[j]);
+    var textIncome = prepareHoverText(currentName, percentageIncome, incomes[j]);
+    var textExpenditure = prepareHoverText(currentName, percentageExpenditure, expenditures[j]);
+
+    // add border if category color is white
+    var borderWidth = 0;
+    if(colors[j] === '#FFFFFF')
+    {
+        borderWidth = 1;
+    }
 
     plotlyData.push({
         x: [percentageExpenditure, percentageIncome],
@@ -74,7 +85,14 @@ for(var j = 0; j < categoryNames.length; j++)
         type: 'bar',
         hoverinfo: 'text',
         text: [textExpenditure, textIncome],
-        name: categoryNames[j]
+        name: currentName,
+        marker: {
+            color: colors[j],  // use the category's color
+            line: {
+                color: '#212121',
+                width: borderWidth
+            }
+        }
     });
 }
 
@@ -94,7 +112,7 @@ var plotlyLayout = {
             family: 'sans-serif',
             size: 14,
             color: 'black'
-        }
+        },
     },
     barmode: 'stack',
     hovermode: 'closest' // show hover popup only for hovered item
@@ -112,8 +130,8 @@ var plotlyConfig = {
 Plotly.newPlot('chart-canvas', plotlyData, plotlyLayout, plotlyConfig);
 
 
-function prepareHoverText(percentage, value)
+function prepareHoverText(categoryName, percentage, value)
 {
     value = value / 100;
-    return percentage.toFixed(1) + '% (' + value.toFixed(1) + ' ' + localizedCurrency + ')';
+    return categoryName + ' ' + percentage.toFixed(1) + '% (' + value.toFixed(1) + ' ' + localizedCurrency + ')';
 }
