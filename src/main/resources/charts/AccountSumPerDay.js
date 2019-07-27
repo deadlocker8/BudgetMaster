@@ -9,9 +9,11 @@ var transactionData = [];
 // Note: All variables starting with "localized" are only available inside default charts.
 
 // group transactions by date
-var groups = transactionData.reverse().reduce((groups, transaction) => {
+var groups = transactionData.reverse().reduce((groups, transaction) =>
+{
     var date = transaction.date;
-    if (!groups[date]) {
+    if(!groups[date])
+    {
         groups[date] = [];
     }
     groups[date].push(transaction);
@@ -23,8 +25,10 @@ var previousSum = 0;
 var sums = [];
 
 // calculate sum for each date
-for (var key in groups) {
-    if (groups.hasOwnProperty(key)) {
+for(var key in groups)
+{
+    if(groups.hasOwnProperty(key))
+    {
         var group = groups[key];
 
         // extract all amount values
@@ -74,7 +78,14 @@ var plotlyConfig = {
     showSendToCloud: false,
     displaylogo: false,
     showLink: false,
-    responsive: true
+    responsive: true,
+    displayModeBar: true,
+    toImageButtonOptions: {
+        format: 'png',
+        filename: 'BudgetMaster_chart_export',
+        height: 1080,
+        width: 1920,
+    }
 };
 
 // Don't touch this line

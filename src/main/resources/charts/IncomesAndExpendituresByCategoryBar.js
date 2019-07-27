@@ -123,7 +123,14 @@ var plotlyConfig = {
     showSendToCloud: false,
     displaylogo: false,
     showLink: false,
-    responsive: true
+    responsive: true,
+    displayModeBar: true,
+    toImageButtonOptions: {
+        format: 'png',
+        filename: 'BudgetMaster_chart_export',
+        height: 1080,
+        width: 1920,
+    }
 };
 
 // Don't touch this line
