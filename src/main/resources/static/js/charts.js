@@ -1,5 +1,15 @@
 $(document).ready(function()
 {
+    if($("#chart-script").length)
+    {
+        var editor = CodeMirror.fromTextArea(document.getElementById('chart-script'), {
+            mode: "javascript",
+            lineNumbers: 50,
+            viewportMargin: Infinity
+        });
+        editor.save();
+    }
+
     if($("#modalConfirmDelete").length)
     {
         $('#modalConfirmDelete').modal('open');

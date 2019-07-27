@@ -3,6 +3,8 @@
         <#import "../helpers/header.ftl" as header>
         <@header.header "BudgetMaster"/>
         <#import "/spring.ftl" as s>
+        <link rel="stylesheet" href="<@s.url "/webjars/codemirror/5.45.0/lib/codemirror.css"/>">
+        <@header.style "charts"/>
     </head>
     <body class="budgetmaster-blue-light">
         <#import "../helpers/navbar.ftl" as navbar>
@@ -38,9 +40,8 @@
 
                         <#-- script -->
                         <div class="row">
-                            <div class="input-field col s12 m12 l8 offset-l2">
+                            <div class="input-field col sl2" style="width: 100%">
                                 <textarea id="chart-script" name="script" <@validation.validation "script" "materialize-textarea"/>><#if chart.getScript()??>${chart.getScript()}<#else>${locale.getString("chart.script.default")}</#if></textarea>
-                                <label for="chart-script">${locale.getString("chart.new.label.script")}</label>
                             </div>
                         </div>
 
@@ -85,5 +86,8 @@
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
+        <script src="<@s.url '/webjars/codemirror/5.45.0/lib/codemirror.js'/>"></script>
+        <script src="<@s.url '/webjars/codemirror/5.45.0/mode/javascript/javascript.js'/>"></script>
+        <script src="<@s.url '/js/charts.js'/>"></script>
     </body>
 </html>

@@ -64,6 +64,7 @@
         <fontawesome.version>5.0.10</fontawesome.version>
         <sortablejs.version>1.8.1</sortablejs.version>
         <mousetrap.version>1.6.1</mousetrap.version>
+        <codemirror.version>5.45.0</codemirror.version>
         <webdrivermanager.version>2.2.1</webdrivermanager.version>
         <selenium.version>3.141.59</selenium.version>
 
@@ -188,6 +189,11 @@
             <groupId>org.webjars.npm</groupId>
             <artifactId>mousetrap</artifactId>
             <version>${mousetrap.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>codemirror</artifactId>
+            <version>${codemirror.version}</version>
         </dependency>
 
         <!-- selenium -->

@@ -21,3 +21,13 @@
 #chart-canvas {
     height: 40em;
 }
+
+.CodeMirror {
+    width: 100%;
+    height: auto;
+    resize: vertical;
+}
+
+.CodeMirror-scroll {
+    height: auto;
+}
