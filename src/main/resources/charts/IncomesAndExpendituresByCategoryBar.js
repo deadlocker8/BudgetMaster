@@ -17,7 +17,7 @@ for(var i = 0; i < transactionData.length; i++)
     var transaction = transactionData[i];
 
     var categoryName = transaction.category.name;
-    // create new category is not already in dict
+    // create new category if not already in dict
     if(!categoryNames.includes(categoryName))
     {
         categoryNames.push(categoryName);
@@ -34,7 +34,8 @@ for(var i = 0; i < transactionData.length; i++)
     if(amount > 0)
     {
         incomes[index] = incomes[index] + amount;
-    } else
+    }
+    else
     {
         expenditures[index] = expenditures[index] + Math.abs(amount);
     }
@@ -96,7 +97,7 @@ var plotlyLayout = {
         }
     },
     barmode: 'stack',
-    hovermode: 'closest'
+    hovermode: 'closest' // show hover popup only for hovered item
 };
 
 // Add your Plotly configuration settings here (optional)

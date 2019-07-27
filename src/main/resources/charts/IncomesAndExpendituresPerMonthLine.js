@@ -32,7 +32,8 @@ for(var i = 0; i < transactionData.length; i++)
     {
         var lastIndex = incomes.length - 1;
         incomes[lastIndex] = incomes[lastIndex] + amount;
-    } else
+    }
+    else
     {
         var lastIndex = expenditures.length - 1;
         expenditures[lastIndex] = expenditures[lastIndex] + Math.abs(amount);
