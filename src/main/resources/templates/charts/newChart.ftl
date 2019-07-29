@@ -28,7 +28,15 @@
                         <#-- name -->
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
-                                <input id="chart-name" type="text" name="name" <@validation.validation "name"/> value="<#if chart.getName()??>${chart.getName()}</#if>">
+                                <#assign chartName=""/>
+                                <#if chart.getName()??>
+                                    <#if chart.getType().name() == "DEFAULT">
+                                        <#assign chartName=locale.getString(chart.getName())/>
+                                    <#else>
+                                        <#assign chartName=chart.getName()/>
+                                    </#if>
+                                </#if>
+                                <input id="chart-name" type="text" name="name" <@validation.validation "name"/> value="${chartName}">
                                 <label for="chart-name">${locale.getString("chart.new.label.name")}</label>
                             </div>
                         </div>
