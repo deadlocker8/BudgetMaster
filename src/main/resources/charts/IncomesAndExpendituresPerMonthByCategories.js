@@ -101,7 +101,8 @@ var plotlyLayout = {
     hovermode: 'closest', // show hover popup only for hovered item
     yaxis: {
         rangemode: 'tozero',
-        tickformat: '.2f %',
+        tickformat: '.0f',
+        ticksuffix: '%',
         showline: true
     }
 };
