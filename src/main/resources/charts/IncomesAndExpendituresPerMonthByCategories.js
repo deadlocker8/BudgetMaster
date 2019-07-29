@@ -17,8 +17,18 @@ const COLOR = 1;
 const INCOME = 2;
 const EXPENDITURE = 3;
 
-var categoryNames = Array.from(new Set(transactionData.map(t => t.category.name)));
-var categoryColors = Array.from(new Set(transactionData.map(t => t.category.color)));
+var categoryNames = [];
+var categoryColors = [];
+
+for(var i = 0; i < transactionData.length; i++)
+{
+    var currentTransaction = transactionData[i];
+    if(!categoryNames.includes(currentTransaction.category.name))
+    {
+        categoryNames.push(currentTransaction.category.name);
+        categoryColors.push(currentTransaction.category.color);
+    }
+}
 
 var dates = [];
 var values = [];
