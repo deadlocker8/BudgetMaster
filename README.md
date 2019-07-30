@@ -17,8 +17,8 @@ Manage your monthly budget easily with BudgetMaster
 - Search and Filter - Search for individual transactions or filter your view.
 
 ## Available Languages
-- English [Roadmap](https://deadlocker.thecodelabs.de/roadmap/php/index.php?id=1)
-- German [Roadmap](https://deadlocker.thecodelabs.de/roadmap/php/index.php?id=2)
+- English [Roadmap](https://roadmaps.thecodelabs.de/roadmap/2)
+- German [Roadmap](https://roadmaps.thecodelabs.de/roadmap/1)
 
 ## In case of Errors
 - see corresponding error log `your_home_directory/Deadlocker/BudgetMaster/error.log`
