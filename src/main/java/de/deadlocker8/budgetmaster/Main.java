@@ -3,6 +3,8 @@ package de.deadlocker8.budgetmaster;
 import de.thecodelabs.utils.io.PathUtils;
 import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.SystemUtils;
+import de.thecodelabs.utils.util.localization.LocalizationMessageFormatter;
+import de.thecodelabs.utils.util.localization.formatter.JavaMessageFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
@@ -51,9 +53,9 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 			}
 
 			@Override
-			public boolean useMessageFormatter()
+			public LocalizationMessageFormatter messageFormatter()
 			{
-				return true;
+				return new JavaMessageFormatter();
 			}
 		});
 		Localization.load();
