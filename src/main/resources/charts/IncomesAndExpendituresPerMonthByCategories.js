@@ -38,7 +38,6 @@ for(var i = 0; i < transactionData.length; i++)
     var transaction = transactionData[i];
 
     var date = moment(transaction.date).startOf('month').format('MMM YY');
-    var date = moment(transaction.date).startOf('month').format('MMM YY');
     if(!dates.includes(date))
     {
         dates.push(date);
