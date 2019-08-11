@@ -93,6 +93,11 @@ public class SettingsController extends BaseController
 			bindingResult.addError(error);
 		}
 
+		if(settings.getBackupReminderActivated() == null)
+		{
+			settings.setBackupReminderActivated(false);
+		}
+
 		if(bindingResult.hasErrors())
 		{
 			model.addAttribute("error", bindingResult);
@@ -109,11 +114,6 @@ public class SettingsController extends BaseController
 				User user = userRepository.findByName("Default");
 				user.setPassword(encryptedPassword);
 				userRepository.save(user);
-			}
-
-			if(settings.getBackupReminderActivated() == null)
-			{
-				settings.setBackupReminderActivated(false);
 			}
 
 			settingsRepository.delete(0);

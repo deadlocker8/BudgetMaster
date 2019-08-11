@@ -218,6 +218,9 @@ ul.sidenav.sidenav-fixed > li:last-child
 /* input password color */
 .input-field input[type=password] {
     color: #FFFFFF !important;
+}
+
+.input-field input[type=password]:not(.invalid) {
     border-bottom: 1px solid #FFFFFF !important;
     box-shadow: 0 1px 0 0 #CCCCCC !important;
 }
