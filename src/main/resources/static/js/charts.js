@@ -189,7 +189,7 @@ function handleQuickDate(element, pickerStartDate, pickerEndDate)
             endDate = moment();
             break;
         case '7':
-            startDate = moment().subtract(3, 'months');
+            startDate = moment("2000-01-01");
             endDate = moment();
             break;
     }

@@ -93,7 +93,7 @@
                                                             <td class="quick-date" data-quick="4">${locale.getString("chart.quick.last.week.days")}</td>
                                                             <td class="quick-date" data-quick="5">${locale.getString("chart.quick.last.month.days")}</td>
                                                             <td class="quick-date" data-quick="6">${locale.getString("chart.quick.last.year.days")}</td>
-                                                            <td class="quick-date" data-quick="7">${locale.getString("chart.quick.last.three.months")}</td>
+                                                            <td class="quick-date" data-quick="7">${locale.getString("chart.quick.until.today")}</td>
                                                         </tr>
                                                     </table>
                                                 </div>
