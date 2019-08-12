@@ -35,17 +35,19 @@ function validateForm()
         inputSourceName.setAttribute("value", accountSourcesNames[i].innerText);
         parent.appendChild(inputSourceName);
 
+        var value = accountDestinations[i].value;
+
         var inputDestinationID = document.createElement("input");
         inputDestinationID.setAttribute("type", "hidden");
         inputDestinationID.setAttribute("name", "accountMatches[" + i + "].accountDestination.ID");
-        inputDestinationID.setAttribute("value", accountDestinations[i].value);
+        inputDestinationID.setAttribute("value", value);
         parent.appendChild(inputDestinationID);
 
-        var inputDestinationNames = document.createElement("input");
-        inputDestinationNames.setAttribute("type", "hidden");
-        inputDestinationNames.setAttribute("name", "accountMatches[" + i + "].accountDestination.name");
-        inputDestinationNames.setAttribute("value", accountDestinations[i].innerText);
-        parent.appendChild(inputDestinationNames);
+        var inputDestinationName = document.createElement("input");
+        inputDestinationName.setAttribute("type", "hidden");
+        inputDestinationName.setAttribute("name", "accountMatches[" + i + "].accountDestination.name");
+        inputDestinationName.setAttribute("value", accountDestinations[i].querySelector('option[value="' + value + '"').innerText);
+        parent.appendChild(inputDestinationName);
     }
 
     return true;
