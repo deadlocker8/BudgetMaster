@@ -13,6 +13,8 @@ var dates = [];
 var incomes = [];
 var expenditures = [];
 
+transactionData = transactionData.reverse();
+
 for(var i = 0; i < transactionData.length; i++)
 {
     var transaction = transactionData[i];

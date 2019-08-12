@@ -23,11 +23,11 @@ public class DefaultCharts
 
 	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_BAR = new Chart("charts.default.incomesAndExpendituresPerMonthBar",
 			getChartFromFile("charts/IncomesAndExpendituresPerMonthBar.js"),
-			ChartType.DEFAULT, 5);
+			ChartType.DEFAULT, 6);
 
 	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_LINE = new Chart("charts.default.incomesAndExpendituresPerMonthLine",
 			getChartFromFile("charts/IncomesAndExpendituresPerMonthLine.js"),
-			ChartType.DEFAULT, 5);
+			ChartType.DEFAULT, 6);
 
 	private static final Chart CHART_INCOMES_AND_EXPENDITURES_BY_CATEGORY_BAR = new Chart("charts.default.incomesAndExpendituresByCategoryBar",
 			getChartFromFile("charts/IncomesAndExpendituresByCategoryBar.js"),
