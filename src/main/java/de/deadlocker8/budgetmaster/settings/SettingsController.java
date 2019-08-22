@@ -27,10 +27,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
@@ -79,7 +76,7 @@ public class SettingsController extends BaseController
 		return "settings/settings";
 	}
 
-	@RequestMapping(value = "/settings/save", method = RequestMethod.POST)
+	@PostMapping(value = "/settings/save")
 	public String post(Model model, @ModelAttribute("Settings") Settings settings, BindingResult bindingResult,
 					   @RequestParam(value = "password") String password,
 					   @RequestParam(value = "passwordConfirmation") String passwordConfirmation,
@@ -192,7 +189,7 @@ public class SettingsController extends BaseController
 		return "settings/settings";
 	}
 
-	@RequestMapping(value = "/settings/database/delete", method = RequestMethod.POST)
+	@PostMapping(value = "/settings/database/delete")
 	public String deleteDatabase(Model model, @RequestParam("verificationCode") String verificationCode,
 								 @RequestParam("verificationUserInput") String verificationUserInput)
 	{

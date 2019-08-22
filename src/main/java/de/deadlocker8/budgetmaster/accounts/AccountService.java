@@ -78,7 +78,7 @@ public class AccountService implements Resetable
 	@Override
 	public void createDefaults()
 	{
-		if(accountRepository.findAll().size() == 0)
+		if(accountRepository.findAll().isEmpty())
 		{
 			Account placeholder = new Account("Placeholder", AccountType.ALL);
 			accountRepository.save(placeholder);

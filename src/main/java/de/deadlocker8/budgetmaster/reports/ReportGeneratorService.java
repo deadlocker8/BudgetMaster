@@ -24,7 +24,7 @@ public class ReportGeneratorService
 	@Autowired
 	HelpersService helpersService;
 
-	private final static String FONT = Fonts.OPEN_SANS;
+	private final String FONT = Fonts.OPEN_SANS;
 
 	@Autowired
 	public ReportGeneratorService(HelpersService helpersService)

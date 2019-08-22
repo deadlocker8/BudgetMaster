@@ -1,22 +1,22 @@
 package de.deadlocker8.budgetmaster.services;
 
-import de.deadlocker8.budgetmaster.accounts.AccountService;
-import de.deadlocker8.budgetmaster.categories.Category;
-import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
-import de.deadlocker8.budgetmaster.reports.Budget;
-import de.deadlocker8.budgetmaster.settings.Settings;
-import de.deadlocker8.budgetmaster.settings.SettingsService;
-import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.accounts.AccountRepository;
+import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
+import de.deadlocker8.budgetmaster.categories.Category;
+import de.deadlocker8.budgetmaster.categories.CategoryRepository;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
-import de.deadlocker8.budgetmaster.transactions.Transaction;
+import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierType;
-import de.deadlocker8.budgetmaster.accounts.AccountRepository;
-import de.deadlocker8.budgetmaster.categories.CategoryRepository;
+import de.deadlocker8.budgetmaster.reports.Budget;
+import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsRepository;
+import de.deadlocker8.budgetmaster.settings.SettingsService;
+import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.TagRepository;
+import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
 import de.deadlocker8.budgetmaster.utils.Colors;
@@ -113,7 +113,7 @@ public class HelpersService
 		return text;
 	}
 
-	public ArrayList<String> getCategoryColorList()
+	public List<String> getCategoryColorList()
 	{
 		ArrayList<String> categoryColors = new ArrayList<>();
 		categoryColors.add(ColorUtilsNonJavaFX.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase());

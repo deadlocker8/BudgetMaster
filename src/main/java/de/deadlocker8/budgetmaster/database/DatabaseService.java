@@ -1,14 +1,16 @@
 package de.deadlocker8.budgetmaster.database;
 
-import com.google.gson.*;
-import de.deadlocker8.budgetmaster.accounts.AccountService;
-import de.deadlocker8.budgetmaster.categories.CategoryService;
-import de.deadlocker8.budgetmaster.database.Database;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializer;
 import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.categories.Category;
+import de.deadlocker8.budgetmaster.categories.CategoryService;
+import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.tags.TagService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
-import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
@@ -17,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 

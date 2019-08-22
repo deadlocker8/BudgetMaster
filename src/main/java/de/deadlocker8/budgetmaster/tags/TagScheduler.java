@@ -31,7 +31,7 @@ public class TagScheduler
 		List<Tag> tags = tagRepository.findAll();
 		for(Tag tag : tags)
 		{
-			if(transactionRepository.findAllByTagsContaining(tag).size() == 0)
+			if(transactionRepository.findAllByTagsContaining(tag).isEmpty())
 			{
 				tagRepository.delete(tag);
 			}

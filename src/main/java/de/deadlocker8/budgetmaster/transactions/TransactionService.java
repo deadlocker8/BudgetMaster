@@ -23,7 +23,6 @@ import java.util.List;
 @Service
 public class TransactionService implements Resetable
 {
-	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private TransactionRepository transactionRepository;
 	private RepeatingOptionRepository repeatingOptionRepository;
 	private CategoryRepository categoryRepository;

@@ -113,7 +113,7 @@ public class TransactionController extends BaseController
 		return "transactions/newTransaction" + StringUtils.capitalize(type);
 	}
 
-	@RequestMapping(value = "/transactions/newTransaction/normal", method = RequestMethod.POST)
+	@PostMapping(value = "/transactions/newTransaction/normal")
 	public String postNormal(Model model, @CookieValue("currentDate") String cookieDate,
 							 @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
 							 @RequestParam(value = "isPayment", required = false) boolean isPayment)
@@ -132,7 +132,7 @@ public class TransactionController extends BaseController
 	}
 
 	@SuppressWarnings("ConstantConditions")
-	@RequestMapping(value = "/transactions/newTransaction/repeating", method = RequestMethod.POST)
+	@PostMapping(value = "/transactions/newTransaction/repeating")
 	public String postRepeating(Model model, @CookieValue("currentDate") String cookieDate,
 								@ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
 								@RequestParam(value = "isRepeating", required = false) boolean isRepeating,
@@ -182,7 +182,7 @@ public class TransactionController extends BaseController
 		return handleRedirect(model, transaction, bindingResult, date, "transactions/newTransactionRepeating");
 	}
 
-	@RequestMapping(value = "/transactions/newTransaction/transfer", method = RequestMethod.POST)
+	@PostMapping(value = "/transactions/newTransaction/transfer")
 	public String postTransfer(Model model, @CookieValue("currentDate") String cookieDate,
 							   @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
 							   @RequestParam(value = "isPayment", required = false) boolean isPayment)

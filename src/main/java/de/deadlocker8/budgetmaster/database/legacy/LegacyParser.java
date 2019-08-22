@@ -26,6 +26,8 @@ import java.util.Set;
 @SuppressWarnings("deprecation")
 public class LegacyParser
 {
+	private final String DATE_FORMAT = "yyyy-MM-dd";
+
 	private Account account;
 	private String jsonString;
 	private List<Category> categories;
@@ -139,7 +141,7 @@ public class LegacyParser
 			transaction.setRepeatingOption(null);
 			transaction.setTags(getTagsByPaymentID(ID));
 
-			DateTime parsedDate = DateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd"));
+			DateTime parsedDate = DateTime.parse(date, DateTimeFormat.forPattern(DATE_FORMAT));
 			transaction.setDate(parsedDate);
 
 			parsedTransactions.add(transaction);
@@ -169,7 +171,7 @@ public class LegacyParser
 			transaction.setTags(getTagsByPaymentID(ID));
 			transaction.setAccount(account);
 
-			DateTime parsedDate = DateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd"));
+			DateTime parsedDate = DateTime.parse(date, DateTimeFormat.forPattern(DATE_FORMAT));
 			transaction.setDate(parsedDate);
 
 			transaction.setRepeatingOption(parseRepeatingOption(currentPayment.getAsJsonObject(), parsedDate));
@@ -189,7 +191,7 @@ public class LegacyParser
 		if(repeatingPayment.has("repeatEndDate"))
 		{
 			String repeatEndDate = repeatingPayment.get("repeatEndDate").getAsString();
-			repeatingOption.setEndOption(new RepeatingEndDate(DateTime.parse(repeatEndDate, DateTimeFormat.forPattern("yyyy-MM-dd"))));
+			repeatingOption.setEndOption(new RepeatingEndDate(DateTime.parse(repeatEndDate, DateTimeFormat.forPattern(DATE_FORMAT))));
 		}
 		else
 		{

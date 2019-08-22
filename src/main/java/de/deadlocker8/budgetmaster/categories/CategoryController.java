@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +22,8 @@ public class CategoryController extends BaseController
 	private final CategoryService categoryService;
 	private final HelpersService helpers;
 	private final SettingsService settingsService;
+
+	private final String WHITE = "#FFFFFF";
 
 	@Autowired
 	public CategoryController(CategoryService categoryService, HelpersService helpers, SettingsService settingsService)
@@ -62,7 +61,7 @@ public class CategoryController extends BaseController
 		return "categories/categories";
 	}
 
-	@RequestMapping(value = "/categories/{ID}/delete", method = RequestMethod.POST)
+	@PostMapping(value = "/categories/{ID}/delete")
 	public String deleteCategory(Model model, @PathVariable("ID") Integer ID, @ModelAttribute("DestinationCategory") DestinationCategory destinationCategory)
 	{
 		if(isDeletable(ID))
@@ -83,7 +82,7 @@ public class CategoryController extends BaseController
 	public String newCategory(Model model)
 	{
 		//add custom color (defaults to white here because we are adding a new category instead of editing an existing)
-		model.addAttribute("customColor", "#FFFFFF");
+		model.addAttribute("customColor", WHITE);
 		Category emptyCategory = new Category(null, ColorUtilsNonJavaFX.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase(), CategoryType.CUSTOM);
 		model.addAttribute("category", emptyCategory);
 		model.addAttribute("settings", settingsService.getSettings());
@@ -101,7 +100,7 @@ public class CategoryController extends BaseController
 
 		if(helpers.getCategoryColorList().contains(category.getColor()))
 		{
-			model.addAttribute("customColor", "#FFFFFF");
+			model.addAttribute("customColor", WHITE);
 		}
 		else
 		{
@@ -113,7 +112,7 @@ public class CategoryController extends BaseController
 		return "categories/newCategory";
 	}
 
-	@RequestMapping(value = "/categories/newCategory", method = RequestMethod.POST)
+	@PostMapping(value = "/categories/newCategory")
 	public String post(Model model, @ModelAttribute("NewCategory") Category category, BindingResult bindingResult)
 	{
 		CategoryValidator userValidator = new CategoryValidator();
@@ -125,7 +124,7 @@ public class CategoryController extends BaseController
 
 			if(helpers.getCategoryColorList().contains(category.getColor()))
 			{
-				model.addAttribute("customColor", "#FFFFFF");
+				model.addAttribute("customColor", WHITE);
 			}
 			else
 			{

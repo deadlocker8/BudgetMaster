@@ -18,10 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -67,7 +64,7 @@ public class ChartController extends BaseController
 		return "charts/charts";
 	}
 
-	@RequestMapping(value = "/charts", method = RequestMethod.POST)
+	@PostMapping(value = "/charts")
 	public String showChart(Model model, @ModelAttribute("NewChartSettings") ChartSettings chartSettings)
 	{
 		chartSettings.setFilterConfiguration(filterHelpersService.updateCategoriesAndTags(chartSettings.getFilterConfiguration()));
@@ -115,7 +112,7 @@ public class ChartController extends BaseController
 		return "charts/newChart";
 	}
 
-	@RequestMapping(value = "/charts/newChart", method = RequestMethod.POST)
+	@PostMapping(value = "/charts/newChart")
 	public String post(Model model, @ModelAttribute("NewChart") Chart chart, BindingResult bindingResult)
 	{
 		ChartValidator userValidator = new ChartValidator();

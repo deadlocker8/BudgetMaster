@@ -23,7 +23,7 @@ public class UserService
 			userRepository.deleteAll();
 		}
 
-		if(userRepository.findAll().size() == 0)
+		if(userRepository.findAll().isEmpty())
 		{
 			BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 			String encryptedPassword = bCryptPasswordEncoder.encode(DEFAULT_PASSWORD);

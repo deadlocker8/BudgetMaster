@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @ControllerAdvice
 public class ColorAdvice
@@ -14,7 +14,7 @@ public class ColorAdvice
 	private HelpersService helpers;
 
 	@ModelAttribute("categoryColors")
-	public ArrayList<String> getCategoryColors()
+	public List<String> getCategoryColors()
 	{
 		return helpers.getCategoryColorList();
 	}
