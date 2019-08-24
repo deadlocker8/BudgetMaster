@@ -49,7 +49,7 @@
                         <#-- script -->
                         <div class="row">
                             <div class="input-field col sl2" style="width: 100%">
-                                <textarea id="chart-script" name="script" <@validation.validation "script" "materialize-textarea"/>><#if chart.getScript()??>${chart.getScript()}<#else>${locale.getString("chart.script.default")}</#if></textarea>
+                                <textarea id="chart-script" name="script" <@validation.validation "script" "materialize-textarea"/>>${chart.getScript()}</textarea>
                             </div>
                         </div>
 

@@ -92,7 +92,7 @@ public class ChartController extends BaseController
 	@RequestMapping("/charts/newChart")
 	public String newChart(Model model)
 	{
-		Chart emptyChart = new Chart(null, null, ChartType.CUSTOM, -1);
+		Chart emptyChart = DefaultCharts.CHART_DEFAULT;
 		model.addAttribute("chart", emptyChart);
 		model.addAttribute("settings", settingsService.getSettings());
 		return "charts/newChart";

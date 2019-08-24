@@ -14,6 +14,10 @@ public class DefaultCharts
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultCharts.class);
 
+	public static final Chart CHART_DEFAULT = new Chart(null,
+			getChartFromFile("charts/Default.js"),
+			ChartType.CUSTOM, -1);
+
 	private static final Chart CHART_ACCOUNT_SUM_PER_DAY = new Chart("charts.default.accountSumPerDay",
 			getChartFromFile("charts/AccountSumPerDay.js"),
 			ChartType.DEFAULT, 4);
