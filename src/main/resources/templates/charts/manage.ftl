@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <br>
-                <div class="center-align"><a href="<@s.url '/charts/newChart'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.chart.new")}</a></div>
+                <@chartFunctions.buttons/>
                 <br>
                 <div class="container">
                     <table class="bordered">
