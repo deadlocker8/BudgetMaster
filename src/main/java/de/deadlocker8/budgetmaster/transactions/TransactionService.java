@@ -167,6 +167,18 @@ public class TransactionService implements Resetable
 		}
 	}
 
+	public void deleteTransactionsWithAccount(Account account) {
+		for(Transaction referringTransaction : account.getReferringTransactions())
+		{
+			deleteTransactionInRepo(referringTransaction.getID());
+		}
+
+		for(Transaction referringTransaction : transactionRepository.findAllByTransferAccount(account))
+		{
+			deleteTransactionInRepo(referringTransaction.getID());
+		}
+	}
+
 	@Override
 	public void createDefaults()
 	{

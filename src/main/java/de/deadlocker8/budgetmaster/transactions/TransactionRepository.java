@@ -31,4 +31,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 
 	@Query(value = "SELECT SUM(t.amount) FROM `transaction` as t WHERE t.transfer_account_id = ?1 AND t.date BETWEEN ?2 AND ?3", nativeQuery = true)
 	Integer getRestForTransferDestination(int accountID, String startDate, String endDate);
+
+	List<Transaction> findAllByTransferAccount(Account account);
 }

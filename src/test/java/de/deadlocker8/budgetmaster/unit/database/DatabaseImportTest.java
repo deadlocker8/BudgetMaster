@@ -293,6 +293,12 @@ public class DatabaseImportTest
 				}
 
 				@Override
+				public List<Transaction> findAllByTransferAccount(Account account)
+				{
+					return null;
+				}
+
+				@Override
 				public List<Transaction> findAll()
 				{
 					return null;
