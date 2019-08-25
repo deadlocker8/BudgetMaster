@@ -1,0 +1,33 @@
+.step-name {
+    margin-left: 1em;
+}
+
+.quick-date {
+    color: #039be5;
+    text-align: center;
+    padding: 0 0 10px 0;
+}
+
+.quick-date:hover {
+    cursor: pointer;
+    text-decoration: underline #2E79B9;
+}
+
+.container-chart {
+    width: 90%;
+    margin: auto;
+}
+
+#chart-canvas {
+    height: 40em;
+}
+
+.CodeMirror {
+    width: 100%;
+    height: auto;
+    resize: vertical;
+}
+
+.CodeMirror-scroll {
+    height: auto;
+}

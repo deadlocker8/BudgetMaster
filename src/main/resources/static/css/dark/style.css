@@ -112,8 +112,17 @@ main {
     color: #212121 !important;
 }
 
+.sidenav-trigger, .sidenav-trigger i {
+    font-size: 1.5em;
+}
+
 .sidenav {
     width: 350px;
+}
+
+ul.sidenav.sidenav-fixed > li:last-child
+{
+    margin-bottom: 160px;
 }
 
 .sidenav, .sidenav-sub, .searchWrapper {
@@ -209,6 +218,9 @@ main {
 /* input password color */
 .input-field input[type=password] {
     color: #FFFFFF !important;
+}
+
+.input-field input[type=password]:not(.invalid) {
     border-bottom: 1px solid #FFFFFF !important;
     box-shadow: 0 1px 0 0 #CCCCCC !important;
 }
@@ -296,6 +308,10 @@ textarea {
 
 .no-margin-bottom {
     margin-bottom: 0;
+}
+
+.no-margin-top {
+    margin-top: 0;
 }
 
 .no-margin {

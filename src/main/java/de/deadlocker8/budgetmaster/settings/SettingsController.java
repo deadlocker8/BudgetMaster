@@ -27,10 +27,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,6 +38,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.List;
 
 
 @Controller
@@ -54,6 +53,7 @@ public class SettingsController extends BaseController
 	private final ImportService importService;
 	private final BudgetMasterUpdateService budgetMasterUpdateService;
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	private final List<Integer> SEARCH_RESULTS_PER_PAGE_OPTIONS = Arrays.asList(10, 20, 25, 30, 50, 100);
 
 	@Autowired
 	public SettingsController(SettingsRepository settingsRepository, UserRepository userRepository, DatabaseService databaseService, AccountService accountService, CategoryService categoryService, ImportService importService, BudgetMasterUpdateService budgetMasterUpdateService)
@@ -71,11 +71,12 @@ public class SettingsController extends BaseController
 	public String settings(WebRequest request, Model model)
 	{
 		model.addAttribute("settings", settingsRepository.findOne(0));
+		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
 		request.removeAttribute("database", WebRequest.SCOPE_SESSION);
 		return "settings/settings";
 	}
 
-	@RequestMapping(value = "/settings/save", method = RequestMethod.POST)
+	@PostMapping(value = "/settings/save")
 	public String post(Model model, @ModelAttribute("Settings") Settings settings, BindingResult bindingResult,
 					   @RequestParam(value = "password") String password,
 					   @RequestParam(value = "passwordConfirmation") String passwordConfirmation,
@@ -89,10 +90,16 @@ public class SettingsController extends BaseController
 			bindingResult.addError(error);
 		}
 
+		if(settings.getBackupReminderActivated() == null)
+		{
+			settings.setBackupReminderActivated(false);
+		}
+
 		if(bindingResult.hasErrors())
 		{
 			model.addAttribute("error", bindingResult);
 			model.addAttribute("settings", settings);
+			model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
 			return "settings/settings";
 		}
 		else
@@ -104,11 +111,6 @@ public class SettingsController extends BaseController
 				User user = userRepository.findByName("Default");
 				user.setPassword(encryptedPassword);
 				userRepository.save(user);
-			}
-
-			if(settings.getBackupReminderActivated() == null)
-			{
-				settings.setBackupReminderActivated(false);
 			}
 
 			settingsRepository.delete(0);
@@ -183,10 +185,11 @@ public class SettingsController extends BaseController
 		model.addAttribute("deleteDatabase", true);
 		model.addAttribute("verificationCode", verificationCode);
 		model.addAttribute("settings", settingsRepository.findOne(0));
+		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
 		return "settings/settings";
 	}
 
-	@RequestMapping(value = "/settings/database/delete", method = RequestMethod.POST)
+	@PostMapping(value = "/settings/database/delete")
 	public String deleteDatabase(Model model, @RequestParam("verificationCode") String verificationCode,
 								 @RequestParam("verificationUserInput") String verificationUserInput)
 	{
@@ -202,6 +205,7 @@ public class SettingsController extends BaseController
 		}
 
 		model.addAttribute("settings", settingsRepository.findOne(0));
+		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
 		return "settings/settings";
 	}
 
@@ -210,6 +214,7 @@ public class SettingsController extends BaseController
 	{
 		model.addAttribute("importDatabase", true);
 		model.addAttribute("settings", settingsRepository.findOne(0));
+		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
 		return "settings/settings";
 	}
 
@@ -236,6 +241,7 @@ public class SettingsController extends BaseController
 
 			model.addAttribute("errorImportDatabase", e.getMessage());
 			model.addAttribute("settings", settingsRepository.findOne(0));
+			model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
 			return "settings/settings";
 		}
 	}
@@ -255,6 +261,7 @@ public class SettingsController extends BaseController
 		importService.importDatabase((Database) request.getAttribute("database", WebRequest.SCOPE_SESSION), accountMatchList);
 		request.removeAttribute("database", RequestAttributes.SCOPE_SESSION);
 		model.addAttribute("settings", settingsRepository.findOne(0));
+		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
 		return "settings/settings";
 	}
 
@@ -271,6 +278,7 @@ public class SettingsController extends BaseController
 		model.addAttribute("performUpdate", true);
 		model.addAttribute("updateString", Localization.getString("info.text.update", Build.getInstance().getVersionName(), budgetMasterUpdateService.getAvailableVersionString()));
 		model.addAttribute("settings", settingsRepository.findOne(0));
+		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
 		return "settings/settings";
 	}
 

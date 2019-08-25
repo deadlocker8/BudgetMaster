@@ -47,6 +47,14 @@
     margin-bottom: 0;
 }
 
+.transaction-row-transparent {
+    opacity: 0.5;
+}
+
+.transaction-row-transparent-override {
+    opacity: 1.0 !important;
+}
+
 .transaction-text {
     font-size: 1.2rem;
 }

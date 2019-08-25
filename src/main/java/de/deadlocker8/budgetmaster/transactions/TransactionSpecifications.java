@@ -6,9 +6,9 @@ import de.deadlocker8.budgetmaster.tags.Tag_;
 import org.joda.time.DateTime;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class TransactionSpecifications

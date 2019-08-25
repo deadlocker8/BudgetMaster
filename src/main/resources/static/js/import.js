@@ -1,8 +1,11 @@
-$( document ).ready(function() {
+$(document).ready(function()
+{
     // prevent form submit on enter
-    $(document).on("keypress", 'form', function (e) {
+    $(document).on("keypress", 'form', function(e)
+    {
         var code = e.keyCode || e.which;
-        if (code === 13) {
+        if(code === 13)
+        {
             e.preventDefault();
             return false;
         }
@@ -13,7 +16,7 @@ function validateForm()
 {
     // handle account matches
     var accountSourcesIDs = $('.account-source-id');
-    var accountSourcesNames= $('.account-source');
+    var accountSourcesNames = $('.account-source');
 
     var accountDestinations = $('select.account-destination');
     var parent = document.getElementById("hidden-account-matches");
@@ -32,17 +35,19 @@ function validateForm()
         inputSourceName.setAttribute("value", accountSourcesNames[i].innerText);
         parent.appendChild(inputSourceName);
 
+        var value = accountDestinations[i].value;
+
         var inputDestinationID = document.createElement("input");
         inputDestinationID.setAttribute("type", "hidden");
         inputDestinationID.setAttribute("name", "accountMatches[" + i + "].accountDestination.ID");
-        inputDestinationID.setAttribute("value", accountDestinations[i].value);
+        inputDestinationID.setAttribute("value", value);
         parent.appendChild(inputDestinationID);
 
-        var inputDestinationNames = document.createElement("input");
-        inputDestinationNames.setAttribute("type", "hidden");
-        inputDestinationNames.setAttribute("name", "accountMatches[" + i + "].accountDestination.name");
-        inputDestinationNames.setAttribute("value", accountDestinations[i].innerText);
-        parent.appendChild(inputDestinationNames);
+        var inputDestinationName = document.createElement("input");
+        inputDestinationName.setAttribute("type", "hidden");
+        inputDestinationName.setAttribute("name", "accountMatches[" + i + "].accountDestination.name");
+        inputDestinationName.setAttribute("value", accountDestinations[i].querySelector('option[value="' + value + '"').innerText);
+        parent.appendChild(inputDestinationName);
     }
 
     return true;

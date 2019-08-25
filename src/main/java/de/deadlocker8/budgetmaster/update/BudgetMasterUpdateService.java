@@ -27,7 +27,7 @@ import java.nio.file.Paths;
 @Service
 public class BudgetMasterUpdateService
 {
-	private final static Logger LOGGER = LoggerFactory.getLogger(Main.class);
+	private final static Logger LOGGER = LoggerFactory.getLogger(BudgetMasterUpdateService.class);
 
 	@Autowired
 	private Artifact artifact;

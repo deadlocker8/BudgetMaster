@@ -24,8 +24,17 @@
                 <br>
                 <div class="container">
                     <table class="bordered">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>${locale.getString("category.new.label.name")}</th>
+                                <th>${locale.getString("categories.usages")}</th>
+                                <th>${locale.getString("categories.actions")}</th>
+                            </tr>
+                        </thead>
                         <#list categories as category>
                             <#assign categoryName=categoriesFunctions.getCategoryName(category)>
+                            <#assign usageCount=helpers.getUsageCountForCategory(category)/>
                             <tr>
                             <td>
                                 <div class="category-circle" style="background-color: ${category.color}">
@@ -34,11 +43,12 @@
                                     </span>
                                 </div>
                             </td>
-                            <td>${categoryName}</td>
+                            <td>${categoryName} </td>
+                            <td>${usageCount}</td>
                             <td>
                                 <a href="<@s.url '/categories/${category.ID?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
                                 <#if (category.getType().name() == "CUSTOM")>
-                                    <a href="<@s.url '/categories/${category.ID?c}/requestDelete'/>" class="btn-flat no-padding text-color"><i class="material-icons left">delete</i></a>
+                                    <a href="<@s.url '/categories/${category.ID?c}/requestDelete'/>" class="btn-flat no-padding text-color"><i class="material-icons left no-margin">delete</i></a>
                                 </#if>
                             </td>
                         </tr>

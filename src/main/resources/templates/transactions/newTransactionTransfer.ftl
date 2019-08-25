@@ -18,7 +18,7 @@
                 <div class="container">
                     <div class="section center-align">
                         <#assign title = locale.getString("title.transaction.new.transfer")/>
-                        <div class="headline"><#if transaction.getID()??>${locale.getString("title.transaction.edit", title)}<#else>${locale.getString("title.transaction.new", locale.getString("title.transaction.new.normal", title))}</#if></div>
+                        <div class="headline"><#if transaction.getID()??>${locale.getString("title.transaction.edit", title)}<#else>${locale.getString("title.transaction.new", title)}</#if></div>
                     </div>
                 </div>
                 <div class="container">
@@ -75,7 +75,7 @@
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
-        <script src="<@s.url '/js/spectrum.js'/>"></script>
+        <script src="<@s.url '/js/libs/spectrum.js'/>"></script>
         <script src="<@s.url '/js/transactions.js'/>"></script>
         <script src="<@s.url '/js/categorySelect.js'/>"></script>
     </body>

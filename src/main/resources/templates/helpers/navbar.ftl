@@ -10,24 +10,17 @@
         <@itemDivider/>
         <@itemWithIcon "home", "/", locale.getString("menu.home"), "home", "budgetmaster-blue", activeID/>
         <@itemWithIcon "transactions", "/transactions", locale.getString("menu.transactions"), "list", "budgetmaster-baby-blue", activeID/>
-        <@subListStart "chart" locale.getString("menu.charts"), "show_chart" "budgetmaster-purple", activeID/>
-            <#-- disabled until future versions -->
-            <#--<@itemPlain "chartCategories", "", locale.getString("menu.charts.chartCategories"), activeID/>-->
-            <#--<@itemPlain "chartMonth", "", locale.getString("menu.charts.chartMonth"), activeID/>-->
-            <#--<@itemPlain "chartTags", "", locale.getString("menu.charts.chartTags"), activeID/>-->
-            <#--<@itemPlain "chartCategoryBudget", "", locale.getString("menu.charts.chartCategoryBudget"), activeID/>-->
-            <#--<@itemPlain "chartHistogram", "", locale.getString("menu.charts.chartHistogram"), activeID/>-->
-        <@subListEnd/>
-
+        <@itemWithIcon "charts" "/charts" locale.getString("menu.charts"), "show_chart" "budgetmaster-purple", activeID/>
         <@itemWithIcon "reports", "/reports", locale.getString("menu.reports"), "description", "budgetmaster-green", activeID/>
         <@itemWithIcon "categories", "/categories", locale.getString("menu.categories"), "label", "budgetmaster-orange", activeID/>
         <@itemWithIcon "settings", "/settings", locale.getString("menu.settings"), "settings", "budgetmaster-red", activeID/>
 
         <@itemDivider/>
+        <@itemWithIcon "hotkeys", "/hotkeys", locale.getString("menu.hotkeys"), "keyboard", "budgetmaster-grey", activeID/>
         <@itemWithIcon "about", "/about", locale.getString("menu.about"), "info", "budgetmaster-grey", activeID/>
 
         <@itemDivider/>
-        <@itemWithIconNoRootUrl "logout", "javascript:\" onclick=\"$('#logout-form').submit();\"", locale.getString("menu.logout") "lock", "budgetmaster-red", activeID/>
+        <@itemLogout locale.getString("menu.logout") "lock"/>
 
         <#if helpers.isUpdateAvailable()>
             <@itemDivider/>
@@ -44,7 +37,7 @@
             <@itemDebug "DEBUG MODE" "bug_report"/>
         </#if>
     </ul>
-    <a href="#" data-target="slide-out" class="sidenav-trigger white-text"><i class="material-icons left mobile-menu-icon">menu</i>Menü</a>
+    <a href="#" data-target="slide-out" class="sidenav-trigger white-text valign-wrapper"><i class="material-icons left mobile-menu-icon">menu</i>Menü</a>
     <div class="hide-on-large-only"><br></div>
 
     <#--logout form -->
@@ -76,7 +69,7 @@
                 <input type="hidden" name="searchTags" value="true">
 
                 <div class="input-field">
-                    <input id="search" class="text-color" name="searchText" type="search">
+                    <input id="search" class="text-color mousetrap" name="searchText" type="search">
                     <label class="label-icon" for="search"><i class="material-icons">search</i></label>
                     <i id="buttonSearch" class="material-icons">send</i>
                     <i id="buttonClearSearch" class="material-icons">close</i>
@@ -124,12 +117,8 @@
     </#if>
 </#macro>
 
-<#macro itemWithIconNoRootUrl ID link text icon activeColor activeID>
-    <#if activeID == ID>
-        <li class="active"><a href="${link}" class="waves-effect no-padding"><div class="stripe ${activeColor}"></div><i class="material-icons">${icon}</i>${text}</a></li>
-    <#else>
-        <li><a href="${link}" class="waves-effect"><i class="material-icons">${icon}</i>${text}</a></li>
-    </#if>
+<#macro itemLogout text icon>
+    <li><a class="waves-effect" id="button-logout"><i class="material-icons">${icon}</i>${text}</a></li>
 </#macro>
 
 <#macro itemUpdate link text icon>
@@ -138,27 +127,6 @@
 
 <#macro itemDebug text icon>
     <li><a class="waves-effect budgetmaster-red budgetmaster-text-update"><i class="material-icons" id="icon-update">${icon}</i>${text}</a></li>
-</#macro>
-
-<#macro subListStart ID text icon activeColor activeID>
-<li>
-    <ul class="collapsible collapsible-accordion no-padding sidenav-sub home-menu-disabled">
-        <li>
-            <#if activeID?starts_with(ID)>
-                <a href="<@s.url '/charts'/>" class="collapsible-header no-padding active"><div class="stripe ${activeColor}"></div><i class="material-icons">${icon}</i>${text}</a>
-            <#else>
-                <a href="<@s.url '/charts'/>" class="collapsible-header nav-padding"><i class="material-icons">${icon}</i>${text}</a>
-            </#if>
-            <div class="collapsible-body">
-                <ul class="sidenav-sub">
-</#macro>
-
-<#macro subListEnd>
-                </ul>
-            </div>
-        </li>
-    </ul>
-</li>
 </#macro>
 
 <#macro backupReminder settings>

@@ -23,7 +23,6 @@ import java.util.List;
 @Service
 public class TransactionService implements Resetable
 {
-	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private TransactionRepository transactionRepository;
 	private RepeatingOptionRepository repeatingOptionRepository;
 	private CategoryRepository categoryRepository;
@@ -86,7 +85,7 @@ public class TransactionService implements Resetable
 		return getTransactionsForAccount(account, startDate, date, filterConfiguration);
 	}
 
-	private List<Transaction> getTransactionsForAccount(Account account, DateTime startDate, DateTime endDate, FilterConfiguration filterConfiguration)
+	public List<Transaction> getTransactionsForAccount(Account account, DateTime startDate, DateTime endDate, FilterConfiguration filterConfiguration)
 	{
 		if(filterConfiguration == null)
 		{
@@ -165,6 +164,18 @@ public class TransactionService implements Resetable
 		for(Transaction transaction : transactionRepository.findAll())
 		{
 			deleteTransactionInRepo(transaction.getID());
+		}
+	}
+
+	public void deleteTransactionsWithAccount(Account account) {
+		for(Transaction referringTransaction : account.getReferringTransactions())
+		{
+			deleteTransactionInRepo(referringTransaction.getID());
+		}
+
+		for(Transaction referringTransaction : transactionRepository.findAllByTransferAccount(account))
+		{
+			deleteTransactionInRepo(referringTransaction.getID());
 		}
 	}
 

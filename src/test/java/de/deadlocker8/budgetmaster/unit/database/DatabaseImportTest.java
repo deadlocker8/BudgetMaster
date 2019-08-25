@@ -227,6 +227,12 @@ public class DatabaseImportTest
 				}
 
 				@Override
+				public Long countByCategory(Category category)
+				{
+					return null;
+				}
+
+				@Override
 				public Page<Transaction> findAll(Specification<Transaction> specification, Pageable pageable)
 				{
 					return null;
@@ -282,6 +288,12 @@ public class DatabaseImportTest
 
 				@Override
 				public Integer getRestForTransferDestination(int accountID, String startDate, String endDate)
+				{
+					return null;
+				}
+
+				@Override
+				public List<Transaction> findAllByTransferAccount(Account account)
 				{
 					return null;
 				}

@@ -4,8 +4,6 @@ import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.tags.Tag;
-import de.deadlocker8.budgetmaster.filter.FilterObject;
-import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
 import de.deadlocker8.budgetmaster.tags.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,12 +31,13 @@ public class FilterHelpersService
 			filterConfiguration.setFilterTags(getFilterTags());
 			return filterConfiguration;
 		}
+		return updateCategoriesAndTags((FilterConfiguration) sessionFilterConfiguration);
+	}
 
-		// update categories and tags
-		FilterConfiguration filterConfiguration = (FilterConfiguration)sessionFilterConfiguration;
+	public FilterConfiguration updateCategoriesAndTags(FilterConfiguration filterConfiguration)
+	{
 		filterConfiguration.setFilterCategories(updateObjects(filterConfiguration.getFilterCategories(), getFilterCategories()));
 		filterConfiguration.setFilterTags(updateObjects(filterConfiguration.getFilterTags(), getFilterTags()));
-
 		return filterConfiguration;
 	}
 

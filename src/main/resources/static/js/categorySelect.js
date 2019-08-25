@@ -1,16 +1,19 @@
-$( document ).ready(function() {
+$(document).ready(function()
+{
     if($("#transaction-category").length)
     {
         beautifyCategorySelect();
     }
 });
 
-function beautifyCategorySelect() {
+function beautifyCategorySelect()
+{
     var counter = 0;
 
     var select = M.FormSelect.init(document.getElementById('transaction-category'), {
         dropdownOptions: {
-            onCloseStart: function () {
+            onCloseStart: function()
+            {
                 var listItems = select.dropdownOptions.childNodes;
                 var selectedItem;
                 for(var i = 0; i < listItems.length; i++)
@@ -27,7 +30,8 @@ function beautifyCategorySelect() {
         }
     });
 
-    select.dropdownOptions.childNodes.forEach(function (item) {
+    select.dropdownOptions.childNodes.forEach(function(item)
+    {
         var currentSpan = jQuery(item.querySelector('span'));
         var categoryInfo = currentSpan.text().split("@@@");
         var categoryName = categoryInfo[0];
@@ -41,7 +45,8 @@ function beautifyCategorySelect() {
         currentSpan.parent().prepend('<div class="category-circle-small category-select" id="category-' + counter + '" style="background-color: ' + categoryColor + '"><span></span></div>');
         $('#categoryWrapper').parent().append('<style>#category-' + counter + ':after{content: "' + firstLetter + '"; color: ' + appropriateTextColor + ';}</style>');
 
-        currentSpan.click(function () {
+        currentSpan.click(function()
+        {
             select.input.value = categoryName;
         });
         counter++;

@@ -2,6 +2,8 @@ package de.deadlocker8.budgetmaster.services;
 
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.thecodelabs.utils.util.Localization;
+import de.thecodelabs.utils.util.localization.LocalizationMessageFormatter;
+import de.thecodelabs.utils.util.localization.formatter.JavaMessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +36,8 @@ public class LocalizationService implements  Localization.LocalizationDelegate
 	}
 
 	@Override
-	public boolean useMessageFormatter()
+	public LocalizationMessageFormatter messageFormatter()
 	{
-		return true;
+		return new JavaMessageFormatter();
 	}
 }

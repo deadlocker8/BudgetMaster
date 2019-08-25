@@ -110,7 +110,7 @@ public class AccountController extends BaseController
 		return "accounts/newAccount";
 	}
 
-	@RequestMapping(value = "/accounts/newAccount", method = RequestMethod.POST)
+	@PostMapping(value = "/accounts/newAccount")
 	public String post(HttpServletRequest request, Model model,
 					   @ModelAttribute("NewAccount") Account account,
 					   BindingResult bindingResult)

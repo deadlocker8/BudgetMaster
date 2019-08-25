@@ -1,0 +1,22 @@
+.table-container {
+    display: table;
+    margin: auto;
+}
+
+.table-cell {
+    display: table-cell
+}
+
+.table-cell-valign {
+    vertical-align: middle;
+}
+
+.table-cell-spacer {
+    width: 3em;
+}
+
+.switch-cell-margin {
+    height: 1.5em;
+    margin-top: 2em;
+    margin-bottom: 2em;
+}

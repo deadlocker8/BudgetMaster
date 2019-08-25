@@ -8,21 +8,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
-public class EmptyPageController extends BaseController
+public class HotKeysController extends BaseController
 {
 	private final SettingsService settingsService;
 
 	@Autowired
-	public EmptyPageController(SettingsService settingsService)
+	public HotKeysController(SettingsService settingsService)
 	{
 		this.settingsService = settingsService;
 	}
 
-	@RequestMapping("/charts")
-	public String charts(Model model)
+	@RequestMapping("/hotkeys")
+	public String index(Model model)
 	{
-		model.addAttribute("active", "charts");
 		model.addAttribute("settings", settingsService.getSettings());
-		return "placeholder/comingSoon";
+		return "hotkeys";
 	}
 }

@@ -186,6 +186,11 @@ public class Transaction
 		return transferAccount != null;
 	}
 
+	public boolean isFuture()
+	{
+		return date.isAfter(DateTime.now());
+	}
+
 	@Override
 	public String toString()
 	{

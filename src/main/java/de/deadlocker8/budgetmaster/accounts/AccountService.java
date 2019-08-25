@@ -3,7 +3,7 @@ package de.deadlocker8.budgetmaster.accounts;
 import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
 import de.deadlocker8.budgetmaster.services.Resetable;
-import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
+import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
 import org.slf4j.Logger;
@@ -19,14 +19,14 @@ public class AccountService implements Resetable
 {
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private AccountRepository accountRepository;
-	private TransactionRepository transactionRepository;
+	private TransactionService transactionService;
 	private UserRepository userRepository;
 
 	@Autowired
-	public AccountService(AccountRepository accountRepository, TransactionRepository transactionRepository, UserRepository userRepository)
+	public AccountService(AccountRepository accountRepository, TransactionService transactionService, UserRepository userRepository)
 	{
 		this.accountRepository = accountRepository;
-		this.transactionRepository = transactionRepository;
+		this.transactionService = transactionService;
 		this.userRepository = userRepository;
 
 		createDefaults();
@@ -47,7 +47,7 @@ public class AccountService implements Resetable
 	public void deleteAccount(int ID)
 	{
 		Account accountToDelete = accountRepository.findOne(ID);
-		transactionRepository.delete(accountToDelete.getReferringTransactions());
+		transactionService.deleteTransactionsWithAccount(accountToDelete);
 		accountToDelete.setReferringTransactions(new ArrayList<>());
 
 		List<Account> accounts = accountRepository.findAll();
@@ -78,7 +78,7 @@ public class AccountService implements Resetable
 	@Override
 	public void createDefaults()
 	{
-		if(accountRepository.findAll().size() == 0)
+		if(accountRepository.findAll().isEmpty())
 		{
 			Account placeholder = new Account("Placeholder", AccountType.ALL);
 			accountRepository.save(placeholder);

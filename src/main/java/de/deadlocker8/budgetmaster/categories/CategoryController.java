@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,15 +19,15 @@ import java.util.stream.Collectors;
 @Controller
 public class CategoryController extends BaseController
 {
-	private final CategoryRepository categoryRepository;
 	private final CategoryService categoryService;
 	private final HelpersService helpers;
 	private final SettingsService settingsService;
 
+	private final String WHITE = "#FFFFFF";
+
 	@Autowired
-	public CategoryController(CategoryRepository categoryRepository, CategoryService categoryService, HelpersService helpers, SettingsService settingsService)
+	public CategoryController(CategoryService categoryService, HelpersService helpers, SettingsService settingsService)
 	{
-		this.categoryRepository = categoryRepository;
 		this.categoryService = categoryService;
 		this.helpers = helpers;
 		this.settingsService = settingsService;
@@ -39,7 +36,7 @@ public class CategoryController extends BaseController
 	@RequestMapping("/categories")
 	public String categories(Model model)
 	{
-		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
+		model.addAttribute("categories", categoryService.getRepository().findAllByOrderByNameAsc());
 		model.addAttribute("settings", settingsService.getSettings());
 		return "categories/categories";
 	}
@@ -59,12 +56,12 @@ public class CategoryController extends BaseController
 		model.addAttribute("availableCategories", availableCategories);
 		model.addAttribute("preselectedCategory", categoryService.getRepository().findByType(CategoryType.NONE));
 
-		model.addAttribute("currentCategory", categoryRepository.getOne(ID));
+		model.addAttribute("currentCategory", categoryService.getRepository().getOne(ID));
 		model.addAttribute("settings", settingsService.getSettings());
 		return "categories/categories";
 	}
 
-	@RequestMapping(value = "/categories/{ID}/delete", method = RequestMethod.POST)
+	@PostMapping(value = "/categories/{ID}/delete")
 	public String deleteCategory(Model model, @PathVariable("ID") Integer ID, @ModelAttribute("DestinationCategory") DestinationCategory destinationCategory)
 	{
 		if(isDeletable(ID))
@@ -77,7 +74,7 @@ public class CategoryController extends BaseController
 
 	private boolean isDeletable(Integer ID)
 	{
-		Category categoryToDelete = categoryRepository.getOne(ID);
+		Category categoryToDelete = categoryService.getRepository().getOne(ID);
 		return categoryToDelete != null && categoryToDelete.getType() == CategoryType.CUSTOM;
 	}
 
@@ -85,7 +82,7 @@ public class CategoryController extends BaseController
 	public String newCategory(Model model)
 	{
 		//add custom color (defaults to white here because we are adding a new category instead of editing an existing)
-		model.addAttribute("customColor", "#FFFFFF");
+		model.addAttribute("customColor", WHITE);
 		Category emptyCategory = new Category(null, ColorUtilsNonJavaFX.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase(), CategoryType.CUSTOM);
 		model.addAttribute("category", emptyCategory);
 		model.addAttribute("settings", settingsService.getSettings());
@@ -95,7 +92,7 @@ public class CategoryController extends BaseController
 	@RequestMapping("/categories/{ID}/edit")
 	public String editCategory(Model model, @PathVariable("ID") Integer ID)
 	{
-		Category category = categoryRepository.findOne(ID);
+		Category category = categoryService.getRepository().findOne(ID);
 		if(category == null)
 		{
 			throw new ResourceNotFoundException();
@@ -103,7 +100,7 @@ public class CategoryController extends BaseController
 
 		if(helpers.getCategoryColorList().contains(category.getColor()))
 		{
-			model.addAttribute("customColor", "#FFFFFF");
+			model.addAttribute("customColor", WHITE);
 		}
 		else
 		{
@@ -115,7 +112,7 @@ public class CategoryController extends BaseController
 		return "categories/newCategory";
 	}
 
-	@RequestMapping(value = "/categories/newCategory", method = RequestMethod.POST)
+	@PostMapping(value = "/categories/newCategory")
 	public String post(Model model, @ModelAttribute("NewCategory") Category category, BindingResult bindingResult)
 	{
 		CategoryValidator userValidator = new CategoryValidator();
@@ -127,7 +124,7 @@ public class CategoryController extends BaseController
 
 			if(helpers.getCategoryColorList().contains(category.getColor()))
 			{
-				model.addAttribute("customColor", "#FFFFFF");
+				model.addAttribute("customColor", WHITE);
 			}
 			else
 			{
@@ -148,7 +145,7 @@ public class CategoryController extends BaseController
 			{
 				category.setType(CategoryType.CUSTOM);
 			}
-			categoryRepository.save(category);
+			categoryService.getRepository().save(category);
 		}
 
 		return "redirect:/categories";
