@@ -2,7 +2,7 @@
 Manage your monthly budget easily with BudgetMaster
 
 - __start:__ 17.12.16
-- __current release:__ v2.3.0 (21) from 25.08.19
+- __current release:__ v2.3.1 (22) from 28.08.19
 
 ## Key Features
 - Keep your data private - Host your own BudgetMaster server or use it in standalone mode. All data remains on your machines.
@@ -15,6 +15,7 @@ Manage your monthly budget easily with BudgetMaster
 - Password protected website - Your data can only be accessed by entering the correct password. (Note: The database is not encrypted)
 - Localization - English and German supported.
 - Search and Filter - Search for individual transactions or filter your view.
+- Visualize your data - Use on of the pre-defined charts or create your one by using the chart framework to visualize and analyze your data.
 
 ## Available Languages
 - English [Roadmap](https://roadmaps.thecodelabs.de/roadmap/2)
