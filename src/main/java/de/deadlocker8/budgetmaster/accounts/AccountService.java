@@ -50,15 +50,15 @@ public class AccountService implements Resetable
 		transactionService.deleteTransactionsWithAccount(accountToDelete);
 		accountToDelete.setReferringTransactions(new ArrayList<>());
 
-		List<Account> accounts = accountRepository.findAll();
-		accounts.remove(accountToDelete);
+		// select "all accounts" as selected account
+		selectAccount(accountRepository.findAllByType(AccountType.ALL).get(0).getID());
 
-		Account newSelectedAccount = accounts.get(0);
-		selectAccount(newSelectedAccount.getID());
-
+		// set new default if necessary
 		if(accountToDelete.isDefault())
 		{
-			setAsDefaultAccount(accountRepository.findAllByType(AccountType.CUSTOM).get(0).getID());
+			List<Account> accounts = accountRepository.findAllByType(AccountType.CUSTOM);
+			accounts.remove(accountToDelete);
+			setAsDefaultAccount(accounts.get(0).getID());
 		}
 
 		accountRepository.delete(ID);

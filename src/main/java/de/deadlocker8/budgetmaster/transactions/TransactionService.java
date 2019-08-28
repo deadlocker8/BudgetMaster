@@ -23,6 +23,7 @@ import java.util.List;
 @Service
 public class TransactionService implements Resetable
 {
+	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private TransactionRepository transactionRepository;
 	private RepeatingOptionRepository repeatingOptionRepository;
 	private CategoryRepository categoryRepository;
@@ -141,6 +142,12 @@ public class TransactionService implements Resetable
 	private void deleteTransactionInRepo(Integer ID)
 	{
 		Transaction transactionToDelete = transactionRepository.findOne(ID);
+		if(transactionToDelete == null)
+		{
+			LOGGER.debug("Skipping already deleted transaction with ID: " + ID);
+			return;
+		}
+
 		// handle repeating transactions
 		if(transactionToDelete.getRepeatingOption() == null)
 		{
