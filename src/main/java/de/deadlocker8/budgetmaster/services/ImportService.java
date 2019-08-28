@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.services;
 
+import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
@@ -29,6 +30,8 @@ public class ImportService
 	@Autowired
 	private TagRepository tagRepository;
 
+	private Database database;
+
 	@Autowired
 	public ImportService(CategoryRepository categoryRepository, TransactionRepository transactionRepository, TagRepository tagRepository)
 	{
@@ -39,14 +42,20 @@ public class ImportService
 
 	public void importDatabase(Database database, AccountMatchList accountMatchList)
 	{
+		this.database = database;
 		LOGGER.debug("Importing database...");
-		importCategories(database);
-		importAccounts(database, accountMatchList);
-		importTransactions(database);
+		importCategories();
+		importAccounts(accountMatchList);
+		importTransactions();
 		LOGGER.debug("Importing database DONE");
 	}
 
-	private void importCategories(Database database)
+	public Database getDatabase()
+	{
+		return database;
+	}
+
+	private void importCategories()
 	{
 		List<Category> categories = database.getCategories();
 		LOGGER.debug("Importing " + categories.size() + " categories...");
@@ -112,7 +121,7 @@ public class ImportService
 		return updatedTransactions;
 	}
 
-	private void importAccounts(Database database, AccountMatchList accountMatchList)
+	private void importAccounts(AccountMatchList accountMatchList)
 	{
 		LOGGER.debug("Importing " + accountMatchList.getAccountMatches().size() + " accounts...");
 		List<Transaction> alreadyUpdatedTransactions = new ArrayList<>();
@@ -127,13 +136,14 @@ public class ImportService
 			List<Transaction> transferTransactions = new ArrayList<>(database.getTransactions());
 			transferTransactions.removeAll(alreadyUpdatedTransferTransactions);
 
-			alreadyUpdatedTransactions.addAll(updateAccountsForTransactions(transactions, accountMatch.getAccountSource().getID(), accountMatch.getAccountDestination().getID()));
-			alreadyUpdatedTransferTransactions.addAll(updateTransferAccountsForTransactions(transferTransactions, accountMatch.getAccountSource().getID(), accountMatch.getAccountDestination().getID()));
+			alreadyUpdatedTransactions.addAll(updateAccountsForTransactions(transactions, accountMatch.getAccountSource().getID(), accountMatch.getAccountDestination()));
+			alreadyUpdatedTransferTransactions.addAll(updateTransferAccountsForTransactions(transferTransactions, accountMatch.getAccountSource().getID(), accountMatch.getAccountDestination()));
 		}
+
 		LOGGER.debug("Importing accounts DONE");
 	}
 
-	private List<Transaction> updateAccountsForTransactions(List<Transaction> transactions, int oldAccountID, int newAccountID)
+	public List<Transaction> updateAccountsForTransactions(List<Transaction> transactions, int oldAccountID, Account newAccount)
 	{
 		List<Transaction> updatedTransactions = new ArrayList<>();
 		for(Transaction transaction : transactions)
@@ -141,27 +151,32 @@ public class ImportService
 			// legacy database
 			if(oldAccountID == -1)
 			{
-				transaction.getAccount().setID(newAccountID);
+				transaction.setAccount(newAccount);
 				updatedTransactions.add(transaction);
+				continue;
 			}
-			else if(transaction.getAccount().getID() == oldAccountID)
+
+			// account needs to be updated
+			if(transaction.getAccount().getID() != oldAccountID)
 			{
-				transaction.getAccount().setID(newAccountID);
-				updatedTransactions.add(transaction);
+				continue;
 			}
+
+			transaction.setAccount(newAccount);
+			updatedTransactions.add(transaction);
 		}
 
 		return updatedTransactions;
 	}
 
-	private List<Transaction> updateTransferAccountsForTransactions(List<Transaction> transactions, int oldAccountID, int newAccountID)
+	public List<Transaction> updateTransferAccountsForTransactions(List<Transaction> transactions, int oldAccountID, Account newAccount)
 	{
 		List<Transaction> updatedTransactions = new ArrayList<>();
 		for(Transaction transaction : transactions)
 		{
 			if(transaction.getTransferAccount() != null && transaction.getTransferAccount().getID() == oldAccountID)
 			{
-				transaction.getTransferAccount().setID(newAccountID);
+				transaction.setTransferAccount(newAccount);
 				updatedTransactions.add(transaction);
 			}
 		}
@@ -169,14 +184,14 @@ public class ImportService
 		return updatedTransactions;
 	}
 
-	private void importTransactions(Database database)
+	private void importTransactions()
 	{
 		List<Transaction> transactions = database.getTransactions();
 		LOGGER.debug("Importing " + transactions.size() + " transactions...");
 		for(int i = 0; i < transactions.size(); i++)
 		{
 			Transaction transaction = transactions.get(i);
-			LOGGER.debug("Importing transaction " + (i+1) + "/" + transactions.size() + " (name: " + transaction.getName() + ", date: " + transaction.getDate() + ")");
+			LOGGER.debug("Importing transaction " + (i + 1) + "/" + transactions.size() + " (name: " + transaction.getName() + ", date: " + transaction.getDate() + ")");
 			updateTagsForTransaction(transaction);
 			transaction.setID(null);
 			transactionRepository.save(transaction);
