@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.tags;
 
+import de.deadlocker8.budgetmaster.ProgramArgs;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,11 @@ public class TagScheduler
 	@Scheduled(fixedRate = 15*60*1000)
 	public void tagCleaner()
 	{
-		LOGGER.debug("Cleaning Tags...");
+		if(ProgramArgs.isDebug())
+		{
+			LOGGER.debug("Cleaning Tags...");
+		}
+
 		List<Tag> tags = tagRepository.findAll();
 		for(Tag tag : tags)
 		{
