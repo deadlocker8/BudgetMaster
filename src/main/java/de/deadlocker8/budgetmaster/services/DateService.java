@@ -53,4 +53,9 @@ public class DateService
 			return DateTime.parse(cookieDate, DateTimeFormat.forPattern("dd.MM.yy").withLocale(settingsService.getSettings().getLanguage().getLocale()));
 		}
 	}
+
+	public DateTime getCurrentDate()
+	{
+		return DateTime.now();
+	}
 }

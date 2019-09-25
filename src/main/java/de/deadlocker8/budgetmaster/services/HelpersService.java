@@ -12,18 +12,15 @@ import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierType;
 import de.deadlocker8.budgetmaster.reports.Budget;
 import de.deadlocker8.budgetmaster.settings.Settings;
-import de.deadlocker8.budgetmaster.settings.SettingsRepository;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.TagRepository;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
-import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
 import de.deadlocker8.budgetmaster.utils.Colors;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.thecodelabs.utils.util.ColorUtilsNonJavaFX;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,9 +33,6 @@ import java.util.List;
 @Service
 public class HelpersService
 {
-	@Autowired
-	private SettingsRepository settingsRepository;
-
 	@Autowired
 	private SettingsService settingsService;
 
@@ -176,15 +170,10 @@ public class HelpersService
 		return transaction.getAmount();
 	}
 
-	public DateTime getCurrentDate()
-	{
-		return DateTime.now();
-	}
-
 	public int getAccountBudget()
 	{
 		Account currentAccount = getCurrentAccount();
-		List<Transaction> transactions = transactionService.getTransactionsForAccountUntilDate(currentAccount, getCurrentDate(), FilterConfiguration.DEFAULT);
+		List<Transaction> transactions = transactionService.getTransactionsForAccountUntilDate(currentAccount, DateTime.now(), FilterConfiguration.DEFAULT);
 
 		int sum = 0;
 		for(Transaction transaction : transactions)
