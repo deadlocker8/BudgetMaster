@@ -118,7 +118,7 @@
 
                             <div class="table-cell">
                                 <div class="left-align" style="margin-bottom: 1em; margin-right: 5em">v${build.getVersionName()}</div>
-                                <div class="left-align">${helpers.getAvailableVersionString()}</div>
+                                <div class="left-align">${updateCheckService.getAvailableVersionString()}</div>
                             </div>
 
                             <div class="table-cell table-cell-valign">

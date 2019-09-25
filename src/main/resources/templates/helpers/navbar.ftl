@@ -22,7 +22,7 @@
         <@itemDivider/>
         <@itemLogout locale.getString("menu.logout") "lock"/>
 
-        <#if helpers.isUpdateAvailable()>
+        <#if updateCheckService.isUpdateAvailable()>
             <@itemDivider/>
             <@itemUpdate "/update", locale.getString("menu.update"), "system_update"/>
         </#if>

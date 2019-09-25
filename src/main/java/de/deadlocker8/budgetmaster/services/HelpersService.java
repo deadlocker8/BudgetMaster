@@ -57,9 +57,6 @@ public class HelpersService
 	@Autowired
 	private CategoryRepository categoryRepository;
 
-	@Autowired
-	private BudgetMasterUpdateService budgetMasterUpdateService;
-
 	public String getURLEncodedString(String input)
 	{
 		try
@@ -225,23 +222,6 @@ public class HelpersService
 	public int getIDOfNoCatgeory()
 	{
 		return categoryRepository.findByType(CategoryType.NONE).getID();
-	}
-
-	public boolean isUpdateAvailable()
-	{
-		try
-		{
-			return budgetMasterUpdateService.getUpdateService().isUpdateAvailable();
-		}
-		catch(NullPointerException e)
-		{
-			return false;
-		}
-	}
-
-	public String getAvailableVersionString()
-	{
-		return budgetMasterUpdateService.getAvailableVersionString();
 	}
 
 	public Long getUsageCountForCategory(Category category)
