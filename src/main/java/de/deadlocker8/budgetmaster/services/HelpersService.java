@@ -28,9 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
-import java.math.RoundingMode;
 import java.net.URLEncoder;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -62,32 +60,6 @@ public class HelpersService
 	@Autowired
 	private BudgetMasterUpdateService budgetMasterUpdateService;
 
-	public String getCurrencyString(int amount)
-	{
-		return getCurrencyString(amount / 100.0);
-	}
-
-	public String getCurrencyString(double amount)
-	{
-		return getAmountString(amount, true) + " " + settingsRepository.findOne(0).getCurrency();
-	}
-
-	public String getAmountString(int amount)
-	{
-		return getAmountString(Math.abs(amount) / 100.0, false);
-	}
-
-	public String getAmountString(double amount, boolean useGrouping)
-	{
-		Settings settings = settingsRepository.findOne(0);
-		NumberFormat format = NumberFormat.getNumberInstance(settings.getLanguage().getLocale());
-		format.setMaximumFractionDigits(2);
-		format.setMinimumFractionDigits(2);
-		format.setRoundingMode(RoundingMode.HALF_UP);
-		format.setGroupingUsed(useGrouping);
-		return String.valueOf(format.format(amount));
-	}
-
 	public String getURLEncodedString(String input)
 	{
 		try
@@ -105,7 +77,7 @@ public class HelpersService
 		return Arrays.asList(LanguageType.values());
 	}
 
-	 // Replaces line breaks and tabs with spaces
+	// Replaces line breaks and tabs with spaces
 	public String getFlatText(String text)
 	{
 		text = text.replace("\n", " ");
@@ -257,14 +229,14 @@ public class HelpersService
 
 	public boolean isUpdateAvailable()
 	{
-		 try
-		 {
-		 	return budgetMasterUpdateService.getUpdateService().isUpdateAvailable();
-		 }
-		 catch(NullPointerException e)
-		 {
+		try
+		{
+			return budgetMasterUpdateService.getUpdateService().isUpdateAvailable();
+		}
+		catch(NullPointerException e)
+		{
 			return false;
-		 }
+		}
 	}
 
 	public String getAvailableVersionString()

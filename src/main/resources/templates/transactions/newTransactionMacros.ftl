@@ -61,7 +61,7 @@
 <#macro transactionAmount transaction>
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
-            <input id="transaction-amount" type="text" <@validation.validation "amount"/> value="<#if transaction.getAmount()??>${helpers.getAmountString(transaction.getAmount())}</#if>">
+            <input id="transaction-amount" type="text" <@validation.validation "amount"/> value="<#if transaction.getAmount()??>${currencyService.getAmountString(transaction.getAmount())}</#if>">
             <label for="transaction-amount">${locale.getString("transaction.new.label.amount")}</label>
         </div>
         <input type="hidden" id="hidden-transaction-amount" name="amount" value="<#if transaction.getAmount()??>${transaction.getAmount()}</#if>">

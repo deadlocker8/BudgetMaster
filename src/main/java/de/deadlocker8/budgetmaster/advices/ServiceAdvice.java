@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.advices;
 
+import de.deadlocker8.budgetmaster.services.CurrencyService;
 import de.deadlocker8.budgetmaster.services.DateService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ public class ServiceAdvice
 	@Autowired
 	DateService dateService;
 
+	@Autowired
+	CurrencyService currencyService;
+
 	@ModelAttribute("helpers")
 	public HelpersService getHelpers()
 	{
@@ -25,5 +29,11 @@ public class ServiceAdvice
 	public DateService getDateService()
 	{
 		return dateService;
+	}
+
+	@ModelAttribute("currencyService")
+	public CurrencyService getCurrencyService()
+	{
+		return currencyService;
 	}
 }

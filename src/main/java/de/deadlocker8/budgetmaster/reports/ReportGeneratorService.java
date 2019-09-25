@@ -3,11 +3,11 @@ package de.deadlocker8.budgetmaster.reports;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
+import de.deadlocker8.budgetmaster.reports.categoryBudget.CategoryBudget;
+import de.deadlocker8.budgetmaster.reports.columns.ReportColumn;
+import de.deadlocker8.budgetmaster.services.CurrencyService;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
-import de.deadlocker8.budgetmaster.reports.columns.ReportColumn;
-import de.deadlocker8.budgetmaster.reports.categoryBudget.CategoryBudget;
-import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Color;
 import de.thecodelabs.utils.util.Localization;
@@ -22,14 +22,15 @@ import java.util.stream.Collectors;
 public class ReportGeneratorService
 {
 	@Autowired
-	HelpersService helpersService;
+	CurrencyService currencyService;
 
 	private final String FONT = Fonts.OPEN_SANS;
 
+
 	@Autowired
-	public ReportGeneratorService(HelpersService helpersService)
+	public ReportGeneratorService(CurrencyService currencyService)
 	{
-		this.helpersService = helpersService;
+		this.currencyService = currencyService;
 	}
 
 	private Chapter generateHeader(ReportConfiguration reportConfiguration)
@@ -106,8 +107,8 @@ public class ReportGeneratorService
 
 			PdfPCell cellTotal;
 			String total = "";
-			String totalIncomeString = helpersService.getCurrencyString(reportConfiguration.getBudget().getIncomeSum());
-			String totalExpenditureString = helpersService.getCurrencyString(reportConfiguration.getBudget().getExpenditureSum());
+			String totalIncomeString = currencyService.getCurrencyString(reportConfiguration.getBudget().getIncomeSum());
+			String totalExpenditureString = currencyService.getCurrencyString(reportConfiguration.getBudget().getExpenditureSum());
 			switch(amountType)
 			{
 				case BOTH:
@@ -156,11 +157,11 @@ public class ReportGeneratorService
 			Budget budget = reportConfiguration.getBudget();
 
 			Paragraph paragraph = new Paragraph();
-			paragraph.add(new Chunk(Localization.getString(Strings.REPORT_INCOMES) + helpersService.getCurrencyString(budget.getIncomeSum()), fontGreen));
+			paragraph.add(new Chunk(Localization.getString(Strings.REPORT_INCOMES) + currencyService.getCurrencyString(budget.getIncomeSum()), fontGreen));
 			paragraph.add(new Chunk("     "));
-			paragraph.add(new Chunk(Localization.getString(Strings.REPORT_PAYMENTS) + helpersService.getCurrencyString(budget.getExpenditureSum()), fontRed));
+			paragraph.add(new Chunk(Localization.getString(Strings.REPORT_PAYMENTS) + currencyService.getCurrencyString(budget.getExpenditureSum()), fontRed));
 			paragraph.add(new Chunk("     "));
-			paragraph.add(new Chunk(Localization.getString(Strings.REPORT_BUDGET_REST) + helpersService.getCurrencyString(budget.getIncomeSum() + budget.getExpenditureSum()), fontBlack));
+			paragraph.add(new Chunk(Localization.getString(Strings.REPORT_BUDGET_REST) + currencyService.getCurrencyString(budget.getIncomeSum() + budget.getExpenditureSum()), fontBlack));
 			paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
 
 			document.add(new Paragraph(Localization.getString(Strings.REPORT_BUDGET), headerFont));
@@ -243,7 +244,7 @@ public class ReportGeneratorService
 			cellName.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			table.addCell(cellName);
 
-			PdfPCell cellAmount = new PdfPCell(new Phrase(helpersService.getCurrencyString(budget.getBudget() / 100.0), font));
+			PdfPCell cellAmount = new PdfPCell(new Phrase(currencyService.getCurrencyString(budget.getBudget() / 100.0), font));
 			cellAmount.setBackgroundColor(getBaseColor(Color.WHITE));
 			cellAmount.setHorizontalAlignment(Element.ALIGN_CENTER);
 			cellAmount.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -264,7 +265,7 @@ public class ReportGeneratorService
 				}
 				return transaction.getAccount().getName();
 			case AMOUNT:
-				return helpersService.getCurrencyString(transaction.getAmount());
+				return currencyService.getCurrencyString(transaction.getAmount());
 			case CATEGORY:
 				return transaction.getCategory().getName();
 			case DATE:

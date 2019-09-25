@@ -97,9 +97,9 @@
 
     <#assign accountBudget = helpers.getAccountBudget()/>
     <#if accountBudget <= 0>
-        <div class="account-budget ${redTextColor}">${helpers.getCurrencyString(accountBudget)}</div>
+        <div class="account-budget ${redTextColor}">${currencyService.getCurrencyString(accountBudget)}</div>
     <#else>
-        <div class="account-budget ${greenTextColor}">${helpers.getCurrencyString(accountBudget)}</div>
+        <div class="account-budget ${greenTextColor}">${currencyService.getCurrencyString(accountBudget)}</div>
     </#if>
     <div class="account-budget-date text-color">(${locale.getString("account.budget.asof")}: ${dateService.getDateStringNormal(helpers.getCurrentDate())})</div>
 </div>

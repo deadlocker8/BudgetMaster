@@ -45,9 +45,9 @@
 <#macro transactionAmount transaction account size>
     <#assign amount = helpers.getAmount(transaction, account)/>
     <#if amount <= 0>
-        <div class="col ${size} bold ${redTextColor} no-wrap right-align transaction-text">${helpers.getCurrencyString(amount)}</div>
+        <div class="col ${size} bold ${redTextColor} no-wrap right-align transaction-text">${currencyService.getCurrencyString(amount)}</div>
     <#else>
-        <div class="col ${size} bold ${greenTextColor} no-wrap right-align transaction-text">${helpers.getCurrencyString(amount)}</div>
+        <div class="col ${size} bold ${greenTextColor} no-wrap right-align transaction-text">${currencyService.getCurrencyString(amount)}</div>
     </#if>
 </#macro>
 
