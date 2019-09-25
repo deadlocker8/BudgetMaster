@@ -24,8 +24,6 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -51,29 +49,9 @@ public class HelpersService
 	@Autowired
 	private CategoryRepository categoryRepository;
 
-	public String getURLEncodedString(String input)
-	{
-		try
-		{
-			return URLEncoder.encode(input, "UTF-8");
-		}
-		catch(UnsupportedEncodingException e)
-		{
-			return input;
-		}
-	}
-
 	public List<LanguageType> getAvailableLanguages()
 	{
 		return Arrays.asList(LanguageType.values());
-	}
-
-	// Replaces line breaks and tabs with spaces
-	public String getFlatText(String text)
-	{
-		text = text.replace("\n", " ");
-		text = text.replace("\t", " ");
-		return text;
 	}
 
 	public List<String> getCategoryColorList()
