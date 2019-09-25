@@ -12,6 +12,7 @@ import de.deadlocker8.budgetmaster.repeating.RepeatingTransactionUpdater;
 import de.deadlocker8.budgetmaster.repeating.endoption.*;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifier;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierType;
+import de.deadlocker8.budgetmaster.services.DateService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.tags.Tag;
@@ -42,10 +43,11 @@ public class TransactionController extends BaseController
 	private final TagService tagService;
 	private final RepeatingTransactionUpdater repeatingTransactionUpdater;
 	private final HelpersService helpers;
+	private final DateService dateService;
 	private final FilterHelpersService filterHelpers;
 
 	@Autowired
-	public TransactionController(TransactionService transactionService, CategoryService categoryService, AccountService accountService, SettingsService settingsService, TagService tagService, RepeatingTransactionUpdater repeatingTransactionUpdater, HelpersService helpers, FilterHelpersService filterHelpers)
+	public TransactionController(TransactionService transactionService, CategoryService categoryService, AccountService accountService, SettingsService settingsService, TagService tagService, RepeatingTransactionUpdater repeatingTransactionUpdater, HelpersService helpers, DateService dateService, FilterHelpersService filterHelpers)
 	{
 		this.transactionService = transactionService;
 		this.categoryService = categoryService;
@@ -54,13 +56,14 @@ public class TransactionController extends BaseController
 		this.tagService = tagService;
 		this.repeatingTransactionUpdater = repeatingTransactionUpdater;
 		this.helpers = helpers;
+		this.dateService = dateService;
 		this.filterHelpers = filterHelpers;
 	}
 
 	@RequestMapping("/transactions")
 	public String transactions(HttpServletRequest request, Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
 	{
-		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
+		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 		repeatingTransactionUpdater.updateRepeatingTransactions(date.dayOfMonth().withMaximumValue());
 
 		prepareModelTransactions(filterHelpers.getFilterConfiguration(request), model, date);
@@ -76,7 +79,7 @@ public class TransactionController extends BaseController
 			return "redirect:/transactions";
 		}
 
-		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
+		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 		prepareModelTransactions(filterHelpers.getFilterConfiguration(request), model, date);
 		model.addAttribute("currentTransaction", transactionService.getRepository().getOne(ID));
 
@@ -106,7 +109,7 @@ public class TransactionController extends BaseController
 	@RequestMapping("/transactions/newTransaction/{type}")
 	public String newTransaction(Model model, @CookieValue("currentDate") String cookieDate, @PathVariable String type)
 	{
-		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
+		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 		Transaction emptyTransaction = new Transaction();
 		emptyTransaction.setCategory(categoryService.getRepository().findByType(CategoryType.NONE));
 		prepareModelNewOrEdit(model, date, emptyTransaction);
@@ -118,7 +121,7 @@ public class TransactionController extends BaseController
 							 @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
 							 @RequestParam(value = "isPayment", required = false) boolean isPayment)
 	{
-		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
+		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 
 		TransactionValidator transactionValidator = new TransactionValidator();
 		transactionValidator.validate(transaction, bindingResult);
@@ -142,7 +145,7 @@ public class TransactionController extends BaseController
 								@RequestParam(value = "repeatingEndType", required = false) String repeatingEndType,
 								@RequestParam(value = "repeatingEndValue", required = false) String repeatingEndValue)
 	{
-		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
+		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 
 		// handle repeating transactions
 		if(transaction.getID() != null && isRepeating)
@@ -187,7 +190,7 @@ public class TransactionController extends BaseController
 							   @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
 							   @RequestParam(value = "isPayment", required = false) boolean isPayment)
 	{
-		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
+		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 
 		TransactionValidator transactionValidator = new TransactionValidator();
 		transactionValidator.validate(transaction, bindingResult);
@@ -259,7 +262,7 @@ public class TransactionController extends BaseController
 			transaction = transaction.getRepeatingOption().getReferringTransactions().get(0);
 		}
 
-		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
+		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 		prepareModelNewOrEdit(model, date, transaction);
 
 		if(transaction.isRepeating())

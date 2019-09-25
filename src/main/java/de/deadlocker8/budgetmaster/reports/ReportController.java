@@ -10,6 +10,7 @@ import de.deadlocker8.budgetmaster.filter.FilterHelpersService;
 import de.deadlocker8.budgetmaster.reports.categoryBudget.CategoryBudgetHandler;
 import de.deadlocker8.budgetmaster.reports.settings.ReportSettings;
 import de.deadlocker8.budgetmaster.reports.settings.ReportSettingsService;
+import de.deadlocker8.budgetmaster.services.DateService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
@@ -19,7 +20,10 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -37,10 +41,11 @@ public class ReportController extends BaseController
 	private final TransactionService transactionService;
 	private final CategoryService categoryService;
 	private final HelpersService helpers;
+	private final DateService dateService;
 	private final FilterHelpersService filterHelpers;
 
 	@Autowired
-	public ReportController(SettingsService settingsService, ReportSettingsService reportSettingsService, ReportGeneratorService reportGeneratorService, TransactionService transactionService, CategoryService categoryService, HelpersService helpers, FilterHelpersService filterHelpers)
+	public ReportController(SettingsService settingsService, ReportSettingsService reportSettingsService, ReportGeneratorService reportGeneratorService, TransactionService transactionService, CategoryService categoryService, HelpersService helpers, DateService dateService, FilterHelpersService filterHelpers)
 	{
 		this.settingsService = settingsService;
 		this.reportSettingsService = reportSettingsService;
@@ -48,13 +53,14 @@ public class ReportController extends BaseController
 		this.transactionService = transactionService;
 		this.categoryService = categoryService;
 		this.helpers = helpers;
+		this.dateService = dateService;
 		this.filterHelpers = filterHelpers;
 	}
 
 	@RequestMapping("/reports")
 	public String reports(HttpServletRequest request, Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
 	{
-		DateTime date = helpers.getDateTimeFromCookie(cookieDate);
+		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 
 		model.addAttribute("reportSettings", reportSettingsService.getReportSettings());
 		model.addAttribute("currentDate", date);

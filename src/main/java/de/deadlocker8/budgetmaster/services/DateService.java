@@ -41,4 +41,16 @@ public class DateService
 	{
 		return date.toString(DateTimeFormat.forPattern(formatStyle.getKey()).withLocale(settingsService.getSettings().getLanguage().getLocale()));
 	}
+
+	public DateTime getDateTimeFromCookie(String cookieDate)
+	{
+		if(cookieDate == null)
+		{
+			return DateTime.now();
+		}
+		else
+		{
+			return DateTime.parse(cookieDate, DateTimeFormat.forPattern("dd.MM.yy").withLocale(settingsService.getSettings().getLanguage().getLocale()));
+		}
+	}
 }

@@ -244,18 +244,6 @@ public class HelpersService
 		return budgetMasterUpdateService.getAvailableVersionString();
 	}
 
-	public DateTime getDateTimeFromCookie(String cookieDate)
-	{
-		if(cookieDate == null)
-		{
-			return DateTime.now();
-		}
-		else
-		{
-			return DateTime.parse(cookieDate, DateTimeFormat.forPattern("dd.MM.yy").withLocale(getSettings().getLanguage().getLocale()));
-		}
-	}
-
 	public Long getUsageCountForCategory(Category category)
 	{
 		return transactionService.getRepository().countByCategory(category);
