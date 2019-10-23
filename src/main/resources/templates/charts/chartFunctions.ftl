@@ -30,7 +30,7 @@
 </#macro>
 
 <#macro buttonShow>
-    <a href="<@s.url '/charts/manage'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">edit</i>${locale.getString("home.menu.charts.action.manage")}</a>
+    <a href="<@s.url '/charts'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">show_chart</i>${locale.getString("home.menu.charts.action.show")}</a>
 </#macro>
 
 <#macro buttons>
