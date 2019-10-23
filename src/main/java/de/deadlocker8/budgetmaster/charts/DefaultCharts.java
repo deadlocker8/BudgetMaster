@@ -42,6 +42,10 @@ public class DefaultCharts
 			getChartFromFile("charts/IncomesAndExpendituresPerMonthByCategories.js"),
 			ChartType.DEFAULT, 13);
 
+	private static final Chart CHART_REST_PER_MONTH = new Chart("charts.default.restPerMonth",
+			getChartFromFile("charts/RestPerMonth.js"),
+			ChartType.DEFAULT, 2);
+
 
 	public static List<Chart> getDefaultCharts()
 	{
@@ -52,6 +56,7 @@ public class DefaultCharts
 		charts.add(CHART_INCOMES_AND_EXPENDITURES_BY_CATEGORY_BAR);
 		charts.add(CHART_INCOMES_AND_EXPENDITURES_BY_CATEGORY_PIE);
 		charts.add(CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_BY_CATEGORIES);
+		charts.add(CHART_REST_PER_MONTH);
 
 		charts.sort(Comparator.comparing(Chart::getName));
 		return charts;
