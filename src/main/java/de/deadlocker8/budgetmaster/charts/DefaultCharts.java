@@ -46,6 +46,10 @@ public class DefaultCharts
 			getChartFromFile("charts/RestPerMonth.js"),
 			ChartType.DEFAULT, 2);
 
+	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_YEAR_BAR = new Chart("charts.default.incomesAndExpendituresPerYearBar",
+			getChartFromFile("charts/IncomesAndExpendituresPerYearBar.js"),
+			ChartType.DEFAULT, 1);
+
 
 	public static List<Chart> getDefaultCharts()
 	{
@@ -57,6 +61,7 @@ public class DefaultCharts
 		charts.add(CHART_INCOMES_AND_EXPENDITURES_BY_CATEGORY_PIE);
 		charts.add(CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_BY_CATEGORIES);
 		charts.add(CHART_REST_PER_MONTH);
+		charts.add(CHART_INCOMES_AND_EXPENDITURES_PER_YEAR_BAR);
 
 		charts.sort(Comparator.comparing(Chart::getName));
 		return charts;
