@@ -24,6 +24,8 @@ public class Settings
 
 	private Integer searchItemsPerPage;
 
+	private Boolean autoBackupActivated;
+
 	public Settings()
 	{
 	}
@@ -39,6 +41,7 @@ public class Settings
 		defaultSettings.setBackupReminderActivated(true);
 		defaultSettings.setLastBackupReminderDate(DateTime.now().minusMonths(1));
 		defaultSettings.setSearchItemsPerPage(10);
+		defaultSettings.setAutoBackupActivated(false);
 
 		return defaultSettings;
 	}
@@ -137,6 +140,16 @@ public class Settings
 		this.searchItemsPerPage = searchItemsPerPage;
 	}
 
+	public Boolean getAutoBackupActivated()
+	{
+		return autoBackupActivated;
+	}
+
+	public void setAutoBackupActivated(Boolean autoBackupActivated)
+	{
+		this.autoBackupActivated = autoBackupActivated;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -150,6 +163,7 @@ public class Settings
 				", backupReminderActivated=" + backupReminderActivated +
 				", lastBackupReminderDate=" + lastBackupReminderDate +
 				", searchItemsPerPage=" + searchItemsPerPage +
+				", autoBackupActivated=" + autoBackupActivated +
 				'}';
 	}
 }

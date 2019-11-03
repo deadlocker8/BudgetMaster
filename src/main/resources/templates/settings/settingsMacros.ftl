@@ -7,14 +7,12 @@
                 <div class="table-cell">
                     <div class="switch-cell-margin">${locale.getString("settings.rest")}</div>
                     <div class="switch-cell-margin">${locale.getString("settings.darkTheme")}</div>
-                    <div class="switch-cell-margin">${locale.getString("settings.backupReminder")}</div>
                     <div class="switch-cell-margin">${locale.getString("settings.updates.automatic")}</div>
                 </div>
                 <div class="table-cell table-cell-spacer"></div>
                 <div class="table-cell">
                     <@switch "rest" "restActivated" settings.isRestActivated()/>
                     <@switch "darkTheme" "useDarkTheme" settings.isUseDarkTheme()/>
-                    <@switch "backupReminder" "backupReminderActivated" settings.getBackupReminderActivated()/>
                     <@switch "updates.automatic" "autoUpdateCheckEnabled" settings.isAutoUpdateCheckEnabled()/>
                 </div>
             </div>

@@ -41,6 +41,10 @@ public class SettingsService
 		{
 			settings.setSearchItemsPerPage(defaultSettings.getSearchItemsPerPage());
 		}
+		if(settings.getAutoBackupActivated() == null)
+		{
+			settings.setAutoBackupActivated(defaultSettings.getAutoBackupActivated());
+		}
 		settingsRepository.delete(0);
 		settingsRepository.save(settings);
 	}

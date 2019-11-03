@@ -84,6 +84,29 @@
                             </div>
                         </div>
 
+                        <#-- backups -->
+                        <div class="container">
+                            <div class="section center-align">
+                                <div class="headline">${locale.getString("settings.backup")}</div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col s12">
+                                <div class="table-container">
+                                    <div class="table-cell">
+                                        <div class="switch-cell-margin">${locale.getString("settings.backupReminder")}</div>
+                                        <div class="switch-cell-margin">${locale.getString("settings.backup.auto")}</div>
+                                    </div>
+                                    <div class="table-cell table-cell-spacer"></div>
+                                    <div class="table-cell">
+                                        <@settingsMacros.switch "backupReminder" "backupReminderActivated" settings.getBackupReminderActivated()/>
+                                        <@settingsMacros.switch "backup.auto" "autoBackupActivated" settings.getAutoBackupActivated()/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <br>
 
                         <#-- buttons -->
