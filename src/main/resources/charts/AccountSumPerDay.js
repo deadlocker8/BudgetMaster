@@ -89,4 +89,4 @@ var plotlyConfig = {
 };
 
 // Don't touch this line
-Plotly.newPlot('chart-canvas', plotlyData, plotlyLayout, plotlyConfig);
+Plotly.newPlot("containerID", plotlyData, plotlyLayout, plotlyConfig);

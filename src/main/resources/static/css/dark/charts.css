@@ -18,7 +18,7 @@
     margin: auto;
 }
 
-#chart-canvas {
+.chart-canvas {
     height: 40em;
 }
 

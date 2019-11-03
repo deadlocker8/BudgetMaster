@@ -143,8 +143,11 @@
                 </div>
 
                 <div class="container-chart">
-                    <div id="chart-canvas"></div>
+                    <#if containerID??>
+                        <div id="${containerID}" class="chart-canvas"></div>
+                    </#if>
                 </div>
+            </div>
         </main>
 
         <!-- Pass localization to JS -->
@@ -172,7 +175,10 @@
                     localizedData = JSON.parse('${locale.getString(chart.getName() + ".localization")}');
                 </#if>
 
-                ${chart.getScript()?replace("var transactionData = [];", "var transactionData = ${transactionData};")}
+                <#assign chartScript = chart.getScript()/>
+                <#assign chartScript = chartScript?replace("var transactionData = [];", "var transactionData = ${transactionData};")/>
+                <#assign chartScript = chartScript?replace("containerID", "${containerID}")/>
+                ${chartScript}
             </script>
         </#if>
     </body>

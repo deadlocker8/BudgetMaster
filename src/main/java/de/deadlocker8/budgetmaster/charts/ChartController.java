@@ -21,6 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 public class ChartController extends BaseController
@@ -77,6 +78,7 @@ public class ChartController extends BaseController
 		model.addAttribute("charts", chartService.getRepository().findAllByOrderByNameAsc());
 		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("chart", chart);
+		model.addAttribute("containerID", UUID.randomUUID());
 		model.addAttribute("transactionData", transactionJson);
 		return "charts/charts";
 	}
