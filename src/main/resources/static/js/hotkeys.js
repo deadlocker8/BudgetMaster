@@ -1,6 +1,6 @@
 Mousetrap.bind('n', function()
 {
-    if(!isSearchFocused())
+    if(areHotKeysEnabled())
     {
         window.location.href = rootURL + '/transactions/newTransaction/normal';
     }
@@ -8,7 +8,7 @@ Mousetrap.bind('n', function()
 
 Mousetrap.bind('r', function()
 {
-    if(!isSearchFocused())
+    if(areHotKeysEnabled())
     {
         window.location.href = rootURL + '/transactions/newTransaction/repeating';
     }
@@ -16,7 +16,7 @@ Mousetrap.bind('r', function()
 
 Mousetrap.bind('t', function()
 {
-    if(!isSearchFocused())
+    if(areHotKeysEnabled())
     {
         window.location.href = rootURL + '/transactions/newTransaction/transfer';
     }
@@ -24,7 +24,7 @@ Mousetrap.bind('t', function()
 
 Mousetrap.bind('f', function()
 {
-    if(!isSearchFocused())
+    if(areHotKeysEnabled())
     {
         window.location.href = rootURL + '/transactions#modalFilter';
     }
@@ -32,7 +32,7 @@ Mousetrap.bind('f', function()
 
 Mousetrap.bind('s', function(e)
 {
-    if(!isSearchFocused())
+    if(areHotKeysEnabled())
     {
         document.getElementById('search').focus();
         e.preventDefault();
@@ -47,8 +47,21 @@ Mousetrap.bind('esc', function()
     }
 });
 
+
+function areHotKeysEnabled()
+{
+    return !isSearchFocused() && !isCategorySelectFocused();
+}
+
+
 function isSearchFocused()
 {
     var searchElement = document.getElementById('search');
     return document.activeElement === searchElement;
+}
+
+function isCategorySelectFocused()
+{
+    var activeElement = document.activeElement;
+    return activeElement.id.includes('select-options');
 }
