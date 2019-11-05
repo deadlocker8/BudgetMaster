@@ -48,7 +48,7 @@ public class DefaultCharts
 
 	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_YEAR_BAR = new Chart("charts.default.incomesAndExpendituresPerYearBar",
 			getChartFromFile("charts/IncomesAndExpendituresPerYearBar.js"),
-			ChartType.DEFAULT, 1);
+			ChartType.DEFAULT, 2);
 
 
 	public static List<Chart> getDefaultCharts()
