@@ -1,18 +1,15 @@
 <#import "/spring.ftl" as s>
 
-<#macro isExpenditureSwitch transaction>
-    <#assign isPayment = 1>
-
-    <#if transaction.getAmount()?? && (transaction.getAmount() > 0)>
-        <#assign isPayment = 0>
-        <#assign colorButtonIncome = "budgetmaster-green">
-        <#assign colorButtonExpenditure = "budgetmaster-grey budgetmaster-text-isPayment">
-    <#else>
+<#macro isExpenditureSwitch transaction isPayment>
+    <#if isPayment>
         <#assign colorButtonIncome = "budgetmaster-grey budgetmaster-text-isPayment">
         <#assign colorButtonExpenditure = "budgetmaster-red">
+    <#else>
+        <#assign colorButtonIncome = "budgetmaster-green">
+        <#assign colorButtonExpenditure = "budgetmaster-grey budgetmaster-text-isPayment">
     </#if>
 
-    <input type="hidden" name="isPayment" id="input-isPayment" value="${isPayment}">
+    <input type="hidden" name="isPayment" id="input-isPayment" value="${isPayment?c}">
 
     <div class="row">
         <div class="col s12 center-align">

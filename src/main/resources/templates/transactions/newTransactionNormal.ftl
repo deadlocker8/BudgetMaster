@@ -28,7 +28,7 @@
                         <input type="hidden" name="ID" value="<#if transaction.getID()??>${transaction.getID()?c}</#if>">
 
                         <#-- isPayment switch -->
-                        <@newTransactionMacros.isExpenditureSwitch transaction/>
+                        <@newTransactionMacros.isExpenditureSwitch transaction isPayment/>
 
                         <#-- name -->
                         <@newTransactionMacros.transactionName transaction/>

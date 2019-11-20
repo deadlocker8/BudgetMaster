@@ -29,7 +29,7 @@
                         <input type="hidden" name="isRepeating" value="${transaction.isRepeating()?c}">
 
                         <#-- isPayment switch -->
-                        <@newTransactionMacros.isExpenditureSwitch transaction/>
+                        <@newTransactionMacros.isExpenditureSwitch transaction isPayment/>
 
                         <#-- name -->
                         <@newTransactionMacros.transactionName transaction/>

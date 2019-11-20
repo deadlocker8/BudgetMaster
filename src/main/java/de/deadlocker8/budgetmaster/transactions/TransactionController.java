@@ -112,7 +112,7 @@ public class TransactionController extends BaseController
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 		Transaction emptyTransaction = new Transaction();
 		emptyTransaction.setCategory(categoryService.getRepository().findByType(CategoryType.NONE));
-		prepareModelNewOrEdit(model, date, emptyTransaction);
+		prepareModelNewOrEdit(model, date, emptyTransaction, true);
 		return "transactions/newTransaction" + StringUtils.capitalize(type);
 	}
 
@@ -131,7 +131,7 @@ public class TransactionController extends BaseController
 
 		transaction.setRepeatingOption(null);
 
-		return handleRedirect(model, transaction, bindingResult, date, "transactions/newTransactionNormal");
+		return handleRedirect(model, transaction, bindingResult, date, "transactions/newTransactionNormal", isPayment);
 	}
 
 	@SuppressWarnings("ConstantConditions")
@@ -182,7 +182,7 @@ public class TransactionController extends BaseController
 		repeatingOption = new RepeatingOption(transaction.getDate(), repeatingModifier, repeatingEnd);
 		transaction.setRepeatingOption(repeatingOption);
 
-		return handleRedirect(model, transaction, bindingResult, date, "transactions/newTransactionRepeating");
+		return handleRedirect(model, transaction, bindingResult, date, "transactions/newTransactionRepeating", isPayment);
 	}
 
 	@PostMapping(value = "/transactions/newTransaction/transfer")
@@ -200,7 +200,7 @@ public class TransactionController extends BaseController
 
 		transaction.setRepeatingOption(null);
 
-		return handleRedirect(model, transaction, bindingResult, date, "transactions/newTransactionTransfer");
+		return handleRedirect(model, transaction, bindingResult, date, "transactions/newTransactionTransfer", isPayment);
 	}
 
 	private void handleAmount(Transaction transaction, boolean isPayment)
@@ -234,12 +234,12 @@ public class TransactionController extends BaseController
 		}
 	}
 
-	private String handleRedirect(Model model, @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult, DateTime date, String url)
+	private String handleRedirect(Model model, @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult, DateTime date, String url, boolean isPayment)
 	{
 		if(bindingResult.hasErrors())
 		{
 			model.addAttribute("error", bindingResult);
-			prepareModelNewOrEdit(model, date, transaction);
+			prepareModelNewOrEdit(model, date, transaction, isPayment);
 			return url;
 		}
 
@@ -263,7 +263,7 @@ public class TransactionController extends BaseController
 		}
 
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
-		prepareModelNewOrEdit(model, date, transaction);
+		prepareModelNewOrEdit(model, date, transaction, transaction.getAmount() <= 0);
 
 		if(transaction.isRepeating())
 		{
@@ -277,13 +277,14 @@ public class TransactionController extends BaseController
 		return "transactions/newTransactionNormal";
 	}
 
-	private void prepareModelNewOrEdit(Model model, DateTime date, Transaction emptyTransaction)
+	private void prepareModelNewOrEdit(Model model, DateTime date, Transaction emptyTransaction, boolean isPayment)
 	{
 		model.addAttribute("currentDate", date);
 		model.addAttribute("categories", categoryService.getRepository().findAllByOrderByNameAsc());
 		model.addAttribute("accounts", accountService.getAllAccountsAsc());
 		model.addAttribute("transaction", emptyTransaction);
 		model.addAttribute("settings", settingsService.getSettings());
+		model.addAttribute("isPayment", isPayment);
 	}
 
 	private Transaction addTagForTransaction(String name, Transaction transaction)
