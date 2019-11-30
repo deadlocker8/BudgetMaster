@@ -115,7 +115,7 @@ public class SearchTest
 		assertTrue(pages.get(1).getAttribute("class").contains("active"));
 		assertEquals("2", pages.get(2).findElement(By.className("page-link")).getText());
 		assertEquals("3", pages.get(3).findElement(By.className("page-link")).getText());
-		assertTrue(!pages.get(4).getAttribute("class").contains("disabled"));
+		assertFalse(pages.get(4).getAttribute("class").contains("disabled"));
 
 		// validate results
 		List<WebElement> results = driver.findElements(By.cssSelector(".search-container .card-panel"));
@@ -128,7 +128,7 @@ public class SearchTest
 		assertEquals(5, pages.size());
 
 		// previous button should be enabled
-		assertTrue(!pages.get(0).getAttribute("class").contains("disabled"));
+		assertFalse(pages.get(0).getAttribute("class").contains("disabled"));
 
 		assertEquals("1", pages.get(1).findElement(By.className("page-link")).getText());
 		assertEquals("2", pages.get(2).findElement(By.className("page-link")).getText());

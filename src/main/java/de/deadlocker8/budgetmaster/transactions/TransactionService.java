@@ -161,10 +161,15 @@ public class TransactionService implements Resetable
 		}
 	}
 
+	@SuppressWarnings("OptionalIsPresent")
 	public boolean isDeletable(Integer ID)
 	{
-		Transaction transactionToDelete = transactionRepository.getOne(ID);
-		return transactionToDelete != null && transactionToDelete.getCategory().getType() != CategoryType.REST;
+		Optional<Transaction> transactionOptional = transactionRepository.findById(ID);
+		if(transactionOptional.isPresent())
+		{
+			return transactionOptional.get().getCategory().getType() != CategoryType.REST;
+		}
+		return false;
 	}
 
 	@Override

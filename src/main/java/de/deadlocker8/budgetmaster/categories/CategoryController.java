@@ -73,10 +73,16 @@ public class CategoryController extends BaseController
 		return "redirect:/categories";
 	}
 
+	@SuppressWarnings("OptionalIsPresent")
 	private boolean isDeletable(Integer ID)
 	{
-		Category categoryToDelete = categoryService.getRepository().getOne(ID);
-		return categoryToDelete != null && categoryToDelete.getType() == CategoryType.CUSTOM;
+		Optional<Category> categoryOptional = categoryService.getRepository().findById(ID);
+		if(categoryOptional.isPresent())
+		{
+			return categoryOptional.get().getType() == CategoryType.CUSTOM;
+		}
+
+		return false;
 	}
 
 	@RequestMapping("/categories/newCategory")
