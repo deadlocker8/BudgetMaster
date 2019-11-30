@@ -11,6 +11,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 
 @Controller
@@ -99,13 +100,13 @@ public class AccountController extends BaseController
 	@RequestMapping("/accounts/{ID}/edit")
 	public String editAccount(Model model, @PathVariable("ID") Integer ID)
 	{
-		Account account = accountRepository.findOne(ID);
-		if(account == null)
+		Optional<Account> accountOptional = accountRepository.findById(ID);
+		if(!accountOptional.isPresent())
 		{
 			throw new ResourceNotFoundException();
 		}
 
-		model.addAttribute("account", account);
+		model.addAttribute("account", accountOptional.get());
 		model.addAttribute("settings", settingsService.getSettings());
 		return "accounts/newAccount";
 	}
@@ -141,9 +142,13 @@ public class AccountController extends BaseController
 			else
 			{
 				// edit existing account
-				Account existingAccount = accountRepository.findOne(account.getID());
-				existingAccount.setName(account.getName());
-				accountRepository.save(existingAccount);
+				Optional<Account> existingAccountOptional = accountRepository.findById(account.getID());
+				if(existingAccountOptional.isPresent())
+				{
+					Account existingAccount = existingAccountOptional.get();
+					existingAccount.setName(account.getName());
+					accountRepository.save(existingAccount);
+				}
 			}
 		}
 

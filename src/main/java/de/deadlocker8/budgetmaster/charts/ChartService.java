@@ -42,6 +42,7 @@ public class ChartService implements Resetable
 			Chart currentChart = chartRepository.findByName(chart.getName());
 			if(currentChart == null)
 			{
+				chart.setID(defaultCharts.indexOf(chart));
 				chartRepository.save(chart);
 				LOGGER.debug("Created default chart '" + chart.getName() + "'");
 			}

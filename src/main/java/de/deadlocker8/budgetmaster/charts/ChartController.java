@@ -21,6 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Controller
@@ -69,7 +70,11 @@ public class ChartController extends BaseController
 	public String showChart(Model model, @ModelAttribute("NewChartSettings") ChartSettings chartSettings)
 	{
 		chartSettings.setFilterConfiguration(filterHelpersService.updateCategoriesAndTags(chartSettings.getFilterConfiguration()));
-		Chart chart = chartService.getRepository().findOne(chartSettings.getChartID());
+		Optional<Chart> chartOptional = chartService.getRepository().findById(chartSettings.getChartID());
+		if(!chartOptional.isPresent())
+		{
+			throw new ResourceNotFoundException();
+		}
 
 		List<Transaction> transactions = transactionService.getTransactionsForAccount(helpers.getCurrentAccount(), chartSettings.getStartDate(), chartSettings.getEndDate(), chartSettings.getFilterConfiguration());
 		String transactionJson = GSON.toJson(transactions);
@@ -77,7 +82,7 @@ public class ChartController extends BaseController
 		model.addAttribute("chartSettings", chartSettings);
 		model.addAttribute("charts", chartService.getRepository().findAllByOrderByNameAsc());
 		model.addAttribute("settings", settingsService.getSettings());
-		model.addAttribute("chart", chart);
+		model.addAttribute("chart", chartOptional.get());
 		model.addAttribute("containerID", UUID.randomUUID());
 		model.addAttribute("transactionData", transactionJson);
 		return "charts/charts";
@@ -103,13 +108,13 @@ public class ChartController extends BaseController
 	@RequestMapping("/charts/{ID}/edit")
 	public String editChart(Model model, @PathVariable("ID") Integer ID)
 	{
-		Chart chart = chartService.getRepository().findOne(ID);
-		if(chart == null)
+		Optional<Chart> chartOptional = chartService.getRepository().findById(ID);
+		if(!chartOptional.isPresent())
 		{
 			throw new ResourceNotFoundException();
 		}
 
-		model.addAttribute("chart", chart);
+		model.addAttribute("chart", chartOptional.get());
 		model.addAttribute("settings", settingsService.getSettings());
 		return "charts/newChart";
 	}
@@ -173,15 +178,20 @@ public class ChartController extends BaseController
 	{
 		if(isDeletable(ID))
 		{
-			chartService.getRepository().delete(ID);
+			chartService.getRepository().deleteById(ID);
 		}
 
 		return "redirect:/charts/manage";
 	}
 
+	@SuppressWarnings("OptionalIsPresent")
 	private boolean isDeletable(Integer ID)
 	{
-		Chart chartToDelete = chartService.getRepository().getOne(ID);
-		return chartToDelete != null && chartToDelete.getType() == ChartType.CUSTOM;
+		Optional<Chart> chartOptional = chartService.getRepository().findById(ID);
+		if(chartOptional.isPresent())
+		{
+			return chartOptional.get().getType() == ChartType.CUSTOM;
+		}
+		return false;
 	}
 }

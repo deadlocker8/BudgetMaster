@@ -8,6 +8,4 @@ import java.util.List;
 public interface RepeatingOptionRepository extends JpaRepository<RepeatingOption, Integer>
 {
 	List<RepeatingOption> findAllByOrderByStartDateAsc();
-
-	RepeatingOption findOne(Integer ID);
 }

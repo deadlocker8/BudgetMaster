@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.update;
 
 import de.thecodelabs.utils.util.SystemUtils;
-import org.springframework.boot.ApplicationHome;
+import org.springframework.boot.system.ApplicationHome;
 
 import java.io.File;
 

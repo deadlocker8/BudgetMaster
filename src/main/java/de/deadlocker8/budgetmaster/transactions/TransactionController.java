@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -250,11 +251,13 @@ public class TransactionController extends BaseController
 	@RequestMapping("/transactions/{ID}/edit")
 	public String editTransaction(Model model, @CookieValue("currentDate") String cookieDate, @PathVariable("ID") Integer ID)
 	{
-		Transaction transaction = transactionService.getRepository().findOne(ID);
-		if(transaction == null)
+		Optional<Transaction> transactionOptional = transactionService.getRepository().findById(ID);
+		if(!transactionOptional.isPresent())
 		{
 			throw new ResourceNotFoundException();
 		}
+
+		Transaction transaction = transactionOptional.get();
 
 		// select first transaction in order to provide correct start date for repeating transactions
 		if(transaction.getRepeatingOption() != null)

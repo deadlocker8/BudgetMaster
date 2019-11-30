@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryService implements Resetable
@@ -32,7 +33,13 @@ public class CategoryService implements Resetable
 
 	public void deleteCategory(int ID, Category newCategory)
 	{
-		Category categoryToDelete = categoryRepository.findOne(ID);
+		Optional<Category> categoryOptional = categoryRepository.findById(ID);
+		if(!categoryOptional.isPresent())
+		{
+			throw new RuntimeException("Can't delete non-existing category with ID: " + ID);
+		}
+
+		Category categoryToDelete = categoryOptional.get();
 		List<Transaction> referringTransactions = categoryToDelete.getReferringTransactions();
 		if(referringTransactions != null)
 		{
@@ -42,7 +49,7 @@ public class CategoryService implements Resetable
 			}
 		}
 
-		categoryRepository.delete(ID);
+		categoryRepository.deleteById(ID);
 	}
 
 	@Override

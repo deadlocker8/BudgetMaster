@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TransactionService implements Resetable
@@ -141,21 +142,22 @@ public class TransactionService implements Resetable
 
 	private void deleteTransactionInRepo(Integer ID)
 	{
-		Transaction transactionToDelete = transactionRepository.findOne(ID);
-		if(transactionToDelete == null)
+		Optional<Transaction> transactionOptional = transactionRepository.findById(ID);
+		if(!transactionOptional.isPresent())
 		{
 			LOGGER.debug("Skipping already deleted transaction with ID: " + ID);
 			return;
 		}
+		Transaction transactionToDelete = transactionOptional.get();
 
 		// handle repeating transactions
 		if(transactionToDelete.getRepeatingOption() == null)
 		{
-			transactionRepository.delete(ID);
+			transactionRepository.deleteById(ID);
 		}
 		else
 		{
-			repeatingOptionRepository.delete(transactionToDelete.getRepeatingOption().getID());
+			repeatingOptionRepository.deleteById(transactionToDelete.getRepeatingOption().getID());
 		}
 	}
 
@@ -174,7 +176,8 @@ public class TransactionService implements Resetable
 		}
 	}
 
-	public void deleteTransactionsWithAccount(Account account) {
+	public void deleteTransactionsWithAccount(Account account)
+	{
 		for(Transaction referringTransaction : account.getReferringTransactions())
 		{
 			deleteTransactionInRepo(referringTransaction.getID());

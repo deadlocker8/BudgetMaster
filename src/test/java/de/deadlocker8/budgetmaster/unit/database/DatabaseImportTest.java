@@ -28,6 +28,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 
@@ -79,15 +80,27 @@ public class DatabaseImportTest
 				}
 
 				@Override
-				public List<Category> findAll(Iterable<Integer> iterable)
+				public List<Category> findAllById(Iterable<Integer> iterable)
 				{
 					return null;
 				}
 
 				@Override
-				public <S extends Category> List<S> save(Iterable<S> iterable)
+				public <S extends Category> List<S> saveAll(Iterable<S> iterable)
 				{
 					return null;
+				}
+
+				@Override
+				public Optional<Category> findById(Integer integer)
+				{
+					return Optional.empty();
+				}
+
+				@Override
+				public boolean existsById(Integer integer)
+				{
+					return false;
 				}
 
 				@Override
@@ -121,6 +134,12 @@ public class DatabaseImportTest
 				}
 
 				@Override
+				public <S extends Category> Optional<S> findOne(Example<S> example)
+				{
+					return Optional.empty();
+				}
+
+				@Override
 				public <S extends Category> List<S> findAll(Example<S> example)
 				{
 					return null;
@@ -145,25 +164,13 @@ public class DatabaseImportTest
 				}
 
 				@Override
-				public Category findOne(Integer integer)
-				{
-					return null;
-				}
-
-				@Override
-				public boolean exists(Integer integer)
-				{
-					return false;
-				}
-
-				@Override
 				public long count()
 				{
 					return 0;
 				}
 
 				@Override
-				public void delete(Integer integer)
+				public void deleteById(Integer integer)
 				{
 
 				}
@@ -175,21 +182,14 @@ public class DatabaseImportTest
 				}
 
 				@Override
-				public void delete(Iterable<? extends Category> iterable)
+				public void deleteAll(Iterable<? extends Category> iterable)
 				{
-
 				}
 
 				@Override
 				public void deleteAll()
 				{
 
-				}
-
-				@Override
-				public <S extends Category> S findOne(Example<S> example)
-				{
-					return null;
 				}
 
 				@Override
@@ -218,9 +218,9 @@ public class DatabaseImportTest
 			return new TransactionRepository()
 			{
 				@Override
-				public Transaction findOne(Specification<Transaction> specification)
+				public Optional<Transaction> findOne(Specification<Transaction> specification)
 				{
-					return null;
+					return Optional.empty();
 				}
 
 				@Override
@@ -314,15 +314,27 @@ public class DatabaseImportTest
 				}
 
 				@Override
-				public List<Transaction> findAll(Iterable<Integer> iterable)
+				public List<Transaction> findAllById(Iterable<Integer> iterable)
 				{
 					return null;
 				}
 
 				@Override
-				public <S extends Transaction> List<S> save(Iterable<S> iterable)
+				public <S extends Transaction> List<S> saveAll(Iterable<S> iterable)
 				{
 					return null;
+				}
+
+				@Override
+				public Optional<Transaction> findById(Integer integer)
+				{
+					return Optional.empty();
+				}
+
+				@Override
+				public boolean existsById(Integer integer)
+				{
+					return false;
 				}
 
 				@Override
@@ -356,6 +368,12 @@ public class DatabaseImportTest
 				}
 
 				@Override
+				public <S extends Transaction> Optional<S> findOne(Example<S> example)
+				{
+					return Optional.empty();
+				}
+
+				@Override
 				public <S extends Transaction> List<S> findAll(Example<S> example)
 				{
 					return null;
@@ -380,25 +398,13 @@ public class DatabaseImportTest
 				}
 
 				@Override
-				public Transaction findOne(Integer integer)
-				{
-					return null;
-				}
-
-				@Override
-				public boolean exists(Integer integer)
-				{
-					return false;
-				}
-
-				@Override
 				public long count()
 				{
 					return 0;
 				}
 
 				@Override
-				public void delete(Integer integer)
+				public void deleteById(Integer integer)
 				{
 
 				}
@@ -410,7 +416,7 @@ public class DatabaseImportTest
 				}
 
 				@Override
-				public void delete(Iterable<? extends Transaction> iterable)
+				public void deleteAll(Iterable<? extends Transaction> iterable)
 				{
 
 				}
@@ -419,12 +425,6 @@ public class DatabaseImportTest
 				public void deleteAll()
 				{
 
-				}
-
-				@Override
-				public <S extends Transaction> S findOne(Example<S> example)
-				{
-					return null;
 				}
 
 				@Override
@@ -477,15 +477,27 @@ public class DatabaseImportTest
 				}
 
 				@Override
-				public List<Tag> findAll(Iterable<Integer> iterable)
+				public List<Tag> findAllById(Iterable<Integer> iterable)
 				{
 					return null;
 				}
 
 				@Override
-				public <S extends Tag> List<S> save(Iterable<S> iterable)
+				public <S extends Tag> List<S> saveAll(Iterable<S> iterable)
 				{
 					return null;
+				}
+
+				@Override
+				public Optional<Tag> findById(Integer integer)
+				{
+					return Optional.empty();
+				}
+
+				@Override
+				public boolean existsById(Integer integer)
+				{
+					return false;
 				}
 
 				@Override
@@ -519,6 +531,12 @@ public class DatabaseImportTest
 				}
 
 				@Override
+				public <S extends Tag> Optional<S> findOne(Example<S> example)
+				{
+					return Optional.empty();
+				}
+
+				@Override
 				public <S extends Tag> List<S> findAll(Example<S> example)
 				{
 					return null;
@@ -543,25 +561,13 @@ public class DatabaseImportTest
 				}
 
 				@Override
-				public Tag findOne(Integer integer)
-				{
-					return null;
-				}
-
-				@Override
-				public boolean exists(Integer integer)
-				{
-					return false;
-				}
-
-				@Override
 				public long count()
 				{
 					return 0;
 				}
 
 				@Override
-				public void delete(Integer integer)
+				public void deleteById(Integer integer)
 				{
 
 				}
@@ -573,7 +579,7 @@ public class DatabaseImportTest
 				}
 
 				@Override
-				public void delete(Iterable<? extends Tag> iterable)
+				public void deleteAll(Iterable<? extends Tag> iterable)
 				{
 
 				}
@@ -582,12 +588,6 @@ public class DatabaseImportTest
 				public void deleteAll()
 				{
 
-				}
-
-				@Override
-				public <S extends Tag> S findOne(Example<S> example)
-				{
-					return null;
 				}
 
 				@Override

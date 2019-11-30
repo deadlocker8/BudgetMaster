@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.utils;
 
 import de.deadlocker8.budgetmaster.Main;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;

@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -92,11 +93,13 @@ public class CategoryController extends BaseController
 	@RequestMapping("/categories/{ID}/edit")
 	public String editCategory(Model model, @PathVariable("ID") Integer ID)
 	{
-		Category category = categoryService.getRepository().findOne(ID);
-		if(category == null)
+		Optional<Category> categoryOptional = categoryService.getRepository().findById(ID);
+		if(!categoryOptional.isPresent())
 		{
 			throw new ResourceNotFoundException();
 		}
+
+		Category category = categoryOptional.get();
 
 		if(helpers.getCategoryColorList().contains(category.getColor()))
 		{

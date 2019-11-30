@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AccountService implements Resetable
@@ -46,7 +47,13 @@ public class AccountService implements Resetable
 
 	public void deleteAccount(int ID)
 	{
-		Account accountToDelete = accountRepository.findOne(ID);
+		Optional<Account> accountToDeleteOptional = accountRepository.findById(ID);
+		if(!accountToDeleteOptional.isPresent())
+		{
+			return;
+		}
+
+		Account accountToDelete = accountToDeleteOptional.get();
 		transactionService.deleteTransactionsWithAccount(accountToDelete);
 		accountToDelete.setReferringTransactions(new ArrayList<>());
 
@@ -61,7 +68,7 @@ public class AccountService implements Resetable
 			setAsDefaultAccount(accounts.get(0).getID());
 		}
 
-		accountRepository.delete(ID);
+		accountRepository.deleteById(ID);
 	}
 
 	@Override
@@ -113,7 +120,13 @@ public class AccountService implements Resetable
 	{
 		deselectAllAccounts();
 
-		Account accountToSelect = accountRepository.findOne(ID);
+		Optional<Account> accountToSelectOptional = accountRepository.findById(ID);
+		if(!accountToSelectOptional.isPresent())
+		{
+			return;
+		}
+
+		Account accountToSelect = accountToSelectOptional.get();
 		accountToSelect.setSelected(true);
 		accountRepository.save(accountToSelect);
 
@@ -129,7 +142,13 @@ public class AccountService implements Resetable
 	{
 		unsetDefaultForAllAccounts();
 
-		Account accountToSelect = accountRepository.findOne(ID);
+		Optional<Account> accountToSelectOptional = accountRepository.findById(ID);
+		if(!accountToSelectOptional.isPresent())
+		{
+			return;
+		}
+
+		Account accountToSelect = accountToSelectOptional.get();
 		accountToSelect.setDefault(true);
 		accountRepository.save(accountToSelect);
 	}

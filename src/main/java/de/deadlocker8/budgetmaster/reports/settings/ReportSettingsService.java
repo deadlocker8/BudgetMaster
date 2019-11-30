@@ -2,10 +2,13 @@ package de.deadlocker8.budgetmaster.reports.settings;
 
 import de.deadlocker8.budgetmaster.reports.columns.ReportColumn;
 import de.deadlocker8.budgetmaster.reports.columns.ReportColumnService;
+import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class ReportSettingsService
@@ -30,7 +33,8 @@ public class ReportSettingsService
 
 	private void createDefaultReportSettingsIfNotExists()
 	{
-		if(reportSettingsRepository.findOne(0) == null)
+		Optional<ReportSettings> reportSettingsOptional = reportSettingsRepository.findById(0);
+		if(!reportSettingsOptional.isPresent())
 		{
 			ReportSettings reportSettings = ReportSettings.getDefault();
 			reportSettings.setID(0);
@@ -42,11 +46,19 @@ public class ReportSettingsService
 			reportSettingsRepository.save(reportSettings);
 			LOGGER.debug("Created default report settings");
 		}
-		reportColumnService.createDefaultsWithReportSettings(reportSettingsRepository.findOne(0));
+
+		reportSettingsOptional = reportSettingsRepository.findById(0);
+		if(!reportSettingsOptional.isPresent())
+		{
+			throw new ResourceNotFoundException();
+		}
+
+		reportColumnService.createDefaultsWithReportSettings(reportSettingsOptional.get());
 	}
 
+	@SuppressWarnings("OptionalGetWithoutIsPresent")
 	public ReportSettings getReportSettings()
 	{
-		return reportSettingsRepository.findOne(0);
+		return reportSettingsRepository.findById(0).get();
 	}
 }

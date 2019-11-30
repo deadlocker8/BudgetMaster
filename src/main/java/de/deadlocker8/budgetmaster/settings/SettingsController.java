@@ -27,7 +27,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,8 +39,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,7 +47,7 @@ import java.util.List;
 @Controller
 public class SettingsController extends BaseController
 {
-	private final SettingsRepository settingsRepository;
+	private final SettingsService settingsService;
 	private final UserRepository userRepository;
 	private final DatabaseService databaseService;
 	private final AccountService accountService;
@@ -56,9 +58,9 @@ public class SettingsController extends BaseController
 	private final List<Integer> SEARCH_RESULTS_PER_PAGE_OPTIONS = Arrays.asList(10, 20, 25, 30, 50, 100);
 
 	@Autowired
-	public SettingsController(SettingsRepository settingsRepository, UserRepository userRepository, DatabaseService databaseService, AccountService accountService, CategoryService categoryService, ImportService importService, BudgetMasterUpdateService budgetMasterUpdateService)
+	public SettingsController(SettingsService settingsService, UserRepository userRepository, DatabaseService databaseService, AccountService accountService, CategoryService categoryService, ImportService importService, BudgetMasterUpdateService budgetMasterUpdateService)
 	{
-		this.settingsRepository = settingsRepository;
+		this.settingsService = settingsService;
 		this.userRepository = userRepository;
 		this.databaseService = databaseService;
 		this.accountService = accountService;
@@ -70,7 +72,7 @@ public class SettingsController extends BaseController
 	@RequestMapping("/settings")
 	public String settings(WebRequest request, Model model)
 	{
-		model.addAttribute("settings", settingsRepository.findOne(0));
+		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
 		request.removeAttribute("database", WebRequest.SCOPE_SESSION);
 		return "settings/settings";
@@ -95,6 +97,11 @@ public class SettingsController extends BaseController
 			settings.setBackupReminderActivated(false);
 		}
 
+		if(settings.getAutoBackupActivated() == null)
+		{
+			settings.setAutoBackupActivated(false);
+		}
+
 		if(bindingResult.hasErrors())
 		{
 			model.addAttribute("error", bindingResult);
@@ -113,8 +120,8 @@ public class SettingsController extends BaseController
 				userRepository.save(user);
 			}
 
-			settingsRepository.delete(0);
-			settingsRepository.save(settings);
+			settingsService.getRepository().deleteById(0);
+			settingsService.getRepository().save(settings);
 
 			Localization.load();
 		}
@@ -151,28 +158,21 @@ public class SettingsController extends BaseController
 	{
 		LOGGER.debug("Exporting database...");
 		String data = databaseService.getDatabaseAsJSON();
-		try
+		byte[] dataBytes = data.getBytes(StandardCharsets.UTF_8);
+		String fileName = "BudgetMasterDatabase_" + DateTime.now().toString("yyyy_MM_dd") + ".json";
+		response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+
+		response.setContentType("application/json; charset=UTF-8");
+		response.setContentLength(dataBytes.length);
+		response.setCharacterEncoding("UTF-8");
+
+		try(ServletOutputStream out = response.getOutputStream())
 		{
-			byte[] dataBytes = data.getBytes("UTF8");
-			String fileName = "BudgetMasterDatabase_" + DateTime.now().toString("yyyy_MM_dd") + ".json";
-			response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-
-			response.setContentType("application/json; charset=UTF-8");
-			response.setContentLength(dataBytes.length);
-			response.setCharacterEncoding("UTF-8");
-
-			try(ServletOutputStream out = response.getOutputStream())
-			{
-				out.write(dataBytes);
-				out.flush();
-				LOGGER.debug("Exporting database DONE");
-			}
-			catch(IOException e)
-			{
-				e.printStackTrace();
-			}
+			out.write(dataBytes);
+			out.flush();
+			LOGGER.debug("Exporting database DONE");
 		}
-		catch(UnsupportedEncodingException e)
+		catch(IOException e)
 		{
 			e.printStackTrace();
 		}
@@ -184,7 +184,7 @@ public class SettingsController extends BaseController
 		String verificationCode = RandomUtils.generateRandomString(RandomUtils.RandomType.BASE_58, 4, RandomUtils.RandomStringPolicy.UPPER, RandomUtils.RandomStringPolicy.DIGIT);
 		model.addAttribute("deleteDatabase", true);
 		model.addAttribute("verificationCode", verificationCode);
-		model.addAttribute("settings", settingsRepository.findOne(0));
+		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
 		return "settings/settings";
 	}
@@ -204,7 +204,7 @@ public class SettingsController extends BaseController
 			return "redirect:/settings/database/requestDelete";
 		}
 
-		model.addAttribute("settings", settingsRepository.findOne(0));
+		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
 		return "settings/settings";
 	}
@@ -213,7 +213,7 @@ public class SettingsController extends BaseController
 	public String requestImportDatabase(Model model)
 	{
 		model.addAttribute("importDatabase", true);
-		model.addAttribute("settings", settingsRepository.findOne(0));
+		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
 		return "settings/settings";
 	}
@@ -228,7 +228,7 @@ public class SettingsController extends BaseController
 
 		try
 		{
-			String jsonString = new String(file.getBytes(), Charset.forName("UTF-8"));
+			String jsonString = new String(file.getBytes(), StandardCharsets.UTF_8);
 			DatabaseParser importer = new DatabaseParser(jsonString, categoryService.getRepository().findByType(CategoryType.NONE));
 			Database database = importer.parseDatabaseFromJSON();
 
@@ -240,7 +240,7 @@ public class SettingsController extends BaseController
 			e.printStackTrace();
 
 			model.addAttribute("errorImportDatabase", e.getMessage());
-			model.addAttribute("settings", settingsRepository.findOne(0));
+			model.addAttribute("settings", settingsService.getSettings());
 			model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
 			return "settings/settings";
 		}
@@ -251,7 +251,7 @@ public class SettingsController extends BaseController
 	{
 		model.addAttribute("database", request.getAttribute("database", WebRequest.SCOPE_SESSION));
 		model.addAttribute("availableAccounts", accountService.getAllAccountsAsc());
-		model.addAttribute("settings", settingsRepository.findOne(0));
+		model.addAttribute("settings", settingsService.getSettings());
 		return "settings/import";
 	}
 
@@ -260,7 +260,7 @@ public class SettingsController extends BaseController
 	{
 		importService.importDatabase((Database) request.getAttribute("database", WebRequest.SCOPE_SESSION), accountMatchList);
 		request.removeAttribute("database", RequestAttributes.SCOPE_SESSION);
-		model.addAttribute("settings", settingsRepository.findOne(0));
+		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
 		return "settings/settings";
 	}
@@ -277,7 +277,7 @@ public class SettingsController extends BaseController
 	{
 		model.addAttribute("performUpdate", true);
 		model.addAttribute("updateString", Localization.getString("info.text.update", Build.getInstance().getVersionName(), budgetMasterUpdateService.getAvailableVersionString()));
-		model.addAttribute("settings", settingsRepository.findOne(0));
+		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
 		return "settings/settings";
 	}
