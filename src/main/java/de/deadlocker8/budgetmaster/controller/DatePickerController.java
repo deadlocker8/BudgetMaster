@@ -2,7 +2,6 @@ package de.deadlocker8.budgetmaster.controller;
 
 import de.deadlocker8.budgetmaster.services.DateService;
 import de.deadlocker8.budgetmaster.settings.Settings;
-import de.deadlocker8.budgetmaster.settings.SettingsRepository;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;

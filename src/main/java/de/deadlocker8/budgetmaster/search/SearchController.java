@@ -11,9 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 
 @Controller
@@ -38,7 +36,7 @@ public class SearchController extends BaseController
 		}
 
 		Specification<Transaction> specification = TransactionSearchSpecifications.withDynamicQuery(search);
-		Page<Transaction> resultPage = transactionService.getRepository().findAll(specification, new PageRequest(search.getPage(), settingsService.getSettings().getSearchItemsPerPage()));
+		Page<Transaction> resultPage = transactionService.getRepository().findAll(specification, PageRequest.of(search.getPage(), settingsService.getSettings().getSearchItemsPerPage()));
 		model.addAttribute("page", resultPage);
 		model.addAttribute("search", search);
 		return "search/search";

@@ -23,7 +23,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 	private PreLoginUrlBlacklist preLoginUrlBlacklist;
 
 	@Autowired
-	public WebSecurityConfig(UserDetailsService userDetailsService)
+	public WebSecurityConfig(UserDetailsServiceImpl userDetailsService)
 	{
 		this.userDetailsService = userDetailsService;
 		this.preLoginUrlBlacklist = new PreLoginUrlBlacklist();

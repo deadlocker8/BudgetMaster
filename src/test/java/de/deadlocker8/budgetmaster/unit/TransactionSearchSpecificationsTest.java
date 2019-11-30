@@ -16,7 +16,6 @@ import de.deadlocker8.budgetmaster.tags.TagRepository;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import de.deadlocker8.budgetmaster.transactions.TransactionSearchSpecifications;
-import de.deadlocker8.budgetmaster.transactions.TransactionSpecifications;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.junit.Before;

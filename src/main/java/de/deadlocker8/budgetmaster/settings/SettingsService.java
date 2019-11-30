@@ -1,6 +1,5 @@
 package de.deadlocker8.budgetmaster.settings;
 
-import de.deadlocker8.budgetmaster.charts.ChartRepository;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
