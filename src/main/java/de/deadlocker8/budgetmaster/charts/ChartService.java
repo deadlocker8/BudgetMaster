@@ -42,7 +42,7 @@ public class ChartService implements Resetable
 			Chart currentChart = chartRepository.findByName(chart.getName());
 			if(currentChart == null)
 			{
-				chart.setID(defaultCharts.indexOf(chart));
+				chart.setID(defaultCharts.indexOf(chart) + 1);
 				chartRepository.save(chart);
 				LOGGER.debug("Created default chart '" + chart.getName() + "'");
 			}
@@ -54,5 +54,16 @@ public class ChartService implements Resetable
 				chartRepository.save(currentChart);
 			}
 		}
+	}
+
+	public int getHighestUsedID()
+	{
+		final List<Chart> chartsOrderedByID = chartRepository.findAllByOrderByIDDesc();
+		if(chartsOrderedByID.size() == 0)
+		{
+			return 0;
+		}
+
+		return chartsOrderedByID.get(0).getID();
 	}
 }

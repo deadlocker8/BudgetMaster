@@ -11,7 +11,6 @@ import java.util.Objects;
 public class Chart
 {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Expose
 	private Integer ID;
 

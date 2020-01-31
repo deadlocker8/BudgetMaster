@@ -12,4 +12,6 @@ public interface ChartRepository extends JpaRepository<Chart, Integer>
 	List<Chart> findAllByType(ChartType chartType);
 
 	Chart findByName(String name);
+
+	List<Chart> findAllByOrderByIDDesc();
 }

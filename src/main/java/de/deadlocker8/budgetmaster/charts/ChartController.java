@@ -154,6 +154,8 @@ public class ChartController extends BaseController
 				}
 			}
 
+			final int highestUsedID = chartService.getHighestUsedID();
+			chart.setID(highestUsedID + 1);
 			chartService.getRepository().save(chart);
 		}
 

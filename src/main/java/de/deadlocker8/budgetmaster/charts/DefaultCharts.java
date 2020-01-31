@@ -55,15 +55,13 @@ public class DefaultCharts
 	{
 		List<Chart> charts = new ArrayList<>();
 		charts.add(CHART_ACCOUNT_SUM_PER_DAY);
-		charts.add(CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_BAR);
-		charts.add(CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_LINE);
 		charts.add(CHART_INCOMES_AND_EXPENDITURES_BY_CATEGORY_BAR);
+		charts.add(CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_LINE);
+		charts.add(CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_BAR);
 		charts.add(CHART_INCOMES_AND_EXPENDITURES_BY_CATEGORY_PIE);
 		charts.add(CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_BY_CATEGORIES);
 		charts.add(CHART_REST_PER_MONTH);
 		charts.add(CHART_INCOMES_AND_EXPENDITURES_PER_YEAR_BAR);
-
-		charts.sort(Comparator.comparing(Chart::getName));
 		return charts;
 	}
 
