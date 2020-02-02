@@ -2,6 +2,11 @@ $(document).ready(function()
 {
     $('#modalConfirmDelete').modal('open');
 
+    if($('#category-name').length)
+    {
+        document.getElementById('category-name').focus();
+    }
+
     $('.category-color').click(function()
     {
         removeActive();

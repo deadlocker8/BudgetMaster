@@ -136,7 +136,7 @@
 <#macro transactionDescription transaction>
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
-            <textarea id="transaction-description" class="materialize-textarea" name="description" <@validation.validation "description"/>><#if transaction.getDescription()??>${transaction.getDescription()}</#if></textarea>
+            <textarea id="transaction-description" class="materialize-textarea" name="description" data-length="250" <@validation.validation "description"/>><#if transaction.getDescription()??>${transaction.getDescription()}</#if></textarea>
             <label for="transaction-description">${locale.getString("transaction.new.label.description")}</label>
         </div>
     </div>

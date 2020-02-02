@@ -13,6 +13,11 @@ $(document).ready(function()
         document.getElementById('transaction-name').focus();
     }
 
+    if($("#transaction-description").length)
+    {
+        $("#transaction-description").characterCounter();
+    }
+
     if($(".datepicker").length)
     {
         var pickerStartDate = M.Datepicker.init(document.getElementById('transaction-datepicker'), {
@@ -306,6 +311,13 @@ function validateForm()
 {
     // amount
     validateAmount($('#transaction-amount').val());
+
+    // description
+    var description = document.getElementById('transaction-description').value;
+    if(description.length > 250)
+    {
+        return false;
+    }
 
     // handle tags
     if($(".chips-autocomplete").length)
