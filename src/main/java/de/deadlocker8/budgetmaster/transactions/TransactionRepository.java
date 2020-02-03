@@ -33,4 +33,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 	Integer getRestForTransferDestination(int accountID, String startDate, String endDate);
 
 	List<Transaction> findAllByTransferAccount(Account account);
+
+	List<Transaction> findAllByOrderByDateDesc();
 }

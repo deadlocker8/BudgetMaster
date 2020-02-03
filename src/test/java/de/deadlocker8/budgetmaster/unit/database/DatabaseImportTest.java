@@ -302,6 +302,12 @@ public class DatabaseImportTest
 				}
 
 				@Override
+				public List<Transaction> findAllByOrderByDateDesc()
+				{
+					return null;
+				}
+
+				@Override
 				public List<Transaction> findAll()
 				{
 					return null;

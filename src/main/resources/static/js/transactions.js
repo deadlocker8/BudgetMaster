@@ -10,6 +10,10 @@ $(document).ready(function()
 
     if($("#transaction-name").length)
     {
+        var elements = document.querySelectorAll('#transaction-name');
+        M.Autocomplete.init(elements, {
+            data: transactionNameSuggestions,
+        });
         document.getElementById('transaction-name').focus();
     }
 

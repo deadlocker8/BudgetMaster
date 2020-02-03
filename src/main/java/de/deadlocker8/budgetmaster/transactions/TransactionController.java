@@ -1,5 +1,9 @@
 package de.deadlocker8.budgetmaster.transactions;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializer;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
@@ -21,6 +25,7 @@ import de.deadlocker8.budgetmaster.tags.TagService;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.ISODateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,14 +34,18 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Controller
 public class TransactionController extends BaseController
 {
+	private static final int MAX_SUGGESTIONS = 25;
+	private static final Gson GSON = new GsonBuilder()
+			.setPrettyPrinting()
+			.create();
+
 	private final TransactionService transactionService;
 	private final CategoryService categoryService;
 	private final AccountService accountService;
@@ -288,6 +297,14 @@ public class TransactionController extends BaseController
 		model.addAttribute("transaction", emptyTransaction);
 		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("isPayment", isPayment);
+
+		final List<Transaction> allByOrderByDateDesc = transactionService.getRepository().findAllByOrderByDateDesc();
+		final List<String> nameSuggestions = allByOrderByDateDesc.stream()
+				.map(Transaction::getName)
+				.distinct()
+				.limit(MAX_SUGGESTIONS)
+				.collect(Collectors.toList());
+		model.addAttribute("suggestionsJSON", GSON.toJson(nameSuggestions));
 	}
 
 	private Transaction addTagForTransaction(String name, Transaction transaction)

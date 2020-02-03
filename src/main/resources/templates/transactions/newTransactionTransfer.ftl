@@ -29,7 +29,7 @@
                         <input type="hidden" name="isPayment" value="true">
 
                         <#-- name -->
-                        <@newTransactionMacros.transactionName transaction/>
+                        <@newTransactionMacros.transactionName transaction suggestionsJSON/>
 
                         <#-- amount -->
                         <@newTransactionMacros.transactionAmount transaction/>

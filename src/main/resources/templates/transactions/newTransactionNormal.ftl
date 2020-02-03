@@ -31,7 +31,7 @@
                         <@newTransactionMacros.isExpenditureSwitch transaction isPayment/>
 
                         <#-- name -->
-                        <@newTransactionMacros.transactionName transaction/>
+                        <@newTransactionMacros.transactionName transaction suggestionsJSON/>
 
                         <#-- amount -->
                         <@newTransactionMacros.transactionAmount transaction/>

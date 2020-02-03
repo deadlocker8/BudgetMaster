@@ -46,13 +46,21 @@
     <a class="waves-effect waves-light btn ${color} buttonExpenditure"><i class="material-icons left">file_upload</i>${locale.getString("title.expenditure")}</a>
 </#macro>
 
-<#macro transactionName transaction>
+<#macro transactionName transaction suggestionsJSON>
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
-            <input id="transaction-name" type="text" name="name" <@validation.validation "name"/> value="<#if transaction.getName()??>${transaction.getName()}</#if>">
+            <input class="autocomplete" autocomplete="off" id="transaction-name" type="text" name="name" <@validation.validation "name"/> value="<#if transaction.getName()??>${transaction.getName()}</#if>">
             <label for="transaction-name">${locale.getString("transaction.new.label.name")}</label>
         </div>
     </div>
+
+    <script>
+        transactionNameSuggestions = {};
+        var nameSuggestions = ${suggestionsJSON};
+        nameSuggestions.forEach(function(name){
+            transactionNameSuggestions[name] = null;
+        });
+    </script>
 </#macro>
 
 <#macro transactionAmount transaction>
