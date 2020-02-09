@@ -12,7 +12,7 @@ import java.util.Objects;
 public abstract class RepeatingModifier
 {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Expose
 	private Integer ID;
 

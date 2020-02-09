@@ -8,7 +8,7 @@ import javax.persistence.*;
 public class ReportColumn
 {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer ID;
 
 	private String key;
