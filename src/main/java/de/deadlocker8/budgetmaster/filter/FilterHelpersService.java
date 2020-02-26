@@ -2,9 +2,9 @@ package de.deadlocker8.budgetmaster.filter;
 
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
-import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.TagService;
+import de.thecodelabs.utils.util.Localization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,9 +64,16 @@ public class FilterHelpersService
 		List<FilterObject> filterCategories = new ArrayList<>();
 		for(Category category : categories)
 		{
-			if(!category.getType().equals(CategoryType.REST))
+			switch(category.getType())
 			{
-				filterCategories.add(new FilterObject(category.getID(), category.getName(), true));
+				case NONE:
+					continue;
+				case REST:
+					filterCategories.add(new FilterObject(category.getID(), Localization.getString("category.none"), true));
+					break;
+				case CUSTOM:
+					filterCategories.add(new FilterObject(category.getID(), category.getName(), true));
+					break;
 			}
 		}
 
