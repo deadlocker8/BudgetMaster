@@ -67,10 +67,10 @@ public class FilterHelpersService
 			switch(category.getType())
 			{
 				case NONE:
-					continue;
-				case REST:
 					filterCategories.add(new FilterObject(category.getID(), Localization.getString("category.none"), true));
 					break;
+				case REST:
+					continue;
 				case CUSTOM:
 					filterCategories.add(new FilterObject(category.getID(), category.getName(), true));
 					break;
