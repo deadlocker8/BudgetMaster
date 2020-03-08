@@ -120,7 +120,15 @@
                             </script>
 
                             <div class="input-field col s12 m12 l8 offset-l2">
-                                <input id="settings-backup-auto-time" type="text" name="autoBackupTime" <@validation.validation "autoBackupTime"/> value="<#if settings.getAutoBackupActivated()??>${settings.getAutoBackupTime().name()}</#if>">
+                                <select id="settings-backup-auto-time" name="autoBackupTime" <@validation.validation "autoBackupTime"/>>
+                                    <#list autoBackupTimes as time>
+                                        <#if settings.getAutoBackupTime() == time>
+                                            <option selected value="${time}">${time.getLocalized()}</option>
+                                        <#else>
+                                            <option value="${time}">${time.getLocalized()}</option>
+                                        </#if>
+                                    </#list>
+                                </select>
                                 <label for="settings-backup-auto-time">${locale.getString("settings.backup.auto.time")}</label>
                             </div>
 

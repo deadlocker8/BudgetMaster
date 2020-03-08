@@ -46,7 +46,7 @@ public class Settings
 		defaultSettings.setSearchItemsPerPage(10);
 		defaultSettings.setAutoBackupActivated(false);
 		defaultSettings.setAutoBackupDays(1);
-		defaultSettings.setAutoBackupTime(AutoBackupTime.DEFAULT);
+		defaultSettings.setAutoBackupTime(AutoBackupTime.TIME_00);
 		defaultSettings.setAutoBackupFilesToKeep(3);
 
 		return defaultSettings;

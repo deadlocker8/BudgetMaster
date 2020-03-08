@@ -76,6 +76,8 @@ public class SettingsController extends BaseController
 	{
 		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
+		model.addAttribute("autoBackupTimes", AutoBackupTime.values());
+
 		request.removeAttribute("database", WebRequest.SCOPE_SESSION);
 		return "settings/settings";
 	}
@@ -126,6 +128,7 @@ public class SettingsController extends BaseController
 			model.addAttribute("error", bindingResult);
 			model.addAttribute("settings", settings);
 			model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
+			model.addAttribute("autoBackupTimes", AutoBackupTime.values());
 			return "settings/settings";
 		}
 
@@ -206,6 +209,7 @@ public class SettingsController extends BaseController
 		model.addAttribute("verificationCode", verificationCode);
 		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
+		model.addAttribute("autoBackupTimes", AutoBackupTime.values());
 		return "settings/settings";
 	}
 
@@ -226,6 +230,7 @@ public class SettingsController extends BaseController
 
 		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
+		model.addAttribute("autoBackupTimes", AutoBackupTime.values());
 		return "settings/settings";
 	}
 
@@ -235,6 +240,7 @@ public class SettingsController extends BaseController
 		model.addAttribute("importDatabase", true);
 		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
+		model.addAttribute("autoBackupTimes", AutoBackupTime.values());
 		return "settings/settings";
 	}
 
@@ -262,6 +268,7 @@ public class SettingsController extends BaseController
 			model.addAttribute("errorImportDatabase", e.getMessage());
 			model.addAttribute("settings", settingsService.getSettings());
 			model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
+			model.addAttribute("autoBackupTimes", AutoBackupTime.values());
 			return "settings/settings";
 		}
 	}
@@ -282,6 +289,7 @@ public class SettingsController extends BaseController
 		request.removeAttribute("database", RequestAttributes.SCOPE_SESSION);
 		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
+		model.addAttribute("autoBackupTimes", AutoBackupTime.values());
 		return "settings/settings";
 	}
 
@@ -299,6 +307,7 @@ public class SettingsController extends BaseController
 		model.addAttribute("updateString", Localization.getString("info.text.update", Build.getInstance().getVersionName(), budgetMasterUpdateService.getAvailableVersionString()));
 		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
+		model.addAttribute("autoBackupTimes", AutoBackupTime.values());
 		return "settings/settings";
 	}
 
