@@ -11,7 +11,7 @@
         <#import "/spring.ftl" as s>
         <title>${title}</title>
         <meta charset="UTF-8"/>
-        <link rel="stylesheet" href="<@s.url '/webjars/font-awesome/5.0.10/web-fonts-with-css/css/fontawesome-all.min.css'/>">
+        <link rel="stylesheet" href="<@s.url '/webjars/font-awesome/5.12.0/css/all.min.css'/>">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="<@s.url "/webjars/materializecss/1.0.0/css/materialize.min.css"/>">
         <@style "style"/>
