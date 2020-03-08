@@ -2,7 +2,7 @@ $(document).ready(function()
 {
     if($("#chart-script").length)
     {
-        var editor = CodeMirror.fromTextArea(document.getElementById('chart-script'), {
+        let editor = CodeMirror.fromTextArea(document.getElementById('chart-script'), {
             mode: "javascript",
             lineNumbers: 50,
             viewportMargin: Infinity
@@ -17,12 +17,12 @@ $(document).ready(function()
 
     if($("#modalFilter").length)
     {
-        var modalFilter = $('#modalFilter').modal();
+        let modalFilter = $('#modalFilter').modal();
     }
 
     if($(".datepicker").length)
     {
-        var pickerStartDate = M.Datepicker.init(document.getElementById('chart-datepicker'), {
+        let pickerStartDate = M.Datepicker.init(document.getElementById('chart-datepicker'), {
             yearRange: 25,
             firstDay: 1,
             showClearBtn: false,
@@ -62,7 +62,7 @@ $(document).ready(function()
         // picker end date
         if(typeof endDate !== "undefined")
         {
-            var pickerEndDate = createDatePickerEnd(pickerStartDate.date, endDate);
+            let pickerEndDate = createDatePickerEnd(pickerStartDate.date, endDate);
         }
     }
 
@@ -122,7 +122,7 @@ $(document).ready(function()
 
 function applyFilter(modal)
 {
-    var filterButton = document.getElementById("modalFilterTrigger");
+    let filterButton = document.getElementById("modalFilterTrigger");
 
     if(isDefaultFilter())
     {
@@ -141,8 +141,8 @@ function applyFilter(modal)
 
 function isDefaultFilter()
 {
-    var allCheckBoxesChecked = $("#filterSettings input[type=checkbox]:checked").length === $("#filterSettings input[type=checkbox]").length;
-    var textInputEmpty = $("#filter-name").val().length === 0;
+    let allCheckBoxesChecked = $("#filterSettings input[type=checkbox]:checked").length === $("#filterSettings input[type=checkbox]").length;
+    let textInputEmpty = $("#filter-name").val().length === 0;
     return allCheckBoxesChecked && textInputEmpty
 }
 
@@ -154,9 +154,9 @@ function resetFilter()
 
 function handleQuickDate(element, pickerStartDate, pickerEndDate)
 {
-    var quickType = element.dataset.quick;
-    var startDate;
-    var endDate;
+    let quickType = element.dataset.quick;
+    let startDate;
+    let endDate;
 
     switch(quickType)
     {

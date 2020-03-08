@@ -28,7 +28,7 @@ $(document).ready(function()
     });
 });
 
-var year;
+let year;
 
 
 function cleanup()
@@ -42,11 +42,11 @@ function updateYearGrid(modifier, currentYear)
 {
     $("#global-datepicker-select-year").fadeOut(200, function()
     {
-        var items = $("#global-datepicker-select-year .global-datepicker-item");
-        var firstYear = parseInt(items[0].innerText);
-        var newFirstYear = firstYear + modifier;
+        let items = $("#global-datepicker-select-year .global-datepicker-item");
+        let firstYear = parseInt(items[0].innerText);
+        let newFirstYear = firstYear + modifier;
 
-        for(var i = 0; i < items.length; i++)
+        for(let i = 0; i < items.length; i++)
         {
             items[i].innerText = newFirstYear + i;
             if(items[i].innerText === currentYear)
@@ -73,7 +73,7 @@ function selectYear(selectedYear)
 
 function selectMonth(selectedMonth)
 {
-    var dateString = "01." + selectedMonth + "." + year;
+    let dateString = "01." + selectedMonth + "." + year;
     document.cookie = "currentDate=" + dateString;
     document.getElementById('buttonChooseDate').click();
 }

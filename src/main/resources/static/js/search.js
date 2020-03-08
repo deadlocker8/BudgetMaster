@@ -4,8 +4,8 @@ $(document).ready(function()
     {
         if(!this.parentElement.classList.contains('disabled'))
         {
-            var page = this.dataset.page;
-            var inputPageNumber = document.getElementById('inputPageNumber');
+            let page = this.dataset.page;
+            let inputPageNumber = document.getElementById('inputPageNumber');
             inputPageNumber.value = page;
             document.getElementById('searchForm').submit();
         }

@@ -43,8 +43,8 @@ $(document).ready(function()
 
 function removeActive()
 {
-    var colors = document.getElementsByClassName("category-color");
-    for(var i = 0; i < colors.length; i++)
+    let colors = document.getElementsByClassName("category-color");
+    for(let i = 0; i < colors.length; i++)
     {
         removeClass(colors[i], "category-color-active");
     }

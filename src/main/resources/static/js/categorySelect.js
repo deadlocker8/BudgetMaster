@@ -8,17 +8,17 @@ $(document).ready(function()
 
 function beautifyCategorySelect()
 {
-    var counter = 0;
+    let counter = 0;
 
-    var select = M.FormSelect.init(document.getElementById('transaction-category'), {
+    let select = M.FormSelect.init(document.getElementById('transaction-category'), {
         dropdownOptions: {
             onCloseStart: function()
             {
-                var listItems = select.dropdownOptions.childNodes;
-                var selectedItem;
-                for(var i = 0; i < listItems.length; i++)
+                let listItems = select.dropdownOptions.childNodes;
+                let selectedItem;
+                for(let i = 0; i < listItems.length; i++)
                 {
-                    var currentItem = listItems[i];
+                    let currentItem = listItems[i];
                     if(currentItem.classList.contains("selected"))
                     {
                         selectedItem = currentItem.textContent;
@@ -32,12 +32,12 @@ function beautifyCategorySelect()
 
     select.dropdownOptions.childNodes.forEach(function(item)
     {
-        var currentSpan = jQuery(item.querySelector('span'));
-        var categoryInfo = currentSpan.text().split("@@@");
-        var categoryName = categoryInfo[0];
-        var firstLetter = capitalizeFirstLetter(categoryName);
-        var categoryColor = categoryInfo[1];
-        var appropriateTextColor = categoryInfo[2];
+        let currentSpan = jQuery(item.querySelector('span'));
+        let categoryInfo = currentSpan.text().split("@@@");
+        let categoryName = categoryInfo[0];
+        let firstLetter = capitalizeFirstLetter(categoryName);
+        let categoryColor = categoryInfo[1];
+        let appropriateTextColor = categoryInfo[2];
 
         currentSpan.text(categoryName);
         currentSpan.data("infos", categoryInfo);
@@ -55,11 +55,11 @@ function beautifyCategorySelect()
     // select current category from code again in order to avoid showing the full infos text (e.g. Test@@@#FFFFFF@#000000@@@1) in the input field by materialize
     if(typeof selectedCategory !== 'undefined')
     {
-        var listItems = select.dropdownOptions.childNodes;
-        for(var i = 0; i < listItems.length; i++)
+        let listItems = select.dropdownOptions.childNodes;
+        for(let i = 0; i < listItems.length; i++)
         {
-            var currentSpan = jQuery(listItems[i].querySelector('span.category-select'));
-            var categoryID = currentSpan.data("infos")[3];
+            let currentSpan = jQuery(listItems[i].querySelector('span.category-select'));
+            let categoryID = currentSpan.data("infos")[3];
             if(categoryID === selectedCategory)
             {
                 currentSpan.trigger("click");

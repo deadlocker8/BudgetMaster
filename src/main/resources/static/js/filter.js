@@ -50,15 +50,15 @@ function updateStatus()
 
 function updateStatusForSectionByCheckboxes(identifier)
 {
-    var section = document.getElementById(identifier);
+    let section = document.getElementById(identifier);
     section.querySelector('.collapsible-header-status').innerText = getStatusByCheckboxes(section);
 }
 
 function getStatusByCheckboxes(item)
 {
-    var checkboxes = $(item).find('input[type=checkbox]');
-    var checkedCount = 0;
-    for(var i = 0; i < checkboxes.length; i++)
+    let checkboxes = $(item).find('input[type=checkbox]');
+    let checkedCount = 0;
+    for(let i = 0; i < checkboxes.length; i++)
     {
         if(checkboxes[i].checked)
         {
@@ -71,9 +71,9 @@ function getStatusByCheckboxes(item)
 
 function updateStatusForSectionName(identifier)
 {
-    var section = document.getElementById(identifier);
-    var nameValue = section.querySelector('#filter-name').value;
-    var statusText = '1/1';
+    let section = document.getElementById(identifier);
+    let nameValue = section.querySelector('#filter-name').value;
+    let statusText = '1/1';
 
     if(nameValue.length === 0)
     {
@@ -84,9 +84,9 @@ function updateStatusForSectionName(identifier)
 
 function setAll(identifier, checked)
 {
-    var section = document.getElementById(identifier);
-    var checkboxes = $(section).find('input[type=checkbox]');
-    for(var i = 0; i < checkboxes.length; i++)
+    let section = document.getElementById(identifier);
+    let checkboxes = $(section).find('input[type=checkbox]');
+    for(let i = 0; i < checkboxes.length; i++)
     {
         checkboxes[i].checked = checked;
     }

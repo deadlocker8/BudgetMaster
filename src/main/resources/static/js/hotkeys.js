@@ -56,12 +56,12 @@ function areHotKeysEnabled()
 
 function isSearchFocused()
 {
-    var searchElement = document.getElementById('search');
+    let searchElement = document.getElementById('search');
     return document.activeElement === searchElement;
 }
 
 function isCategorySelectFocused()
 {
-    var activeElement = document.activeElement;
+    let activeElement = document.activeElement;
     return activeElement.id.includes('select-options');
 }

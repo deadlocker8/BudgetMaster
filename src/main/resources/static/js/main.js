@@ -28,7 +28,7 @@ $(document).ready(function()
 
     $("#selectAccount").on('change', function()
     {
-        var accountID = $(this).val();
+        let accountID = $(this).val();
         window.location = rootURL + "/accounts/" + accountID + "/select";
     });
 

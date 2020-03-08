@@ -1,7 +1,7 @@
 $(document).ready(function()
 {
-    var el = document.getElementById('columnNames');
-    var sortable = Sortable.create(el, {
+    let el = document.getElementById('columnNames');
+    Sortable.create(el, {
         animation: 150,
         ghostClass: 'columnName-selected',
         dragClass: 'columnName-selected'
@@ -33,7 +33,7 @@ function validateForm()
 {
     $('.columnName-checkbox').each(function(i, obj)
     {
-        var positionInput = document.getElementsByName("columns['" + obj.dataset.index + "'].position")[0];
+        let positionInput = document.getElementsByName("columns['" + obj.dataset.index + "'].position")[0];
         positionInput.value = i;
     });
 

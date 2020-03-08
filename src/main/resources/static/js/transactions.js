@@ -10,7 +10,7 @@ $(document).ready(function()
 
     if($("#transaction-name").length)
     {
-        var elements = document.querySelectorAll('#transaction-name');
+        let elements = document.querySelectorAll('#transaction-name');
         M.Autocomplete.init(elements, {
             data: transactionNameSuggestions,
         });
@@ -24,7 +24,7 @@ $(document).ready(function()
 
     if($(".datepicker").length)
     {
-        var pickerStartDate = M.Datepicker.init(document.getElementById('transaction-datepicker'), {
+        let pickerStartDate = M.Datepicker.init(document.getElementById('transaction-datepicker'), {
             yearRange: 25,
             firstDay: 1,
             showClearBtn: false,
@@ -64,7 +64,7 @@ $(document).ready(function()
         // picker end date
         if(typeof endDate !== "undefined")
         {
-            var pickerEndDate = createDatePickerEnd(pickerStartDate.date, endDate);
+            let pickerEndDate = createDatePickerEnd(pickerStartDate.date, endDate);
         }
     }
 
@@ -106,7 +106,7 @@ $(document).ready(function()
             onSelect: function()
             {
                 // select corresponding radio button
-                var endDate = document.getElementById("repeating-end-date");
+                let endDate = document.getElementById("repeating-end-date");
                 endDate.checked = true;
             }
         });
@@ -136,7 +136,7 @@ $(document).ready(function()
             validateNumber($(this).val(), transactionRepeatingEndAfterXTimesInputID.substr(1), null, numberValidationMessage);
 
             // select corresponding radio button
-            var endAfterXTimes = document.getElementById("repeating-end-after-x-times");
+            let endAfterXTimes = document.getElementById("repeating-end-after-x-times");
             endAfterXTimes.checked = true;
         });
     }
@@ -157,7 +157,7 @@ $(document).ready(function()
     // prevent form submit on enter (otherwise tag functionality will be hard to use)
     $(document).on("keypress", 'form', function(e)
     {
-        var code = e.keyCode || e.which;
+        let code = e.keyCode || e.which;
         if(code === 13)
         {
             if(e.target.nodeName === 'TEXTAREA' || e.target.id === 'search')
@@ -214,8 +214,8 @@ $(document).ready(function()
     });
 
     // scroll to highlighted transaction
-    var highlightedSmall = document.getElementById("highlighted-small");
-    var highlightedLarge = document.getElementById("highlighted-large");
+    let highlightedSmall = document.getElementById("highlighted-small");
+    let highlightedLarge = document.getElementById("highlighted-large");
     if(highlightedSmall !== undefined && highlightedSmall != null && !isHidden(highlightedSmall))
     {
         $('html, body').animate({
@@ -232,19 +232,19 @@ $(document).ready(function()
 
 function isHidden(el)
 {
-    var style = window.getComputedStyle(el);
+    let style = window.getComputedStyle(el);
     return (style.display === 'none' || style.display === 'none !important')
 }
 
-var transactionRepeatingModifierID = "#transaction-repeating-modifier";
-var transactionRepeatingEndAfterXTimesInputID = "#transaction-repeating-end-after-x-times-input";
+let transactionRepeatingModifierID = "#transaction-repeating-modifier";
+let transactionRepeatingEndAfterXTimesInputID = "#transaction-repeating-end-after-x-times-input";
 
 AMOUNT_REGEX = new RegExp("^-?\\d+(,\\d+)?(\\.\\d+)?$");
 ALLOWED_CHARACTERS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "."];
 
 function validateAmount(text)
 {
-    var id = "transaction-amount";
+    let id = "transaction-amount";
 
     if(text.match(AMOUNT_REGEX) == null)
     {
@@ -254,7 +254,7 @@ function validateAmount(text)
     else
     {
         removeTooltip(id);
-        var amount = parseFloat(text.replace(",", ".")) * 100;
+        let amount = parseFloat(text.replace(",", ".")) * 100;
         document.getElementById("hidden-" + id).value = amount.toFixed(0);
     }
 }
@@ -265,7 +265,7 @@ function validateForm()
     validateAmount($('#transaction-amount').val());
 
     // description
-    var description = document.getElementById('transaction-description').value;
+    let description = document.getElementById('transaction-description').value;
     if(description.length > 250)
     {
         return false;
@@ -274,11 +274,11 @@ function validateForm()
     // handle tags
     if($(".chips-autocomplete").length)
     {
-        var tags = M.Chips.getInstance(document.querySelector('.chips-autocomplete')).chipsData;
-        var parent = document.getElementById("hidden-transaction-tags");
-        for(var i = 0; i < tags.length; i++)
+        let tags = M.Chips.getInstance(document.querySelector('.chips-autocomplete')).chipsData;
+        let parent = document.getElementById("hidden-transaction-tags");
+        for(let i = 0; i < tags.length; i++)
         {
-            var input = document.createElement("input");
+            let input = document.createElement("input");
             input.setAttribute("type", "hidden");
             input.setAttribute("name", "tags[" + i + "].name");
             input.setAttribute("value", tags[i].tag);
@@ -294,10 +294,10 @@ function validateForm()
         }
 
         // handle repeating end
-        var endNever = document.getElementById("repeating-end-never");
-        var endAfterXTimes = document.getElementById("repeating-end-after-x-times");
-        var endDate = document.getElementById("repeating-end-date");
-        var endInput = document.getElementById("hidden-transaction-repeating-end-value");
+        let endNever = document.getElementById("repeating-end-never");
+        let endAfterXTimes = document.getElementById("repeating-end-after-x-times");
+        let endDate = document.getElementById("repeating-end-date");
+        let endInput = document.getElementById("hidden-transaction-repeating-end-value");
 
         if(endNever.checked)
         {

@@ -3,7 +3,7 @@ $(document).ready(function()
     // prevent form submit on enter
     $(document).on("keypress", 'form', function(e)
     {
-        var code = e.keyCode || e.which;
+        let code = e.keyCode || e.which;
         if(code === 13)
         {
             e.preventDefault();
@@ -15,35 +15,35 @@ $(document).ready(function()
 function validateForm()
 {
     // handle account matches
-    var accountSourcesIDs = $('.account-source-id');
-    var accountSourcesNames = $('.account-source');
+    let accountSourcesIDs = $('.account-source-id');
+    let accountSourcesNames = $('.account-source');
 
-    var accountDestinations = $('select.account-destination');
-    var parent = document.getElementById("hidden-account-matches");
+    let accountDestinations = $('select.account-destination');
+    let parent = document.getElementById("hidden-account-matches");
 
-    for(var i = 0; i < accountSourcesIDs.length; i++)
+    for(let i = 0; i < accountSourcesIDs.length; i++)
     {
-        var inputSourceID = document.createElement("input");
+        let inputSourceID = document.createElement("input");
         inputSourceID.setAttribute("type", "hidden");
         inputSourceID.setAttribute("name", "accountMatches[" + i + "].accountSource.ID");
         inputSourceID.setAttribute("value", accountSourcesIDs[i].innerText);
         parent.appendChild(inputSourceID);
 
-        var inputSourceName = document.createElement("input");
+        let inputSourceName = document.createElement("input");
         inputSourceName.setAttribute("type", "hidden");
         inputSourceName.setAttribute("name", "accountMatches[" + i + "].accountSource.name");
         inputSourceName.setAttribute("value", accountSourcesNames[i].innerText);
         parent.appendChild(inputSourceName);
 
-        var value = accountDestinations[i].value;
+        let value = accountDestinations[i].value;
 
-        var inputDestinationID = document.createElement("input");
+        let inputDestinationID = document.createElement("input");
         inputDestinationID.setAttribute("type", "hidden");
         inputDestinationID.setAttribute("name", "accountMatches[" + i + "].accountDestination.ID");
         inputDestinationID.setAttribute("value", value);
         parent.appendChild(inputDestinationID);
 
-        var inputDestinationName = document.createElement("input");
+        let inputDestinationName = document.createElement("input");
         inputDestinationName.setAttribute("type", "hidden");
         inputDestinationName.setAttribute("name", "accountMatches[" + i + "].accountDestination.name");
         inputDestinationName.setAttribute("value", accountDestinations[i].querySelector('option[value="' + value + '"').innerText);

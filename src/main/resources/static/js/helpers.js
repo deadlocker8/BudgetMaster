@@ -24,7 +24,7 @@ function validateNumber(text, ID, hiddenID, message)
 
 function addTooltip(id, message)
 {
-    var element = document.getElementById(id);
+    let element = document.getElementById(id);
 
     removeClass(element, "validate");
     removeClass(element, "valid");
@@ -38,13 +38,13 @@ function addTooltip(id, message)
 
 function removeTooltip(id)
 {
-    var element = document.getElementById(id);
+    let element = document.getElementById(id);
 
     removeClass(element, "validate");
     removeClass(element, "invalid");
     removeClass(element, "tooltipped");
     addClass(element, "valid");
-    var tooltip = M.Tooltip.getInstance(element);
+    let tooltip = M.Tooltip.getInstance(element);
     if(tooltip !== undefined)
     {
         tooltip.destroy();
