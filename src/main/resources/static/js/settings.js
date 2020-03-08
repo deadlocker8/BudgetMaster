@@ -31,7 +31,7 @@ $(document).ready(function()
     {
         autoBackupFilesToKeep.on('change keydown paste input', function()
         {
-            validateNumber(autoBackupFilesToKeep.val(), "settings-backup-auto-files-to-keep", "hidden-settings-backup-auto-files-to-keep", numberValidationMessage);
+            validateNumber(autoBackupFilesToKeep.val(), "settings-backup-auto-files-to-keep", "hidden-settings-backup-auto-files-to-keep", numberValidationMessageZeroAllowed);
         });
     }
 
@@ -46,7 +46,7 @@ function validateForm()
     if(autoBackupCheckbox.checked)
     {
         let autoBackupDaysValid = validateNumber($('#settings-backup-auto-days').val(), "settings-backup-auto-days", "hidden-settings-backup-auto-days", numberValidationMessage);
-        let autoBackupFilesToKeepValid = validateNumber($('#settings-backup-auto-files-to-keep').val(), "settings-backup-auto-files-to-keep", "hidden-settings-backup-auto-files-to-keepp", numberValidationMessage);
+        let autoBackupFilesToKeepValid = validateNumber($('#settings-backup-auto-files-to-keep').val(), "settings-backup-auto-files-to-keep", "hidden-settings-backup-auto-files-to-keep", numberValidationMessageZeroAllowed);
         return autoBackupDaysValid && autoBackupFilesToKeepValid;
     }
 

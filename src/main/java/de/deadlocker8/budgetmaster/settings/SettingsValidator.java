@@ -16,6 +16,6 @@ public class SettingsValidator implements Validator
 	public void validate(Object obj, Errors errors)
 	{
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "autoBackupDays", Strings.WARNING_EMPTY_NUMBER);
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "autoBackupFilesToKeep", Strings.WARNING_EMPTY_NUMBER);
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "autoBackupFilesToKeep", Strings.WARNING_EMPTY_NUMBER_ZERO_ALLOWED);
 	}
 }

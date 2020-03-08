@@ -41,6 +41,7 @@ public class Strings
     public static final String WARNING_EMPTY_CHART_NAME = "warning.empty.chart.name";
     public static final String WARNING_EMPTY_CHART_SCRIPT = "warning.empty.chart.script";
     public static final String WARNING_EMPTY_NUMBER = "warning.empty.number";
+    public static final String WARNING_EMPTY_NUMBER_ZERO_ALLOWED = "warning.empty.number.zero.allowed";
 
     //REPORT
     public static final String REPORT_FOOTER_LEFT = "report.footer.left";

@@ -116,6 +116,7 @@
 
                             <script>
                                 numberValidationMessage = "${locale.getString("warning.empty.number")}";
+                                numberValidationMessageZeroAllowed = "${locale.getString("warning.empty.number.zero.allowed")}";
                             </script>
 
                             <div class="input-field col s12 m12 l8 offset-l2">
