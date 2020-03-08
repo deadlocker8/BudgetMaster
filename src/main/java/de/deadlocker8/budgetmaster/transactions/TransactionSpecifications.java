@@ -56,7 +56,8 @@ public class TransactionSpecifications
 
 			if(isTransfer)
 			{
-				transferBackReference = builder.equal(transaction.get(Transaction_.transferAccount), account);
+				final Predicate transferAccountNotEqualsAccount = builder.notEqual(transaction.get(Transaction_.transferAccount), transaction.get(Transaction_.account));
+				transferBackReference = builder.and(transferAccountNotEqualsAccount, builder.equal(transaction.get(Transaction_.transferAccount), account));
 
 				if(!isIncome && !isExpenditure)
 				{

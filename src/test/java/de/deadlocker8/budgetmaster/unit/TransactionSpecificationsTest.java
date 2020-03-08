@@ -40,6 +40,7 @@ public class TransactionSpecificationsTest
 	private Transaction transaction2;
 	private Transaction repeatingTransaction;
 	private Transaction transferTransaction;
+	private Transaction transferTransactionWrongAccount;
 
 	@Autowired
 	private CategoryRepository categoryRepository;
@@ -126,6 +127,15 @@ public class TransactionSpecificationsTest
 		transferTransaction.setAccount(account);
 		transferTransaction.setTransferAccount(account2);
 		transferTransaction = transactionRepository.save(transferTransaction);
+
+		transferTransactionWrongAccount = new Transaction();
+		transferTransactionWrongAccount.setName("Lunch");
+		transferTransactionWrongAccount.setAmount(-1100);
+		transferTransactionWrongAccount.setDate(new DateTime(2018, 9, 18, 12, 0, 0, 0));
+		transferTransactionWrongAccount.setCategory(category2);
+		transferTransactionWrongAccount.setAccount(account2);
+		transferTransactionWrongAccount.setTransferAccount(account2);
+		transferTransactionWrongAccount = transactionRepository.save(transferTransactionWrongAccount);
 	}
 
 	@Test
@@ -212,8 +222,9 @@ public class TransactionSpecificationsTest
 		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account2, false, false, true, null, null, null, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertThat(results).hasSize(1)
-				.contains(transferTransaction);
+		assertThat(results).hasSize(2)
+				.contains(transferTransaction)
+				.contains(transferTransactionWrongAccount);
 	}
 
 	@Test
@@ -290,6 +301,16 @@ public class TransactionSpecificationsTest
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).hasSize(1)
 				.contains(repeatingTransaction);
+	}
+
+	@Test
+	public void getByPartialName_ExcludeTransfersWithWrongAccount()
+	{
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account2, true, true, true, null, null, null, "tin");
+
+		List<Transaction> results = transactionRepository.findAll(spec);
+		assertThat(results).hasSize(1)
+			.contains(transferTransaction);
 	}
 
 	@Test
