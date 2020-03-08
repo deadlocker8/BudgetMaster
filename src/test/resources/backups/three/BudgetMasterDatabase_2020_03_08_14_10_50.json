@@ -1,0 +1,105 @@
+{
+  "TYPE": "BUDGETMASTER_DATABASE",
+  "VERSION": 3,
+  "categories": [
+    {
+      "ID": 1,
+      "name": "No Category",
+      "color": "#eeeeee",
+      "type": "NONE"
+    },
+    {
+      "ID": 2,
+      "name": "Rest",
+      "color": "#FFFF00",
+      "type": "REST"
+    },
+    {
+      "ID": 39,
+      "name": "dfgdg",
+      "color": "#ff9500",
+      "type": "CUSTOM"
+    }
+  ],
+  "accounts": [
+    {
+      "ID": 1,
+      "name": "Placeholder",
+      "type": "ALL"
+    },
+    {
+      "ID": 2,
+      "name": "fdsdasa",
+      "type": "CUSTOM"
+    },
+    {
+      "ID": 37,
+      "name": "d2",
+      "type": "CUSTOM"
+    }
+  ],
+  "transactions": [
+    {
+      "ID": 37,
+      "amount": -100,
+      "date": "2020-02-05",
+      "account": {
+        "ID": 2,
+        "name": "fdsdasa",
+        "type": "CUSTOM"
+      },
+      "category": {
+        "ID": 39,
+        "name": "dfgdg",
+        "color": "#ff9500",
+        "type": "CUSTOM"
+      },
+      "name": "Apfel",
+      "description": "",
+      "tags": []
+    },
+    {
+      "ID": 38,
+      "amount": -200,
+      "date": "2020-02-05",
+      "account": {
+        "ID": 2,
+        "name": "fdsdasa",
+        "type": "CUSTOM"
+      },
+      "category": {
+        "ID": 1,
+        "name": "No Category",
+        "color": "#eeeeee",
+        "type": "NONE"
+      },
+      "name": "Birne",
+      "description": "",
+      "tags": []
+    },
+    {
+      "ID": 39,
+      "amount": -100,
+      "date": "2020-02-26",
+      "account": {
+        "ID": 2,
+        "name": "fdsdasa",
+        "type": "CUSTOM"
+      },
+      "category": {
+        "ID": 1,
+        "name": "No Category",
+        "color": "#eeeeee",
+        "type": "NONE"
+      },
+      "name": "Transfer Me",
+      "description": "",
+      "tags": [],
+      "transferAccount": {
+        "ID": 37,
+        "name": "d2",
+        "type": "CUSTOM"
+      }
+    }
+  ]
+}

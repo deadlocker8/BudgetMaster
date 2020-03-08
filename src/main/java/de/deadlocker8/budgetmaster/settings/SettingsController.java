@@ -19,7 +19,6 @@ import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.RandomUtils;
 import de.thecodelabs.versionizer.UpdateItem;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +40,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -114,6 +114,12 @@ public class SettingsController extends BaseController
 			settings.setAutoBackupTime(defaultSettings.getAutoBackupTime());
 			settings.setAutoBackupFilesToKeep(defaultSettings.getAutoBackupFilesToKeep());
 		}
+		else
+		{
+			final Path applicationSupportFolder = Main.getApplicationSupportFolder();
+			final Path backupFolder = applicationSupportFolder.resolve("backups");
+			databaseService.backupDatabase(backupFolder);
+		}
 
 		if(bindingResult.hasErrors())
 		{
@@ -173,7 +179,7 @@ public class SettingsController extends BaseController
 		String data = DatabaseService.GSON.toJson(databaseForJsonSerialization);
 		byte[] dataBytes = data.getBytes(StandardCharsets.UTF_8);
 
-		String fileName = "BudgetMasterDatabase_" + DateTime.now().toString("yyyy_MM_dd") + ".json";
+		String fileName = DatabaseService.getExportFileName(false);
 		response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
 
 		response.setContentType("application/json; charset=UTF-8");

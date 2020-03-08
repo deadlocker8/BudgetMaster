@@ -41,7 +41,7 @@ public class DatabaseService
 			.registerTypeAdapter(DateTime.class, (JsonSerializer<DateTime>) (json, typeOfSrc, context) -> new JsonPrimitive(ISODateTimeFormat.date().print(json)))
 			.create();
 
-	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseService.class);
 	private AccountService accountService;
 	private CategoryService categoryService;
 	private TransactionService transactionService;
@@ -99,32 +99,15 @@ public class DatabaseService
 		LOGGER.info("All tags reset.");
 	}
 
-	private void rotatingBackup(Path backupFolderPath)
+	public void rotatingBackup(Path backupFolderPath)
 	{
-		final Integer numberOfFilesToKeep = settingsService.getSettings().getAutoBackupFilesToKeep();
-		if(numberOfFilesToKeep == 0)
-		{
-			LOGGER.debug("Skipping backup rotation since number of files to keep is set to unlimited");
-			return;
-		}
+		final List<Path> filesToDelete = determineFilesToDelete(backupFolderPath);
 
-		final List<String> existingBackups = getExistingBackups(backupFolderPath);
-		if(existingBackups.size() < numberOfFilesToKeep)
+		for(Path path : filesToDelete)
 		{
-			LOGGER.debug("Skipping backup rotation (existing backups: " + existingBackups.size() + ", files to keep: " + numberOfFilesToKeep + ")");
-			return;
-		}
-
-		LOGGER.debug("Removing old backups (existing backups: " + existingBackups.size() + ", files to keep: " + numberOfFilesToKeep + ")");
-		// reserve 1 file for the backup created afterwards
-		final int allowedNumberOfFiles = existingBackups.size() - numberOfFilesToKeep + 1;
-		for(int i = 0; i < allowedNumberOfFiles; i++)
-		{
-			final Path oldBackup = Paths.get(existingBackups.get(i));
-			LOGGER.debug("Deleting old backup: " + oldBackup.toString());
 			try
 			{
-				Files.deleteIfExists(oldBackup);
+				Files.deleteIfExists(path);
 			}
 			catch(IOException e)
 			{
@@ -133,7 +116,38 @@ public class DatabaseService
 		}
 	}
 
-	private List<String> getExistingBackups(Path backupFolderPath)
+	public List<Path> determineFilesToDelete(Path backupFolderPath)
+	{
+		final ArrayList<Path> filesToDelete = new ArrayList<>();
+
+		final Integer numberOfFilesToKeep = settingsService.getSettings().getAutoBackupFilesToKeep();
+		if(numberOfFilesToKeep == 0)
+		{
+			LOGGER.debug("Skipping backup rotation since number of files to keep is set to unlimited");
+			return filesToDelete;
+		}
+
+		final List<String> existingBackups = getExistingBackups(backupFolderPath);
+		if(existingBackups.size() < numberOfFilesToKeep)
+		{
+			LOGGER.debug("Skipping backup rotation (existing backups: " + existingBackups.size() + ", files to keep: " + numberOfFilesToKeep + ")");
+			return filesToDelete;
+		}
+
+		LOGGER.debug("Determining old backups (existing backups: " + existingBackups.size() + ", files to keep: " + numberOfFilesToKeep + ")");
+		// reserve 1 file for the backup created afterwards
+		final int allowedNumberOfFiles = existingBackups.size() - numberOfFilesToKeep + 1;
+		for(int i = 0; i < allowedNumberOfFiles; i++)
+		{
+			final Path oldBackup = Paths.get(existingBackups.get(i));
+			LOGGER.debug("Schedule old backup for deletion: " + oldBackup.toString());
+			filesToDelete.add(oldBackup);
+		}
+
+		return filesToDelete;
+	}
+
+	public List<String> getExistingBackups(Path backupFolderPath)
 	{
 		try(Stream<Path> walk = Files.walk(backupFolderPath))
 		{
@@ -159,7 +173,7 @@ public class DatabaseService
 		rotatingBackup(backupFolderPath);
 
 		final Database databaseForJsonSerialization = getDatabaseForJsonSerialization();
-		final String fileName = "BudgetMasterDatabase_" + DateTime.now().toString("yyyy_MM_dd_HH_mm_ss") + ".json";
+		final String fileName = getExportFileName(true);
 		final String backupPath = backupFolderPath.resolve(fileName).toString();
 
 		try(Writer writer = new FileWriter(backupPath))
@@ -172,6 +186,17 @@ public class DatabaseService
 		{
 			e.printStackTrace();
 		}
+	}
+
+	public static String getExportFileName(boolean includeTime)
+	{
+		String formatString = "yyyy_MM_dd";
+		if(includeTime)
+		{
+			formatString = "yyyy_MM_dd_HH_mm_ss";
+		}
+
+		return "BudgetMasterDatabase_" + DateTime.now().toString(formatString) + ".json";
 	}
 
 	public Database getDatabaseForJsonSerialization()
