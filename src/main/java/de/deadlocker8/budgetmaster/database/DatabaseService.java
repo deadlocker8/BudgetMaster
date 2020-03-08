@@ -9,6 +9,7 @@ import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
+import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.tags.TagService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
@@ -23,9 +24,13 @@ import org.springframework.stereotype.Service;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class DatabaseService
@@ -41,14 +46,17 @@ public class DatabaseService
 	private CategoryService categoryService;
 	private TransactionService transactionService;
 	private TagService tagService;
+	private SettingsService settingsService;
+
 
 	@Autowired
-	public DatabaseService(AccountService accountService, CategoryService categoryService, TransactionService transactionService, TagService tagService)
+	public DatabaseService(AccountService accountService, CategoryService categoryService, TransactionService transactionService, TagService tagService, SettingsService settingsService)
 	{
 		this.accountService = accountService;
 		this.categoryService = categoryService;
 		this.transactionService = transactionService;
 		this.tagService = tagService;
+		this.settingsService = settingsService;
 	}
 
 	public void reset()
@@ -91,10 +99,64 @@ public class DatabaseService
 		LOGGER.info("All tags reset.");
 	}
 
+	private void rotatingBackup(Path backupFolderPath)
+	{
+		final Integer numberOfFilesToKeep = settingsService.getSettings().getAutoBackupFilesToKeep();
+		if(numberOfFilesToKeep == 0)
+		{
+			LOGGER.debug("Skipping backup rotation since number of files to keep is set to unlimited");
+			return;
+		}
+
+		final List<String> existingBackups = getExistingBackups(backupFolderPath);
+		if(existingBackups.size() < numberOfFilesToKeep)
+		{
+			LOGGER.debug("Skipping backup rotation (existing backups: " + existingBackups.size() + ", files to keep: " + numberOfFilesToKeep + ")");
+			return;
+		}
+
+		LOGGER.debug("Removing old backups (existing backups: " + existingBackups.size() + ", files to keep: " + numberOfFilesToKeep + ")");
+		// reserve 1 file for the backup created afterwards
+		final int allowedNumberOfFiles = existingBackups.size() - numberOfFilesToKeep + 1;
+		for(int i = 0; i < allowedNumberOfFiles; i++)
+		{
+			final Path oldBackup = Paths.get(existingBackups.get(i));
+			LOGGER.debug("Deleting old backup: " + oldBackup.toString());
+			try
+			{
+				Files.deleteIfExists(oldBackup);
+			}
+			catch(IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private List<String> getExistingBackups(Path backupFolderPath)
+	{
+		try(Stream<Path> walk = Files.walk(backupFolderPath))
+		{
+			return walk.filter(Files::isRegularFile)
+					.map(Path::toString)
+					.filter(path -> path.endsWith(".json"))
+					.sorted()
+					.collect(Collectors.toList());
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+
+		return new ArrayList<>();
+	}
+
 	public void backupDatabase(Path backupFolderPath)
 	{
-		LOGGER.debug("Backup database...");
+		LOGGER.info("Backup database...");
 		PathUtils.createDirectoriesIfNotExists(backupFolderPath);
+
+		rotatingBackup(backupFolderPath);
 
 		final Database databaseForJsonSerialization = getDatabaseForJsonSerialization();
 		final String fileName = "BudgetMasterDatabase_" + DateTime.now().toString("yyyy_MM_dd_HH_mm_ss") + ".json";
@@ -102,9 +164,9 @@ public class DatabaseService
 
 		try(Writer writer = new FileWriter(backupPath))
 		{
-			LOGGER.debug("Backup database to: " + backupPath);
+			LOGGER.info("Backup database to: " + backupPath);
 			DatabaseService.GSON.toJson(databaseForJsonSerialization, writer);
-			LOGGER.debug("Backup database DONE");
+			LOGGER.info("Backup database DONE");
 		}
 		catch(IOException e)
 		{
