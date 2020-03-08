@@ -1,10 +1,11 @@
 <html>
     <head>
+        <#import "/spring.ftl" as s>
+
         <#import "../helpers/header.ftl" as header>
         <@header.header "BudgetMaster"/>
-        <@header.style "libs/spectrum"/>
+        <link type="text/css" rel="stylesheet" href="<@s.url '${"/css/libs/spectrum.css"}'/>"/>
         <@header.style "categories"/>
-        <#import "/spring.ftl" as s>
     </head>
     <body class="budgetmaster-blue-light">
         <#import "../helpers/navbar.ftl" as navbar>
