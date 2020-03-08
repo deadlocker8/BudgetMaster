@@ -20,7 +20,7 @@
                 </div>
                 <div class="container">
                     <#import "../helpers/validation.ftl" as validation>
-                    <form name="Settings" action="<@s.url '/settings/save'/>" method="post">
+                    <form name="Settings" action="<@s.url '/settings/save'/>" method="post" onsubmit="return validateForm()">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="ID" value="${settings.getID()?c}">
                         <input type="hidden" name="lastBackupReminderDate" value="${dateService.getLongDateString(settings.getLastBackupReminderDate())}">
@@ -107,6 +107,23 @@
                             </div>
                         </div>
 
+                        <div class="row" id="settings-auto-backup">
+                            <div class="input-field col s12 m12 l8 offset-l2">
+                                <input id="settings-backup-auto-days" type="text" <@validation.validation "autoBackupDays"/> value="<#if settings.getAutoBackupActivated()??>${settings.getAutoBackupDays()}</#if>">
+                                <label for="settings-backup-auto-days">${locale.getString("settings.backup.auto.days")}</label>
+                            </div>
+                            <input type="hidden" id="hidden-settings-backup-auto-days" name="autoBackupDays" value="<#if settings.getAutoBackupActivated()??>${settings.getAutoBackupDays()}</#if>">
+
+                            <script>
+                                numberValidationMessage = "${locale.getString("warning.transaction.number")}";
+                            </script>
+
+                            <div class="input-field col s12 m12 l8 offset-l2">
+                                <input id="settings-backup-auto-time" type="text" name="autoBackupTime" <@validation.validation "autoBackupTime"/> value="<#if settings.getAutoBackupActivated()??>${settings.getAutoBackupTime().name()}</#if>">
+                                <label for="settings-backup-auto-time">${locale.getString("settings.backup.auto.time")}</label>
+                            </div>
+                        </div>
+
                         <br>
 
                         <#-- buttons -->
@@ -183,6 +200,7 @@
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
         <script src="<@s.url '/js/libs/spectrum.js'/>"></script>
+        <script src="<@s.url '/js/helpers.js'/>"></script>
         <script src="<@s.url '/js/settings.js'/>"></script>
     </body>
 </html>

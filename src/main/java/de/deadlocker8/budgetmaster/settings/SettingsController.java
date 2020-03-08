@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.settings;
 
 import de.deadlocker8.budgetmaster.Build;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
+import de.deadlocker8.budgetmaster.accounts.AccountValidator;
 import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
@@ -42,6 +43,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -86,11 +88,14 @@ public class SettingsController extends BaseController
 	{
 		settings.setLanguage(LanguageType.fromName(languageType));
 
-		FieldError error = validatePassword(password, passwordConfirmation);
-		if(error != null)
+		Optional<FieldError> passwordErrorOptional = validatePassword(password, passwordConfirmation);
+		if(passwordErrorOptional.isPresent())
 		{
-			bindingResult.addError(error);
+			bindingResult.addError(passwordErrorOptional.get());
 		}
+
+		SettingsValidator settingsValidator = new SettingsValidator();
+		settingsValidator.validate(settings, bindingResult);
 
 		if(settings.getBackupReminderActivated() == null)
 		{
@@ -102,6 +107,13 @@ public class SettingsController extends BaseController
 			settings.setAutoBackupActivated(false);
 		}
 
+		if(!settings.getAutoBackupActivated())
+		{
+			final Settings defaultSettings = Settings.getDefault();
+			settings.setAutoBackupDays(defaultSettings.getAutoBackupDays());
+			settings.setAutoBackupTime(defaultSettings.getAutoBackupTime());
+		}
+
 		if(bindingResult.hasErrors())
 		{
 			model.addAttribute("error", bindingResult);
@@ -109,48 +121,46 @@ public class SettingsController extends BaseController
 			model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
 			return "settings/settings";
 		}
-		else
+
+		if(!password.equals("•••••"))
 		{
-			if(!password.equals("•••••"))
-			{
-				BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-				String encryptedPassword = bCryptPasswordEncoder.encode(password);
-				User user = userRepository.findByName("Default");
-				user.setPassword(encryptedPassword);
-				userRepository.save(user);
-			}
-
-			settingsService.getRepository().deleteById(0);
-			settingsService.getRepository().save(settings);
-
-			Localization.load();
+			BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+			String encryptedPassword = bCryptPasswordEncoder.encode(password);
+			User user = userRepository.findByName("Default");
+			user.setPassword(encryptedPassword);
+			userRepository.save(user);
 		}
+
+		settingsService.getRepository().deleteById(0);
+		settingsService.getRepository().save(settings);
+
+		Localization.load();
 
 		return "redirect:/settings";
 	}
 
-	private FieldError validatePassword(String password, String passwordConfirmation)
+	private Optional<FieldError> validatePassword(String password, String passwordConfirmation)
 	{
 		if(password == null || password.equals(""))
 		{
-			return new FieldError("Settings", "password", password, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_EMPTY}, null, Strings.WARNING_SETTINGS_PASSWORD_EMPTY);
+			return Optional.of(new FieldError("Settings", "password", password, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_EMPTY}, null, Strings.WARNING_SETTINGS_PASSWORD_EMPTY));
 		}
 		else if(password.length() < 3)
 		{
-			return new FieldError("Settings", "password", password, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_LENGTH}, null, Strings.WARNING_SETTINGS_PASSWORD_LENGTH);
+			return Optional.of(new FieldError("Settings", "password", password, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_LENGTH}, null, Strings.WARNING_SETTINGS_PASSWORD_LENGTH));
 		}
 
 		if(passwordConfirmation == null || passwordConfirmation.equals(""))
 		{
-			return new FieldError("Settings", "passwordConfirmation", passwordConfirmation, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_EMPTY}, null, Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_EMPTY);
+			return Optional.of(new FieldError("Settings", "passwordConfirmation", passwordConfirmation, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_EMPTY}, null, Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_EMPTY));
 		}
 
 		if(!password.equals(passwordConfirmation))
 		{
-			return new FieldError("Settings", "passwordConfirmation", passwordConfirmation, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_WRONG}, null, Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_WRONG);
+			return Optional.of(new FieldError("Settings", "passwordConfirmation", passwordConfirmation, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_WRONG}, null, Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_WRONG));
 		}
 
-		return null;
+		return Optional.empty();
 	}
 
 	@RequestMapping("/settings/database/requestExport")

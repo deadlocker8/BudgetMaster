@@ -53,6 +53,15 @@ public class SettingsService
 		{
 			settings.setAutoBackupActivated(defaultSettings.getAutoBackupActivated());
 		}
+		if(settings.getAutoBackupDays() == null)
+		{
+			settings.setAutoBackupDays(defaultSettings.getAutoBackupDays());
+		}
+		if(settings.getAutoBackupTime() == null)
+		{
+			settings.setAutoBackupTime(defaultSettings.getAutoBackupTime());
+		}
+
 		settingsRepository.deleteById(0);
 		settingsRepository.save(settings);
 	}

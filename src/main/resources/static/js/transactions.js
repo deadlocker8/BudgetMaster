@@ -240,7 +240,6 @@ var transactionRepeatingModifierID = "#transaction-repeating-modifier";
 var transactionRepeatingEndAfterXTimesInputID = "#transaction-repeating-end-after-x-times-input";
 
 AMOUNT_REGEX = new RegExp("^-?\\d+(,\\d+)?(\\.\\d+)?$");
-NUMBER_REGEX = new RegExp("^\\d+$");
 ALLOWED_CHARACTERS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "."];
 
 function validateAmount(text)
@@ -257,57 +256,6 @@ function validateAmount(text)
         removeTooltip(id);
         var amount = parseFloat(text.replace(",", ".")) * 100;
         document.getElementById("hidden-" + id).value = amount.toFixed(0);
-    }
-}
-
-function validateNumber(text, ID, hiddenID, message)
-{
-    if(text.match(NUMBER_REGEX) == null)
-    {
-        addTooltip(ID, message);
-        if(hiddenID != null)
-        {
-            document.getElementById(hiddenID).value = "";
-        }
-        return false;
-    }
-    else
-    {
-        removeTooltip(ID);
-        if(hiddenID != null)
-        {
-            document.getElementById(hiddenID).value = parseInt(text);
-        }
-        return true;
-    }
-}
-
-function addTooltip(id, message)
-{
-    var element = document.getElementById(id);
-
-    removeClass(element, "validate");
-    removeClass(element, "valid");
-    addClass(element, "tooltipped");
-    addClass(element, "invalid");
-    element.dataset.tooltip = message;
-    element.dataset.position = "bottom";
-    element.dataset.delay = "50";
-    M.Tooltip.init(element);
-}
-
-function removeTooltip(id)
-{
-    var element = document.getElementById(id);
-
-    removeClass(element, "validate");
-    removeClass(element, "invalid");
-    removeClass(element, "tooltipped");
-    addClass(element, "valid");
-    var tooltip = M.Tooltip.getInstance(element);
-    if(tooltip !== undefined)
-    {
-        tooltip.destroy();
     }
 }
 

@@ -96,6 +96,7 @@
         <!--  Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
+        <script src="<@s.url '/js/helpers.js'/>"></script>
         <script src="<@s.url '/js/transactions.js'/>"></script>
         <script src="<@s.url '/js/globalDatePicker.js'/>"></script>
         <script src="<@s.url '/js/filter.js'/>"></script>
