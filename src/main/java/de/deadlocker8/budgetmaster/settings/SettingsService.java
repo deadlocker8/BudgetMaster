@@ -61,6 +61,10 @@ public class SettingsService
 		{
 			settings.setAutoBackupTime(defaultSettings.getAutoBackupTime());
 		}
+		if(settings.getAutoBackupFilesToKeep() == null)
+		{
+			settings.setAutoBackupFilesToKeep(defaultSettings.getAutoBackupFilesToKeep());
+		}
 
 		settingsRepository.deleteById(0);
 		settingsRepository.save(settings);
