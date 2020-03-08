@@ -1,6 +1,6 @@
 <#macro scripts>
 <#import "/spring.ftl" as s>
-<script src="<@s.url '/webjars/jquery/3.3.1/jquery.min.js'/>"></script>
+<script src="<@s.url '/webjars/jquery/3.4.1/jquery.min.js'/>"></script>
 <script src="<@s.url '/webjars/materializecss/1.0.0/js/materialize.min.js'/>"></script>
 <script src="<@s.url '/webjars/mousetrap/1.6.1/mousetrap.js'/>"></script>
 <script>

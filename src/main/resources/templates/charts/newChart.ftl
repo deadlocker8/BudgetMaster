@@ -94,8 +94,8 @@
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
-        <script src="<@s.url '/webjars/codemirror/5.45.0/lib/codemirror.js'/>"></script>
-        <script src="<@s.url '/webjars/codemirror/5.45.0/mode/javascript/javascript.js'/>"></script>
+        <script src="<@s.url '/webjars/codemirror/5.50.0/lib/codemirror.js'/>"></script>
+        <script src="<@s.url '/webjars/codemirror/5.50.0/mode/javascript/javascript.js'/>"></script>
         <script src="<@s.url '/js/charts.js'/>"></script>
     </body>
 </html>
