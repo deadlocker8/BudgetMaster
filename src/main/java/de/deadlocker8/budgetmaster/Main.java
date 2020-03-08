@@ -17,11 +17,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 
 @EnableScheduling
@@ -94,21 +92,47 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 			RunMode.currentRunMode = RunMode.DEBUG;
 		}
 
+		Path savePath = SystemUtils.getApplicationSupportDirectoryPath(Localization.getString("folder"));
+
+		final Optional<String> customFolderOptional = ProgramArgs.getCustomFolder();
+		if(customFolderOptional.isPresent())
+		{
+			final Path customFolder = Paths.get(customFolderOptional.get());
+			if(customFolder.isAbsolute())
+			{
+				savePath = customFolder;
+			}
+			else
+			{
+				LOGGER.error("Ignoring option --customFolder: provided path '" + customFolder.toString() + "' is not absolute");
+			}
+		}
+
+		savePath = determineFolder(savePath);
+		LOGGER.info("Used save path: " + savePath.toString());
+		return savePath;
+	}
+
+	private static Path determineFolder(Path baseFolder)
+	{
 		switch(RunMode.currentRunMode)
 		{
 			case NORMAL:
 				LOGGER.info("Starting in NORMAL Mode");
-				return SystemUtils.getApplicationSupportDirectoryPath(Localization.getString("folder"));
+				return baseFolder;
 			case DEBUG:
 				LOGGER.info("Starting in DEBUG Mode");
-				return SystemUtils.getApplicationSupportDirectoryPath(Localization.getString("folder"), "debug");
+				return baseFolder.resolve("debug");
 			case TEST:
 				LOGGER.info("Starting in TEST Mode");
-				return SystemUtils.getApplicationSupportDirectoryPath(Localization.getString("folder"), "test");
+				return baseFolder.resolve("test");
 			default:
 				LOGGER.info("Mode not supported! Starting in NORMAL Mode");
-				return SystemUtils.getApplicationSupportDirectoryPath(Localization.getString("folder"));
+				return baseFolder;
 		}
+
+
+
 	}
 
 	public static void main(String[] args)
