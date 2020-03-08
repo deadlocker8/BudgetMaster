@@ -29,7 +29,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @DataJpaTest
@@ -130,10 +130,8 @@ public class TransactionSearchSpecificationsTest
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertTrue(results.contains(transaction1));
-		assertFalse(results.contains(transaction2));
-		assertFalse(results.contains(repeatingTransaction));
-		assertFalse(results.contains(transferTransaction));
+		assertThat(results).hasSize(1)
+				.contains(transaction1);
 	}
 
 	@Test
@@ -143,10 +141,8 @@ public class TransactionSearchSpecificationsTest
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertTrue(results.contains(transaction1));
-		assertFalse(results.contains(transaction2));
-		assertFalse(results.contains(repeatingTransaction));
-		assertFalse(results.contains(transferTransaction));
+		assertThat(results).hasSize(1)
+				.contains(transaction1);
 	}
 
 	@Test
@@ -156,10 +152,8 @@ public class TransactionSearchSpecificationsTest
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertTrue(results.contains(transaction1));
-		assertFalse(results.contains(transaction2));
-		assertFalse(results.contains(repeatingTransaction));
-		assertFalse(results.contains(transferTransaction));
+		assertThat(results).hasSize(1)
+				.contains(transaction1);
 	}
 
 	@Test
@@ -169,10 +163,8 @@ public class TransactionSearchSpecificationsTest
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertTrue(results.contains(transaction1));
-		assertFalse(results.contains(transaction2));
-		assertFalse(results.contains(repeatingTransaction));
-		assertFalse(results.contains(transferTransaction));
+		assertThat(results).hasSize(1)
+				.contains(transaction1);
 	}
 
 	@Test
@@ -182,10 +174,9 @@ public class TransactionSearchSpecificationsTest
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertFalse(results.contains(transaction1));
-		assertTrue(results.contains(transaction2));
-		assertFalse(results.contains(repeatingTransaction));
-		assertTrue(results.contains(transferTransaction));
+		assertThat(results).hasSize(2)
+				.contains(transaction2)
+				.contains(transferTransaction);
 	}
 
 	@Test
@@ -195,13 +186,11 @@ public class TransactionSearchSpecificationsTest
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		List<Transaction> expected = new ArrayList<>();
-		expected.add(transaction2);
-		expected.add(transaction1);
-		expected.add(transferTransaction);
-		expected.add(repeatingTransaction);
-
-		assertEquals(expected, results);
+		assertThat(results).hasSize(4)
+				.contains(transaction1)
+				.contains(transaction2)
+				.contains(repeatingTransaction)
+				.contains(transferTransaction);
 	}
 
 	@Test
@@ -211,55 +200,51 @@ public class TransactionSearchSpecificationsTest
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertTrue(results.contains(transaction1));
-		assertFalse(results.contains(transaction2));
-		assertTrue(results.contains(repeatingTransaction));
-		assertTrue(results.contains(transferTransaction));
+		assertThat(results).hasSize(3)
+				.contains(transaction1)
+				.contains(repeatingTransaction)
+				.contains(transferTransaction);
 	}
 
 	@Test
 	public void getMatches_NoMatches()
 	{
-		Search search = new Search("asuzgdzasuiduzasds", true, true, true,true, 0);
+		Search search = new Search("asuzgdzasuiduzasds", true, true, true, true, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertEquals(0, results.size());
+		assertThat(results).hasSize(0);
 	}
 
 	@Test
 	public void getMatches_SearchNothing()
 	{
-		Search search = new Search("egal", false, false, false,false, 0);
+		Search search = new Search("egal", false, false, false, false, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertEquals(0, results.size());
+		assertThat(results).hasSize(0);
 	}
 
 	@Test
 	public void getMatches_SearchTagsEquals()
 	{
-		Search search = new Search("MyAwesomeTag", false, false, false,true, 0);
+		Search search = new Search("MyAwesomeTag", false, false, false, true, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertTrue(results.contains(transaction1));
-		assertFalse(results.contains(transaction2));
-		assertFalse(results.contains(repeatingTransaction));
-		assertFalse(results.contains(transferTransaction));
+		assertThat(results).hasSize(1)
+				.contains(transaction1);
 	}
 
 	@Test
 	public void getMatches_SearchTagsLike()
 	{
-		Search search = new Search("Awesome", false, false, false,true, 0);
+		Search search = new Search("Awesome", false, false, false, true, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertTrue(results.contains(transaction1));
-		assertFalse(results.contains(transaction2));
-		assertFalse(results.contains(repeatingTransaction));
-		assertFalse(results.contains(transferTransaction));
+		assertThat(results).hasSize(1)
+				.contains(transaction1);
 	}
 }
