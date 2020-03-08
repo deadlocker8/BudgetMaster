@@ -74,7 +74,7 @@
 
     <script>
         amountValidationMessage = "${locale.getString("warning.transaction.amount")}";
-        numberValidationMessage = "${locale.getString("warning.transaction.number")}";
+        numberValidationMessage = "${locale.getString("warning.empty.number")}";
     </script>
 </#macro>
 

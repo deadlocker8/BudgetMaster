@@ -112,6 +112,7 @@ public class SettingsController extends BaseController
 			final Settings defaultSettings = Settings.getDefault();
 			settings.setAutoBackupDays(defaultSettings.getAutoBackupDays());
 			settings.setAutoBackupTime(defaultSettings.getAutoBackupTime());
+			settings.setAutoBackupFilesToKeep(defaultSettings.getAutoBackupFilesToKeep());
 		}
 
 		if(bindingResult.hasErrors())

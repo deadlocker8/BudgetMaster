@@ -27,6 +27,7 @@ public class Settings
 	private Boolean autoBackupActivated;
 	private Integer autoBackupDays;
 	private AutoBackupTime autoBackupTime;
+	private Integer autoBackupFilesToKeep;
 
 	public Settings()
 	{
@@ -46,6 +47,7 @@ public class Settings
 		defaultSettings.setAutoBackupActivated(false);
 		defaultSettings.setAutoBackupDays(1);
 		defaultSettings.setAutoBackupTime(AutoBackupTime.DEFAULT);
+		defaultSettings.setAutoBackupFilesToKeep(3);
 
 		return defaultSettings;
 	}
@@ -174,6 +176,16 @@ public class Settings
 		this.autoBackupTime = autoBackupTime;
 	}
 
+	public Integer getAutoBackupFilesToKeep()
+	{
+		return autoBackupFilesToKeep;
+	}
+
+	public void setAutoBackupFilesToKeep(Integer autoBackupFilesToKeep)
+	{
+		this.autoBackupFilesToKeep = autoBackupFilesToKeep;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -190,6 +202,7 @@ public class Settings
 				", autoBackupActivated=" + autoBackupActivated +
 				", autoBackupDays=" + autoBackupDays +
 				", autoBackupTime=" + autoBackupTime +
+				", autoBackupFilesToKeep=" + autoBackupFilesToKeep +
 				'}';
 	}
 }

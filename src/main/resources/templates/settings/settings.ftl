@@ -115,13 +115,19 @@
                             <input type="hidden" id="hidden-settings-backup-auto-days" name="autoBackupDays" value="<#if settings.getAutoBackupActivated()??>${settings.getAutoBackupDays()}</#if>">
 
                             <script>
-                                numberValidationMessage = "${locale.getString("warning.transaction.number")}";
+                                numberValidationMessage = "${locale.getString("warning.empty.number")}";
                             </script>
 
                             <div class="input-field col s12 m12 l8 offset-l2">
                                 <input id="settings-backup-auto-time" type="text" name="autoBackupTime" <@validation.validation "autoBackupTime"/> value="<#if settings.getAutoBackupActivated()??>${settings.getAutoBackupTime().name()}</#if>">
                                 <label for="settings-backup-auto-time">${locale.getString("settings.backup.auto.time")}</label>
                             </div>
+
+                            <div class="input-field col s12 m12 l8 offset-l2">
+                                <input id="settings-backup-auto-files-to-keep" type="text" <@validation.validation "autoBackupFilesToKeep"/> value="<#if settings.getAutoBackupActivated()??>${settings.getAutoBackupFilesToKeep()}</#if>">
+                                <label for="settings-backup-auto-files-to-keep">${locale.getString("settings.backup.auto.files.to.keep")}</label>
+                            </div>
+                            <input type="hidden" id="hidden-settings-backup-auto-files-to-keep" name="autoBackupFilesToKeep" value="<#if settings.getAutoBackupActivated()??>${settings.getAutoBackupFilesToKeep()}</#if>">
                         </div>
 
                         <br>
