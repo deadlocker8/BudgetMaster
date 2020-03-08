@@ -12,6 +12,7 @@ import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.tags.TagService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
+import de.thecodelabs.utils.io.PathUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
@@ -19,12 +20,22 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class DatabaseService
 {
+	public static Gson GSON = new GsonBuilder()
+			.excludeFieldsWithoutExposeAnnotation()
+			.setPrettyPrinting()
+			.registerTypeAdapter(DateTime.class, (JsonSerializer<DateTime>) (json, typeOfSrc, context) -> new JsonPrimitive(ISODateTimeFormat.date().print(json)))
+			.create();
+
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private AccountService accountService;
 	private CategoryService categoryService;
@@ -80,7 +91,28 @@ public class DatabaseService
 		LOGGER.info("All tags reset.");
 	}
 
-	public String getDatabaseAsJSON()
+	public void backupDatabase(Path backupFolderPath)
+	{
+		LOGGER.debug("Backup database...");
+		PathUtils.createDirectoriesIfNotExists(backupFolderPath);
+
+		final Database databaseForJsonSerialization = getDatabaseForJsonSerialization();
+		final String fileName = "BudgetMasterDatabase_" + DateTime.now().toString("yyyy_MM_dd_HH_mm_ss") + ".json";
+		final String backupPath = backupFolderPath.resolve(fileName).toString();
+
+		try(Writer writer = new FileWriter(backupPath))
+		{
+			LOGGER.debug("Backup database to: " + backupPath);
+			DatabaseService.GSON.toJson(databaseForJsonSerialization, writer);
+			LOGGER.debug("Backup database DONE");
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	public Database getDatabaseForJsonSerialization()
 	{
 		List<Category> categories = categoryService.getRepository().findAll();
 		List<Account> accounts = accountService.getRepository().findAll();
@@ -89,14 +121,8 @@ public class DatabaseService
 		LOGGER.debug("Reduced " + transactions.size() + " transactions to " + filteredTransactions.size());
 
 		Database database = new Database(categories, accounts, filteredTransactions);
-		LOGGER.debug("Created database JSON with " + database.getTransactions().size() + " transactions, " + database.getCategories().size() + " categories and " + database.getAccounts().size() + " accounts");
-
-		Gson gson = new GsonBuilder()
-				.excludeFieldsWithoutExposeAnnotation()
-				.setPrettyPrinting()
-				.registerTypeAdapter(DateTime.class, (JsonSerializer<DateTime>) (json, typeOfSrc, context) -> new JsonPrimitive(ISODateTimeFormat.date().print(json)))
-				.create();
-		return gson.toJson(database);
+		LOGGER.debug("Created database for JSON with " + database.getTransactions().size() + " transactions, " + database.getCategories().size() + " categories and " + database.getAccounts().size() + " accounts");
+		return database;
 	}
 
 	private List<Transaction> filterRepeatingTransactions(List<Transaction> transactions)

@@ -106,7 +106,8 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 				LOGGER.info("Starting in TEST Mode");
 				return SystemUtils.getApplicationSupportDirectoryPath(Localization.getString("folder"), "test");
 			default:
-				return null;
+				LOGGER.info("Mode not supported! Starting in NORMAL Mode");
+				return SystemUtils.getApplicationSupportDirectoryPath(Localization.getString("folder"));
 		}
 	}
 

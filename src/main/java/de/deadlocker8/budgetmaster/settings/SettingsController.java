@@ -1,8 +1,8 @@
 package de.deadlocker8.budgetmaster.settings;
 
 import de.deadlocker8.budgetmaster.Build;
+import de.deadlocker8.budgetmaster.Main;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
-import de.deadlocker8.budgetmaster.accounts.AccountValidator;
 import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
@@ -168,8 +168,11 @@ public class SettingsController extends BaseController
 	public void downloadFile(HttpServletResponse response)
 	{
 		LOGGER.debug("Exporting database...");
-		String data = databaseService.getDatabaseAsJSON();
+
+		final Database databaseForJsonSerialization = databaseService.getDatabaseForJsonSerialization();
+		String data = DatabaseService.GSON.toJson(databaseForJsonSerialization);
 		byte[] dataBytes = data.getBytes(StandardCharsets.UTF_8);
+
 		String fileName = "BudgetMasterDatabase_" + DateTime.now().toString("yyyy_MM_dd") + ".json";
 		response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
 
