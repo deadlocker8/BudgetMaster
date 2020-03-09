@@ -58,6 +58,7 @@
                         <br>
                         <#-- buttons -->
                         <@newTransactionMacros.buttons/>
+                        <@newTransactionMacros.buttonTemplate/>
                     </form>
                 </div>
             </div>

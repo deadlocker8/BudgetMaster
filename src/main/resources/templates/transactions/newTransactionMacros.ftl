@@ -362,7 +362,15 @@
 </#macro>
 
 <#macro buttonSave>
-    <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action">
+    <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action" value="save">
         <i class="material-icons left">save</i>${locale.getString("save")}
     </button>
+</#macro>
+
+<#macro buttonTemplate>
+    <div class="fixed-action-btn">
+        <button class="btn-floating btn-large waves-effect waves-light budgetmaster-blue tooltipped" type="submit" name="action" value="template" data-position="left" data-tooltip="${locale.getString("save.as.template")}">
+            <i class="material-icons left">file_copy</i>${locale.getString("save")}
+        </button>
+    </div>
 </#macro>

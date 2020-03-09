@@ -158,11 +158,13 @@ ul.sidenav.sidenav-fixed > li:last-child
     font-weight: 600;
 }
 
-.btn:hover {
+.btn:hover,
+.btn-floating:hover {
     background-color: #70A3CF;
 }
 
-.btn:focus {
+.btn:focus,
+.btn-floating:focus {
     background-color: #2E79B9;
 }
 
@@ -532,6 +534,10 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
 
     .budget {
         font-size: 2.5vmin;
+    }
+
+    .fixed-action-btn {
+        right: 53px;
     }
 }
 

@@ -126,21 +126,33 @@ public class TransactionController extends BaseController
 	}
 
 	@PostMapping(value = "/transactions/newTransaction/normal")
-	public String postNormal(Model model, @CookieValue("currentDate") String cookieDate,
+	public String postNormal(Model model, @RequestParam String action,
+							 @CookieValue("currentDate") String cookieDate,
 							 @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
 							 @RequestParam(value = "isPayment", required = false) boolean isPayment)
 	{
-		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
+		if(action.equals(TransactionSubmitAction.TEMPLATE.getActionName()))
+		{
+			LOGGER.debug("Received request to create template from existing normal transaction");
+			return "redirect:/transactions";
+		}
 
-		TransactionValidator transactionValidator = new TransactionValidator();
-		transactionValidator.validate(transaction, bindingResult);
+		if(action.equals(TransactionSubmitAction.SAVE.getActionName()))
+		{
+			DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 
-		handleAmount(transaction, isPayment);
-		handleTags(transaction);
+			TransactionValidator transactionValidator = new TransactionValidator();
+			transactionValidator.validate(transaction, bindingResult);
 
-		transaction.setRepeatingOption(null);
+			handleAmount(transaction, isPayment);
+			handleTags(transaction);
 
-		return handleRedirect(model, transaction, bindingResult, date, "transactions/newTransactionNormal", isPayment);
+			transaction.setRepeatingOption(null);
+
+			return handleRedirect(model, transaction, bindingResult, date, "transactions/newTransactionNormal", isPayment);
+		}
+
+		return "redirect:/transactions";
 	}
 
 	@SuppressWarnings("ConstantConditions")
@@ -195,21 +207,33 @@ public class TransactionController extends BaseController
 	}
 
 	@PostMapping(value = "/transactions/newTransaction/transfer")
-	public String postTransfer(Model model, @CookieValue("currentDate") String cookieDate,
+	public String postTransfer(Model model, @RequestParam String action,
+							   @CookieValue("currentDate") String cookieDate,
 							   @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
 							   @RequestParam(value = "isPayment", required = false) boolean isPayment)
 	{
-		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
+		if(action.equals(TransactionSubmitAction.TEMPLATE.getActionName()))
+		{
+			LOGGER.debug("Received request to create template from existing transfer");
+			return "redirect:/transactions";
+		}
 
-		TransactionValidator transactionValidator = new TransactionValidator();
-		transactionValidator.validate(transaction, bindingResult);
+		if(action.equals(TransactionSubmitAction.SAVE.getActionName()))
+		{
+			DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 
-		handleAmount(transaction, isPayment);
-		handleTags(transaction);
+			TransactionValidator transactionValidator = new TransactionValidator();
+			transactionValidator.validate(transaction, bindingResult);
 
-		transaction.setRepeatingOption(null);
+			handleAmount(transaction, isPayment);
+			handleTags(transaction);
 
-		return handleRedirect(model, transaction, bindingResult, date, "transactions/newTransactionTransfer", isPayment);
+			transaction.setRepeatingOption(null);
+
+			return handleRedirect(model, transaction, bindingResult, date, "transactions/newTransactionTransfer", isPayment);
+		}
+
+		return "redirect:/transactions";
 	}
 
 	private void handleAmount(Transaction transaction, boolean isPayment)
