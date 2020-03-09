@@ -31,6 +31,10 @@
                     <div class="col s8 m5 l5">${locale.getString("hotkeys.transactions.new.transfer")}</div>
                 </div>
                 <div class="row">
+                    <@cellKey locale.getString("hotkeys.transactions.new.template.key")/>
+                    <div class="col s8 m5 l5">${locale.getString("hotkeys.transactions.new.template")}</div>
+                </div>
+                <div class="row">
                     <@cellKey locale.getString("hotkeys.transactions.filter.key")/>
                     <div class="col s8 m5 l5">${locale.getString("hotkeys.transactions.filter")}</div>
                 </div>

@@ -22,6 +22,14 @@ Mousetrap.bind('t', function()
     }
 });
 
+Mousetrap.bind('v', function()
+{
+    if(areHotKeysEnabled())
+    {
+        window.location.href = rootURL + '/transactions/newTransaction/template';
+    }
+});
+
 Mousetrap.bind('f', function()
 {
     if(areHotKeysEnabled())
