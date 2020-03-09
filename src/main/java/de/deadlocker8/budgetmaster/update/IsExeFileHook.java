@@ -17,6 +17,6 @@ public class IsExeFileHook implements SystemUtils.SystemFileHook
 		}
 
 		String sourcePath = source.getAbsolutePath();
-		return sourcePath.endsWith(".exe") || sourcePath.endsWith(".EXE");
+		return sourcePath.toLowerCase().endsWith(".exe");
 	}
 }

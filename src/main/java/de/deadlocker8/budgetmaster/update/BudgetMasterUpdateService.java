@@ -60,7 +60,7 @@ public class BudgetMasterUpdateService
 		{
 			isRunningFromSource = false;
 			executablePath = source.getAbsolutePath();
-			if(executablePath.endsWith(".exe") || executablePath.endsWith(".EXE"))
+			if(executablePath.toLowerCase().endsWith(".exe"))
 			{
 				updateStrategy = UpdateService.Strategy.EXE;
 				fileType = RemoteFile.FileType.EXE;

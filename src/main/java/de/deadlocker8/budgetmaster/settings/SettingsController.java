@@ -109,18 +109,19 @@ public class SettingsController extends BaseController
 			settings.setAutoBackupActivated(false);
 		}
 
-		if(!settings.getAutoBackupActivated())
+		if(settings.getAutoBackupActivated())
+		{
+			// TODO remove; schedule cron instead
+			final Path applicationSupportFolder = Main.getApplicationSupportFolder();
+			final Path backupFolder = applicationSupportFolder.resolve("backups");
+			databaseService.backupDatabase(backupFolder);
+		}
+		else
 		{
 			final Settings defaultSettings = Settings.getDefault();
 			settings.setAutoBackupDays(defaultSettings.getAutoBackupDays());
 			settings.setAutoBackupTime(defaultSettings.getAutoBackupTime());
 			settings.setAutoBackupFilesToKeep(defaultSettings.getAutoBackupFilesToKeep());
-		}
-		else
-		{
-			final Path applicationSupportFolder = Main.getApplicationSupportFolder();
-			final Path backupFolder = applicationSupportFolder.resolve("backups");
-			databaseService.backupDatabase(backupFolder);
 		}
 
 		if(bindingResult.hasErrors())

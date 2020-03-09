@@ -13,20 +13,6 @@ public class Strings
     //ACCOUNT
     public static final String ACCOUNT_DEFAULT_NAME = "account.default.name";
 
-    //MONTH_NAMES
-    public static final String MONTH_JANUARY ="month.january";
-    public static final String MONTH_FEBRUARY ="month.february";
-    public static final String MONTH_MARCH ="month.march";
-    public static final String MONTH_APRIL ="month.april";
-    public static final String MONTH_MAY ="month.may";
-    public static final String MONTH_JUNE ="month.june";
-    public static final String MONTH_JULY ="month.july";
-    public static final String MONTH_AUGUST ="month.august";
-    public static final String MONTH_SEPTEMBER ="month.september";
-    public static final String MONTH_OCTOBER ="month.october";
-    public static final String MONTH_NOVEMBER ="month.november";
-    public static final String MONTH_DECEMBER ="month.december";
-
     //WARNING
     public static final String WARNING_EMPTY_CATEGORY_NAME = "warning.empty.category.name";
     public static final String WARNING_EMPTY_ACCOUNT_NAME = "warning.empty.account.name";

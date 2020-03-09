@@ -17,6 +17,6 @@ public class IsJarFileHook implements SystemUtils.SystemFileHook
 		}
 
 		String sourcePath = source.getAbsolutePath();
-		return sourcePath.endsWith(".jar") || sourcePath.endsWith(".JAR");
+		return sourcePath.toLowerCase().endsWith(".jar");
 	}
 }
