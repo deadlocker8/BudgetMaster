@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.controller;
 
+import de.deadlocker8.budgetmaster.services.DateFormatStyle;
 import de.deadlocker8.budgetmaster.services.DateService;
 import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
@@ -18,8 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class DatePickerController extends BaseController
 {
-	private final String DATE_FORMAT = "dd.MM.yy";
-
 	private final SettingsService settingsService;
 	private final DateService dateService;
 
@@ -34,7 +33,7 @@ public class DatePickerController extends BaseController
 	public String previousMonth(HttpServletResponse response, @CookieValue("currentDate") String date, @RequestParam("target") String target)
 	{
 		Settings settings = settingsService.getSettings();
-		DateTime currentDate = DateTime.parse(date, DateTimeFormat.forPattern(DATE_FORMAT).withLocale(settings.getLanguage().getLocale()));
+		DateTime currentDate = DateTime.parse(date, DateTimeFormat.forPattern(DateFormatStyle.NORMAL.getKey()).withLocale(settings.getLanguage().getLocale()));
 		currentDate = currentDate.minusMonths(1);
 
 		response.addCookie(new Cookie("currentDate", dateService.getDateStringNormal(currentDate)));
@@ -45,7 +44,7 @@ public class DatePickerController extends BaseController
 	public String nextMonth(HttpServletResponse response, @CookieValue("currentDate") String date, @RequestParam("target") String target)
 	{
 		Settings settings = settingsService.getSettings();
-		DateTime currentDate = DateTime.parse(date, DateTimeFormat.forPattern(DATE_FORMAT).withLocale(settings.getLanguage().getLocale()));
+		DateTime currentDate = DateTime.parse(date, DateTimeFormat.forPattern(DateFormatStyle.NORMAL.getKey()).withLocale(settings.getLanguage().getLocale()));
 		currentDate = currentDate.plusMonths(1);
 
 		response.addCookie(new Cookie("currentDate", dateService.getDateStringNormal(currentDate)));
@@ -56,7 +55,7 @@ public class DatePickerController extends BaseController
 	public String setDate(HttpServletResponse response, @CookieValue("currentDate") String date, @RequestParam("target") String target)
 	{
 		Settings settings = settingsService.getSettings();
-		DateTime currentDate = DateTime.parse(date, DateTimeFormat.forPattern(DATE_FORMAT).withLocale(settings.getLanguage().getLocale()));
+		DateTime currentDate = DateTime.parse(date, DateTimeFormat.forPattern(DateFormatStyle.NORMAL.getKey()).withLocale(settings.getLanguage().getLocale()));
 
 		response.addCookie(new Cookie("currentDate", dateService.getDateStringNormal(currentDate)));
 		return "redirect:" + target;

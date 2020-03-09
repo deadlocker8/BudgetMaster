@@ -16,6 +16,7 @@ import de.deadlocker8.budgetmaster.repeating.RepeatingTransactionUpdater;
 import de.deadlocker8.budgetmaster.repeating.endoption.*;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifier;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierType;
+import de.deadlocker8.budgetmaster.services.DateFormatStyle;
 import de.deadlocker8.budgetmaster.services.DateService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
@@ -195,7 +196,7 @@ public class TransactionController extends BaseController
 				repeatingEnd = new RepeatingEndAfterXTimes(Integer.parseInt(repeatingEndValue));
 				break;
 			case DATE:
-				DateTime endDate = DateTime.parse(repeatingEndValue, DateTimeFormat.forPattern("dd.MM.yy").withLocale(settingsService.getSettings().getLanguage().getLocale()));
+				DateTime endDate = DateTime.parse(repeatingEndValue, DateTimeFormat.forPattern(DateFormatStyle.NORMAL.getKey()).withLocale(settingsService.getSettings().getLanguage().getLocale()));
 				repeatingEnd = new RepeatingEndDate(endDate);
 				break;
 		}

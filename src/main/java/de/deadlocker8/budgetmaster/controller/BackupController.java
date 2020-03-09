@@ -29,7 +29,7 @@ public class BackupController extends BaseController
 	}
 
 	@RequestMapping("/backupReminder/settings")
-	public String settings(Model model)
+	public String settings()
 	{
 		settingsService.updateLastBackupReminderDate();
 		return "redirect:/settings";

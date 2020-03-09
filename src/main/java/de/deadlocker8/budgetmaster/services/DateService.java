@@ -50,7 +50,7 @@ public class DateService
 		}
 		else
 		{
-			return DateTime.parse(cookieDate, DateTimeFormat.forPattern("dd.MM.yy").withLocale(settingsService.getSettings().getLanguage().getLocale()));
+			return DateTime.parse(cookieDate, DateTimeFormat.forPattern(DateFormatStyle.NORMAL.getKey()).withLocale(settingsService.getSettings().getLanguage().getLocale()));
 		}
 	}
 

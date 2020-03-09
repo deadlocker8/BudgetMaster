@@ -6,6 +6,7 @@ import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.reports.categoryBudget.CategoryBudget;
 import de.deadlocker8.budgetmaster.reports.columns.ReportColumn;
 import de.deadlocker8.budgetmaster.services.CurrencyService;
+import de.deadlocker8.budgetmaster.services.DateFormatStyle;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.utils.Strings;
@@ -269,7 +270,7 @@ public class ReportGeneratorService
 			case CATEGORY:
 				return transaction.getCategory().getName();
 			case DATE:
-				return transaction.getDate().toString("dd.MM.");
+				return transaction.getDate().toString(DateFormatStyle.NO_YEAR.getKey());
 			case DESCRIPTION:
 				return transaction.getDescription();
 			case TAGS:
