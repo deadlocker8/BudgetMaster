@@ -13,18 +13,19 @@
 </#macro>
 
 <#macro transactionCategory transaction alignment>
+    <#import "../categories/categoriesFunctions.ftl" as categoriesFunctions>
     <div class="col s3 l1 xl1 ${alignment}">
         <div class="hide-on-med-and-down">
             <div class="category-circle" style="background-color: ${transaction.category.color}">
                 <span style="color: ${transaction.category.getAppropriateTextColor()}">
-                    ${transaction.category.name?capitalize[0]}
+                    ${categoriesFunctions.getCategoryName(transaction.category)?capitalize[0]}
                 </span>
             </div>
         </div>
         <div class="hide-on-large-only">
             <div class="category-circle-small" style="background-color: ${transaction.category.color}">
                 <span style="color: ${transaction.category.getAppropriateTextColor()}">
-                    ${transaction.category.name?capitalize[0]}
+                    ${categoriesFunctions.getCategoryName(transaction.category)?capitalize[0]}
                 </span>
             </div>
         </div>
