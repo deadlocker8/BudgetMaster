@@ -27,30 +27,25 @@ public class TransactionSpecifications
 
 			Predicate transferBackReference = null;
 
-			if(account != null)
-			{
-				predicates.add(builder.and(builder.equal(transaction.get(Transaction_.account), account)));
-			}
-
 			if(isIncome && !isExpenditure)
 			{
-				predicates.add(builder.and(builder.gt(transaction.get(Transaction_.amount), 0)));
+				predicates.add(builder.gt(transaction.get(Transaction_.amount), 0));
 			}
 
 			if(!isIncome && isExpenditure)
 			{
-				predicates.add(builder.and(builder.le(transaction.get(Transaction_.amount), 0)));
+				predicates.add(builder.le(transaction.get(Transaction_.amount), 0));
 			}
 
 			if(isRepeating != null)
 			{
 				if(isRepeating)
 				{
-					predicates.add(builder.and(builder.isNotNull(transaction.get(Transaction_.repeatingOption))));
+					predicates.add(builder.isNotNull(transaction.get(Transaction_.repeatingOption)));
 				}
 				else
 				{
-					predicates.add(builder.and(builder.isNull(transaction.get(Transaction_.repeatingOption))));
+					predicates.add(builder.isNull(transaction.get(Transaction_.repeatingOption)));
 				}
 			}
 
@@ -61,17 +56,17 @@ public class TransactionSpecifications
 
 				if(!isIncome && !isExpenditure)
 				{
-					predicates.add(builder.and(builder.isNotNull(transaction.get(Transaction_.transferAccount))));
+					predicates.add(builder.isNotNull(transaction.get(Transaction_.transferAccount)));
 				}
 			}
 			else
 			{
-				predicates.add(builder.and(builder.isNull(transaction.get(Transaction_.transferAccount))));
+				predicates.add(builder.isNull(transaction.get(Transaction_.transferAccount)));
 			}
 
 			if(categoryIDs != null)
 			{
-				predicates.add(builder.and(transaction.get(Transaction_.category).get("ID").in(categoryIDs)));
+				predicates.add(transaction.get(Transaction_.category).get("ID").in(categoryIDs));
 			}
 
 			if(tagIDs != null)
@@ -88,19 +83,31 @@ public class TransactionSpecifications
 
 			if(name != null && name.length() > 0)
 			{
-				predicates.add(builder.and(builder.like(builder.lower(transaction.get(Transaction_.name)), "%" + name.toLowerCase() + "%")));
+				predicates.add(builder.like(builder.lower(transaction.get(Transaction_.name)), "%" + name.toLowerCase() + "%"));
 			}
 
 			query.orderBy(builder.desc(transaction.get(Transaction_.date)));
 
 			Predicate[] predicatesArray = new Predicate[predicates.size()];
 
-			if(transferBackReference == null)
+			final Predicate predicatesCombined = builder.and(predicates.toArray(predicatesArray));
+			Predicate generalPredicates = builder.and(dateConstraint, predicatesCombined);
+			if(account != null)
 			{
-				return builder.and(dateConstraint, builder.or(builder.and(predicates.toArray(predicatesArray))));
+				Predicate accountPredicate = builder.equal(transaction.get(Transaction_.account), account);
+				generalPredicates = builder.and(generalPredicates, accountPredicate);
 			}
 
-			return builder.and(dateConstraint, builder.or(builder.and(predicates.toArray(predicatesArray)), transferBackReference));
+			final Predicate transferPredicates = builder.and(dateConstraint, predicatesCombined, transferBackReference);
+
+			if(transferBackReference == null)
+			{
+				return generalPredicates;
+			}
+			else
+			{
+				return builder.or(generalPredicates, transferPredicates);
+			}
 		};
 	}
 }

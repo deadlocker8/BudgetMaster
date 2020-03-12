@@ -306,7 +306,7 @@ public class TransactionSpecificationsTest
 	@Test
 	public void getByPartialName_ExcludeTransfersWithWrongAccount()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account2, true, true, true, null, null, null, "tin");
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account2, true, true, true, null, null, null, "tion");
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).hasSize(1)
