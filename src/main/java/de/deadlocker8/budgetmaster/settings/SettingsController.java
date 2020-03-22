@@ -27,10 +27,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
@@ -71,7 +68,7 @@ public class SettingsController extends BaseController
 		this.budgetMasterUpdateService = budgetMasterUpdateService;
 	}
 
-	@RequestMapping("/settings")
+	@GetMapping("/settings")
 	public String settings(WebRequest request, Model model)
 	{
 		model.addAttribute("settings", settingsService.getSettings());
@@ -142,8 +139,7 @@ public class SettingsController extends BaseController
 			userRepository.save(user);
 		}
 
-		settingsService.getRepository().deleteById(0);
-		settingsService.getRepository().save(settings);
+		settingsService.updateSettings(settings);
 
 		Localization.load();
 

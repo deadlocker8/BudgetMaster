@@ -5,7 +5,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
+import java.lang.reflect.Field;
 import java.util.Optional;
 
 @Service
@@ -15,13 +18,22 @@ public class SettingsService
 	private SettingsRepository settingsRepository;
 
 	@Autowired
+	private SettingsService settingsService;
+
+	@Autowired
 	public SettingsService(SettingsRepository settingsRepository)
 	{
 		this.settingsRepository = settingsRepository;
-		createDefaultSettingsIfNotExists();
 	}
 
-	private void createDefaultSettingsIfNotExists()
+	@PostConstruct
+	public void postInit()
+	{
+		this.settingsService.createDefaultSettingsIfNotExists();
+	}
+
+	@Transactional
+	public void createDefaultSettingsIfNotExists()
 	{
 		if(!settingsRepository.findById(0).isPresent())
 		{
@@ -65,9 +77,6 @@ public class SettingsService
 		{
 			settings.setAutoBackupFilesToKeep(defaultSettings.getAutoBackupFilesToKeep());
 		}
-
-		settingsRepository.deleteById(0);
-		settingsRepository.save(settings);
 	}
 
 	@SuppressWarnings("OptionalGetWithoutIsPresent")
@@ -76,16 +85,31 @@ public class SettingsService
 		return settingsRepository.findById(0).get();
 	}
 
+	@Transactional
 	public void updateLastBackupReminderDate()
 	{
 		Settings settings = getSettings();
 		settings.setLastBackupReminderDate(DateTime.now());
-		settingsRepository.deleteById(0);
-		settingsRepository.save(settings);
 	}
 
-	public SettingsRepository getRepository()
+	@Transactional
+	public void updateSettings(Settings newSettings)
 	{
-		return settingsRepository;
+		final Settings settings = getSettings();
+
+		for(Field declaredField : Settings.class.getDeclaredFields())
+		{
+			declaredField.setAccessible(true);
+
+			try
+			{
+				// Update database object
+				declaredField.set(settings, declaredField.get(newSettings));
+			}
+			catch(IllegalAccessException e)
+			{
+				LOGGER.error("Error copying settings data", e);
+			}
+		}
 	}
 }
