@@ -59,7 +59,7 @@ public class ChartService implements Resetable
 	public int getHighestUsedID()
 	{
 		final List<Chart> chartsOrderedByID = chartRepository.findAllByOrderByIDDesc();
-		if(chartsOrderedByID.size() == 0)
+		if(chartsOrderedByID.isEmpty())
 		{
 			return 0;
 		}
