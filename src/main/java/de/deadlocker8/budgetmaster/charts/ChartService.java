@@ -12,6 +12,9 @@ import java.util.List;
 public class ChartService implements Resetable
 {
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	private final String PATTERN_OLD_CONTAINER_ID = "Plotly.newPlot('chart-canvas',";
+	private final String PATTERN_DYNAMIC_CONTAINER_ID = "Plotly.newPlot('containerID',";
+
 	private ChartRepository chartRepository;
 
 	@Autowired
@@ -20,6 +23,7 @@ public class ChartService implements Resetable
 		this.chartRepository = categoryRepository;
 
 		createDefaults();
+		updateUserCharts();
 	}
 
 	public ChartRepository getRepository()
@@ -65,5 +69,21 @@ public class ChartService implements Resetable
 		}
 
 		return chartsOrderedByID.get(0).getID();
+	}
+
+	private void updateUserCharts()
+	{
+		final List<Chart> userCharts = getRepository().findAllByType(ChartType.CUSTOM);
+		for(Chart userChart : userCharts)
+		{
+			String script = userChart.getScript();
+			if(script.contains(PATTERN_OLD_CONTAINER_ID))
+			{
+				LOGGER.debug("Updating user chart '" + userChart.getName() + "' with ID " + userChart.getID());
+				script = script.replace(PATTERN_OLD_CONTAINER_ID, PATTERN_DYNAMIC_CONTAINER_ID);
+				userChart.setScript(script);
+				getRepository().save(userChart);
+			}
+		}
 	}
 }
