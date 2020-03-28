@@ -1,5 +1,9 @@
 $(document).ready(function()
 {
+    let modalFilter;
+    let pickerStartDate;
+    let pickerEndDate;
+
     if($("#chart-script").length)
     {
         let editor = CodeMirror.fromTextArea(document.getElementById('chart-script'), {
@@ -17,12 +21,12 @@ $(document).ready(function()
 
     if($("#modalFilter").length)
     {
-        let modalFilter = $('#modalFilter').modal();
+        modalFilter = $('#modalFilter').modal();
     }
 
     if($(".datepicker").length)
     {
-        let pickerStartDate = M.Datepicker.init(document.getElementById('chart-datepicker'), {
+        pickerStartDate = M.Datepicker.init(document.getElementById('chart-datepicker'), {
             yearRange: 25,
             firstDay: 1,
             showClearBtn: false,
@@ -62,7 +66,7 @@ $(document).ready(function()
         // picker end date
         if(typeof endDate !== "undefined")
         {
-            let pickerEndDate = createDatePickerEnd(pickerStartDate.date, endDate);
+            pickerEndDate = createDatePickerEnd(pickerStartDate.date, endDate);
         }
     }
 
