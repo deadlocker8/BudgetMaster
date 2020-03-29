@@ -10,7 +10,7 @@
         <@itemDivider/>
         <@itemWithIcon "home", "/", locale.getString("menu.home"), "home", "budgetmaster-blue", activeID/>
         <@itemWithIcon "transactions", "/transactions", locale.getString("menu.transactions"), "list", "budgetmaster-baby-blue", activeID/>
-        <@itemWithIcon "templates", "/templates", locale.getString("menu.templates"), "file_copy", "budgetmaster-brown", activeID/>
+        <@itemWithIcon "templates", "/templates", locale.getString("menu.templates"), "file_copy", "budgetmaster-dark-orange", activeID/>
         <@itemWithIcon "charts" "/charts" locale.getString("menu.charts"), "show_chart" "budgetmaster-purple", activeID/>
         <@itemWithIcon "reports", "/reports", locale.getString("menu.reports"), "description", "budgetmaster-green", activeID/>
         <@itemWithIcon "categories", "/categories", locale.getString("menu.categories"), "label", "budgetmaster-orange", activeID/>

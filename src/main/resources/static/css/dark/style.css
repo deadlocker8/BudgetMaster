@@ -104,8 +104,12 @@ main {
     color: rgba(0, 0, 0, 0.87);
 }
 
-.budgetmaster-brown {
-    background-color: #a57548;
+.budgetmaster-dark-orange {
+    background-color: #ff7043;
+}
+
+.budgetmaster-dark-orange-text {
+    color: #ff7043;
 }
 
 .budgetmaster-update {

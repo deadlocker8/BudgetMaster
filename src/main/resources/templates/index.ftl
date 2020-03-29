@@ -37,29 +37,32 @@
                     </div>
                     <div class="row home-menu-flex">
                 </div>
+                        <@indexFunctions.homeEntry url="/templates" icon="file_copy" iconColor="budgetmaster-dark-orange-text" headlineText="menu.templates" bodyText="home.menu.templates">
+                            <@indexFunctions.action url="/templates/manage" name="home.menu.templates.action.manage"/>
+                            <br>
+                            <@indexFunctions.action url="/templates" name="home.menu.templates.action.show"/>
+                        </@indexFunctions.homeEntry>
+                <div class="hide-on-med-only">
+                    </div>
+                    <div class="row home-menu-flex">
+                </div>
                         <@indexFunctions.homeEntry url="/charts" icon="show_chart" iconColor="budgetmaster-purple-text" headlineText="menu.charts" bodyText="home.menu.charts">
                             <@indexFunctions.action url="/charts/manage" name="home.menu.charts.action.manage"/>
                             <br>
                             <@indexFunctions.action url="/charts" name="home.menu.charts.action.show"/>
                         </@indexFunctions.homeEntry>
-                <div class="hide-on-med-only">
+
+                <div class="hide-on-small-only hide-on-large-only">
                     </div>
                     <div class="row home-menu-flex">
                 </div>
                         <@indexFunctions.homeEntry url="/reports" icon="description" iconColor="budgetmaster-green-text" headlineText="menu.reports" bodyText="home.menu.reports">
                             <@indexFunctions.action url="/reports" name="home.menu.reports.action.new"/>
                         </@indexFunctions.homeEntry>
-                <div class="hide-on-small-only hide-on-large-only">
-                    </div>
-                    <div class="row home-menu-flex">
-                </div>
+
                         <@indexFunctions.homeEntry url="/categories" icon="label" iconColor="budgetmaster-orange-text" headlineText="menu.categories" bodyText="home.menu.categories">
                             <@indexFunctions.action url="/categories" name="home.menu.categories.action.manage"/>
                             <@indexFunctions.action url="/categories/newCategory" name="home.menu.categories.action.new"/>
-                        </@indexFunctions.homeEntry>
-
-                        <@indexFunctions.homeEntry url="/settings" icon="settings" iconColor="budgetmaster-red-text" headlineText="menu.settings" bodyText="home.menu.settings">
-                            <@indexFunctions.action url="/settings" name="home.menu.settings.action.manage"/>
                         </@indexFunctions.homeEntry>
                     </div>
                 </div>
