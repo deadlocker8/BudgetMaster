@@ -27,8 +27,7 @@ public enum AutoBackupTime
 	TIME_20("20:00"),
 	TIME_21("21:00"),
 	TIME_22("22:00"),
-	TIME_23("23:00"),
-	TIME_24("24:00");
+	TIME_23("23:00");
 
 	private String time;
 
@@ -45,5 +44,10 @@ public enum AutoBackupTime
 	public String getLocalized()
 	{
 		return Localization.getString("settings.backup.auto.time.short", getTime());
+	}
+
+	public int getCronTime()
+	{
+		return Integer.parseInt(name().substring(name().lastIndexOf('_') + 1));
 	}
 }

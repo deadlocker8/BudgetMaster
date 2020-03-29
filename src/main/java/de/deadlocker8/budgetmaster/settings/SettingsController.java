@@ -1,7 +1,6 @@
 package de.deadlocker8.budgetmaster.settings;
 
 import de.deadlocker8.budgetmaster.Build;
-import de.deadlocker8.budgetmaster.Main;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
@@ -13,6 +12,7 @@ import de.deadlocker8.budgetmaster.database.DatabaseParser;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
 import de.deadlocker8.budgetmaster.services.ImportService;
+import de.deadlocker8.budgetmaster.services.BackupService;
 import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.deadlocker8.budgetmaster.utils.Strings;
@@ -37,7 +37,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -53,11 +52,13 @@ public class SettingsController extends BaseController
 	private final CategoryService categoryService;
 	private final ImportService importService;
 	private final BudgetMasterUpdateService budgetMasterUpdateService;
+	private final BackupService scheduleTaskService;
+
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private final List<Integer> SEARCH_RESULTS_PER_PAGE_OPTIONS = Arrays.asList(10, 20, 25, 30, 50, 100);
 
 	@Autowired
-	public SettingsController(SettingsService settingsService, UserRepository userRepository, DatabaseService databaseService, AccountService accountService, CategoryService categoryService, ImportService importService, BudgetMasterUpdateService budgetMasterUpdateService)
+	public SettingsController(SettingsService settingsService, UserRepository userRepository, DatabaseService databaseService, AccountService accountService, CategoryService categoryService, ImportService importService, BudgetMasterUpdateService budgetMasterUpdateService, BackupService scheduleTaskService)
 	{
 		this.settingsService = settingsService;
 		this.userRepository = userRepository;
@@ -66,6 +67,7 @@ public class SettingsController extends BaseController
 		this.categoryService = categoryService;
 		this.importService = importService;
 		this.budgetMasterUpdateService = budgetMasterUpdateService;
+		this.scheduleTaskService = scheduleTaskService;
 	}
 
 	@GetMapping("/settings")
@@ -108,10 +110,8 @@ public class SettingsController extends BaseController
 
 		if(settings.getAutoBackupActivated())
 		{
-			// TODO remove; schedule cron instead
-			final Path applicationSupportFolder = Main.getApplicationSupportFolder();
-			final Path backupFolder = applicationSupportFolder.resolve("backups");
-			databaseService.backupDatabase(backupFolder);
+			final String cron = scheduleTaskService.computeCron(settings.getAutoBackupTime(), settings.getAutoBackupDays());
+			scheduleTaskService.startBackupCron(cron);
 		}
 		else
 		{
@@ -119,6 +119,7 @@ public class SettingsController extends BaseController
 			settings.setAutoBackupDays(defaultSettings.getAutoBackupDays());
 			settings.setAutoBackupTime(defaultSettings.getAutoBackupTime());
 			settings.setAutoBackupFilesToKeep(defaultSettings.getAutoBackupFilesToKeep());
+			scheduleTaskService.stopBackupCron();
 		}
 
 		if(bindingResult.hasErrors())

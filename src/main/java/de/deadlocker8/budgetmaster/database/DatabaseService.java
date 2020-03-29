@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -165,6 +166,7 @@ public class DatabaseService
 		return new ArrayList<>();
 	}
 
+	@Transactional
 	public void backupDatabase(Path backupFolderPath)
 	{
 		LOGGER.info("Backup database...");
@@ -178,13 +180,13 @@ public class DatabaseService
 
 		try(Writer writer = new FileWriter(backupPath))
 		{
-			LOGGER.info("Backup database to: " + backupPath);
+			LOGGER.info("Backup database to: {}", backupPath);
 			DatabaseService.GSON.toJson(databaseForJsonSerialization, writer);
 			LOGGER.info("Backup database DONE");
 		}
 		catch(IOException e)
 		{
-			e.printStackTrace();
+			LOGGER.error("Failed to backup database", e);
 		}
 	}
 
