@@ -137,6 +137,10 @@
                                 <label for="settings-backup-auto-files-to-keep">${locale.getString("settings.backup.auto.files.to.keep")}</label>
                             </div>
                             <input type="hidden" id="hidden-settings-backup-auto-files-to-keep" name="autoBackupFilesToKeep" value="<#if settings.getAutoBackupActivated()??>${settings.getAutoBackupFilesToKeep()}</#if>">
+
+                            <div class="col s12 m12 l8 offset-l2">
+                                ${locale.getString("settings.backup.auto.next")}: <#if nextBackupTime??>${dateService.getDateTimeString(nextBackupTime)}<#else>-</#if>
+                            </div>
                         </div>
 
                         <br>

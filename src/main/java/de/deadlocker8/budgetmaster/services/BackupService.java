@@ -3,16 +3,16 @@ package de.deadlocker8.budgetmaster.services;
 import de.deadlocker8.budgetmaster.settings.AutoBackupTime;
 import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.support.CronSequenceGenerator;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.concurrent.ScheduledFuture;
 
 @Service
@@ -65,5 +65,19 @@ public class BackupService
 	{
 		int hour = time.getCronTime();
 		return String.format("0 0 %d */%d * *", hour, days);
+	}
+
+	public Optional<DateTime> getNextRun()
+	{
+		final Settings settings = settingsService.getSettings();
+		if(settings.getAutoBackupActivated())
+		{
+			final String cron = computeCron(settings.getAutoBackupTime(), settings.getAutoBackupDays());
+			CronSequenceGenerator cronTrigger = new CronSequenceGenerator(cron);
+			Date next = cronTrigger.next(new Date());
+
+			return Optional.of(new DateTime(next));
+		}
+		return Optional.empty();
 	}
 }

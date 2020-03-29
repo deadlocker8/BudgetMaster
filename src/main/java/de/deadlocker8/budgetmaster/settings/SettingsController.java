@@ -19,6 +19,7 @@ import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.RandomUtils;
 import de.thecodelabs.versionizer.UpdateItem;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +77,9 @@ public class SettingsController extends BaseController
 		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
 		model.addAttribute("autoBackupTimes", AutoBackupTime.values());
+
+		final Optional<DateTime> nextBackupTimeOptional = scheduleTaskService.getNextRun();
+		nextBackupTimeOptional.ifPresent(date -> model.addAttribute("nextBackupTime", date));
 
 		request.removeAttribute("database", WebRequest.SCOPE_SESSION);
 		return "settings/settings";

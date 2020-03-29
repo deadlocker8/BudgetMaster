@@ -37,6 +37,11 @@ public class DateService
 		return getDateString(date, DateFormatStyle.LONG_MONTH_AND_YEAR);
 	}
 
+	public String getDateTimeString(DateTime date)
+	{
+		return getDateString(date, DateFormatStyle.DATE_TIME);
+	}
+
 	private String getDateString(DateTime date, DateFormatStyle formatStyle)
 	{
 		return date.toString(DateTimeFormat.forPattern(formatStyle.getKey()).withLocale(settingsService.getSettings().getLanguage().getLocale()));
