@@ -8,6 +8,8 @@
         <#import "helpers/navbar.ftl" as navbar>
         <@navbar.navbar "home" settings/>
 
+        <#import "indexFunctions.ftl" as indexFunctions>
+
         <main>
             <div class="card main-card background-color">
                 <div class="container">
@@ -22,84 +24,43 @@
                     <div class="hide-on-small-only"><br></div>
 
                     <div class="row home-menu-flex">
-                        <div class="col s12 m6 l4 home-menu-cell">
-                            <a href="<@s.url '/accounts'/>" class="home-menu-link btn-flat budget">
-                                <i class="material-icons icon-budget left">account_balance</i>
-                                ${locale.getString("menu.accounts")}
-                            </a>
-                            <p class="text-grey home-menu-text">${locale.getString("home.menu.accounts")}</p>
-                            <div class="left-align">
-                                <a href="<@s.url '/accounts'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>${locale.getString("home.menu.accounts.action.manage")}</a>
-                                <a href="<@s.url '/accounts/newAccount'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>${locale.getString("home.menu.accounts.action.new")}</a>
-                            </div>
-                        </div>
-                        <div class="col s12 m6 l4 home-menu-cell">
-                            <a href="<@s.url '/transactions'/>" class="home-menu-link btn-flat budget">
-                                <i class="material-icons icon-budget left budgetmaster-baby-blue-text">list</i>
-                                ${locale.getString("menu.transactions")}
-                            </a>
-                            <p class="text-grey home-menu-text">${locale.getString("home.menu.transactions")}</p>
-                            <div class="left-align">
-                                <a href="<@s.url '/transactions'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>${locale.getString("home.menu.transactions.action.manage")}</a>
-                                <a href="<@s.url '/transactions/newTransaction/normal'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>${locale.getString("home.menu.transactions.action.new")}</a>
-                            </div>
-                        </div>
+                        <@indexFunctions.homeEntry url="/accounts" icon="account_balance" iconColor="" headlineText="menu.accounts" bodyText="home.menu.accounts">
+                            <@indexFunctions.action url="/accounts" name="home.menu.accounts.action.manage"/>
+                            <@indexFunctions.action url="/accounts/newAccount" name="home.menu.accounts.action.new"/>
+                        </@indexFunctions.homeEntry>
+
+                        <@indexFunctions.homeEntry url="/transactions" icon="list" iconColor="budgetmaster-baby-blue-text" headlineText="menu.transactions" bodyText="home.menu.transactions">
+                            <@indexFunctions.action url="/transactions" name="home.menu.transactions.action.manage"/>
+                            <@indexFunctions.action url="/transactions/newTransaction/normal" name="home.menu.transactions.action.new"/>
+                        </@indexFunctions.homeEntry>
                 <div class="hide-on-small-only hide-on-large-only">
                     </div>
                     <div class="row home-menu-flex">
                 </div>
-                        <div class="col s12 m6 l4 home-menu-cell">
-                            <a href="<@s.url '/charts'/>" class="home-menu-link btn-flat budget">
-                                <i class="material-icons icon-budget left budgetmaster-purple-text">show_chart</i>
-                                ${locale.getString("menu.charts")}
-                            </a>
-                            <p class="text-grey home-menu-text">${locale.getString("home.menu.charts")}</p>
-                            <div class="left-align">
-                                <a href="<@s.url '/charts/manage'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>${locale.getString("home.menu.charts.action.manage")}</a>
-                                <br>
-                                <a href="<@s.url '/charts'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>${locale.getString("home.menu.charts.action.show")}</a>
-                            </div>
-
-                        </div>
+                        <@indexFunctions.homeEntry url="/charts" icon="show_chart" iconColor="budgetmaster-purple-text" headlineText="menu.charts" bodyText="home.menu.charts">
+                            <@indexFunctions.action url="/charts/manage" name="home.menu.charts.action.manage"/>
+                            <br>
+                            <@indexFunctions.action url="/charts" name="home.menu.charts.action.show"/>
+                        </@indexFunctions.homeEntry>
                 <div class="hide-on-med-only">
                     </div>
                     <div class="row home-menu-flex">
                 </div>
-                        <div class="col s12 m6 l4 home-menu-cell">
-                            <a href="<@s.url '/reports'/>" class="home-menu-link btn-flat budget">
-                                <i class="material-icons icon-budget left budgetmaster-green-text">description</i>
-                                ${locale.getString("menu.reports")}
-                            </a>
-                            <p class="text-grey home-menu-text">${locale.getString("home.menu.reports")}</p>
-                            <div class="left-align">
-                                <a href="<@s.url '/reports'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>${locale.getString("home.menu.reports.action.new")}</a>
-                            </div>
-                        </div>
+                        <@indexFunctions.homeEntry url="/reports" icon="description" iconColor="budgetmaster-green-text" headlineText="menu.reports" bodyText="home.menu.reports">
+                            <@indexFunctions.action url="/reports" name="home.menu.reports.action.new"/>
+                        </@indexFunctions.homeEntry>
                 <div class="hide-on-small-only hide-on-large-only">
                     </div>
                     <div class="row home-menu-flex">
                 </div>
-                        <div class="col s12 m6 l4 home-menu-cell">
-                            <a href="<@s.url '/categories'/>" class="home-menu-link btn-flat budget">
-                                <i class="material-icons icon-budget left budgetmaster-orange-text">label</i>
-                                ${locale.getString("menu.categories")}
-                            </a>
-                            <p class="text-grey home-menu-text">${locale.getString("home.menu.categories")}</p>
-                            <div class="left-align">
-                                <a href="<@s.url '/categories'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>${locale.getString("home.menu.categories.action.manage")}</a>
-                                <a href="<@s.url '/categories/newCategory'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>${locale.getString("home.menu.categories.action.new")}</a>
-                            </div>
-                        </div>
-                        <div class="col s12 m6 l4 home-menu-cell">
-                            <a href="<@s.url '/settings'/>" class="home-menu-link btn-flat budget">
-                                <i class="material-icons icon-budget left budgetmaster-red-text">settings</i>
-                                ${locale.getString("menu.settings")}
-                            </a>
-                            <p class="text-grey home-menu-text">${locale.getString("home.menu.settings")}</p>
-                            <div class="left-align">
-                                <a href="<@s.url '/settings'/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>${locale.getString("home.menu.settings.action.manage")}</a>
-                            </div>
-                        </div>
+                        <@indexFunctions.homeEntry url="/categories" icon="label" iconColor="budgetmaster-orange-text" headlineText="menu.categories" bodyText="home.menu.categories">
+                            <@indexFunctions.action url="/categories" name="home.menu.categories.action.manage"/>
+                            <@indexFunctions.action url="/categories/newCategory" name="home.menu.categories.action.new"/>
+                        </@indexFunctions.homeEntry>
+
+                        <@indexFunctions.homeEntry url="/settings" icon="settings" iconColor="budgetmaster-red-text" headlineText="menu.settings" bodyText="home.menu.settings">
+                            <@indexFunctions.action url="/settings" name="home.menu.settings.action.manage"/>
+                        </@indexFunctions.homeEntry>
                     </div>
                 </div>
             </div>
