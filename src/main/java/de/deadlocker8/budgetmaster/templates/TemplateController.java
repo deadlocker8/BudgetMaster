@@ -1,7 +1,5 @@
 package de.deadlocker8.budgetmaster.templates;
 
-import de.deadlocker8.budgetmaster.charts.Chart;
-import de.deadlocker8.budgetmaster.charts.ChartType;
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import org.springframework.beans.factory.annotation.Autowired;
