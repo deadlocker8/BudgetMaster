@@ -22,6 +22,8 @@
                         </div>
                     </div>
 
+                    <div class="hide-on-small-only"><br></div>
+
                     <div class="row home-menu-flex">
                         <@indexFunctions.homeEntry url="/accounts" icon="account_balance" iconColor="" headlineText="menu.accounts" bodyText="home.menu.accounts">
                             <@indexFunctions.action url="/accounts" name="home.menu.accounts.action.manage"/>
