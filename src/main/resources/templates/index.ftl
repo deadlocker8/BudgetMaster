@@ -21,6 +21,7 @@
                             </a>
                         </div>
                     </div>
+
                     <div class="hide-on-small-only"><br></div>
 
                     <div class="row home-menu-flex">
@@ -33,29 +34,19 @@
                             <@indexFunctions.action url="/transactions" name="home.menu.transactions.action.manage"/>
                             <@indexFunctions.action url="/transactions/newTransaction/normal" name="home.menu.transactions.action.new"/>
                         </@indexFunctions.homeEntry>
-                <div class="hide-on-small-only hide-on-large-only">
-                    </div>
-                    <div class="row home-menu-flex">
-                </div>
+
                         <@indexFunctions.homeEntry url="/templates" icon="file_copy" iconColor="budgetmaster-dark-orange-text" headlineText="menu.templates" bodyText="home.menu.templates">
                             <@indexFunctions.action url="/templates/manage" name="home.menu.templates.action.manage"/>
                             <br>
                             <@indexFunctions.action url="/templates" name="home.menu.templates.action.show"/>
                         </@indexFunctions.homeEntry>
-                <div class="hide-on-med-only">
-                    </div>
-                    <div class="row home-menu-flex">
-                </div>
+
                         <@indexFunctions.homeEntry url="/charts" icon="show_chart" iconColor="budgetmaster-purple-text" headlineText="menu.charts" bodyText="home.menu.charts">
                             <@indexFunctions.action url="/charts/manage" name="home.menu.charts.action.manage"/>
                             <br>
                             <@indexFunctions.action url="/charts" name="home.menu.charts.action.show"/>
                         </@indexFunctions.homeEntry>
 
-                <div class="hide-on-small-only hide-on-large-only">
-                    </div>
-                    <div class="row home-menu-flex">
-                </div>
                         <@indexFunctions.homeEntry url="/reports" icon="description" iconColor="budgetmaster-green-text" headlineText="menu.reports" bodyText="home.menu.reports">
                             <@indexFunctions.action url="/reports" name="home.menu.reports.action.new"/>
                         </@indexFunctions.homeEntry>
