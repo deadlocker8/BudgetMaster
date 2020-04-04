@@ -19,7 +19,6 @@ import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -29,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.AdditionalAnswers.returnsFirstArg;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class DatabaseImportTest
