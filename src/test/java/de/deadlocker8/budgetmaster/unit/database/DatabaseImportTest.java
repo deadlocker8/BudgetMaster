@@ -19,14 +19,17 @@ import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class DatabaseImportTest
@@ -239,6 +242,63 @@ public class DatabaseImportTest
 		List<TransactionBase> updatedTransactions = importService.updateAccountsForItems(templateList, account1.getID(), destinationAccount);
 		assertThat(updatedTransactions).hasSize(1);
 		assertThat(updatedTransactions.get(0).getAccount().getID()).isEqualTo(5);
+	}
+
+	@Test
+	public void test_updateTagsForItem_ExistingTag()
+	{
+		Account account1 = new Account("Account_1", AccountType.CUSTOM);
+		account1.setID(2);
+
+		Tag existingTag = new Tag("ExistingTag");
+		existingTag.setID(2);
+
+		Transaction transaction1 = new Transaction();
+		transaction1.setAccount(account1);
+		transaction1.setName("ShouldGoInAccount_1");
+		transaction1.setAmount(200);
+		transaction1.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		List<Tag> tags = new ArrayList<>();
+		tags.add(existingTag);
+		transaction1.setTags(tags);
+
+		Mockito.when(tagRepository.findByName(existingTag.getName())).thenReturn(existingTag);
+
+		importService.updateTagsForItem(transaction1);
+		assertThat(transaction1.getTags()).hasSize(1);
+		assertThat(transaction1.getTags().get(0))
+				.hasFieldOrPropertyWithValue("ID", 2)
+				.hasFieldOrPropertyWithValue("name", existingTag.getName());
+	}
+
+	@Test
+	public void test_updateTagsForItem_NewTag()
+	{
+		Account account1 = new Account("Account_1", AccountType.CUSTOM);
+		account1.setID(2);
+
+		Tag newTag = new Tag("NewTag");
+		newTag.setID(5);
+
+		Transaction transaction1 = new Transaction();
+		transaction1.setAccount(account1);
+		transaction1.setName("ShouldGoInAccount_1");
+		transaction1.setAmount(200);
+		transaction1.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		List<Tag> tags = new ArrayList<>();
+		tags.add(newTag);
+		transaction1.setTags(tags);
+
+		Tag savedTag = new Tag("NewTag");
+		savedTag.setID(1);
+		Mockito.when(tagRepository.save(Mockito.any(Tag.class))).thenReturn(savedTag);
+		Mockito.when(tagRepository.findByName(newTag.getName())).thenReturn(null);
+
+		importService.updateTagsForItem(transaction1);
+		assertThat(transaction1.getTags()).hasSize(1);
+		assertThat(transaction1.getTags().get(0))
+				.hasFieldOrPropertyWithValue("ID", 1)
+				.hasFieldOrPropertyWithValue("name", newTag.getName());
 	}
 
 	@Test

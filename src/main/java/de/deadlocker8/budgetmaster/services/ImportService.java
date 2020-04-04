@@ -216,14 +216,14 @@ public class ImportService
 		{
 			Transaction transaction = transactions.get(i);
 			LOGGER.debug("Importing transaction " + (i + 1) + "/" + transactions.size() + " (name: " + transaction.getName() + ", date: " + transaction.getDate() + ")");
-			updateTagsForTransaction(transaction);
+			updateTagsForItem(transaction);
 			transaction.setID(null);
 			transactionRepository.save(transaction);
 		}
 		LOGGER.debug("Importing transactions DONE");
 	}
 
-	private void updateTagsForTransaction(TransactionBase item)
+	public void updateTagsForItem(TransactionBase item)
 	{
 		List<Tag> tags = item.getTags();
 		for(int i = 0; i < tags.size(); i++)
@@ -232,8 +232,8 @@ public class ImportService
 			Tag existingTag = tagRepository.findByName(currentTag.getName());
 			if(existingTag == null)
 			{
-				tagRepository.save(new Tag(currentTag.getName()));
-				tags.set(i, tagRepository.findByName(currentTag.getName()));
+				final Tag newTag = tagRepository.save(new Tag(currentTag.getName()));
+				tags.set(i, newTag);
 			}
 			else
 			{
@@ -250,7 +250,7 @@ public class ImportService
 		{
 			Template template = templates.get(i);
 			LOGGER.debug("Importing template " + (i + 1) + "/" + templates.size() + " (templateName: " + template.getTemplateName() + ")");
-			updateTagsForTransaction(template);
+			updateTagsForItem(template);
 			template.setID(null);
 			templateRepository.save(template);
 		}
