@@ -2,8 +2,6 @@ package de.deadlocker8.budgetmaster.transactions;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializer;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
@@ -26,7 +24,6 @@ import de.deadlocker8.budgetmaster.tags.TagService;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.ISODateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

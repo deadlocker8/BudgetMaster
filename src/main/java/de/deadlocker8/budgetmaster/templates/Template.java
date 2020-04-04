@@ -41,9 +41,9 @@ public class Template implements TransactionBase
 	@ManyToMany
 	@Expose
 	@JoinTable(
-			name = "transaction_tags",
+			name = "template_tags",
 			joinColumns = @JoinColumn(
-					name = "transaction_id", referencedColumnName = "ID"),
+					name = "template_id", referencedColumnName = "ID"),
 			inverseJoinColumns = @JoinColumn(
 					name = "tags_id", referencedColumnName = "ID"))
 	private List<Tag> tags;

@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.tags;
 
 import com.google.gson.annotations.Expose;
+import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 
 import javax.persistence.*;
@@ -25,6 +26,9 @@ public class Tag
 
 	@ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
 	private List<Transaction> referringTransactions;
+
+	@ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
+	private List<Template> referringTemplates;
 
 	public Tag()
 	{
@@ -58,6 +62,11 @@ public class Tag
 	public List<Transaction> getReferringTransactions()
 	{
 		return referringTransactions;
+	}
+
+	public List<Template> getReferringTemplates()
+	{
+		return referringTemplates;
 	}
 
 	@Override

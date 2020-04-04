@@ -9,6 +9,7 @@ import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
 import de.deadlocker8.budgetmaster.services.ImportService;
+import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.TagRepository;
 import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.templates.TemplateRepository;
@@ -259,6 +260,11 @@ public class DatabaseImportTest
 		Account destAccount2 = new Account("Destination_Account_2", AccountType.CUSTOM);
 		destAccount2.setID(2);
 
+		// tags
+		Tag tag1 = new Tag("Car");
+		List<Tag> tags = new ArrayList<>();
+		tags.add(tag1);
+
 		// transactions
 		List<Transaction> transactions = new ArrayList<>();
 		Transaction transaction1 = new Transaction();
@@ -266,7 +272,7 @@ public class DatabaseImportTest
 		transaction1.setName("ShouldGoInAccount_1");
 		transaction1.setAmount(200);
 		transaction1.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
-		transaction1.setTags(new ArrayList<>());
+		transaction1.setTags(tags);
 		transactions.add(transaction1);
 
 		Transaction transaction2 = new Transaction();
@@ -277,13 +283,17 @@ public class DatabaseImportTest
 		transaction2.setTags(new ArrayList<>());
 		transactions.add(transaction2);
 
-		List<Template> templates = new ArrayList<>();
+		// templates
 		Template template = new Template();
 		template.setTemplateName("MyTemplate");
 		template.setAmount(1500);
 		template.setName("Transaction from Template");
+		List<Tag> tags2 = new ArrayList<>();
+		tags2.add(tag1);
+		template.setTags(tags2);
+
+		List<Template> templates = new ArrayList<>();
 		templates.add(template);
-		template.setTags(new ArrayList<>());
 
 		// database
 		Database database = new Database(new ArrayList<>(), accounts, transactions, templates);
@@ -307,7 +317,7 @@ public class DatabaseImportTest
 		expectedTransaction1.setName("ShouldGoInAccount_1");
 		expectedTransaction1.setAmount(200);
 		expectedTransaction1.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
-		expectedTransaction1.setTags(new ArrayList<>());
+		expectedTransaction1.setTags(tags);
 
 		Transaction expectedTransaction2 = new Transaction();
 		expectedTransaction2.setAccount(destAccount2);

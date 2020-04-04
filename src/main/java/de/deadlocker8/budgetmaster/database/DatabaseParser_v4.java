@@ -4,8 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import de.deadlocker8.budgetmaster.accounts.Account;
-import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import org.slf4j.Logger;
