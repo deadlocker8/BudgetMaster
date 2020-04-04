@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.tags;
 
 import de.deadlocker8.budgetmaster.ProgramArgs;
+import de.deadlocker8.budgetmaster.templates.TemplateRepository;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,12 +18,14 @@ public class TagScheduler
 
 	private TagRepository tagRepository;
 	private TransactionRepository transactionRepository;
+	private TemplateRepository templateRepository;
 
 	@Autowired
-	public TagScheduler(TagRepository tagRepository, TransactionRepository transactionRepository)
+	public TagScheduler(TagRepository tagRepository, TransactionRepository transactionRepository, TemplateRepository templateRepository)
 	{
 		this.tagRepository = tagRepository;
 		this.transactionRepository = transactionRepository;
+		this.templateRepository = templateRepository;
 	}
 
 	@Scheduled(fixedRate = 15*60*1000)
@@ -36,7 +39,8 @@ public class TagScheduler
 		List<Tag> tags = tagRepository.findAll();
 		for(Tag tag : tags)
 		{
-			if(transactionRepository.findAllByTagsContaining(tag).isEmpty())
+			if(transactionRepository.findAllByTagsContaining(tag).isEmpty() &&
+					templateRepository.findAllByTagsContaining(tag).isEmpty())
 			{
 				tagRepository.delete(tag);
 			}
