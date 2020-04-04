@@ -8,7 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
@@ -29,8 +32,7 @@ public class AccountController extends BaseController
 		this.settingsService = settingsService;
 	}
 
-	@RequestMapping(value = "/accounts/{ID}/select")
-
+	@GetMapping(value = "/accounts/{ID}/select")
 	public String selectAccount(HttpServletRequest request, @PathVariable("ID") Integer ID)
 	{
 		accountService.selectAccount(ID);
@@ -42,7 +44,8 @@ public class AccountController extends BaseController
 		}
 		return "redirect:" + referer;
 	}
-	@RequestMapping(value = "/accounts/{ID}/setAsDefault")
+
+	@GetMapping(value = "/accounts/{ID}/setAsDefault")
 	public String setAsDefault(HttpServletRequest request, @PathVariable("ID") Integer ID)
 	{
 		accountService.setAsDefaultAccount(ID);
@@ -55,15 +58,15 @@ public class AccountController extends BaseController
 		return "redirect:" + referer;
 	}
 
-	@RequestMapping("/accounts")
-	public String accounts(HttpServletRequest request, Model model)
+	@GetMapping("/accounts")
+	public String accounts(Model model)
 	{
 		model.addAttribute("accounts", accountService.getAllAccountsAsc());
 		model.addAttribute("settings", settingsService.getSettings());
 		return "accounts/accounts";
 	}
 
-	@RequestMapping("/accounts/{ID}/requestDelete")
+	@GetMapping("/accounts/{ID}/requestDelete")
 	public String requestDeleteAccount(Model model, @PathVariable("ID") Integer ID)
 	{
 		model.addAttribute("accounts", accountService.getAllAccountsAsc());
@@ -72,7 +75,7 @@ public class AccountController extends BaseController
 		return "accounts/accounts";
 	}
 
-	@RequestMapping("/accounts/{ID}/delete")
+	@GetMapping("/accounts/{ID}/delete")
 	public String deleteAccountAndReferringTransactions(Model model, @PathVariable("ID") Integer ID)
 	{
 		if(accountRepository.findAllByType(AccountType.CUSTOM).size() > 1)
@@ -88,7 +91,7 @@ public class AccountController extends BaseController
 		return "accounts/accounts";
 	}
 
-	@RequestMapping("/accounts/newAccount")
+	@GetMapping("/accounts/newAccount")
 	public String newAccount(Model model)
 	{
 		Account emptyAccount = new Account();
@@ -97,7 +100,7 @@ public class AccountController extends BaseController
 		return "accounts/newAccount";
 	}
 
-	@RequestMapping("/accounts/{ID}/edit")
+	@GetMapping("/accounts/{ID}/edit")
 	public String editAccount(Model model, @PathVariable("ID") Integer ID)
 	{
 		Optional<Account> accountOptional = accountRepository.findById(ID);

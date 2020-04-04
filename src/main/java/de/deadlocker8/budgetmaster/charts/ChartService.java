@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ChartService implements Resetable
@@ -35,6 +36,17 @@ public class ChartService implements Resetable
 	public void deleteAll()
 	{
 		chartRepository.deleteAll();
+	}
+
+	@SuppressWarnings("OptionalIsPresent")
+	public boolean isDeletable(Integer ID)
+	{
+		Optional<Chart> chartOptional = getRepository().findById(ID);
+		if(chartOptional.isPresent())
+		{
+			return chartOptional.get().getType() == ChartType.CUSTOM;
+		}
+		return false;
 	}
 
 	@Override

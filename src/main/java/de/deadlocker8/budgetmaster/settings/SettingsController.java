@@ -175,7 +175,7 @@ public class SettingsController extends BaseController
 		return Optional.empty();
 	}
 
-	@RequestMapping("/settings/database/requestExport")
+	@GetMapping("/settings/database/requestExport")
 	public void downloadFile(HttpServletResponse response)
 	{
 		LOGGER.debug("Exporting database...");
@@ -203,7 +203,7 @@ public class SettingsController extends BaseController
 		}
 	}
 
-	@RequestMapping("/settings/database/requestDelete")
+	@GetMapping("/settings/database/requestDelete")
 	public String requestDeleteDatabase(Model model)
 	{
 		String verificationCode = RandomUtils.generateRandomString(RandomUtils.RandomType.BASE_58, 4, RandomUtils.RandomStringPolicy.UPPER, RandomUtils.RandomStringPolicy.DIGIT);
@@ -236,7 +236,7 @@ public class SettingsController extends BaseController
 		return "settings/settings";
 	}
 
-	@RequestMapping("/settings/database/requestImport")
+	@GetMapping("/settings/database/requestImport")
 	public String requestImportDatabase(Model model)
 	{
 		model.addAttribute("importDatabase", true);
@@ -275,7 +275,7 @@ public class SettingsController extends BaseController
 		}
 	}
 
-	@RequestMapping("/settings/database/accountMatcher")
+	@GetMapping("/settings/database/accountMatcher")
 	public String openAccountMatcher(WebRequest request, Model model)
 	{
 		model.addAttribute("database", request.getAttribute("database", WebRequest.SCOPE_SESSION));
@@ -284,7 +284,7 @@ public class SettingsController extends BaseController
 		return "settings/import";
 	}
 
-	@RequestMapping("/settings/database/import")
+	@PostMapping("/settings/database/import")
 	public String importDatabase(WebRequest request, @ModelAttribute("Import") AccountMatchList accountMatchList, Model model)
 	{
 		importService.importDatabase((Database) request.getAttribute("database", WebRequest.SCOPE_SESSION), accountMatchList);
@@ -295,14 +295,14 @@ public class SettingsController extends BaseController
 		return "settings/settings";
 	}
 
-	@RequestMapping("/updateSearch")
+	@GetMapping("/updateSearch")
 	public String updateSearch()
 	{
 		budgetMasterUpdateService.getUpdateService().fetchCurrentVersion();
 		return "redirect:/settings";
 	}
 
-	@RequestMapping("/update")
+	@GetMapping("/update")
 	public String update(Model model)
 	{
 		model.addAttribute("performUpdate", true);
@@ -313,7 +313,7 @@ public class SettingsController extends BaseController
 		return "settings/settings";
 	}
 
-	@RequestMapping("/performUpdate")
+	@GetMapping("/performUpdate")
 	public String performUpdate()
 	{
 		if(budgetMasterUpdateService.isRunningFromSource())

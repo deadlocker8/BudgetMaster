@@ -11,6 +11,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
@@ -27,7 +29,7 @@ public class SearchController extends BaseController
 		this.settingsService = settingsService;
 	}
 
-	@RequestMapping(value = "/search")
+	@GetMapping(value = "/search")
 	public String search(Model model, Search search)
 	{
 		if(search.isEmptySearch())

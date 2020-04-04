@@ -52,6 +52,18 @@ public class CategoryService implements Resetable
 		categoryRepository.deleteById(ID);
 	}
 
+	@SuppressWarnings("OptionalIsPresent")
+	public boolean isDeletable(Integer ID)
+	{
+		Optional<Category> categoryOptional = getRepository().findById(ID);
+		if(categoryOptional.isPresent())
+		{
+			return categoryOptional.get().getType() == CategoryType.CUSTOM;
+		}
+
+		return false;
+	}
+
 	@Override
 	public void deleteAll()
 	{

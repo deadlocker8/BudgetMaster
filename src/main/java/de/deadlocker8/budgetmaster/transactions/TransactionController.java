@@ -67,7 +67,7 @@ public class TransactionController extends BaseController
 		this.filterHelpers = filterHelpers;
 	}
 
-	@RequestMapping("/transactions")
+	@GetMapping("/transactions")
 	public String transactions(HttpServletRequest request, Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
 	{
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
@@ -78,7 +78,7 @@ public class TransactionController extends BaseController
 		return "transactions/transactions";
 	}
 
-	@RequestMapping("/transactions/{ID}/requestDelete")
+	@GetMapping("/transactions/{ID}/requestDelete")
 	public String requestDeleteTransaction(HttpServletRequest request, Model model, @PathVariable("ID") Integer ID, @CookieValue("currentDate") String cookieDate)
 	{
 		if(!transactionService.isDeletable(ID))
@@ -106,14 +106,14 @@ public class TransactionController extends BaseController
 		model.addAttribute("settings", settingsService.getSettings());
 	}
 
-	@RequestMapping("/transactions/{ID}/delete")
+	@GetMapping("/transactions/{ID}/delete")
 	public String deleteTransaction(@PathVariable("ID") Integer ID)
 	{
 		transactionService.deleteTransaction(ID);
 		return "redirect:/transactions";
 	}
 
-	@RequestMapping("/transactions/newTransaction/{type}")
+	@GetMapping("/transactions/newTransaction/{type}")
 	public String newTransaction(Model model, @CookieValue("currentDate") String cookieDate, @PathVariable String type)
 	{
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
@@ -278,7 +278,7 @@ public class TransactionController extends BaseController
 		return "redirect:/transactions";
 	}
 
-	@RequestMapping("/transactions/{ID}/edit")
+	@GetMapping("/transactions/{ID}/edit")
 	public String editTransaction(Model model, @CookieValue("currentDate") String cookieDate, @PathVariable("ID") Integer ID)
 	{
 		Optional<Transaction> transactionOptional = transactionService.getRepository().findById(ID);
@@ -346,7 +346,7 @@ public class TransactionController extends BaseController
 		return transaction;
 	}
 
-	@RequestMapping("/transactions/{ID}/highlight")
+	@GetMapping("/transactions/{ID}/highlight")
 	public String highlight(Model model, @PathVariable("ID") Integer ID)
 	{
 		Transaction transaction = transactionService.getRepository().getOne(ID);

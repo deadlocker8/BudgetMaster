@@ -34,7 +34,7 @@ public class CategoryController extends BaseController
 		this.settingsService = settingsService;
 	}
 
-	@RequestMapping("/categories")
+	@GetMapping("/categories")
 	public String categories(Model model)
 	{
 		model.addAttribute("categories", categoryService.getRepository().findAllByOrderByNameAsc());
@@ -42,10 +42,10 @@ public class CategoryController extends BaseController
 		return "categories/categories";
 	}
 
-	@RequestMapping("/categories/{ID}/requestDelete")
+	@GetMapping("/categories/{ID}/requestDelete")
 	public String requestDeleteCategory(Model model, @PathVariable("ID") Integer ID)
 	{
-		if(!isDeletable(ID))
+		if(!categoryService.isDeletable(ID))
 		{
 			return "redirect:/categories";
 		}
@@ -65,7 +65,7 @@ public class CategoryController extends BaseController
 	@PostMapping(value = "/categories/{ID}/delete")
 	public String deleteCategory(Model model, @PathVariable("ID") Integer ID, @ModelAttribute("DestinationCategory") DestinationCategory destinationCategory)
 	{
-		if(isDeletable(ID))
+		if(categoryService.isDeletable(ID))
 		{
 			categoryService.deleteCategory(ID, destinationCategory.getCategory());
 		}
@@ -73,19 +73,7 @@ public class CategoryController extends BaseController
 		return "redirect:/categories";
 	}
 
-	@SuppressWarnings("OptionalIsPresent")
-	private boolean isDeletable(Integer ID)
-	{
-		Optional<Category> categoryOptional = categoryService.getRepository().findById(ID);
-		if(categoryOptional.isPresent())
-		{
-			return categoryOptional.get().getType() == CategoryType.CUSTOM;
-		}
-
-		return false;
-	}
-
-	@RequestMapping("/categories/newCategory")
+	@GetMapping("/categories/newCategory")
 	public String newCategory(Model model)
 	{
 		//add custom color (defaults to white here because we are adding a new category instead of editing an existing)
@@ -96,7 +84,7 @@ public class CategoryController extends BaseController
 		return "categories/newCategory";
 	}
 
-	@RequestMapping("/categories/{ID}/edit")
+	@GetMapping("/categories/{ID}/edit")
 	public String editCategory(Model model, @PathVariable("ID") Integer ID)
 	{
 		Optional<Category> categoryOptional = categoryService.getRepository().findById(ID);

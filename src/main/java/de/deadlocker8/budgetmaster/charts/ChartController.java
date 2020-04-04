@@ -49,7 +49,7 @@ public class ChartController extends BaseController
 		this.transactionService = transactionService;
 	}
 
-	@RequestMapping("/charts")
+	@GetMapping("/charts")
 	public String charts(Model model)
 	{
 		List<Chart> charts = chartService.getRepository().findAllByOrderByNameAsc();
@@ -88,7 +88,7 @@ public class ChartController extends BaseController
 		return "charts/charts";
 	}
 
-	@RequestMapping("/charts/manage")
+	@GetMapping("/charts/manage")
 	public String manage(Model model)
 	{
 		model.addAttribute("charts", chartService.getRepository().findAllByOrderByNameAsc());
@@ -96,7 +96,7 @@ public class ChartController extends BaseController
 		return "charts/manage";
 	}
 
-	@RequestMapping("/charts/newChart")
+	@GetMapping("/charts/newChart")
 	public String newChart(Model model)
 	{
 		Chart emptyChart = DefaultCharts.CHART_DEFAULT;
@@ -105,7 +105,7 @@ public class ChartController extends BaseController
 		return "charts/newChart";
 	}
 
-	@RequestMapping("/charts/{ID}/edit")
+	@GetMapping("/charts/{ID}/edit")
 	public String editChart(Model model, @PathVariable("ID") Integer ID)
 	{
 		Optional<Chart> chartOptional = chartService.getRepository().findById(ID);
@@ -165,10 +165,10 @@ public class ChartController extends BaseController
 		return "redirect:/charts/manage";
 	}
 
-	@RequestMapping("/charts/{ID}/requestDelete")
+	@GetMapping("/charts/{ID}/requestDelete")
 	public String requestDeleteChart(Model model, @PathVariable("ID") Integer ID)
 	{
-		if(!isDeletable(ID))
+		if(!chartService.isDeletable(ID))
 		{
 			return "redirect:/charts/manage";
 		}
@@ -179,25 +179,14 @@ public class ChartController extends BaseController
 		return "charts/manage";
 	}
 
-	@RequestMapping(value = "/charts/{ID}/delete")
+	@GetMapping(value = "/charts/{ID}/delete")
 	public String deleteChart(Model model, @PathVariable("ID") Integer ID)
 	{
-		if(isDeletable(ID))
+		if(chartService.isDeletable(ID))
 		{
 			chartService.getRepository().deleteById(ID);
 		}
 
 		return "redirect:/charts/manage";
-	}
-
-	@SuppressWarnings("OptionalIsPresent")
-	private boolean isDeletable(Integer ID)
-	{
-		Optional<Chart> chartOptional = chartService.getRepository().findById(ID);
-		if(chartOptional.isPresent())
-		{
-			return chartOptional.get().getType() == ChartType.CUSTOM;
-		}
-		return false;
 	}
 }

@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmaster.filter;
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +28,7 @@ public class FilterController extends BaseController
 		return "redirect:" + request.getHeader("Referer");
 	}
 
-	@RequestMapping("/filter/reset")
+	@GetMapping("/filter/reset")
 	public String reset(WebRequest request)
 	{
 		FilterConfiguration filterConfiguration = FilterConfiguration.DEFAULT;
