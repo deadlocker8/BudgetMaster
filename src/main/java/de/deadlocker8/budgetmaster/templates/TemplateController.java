@@ -13,11 +13,13 @@ import java.util.ArrayList;
 @Controller
 public class TemplateController extends BaseController
 {
+	private final TemplateService templateService;
 	private final SettingsService settingsService;
 
 	@Autowired
-	public TemplateController(SettingsService settingsService)
+	public TemplateController(TemplateService templateService, SettingsService settingsService)
 	{
+		this.templateService = templateService;
 		this.settingsService = settingsService;
 	}
 
@@ -25,7 +27,7 @@ public class TemplateController extends BaseController
 	public String showTemplates(Model model)
 	{
 		model.addAttribute("settings", settingsService.getSettings());
-		model.addAttribute("templates", new ArrayList<>());
+		model.addAttribute("templates", templateService.getRepository().findAllByOrderByTemplateNameAsc());
 		return "templates/templates";
 	}
 
@@ -33,7 +35,7 @@ public class TemplateController extends BaseController
 	public String manage(Model model)
 	{
 		model.addAttribute("settings", settingsService.getSettings());
-		model.addAttribute("templates", new ArrayList<>());
+		model.addAttribute("templates", templateService.getRepository().findAllByOrderByTemplateNameAsc());
 		return "templates/manage";
 	}
 }
