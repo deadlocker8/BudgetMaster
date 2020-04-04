@@ -153,7 +153,7 @@ public class DatabaseImportTest
 		Account destinationAccount = new Account("DestinationAccount_1", AccountType.CUSTOM);
 		destinationAccount.setID(5);
 
-		List<Transaction> transactionList = new ArrayList<>();
+		List<TransactionBase> transactionList = new ArrayList<>();
 		Transaction transaction1 = new Transaction();
 		transaction1.setAccount(account1);
 		transaction1.setName("ShouldGoInAccount_1");
@@ -168,7 +168,7 @@ public class DatabaseImportTest
 		transaction2.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
 		transactionList.add(transaction2);
 
-		List<Transaction> updatedTransactions = importService.updateAccountsForTransactions(transactionList, account1.getID(), destinationAccount);
+		List<TransactionBase> updatedTransactions = importService.updateAccountsForTransactions(transactionList, account1.getID(), destinationAccount);
 		assertThat(updatedTransactions).hasSize(1);
 		assertThat(updatedTransactions.get(0).getAccount().getID()).isEqualTo(5);
 	}
@@ -184,7 +184,7 @@ public class DatabaseImportTest
 		Account destinationAccount = new Account("DestinationAccount_1", AccountType.CUSTOM);
 		destinationAccount.setID(5);
 
-		List<Transaction> transactionList = new ArrayList<>();
+		List<TransactionBase> transactionList = new ArrayList<>();
 		Transaction transaction = new Transaction();
 		transaction.setAccount(account1);
 		transaction.setTransferAccount(transferAccount);

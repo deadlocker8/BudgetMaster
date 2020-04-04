@@ -139,16 +139,18 @@ public class ImportService
 	private void importAccounts(AccountMatchList accountMatchList)
 	{
 		LOGGER.debug("Importing " + accountMatchList.getAccountMatches().size() + " accounts...");
-		List<Transaction> alreadyUpdatedTransactions = new ArrayList<>();
-		List<Transaction> alreadyUpdatedTransferTransactions = new ArrayList<>();
+		List<TransactionBase> alreadyUpdatedTransactions = new ArrayList<>();
+		List<TransactionBase> alreadyUpdatedTransferTransactions = new ArrayList<>();
+		List<TransactionBase> alreadyUpdatedTemplates = new ArrayList<>();
+
 		for(AccountMatch accountMatch : accountMatchList.getAccountMatches())
 		{
 			LOGGER.debug("Importing account " + accountMatch.getAccountSource().getName() + " -> " + accountMatch.getAccountDestination().getName());
 
-			List<Transaction> transactions = new ArrayList<>(database.getTransactions());
+			List<TransactionBase> transactions = new ArrayList<>(database.getTransactions());
 			transactions.removeAll(alreadyUpdatedTransactions);
 
-			List<Transaction> transferTransactions = new ArrayList<>(database.getTransactions());
+			List<TransactionBase> transferTransactions = new ArrayList<>(database.getTransactions());
 			transferTransactions.removeAll(alreadyUpdatedTransferTransactions);
 
 			alreadyUpdatedTransactions.addAll(updateAccountsForTransactions(transactions, accountMatch.getAccountSource().getID(), accountMatch.getAccountDestination()));
@@ -158,10 +160,10 @@ public class ImportService
 		LOGGER.debug("Importing accounts DONE");
 	}
 
-	public List<Transaction> updateAccountsForTransactions(List<Transaction> transactions, int oldAccountID, Account newAccount)
+	public List<TransactionBase> updateAccountsForTransactions(List<TransactionBase> transactions, int oldAccountID, Account newAccount)
 	{
-		List<Transaction> updatedTransactions = new ArrayList<>();
-		for(Transaction transaction : transactions)
+		List<TransactionBase> updatedTransactions = new ArrayList<>();
+		for(TransactionBase transaction : transactions)
 		{
 			// legacy database
 			if(oldAccountID == -1)
@@ -184,10 +186,10 @@ public class ImportService
 		return updatedTransactions;
 	}
 
-	public List<Transaction> updateTransferAccountsForTransactions(List<Transaction> transactions, int oldAccountID, Account newAccount)
+	public List<TransactionBase> updateTransferAccountsForTransactions(List<TransactionBase> transactions, int oldAccountID, Account newAccount)
 	{
-		List<Transaction> updatedTransactions = new ArrayList<>();
-		for(Transaction transaction : transactions)
+		List<TransactionBase> updatedTransactions = new ArrayList<>();
+		for(TransactionBase transaction : transactions)
 		{
 			if(transaction.getTransferAccount() != null && transaction.getTransferAccount().getID() == oldAccountID)
 			{
