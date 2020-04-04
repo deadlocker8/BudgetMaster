@@ -66,6 +66,7 @@ public class DatabaseService
 	public void reset()
 	{
 		resetTransactions();
+		resetTemplates();
 		resetCategories();
 		resetAccounts();
 		resetTags();
@@ -101,6 +102,14 @@ public class DatabaseService
 		tagService.deleteAll();
 		tagService.createDefaults();
 		LOGGER.info("All tags reset.");
+	}
+
+	private void resetTemplates()
+	{
+		LOGGER.info("Resetting templates...");
+		templateService.deleteAll();
+		templateService.createDefaults();
+		LOGGER.info("All templates reset.");
 	}
 
 	public void rotatingBackup(Path backupFolderPath)
