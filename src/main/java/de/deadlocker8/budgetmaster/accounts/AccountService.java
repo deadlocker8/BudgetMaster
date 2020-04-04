@@ -91,7 +91,7 @@ public class AccountService implements Resetable
 			accountRepository.save(placeholder);
 			LOGGER.debug("Created placeholder account");
 
-			Account account =  accountRepository.save(new Account(Localization.getString(Strings.ACCOUNT_DEFAULT_NAME), AccountType.CUSTOM));
+			Account account = accountRepository.save(new Account(Localization.getString(Strings.ACCOUNT_DEFAULT_NAME), AccountType.CUSTOM));
 			selectAccount(account.getID());
 			setAsDefaultAccount(account.getID());
 			LOGGER.debug("Created default account");
