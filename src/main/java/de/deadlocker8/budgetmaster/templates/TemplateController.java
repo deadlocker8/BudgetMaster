@@ -7,8 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.ArrayList;
-
 
 @Controller
 public class TemplateController extends BaseController
@@ -31,11 +29,11 @@ public class TemplateController extends BaseController
 		return "templates/templates";
 	}
 
-	@GetMapping("/templates/manage")
+	@GetMapping("/templates/select")
 	public String manage(Model model)
 	{
 		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("templates", templateService.getRepository().findAllByOrderByTemplateNameAsc());
-		return "templates/manage";
+		return "templates/selectTemplate";
 	}
 }

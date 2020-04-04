@@ -18,15 +18,46 @@
                     </div>
                 </div>
                 <br>
-                <div class="center-align"><a href="<@s.url '/templates/manage'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">edit</i>${locale.getString("home.menu.templates.action.manage")}</a></div>
+                <@templateFunctions.buttons/>
                 <br>
                 <div class="container">
                     <#if templates?size == 0>
                         <div class="headline center-align">${locale.getString("placeholder")}</div>
                     <#else>
+                        <table class="bordered">
+                            <thead>
+                                <tr>
+                                    <th>${locale.getString("chart.new.label.name")}</th>
+                                    <th>${locale.getString("chart.actions")}</th>
+                                </tr>
+                            </thead>
+                            <#list templates as template>
+                                <tr>
+                                    <td>${template.getName()}</td>
+                                    <td>
+                                        <a href="<@s.url '/templates/${template.ID?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
+                                        <a href="<@s.url '/templates/${template.ID?c}/requestDelete'/>" class="btn-flat no-padding text-color"><i class="material-icons left">delete</i></a>
+                                    </td>
+                                </tr>
+                            </#list>
+                        </table>
                     </#if>
                 </div>
             </div>
+
+            <#if currentTemplate??>
+                <!-- confirm delete modal -->
+                <div id="modalConfirmDelete" class="modal background-color">
+                    <div class="modal-content">
+                        <h4>${locale.getString("info.title.template.delete")}</h4>
+                        <p>${locale.getString("info.text.template.delete", currentTemplate.getName())}</p>
+                    </div>
+                    <div class="modal-footer background-color">
+                        <a href="<@s.url '/templates/manage'/>" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
+                        <a href="<@s.url '/templates/${currentTemplate.getID()?c}/delete'/>" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("info.title.template.delete")}</a>
+                    </div>
+                </div>
+            </#if>
         </main>
 
         <#import "../helpers/scripts.ftl" as scripts>
