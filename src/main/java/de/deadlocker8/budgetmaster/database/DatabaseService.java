@@ -214,7 +214,7 @@ public class DatabaseService
 		LOGGER.debug("Reduced " + transactions.size() + " transactions to " + filteredTransactions.size());
 
 		Database database = new Database(categories, accounts, filteredTransactions, templates);
-		LOGGER.debug("Created database for JSON with " + database.getTransactions().size() + " transactions, " + database.getCategories().size() + " categories and " + database.getAccounts().size() + " accounts");
+		LOGGER.debug("Created database for JSON with " + database.getTransactions().size() + " transactions, " + database.getCategories().size() + " categories and " + database.getAccounts().size() + " accounts and " + database.getTemplates().size() + " templates");
 		return database;
 	}
 

@@ -51,7 +51,7 @@ public class DatabaseParser
 			if(version == 4)
 			{
 				final Database database = new DatabaseParser_v4(jsonString).parseDatabaseFromJSON();
-				LOGGER.debug("Parsed database with " + database.getTransactions().size() + " transactions, " + database.getCategories().size() + " categories and " + database.getAccounts().size() + " accounts and" + database.getTemplates().size() + " templates");
+				LOGGER.debug("Parsed database with " + database.getTransactions().size() + " transactions, " + database.getCategories().size() + " categories and " + database.getAccounts().size() + " accounts and " + database.getTemplates().size() + " templates");
 				return database;
 			}
 
