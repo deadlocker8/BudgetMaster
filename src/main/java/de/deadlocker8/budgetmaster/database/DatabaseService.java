@@ -11,6 +11,8 @@ import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.tags.TagService;
+import de.deadlocker8.budgetmaster.templates.Template;
+import de.deadlocker8.budgetmaster.templates.TemplateService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.thecodelabs.utils.io.PathUtils;
@@ -47,16 +49,17 @@ public class DatabaseService
 	private CategoryService categoryService;
 	private TransactionService transactionService;
 	private TagService tagService;
+	private TemplateService templateService;
 	private SettingsService settingsService;
 
-
 	@Autowired
-	public DatabaseService(AccountService accountService, CategoryService categoryService, TransactionService transactionService, TagService tagService, SettingsService settingsService)
+	public DatabaseService(AccountService accountService, CategoryService categoryService, TransactionService transactionService, TagService tagService, TemplateService templateService, SettingsService settingsService)
 	{
 		this.accountService = accountService;
 		this.categoryService = categoryService;
 		this.transactionService = transactionService;
 		this.tagService = tagService;
+		this.templateService = templateService;
 		this.settingsService = settingsService;
 	}
 
@@ -207,9 +210,10 @@ public class DatabaseService
 		List<Account> accounts = accountService.getRepository().findAll();
 		List<Transaction> transactions = transactionService.getRepository().findAll();
 		List<Transaction> filteredTransactions = filterRepeatingTransactions(transactions);
+		List<Template> templates = templateService.getRepository().findAll();
 		LOGGER.debug("Reduced " + transactions.size() + " transactions to " + filteredTransactions.size());
 
-		Database database = new Database(categories, accounts, filteredTransactions);
+		Database database = new Database(categories, accounts, filteredTransactions, templates);
 		LOGGER.debug("Created database for JSON with " + database.getTransactions().size() + " transactions, " + database.getCategories().size() + " categories and " + database.getAccounts().size() + " accounts");
 		return database;
 	}
