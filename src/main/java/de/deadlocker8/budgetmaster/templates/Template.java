@@ -168,13 +168,22 @@ public class Template
 	{
 		String value = "Template{" +
 				"ID=" + ID +
-				", templateName=" + templateName +
+				", templateName='" + templateName + '\'' +
 				", amount=" + amount +
-				", account=Account[ID=" + account.getID() + ", name=" + account.getName() + "]" +
 				", category=" + category +
 				", name='" + name + '\'' +
 				", description='" + description + '\'' +
 				", tags=" + tags;
+
+		if(account == null)
+		{
+			value += ", account=null";
+		}
+		else
+		{
+			value += ", account=Account[ID=" + account.getID() + ", name=" + account.getName() + "]";
+		}
+
 		if(transferAccount == null)
 		{
 			value += ", transferAccount=null";

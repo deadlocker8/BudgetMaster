@@ -21,8 +21,8 @@ public class DatabaseParser_v3
 {
 	final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private String jsonString;
-	private List<Category> categories;
-	private List<Account> accounts;
+	protected List<Category> categories;
+	protected List<Account> accounts;
 
 	public DatabaseParser_v3(String json)
 	{
@@ -39,7 +39,7 @@ public class DatabaseParser_v3
 		return new Database(categories, accounts, transactions, new ArrayList<>());
 	}
 
-	private List<Category> parseCategories(JsonObject root)
+	protected List<Category> parseCategories(JsonObject root)
 	{
 		List<Category> parsedCategories = new ArrayList<>();
 		JsonArray categories = root.get("categories").getAsJsonArray();
@@ -52,7 +52,7 @@ public class DatabaseParser_v3
 		return parsedCategories;
 	}
 
-	private List<Account> parseAccounts(JsonObject root)
+	protected List<Account> parseAccounts(JsonObject root)
 	{
 		List<Account> parsedAccounts = new ArrayList<>();
 		JsonArray accounts = root.get("accounts").getAsJsonArray();
@@ -64,7 +64,7 @@ public class DatabaseParser_v3
 		return parsedAccounts;
 	}
 
-	private List<Transaction> parseTransactions(JsonObject root)
+	protected List<Transaction> parseTransactions(JsonObject root)
 	{
 		List<Transaction> parsedTransactions = new ArrayList<>();
 		JsonArray transactions = root.get("transactions").getAsJsonArray();
@@ -147,7 +147,7 @@ public class DatabaseParser_v3
 		return repeatingOption;
 	}
 
-	private List<Tag> parseTags(JsonObject transaction)
+	protected List<Tag> parseTags(JsonObject transaction)
 	{
 		List<Tag> parsedTags = new ArrayList<>();
 		JsonArray tags = transaction.get("tags").getAsJsonArray();
@@ -159,7 +159,7 @@ public class DatabaseParser_v3
 		return parsedTags;
 	}
 
-	private Category getCategoryByID(int ID)
+	protected Category getCategoryByID(int ID)
 	{
 		for(Category category : categories)
 		{
@@ -172,7 +172,7 @@ public class DatabaseParser_v3
 		return null;
 	}
 
-	private Account getAccountByID(int ID)
+	protected Account getAccountByID(int ID)
 	{
 		for(Account account : accounts)
 		{
