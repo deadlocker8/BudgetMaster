@@ -24,7 +24,7 @@ public class DatabaseParser
 	{
 		try
 		{
-			JsonObject root = new JsonParser().parse(jsonString).getAsJsonObject();
+			JsonObject root = JsonParser.parseString(jsonString).getAsJsonObject();
 			String type = root.get("TYPE").getAsString();
 			if(!type.equals(JSONIdentifier.BUDGETMASTER_DATABASE.toString()))
 			{

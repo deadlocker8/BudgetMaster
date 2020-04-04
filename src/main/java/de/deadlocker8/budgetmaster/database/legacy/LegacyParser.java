@@ -44,7 +44,7 @@ public class LegacyParser
 
 	public Database parseDatabaseFromJSON()
 	{
-		JsonObject root = new JsonParser().parse(jsonString).getAsJsonObject();
+		JsonObject root = JsonParser.parseString(jsonString).getAsJsonObject();
 		categories = new ArrayList<>(parseCategories(root));
 		tags = parseTags(root);
 		tagMatches = parseTagMatches(root);

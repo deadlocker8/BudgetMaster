@@ -31,7 +31,7 @@ public class DatabaseParser_v3
 
 	public Database parseDatabaseFromJSON() throws IllegalArgumentException
 	{
-		JsonObject root = new JsonParser().parse(jsonString).getAsJsonObject();
+		JsonObject root = JsonParser.parseString(jsonString).getAsJsonObject();
 		categories = parseCategories(root);
 		accounts = parseAccounts(root);
 		List<Transaction> transactions = parseTransactions(root);
