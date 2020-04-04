@@ -10,7 +10,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Entity
 public class Template implements TransactionBase
@@ -63,7 +62,7 @@ public class Template implements TransactionBase
 		this.templateName = template.getTemplateName();
 		this.amount = template.getAmount();
 		this.account = template.getAccount();
-		template.getCategory().ifPresent(value -> this.category = value);
+		this.category = template.getCategory();
 		this.name = template.getName();
 		this.description = template.getDescription();
 		this.tags = new ArrayList<>(template.getTags());
@@ -110,9 +109,9 @@ public class Template implements TransactionBase
 		this.account = account;
 	}
 
-	public Optional<Category> getCategory()
+	public Category getCategory()
 	{
-		return Optional.ofNullable(category);
+		return category;
 	}
 
 	public void setCategory(Category category)

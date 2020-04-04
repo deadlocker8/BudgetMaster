@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface TransactionBase
 {
-	Optional<Category> getCategory();
+	Category getCategory();
 
 	List<Tag> getTags();
 }

@@ -71,7 +71,7 @@ public class DatabaseImportTest
 
 		List<TransactionBase> updatedTransactions = importService.updateCategoriesForItems(transactionList, 3, 5);
 		assertThat(updatedTransactions).hasSize(1);
-		assertThat(updatedTransactions.get(0).getCategory()).isPresent().get().hasFieldOrPropertyWithValue("ID", 5);
+		assertThat(updatedTransactions.get(0).getCategory()).hasFieldOrPropertyWithValue("ID", 5);
 	}
 
 	@Test
@@ -103,7 +103,7 @@ public class DatabaseImportTest
 
 		List<TransactionBase> updatedTemplates = importService.updateCategoriesForItems(templateList, 3, 5);
 		assertThat(updatedTemplates).hasSize(1);
-		assertThat(updatedTemplates.get(0).getCategory()).isPresent().get().hasFieldOrPropertyWithValue("ID", 5);
+		assertThat(updatedTemplates.get(0).getCategory()).hasFieldOrPropertyWithValue("ID", 5);
 	}
 
 	@Test

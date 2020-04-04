@@ -17,10 +17,10 @@ public class CategoryBudgetHandler
 			CategoryBudget currentBudget = budgets.get(budgets.size() - 1);
 			for(Transaction currentTransaction : transactions)
 			{
-				final Optional<Category> categoryOptional = currentTransaction.getCategory();
-				if(categoryOptional.isPresent())
+				final Category category = currentTransaction.getCategory();
+				if(category != null)
 				{
-					if(currentCategory.getID().equals(categoryOptional.get().getID()))
+					if(currentCategory.getID().equals(category.getID()))
 					{
 						currentBudget.setBudget(currentBudget.getBudget() + currentTransaction.getAmount());
 					}

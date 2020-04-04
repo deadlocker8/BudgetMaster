@@ -69,7 +69,7 @@ public class Transaction implements TransactionBase
 		this.amount = transaction.getAmount();
 		this.date = transaction.getDate();
 		this.account = transaction.getAccount();
-		transaction.getCategory().ifPresent(value -> this.category = value);
+		this.category = transaction.getCategory();
 		this.name = transaction.getName();
 		this.description = transaction.getDescription();
 		this.tags = new ArrayList<>(transaction.getTags());
@@ -117,9 +117,9 @@ public class Transaction implements TransactionBase
 		this.account = account;
 	}
 
-	public Optional<Category> getCategory()
+	public Category getCategory()
 	{
-		return Optional.ofNullable(category);
+		return category;
 	}
 
 	public void setCategory(Category category)

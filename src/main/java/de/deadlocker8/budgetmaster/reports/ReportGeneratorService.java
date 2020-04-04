@@ -2,7 +2,6 @@ package de.deadlocker8.budgetmaster.reports;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
-import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.reports.categoryBudget.CategoryBudget;
 import de.deadlocker8.budgetmaster.reports.columns.ReportColumn;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -259,22 +257,18 @@ public class ReportGeneratorService
 
 	private String getProperty(Transaction transaction, ColumnType columnType, int position)
 	{
-		final Optional<Category> categoryOptional = transaction.getCategory();
 		switch(columnType)
 		{
 			case ACCOUNT:
-				if(categoryOptional.isPresent())
+				if(transaction.getCategory().getType().equals(CategoryType.REST))
 				{
-					if(categoryOptional.get().getType().equals(CategoryType.REST))
-					{
-						return null;
-					}
+					return null;
 				}
 				return transaction.getAccount().getName();
 			case AMOUNT:
 				return currencyService.getCurrencyString(transaction.getAmount());
 			case CATEGORY:
-				return categoryOptional.map(Category::getName).orElse(null);
+				return transaction.getCategory().getName();
 			case DATE:
 				return transaction.getDate().toString(DateFormatStyle.NO_YEAR.getKey());
 			case DESCRIPTION:

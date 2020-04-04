@@ -120,16 +120,16 @@ public class ImportService
 		List<TransactionBase> updatedItems = new ArrayList<>();
 		for(TransactionBase item : items)
 		{
-
-			final Optional<Category> categoryOptional = item.getCategory();
-			if(categoryOptional.isPresent())
+			final Category category = item.getCategory();
+			if(category == null)
 			{
-				final Category category = categoryOptional.get();
-				if(category.getID() == oldCategoryID)
-				{
-					category.setID(newCategoryID);
-					updatedItems.add(item);
-				}
+				continue;
+			}
+
+			if(category.getID() == oldCategoryID)
+			{
+				category.setID(newCategoryID);
+				updatedItems.add(item);
 			}
 		}
 
