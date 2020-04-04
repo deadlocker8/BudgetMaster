@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ImportService
@@ -149,38 +148,46 @@ public class ImportService
 
 			List<TransactionBase> transactions = new ArrayList<>(database.getTransactions());
 			transactions.removeAll(alreadyUpdatedTransactions);
+			alreadyUpdatedTransactions.addAll(updateAccountsForItems(transactions, accountMatch.getAccountSource().getID(), accountMatch.getAccountDestination()));
 
 			List<TransactionBase> transferTransactions = new ArrayList<>(database.getTransactions());
 			transferTransactions.removeAll(alreadyUpdatedTransferTransactions);
-
-			alreadyUpdatedTransactions.addAll(updateAccountsForTransactions(transactions, accountMatch.getAccountSource().getID(), accountMatch.getAccountDestination()));
 			alreadyUpdatedTransferTransactions.addAll(updateTransferAccountsForTransactions(transferTransactions, accountMatch.getAccountSource().getID(), accountMatch.getAccountDestination()));
+
+			List<TransactionBase> templates = new ArrayList<>(database.getTemplates());
+			transactions.removeAll(alreadyUpdatedTemplates);
+			alreadyUpdatedTemplates.addAll(updateAccountsForItems(templates, accountMatch.getAccountSource().getID(), accountMatch.getAccountDestination()));
 		}
 
 		LOGGER.debug("Importing accounts DONE");
 	}
 
-	public List<TransactionBase> updateAccountsForTransactions(List<TransactionBase> transactions, int oldAccountID, Account newAccount)
+	public List<TransactionBase> updateAccountsForItems(List<TransactionBase> items, int oldAccountID, Account newAccount)
 	{
 		List<TransactionBase> updatedTransactions = new ArrayList<>();
-		for(TransactionBase transaction : transactions)
+		for(TransactionBase item : items)
 		{
 			// legacy database
 			if(oldAccountID == -1)
 			{
-				transaction.setAccount(newAccount);
-				updatedTransactions.add(transaction);
+				item.setAccount(newAccount);
+				updatedTransactions.add(item);
 				continue;
 			}
 
-			// account needs to be updated
-			if(transaction.getAccount().getID() != oldAccountID)
+			if(item.getAccount() == null)
 			{
 				continue;
 			}
 
-			transaction.setAccount(newAccount);
-			updatedTransactions.add(transaction);
+			if(item.getAccount().getID() != oldAccountID)
+			{
+				continue;
+			}
+
+			// account needs to be updated
+			item.setAccount(newAccount);
+			updatedTransactions.add(item);
 		}
 
 		return updatedTransactions;

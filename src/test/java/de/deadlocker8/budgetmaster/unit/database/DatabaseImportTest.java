@@ -91,7 +91,7 @@ public class DatabaseImportTest
 		template1.setTags(new ArrayList<>());
 
 		Template template2 = new Template();
-		template2.setTemplateName("MyTemplate");
+		template2.setTemplateName("MyTemplate_2");
 		template2.setCategory(category2);
 		template2.setAmount(-525);
 		template2.setName("Test_2");
@@ -168,7 +168,7 @@ public class DatabaseImportTest
 		transaction2.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
 		transactionList.add(transaction2);
 
-		List<TransactionBase> updatedTransactions = importService.updateAccountsForTransactions(transactionList, account1.getID(), destinationAccount);
+		List<TransactionBase> updatedTransactions = importService.updateAccountsForItems(transactionList, account1.getID(), destinationAccount);
 		assertThat(updatedTransactions).hasSize(1);
 		assertThat(updatedTransactions.get(0).getAccount().getID()).isEqualTo(5);
 	}
@@ -204,6 +204,40 @@ public class DatabaseImportTest
 		assertThat(importService.updateTransferAccountsForTransactions(transactionList, transferAccount.getID(), destinationAccount))
 				.hasSize(1)
 				.contains(expectedTransaction);
+	}
+
+	@Test
+	public void test_updateAccountsForTemplates()
+	{
+		Account account1 = new Account("Account_1", AccountType.CUSTOM);
+		account1.setID(2);
+		Account account2 = new Account("Account_2", AccountType.CUSTOM);
+		account2.setID(3);
+
+		Account destinationAccount = new Account("DestinationAccount_1", AccountType.CUSTOM);
+		destinationAccount.setID(5);
+
+		Template template1 = new Template();
+		template1.setAccount(account1);
+		template1.setTemplateName("ShouldGoInAccount_1");
+		template1.setAmount(200);
+		template1.setName("Test");
+		template1.setTags(new ArrayList<>());
+
+		Template template2 = new Template();
+		template2.setAccount(account2);
+		template2.setTemplateName("ImPartOfAccount_2");
+		template2.setAmount(-525);
+		template2.setName("Test_2");
+		template2.setTags(new ArrayList<>());
+
+		List<TransactionBase> templateList = new ArrayList<>();
+		templateList.add(template1);
+		templateList.add(template2);
+
+		List<TransactionBase> updatedTransactions = importService.updateAccountsForItems(templateList, account1.getID(), destinationAccount);
+		assertThat(updatedTransactions).hasSize(1);
+		assertThat(updatedTransactions.get(0).getAccount().getID()).isEqualTo(5);
 	}
 
 	@Test
