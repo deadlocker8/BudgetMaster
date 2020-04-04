@@ -6,11 +6,11 @@ import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.DatabaseParser_v3;
-import de.deadlocker8.budgetmaster.tags.Tag;
-import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndAfterXTimes;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierDays;
+import de.deadlocker8.budgetmaster.tags.Tag;
+import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.Localization.LocalizationDelegate;
 import org.joda.time.DateTime;
@@ -26,8 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DatabaseParser_v3Test
 {
@@ -60,18 +59,17 @@ public class DatabaseParser_v3Test
 			DatabaseParser_v3 importer = new DatabaseParser_v3(json);
 			Database database = importer.parseDatabaseFromJSON();
 
-			assertEquals(3, database.getCategories().size());
-			Category categoryNone = new Category("Keine Kategorie", "#FFFFFF", CategoryType.NONE);
+			final Category categoryNone = new Category("Keine Kategorie", "#FFFFFF", CategoryType.NONE);
 			categoryNone.setID(1);
-			assertTrue(database.getCategories().contains(categoryNone));
 
-			Category categoryRest = new Category("Übertrag", "#FFFF00", CategoryType.REST);
+			final Category categoryRest = new Category("Übertrag", "#FFFF00", CategoryType.REST);
 			categoryRest.setID(2);
-			assertTrue(database.getCategories().contains(categoryRest));
 
-			Category category3 = new Category("0815", "#ffcc00", CategoryType.CUSTOM);
+			final Category category3 = new Category("0815", "#ffcc00", CategoryType.CUSTOM);
 			category3.setID(3);
-			assertTrue(database.getCategories().contains(category3));
+
+			assertThat(database.getCategories()).hasSize(3)
+					.contains(categoryNone, categoryRest, category3);
 		}
 		catch(IOException | URISyntaxException e)
 		{
@@ -88,10 +86,10 @@ public class DatabaseParser_v3Test
 			DatabaseParser_v3 importer = new DatabaseParser_v3(json);
 			Database database = importer.parseDatabaseFromJSON();
 
-			assertEquals(3, database.getAccounts().size());
-			assertEquals("Placeholder", database.getAccounts().get(0).getName());
-			assertEquals("Default", database.getAccounts().get(1).getName());
-			assertEquals("Second Account", database.getAccounts().get(2).getName());
+			assertThat(database.getAccounts()).hasSize(3);
+			assertThat(database.getAccounts().get(0)).hasFieldOrPropertyWithValue("name", "Placeholder");
+			assertThat(database.getAccounts().get(1)).hasFieldOrPropertyWithValue("name", "Default");
+			assertThat(database.getAccounts().get(2)).hasFieldOrPropertyWithValue("name", "Second Account");
 		}
 		catch(IOException | URISyntaxException e)
 		{
@@ -120,8 +118,6 @@ public class DatabaseParser_v3Test
 			Category category3 = new Category("0815", "#ffcc00", CategoryType.CUSTOM);
 			category3.setID(3);
 
-			assertEquals(6, database.getTransactions().size());
-
 			Transaction normalTransaction_1 = new Transaction();
 			normalTransaction_1.setAmount(35000);
 			normalTransaction_1.setDate(DateTime.parse("2018-03-13", DateTimeFormat.forPattern("yyyy-MM-dd")));
@@ -130,7 +126,6 @@ public class DatabaseParser_v3Test
 			normalTransaction_1.setDescription("Lorem Ipsum");
 			normalTransaction_1.setTags(new ArrayList<>());
 			normalTransaction_1.setAccount(account1);
-			assertTrue(database.getTransactions().contains(normalTransaction_1));
 
 			Transaction normalTransaction_2 = new Transaction();
 			normalTransaction_2.setAmount(-2000);
@@ -145,7 +140,6 @@ public class DatabaseParser_v3Test
 			tag.setID(1);
 			tags.add(tag);
 			normalTransaction_2.setTags(tags);
-			assertTrue(database.getTransactions().contains(normalTransaction_2));
 
 			Transaction repeatingTransaction_1 = new Transaction();
 			repeatingTransaction_1.setAmount(-12300);
@@ -161,7 +155,6 @@ public class DatabaseParser_v3Test
 			repeatingOption_1.setEndOption(new RepeatingEndAfterXTimes(2));
 			repeatingTransaction_1.setRepeatingOption(repeatingOption_1);
 			repeatingTransaction_1.setTags(new ArrayList<>());
-			assertTrue(database.getTransactions().contains(repeatingTransaction_1));
 
 			Transaction repeatingTransaction_2 = new Transaction();
 			repeatingTransaction_2.setAmount(-12300);
@@ -177,7 +170,6 @@ public class DatabaseParser_v3Test
 			repeatingOption_2.setEndOption(new RepeatingEndAfterXTimes(2));
 			repeatingTransaction_2.setRepeatingOption(repeatingOption_2);
 			repeatingTransaction_2.setTags(new ArrayList<>());
-			assertTrue(database.getTransactions().contains(repeatingTransaction_2));
 
 			Transaction transferTransaction = new Transaction();
 			transferTransaction.setAmount(-250);
@@ -188,7 +180,14 @@ public class DatabaseParser_v3Test
 			transferTransaction.setTransferAccount(account1);
 			transferTransaction.setCategory(category3);
 			transferTransaction.setTags(new ArrayList<>());
-			assertTrue(database.getTransactions().contains(transferTransaction));
+
+			assertThat(database.getTransactions()).hasSize(6)
+					.contains(normalTransaction_1,
+							normalTransaction_2,
+							repeatingTransaction_1,
+							repeatingTransaction_2,
+							transferTransaction);
+
 		}
 		catch(IOException | URISyntaxException e)
 		{
