@@ -10,6 +10,7 @@ import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
 import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.tags.TagRepository;
+import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import org.joda.time.DateTime;
@@ -17,15 +18,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class DatabaseImportTest
@@ -67,8 +65,8 @@ public class DatabaseImportTest
 		transactionList.add(transaction2);
 
 		List<Transaction> updatedTransactions = importService.updateCategoriesForTransactions(transactionList, 3, 5);
-		assertEquals(1, updatedTransactions.size());
-		assertEquals(new Integer(5), updatedTransactions.get(0).getCategory().getID());
+		assertThat(updatedTransactions).hasSize(1);
+		assertThat(updatedTransactions.get(0).getCategory().getID()).isEqualTo(5);
 	}
 
 	@Test
@@ -102,8 +100,9 @@ public class DatabaseImportTest
 		alreadyUpdatedTransactions.add(transaction1);
 
 		transactionList.removeAll(alreadyUpdatedTransactions);
-		assertEquals(1, transactionList.size());
-		assertEquals(transaction2, transactionList.get(0));
+		assertThat(transactionList)
+				.hasSize(1)
+				.contains(transaction2);
 	}
 
 	@Test
@@ -133,8 +132,8 @@ public class DatabaseImportTest
 		transactionList.add(transaction2);
 
 		List<Transaction> updatedTransactions = importService.updateAccountsForTransactions(transactionList, account1.getID(), destinationAccount);
-		assertEquals(1, updatedTransactions.size());
-		assertEquals(new Integer(5), updatedTransactions.get(0).getAccount().getID());
+		assertThat(updatedTransactions).hasSize(1);
+		assertThat(updatedTransactions.get(0).getAccount().getID()).isEqualTo(5);
 	}
 
 	@Test
@@ -165,9 +164,9 @@ public class DatabaseImportTest
 		expectedTransaction.setAmount(-525);
 		expectedTransaction.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
 
-		List<Transaction> updatedTransactions = importService.updateTransferAccountsForTransactions(transactionList, transferAccount.getID(), destinationAccount);
-		assertEquals(1, updatedTransactions.size());
-		assertEquals(expectedTransaction, updatedTransactions.get(0));
+		assertThat(importService.updateTransferAccountsForTransactions(transactionList, transferAccount.getID(), destinationAccount))
+				.hasSize(1)
+				.contains(expectedTransaction);
 	}
 
 	@Test
@@ -207,8 +206,15 @@ public class DatabaseImportTest
 		transaction2.setTags(new ArrayList<>());
 		transactions.add(transaction2);
 
+		List<Template> templates = new ArrayList<>();
+		Template template = new Template();
+		template.setTemplateName("MyTemplate");
+		template.setAmount(1500);
+		template.setName("Transaction from Template");
+		templates.add(template);
+
 		// database
-		Database database = new Database(new ArrayList<>(), accounts, transactions);
+		Database database = new Database(new ArrayList<>(), accounts, transactions, templates);
 
 		// account matches
 		AccountMatch match1 = new AccountMatch(sourceAccount1);
@@ -243,9 +249,11 @@ public class DatabaseImportTest
 		Database databaseResult = importService.getDatabase();
 
 		// assert
-		List<Transaction> resultTransactions = databaseResult.getTransactions();
-		assertEquals(2, resultTransactions.size());
-		assertEquals(expectedTransaction1, resultTransactions.get(0));
-		assertEquals(expectedTransaction2, resultTransactions.get(1));
+		assertThat(databaseResult.getTransactions())
+				.hasSize(2)
+				.contains(expectedTransaction1, expectedTransaction2);
+		assertThat(databaseResult.getTemplates())
+				.hasSize(1)
+				.contains(template);
 	}
 }
