@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.transactions;
 
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
+import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryRepository;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
@@ -167,7 +168,11 @@ public class TransactionService implements Resetable
 		Optional<Transaction> transactionOptional = transactionRepository.findById(ID);
 		if(transactionOptional.isPresent())
 		{
-			return transactionOptional.get().getCategory().getType() != CategoryType.REST;
+			final Optional<Category> categoryOptional = transactionOptional.get().getCategory();
+			if(categoryOptional.isPresent())
+			{
+				return categoryOptional.get().getType() != CategoryType.REST;
+			}
 		}
 		return false;
 	}

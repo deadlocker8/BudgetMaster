@@ -4,14 +4,16 @@ import com.google.gson.annotations.Expose;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.tags.Tag;
+import de.deadlocker8.budgetmaster.transactions.TransactionBase;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Entity
-public class Template
+public class Template implements TransactionBase
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,7 +63,7 @@ public class Template
 		this.templateName = template.getTemplateName();
 		this.amount = template.getAmount();
 		this.account = template.getAccount();
-		this.category = template.getCategory();
+		template.getCategory().ifPresent(value -> this.category = value);
 		this.name = template.getName();
 		this.description = template.getDescription();
 		this.tags = new ArrayList<>(template.getTags());
@@ -108,9 +110,9 @@ public class Template
 		this.account = account;
 	}
 
-	public Category getCategory()
+	public Optional<Category> getCategory()
 	{
-		return category;
+		return Optional.ofNullable(category);
 	}
 
 	public void setCategory(Category category)

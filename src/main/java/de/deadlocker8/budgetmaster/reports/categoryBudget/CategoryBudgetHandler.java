@@ -15,11 +15,15 @@ public class CategoryBudgetHandler
 		{
 			budgets.add(new CategoryBudget(currentCategory, 0));
 			CategoryBudget currentBudget = budgets.get(budgets.size() - 1);
-			for(Transaction currentPayment : transactions)
+			for(Transaction currentTransaction : transactions)
 			{
-				if(currentCategory.getID().equals(currentPayment.getCategory().getID()))
+				final Optional<Category> categoryOptional = currentTransaction.getCategory();
+				if(categoryOptional.isPresent())
 				{
-					currentBudget.setBudget(currentBudget.getBudget() + currentPayment.getAmount());
+					if(currentCategory.getID().equals(categoryOptional.get().getID()))
+					{
+						currentBudget.setBudget(currentBudget.getBudget() + currentTransaction.getAmount());
+					}
 				}
 			}
 		}

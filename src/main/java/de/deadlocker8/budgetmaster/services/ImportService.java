@@ -1,15 +1,18 @@
 package de.deadlocker8.budgetmaster.services;
 
 import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.categories.Category;
+import de.deadlocker8.budgetmaster.categories.CategoryRepository;
+import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
-import de.deadlocker8.budgetmaster.categories.Category;
-import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.tags.Tag;
-import de.deadlocker8.budgetmaster.transactions.Transaction;
-import de.deadlocker8.budgetmaster.categories.CategoryRepository;
 import de.deadlocker8.budgetmaster.tags.TagRepository;
+import de.deadlocker8.budgetmaster.templates.Template;
+import de.deadlocker8.budgetmaster.templates.TemplateRepository;
+import de.deadlocker8.budgetmaster.transactions.Transaction;
+import de.deadlocker8.budgetmaster.transactions.TransactionBase;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,25 +21,26 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ImportService
 {
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-	@Autowired
-	private CategoryRepository categoryRepository;
-	@Autowired
-	private TransactionRepository transactionRepository;
-	@Autowired
-	private TagRepository tagRepository;
+
+	private final CategoryRepository categoryRepository;
+	private final TransactionRepository transactionRepository;
+	private final TemplateRepository templateRepository;
+	private final TagRepository tagRepository;
 
 	private Database database;
 
 	@Autowired
-	public ImportService(CategoryRepository categoryRepository, TransactionRepository transactionRepository, TagRepository tagRepository)
+	public ImportService(CategoryRepository categoryRepository, TransactionRepository transactionRepository, TemplateRepository templateRepository, TagRepository tagRepository)
 	{
 		this.categoryRepository = categoryRepository;
 		this.transactionRepository = transactionRepository;
+		this.templateRepository = templateRepository;
 		this.tagRepository = tagRepository;
 	}
 
@@ -47,6 +51,7 @@ public class ImportService
 		importCategories();
 		importAccounts(accountMatchList);
 		importTransactions();
+		importTemplates();
 		LOGGER.debug("Importing database DONE");
 	}
 
@@ -59,7 +64,8 @@ public class ImportService
 	{
 		List<Category> categories = database.getCategories();
 		LOGGER.debug("Importing " + categories.size() + " categories...");
-		List<Transaction> alreadyUpdatedTransactions = new ArrayList<>();
+		List<TransactionBase> alreadyUpdatedTransactions = new ArrayList<>();
+		List<TransactionBase> alreadyUpdatedTemplates = new ArrayList<>();
 
 		for(Category category : categories)
 		{
@@ -97,28 +103,37 @@ public class ImportService
 				continue;
 			}
 
-			List<Transaction> transactions = new ArrayList<>(database.getTransactions());
+			List<TransactionBase> transactions = new ArrayList<>(database.getTransactions());
 			transactions.removeAll(alreadyUpdatedTransactions);
+			alreadyUpdatedTransactions.addAll(updateCategoriesForItems(transactions, oldCategoryID, newCategoryID));
 
-			alreadyUpdatedTransactions.addAll(updateCategoriesForTransactions(transactions, oldCategoryID, newCategoryID));
+			List<TransactionBase> templates = new ArrayList<>(database.getTemplates());
+			templates.removeAll(alreadyUpdatedTemplates);
+			alreadyUpdatedTemplates.addAll(updateCategoriesForItems(templates, oldCategoryID, newCategoryID));
 		}
 
 		LOGGER.debug("Importing categories DONE");
 	}
 
-	public List<Transaction> updateCategoriesForTransactions(List<Transaction> transactions, int oldCategoryID, int newCategoryID)
+	public List<TransactionBase> updateCategoriesForItems(List<TransactionBase> items, int oldCategoryID, int newCategoryID)
 	{
-		List<Transaction> updatedTransactions = new ArrayList<>();
-		for(Transaction transaction : transactions)
+		List<TransactionBase> updatedItems = new ArrayList<>();
+		for(TransactionBase item : items)
 		{
-			if(transaction.getCategory().getID() == oldCategoryID)
+
+			final Optional<Category> categoryOptional = item.getCategory();
+			if(categoryOptional.isPresent())
 			{
-				transaction.getCategory().setID(newCategoryID);
-				updatedTransactions.add(transaction);
+				final Category category = categoryOptional.get();
+				if(category.getID() == oldCategoryID)
+				{
+					category.setID(newCategoryID);
+					updatedItems.add(item);
+				}
 			}
 		}
 
-		return updatedTransactions;
+		return updatedItems;
 	}
 
 	private void importAccounts(AccountMatchList accountMatchList)
@@ -199,9 +214,9 @@ public class ImportService
 		LOGGER.debug("Importing transactions DONE");
 	}
 
-	private void updateTagsForTransaction(Transaction transaction)
+	private void updateTagsForTransaction(TransactionBase item)
 	{
-		List<Tag> tags = transaction.getTags();
+		List<Tag> tags = item.getTags();
 		for(int i = 0; i < tags.size(); i++)
 		{
 			Tag currentTag = tags.get(i);
@@ -216,5 +231,20 @@ public class ImportService
 				tags.set(i, existingTag);
 			}
 		}
+	}
+
+	private void importTemplates()
+	{
+		List<Template> templates = database.getTemplates();
+		LOGGER.debug("Importing " + templates.size() + " templates...");
+		for(int i = 0; i < templates.size(); i++)
+		{
+			Template template = templates.get(i);
+			LOGGER.debug("Importing template " + (i + 1) + "/" + templates.size() + " (templateName: " + template.getTemplateName() + ")");
+			updateTagsForTransaction(template);
+			template.setID(null);
+			templateRepository.save(template);
+		}
+		LOGGER.debug("Importing transactions DONE");
 	}
 }

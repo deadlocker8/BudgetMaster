@@ -11,7 +11,9 @@ import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
 import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.tags.TagRepository;
 import de.deadlocker8.budgetmaster.templates.Template;
+import de.deadlocker8.budgetmaster.templates.TemplateRepository;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
+import de.deadlocker8.budgetmaster.transactions.TransactionBase;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -37,6 +39,9 @@ public class DatabaseImportTest
 	@Mock
 	private TagRepository tagRepository;
 
+	@Mock
+	private TemplateRepository templateRepository;
+
 	@InjectMocks
 	private ImportService importService;
 
@@ -49,7 +54,7 @@ public class DatabaseImportTest
 		Category category2 = new Category("Category2", "#ff0000", CategoryType.CUSTOM);
 		category2.setID(4);
 
-		List<Transaction> transactionList = new ArrayList<>();
+		List<TransactionBase> transactionList = new ArrayList<>();
 		Transaction transaction1 = new Transaction();
 		transaction1.setName("Test");
 		transaction1.setAmount(200);
@@ -64,9 +69,41 @@ public class DatabaseImportTest
 		transaction2.setCategory(category2);
 		transactionList.add(transaction2);
 
-		List<Transaction> updatedTransactions = importService.updateCategoriesForTransactions(transactionList, 3, 5);
+		List<TransactionBase> updatedTransactions = importService.updateCategoriesForItems(transactionList, 3, 5);
 		assertThat(updatedTransactions).hasSize(1);
-		assertThat(updatedTransactions.get(0).getCategory().getID()).isEqualTo(5);
+		assertThat(updatedTransactions.get(0).getCategory()).isPresent().get().hasFieldOrPropertyWithValue("ID", 5);
+	}
+
+	@Test
+	public void test_updateCategoriesForTemplates()
+	{
+		Category category1 = new Category("Category1", "#ff0000", CategoryType.CUSTOM);
+		category1.setID(3);
+
+		Category category2 = new Category("Category2", "#ff0000", CategoryType.CUSTOM);
+		category2.setID(4);
+
+		Template template1 = new Template();
+		template1.setTemplateName("MyTemplate");
+		template1.setCategory(category1);
+		template1.setAmount(200);
+		template1.setName("Test");
+		template1.setTags(new ArrayList<>());
+
+		Template template2 = new Template();
+		template2.setTemplateName("MyTemplate");
+		template2.setCategory(category2);
+		template2.setAmount(-525);
+		template2.setName("Test_2");
+		template2.setTags(new ArrayList<>());
+
+		List<TransactionBase> templateList = new ArrayList<>();
+		templateList.add(template1);
+		templateList.add(template2);
+
+		List<TransactionBase> updatedTemplates = importService.updateCategoriesForItems(templateList, 3, 5);
+		assertThat(updatedTemplates).hasSize(1);
+		assertThat(updatedTemplates.get(0).getCategory()).isPresent().get().hasFieldOrPropertyWithValue("ID", 5);
 	}
 
 	@Test
@@ -212,6 +249,7 @@ public class DatabaseImportTest
 		template.setAmount(1500);
 		template.setName("Transaction from Template");
 		templates.add(template);
+		template.setTags(new ArrayList<>());
 
 		// database
 		Database database = new Database(new ArrayList<>(), accounts, transactions, templates);
