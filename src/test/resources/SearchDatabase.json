@@ -1,168 +1,169 @@
 {
-  "TYPE": "BUDGETMASTER_DATABASE",
-  "VERSION": 3,
-  "categories": [
-    {
-      "ID": 1,
-      "name": "No Category",
-      "color": "#FFFFFF",
-      "type": "NONE"
-    },
-    {
-      "ID": 2,
-      "name": "Rest",
-      "color": "#FFFF00",
-      "type": "REST"
-    },
-    {
-      "ID": 97,
-      "name": "sdfdsf",
-      "color": "#2e7c2b",
-      "type": "CUSTOM"
-    },
-    {
-      "ID": 98,
-      "name": "12sd",
-      "color": "#ff3b30",
-      "type": "CUSTOM"
-    }
-  ],
-  "accounts": [
-    {
-      "ID": 1,
-      "name": "Placeholder",
-      "type": "ALL"
-    },
-    {
-      "ID": 2,
-      "name": "DefaultAccount0815",
-      "type": "CUSTOM"
-    },
-    {
-      "ID": 3,
-      "name": "sfsdf",
-      "type": "CUSTOM"
-    }
-  ],
-  "transactions": [
-    {
-      "ID": 97,
-      "amount": -20000,
-      "date": "2019-04-24",
-      "account": {
-        "ID": 3,
-        "name": "sfsdf",
-        "type": "CUSTOM"
-      },
-      "category": {
-        "ID": 1,
-        "name": "No Category",
-        "color": "#FFFFFF",
-        "type": "NONE"
-      },
-      "name": "Umbuchung",
-      "description": "",
-      "tags": [],
-      "transferAccount": {
-        "ID": 2,
-        "name": "DefaultAccount0815",
-        "type": "CUSTOM"
-      }
-    },
-    {
-      "ID": 99,
-      "amount": -1500,
-      "date": "2019-05-01",
-      "account": {
-        "ID": 2,
-        "name": "DefaultAccount0815",
-        "type": "CUSTOM"
-      },
-      "category": {
-        "ID": 98,
-        "name": "12sd",
-        "color": "#ff3b30",
-        "type": "CUSTOM"
-      },
-      "name": "Test",
-      "description": "",
-      "tags": []
-    },
-    {
-      "ID": 195,
-      "amount": -300,
-      "date": "2019-05-01",
-      "account": {
-        "ID": 2,
-        "name": "DefaultAccount0815",
-        "type": "CUSTOM"
-      },
-      "category": {
-        "ID": 1,
-        "name": "No Category",
-        "color": "#FFFFFF",
-        "type": "NONE"
-      },
-      "name": "Transfer dings",
-      "description": "",
-      "tags": [],
-      "transferAccount": {
-        "ID": 3,
-        "name": "sfsdf",
-        "type": "CUSTOM"
-      }
-    },
-    {
-      "ID": 199,
-      "amount": 100,
-      "date": "2019-05-01",
-      "account": {
-        "ID": 2,
-        "name": "DefaultAccount0815",
-        "type": "CUSTOM"
-      },
-      "category": {
-        "ID": 98,
-        "name": "12sd",
-        "color": "#ff3b30",
-        "type": "CUSTOM"
-      },
-      "name": "xxx",
-      "description": "",
-      "tags": []
-    },
-    {
-      "ID": 227,
-      "amount": -1500,
-      "date": "2019-05-01",
-      "account": {
-        "ID": 2,
-        "name": "DefaultAccount0815",
-        "type": "CUSTOM"
-      },
-      "category": {
-        "ID": 97,
-        "name": "sdfdsf",
-        "color": "#2e7c2b",
-        "type": "CUSTOM"
-      },
-      "name": "beste",
-      "description": "Lorem Ipsum",
-      "tags": [],
-      "repeatingOption": {
-        "ID": 161,
-        "startDate": "2019-05-01",
-        "modifier": {
-          "ID": 161,
-          "quantity": 1,
-          "localizationKey": "repeating.modifier.days"
+    "TYPE": "BUDGETMASTER_DATABASE",
+    "VERSION": 4,
+    "categories": [
+        {
+            "ID": 1,
+            "name": "No Category",
+            "color": "#FFFFFF",
+            "type": "NONE"
         },
-        "endOption": {
-          "times": 20,
-          "ID": 161,
-          "localizationKey": "repeating.end.key.afterXTimes"
+        {
+            "ID": 2,
+            "name": "Rest",
+            "color": "#FFFF00",
+            "type": "REST"
+        },
+        {
+            "ID": 97,
+            "name": "sdfdsf",
+            "color": "#2e7c2b",
+            "type": "CUSTOM"
+        },
+        {
+            "ID": 98,
+            "name": "12sd",
+            "color": "#ff3b30",
+            "type": "CUSTOM"
         }
-      }
-    }
-  ]
+    ],
+    "accounts": [
+        {
+            "ID": 1,
+            "name": "Placeholder",
+            "type": "ALL"
+        },
+        {
+            "ID": 2,
+            "name": "DefaultAccount0815",
+            "type": "CUSTOM"
+        },
+        {
+            "ID": 3,
+            "name": "sfsdf",
+            "type": "CUSTOM"
+        }
+    ],
+    "transactions": [
+        {
+            "ID": 97,
+            "amount": -20000,
+            "date": "2019-04-24",
+            "account": {
+                "ID": 3,
+                "name": "sfsdf",
+                "type": "CUSTOM"
+            },
+            "category": {
+                "ID": 1,
+                "name": "No Category",
+                "color": "#FFFFFF",
+                "type": "NONE"
+            },
+            "name": "Umbuchung",
+            "description": "",
+            "tags": [],
+            "transferAccount": {
+                "ID": 2,
+                "name": "DefaultAccount0815",
+                "type": "CUSTOM"
+            }
+        },
+        {
+            "ID": 99,
+            "amount": -1500,
+            "date": "2019-05-01",
+            "account": {
+                "ID": 2,
+                "name": "DefaultAccount0815",
+                "type": "CUSTOM"
+            },
+            "category": {
+                "ID": 98,
+                "name": "12sd",
+                "color": "#ff3b30",
+                "type": "CUSTOM"
+            },
+            "name": "Test",
+            "description": "",
+            "tags": []
+        },
+        {
+            "ID": 195,
+            "amount": -300,
+            "date": "2019-05-01",
+            "account": {
+                "ID": 2,
+                "name": "DefaultAccount0815",
+                "type": "CUSTOM"
+            },
+            "category": {
+                "ID": 1,
+                "name": "No Category",
+                "color": "#FFFFFF",
+                "type": "NONE"
+            },
+            "name": "Transfer dings",
+            "description": "",
+            "tags": [],
+            "transferAccount": {
+                "ID": 3,
+                "name": "sfsdf",
+                "type": "CUSTOM"
+            }
+        },
+        {
+            "ID": 199,
+            "amount": 100,
+            "date": "2019-05-01",
+            "account": {
+                "ID": 2,
+                "name": "DefaultAccount0815",
+                "type": "CUSTOM"
+            },
+            "category": {
+                "ID": 98,
+                "name": "12sd",
+                "color": "#ff3b30",
+                "type": "CUSTOM"
+            },
+            "name": "xxx",
+            "description": "",
+            "tags": []
+        },
+        {
+            "ID": 227,
+            "amount": -1500,
+            "date": "2019-05-01",
+            "account": {
+                "ID": 2,
+                "name": "DefaultAccount0815",
+                "type": "CUSTOM"
+            },
+            "category": {
+                "ID": 97,
+                "name": "sdfdsf",
+                "color": "#2e7c2b",
+                "type": "CUSTOM"
+            },
+            "name": "beste",
+            "description": "Lorem Ipsum",
+            "tags": [],
+            "repeatingOption": {
+                "ID": 161,
+                "startDate": "2019-05-01",
+                "modifier": {
+                    "ID": 161,
+                    "quantity": 1,
+                    "localizationKey": "repeating.modifier.days"
+                },
+                "endOption": {
+                    "times": 20,
+                    "ID": 161,
+                    "localizationKey": "repeating.end.key.afterXTimes"
+                }
+            }
+        }
+    ],
+    "templates": []
 }
