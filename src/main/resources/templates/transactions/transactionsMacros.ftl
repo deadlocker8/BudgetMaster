@@ -103,7 +103,7 @@
         </div>
         <div class="modal-footer background-color">
             <a href="<@s.url '/transactions'/>" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
-            <a href="<@s.url '/transactions/${transaction.ID?c}/delete'/>" class="modal-action modal-close waves-effectwaves-light green btn-flat white-text">${locale.getString("delete")}</a>
+            <a href="<@s.url '/transactions/${transaction.ID?c}/delete'/>" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("delete")}</a>
         </div>
     </div>
 </#macro>
