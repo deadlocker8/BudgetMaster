@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.tags.Tag;
+import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionBase;
 
 import javax.persistence.*;
@@ -67,6 +68,18 @@ public class Template implements TransactionBase
 		this.description = template.getDescription();
 		this.tags = new ArrayList<>(template.getTags());
 		this.transferAccount = template.getTransferAccount();
+	}
+
+	public Template(String templateName, Transaction transaction)
+	{
+		this.templateName = templateName;
+		this.amount = transaction.getAmount();
+		this.account = transaction.getAccount();
+		this.category = transaction.getCategory();
+		this.name = transaction.getName();
+		this.description = transaction.getDescription();
+		this.tags = new ArrayList<>(transaction.getTags());
+		this.transferAccount = transaction.getTransferAccount();
 	}
 
 	public Integer getID()

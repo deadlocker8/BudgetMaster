@@ -4,4 +4,40 @@ $(document).ready(function()
     {
         $('#modalConfirmDelete').modal('open');
     }
+
+    if($('#buttonSaveAsTemplate').length)
+    {
+        $('#buttonSaveAsTemplate').click(function()
+        {
+            $.ajax({
+                type: 'GET',
+                url: $("#buttonSaveAsTemplate").attr("data-url"),
+                data: {},
+                success: function(data)
+                {
+                    $('#saveAsTemplateModalContainer').html(data);
+                    $('#modalCreateFromTransaction').modal();
+                    $('#modalCreateFromTransaction').modal('open');
+                    $('#buttonCreateTemplate').click(function()
+                    {
+                        let templateName = document.getElementById('template-name').value;
+
+                        // insert additional input for template name
+                        let inputTemplateName = document.createElement('input');
+                        inputTemplateName.setAttribute('type', 'hidden');
+                        inputTemplateName.setAttribute('name', 'templateName');
+                        inputTemplateName.setAttribute('value', templateName);
+
+                        let form = document.getElementsByName('NewTransaction')[0];
+                        form.appendChild(inputTemplateName);
+
+                        // replace form target url
+                        form.action = $("#buttonCreateTemplate").attr("data-url");
+
+                        form.submit();
+                    });
+                }
+            });
+        });
+    }
 });

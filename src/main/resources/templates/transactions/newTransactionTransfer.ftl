@@ -65,6 +65,8 @@
                         <@newTransactionMacros.buttons/>
                         <@newTransactionMacros.buttonTemplate/>
                     </form>
+
+                    <div id="saveAsTemplateModalContainer"></div>
                 </div>
             </div>
         </main>
@@ -80,5 +82,6 @@
         <script src="<@s.url '/js/helpers.js'/>"></script>
         <script src="<@s.url '/js/transactions.js'/>"></script>
         <script src="<@s.url '/js/categorySelect.js'/>"></script>
+        <script src="<@s.url '/js/templates.js'/>"></script>
     </body>
 </html>
