@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 
 @Controller
@@ -35,5 +36,21 @@ public class TemplateController extends BaseController
 		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("templates", templateService.getRepository().findAllByOrderByTemplateNameAsc());
 		return "templates/selectTemplate";
+	}
+
+	@GetMapping("/templates/{ID}/requestDelete")
+	public String requestDeleteTemplate(Model model, @PathVariable("ID") Integer ID)
+	{
+		model.addAttribute("settings", settingsService.getSettings());
+		model.addAttribute("templates", templateService.getRepository().findAllByOrderByTemplateNameAsc());
+		model.addAttribute("currentTemplate", templateService.getRepository().getOne(ID));
+		return "templates/templates";
+	}
+
+	@GetMapping("/templates/{ID}/delete")
+	public String deleteTemplate(Model model, @PathVariable("ID") Integer ID)
+	{
+		templateService.getRepository().deleteById(ID);
+		return "redirect:/templates";
 	}
 }
