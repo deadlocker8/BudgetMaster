@@ -36,9 +36,7 @@
                         </@indexFunctions.homeEntry>
 
                         <@indexFunctions.homeEntry url="/templates" icon="file_copy" iconColor="budgetmaster-dark-orange-text" headlineText="menu.templates" bodyText="home.menu.templates">
-                            <@indexFunctions.action url="/templates/manage" name="home.menu.templates.action.manage"/>
-                            <br>
-                            <@indexFunctions.action url="/templates" name="home.menu.templates.action.show"/>
+                            <@indexFunctions.action url="/templates" name="home.menu.templates.action.manage"/>
                         </@indexFunctions.homeEntry>
 
                         <@indexFunctions.homeEntry url="/charts" icon="show_chart" iconColor="budgetmaster-purple-text" headlineText="menu.charts" bodyText="home.menu.charts">
