@@ -9,6 +9,10 @@ import java.util.Optional;
 
 public interface TransactionBase
 {
+	Integer getAmount();
+
+	void setAmount(Integer amount);
+
 	Category getCategory();
 
 	List<Tag> getTags();

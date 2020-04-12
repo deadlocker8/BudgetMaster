@@ -130,7 +130,7 @@ public class TransactionController extends BaseController
 		TransactionValidator transactionValidator = new TransactionValidator();
 		transactionValidator.validate(transaction, bindingResult);
 
-		handleAmount(transaction, isPayment);
+		transactionService.handleAmount(transaction, isPayment);
 		transactionService.handleTags(transaction);
 
 		transaction.setRepeatingOption(null);
@@ -160,7 +160,7 @@ public class TransactionController extends BaseController
 		TransactionValidator transactionValidator = new TransactionValidator();
 		transactionValidator.validate(transaction, bindingResult);
 
-		handleAmount(transaction, isPayment);
+		transactionService.handleAmount(transaction, isPayment);
 		transactionService.handleTags(transaction);
 
 		RepeatingOption repeatingOption;
@@ -200,29 +200,12 @@ public class TransactionController extends BaseController
 		TransactionValidator transactionValidator = new TransactionValidator();
 		transactionValidator.validate(transaction, bindingResult);
 
-		handleAmount(transaction, isPayment);
+		transactionService.handleAmount(transaction, isPayment);
 		transactionService.handleTags(transaction);
 
 		transaction.setRepeatingOption(null);
 
 		return handleRedirect(model, transaction, bindingResult, date, "transactions/newTransactionTransfer", isPayment);
-	}
-
-	private void handleAmount(Transaction transaction, boolean isPayment)
-	{
-		if(transaction.getAmount() == null)
-		{
-			transaction.setAmount(0);
-		}
-
-		if(isPayment)
-		{
-			transaction.setAmount(-Math.abs(transaction.getAmount()));
-		}
-		else
-		{
-			transaction.setAmount(Math.abs(transaction.getAmount()));
-		}
 	}
 
 	private String handleRedirect(Model model, @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult, DateTime date, String url, boolean isPayment)

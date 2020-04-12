@@ -207,6 +207,23 @@ public class TransactionService implements Resetable
 	{
 	}
 
+	public void handleAmount(TransactionBase item, boolean isPayment)
+	{
+		if(item.getAmount() == null)
+		{
+			item.setAmount(0);
+		}
+
+		if(isPayment)
+		{
+			item.setAmount(-Math.abs(item.getAmount()));
+		}
+		else
+		{
+			item.setAmount(Math.abs(item.getAmount()));
+		}
+	}
+
 	public void handleTags(TransactionBase item)
 	{
 		List<Tag> tags = item.getTags();
