@@ -75,6 +75,10 @@
         <#import "../helpers/globalDatePicker.ftl" as datePicker>
         <@datePicker.datePickerLocalization/>
 
+        <script>
+            createTemplateWithErrorInForm = '${locale.getString("save.as.template.errorsInForm")}';
+        </script>
+
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>

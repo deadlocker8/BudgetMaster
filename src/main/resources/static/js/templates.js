@@ -13,7 +13,7 @@ $(document).ready(function()
             if(!isValidForm)
             {
                 $('#modalCreateFromTransaction').modal('close');
-                // TODO: toast
+                M.toast({html: createTemplateWithErrorInForm});
                 return;
             }
 
