@@ -9,6 +9,7 @@ $(document).ready(function()
     {
         $('#buttonSaveAsTemplate').click(function()
         {
+            // check if transaction form is valid
             let isValidForm = validateForm(true);
             if(!isValidForm)
             {
@@ -26,9 +27,19 @@ $(document).ready(function()
                     $('#saveAsTemplateModalContainer').html(data);
                     $('#modalCreateFromTransaction').modal();
                     $('#modalCreateFromTransaction').modal('open');
-                    $('#buttonCreateTemplate').click(function()
+                    $('#buttonCreateTemplate').click(function(e)
                     {
+                        // validate template name
                         let templateName = document.getElementById('template-name').value;
+                        // if(templateName.length === 0)
+                        // {
+                        //     addTooltip('template-name', templateNameValidationMessage);
+                        //     return;
+                        // }
+                        // else
+                        // {
+                        //     removeTooltip('template-name');
+                        // }
 
                         // insert additional input for template name
                         let inputTemplateName = document.createElement('input');
