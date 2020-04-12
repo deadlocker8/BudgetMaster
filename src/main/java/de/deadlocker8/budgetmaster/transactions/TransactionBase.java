@@ -13,6 +13,8 @@ public interface TransactionBase
 
 	List<Tag> getTags();
 
+	void setTags(List<Tag> tags);
+
 	Account getAccount();
 
 	void setAccount(Account account);

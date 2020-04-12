@@ -18,9 +18,6 @@ import de.deadlocker8.budgetmaster.services.DateFormatStyle;
 import de.deadlocker8.budgetmaster.services.DateService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
-import de.deadlocker8.budgetmaster.tags.Tag;
-import de.deadlocker8.budgetmaster.tags.TagRepository;
-import de.deadlocker8.budgetmaster.tags.TagService;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -32,7 +29,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -49,20 +45,18 @@ public class TransactionController extends BaseController
 	private final CategoryService categoryService;
 	private final AccountService accountService;
 	private final SettingsService settingsService;
-	private final TagService tagService;
 	private final RepeatingTransactionUpdater repeatingTransactionUpdater;
 	private final HelpersService helpers;
 	private final DateService dateService;
 	private final FilterHelpersService filterHelpers;
 
 	@Autowired
-	public TransactionController(TransactionService transactionService, CategoryService categoryService, AccountService accountService, SettingsService settingsService, TagService tagService, RepeatingTransactionUpdater repeatingTransactionUpdater, HelpersService helpers, DateService dateService, FilterHelpersService filterHelpers)
+	public TransactionController(TransactionService transactionService, CategoryService categoryService, AccountService accountService, SettingsService settingsService, RepeatingTransactionUpdater repeatingTransactionUpdater, HelpersService helpers, DateService dateService, FilterHelpersService filterHelpers)
 	{
 		this.transactionService = transactionService;
 		this.categoryService = categoryService;
 		this.accountService = accountService;
 		this.settingsService = settingsService;
-		this.tagService = tagService;
 		this.repeatingTransactionUpdater = repeatingTransactionUpdater;
 		this.helpers = helpers;
 		this.dateService = dateService;
@@ -137,7 +131,7 @@ public class TransactionController extends BaseController
 		transactionValidator.validate(transaction, bindingResult);
 
 		handleAmount(transaction, isPayment);
-		handleTags(transaction);
+		transactionService.handleTags(transaction);
 
 		transaction.setRepeatingOption(null);
 
@@ -167,7 +161,7 @@ public class TransactionController extends BaseController
 		transactionValidator.validate(transaction, bindingResult);
 
 		handleAmount(transaction, isPayment);
-		handleTags(transaction);
+		transactionService.handleTags(transaction);
 
 		RepeatingOption repeatingOption;
 		RepeatingModifierType type = RepeatingModifierType.getByLocalization(repeatingModifierType);
@@ -207,7 +201,7 @@ public class TransactionController extends BaseController
 		transactionValidator.validate(transaction, bindingResult);
 
 		handleAmount(transaction, isPayment);
-		handleTags(transaction);
+		transactionService.handleTags(transaction);
 
 		transaction.setRepeatingOption(null);
 
@@ -228,20 +222,6 @@ public class TransactionController extends BaseController
 		else
 		{
 			transaction.setAmount(Math.abs(transaction.getAmount()));
-		}
-	}
-
-	private void handleTags(Transaction transaction)
-	{
-		List<Tag> tags = transaction.getTags();
-		if(tags != null)
-		{
-			transaction.setTags(new ArrayList<>());
-			for(Tag currentTag : tags)
-			{
-				//noinspection ConstantConditions
-				transaction = addTagForTransaction(currentTag.getName(), transaction);
-			}
 		}
 	}
 
@@ -306,24 +286,6 @@ public class TransactionController extends BaseController
 				.limit(MAX_SUGGESTIONS)
 				.collect(Collectors.toList());
 		model.addAttribute("suggestionsJSON", GSON.toJson(nameSuggestions));
-	}
-
-	private Transaction addTagForTransaction(String name, Transaction transaction)
-	{
-		TagRepository tagRepository = tagService.getRepository();
-
-		if(tagRepository.findByName(name) == null)
-		{
-			tagRepository.save(new Tag(name));
-		}
-
-		List<Transaction> referringTransactions = tagRepository.findByName(name).getReferringTransactions();
-		if(referringTransactions == null || !referringTransactions.contains(transaction))
-		{
-			transaction.getTags().add(tagRepository.findByName(name));
-		}
-
-		return transaction;
 	}
 
 	@GetMapping("/transactions/{ID}/highlight")

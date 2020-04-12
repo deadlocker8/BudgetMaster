@@ -2,12 +2,15 @@ package de.deadlocker8.budgetmaster.transactions;
 
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
-import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryRepository;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOptionRepository;
 import de.deadlocker8.budgetmaster.services.Resetable;
+import de.deadlocker8.budgetmaster.tags.Tag;
+import de.deadlocker8.budgetmaster.tags.TagRepository;
+import de.deadlocker8.budgetmaster.tags.TagService;
+import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
 import org.joda.time.DateTime;
@@ -29,14 +32,15 @@ public class TransactionService implements Resetable
 	private TransactionRepository transactionRepository;
 	private RepeatingOptionRepository repeatingOptionRepository;
 	private CategoryRepository categoryRepository;
-
+	private TagService tagService;
 
 	@Autowired
-	public TransactionService(TransactionRepository transactionRepository, RepeatingOptionRepository repeatingOptionRepository, CategoryRepository categoryRepository)
+	public TransactionService(TransactionRepository transactionRepository, RepeatingOptionRepository repeatingOptionRepository, CategoryRepository categoryRepository, TagService tagService)
 	{
 		this.transactionRepository = transactionRepository;
 		this.repeatingOptionRepository = repeatingOptionRepository;
 		this.categoryRepository = categoryRepository;
+		this.tagService = tagService;
 	}
 
 	public TransactionRepository getRepository()
@@ -201,5 +205,46 @@ public class TransactionService implements Resetable
 	@Override
 	public void createDefaults()
 	{
+	}
+
+	public void handleTags(TransactionBase item)
+	{
+		List<Tag> tags = item.getTags();
+		if(tags != null)
+		{
+			item.setTags(new ArrayList<>());
+			for(Tag currentTag : tags)
+			{
+				//noinspection ConstantConditions
+				item = addTagForTransactionBase(currentTag.getName(), item);
+			}
+		}
+	}
+
+	private TransactionBase addTagForTransactionBase(String name, TransactionBase item)
+	{
+		final TagRepository tagRepository = tagService.getRepository();
+
+		if(tagRepository.findByName(name) == null)
+		{
+			tagRepository.save(new Tag(name));
+		}
+
+		List<? extends TransactionBase> referringTransactions;
+		if(item instanceof Template)
+		{
+			referringTransactions = tagRepository.findByName(name).getReferringTemplates();
+		}
+		else
+		{
+			referringTransactions = tagRepository.findByName(name).getReferringTransactions();
+		}
+
+		if(referringTransactions == null || !referringTransactions.contains(item))
+		{
+			item.getTags().add(tagRepository.findByName(name));
+		}
+
+		return item;
 	}
 }
