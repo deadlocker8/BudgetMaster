@@ -9,6 +9,14 @@ $(document).ready(function()
     {
         $('#buttonSaveAsTemplate').click(function()
         {
+            let isValidForm = validateForm(true);
+            if(!isValidForm)
+            {
+                $('#modalCreateFromTransaction').modal('close');
+                // TODO: toast
+                return;
+            }
+
             $.ajax({
                 type: 'GET',
                 url: $("#buttonSaveAsTemplate").attr("data-url"),

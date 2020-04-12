@@ -3,13 +3,12 @@ package de.deadlocker8.budgetmaster.templates;
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
+import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 
 
 @Controller
@@ -17,12 +16,14 @@ public class TemplateController extends BaseController
 {
 	private final TemplateService templateService;
 	private final SettingsService settingsService;
+	private final TransactionService transactionService;
 
 	@Autowired
-	public TemplateController(TemplateService templateService, SettingsService settingsService)
+	public TemplateController(TemplateService templateService, SettingsService settingsService, TransactionService transactionService)
 	{
 		this.templateService = templateService;
 		this.settingsService = settingsService;
+		this.transactionService = transactionService;
 	}
 
 	@GetMapping("/templates")
@@ -54,10 +55,10 @@ public class TemplateController extends BaseController
 							 @RequestParam(value = "isPayment", required = false) boolean isPayment)
 	{
 		//TODO: handle BindingResult and errors
-		if(transaction.getTags() == null)
-		{
-			transaction.setTags(new ArrayList<>());
-		}
+
+		transactionService.handleAmount(transaction, isPayment);
+		transactionService.handleTags(transaction);
+
 		final Template template = new Template(templateName, transaction);
 		templateService.getRepository().save(template);
 

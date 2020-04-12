@@ -242,27 +242,41 @@ let transactionRepeatingEndAfterXTimesInputID = "#transaction-repeating-end-afte
 AMOUNT_REGEX = new RegExp("^-?\\d+(,\\d+)?(\\.\\d+)?$");
 ALLOWED_CHARACTERS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "."];
 
-function validateAmount(text)
+function validateAmount(text, allowEmpty=false)
 {
     let id = "transaction-amount";
+
+    if(allowEmpty && text.length === 0)
+    {
+        removeTooltip(id);
+        let amount = parseFloat(text.replace(",", ".")) * 100;
+        document.getElementById("hidden-" + id).value = amount.toFixed(0);
+        return true;
+    }
 
     if(text.match(AMOUNT_REGEX) == null)
     {
         addTooltip(id, amountValidationMessage);
         document.getElementById("hidden-" + id).value = "";
+        return false;
     }
     else
     {
         removeTooltip(id);
         let amount = parseFloat(text.replace(",", ".")) * 100;
         document.getElementById("hidden-" + id).value = amount.toFixed(0);
+        return true;
     }
 }
 
-function validateForm()
+function validateForm(allowEmptyAmount=false)
 {
     // amount
-    validateAmount($('#transaction-amount').val());
+    let isValidAmount = validateAmount($('#transaction-amount').val(), allowEmptyAmount);
+    if(!isValidAmount)
+    {
+        return false;
+    }
 
     // description
     let description = document.getElementById('transaction-description').value;
