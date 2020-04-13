@@ -45,7 +45,7 @@ public class TemplateController extends BaseController
 	}
 
 	@GetMapping("/templates/select")
-	public String manage(Model model)
+	public String select(Model model)
 	{
 		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("templates", templateService.getRepository().findAllByOrderByTemplateNameAsc());
@@ -91,9 +91,17 @@ public class TemplateController extends BaseController
 	}
 
 	@GetMapping("/templates/{ID}/delete")
-	public String deleteTemplate(Model model, @PathVariable("ID") Integer ID)
+	public String deleteTemplate(@PathVariable("ID") Integer ID)
 	{
 		templateService.getRepository().deleteById(ID);
+		return "redirect:/templates";
+	}
+
+	@GetMapping("/templates/{ID}/select")
+	public String selectTemplate(@PathVariable("ID") Integer ID)
+	{
+		final Template template = templateService.getRepository().getOne(ID);
+		System.out.println(template);
 		return "redirect:/templates";
 	}
 }

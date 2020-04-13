@@ -26,7 +26,7 @@ Mousetrap.bind('v', function()
 {
     if(areHotKeysEnabled())
     {
-        window.location.href = rootURL + '/transactions/newTransaction/template';
+        window.location.href = rootURL + '/templates/select';
     }
 });
 
