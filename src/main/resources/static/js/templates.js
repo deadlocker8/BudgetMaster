@@ -1,6 +1,6 @@
 $(document).ready(function()
 {
-    if($("#modalConfirmDelete").length)
+    if($('#modalConfirmDelete').length)
     {
         $('#modalConfirmDelete').modal('open');
     }
@@ -20,42 +20,58 @@ $(document).ready(function()
 
             $.ajax({
                 type: 'GET',
-                url: $("#buttonSaveAsTemplate").attr("data-url"),
+                url: $('#buttonSaveAsTemplate').attr('data-url'),
                 data: {},
                 success: function(data)
                 {
                     $('#saveAsTemplateModalContainer').html(data);
                     $('#modalCreateFromTransaction').modal();
                     $('#modalCreateFromTransaction').modal('open');
-                    $('#buttonCreateTemplate').click(function(e)
+                    let templateNameInput = document.getElementById('template-name');
+                    templateNameInput.focus();
+                    $(templateNameInput).on('keypress', function(e)
                     {
-                        // validate template name
-                        let templateName = document.getElementById('template-name').value;
-                        let isValid = validateTemplateName(templateName);
-                        if(!isValid)
+                        let code = e.keyCode || e.which;
+                        if(code === 13)
                         {
-                            return
+                            saveAsTemplate();
                         }
+                    });
 
-                        // insert additional input for template name
-                        let inputTemplateName = document.createElement('input');
-                        inputTemplateName.setAttribute('type', 'hidden');
-                        inputTemplateName.setAttribute('name', 'templateName');
-                        inputTemplateName.setAttribute('value', templateName);
-
-                        let form = document.getElementsByName('NewTransaction')[0];
-                        form.appendChild(inputTemplateName);
-
-                        // replace form target url
-                        form.action = $("#buttonCreateTemplate").attr("data-url");
-
-                        form.submit();
+                    $('#buttonCreateTemplate').click(function()
+                    {
+                        saveAsTemplate();
                     });
                 }
             });
         });
     }
 });
+
+function saveAsTemplate()
+{
+    // validate template name
+    let templateName = document.getElementById('template-name').value;
+    let isValid = validateTemplateName(templateName);
+    if(!isValid)
+    {
+        return
+    }
+
+    // insert additional input for template name
+    let inputTemplateName = document.createElement('input');
+    inputTemplateName.setAttribute('type', 'hidden');
+    inputTemplateName.setAttribute('name', 'templateName');
+    inputTemplateName.setAttribute('value', templateName);
+
+    let form = document.getElementsByName('NewTransaction')[0];
+    form.appendChild(inputTemplateName);
+
+    // replace form target url
+    form.action = $('#buttonCreateTemplate').attr('data-url');
+
+    form.submit();
+}
 
 function validateTemplateName(templateName)
 {
