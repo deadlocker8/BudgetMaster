@@ -129,17 +129,7 @@ public class TemplateController extends BaseController
 		}
 
 		final Template template = templateOptional.get();
-
-		if(template.getCategory() == null)
-		{
-			template.setCategory(categoryService.getRepository().findByType(CategoryType.NONE));
-		}
-
-		if(template.getAmount() == null)
-		{
-			final Account selectedAccount = accountService.getRepository().findByIsSelected(true);
-			template.setAccount(selectedAccount);
-		}
+		templateService.prepareTemplateForNewTransaction(template);
 
 		boolean isPayment = true;
 		if(template.getAmount() != null)
