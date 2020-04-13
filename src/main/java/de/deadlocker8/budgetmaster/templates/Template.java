@@ -78,7 +78,14 @@ public class Template implements TransactionBase
 		this.category = transaction.getCategory();
 		this.name = transaction.getName();
 		this.description = transaction.getDescription();
-		this.tags = new ArrayList<>(transaction.getTags());
+		if(transaction.getTags() == null)
+		{
+			this.tags = new ArrayList<>();
+		}
+		else
+		{
+			this.tags = new ArrayList<>(transaction.getTags());
+		}
 		this.transferAccount = transaction.getTransferAccount();
 	}
 
