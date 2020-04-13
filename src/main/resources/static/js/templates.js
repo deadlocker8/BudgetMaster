@@ -31,14 +31,10 @@ $(document).ready(function()
                     {
                         // validate template name
                         let templateName = document.getElementById('template-name').value;
-                        if(templateName.length === 0)
+                        let isValid = validateTemplateName(templateName);
+                        if(!isValid)
                         {
-                            addTooltip('template-name', templateNameValidationMessage);
-                            return;
-                        }
-                        else
-                        {
-                            removeTooltip('template-name');
+                            return
                         }
 
                         // insert additional input for template name
@@ -60,3 +56,28 @@ $(document).ready(function()
         });
     }
 });
+
+function validateTemplateName(templateName)
+{
+    if(templateName.length === 0)
+    {
+        addTooltip('template-name', templateNameEmptyValidationMessage);
+        return false;
+    }
+    else
+    {
+        removeTooltip('template-name');
+    }
+
+    if(existingTemplateNames.includes(templateName))
+    {
+        addTooltip('template-name', templateNameDuplicateValidationMessage);
+        return false;
+    }
+    else
+    {
+        removeTooltip('template-name');
+    }
+
+    return true;
+}

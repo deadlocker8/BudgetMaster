@@ -1,26 +1,29 @@
 package de.deadlocker8.budgetmaster.templates;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
-import de.deadlocker8.budgetmaster.transactions.TransactionValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Controller
 public class TemplateController extends BaseController
 {
+	private static final Gson GSON = new GsonBuilder()
+			.setPrettyPrinting()
+			.create();
+
 	private final TemplateService templateService;
 	private final SettingsService settingsService;
 	private final TransactionService transactionService;
@@ -50,8 +53,12 @@ public class TemplateController extends BaseController
 	}
 
 	@GetMapping("/templates/fromTransactionModal")
-	public String fromTransactionModal()
+	public String fromTransactionModal(Model model)
 	{
+		final List<String> templateNames = templateService.getRepository().findAll().stream()
+				.map(Template::getTemplateName)
+				.collect(Collectors.toList());
+		model.addAttribute("existingTemplateNames", GSON.toJson(templateNames));
 		return "templates/createFromTransactionModal";
 	}
 

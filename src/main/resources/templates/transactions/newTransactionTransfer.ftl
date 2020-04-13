@@ -77,7 +77,8 @@
 
         <script>
             createTemplateWithErrorInForm = '${locale.getString("save.as.template.errorsInForm")}';
-            templateNameValidationMessage = "${locale.getString("warning.empty.transaction.name")}";
+            templateNameEmptyValidationMessage = "${locale.getString("warning.empty.transaction.name")}";
+            templateNameDuplicateValidationMessage = "${locale.getString("warning.empty.template.name")}";
         </script>
 
         <!-- Scripts-->
