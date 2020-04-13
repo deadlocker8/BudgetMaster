@@ -10,6 +10,18 @@
                 <input id="template-name" type="text" name="templateName">
                 <label for="template-name">${locale.getString("transaction.new.label.name")}</label>
             </div>
+            <div class="col s12">
+                <label>
+                    <input id="ignore-category" type="checkbox">
+                    <span class="columnName-checkbox-label text-color">${locale.getString('template.checkbox.ignore.category')}</span>
+                </label>
+            </div>
+            <div class="col s12">
+                <label>
+                    <input id="ignore-account" type="checkbox" checked="checked">
+                    <span class="columnName-checkbox-label text-color">${locale.getString('template.checkbox.ignore.account')}</span>
+                </label>
+            </div>
         </div>
     </div>
     <div class="modal-footer background-color">

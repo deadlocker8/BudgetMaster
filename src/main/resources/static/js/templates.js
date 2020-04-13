@@ -24,29 +24,36 @@ $(document).ready(function()
                 data: {},
                 success: function(data)
                 {
-                    $('#saveAsTemplateModalContainer').html(data);
-                    $('#modalCreateFromTransaction').modal();
-                    $('#modalCreateFromTransaction').modal('open');
-                    let templateNameInput = document.getElementById('template-name');
-                    templateNameInput.focus();
-                    $(templateNameInput).on('keypress', function(e)
-                    {
-                        let code = e.keyCode || e.which;
-                        if(code === 13)
-                        {
-                            saveAsTemplate();
-                        }
-                    });
-
-                    $('#buttonCreateTemplate').click(function()
-                    {
-                        saveAsTemplate();
-                    });
+                   createAndOpenModal(data)
                 }
             });
         });
     }
 });
+
+function createAndOpenModal(data)
+{
+    let modalID = '#modalCreateFromTransaction';
+
+    $('#saveAsTemplateModalContainer').html(data);
+    $(modalID).modal();
+    $(modalID).modal('open');
+    let templateNameInput = document.getElementById('template-name');
+    templateNameInput.focus();
+    $(templateNameInput).on('keypress', function(e)
+    {
+        let code = e.keyCode || e.which;
+        if(code === 13)
+        {
+            saveAsTemplate();
+        }
+    });
+
+    $('#buttonCreateTemplate').click(function()
+    {
+        saveAsTemplate();
+    });
+}
 
 function saveAsTemplate()
 {
@@ -58,18 +65,13 @@ function saveAsTemplate()
         return
     }
 
-    // insert additional input for template name
-    let inputTemplateName = document.createElement('input');
-    inputTemplateName.setAttribute('type', 'hidden');
-    inputTemplateName.setAttribute('name', 'templateName');
-    inputTemplateName.setAttribute('value', templateName);
-
     let form = document.getElementsByName('NewTransaction')[0];
-    form.appendChild(inputTemplateName);
+    form.appendChild(createAdditionalHiddenInput('templateName', templateName));
+    form.appendChild(createAdditionalHiddenInput('ignoreCategory', document.getElementById('ignore-category').checked));
+    form.appendChild(createAdditionalHiddenInput('ignoreAccount', document.getElementById('ignore-account').checked));
 
     // replace form target url
     form.action = $('#buttonCreateTemplate').attr('data-url');
-
     form.submit();
 }
 
@@ -96,4 +98,13 @@ function validateTemplateName(templateName)
     }
 
     return true;
+}
+
+function createAdditionalHiddenInput(name, value)
+{
+    let newInput = document.createElement('input');
+    newInput.setAttribute('type', 'hidden');
+    newInput.setAttribute('name', name);
+    newInput.setAttribute('value', value);
+    return newInput;
 }

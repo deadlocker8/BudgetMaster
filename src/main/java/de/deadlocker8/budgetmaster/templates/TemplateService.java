@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.templates;
 
 import de.deadlocker8.budgetmaster.services.Resetable;
+import de.deadlocker8.budgetmaster.transactions.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,21 @@ public class TemplateService implements Resetable
 	@Override
 	public void createDefaults()
 	{
+	}
+
+	public void createFromTransaction(String templateName, Transaction transaction, boolean ignoreCategory, boolean ignoreAccount)
+	{
+		final Template template = new Template(templateName, transaction);
+		if(ignoreCategory)
+		{
+			template.setCategory(null);
+		}
+
+		if(ignoreAccount)
+		{
+			template.setAccount(null);
+		}
+
+		getRepository().save(template);
 	}
 }
