@@ -1,7 +1,5 @@
 package de.deadlocker8.budgetmaster.transactions;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
@@ -31,16 +29,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 public class TransactionController extends BaseController
 {
-	private static final int MAX_SUGGESTIONS = 25;
-	private static final Gson GSON = new GsonBuilder()
-			.setPrettyPrinting()
-			.create();
-
 	private final TransactionService transactionService;
 	private final CategoryService categoryService;
 	private final AccountService accountService;
@@ -115,7 +107,7 @@ public class TransactionController extends BaseController
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 		Transaction emptyTransaction = new Transaction();
 		emptyTransaction.setCategory(categoryService.getRepository().findByType(CategoryType.NONE));
-		prepareModelNewOrEdit(model, date, emptyTransaction, true);
+		transactionService.prepareModelNewOrEdit(model, false, date, emptyTransaction, true, accountService.getAllAccountsAsc());
 		return "transactions/newTransaction" + StringUtils.capitalize(type);
 	}
 
@@ -135,7 +127,7 @@ public class TransactionController extends BaseController
 
 		transaction.setRepeatingOption(null);
 
-		return handleRedirect(model, transaction, bindingResult, date, "transactions/newTransactionNormal", isPayment);
+		return handleRedirect(model, transaction.getID() != null, transaction, bindingResult, date, "transactions/newTransactionNormal", isPayment);
 	}
 
 	@SuppressWarnings("ConstantConditions")
@@ -186,7 +178,7 @@ public class TransactionController extends BaseController
 		repeatingOption = new RepeatingOption(transaction.getDate(), repeatingModifier, repeatingEnd);
 		transaction.setRepeatingOption(repeatingOption);
 
-		return handleRedirect(model, transaction, bindingResult, date, "transactions/newTransactionRepeating", isPayment);
+		return handleRedirect(model, transaction.getID() != null, transaction, bindingResult, date, "transactions/newTransactionRepeating", isPayment);
 	}
 
 	@PostMapping(value = "/transactions/newTransaction/transfer")
@@ -205,15 +197,15 @@ public class TransactionController extends BaseController
 
 		transaction.setRepeatingOption(null);
 
-		return handleRedirect(model, transaction, bindingResult, date, "transactions/newTransactionTransfer", isPayment);
+		return handleRedirect(model, transaction.getID() != null, transaction, bindingResult, date, "transactions/newTransactionTransfer", isPayment);
 	}
 
-	private String handleRedirect(Model model, @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult, DateTime date, String url, boolean isPayment)
+	private String handleRedirect(Model model, boolean isEdit, @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult, DateTime date, String url, boolean isPayment)
 	{
 		if(bindingResult.hasErrors())
 		{
 			model.addAttribute("error", bindingResult);
-			prepareModelNewOrEdit(model, date, transaction, isPayment);
+			transactionService.prepareModelNewOrEdit(model, isEdit, date, transaction, isPayment, accountService.getAllAccountsAsc());
 			return url;
 		}
 
@@ -239,7 +231,7 @@ public class TransactionController extends BaseController
 		}
 
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
-		prepareModelNewOrEdit(model, date, transaction, transaction.getAmount() <= 0);
+		transactionService.prepareModelNewOrEdit(model, true, date, transaction, transaction.getAmount() <= 0, accountService.getAllAccountsAsc());
 
 		if(transaction.isRepeating())
 		{
@@ -253,23 +245,6 @@ public class TransactionController extends BaseController
 		return "transactions/newTransactionNormal";
 	}
 
-	private void prepareModelNewOrEdit(Model model, DateTime date, Transaction emptyTransaction, boolean isPayment)
-	{
-		model.addAttribute("currentDate", date);
-		model.addAttribute("categories", categoryService.getRepository().findAllByOrderByNameAsc());
-		model.addAttribute("accounts", accountService.getAllAccountsAsc());
-		model.addAttribute("transaction", emptyTransaction);
-		model.addAttribute("settings", settingsService.getSettings());
-		model.addAttribute("isPayment", isPayment);
-
-		final List<Transaction> allByOrderByDateDesc = transactionService.getRepository().findAllByOrderByDateDesc();
-		final List<String> nameSuggestions = allByOrderByDateDesc.stream()
-				.map(Transaction::getName)
-				.distinct()
-				.limit(MAX_SUGGESTIONS)
-				.collect(Collectors.toList());
-		model.addAttribute("suggestionsJSON", GSON.toJson(nameSuggestions));
-	}
 
 	@GetMapping("/transactions/{ID}/highlight")
 	public String highlight(Model model, @PathVariable("ID") Integer ID)

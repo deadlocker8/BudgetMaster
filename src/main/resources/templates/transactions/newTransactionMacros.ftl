@@ -124,7 +124,7 @@
 <#macro transactionStartDate transaction currentDate>
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
-            <#if transaction.getDate()??>
+            <#if transaction.getDate?? && transaction.getDate()??>
                 <#assign startDate = dateService.getLongDateString(transaction.getDate())/>
             <#else>
                 <#assign startDate = dateService.getLongDateString(currentDate)/>

@@ -1,5 +1,7 @@
 package de.deadlocker8.budgetmaster.transactions;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.categories.CategoryRepository;
@@ -7,6 +9,7 @@ import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOptionRepository;
 import de.deadlocker8.budgetmaster.services.Resetable;
+import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.TagRepository;
 import de.deadlocker8.budgetmaster.tags.TagService;
@@ -20,27 +23,37 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TransactionService implements Resetable
 {
+	private static final int MAX_SUGGESTIONS = 25;
+	private static final Gson GSON = new GsonBuilder()
+			.setPrettyPrinting()
+			.create();
+
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+
 	private TransactionRepository transactionRepository;
 	private RepeatingOptionRepository repeatingOptionRepository;
 	private CategoryRepository categoryRepository;
 	private TagService tagService;
+	private SettingsService settingsService;
 
 	@Autowired
-	public TransactionService(TransactionRepository transactionRepository, RepeatingOptionRepository repeatingOptionRepository, CategoryRepository categoryRepository, TagService tagService)
+	public TransactionService(TransactionRepository transactionRepository, RepeatingOptionRepository repeatingOptionRepository, CategoryRepository categoryRepository, TagService tagService, SettingsService settingsService)
 	{
 		this.transactionRepository = transactionRepository;
 		this.repeatingOptionRepository = repeatingOptionRepository;
 		this.categoryRepository = categoryRepository;
 		this.tagService = tagService;
+		this.settingsService = settingsService;
 	}
 
 	public TransactionRepository getRepository()
@@ -263,5 +276,24 @@ public class TransactionService implements Resetable
 		}
 
 		return item;
+	}
+
+	public void prepareModelNewOrEdit(Model model, boolean isEdit, DateTime date, TransactionBase item, boolean isPayment, List<Account> accounts)
+	{
+		model.addAttribute("isEdit", isEdit);
+		model.addAttribute("currentDate", date);
+		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
+		model.addAttribute("accounts", accounts);
+		model.addAttribute("transaction", item);
+		model.addAttribute("settings", settingsService.getSettings());
+		model.addAttribute("isPayment", isPayment);
+
+		final List<Transaction> allByOrderByDateDesc = getRepository().findAllByOrderByDateDesc();
+		final List<String> nameSuggestions = allByOrderByDateDesc.stream()
+				.map(Transaction::getName)
+				.distinct()
+				.limit(MAX_SUGGESTIONS)
+				.collect(Collectors.toList());
+		model.addAttribute("suggestionsJSON", GSON.toJson(nameSuggestions));
 	}
 }

@@ -2,10 +2,17 @@ package de.deadlocker8.budgetmaster.templates;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.accounts.AccountService;
+import de.deadlocker8.budgetmaster.categories.CategoryService;
+import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.controller.BaseController;
+import de.deadlocker8.budgetmaster.services.DateService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
+import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -14,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -27,13 +35,19 @@ public class TemplateController extends BaseController
 	private final TemplateService templateService;
 	private final SettingsService settingsService;
 	private final TransactionService transactionService;
+	private final DateService dateService;
+	private final AccountService accountService;
+	private final CategoryService categoryService;
 
 	@Autowired
-	public TemplateController(TemplateService templateService, SettingsService settingsService, TransactionService transactionService)
+	public TemplateController(TemplateService templateService, SettingsService settingsService, TransactionService transactionService, DateService dateService, AccountService accountService, CategoryService categoryService)
 	{
 		this.templateService = templateService;
 		this.settingsService = settingsService;
 		this.transactionService = transactionService;
+		this.dateService = dateService;
+		this.accountService = accountService;
+		this.categoryService = categoryService;
 	}
 
 	@GetMapping("/templates")
@@ -84,9 +98,15 @@ public class TemplateController extends BaseController
 	@GetMapping("/templates/{ID}/requestDelete")
 	public String requestDeleteTemplate(Model model, @PathVariable("ID") Integer ID)
 	{
+		final Optional<Template> templateOptional = templateService.getRepository().findById(ID);
+		if(!templateOptional.isPresent())
+		{
+			throw new ResourceNotFoundException();
+		}
+
 		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("templates", templateService.getRepository().findAllByOrderByTemplateNameAsc());
-		model.addAttribute("currentTemplate", templateService.getRepository().getOne(ID));
+		model.addAttribute("currentTemplate", templateOptional.get());
 		return "templates/templates";
 	}
 
@@ -98,10 +118,42 @@ public class TemplateController extends BaseController
 	}
 
 	@GetMapping("/templates/{ID}/select")
-	public String selectTemplate(@PathVariable("ID") Integer ID)
+	public String selectTemplate(Model model,
+								 @CookieValue("currentDate") String cookieDate,
+								 @PathVariable("ID") Integer ID)
 	{
-		final Template template = templateService.getRepository().getOne(ID);
-		System.out.println(template);
-		return "redirect:/templates";
+		final Optional<Template> templateOptional = templateService.getRepository().findById(ID);
+		if(!templateOptional.isPresent())
+		{
+			throw new ResourceNotFoundException();
+		}
+
+		final Template template = templateOptional.get();
+
+		if(template.getCategory() == null)
+		{
+			template.setCategory(categoryService.getRepository().findByType(CategoryType.NONE));
+		}
+
+		if(template.getAmount() == null)
+		{
+			final Account selectedAccount = accountService.getRepository().findByIsSelected(true);
+			template.setAccount(selectedAccount);
+		}
+
+		boolean isPayment = true;
+		if(template.getAmount() != null)
+		{
+			isPayment = template.getAmount() <= 0;
+		}
+
+		final DateTime date = dateService.getDateTimeFromCookie(cookieDate);
+		transactionService.prepareModelNewOrEdit(model, false, date, template, isPayment, accountService.getAllAccountsAsc());
+
+		if(template.isTransfer())
+		{
+			return "transactions/newTransactionTransfer";
+		}
+		return "transactions/newTransactionNormal";
 	}
 }
