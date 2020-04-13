@@ -31,15 +31,15 @@ $(document).ready(function()
                     {
                         // validate template name
                         let templateName = document.getElementById('template-name').value;
-                        // if(templateName.length === 0)
-                        // {
-                        //     addTooltip('template-name', templateNameValidationMessage);
-                        //     return;
-                        // }
-                        // else
-                        // {
-                        //     removeTooltip('template-name');
-                        // }
+                        if(templateName.length === 0)
+                        {
+                            addTooltip('template-name', templateNameValidationMessage);
+                            return;
+                        }
+                        else
+                        {
+                            removeTooltip('template-name');
+                        }
 
                         // insert additional input for template name
                         let inputTemplateName = document.createElement('input');
