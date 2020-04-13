@@ -32,7 +32,13 @@
                             <div class="col s12 m6 l4">
                                 <div class="card budgetmaster-grey card-template">
                                     <div class="card-content">
-                                        <span class="card-title">${template.getTemplateName()}</span>
+                                        <span class="card-title">
+                                            <#if template.getTransferAccount()??>
+                                                <i class="material-icons">swap_horiz</i>
+                                            </#if>
+                                            ${template.getTemplateName()}
+                                        </span>
+
                                         <table class="table-template-content">
                                             <#if template.getName()??>
                                                 <tr>
