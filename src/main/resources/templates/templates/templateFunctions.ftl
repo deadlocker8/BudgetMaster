@@ -17,7 +17,7 @@
     <div class="row">
         <#list templates as template>
             <div class="col s12 m6 l4">
-                <div class="card budgetmaster-grey card-template">
+                <div class="card card-template">
                     <div class="card-content">
                         <@templateCardTitle template/>
 
