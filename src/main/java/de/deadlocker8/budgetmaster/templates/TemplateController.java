@@ -80,8 +80,8 @@ public class TemplateController extends BaseController
 	public String postNormal(@RequestParam(value = "templateName") String templateName,
 							 @ModelAttribute("NewTransaction") Transaction transaction,
 							 @RequestParam(value = "isPayment", required = false) boolean isPayment,
-							 @RequestParam(value = "ignoreCategory") Boolean ignoreCategory,
-							 @RequestParam(value = "ignoreAccount") Boolean ignoreAccount)
+							 @RequestParam(value = "includeCategory") Boolean includeCategory,
+							 @RequestParam(value = "includeAccount") Boolean includeAccount)
 	{
 		transactionService.handleAmount(transaction, isPayment);
 		transactionService.handleTags(transaction);
@@ -91,7 +91,7 @@ public class TemplateController extends BaseController
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "templateName must not be empty");
 		}
 
-		templateService.createFromTransaction(templateName, transaction, ignoreCategory, ignoreAccount);
+		templateService.createFromTransaction(templateName, transaction, includeCategory, includeAccount);
 		return "redirect:/templates";
 	}
 

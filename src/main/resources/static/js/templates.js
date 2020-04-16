@@ -67,8 +67,8 @@ function saveAsTemplate()
 
     let form = document.getElementsByName('NewTransaction')[0];
     form.appendChild(createAdditionalHiddenInput('templateName', templateName));
-    form.appendChild(createAdditionalHiddenInput('ignoreCategory', document.getElementById('ignore-category').checked));
-    form.appendChild(createAdditionalHiddenInput('ignoreAccount', document.getElementById('ignore-account').checked));
+    form.appendChild(createAdditionalHiddenInput('includeCategory', document.getElementById('include-category').checked));
+    form.appendChild(createAdditionalHiddenInput('includeAccount', document.getElementById('include-account').checked));
 
     // replace form target url
     form.action = $('#buttonCreateTemplate').attr('data-url');

@@ -43,15 +43,15 @@ public class TemplateService implements Resetable
 	{
 	}
 
-	public void createFromTransaction(String templateName, Transaction transaction, boolean ignoreCategory, boolean ignoreAccount)
+	public void createFromTransaction(String templateName, Transaction transaction, boolean includeCategory, boolean includeAccount)
 	{
 		final Template template = new Template(templateName, transaction);
-		if(ignoreCategory)
+		if(!includeCategory)
 		{
 			template.setCategory(null);
 		}
 
-		if(ignoreAccount)
+		if(!includeAccount)
 		{
 			template.setAccount(null);
 		}
