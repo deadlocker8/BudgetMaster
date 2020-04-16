@@ -42,7 +42,7 @@ public class Settings
 		defaultSettings.setUseDarkTheme(false);
 		defaultSettings.setAutoUpdateCheckEnabled(true);
 		defaultSettings.setBackupReminderActivated(true);
-		defaultSettings.setLastBackupReminderDate(DateTime.now().minusMonths(1));
+		defaultSettings.setLastBackupReminderDate(DateTime.now());
 		defaultSettings.setSearchItemsPerPage(10);
 		defaultSettings.setAutoBackupActivated(false);
 		defaultSettings.setAutoBackupDays(1);
