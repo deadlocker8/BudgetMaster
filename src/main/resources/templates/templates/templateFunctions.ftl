@@ -13,43 +13,50 @@
     </div>
 </#macro>
 
-<#macro listTemplatesAsCards templates>
-    <div class="row">
-        <#list templates as template>
-            <div class="col s12 m6 l4">
-                <div class="card card-template">
-                    <div class="card-content">
-                        <@templateCardTitle template/>
-
-                        <table class="table-template-content">
-                            <@templateCardName template/>
-                            <@templateCardAmount template/>
-                            <@templateCardCategory template/>
-                            <@templateCardDescription template/>
-                            <@templateCardTags template/>
-                            <@templateCardAccount template/>
-                            <@templateCardTransferAccount template/>
-                        </table>
-                    </div>
-                    <div class="card-action center-align card-delimiter">
-                        <a href="<@s.url '/templates/${template.ID?c}/select'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">note_add</i>${locale.getString("title.transaction.new", locale.getString("title.transaction.new.normal"))}</a>
-                    </div>
-                </div>
+<#macro listTemplates templates>
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <ul class="collapsible expandable z-depth-2">
+                    <#list templates as template>
+                        <li>
+                            <div class="collapsible-header bold">
+                                <@templateHeader template/>
+                            </div>
+                            <div class="collapsible-body">
+                                <div class="row no-margin-bottom">
+                                    <table class="table-template-content text-color">
+                                        <@templateName template/>
+                                        <@templateAmount template/>
+                                        <@templateCategory template/>
+                                        <@templateDescription template/>
+                                        <@templateTags template/>
+                                        <@templateAccount template/>
+                                        <@templateTransferAccount template/>
+                                    </table>
+                                </div>
+                            </div>
+                        </li>
+                    </#list>
+                </ul>
             </div>
-        </#list>
+        </div>
     </div>
 </#macro>
 
-<#macro templateCardTitle template>
-    <span class="card-title">
-        <#if template.getTransferAccount()??>
-            <i class="material-icons">swap_horiz</i>
-        </#if>
-        ${template.getTemplateName()}
-    </span>
+<#macro templateHeader template>
+    <#if template.getTransferAccount()??>
+        <i class="material-icons">swap_horiz</i>
+    <#else>
+        <i class="material-icons">payment</i>
+    </#if>
+    ${template.getTemplateName()}
+    <div class="collapsible-header-button">
+        <a href="<@s.url '/templates/${template.ID?c}/select'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">note_add</i>${locale.getString("title.transaction.new", locale.getString("title.transaction.new.normal"))}</a>
+    </div>
 </#macro>
 
-<#macro templateCardName template>
+<#macro templateName template>
     <#if template.getName()??>
         <tr>
             <td class="template-content-label">${locale.getString("transaction.new.label.name")}</td>
@@ -58,7 +65,7 @@
     </#if>
 </#macro>
 
-<#macro templateCardAmount template>
+<#macro templateAmount template>
     <#if template.getAmount()??>
         <tr>
             <td class="template-content-label">${locale.getString("transaction.new.label.amount")}</td>
@@ -67,7 +74,7 @@
     </#if>
 </#macro>
 
-<#macro templateCardCategory template>
+<#macro templateCategory template>
     <#if template.getCategory()??>
         <tr>
             <td class="template-content-label">${locale.getString("transaction.new.label.category")}</td>
@@ -76,7 +83,7 @@
     </#if>
 </#macro>
 
-<#macro templateCardDescription template>
+<#macro templateDescription template>
     <#if template.getDescription()??>
         <tr>
             <td class="template-content-label">${locale.getString("transaction.new.label.description")}</td>
@@ -85,7 +92,7 @@
     </#if>
 </#macro>
 
-<#macro templateCardTags template>
+<#macro templateTags template>
     <#if template.getTags()?? && template.getTags()?size gt 0>
         <tr>
             <td class="template-content-label">${locale.getString("transaction.new.label.tags")}</td>
@@ -98,7 +105,7 @@
     </#if>
 </#macro>
 
-<#macro templateCardAccount template>
+<#macro templateAccount template>
     <#if template.getAccount()??>
         <tr>
             <td class="template-content-label">${locale.getString("transaction.new.label.account")}</td>
@@ -107,7 +114,7 @@
     </#if>
 </#macro>
 
-<#macro templateCardTransferAccount template>
+<#macro templateTransferAccount template>
     <#if template.getTransferAccount()??>
         <tr>
             <td class="template-content-label">${locale.getString("transaction.new.label.transfer.account")}</td>

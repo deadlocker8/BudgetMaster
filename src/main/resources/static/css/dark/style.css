@@ -128,8 +128,7 @@ main {
     width: 350px;
 }
 
-ul.sidenav.sidenav-fixed > li:last-child
-{
+ul.sidenav.sidenav-fixed > li:last-child {
     margin-bottom: 160px;
 }
 
@@ -473,6 +472,11 @@ input[type="checkbox"]:checked + span:not(.lever)::before {
     border-right: 3px solid #45A0EF;
     border-bottom: 3px solid #45A0EF;
 }
+
+input[type="checkbox"]:not(:checked) + span:not(.lever)::before {
+    border: 2px solid rgba(255, 255, 255, 0.7);
+}
+
 
 /* chips autocomplete dropdown */
 .autocomplete-content li span {

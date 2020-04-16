@@ -24,11 +24,15 @@ $(document).ready(function()
                 data: {},
                 success: function(data)
                 {
-                   createAndOpenModal(data)
+                    createAndOpenModal(data)
                 }
             });
         });
     }
+
+    M.Collapsible.init(document.querySelector('.collapsible.expandable'), {
+        accordion: false
+    });
 });
 
 function createAndOpenModal(data)

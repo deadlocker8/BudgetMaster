@@ -5,7 +5,7 @@
         <@header.style "transactions"/>
         <@header.style "datepicker"/>
         <@header.style "categories"/>
-        <@header.style "filter"/>
+        <@header.style "collapsible"/>
         <#import "/spring.ftl" as s>
     </head>
     <body class="budgetmaster-blue-light">

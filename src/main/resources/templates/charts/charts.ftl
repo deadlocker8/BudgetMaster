@@ -3,7 +3,7 @@
         <#import "../helpers/header.ftl" as header>
         <@header.header "BudgetMaster"/>
         <@header.style "datepicker"/>
-        <@header.style "filter"/>
+        <@header.style "collapsible"/>
         <@header.style "charts"/>
         <#import "/spring.ftl" as s>
     </head>
@@ -30,7 +30,7 @@
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                         <div class="row">
-                            <div class="s12">
+                            <div class="col s12">
                                 <ul class="collapsible z-depth-2">
 
                                     <!-- STEP 1 -->

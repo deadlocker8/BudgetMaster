@@ -22,7 +22,3 @@
     background-color: #444444;
     border-bottom: 1px solid #666666;
 }
-
-input[type="checkbox"]:not(:checked) + span:not(.lever)::before {
-    border: 2px solid rgba(255, 255, 255, 0.7);
-}

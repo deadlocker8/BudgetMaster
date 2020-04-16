@@ -1,20 +1,10 @@
-.card-template {
-    color: #212121;
-    background-color: #CCCCCC;
-}
-
-.card-template .card-title {
-    font-weight: bold;
-}
-
-.card-delimiter {
-    border-top: 1px solid rgba(0, 0, 0, 0.25) !important;
-}
-
-.table-template-content {
-    color: #212121;
-}
-
 .template-content-label {
+    font-weight: 600;
+}
+
+.collapsible-header-button {
+    position: absolute;
+    right: 15px;
+    top: 8px;
     font-weight: bold;
 }

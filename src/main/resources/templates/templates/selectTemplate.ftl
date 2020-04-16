@@ -2,6 +2,7 @@
     <head>
         <#import "../helpers/header.ftl" as header>
         <@header.header "BudgetMaster"/>
+        <@header.style "collapsible"/>
         <@header.style "templates"/>
         <#import "/spring.ftl" as s>
     </head>
@@ -27,7 +28,7 @@
                         <div class="headline center-align">${locale.getString("placeholder")}</div>
                     </div>
                 <#else>
-                    <@templateFunctions.listTemplatesAsCards templates/>
+                    <@templateFunctions.listTemplates templates/>
                 </#if>
             </div>
         </main>

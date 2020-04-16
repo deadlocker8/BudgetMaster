@@ -115,7 +115,7 @@
         <#assign prefixValue = ""/>
     </#if>
     <div class="row">
-        <div class="s12">
+        <div class="col s12">
             <ul class="collapsible z-depth-2" id="filterSettings">
                 <li id="section-type">
                     <div class="collapsible-header">
