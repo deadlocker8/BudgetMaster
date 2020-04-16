@@ -2,10 +2,7 @@ package de.deadlocker8.budgetmaster.templates;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
-import de.deadlocker8.budgetmaster.categories.CategoryService;
-import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.services.DateService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
@@ -37,17 +34,15 @@ public class TemplateController extends BaseController
 	private final TransactionService transactionService;
 	private final DateService dateService;
 	private final AccountService accountService;
-	private final CategoryService categoryService;
 
 	@Autowired
-	public TemplateController(TemplateService templateService, SettingsService settingsService, TransactionService transactionService, DateService dateService, AccountService accountService, CategoryService categoryService)
+	public TemplateController(TemplateService templateService, SettingsService settingsService, TransactionService transactionService, DateService dateService, AccountService accountService)
 	{
 		this.templateService = templateService;
 		this.settingsService = settingsService;
 		this.transactionService = transactionService;
 		this.dateService = dateService;
 		this.accountService = accountService;
-		this.categoryService = categoryService;
 	}
 
 	@GetMapping("/templates")

@@ -14,6 +14,10 @@ import java.util.List;
 
 public class TransactionSearchSpecifications
 {
+	private TransactionSearchSpecifications()
+	{
+	}
+
 	public static Specification<Transaction> withDynamicQuery(final Search search)
 	{
 		return (transaction, query, builder) -> {

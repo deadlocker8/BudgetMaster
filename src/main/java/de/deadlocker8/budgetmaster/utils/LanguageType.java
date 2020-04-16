@@ -7,9 +7,9 @@ public enum LanguageType
 	GERMAN("Deutsch", Locale.GERMAN, "german"),
 	ENGLISH("English", Locale.ENGLISH, "english");
 	
-	private String name;
-	private Locale locale;
-	private String iconName;
+	private final String name;
+	private final Locale locale;
+	private final String iconName;
 	
 	LanguageType(String name, Locale locale, String iconName)
 	{

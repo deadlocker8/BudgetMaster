@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class DefaultCharts
@@ -50,6 +49,9 @@ public class DefaultCharts
 			getChartFromFile("charts/IncomesAndExpendituresPerYearBar.js"),
 			ChartType.DEFAULT, 2);
 
+	private DefaultCharts()
+	{
+	}
 
 	public static List<Chart> getDefaultCharts()
 	{

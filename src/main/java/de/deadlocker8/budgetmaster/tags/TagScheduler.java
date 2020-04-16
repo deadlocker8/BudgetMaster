@@ -16,9 +16,9 @@ public class TagScheduler
 {
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
-	private TagRepository tagRepository;
-	private TransactionRepository transactionRepository;
-	private TemplateRepository templateRepository;
+	private final TagRepository tagRepository;
+	private final TransactionRepository transactionRepository;
+	private final TemplateRepository templateRepository;
 
 	@Autowired
 	public TagScheduler(TagRepository tagRepository, TransactionRepository transactionRepository, TemplateRepository templateRepository)
