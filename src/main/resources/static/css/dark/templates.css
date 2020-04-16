@@ -2,6 +2,10 @@
     font-weight: 600;
 }
 
+.template-header-name {
+    max-width: 60%;
+}
+
 .collapsible-header-button {
     position: absolute;
     right: 15px;

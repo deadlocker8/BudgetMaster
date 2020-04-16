@@ -28,7 +28,7 @@
                         <div class="headline center-align">${locale.getString("placeholder")}</div>
                     </div>
                 <#else>
-                    <@templateFunctions.listTemplates templates/>
+                    <@templateFunctions.listTemplates templates false/>
                 </#if>
             </div>
         </main>

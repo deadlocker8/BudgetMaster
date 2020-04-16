@@ -13,7 +13,7 @@
     </div>
 </#macro>
 
-<#macro listTemplates templates>
+<#macro listTemplates templates isEditable>
     <div class="container">
         <div class="row">
             <div class="col s12">
@@ -22,6 +22,14 @@
                         <li>
                             <div class="collapsible-header bold">
                                 <@templateHeader template/>
+                                <div class="collapsible-header-button">
+                                    <#if isEditable>
+                                        <a href="<@s.url '/templates/${template.ID?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
+                                        <a href="<@s.url '/templates/${template.ID?c}/requestDelete'/>" class="btn-flat no-padding text-color"><i class="material-icons left">delete</i></a>
+                                    <#else>
+                                        <a href="<@s.url '/templates/${template.ID?c}/select'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">note_add</i>${locale.getString("title.transaction.new", locale.getString("title.transaction.new.normal"))}</a>
+                                    </#if>
+                                </div>
                             </div>
                             <div class="collapsible-body">
                                 <div class="row no-margin-bottom">
@@ -50,10 +58,7 @@
     <#else>
         <i class="material-icons">payment</i>
     </#if>
-    ${template.getTemplateName()}
-    <div class="collapsible-header-button">
-        <a href="<@s.url '/templates/${template.ID?c}/select'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">note_add</i>${locale.getString("title.transaction.new", locale.getString("title.transaction.new.normal"))}</a>
-    </div>
+    <div class="truncate template-header-name">${template.getTemplateName()}</div>
 </#macro>
 
 <#macro templateName template>

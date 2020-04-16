@@ -2,6 +2,8 @@
     <head>
         <#import "../helpers/header.ftl" as header>
         <@header.header "BudgetMaster"/>
+        <@header.style "collapsible"/>
+        <@header.style "templates"/>
         <#import "/spring.ftl" as s>
     </head>
     <body class="budgetmaster-blue-light">
@@ -9,6 +11,7 @@
         <@navbar.navbar "templates" settings/>
 
         <#import "templateFunctions.ftl" as templateFunctions>
+        <#import "../categories/categoriesFunctions.ftl" as categoriesFunctions>
 
         <main>
             <div class="card main-card background-color">
@@ -20,29 +23,13 @@
                 <br>
                 <@templateFunctions.buttons/>
                 <br>
-                <div class="container">
-                    <#if templates?size == 0>
+                <#if templates?size == 0>
+                    <div class="container">
                         <div class="headline center-align">${locale.getString("placeholder")}</div>
-                    <#else>
-                        <table class="bordered">
-                            <thead>
-                                <tr>
-                                    <th>${locale.getString("chart.new.label.name")}</th>
-                                    <th>${locale.getString("chart.actions")}</th>
-                                </tr>
-                            </thead>
-                            <#list templates as template>
-                                <tr>
-                                    <td>${template.getTemplateName()}</td>
-                                    <td>
-                                        <a href="<@s.url '/templates/${template.ID?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
-                                        <a href="<@s.url '/templates/${template.ID?c}/requestDelete'/>" class="btn-flat no-padding text-color"><i class="material-icons left">delete</i></a>
-                                    </td>
-                                </tr>
-                            </#list>
-                        </table>
-                    </#if>
-                </div>
+                    </div>
+                <#else>
+                    <@templateFunctions.listTemplates templates true/>
+                </#if>
             </div>
 
             <#if currentTemplate??>
@@ -53,7 +40,7 @@
                         <p>${locale.getString("info.text.template.delete", currentTemplate.getName())}</p>
                     </div>
                     <div class="modal-footer background-color">
-                        <a href="<@s.url '/templates/manage'/>" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
+                        <a href="<@s.url '/templates'/>" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
                         <a href="<@s.url '/templates/${currentTemplate.getID()?c}/delete'/>" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("info.title.template.delete")}</a>
                     </div>
                 </div>
