@@ -607,6 +607,11 @@ input[type="radio"]:not(:checked) + span::before, [type="radio"]:not(:checked) +
     margin-bottom: 20px;
 }
 
+/* inputs with icon prefix */
+.input-field .prefix.active {
+    color: #2E79B9;
+}
+
 .invisible {
     opacity: 0;
 }

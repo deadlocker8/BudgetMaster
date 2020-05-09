@@ -17,9 +17,9 @@
     <div class="container">
         <div class="row">
             <div class="col s12">
-                <ul class="collapsible expandable z-depth-2">
+                <ul class="collapsible expandable z-depth-2" id="templateCollapsible">
                     <#list templates as template>
-                        <li>
+                        <li class="template-item">
                             <div class="collapsible-header bold">
                                 <@templateHeader template/>
                                 <div class="collapsible-header-button">

@@ -33,6 +33,17 @@ $(document).ready(function()
     M.Collapsible.init(document.querySelector('.collapsible.expandable'), {
         accordion: false
     });
+
+
+    let inputSearchTemplate = document.getElementById('searchTemplate');
+    if(inputSearchTemplate !== undefined)
+    {
+        $(inputSearchTemplate).on('change keydown paste input', function()
+        {
+            let searchText = $(this).val();
+            searchTemplates(searchText);
+        });
+    }
 });
 
 function createAndOpenModal(data)
@@ -111,4 +122,48 @@ function createAdditionalHiddenInput(name, value)
     newInput.setAttribute('name', name);
     newInput.setAttribute('value', value);
     return newInput;
+}
+
+function searchTemplates(searchText)
+{
+    searchText = searchText.trim();
+
+    let templateItems = document.querySelectorAll('.template-item');
+    let collapsible = document.getElementById('templateCollapsible');
+
+    if(!searchText)
+    {
+        templateItems.forEach((item) =>
+        {
+            collapsible.classList.remove('hidden');
+            item.classList.remove('hidden');
+        });
+        return;
+    }
+
+    let numberOfVisibleItems = 0;
+    for(let i = 0; i < templateItems.length; i++)
+    {
+        let item = templateItems[i];
+        let templateName = item.querySelector('.template-header-name').innerText;
+        if(templateName.includes(searchText))
+        {
+            item.classList.remove('hidden');
+            numberOfVisibleItems++;
+        }
+        else
+        {
+            item.classList.add('hidden');
+        }
+    }
+
+    // hide whole collapsible to prevent shadows from remaining visible
+    if(numberOfVisibleItems === 0)
+    {
+        collapsible.classList.add('hidden');
+    }
+    else
+    {
+        collapsible.classList.remove('hidden');
+    }
 }

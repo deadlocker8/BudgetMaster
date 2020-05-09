@@ -19,6 +19,13 @@
                     <div class="section center-align">
                         <div class="headline">${locale.getString("menu.templates")}</div>
                     </div>
+                    <div class="searchTemplateWrapper">
+                        <div class="input-field col s12 m12 l8 offset-l2">
+                            <i class="material-icons prefix">search</i>
+                            <input id="searchTemplate" type="text">
+                            <label for="searchTemplate">${locale.getString("search")}</label>
+                        </div>
+                    </div>
                 </div>
                 <br>
                 <div class="center-align"><a href="<@s.url '/templates'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">edit</i>${locale.getString("home.menu.templates.action.manage")}</a></div>
