@@ -127,6 +127,7 @@ function createAdditionalHiddenInput(name, value)
 function searchTemplates(searchText)
 {
     searchText = searchText.trim();
+    searchText = searchText.toLowerCase()
 
     let templateItems = document.querySelectorAll('.template-item');
     let collapsible = document.getElementById('templateCollapsible');
@@ -146,7 +147,7 @@ function searchTemplates(searchText)
     {
         let item = templateItems[i];
         let templateName = item.querySelector('.template-header-name').innerText;
-        if(templateName.includes(searchText))
+        if(templateName.toLowerCase().includes(searchText))
         {
             item.classList.remove('hidden');
             numberOfVisibleItems++;
