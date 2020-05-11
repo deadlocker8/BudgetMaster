@@ -37,7 +37,7 @@
                 <div id="modalConfirmDelete" class="modal background-color">
                     <div class="modal-content">
                         <h4>${locale.getString("info.title.template.delete")}</h4>
-                        <p>${locale.getString("info.text.template.delete", currentTemplate.getName())}</p>
+                        <p>${locale.getString("info.text.template.delete", currentTemplate.getTemplateName())}</p>
                     </div>
                     <div class="modal-footer background-color">
                         <a href="<@s.url '/templates'/>" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
