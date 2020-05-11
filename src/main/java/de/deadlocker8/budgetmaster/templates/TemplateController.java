@@ -172,6 +172,6 @@ public class TemplateController extends BaseController
 		}
 
 		templateService.getRepository().save(template);
-		return "redirect:/transactions";
+		return "redirect:/templates";
 	}
 }
