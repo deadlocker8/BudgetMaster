@@ -129,7 +129,7 @@
     </#if>
 </#macro>
 
-<#macro templateName template>
+<#macro templateNameInput template>
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
             <input id="template-name" type="text" name="templateName" <@validation.validation "templateName"/> value="<#if template.getTemplateName()??>${template.getTemplateName()}</#if>">

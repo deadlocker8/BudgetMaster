@@ -32,7 +32,7 @@
                         <@newTransactionMacros.isExpenditureSwitch template isPayment/>
 
                         <#-- template name -->
-                        <@templateFunctions.templateName template/>
+                        <@templateFunctions.templateNameInput template/>
 
                         <#-- name -->
                         <@newTransactionMacros.transactionName template suggestionsJSON/>
