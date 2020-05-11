@@ -1,4 +1,5 @@
 <#import "/spring.ftl" as s>
+<#import "../helpers/validation.ftl" as validation>
 
 <#macro buttonNew>
     <a href="<@s.url '/templates/newTemplate'/>" class="waves-effect waves-light btn budgetmaster-blue"><i
@@ -126,4 +127,13 @@
             <td>${template.getTransferAccount().getName()}</td>
         </tr>
     </#if>
+</#macro>
+
+<#macro templateName template>
+    <div class="row">
+        <div class="input-field col s12 m12 l8 offset-l2">
+            <input id="template-name" type="text" name="templateName" <@validation.validation "templateName"/> value="<#if template.getTemplateName()??>${template.getTemplateName()}</#if>">
+            <label for="template-name">${locale.getString("template.new.label.name")}</label>
+        </div>
+    </div>
 </#macro>

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -72,11 +73,11 @@ public class TemplateController extends BaseController
 	}
 
 	@PostMapping(value = "/templates/fromTransaction")
-	public String postNormal(@RequestParam(value = "templateName") String templateName,
-							 @ModelAttribute("NewTransaction") Transaction transaction,
-							 @RequestParam(value = "isPayment", required = false) boolean isPayment,
-							 @RequestParam(value = "includeCategory") Boolean includeCategory,
-							 @RequestParam(value = "includeAccount") Boolean includeAccount)
+	public String postFromTransaction(@RequestParam(value = "templateName") String templateName,
+									  @ModelAttribute("NewTransaction") Transaction transaction,
+									  @RequestParam(value = "isPayment", required = false) boolean isPayment,
+									  @RequestParam(value = "includeCategory") Boolean includeCategory,
+									  @RequestParam(value = "includeAccount") Boolean includeAccount)
 	{
 		transactionService.handleAmount(transaction, isPayment);
 		transactionService.handleTags(transaction);
@@ -140,5 +141,37 @@ public class TemplateController extends BaseController
 			return "transactions/newTransactionTransfer";
 		}
 		return "transactions/newTransactionNormal";
+	}
+
+	@GetMapping("/templates/newTemplate")
+	public String newTemplate(Model model)
+	{
+		final Template emptyTemplate = new Template();
+		templateService.prepareTemplateForNewTransaction(emptyTemplate);
+		templateService.prepareModelNewOrEdit(model, false, emptyTemplate, true, accountService.getAllAccountsAsc());
+		return "templates/newTemplate";
+	}
+
+	@PostMapping(value = "/templates/newTemplate")
+	public String post(Model model,
+					   @ModelAttribute("NewTemplate") Template template, BindingResult bindingResult,
+					   @RequestParam(value = "isPayment", required = false) boolean isPayment)
+	{
+
+		TemplateValidator templateValidator = new TemplateValidator();
+		templateValidator.validate(template, bindingResult);
+
+		transactionService.handleAmount(template, isPayment);
+		transactionService.handleTags(template);
+
+		if(bindingResult.hasErrors())
+		{
+			model.addAttribute("error", bindingResult);
+			templateService.prepareModelNewOrEdit(model, template.getID() != null, template, isPayment, accountService.getAllAccountsAsc());
+			return "templates/newTemplate";
+		}
+
+		templateService.getRepository().save(template);
+		return "redirect:/transactions";
 	}
 }

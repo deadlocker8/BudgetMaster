@@ -1,4 +1,5 @@
 <#import "/spring.ftl" as s>
+<#import "../helpers/validation.ftl" as validation>
 
 <#macro isExpenditureSwitch transaction isPayment>
     <#if isPayment>

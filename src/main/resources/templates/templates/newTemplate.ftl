@@ -12,46 +12,46 @@
         <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "transactions" settings/>
 
-        <#import "newTransactionMacros.ftl" as newTransactionMacros>
+        <#import "../transactions/newTransactionMacros.ftl" as newTransactionMacros>
+        <#import "templateFunctions.ftl" as templateFunctions>
 
         <main>
             <div class="card main-card background-color">
                 <div class="container">
                     <div class="section center-align">
-                        <#assign title = locale.getString("title.transaction.new.normal")/>
-                        <div class="headline"><#if isEdit>${locale.getString("title.transaction.edit", title)}<#else>${locale.getString("title.transaction.new", title)}</#if></div>
+                        <div class="headline"><#if isEdit>${locale.getString("title.template.edit")}<#else>${locale.getString("title.template.new")}</#if></div>
                     </div>
                 </div>
                 <div class="container">
                     <#import "../helpers/validation.ftl" as validation>
-                    <form name="NewTransaction" action="<@s.url '/transactions/newTransaction/normal'/>" method="post" onsubmit="return validateForm()">
+                    <form name="NewTemplate" action="<@s.url '/templates/newTemplate'/>" method="post" onsubmit="return validateForm()">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <input type="hidden" name="ID" value="<#if transaction.getID()??>${transaction.getID()?c}</#if>">
+                        <input type="hidden" name="ID" value="<#if template.getID()??>${template.getID()?c}</#if>">
 
                         <#-- isPayment switch -->
-                        <@newTransactionMacros.isExpenditureSwitch transaction isPayment/>
+                        <@newTransactionMacros.isExpenditureSwitch template isPayment/>
+
+                        <#-- template name -->
+                        <@templateFunctions.templateName template/>
 
                         <#-- name -->
-                        <@newTransactionMacros.transactionName transaction suggestionsJSON/>
+                        <@newTransactionMacros.transactionName template suggestionsJSON/>
 
                         <#-- amount -->
-                        <@newTransactionMacros.transactionAmount transaction/>
+                        <@newTransactionMacros.transactionAmount template/>
 
                         <#-- category -->
-                        <@newTransactionMacros.categorySelect categories transaction.getCategory() "col s12 m12 l8 offset-l2" locale.getString("transaction.new.label.category")/>
-
-                        <#-- date -->
-                        <@newTransactionMacros.transactionStartDate transaction currentDate/>
+                        <@newTransactionMacros.categorySelect categories template.getCategory() "col s12 m12 l8 offset-l2" locale.getString("transaction.new.label.category")/>
 
                         <#-- description -->
-                        <@newTransactionMacros.transactionDescription transaction/>
+                        <@newTransactionMacros.transactionDescription template/>
 
                         <#-- tags -->
-                        <@newTransactionMacros.transactionTags transaction/>
+                        <@newTransactionMacros.transactionTags template/>
 
                         <#-- account -->
-                        <#if transaction.getAccount()??>
-                            <@newTransactionMacros.account accounts transaction.getAccount() "transaction-account" "account" locale.getString("transaction.new.label.account")/>
+                        <#if template.getAccount()??>
+                            <@newTransactionMacros.account accounts template.getAccount() "transaction-account" "account" locale.getString("transaction.new.label.account")/>
                         <#else>
                             <@newTransactionMacros.account accounts helpers.getCurrentAccountOrDefault() "transaction-account" "account" locale.getString("transaction.new.label.account")/>
                         </#if>
@@ -59,10 +59,7 @@
                         <br>
                         <#-- buttons -->
                         <@newTransactionMacros.buttons/>
-                        <@newTransactionMacros.buttonTemplate/>
                     </form>
-
-                    <div id="saveAsTemplateModalContainer"></div>
                 </div>
             </div>
         </main>
@@ -70,12 +67,6 @@
         <!-- Pass localization to JS -->
         <#import "../helpers/globalDatePicker.ftl" as datePicker>
         <@datePicker.datePickerLocalization/>
-
-        <script>
-            createTemplateWithErrorInForm = '${locale.getString("save.as.template.errorsInForm")}';
-            templateNameEmptyValidationMessage = "${locale.getString("warning.empty.transaction.name")}";
-            templateNameDuplicateValidationMessage = "${locale.getString("warning.duplicate.template.name")}";
-        </script>
 
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
