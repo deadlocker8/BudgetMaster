@@ -44,6 +44,11 @@ $(document).ready(function()
             searchTemplates(searchText);
         });
     }
+
+    if($("#template-name").length)
+    {
+        document.getElementById('template-name').focus();
+    }
 });
 
 function createAndOpenModal(data)
