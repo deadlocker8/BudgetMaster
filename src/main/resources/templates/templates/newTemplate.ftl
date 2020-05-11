@@ -24,7 +24,7 @@
                 </div>
                 <div class="container">
                     <#import "../helpers/validation.ftl" as validation>
-                    <form name="NewTemplate" action="<@s.url '/templates/newTemplate'/>" method="post" onsubmit="return validateForm()">
+                    <form name="NewTemplate" action="<@s.url '/templates/newTemplate'/>" method="post" onsubmit="return validateForm(true)">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="ID" value="<#if template.getID()??>${template.getID()?c}</#if>">
 
