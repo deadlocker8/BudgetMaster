@@ -223,16 +223,18 @@
         <input type="hidden" id="hidden-transaction-repeating-modifier" name="repeatingModifierNumber" value="<#if transaction.getRepeatingOption()??>${transaction.getRepeatingOption().getModifier().getQuantity()}</#if>">
 
         <div class="input-field col s6 m6 l4">
+
+            <#if transaction.getRepeatingOption()??>
+                <#assign selectedOption=locale.getString(transaction.getRepeatingOption().getModifier().getLocalizationKey())>
+            <#else>
+                <#assign selectedOption=locale.getString("repeating.modifier.months")>
+            </#if>
+
             <select id="transaction-repeating-modifier-type" name="repeatingModifierType">
                 <#list helpers.getRepeatingModifierTypes() as modifierType>
                     <#assign modifierName=locale.getString(modifierType.getLocalizationKey())>
-                    <#if transaction.getRepeatingOption()??>
-                        ${transaction.getRepeatingOption().getModifier().getLocalizationKey()}
-                        <#if locale.getString(transaction.getRepeatingOption().getModifier().getLocalizationKey()) == modifierName>
-                            <option selected value="${modifierName}">${modifierName}</option>
-                        <#else>
-                            <option value="${modifierName}">${modifierName}</option>
-                        </#if>
+                    <#if selectedOption == modifierName>
+                        <option selected value="${modifierName}">${modifierName}</option>
                     <#else>
                         <option value="${modifierName}">${modifierName}</option>
                     </#if>
