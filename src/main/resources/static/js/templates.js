@@ -51,16 +51,26 @@ $(document).ready(function()
 
     if($("#include-account").length)
     {
-        document.getElementById('include-account').addEventListener('change', (event) =>
-        {
-            let accountSelect = document.getElementById('transaction-account')
-            let accountSelectInstance = M.FormSelect.getInstance(accountSelect);
-            accountSelectInstance.destroy();
-            accountSelect.disabled = !event.target.checked;
-            M.FormSelect.init(document.querySelectorAll('#transaction-account'), {});
-        });
+        handleIncludeAccountCheckbox('include-account', 'transaction-account')
+    }
+
+    if($("#include-transfer-account").length)
+    {
+        handleIncludeAccountCheckbox('include-transfer-account', 'transaction-transfer-account')
     }
 });
+
+function handleIncludeAccountCheckbox(checkboxID, selectID)
+{
+    document.getElementById(checkboxID).addEventListener('change', (event) =>
+    {
+        let accountSelect = document.getElementById(selectID)
+        let accountSelectInstance = M.FormSelect.getInstance(accountSelect);
+        accountSelectInstance.destroy();
+        accountSelect.disabled = !event.target.checked;
+        M.FormSelect.init(document.querySelectorAll('#' + selectID), {});
+    });
+}
 
 function createAndOpenModal(data)
 {

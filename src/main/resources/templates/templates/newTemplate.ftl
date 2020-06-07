@@ -58,6 +58,15 @@
                             <@newTransactionMacros.account accounts helpers.getCurrentAccountOrDefault() "transaction-account" "account" "", true/>
                         </#if>
 
+                        <#-- transfer account -->
+                        <#if template.getTransferAccount()??>
+                            <@templateFunctions.templateIncludeAccountCheckbox "include-transfer-account" "includeTransferAccount" locale.getString('template.checkbox.include.account.transfer') true/>
+                            <@newTransactionMacros.account accounts template.getTransferAccount() "transaction-transfer-account" "transferAccount" "" false/>
+                        <#else>
+                            <@templateFunctions.templateIncludeAccountCheckbox "include-transfer-account" "includeTransferAccount" locale.getString('template.checkbox.include.account.transfer') false/>
+                            <@newTransactionMacros.account accounts helpers.getCurrentAccountOrDefault() "transaction-transfer-account" "transferAccount" "", true/>
+                        </#if>
+
                         <br>
                         <#-- buttons -->
                         <@newTransactionMacros.buttons/>

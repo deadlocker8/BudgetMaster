@@ -153,7 +153,8 @@ public class TemplateController extends BaseController
 	public String post(Model model,
 					   @ModelAttribute("NewTemplate") Template template, BindingResult bindingResult,
 					   @RequestParam(value = "isPayment", required = false) boolean isPayment,
-					   @RequestParam(value = "includeAccount", required = false) boolean includeAccount)
+					   @RequestParam(value = "includeAccount", required = false) boolean includeAccount,
+					   @RequestParam(value = "includeTransferAccount", required = false) boolean includeTransferAccount)
 	{
 		template.setTemplateName(template.getTemplateName().trim());
 
@@ -186,6 +187,11 @@ public class TemplateController extends BaseController
 			template.setAccount(null);
 		}
 
+		if(!includeTransferAccount)
+		{
+			template.setTransferAccount(null);
+		}
+
 		templateService.getRepository().save(template);
 		return "redirect:/templates";
 	}
@@ -200,13 +206,9 @@ public class TemplateController extends BaseController
 		}
 
 		Template template = templateOptional.get();
-
+		templateService.prepareTemplateForNewTransaction(template, false);
 		templateService.prepareModelNewOrEdit(model, true, template, template.getAmount() <= 0, accountService.getAllAccountsAsc());
 
-		if(template.isTransfer())
-		{
-			return "templates/newTransferTemplate";
-		}
 		return "templates/newTemplate";
 	}
 }
