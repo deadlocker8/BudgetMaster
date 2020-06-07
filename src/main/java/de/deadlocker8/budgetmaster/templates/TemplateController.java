@@ -155,6 +155,8 @@ public class TemplateController extends BaseController
 					   @RequestParam(value = "isPayment", required = false) boolean isPayment,
 					   @RequestParam(value = "includeAccount", required = false) boolean includeAccount)
 	{
+		template.setTemplateName(template.getTemplateName().trim());
+
 		String previousTemplateName = null;
 		boolean isEdit = template.getID() != null;
 		if(isEdit)
