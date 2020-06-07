@@ -34,7 +34,6 @@ $(document).ready(function()
         accordion: false
     });
 
-
     let inputSearchTemplate = document.getElementById('searchTemplate');
     if(inputSearchTemplate !== undefined)
     {
@@ -48,6 +47,18 @@ $(document).ready(function()
     if($("#template-name").length)
     {
         document.getElementById('template-name').focus();
+    }
+
+    if($("#include-account").length)
+    {
+        document.getElementById('include-account').addEventListener('change', (event) =>
+        {
+            let accountSelect = document.getElementById('transaction-account')
+            let accountSelectInstance = M.FormSelect.getInstance(accountSelect);
+            accountSelectInstance.destroy();
+            accountSelect.disabled = !event.target.checked;
+            M.FormSelect.init(document.querySelectorAll('#transaction-account'), {});
+        });
     }
 });
 

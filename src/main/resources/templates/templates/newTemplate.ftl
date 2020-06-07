@@ -51,9 +51,11 @@
 
                         <#-- account -->
                         <#if template.getAccount()??>
-                            <@newTransactionMacros.account accounts template.getAccount() "transaction-account" "account" locale.getString("transaction.new.label.account")/>
+                            <@templateFunctions.templateIncludeAccountCheckbox "include-account" "includeAccount" locale.getString('template.checkbox.include.account') true/>
+                            <@newTransactionMacros.account accounts template.getAccount() "transaction-account" "account" "" false/>
                         <#else>
-                            <@newTransactionMacros.account accounts helpers.getCurrentAccountOrDefault() "transaction-account" "account" locale.getString("transaction.new.label.account")/>
+                            <@templateFunctions.templateIncludeAccountCheckbox "include-account" "includeAccount" locale.getString('template.checkbox.include.account') false/>
+                            <@newTransactionMacros.account accounts helpers.getCurrentAccountOrDefault() "transaction-account" "account" "", true/>
                         </#if>
 
                         <br>

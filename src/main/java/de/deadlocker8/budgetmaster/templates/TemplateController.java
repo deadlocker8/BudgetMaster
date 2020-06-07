@@ -122,7 +122,7 @@ public class TemplateController extends BaseController
 		}
 
 		final Template template = templateOptional.get();
-		templateService.prepareTemplateForNewTransaction(template);
+		templateService.prepareTemplateForNewTransaction(template, true);
 
 		boolean isPayment = true;
 		if(template.getAmount() != null)
@@ -144,7 +144,7 @@ public class TemplateController extends BaseController
 	public String newTemplate(Model model)
 	{
 		final Template emptyTemplate = new Template();
-		templateService.prepareTemplateForNewTransaction(emptyTemplate);
+		templateService.prepareTemplateForNewTransaction(emptyTemplate, false);
 		templateService.prepareModelNewOrEdit(model, false, emptyTemplate, true, accountService.getAllAccountsAsc());
 		return "templates/newTemplate";
 	}
@@ -152,7 +152,8 @@ public class TemplateController extends BaseController
 	@PostMapping(value = "/templates/newTemplate")
 	public String post(Model model,
 					   @ModelAttribute("NewTemplate") Template template, BindingResult bindingResult,
-					   @RequestParam(value = "isPayment", required = false) boolean isPayment)
+					   @RequestParam(value = "isPayment", required = false) boolean isPayment,
+					   @RequestParam(value = "includeAccount", required = false) boolean includeAccount)
 	{
 
 		TemplateValidator templateValidator = new TemplateValidator(templateService.getExistingTemplateNames());
@@ -166,6 +167,11 @@ public class TemplateController extends BaseController
 			model.addAttribute("error", bindingResult);
 			templateService.prepareModelNewOrEdit(model, template.getID() != null, template, isPayment, accountService.getAllAccountsAsc());
 			return "templates/newTemplate";
+		}
+
+		if(!includeAccount)
+		{
+			template.setAccount(null);
 		}
 
 		templateService.getRepository().save(template);

@@ -137,3 +137,14 @@
         </div>
     </div>
 </#macro>
+
+<#macro templateIncludeAccountCheckbox id name label checked>
+    <div class="row">
+        <div class="input-field col s12 m12 l8 offset-l2">
+            <label>
+                <input id="${id}" name="${name}" type="checkbox" <#if checked>checked</#if>>
+                <span class="columnName-checkbox-label text-color">${label}</span>
+            </label>
+        </div>
+    </div>
+</#macro>

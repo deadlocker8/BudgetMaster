@@ -180,10 +180,10 @@
     </script>
 </#macro>
 
-<#macro account accounts selectedAccount id name label>
+<#macro account accounts selectedAccount id name label disabled>
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
-            <select id="${id}" name="${name}" <@validation.validation "account"/>>
+            <select id="${id}" name="${name}" <@validation.validation "account"/> <#if disabled>disabled</#if>>
                 <#list accounts as account>
                     <#if (account.getType().name() != "CUSTOM")>
                         <#continue>

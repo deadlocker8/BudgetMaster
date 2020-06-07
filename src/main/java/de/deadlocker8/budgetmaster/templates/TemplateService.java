@@ -75,14 +75,14 @@ public class TemplateService implements Resetable
 		getRepository().save(template);
 	}
 
-	public void prepareTemplateForNewTransaction(Template template)
+	public void prepareTemplateForNewTransaction(Template template, boolean prepareAccount)
 	{
 		if(template.getCategory() == null)
 		{
 			template.setCategory(categoryService.getRepository().findByType(CategoryType.NONE));
 		}
 
-		if(template.getAmount() == null)
+		if(prepareAccount && template.getAccount() == null)
 		{
 			final Account selectedAccount = accountService.getRepository().findByIsSelected(true);
 			template.setAccount(selectedAccount);
