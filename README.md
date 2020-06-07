@@ -2,12 +2,13 @@
 Manage your monthly budget easily with BudgetMaster
 
 - __start:__ 17.12.16
-- __current release:__ v2.3.1 (22) from 28.08.19
+- __current release:__ v2.4.0 (23) from 07.06.20
 
 ## Key Features
 - Keep your data private - Host your own BudgetMaster server or use it in standalone mode. All data remains on your machines.
 - Track transactions - Track your incomes and expenditures in transactions with name, description, tags, etc.
 - Schedule transactions - Repeat recurring transactions automatically.
+- Transaction Templates - Prepare templates for transactions that always look the same but are not repeated.
 - Multi Bank - Organize your transactions into multiple accounts.
 - Categories - Group your transactions into categories.
 - Data Backup - Backup your complete database or generate month reports as PDF.
@@ -16,6 +17,7 @@ Manage your monthly budget easily with BudgetMaster
 - Localization - English and German supported.
 - Search and Filter - Search for individual transactions or filter your view.
 - Visualize your data - Use on of the pre-defined charts or create your one by using the chart framework to visualize and analyze your data.
+- Auto Backup - Schedule an automatic export of your database content.
 
 ## Available Languages
 - English [Roadmap](https://roadmaps.thecodelabs.de/roadmap/2)
