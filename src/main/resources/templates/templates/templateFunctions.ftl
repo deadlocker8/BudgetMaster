@@ -63,7 +63,7 @@
 </#macro>
 
 <#macro templateName template>
-    <#if template.getName()??>
+    <#if template.getName()?has_content>
         <tr>
             <td class="template-content-label">${locale.getString("transaction.new.label.name")}</td>
             <td>${template.getName()}</td>
@@ -90,7 +90,7 @@
 </#macro>
 
 <#macro templateDescription template>
-    <#if template.getDescription()??>
+    <#if template.getDescription()?has_content>
         <tr>
             <td class="template-content-label">${locale.getString("transaction.new.label.description")}</td>
             <td>${template.getDescription()}</td>
