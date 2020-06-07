@@ -65,10 +65,7 @@ public class TemplateController extends BaseController
 	@GetMapping("/templates/fromTransactionModal")
 	public String fromTransactionModal(Model model)
 	{
-		final List<String> templateNames = templateService.getRepository().findAll().stream()
-				.map(Template::getTemplateName)
-				.collect(Collectors.toList());
-		model.addAttribute("existingTemplateNames", GSON.toJson(templateNames));
+		model.addAttribute("existingTemplateNames", GSON.toJson(templateService.getExistingTemplateNames()));
 		return "templates/createFromTransactionModal";
 	}
 
@@ -158,7 +155,7 @@ public class TemplateController extends BaseController
 					   @RequestParam(value = "isPayment", required = false) boolean isPayment)
 	{
 
-		TemplateValidator templateValidator = new TemplateValidator();
+		TemplateValidator templateValidator = new TemplateValidator(templateService.getExistingTemplateNames());
 		templateValidator.validate(template, bindingResult);
 
 		transactionService.handleAmount(template, isPayment);

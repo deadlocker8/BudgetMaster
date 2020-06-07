@@ -99,4 +99,11 @@ public class TemplateService implements Resetable
 		model.addAttribute("isPayment", isPayment);
 		model.addAttribute("suggestionsJSON", GSON.toJson(new ArrayList<String>()));
 	}
+
+	public List<String> getExistingTemplateNames()
+	{
+		return getRepository().findAll().stream()
+				.map(Template::getTemplateName)
+				.collect(Collectors.toList());
+	}
 }
