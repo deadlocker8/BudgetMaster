@@ -11,10 +11,12 @@ import java.util.List;
 
 public class TemplateValidator implements Validator
 {
+	private String previousTemplateName;
 	private List<String> existingTemplateNames;
 
-	public TemplateValidator(List<String> existingTemplateNames)
+	public TemplateValidator(String previousTemplateName, List<String> existingTemplateNames)
 	{
+		this.previousTemplateName = previousTemplateName;
 		this.existingTemplateNames = existingTemplateNames;
 	}
 
@@ -27,9 +29,14 @@ public class TemplateValidator implements Validator
 	{
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "templateName", Strings.WARNING_EMPTY_TRANSACTION_NAME);
 
-		Template template = (Template)obj;
 
-		boolean isNameAlreadyUsed = this.existingTemplateNames.stream().anyMatch(template.getTemplateName()::equalsIgnoreCase);
+		final Template template = (Template) obj;
+		if(previousTemplateName != null && previousTemplateName.equals(template.getTemplateName()))
+		{
+			return;
+		}
+
+		final boolean isNameAlreadyUsed = this.existingTemplateNames.contains(template.getTemplateName());
 		if(isNameAlreadyUsed)
 		{
 			errors.rejectValue("templateName", Strings.WARNING_DUPLICATE_TEMPLATE_NAME);

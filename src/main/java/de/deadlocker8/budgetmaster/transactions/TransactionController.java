@@ -245,7 +245,6 @@ public class TransactionController extends BaseController
 		return "transactions/newTransactionNormal";
 	}
 
-
 	@GetMapping("/transactions/{ID}/highlight")
 	public String highlight(Model model, @PathVariable("ID") Integer ID)
 	{

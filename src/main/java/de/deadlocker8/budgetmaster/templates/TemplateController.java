@@ -155,8 +155,18 @@ public class TemplateController extends BaseController
 					   @RequestParam(value = "isPayment", required = false) boolean isPayment,
 					   @RequestParam(value = "includeAccount", required = false) boolean includeAccount)
 	{
+		String previousTemplateName = null;
+		boolean isEdit = template.getID() != null;
+		if(isEdit)
+		{
+			final Optional<Template> existingTemplateOptional = templateService.getRepository().findById(template.getID());
+			if(existingTemplateOptional.isPresent())
+			{
+				previousTemplateName = existingTemplateOptional.get().getTemplateName();
+			}
+		}
 
-		TemplateValidator templateValidator = new TemplateValidator(templateService.getExistingTemplateNames());
+		TemplateValidator templateValidator = new TemplateValidator(previousTemplateName, templateService.getExistingTemplateNames());
 		templateValidator.validate(template, bindingResult);
 
 		transactionService.handleAmount(template, isPayment);
@@ -176,5 +186,25 @@ public class TemplateController extends BaseController
 
 		templateService.getRepository().save(template);
 		return "redirect:/templates";
+	}
+
+	@GetMapping("/templates/{ID}/edit")
+	public String editTemplate(Model model, @PathVariable("ID") Integer ID)
+	{
+		Optional<Template> templateOptional = templateService.getRepository().findById(ID);
+		if(!templateOptional.isPresent())
+		{
+			throw new ResourceNotFoundException();
+		}
+
+		Template template = templateOptional.get();
+
+		templateService.prepareModelNewOrEdit(model, true, template, template.getAmount() <= 0, accountService.getAllAccountsAsc());
+
+		if(template.isTransfer())
+		{
+			return "templates/newTransferTemplate";
+		}
+		return "templates/newTemplate";
 	}
 }
