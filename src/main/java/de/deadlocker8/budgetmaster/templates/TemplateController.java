@@ -125,6 +125,11 @@ public class TemplateController extends BaseController
 		}
 
 		final Template template = templateOptional.get();
+
+		// set ID to null, otherwise the transaction form is prefilled with the template ID and saving the transaction
+		// may then override an existing transactions if the ID is also already used in transactions table
+		template.setID(null);
+
 		templateService.prepareTemplateForNewTransaction(template, true);
 
 		boolean isPayment = true;
