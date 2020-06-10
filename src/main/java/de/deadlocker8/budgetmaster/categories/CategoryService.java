@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.categories;
 
 import de.deadlocker8.budgetmaster.services.Resetable;
+import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -84,5 +86,24 @@ public class CategoryService implements Resetable
 			categoryRepository.save(new Category(Localization.getString(Strings.CATEGORY_REST), "#FFFF00", CategoryType.REST));
 			LOGGER.debug("Created default category REST");
 		}
+	}
+
+	public List<Category> getAllCategories()
+	{
+		localizeDefaultCategories();
+		return categoryRepository.findAllByOrderByNameAsc();
+	}
+
+	public void localizeDefaultCategories()
+	{
+		LOGGER.debug("Updating localization for default categories");
+
+		final Category categoryNone = categoryRepository.findByType(CategoryType.NONE);
+		categoryNone.setName(Localization.getString(Strings.CATEGORY_NONE));
+		categoryRepository.save(categoryNone);
+
+		final Category categoryRest = categoryRepository.findByType(CategoryType.REST);
+		categoryRest.setName(Localization.getString(Strings.CATEGORY_REST));
+		categoryRepository.save(categoryRest);
 	}
 }

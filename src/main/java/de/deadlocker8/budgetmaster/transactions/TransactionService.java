@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.categories.CategoryRepository;
+import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOptionRepository;
@@ -42,16 +43,16 @@ public class TransactionService implements Resetable
 
 	private TransactionRepository transactionRepository;
 	private RepeatingOptionRepository repeatingOptionRepository;
-	private CategoryRepository categoryRepository;
+	private CategoryService categoryService;
 	private TagService tagService;
 	private SettingsService settingsService;
 
 	@Autowired
-	public TransactionService(TransactionRepository transactionRepository, RepeatingOptionRepository repeatingOptionRepository, CategoryRepository categoryRepository, TagService tagService, SettingsService settingsService)
+	public TransactionService(TransactionRepository transactionRepository, RepeatingOptionRepository repeatingOptionRepository, CategoryService categoryService, TagService tagService, SettingsService settingsService)
 	{
 		this.transactionRepository = transactionRepository;
 		this.repeatingOptionRepository = repeatingOptionRepository;
-		this.categoryRepository = categoryRepository;
+		this.categoryService = categoryService;
 		this.tagService = tagService;
 		this.settingsService = settingsService;
 	}
@@ -82,7 +83,7 @@ public class TransactionService implements Resetable
 		List<Transaction> transactions = getTransactionsForMonthAndYearWithoutRest(account, month, year, filterConfiguration);
 
 		Transaction transactionRest = new Transaction();
-		transactionRest.setCategory(categoryRepository.findByType(CategoryType.REST));
+		transactionRest.setCategory(categoryService.getRepository().findByType(CategoryType.REST));
 		transactionRest.setName(Localization.getString(Strings.CATEGORY_REST));
 		transactionRest.setDate(DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(1));
 		transactionRest.setAmount(getRest(account, startDate));
@@ -282,7 +283,7 @@ public class TransactionService implements Resetable
 	{
 		model.addAttribute("isEdit", isEdit);
 		model.addAttribute("currentDate", date);
-		model.addAttribute("categories", categoryRepository.findAllByOrderByNameAsc());
+		model.addAttribute("categories", categoryService.getAllCategories());
 		model.addAttribute("accounts", accounts);
 		model.addAttribute("transaction", item);
 		model.addAttribute("settings", settingsService.getSettings());

@@ -92,7 +92,7 @@ public class TemplateService implements Resetable
 	public void prepareModelNewOrEdit(Model model, boolean isEdit, TransactionBase item, boolean isPayment, List<Account> accounts)
 	{
 		model.addAttribute("isEdit", isEdit);
-		model.addAttribute("categories", categoryService.getRepository().findAllByOrderByNameAsc());
+		model.addAttribute("categories", categoryService.getAllCategories());
 		model.addAttribute("accounts", accounts);
 		model.addAttribute("template", item);
 		model.addAttribute("settings", settingsService.getSettings());

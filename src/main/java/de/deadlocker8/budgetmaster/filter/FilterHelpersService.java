@@ -60,7 +60,7 @@ public class FilterHelpersService
 
 	public List<FilterObject> getFilterCategories()
 	{
-		List<Category> categories = categoryService.getRepository().findAllByOrderByNameAsc();
+		List<Category> categories = categoryService.getAllCategories();
 		List<FilterObject> filterCategories = new ArrayList<>();
 		for(Category category : categories)
 		{

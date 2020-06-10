@@ -20,11 +20,11 @@ import java.util.stream.Collectors;
 @Controller
 public class CategoryController extends BaseController
 {
+	private static final String WHITE = "#FFFFFF";
+
 	private final CategoryService categoryService;
 	private final HelpersService helpers;
 	private final SettingsService settingsService;
-
-	private final String WHITE = "#FFFFFF";
 
 	@Autowired
 	public CategoryController(CategoryService categoryService, HelpersService helpers, SettingsService settingsService)
@@ -37,7 +37,7 @@ public class CategoryController extends BaseController
 	@GetMapping("/categories")
 	public String categories(Model model)
 	{
-		model.addAttribute("categories", categoryService.getRepository().findAllByOrderByNameAsc());
+		model.addAttribute("categories", categoryService.getAllCategories());
 		model.addAttribute("settings", settingsService.getSettings());
 		return "categories/categories";
 	}
@@ -50,7 +50,7 @@ public class CategoryController extends BaseController
 			return "redirect:/categories";
 		}
 
-		List<Category> allCategories = categoryService.getRepository().findAllByOrderByNameAsc();
+		List<Category> allCategories = categoryService.getAllCategories();
 		List<Category> availableCategories = allCategories.stream().filter(category -> !category.getID().equals(ID)).collect(Collectors.toList());
 
 		model.addAttribute("categories", allCategories);

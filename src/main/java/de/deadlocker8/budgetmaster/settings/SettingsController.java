@@ -147,6 +147,7 @@ public class SettingsController extends BaseController
 		settingsService.updateSettings(settings);
 
 		Localization.load();
+		categoryService.localizeDefaultCategories();
 
 		return "redirect:/settings";
 	}
