@@ -31,8 +31,9 @@
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
                                 <#assign categoryName=categoriesFunctions.getCategoryName(category)>
+                                <#assign isNameEditingForbidden=category.getType()?? && (category.getType().name() == "NONE" || category.getType().name() == "REST")>
 
-                                <input id="category-name" type="text" name="name" <@validation.validation "name"/> value="${categoryName}">
+                                <input id="category-name" type="text" name="name" <@validation.validation "name"/> value="${categoryName}" <#if isNameEditingForbidden>disabled</#if>>
                                 <label for="category-name">${locale.getString("category.new.label.name")}</label>
                             </div>
                         </div>
