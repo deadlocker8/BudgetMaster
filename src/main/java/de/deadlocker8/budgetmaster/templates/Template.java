@@ -184,6 +184,16 @@ public class Template implements TransactionBase
 		return transferAccount != null;
 	}
 
+	public boolean isPayment()
+	{
+		if(this.amount == null)
+		{
+			return true;
+		}
+
+		return this.amount <= 0;
+	}
+
 	@Override
 	public String toString()
 	{

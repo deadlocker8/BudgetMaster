@@ -249,7 +249,7 @@ function validateAmount(text, allowEmpty=false)
     if(allowEmpty && text.length === 0)
     {
         removeTooltip(id);
-        document.getElementById("hidden-" + id).value = 0;
+        document.getElementById("hidden-" + id).value = "";
         return true;
     }
 

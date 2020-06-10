@@ -76,7 +76,10 @@ public class TemplateController extends BaseController
 									  @RequestParam(value = "includeCategory") Boolean includeCategory,
 									  @RequestParam(value = "includeAccount") Boolean includeAccount)
 	{
-		transactionService.handleAmount(transaction, isPayment);
+		if(transaction.getAmount() != null)
+		{
+			transactionService.handleAmount(transaction, isPayment);
+		}
 		transactionService.handleTags(transaction);
 
 		if(templateName == null || templateName.isEmpty())
@@ -172,7 +175,10 @@ public class TemplateController extends BaseController
 		TemplateValidator templateValidator = new TemplateValidator(previousTemplateName, templateService.getExistingTemplateNames());
 		templateValidator.validate(template, bindingResult);
 
-		transactionService.handleAmount(template, isPayment);
+		if(template.getAmount() != null)
+		{
+			transactionService.handleAmount(template, isPayment);
+		}
 		transactionService.handleTags(template);
 
 		if(bindingResult.hasErrors())
@@ -207,7 +213,7 @@ public class TemplateController extends BaseController
 
 		Template template = templateOptional.get();
 		templateService.prepareTemplateForNewTransaction(template, false);
-		templateService.prepareModelNewOrEdit(model, true, template, template.getAmount() <= 0, accountService.getAllAccountsAsc());
+		templateService.prepareModelNewOrEdit(model, true, template, template.isPayment(), accountService.getAllAccountsAsc());
 
 		return "templates/newTemplate";
 	}
