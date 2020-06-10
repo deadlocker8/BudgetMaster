@@ -125,7 +125,7 @@ $(document).ready(function()
         $(transactionRepeatingModifierID).on('change keydown paste input', function()
         {
             // substr(1) removes "#" at the beginning
-            validateNumber($(this).val(), transactionRepeatingModifierID.substr(1), "hidden-" + transactionRepeatingModifierID.substr(1), numberValidationMessage);
+            validateNumber($(this).val(), transactionRepeatingModifierID.substr(1), "hidden-" + transactionRepeatingModifierID.substr(1), numberValidationMessage, REGEX_NUMBER);
         });
     }
 
@@ -133,7 +133,7 @@ $(document).ready(function()
     {
         $(transactionRepeatingEndAfterXTimesInputID).on('change keydown paste input', function()
         {
-            validateNumber($(this).val(), transactionRepeatingEndAfterXTimesInputID.substr(1), null, numberValidationMessage);
+            validateNumber($(this).val(), transactionRepeatingEndAfterXTimesInputID.substr(1), null, numberValidationMessage, REGEX_NUMBER);
 
             // select corresponding radio button
             let endAfterXTimes = document.getElementById("repeating-end-after-x-times");
@@ -301,7 +301,7 @@ function validateForm(allowEmptyAmount=false)
 
     if($(transactionRepeatingModifierID).length)
     {
-        if(!validateNumber($(transactionRepeatingModifierID).val(), transactionRepeatingModifierID.substr(1), "hidden-" + transactionRepeatingModifierID.substr(1), numberValidationMessage))
+        if(!validateNumber($(transactionRepeatingModifierID).val(), transactionRepeatingModifierID.substr(1), "hidden-" + transactionRepeatingModifierID.substr(1), numberValidationMessage), REGEX_NUMBER)
         {
             return false;
         }
@@ -319,7 +319,7 @@ function validateForm(allowEmptyAmount=false)
 
         if(endAfterXTimes.checked)
         {
-            if(!validateNumber($(transactionRepeatingEndAfterXTimesInputID).val(), transactionRepeatingEndAfterXTimesInputID.substr(1), null, numberValidationMessage))
+            if(!validateNumber($(transactionRepeatingEndAfterXTimesInputID).val(), transactionRepeatingEndAfterXTimesInputID.substr(1), null, numberValidationMessage), REGEX_NUMBER)
             {
                 return false;
             }

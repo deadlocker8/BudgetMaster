@@ -22,7 +22,7 @@ $(document).ready(function()
     {
         autoBackupDays.on('change keydown paste input', function()
         {
-            validateNumber(autoBackupDays.val(), 'settings-backup-auto-days', "hidden-settings-backup-auto-days", numberValidationMessage);
+            validateNumber(autoBackupDays.val(), 'settings-backup-auto-days', "hidden-settings-backup-auto-days", numberValidationMessage, REGEX_NUMBER_GREATER_ZERO);
         });
     }
 
@@ -31,7 +31,7 @@ $(document).ready(function()
     {
         autoBackupFilesToKeep.on('change keydown paste input', function()
         {
-            validateNumber(autoBackupFilesToKeep.val(), "settings-backup-auto-files-to-keep", "hidden-settings-backup-auto-files-to-keep", numberValidationMessageZeroAllowed);
+            validateNumber(autoBackupFilesToKeep.val(), "settings-backup-auto-files-to-keep", "hidden-settings-backup-auto-files-to-keep", numberValidationMessageZeroAllowed, REGEX_NUMBER);
         });
     }
 
@@ -45,8 +45,8 @@ function validateForm()
     let autoBackupCheckbox = document.getElementsByName("autoBackupActivated")[0];
     if(autoBackupCheckbox.checked)
     {
-        let autoBackupDaysValid = validateNumber($('#settings-backup-auto-days').val(), "settings-backup-auto-days", "hidden-settings-backup-auto-days", numberValidationMessage);
-        let autoBackupFilesToKeepValid = validateNumber($('#settings-backup-auto-files-to-keep').val(), "settings-backup-auto-files-to-keep", "hidden-settings-backup-auto-files-to-keep", numberValidationMessageZeroAllowed);
+        let autoBackupDaysValid = validateNumber($('#settings-backup-auto-days').val(), "settings-backup-auto-days", "hidden-settings-backup-auto-days", numberValidationMessage, REGEX_NUMBER_GREATER_ZERO);
+        let autoBackupFilesToKeepValid = validateNumber($('#settings-backup-auto-files-to-keep').val(), "settings-backup-auto-files-to-keep", "hidden-settings-backup-auto-files-to-keep", numberValidationMessageZeroAllowed, REGEX_NUMBER);
         return autoBackupDaysValid && autoBackupFilesToKeepValid;
     }
 

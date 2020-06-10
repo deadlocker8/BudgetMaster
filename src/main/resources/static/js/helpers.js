@@ -1,8 +1,9 @@
-NUMBER_REGEX = new RegExp("^\\d+$");
+REGEX_NUMBER = new RegExp("^\\d+$");
+REGEX_NUMBER_GREATER_ZERO= new RegExp("^[1-9]\\d*$");
 
-function validateNumber(text, ID, hiddenID, message)
+function validateNumber(text, ID, hiddenID, message, regex)
 {
-    if(text.match(NUMBER_REGEX) == null)
+    if(text.match(regex) == null)
     {
         addTooltip(ID, message);
         if(hiddenID != null)
