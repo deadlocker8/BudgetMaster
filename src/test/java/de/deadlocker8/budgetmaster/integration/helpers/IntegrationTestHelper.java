@@ -26,7 +26,7 @@ public class IntegrationTestHelper
 		return text;
 	}
 
-	private final static String BASE_URL = "http://localhost:";
+	private static final String BASE_URL = "http://localhost:";
 	private WebDriver driver;
 	private String url;
 

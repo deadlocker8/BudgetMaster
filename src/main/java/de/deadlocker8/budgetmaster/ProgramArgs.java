@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public class ProgramArgs
 {
-	private final static Logger LOGGER = LoggerFactory.getLogger(ProgramArgs.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProgramArgs.class);
 
 	private static List<String> args = new ArrayList<>();
 
