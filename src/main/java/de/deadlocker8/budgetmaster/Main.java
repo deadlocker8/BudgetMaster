@@ -5,6 +5,7 @@ import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.SystemUtils;
 import de.thecodelabs.utils.util.localization.LocalizationMessageFormatter;
 import de.thecodelabs.utils.util.localization.formatter.JavaMessageFormatter;
+import org.joda.time.DateTimeZone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
@@ -26,10 +27,11 @@ import java.util.*;
 @SpringBootApplication
 public class Main extends SpringBootServletInitializer implements ApplicationRunner
 {
-	private final static Logger LOGGER = LoggerFactory.getLogger(Main.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
 	static
 	{
+		DateTimeZone.setDefault(DateTimeZone.UTC);
 		prepare(new String[0]);
 	}
 
@@ -130,7 +132,6 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 				LOGGER.info("Mode not supported! Starting in NORMAL Mode");
 				return baseFolder;
 		}
-
 
 
 	}
