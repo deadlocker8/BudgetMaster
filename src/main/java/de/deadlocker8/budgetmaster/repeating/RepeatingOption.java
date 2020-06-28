@@ -109,7 +109,7 @@ public class RepeatingOption
 
 			List<DateTime> temporaryList = new ArrayList<>(dates);
 			temporaryList.add(nextDate);
-			if(endOption.isEndReached((temporaryList)))
+			if(endOption.isEndReached(temporaryList))
 			{
 				return dates;
 			}

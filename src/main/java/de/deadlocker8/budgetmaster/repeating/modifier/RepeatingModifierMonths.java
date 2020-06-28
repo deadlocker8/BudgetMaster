@@ -7,9 +7,9 @@ import javax.persistence.Entity;
 @Entity
 public class RepeatingModifierMonths extends RepeatingModifier
 {
-	public RepeatingModifierMonths(int numberOfmonths)
+	public RepeatingModifierMonths(int numberOfMonths)
 	{
-		super(numberOfmonths, "repeating.modifier.months");
+		super(numberOfMonths, "repeating.modifier.months");
 	}
 
 	public RepeatingModifierMonths() {}
