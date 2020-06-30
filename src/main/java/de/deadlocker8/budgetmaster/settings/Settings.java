@@ -28,6 +28,7 @@ public class Settings
 	private Integer autoBackupDays;
 	private AutoBackupTime autoBackupTime;
 	private Integer autoBackupFilesToKeep;
+	private Integer installedVersionCode;
 
 	public Settings()
 	{
@@ -48,6 +49,7 @@ public class Settings
 		defaultSettings.setAutoBackupDays(1);
 		defaultSettings.setAutoBackupTime(AutoBackupTime.TIME_00);
 		defaultSettings.setAutoBackupFilesToKeep(3);
+		defaultSettings.setInstalledVersionCode(0);
 
 		return defaultSettings;
 	}
@@ -186,6 +188,16 @@ public class Settings
 		this.autoBackupFilesToKeep = autoBackupFilesToKeep;
 	}
 
+	public Integer getInstalledVersionCode()
+	{
+		return installedVersionCode;
+	}
+
+	public void setInstalledVersionCode(Integer installedVersionCode)
+	{
+		this.installedVersionCode = installedVersionCode;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -203,6 +215,7 @@ public class Settings
 				", autoBackupDays=" + autoBackupDays +
 				", autoBackupTime=" + autoBackupTime +
 				", autoBackupFilesToKeep=" + autoBackupFilesToKeep +
+				", installedVersionCode=" + installedVersionCode +
 				'}';
 	}
 }

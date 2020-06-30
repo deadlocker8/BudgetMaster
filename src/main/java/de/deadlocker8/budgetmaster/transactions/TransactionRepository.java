@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 
+@SuppressWarnings("SqlResolve")
 public interface TransactionRepository extends JpaRepository<Transaction, Integer>, JpaSpecificationExecutor<Transaction>
 {
 	List<Transaction> findAllByAccountAndDateBetweenOrderByDateDesc(Account account, DateTime startDate, DateTime endDate);

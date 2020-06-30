@@ -24,6 +24,7 @@
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="ID" value="${settings.getID()?c}">
                         <input type="hidden" name="lastBackupReminderDate" value="${dateService.getLongDateString(settings.getLastBackupReminderDate())}">
+                        <input type="hidden" name="installedVersionCode" value="${settings.getInstalledVersionCode()}">
 
                         <#-- password -->
                         <div class="row">

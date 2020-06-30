@@ -77,6 +77,10 @@ public class SettingsService
 		{
 			settings.setAutoBackupFilesToKeep(defaultSettings.getAutoBackupFilesToKeep());
 		}
+		if(settings.getInstalledVersionCode() == null)
+		{
+			settings.setInstalledVersionCode(defaultSettings.getInstalledVersionCode());
+		}
 	}
 
 	@SuppressWarnings("OptionalGetWithoutIsPresent")
