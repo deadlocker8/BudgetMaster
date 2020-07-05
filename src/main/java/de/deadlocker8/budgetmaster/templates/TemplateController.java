@@ -126,8 +126,6 @@ public class TemplateController extends BaseController
 
 		final Template template = templateOptional.get();
 
-		template.setID(null);
-
 		templateService.prepareTemplateForNewTransaction(template, true);
 
 		boolean isPayment = true;
