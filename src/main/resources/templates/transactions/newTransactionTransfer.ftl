@@ -26,7 +26,9 @@
                     <#import "../helpers/validation.ftl" as validation>
                     <form name="NewTransaction" action="<@s.url '/transactions/newTransaction/transfer'/>" method="post" onsubmit="return validateForm()">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <input type="hidden" name="ID" value="<#if transaction.getID()??>${transaction.getID()?c}</#if>">
+                        <!-- only set ID for transactions not templates, otherwise the input is filled with the template ID and saving the transaction
+                        may then override an existing transactions if the ID is also already used in transactions table -->
+                        <input type="hidden" name="ID" value="<#if transaction.class.simpleName == "Transaction" && transaction.getID()??>${transaction.getID()?c}</#if>">
                         <input type="hidden" name="isPayment" value="true">
 
                         <#-- name -->
