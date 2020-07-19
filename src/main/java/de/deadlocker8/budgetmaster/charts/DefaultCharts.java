@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +73,7 @@ public class DefaultCharts
 		URL url = DefaultCharts.class.getClassLoader().getResource(filePath);
 		if(url == null)
 		{
-			LOGGER.warn("Couldn't add default chart '" + filePath + "' due to missing file");
+			LOGGER.warn(MessageFormat.format("Couldn''t add default chart ''{0}'' due to missing file", filePath));
 			return "";
 		}
 

@@ -30,6 +30,7 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -143,17 +144,17 @@ public class DatabaseService
 		final List<String> existingBackups = getExistingBackups(backupFolderPath);
 		if(existingBackups.size() < numberOfFilesToKeep)
 		{
-			LOGGER.debug("Skipping backup rotation (existing backups: " + existingBackups.size() + ", files to keep: " + numberOfFilesToKeep + ")");
+			LOGGER.debug(MessageFormat.format("Skipping backup rotation (existing backups: {0}, files to keep: {1})", existingBackups.size(), numberOfFilesToKeep));
 			return filesToDelete;
 		}
 
-		LOGGER.debug("Determining old backups (existing backups: " + existingBackups.size() + ", files to keep: " + numberOfFilesToKeep + ")");
+		LOGGER.debug(MessageFormat.format("Determining old backups (existing backups: {0}, files to keep: {1})", existingBackups.size(), numberOfFilesToKeep));
 		// reserve 1 file for the backup created afterwards
 		final int allowedNumberOfFiles = existingBackups.size() - numberOfFilesToKeep + 1;
 		for(int i = 0; i < allowedNumberOfFiles; i++)
 		{
 			final Path oldBackup = Paths.get(existingBackups.get(i));
-			LOGGER.debug("Schedule old backup for deletion: " + oldBackup.toString());
+			LOGGER.debug(MessageFormat.format("Schedule old backup for deletion: {0}", oldBackup.toString()));
 			filesToDelete.add(oldBackup);
 		}
 

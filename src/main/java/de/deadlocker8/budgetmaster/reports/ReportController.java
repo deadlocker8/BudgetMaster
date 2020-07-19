@@ -29,6 +29,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.List;
 
 
@@ -100,7 +101,7 @@ public class ReportController extends BaseController
 		String month = reportSettings.getDate().toString("MM");
 		String year = reportSettings.getDate().toString("YYYY");
 
-		LOGGER.debug("Exporting month report (month: " + year + "_" + month + ", account: " + accountName + ")...");
+		LOGGER.debug(MessageFormat.format("Exporting month report (month: {0}_{1}, account: {2})...", year, month, accountName));
 
 		//generate PDF
 		try

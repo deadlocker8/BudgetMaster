@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,13 +63,13 @@ public class ImportService
 	private void importCategories()
 	{
 		List<Category> categories = database.getCategories();
-		LOGGER.debug("Importing " + categories.size() + " categories...");
+		LOGGER.debug(MessageFormat.format("Importing {0} categories...", categories.size()));
 		List<TransactionBase> alreadyUpdatedTransactions = new ArrayList<>();
 		List<TransactionBase> alreadyUpdatedTemplates = new ArrayList<>();
 
 		for(Category category : categories)
 		{
-			LOGGER.debug("Importing category " + category.getName());
+			LOGGER.debug(MessageFormat.format("Importing category {0}", category.getName()));
 			Category existingCategory;
 			if(category.getType().equals(CategoryType.NONE) || category.getType().equals(CategoryType.REST))
 			{
@@ -137,14 +138,14 @@ public class ImportService
 
 	private void importAccounts(AccountMatchList accountMatchList)
 	{
-		LOGGER.debug("Importing " + accountMatchList.getAccountMatches().size() + " accounts...");
+		LOGGER.debug(MessageFormat.format("Importing {0} accounts...", accountMatchList.getAccountMatches().size()));
 		List<TransactionBase> alreadyUpdatedTransactions = new ArrayList<>();
 		List<TransactionBase> alreadyUpdatedTransferTransactions = new ArrayList<>();
 		List<TransactionBase> alreadyUpdatedTemplates = new ArrayList<>();
 
 		for(AccountMatch accountMatch : accountMatchList.getAccountMatches())
 		{
-			LOGGER.debug("Importing account " + accountMatch.getAccountSource().getName() + " -> " + accountMatch.getAccountDestination().getName());
+			LOGGER.debug(MessageFormat.format("Importing account {0} -> {1}", accountMatch.getAccountSource().getName(), accountMatch.getAccountDestination().getName()));
 
 			List<TransactionBase> transactions = new ArrayList<>(database.getTransactions());
 			transactions.removeAll(alreadyUpdatedTransactions);
@@ -211,11 +212,11 @@ public class ImportService
 	private void importTransactions()
 	{
 		List<Transaction> transactions = database.getTransactions();
-		LOGGER.debug("Importing " + transactions.size() + " transactions...");
+		LOGGER.debug(MessageFormat.format("Importing {0} transactions...", transactions.size()));
 		for(int i = 0; i < transactions.size(); i++)
 		{
 			Transaction transaction = transactions.get(i);
-			LOGGER.debug("Importing transaction " + (i + 1) + "/" + transactions.size() + " (name: " + transaction.getName() + ", date: " + transaction.getDate() + ")");
+			LOGGER.debug(MessageFormat.format("Importing transaction {0}/{1} (name: {2}, date: {3})", i + 1, transactions.size(), transaction.getName(), transaction.getDate()));
 			updateTagsForItem(transaction);
 			transaction.setID(null);
 			transactionRepository.save(transaction);
@@ -245,11 +246,11 @@ public class ImportService
 	private void importTemplates()
 	{
 		List<Template> templates = database.getTemplates();
-		LOGGER.debug("Importing " + templates.size() + " templates...");
+		LOGGER.debug(MessageFormat.format("Importing {0} templates...", templates.size()));
 		for(int i = 0; i < templates.size(); i++)
 		{
 			Template template = templates.get(i);
-			LOGGER.debug("Importing template " + (i + 1) + "/" + templates.size() + " (templateName: " + template.getTemplateName() + ")");
+			LOGGER.debug(new StringBuilder().append("Importing template ").append(i + 1).append("/").append(templates.size()).append(" (templateName: ").append(template.getTemplateName()).append(")").toString());
 			updateTagsForItem(template);
 			template.setID(null);
 			templateRepository.save(template);

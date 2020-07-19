@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,11 +61,11 @@ public class ChartService implements Resetable
 			{
 				chart.setID(defaultCharts.indexOf(chart) + 1);
 				chartRepository.save(chart);
-				LOGGER.debug("Created default chart '" + chart.getName() + "'");
+				LOGGER.debug(MessageFormat.format("Created default chart ''{0}''", chart.getName()));
 			}
 			else if(currentChart.getVersion() < chart.getVersion())
 			{
-				LOGGER.debug("Update default chart '" + chart.getName() + "' from version " + currentChart.getVersion() + " to " + chart.getVersion());
+				LOGGER.debug(MessageFormat.format("Update default chart ''{0}'' from version {1} to {2}", chart.getName(), currentChart.getVersion(), chart.getVersion()));
 				currentChart.setVersion(chart.getVersion());
 				currentChart.setScript(chart.getScript());
 				chartRepository.save(currentChart);
@@ -91,7 +92,7 @@ public class ChartService implements Resetable
 			String script = userChart.getScript();
 			if(script.contains(PATTERN_OLD_CONTAINER_ID))
 			{
-				LOGGER.debug("Updating user chart '" + userChart.getName() + "' with ID " + userChart.getID());
+				LOGGER.debug(MessageFormat.format("Updating user chart ''{0}'' with ID {1}", userChart.getName(), userChart.getID()));
 				script = script.replace(PATTERN_OLD_CONTAINER_ID, PATTERN_DYNAMIC_CONTAINER_ID);
 				userChart.setScript(script);
 				getRepository().save(userChart);

@@ -8,6 +8,8 @@ import de.thecodelabs.utils.util.Localization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.MessageFormat;
+
 public class DatabaseParser
 {
 	final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
@@ -32,26 +34,26 @@ public class DatabaseParser
 			}
 
 			int version = root.get("VERSION").getAsInt();
-			LOGGER.info("Parsing BudgetMaster database with version " + version);
+			LOGGER.info(MessageFormat.format("Parsing BudgetMaster database with version {0}", version));
 
 			if(version == 2)
 			{
 				final Database database = new LegacyParser(jsonString, categoryNone).parseDatabaseFromJSON();
-				LOGGER.debug("Parsed database with " + database.getTransactions().size() + " transactions, " + database.getCategories().size() + " categories and " + database.getAccounts().size() + " accounts");
+				LOGGER.debug(MessageFormat.format("Parsed database with {0} transactions, {1} categories and {2} accounts", database.getTransactions().size(), database.getCategories().size(), database.getAccounts().size()));
 				return database;
 			}
 
 			if(version == 3)
 			{
 				final Database database = new DatabaseParser_v3(jsonString).parseDatabaseFromJSON();
-				LOGGER.debug("Parsed database with " + database.getTransactions().size() + " transactions, " + database.getCategories().size() + " categories and " + database.getAccounts().size() + " accounts");
+				LOGGER.debug(MessageFormat.format("Parsed database with {0} transactions, {1} categories and {2} accounts", database.getTransactions().size(), database.getCategories().size(), database.getAccounts().size()));
 				return database;
 			}
 
 			if(version == 4)
 			{
 				final Database database = new DatabaseParser_v4(jsonString).parseDatabaseFromJSON();
-				LOGGER.debug("Parsed database with " + database.getTransactions().size() + " transactions, " + database.getCategories().size() + " categories and " + database.getAccounts().size() + " accounts and " + database.getTemplates().size() + " templates");
+				LOGGER.debug(MessageFormat.format("Parsed database with {0} transactions, {1} categories and {2} accounts and {3} templates", database.getTransactions().size(), database.getCategories().size(), database.getAccounts().size(), database.getTemplates().size()));
 				return database;
 			}
 

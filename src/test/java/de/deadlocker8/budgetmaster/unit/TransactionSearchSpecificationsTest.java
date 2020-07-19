@@ -213,7 +213,7 @@ public class TransactionSearchSpecificationsTest
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertThat(results).hasSize(0);
+		assertThat(results).isEmpty();
 	}
 
 	@Test
@@ -223,7 +223,7 @@ public class TransactionSearchSpecificationsTest
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertThat(results).hasSize(0);
+		assertThat(results).isEmpty();
 	}
 
 	@Test

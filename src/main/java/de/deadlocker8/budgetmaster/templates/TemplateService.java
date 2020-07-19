@@ -10,8 +10,6 @@ import de.deadlocker8.budgetmaster.services.Resetable;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionBase;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -27,7 +25,6 @@ public class TemplateService implements Resetable
 			.setPrettyPrinting()
 			.create();
 
-	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private final TemplateRepository templateRepository;
 	private final AccountService accountService;
 	private final CategoryService categoryService;

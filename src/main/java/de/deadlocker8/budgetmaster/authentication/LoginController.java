@@ -6,7 +6,6 @@ import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -25,7 +24,7 @@ public class LoginController extends BaseController
 		if(paramMap.containsKey("logout"))
 			model.addAttribute("isLogout", true);
 
-		DefaultSavedRequest savedRequest = (DefaultSavedRequest)request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST");
+		DefaultSavedRequest savedRequest = (DefaultSavedRequest) request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST");
 		if(savedRequest != null)
 		{
 			request.getSession().setAttribute("preLoginURL", savedRequest.getRequestURL());

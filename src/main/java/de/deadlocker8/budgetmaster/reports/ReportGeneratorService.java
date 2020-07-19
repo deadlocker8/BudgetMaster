@@ -211,10 +211,7 @@ public class ReportGeneratorService
 			document.add(Chunk.NEWLINE);
 
 			PdfPTable table = generateCategoryBudgets(reportConfiguration);
-			if(table != null)
-			{
-				document.add(table);
-			}
+			document.add(table);
 		}
 
 		document.close();

@@ -1,7 +1,6 @@
 package de.deadlocker8.budgetmaster.categories;
 
 import de.deadlocker8.budgetmaster.services.Resetable;
-import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -36,7 +34,7 @@ public class CategoryService implements Resetable
 	public void deleteCategory(int ID, Category newCategory)
 	{
 		Optional<Category> categoryOptional = categoryRepository.findById(ID);
-		if(!categoryOptional.isPresent())
+		if(categoryOptional.isEmpty())
 		{
 			throw new RuntimeException("Can't delete non-existing category with ID: " + ID);
 		}
