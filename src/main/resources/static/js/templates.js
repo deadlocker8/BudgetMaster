@@ -58,6 +58,11 @@ $(document).ready(function()
     {
         handleIncludeAccountCheckbox('include-transfer-account', 'transaction-transfer-account')
     }
+
+    if($("#searchTemplate").length)
+    {
+        document.getElementById('searchTemplate').focus();
+    }
 });
 
 function handleIncludeAccountCheckbox(checkboxID, selectID)
