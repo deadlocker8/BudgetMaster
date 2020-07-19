@@ -82,6 +82,10 @@ public class DateRepair
 
 			for(Transaction transaction : transactions)
 			{
+				// avoid constraint violations
+				transaction.setTags(new ArrayList<>());
+				transactionRepository.save(transaction);
+
 				final Query nativeQuery = entityManager.createNativeQuery("DELETE FROM `transaction` WHERE id=:ID");
 				nativeQuery.setParameter("ID", transaction.getID());
 				nativeQuery.executeUpdate();
