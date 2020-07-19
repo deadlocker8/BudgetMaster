@@ -250,7 +250,7 @@ public class ImportService
 		for(int i = 0; i < templates.size(); i++)
 		{
 			Template template = templates.get(i);
-			LOGGER.debug(new StringBuilder().append("Importing template ").append(i + 1).append("/").append(templates.size()).append(" (templateName: ").append(template.getTemplateName()).append(")").toString());
+			LOGGER.debug(MessageFormat.format("Importing template {0}/{1} (templateName: {2})", i + 1, templates.size(), template.getTemplateName()));
 			updateTagsForItem(template);
 			template.setID(null);
 			templateRepository.save(template);
