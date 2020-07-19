@@ -132,8 +132,6 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 				LOGGER.info("Mode not supported! Starting in NORMAL Mode");
 				return baseFolder;
 		}
-
-
 	}
 
 	public static void main(String[] args)
