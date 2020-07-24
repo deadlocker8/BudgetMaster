@@ -335,10 +335,10 @@
     </div>
 </#macro>
 
-<#macro buttons>
+<#macro buttons cancelUrl>
     <div class="row hide-on-small-only">
         <div class="col s6 right-align">
-            <@buttonCancel/>
+            <@buttonCancel cancelUrl/>
         </div>
 
         <div class="col s6 left-align">
@@ -349,7 +349,7 @@
     <div class="hide-on-med-and-up">
         <div class="row center-align">
             <div class="col s12">
-                <@buttonCancel/>
+                <@buttonCancel cancelUrl/>
             </div>
         </div>
         <div class="row center-align">
@@ -360,8 +360,8 @@
     </div>
 </#macro>
 
-<#macro buttonCancel>
-    <a href="<@s.url '/transactions'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
+<#macro buttonCancel url>
+    <a href="<@s.url url/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
 </#macro>
 
 <#macro buttonSave>

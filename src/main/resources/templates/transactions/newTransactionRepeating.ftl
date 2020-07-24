@@ -60,7 +60,7 @@
                         <@newTransactionMacros.transactionRepeating transaction currentDate/>
                         <br>
                         <#-- buttons -->
-                        <@newTransactionMacros.buttons/>
+                        <@newTransactionMacros.buttons '/transactions'/>
                     </form>
                 </div>
             </div>
