@@ -301,7 +301,7 @@ function validateForm(allowEmptyAmount=false)
 
     if($(transactionRepeatingModifierID).length)
     {
-        if(!validateNumber($(transactionRepeatingModifierID).val(), transactionRepeatingModifierID.substr(1), "hidden-" + transactionRepeatingModifierID.substr(1), numberValidationMessage), REGEX_NUMBER)
+        if(!validateNumber($(transactionRepeatingModifierID).val(), transactionRepeatingModifierID.substr(1), "hidden-" + transactionRepeatingModifierID.substr(1), numberValidationMessage, REGEX_NUMBER))
         {
             return false;
         }
@@ -314,12 +314,13 @@ function validateForm(allowEmptyAmount=false)
 
         if(endNever.checked)
         {
+            console.log("3");
             return true;
         }
 
         if(endAfterXTimes.checked)
         {
-            if(!validateNumber($(transactionRepeatingEndAfterXTimesInputID).val(), transactionRepeatingEndAfterXTimesInputID.substr(1), null, numberValidationMessage), REGEX_NUMBER)
+            if(!validateNumber($(transactionRepeatingEndAfterXTimesInputID).val(), transactionRepeatingEndAfterXTimesInputID.substr(1), null, numberValidationMessage, REGEX_NUMBER))
             {
                 return false;
             }
