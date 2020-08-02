@@ -12,6 +12,10 @@ public interface TransactionBase
 
 	void setAmount(Integer amount);
 
+	Boolean isExpenditure();
+
+	void setExpenditure(Boolean isExpenditure);
+
 	Category getCategory();
 
 	List<Tag> getTags();

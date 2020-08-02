@@ -221,14 +221,19 @@ public class TransactionService implements Resetable
 	{
 	}
 
-	public void handleAmount(TransactionBase item, boolean isPayment)
+	public void handleAmount(TransactionBase item)
 	{
+		if(item.isExpenditure() == null)
+		{
+			item.setExpenditure(false);
+		}
+
 		if(item.getAmount() == null)
 		{
 			item.setAmount(0);
 		}
 
-		if(isPayment)
+		if(item.isExpenditure())
 		{
 			item.setAmount(-Math.abs(item.getAmount()));
 		}
@@ -279,7 +284,7 @@ public class TransactionService implements Resetable
 		return item;
 	}
 
-	public void prepareModelNewOrEdit(Model model, boolean isEdit, DateTime date, TransactionBase item, boolean isPayment, List<Account> accounts)
+	public void prepareModelNewOrEdit(Model model, boolean isEdit, DateTime date, TransactionBase item, List<Account> accounts)
 	{
 		model.addAttribute("isEdit", isEdit);
 		model.addAttribute("currentDate", date);
@@ -287,7 +292,6 @@ public class TransactionService implements Resetable
 		model.addAttribute("accounts", accounts);
 		model.addAttribute("transaction", item);
 		model.addAttribute("settings", settingsService.getSettings());
-		model.addAttribute("isPayment", isPayment);
 
 		final List<Transaction> allByOrderByDateDesc = getRepository().findAllByOrderByDateDesc();
 		final List<String> nameSuggestions = allByOrderByDateDesc.stream()

@@ -72,13 +72,12 @@ public class TemplateController extends BaseController
 	@PostMapping(value = "/templates/fromTransaction")
 	public String postFromTransaction(@RequestParam(value = "templateName") String templateName,
 									  @ModelAttribute("NewTransaction") Transaction transaction,
-									  @RequestParam(value = "isPayment", required = false) boolean isPayment,
 									  @RequestParam(value = "includeCategory") Boolean includeCategory,
 									  @RequestParam(value = "includeAccount") Boolean includeAccount)
 	{
 		if(transaction.getAmount() != null)
 		{
-			transactionService.handleAmount(transaction, isPayment);
+			transactionService.handleAmount(transaction);
 		}
 		transactionService.handleTags(transaction);
 
@@ -128,14 +127,13 @@ public class TemplateController extends BaseController
 
 		templateService.prepareTemplateForNewTransaction(template, true);
 
-		boolean isPayment = true;
-		if(template.getAmount() != null)
+		if(template.getAmount() == null)
 		{
-			isPayment = template.getAmount() <= 0;
+			template.setExpenditure(true);
 		}
 
 		final DateTime date = dateService.getDateTimeFromCookie(cookieDate);
-		transactionService.prepareModelNewOrEdit(model, false, date, template, isPayment, accountService.getAllAccountsAsc());
+		transactionService.prepareModelNewOrEdit(model, false, date, template, accountService.getAllAccountsAsc());
 
 		if(template.isTransfer())
 		{
@@ -149,14 +147,13 @@ public class TemplateController extends BaseController
 	{
 		final Template emptyTemplate = new Template();
 		templateService.prepareTemplateForNewTransaction(emptyTemplate, false);
-		templateService.prepareModelNewOrEdit(model, false, emptyTemplate, true, accountService.getAllAccountsAsc());
+		templateService.prepareModelNewOrEdit(model, false, emptyTemplate, accountService.getAllAccountsAsc());
 		return "templates/newTemplate";
 	}
 
 	@PostMapping(value = "/templates/newTemplate")
 	public String post(Model model,
 					   @ModelAttribute("NewTemplate") Template template, BindingResult bindingResult,
-					   @RequestParam(value = "isPayment", required = false) boolean isPayment,
 					   @RequestParam(value = "includeAccount", required = false) boolean includeAccount,
 					   @RequestParam(value = "includeTransferAccount", required = false) boolean includeTransferAccount)
 	{
@@ -176,16 +173,21 @@ public class TemplateController extends BaseController
 		TemplateValidator templateValidator = new TemplateValidator(previousTemplateName, templateService.getExistingTemplateNames());
 		templateValidator.validate(template, bindingResult);
 
+		if(template.isExpenditure() == null)
+		{
+			template.setExpenditure(false);
+		}
+
 		if(template.getAmount() != null)
 		{
-			transactionService.handleAmount(template, isPayment);
+			transactionService.handleAmount(template);
 		}
 		transactionService.handleTags(template);
 
 		if(bindingResult.hasErrors())
 		{
 			model.addAttribute("error", bindingResult);
-			templateService.prepareModelNewOrEdit(model, template.getID() != null, template, isPayment, accountService.getAllAccountsAsc());
+			templateService.prepareModelNewOrEdit(model, template.getID() != null, template, accountService.getAllAccountsAsc());
 			return "templates/newTemplate";
 		}
 
@@ -214,7 +216,7 @@ public class TemplateController extends BaseController
 
 		Template template = templateOptional.get();
 		templateService.prepareTemplateForNewTransaction(template, false);
-		templateService.prepareModelNewOrEdit(model, true, template, template.isPayment(), accountService.getAllAccountsAsc());
+		templateService.prepareModelNewOrEdit(model, true, template, accountService.getAllAccountsAsc());
 
 		return "templates/newTemplate";
 	}

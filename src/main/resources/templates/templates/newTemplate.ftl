@@ -29,7 +29,7 @@
                         <input type="hidden" name="ID" value="<#if template.getID()??>${template.getID()?c}</#if>">
 
                         <#-- isPayment switch -->
-                        <@newTransactionMacros.isExpenditureSwitch template isPayment/>
+                        <@newTransactionMacros.isExpenditureSwitch template/>
 
                         <#-- template name -->
                         <@templateFunctions.templateNameInput template/>

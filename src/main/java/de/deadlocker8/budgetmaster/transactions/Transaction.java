@@ -20,8 +20,12 @@ public class Transaction implements TransactionBase
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Expose
 	private Integer ID;
+
 	@Expose
 	private Integer amount;
+
+	@Expose
+	private Boolean isExpenditure;
 
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	@Expose
@@ -66,6 +70,7 @@ public class Transaction implements TransactionBase
 	{
 		this.ID = transaction.getID();
 		this.amount = transaction.getAmount();
+		this.isExpenditure = transaction.isExpenditure();
 		this.date = transaction.getDate();
 		this.account = transaction.getAccount();
 		this.category = transaction.getCategory();
@@ -94,6 +99,21 @@ public class Transaction implements TransactionBase
 	public void setAmount(Integer amount)
 	{
 		this.amount = amount;
+	}
+
+	public Boolean isExpenditure()
+	{
+		return isExpenditure;
+	}
+
+	public Boolean getExpenditure()
+	{
+		return isExpenditure;
+	}
+
+	public void setExpenditure(Boolean expenditure)
+	{
+		isExpenditure = expenditure;
 	}
 
 	public DateTime getDate()
@@ -197,6 +217,7 @@ public class Transaction implements TransactionBase
 		String value = "Transaction{" +
 				"ID=" + ID +
 				", amount=" + amount +
+				", isExpenditure=" + isExpenditure +
 				", date=" + date +
 				", account=Account[ID=" + account.getID() + ", name=" + account.getName() + "]" +
 				", category=" + category +
@@ -225,6 +246,7 @@ public class Transaction implements TransactionBase
 		Transaction transaction = (Transaction) o;
 		return Objects.equals(ID, transaction.ID) &&
 				Objects.equals(amount, transaction.amount) &&
+				Objects.equals(isExpenditure, transaction.isExpenditure) &&
 				Objects.equals(date, transaction.date) &&
 				Objects.equals(account, transaction.account) &&
 				Objects.equals(category, transaction.category) &&
@@ -238,6 +260,6 @@ public class Transaction implements TransactionBase
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, amount, date, account, category, name, description, tags, repeatingOption, transferAccount);
+		return Objects.hash(ID, amount, isExpenditure, date, account, category, name, description, tags, repeatingOption, transferAccount);
 	}
 }
