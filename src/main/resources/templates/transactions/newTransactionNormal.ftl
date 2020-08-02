@@ -31,7 +31,7 @@
                         <input type="hidden" name="ID" value="<#if transaction.class.simpleName == "Transaction" && transaction.getID()??>${transaction.getID()?c}</#if>">
 
                         <#-- isPayment switch -->
-                        <@newTransactionMacros.isExpenditureSwitch transaction isPayment/>
+                        <@newTransactionMacros.isExpenditureSwitch transaction/>
 
                         <#-- name -->
                         <@newTransactionMacros.transactionName transaction suggestionsJSON/>

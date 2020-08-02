@@ -29,7 +29,7 @@
                         <!-- only set ID for transactions not templates, otherwise the input is filled with the template ID and saving the transaction
                         may then override an existing transactions if the ID is also already used in transactions table -->
                         <input type="hidden" name="ID" value="<#if transaction.class.simpleName == "Transaction" && transaction.getID()??>${transaction.getID()?c}</#if>">
-                        <input type="hidden" name="isPayment" value="true">
+                        <input type="hidden" name="isExpenditure" value="true">
 
                         <#-- name -->
                         <@newTransactionMacros.transactionName transaction suggestionsJSON/>

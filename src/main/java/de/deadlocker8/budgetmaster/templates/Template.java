@@ -26,6 +26,9 @@ public class Template implements TransactionBase
 	@Expose
 	private Integer amount;
 
+	@Expose
+	private Boolean isExpenditure;
+
 	@ManyToOne
 	@Expose
 	private Account account;
@@ -62,6 +65,7 @@ public class Template implements TransactionBase
 		this.ID = template.getID();
 		this.templateName = template.getTemplateName();
 		this.amount = template.getAmount();
+		this.isExpenditure = template.isExpenditure();
 		this.account = template.getAccount();
 		this.category = template.getCategory();
 		this.name = template.getName();
@@ -74,6 +78,12 @@ public class Template implements TransactionBase
 	{
 		this.templateName = templateName;
 		this.amount = transaction.getAmount();
+		this.isExpenditure = transaction.isExpenditure();
+		if(this.isExpenditure == null)
+		{
+			this.isExpenditure = true;
+		}
+
 		this.account = transaction.getAccount();
 		this.category = transaction.getCategory();
 		this.name = transaction.getName();
@@ -117,6 +127,21 @@ public class Template implements TransactionBase
 	public void setAmount(Integer amount)
 	{
 		this.amount = amount;
+	}
+
+	public Boolean isExpenditure()
+	{
+		return isExpenditure;
+	}
+
+	public Boolean getExpenditure()
+	{
+		return isExpenditure;
+	}
+
+	public void setExpenditure(Boolean expenditure)
+	{
+		isExpenditure = expenditure;
 	}
 
 	public Account getAccount()
@@ -184,16 +209,6 @@ public class Template implements TransactionBase
 		return transferAccount != null;
 	}
 
-	public boolean isPayment()
-	{
-		if(this.amount == null)
-		{
-			return true;
-		}
-
-		return this.amount <= 0;
-	}
-
 	@Override
 	public String toString()
 	{
@@ -201,6 +216,7 @@ public class Template implements TransactionBase
 				"ID=" + ID +
 				", templateName='" + templateName + '\'' +
 				", amount=" + amount +
+				", isExpenditure=" + isExpenditure +
 				", category=" + category +
 				", name='" + name + '\'' +
 				", description='" + description + '\'' +
@@ -237,6 +253,7 @@ public class Template implements TransactionBase
 		return Objects.equals(ID, template.ID) &&
 				Objects.equals(templateName, template.templateName) &&
 				Objects.equals(amount, template.amount) &&
+				Objects.equals(isExpenditure, template.isExpenditure) &&
 				Objects.equals(account, template.account) &&
 				Objects.equals(category, template.category) &&
 				Objects.equals(name, template.name) &&
@@ -248,6 +265,6 @@ public class Template implements TransactionBase
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, templateName, amount, account, category, name, description, tags, transferAccount);
+		return Objects.hash(ID, templateName, amount, isExpenditure, account, category, name, description, tags, transferAccount);
 	}
 }
