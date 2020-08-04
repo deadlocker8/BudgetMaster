@@ -314,7 +314,6 @@ function validateForm(allowEmptyAmount=false)
 
         if(endNever.checked)
         {
-            console.log("3");
             return true;
         }
 
