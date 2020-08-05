@@ -28,7 +28,7 @@ public class UpdateInstalledVersion
 
 	@EventListener
 	@Transactional
-	@Order(2)
+	@Order(3)
 	public void onApplicationEvent(ApplicationStartedEvent event)
 	{
 		final Build build = Build.getInstance();
