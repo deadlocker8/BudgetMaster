@@ -35,6 +35,22 @@ public enum TransactionType
 		}
 	}
 
+	public static TransactionType getFromTransaction(Transaction transaction)
+	{
+		if(transaction.isTransfer())
+		{
+			return TRANSFER;
+		}
+		else if(transaction.isRepeating())
+		{
+			return REPEATING;
+		}
+		else
+		{
+			return NORMAL;
+		}
+	}
+
 	@Override
 	public String toString()
 	{

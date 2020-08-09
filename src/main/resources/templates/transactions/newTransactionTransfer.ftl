@@ -30,6 +30,7 @@
                         may then override an existing transactions if the ID is also already used in transactions table -->
                         <input type="hidden" name="ID" value="<#if transaction.class.simpleName == "Transaction" && transaction.getID()??>${transaction.getID()?c}</#if>">
                         <input type="hidden" name="isExpenditure" value="true">
+                        <input type="hidden" name="previousType" value="<#if previousType??>${previousType.name()}</#if>">
 
                         <#-- name -->
                         <@newTransactionMacros.transactionName transaction suggestionsJSON/>
@@ -66,7 +67,7 @@
                         <br>
                         <#-- buttons -->
                         <@newTransactionMacros.buttons '/transactions'/>
-                        <@newTransactionMacros.buttonTransactionActions/>
+                        <@newTransactionMacros.buttonTransactionActions isEdit true previousType??/>
                     </form>
 
                     <div id="saveAsTemplateModalContainer"></div>
