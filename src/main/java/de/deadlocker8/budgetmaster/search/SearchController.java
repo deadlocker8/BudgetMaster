@@ -5,6 +5,7 @@ import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionSearchSpecifications;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
+import de.deadlocker8.budgetmaster.utils.Mappings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,7 +28,7 @@ public class SearchController extends BaseController
 		this.settingsService = settingsService;
 	}
 
-	@GetMapping(value = "/search")
+	@GetMapping(Mappings.SEARCH)
 	public String search(Model model, Search search)
 	{
 		if(search.isEmptySearch())

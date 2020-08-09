@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.services;
 
+import de.deadlocker8.budgetmaster.utils.Mappings;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -14,10 +15,10 @@ public class ErrorCodeController implements ErrorController
 	@Override
 	public String getErrorPath()
 	{
-		return "/error";
+		return Mappings.ERROR;
 	}
 
-	@RequestMapping("/error")
+	@RequestMapping(Mappings.ERROR)
 	public String handleError(HttpServletRequest request)
 	{
 		final Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);

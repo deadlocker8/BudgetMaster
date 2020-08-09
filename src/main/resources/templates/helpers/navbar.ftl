@@ -25,7 +25,7 @@
 
         <#if updateCheckService.isUpdateAvailable()>
             <@itemDivider/>
-            <@itemUpdate "/update", locale.getString("menu.update"), "system_update"/>
+            <@itemUpdate "/settings/update", locale.getString("menu.update"), "system_update"/>
         </#if>
 
         <#if programArgs.isTest()>

@@ -18,7 +18,7 @@ public class IndexController extends BaseController
 		this.settingsService = settingsService;
 	}
 
-	@RequestMapping("/")
+	@RequestMapping
 	public String index(Model model)
 	{
 		model.addAttribute("settings", settingsService.getSettings());

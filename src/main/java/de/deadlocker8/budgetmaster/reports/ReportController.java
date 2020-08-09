@@ -15,6 +15,7 @@ import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
+import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.thecodelabs.utils.util.Localization;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ import java.util.List;
 
 
 @Controller
+@RequestMapping(Mappings.REPORTS)
 public class ReportController extends BaseController
 {
 	private final SettingsService settingsService;
@@ -58,7 +60,7 @@ public class ReportController extends BaseController
 		this.filterHelpers = filterHelpers;
 	}
 
-	@RequestMapping("/reports")
+	@RequestMapping
 	public String reports(HttpServletRequest request, Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
 	{
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
@@ -70,7 +72,7 @@ public class ReportController extends BaseController
 		return "reports/reports";
 	}
 
-	@PostMapping(value = "/reports/generate")
+	@PostMapping(value = "/generate")
 	public void post(HttpServletRequest request, HttpServletResponse response,
 					 @ModelAttribute("NewReportSettings") ReportSettings reportSettings)
 	{

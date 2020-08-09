@@ -1,6 +1,5 @@
 package de.deadlocker8.budgetmaster.transactions;
 
-import com.hp.gagawa.java.elements.Tr;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
@@ -17,6 +16,7 @@ import de.deadlocker8.budgetmaster.services.DateFormatStyle;
 import de.deadlocker8.budgetmaster.services.DateService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
+import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@RequestMapping(Mappings.TRANSACTIONS)
 public class TransactionController extends BaseController
 {
 	private final TransactionService transactionService;
@@ -57,7 +58,7 @@ public class TransactionController extends BaseController
 		this.filterHelpers = filterHelpers;
 	}
 
-	@GetMapping("/transactions")
+	@GetMapping
 	public String transactions(HttpServletRequest request, Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
 	{
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
@@ -68,7 +69,7 @@ public class TransactionController extends BaseController
 		return "transactions/transactions";
 	}
 
-	@GetMapping("/transactions/{ID}/requestDelete")
+	@GetMapping("/{ID}/requestDelete")
 	public String requestDeleteTransaction(HttpServletRequest request, Model model, @PathVariable("ID") Integer ID, @CookieValue("currentDate") String cookieDate)
 	{
 		if(!transactionService.isDeletable(ID))
@@ -96,14 +97,14 @@ public class TransactionController extends BaseController
 		model.addAttribute("settings", settingsService.getSettings());
 	}
 
-	@GetMapping("/transactions/{ID}/delete")
+	@GetMapping("/{ID}/delete")
 	public String deleteTransaction(@PathVariable("ID") Integer ID)
 	{
 		transactionService.deleteTransaction(ID);
 		return "redirect:/transactions";
 	}
 
-	@GetMapping("/transactions/newTransaction/{type}")
+	@GetMapping("/newTransaction/{type}")
 	public String newTransaction(Model model, @CookieValue("currentDate") String cookieDate, @PathVariable String type)
 	{
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
@@ -113,7 +114,7 @@ public class TransactionController extends BaseController
 		return "transactions/newTransaction" + StringUtils.capitalize(type);
 	}
 
-	@PostMapping(value = "/transactions/newTransaction/normal")
+	@PostMapping(value = "/newTransaction/normal")
 	public String postNormal(Model model,
 							 @CookieValue("currentDate") String cookieDate,
 							 @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
@@ -143,7 +144,7 @@ public class TransactionController extends BaseController
 	}
 
 	@SuppressWarnings("ConstantConditions")
-	@PostMapping(value = "/transactions/newTransaction/repeating")
+	@PostMapping(value = "/newTransaction/repeating")
 	public String postRepeating(Model model, @CookieValue("currentDate") String cookieDate,
 								@ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
 								@RequestParam(value = "isRepeating", required = false) boolean isRepeating,
@@ -193,7 +194,7 @@ public class TransactionController extends BaseController
 		return handleRedirect(model, transaction.getID() != null, transaction, bindingResult, date, "transactions/newTransactionRepeating");
 	}
 
-	@PostMapping(value = "/transactions/newTransaction/transfer")
+	@PostMapping(value = "/newTransaction/transfer")
 	public String postTransfer(Model model,
 							   @CookieValue("currentDate") String cookieDate,
 							   @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
@@ -227,7 +228,7 @@ public class TransactionController extends BaseController
 		return "redirect:/transactions";
 	}
 
-	@GetMapping("/transactions/{ID}/edit")
+	@GetMapping("/{ID}/edit")
 	public String editTransaction(Model model, @CookieValue("currentDate") String cookieDate, @PathVariable("ID") Integer ID)
 	{
 		Optional<Transaction> transactionOptional = transactionService.getRepository().findById(ID);
@@ -259,7 +260,7 @@ public class TransactionController extends BaseController
 		return "transactions/newTransactionNormal";
 	}
 
-	@GetMapping("/transactions/{ID}/highlight")
+	@GetMapping("/{ID}/highlight")
 	public String highlight(Model model, @PathVariable("ID") Integer ID)
 	{
 		Transaction transaction = transactionService.getRepository().getOne(ID);
@@ -275,7 +276,7 @@ public class TransactionController extends BaseController
 		return "transactions/transactions";
 	}
 
-	@GetMapping("/transactions/{ID}/changeTypeModal")
+	@GetMapping("/{ID}/changeTypeModal")
 	public String changeTypeModal(Model model, @PathVariable("ID") Integer ID)
 	{
 		final Optional<Transaction> transactionOptional = transactionService.getRepository().findById(ID);
@@ -288,7 +289,7 @@ public class TransactionController extends BaseController
 		return "transactions/changeTypeModal";
 	}
 
-	@GetMapping("/transactions/{ID}/changeType")
+	@GetMapping("/{ID}/changeType")
 	public String changeTypeModal(Model model, @PathVariable("ID") Integer ID,
 								  @CookieValue("currentDate") String cookieDate,
 								  @RequestParam(value = "newType") int newType)
@@ -335,7 +336,6 @@ public class TransactionController extends BaseController
 				redirectUrl = "transactions/newTransactionTransfer";
 				break;
 		}
-
 
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 		transactionService.prepareModelNewOrEdit(model, true, date, previousType, transactionCopy, accountService.getAllAccountsAsc());

@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.controller;
 
 import de.deadlocker8.budgetmaster.settings.SettingsService;
+import de.deadlocker8.budgetmaster.utils.Mappings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 
 @Controller
+@RequestMapping(Mappings.BACKUP_REMINDER)
 public class BackupController extends BaseController
 {
 	private final SettingsService settingsService;
@@ -20,7 +22,7 @@ public class BackupController extends BaseController
 		this.settingsService = settingsService;
 	}
 
-	@RequestMapping("/backupReminder/cancel")
+	@RequestMapping("/cancel")
 	public String cancel(HttpServletRequest request, Model model)
 	{
 		settingsService.updateLastBackupReminderDate();
@@ -28,7 +30,7 @@ public class BackupController extends BaseController
 		return "redirect:" + request.getHeader("Referer");
 	}
 
-	@RequestMapping("/backupReminder/settings")
+	@RequestMapping("/settings")
 	public String settings()
 	{
 		settingsService.updateLastBackupReminderDate();

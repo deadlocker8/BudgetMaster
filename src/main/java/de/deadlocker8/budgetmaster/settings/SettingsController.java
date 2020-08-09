@@ -15,6 +15,7 @@ import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.services.BackupService;
 import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
+import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.RandomUtils;
@@ -45,6 +46,7 @@ import java.util.Optional;
 
 
 @Controller
+@RequestMapping(Mappings.SETTINGS)
 public class SettingsController extends BaseController
 {
 	private final SettingsService settingsService;
@@ -56,7 +58,6 @@ public class SettingsController extends BaseController
 	private final BudgetMasterUpdateService budgetMasterUpdateService;
 	private final BackupService scheduleTaskService;
 
-	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private final List<Integer> SEARCH_RESULTS_PER_PAGE_OPTIONS = Arrays.asList(10, 20, 25, 30, 50, 100);
 
 	@Autowired
@@ -72,7 +73,7 @@ public class SettingsController extends BaseController
 		this.scheduleTaskService = scheduleTaskService;
 	}
 
-	@GetMapping("/settings")
+	@GetMapping
 	public String settings(WebRequest request, Model model)
 	{
 		model.addAttribute("settings", settingsService.getSettings());
@@ -86,7 +87,7 @@ public class SettingsController extends BaseController
 		return "settings/settings";
 	}
 
-	@PostMapping(value = "/settings/save")
+	@PostMapping(value = "/save")
 	public String post(Model model, @ModelAttribute("Settings") Settings settings, BindingResult bindingResult,
 					   @RequestParam(value = "password") String password,
 					   @RequestParam(value = "passwordConfirmation") String passwordConfirmation,
@@ -177,7 +178,7 @@ public class SettingsController extends BaseController
 		return Optional.empty();
 	}
 
-	@GetMapping("/settings/database/requestExport")
+	@GetMapping("/database/requestExport")
 	public void downloadFile(HttpServletResponse response)
 	{
 		LOGGER.debug("Exporting database...");
@@ -205,7 +206,7 @@ public class SettingsController extends BaseController
 		}
 	}
 
-	@GetMapping("/settings/database/requestDelete")
+	@GetMapping("/database/requestDelete")
 	public String requestDeleteDatabase(Model model)
 	{
 		String verificationCode = RandomUtils.generateRandomString(RandomUtils.RandomType.BASE_58, 4, RandomUtils.RandomStringPolicy.UPPER, RandomUtils.RandomStringPolicy.DIGIT);
@@ -217,7 +218,7 @@ public class SettingsController extends BaseController
 		return "settings/settings";
 	}
 
-	@PostMapping(value = "/settings/database/delete")
+	@PostMapping(value = "/database/delete")
 	public String deleteDatabase(Model model, @RequestParam("verificationCode") String verificationCode,
 								 @RequestParam("verificationUserInput") String verificationUserInput)
 	{
@@ -238,7 +239,7 @@ public class SettingsController extends BaseController
 		return "settings/settings";
 	}
 
-	@GetMapping("/settings/database/requestImport")
+	@GetMapping("/database/requestImport")
 	public String requestImportDatabase(Model model)
 	{
 		model.addAttribute("importDatabase", true);
@@ -248,7 +249,7 @@ public class SettingsController extends BaseController
 		return "settings/settings";
 	}
 
-	@RequestMapping("/settings/database/upload")
+	@RequestMapping("/database/upload")
 	public String upload(WebRequest request, Model model, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
 	{
 		if(file.isEmpty())
@@ -277,7 +278,7 @@ public class SettingsController extends BaseController
 		}
 	}
 
-	@GetMapping("/settings/database/accountMatcher")
+	@GetMapping("/database/accountMatcher")
 	public String openAccountMatcher(WebRequest request, Model model)
 	{
 		model.addAttribute("database", request.getAttribute("database", WebRequest.SCOPE_SESSION));
@@ -286,7 +287,7 @@ public class SettingsController extends BaseController
 		return "settings/import";
 	}
 
-	@PostMapping("/settings/database/import")
+	@PostMapping("/database/import")
 	public String importDatabase(WebRequest request, @ModelAttribute("Import") AccountMatchList accountMatchList, Model model)
 	{
 		importService.importDatabase((Database) request.getAttribute("database", WebRequest.SCOPE_SESSION), accountMatchList);

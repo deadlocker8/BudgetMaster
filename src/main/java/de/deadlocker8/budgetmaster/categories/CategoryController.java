@@ -4,6 +4,7 @@ import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.utils.Colors;
+import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import de.thecodelabs.utils.util.ColorUtilsNonJavaFX;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 
 @Controller
+@RequestMapping(Mappings.CATEGORIES)
 public class CategoryController extends BaseController
 {
 	private static final String WHITE = "#FFFFFF";
@@ -34,7 +36,7 @@ public class CategoryController extends BaseController
 		this.settingsService = settingsService;
 	}
 
-	@GetMapping("/categories")
+	@GetMapping
 	public String categories(Model model)
 	{
 		model.addAttribute("categories", categoryService.getAllCategories());
@@ -42,7 +44,7 @@ public class CategoryController extends BaseController
 		return "categories/categories";
 	}
 
-	@GetMapping("/categories/{ID}/requestDelete")
+	@GetMapping("/{ID}/requestDelete")
 	public String requestDeleteCategory(Model model, @PathVariable("ID") Integer ID)
 	{
 		if(!categoryService.isDeletable(ID))
@@ -62,7 +64,7 @@ public class CategoryController extends BaseController
 		return "categories/categories";
 	}
 
-	@PostMapping(value = "/categories/{ID}/delete")
+	@PostMapping(value = "/{ID}/delete")
 	public String deleteCategory(Model model, @PathVariable("ID") Integer ID, @ModelAttribute("DestinationCategory") DestinationCategory destinationCategory)
 	{
 		if(categoryService.isDeletable(ID))
@@ -73,7 +75,7 @@ public class CategoryController extends BaseController
 		return "redirect:/categories";
 	}
 
-	@GetMapping("/categories/newCategory")
+	@GetMapping("/newCategory")
 	public String newCategory(Model model)
 	{
 		//add custom color (defaults to white here because we are adding a new category instead of editing an existing)
@@ -84,7 +86,7 @@ public class CategoryController extends BaseController
 		return "categories/newCategory";
 	}
 
-	@GetMapping("/categories/{ID}/edit")
+	@GetMapping("/{ID}/edit")
 	public String editCategory(Model model, @PathVariable("ID") Integer ID)
 	{
 		Optional<Category> categoryOptional = categoryService.getRepository().findById(ID);
@@ -109,7 +111,7 @@ public class CategoryController extends BaseController
 		return "categories/newCategory";
 	}
 
-	@PostMapping(value = "/categories/newCategory")
+	@PostMapping(value = "/newCategory")
 	public String post(Model model, @ModelAttribute("NewCategory") Category category, BindingResult bindingResult)
 	{
 		CategoryValidator userValidator = new CategoryValidator();

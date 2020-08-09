@@ -182,7 +182,7 @@
                             </div>
 
                             <div class="table-cell table-cell-valign">
-                                <a href="<@s.url '/updateSearch'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">refresh</i>${locale.getString("settings.updates.search")}</a>
+                                <a href="<@s.url '/settings/updateSearch'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">refresh</i>${locale.getString("settings.updates.search")}</a>
                             </div>
                         </div>
                     </div>
