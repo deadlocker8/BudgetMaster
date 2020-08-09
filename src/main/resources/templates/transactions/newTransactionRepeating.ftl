@@ -62,6 +62,8 @@
                         <#-- buttons -->
                         <@newTransactionMacros.buttons '/transactions'/>
                     </form>
+
+                    <div id="changeTransactionTypeModalContainer"></div>
                 </div>
             </div>
         </main>
@@ -76,6 +78,7 @@
         <script src="<@s.url '/js/libs/spectrum.js'/>"></script>
         <script src="<@s.url '/js/helpers.js'/>"></script>
         <script src="<@s.url '/js/transactions.js'/>"></script>
+        <script src="<@s.url '/js/transactionActions.js'/>"></script>
         <script src="<@s.url '/js/categorySelect.js'/>"></script>
     </body>
 </html>

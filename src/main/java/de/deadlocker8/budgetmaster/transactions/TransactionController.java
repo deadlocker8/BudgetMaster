@@ -27,6 +27,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -214,7 +215,7 @@ public class TransactionController extends BaseController
 	public String editTransaction(Model model, @CookieValue("currentDate") String cookieDate, @PathVariable("ID") Integer ID)
 	{
 		Optional<Transaction> transactionOptional = transactionService.getRepository().findById(ID);
-		if(!transactionOptional.isPresent())
+		if(transactionOptional.isEmpty())
 		{
 			throw new ResourceNotFoundException();
 		}
@@ -256,5 +257,67 @@ public class TransactionController extends BaseController
 		prepareModelTransactions(filterConfiguration, model, transaction.getDate());
 		model.addAttribute("highlightID", ID);
 		return "transactions/transactions";
+	}
+
+	@GetMapping("/transactions/{ID}/changeTypeModal")
+	public String changeTypeModal(Model model, @PathVariable("ID") Integer ID)
+	{
+		final Optional<Transaction> transactionOptional = transactionService.getRepository().findById(ID);
+		if(transactionOptional.isEmpty())
+		{
+			throw new ResourceNotFoundException();
+		}
+
+		model.addAttribute("transaction", transactionOptional.get());
+		return "transactions/changeTypeModal";
+	}
+
+	@GetMapping("/transactions/{ID}/changeType")
+	public String changeTypeModal(Model model, @PathVariable("ID") Integer ID,
+								  @CookieValue("currentDate") String cookieDate,
+								  @RequestParam(value = "newType") int newType)
+	{
+		final Optional<Transaction> transactionOptional = transactionService.getRepository().findById(ID);
+		if(transactionOptional.isEmpty())
+		{
+			throw new ResourceNotFoundException();
+		}
+
+		final Optional<TransactionType> transactionTypeOptional = TransactionType.getByID(newType);
+		if(transactionTypeOptional.isEmpty())
+		{
+			throw new IllegalArgumentException();
+		}
+
+		Transaction transaction = transactionOptional.get();
+		// select first transaction in order to provide correct start date for repeating transactions
+		if(transaction.getRepeatingOption() != null)
+		{
+			transaction = transaction.getRepeatingOption().getReferringTransactions().get(0);
+		}
+
+		final TransactionType newTransactionType = transactionTypeOptional.get();
+		LOGGER.debug(MessageFormat.format("Changing transaction type to {0} for transaction with ID {1}", newTransactionType, transaction.getID()));
+
+
+		String redirectUrl = "";
+		switch(newTransactionType)
+		{
+			case NORMAL:
+				transaction.setTransferAccount(null);
+				redirectUrl = "transactions/newTransactionNormal";
+				break;
+			case REPEATING:
+				redirectUrl = "transactions/newTransactionRepeating";
+				break;
+			case TRANSFER:
+				redirectUrl = "transactions/newTransactionTransfer";
+				break;
+		}
+
+		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
+		transactionService.prepareModelNewOrEdit(model, true, date, transaction, accountService.getAllAccountsAsc());
+
+		return redirectUrl;
 	}
 }
