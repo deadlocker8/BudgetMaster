@@ -208,7 +208,7 @@ $(document).ready(function()
         document.getElementById("input-isPayment").value = 1;
     });
 
-    M.FloatingActionButton.init(document.querySelectorAll('.fixed-action-btn'), {
+    M.FloatingActionButton.init(document.querySelectorAll('.new-transaction-button'), {
         direction: 'bottom',
         hoverEnabled: false
     });

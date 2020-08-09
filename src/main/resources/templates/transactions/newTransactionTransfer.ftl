@@ -66,7 +66,7 @@
                         <br>
                         <#-- buttons -->
                         <@newTransactionMacros.buttons '/transactions'/>
-                        <@newTransactionMacros.buttonTemplate/>
+                        <@newTransactionMacros.buttonTransactionActions/>
                     </form>
 
                     <div id="saveAsTemplateModalContainer"></div>

@@ -7,26 +7,19 @@ $(document).ready(function()
 
     if($('#buttonSaveAsTemplate').length)
     {
-        $('#buttonSaveAsTemplate').click(function()
-        {
-            // check if transaction form is valid
-            let isValidForm = validateForm(true);
-            if(!isValidForm)
-            {
-                $('#modalCreateFromTransaction').modal('close');
-                M.toast({html: createTemplateWithErrorInForm});
-                return;
-            }
+        M.FloatingActionButton.init(document.querySelectorAll('#transaction-actions-button'), {});
 
-            $.ajax({
-                type: 'GET',
-                url: $('#buttonSaveAsTemplate').attr('data-url'),
-                data: {},
-                success: function(data)
-                {
-                    createAndOpenModal(data)
-                }
-            });
+        $('.transaction-action').click(function()
+        {
+            let actionType = $(this).attr('data-action-type');
+            if(actionType === 'saveAsTemplate')
+            {
+                openSaveAsTemplateModal(this);
+            }
+            else if(actionType === 'changeType')
+            {
+                changeTransactionType(this);
+            }
         });
     }
 
@@ -198,4 +191,30 @@ function searchTemplates(searchText)
     {
         collapsible.classList.remove('hidden');
     }
+}
+
+function openSaveAsTemplateModal(item)
+{
+    // check if transaction form is valid
+    let isValidForm = validateForm(true);
+    if(!isValidForm)
+    {
+        $('#modalCreateFromTransaction').modal('close');
+        M.toast({html: createTemplateWithErrorInForm});
+        return;
+    }
+
+    $.ajax({
+        type: 'GET',
+        url: $(item).attr('data-url'),
+        data: {},
+        success: function(data)
+        {
+            createAndOpenModal(data)
+        }
+    });
+}
+
+function changeTransactionType(item)
+{
 }
