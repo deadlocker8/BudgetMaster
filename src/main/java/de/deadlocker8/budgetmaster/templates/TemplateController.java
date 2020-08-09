@@ -92,7 +92,7 @@ public class TemplateController extends BaseController
 	public String requestDeleteTemplate(Model model, @PathVariable("ID") Integer ID)
 	{
 		final Optional<Template> templateOptional = templateService.getRepository().findById(ID);
-		if(!templateOptional.isPresent())
+		if(templateOptional.isEmpty())
 		{
 			throw new ResourceNotFoundException();
 		}
@@ -116,7 +116,7 @@ public class TemplateController extends BaseController
 								 @PathVariable("ID") Integer ID)
 	{
 		final Optional<Template> templateOptional = templateService.getRepository().findById(ID);
-		if(!templateOptional.isPresent())
+		if(templateOptional.isEmpty())
 		{
 			throw new ResourceNotFoundException();
 		}
@@ -207,7 +207,7 @@ public class TemplateController extends BaseController
 	public String editTemplate(Model model, @PathVariable("ID") Integer ID)
 	{
 		Optional<Template> templateOptional = templateService.getRepository().findById(ID);
-		if(!templateOptional.isPresent())
+		if(templateOptional.isEmpty())
 		{
 			throw new ResourceNotFoundException();
 		}
