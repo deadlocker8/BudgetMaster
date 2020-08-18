@@ -58,7 +58,7 @@ public class NewTransactionTest
 		@Override
 		protected void failed(Throwable e, Description description)
 		{
-			IntegrationTestHelper.saveScreenshots(driver, name, SearchTest.class);
+			IntegrationTestHelper.saveScreenshots(driver, name, NewTransactionTest.class);
 		}
 	};
 
@@ -66,7 +66,7 @@ public class NewTransactionTest
 	public void prepare()
 	{
 		FirefoxOptions options = new FirefoxOptions();
-		options.setHeadless(false);
+		options.setHeadless(true);
 		driver = new FirefoxDriver(options);
 
 		// prepare
@@ -84,6 +84,25 @@ public class NewTransactionTest
 	}
 
 	@Test
+	public void newTransaction_normal_cancel()
+	{
+		// open new transaction page
+		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]")).click();
+
+		// click cancel button
+		driver.findElement(By.xpath("//a[contains(text(),'Cancel')]")).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
+
+		// assert
+		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
+
+		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		assertThat(transactionsRows).hasSize(1);
+	}
+
+	@Test
 	public void newTransaction_normal_income()
 	{
 		// open new transaction page
@@ -94,13 +113,13 @@ public class NewTransactionTest
 		String description = "Lorem Ipsum dolor sit amet";
 
 		// fill form
+		driver.findElement(By.className("buttonIncome")).click();
 		driver.findElement(By.id("transaction-name")).sendKeys(name);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
 		driver.findElement(By.id("transaction-description")).sendKeys(description);
 
 		// submit form
-		final WebElement buttonSubmit = driver.findElement(By.xpath("//button[@type='submit']"));
-		buttonSubmit.click();
+		driver.findElement(By.xpath("//button[@type='submit']")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
@@ -118,6 +137,43 @@ public class NewTransactionTest
 		// check columns
 		final String dateString = new SimpleDateFormat("dd.MM.").format(new Date());
 		assertTransactionColumns(columns, dateString, "N", "rgb(255, 255, 255)", false, name, description, amount);
+	}
+
+	@Test
+	public void newTransaction_normal_expenditure()
+	{
+		// open new transaction page
+		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]")).click();
+
+		String name = "My normal transaction";
+		String amount = "15.00";
+		String description = "Lorem Ipsum dolor sit amet";
+
+		// fill form
+		driver.findElement(By.className("buttonExpenditure")).click();
+		driver.findElement(By.id("transaction-name")).sendKeys(name);
+		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
+		driver.findElement(By.id("transaction-description")).sendKeys(description);
+
+		// submit form
+		driver.findElement(By.xpath("//button[@type='submit']")).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
+
+		// assert
+		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
+
+		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		assertThat(transactionsRows).hasSize(2);
+
+		final WebElement row = transactionsRows.get(0);
+		final List<WebElement> columns = row.findElements(By.className("col"));
+		assertThat(columns).hasSize(6);
+
+		// check columns
+		final String dateString = new SimpleDateFormat("dd.MM.").format(new Date());
+		assertTransactionColumns(columns, dateString, "N", "rgb(255, 255, 255)", false, name, description, "-" + amount);
 	}
 
 	private void assertTransactionColumns(List<WebElement> columns, String shortDate, String categoryLetter, String categoryColor, boolean repeatIconVisible, String name, String description, String amount)
