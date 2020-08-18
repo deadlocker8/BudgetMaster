@@ -14,7 +14,7 @@ public interface TransactionBase
 
 	Boolean isExpenditure();
 
-	void setExpenditure(Boolean isExpenditure);
+	void setIsExpenditure(Boolean isExpenditure);
 
 	Category getCategory();
 
