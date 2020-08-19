@@ -111,7 +111,7 @@ public class Transaction implements TransactionBase
 		return isExpenditure;
 	}
 
-	public void setExpenditure(Boolean expenditure)
+	public void setIsExpenditure(Boolean expenditure)
 	{
 		isExpenditure = expenditure;
 	}

@@ -55,7 +55,7 @@ public class IntroduceIsExpenditureMember
 				continue;
 			}
 
-			transaction.setExpenditure(transaction.getAmount() <= 0);
+			transaction.setIsExpenditure(transaction.getAmount() <= 0);
 			fixedTransactionsCount++;
 		}
 

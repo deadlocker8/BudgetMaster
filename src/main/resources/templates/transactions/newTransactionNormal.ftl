@@ -60,7 +60,7 @@
 
                         <br>
                         <#-- buttons -->
-                        <@newTransactionMacros.buttons/>
+                        <@newTransactionMacros.buttons "/transactions"/>
                         <@newTransactionMacros.buttonTemplate/>
                     </form>
 
