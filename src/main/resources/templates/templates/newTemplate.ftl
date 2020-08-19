@@ -69,7 +69,7 @@
 
                         <br>
                         <#-- buttons -->
-                        <@newTransactionMacros.buttons/>
+                        <@newTransactionMacros.buttons "/templates"/>
                     </form>
                 </div>
             </div>
