@@ -10,7 +10,7 @@
     </head>
     <body class="budgetmaster-blue-light">
         <#import "../helpers/navbar.ftl" as navbar>
-        <@navbar.navbar "transactions" settings/>
+        <@navbar.navbar "templates" settings/>
 
         <#import "../transactions/newTransactionMacros.ftl" as newTransactionMacros>
         <#import "templateFunctions.ftl" as templateFunctions>
