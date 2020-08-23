@@ -112,11 +112,13 @@ public class NewTransactionTransferTest
 		String name = "My transfer transaction";
 		String amount = "15.00";
 		String description = "Lorem Ipsum dolor sit amet";
+		String categoryName = "sdfdsf";
 
 		// fill form
 		driver.findElement(By.id("transaction-name")).sendKeys(name);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
 		driver.findElement(By.id("transaction-description")).sendKeys(description);
+		TransactionTestHelper.selectCategory(driver, categoryName);
 
 		// submit form
 		driver.findElement(By.xpath("//button[@type='submit']")).click();
@@ -136,6 +138,6 @@ public class NewTransactionTransferTest
 
 		// check columns
 		final String dateString = new SimpleDateFormat("dd.MM.").format(new Date());
-		TransactionTestHelper.assertTransactionColumns(columns, dateString, "N", "rgb(255, 255, 255)", false, true, name, description, amount);
+		TransactionTestHelper.assertTransactionColumns(columns, dateString, categoryName, "rgb(46, 124, 43)", false, true, name, description, amount);
 	}
 }

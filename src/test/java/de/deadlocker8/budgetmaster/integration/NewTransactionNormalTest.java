@@ -24,7 +24,9 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -74,6 +76,9 @@ public class NewTransactionNormalTest
 		helper.login(UserService.DEFAULT_PASSWORD);
 		helper.hideBackupReminder();
 
+		String path = getClass().getClassLoader().getResource("SearchDatabase.json").getFile().replace("/", File.separator);
+		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf"), Arrays.asList("DefaultAccount0815", "Account2"));
+
 		// open transactions page
 		driver.get(helper.getUrl() + "/transactions");
 		driver.findElement(By.id("button-new-transaction")).click();
@@ -107,12 +112,14 @@ public class NewTransactionNormalTest
 		String name = "My normal transaction";
 		String amount = "15.00";
 		String description = "Lorem Ipsum dolor sit amet";
+		String categoryName = "sdfdsf";
 
 		// fill form
 		driver.findElement(By.className("buttonIncome")).click();
 		driver.findElement(By.id("transaction-name")).sendKeys(name);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
 		driver.findElement(By.id("transaction-description")).sendKeys(description);
+		TransactionTestHelper.selectCategory(driver, categoryName);
 
 		// submit form
 		driver.findElement(By.xpath("//button[@type='submit']")).click();
@@ -132,7 +139,7 @@ public class NewTransactionNormalTest
 
 		// check columns
 		final String dateString = new SimpleDateFormat("dd.MM.").format(new Date());
-		TransactionTestHelper.assertTransactionColumns(columns, dateString, "N", "rgb(255, 255, 255)", false, false, name, description, amount);
+		TransactionTestHelper.assertTransactionColumns(columns, dateString, categoryName, "rgb(46, 124, 43)", false, false, name, description, amount);
 	}
 
 	@Test
@@ -144,12 +151,14 @@ public class NewTransactionNormalTest
 		String name = "My normal transaction";
 		String amount = "15.00";
 		String description = "Lorem Ipsum dolor sit amet";
+		String categoryName = "sdfdsf";
 
 		// fill form
 		driver.findElement(By.className("buttonExpenditure")).click();
 		driver.findElement(By.id("transaction-name")).sendKeys(name);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
 		driver.findElement(By.id("transaction-description")).sendKeys(description);
+		TransactionTestHelper.selectCategory(driver, categoryName);
 
 		// submit form
 		driver.findElement(By.xpath("//button[@type='submit']")).click();
@@ -169,6 +178,6 @@ public class NewTransactionNormalTest
 
 		// check columns
 		final String dateString = new SimpleDateFormat("dd.MM.").format(new Date());
-		TransactionTestHelper.assertTransactionColumns(columns, dateString, "N", "rgb(255, 255, 255)", false, false, name, description, "-" + amount);
+		TransactionTestHelper.assertTransactionColumns(columns, dateString, categoryName, "rgb(46, 124, 43)", false, false, name, description, "-" + amount);
 	}
 }
