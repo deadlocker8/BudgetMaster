@@ -224,7 +224,7 @@ public class TransactionService implements Resetable
 	{
 		if(item.isExpenditure() == null)
 		{
-			item.setExpenditure(false);
+			item.setIsExpenditure(true);
 		}
 
 		if(item.getAmount() == null)

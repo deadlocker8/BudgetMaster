@@ -61,7 +61,7 @@
 
                         <br>
                         <#-- buttons -->
-                        <@newTransactionMacros.buttons '/transactions'/>
+                        <@newTransactionMacros.buttons "/transactions"/>
                         <@newTransactionMacros.buttonTransactionActions isEdit true previousType??/>
                     </form>
 

@@ -340,10 +340,10 @@
     </div>
 </#macro>
 
-<#macro buttons cancelUrl>
+<#macro buttons cancelURL>
     <div class="row hide-on-small-only">
         <div class="col s6 right-align">
-            <@buttonCancel cancelUrl/>
+            <@buttonCancel cancelURL/>
         </div>
 
         <div class="col s6 left-align">
@@ -354,7 +354,7 @@
     <div class="hide-on-med-and-up">
         <div class="row center-align">
             <div class="col s12">
-                <@buttonCancel cancelUrl/>
+                <@buttonCancel cancelURL/>
             </div>
         </div>
         <div class="row center-align">
@@ -365,8 +365,8 @@
     </div>
 </#macro>
 
-<#macro buttonCancel url>
-    <a href="<@s.url url/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
+<#macro buttonCancel cancelURL>
+    <a href="<@s.url cancelURL/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
 </#macro>
 
 <#macro buttonSave>
@@ -375,26 +375,10 @@
     </button>
 </#macro>
 
-<#macro buttonTransactionActions canChangeType canCreateTemplate changetypeInProgress>
-    <#if (canChangeType || canCreateTemplate) && !changetypeInProgress>
-        <div class="fixed-action-btn" id="transaction-actions-button">
-            <a class="btn-floating btn-large waves-effect waves-light budgetmaster-blue">
-                <i class="material-icons left">settings</i>${locale.getString("save")}
-            </a>
-            <ul>
-                <#if canChangeType>
-                    <li>
-                        <a class="btn-floating btn transaction-action mobile-fab-tip no-wrap" data-action-type="changeType" data-url="<@s.url '/transactions/${transaction.getID()?c}/changeTypeModal'/>">${locale.getString("transaction.change.type")}</a>
-                        <a class="btn-floating btn transaction-action budgetmaster-baby-blue" data-action-type="changeType" data-url="<@s.url '/transactions/${transaction.getID()?c}/changeTypeModal'/>"><i class="material-icons">shuffle</i></a>
-                    </li>
-                </#if>
-                <#if canCreateTemplate>
-                    <li>
-                        <a class="btn-floating btn transaction-action mobile-fab-tip no-wrap" data-action-type="saveAsTemplate" data-url="<@s.url '/templates/fromTransactionModal'/>">${locale.getString("save.as.template")}</a>
-                        <a class="btn-floating btn transaction-action budgetmaster-dark-orange" data-action-type="saveAsTemplate" data-url="<@s.url '/templates/fromTransactionModal'/>"><i class="material-icons">file_copy</i></a>
-                    </li>
-                </#if>
-            </ul>
-        </div>
-    </#if>
+<#macro buttonTemplate>
+    <div class="fixed-action-btn">
+        <a id="buttonSaveAsTemplate" class="btn-floating btn-large waves-effect waves-light budgetmaster-blue tooltipped" data-position="left" data-tooltip="${locale.getString("save.as.template")}" data-url="<@s.url '/templates/fromTransactionModal'/>">
+            <i class="material-icons left">file_copy</i>${locale.getString("save")}
+        </a>
+    </div>
 </#macro>
