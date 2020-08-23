@@ -4,6 +4,7 @@ import de.deadlocker8.budgetmaster.Main;
 import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
+import de.deadlocker8.budgetmaster.integration.helpers.TransactionTestHelper;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -35,7 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SeleniumTest
-public class NewTransactionTest
+public class NewTransactionTransferTest
 {
 	private IntegrationTestHelper helper;
 	private WebDriver driver;
@@ -58,7 +59,7 @@ public class NewTransactionTest
 		@Override
 		protected void failed(Throwable e, Description description)
 		{
-			IntegrationTestHelper.saveScreenshots(driver, name, NewTransactionTest.class);
+			IntegrationTestHelper.saveScreenshots(driver, name, NewTransactionTransferTest.class);
 		}
 	};
 
@@ -84,10 +85,10 @@ public class NewTransactionTest
 	}
 
 	@Test
-	public void newTransaction_normal_cancel()
+	public void newTransaction_transfer_cancel()
 	{
 		// open new transaction page
-		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]")).click();
+		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transfer')]")).click();
 
 		// click cancel button
 		driver.findElement(By.xpath("//a[contains(text(),'Cancel')]")).click();
@@ -103,17 +104,16 @@ public class NewTransactionTest
 	}
 
 	@Test
-	public void newTransaction_normal_income()
+	public void newTransaction_transfer()
 	{
 		// open new transaction page
-		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]")).click();
+		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transfer')]")).click();
 
-		String name = "My normal transaction";
+		String name = "My transfer transaction";
 		String amount = "15.00";
 		String description = "Lorem Ipsum dolor sit amet";
 
 		// fill form
-		driver.findElement(By.className("buttonIncome")).click();
 		driver.findElement(By.id("transaction-name")).sendKeys(name);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
 		driver.findElement(By.id("transaction-description")).sendKeys(description);
@@ -136,70 +136,6 @@ public class NewTransactionTest
 
 		// check columns
 		final String dateString = new SimpleDateFormat("dd.MM.").format(new Date());
-		assertTransactionColumns(columns, dateString, "N", "rgb(255, 255, 255)", false, name, description, amount);
-	}
-
-	@Test
-	public void newTransaction_normal_expenditure()
-	{
-		// open new transaction page
-		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]")).click();
-
-		String name = "My normal transaction";
-		String amount = "15.00";
-		String description = "Lorem Ipsum dolor sit amet";
-
-		// fill form
-		driver.findElement(By.className("buttonExpenditure")).click();
-		driver.findElement(By.id("transaction-name")).sendKeys(name);
-		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
-		driver.findElement(By.id("transaction-description")).sendKeys(description);
-
-		// submit form
-		driver.findElement(By.xpath("//button[@type='submit']")).click();
-
-		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
-
-		// assert
-		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
-
-		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
-		assertThat(transactionsRows).hasSize(2);
-
-		final WebElement row = transactionsRows.get(0);
-		final List<WebElement> columns = row.findElements(By.className("col"));
-		assertThat(columns).hasSize(6);
-
-		// check columns
-		final String dateString = new SimpleDateFormat("dd.MM.").format(new Date());
-		assertTransactionColumns(columns, dateString, "N", "rgb(255, 255, 255)", false, name, description, "-" + amount);
-	}
-
-	private void assertTransactionColumns(List<WebElement> columns, String shortDate, String categoryLetter, String categoryColor, boolean repeatIconVisible, String name, String description, String amount)
-	{
-		// date
-		assertThat(columns.get(0)).hasFieldOrPropertyWithValue("text", shortDate);
-
-		// category
-		final WebElement categoryCircle = columns.get(1).findElement(By.className("category-circle"));
-		assertThat(categoryCircle.getCssValue("background-color")).isEqualTo(categoryColor);
-		assertThat(categoryCircle.findElement(By.tagName("span"))).hasFieldOrPropertyWithValue("text", categoryLetter);
-
-		// icon
-		final List<WebElement> icons = columns.get(2).findElements(By.tagName("i"));
-		assertThat(icons).hasSize(1);
-		assertThat(icons.get(0).isDisplayed()).isEqualTo(repeatIconVisible);
-
-		// name
-		assertThat(columns.get(3).findElement(By.className("transaction-text")).getText())
-				.isEqualTo(name);
-
-		//description
-		assertThat(columns.get(3).findElement(By.className("italic")).getText())
-				.isEqualTo(description);
-
-		// amount
-		assertThat(columns.get(4).getText()).contains(amount);
+		TransactionTestHelper.assertTransactionColumns(columns, dateString, "N", "rgb(255, 255, 255)", false, true, name, description, amount);
 	}
 }
