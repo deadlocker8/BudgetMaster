@@ -129,7 +129,7 @@ public class TemplateController extends BaseController
 
 		if(template.getAmount() == null)
 		{
-			template.setExpenditure(true);
+			template.setIsExpenditure(true);
 		}
 
 		final DateTime date = dateService.getDateTimeFromCookie(cookieDate);
@@ -175,7 +175,7 @@ public class TemplateController extends BaseController
 
 		if(template.isExpenditure() == null)
 		{
-			template.setExpenditure(false);
+			template.setIsExpenditure(false);
 		}
 
 		if(template.getAmount() != null)
