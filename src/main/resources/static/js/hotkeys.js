@@ -55,6 +55,14 @@ Mousetrap.bind('esc', function()
     }
 });
 
+let saveTransactionOrTemplateButton = document.getElementById('button-save-transaction');
+if(saveTransactionOrTemplateButton !== null)
+{
+    Mousetrap(document.querySelector('body')).bind('mod+enter', function(e)
+    {
+        document.getElementById('button-save-transaction').click();
+    });
+}
 
 function areHotKeysEnabled()
 {

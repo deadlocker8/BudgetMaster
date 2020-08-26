@@ -157,6 +157,11 @@ $(document).ready(function()
     // prevent form submit on enter (otherwise tag functionality will be hard to use)
     $(document).on("keypress", 'form', function(e)
     {
+        if(e.ctrlKey)
+        {
+            return true;
+        }
+
         let code = e.keyCode || e.which;
         if(code === 13)
         {
