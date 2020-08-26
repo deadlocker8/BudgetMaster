@@ -142,7 +142,7 @@ public class NewTransactionRecurringTest
 		}
 
 		// submit form
-		WebElement submitButton = driver.findElement(By.xpath("//button[@type='submit']"));
+		WebElement submitButton = driver.findElement(By.id("button-save-transaction"));
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", submitButton);
 
 		WebDriverWait wait = new WebDriverWait(driver, 5);

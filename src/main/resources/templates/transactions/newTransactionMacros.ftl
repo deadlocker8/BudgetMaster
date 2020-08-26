@@ -370,7 +370,7 @@
 </#macro>
 
 <#macro buttonSave>
-    <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action">
+    <button id="button-save-transaction" class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action">
         <i class="material-icons left">save</i>${locale.getString("save")}
     </button>
 </#macro>

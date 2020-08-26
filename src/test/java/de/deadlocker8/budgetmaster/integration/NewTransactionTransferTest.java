@@ -121,7 +121,7 @@ public class NewTransactionTransferTest
 		TransactionTestHelper.selectCategory(driver, categoryName);
 
 		// submit form
-		driver.findElement(By.xpath("//button[@type='submit']")).click();
+		driver.findElement(By.id("button-save-transaction")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
