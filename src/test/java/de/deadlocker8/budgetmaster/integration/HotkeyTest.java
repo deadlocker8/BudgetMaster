@@ -68,7 +68,7 @@ public class HotkeyTest
 	public void prepare()
 	{
 		FirefoxOptions options = new FirefoxOptions();
-		options.setHeadless(true);
+		options.setHeadless(false);
 		driver = new FirefoxDriver(options);
 
 		// prepare
@@ -154,38 +154,9 @@ public class HotkeyTest
 		// fill mandatory inputs
 		driver.findElement(By.id("transaction-name")).sendKeys("My Transaction");
 		driver.findElement(By.id("transaction-amount")).sendKeys("15.00");
-
-		final WebElement body = driver.findElement(By.tagName("body"));
-		Action seriesOfActions = new Actions(driver)
-				.moveToElement(body)
-				.keyDown(body, Keys.CONTROL)
-				.sendKeys(body, Keys.ENTER)
-				.keyUp(body, Keys.CONTROL)
-				.build();
-		seriesOfActions.perform();
-
-		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
-
-		// assert
-		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
-
-		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
-		assertThat(transactionsRows).hasSize(2);
-	}
-
-	@Test
-	public void hotkey_saveTransaction_focusOnCategorySelect()
-	{
-		// open transactions page
-		driver.get(helper.getUrl() + "/transactions/newTransaction/normal");
-
-		// fill mandatory inputs
-		driver.findElement(By.id("transaction-name")).sendKeys("My Transaction");
-		driver.findElement(By.id("transaction-amount")).sendKeys("15.00");
 		TransactionTestHelper.selectCategory(driver, "sdfdsf");
 
-		final WebElement categoryWrapper = driver.findElement(By.id("categoryWrapper"));
+		WebElement categoryWrapper = driver.findElement(By.id("categoryWrapper"));
 		Action seriesOfActions = new Actions(driver)
 				.moveToElement(categoryWrapper)
 				.keyDown(categoryWrapper, Keys.CONTROL)
