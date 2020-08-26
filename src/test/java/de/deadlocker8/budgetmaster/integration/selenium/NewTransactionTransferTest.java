@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.integration;
+package de.deadlocker8.budgetmaster.integration.selenium;
 
 import de.deadlocker8.budgetmaster.Main;
 import de.deadlocker8.budgetmaster.authentication.UserService;
@@ -13,13 +13,10 @@ import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.interactions.Action;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,7 +25,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,7 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SeleniumTest
-public class HotkeyTest
+public class NewTransactionTransferTest
 {
 	private IntegrationTestHelper helper;
 	private WebDriver driver;
@@ -60,7 +59,7 @@ public class HotkeyTest
 		@Override
 		protected void failed(Throwable e, Description description)
 		{
-			IntegrationTestHelper.saveScreenshots(driver, name, HotkeyTest.class);
+			IntegrationTestHelper.saveScreenshots(driver, name, NewTransactionTransferTest.class);
 		}
 	};
 
@@ -68,7 +67,7 @@ public class HotkeyTest
 	public void prepare()
 	{
 		FirefoxOptions options = new FirefoxOptions();
-		options.setHeadless(false);
+		options.setHeadless(true);
 		driver = new FirefoxDriver(options);
 
 		// prepare
@@ -79,91 +78,50 @@ public class HotkeyTest
 
 		String path = getClass().getClassLoader().getResource("SearchDatabase.json").getFile().replace("/", File.separator);
 		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf"), Arrays.asList("DefaultAccount0815", "Account2"));
+
+		// open transactions page
+		driver.get(helper.getUrl() + "/transactions");
+		driver.findElement(By.id("button-new-transaction")).click();
 	}
 
 	@Test
-	public void hotkey_newTransaction_normal()
+	public void newTransaction_transfer_cancel()
 	{
-		driver.findElement(By.tagName("body")).sendKeys("n");
+		// open new transaction page
+		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transfer')]")).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("form[name='NewTransaction']")));
-
-		assertThat(driver.getCurrentUrl()).endsWith("/newTransaction/normal");
-	}
-
-	@Test
-	public void hotkey_newTransaction_recurring()
-	{
-		driver.findElement(By.tagName("body")).sendKeys("r");
-
-		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("form[name='NewTransaction']")));
-
-		assertThat(driver.getCurrentUrl()).endsWith("/newTransaction/repeating");
-	}
-
-	@Test
-	public void hotkey_newTransaction_transfer()
-	{
-		driver.findElement(By.tagName("body")).sendKeys("t");
-
-		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("form[name='NewTransaction']")));
-
-		assertThat(driver.getCurrentUrl()).endsWith("/newTransaction/transfer");
-	}
-
-	@Test
-	public void hotkey_newTransaction_transactionFromTemplate()
-	{
-		driver.findElement(By.tagName("body")).sendKeys("v");
-
-		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.id("searchTemplate")));
-
-		assertThat(driver.getCurrentUrl()).endsWith("/templates/select");
-	}
-
-	@Test
-	public void hotkey_filter()
-	{
-		driver.findElement(By.tagName("body")).sendKeys("f");
+		// click cancel button
+		driver.findElement(By.xpath("//a[contains(text(),'Cancel')]")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
 
-		assertThat(driver.getCurrentUrl()).endsWith("/transactions#modalFilter");
-		assertThat(driver.findElement(By.id("modalFilter")).isDisplayed()).isTrue();
+		// assert
+		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
+
+		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		assertThat(transactionsRows).hasSize(1);
 	}
 
 	@Test
-	public void hotkey_search()
+	public void newTransaction_transfer()
 	{
-		driver.findElement(By.tagName("body")).sendKeys("s");
+		// open new transaction page
+		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transfer')]")).click();
 
-		assertThat(driver.findElement(By.id("search"))).isEqualTo(driver.switchTo().activeElement());
-	}
+		String name = "My transfer transaction";
+		String amount = "15.00";
+		String description = "Lorem Ipsum dolor sit amet";
+		String categoryName = "sdfdsf";
 
-	@Test
-	public void hotkey_saveTransaction()
-	{
-		// open transactions page
-		driver.get(helper.getUrl() + "/transactions/newTransaction/normal");
+		// fill form
+		driver.findElement(By.id("transaction-name")).sendKeys(name);
+		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
+		driver.findElement(By.id("transaction-description")).sendKeys(description);
+		TransactionTestHelper.selectCategory(driver, categoryName);
 
-		// fill mandatory inputs
-		driver.findElement(By.id("transaction-name")).sendKeys("My Transaction");
-		driver.findElement(By.id("transaction-amount")).sendKeys("15.00");
-		TransactionTestHelper.selectCategory(driver, "sdfdsf");
-
-		WebElement categoryWrapper = driver.findElement(By.id("categoryWrapper"));
-		Action seriesOfActions = new Actions(driver)
-				.moveToElement(categoryWrapper)
-				.keyDown(categoryWrapper, Keys.CONTROL)
-				.sendKeys(categoryWrapper, Keys.ENTER)
-				.keyUp(categoryWrapper, Keys.CONTROL)
-				.build();
-		seriesOfActions.perform();
+		// submit form
+		driver.findElement(By.id("button-save-transaction")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
@@ -173,5 +131,13 @@ public class HotkeyTest
 
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		assertThat(transactionsRows).hasSize(2);
+
+		final WebElement row = transactionsRows.get(0);
+		final List<WebElement> columns = row.findElements(By.className("col"));
+		assertThat(columns).hasSize(6);
+
+		// check columns
+		final String dateString = new SimpleDateFormat("dd.MM.").format(new Date());
+		TransactionTestHelper.assertTransactionColumns(columns, dateString, categoryName, "rgb(46, 124, 43)", false, true, name, description, amount);
 	}
 }
