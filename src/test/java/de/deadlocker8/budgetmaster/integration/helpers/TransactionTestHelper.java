@@ -48,7 +48,7 @@ public class TransactionTestHelper
 
 	public static void selectCategory(WebDriver driver, String categoryName)
 	{
-		WebElement categorySelect = driver.findElement(By.cssSelector("#categoryWrapper"));
+		WebElement categorySelect = driver.findElement(By.id("categoryWrapper"));
 		categorySelect.findElement(By.className("select-dropdown")).click();
 
 		WebElement categoryToSelect = categorySelect.findElement(By.xpath("//ul/li/span[text()='" + categoryName + "']"));

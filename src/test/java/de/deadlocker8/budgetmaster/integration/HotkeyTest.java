@@ -13,10 +13,13 @@ import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,9 +28,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -142,5 +143,64 @@ public class HotkeyTest
 		driver.findElement(By.tagName("body")).sendKeys("s");
 
 		assertThat(driver.findElement(By.id("search"))).isEqualTo(driver.switchTo().activeElement());
+	}
+
+	@Test
+	public void hotkey_saveTransaction()
+	{
+		// open transactions page
+		driver.get(helper.getUrl() + "/transactions/newTransaction/normal");
+
+		// fill mandatory inputs
+		driver.findElement(By.id("transaction-name")).sendKeys("My Transaction");
+		driver.findElement(By.id("transaction-amount")).sendKeys("15.00");
+
+		final WebElement body = driver.findElement(By.tagName("body"));
+		Action seriesOfActions = new Actions(driver)
+				.moveToElement(body)
+				.keyDown(body, Keys.CONTROL)
+				.sendKeys(body, Keys.ENTER)
+				.keyUp(body, Keys.CONTROL)
+				.build();
+		seriesOfActions.perform();
+
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
+
+		// assert
+		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
+
+		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		assertThat(transactionsRows).hasSize(2);
+	}
+
+	@Test
+	public void hotkey_saveTransaction_focusOnCategorySelect()
+	{
+		// open transactions page
+		driver.get(helper.getUrl() + "/transactions/newTransaction/normal");
+
+		// fill mandatory inputs
+		driver.findElement(By.id("transaction-name")).sendKeys("My Transaction");
+		driver.findElement(By.id("transaction-amount")).sendKeys("15.00");
+		TransactionTestHelper.selectCategory(driver, "sdfdsf");
+
+		final WebElement categoryWrapper = driver.findElement(By.id("categoryWrapper"));
+		Action seriesOfActions = new Actions(driver)
+				.moveToElement(categoryWrapper)
+				.keyDown(categoryWrapper, Keys.CONTROL)
+				.sendKeys(categoryWrapper, Keys.ENTER)
+				.keyUp(categoryWrapper, Keys.CONTROL)
+				.build();
+		seriesOfActions.perform();
+
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
+
+		// assert
+		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
+
+		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		assertThat(transactionsRows).hasSize(2);
 	}
 }
