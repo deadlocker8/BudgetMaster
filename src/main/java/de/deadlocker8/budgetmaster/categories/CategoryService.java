@@ -9,8 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryService implements Resetable
@@ -89,7 +91,9 @@ public class CategoryService implements Resetable
 	public List<Category> getAllCategories()
 	{
 		localizeDefaultCategories();
-		return categoryRepository.findAllByOrderByNameAsc();
+		return categoryRepository.findAllByOrderByNameAsc().stream()
+				.sorted(Comparator.comparing(c -> c.getName().toLowerCase()))
+				.collect(Collectors.toList());
 	}
 
 	public void localizeDefaultCategories()
