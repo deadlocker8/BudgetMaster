@@ -54,14 +54,6 @@ public class TemplateController extends BaseController
 		return "templates/templates";
 	}
 
-	@GetMapping("/select")
-	public String select(Model model)
-	{
-		model.addAttribute("settings", settingsService.getSettings());
-		model.addAttribute("templates", templateService.getRepository().findAllByOrderByTemplateNameAsc());
-		return "templates/selectTemplate";
-	}
-
 	@GetMapping("/fromTransactionModal")
 	public String fromTransactionModal(Model model)
 	{

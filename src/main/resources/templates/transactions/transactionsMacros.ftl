@@ -139,8 +139,8 @@
         </a>
         <ul class="${listClasses}">
             <li>
-                <a href="<@s.url '/templates/select'/>" class="btn-floating btn budgetmaster-baby-blue"><i class="material-icons">file_copy</i></a>
-                <a href="<@s.url '/templates/select'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new.from.template")}</a>
+                <a href="<@s.url '/templates'/>" class="btn-floating btn budgetmaster-baby-blue"><i class="material-icons">file_copy</i></a>
+                <a href="<@s.url '/templates'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new.from.template")}</a>
             </li>
             <li>
                 <a href="<@s.url '/transactions/newTransaction/transfer'/>" class="btn-floating btn budgetmaster-dark-green"><i class="material-icons">swap_horiz</i></a>

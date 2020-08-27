@@ -122,7 +122,7 @@ public class HotkeyTest
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.id("searchTemplate")));
 
-		assertThat(driver.getCurrentUrl()).endsWith("/templates/select");
+		assertThat(driver.getCurrentUrl()).endsWith("/templates");
 	}
 
 	@Test
