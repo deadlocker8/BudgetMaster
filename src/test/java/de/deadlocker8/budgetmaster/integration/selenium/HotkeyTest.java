@@ -68,7 +68,7 @@ public class HotkeyTest
 	public void prepare()
 	{
 		FirefoxOptions options = new FirefoxOptions();
-		options.setHeadless(false);
+		options.setHeadless(true);
 		driver = new FirefoxDriver(options);
 
 		// prepare
