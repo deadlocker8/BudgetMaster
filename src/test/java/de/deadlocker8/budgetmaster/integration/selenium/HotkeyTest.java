@@ -158,7 +158,6 @@ public class HotkeyTest
 
 		WebElement categoryWrapper = driver.findElement(By.id("categoryWrapper"));
 		Action seriesOfActions = new Actions(driver)
-				.moveToElement(categoryWrapper)
 				.keyDown(categoryWrapper, Keys.CONTROL)
 				.sendKeys(categoryWrapper, Keys.ENTER)
 				.keyUp(categoryWrapper, Keys.CONTROL)
