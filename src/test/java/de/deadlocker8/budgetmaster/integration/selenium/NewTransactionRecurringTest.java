@@ -122,11 +122,11 @@ public class NewTransactionRecurringTest
 		driver.findElement(By.id("transaction-name")).sendKeys(name);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
 		driver.findElement(By.id("transaction-description")).sendKeys(description);
-		TransactionTestHelper.selectCategory(driver, categoryName);
+		TransactionTestHelper.selectOptionFromDropdown(driver, By.id("categoryWrapper"), categoryName);
 
 		// fill repeating options
 		driver.findElement(By.id("transaction-repeating-modifier")).sendKeys(repeatingModifier);
-		selectRepeatingModifierType(repeatingModifierType);
+		TransactionTestHelper.selectOptionFromDropdown(driver, By.cssSelector("#transaction-repeating-modifier-row"), repeatingModifierType);
 
 		// fill date
 		driver.findElement(By.id("transaction-datepicker")).click();
@@ -186,11 +186,11 @@ public class NewTransactionRecurringTest
 		driver.findElement(By.id("transaction-name")).sendKeys(name);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
 		driver.findElement(By.id("transaction-description")).sendKeys(description);
-		TransactionTestHelper.selectCategory(driver, categoryName);
+		TransactionTestHelper.selectOptionFromDropdown(driver, By.id("categoryWrapper"), categoryName);
 
 		// fill repeating options
 		driver.findElement(By.id("transaction-repeating-modifier")).sendKeys(repeatingModifier);
-		selectRepeatingModifierType(repeatingModifierType);
+		TransactionTestHelper.selectOptionFromDropdown(driver, By.cssSelector("#transaction-repeating-modifier-row"), repeatingModifierType);
 
 		// fill date
 		driver.findElement(By.id("transaction-datepicker")).click();
@@ -230,15 +230,6 @@ public class NewTransactionRecurringTest
 		// check columns
 		final String dateString = new SimpleDateFormat("03.MM.").format(new Date());
 		TransactionTestHelper.assertTransactionColumns(columns, dateString, categoryName, "rgb(46, 124, 43)", true, false, name, description, "-" +  amount);
-	}
-
-	private void selectRepeatingModifierType(String type)
-	{
-		WebElement categorySelect = driver.findElement(By.cssSelector("#transaction-repeating-modifier-row"));
-		categorySelect.findElement(By.className("select-dropdown")).click();
-
-		WebElement categoryToSelect = categorySelect.findElement(By.xpath("//ul/li/span[text()='" + type + "']"));
-		categoryToSelect.click();
 	}
 
 	@Test

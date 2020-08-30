@@ -154,7 +154,7 @@ public class HotkeyTest
 		// fill mandatory inputs
 		driver.findElement(By.id("transaction-name")).sendKeys("My Transaction");
 		driver.findElement(By.id("transaction-amount")).sendKeys("15.00");
-		TransactionTestHelper.selectCategory(driver, "sdfdsf");
+		TransactionTestHelper.selectOptionFromDropdown(driver, By.id("categoryWrapper"), "sdfdsf");
 
 		WebElement categoryWrapper = driver.findElement(By.id("categoryWrapper"));
 		Action seriesOfActions = new Actions(driver)

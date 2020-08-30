@@ -46,12 +46,12 @@ public class TransactionTestHelper
 		assertThat(columns.get(4).getText()).contains(amount);
 	}
 
-	public static void selectCategory(WebDriver driver, String categoryName)
+	public static void selectOptionFromDropdown(WebDriver driver, By selectLocator, String nameToSelect)
 	{
-		WebElement categorySelect = driver.findElement(By.id("categoryWrapper"));
-		categorySelect.findElement(By.className("select-dropdown")).click();
+		WebElement select = driver.findElement(selectLocator);
+		select.findElement(By.className("select-dropdown")).click();
 
-		WebElement categoryToSelect = categorySelect.findElement(By.xpath("//ul/li/span[text()='" + categoryName + "']"));
-		categoryToSelect.click();
+		WebElement itemToSelect = select.findElement(By.xpath("//ul/li/span[text()='" + nameToSelect + "']"));
+		itemToSelect.click();
 	}
 }

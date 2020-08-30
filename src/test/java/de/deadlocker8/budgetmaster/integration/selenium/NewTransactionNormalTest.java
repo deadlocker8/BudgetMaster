@@ -119,7 +119,7 @@ public class NewTransactionNormalTest
 		driver.findElement(By.id("transaction-name")).sendKeys(name);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
 		driver.findElement(By.id("transaction-description")).sendKeys(description);
-		TransactionTestHelper.selectCategory(driver, categoryName);
+		TransactionTestHelper.selectOptionFromDropdown(driver, By.id("categoryWrapper"), categoryName);
 
 		// submit form
 		driver.findElement(By.id("button-save-transaction")).click();
@@ -158,7 +158,7 @@ public class NewTransactionNormalTest
 		driver.findElement(By.id("transaction-name")).sendKeys(name);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
 		driver.findElement(By.id("transaction-description")).sendKeys(description);
-		TransactionTestHelper.selectCategory(driver, categoryName);
+		TransactionTestHelper.selectOptionFromDropdown(driver, By.id("categoryWrapper"), categoryName);
 
 		// submit form
 		driver.findElement(By.id("button-save-transaction")).click();

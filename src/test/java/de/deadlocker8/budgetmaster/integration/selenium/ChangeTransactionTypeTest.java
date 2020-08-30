@@ -4,6 +4,7 @@ import de.deadlocker8.budgetmaster.Main;
 import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
+import de.deadlocker8.budgetmaster.integration.helpers.TransactionTestHelper;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -79,15 +80,6 @@ public class ChangeTransactionTypeTest
 		assertThat(driver.findElement(By.id("modalChangeTransactionType")).isDisplayed()).isTrue();
 	}
 
-	private void selectNewType(String type)
-	{
-		WebElement select = driver.findElement(By.cssSelector("#modalChangeTransactionType .select-wrapper"));
-		select.findElement(By.className("select-dropdown")).click();
-
-		WebElement itemToSelect = select.findElement(By.xpath("//ul/li/span[text()='" + type + "']"));
-		itemToSelect.click();
-	}
-
 	@Before
 	public void prepare()
 	{
@@ -142,7 +134,7 @@ public class ChangeTransactionTypeTest
 	public void test_normal_to_transfer()
 	{
 		openTransferTypeModal(2);
-		selectNewType("Transfer");
+		TransactionTestHelper.selectOptionFromDropdown(driver, By.cssSelector("#modalChangeTransactionType .select-wrapper"), "Transfer");
 		driver.findElement(By.id("buttonChangeTransactionType")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, 5);
@@ -168,7 +160,7 @@ public class ChangeTransactionTypeTest
 	public void test_recurring_to_normal()
 	{
 		openTransferTypeModal(6);
-		selectNewType("Transaction");
+		TransactionTestHelper.selectOptionFromDropdown(driver, By.cssSelector("#modalChangeTransactionType .select-wrapper"), "Transaction");
 		driver.findElement(By.id("buttonChangeTransactionType")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, 5);
@@ -192,7 +184,7 @@ public class ChangeTransactionTypeTest
 	public void test_transfer_to_recurring()
 	{
 		openTransferTypeModal(3);
-		selectNewType("Recurring");
+		TransactionTestHelper.selectOptionFromDropdown(driver, By.cssSelector("#modalChangeTransactionType .select-wrapper"), "Recurring");
 		driver.findElement(By.id("buttonChangeTransactionType")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, 5);
