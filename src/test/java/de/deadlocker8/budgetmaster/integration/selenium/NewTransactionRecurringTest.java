@@ -240,4 +240,29 @@ public class NewTransactionRecurringTest
 		WebElement categoryToSelect = categorySelect.findElement(By.xpath("//ul/li/span[text()='" + type + "']"));
 		categoryToSelect.click();
 	}
+
+	@Test
+	public void test_edit()
+	{
+		driver.get(helper.getUrl() + "/transactions/6/edit");
+
+		assertThat(driver.findElement(By.className("buttonExpenditure")).getAttribute("class")).contains("budgetmaster-red");
+		assertThat(driver.findElement(By.id("transaction-name")).getAttribute("value")).isEqualTo("beste");
+		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEqualTo("15.00");
+		assertThat(driver.findElement(By.id("transaction-datepicker")).getAttribute("value")).isEqualTo("01.05.2019");
+		assertThat(driver.findElement(By.id("transaction-description")).getAttribute("value")).isEqualTo("Lorem Ipsum");
+		assertThat(driver.findElement(By.id("transaction-category")).getAttribute("value")).isEqualTo("3");
+
+		final List<WebElement> chips = driver.findElements(By.cssSelector("#transaction-chips .chip"));
+		assertThat(chips).hasSize(1);
+		assertThat(chips.get(0)).hasFieldOrPropertyWithValue("text", "123\nclose");
+
+		assertThat(driver.findElement(By.id("transaction-account")).getAttribute("value")).isEqualTo("3");
+
+		assertThat(driver.findElement(By.id("transaction-repeating-modifier")).getAttribute("value")).isEqualTo("1");
+		assertThat(driver.findElement(By.id("transaction-repeating-modifier-type")).getAttribute("value")).isEqualTo("Days");
+
+		assertThat(driver.findElement(By.id("repeating-end-after-x-times")).isSelected()).isTrue();
+		assertThat(driver.findElement(By.id("transaction-repeating-end-after-x-times-input")).getAttribute("value")).isEqualTo("20");
+	}
 }
