@@ -110,7 +110,12 @@
             },
             "name": "Transfer dings",
             "description": "",
-            "tags": [],
+            "tags": [
+                {
+                    "ID": 1,
+                    "name": "123"
+                }
+            ],
             "transferAccount": {
                 "ID": 3,
                 "name": "sfsdf",

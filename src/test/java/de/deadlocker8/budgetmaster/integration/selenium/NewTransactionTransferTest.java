@@ -13,6 +13,7 @@ import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -31,6 +32,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -139,5 +141,26 @@ public class NewTransactionTransferTest
 		// check columns
 		final String dateString = new SimpleDateFormat("dd.MM.").format(new Date());
 		TransactionTestHelper.assertTransactionColumns(columns, dateString, categoryName, "rgb(46, 124, 43)", false, true, name, description, amount);
+	}
+
+	@Test
+	public void test_edit()
+	{
+		driver.get(helper.getUrl() + "/transactions/3/edit");
+
+		assertThatThrownBy(()->driver.findElement(By.className("buttonExpenditure"))).isInstanceOf(NoSuchElementException.class);
+
+		assertThat(driver.findElement(By.id("transaction-name")).getAttribute("value")).isEqualTo("Transfer dings");
+		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEqualTo("3.00");
+		assertThat(driver.findElement(By.id("transaction-datepicker")).getAttribute("value")).isEqualTo("01.05.2019");
+		assertThat(driver.findElement(By.id("transaction-description")).getAttribute("value")).isEmpty();
+		assertThat(driver.findElement(By.id("transaction-category")).getAttribute("value")).isEqualTo("1");
+
+		final List<WebElement> chips = driver.findElements(By.cssSelector("#transaction-chips .chip"));
+		assertThat(chips).hasSize(1);
+		assertThat(chips.get(0)).hasFieldOrPropertyWithValue("text", "123\nclose");
+
+		assertThat(driver.findElement(By.id("transaction-account")).getAttribute("value")).isEqualTo("3");
+		assertThat(driver.findElement(By.id("transaction-transfer-account")).getAttribute("value")).isEqualTo("4");
 	}
 }
