@@ -11,9 +11,13 @@ $(document).ready(function()
     if($("#transaction-name").length)
     {
         let elements = document.querySelectorAll('#transaction-name');
-        M.Autocomplete.init(elements, {
+        let autoCompleteInstances = M.Autocomplete.init(elements, {
             data: transactionNameSuggestions,
         });
+
+        // prevent tab traversal for dropdown (otherwise "tab" needs to be hit twice to jump from name input to amount input)
+        autoCompleteInstances[0].dropdown.dropdownEl.tabIndex = -1;
+
         document.getElementById('transaction-name').focus();
     }
 
@@ -143,7 +147,8 @@ $(document).ready(function()
 
     if($(".chips-autocomplete").length)
     {
-        $('.chips-autocomplete').chips({
+        let elements = document.querySelectorAll('.chips-autocomplete');
+        let instances = M.Chips.init(elements, {
             autocompleteOptions: {
                 data: tagAutoComplete,
                 limit: Infinity,
@@ -152,6 +157,9 @@ $(document).ready(function()
             placeholder: tagsPlaceholder,
             data: initialTags
         });
+
+        // prevent tab traversal for dropdown (otherwise "tab" needs to be hit twice to jump from tag input to account input)
+        instances[0].autocomplete.dropdown.dropdownEl.tabIndex = -1;
     }
 
     // prevent form submit on enter (otherwise tag functionality will be hard to use)
