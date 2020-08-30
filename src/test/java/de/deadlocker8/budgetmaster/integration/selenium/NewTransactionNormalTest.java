@@ -85,7 +85,7 @@ public class NewTransactionNormalTest
 	}
 
 	@Test
-	public void newTransaction_normal_cancel()
+	public void test_newTransaction_cancel()
 	{
 		// open new transaction page
 		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]")).click();
@@ -104,7 +104,7 @@ public class NewTransactionNormalTest
 	}
 
 	@Test
-	public void newTransaction_normal_income()
+	public void test_newTransaction_income()
 	{
 		// open new transaction page
 		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]")).click();
@@ -143,7 +143,7 @@ public class NewTransactionNormalTest
 	}
 
 	@Test
-	public void newTransaction_normal_expenditure()
+	public void test_newTransaction_expenditure()
 	{
 		// open new transaction page
 		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]")).click();
@@ -179,5 +179,24 @@ public class NewTransactionNormalTest
 		// check columns
 		final String dateString = new SimpleDateFormat("dd.MM.").format(new Date());
 		TransactionTestHelper.assertTransactionColumns(columns, dateString, categoryName, "rgb(46, 124, 43)", false, false, name, description, "-" + amount);
+	}
+
+	@Test
+	public void test_edit()
+	{
+		driver.get(helper.getUrl() + "/transactions/2/edit");
+
+		assertThat(driver.findElement(By.className("buttonExpenditure")).getAttribute("class")).contains("budgetmaster-red");
+		assertThat(driver.findElement(By.id("transaction-name")).getAttribute("value")).isEqualTo("Test");
+		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEqualTo("15.00");
+		assertThat(driver.findElement(By.id("transaction-datepicker")).getAttribute("value")).isEqualTo("01.05.2019");
+		assertThat(driver.findElement(By.id("transaction-description")).getAttribute("value")).isEqualTo("Lorem Ipsum");
+		assertThat(driver.findElement(By.id("transaction-category")).getAttribute("value")).isEqualTo("4");
+
+		final List<WebElement> chips = driver.findElements(By.cssSelector("#transaction-chips .chip"));
+		assertThat(chips).hasSize(1);
+		assertThat(chips.get(0)).hasFieldOrPropertyWithValue("text", "123\nclose");
+
+		assertThat(driver.findElement(By.id("transaction-account")).getAttribute("value")).isEqualTo("3");
 	}
 }

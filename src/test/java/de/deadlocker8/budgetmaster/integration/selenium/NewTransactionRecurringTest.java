@@ -86,7 +86,7 @@ public class NewTransactionRecurringTest
 	}
 
 	@Test
-	public void newTransaction_recurring_cancel()
+	public void test_newTransaction_cancel()
 	{
 		// open new transaction page
 		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Recurring')]")).click();
@@ -105,7 +105,7 @@ public class NewTransactionRecurringTest
 	}
 
 	@Test
-	public void newTransaction_recurring_income()
+	public void test_newTransaction_income()
 	{
 		// open new transaction page
 		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Recurring')]")).click();
@@ -169,7 +169,7 @@ public class NewTransactionRecurringTest
 	}
 
 	@Test
-	public void newTransaction_recurring_expenditure()
+	public void test_newTransaction_expenditure()
 	{
 		// open new transaction page
 		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Recurring')]")).click();

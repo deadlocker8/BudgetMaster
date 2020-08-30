@@ -85,7 +85,7 @@ public class NewTransactionTransferTest
 	}
 
 	@Test
-	public void newTransaction_transfer_cancel()
+	public void test_newTransaction_cancel()
 	{
 		// open new transaction page
 		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transfer')]")).click();
@@ -104,7 +104,7 @@ public class NewTransactionTransferTest
 	}
 
 	@Test
-	public void newTransaction_transfer()
+	public void test_newTransaction_transfer()
 	{
 		// open new transaction page
 		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transfer')]")).click();

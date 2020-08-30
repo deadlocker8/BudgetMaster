@@ -85,8 +85,13 @@
                 "type": "CUSTOM"
             },
             "name": "Test",
-            "description": "",
-            "tags": []
+            "description": "Lorem Ipsum",
+            "tags": [
+                {
+                    "ID": 1,
+                    "name": "123"
+                }
+            ]
         },
         {
             "ID": 195,
