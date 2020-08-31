@@ -25,6 +25,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -40,11 +41,11 @@ public class TransactionService implements Resetable
 
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
-	private TransactionRepository transactionRepository;
-	private RepeatingOptionRepository repeatingOptionRepository;
-	private CategoryService categoryService;
-	private TagService tagService;
-	private SettingsService settingsService;
+	private final TransactionRepository transactionRepository;
+	private final RepeatingOptionRepository repeatingOptionRepository;
+	private final CategoryService categoryService;
+	private final TagService tagService;
+	private final SettingsService settingsService;
 
 	@Autowired
 	public TransactionService(TransactionRepository transactionRepository, RepeatingOptionRepository repeatingOptionRepository, CategoryService categoryService, TagService tagService, SettingsService settingsService)
@@ -161,9 +162,9 @@ public class TransactionService implements Resetable
 	private void deleteTransactionInRepo(Integer ID)
 	{
 		Optional<Transaction> transactionOptional = transactionRepository.findById(ID);
-		if(!transactionOptional.isPresent())
+		if(transactionOptional.isEmpty())
 		{
-			LOGGER.debug("Skipping already deleted transaction with ID: " + ID);
+			LOGGER.debug(MessageFormat.format("Skipping already deleted transaction with ID: {0}", ID));
 			return;
 		}
 		Transaction transactionToDelete = transactionOptional.get();

@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,20 +57,20 @@ public class DateRepairTest
 	public void test_Repeating_WithTags()
 	{
 		final List<Transaction> transactions = transactionRepository.findAll();
-		assertThat(transactions).hasSize(4);
+		assertThat(transactions).hasSize(8);
 
 		assertThat(transactions.stream()
 				.map(t -> t.getTags().stream()
 						.map(Tag::getName).toArray(String[]::new))
 				.toArray(String[][]::new))
-				.containsOnly(new String[]{"0815", "abc"});
+				.containsOnly(new String[]{"0815", "abc"}, new String[0]);
 	}
 
 	@Test
 	public void test_Repeating()
 	{
 		final List<Transaction> transactions = transactionRepository.findAll();
-		assertThat(transactions).hasSize(4);
+		assertThat(transactions).hasSize(8);
 
 		assertThat(transactions.stream()
 				.map(t -> t.getDate().getHourOfDay())
