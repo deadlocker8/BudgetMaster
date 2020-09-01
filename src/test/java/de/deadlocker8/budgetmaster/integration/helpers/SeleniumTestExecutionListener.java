@@ -31,7 +31,7 @@ public class SeleniumTestExecutionListener extends AbstractTestExecutionListener
 	@Override
 	public void afterTestMethod(TestContext testContext) throws Exception
 	{
-		final Path path = SystemUtils.getApplicationSupportDirectoryPath(Localization.getString("folder"), "test", "repeating_with_tags.mv.db");
+		final Path path = SystemUtils.getApplicationSupportDirectoryPath(Localization.getString("folder"), "test", "budgetmaster.mv.db");
 		try
 		{
 			Files.deleteIfExists(path);
