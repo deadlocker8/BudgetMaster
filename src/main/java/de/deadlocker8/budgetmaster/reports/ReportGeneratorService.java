@@ -7,6 +7,7 @@ import de.deadlocker8.budgetmaster.reports.categoryBudget.CategoryBudget;
 import de.deadlocker8.budgetmaster.reports.columns.ReportColumn;
 import de.deadlocker8.budgetmaster.services.CurrencyService;
 import de.deadlocker8.budgetmaster.services.DateFormatStyle;
+import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.utils.Strings;
@@ -17,27 +18,29 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
 public class ReportGeneratorService
 {
+	private static final String FONT = Fonts.OPEN_SANS;
+
+	private final CurrencyService currencyService;
+	private final SettingsService settingsService;
+
 	@Autowired
-	CurrencyService currencyService;
-
-	private final String FONT = Fonts.OPEN_SANS;
-
-
-	@Autowired
-	public ReportGeneratorService(CurrencyService currencyService)
+	public ReportGeneratorService(CurrencyService currencyService, SettingsService settingsService)
 	{
 		this.currencyService = currencyService;
+		this.settingsService = settingsService;
 	}
 
 	private Chapter generateHeader(ReportConfiguration reportConfiguration)
 	{
 		Font font = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 16, Font.BOLDITALIC, BaseColor.BLACK);
-		Chunk chunk = new Chunk(Localization.getString(Strings.REPORT_HEADLINE, reportConfiguration.getReportSettings().getDate().toString("MMMM yyyy")), font);
+		Locale locale = settingsService.getSettings().getLanguage().getLocale();
+		Chunk chunk = new Chunk(Localization.getString(Strings.REPORT_HEADLINE, reportConfiguration.getReportSettings().getDate().toString("MMMM yyyy", locale)), font);
 		Chapter chapter = new Chapter(new Paragraph(chunk), 1);
 		chapter.setNumberDepth(0);
 
