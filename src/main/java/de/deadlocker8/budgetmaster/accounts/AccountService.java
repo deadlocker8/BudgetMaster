@@ -149,8 +149,6 @@ public class AccountService implements Resetable
 
 	public void setAsDefaultAccount(int ID)
 	{
-		unsetDefaultForAllAccounts();
-
 		Optional<Account> accountToSelectOptional = accountRepository.findById(ID);
 		if(accountToSelectOptional.isEmpty())
 		{
@@ -158,6 +156,13 @@ public class AccountService implements Resetable
 		}
 
 		Account accountToSelect = accountToSelectOptional.get();
+		if(accountToSelect.isReadOnly())
+		{
+			return;
+		}
+
+		unsetDefaultForAllAccounts();
+
 		accountToSelect.setDefault(true);
 		accountRepository.save(accountToSelect);
 	}

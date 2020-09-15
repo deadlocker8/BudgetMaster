@@ -65,8 +65,11 @@ public class AccountController extends BaseController
 		}
 
 		final Account account = accountOptional.get();
-		account.setReadOnly(!account.isReadOnly());
-		accountService.getRepository().save(account);
+		if(!account.isDefault())
+		{
+			account.setReadOnly(!account.isReadOnly());
+			accountService.getRepository().save(account);
+		}
 
 		String referer = request.getHeader("Referer");
 		if(referer.contains("database/import"))

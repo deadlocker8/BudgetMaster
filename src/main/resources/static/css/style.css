@@ -527,6 +527,12 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     color: #2E79B9;
 }
 
+.placeholder-icon {
+    display: inline-block;
+    width: 1.3rem;
+    margin-right: 15px;
+}
+
 .invisible {
     opacity: 0;
 }

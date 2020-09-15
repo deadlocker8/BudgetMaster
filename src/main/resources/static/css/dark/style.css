@@ -612,6 +612,12 @@ input[type="radio"]:not(:checked) + span::before, [type="radio"]:not(:checked) +
     color: #2E79B9;
 }
 
+.placeholder-icon {
+    display: inline-block;
+    width: 1.3rem;
+    margin-right: 15px;
+}
+
 .invisible {
     opacity: 0;
 }
