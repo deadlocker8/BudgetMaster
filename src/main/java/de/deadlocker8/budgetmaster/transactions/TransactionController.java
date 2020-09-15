@@ -110,7 +110,7 @@ public class TransactionController extends BaseController
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 		Transaction emptyTransaction = new Transaction();
 		emptyTransaction.setCategory(categoryService.getRepository().findByType(CategoryType.NONE));
-		transactionService.prepareModelNewOrEdit(model, false, date, null, emptyTransaction, accountService.getAllAccountsAsc());
+		transactionService.prepareModelNewOrEdit(model, false, date, null, emptyTransaction, accountService.getAllActivatedAccountsAsc());
 		return "transactions/newTransaction" + StringUtils.capitalize(type);
 	}
 
@@ -220,7 +220,7 @@ public class TransactionController extends BaseController
 		if(bindingResult.hasErrors())
 		{
 			model.addAttribute("error", bindingResult);
-			transactionService.prepareModelNewOrEdit(model, isEdit, date, null, transaction, accountService.getAllAccountsAsc());
+			transactionService.prepareModelNewOrEdit(model, isEdit, date, null, transaction, accountService.getAllActivatedAccountsAsc());
 			return url;
 		}
 
@@ -246,7 +246,7 @@ public class TransactionController extends BaseController
 		}
 
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
-		transactionService.prepareModelNewOrEdit(model, true, date, null, transaction, accountService.getAllAccountsAsc());
+		transactionService.prepareModelNewOrEdit(model, true, date, null, transaction, accountService.getAllActivatedAccountsAsc());
 
 		if(transaction.isRepeating())
 		{
@@ -338,7 +338,7 @@ public class TransactionController extends BaseController
 		}
 
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
-		transactionService.prepareModelNewOrEdit(model, true, date, previousType, transactionCopy, accountService.getAllAccountsAsc());
+		transactionService.prepareModelNewOrEdit(model, true, date, previousType, transactionCopy, accountService.getAllActivatedAccountsAsc());
 
 		return redirectUrl;
 	}

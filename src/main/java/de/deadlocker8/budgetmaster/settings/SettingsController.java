@@ -282,7 +282,7 @@ public class SettingsController extends BaseController
 	public String openAccountMatcher(WebRequest request, Model model)
 	{
 		model.addAttribute("database", request.getAttribute("database", WebRequest.SCOPE_SESSION));
-		model.addAttribute("availableAccounts", accountService.getAllAccountsAsc());
+		model.addAttribute("availableAccounts", accountService.getAllActivatedAccountsAsc());
 		model.addAttribute("settings", settingsService.getSettings());
 		return "settings/import";
 	}

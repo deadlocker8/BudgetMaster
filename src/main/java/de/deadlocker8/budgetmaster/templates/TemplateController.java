@@ -125,7 +125,7 @@ public class TemplateController extends BaseController
 		}
 
 		final DateTime date = dateService.getDateTimeFromCookie(cookieDate);
-		transactionService.prepareModelNewOrEdit(model, false, date, null, template, accountService.getAllAccountsAsc());
+		transactionService.prepareModelNewOrEdit(model, false, date, null, template, accountService.getAllActivatedAccountsAsc());
 
 		if(template.isTransfer())
 		{
@@ -139,7 +139,7 @@ public class TemplateController extends BaseController
 	{
 		final Template emptyTemplate = new Template();
 		templateService.prepareTemplateForNewTransaction(emptyTemplate, false);
-		templateService.prepareModelNewOrEdit(model, false, emptyTemplate, accountService.getAllAccountsAsc());
+		templateService.prepareModelNewOrEdit(model, false, emptyTemplate, accountService.getAllActivatedAccountsAsc());
 		return "templates/newTemplate";
 	}
 
@@ -179,7 +179,7 @@ public class TemplateController extends BaseController
 		if(bindingResult.hasErrors())
 		{
 			model.addAttribute("error", bindingResult);
-			templateService.prepareModelNewOrEdit(model, template.getID() != null, template, accountService.getAllAccountsAsc());
+			templateService.prepareModelNewOrEdit(model, template.getID() != null, template, accountService.getAllActivatedAccountsAsc());
 			return "templates/newTemplate";
 		}
 
@@ -208,7 +208,7 @@ public class TemplateController extends BaseController
 
 		Template template = templateOptional.get();
 		templateService.prepareTemplateForNewTransaction(template, false);
-		templateService.prepareModelNewOrEdit(model, true, template, accountService.getAllAccountsAsc());
+		templateService.prepareModelNewOrEdit(model, true, template, accountService.getAllActivatedAccountsAsc());
 
 		return "templates/newTemplate";
 	}
