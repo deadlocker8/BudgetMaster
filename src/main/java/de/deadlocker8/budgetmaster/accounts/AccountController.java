@@ -19,14 +19,12 @@ import java.util.Optional;
 @RequestMapping(Mappings.ACCOUNTS)
 public class AccountController extends BaseController
 {
-	private final AccountRepository accountRepository;
 	private final AccountService accountService;
 	private final SettingsService settingsService;
 
 	@Autowired
-	public AccountController(AccountRepository accountRepository, AccountService accountService, SettingsService settingsService)
+	public AccountController(AccountService accountService, SettingsService settingsService)
 	{
-		this.accountRepository = accountRepository;
 		this.accountService = accountService;
 		this.settingsService = settingsService;
 	}
@@ -90,7 +88,7 @@ public class AccountController extends BaseController
 	public String requestDeleteAccount(Model model, @PathVariable("ID") Integer ID)
 	{
 		model.addAttribute("accounts", accountService.getAllAccountsAsc());
-		model.addAttribute("currentAccount", accountRepository.getOne(ID));
+		model.addAttribute("currentAccount", accountService.getRepository().getOne(ID));
 		model.addAttribute("settings", settingsService.getSettings());
 		return "accounts/accounts";
 	}
@@ -98,14 +96,14 @@ public class AccountController extends BaseController
 	@GetMapping("/{ID}/delete")
 	public String deleteAccountAndReferringTransactions(Model model, @PathVariable("ID") Integer ID)
 	{
-		if(accountRepository.findAllByType(AccountType.CUSTOM).size() > 1)
+		if(accountService.getRepository().findAllByType(AccountType.CUSTOM).size() > 1)
 		{
 			accountService.deleteAccount(ID);
 			return "redirect:/accounts";
 		}
 
 		model.addAttribute("accounts", accountService.getAllAccountsAsc());
-		model.addAttribute("currentAccount", accountRepository.getOne(ID));
+		model.addAttribute("currentAccount", accountService.getRepository().getOne(ID));
 		model.addAttribute("accountNotDeletable", true);
 		model.addAttribute("settings", settingsService.getSettings());
 		return "accounts/accounts";
@@ -123,7 +121,7 @@ public class AccountController extends BaseController
 	@GetMapping("/{ID}/edit")
 	public String editAccount(Model model, @PathVariable("ID") Integer ID)
 	{
-		Optional<Account> accountOptional = accountRepository.findById(ID);
+		Optional<Account> accountOptional = accountService.getRepository().findById(ID);
 		if(accountOptional.isEmpty())
 		{
 			throw new ResourceNotFoundException();
@@ -142,7 +140,7 @@ public class AccountController extends BaseController
 		AccountValidator accountValidator = new AccountValidator();
 		accountValidator.validate(account, bindingResult);
 
-		if(accountRepository.findByName(account.getName()) != null)
+		if(accountService.getRepository().findByName(account.getName()) != null)
 		{
 			bindingResult.addError(new FieldError("NewAccount", "name", "", false, new String[]{"warning.duplicate.account.name"}, null, null));
 		}
@@ -160,17 +158,17 @@ public class AccountController extends BaseController
 			if(account.getID() == null)
 			{
 				// new account
-				accountRepository.save(account);
+				accountService.getRepository().save(account);
 			}
 			else
 			{
 				// edit existing account
-				Optional<Account> existingAccountOptional = accountRepository.findById(account.getID());
+				Optional<Account> existingAccountOptional = accountService.getRepository().findById(account.getID());
 				if(existingAccountOptional.isPresent())
 				{
 					Account existingAccount = existingAccountOptional.get();
 					existingAccount.setName(account.getName());
-					accountRepository.save(existingAccount);
+					accountService.getRepository().save(existingAccount);
 				}
 			}
 		}
