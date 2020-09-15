@@ -28,6 +28,7 @@ public class Account
 
 	private Boolean isSelected = false;
 	private Boolean isDefault = false;
+	private Boolean isReadOnly = false;
 
 	@Expose
 	private AccountType type;
@@ -39,6 +40,7 @@ public class Account
 		this.type = type;
 		this.isSelected = false;
 		this.isDefault = false;
+		this.isReadOnly = false;
 	}
 
 	public Account()
@@ -95,6 +97,16 @@ public class Account
 		isDefault = aDefault;
 	}
 
+	public Boolean isReadOnly()
+	{
+		return isReadOnly;
+	}
+
+	public void setReadOnly(Boolean readOnly)
+	{
+		isReadOnly = readOnly;
+	}
+
 	public AccountType getType()
 	{
 		return type;
@@ -114,6 +126,7 @@ public class Account
 				", referringTransactions=" + referringTransactions +
 				", isSelected=" + isSelected +
 				", isDefault=" + isDefault +
+				", isReadOnly=" + isReadOnly +
 				", type=" + type +
 				'}';
 	}
@@ -126,6 +139,7 @@ public class Account
 		Account account = (Account) o;
 		return isSelected == account.isSelected &&
 				isDefault == account.isDefault &&
+				isReadOnly == account.isReadOnly &&
 				Objects.equals(ID, account.ID) &&
 				Objects.equals(name, account.name) &&
 				type == account.type;
@@ -134,6 +148,6 @@ public class Account
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, name, isSelected, isDefault, type);
+		return Objects.hash(ID, name, isSelected, isDefault, isReadOnly, type);
 	}
 }

@@ -35,7 +35,7 @@ public class SettingsService
 	@Transactional
 	public void createDefaultSettingsIfNotExists()
 	{
-		if(!settingsRepository.findById(0).isPresent())
+		if(settingsRepository.findById(0).isEmpty())
 		{
 			settingsRepository.save(Settings.getDefault());
 			LOGGER.debug("Created default settings");
@@ -43,7 +43,7 @@ public class SettingsService
 
 		Settings defaultSettings = Settings.getDefault();
 		Optional<Settings> settingsOptional = settingsRepository.findById(0);
-		if(!settingsOptional.isPresent())
+		if(settingsOptional.isEmpty())
 		{
 			throw new RuntimeException("Missing Settings in database");
 		}

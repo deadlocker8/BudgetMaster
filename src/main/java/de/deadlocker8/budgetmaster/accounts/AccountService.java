@@ -19,9 +19,9 @@ import java.util.Optional;
 public class AccountService implements Resetable
 {
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-	private AccountRepository accountRepository;
-	private TransactionService transactionService;
-	private UserRepository userRepository;
+	private final AccountRepository accountRepository;
+	private final TransactionService transactionService;
+	private final UserRepository userRepository;
 
 	@Autowired
 	public AccountService(AccountRepository accountRepository, TransactionService transactionService, UserRepository userRepository)
@@ -48,7 +48,7 @@ public class AccountService implements Resetable
 	public void deleteAccount(int ID)
 	{
 		Optional<Account> accountToDeleteOptional = accountRepository.findById(ID);
-		if(!accountToDeleteOptional.isPresent())
+		if(accountToDeleteOptional.isEmpty())
 		{
 			return;
 		}
@@ -97,6 +97,15 @@ public class AccountService implements Resetable
 			LOGGER.debug("Created default account");
 		}
 
+		for(Account account : accountRepository.findAll())
+		{
+			if(account.isReadOnly() == null)
+			{
+				account.setReadOnly(false);
+			}
+			accountRepository.save(account);
+		}
+
 		Account defaultAccount = accountRepository.findByIsDefault(true);
 		if(defaultAccount == null)
 		{
@@ -121,7 +130,7 @@ public class AccountService implements Resetable
 		deselectAllAccounts();
 
 		Optional<Account> accountToSelectOptional = accountRepository.findById(ID);
-		if(!accountToSelectOptional.isPresent())
+		if(accountToSelectOptional.isEmpty())
 		{
 			return;
 		}
@@ -143,7 +152,7 @@ public class AccountService implements Resetable
 		unsetDefaultForAllAccounts();
 
 		Optional<Account> accountToSelectOptional = accountRepository.findById(ID);
-		if(!accountToSelectOptional.isPresent())
+		if(accountToSelectOptional.isEmpty())
 		{
 			return;
 		}
