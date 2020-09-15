@@ -25,6 +25,16 @@
                                 <tr>
                                     <td>
                                         <a href="<@s.url '/accounts/${account.getID()?c}/setAsDefault'/>" class="btn-flat no-padding text-color tooltipped" data-position="left" data-tooltip="${locale.getString("account.tooltip.default")}"><i class="material-icons left"><#if account.isDefault()>star<#else>star_border</#if></i></a>
+
+                                        <#if account.isReadOnly()>
+                                            <#assign toolTipText = locale.getString("account.tooltip.readonly.activate")/>
+                                            <#assign lockIcon = '<i class="fas fa-lock"></i>'/>
+                                        <#else>
+                                            <#assign toolTipText = locale.getString("account.tooltip.readonly.deactivate")/>
+                                            <#assign lockIcon = '<i class="fas fa-lock-open"></i>'/>
+                                        </#if>
+
+                                        <a href="<@s.url '/accounts/${account.getID()?c}/toggleReadOnly'/>" class="btn-flat no-padding text-color tooltipped" data-position="left" data-tooltip="${toolTipText}">${lockIcon}</a>
                                     </td>
                                     <td>${account.getName()}</td>
                                     <td>
