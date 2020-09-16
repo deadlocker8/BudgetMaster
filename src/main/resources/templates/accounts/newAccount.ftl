@@ -40,7 +40,7 @@
                             </div>
 
                             <div class="col s6 left-align">
-                                <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action">
+                                <button id="button-save-account" class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action">
                                     <i class="material-icons left">save</i>${locale.getString("save")}
                                 </button>
                             </div>
@@ -53,7 +53,7 @@
                             </div>
                             <div class="row center-align">
                                 <div class="col s12">
-                                    <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="buttonSave">
+                                    <button id="button-save-account" class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="buttonSave">
                                         <i class="material-icons left">save</i>${locale.getString("save")}
                                     </button>
                                 </div>

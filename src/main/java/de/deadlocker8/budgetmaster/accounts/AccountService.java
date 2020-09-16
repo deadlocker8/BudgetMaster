@@ -104,6 +104,7 @@ public class AccountService implements Resetable
 			LOGGER.debug("Created default account");
 		}
 
+		// handle null values for new field "isReadOnly"
 		for(Account account : accountRepository.findAll())
 		{
 			if(account.isReadOnly() == null)
