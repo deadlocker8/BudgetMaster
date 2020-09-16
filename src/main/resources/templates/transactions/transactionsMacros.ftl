@@ -54,7 +54,7 @@
 
 <#macro transactionButtons transaction>
         <div class="col s8 l2 xl1 right-align transaction-buttons no-wrap">
-            <#if (transaction.category.type.name() != "REST")>
+            <#if (transaction.category.type.name() != "REST") && !transaction.getAccount().isReadOnly()>
                 <a href="<@s.url '/transactions/${transaction.ID?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
                 <a href="<@s.url '/transactions/${transaction.ID?c}/requestDelete'/>" class="btn-flat no-padding text-color"><i class="material-icons left no-margin">delete</i></a>
             </#if>

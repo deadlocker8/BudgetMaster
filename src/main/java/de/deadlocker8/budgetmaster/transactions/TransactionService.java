@@ -188,7 +188,12 @@ public class TransactionService implements Resetable
 			final Transaction transaction = transactionOptional.get();
 			if(transaction.getCategory() != null)
 			{
-				return transaction.getCategory().getType() != CategoryType.REST;
+				if(transaction.getCategory().getType() == CategoryType.REST)
+				{
+					return false;
+				}
+
+				return !transaction.getAccount().isReadOnly();
 			}
 		}
 		return false;

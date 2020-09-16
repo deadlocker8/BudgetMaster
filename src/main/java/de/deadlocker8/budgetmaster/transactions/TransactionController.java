@@ -239,6 +239,11 @@ public class TransactionController extends BaseController
 
 		Transaction transaction = transactionOptional.get();
 
+		if(transaction.getAccount().isReadOnly())
+		{
+			return "redirect:/transactions";
+		}
+
 		// select first transaction in order to provide correct start date for repeating transactions
 		if(transaction.getRepeatingOption() != null)
 		{
