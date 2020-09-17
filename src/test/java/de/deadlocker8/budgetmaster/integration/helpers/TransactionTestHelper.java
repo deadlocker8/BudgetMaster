@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.integration.helpers;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -51,7 +52,8 @@ public class TransactionTestHelper
 		WebElement select = driver.findElement(selectLocator);
 		select.findElement(By.className("select-dropdown")).click();
 
-		WebElement itemToSelect = select.findElement(By.xpath("//ul/li/span[text()='" + nameToSelect + "']"));
+		WebElement itemToSelect = select.findElement(By.xpath(".//ul/li/span[text()='" + nameToSelect + "']"));
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", itemToSelect);
 		itemToSelect.click();
 	}
 }

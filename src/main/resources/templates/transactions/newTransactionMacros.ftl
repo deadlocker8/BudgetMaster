@@ -187,7 +187,7 @@
 
 <#macro account accounts selectedAccount id name label disabled>
     <div class="row">
-        <div class="input-field col s12 m12 l8 offset-l2">
+        <div class="input-field col s12 m12 l8 offset-l2" id="accountWrapper">
             <select id="${id}" name="${name}" <@validation.validation "account"/> <#if disabled>disabled</#if>>
                 <#list accounts as account>
                     <#if (account.getType().name() != "CUSTOM")>

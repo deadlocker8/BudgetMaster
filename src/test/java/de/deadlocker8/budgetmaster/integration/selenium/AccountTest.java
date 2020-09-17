@@ -4,6 +4,7 @@ import de.deadlocker8.budgetmaster.Main;
 import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
+import de.deadlocker8.budgetmaster.integration.helpers.TransactionTestHelper;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -26,6 +27,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -131,6 +133,114 @@ public class AccountTest
 		driver.get(helper.getUrl() + "/accounts/2/edit");
 
 		assertThat(driver.findElement(By.id("account-name")).getAttribute("value")).isEqualTo("Default Account");
+	}
+
+	@Test
+	public void test_setAsDefault()
+	{
+		driver.get(helper.getUrl() + "/accounts");
+
+		List<WebElement> accountRows = driver.findElements(By.cssSelector(".account-container tr"));
+		final List<WebElement> columns = accountRows.get(0).findElements(By.tagName("td"));
+		final List<WebElement> icons = columns.get(0).findElements(By.tagName("i"));
+
+		icons.get(0).click();
+
+		// assert
+		assertThat(driver.getCurrentUrl()).endsWith("/accounts");
+
+		accountRows = driver.findElements(By.cssSelector(".account-container tr"));
+		assertThat(accountRows).hasSize(3);
+
+		assertAccountColumns(accountRows.get(0).findElements(By.tagName("td")), true, true, false, false, "Account2");
+		assertAccountColumns(accountRows.get(1).findElements(By.tagName("td")), true, false, true, false, "Default Account");
+		assertAccountColumns(accountRows.get(2).findElements(By.tagName("td")), true, false, true, false, "DefaultAccount0815");
+	}
+
+	@Test
+	public void test_setReadOnly()
+	{
+		setAsReadOnly();
+
+		// assert
+		assertThat(driver.getCurrentUrl()).endsWith("/accounts");
+
+		List<WebElement> accountRows = driver.findElements(By.cssSelector(".account-container tr"));
+		assertThat(accountRows).hasSize(3);
+
+		assertAccountColumns(accountRows.get(0).findElements(By.tagName("td")), false, false, true, true, "Account2");
+		assertAccountColumns(accountRows.get(1).findElements(By.tagName("td")), true, true, false, false, "Default Account");
+		assertAccountColumns(accountRows.get(2).findElements(By.tagName("td")), true, false, true, false, "DefaultAccount0815");
+	}
+
+	private void setAsReadOnly()
+	{
+		driver.get(helper.getUrl() + "/accounts");
+
+		List<WebElement> accountRows = driver.findElements(By.cssSelector(".account-container tr"));
+		final List<WebElement> columns = accountRows.get(0).findElements(By.tagName("td"));
+		final List<WebElement> icons = columns.get(0).findElements(By.tagName("i"));
+
+		icons.get(1).click();
+	}
+
+	@Test
+	public void test_readOnly_newTransaction_listOnlyReadableAccounts()
+	{
+		setAsReadOnly();
+
+		driver.get(helper.getUrl() + "/transactions");
+		driver.findElement(By.id("button-new-transaction")).click();
+		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]")).click();
+
+		// assert
+		WebElement select = driver.findElement(By.id("accountWrapper"));
+		select.findElement(By.className("select-dropdown")).click();
+
+		List<WebElement> items = select.findElements(By.xpath(".//ul/li/span"));
+		List<String> itemNames = items.stream()
+				.map(WebElement::getText)
+				.collect(Collectors.toList());
+		assertThat(itemNames).containsExactly("Default Account", "DefaultAccount0815");
+	}
+
+	@Test
+	public void test_readOnly_preventTransactionDeleteAndEdit()
+	{
+		// select "Account2"
+		TransactionTestHelper.selectOptionFromDropdown(driver, By.id("selectWrapper"), "Account2");
+
+		// open new transaction page
+		driver.get(helper.getUrl() + "/transactions");
+		driver.findElement(By.id("button-new-transaction")).click();
+		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]")).click();
+
+		// fill form
+		driver.findElement(By.id("transaction-name")).sendKeys("My transaction");
+		driver.findElement(By.id("transaction-amount")).sendKeys("15.00");
+		TransactionTestHelper.selectOptionFromDropdown(driver, By.id("categoryWrapper"), "sdfdsf");
+
+		// submit form
+		driver.findElement(By.id("button-save-transaction")).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
+
+		// set used account as readonly
+		setAsReadOnly();
+
+		driver.get(helper.getUrl() + "/transactions");
+
+		// assert
+		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		assertThat(transactionsRows).hasSize(2);
+
+		final WebElement row = transactionsRows.get(0);
+		final List<WebElement> columns = row.findElements(By.className("col"));
+
+		// check columns
+		final List<WebElement> icons = columns.get(5).findElements(By.tagName("i"));
+		assertThat(icons).isEmpty();
 	}
 
 	public static void assertAccountColumns(List<WebElement> columns, boolean isDefaultIconVisible, boolean isDefaultIconSelected, boolean isReadOnlyIconVisible, boolean isReadOnlyIconSelected, String name)
