@@ -184,6 +184,10 @@ ul.sidenav.sidenav-fixed > li:last-child
     font-style: italic;
 }
 
+.input-label {
+    color: #2E79B9 !important;
+}
+
 /* label focus color */
 .input-field input[type=text]:focus + label {
     color: #2E79B9 !important;

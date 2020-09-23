@@ -56,7 +56,7 @@
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
             <input class="autocomplete" autocomplete="off" id="transaction-name" type="text" name="name" <@validation.validation "name"/> value="<#if transaction.getName()??>${transaction.getName()}</#if>">
-            <label for="transaction-name">${locale.getString("transaction.new.label.name")}</label>
+            <label class="input-label" for="transaction-name">${locale.getString("transaction.new.label.name")}</label>
         </div>
     </div>
 
@@ -73,7 +73,7 @@
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
             <input id="transaction-amount" type="text" <@validation.validation "amount"/> value="<#if transaction.getAmount()??>${currencyService.getAmountString(transaction.getAmount())}</#if>">
-            <label for="transaction-amount">${locale.getString("transaction.new.label.amount")}</label>
+            <label class="input-label" for="transaction-amount">${locale.getString("transaction.new.label.amount")}</label>
         </div>
         <input type="hidden" id="hidden-transaction-amount" name="amount" value="<#if transaction.getAmount()??>${transaction.getAmount()}</#if>">
     </div>
@@ -113,7 +113,7 @@
                     <option value="${category.getID()?c}">${categoryInfos}</option>
                 </#list>
             </select>
-            <label for="transaction-category">${labelText}</label>
+            <label class="input-label" for="transaction-category">${labelText}</label>
         </div>
     </div>
 
@@ -137,7 +137,7 @@
             </#if>
 
             <input id="transaction-datepicker" type="text" class="datepicker" name="date" value="${startDate}">
-            <label for="transaction-datepicker">${locale.getString("transaction.new.label.date")}</label>
+            <label class="input-label" for="transaction-datepicker">${locale.getString("transaction.new.label.date")}</label>
         </div>
     </div>
 
@@ -151,7 +151,7 @@
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
             <textarea id="transaction-description" class="materialize-textarea" name="description" data-length="250" <@validation.validation "description"/>><#if transaction.getDescription()??>${transaction.getDescription()}</#if></textarea>
-            <label for="transaction-description">${locale.getString("transaction.new.label.description")}</label>
+            <label class="input-label" for="transaction-description">${locale.getString("transaction.new.label.description")}</label>
         </div>
     </div>
 </#macro>
@@ -159,7 +159,7 @@
 <#macro transactionTags transaction>
     <div class="row">
         <div class="col s12 m12 l8 offset-l2">
-            <label class="chips-label" for="transaction-chips">${locale.getString("transaction.new.label.tags")}</label>
+            <label class="input-label" class="chips-label" for="transaction-chips">${locale.getString("transaction.new.label.tags")}</label>
             <div id="transaction-chips" class="chips chips-placeholder chips-autocomplete"></div>
         </div>
         <div id="hidden-transaction-tags"></div>
@@ -202,7 +202,7 @@
                     <option value="${account.getID()?c}">${account.getName()}</option>
                 </#list>
             </select>
-            <label for="${id}">${label}</label>
+            <label class="input-label" for="${id}">${label}</label>
         </div>
     </div>
 </#macro>

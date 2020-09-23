@@ -201,6 +201,10 @@ ul.sidenav.sidenav-fixed > li:last-child {
     font-style: italic;
 }
 
+.input-label {
+    color: #FFFFFF !important;
+}
+
 /* input text color */
 .input-field input[type=text] {
     color: #FFFFFF;
