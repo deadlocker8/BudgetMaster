@@ -9,40 +9,14 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col s12">
-                <h5>Transaction templates</h5>
-                Allows the creation of templates for similar transactions.
+        <#list newsEntries as entry>
+            <div class="row">
+                <div class="col s12">
+                    <h5>${entry.getHeadline()}</h5>
+                    ${entry.getDescription()}
+                </div>
             </div>
-        </div>
-
-        <div class="row">
-            <div class="col s12">
-                <h5>Auto backup</h5>
-                Allows the scheduling of automatic BudgetMaster data backups.
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col s12">
-                <h5>Transaction name suggestions</h5>
-                Shows suggestions based on the last 25 created transactions.
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col s12">
-                <h5>New charts</h5>
-                Two new default charts (income/expenditures per year and rest per month).
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col s12">
-                <h5>Command line option to set custom directory</h5>
-                Specify a folder where settings, database and backups are stored (more details in the wiki).
-            </div>
-        </div>
+        </#list>
 
         <div class="row">
             <div class="col s12">

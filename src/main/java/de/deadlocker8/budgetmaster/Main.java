@@ -48,15 +48,21 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 			}
 
 			@Override
-			public String getBaseResource()
+			public String[] getBaseResources()
 			{
-				return "languages/";
+				return new String[]{"languages/base", "languages/news"};
 			}
 
 			@Override
 			public LocalizationMessageFormatter messageFormatter()
 			{
 				return new JavaMessageFormatter();
+			}
+
+			@Override
+			public boolean useMultipleResourceBundles()
+			{
+				return true;
 			}
 		});
 		Localization.load();
