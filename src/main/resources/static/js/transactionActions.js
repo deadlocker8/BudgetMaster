@@ -118,7 +118,6 @@ function createAdditionalHiddenInput(name, value)
 
 function openChangeTransactionTypeModal(item)
 {
-    console.log($(item).attr('data-url'));
     $.ajax({
         type: 'GET',
         url: $(item).attr('data-url'),

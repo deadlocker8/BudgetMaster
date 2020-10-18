@@ -6,6 +6,7 @@
     <body class="budgetmaster-blue-light">
         <#import "helpers/navbar.ftl" as navbar>
         <@navbar.navbar "about" settings/>
+        <#import "/spring.ftl" as s>
 
         <main>
             <div class="card main-card background-color">
@@ -17,7 +18,12 @@
                 <div class="hide-on-small-only"><br><br></div>
                 <div class="row">
                     <@cellKey locale.getString("about.version")/>
-                    <div class="col s8 m5 l5">${build.getVersionName()} (${build.getVersionCode()})</div>
+                    <div class="col s8 m5 l5">
+                        ${build.getVersionName()} (${build.getVersionCode()})
+
+                        <a class="whatsNewLink" data-url="<@s.url '/about/whatsNewModal'/>">${locale.getString("about.version.whatsnew")}?</a>
+                        <div id="whatsNewModelContainer"></div>
+                    </div>
                 </div>
                 <div class="row">
                     <@cellKey locale.getString("about.date")/>
@@ -45,6 +51,7 @@
         <!--  Scripts-->
         <#import "helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
+        <script src="<@s.url '/js/about.js'/>"></script>
     </body>
 </html>
 
