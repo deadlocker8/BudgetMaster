@@ -14,6 +14,11 @@ $(document).ready(function()
         $('#modalBackupReminder').modal('open');
     }
 
+    if($("#whatsNewModelContainer").length)
+    {
+        fetchAndShowWhatsNewModal(document.getElementById('whatsNewModelContainer'), 'whatsNewModelContainer');
+    }
+
     $('.tooltipped').tooltip();
 
     $('select').formSelect();
@@ -47,6 +52,30 @@ $(document).ready(function()
         document.getElementById("search").value = "";
     });
 });
+
+
+function fetchAndShowWhatsNewModal(item, containerID)
+{
+    let modalID = '#modalWhatsNew';
+    let modal = $(modalID).modal();
+    if(modal.isOpen)
+    {
+        return;
+    }
+
+    $.ajax({
+        type: 'GET',
+        url: $(item).attr('data-url'),
+        data: {},
+        success: function(data)
+        {
+
+            $('#' + containerID).html(data);
+            $(modalID).modal();
+            $(modalID).modal('open');
+        }
+    });
+}
 
 function addClass(element, className)
 {

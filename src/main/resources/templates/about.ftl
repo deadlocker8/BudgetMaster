@@ -22,7 +22,7 @@
                         ${build.getVersionName()} (${build.getVersionCode()})
 
                         <a class="whatsNewLink" data-url="<@s.url '/about/whatsNewModal'/>">${locale.getString("about.version.whatsnew")}?</a>
-                        <div id="whatsNewModelContainer"></div>
+                        <div id="whatsNewModelContainerOnDemand"></div>
                     </div>
                 </div>
                 <div class="row">

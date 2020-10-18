@@ -81,6 +81,10 @@ public class SettingsService
 		{
 			settings.setInstalledVersionCode(defaultSettings.getInstalledVersionCode());
 		}
+		if(settings.getWhatsNewShownForCurrentVersion() == null)
+		{
+			settings.setWhatsNewShownForCurrentVersion(defaultSettings.getWhatsNewShownForCurrentVersion());
+		}
 	}
 
 	@SuppressWarnings("OptionalGetWithoutIsPresent")

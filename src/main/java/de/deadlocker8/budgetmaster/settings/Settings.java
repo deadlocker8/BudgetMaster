@@ -29,6 +29,7 @@ public class Settings
 	private AutoBackupTime autoBackupTime;
 	private Integer autoBackupFilesToKeep;
 	private Integer installedVersionCode;
+	private Boolean whatsNewShownForCurrentVersion;
 
 	public Settings()
 	{
@@ -50,6 +51,7 @@ public class Settings
 		defaultSettings.setAutoBackupTime(AutoBackupTime.TIME_00);
 		defaultSettings.setAutoBackupFilesToKeep(3);
 		defaultSettings.setInstalledVersionCode(0);
+		defaultSettings.setWhatsNewShownForCurrentVersion(false);
 
 		return defaultSettings;
 	}
@@ -198,6 +200,21 @@ public class Settings
 		this.installedVersionCode = installedVersionCode;
 	}
 
+	public Boolean getWhatsNewShownForCurrentVersion()
+	{
+		return whatsNewShownForCurrentVersion;
+	}
+
+	public void setWhatsNewShownForCurrentVersion(Boolean whatsNewShownForCurrentVersion)
+	{
+		this.whatsNewShownForCurrentVersion = whatsNewShownForCurrentVersion;
+	}
+
+	public boolean needToShowWhatsNew()
+	{
+		return !this.whatsNewShownForCurrentVersion;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -216,6 +233,7 @@ public class Settings
 				", autoBackupTime=" + autoBackupTime +
 				", autoBackupFilesToKeep=" + autoBackupFilesToKeep +
 				", installedVersionCode=" + installedVersionCode +
+				", whatsNewShownForCurrentVersion=" + whatsNewShownForCurrentVersion +
 				'}';
 	}
 }

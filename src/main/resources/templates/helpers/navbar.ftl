@@ -50,6 +50,7 @@
     </form>
 
     <@backupReminder settings/>
+    <@whatsNewModal settings/>
 </#macro>
 
 <#macro itemLogo>
@@ -142,5 +143,11 @@
                 <a href="<@s.url '/backupReminder/settings'/>" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("info.button.backup.reminder")}</a>
             </div>
         </div>
+    </#if>
+</#macro>
+
+<#macro whatsNewModal settings>
+    <#if settings.needToShowWhatsNew()>
+        <div id="whatsNewModelContainer" data-url="<@s.url '/about/whatsNewModal'/>"></div>
     </#if>
 </#macro>
