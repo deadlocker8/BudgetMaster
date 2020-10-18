@@ -48,10 +48,13 @@
             <div class="col s12">
                 <h5>Further information</h5>
                 <div>
-                    <a href="${locale.getString("roadmap.url")}">${locale.getString("about.roadmap.link")}</a>
+                    ${locale.getString("about.date")} ${build.getVersionDate()}
                 </div>
                 <div>
-                    More detailed changelog (english only): <a href="https://github.com/deadlocker8/BudgetMaster/releases/tag/v2.4.0">GitHub</a>
+                    All published and planned releases: <a href="${locale.getString("roadmap.url")}">${locale.getString("about.roadmap.link")}</a>
+                </div>
+                <div>
+                    More detailed changelog (english only): <a href="https://github.com/deadlocker8/BudgetMaster/releases/tag/v${build.getVersionName()}">GitHub</a>
                 </div>
             </div>
         </div>
