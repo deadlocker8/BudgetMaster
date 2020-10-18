@@ -35,11 +35,10 @@ public class AboutController extends BaseController
 	public String fromTransactionModal(Model model)
 	{
 		final List<NewsEntry> newsEntries =  new ArrayList<>();
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.templates.headline", "news.templates.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.backup.headline", "news.backup.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.suggestions.headline", "news.suggestions.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.charts.headline", "news.charts.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.commandline.headline", "news.commandline.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.changeType.headline", "news.changeType.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.readonlyAccounts.headline", "news.readonlyAccounts.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.firstUseWizard.headline", "news.firstUseWizard.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.java11.headline", "news.java11.description"));
 
 		model.addAttribute("newsEntries", newsEntries);
 		return "whatsNewModal";
