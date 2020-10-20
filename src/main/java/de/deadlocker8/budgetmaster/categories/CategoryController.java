@@ -57,9 +57,9 @@ public class CategoryController extends BaseController
 
 		model.addAttribute("categories", allCategories);
 		model.addAttribute("availableCategories", availableCategories);
-		model.addAttribute("preselectedCategory", categoryService.getRepository().findByType(CategoryType.NONE));
+		model.addAttribute("preselectedCategory", categoryService.findByType(CategoryType.NONE));
 
-		model.addAttribute("currentCategory", categoryService.getRepository().getOne(ID));
+		model.addAttribute("currentCategory", categoryService.findById(ID));
 		model.addAttribute("settings", settingsService.getSettings());
 		return "categories/categories";
 	}
@@ -89,7 +89,7 @@ public class CategoryController extends BaseController
 	@GetMapping("/{ID}/edit")
 	public String editCategory(Model model, @PathVariable("ID") Integer ID)
 	{
-		Optional<Category> categoryOptional = categoryService.getRepository().findById(ID);
+		Optional<Category> categoryOptional = categoryService.findById(ID);
 		if(!categoryOptional.isPresent())
 		{
 			throw new ResourceNotFoundException();
@@ -144,7 +144,7 @@ public class CategoryController extends BaseController
 			{
 				category.setType(CategoryType.CUSTOM);
 			}
-			categoryService.getRepository().save(category);
+			categoryService.save(category);
 		}
 
 		return "redirect:/categories";

@@ -13,10 +13,10 @@ import java.util.Optional;
 @Service
 public class ReportSettingsService
 {
-	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ReportSettingsService.class);
 
-	private ReportSettingsRepository reportSettingsRepository;
-	private ReportColumnService reportColumnService;
+	private final ReportSettingsRepository reportSettingsRepository;
+	private final ReportColumnService reportColumnService;
 
 	@Autowired
 	public ReportSettingsService(ReportSettingsRepository reportSettingsRepository, ReportColumnService reportColumnService)

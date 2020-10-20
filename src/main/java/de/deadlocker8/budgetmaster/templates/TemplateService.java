@@ -76,7 +76,7 @@ public class TemplateService implements Resetable
 	{
 		if(template.getCategory() == null)
 		{
-			template.setCategory(categoryService.getRepository().findByType(CategoryType.NONE));
+			template.setCategory(categoryService.findByType(CategoryType.NONE));
 		}
 
 		if(prepareAccount && template.getAccount() == null)
