@@ -14,7 +14,7 @@ import java.util.Optional;
 @Service
 public class SettingsService
 {
-	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	private static final Logger LOGGER = LoggerFactory.getLogger(SettingsService.class);
 	private final SettingsRepository settingsRepository;
 
 	@Autowired

@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService
 {
-	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+
 	public static final String DEFAULT_PASSWORD = "BudgetMaster";
 
 	@Autowired

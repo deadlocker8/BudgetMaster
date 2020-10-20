@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class TagScheduler
 {
-	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	private static final Logger LOGGER = LoggerFactory.getLogger(TagScheduler.class);
 
 	private final TagRepository tagRepository;
 	private final TransactionRepository transactionRepository;

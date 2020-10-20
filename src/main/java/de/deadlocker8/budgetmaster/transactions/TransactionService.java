@@ -39,7 +39,7 @@ public class TransactionService implements Resetable
 			.setPrettyPrinting()
 			.create();
 
-	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	private static final Logger LOGGER = LoggerFactory.getLogger(TransactionService.class);
 
 	private final TransactionRepository transactionRepository;
 	private final RepeatingOptionRepository repeatingOptionRepository;

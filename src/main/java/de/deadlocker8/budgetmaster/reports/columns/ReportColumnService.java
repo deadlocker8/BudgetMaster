@@ -10,8 +10,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class ReportColumnService
 {
-	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-	private ReportColumnRepository reportColumnRepository;
+	private static final Logger LOGGER = LoggerFactory.getLogger(ReportColumnService.class);
+
+	private final ReportColumnRepository reportColumnRepository;
 
 	@Autowired
 	public ReportColumnService(ReportColumnRepository reportColumnRepository)

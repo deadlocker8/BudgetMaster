@@ -13,9 +13,10 @@ import java.util.Optional;
 @Service
 public class ChartService implements Resetable
 {
-	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-	private final String PATTERN_OLD_CONTAINER_ID = "Plotly.newPlot('chart-canvas',";
-	private final String PATTERN_DYNAMIC_CONTAINER_ID = "Plotly.newPlot('containerID',";
+	private static final Logger LOGGER = LoggerFactory.getLogger(ChartService.class);
+	
+	private static final String PATTERN_OLD_CONTAINER_ID = "Plotly.newPlot('chart-canvas',";
+	private static final String PATTERN_DYNAMIC_CONTAINER_ID = "Plotly.newPlot('containerID',";
 
 	private ChartRepository chartRepository;
 

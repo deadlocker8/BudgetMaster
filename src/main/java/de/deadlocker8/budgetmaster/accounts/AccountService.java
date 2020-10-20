@@ -18,7 +18,8 @@ import java.util.Optional;
 @Service
 public class AccountService implements Resetable
 {
-	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	private static final Logger LOGGER = LoggerFactory.getLogger(AccountService.class);
+
 	private final AccountRepository accountRepository;
 	private final TransactionService transactionService;
 	private final UserRepository userRepository;

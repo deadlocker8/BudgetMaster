@@ -26,7 +26,7 @@ import java.util.List;
 @Service
 public class ImportService
 {
-	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ImportService.class);
 
 	private final CategoryRepository categoryRepository;
 	private final TransactionRepository transactionRepository;
