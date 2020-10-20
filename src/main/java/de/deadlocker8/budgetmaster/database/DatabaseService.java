@@ -216,7 +216,7 @@ public class DatabaseService
 
 	public Database getDatabaseForJsonSerialization()
 	{
-		List<Category> categories = categoryService.getRepository().findAll();
+		List<Category> categories = categoryService.getAllCategories();
 		List<Account> accounts = accountService.getRepository().findAll();
 		List<Transaction> transactions = transactionService.getRepository().findAll();
 		List<Transaction> filteredTransactions = filterRepeatingTransactions(transactions);

@@ -260,7 +260,7 @@ public class SettingsController extends BaseController
 		try
 		{
 			String jsonString = new String(file.getBytes(), StandardCharsets.UTF_8);
-			DatabaseParser importer = new DatabaseParser(jsonString, categoryService.getRepository().findByType(CategoryType.NONE));
+			DatabaseParser importer = new DatabaseParser(jsonString, categoryService.findByType(CategoryType.NONE));
 			Database database = importer.parseDatabaseFromJSON();
 
 			request.setAttribute("database", database, WebRequest.SCOPE_SESSION);

@@ -83,7 +83,7 @@ public class TransactionService implements Resetable
 		List<Transaction> transactions = getTransactionsForMonthAndYearWithoutRest(account, month, year, filterConfiguration);
 
 		Transaction transactionRest = new Transaction();
-		transactionRest.setCategory(categoryService.getRepository().findByType(CategoryType.REST));
+		transactionRest.setCategory(categoryService.findByType(CategoryType.REST));
 		transactionRest.setName(Localization.getString(Strings.CATEGORY_REST));
 		transactionRest.setDate(DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(1));
 		transactionRest.setAmount(getRest(account, startDate));

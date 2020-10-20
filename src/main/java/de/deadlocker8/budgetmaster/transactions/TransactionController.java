@@ -109,7 +109,7 @@ public class TransactionController extends BaseController
 	{
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 		Transaction emptyTransaction = new Transaction();
-		emptyTransaction.setCategory(categoryService.getRepository().findByType(CategoryType.NONE));
+		emptyTransaction.setCategory(categoryService.findByType(CategoryType.NONE));
 		transactionService.prepareModelNewOrEdit(model, false, date, null, emptyTransaction, accountService.getAllActivatedAccountsAsc());
 		return "transactions/newTransaction" + StringUtils.capitalize(type);
 	}

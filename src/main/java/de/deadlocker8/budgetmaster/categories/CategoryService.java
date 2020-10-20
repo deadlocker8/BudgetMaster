@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 @Service
 public class CategoryService implements Resetable
 {
-	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-	private CategoryRepository categoryRepository;
+	private static final Logger LOGGER = LoggerFactory.getLogger(CategoryService.class);
+	private final CategoryRepository categoryRepository;
 
 	@Autowired
 	public CategoryService(CategoryRepository categoryRepository)
@@ -28,9 +28,19 @@ public class CategoryService implements Resetable
 		createDefaults();
 	}
 
-	public CategoryRepository getRepository()
+	public Optional<Category> findById(Integer ID)
 	{
-		return categoryRepository;
+		return categoryRepository.findById(ID);
+	}
+
+	public Category findByType(CategoryType type)
+	{
+		return categoryRepository.findByType(type);
+	}
+
+	public Category save(Category category)
+	{
+		return categoryRepository.save(category);
 	}
 
 	public void deleteCategory(int ID, Category newCategory)
@@ -57,7 +67,7 @@ public class CategoryService implements Resetable
 	@SuppressWarnings("OptionalIsPresent")
 	public boolean isDeletable(Integer ID)
 	{
-		Optional<Category> categoryOptional = getRepository().findById(ID);
+		Optional<Category> categoryOptional = findById(ID);
 		if(categoryOptional.isPresent())
 		{
 			return categoryOptional.get().getType() == CategoryType.CUSTOM;
