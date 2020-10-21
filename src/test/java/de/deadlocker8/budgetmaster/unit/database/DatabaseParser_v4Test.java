@@ -46,7 +46,7 @@ public class DatabaseParser_v4Test
 			@Override
 			public String getBaseResource()
 			{
-				return "languages/";
+				return "languages/base";
 			}
 		});
 		Localization.load();
