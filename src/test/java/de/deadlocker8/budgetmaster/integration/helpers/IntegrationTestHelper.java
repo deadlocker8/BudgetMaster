@@ -66,6 +66,18 @@ public class IntegrationTestHelper
 		}
 	}
 
+	public void hideWhatsNewDialog()
+	{
+		try
+		{
+			WebElement buttonCloseReminder = driver.findElement(By.cssSelector("#modalWhatsNew #buttonCloseWhatsNew"));
+			buttonCloseReminder.click();
+		}
+		catch(NoSuchElementException ignored)
+		{
+		}
+	}
+
 	public void uploadDatabase(String path, List<String> sourceAccounts, List<String> destinationAccounts)
 	{
 		if(path.startsWith("\\"))

@@ -98,6 +98,7 @@ public class LoginControllerTest
 		helper.start();
 		helper.login(UserService.DEFAULT_PASSWORD);
 		helper.hideBackupReminder();
+		helper.hideWhatsNewDialog();
 
 		WebElement label = driver.findElement(By.id("logo-home"));
 		String expected = helper.getUrl() + "/images/Logo_with_text_medium_res.png";
@@ -111,6 +112,7 @@ public class LoginControllerTest
 		helper.start();
 		helper.login(UserService.DEFAULT_PASSWORD);
 		helper.hideBackupReminder();
+		helper.hideWhatsNewDialog();
 
 		WebElement buttonLogout = driver.findElement(By.xpath("//body/ul/li/a[contains(text(), 'Logout')]"));
 		JavascriptExecutor js = (JavascriptExecutor)driver;

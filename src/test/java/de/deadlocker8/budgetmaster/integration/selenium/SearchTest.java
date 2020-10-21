@@ -73,6 +73,7 @@ public class SearchTest
 		helper.start();
 		helper.login(UserService.DEFAULT_PASSWORD);
 		helper.hideBackupReminder();
+		helper.hideWhatsNewDialog();
 
 		String path = getClass().getClassLoader().getResource("SearchDatabase.json").getFile().replace("/", File.separator);
 		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf"), Arrays.asList("DefaultAccount0815", "Account2"));

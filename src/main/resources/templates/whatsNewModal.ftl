@@ -34,7 +34,7 @@
         </div>
     </div>
     <div class="modal-footer background-color">
-        <a href="<@s.url '/about/whatsNewModal/close'/>" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("ok")}</a>
+        <a id="buttonCloseWhatsNew" href="<@s.url '/about/whatsNewModal/close'/>" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("ok")}</a>
     </div>
 </div>
 

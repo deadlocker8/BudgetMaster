@@ -67,6 +67,7 @@ public class ImportTest
 		helper.start();
 		helper.login(UserService.DEFAULT_PASSWORD);
 		helper.hideBackupReminder();
+		helper.hideWhatsNewDialog();
 
 		String path = getClass().getClassLoader().getResource("SearchDatabase.json").getFile().replace("/", File.separator);
 		List<String> sourceAccounts = Arrays.asList("DefaultAccount0815", "sfsdf");
