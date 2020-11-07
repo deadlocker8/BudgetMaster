@@ -18,6 +18,8 @@ public interface TransactionBase
 
 	Category getCategory();
 
+	void setCategory(Category category);
+
 	List<Tag> getTags();
 
 	void setTags(List<Tag> tags);

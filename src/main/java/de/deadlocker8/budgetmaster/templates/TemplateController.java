@@ -116,10 +116,19 @@ public class TemplateController extends BaseController
 		}
 
 		final Template template = templateOptional.get();
+		final Transaction newTransaction = new Transaction();
+		newTransaction.setName(template.getName());
+		newTransaction.setAmount(template.getAmount());
+		newTransaction.setCategory(template.getCategory());
+		newTransaction.setDescription(template.getDescription());
+		newTransaction.setAccount(template.getAccount());
+		newTransaction.setTransferAccount(template.getTransferAccount());
+		newTransaction.setTags(template.getTags());
+		newTransaction.setIsExpenditure(template.isExpenditure());
 
-		templateService.prepareTemplateForNewTransaction(template, true);
+		templateService.prepareTemplateForNewTransaction(newTransaction, true);
 
-		if(template.getAmount() == null)
+		if(newTransaction.getAmount() == null && newTransaction.isExpenditure() == null)
 		{
 			template.setIsExpenditure(true);
 		}

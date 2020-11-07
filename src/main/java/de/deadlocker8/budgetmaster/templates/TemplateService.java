@@ -72,7 +72,7 @@ public class TemplateService implements Resetable
 		getRepository().save(template);
 	}
 
-	public void prepareTemplateForNewTransaction(Template template, boolean prepareAccount)
+	public void prepareTemplateForNewTransaction(TransactionBase template, boolean prepareAccount)
 	{
 		if(template.getCategory() == null)
 		{
