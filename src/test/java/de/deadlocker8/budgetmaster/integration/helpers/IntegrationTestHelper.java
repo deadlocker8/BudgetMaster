@@ -71,6 +71,7 @@ public class IntegrationTestHelper
 		try
 		{
 			WebElement buttonCloseReminder = driver.findElement(By.cssSelector("#modalWhatsNew #buttonCloseWhatsNew"));
+			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", buttonCloseReminder);
 			buttonCloseReminder.click();
 		}
 		catch(NoSuchElementException ignored)
