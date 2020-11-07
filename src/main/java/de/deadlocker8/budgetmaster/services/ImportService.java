@@ -156,7 +156,7 @@ public class ImportService
 			alreadyUpdatedTransferTransactions.addAll(updateTransferAccountsForTransactions(transferTransactions, accountMatch.getAccountSource().getID(), accountMatch.getAccountDestination()));
 
 			List<TransactionBase> templates = new ArrayList<>(database.getTemplates());
-			transactions.removeAll(alreadyUpdatedTemplates);
+			templates.removeAll(alreadyUpdatedTemplates);
 			alreadyUpdatedTemplates.addAll(updateAccountsForItems(templates, accountMatch.getAccountSource().getID(), accountMatch.getAccountDestination()));
 		}
 
