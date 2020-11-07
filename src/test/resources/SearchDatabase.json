@@ -180,5 +180,45 @@
             }
         }
     ],
-    "templates": []
+    "templates": [
+        {
+            "ID": 1,
+            "templateName": "My Income Template",
+            "isExpenditure": false,
+            "category": {
+                "ID": 1,
+                "name": "No Category",
+                "color": "#FFFFFF",
+                "type": "NONE"
+            },
+            "name": "",
+            "description": "",
+            "tags": []
+        },
+        {
+            "ID": 2,
+            "templateName": "Filled Template",
+            "amount": -1500,
+            "isExpenditure": true,
+            "account": {
+                "ID": 2,
+                "name": "DefaultAccount0815",
+                "type": "CUSTOM"
+            },
+            "category": {
+                "ID": 1,
+                "name": "No Category",
+                "color": "#FFFFFF",
+                "type": "NONE"
+            },
+            "name": "NameFromTemplate",
+            "description": "DescriptionFromTemplate",
+            "tags": [
+                {
+                    "ID": 1,
+                    "name": "TagFromTemplate"
+                }
+            ]
+        }
+    ]
 }
