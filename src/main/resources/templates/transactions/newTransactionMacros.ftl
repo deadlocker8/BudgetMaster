@@ -81,6 +81,7 @@
     <script>
         amountValidationMessage = "${locale.getString("warning.transaction.amount")}";
         numberValidationMessage = "${locale.getString("warning.empty.number")}";
+        dateValidationMessage = "${locale.getString("warning.transaction.date")}";
     </script>
 </#macro>
 
@@ -136,7 +137,7 @@
                 <#assign startDate = dateService.getLongDateString(currentDate)/>
             </#if>
 
-            <input id="transaction-datepicker" type="text" class="datepicker" name="date" value="${startDate}">
+            <input id="transaction-datepicker" type="text" class="datepicker<#if programArgs.isUseSimpleDatepickerForTransactions()>-simple</#if>" name="date" value="${startDate}">
             <label class="input-label" for="transaction-datepicker">${locale.getString("transaction.new.label.date")}</label>
         </div>
     </div>
@@ -329,7 +330,7 @@
                     <td class="cell">${locale.getString("repeating.end.date")}</td>
                     <td class="cell input-cell">
                         <div class="input-field no-margin">
-                            <input class="datepicker no-margin input-min-width" id="transaction-repeating-end-date-input" type="text" value="${endDate}">
+                            <input class="datepicker<#if programArgs.isUseSimpleDatepickerForTransactions()>-simple</#if> no-margin input-min-width" id="transaction-repeating-end-date-input" type="text" value="${endDate}">
                             <label for="transaction-repeating-end-date-input"></label>
                         </div>
                     </td>

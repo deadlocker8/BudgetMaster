@@ -26,6 +26,24 @@ $(document).ready(function()
         $("#transaction-description").characterCounter();
     }
 
+    if($(".datepicker-simple".length) && $("#transaction-repeating-end-date-input").length)
+    {
+        let pickerEndDate = document.getElementById('transaction-repeating-end-date-input');
+
+        // select corresponding radio button
+        let endDate = document.getElementById("repeating-end-date");
+
+        pickerEndDate.addEventListener('input', function()
+        {
+            endDate.checked = true;
+        });
+
+        pickerEndDate.addEventListener('focus', function()
+        {
+            endDate.checked = true;
+        });
+    }
+
     if($(".datepicker").length)
     {
         let pickerStartDate = M.Datepicker.init(document.getElementById('transaction-datepicker'), {
@@ -254,8 +272,10 @@ let transactionRepeatingEndAfterXTimesInputID = "#transaction-repeating-end-afte
 
 AMOUNT_REGEX = new RegExp("^-?\\d+(,\\d+)?(\\.\\d+)?$");
 ALLOWED_CHARACTERS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "."];
+DATE_REGEX_SHORT = new RegExp("^(\\d{2}.\\d{2}.)(\\d{2})$");
+DATE_REGEX_LONG = new RegExp("^\\d{2}.\\d{2}.\\d{4}$");
 
-function validateAmount(text, allowEmpty=false)
+function validateAmount(text, allowEmpty = false)
 {
     let id = "transaction-amount";
 
@@ -281,11 +301,47 @@ function validateAmount(text, allowEmpty=false)
     }
 }
 
-function validateForm(allowEmptyAmount=false)
+function validateDate(inputId)
+{
+    let dateInput = document.getElementById(inputId);
+    dateInput.value = dateInput.value.trim();
+    let date = dateInput.value;
+
+    if(date.match(DATE_REGEX_LONG) != null)
+    {
+        removeTooltip(inputId);
+        return true;
+    }
+
+    let match = date.match(DATE_REGEX_SHORT);
+    if(match != null)
+    {
+        let dayAndMonth = match[1];
+        let year = match[2];
+
+        dateInput.value = dayAndMonth + '20' + year;
+        removeTooltip(inputId);
+        return true;
+    }
+    else
+    {
+        addTooltip(inputId, dateValidationMessage);
+        return false;
+    }
+}
+
+function validateForm(allowEmptyAmount = false)
 {
     // amount
     let isValidAmount = validateAmount($('#transaction-amount').val(), allowEmptyAmount);
     if(!isValidAmount)
+    {
+        return false;
+    }
+
+    // start date
+    let isValidDate = validateDate('transaction-datepicker');
+    if(!isValidDate)
     {
         return false;
     }
@@ -342,6 +398,13 @@ function validateForm(allowEmptyAmount=false)
 
         if(endDate.checked)
         {
+            // start date
+            let isValidDate = validateDate('transaction-repeating-end-date-input');
+            if(!isValidDate)
+            {
+                return false;
+            }
+
             endInput.value = $("#transaction-repeating-end-date-input").val();
         }
     }

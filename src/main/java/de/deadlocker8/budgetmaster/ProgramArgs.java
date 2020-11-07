@@ -60,4 +60,9 @@ public class ProgramArgs
 	{
 		return RunMode.currentRunMode.equals(RunMode.TEST);
 	}
+
+	public static boolean isUseSimpleDatepickerForTransactions()
+	{
+		return ProgramArgs.getArgs().contains("--useSimpleDatepicker");
+	}
 }

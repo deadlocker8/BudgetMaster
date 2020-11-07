@@ -68,6 +68,7 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 		Localization.load();
 
 		ProgramArgs.setArgs(Arrays.asList(args));
+		LOGGER.debug(MessageFormat.format("Starting with ProgramArgs: {0}", ProgramArgs.getArgs()));
 
 		Path applicationSupportFolder = getApplicationSupportFolder();
 		PathUtils.createDirectoriesIfNotExists(applicationSupportFolder);
