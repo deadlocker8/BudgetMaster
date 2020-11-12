@@ -319,7 +319,10 @@ function validateDate(inputId)
         let dayAndMonth = match[1];
         let year = match[2];
 
-        dateInput.value = dayAndMonth + '20' + year;
+        let currentYear = new Date().getFullYear();
+        currentYear = currentYear.toString().substr(0, 2);
+
+        dateInput.value = dayAndMonth + currentYear + year;
         removeTooltip(inputId);
         return true;
     }
