@@ -22,6 +22,19 @@
                         </div>
                     </div>
 
+                    <div class="row">
+                        <div class="col s12 center-align">
+                            <a href="<@s.url "/firstUse"/>" class="home-firstUse">
+                                <table class="no-border-table">
+                                    <tr>
+                                        <td><i class="fas fa-graduation-cap"></i></td>
+                                        <td>${locale.getString("home.first.use")}</td>
+                                    </tr>
+                                </table>
+                            </a>
+                        </div>
+                    </div>
+
                     <div class="hide-on-small-only"><br></div>
 
                     <div class="row home-menu-flex">

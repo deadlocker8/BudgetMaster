@@ -366,7 +366,23 @@ ul.sidenav.sidenav-fixed > li:last-child
 }
 
 #logo-home {
-    max-height: 15vmin;
+    max-height: 13vmin;
+}
+
+.home-firstUse {
+    border: 2px solid #212121;
+    border-radius: 5px;
+    padding: 0 1vmin;
+    display: inline-block;
+}
+
+.home-firstUse td{
+    padding: 10px;
+    font-size: 1.8vmin;
+}
+
+.home-firstUse i {
+    font-size: 2.5vmin;
 }
 
 .break-all {
