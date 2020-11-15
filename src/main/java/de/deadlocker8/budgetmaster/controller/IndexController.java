@@ -30,6 +30,6 @@ public class IndexController extends BaseController
 	public String firstUse(Model model)
 	{
 		model.addAttribute("settings", settingsService.getSettings());
-		return "index";
+		return "firstUse";
 	}
 }

@@ -28,7 +28,7 @@
                                 <table class="no-border-table">
                                     <tr>
                                         <td><i class="fas fa-graduation-cap"></i></td>
-                                        <td>${locale.getString("home.first.use")}</td>
+                                        <td>${locale.getString("home.first.use.teaser")}</td>
                                     </tr>
                                 </table>
                             </a>

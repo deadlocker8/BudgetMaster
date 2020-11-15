@@ -17,3 +17,16 @@
 <#macro action url name>
     <a href="<@s.url url/>" class="waves-effect btn-flat home-menu-link-item"><i class="material-icons left">play_arrow</i>${locale.getString(name)}</a>
 </#macro>
+
+<#macro stepContent headline contentText actionUrl, actionName>
+    <h5>${locale.getString(headline)}</h5>
+    <p>
+        ${locale.getString(contentText)}
+        <#nested>
+    </p>
+    <p>
+        <#if actionUrl?has_content>
+            <@indexFunctions.action url=actionUrl name=actionName/>
+        </#if>
+    </p>
+</#macro>
