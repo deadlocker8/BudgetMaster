@@ -85,6 +85,10 @@ public class SettingsService
 		{
 			settings.setWhatsNewShownForCurrentVersion(defaultSettings.getWhatsNewShownForCurrentVersion());
 		}
+		if(settings.getShowFirstUseBanner() == null)
+		{
+			settings.setShowFirstUseBanner(defaultSettings.getShowFirstUseBanner());
+		}
 	}
 
 	@SuppressWarnings("OptionalGetWithoutIsPresent")
@@ -98,6 +102,13 @@ public class SettingsService
 	{
 		Settings settings = getSettings();
 		settings.setLastBackupReminderDate(DateTime.now());
+	}
+
+	@Transactional
+	public void disableFirstUseBanner()
+	{
+		Settings settings = getSettings();
+		settings.setShowFirstUseBanner(false);
 	}
 
 	@Transactional

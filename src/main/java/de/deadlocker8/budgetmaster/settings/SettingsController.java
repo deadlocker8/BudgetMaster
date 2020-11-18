@@ -11,8 +11,8 @@ import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.DatabaseParser;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
-import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.services.BackupService;
+import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.deadlocker8.budgetmaster.utils.Mappings;
@@ -21,8 +21,6 @@ import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.RandomUtils;
 import de.thecodelabs.versionizer.UpdateItem;
 import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -339,5 +337,12 @@ public class SettingsController extends BaseController
 		System.exit(0);
 
 		return "";
+	}
+
+	@RequestMapping("/hideFirstUseBanner")
+	public String hideFirstUseBanner()
+	{
+		settingsService.disableFirstUseBanner();
+		return "redirect:/";
 	}
 }

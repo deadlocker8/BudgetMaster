@@ -30,6 +30,7 @@ public class Settings
 	private Integer autoBackupFilesToKeep;
 	private Integer installedVersionCode;
 	private Boolean whatsNewShownForCurrentVersion;
+	private Boolean showFirstUseBanner;
 
 	public Settings()
 	{
@@ -52,6 +53,7 @@ public class Settings
 		defaultSettings.setAutoBackupFilesToKeep(3);
 		defaultSettings.setInstalledVersionCode(0);
 		defaultSettings.setWhatsNewShownForCurrentVersion(false);
+		defaultSettings.setShowFirstUseBanner(true);
 
 		return defaultSettings;
 	}
@@ -215,6 +217,16 @@ public class Settings
 		return !this.whatsNewShownForCurrentVersion;
 	}
 
+	public Boolean getShowFirstUseBanner()
+	{
+		return showFirstUseBanner;
+	}
+
+	public void setShowFirstUseBanner(Boolean showFirstUseBanner)
+	{
+		this.showFirstUseBanner = showFirstUseBanner;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -234,6 +246,7 @@ public class Settings
 				", autoBackupFilesToKeep=" + autoBackupFilesToKeep +
 				", installedVersionCode=" + installedVersionCode +
 				", whatsNewShownForCurrentVersion=" + whatsNewShownForCurrentVersion +
+				", showFirstUseBanner=" + showFirstUseBanner +
 				'}';
 	}
 }

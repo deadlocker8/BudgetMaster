@@ -422,20 +422,31 @@ textarea {
     max-height: 13vmin;
 }
 
-.home-firstUse {
-    border: 2px solid white;
-    border-radius: 5px;
-    padding: 0 1vmin;
+.home-firstUseBanner-wrapper {
     display: inline-block;
 }
 
-.home-firstUse td{
-    padding: 10px;
+.home-firstUseBanner {
+    border: 2px solid white;
+    border-radius: 5px;
+    padding: 0 1vmin;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items:  center;
     font-size: 1.8vmin;
 }
 
-.home-firstUse i {
+.home-firstUseBanner-item {
+    padding: 10px 0 10px 10px;
+}
+
+.home-firstUseBanner i {
     font-size: 2.5vmin;
+}
+
+.home-firstUseBanner-clear i {
+    font-size: 1.8vmin;
 }
 
 .break-all {

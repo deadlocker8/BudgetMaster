@@ -22,18 +22,9 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col s12 center-align">
-                            <a href="<@s.url "/firstUse"/>" class="home-firstUse">
-                                <table class="no-border-table">
-                                    <tr>
-                                        <td><i class="fas fa-graduation-cap"></i></td>
-                                        <td>${locale.getString("home.first.use.teaser")}</td>
-                                    </tr>
-                                </table>
-                            </a>
-                        </div>
-                    </div>
+                    <#if settings.getShowFirstUseBanner()>
+                        <@indexFunctions.firstUseBanner/>
+                    </#if>
 
                     <div class="hide-on-small-only"><br></div>
 
