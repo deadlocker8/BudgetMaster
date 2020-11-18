@@ -3,6 +3,8 @@ package de.deadlocker8.budgetmaster.integration.helpers;
 import de.thecodelabs.utils.util.Localization;
 import org.junit.rules.TestName;
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.io.IOException;
@@ -70,11 +72,14 @@ public class IntegrationTestHelper
 	{
 		try
 		{
+			WebDriverWait wait = new WebDriverWait(driver, 2);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("modalWhatsNew")));
+
 			WebElement buttonCloseReminder = driver.findElement(By.cssSelector("#modalWhatsNew #buttonCloseWhatsNew"));
 			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", buttonCloseReminder);
 			buttonCloseReminder.click();
 		}
-		catch(NoSuchElementException ignored)
+		catch(NoSuchElementException | TimeoutException ignored)
 		{
 		}
 	}

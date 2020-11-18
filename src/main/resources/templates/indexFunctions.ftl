@@ -32,7 +32,7 @@
 </#macro>
 
 <#macro firstUseBanner>
-    <div class="row">
+    <div class="row" id="firstUseBanner">
         <div class="col s12 center-align">
             <div class="home-firstUseBanner-wrapper">
                 <div class="home-firstUseBanner text-color">
