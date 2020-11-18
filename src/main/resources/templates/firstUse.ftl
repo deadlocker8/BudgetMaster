@@ -6,7 +6,7 @@
     </head>
     <body class="budgetmaster-blue-light">
         <#import "helpers/navbar.ftl" as navbar>
-        <@navbar.navbar "home" settings/>
+        <@navbar.navbar "firstUseGuide" settings/>
 
         <#import "indexFunctions.ftl" as indexFunctions>
 
