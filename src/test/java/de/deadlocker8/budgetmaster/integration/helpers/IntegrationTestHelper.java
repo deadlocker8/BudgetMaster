@@ -8,6 +8,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -89,6 +92,15 @@ public class IntegrationTestHelper
 		if(path.startsWith("\\"))
 		{
 			path = path.substring(1);
+		}
+
+		try
+		{
+			path = URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
+		}
+		catch(UnsupportedEncodingException ex)
+		{
+			throw new RuntimeException(ex.getCause());
 		}
 
 		driver.get(url + "/settings/database/requestImport");
