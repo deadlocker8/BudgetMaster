@@ -12,3 +12,7 @@
     top: 8px;
     font-weight: bold;
 }
+
+.template-selected {
+    background-color: #888888;
+}

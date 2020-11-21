@@ -38,7 +38,11 @@ $(document).ready(function()
     {
         document.getElementById('searchTemplate').focus();
     }
+
+    enableHotKeys();
 });
+
+let selectedTemplateName = null;
 
 function handleIncludeAccountCheckbox(checkboxID, selectID)
 {
@@ -90,9 +94,124 @@ function searchTemplates(searchText)
     if(numberOfVisibleItems === 0)
     {
         collapsible.classList.add('hidden');
+
+        // hide all item selections
+        let templateItems = document.getElementsByClassName('template-item');
+        for(let i = 0; i < templateItems.length; i++)
+        {
+            toggleItemSelection(templateItems[i], false);
+        }
+        selectedTemplateName = null;
     }
     else
     {
         collapsible.classList.remove('hidden');
+    }
+}
+
+function enableHotKeys()
+{
+    Mousetrap.bind('up', function()
+    {
+        handleKeyUpOrDown(true);
+    });
+
+    Mousetrap.bind('down', function()
+    {
+        handleKeyUpOrDown(false);
+    });
+}
+
+function handleKeyUpOrDown(isUp)
+{
+    let templateItems = document.querySelectorAll('.template-item:not(.hidden)');
+    for(let i = 0; i < templateItems.length; i++)
+    {
+        toggleItemSelection(templateItems[i], false);
+    }
+
+    if(templateItems.length === 0)
+    {
+        selectedTemplateName = null;
+        return;
+    }
+
+    let previousIndex = getIndexOfTemplateName(templateItems, selectedTemplateName);
+    let noItemSelected = selectedTemplateName === null;
+    let previousItemNoLongerInList = previousIndex === null;
+
+    if(noItemSelected || previousItemNoLongerInList)
+    {
+        // select the first item
+        selectItem(templateItems, 0);
+    }
+    else
+    {
+        // select next item
+        if(isUp)
+        {
+            selectNextItemOnUp(templateItems, previousIndex);
+        }
+        else
+        {
+            selectNextItemOnDown(templateItems, previousIndex);
+        }
+    }
+}
+
+function selectItem(templateItems, index)
+{
+    toggleItemSelection(templateItems[index], true);
+    selectedTemplateName = getTemplateName(templateItems[index]);
+    document.getElementById('searchTemplate').focus();
+}
+
+function toggleItemSelection(templateItem, isSelected)
+{
+    templateItem.getElementsByClassName('collapsible-header')[0].classList.toggle('template-selected', isSelected);
+}
+
+function getTemplateName(templateItem)
+{
+    return templateItem.getElementsByClassName('template-header-name')[0];
+}
+
+function getIndexOfTemplateName(templateItems, templateName)
+{
+    for(let i = 0; i < templateItems.length; i++)
+    {
+        let currentTemplateName = getTemplateName(templateItems[i]);
+        if(currentTemplateName === templateName)
+        {
+            return i;
+        }
+    }
+
+    return null;
+}
+
+function selectNextItemOnDown(templateItems, previousIndex)
+{
+    let isLastItemSelected = previousIndex + 1 === templateItems.length;
+    if(isLastItemSelected)
+    {
+        selectItem(templateItems, 0);
+    }
+    else
+    {
+        selectItem(templateItems, previousIndex + 1);
+    }
+}
+
+function selectNextItemOnUp(templateItems, previousIndex)
+{
+    let isFirstItemSelected = previousIndex === 0;
+    if(isFirstItemSelected)
+    {
+        selectItem(templateItems, templateItems.length - 1);
+    }
+    else
+    {
+        selectItem(templateItems, previousIndex - 1);
     }
 }
