@@ -272,6 +272,8 @@ let transactionRepeatingEndAfterXTimesInputID = "#transaction-repeating-end-afte
 
 AMOUNT_REGEX = new RegExp("^-?\\d+(,\\d+)?(\\.\\d+)?$");
 ALLOWED_CHARACTERS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "."];
+DATE_REGEX_SHORT_NO_DOTS = new RegExp("^\\d{6}$");
+DATE_REGEX_LONG_NO_DOTS = new RegExp("^\\d{8}$");
 DATE_REGEX_SHORT = new RegExp("^(\\d{2}.\\d{2}.)(\\d{2})$");
 DATE_REGEX_LONG = new RegExp("^\\d{2}.\\d{2}.\\d{4}$");
 
@@ -307,6 +309,9 @@ function validateDate(inputId)
     dateInput.value = dateInput.value.trim();
     let date = dateInput.value;
 
+    date = convertDateWithoutDots(date);
+    dateInput.value = date;
+
     if(date.match(DATE_REGEX_LONG) != null)
     {
         removeTooltip(inputId);
@@ -331,6 +336,28 @@ function validateDate(inputId)
         addTooltip(inputId, dateValidationMessage);
         return false;
     }
+}
+
+function convertDateWithoutDots(dateString)
+{
+    let yearLength = 2;
+    if(dateString.match(DATE_REGEX_SHORT_NO_DOTS) != null)
+    {
+        yearLength = 2;
+    }
+    else if(dateString.match(DATE_REGEX_LONG_NO_DOTS) != null)
+    {
+        yearLength = 4;
+    }
+    else
+    {
+        console.log("Date string has dots");
+        return dateString;
+    }
+
+    let a = dateString.substr(0, 2) + '.' + dateString.substr(2, 2) + '.' + dateString.substr(4, yearLength);
+    console.log("converting date string from " + dateString + " to " + a);
+    return a;
 }
 
 function validateForm(allowEmptyAmount = false)
