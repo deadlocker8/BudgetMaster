@@ -107,6 +107,8 @@ function searchTemplates(searchText)
     {
         collapsible.classList.remove('hidden');
     }
+
+    handleKeyUpOrDown(null);
 }
 
 function enableHotKeys()
@@ -134,11 +136,12 @@ function enableHotKeys()
 
 function handleKeyUpOrDown(isUp)
 {
-    let templateItems = document.querySelectorAll('.template-item:not(.hidden)');
+    let templateItems = document.getElementsByClassName('template-item');
     for(let i = 0; i < templateItems.length; i++)
     {
         toggleItemSelection(templateItems[i], false);
     }
+    templateItems = document.querySelectorAll('.template-item:not(.hidden)');
 
     if(templateItems.length === 0)
     {
@@ -157,6 +160,12 @@ function handleKeyUpOrDown(isUp)
     }
     else
     {
+        if(isUp === null )
+        {
+            selectItem(templateItems, previousIndex);
+            return;
+        }
+
         // select next item
         if(isUp)
         {
