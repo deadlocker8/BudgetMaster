@@ -123,8 +123,13 @@ function enableHotKeys()
 
     Mousetrap.bind('enter', function()
     {
-        confirmTemplateSelection(false);
+        if(!isSearchFocused())
+        {
+            confirmTemplateSelection();
+        }
     });
+
+    handleKeyUpOrDown(false);
 }
 
 function handleKeyUpOrDown(isUp)
