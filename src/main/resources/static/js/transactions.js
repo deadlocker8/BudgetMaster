@@ -351,13 +351,10 @@ function convertDateWithoutDots(dateString)
     }
     else
     {
-        console.log("Date string has dots");
         return dateString;
     }
 
-    let a = dateString.substr(0, 2) + '.' + dateString.substr(2, 2) + '.' + dateString.substr(4, yearLength);
-    console.log("converting date string from " + dateString + " to " + a);
-    return a;
+    return dateString.substr(0, 2) + '.' + dateString.substr(2, 2) + '.' + dateString.substr(4, yearLength);
 }
 
 function validateForm(allowEmptyAmount = false)
