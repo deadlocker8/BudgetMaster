@@ -26,7 +26,7 @@
                                 <div class="collapsible-header-button">
                                     <a href="<@s.url '/templates/${template.ID?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left no-margin">edit</i></a>
                                     <a href="<@s.url '/templates/${template.ID?c}/requestDelete'/>" class="btn-flat no-padding text-color"><i class="material-icons left no-margin">delete</i></a>
-                                    <a href="<@s.url '/templates/${template.ID?c}/select'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left no-margin">note_add</i></a>
+                                    <a href="<@s.url '/templates/${template.ID?c}/select'/>" class="waves-effect waves-light btn budgetmaster-blue button-select-template"><i class="material-icons left no-margin">note_add</i></a>
                                 </div>
                             </div>
                             <div class="collapsible-body">

@@ -120,6 +120,11 @@ function enableHotKeys()
     {
         handleKeyUpOrDown(false);
     });
+
+    Mousetrap.bind('enter', function()
+    {
+        confirmTemplateSelection(false);
+    });
 }
 
 function handleKeyUpOrDown(isUp)
@@ -214,4 +219,25 @@ function selectNextItemOnUp(templateItems, previousIndex)
     {
         selectItem(templateItems, previousIndex - 1);
     }
+}
+
+function confirmTemplateSelection()
+{
+    let templateItems = document.querySelectorAll('.template-item:not(.hidden)');
+    if(templateItems.length === 0)
+    {
+        selectedTemplateName = null;
+        return;
+    }
+
+    let index = getIndexOfTemplateName(templateItems, selectedTemplateName);
+    let indexItemNoLongerInList = index === null;
+    let noItemSelected = selectedTemplateName === null;
+
+    if(noItemSelected || indexItemNoLongerInList)
+    {
+        return;
+    }
+
+    templateItems[index].getElementsByClassName('button-select-template')[0].click();
 }
