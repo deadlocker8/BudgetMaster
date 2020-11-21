@@ -122,6 +122,8 @@ public class IntegrationTestHelper
 		matchAccounts(sourceAccounts, destinationAccounts);
 
 		// confirm import
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("buttonImport")));
 		driver.findElement(By.id("buttonImport")).click();
 
 		assertEquals(Localization.getString("menu.settings"), IntegrationTestHelper.getTextNode(driver.findElement(By.className("headline"))));
@@ -134,6 +136,9 @@ public class IntegrationTestHelper
 	private void createAccountOnImport(String accountName)
 	{
 		driver.findElement(By.className("button-new-account")).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("account-name")));
 		WebElement inputAccountName = driver.findElement(By.id("account-name"));
 		inputAccountName.sendKeys(accountName);
 		driver.findElement(By.tagName("button")).click();
