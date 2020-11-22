@@ -67,6 +67,7 @@ public class SearchTest
 		FirefoxOptions options = new FirefoxOptions();
 		options.setHeadless(true);
 		driver = new FirefoxDriver(options);
+		driver.manage().window().maximize();
 
 		// prepare
 		IntegrationTestHelper helper = new IntegrationTestHelper(driver, port);
