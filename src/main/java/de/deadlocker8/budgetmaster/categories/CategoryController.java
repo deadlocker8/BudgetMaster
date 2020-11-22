@@ -59,7 +59,7 @@ public class CategoryController extends BaseController
 		model.addAttribute("availableCategories", availableCategories);
 		model.addAttribute("preselectedCategory", categoryService.findByType(CategoryType.NONE));
 
-		model.addAttribute("currentCategory", categoryService.findById(ID));
+		model.addAttribute("currentCategory", categoryService.findById(ID).get());
 		model.addAttribute("settings", settingsService.getSettings());
 		return "categories/categories";
 	}
