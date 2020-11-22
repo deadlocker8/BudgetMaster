@@ -123,7 +123,7 @@ public class IntegrationTestHelper
 
 		// confirm import
 		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("buttonImport")));
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("buttonImport")));
 		driver.findElement(By.id("buttonImport")).click();
 
 		assertEquals(Localization.getString("menu.settings"), IntegrationTestHelper.getTextNode(driver.findElement(By.className("headline"))));
