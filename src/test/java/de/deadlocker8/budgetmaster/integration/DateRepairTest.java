@@ -62,7 +62,7 @@ public class DateRepairTest
 		assertThat(transactions.stream()
 				.map(t -> t.getTags().stream()
 						.map(Tag::getName).toArray(String[]::new))
-				.toArray(String[][]::new))
+				.collect(Collectors.toList()))
 				.containsOnly(new String[]{"0815", "abc"}, new String[0]);
 	}
 
