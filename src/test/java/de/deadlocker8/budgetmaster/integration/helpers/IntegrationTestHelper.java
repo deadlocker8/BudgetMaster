@@ -135,9 +135,10 @@ public class IntegrationTestHelper
 
 	private void createAccountOnImport(String accountName)
 	{
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("button-new-account")));
 		driver.findElement(By.className("button-new-account")).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("account-name")));
 		WebElement inputAccountName = driver.findElement(By.id("account-name"));
 		inputAccountName.sendKeys(accountName);
