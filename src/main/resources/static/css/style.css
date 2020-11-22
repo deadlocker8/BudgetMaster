@@ -564,6 +564,10 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     margin-right: 15px;
 }
 
+.whatsNewLink:hover {
+    cursor: pointer;
+}
+
 .invisible {
     opacity: 0;
 }

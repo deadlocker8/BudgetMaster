@@ -649,6 +649,10 @@ input[type="radio"]:not(:checked) + span::before, [type="radio"]:not(:checked) +
     margin-right: 15px;
 }
 
+.whatsNewLink:hover {
+    cursor: pointer;
+}
+
 .invisible {
     opacity: 0;
 }
