@@ -163,6 +163,9 @@ public class IntegrationTestHelper
 			WebElement sourceAccount = row.findElement(By.className("account-source"));
 			assertEquals(sourceAccounts.get(i), IntegrationTestHelper.getTextNode(sourceAccount));
 
+			WebDriverWait wait = new WebDriverWait(driver, 5);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("select-dropdown")));
+
 			row.findElement(By.className("select-dropdown")).click();
 			WebElement accountToSelect = row.findElement(By.xpath("//form/table/tbody/tr[" + (i + 1) + "]/td[5]/div/div/ul/li/span[text()='" + account + "']"));
 			accountToSelect.click();
