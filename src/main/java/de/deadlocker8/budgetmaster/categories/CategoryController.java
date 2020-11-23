@@ -65,7 +65,7 @@ public class CategoryController extends BaseController
 	}
 
 	@PostMapping(value = "/{ID}/delete")
-	public String deleteCategory(Model model, @PathVariable("ID") Integer ID, @ModelAttribute("DestinationCategory") DestinationCategory destinationCategory)
+	public String deleteCategory(@PathVariable("ID") Integer ID, @ModelAttribute("DestinationCategory") DestinationCategory destinationCategory)
 	{
 		if(categoryService.isDeletable(ID))
 		{
