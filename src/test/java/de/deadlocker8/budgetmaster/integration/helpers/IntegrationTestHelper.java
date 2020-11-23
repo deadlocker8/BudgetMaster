@@ -144,7 +144,7 @@ public class IntegrationTestHelper
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("account-name")));
 		WebElement inputAccountName = driver.findElement(By.id("account-name"));
 		inputAccountName.sendKeys(accountName);
-		driver.findElement(By.tagName("button")).click();
+		driver.findElement(By.id("button-save-account")).click();
 	}
 
 	private void matchAccounts(List<String> sourceAccounts, List<String> destinationAccounts)

@@ -90,7 +90,7 @@ public class CategoryController extends BaseController
 	public String editCategory(Model model, @PathVariable("ID") Integer ID)
 	{
 		Optional<Category> categoryOptional = categoryService.findById(ID);
-		if(!categoryOptional.isPresent())
+		if(categoryOptional.isEmpty())
 		{
 			throw new ResourceNotFoundException();
 		}
