@@ -50,7 +50,7 @@ public class HelpersService
 	@Autowired
 	private CategoryRepository categoryRepository;
 
-	@Value("${use.simple.datepicker:false}")
+	@Value("${budgetmaster.datepicker.simple:false}")
 	private boolean useSimpleDatepickerForTransactions;
 
 	public List<LanguageType> getAvailableLanguages()
