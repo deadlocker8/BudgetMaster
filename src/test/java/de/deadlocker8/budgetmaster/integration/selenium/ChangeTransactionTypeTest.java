@@ -84,7 +84,7 @@ public class ChangeTransactionTypeTest
 	public void prepare()
 	{
 		FirefoxOptions options = new FirefoxOptions();
-		options.setHeadless(true);
+		options.setHeadless(false);
 		driver = new FirefoxDriver(options);
 
 		// prepare

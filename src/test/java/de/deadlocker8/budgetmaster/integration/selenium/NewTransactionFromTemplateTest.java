@@ -66,7 +66,7 @@ public class NewTransactionFromTemplateTest
 	public void prepare()
 	{
 		FirefoxOptions options = new FirefoxOptions();
-		options.setHeadless(true);
+		options.setHeadless(false);
 		driver = new FirefoxDriver(options);
 
 		// prepare
