@@ -1,7 +1,7 @@
 <#global locale = static["de.thecodelabs.utils.util.Localization"]>
 <#import "/spring.ftl" as s>
 
-<div id="modalWhatsNew" class="modal background-color">
+<div id="modalWhatsNew" class="modal modal-fixed-footer background-color">
     <div class="modal-content">
         <div class="row">
             <div class="col s12">
