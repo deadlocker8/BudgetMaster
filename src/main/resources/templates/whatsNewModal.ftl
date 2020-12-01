@@ -20,15 +20,15 @@
 
         <div class="row">
             <div class="col s12">
-                <h5>Further information</h5>
+                <h5>${locale.getString("news.further.information")}</h5>
                 <div>
                     ${locale.getString("about.date")} ${build.getVersionDate()}
                 </div>
                 <div>
-                    All published and planned releases: <a href="${locale.getString("roadmap.url")}">${locale.getString("about.roadmap.link")}</a>
+                    ${locale.getString("news.all.releases")} <a href="${locale.getString("roadmap.url")}">${locale.getString("about.roadmap.link")}</a>
                 </div>
                 <div>
-                    More detailed changelog (english only): <a href="https://github.com/deadlocker8/BudgetMaster/releases/tag/v${build.getVersionName()}">GitHub</a>
+                    ${locale.getString("news.detailed")} <a href="https://github.com/deadlocker8/BudgetMaster/releases/tag/v${build.getVersionName()}">GitHub</a>
                 </div>
             </div>
         </div>
