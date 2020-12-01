@@ -4,33 +4,31 @@ import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryRepository;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
+import de.deadlocker8.budgetmaster.unit.helpers.LocalizedTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+@RunWith(SpringJUnit4ClassRunner.class)
+@LocalizedTest
 public class CategoryServiceTest
 {
 	private static final Category CATEGORY_NONE = new Category("No Category", "#FFFFFF", CategoryType.NONE);
 	private static final Category CATEGORY_REST = new Category("Rest", "#FFFF00", CategoryType.REST);
 
-	@MockBean(CategoryRepository.class)
+	@Mock
 	private CategoryRepository categoryRepository;
 
-	@Autowired
+	@InjectMocks
 	private CategoryService categoryService;
 
 	@Test

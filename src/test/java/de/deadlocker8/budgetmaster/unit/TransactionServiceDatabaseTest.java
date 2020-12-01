@@ -1,38 +1,25 @@
 package de.deadlocker8.budgetmaster.unit;
 
 import de.deadlocker8.budgetmaster.Main;
-import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
-import de.deadlocker8.budgetmaster.categories.Category;
-import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
-import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
-import de.deadlocker8.budgetmaster.repeating.RepeatingOptionRepository;
-import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndAfterXTimes;
-import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierDays;
+import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
-import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
-import de.deadlocker8.budgetmaster.transactions.TransactionSpecifications;
-import de.deadlocker8.budgetmaster.utils.eventlistener.DateRepair;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.Resource;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -48,6 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = Main.class)
 @Import(TransactionServiceDatabaseTest.TestDatabaseConfiguration.class)
 @ActiveProfiles("test")
+@SeleniumTest
 @Transactional
 public class TransactionServiceDatabaseTest
 {

@@ -7,20 +7,24 @@ import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
+import de.deadlocker8.budgetmaster.unit.helpers.LocalizedTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+@RunWith(SpringJUnit4ClassRunner.class)
+@LocalizedTest
 public class TransactionServiceTest
 {
 	private static final Category CATEGORY_REST = new Category("Rest", "#FFFF00", CategoryType.REST);
@@ -28,10 +32,10 @@ public class TransactionServiceTest
 
 	private static final Account ACCOUNT = new Account("MyAccount", AccountType.CUSTOM);
 
-	@MockBean(TransactionRepository.class)
+	@Mock
 	private TransactionRepository transactionRepository;
 
-	@Autowired
+	@InjectMocks
 	private TransactionService transactionService;
 
 	@Test

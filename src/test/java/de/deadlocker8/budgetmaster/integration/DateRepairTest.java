@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.integration;
 
 import de.deadlocker8.budgetmaster.Main;
+import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
@@ -31,6 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = Main.class)
 @Import(DateRepairTest.TestDatabaseConfiguration.class)
 @ActiveProfiles("test")
+@SeleniumTest
 @Transactional
 public class DateRepairTest
 {
