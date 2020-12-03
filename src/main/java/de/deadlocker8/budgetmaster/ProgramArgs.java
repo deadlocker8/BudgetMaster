@@ -13,6 +13,10 @@ public class ProgramArgs
 
 	private static List<String> args = new ArrayList<>();
 
+	private ProgramArgs()
+	{
+	}
+
 	public static void setArgs(List<String> args)
 	{
 		ProgramArgs.args = args;

@@ -16,6 +16,7 @@ import de.deadlocker8.budgetmaster.services.DateFormatStyle;
 import de.deadlocker8.budgetmaster.services.DateService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
+import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -27,10 +28,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
+@RequestMapping(Mappings.TRANSACTIONS)
 public class TransactionController extends BaseController
 {
 	private final TransactionService transactionService;
@@ -55,7 +58,7 @@ public class TransactionController extends BaseController
 		this.filterHelpers = filterHelpers;
 	}
 
-	@GetMapping("/transactions")
+	@GetMapping
 	public String transactions(HttpServletRequest request, Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
 	{
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
@@ -66,7 +69,7 @@ public class TransactionController extends BaseController
 		return "transactions/transactions";
 	}
 
-	@GetMapping("/transactions/{ID}/requestDelete")
+	@GetMapping("/{ID}/requestDelete")
 	public String requestDeleteTransaction(HttpServletRequest request, Model model, @PathVariable("ID") Integer ID, @CookieValue("currentDate") String cookieDate)
 	{
 		if(!transactionService.isDeletable(ID))
@@ -94,29 +97,32 @@ public class TransactionController extends BaseController
 		model.addAttribute("settings", settingsService.getSettings());
 	}
 
-	@GetMapping("/transactions/{ID}/delete")
+	@GetMapping("/{ID}/delete")
 	public String deleteTransaction(@PathVariable("ID") Integer ID)
 	{
 		transactionService.deleteTransaction(ID);
 		return "redirect:/transactions";
 	}
 
-	@GetMapping("/transactions/newTransaction/{type}")
+	@GetMapping("/newTransaction/{type}")
 	public String newTransaction(Model model, @CookieValue("currentDate") String cookieDate, @PathVariable String type)
 	{
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 		Transaction emptyTransaction = new Transaction();
-		emptyTransaction.setCategory(categoryService.getRepository().findByType(CategoryType.NONE));
-		transactionService.prepareModelNewOrEdit(model, false, date, emptyTransaction, accountService.getAllAccountsAsc());
+		emptyTransaction.setCategory(categoryService.findByType(CategoryType.NONE));
+		transactionService.prepareModelNewOrEdit(model, false, date, null, emptyTransaction, accountService.getAllActivatedAccountsAsc());
 		return "transactions/newTransaction" + StringUtils.capitalize(type);
 	}
 
-	@PostMapping(value = "/transactions/newTransaction/normal")
+	@PostMapping(value = "/newTransaction/normal")
 	public String postNormal(Model model,
 							 @CookieValue("currentDate") String cookieDate,
-							 @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult)
+							 @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
+							 @RequestParam(value = "previousType", required = false) TransactionType previousType)
 	{
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
+
+		handlePreviousType(previousType, transaction);
 
 		TransactionValidator transactionValidator = new TransactionValidator();
 		transactionValidator.validate(transaction, bindingResult);
@@ -129,11 +135,20 @@ public class TransactionController extends BaseController
 		return handleRedirect(model, transaction.getID() != null, transaction, bindingResult, date, "transactions/newTransactionNormal");
 	}
 
+	private void handlePreviousType(TransactionType previousType, Transaction transaction)
+	{
+		if(previousType == TransactionType.REPEATING)
+		{
+			transactionService.deleteTransaction(transaction.getID());
+		}
+	}
+
 	@SuppressWarnings("ConstantConditions")
-	@PostMapping(value = "/transactions/newTransaction/repeating")
+	@PostMapping(value = "/newTransaction/repeating")
 	public String postRepeating(Model model, @CookieValue("currentDate") String cookieDate,
 								@ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
 								@RequestParam(value = "isRepeating", required = false) boolean isRepeating,
+								@RequestParam(value = "previousType", required = false) TransactionType previousType,
 								@RequestParam(value = "repeatingModifierNumber", required = false) int repeatingModifierNumber,
 								@RequestParam(value = "repeatingModifierType", required = false) String repeatingModifierType,
 								@RequestParam(value = "repeatingEndType", required = false) String repeatingEndType,
@@ -179,12 +194,15 @@ public class TransactionController extends BaseController
 		return handleRedirect(model, transaction.getID() != null, transaction, bindingResult, date, "transactions/newTransactionRepeating");
 	}
 
-	@PostMapping(value = "/transactions/newTransaction/transfer")
+	@PostMapping(value = "/newTransaction/transfer")
 	public String postTransfer(Model model,
 							   @CookieValue("currentDate") String cookieDate,
-							   @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult)
+							   @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
+							   @RequestParam(value = "previousType", required = false) TransactionType previousType)
 	{
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
+
+		handlePreviousType(previousType, transaction);
 
 		TransactionValidator transactionValidator = new TransactionValidator();
 		transactionValidator.validate(transaction, bindingResult);
@@ -202,7 +220,7 @@ public class TransactionController extends BaseController
 		if(bindingResult.hasErrors())
 		{
 			model.addAttribute("error", bindingResult);
-			transactionService.prepareModelNewOrEdit(model, isEdit, date, transaction, accountService.getAllAccountsAsc());
+			transactionService.prepareModelNewOrEdit(model, isEdit, date, null, transaction, accountService.getAllActivatedAccountsAsc());
 			return url;
 		}
 
@@ -210,16 +228,21 @@ public class TransactionController extends BaseController
 		return "redirect:/transactions";
 	}
 
-	@GetMapping("/transactions/{ID}/edit")
+	@GetMapping("/{ID}/edit")
 	public String editTransaction(Model model, @CookieValue("currentDate") String cookieDate, @PathVariable("ID") Integer ID)
 	{
 		Optional<Transaction> transactionOptional = transactionService.getRepository().findById(ID);
-		if(!transactionOptional.isPresent())
+		if(transactionOptional.isEmpty())
 		{
 			throw new ResourceNotFoundException();
 		}
 
 		Transaction transaction = transactionOptional.get();
+
+		if(transaction.getAccount().isReadOnly())
+		{
+			return "redirect:/transactions";
+		}
 
 		// select first transaction in order to provide correct start date for repeating transactions
 		if(transaction.getRepeatingOption() != null)
@@ -228,7 +251,7 @@ public class TransactionController extends BaseController
 		}
 
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
-		transactionService.prepareModelNewOrEdit(model, true, date, transaction, accountService.getAllAccountsAsc());
+		transactionService.prepareModelNewOrEdit(model, true, date, null, transaction, accountService.getAllActivatedAccountsAsc());
 
 		if(transaction.isRepeating())
 		{
@@ -242,7 +265,7 @@ public class TransactionController extends BaseController
 		return "transactions/newTransactionNormal";
 	}
 
-	@GetMapping("/transactions/{ID}/highlight")
+	@GetMapping("/{ID}/highlight")
 	public String highlight(Model model, @PathVariable("ID") Integer ID)
 	{
 		Transaction transaction = transactionService.getRepository().getOne(ID);
@@ -256,5 +279,72 @@ public class TransactionController extends BaseController
 		prepareModelTransactions(filterConfiguration, model, transaction.getDate());
 		model.addAttribute("highlightID", ID);
 		return "transactions/transactions";
+	}
+
+	@GetMapping("/{ID}/changeTypeModal")
+	public String changeTypeModal(Model model, @PathVariable("ID") Integer ID)
+	{
+		final Optional<Transaction> transactionOptional = transactionService.getRepository().findById(ID);
+		if(transactionOptional.isEmpty())
+		{
+			throw new ResourceNotFoundException();
+		}
+
+		model.addAttribute("transaction", transactionOptional.get());
+		return "transactions/changeTypeModal";
+	}
+
+	@GetMapping("/{ID}/changeType")
+	public String changeTypeModal(Model model, @PathVariable("ID") Integer ID,
+								  @CookieValue("currentDate") String cookieDate,
+								  @RequestParam(value = "newType") int newType)
+	{
+		final Optional<Transaction> transactionOptional = transactionService.getRepository().findById(ID);
+		if(transactionOptional.isEmpty())
+		{
+			throw new ResourceNotFoundException();
+		}
+
+		final Optional<TransactionType> transactionTypeOptional = TransactionType.getByID(newType);
+		if(transactionTypeOptional.isEmpty())
+		{
+			throw new IllegalArgumentException();
+		}
+
+		Transaction transaction = transactionOptional.get();
+		// select first transaction in order to provide correct start date for repeating transactions
+		if(transaction.getRepeatingOption() != null)
+		{
+			transaction = transaction.getRepeatingOption().getReferringTransactions().get(0);
+		}
+
+		Transaction transactionCopy = new Transaction(transaction);
+		final TransactionType newTransactionType = transactionTypeOptional.get();
+		LOGGER.debug(MessageFormat.format("Changing transaction type to {0} for transaction with ID {1}", newTransactionType, String.valueOf(transaction.getID())));
+
+		final TransactionType previousType = TransactionType.getFromTransaction(transaction);
+
+		String redirectUrl = "";
+		switch(newTransactionType)
+		{
+			case NORMAL:
+				transactionCopy.setTransferAccount(null);
+				transactionCopy.setRepeatingOption(null);
+				redirectUrl = "transactions/newTransactionNormal";
+				break;
+			case REPEATING:
+				transactionCopy.setTransferAccount(null);
+				redirectUrl = "transactions/newTransactionRepeating";
+				break;
+			case TRANSFER:
+				transactionCopy.setRepeatingOption(null);
+				redirectUrl = "transactions/newTransactionTransfer";
+				break;
+		}
+
+		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
+		transactionService.prepareModelNewOrEdit(model, true, date, previousType, transactionCopy, accountService.getAllActivatedAccountsAsc());
+
+		return redirectUrl;
 	}
 }

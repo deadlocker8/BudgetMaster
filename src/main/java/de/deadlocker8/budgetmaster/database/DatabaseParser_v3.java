@@ -105,14 +105,14 @@ public class DatabaseParser_v3
 		return parsedTransactions;
 	}
 
-	private RepeatingOption parseRepeatingOption(JsonObject transactiob, DateTime startDate)
+	protected RepeatingOption parseRepeatingOption(JsonObject transaction, DateTime startDate)
 	{
-		if(!transactiob.has("repeatingOption"))
+		if(!transaction.has("repeatingOption"))
 		{
 			return null;
 		}
 
-		JsonObject option = transactiob.get("repeatingOption").getAsJsonObject();
+		JsonObject option = transaction.get("repeatingOption").getAsJsonObject();
 
 		JsonObject repeatingModifier = option.get("modifier").getAsJsonObject();
 		String repeatingModifierType = repeatingModifier.get("localizationKey").getAsString();

@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class RepeatingEndDate extends RepeatingEnd
@@ -34,5 +35,21 @@ public class RepeatingEndDate extends RepeatingEnd
 	public Object getValue()
 	{
 		return endDate;
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
+		if(!super.equals(o)) return false;
+		RepeatingEndDate that = (RepeatingEndDate) o;
+		return Objects.equals(endDate, that.endDate);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(super.hashCode(), endDate);
 	}
 }

@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.integration;
 
 import de.deadlocker8.budgetmaster.Main;
+import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = Main.class)
 @Import(DateRepairTest.TestDatabaseConfiguration.class)
 @ActiveProfiles("test")
+@SeleniumTest
 @Transactional
 public class DateRepairTest
 {
@@ -56,20 +59,20 @@ public class DateRepairTest
 	public void test_Repeating_WithTags()
 	{
 		final List<Transaction> transactions = transactionRepository.findAll();
-		assertThat(transactions).hasSize(4);
+		assertThat(transactions).hasSize(8);
 
 		assertThat(transactions.stream()
 				.map(t -> t.getTags().stream()
 						.map(Tag::getName).toArray(String[]::new))
-				.toArray(String[][]::new))
-				.containsOnly(new String[]{"0815", "abc"});
+				.collect(Collectors.toList()))
+				.containsOnly(new String[]{"0815", "abc"}, new String[0]);
 	}
 
 	@Test
 	public void test_Repeating()
 	{
 		final List<Transaction> transactions = transactionRepository.findAll();
-		assertThat(transactions).hasSize(4);
+		assertThat(transactions).hasSize(8);
 
 		assertThat(transactions.stream()
 				.map(t -> t.getDate().getHourOfDay())

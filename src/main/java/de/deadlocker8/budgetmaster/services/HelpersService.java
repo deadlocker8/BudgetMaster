@@ -22,6 +22,7 @@ import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.thecodelabs.utils.util.ColorUtilsNonJavaFX;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -48,6 +49,9 @@ public class HelpersService
 
 	@Autowired
 	private CategoryRepository categoryRepository;
+
+	@Value("${budgetmaster.datepicker.simple:false}")
+	private boolean useSimpleDatepickerForTransactions;
 
 	public List<LanguageType> getAvailableLanguages()
 	{
@@ -194,5 +198,10 @@ public class HelpersService
 	public Long getUsageCountForCategory(Category category)
 	{
 		return transactionService.getRepository().countByCategory(category);
+	}
+
+	public boolean isUseSimpleDatepickerForTransactions()
+	{
+		return useSimpleDatepickerForTransactions;
 	}
 }

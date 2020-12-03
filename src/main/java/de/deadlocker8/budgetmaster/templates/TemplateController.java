@@ -8,6 +8,7 @@ import de.deadlocker8.budgetmaster.services.DateService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
+import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Controller
+@RequestMapping(Mappings.TEMPLATES)
 public class TemplateController extends BaseController
 {
 	private static final Gson GSON = new GsonBuilder()
@@ -46,7 +46,7 @@ public class TemplateController extends BaseController
 		this.accountService = accountService;
 	}
 
-	@GetMapping("/templates")
+	@GetMapping
 	public String showTemplates(Model model)
 	{
 		model.addAttribute("settings", settingsService.getSettings());
@@ -54,22 +54,14 @@ public class TemplateController extends BaseController
 		return "templates/templates";
 	}
 
-	@GetMapping("/templates/select")
-	public String select(Model model)
-	{
-		model.addAttribute("settings", settingsService.getSettings());
-		model.addAttribute("templates", templateService.getRepository().findAllByOrderByTemplateNameAsc());
-		return "templates/selectTemplate";
-	}
-
-	@GetMapping("/templates/fromTransactionModal")
+	@GetMapping("/fromTransactionModal")
 	public String fromTransactionModal(Model model)
 	{
 		model.addAttribute("existingTemplateNames", GSON.toJson(templateService.getExistingTemplateNames()));
 		return "templates/createFromTransactionModal";
 	}
 
-	@PostMapping(value = "/templates/fromTransaction")
+	@PostMapping(value = "/fromTransaction")
 	public String postFromTransaction(@RequestParam(value = "templateName") String templateName,
 									  @ModelAttribute("NewTransaction") Transaction transaction,
 									  @RequestParam(value = "includeCategory") Boolean includeCategory,
@@ -90,11 +82,11 @@ public class TemplateController extends BaseController
 		return "redirect:/templates";
 	}
 
-	@GetMapping("/templates/{ID}/requestDelete")
+	@GetMapping("/{ID}/requestDelete")
 	public String requestDeleteTemplate(Model model, @PathVariable("ID") Integer ID)
 	{
 		final Optional<Template> templateOptional = templateService.getRepository().findById(ID);
-		if(!templateOptional.isPresent())
+		if(templateOptional.isEmpty())
 		{
 			throw new ResourceNotFoundException();
 		}
@@ -105,35 +97,44 @@ public class TemplateController extends BaseController
 		return "templates/templates";
 	}
 
-	@GetMapping("/templates/{ID}/delete")
+	@GetMapping("/{ID}/delete")
 	public String deleteTemplate(@PathVariable("ID") Integer ID)
 	{
 		templateService.getRepository().deleteById(ID);
 		return "redirect:/templates";
 	}
 
-	@GetMapping("/templates/{ID}/select")
+	@GetMapping("/{ID}/select")
 	public String selectTemplate(Model model,
 								 @CookieValue("currentDate") String cookieDate,
 								 @PathVariable("ID") Integer ID)
 	{
 		final Optional<Template> templateOptional = templateService.getRepository().findById(ID);
-		if(!templateOptional.isPresent())
+		if(templateOptional.isEmpty())
 		{
 			throw new ResourceNotFoundException();
 		}
 
 		final Template template = templateOptional.get();
+		final Transaction newTransaction = new Transaction();
+		newTransaction.setName(template.getName());
+		newTransaction.setAmount(template.getAmount());
+		newTransaction.setCategory(template.getCategory());
+		newTransaction.setDescription(template.getDescription());
+		newTransaction.setAccount(template.getAccount());
+		newTransaction.setTransferAccount(template.getTransferAccount());
+		newTransaction.setTags(template.getTags());
+		newTransaction.setIsExpenditure(template.isExpenditure());
 
-		templateService.prepareTemplateForNewTransaction(template, true);
+		templateService.prepareTemplateForNewTransaction(newTransaction, true);
 
-		if(template.getAmount() == null)
+		if(newTransaction.getAmount() == null && newTransaction.isExpenditure() == null)
 		{
 			template.setIsExpenditure(true);
 		}
 
 		final DateTime date = dateService.getDateTimeFromCookie(cookieDate);
-		transactionService.prepareModelNewOrEdit(model, false, date, template, accountService.getAllAccountsAsc());
+		transactionService.prepareModelNewOrEdit(model, false, date, null, template, accountService.getAllActivatedAccountsAsc());
 
 		if(template.isTransfer())
 		{
@@ -142,16 +143,16 @@ public class TemplateController extends BaseController
 		return "transactions/newTransactionNormal";
 	}
 
-	@GetMapping("/templates/newTemplate")
+	@GetMapping("/newTemplate")
 	public String newTemplate(Model model)
 	{
 		final Template emptyTemplate = new Template();
 		templateService.prepareTemplateForNewTransaction(emptyTemplate, false);
-		templateService.prepareModelNewOrEdit(model, false, emptyTemplate, accountService.getAllAccountsAsc());
+		templateService.prepareModelNewOrEdit(model, false, emptyTemplate, accountService.getAllActivatedAccountsAsc());
 		return "templates/newTemplate";
 	}
 
-	@PostMapping(value = "/templates/newTemplate")
+	@PostMapping(value = "/newTemplate")
 	public String post(Model model,
 					   @ModelAttribute("NewTemplate") Template template, BindingResult bindingResult,
 					   @RequestParam(value = "includeAccount", required = false) boolean includeAccount,
@@ -175,7 +176,7 @@ public class TemplateController extends BaseController
 
 		if(template.isExpenditure() == null)
 		{
-			template.setIsExpenditure(true);
+			template.setIsExpenditure(false);
 		}
 
 		if(template.getAmount() != null)
@@ -187,7 +188,7 @@ public class TemplateController extends BaseController
 		if(bindingResult.hasErrors())
 		{
 			model.addAttribute("error", bindingResult);
-			templateService.prepareModelNewOrEdit(model, template.getID() != null, template, accountService.getAllAccountsAsc());
+			templateService.prepareModelNewOrEdit(model, template.getID() != null, template, accountService.getAllActivatedAccountsAsc());
 			return "templates/newTemplate";
 		}
 
@@ -205,18 +206,18 @@ public class TemplateController extends BaseController
 		return "redirect:/templates";
 	}
 
-	@GetMapping("/templates/{ID}/edit")
+	@GetMapping("/{ID}/edit")
 	public String editTemplate(Model model, @PathVariable("ID") Integer ID)
 	{
 		Optional<Template> templateOptional = templateService.getRepository().findById(ID);
-		if(!templateOptional.isPresent())
+		if(templateOptional.isEmpty())
 		{
 			throw new ResourceNotFoundException();
 		}
 
 		Template template = templateOptional.get();
 		templateService.prepareTemplateForNewTransaction(template, false);
-		templateService.prepareModelNewOrEdit(model, true, template, accountService.getAllAccountsAsc());
+		templateService.prepareModelNewOrEdit(model, true, template, accountService.getAllActivatedAccountsAsc());
 
 		return "templates/newTemplate";
 	}

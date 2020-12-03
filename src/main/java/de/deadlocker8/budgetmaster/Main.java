@@ -20,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.text.MessageFormat;
 import java.util.*;
 
 
@@ -47,9 +48,9 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 			}
 
 			@Override
-			public String getBaseResource()
+			public String[] getBaseResources()
 			{
-				return "languages/";
+				return new String[]{"languages/base", "languages/news"};
 			}
 
 			@Override
@@ -57,10 +58,17 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 			{
 				return new JavaMessageFormatter();
 			}
+
+			@Override
+			public boolean useMultipleResourceBundles()
+			{
+				return true;
+			}
 		});
 		Localization.load();
 
 		ProgramArgs.setArgs(Arrays.asList(args));
+		LOGGER.debug(MessageFormat.format("Starting with ProgramArgs: {0}", ProgramArgs.getArgs()));
 
 		Path applicationSupportFolder = getApplicationSupportFolder();
 		PathUtils.createDirectoriesIfNotExists(applicationSupportFolder);
@@ -106,12 +114,12 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 			}
 			else
 			{
-				LOGGER.error("Ignoring option --customFolder: provided path '" + customFolder.toString() + "' is not absolute");
+				LOGGER.error(MessageFormat.format("Ignoring option --customFolder: provided path ''{0}'' is not absolute", customFolder.toString()));
 			}
 		}
 
 		savePath = determineFolder(savePath);
-		LOGGER.info("Used save path: " + savePath.toString());
+		LOGGER.info(MessageFormat.format("Used save path: {0}", savePath.toString()));
 		return savePath;
 	}
 
@@ -180,6 +188,6 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 
 	private static void logAppInfo(String appName, String versionName, String versionCode, String versionDate)
 	{
-		LOGGER.info(appName + " - v" + versionName + " - (versioncode: " + versionCode + ") from " + versionDate + ")");
+		LOGGER.info(MessageFormat.format("{0} - v{1} - (versioncode: {2}) from {3})", appName, versionName, versionCode, versionDate));
 	}
 }

@@ -22,6 +22,7 @@
                         <input type="hidden" name="ID" value="<#if account.getID()??>${account.getID()?c}</#if>">
                         <input type="hidden" name="isSelected" value="<#if account.isSelected()??>${account.isSelected()?c}</#if>">
                         <input type="hidden" name="isDefault" value="<#if account.isDefault()??>${account.isDefault()?c}</#if>">
+                        <input type="hidden" name="isReadOnly" value="<#if account.isReadOnly()??>${account.isReadOnly()?c}</#if>">
 
                         <#-- name -->
                         <div class="row">
@@ -39,7 +40,7 @@
                             </div>
 
                             <div class="col s6 left-align">
-                                <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action">
+                                <button id="button-save-account" class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action">
                                     <i class="material-icons left">save</i>${locale.getString("save")}
                                 </button>
                             </div>
@@ -52,7 +53,7 @@
                             </div>
                             <div class="row center-align">
                                 <div class="col s12">
-                                    <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="buttonSave">
+                                    <button id="button-save-account" class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="buttonSave">
                                         <i class="material-icons left">save</i>${locale.getString("save")}
                                     </button>
                                 </div>

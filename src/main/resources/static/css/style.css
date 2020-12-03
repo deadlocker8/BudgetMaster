@@ -184,6 +184,10 @@ ul.sidenav.sidenav-fixed > li:last-child
     font-style: italic;
 }
 
+.input-label {
+    color: #2E79B9 !important;
+}
+
 /* label focus color */
 .input-field input[type=text]:focus + label {
     color: #2E79B9 !important;
@@ -362,7 +366,34 @@ ul.sidenav.sidenav-fixed > li:last-child
 }
 
 #logo-home {
-    max-height: 15vmin;
+    max-height: 13vmin;
+}
+
+.home-firstUseBanner-wrapper {
+    display: inline-block;
+}
+
+.home-firstUseBanner {
+    border: 2px solid #212121;
+    border-radius: 5px;
+    padding: 0 1vmin;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items:  center;
+    font-size: 1.8vmin;
+}
+
+.home-firstUseBanner-item {
+    padding: 10px 0 10px 10px;
+}
+
+.home-firstUseBanner i {
+    font-size: 2.5vmin;
+}
+
+.home-firstUseBanner-clear i {
+    font-size: 1.8vmin;
 }
 
 .break-all {
@@ -525,6 +556,16 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
 /* inputs with icon prefix */
 .input-field .prefix.active {
     color: #2E79B9;
+}
+
+.placeholder-icon {
+    display: inline-block;
+    width: 1.3rem;
+    margin-right: 15px;
+}
+
+.whatsNewLink:hover {
+    cursor: pointer;
 }
 
 .invisible {

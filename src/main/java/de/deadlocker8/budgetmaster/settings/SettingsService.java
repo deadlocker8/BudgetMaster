@@ -14,7 +14,7 @@ import java.util.Optional;
 @Service
 public class SettingsService
 {
-	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	private static final Logger LOGGER = LoggerFactory.getLogger(SettingsService.class);
 	private final SettingsRepository settingsRepository;
 
 	@Autowired
@@ -35,7 +35,7 @@ public class SettingsService
 	@Transactional
 	public void createDefaultSettingsIfNotExists()
 	{
-		if(!settingsRepository.findById(0).isPresent())
+		if(settingsRepository.findById(0).isEmpty())
 		{
 			settingsRepository.save(Settings.getDefault());
 			LOGGER.debug("Created default settings");
@@ -43,7 +43,7 @@ public class SettingsService
 
 		Settings defaultSettings = Settings.getDefault();
 		Optional<Settings> settingsOptional = settingsRepository.findById(0);
-		if(!settingsOptional.isPresent())
+		if(settingsOptional.isEmpty())
 		{
 			throw new RuntimeException("Missing Settings in database");
 		}
@@ -81,6 +81,14 @@ public class SettingsService
 		{
 			settings.setInstalledVersionCode(defaultSettings.getInstalledVersionCode());
 		}
+		if(settings.getWhatsNewShownForCurrentVersion() == null)
+		{
+			settings.setWhatsNewShownForCurrentVersion(defaultSettings.getWhatsNewShownForCurrentVersion());
+		}
+		if(settings.getShowFirstUseBanner() == null)
+		{
+			settings.setShowFirstUseBanner(defaultSettings.getShowFirstUseBanner());
+		}
 	}
 
 	@SuppressWarnings("OptionalGetWithoutIsPresent")
@@ -94,6 +102,13 @@ public class SettingsService
 	{
 		Settings settings = getSettings();
 		settings.setLastBackupReminderDate(DateTime.now());
+	}
+
+	@Transactional
+	public void disableFirstUseBanner()
+	{
+		Settings settings = getSettings();
+		settings.setShowFirstUseBanner(false);
 	}
 
 	@Transactional

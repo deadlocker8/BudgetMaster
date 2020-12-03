@@ -1,7 +1,6 @@
 package de.deadlocker8.budgetmaster.categories;
 
 import de.deadlocker8.budgetmaster.services.Resetable;
-import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
@@ -10,15 +9,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryService implements Resetable
 {
-	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-	private CategoryRepository categoryRepository;
+	private static final Logger LOGGER = LoggerFactory.getLogger(CategoryService.class);
+	private final CategoryRepository categoryRepository;
 
 	@Autowired
 	public CategoryService(CategoryRepository categoryRepository)
@@ -28,15 +28,25 @@ public class CategoryService implements Resetable
 		createDefaults();
 	}
 
-	public CategoryRepository getRepository()
+	public Optional<Category> findById(Integer ID)
 	{
-		return categoryRepository;
+		return categoryRepository.findById(ID);
+	}
+
+	public Category findByType(CategoryType type)
+	{
+		return categoryRepository.findByType(type);
+	}
+
+	public Category save(Category category)
+	{
+		return categoryRepository.save(category);
 	}
 
 	public void deleteCategory(int ID, Category newCategory)
 	{
 		Optional<Category> categoryOptional = categoryRepository.findById(ID);
-		if(!categoryOptional.isPresent())
+		if(categoryOptional.isEmpty())
 		{
 			throw new RuntimeException("Can't delete non-existing category with ID: " + ID);
 		}
@@ -57,7 +67,7 @@ public class CategoryService implements Resetable
 	@SuppressWarnings("OptionalIsPresent")
 	public boolean isDeletable(Integer ID)
 	{
-		Optional<Category> categoryOptional = getRepository().findById(ID);
+		Optional<Category> categoryOptional = findById(ID);
 		if(categoryOptional.isPresent())
 		{
 			return categoryOptional.get().getType() == CategoryType.CUSTOM;
@@ -91,7 +101,9 @@ public class CategoryService implements Resetable
 	public List<Category> getAllCategories()
 	{
 		localizeDefaultCategories();
-		return categoryRepository.findAllByOrderByNameAsc();
+		return categoryRepository.findAllByOrderByNameAsc().stream()
+				.sorted(Comparator.comparing(c -> c.getName().toLowerCase()))
+				.collect(Collectors.toList());
 	}
 
 	public void localizeDefaultCategories()

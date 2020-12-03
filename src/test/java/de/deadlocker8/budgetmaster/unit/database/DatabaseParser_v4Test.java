@@ -46,7 +46,7 @@ public class DatabaseParser_v4Test
 			@Override
 			public String getBaseResource()
 			{
-				return "languages/";
+				return "languages/base";
 			}
 		});
 		Localization.load();
@@ -128,6 +128,7 @@ public class DatabaseParser_v4Test
 			normalTransaction_1.setDescription("Lorem Ipsum");
 			normalTransaction_1.setTags(new ArrayList<>());
 			normalTransaction_1.setAccount(account1);
+			normalTransaction_1.setIsExpenditure(false);
 
 			Transaction normalTransaction_2 = new Transaction();
 			normalTransaction_2.setAmount(-2000);
@@ -136,6 +137,7 @@ public class DatabaseParser_v4Test
 			normalTransaction_2.setDescription("");
 			normalTransaction_2.setAccount(account2);
 			normalTransaction_2.setCategory(category3);
+			normalTransaction_2.setIsExpenditure(true);
 
 			List<Tag> tags = new ArrayList<>();
 			Tag tag = new Tag("0815");
@@ -157,6 +159,7 @@ public class DatabaseParser_v4Test
 			repeatingOption_1.setEndOption(new RepeatingEndAfterXTimes(2));
 			repeatingTransaction_1.setRepeatingOption(repeatingOption_1);
 			repeatingTransaction_1.setTags(new ArrayList<>());
+			repeatingTransaction_1.setIsExpenditure(true);
 
 			Transaction repeatingTransaction_2 = new Transaction();
 			repeatingTransaction_2.setAmount(-12300);
@@ -172,6 +175,7 @@ public class DatabaseParser_v4Test
 			repeatingOption_2.setEndOption(new RepeatingEndAfterXTimes(2));
 			repeatingTransaction_2.setRepeatingOption(repeatingOption_2);
 			repeatingTransaction_2.setTags(new ArrayList<>());
+			repeatingTransaction_2.setIsExpenditure(true);
 
 			Transaction transferTransaction = new Transaction();
 			transferTransaction.setAmount(-250);
@@ -182,6 +186,7 @@ public class DatabaseParser_v4Test
 			transferTransaction.setTransferAccount(account1);
 			transferTransaction.setCategory(category3);
 			transferTransaction.setTags(new ArrayList<>());
+			transferTransaction.setIsExpenditure(true);
 
 			assertThat(database.getTransactions()).hasSize(6)
 					.contains(normalTransaction_1,
@@ -225,6 +230,7 @@ public class DatabaseParser_v4Test
 			normalTemplate.setDescription("Lorem Ipsum");
 			normalTemplate.setAccount(account1);
 			normalTemplate.setCategory(categoryNone);
+			normalTemplate.setIsExpenditure(false);
 
 			List<Tag> tags = new ArrayList<>();
 			Tag tag = new Tag("0815");
@@ -235,16 +241,18 @@ public class DatabaseParser_v4Test
 			Template minimalTemplate = new Template();
 			minimalTemplate.setTemplateName("My Minimal Template");
 			minimalTemplate.setTags(new ArrayList<>());
+			minimalTemplate.setIsExpenditure(true);
 
 			Template transferTemplate = new Template();
 			transferTemplate.setTemplateName("My Transfer Template");
-			transferTemplate.setAmount(35000);
+			transferTemplate.setAmount(-35000);
 			transferTemplate.setAccount(account2);
 			transferTemplate.setTransferAccount(account1);
 			transferTemplate.setName("Income");
 			transferTemplate.setDescription("Lorem Ipsum");
 			transferTemplate.setCategory(category3);
 			transferTemplate.setTags(tags);
+			transferTemplate.setIsExpenditure(true);
 
 			assertThat(database.getTemplates()).hasSize(3)
 					.contains(normalTemplate, minimalTemplate, transferTemplate);

@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
 
 @Service
 public class BudgetMasterUpdateService
@@ -79,7 +80,7 @@ public class BudgetMasterUpdateService
 			{
 				UpdateAvailableEvent customSpringEvent = new UpdateAvailableEvent(this, updateService);
 				applicationEventPublisher.publishEvent(customSpringEvent);
-				LOGGER.info("Update available (installed: v" + Build.getInstance().getVersionName() + ", available: " + getAvailableVersionString() + ")");
+				LOGGER.info(MessageFormat.format("Update available (installed: v{0}, available: {1})", Build.getInstance().getVersionName(), getAvailableVersionString()));
 			}
 		}
 	}

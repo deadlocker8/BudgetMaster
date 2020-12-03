@@ -13,6 +13,10 @@ import java.util.List;
 
 public class TransactionSpecifications
 {
+	private TransactionSpecifications()
+	{
+	}
+
 	public static Specification<Transaction> withDynamicQuery(final DateTime startDate, final DateTime endDate,
 															  Account account,
 															  final boolean isIncome, boolean isExpenditure, boolean isTransfer,

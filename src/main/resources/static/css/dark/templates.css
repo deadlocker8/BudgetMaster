@@ -3,7 +3,7 @@
 }
 
 .template-header-name {
-    max-width: 60%;
+    max-width: 50%;
 }
 
 .collapsible-header-button {
@@ -11,4 +11,8 @@
     right: 15px;
     top: 8px;
     font-weight: bold;
+}
+
+.template-selected {
+    background-color: #888888;
 }

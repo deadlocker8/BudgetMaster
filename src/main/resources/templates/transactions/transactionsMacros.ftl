@@ -54,7 +54,7 @@
 
 <#macro transactionButtons transaction>
         <div class="col s8 l2 xl1 right-align transaction-buttons no-wrap">
-            <#if (transaction.category.type.name() != "REST")>
+            <#if (transaction.category.type.name() != "REST") && !transaction.getAccount().isReadOnly()>
                 <a href="<@s.url '/transactions/${transaction.ID?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
                 <a href="<@s.url '/transactions/${transaction.ID?c}/requestDelete'/>" class="btn-flat no-padding text-color"><i class="material-icons left no-margin">delete</i></a>
             </#if>
@@ -139,8 +139,8 @@
         </a>
         <ul class="${listClasses}">
             <li>
-                <a href="<@s.url '/templates/select'/>" class="btn-floating btn budgetmaster-baby-blue"><i class="material-icons">file_copy</i></a>
-                <a href="<@s.url '/templates/select'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new.from.template")}</a>
+                <a href="<@s.url '/templates'/>" class="btn-floating btn budgetmaster-baby-blue"><i class="material-icons">file_copy</i></a>
+                <a href="<@s.url '/templates'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new.from.template")}</a>
             </li>
             <li>
                 <a href="<@s.url '/transactions/newTransaction/transfer'/>" class="btn-floating btn budgetmaster-dark-green"><i class="material-icons">swap_horiz</i></a>

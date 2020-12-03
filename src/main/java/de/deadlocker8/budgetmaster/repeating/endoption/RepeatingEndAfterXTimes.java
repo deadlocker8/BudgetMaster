@@ -5,6 +5,7 @@ import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class RepeatingEndAfterXTimes extends RepeatingEnd
@@ -31,5 +32,21 @@ public class RepeatingEndAfterXTimes extends RepeatingEnd
 	public Object getValue()
 	{
 		return times;
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
+		if(!super.equals(o)) return false;
+		RepeatingEndAfterXTimes that = (RepeatingEndAfterXTimes) o;
+		return times == that.times;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(super.hashCode(), times);
 	}
 }

@@ -35,6 +35,10 @@
                     <div class="col s8 m5 l5">${locale.getString("hotkeys.transactions.new.template")}</div>
                 </div>
                 <div class="row">
+                    <@cellKeyWithModifier locale.getString("hotkeys.transactions.save.modifier") locale.getString("hotkeys.transactions.save.key")/>
+                    <div class="col s8 m5 l5">${locale.getString("hotkeys.transactions.save")}</div>
+                </div>
+                <div class="row">
                     <@cellKey locale.getString("hotkeys.transactions.filter.key")/>
                     <div class="col s8 m5 l5">${locale.getString("hotkeys.transactions.filter")}</div>
                 </div>
@@ -53,6 +57,14 @@
 
 <#macro cellKey key>
     <div class="col s4 m3 offset-m2 l2 offset-l3 right-align bold">
+        <div class="keyboard-key">${key}</div>
+    </div>
+</#macro>
+
+<#macro cellKeyWithModifier modifier key>
+    <div class="col s4 m3 offset-m2 l2 offset-l3 right-align bold">
+        <div class="keyboard-key modifier-key">${modifier}</div>
+        <span class="bold">+</span>
         <div class="keyboard-key">${key}</div>
     </div>
 </#macro>

@@ -2,37 +2,34 @@ package de.deadlocker8.budgetmaster.accounts;
 
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
+import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 
 @Controller
+@RequestMapping(Mappings.ACCOUNTS)
 public class AccountController extends BaseController
 {
-	private final AccountRepository accountRepository;
 	private final AccountService accountService;
 	private final SettingsService settingsService;
 
 	@Autowired
-	public AccountController(AccountRepository accountRepository, AccountService accountService, SettingsService settingsService)
+	public AccountController(AccountService accountService, SettingsService settingsService)
 	{
-		this.accountRepository = accountRepository;
 		this.accountService = accountService;
 		this.settingsService = settingsService;
 	}
 
-	@GetMapping(value = "/accounts/{ID}/select")
+	@GetMapping(value = "/{ID}/select")
 	public String selectAccount(HttpServletRequest request, @PathVariable("ID") Integer ID)
 	{
 		accountService.selectAccount(ID);
@@ -45,7 +42,7 @@ public class AccountController extends BaseController
 		return "redirect:" + referer;
 	}
 
-	@GetMapping(value = "/accounts/{ID}/setAsDefault")
+	@GetMapping(value = "/{ID}/setAsDefault")
 	public String setAsDefault(HttpServletRequest request, @PathVariable("ID") Integer ID)
 	{
 		accountService.setAsDefaultAccount(ID);
@@ -58,7 +55,31 @@ public class AccountController extends BaseController
 		return "redirect:" + referer;
 	}
 
-	@GetMapping("/accounts")
+	@GetMapping(value = "/{ID}/toggleReadOnly")
+	public String toggleReadOnly(HttpServletRequest request, @PathVariable("ID") Integer ID)
+	{
+		final Optional<Account> accountOptional = accountService.getRepository().findById(ID);
+		if(accountOptional.isEmpty())
+		{
+			throw new ResourceNotFoundException();
+		}
+
+		final Account account = accountOptional.get();
+		if(!account.isDefault())
+		{
+			account.setReadOnly(!account.isReadOnly());
+			accountService.getRepository().save(account);
+		}
+
+		String referer = request.getHeader("Referer");
+		if(referer.contains("database/import"))
+		{
+			return "redirect:/settings";
+		}
+		return "redirect:" + referer;
+	}
+
+	@GetMapping
 	public String accounts(Model model)
 	{
 		model.addAttribute("accounts", accountService.getAllAccountsAsc());
@@ -66,32 +87,32 @@ public class AccountController extends BaseController
 		return "accounts/accounts";
 	}
 
-	@GetMapping("/accounts/{ID}/requestDelete")
+	@GetMapping("/{ID}/requestDelete")
 	public String requestDeleteAccount(Model model, @PathVariable("ID") Integer ID)
 	{
 		model.addAttribute("accounts", accountService.getAllAccountsAsc());
-		model.addAttribute("currentAccount", accountRepository.getOne(ID));
+		model.addAttribute("currentAccount", accountService.getRepository().getOne(ID));
 		model.addAttribute("settings", settingsService.getSettings());
 		return "accounts/accounts";
 	}
 
-	@GetMapping("/accounts/{ID}/delete")
+	@GetMapping("/{ID}/delete")
 	public String deleteAccountAndReferringTransactions(Model model, @PathVariable("ID") Integer ID)
 	{
-		if(accountRepository.findAllByType(AccountType.CUSTOM).size() > 1)
+		if(accountService.getRepository().findAllByType(AccountType.CUSTOM).size() > 1)
 		{
 			accountService.deleteAccount(ID);
 			return "redirect:/accounts";
 		}
 
 		model.addAttribute("accounts", accountService.getAllAccountsAsc());
-		model.addAttribute("currentAccount", accountRepository.getOne(ID));
+		model.addAttribute("currentAccount", accountService.getRepository().getOne(ID));
 		model.addAttribute("accountNotDeletable", true);
 		model.addAttribute("settings", settingsService.getSettings());
 		return "accounts/accounts";
 	}
 
-	@GetMapping("/accounts/newAccount")
+	@GetMapping("/newAccount")
 	public String newAccount(Model model)
 	{
 		Account emptyAccount = new Account();
@@ -100,11 +121,11 @@ public class AccountController extends BaseController
 		return "accounts/newAccount";
 	}
 
-	@GetMapping("/accounts/{ID}/edit")
+	@GetMapping("/{ID}/edit")
 	public String editAccount(Model model, @PathVariable("ID") Integer ID)
 	{
-		Optional<Account> accountOptional = accountRepository.findById(ID);
-		if(!accountOptional.isPresent())
+		Optional<Account> accountOptional = accountService.getRepository().findById(ID);
+		if(accountOptional.isEmpty())
 		{
 			throw new ResourceNotFoundException();
 		}
@@ -114,7 +135,7 @@ public class AccountController extends BaseController
 		return "accounts/newAccount";
 	}
 
-	@PostMapping(value = "/accounts/newAccount")
+	@PostMapping(value = "/newAccount")
 	public String post(HttpServletRequest request, Model model,
 					   @ModelAttribute("NewAccount") Account account,
 					   BindingResult bindingResult)
@@ -122,7 +143,7 @@ public class AccountController extends BaseController
 		AccountValidator accountValidator = new AccountValidator();
 		accountValidator.validate(account, bindingResult);
 
-		if(accountRepository.findByName(account.getName()) != null)
+		if(accountService.getRepository().findByName(account.getName()) != null)
 		{
 			bindingResult.addError(new FieldError("NewAccount", "name", "", false, new String[]{"warning.duplicate.account.name"}, null, null));
 		}
@@ -140,17 +161,17 @@ public class AccountController extends BaseController
 			if(account.getID() == null)
 			{
 				// new account
-				accountRepository.save(account);
+				accountService.getRepository().save(account);
 			}
 			else
 			{
 				// edit existing account
-				Optional<Account> existingAccountOptional = accountRepository.findById(account.getID());
+				Optional<Account> existingAccountOptional = accountService.getRepository().findById(account.getID());
 				if(existingAccountOptional.isPresent())
 				{
 					Account existingAccount = existingAccountOptional.get();
 					existingAccount.setName(account.getName());
-					accountRepository.save(existingAccount);
+					accountService.getRepository().save(existingAccount);
 				}
 			}
 		}

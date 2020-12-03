@@ -26,7 +26,7 @@ Mousetrap.bind('v', function()
 {
     if(areHotKeysEnabled())
     {
-        window.location.href = rootURL + '/templates/select';
+        window.location.href = rootURL + '/templates';
     }
 });
 
@@ -55,17 +55,30 @@ Mousetrap.bind('esc', function()
     }
 });
 
+let saveTransactionOrTemplateButton = document.getElementById('button-save-transaction');
+if(saveTransactionOrTemplateButton !== null)
+{
+    Mousetrap(document.querySelector('body')).bind('mod+enter', function(e)
+    {
+        document.getElementById('button-save-transaction').click();
+    });
+}
 
 function areHotKeysEnabled()
 {
-    return !isSearchFocused() && !isCategorySelectFocused();
+    return !isSearchFocused() && !isCategorySelectFocused()  && !isTemplateSearchFocused();
 }
-
 
 function isSearchFocused()
 {
     let searchElement = document.getElementById('search');
     return document.activeElement === searchElement;
+}
+
+function isTemplateSearchFocused()
+{
+    let templateSearchElement = document.getElementById('searchTemplate');
+    return document.activeElement === templateSearchElement;
 }
 
 function isCategorySelectFocused()

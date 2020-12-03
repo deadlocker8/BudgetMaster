@@ -56,7 +56,7 @@
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
             <input class="autocomplete" autocomplete="off" id="transaction-name" type="text" name="name" <@validation.validation "name"/> value="<#if transaction.getName()??>${transaction.getName()}</#if>">
-            <label for="transaction-name">${locale.getString("transaction.new.label.name")}</label>
+            <label class="input-label" for="transaction-name">${locale.getString("transaction.new.label.name")}</label>
         </div>
     </div>
 
@@ -73,7 +73,7 @@
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
             <input id="transaction-amount" type="text" <@validation.validation "amount"/> value="<#if transaction.getAmount()??>${currencyService.getAmountString(transaction.getAmount())}</#if>">
-            <label for="transaction-amount">${locale.getString("transaction.new.label.amount")}</label>
+            <label class="input-label" for="transaction-amount">${locale.getString("transaction.new.label.amount")}</label>
         </div>
         <input type="hidden" id="hidden-transaction-amount" name="amount" value="<#if transaction.getAmount()??>${transaction.getAmount()}</#if>">
     </div>
@@ -81,6 +81,7 @@
     <script>
         amountValidationMessage = "${locale.getString("warning.transaction.amount")}";
         numberValidationMessage = "${locale.getString("warning.empty.number")}";
+        dateValidationMessage = "${locale.getString("warning.transaction.date")}";
     </script>
 </#macro>
 
@@ -113,7 +114,7 @@
                     <option value="${category.getID()?c}">${categoryInfos}</option>
                 </#list>
             </select>
-            <label for="transaction-category">${labelText}</label>
+            <label class="input-label" for="transaction-category">${labelText}</label>
         </div>
     </div>
 
@@ -136,8 +137,8 @@
                 <#assign startDate = dateService.getLongDateString(currentDate)/>
             </#if>
 
-            <input id="transaction-datepicker" type="text" class="datepicker" name="date" value="${startDate}">
-            <label for="transaction-datepicker">${locale.getString("transaction.new.label.date")}</label>
+            <input id="transaction-datepicker" type="text" class="datepicker<#if helpers.isUseSimpleDatepickerForTransactions()>-simple</#if>" name="date" value="${startDate}">
+            <label class="input-label" for="transaction-datepicker">${locale.getString("transaction.new.label.date")}</label>
         </div>
     </div>
 
@@ -151,7 +152,7 @@
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
             <textarea id="transaction-description" class="materialize-textarea" name="description" data-length="250" <@validation.validation "description"/>><#if transaction.getDescription()??>${transaction.getDescription()}</#if></textarea>
-            <label for="transaction-description">${locale.getString("transaction.new.label.description")}</label>
+            <label class="input-label" for="transaction-description">${locale.getString("transaction.new.label.description")}</label>
         </div>
     </div>
 </#macro>
@@ -159,7 +160,7 @@
 <#macro transactionTags transaction>
     <div class="row">
         <div class="col s12 m12 l8 offset-l2">
-            <label class="chips-label" for="transaction-chips">${locale.getString("transaction.new.label.tags")}</label>
+            <label class="input-label" class="chips-label" for="transaction-chips">${locale.getString("transaction.new.label.tags")}</label>
             <div id="transaction-chips" class="chips chips-placeholder chips-autocomplete"></div>
         </div>
         <div id="hidden-transaction-tags"></div>
@@ -187,7 +188,7 @@
 
 <#macro account accounts selectedAccount id name label disabled>
     <div class="row">
-        <div class="input-field col s12 m12 l8 offset-l2">
+        <div class="input-field col s12 m12 l8 offset-l2" id="accountWrapper">
             <select id="${id}" name="${name}" <@validation.validation "account"/> <#if disabled>disabled</#if>>
                 <#list accounts as account>
                     <#if (account.getType().name() != "CUSTOM")>
@@ -202,7 +203,7 @@
                     <option value="${account.getID()?c}">${account.getName()}</option>
                 </#list>
             </select>
-            <label for="${id}">${label}</label>
+            <label class="input-label" for="${id}">${label}</label>
         </div>
     </div>
 </#macro>
@@ -329,7 +330,7 @@
                     <td class="cell">${locale.getString("repeating.end.date")}</td>
                     <td class="cell input-cell">
                         <div class="input-field no-margin">
-                            <input class="datepicker no-margin input-min-width" id="transaction-repeating-end-date-input" type="text" value="${endDate}">
+                            <input class="datepicker<#if helpers.isUseSimpleDatepickerForTransactions()>-simple</#if> no-margin input-min-width" id="transaction-repeating-end-date-input" type="text" value="${endDate}">
                             <label for="transaction-repeating-end-date-input"></label>
                         </div>
                     </td>
@@ -370,15 +371,31 @@
 </#macro>
 
 <#macro buttonSave>
-    <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action">
+    <button id="button-save-transaction" class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action">
         <i class="material-icons left">save</i>${locale.getString("save")}
     </button>
 </#macro>
 
-<#macro buttonTemplate>
-    <div class="fixed-action-btn">
-        <a id="buttonSaveAsTemplate" class="btn-floating btn-large waves-effect waves-light budgetmaster-blue tooltipped" data-position="left" data-tooltip="${locale.getString("save.as.template")}" data-url="<@s.url '/templates/fromTransactionModal'/>">
-            <i class="material-icons left">file_copy</i>${locale.getString("save")}
-        </a>
-    </div>
+<#macro buttonTransactionActions canChangeType canCreateTemplate changetypeInProgress>
+    <#if (canChangeType || canCreateTemplate) && !changetypeInProgress>
+        <div class="fixed-action-btn" id="transaction-actions-button">
+            <a class="btn-floating btn-large waves-effect waves-light budgetmaster-blue">
+                <i class="material-icons left">settings</i>${locale.getString("save")}
+            </a>
+            <ul>
+                <#if canChangeType>
+                    <li>
+                        <a class="btn-floating btn transaction-action mobile-fab-tip no-wrap" data-action-type="changeType" data-url="<@s.url '/transactions/${transaction.getID()?c}/changeTypeModal'/>">${locale.getString("transaction.change.type")}</a>
+                        <a class="btn-floating btn transaction-action budgetmaster-baby-blue" data-action-type="changeType" data-url="<@s.url '/transactions/${transaction.getID()?c}/changeTypeModal'/>"><i class="material-icons">shuffle</i></a>
+                    </li>
+                </#if>
+                <#if canCreateTemplate>
+                    <li>
+                        <a class="btn-floating btn transaction-action mobile-fab-tip no-wrap" data-action-type="saveAsTemplate" data-url="<@s.url '/templates/fromTransactionModal'/>">${locale.getString("save.as.template")}</a>
+                        <a class="btn-floating btn transaction-action budgetmaster-dark-orange" data-action-type="saveAsTemplate" data-url="<@s.url '/templates/fromTransactionModal'/>"><i class="material-icons">file_copy</i></a>
+                    </li>
+                </#if>
+            </ul>
+        </div>
+    </#if>
 </#macro>

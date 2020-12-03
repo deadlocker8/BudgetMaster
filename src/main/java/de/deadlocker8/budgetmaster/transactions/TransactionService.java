@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
-import de.deadlocker8.budgetmaster.categories.CategoryRepository;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
@@ -26,6 +25,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -39,13 +39,13 @@ public class TransactionService implements Resetable
 			.setPrettyPrinting()
 			.create();
 
-	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	private static final Logger LOGGER = LoggerFactory.getLogger(TransactionService.class);
 
-	private TransactionRepository transactionRepository;
-	private RepeatingOptionRepository repeatingOptionRepository;
-	private CategoryService categoryService;
-	private TagService tagService;
-	private SettingsService settingsService;
+	private final TransactionRepository transactionRepository;
+	private final RepeatingOptionRepository repeatingOptionRepository;
+	private final CategoryService categoryService;
+	private final TagService tagService;
+	private final SettingsService settingsService;
 
 	@Autowired
 	public TransactionService(TransactionRepository transactionRepository, RepeatingOptionRepository repeatingOptionRepository, CategoryService categoryService, TagService tagService, SettingsService settingsService)
@@ -83,7 +83,7 @@ public class TransactionService implements Resetable
 		List<Transaction> transactions = getTransactionsForMonthAndYearWithoutRest(account, month, year, filterConfiguration);
 
 		Transaction transactionRest = new Transaction();
-		transactionRest.setCategory(categoryService.getRepository().findByType(CategoryType.REST));
+		transactionRest.setCategory(categoryService.findByType(CategoryType.REST));
 		transactionRest.setName(Localization.getString(Strings.CATEGORY_REST));
 		transactionRest.setDate(DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(1));
 		transactionRest.setAmount(getRest(account, startDate));
@@ -162,9 +162,9 @@ public class TransactionService implements Resetable
 	private void deleteTransactionInRepo(Integer ID)
 	{
 		Optional<Transaction> transactionOptional = transactionRepository.findById(ID);
-		if(!transactionOptional.isPresent())
+		if(transactionOptional.isEmpty())
 		{
-			LOGGER.debug("Skipping already deleted transaction with ID: " + ID);
+			LOGGER.debug(MessageFormat.format("Skipping already deleted transaction with ID: {0}", ID));
 			return;
 		}
 		Transaction transactionToDelete = transactionOptional.get();
@@ -188,7 +188,12 @@ public class TransactionService implements Resetable
 			final Transaction transaction = transactionOptional.get();
 			if(transaction.getCategory() != null)
 			{
-				return transaction.getCategory().getType() != CategoryType.REST;
+				if(transaction.getCategory().getType() == CategoryType.REST)
+				{
+					return false;
+				}
+
+				return !transaction.getAccount().isReadOnly();
 			}
 		}
 		return false;
@@ -284,10 +289,11 @@ public class TransactionService implements Resetable
 		return item;
 	}
 
-	public void prepareModelNewOrEdit(Model model, boolean isEdit, DateTime date, TransactionBase item, List<Account> accounts)
+	public void prepareModelNewOrEdit(Model model, boolean isEdit, DateTime date, TransactionType previousType, TransactionBase item, List<Account> accounts)
 	{
 		model.addAttribute("isEdit", isEdit);
 		model.addAttribute("currentDate", date);
+		model.addAttribute("previousType", previousType);
 		model.addAttribute("categories", categoryService.getAllCategories());
 		model.addAttribute("accounts", accounts);
 		model.addAttribute("transaction", item);

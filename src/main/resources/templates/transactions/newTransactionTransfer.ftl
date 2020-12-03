@@ -30,6 +30,7 @@
                         may then override an existing transactions if the ID is also already used in transactions table -->
                         <input type="hidden" name="ID" value="<#if transaction.class.simpleName == "Transaction" && transaction.getID()??>${transaction.getID()?c}</#if>">
                         <input type="hidden" name="isExpenditure" value="true">
+                        <input type="hidden" name="previousType" value="<#if previousType??>${previousType.name()}</#if>">
 
                         <#-- name -->
                         <@newTransactionMacros.transactionName transaction suggestionsJSON/>
@@ -65,11 +66,13 @@
 
                         <br>
                         <#-- buttons -->
-                        <@newTransactionMacros.buttons "/transactions"/>
-                        <@newTransactionMacros.buttonTemplate/>
+                        <@newTransactionMacros.buttons '/transactions'/>
+                        <@newTransactionMacros.buttonTransactionActions isEdit true previousType??/>
                     </form>
 
                     <div id="saveAsTemplateModalContainer"></div>
+
+                    <div id="changeTransactionTypeModalContainer"></div>
                 </div>
             </div>
         </main>
@@ -90,6 +93,7 @@
         <script src="<@s.url '/js/libs/spectrum.js'/>"></script>
         <script src="<@s.url '/js/helpers.js'/>"></script>
         <script src="<@s.url '/js/transactions.js'/>"></script>
+        <script src="<@s.url '/js/transactionActions.js'/>"></script>
         <script src="<@s.url '/js/categorySelect.js'/>"></script>
         <script src="<@s.url '/js/templates.js'/>"></script>
     </body>

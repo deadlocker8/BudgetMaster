@@ -201,6 +201,10 @@ ul.sidenav.sidenav-fixed > li:last-child {
     font-style: italic;
 }
 
+.input-label {
+    color: #FFFFFF !important;
+}
+
 /* input text color */
 .input-field input[type=text] {
     color: #FFFFFF;
@@ -415,7 +419,34 @@ textarea {
 }
 
 #logo-home {
-    max-height: 15vmin;
+    max-height: 13vmin;
+}
+
+.home-firstUseBanner-wrapper {
+    display: inline-block;
+}
+
+.home-firstUseBanner {
+    border: 2px solid white;
+    border-radius: 5px;
+    padding: 0 1vmin;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items:  center;
+    font-size: 1.8vmin;
+}
+
+.home-firstUseBanner-item {
+    padding: 10px 0 10px 10px;
+}
+
+.home-firstUseBanner i {
+    font-size: 2.5vmin;
+}
+
+.home-firstUseBanner-clear i {
+    font-size: 1.8vmin;
 }
 
 .break-all {
@@ -610,6 +641,16 @@ input[type="radio"]:not(:checked) + span::before, [type="radio"]:not(:checked) +
 /* inputs with icon prefix */
 .input-field .prefix.active {
     color: #2E79B9;
+}
+
+.placeholder-icon {
+    display: inline-block;
+    width: 1.3rem;
+    margin-right: 15px;
+}
+
+.whatsNewLink:hover {
+    cursor: pointer;
 }
 
 .invisible {

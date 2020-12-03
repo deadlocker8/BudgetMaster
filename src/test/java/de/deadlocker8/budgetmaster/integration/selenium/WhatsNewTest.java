@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.integration;
+package de.deadlocker8.budgetmaster.integration.selenium;
 
 import de.deadlocker8.budgetmaster.Main;
 import de.deadlocker8.budgetmaster.authentication.UserService;
@@ -11,24 +11,26 @@ import org.junit.rules.TestName;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SeleniumTest
-public class ImportTest
+public class WhatsNewTest
 {
+	private IntegrationTestHelper helper;
 	private WebDriver driver;
 
 	@LocalServerPort
@@ -49,7 +51,7 @@ public class ImportTest
 		@Override
 		protected void failed(Throwable e, Description description)
 		{
-			IntegrationTestHelper.saveScreenshots(driver, name, SearchTest.class);
+			IntegrationTestHelper.saveScreenshots(driver, name, WhatsNewTest.class);
 		}
 	};
 
@@ -57,20 +59,21 @@ public class ImportTest
 	public void prepare()
 	{
 		FirefoxOptions options = new FirefoxOptions();
-		options.setHeadless(true);
+		options.setHeadless(false);
 		driver = new FirefoxDriver(options);
-	}
-	@Test
-	public void requestImport()
-	{
-		IntegrationTestHelper helper = new IntegrationTestHelper(driver, port);
+
+		// prepare
+		helper = new IntegrationTestHelper(driver, port);
 		helper.start();
 		helper.login(UserService.DEFAULT_PASSWORD);
 		helper.hideBackupReminder();
+	}
 
-		String path = getClass().getClassLoader().getResource("SearchDatabase.json").getFile().replace("/", File.separator);
-		List<String> sourceAccounts = Arrays.asList("DefaultAccount0815", "sfsdf");
-		List<String> destinationAccounts = Arrays.asList("DefaultAccount0815", "Account2");
-		helper.uploadDatabase(path, sourceAccounts, destinationAccounts);
+	@Test
+	public void test_whats_new_dialog()
+	{
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("modalWhatsNew")));
+		assertThat(driver.findElement(By.id("modalWhatsNew")).isDisplayed()).isTrue();
 	}
 }

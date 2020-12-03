@@ -11,6 +11,7 @@ import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
+import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
@@ -25,6 +26,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Controller
+@RequestMapping(Mappings.CHARTS)
 public class ChartController extends BaseController
 {
 	private static final Gson GSON = new GsonBuilder()
@@ -49,7 +51,7 @@ public class ChartController extends BaseController
 		this.transactionService = transactionService;
 	}
 
-	@GetMapping("/charts")
+	@GetMapping
 	public String charts(Model model)
 	{
 		List<Chart> charts = chartService.getRepository().findAllByOrderByNameAsc();
@@ -66,12 +68,12 @@ public class ChartController extends BaseController
 		return "charts/charts";
 	}
 
-	@PostMapping(value = "/charts")
+	@PostMapping
 	public String showChart(Model model, @ModelAttribute("NewChartSettings") ChartSettings chartSettings)
 	{
 		chartSettings.setFilterConfiguration(filterHelpersService.updateCategoriesAndTags(chartSettings.getFilterConfiguration()));
 		Optional<Chart> chartOptional = chartService.getRepository().findById(chartSettings.getChartID());
-		if(!chartOptional.isPresent())
+		if(chartOptional.isEmpty())
 		{
 			throw new ResourceNotFoundException();
 		}
@@ -88,7 +90,7 @@ public class ChartController extends BaseController
 		return "charts/charts";
 	}
 
-	@GetMapping("/charts/manage")
+	@GetMapping("/manage")
 	public String manage(Model model)
 	{
 		model.addAttribute("charts", chartService.getRepository().findAllByOrderByNameAsc());
@@ -96,7 +98,7 @@ public class ChartController extends BaseController
 		return "charts/manage";
 	}
 
-	@GetMapping("/charts/newChart")
+	@GetMapping("/newChart")
 	public String newChart(Model model)
 	{
 		Chart emptyChart = DefaultCharts.CHART_DEFAULT;
@@ -105,11 +107,11 @@ public class ChartController extends BaseController
 		return "charts/newChart";
 	}
 
-	@GetMapping("/charts/{ID}/edit")
+	@GetMapping("/{ID}/edit")
 	public String editChart(Model model, @PathVariable("ID") Integer ID)
 	{
 		Optional<Chart> chartOptional = chartService.getRepository().findById(ID);
-		if(!chartOptional.isPresent())
+		if(chartOptional.isEmpty())
 		{
 			throw new ResourceNotFoundException();
 		}
@@ -119,7 +121,7 @@ public class ChartController extends BaseController
 		return "charts/newChart";
 	}
 
-	@PostMapping(value = "/charts/newChart")
+	@PostMapping(value = "/newChart")
 	public String post(Model model, @ModelAttribute("NewChart") Chart chart, BindingResult bindingResult)
 	{
 		ChartValidator userValidator = new ChartValidator();
@@ -165,7 +167,7 @@ public class ChartController extends BaseController
 		return "redirect:/charts/manage";
 	}
 
-	@GetMapping("/charts/{ID}/requestDelete")
+	@GetMapping("/{ID}/requestDelete")
 	public String requestDeleteChart(Model model, @PathVariable("ID") Integer ID)
 	{
 		if(!chartService.isDeletable(ID))
@@ -179,7 +181,7 @@ public class ChartController extends BaseController
 		return "charts/manage";
 	}
 
-	@GetMapping(value = "/charts/{ID}/delete")
+	@GetMapping(value = "/{ID}/delete")
 	public String deleteChart(Model model, @PathVariable("ID") Integer ID)
 	{
 		if(chartService.isDeletable(ID))

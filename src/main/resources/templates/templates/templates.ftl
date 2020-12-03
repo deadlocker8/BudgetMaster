@@ -22,7 +22,7 @@
                     <div class="row">
                         <div class="input-field col s12 m12 l8 offset-l2">
                             <i class="material-icons prefix">search</i>
-                            <input id="searchTemplate" type="text">
+                            <input id="searchTemplate" type="text" class="mousetrap">
                             <label for="searchTemplate">${locale.getString("search")}</label>
                         </div>
                     </div>
@@ -35,7 +35,7 @@
                         <div class="headline center-align">${locale.getString("placeholder")}</div>
                     </div>
                 <#else>
-                    <@templateFunctions.listTemplates templates true/>
+                    <@templateFunctions.listTemplates templates/>
                 </#if>
             </div>
 

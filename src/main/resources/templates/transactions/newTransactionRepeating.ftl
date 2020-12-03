@@ -27,6 +27,7 @@
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="ID" value="<#if transaction.getID()??>${transaction.getID()?c}</#if>">
                         <input type="hidden" name="isRepeating" value="${transaction.isRepeating()?c}">
+                        <input type="hidden" name="previousType" value="<#if previousType??>${previousType.name()}</#if>">
 
                         <#-- isPayment switch -->
                         <@newTransactionMacros.isExpenditureSwitch transaction/>
@@ -61,7 +62,10 @@
                         <br>
                         <#-- buttons -->
                         <@newTransactionMacros.buttons "/transactions"/>
+                        <@newTransactionMacros.buttonTransactionActions isEdit false previousType??/>
                     </form>
+
+                    <div id="changeTransactionTypeModalContainer"></div>
                 </div>
             </div>
         </main>
@@ -76,6 +80,7 @@
         <script src="<@s.url '/js/libs/spectrum.js'/>"></script>
         <script src="<@s.url '/js/helpers.js'/>"></script>
         <script src="<@s.url '/js/transactions.js'/>"></script>
+        <script src="<@s.url '/js/transactionActions.js'/>"></script>
         <script src="<@s.url '/js/categorySelect.js'/>"></script>
     </body>
 </html>

@@ -3,9 +3,14 @@ package de.deadlocker8.budgetmaster.integration.helpers;
 import de.thecodelabs.utils.util.Localization;
 import org.junit.rules.TestName;
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -66,11 +71,36 @@ public class IntegrationTestHelper
 		}
 	}
 
+	public void hideWhatsNewDialog()
+	{
+		try
+		{
+			WebDriverWait wait = new WebDriverWait(driver, 2);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("modalWhatsNew")));
+
+			WebElement buttonCloseReminder = driver.findElement(By.cssSelector("#modalWhatsNew #buttonCloseWhatsNew"));
+			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", buttonCloseReminder);
+			buttonCloseReminder.click();
+		}
+		catch(NoSuchElementException | TimeoutException ignored)
+		{
+		}
+	}
+
 	public void uploadDatabase(String path, List<String> sourceAccounts, List<String> destinationAccounts)
 	{
 		if(path.startsWith("\\"))
 		{
 			path = path.substring(1);
+		}
+
+		try
+		{
+			path = URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
+		}
+		catch(UnsupportedEncodingException ex)
+		{
+			throw new RuntimeException(ex.getCause());
 		}
 
 		driver.get(url + "/settings/database/requestImport");
@@ -92,7 +122,11 @@ public class IntegrationTestHelper
 		matchAccounts(sourceAccounts, destinationAccounts);
 
 		// confirm import
-		driver.findElement(By.id("buttonImport")).click();
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("buttonImport")));
+		final WebElement buttonImport = driver.findElement(By.id("buttonImport"));
+		buttonImport.sendKeys("");
+		buttonImport.click();
 
 		assertEquals(Localization.getString("menu.settings"), IntegrationTestHelper.getTextNode(driver.findElement(By.className("headline"))));
 
@@ -103,10 +137,14 @@ public class IntegrationTestHelper
 
 	private void createAccountOnImport(String accountName)
 	{
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("button-new-account")));
 		driver.findElement(By.className("button-new-account")).click();
+
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("account-name")));
 		WebElement inputAccountName = driver.findElement(By.id("account-name"));
 		inputAccountName.sendKeys(accountName);
-		driver.findElement(By.tagName("button")).click();
+		driver.findElement(By.id("button-save-account")).click();
 	}
 
 	private void matchAccounts(List<String> sourceAccounts, List<String> destinationAccounts)
@@ -124,6 +162,9 @@ public class IntegrationTestHelper
 			WebElement row = tableRows.get(i);
 			WebElement sourceAccount = row.findElement(By.className("account-source"));
 			assertEquals(sourceAccounts.get(i), IntegrationTestHelper.getTextNode(sourceAccount));
+
+			WebDriverWait wait = new WebDriverWait(driver, 5);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("select-dropdown")));
 
 			row.findElement(By.className("select-dropdown")).click();
 			WebElement accountToSelect = row.findElement(By.xpath("//form/table/tbody/tr[" + (i + 1) + "]/td[5]/div/div/ul/li/span[text()='" + account + "']"));

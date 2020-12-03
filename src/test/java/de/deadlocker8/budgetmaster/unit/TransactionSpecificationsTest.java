@@ -234,7 +234,7 @@ public class TransactionSpecificationsTest
 		Specification spec = TransactionSpecifications.withDynamicQuery(startDate2019, DateTime.now(), account2, false, false, true, null, null, null, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertThat(results).hasSize(0);
+		assertThat(results).isEmpty();
 	}
 
 	@Test
@@ -267,7 +267,7 @@ public class TransactionSpecificationsTest
 		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, true, null, categoryIDs, null, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertThat(results).hasSize(0);
+		assertThat(results).isEmpty();
 	}
 
 	@Test
@@ -351,7 +351,7 @@ public class TransactionSpecificationsTest
 		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, true, null, null, tagIDs, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertThat(results).hasSize(0);
+		assertThat(results).isEmpty();
 	}
 
 	@Test

@@ -11,17 +11,16 @@ import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.DatabaseParser;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
-import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.services.BackupService;
+import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
+import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.RandomUtils;
 import de.thecodelabs.versionizer.UpdateItem;
 import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -38,12 +37,14 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 
 @Controller
+@RequestMapping(Mappings.SETTINGS)
 public class SettingsController extends BaseController
 {
 	private final SettingsService settingsService;
@@ -55,7 +56,6 @@ public class SettingsController extends BaseController
 	private final BudgetMasterUpdateService budgetMasterUpdateService;
 	private final BackupService scheduleTaskService;
 
-	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private final List<Integer> SEARCH_RESULTS_PER_PAGE_OPTIONS = Arrays.asList(10, 20, 25, 30, 50, 100);
 
 	@Autowired
@@ -71,7 +71,7 @@ public class SettingsController extends BaseController
 		this.scheduleTaskService = scheduleTaskService;
 	}
 
-	@GetMapping("/settings")
+	@GetMapping
 	public String settings(WebRequest request, Model model)
 	{
 		model.addAttribute("settings", settingsService.getSettings());
@@ -85,7 +85,7 @@ public class SettingsController extends BaseController
 		return "settings/settings";
 	}
 
-	@PostMapping(value = "/settings/save")
+	@PostMapping(value = "/save")
 	public String post(Model model, @ModelAttribute("Settings") Settings settings, BindingResult bindingResult,
 					   @RequestParam(value = "password") String password,
 					   @RequestParam(value = "passwordConfirmation") String passwordConfirmation,
@@ -176,7 +176,7 @@ public class SettingsController extends BaseController
 		return Optional.empty();
 	}
 
-	@GetMapping("/settings/database/requestExport")
+	@GetMapping("/database/requestExport")
 	public void downloadFile(HttpServletResponse response)
 	{
 		LOGGER.debug("Exporting database...");
@@ -204,7 +204,7 @@ public class SettingsController extends BaseController
 		}
 	}
 
-	@GetMapping("/settings/database/requestDelete")
+	@GetMapping("/database/requestDelete")
 	public String requestDeleteDatabase(Model model)
 	{
 		String verificationCode = RandomUtils.generateRandomString(RandomUtils.RandomType.BASE_58, 4, RandomUtils.RandomStringPolicy.UPPER, RandomUtils.RandomStringPolicy.DIGIT);
@@ -216,7 +216,7 @@ public class SettingsController extends BaseController
 		return "settings/settings";
 	}
 
-	@PostMapping(value = "/settings/database/delete")
+	@PostMapping(value = "/database/delete")
 	public String deleteDatabase(Model model, @RequestParam("verificationCode") String verificationCode,
 								 @RequestParam("verificationUserInput") String verificationUserInput)
 	{
@@ -237,7 +237,7 @@ public class SettingsController extends BaseController
 		return "settings/settings";
 	}
 
-	@GetMapping("/settings/database/requestImport")
+	@GetMapping("/database/requestImport")
 	public String requestImportDatabase(Model model)
 	{
 		model.addAttribute("importDatabase", true);
@@ -247,7 +247,7 @@ public class SettingsController extends BaseController
 		return "settings/settings";
 	}
 
-	@RequestMapping("/settings/database/upload")
+	@RequestMapping("/database/upload")
 	public String upload(WebRequest request, Model model, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
 	{
 		if(file.isEmpty())
@@ -258,7 +258,7 @@ public class SettingsController extends BaseController
 		try
 		{
 			String jsonString = new String(file.getBytes(), StandardCharsets.UTF_8);
-			DatabaseParser importer = new DatabaseParser(jsonString, categoryService.getRepository().findByType(CategoryType.NONE));
+			DatabaseParser importer = new DatabaseParser(jsonString, categoryService.findByType(CategoryType.NONE));
 			Database database = importer.parseDatabaseFromJSON();
 
 			request.setAttribute("database", database, WebRequest.SCOPE_SESSION);
@@ -276,16 +276,16 @@ public class SettingsController extends BaseController
 		}
 	}
 
-	@GetMapping("/settings/database/accountMatcher")
+	@GetMapping("/database/accountMatcher")
 	public String openAccountMatcher(WebRequest request, Model model)
 	{
 		model.addAttribute("database", request.getAttribute("database", WebRequest.SCOPE_SESSION));
-		model.addAttribute("availableAccounts", accountService.getAllAccountsAsc());
+		model.addAttribute("availableAccounts", accountService.getAllActivatedAccountsAsc());
 		model.addAttribute("settings", settingsService.getSettings());
 		return "settings/import";
 	}
 
-	@PostMapping("/settings/database/import")
+	@PostMapping("/database/import")
 	public String importDatabase(WebRequest request, @ModelAttribute("Import") AccountMatchList accountMatchList, Model model)
 	{
 		importService.importDatabase((Database) request.getAttribute("database", WebRequest.SCOPE_SESSION), accountMatchList);
@@ -333,9 +333,16 @@ public class SettingsController extends BaseController
 			e.printStackTrace();
 		}
 
-		LOGGER.info("Stopping BudgetMaster for update to version " + budgetMasterUpdateService.getAvailableVersionString());
+		LOGGER.info(MessageFormat.format("Stopping BudgetMaster for update to version {0}", budgetMasterUpdateService.getAvailableVersionString()));
 		System.exit(0);
 
 		return "";
+	}
+
+	@RequestMapping("/hideFirstUseBanner")
+	public String hideFirstUseBanner()
+	{
+		settingsService.disableFirstUseBanner();
+		return "redirect:/";
 	}
 }

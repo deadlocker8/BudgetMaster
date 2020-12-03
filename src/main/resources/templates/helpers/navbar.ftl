@@ -18,6 +18,7 @@
 
         <@itemDivider/>
         <@itemWithIcon "hotkeys", "/hotkeys", locale.getString("menu.hotkeys"), "keyboard", "budgetmaster-grey", activeID/>
+        <@itemWithFontawesomeIcon "firstUseGuide", "/firstUse", locale.getString("menu.firstUseGuide"), "fas fa-graduation-cap", "budgetmaster-grey", activeID/>
         <@itemWithIcon "about", "/about", locale.getString("menu.about"), "info", "budgetmaster-grey", activeID/>
 
         <@itemDivider/>
@@ -25,7 +26,7 @@
 
         <#if updateCheckService.isUpdateAvailable()>
             <@itemDivider/>
-            <@itemUpdate "/update", locale.getString("menu.update"), "system_update"/>
+            <@itemUpdate "/settings/update", locale.getString("menu.update"), "system_update"/>
         </#if>
 
         <#if programArgs.isTest()>
@@ -50,6 +51,7 @@
     </form>
 
     <@backupReminder settings/>
+    <@whatsNewModal settings/>
 </#macro>
 
 <#macro itemLogo>
@@ -118,6 +120,14 @@
     </#if>
 </#macro>
 
+<#macro itemWithFontawesomeIcon ID link text icon activeColor activeID>
+    <#if activeID == ID>
+        <li class="active"><a href="<@s.url '${link}'/>" class="waves-effect no-padding"><div class="stripe ${activeColor}"></div><i class="${icon}"></i>${text}</a></li>
+    <#else>
+        <li><a href="<@s.url '${link}'/>" class="waves-effect"><i class="${icon}"></i>${text}</a></li>
+    </#if>
+</#macro>
+
 <#macro itemLogout text icon>
     <li><a class="waves-effect" id="button-logout"><i class="material-icons">${icon}</i>${text}</a></li>
 </#macro>
@@ -142,5 +152,11 @@
                 <a href="<@s.url '/backupReminder/settings'/>" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("info.button.backup.reminder")}</a>
             </div>
         </div>
+    </#if>
+</#macro>
+
+<#macro whatsNewModal settings>
+    <#if settings.needToShowWhatsNew()>
+        <div id="whatsNewModelContainer" data-url="<@s.url '/about/whatsNewModal'/>"></div>
     </#if>
 </#macro>

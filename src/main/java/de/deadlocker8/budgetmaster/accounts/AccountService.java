@@ -18,10 +18,11 @@ import java.util.Optional;
 @Service
 public class AccountService implements Resetable
 {
-	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-	private AccountRepository accountRepository;
-	private TransactionService transactionService;
-	private UserRepository userRepository;
+	private static final Logger LOGGER = LoggerFactory.getLogger(AccountService.class);
+
+	private final AccountRepository accountRepository;
+	private final TransactionService transactionService;
+	private final UserRepository userRepository;
 
 	@Autowired
 	public AccountService(AccountRepository accountRepository, TransactionService transactionService, UserRepository userRepository)
@@ -45,10 +46,17 @@ public class AccountService implements Resetable
 		return accounts;
 	}
 
+	public List<Account> getAllActivatedAccountsAsc()
+	{
+		List<Account> accounts = accountRepository.findAllByType(AccountType.ALL);
+		accounts.addAll(accountRepository.findAllByTypeAndIsReadOnlyOrderByNameAsc(AccountType.CUSTOM, false));
+		return accounts;
+	}
+
 	public void deleteAccount(int ID)
 	{
 		Optional<Account> accountToDeleteOptional = accountRepository.findById(ID);
-		if(!accountToDeleteOptional.isPresent())
+		if(accountToDeleteOptional.isEmpty())
 		{
 			return;
 		}
@@ -97,6 +105,16 @@ public class AccountService implements Resetable
 			LOGGER.debug("Created default account");
 		}
 
+		// handle null values for new field "isReadOnly"
+		for(Account account : accountRepository.findAll())
+		{
+			if(account.isReadOnly() == null)
+			{
+				account.setReadOnly(false);
+			}
+			accountRepository.save(account);
+		}
+
 		Account defaultAccount = accountRepository.findByIsDefault(true);
 		if(defaultAccount == null)
 		{
@@ -121,7 +139,7 @@ public class AccountService implements Resetable
 		deselectAllAccounts();
 
 		Optional<Account> accountToSelectOptional = accountRepository.findById(ID);
-		if(!accountToSelectOptional.isPresent())
+		if(accountToSelectOptional.isEmpty())
 		{
 			return;
 		}
@@ -140,15 +158,20 @@ public class AccountService implements Resetable
 
 	public void setAsDefaultAccount(int ID)
 	{
-		unsetDefaultForAllAccounts();
-
 		Optional<Account> accountToSelectOptional = accountRepository.findById(ID);
-		if(!accountToSelectOptional.isPresent())
+		if(accountToSelectOptional.isEmpty())
 		{
 			return;
 		}
 
 		Account accountToSelect = accountToSelectOptional.get();
+		if(accountToSelect.isReadOnly())
+		{
+			return;
+		}
+
+		unsetDefaultForAllAccounts();
+
 		accountToSelect.setDefault(true);
 		accountRepository.save(accountToSelect);
 	}

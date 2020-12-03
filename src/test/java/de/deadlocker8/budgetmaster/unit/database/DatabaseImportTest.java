@@ -342,16 +342,22 @@ public class DatabaseImportTest
 		transactions.add(transaction2);
 
 		// templates
-		Template template = new Template();
-		template.setTemplateName("MyTemplate");
-		template.setAmount(1500);
-		template.setName("Transaction from Template");
+		Template template1 = new Template();
+		template1.setTemplateName("MyTemplate");
+		template1.setAmount(1500);
+		template1.setAccount(sourceAccount1);
+		template1.setName("Transaction from Template");
 		List<Tag> tags2 = new ArrayList<>();
 		tags2.add(tag1);
-		template.setTags(tags2);
+		template1.setTags(tags2);
+
+		Template template2 = new Template();
+		template2.setTemplateName("MyTemplate2");
+		template2.setTags(new ArrayList<>());
 
 		List<Template> templates = new ArrayList<>();
-		templates.add(template);
+		templates.add(template1);
+		templates.add(template2);
 
 		// database
 		Database database = new Database(new ArrayList<>(), accounts, transactions, templates);
@@ -384,7 +390,23 @@ public class DatabaseImportTest
 		expectedTransaction2.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
 		expectedTransaction2.setTags(new ArrayList<>());
 
+		Template expectedTemplate1 = new Template();
+		expectedTemplate1.setTemplateName("MyTemplate");
+		expectedTemplate1.setAmount(1500);
+		expectedTemplate1.setAccount(destAccount1);
+		expectedTemplate1.setName("Transaction from Template");
+		List<Tag> expectedTemplateTags = new ArrayList<>();
+		expectedTemplateTags.add(tag1);
+		expectedTemplate1.setTags(expectedTemplateTags);
+
+		Template expectedTemplate2 = new Template();
+		expectedTemplate2.setTemplateName("MyTemplate2");
+		expectedTemplate2.setTags(new ArrayList<>());
+
+
 		// act
+		Mockito.when(tagRepository.save(Mockito.any(Tag.class))).thenReturn(tag1);
+
 		importService.importDatabase(database, accountMatchList);
 		Database databaseResult = importService.getDatabase();
 
@@ -393,7 +415,7 @@ public class DatabaseImportTest
 				.hasSize(2)
 				.contains(expectedTransaction1, expectedTransaction2);
 		assertThat(databaseResult.getTemplates())
-				.hasSize(1)
-				.contains(template);
+				.hasSize(2)
+				.contains(expectedTemplate1, expectedTemplate2);
 	}
 }

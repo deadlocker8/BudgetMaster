@@ -25,6 +25,8 @@
                         <input type="hidden" name="ID" value="${settings.getID()?c}">
                         <input type="hidden" name="lastBackupReminderDate" value="${dateService.getLongDateString(settings.getLastBackupReminderDate())}">
                         <input type="hidden" name="installedVersionCode" value="${settings.getInstalledVersionCode()}">
+                        <input type="hidden" name="whatsNewShownForCurrentVersion" value="${settings.getWhatsNewShownForCurrentVersion()?c}">
+                        <input type="hidden" name="showFirstUseBanner" value="${settings.getShowFirstUseBanner()?c}">
 
                         <#-- password -->
                         <div class="row">
@@ -182,7 +184,7 @@
                             </div>
 
                             <div class="table-cell table-cell-valign">
-                                <a href="<@s.url '/updateSearch'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">refresh</i>${locale.getString("settings.updates.search")}</a>
+                                <a href="<@s.url '/settings/updateSearch'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">refresh</i>${locale.getString("settings.updates.search")}</a>
                             </div>
                         </div>
                     </div>

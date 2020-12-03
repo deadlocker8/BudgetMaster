@@ -22,6 +22,10 @@
                         </div>
                     </div>
 
+                    <#if settings.getShowFirstUseBanner()>
+                        <@indexFunctions.firstUseBanner/>
+                    </#if>
+
                     <div class="hide-on-small-only"><br></div>
 
                     <div class="row home-menu-flex">

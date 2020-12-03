@@ -7,6 +7,10 @@ import java.util.*;
 
 public class CategoryBudgetHandler
 {
+	private CategoryBudgetHandler()
+	{
+	}
+
 	public static List<CategoryBudget> getCategoryBudgets(List<Transaction> transactions, List<Category> categories)
 	{
 		List<CategoryBudget> budgets = new ArrayList<>();

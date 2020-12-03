@@ -16,15 +16,27 @@
                     </div>
                 </div>
                 <br>
-                <div class="center-align"><a href="<@s.url '/accounts/newAccount'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.account.new")}</a></div>
+                <div class="center-align"><a href="<@s.url '/accounts/newAccount'/>" id="button-new-account" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.account.new")}</a></div>
                 <br>
-                <div class="container">
+                <div class="container account-container">
                     <table class="bordered">
                         <#list accounts as account>
                             <#if (account.getType().name() == "CUSTOM")>
                                 <tr>
                                     <td>
-                                        <a href="<@s.url '/accounts/${account.getID()?c}/setAsDefault'/>" class="btn-flat no-padding text-color tooltipped" data-position="left" data-tooltip="${locale.getString("account.tooltip.default")}"><i class="material-icons left"><#if account.isDefault()>star<#else>star_border</#if></i></a>
+                                        <#if account.isReadOnly()>
+                                            <#assign toolTipText = locale.getString("account.tooltip.readonly.activate")/>
+                                            <#assign lockIcon = '<i class="fas fa-lock"></i>'/>
+                                            <div class="placeholder-icon"></div>
+                                        <#else>
+                                            <#assign toolTipText = locale.getString("account.tooltip.readonly.deactivate")/>
+                                            <#assign lockIcon = '<i class="fas fa-lock-open"></i>'/>
+                                            <a href="<@s.url '/accounts/${account.getID()?c}/setAsDefault'/>" class="btn-flat no-padding text-color tooltipped" data-position="left" data-tooltip="${locale.getString("account.tooltip.default")}"><i class="material-icons left"><#if account.isDefault()>star<#else>star_border</#if></i></a>
+                                        </#if>
+
+                                        <#if !account.isDefault()>
+                                            <a href="<@s.url '/accounts/${account.getID()?c}/toggleReadOnly'/>" class="btn-flat no-padding text-color tooltipped" data-position="right" data-tooltip="${toolTipText}">${lockIcon}</a>
+                                        </#if>
                                     </td>
                                     <td>${account.getName()}</td>
                                     <td>

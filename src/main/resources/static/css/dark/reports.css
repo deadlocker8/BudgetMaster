@@ -55,7 +55,20 @@
 
 .table-advice {
     width: auto;
-    margin: auto;
+    margin: 1vmin;
+    border: 2px solid white;
+    border-radius: 5px;
+    padding: 0 1vmin;
+    display: inline-block;
+}
+
+.table-advice td{
+    padding: 10px;
+    font-size: 1.5vmin;
+}
+
+.table-advice i {
+    font-size: 2.5vmin;
 }
 
 .columnName-selected {

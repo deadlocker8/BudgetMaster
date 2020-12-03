@@ -5,31 +5,6 @@ $(document).ready(function()
         $('#modalConfirmDelete').modal('open');
     }
 
-    if($('#buttonSaveAsTemplate').length)
-    {
-        $('#buttonSaveAsTemplate').click(function()
-        {
-            // check if transaction form is valid
-            let isValidForm = validateForm(true);
-            if(!isValidForm)
-            {
-                $('#modalCreateFromTransaction').modal('close');
-                M.toast({html: createTemplateWithErrorInForm});
-                return;
-            }
-
-            $.ajax({
-                type: 'GET',
-                url: $('#buttonSaveAsTemplate').attr('data-url'),
-                data: {},
-                success: function(data)
-                {
-                    createAndOpenModal(data)
-                }
-            });
-        });
-    }
-
     M.Collapsible.init(document.querySelector('.collapsible.expandable'), {
         accordion: false
     });
@@ -58,7 +33,16 @@ $(document).ready(function()
     {
         handleIncludeAccountCheckbox('include-transfer-account', 'transaction-transfer-account')
     }
+
+    if($("#searchTemplate").length)
+    {
+        document.getElementById('searchTemplate').focus();
+    }
+
+    enableHotKeys();
 });
+
+let selectedTemplateName = null;
 
 function handleIncludeAccountCheckbox(checkboxID, selectID)
 {
@@ -70,84 +54,6 @@ function handleIncludeAccountCheckbox(checkboxID, selectID)
         accountSelect.disabled = !event.target.checked;
         M.FormSelect.init(document.querySelectorAll('#' + selectID), {});
     });
-}
-
-function createAndOpenModal(data)
-{
-    let modalID = '#modalCreateFromTransaction';
-
-    $('#saveAsTemplateModalContainer').html(data);
-    $(modalID).modal();
-    $(modalID).modal('open');
-    let templateNameInput = document.getElementById('template-name');
-    templateNameInput.focus();
-    $(templateNameInput).on('keypress', function(e)
-    {
-        let code = e.keyCode || e.which;
-        if(code === 13)
-        {
-            saveAsTemplate();
-        }
-    });
-
-    $('#buttonCreateTemplate').click(function()
-    {
-        saveAsTemplate();
-    });
-}
-
-function saveAsTemplate()
-{
-    // validate template name
-    let templateName = document.getElementById('template-name').value;
-    let isValid = validateTemplateName(templateName);
-    if(!isValid)
-    {
-        return
-    }
-
-    let form = document.getElementsByName('NewTransaction')[0];
-    form.appendChild(createAdditionalHiddenInput('templateName', templateName));
-    form.appendChild(createAdditionalHiddenInput('includeCategory', document.getElementById('include-category').checked));
-    form.appendChild(createAdditionalHiddenInput('includeAccount', document.getElementById('include-account').checked));
-
-    // replace form target url
-    form.action = $('#buttonCreateTemplate').attr('data-url');
-    form.submit();
-}
-
-function validateTemplateName(templateName)
-{
-    if(templateName.length === 0)
-    {
-        addTooltip('template-name', templateNameEmptyValidationMessage);
-        return false;
-    }
-    else
-    {
-        removeTooltip('template-name');
-    }
-
-    if(existingTemplateNames.includes(templateName))
-    {
-        addTooltip('template-name', templateNameDuplicateValidationMessage);
-        return false;
-    }
-    else
-    {
-        removeTooltip('template-name');
-    }
-
-    return true;
-}
-
-function createAdditionalHiddenInput(name, value)
-{
-    let newInput = document.createElement('input');
-    newInput.setAttribute('type', 'hidden');
-    newInput.setAttribute('name', name);
-    newInput.setAttribute('value', value);
-    return newInput;
 }
 
 function searchTemplates(searchText)
@@ -188,9 +94,164 @@ function searchTemplates(searchText)
     if(numberOfVisibleItems === 0)
     {
         collapsible.classList.add('hidden');
+
+        // hide all item selections
+        let templateItems = document.getElementsByClassName('template-item');
+        for(let i = 0; i < templateItems.length; i++)
+        {
+            toggleItemSelection(templateItems[i], false);
+        }
+        selectedTemplateName = null;
     }
     else
     {
         collapsible.classList.remove('hidden');
     }
+
+    handleKeyUpOrDown(null);
+}
+
+function enableHotKeys()
+{
+    Mousetrap.bind('up', function()
+    {
+        handleKeyUpOrDown(true);
+    });
+
+    Mousetrap.bind('down', function()
+    {
+        handleKeyUpOrDown(false);
+    });
+
+    Mousetrap.bind('enter', function()
+    {
+        if(!isSearchFocused())
+        {
+            confirmTemplateSelection();
+        }
+    });
+
+    handleKeyUpOrDown(false);
+}
+
+function handleKeyUpOrDown(isUp)
+{
+    let templateItems = document.getElementsByClassName('template-item');
+    for(let i = 0; i < templateItems.length; i++)
+    {
+        toggleItemSelection(templateItems[i], false);
+    }
+    templateItems = document.querySelectorAll('.template-item:not(.hidden)');
+
+    if(templateItems.length === 0)
+    {
+        selectedTemplateName = null;
+        return;
+    }
+
+    let previousIndex = getIndexOfTemplateName(templateItems, selectedTemplateName);
+    let noItemSelected = selectedTemplateName === null;
+    let previousItemNoLongerInList = previousIndex === null;
+
+    if(noItemSelected || previousItemNoLongerInList)
+    {
+        // select the first item
+        selectItem(templateItems, 0);
+    }
+    else
+    {
+        if(isUp === null )
+        {
+            selectItem(templateItems, previousIndex);
+            return;
+        }
+
+        // select next item
+        if(isUp)
+        {
+            selectNextItemOnUp(templateItems, previousIndex);
+        }
+        else
+        {
+            selectNextItemOnDown(templateItems, previousIndex);
+        }
+    }
+}
+
+function selectItem(templateItems, index)
+{
+    toggleItemSelection(templateItems[index], true);
+    selectedTemplateName = getTemplateName(templateItems[index]);
+    document.getElementById('searchTemplate').focus();
+}
+
+function toggleItemSelection(templateItem, isSelected)
+{
+    templateItem.getElementsByClassName('collapsible-header')[0].classList.toggle('template-selected', isSelected);
+}
+
+function getTemplateName(templateItem)
+{
+    return templateItem.getElementsByClassName('template-header-name')[0];
+}
+
+function getIndexOfTemplateName(templateItems, templateName)
+{
+    for(let i = 0; i < templateItems.length; i++)
+    {
+        let currentTemplateName = getTemplateName(templateItems[i]);
+        if(currentTemplateName === templateName)
+        {
+            return i;
+        }
+    }
+
+    return null;
+}
+
+function selectNextItemOnDown(templateItems, previousIndex)
+{
+    let isLastItemSelected = previousIndex + 1 === templateItems.length;
+    if(isLastItemSelected)
+    {
+        selectItem(templateItems, 0);
+    }
+    else
+    {
+        selectItem(templateItems, previousIndex + 1);
+    }
+}
+
+function selectNextItemOnUp(templateItems, previousIndex)
+{
+    let isFirstItemSelected = previousIndex === 0;
+    if(isFirstItemSelected)
+    {
+        selectItem(templateItems, templateItems.length - 1);
+    }
+    else
+    {
+        selectItem(templateItems, previousIndex - 1);
+    }
+}
+
+function confirmTemplateSelection()
+{
+    let templateItems = document.querySelectorAll('.template-item:not(.hidden)');
+    if(templateItems.length === 0)
+    {
+        selectedTemplateName = null;
+        return;
+    }
+
+    let index = getIndexOfTemplateName(templateItems, selectedTemplateName);
+    let indexItemNoLongerInList = index === null;
+    let noItemSelected = selectedTemplateName === null;
+
+    if(noItemSelected || indexItemNoLongerInList)
+    {
+        return;
+    }
+
+    templateItems[index].getElementsByClassName('button-select-template')[0].click();
 }

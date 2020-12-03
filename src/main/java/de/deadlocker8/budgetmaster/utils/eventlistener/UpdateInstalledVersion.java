@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.utils.eventlistener;
 
 import de.deadlocker8.budgetmaster.Build;
+import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +35,14 @@ public class UpdateInstalledVersion
 		final Build build = Build.getInstance();
 		final int runningVersionCode = Integer.parseInt(build.getVersionCode());
 
+		final Settings settings = settingsService.getSettings();
+		if(settings.getInstalledVersionCode() < runningVersionCode)
+		{
+			LOGGER.debug("Reset 'whatsNewShownForCurrentVersion'");
+			settings.setWhatsNewShownForCurrentVersion(false);
+		}
+
 		LOGGER.debug(MessageFormat.format("Updated installedVersionCode to {0}", runningVersionCode));
-		settingsService.getSettings().setInstalledVersionCode(runningVersionCode);
+		settings.setInstalledVersionCode(runningVersionCode);
 	}
 }

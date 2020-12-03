@@ -231,7 +231,7 @@
         },
         {
             "ID": 7,
-            "amount": 35000,
+            "amount": -35000,
             "account": {
                 "ID": 3,
                 "name": "Second Account"

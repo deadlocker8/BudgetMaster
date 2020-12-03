@@ -14,7 +14,7 @@
     </div>
 </#macro>
 
-<#macro listTemplates templates isEditable>
+<#macro listTemplates templates>
     <div class="container">
         <div class="row">
             <div class="col s12">
@@ -24,12 +24,9 @@
                             <div class="collapsible-header bold">
                                 <@templateHeader template/>
                                 <div class="collapsible-header-button">
-                                    <#if isEditable>
-                                        <a href="<@s.url '/templates/${template.ID?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
-                                        <a href="<@s.url '/templates/${template.ID?c}/requestDelete'/>" class="btn-flat no-padding text-color"><i class="material-icons left">delete</i></a>
-                                    <#else>
-                                        <a href="<@s.url '/templates/${template.ID?c}/select'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">note_add</i>${locale.getString("title.transaction.new", locale.getString("title.transaction.new.normal"))}</a>
-                                    </#if>
+                                    <a href="<@s.url '/templates/${template.ID?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left no-margin">edit</i></a>
+                                    <a href="<@s.url '/templates/${template.ID?c}/requestDelete'/>" class="btn-flat no-padding text-color"><i class="material-icons left no-margin">delete</i></a>
+                                    <a href="<@s.url '/templates/${template.ID?c}/select'/>" class="waves-effect waves-light btn budgetmaster-blue button-select-template"><i class="material-icons left no-margin">note_add</i></a>
                                 </div>
                             </div>
                             <div class="collapsible-body">
