@@ -84,6 +84,12 @@ public class TemplateService implements Resetable
 			final Account selectedAccount = accountService.getRepository().findByIsSelected(true);
 			template.setAccount(selectedAccount);
 		}
+
+		final Account account = template.getAccount();
+		if(account != null && account.isReadOnly())
+		{
+			template.setAccount(accountService.getRepository().findByIsDefault(true));
+		}
 	}
 
 	public void prepareModelNewOrEdit(Model model, boolean isEdit, TransactionBase item, List<Account> accounts)
