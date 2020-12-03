@@ -147,7 +147,7 @@ public class NewTransactionRecurringTest
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", submitButton);
 
 		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.visibilityOf(submitButton));
+		wait.until(ExpectedConditions.elementToBeClickable(submitButton));
 
 		submitButton.click();
 
@@ -211,7 +211,7 @@ public class NewTransactionRecurringTest
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", submitButton);
 
 		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.visibilityOf(submitButton));
+		wait.until(ExpectedConditions.elementToBeClickable(submitButton));
 
 		submitButton.click();
 
