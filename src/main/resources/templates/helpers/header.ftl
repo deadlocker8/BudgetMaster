@@ -7,15 +7,7 @@
         </#if>
 </#macro>
 
-<#macro header title>
-        <#import "/spring.ftl" as s>
-        <title>${title}</title>
-        <meta charset="UTF-8"/>
-        <link rel="stylesheet" href="<@s.url '/webjars/font-awesome/5.15.1/css/all.min.css'/>">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link rel="stylesheet" href="<@s.url "/webjars/materializecss/1.0.0/css/materialize.min.css"/>">
-        <@style "style"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<#macro globals>
         <#global locale = static["de.thecodelabs.utils.util.Localization"]>
         <#global programArgs = static["de.deadlocker8.budgetmaster.ProgramArgs"]>
 
@@ -26,6 +18,17 @@
                 <#global greenTextColor="text-dark-green"/>
                 <#global redTextColor="text-red"/>
         </#if>
+</#macro>
+
+<#macro header title>
+        <#import "/spring.ftl" as s>
+        <title>${title}</title>
+        <meta charset="UTF-8"/>
+        <link rel="stylesheet" href="<@s.url '/webjars/font-awesome/5.15.1/css/all.min.css'/>">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="<@s.url "/webjars/materializecss/1.0.0/css/materialize.min.css"/>">
+        <@style "style"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </#macro>
 
 <#macro logo id classes>

@@ -3,7 +3,8 @@
         <#import "/spring.ftl" as s>
 
         <#import "../helpers/header.ftl" as header>
-        <@header.header "BudgetMaster"/>
+        <@header.globals/>
+		<@header.header "BudgetMaster"/>
         <link type="text/css" rel="stylesheet" href="<@s.url '${"/css/libs/spectrum.css"}'/>"/>
         <@header.style "categories"/>
     </head>

@@ -1,6 +1,7 @@
 <html>
     <head>
         <#import "../helpers/header.ftl" as header>
+        <@header.globals/>
         <@header.header "BudgetMaster - 418"/>
         <@header.style "login"/>
         <#import "/spring.ftl" as s>

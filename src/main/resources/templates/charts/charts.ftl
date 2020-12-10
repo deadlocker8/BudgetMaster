@@ -1,7 +1,8 @@
 <html>
     <head>
         <#import "../helpers/header.ftl" as header>
-        <@header.header "BudgetMaster"/>
+        <@header.globals/>
+		<@header.header "BudgetMaster"/>
         <@header.style "datepicker"/>
         <@header.style "collapsible"/>
         <@header.style "charts"/>

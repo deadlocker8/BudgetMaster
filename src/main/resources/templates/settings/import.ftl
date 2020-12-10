@@ -1,7 +1,8 @@
 <html>
     <head>
         <#import "../helpers/header.ftl" as header>
-        <@header.header "BudgetMaster"/>
+        <@header.globals/>
+		<@header.header "BudgetMaster"/>
         <#import "/spring.ftl" as s>
     </head>
     <body class="budgetmaster-blue-light">

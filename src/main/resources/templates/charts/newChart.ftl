@@ -1,7 +1,8 @@
 <html>
     <head>
         <#import "../helpers/header.ftl" as header>
-        <@header.header "BudgetMaster"/>
+        <@header.globals/>
+		<@header.header "BudgetMaster"/>
         <#import "/spring.ftl" as s>
         <link rel="stylesheet" href="<@s.url "/webjars/codemirror/5.50.0/lib/codemirror.css"/>">
         <@header.style "charts"/>

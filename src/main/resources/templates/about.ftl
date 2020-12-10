@@ -1,6 +1,7 @@
 <html>
     <head>
         <#import "helpers/header.ftl" as header>
+        <@header.globals/>
         <@header.header "BudgetMaster"/>
     </head>
     <body class="budgetmaster-blue-light">
