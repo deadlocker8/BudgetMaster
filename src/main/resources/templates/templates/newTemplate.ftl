@@ -2,7 +2,13 @@
     <head>
         <#import "../helpers/header.ftl" as header>
         <@header.globals/>
-		<@header.header "BudgetMaster"/>
+        <#if isEdit>
+            <#assign title=locale.getString("title.template.edit")/>
+        <#else>
+            <#assign title=locale.getString("title.template.new")/>
+        </#if>
+
+        <@header.header "BudgetMaster - ${title}"/>
         <@header.style "transactions"/>
         <@header.style "datepicker"/>
         <@header.style "categories"/>
@@ -20,7 +26,7 @@
             <div class="card main-card background-color">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="headline"><#if isEdit>${locale.getString("title.template.edit")}<#else>${locale.getString("title.template.new")}</#if></div>
+                        <div class="headline">${title}</div>
                     </div>
                 </div>
                 <div class="container">

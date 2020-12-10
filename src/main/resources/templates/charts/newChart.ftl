@@ -2,7 +2,14 @@
     <head>
         <#import "../helpers/header.ftl" as header>
         <@header.globals/>
-		<@header.header "BudgetMaster"/>
+
+        <#if chart.getID()??>
+            <#assign title=locale.getString("title.chart.edit")/>
+        <#else>
+            <#assign title=locale.getString("title.chart.new")/>
+        </#if>
+
+        <@header.header "BudgetMaster - ${title}"/>
         <#import "/spring.ftl" as s>
         <link rel="stylesheet" href="<@s.url "/webjars/codemirror/5.50.0/lib/codemirror.css"/>">
         <@header.style "charts"/>
@@ -17,7 +24,7 @@
             <div class="card main-card background-color">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="headline"><#if chart.getID()??>${locale.getString("title.chart.edit")}<#else>${locale.getString("title.chart.new")}</#if></div>
+                        <div class="headline">${title}</div>
                     </div>
                 </div>
                 <div class="container">

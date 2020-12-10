@@ -2,7 +2,7 @@
     <head>
         <#import "../helpers/header.ftl" as header>
         <@header.globals/>
-		<@header.header "BudgetMaster"/>
+		<@header.header "BudgetMaster - ${locale.getString('menu.charts')}"/>
         <@header.style "datepicker"/>
         <@header.style "collapsible"/>
         <@header.style "charts"/>

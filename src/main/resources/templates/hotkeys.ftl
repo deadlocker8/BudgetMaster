@@ -2,7 +2,7 @@
     <head>
         <#import "helpers/header.ftl" as header>
         <@header.globals/>
-		<@header.header "BudgetMaster"/>
+        <@header.header "BudgetMaster - ${locale.getString('menu.hotkeys')}"/>
         <@header.style "hotkeys"/>
     </head>
     <body class="budgetmaster-blue-light">

@@ -2,7 +2,14 @@
     <head>
         <#import "../helpers/header.ftl" as header>
         <@header.globals/>
-		<@header.header "BudgetMaster"/>
+
+        <#if account.getID()??>
+            <#assign title=locale.getString("title.account.edit")/>
+        <#else>
+            <#assign title=locale.getString("title.account.new")/>
+        </#if>
+
+        <@header.header "BudgetMaster - ${title}"/>
         <#import "/spring.ftl" as s>
     </head>
     <body class="budgetmaster-blue-light">
@@ -13,7 +20,7 @@
             <div class="card main-card background-color">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="headline"><#if account.getID()??>${locale.getString("title.account.edit")}<#else>${locale.getString("title.account.new")}</#if></div>
+                        <div class="headline">${title}</div>
                     </div>
                 </div>
                 <div class="container">

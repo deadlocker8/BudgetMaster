@@ -2,7 +2,14 @@
     <head>
         <#import "../helpers/header.ftl" as header>
         <@header.globals/>
-		<@header.header "BudgetMaster"/>
+        <#assign title = locale.getString("title.transaction.new.repeating.long")/>
+        <#if isEdit>
+            <#assign title=locale.getString("title.transaction.edit", title)/>
+        <#else>
+            <#assign title=locale.getString("title.transaction.new", title)/>
+        </#if>
+
+        <@header.header "BudgetMaster - ${title}"/>
         <@header.style "transactions"/>
         <@header.style "datepicker"/>
         <@header.style "categories"/>
@@ -18,8 +25,7 @@
             <div class="card main-card background-color">
                 <div class="container">
                     <div class="section center-align">
-                        <#assign title = locale.getString("title.transaction.new.repeating.long")/>
-                        <div class="headline"><#if isEdit>${locale.getString("title.transaction.edit", title)}<#else>${locale.getString("title.transaction.new", title)}</#if></div>
+                        <div class="headline">${title}</div>
                     </div>
                 </div>
                 <div class="container">

@@ -4,7 +4,14 @@
 
         <#import "../helpers/header.ftl" as header>
         <@header.globals/>
-		<@header.header "BudgetMaster"/>
+
+        <#if category.getID()??>
+            <#assign title=locale.getString("title.category.edit")/>
+        <#else>
+            <#assign title=locale.getString("title.category.new")/>
+        </#if>
+
+        <@header.header "BudgetMaster - ${title}"/>
         <link type="text/css" rel="stylesheet" href="<@s.url '${"/css/libs/spectrum.css"}'/>"/>
         <@header.style "categories"/>
     </head>
@@ -18,7 +25,7 @@
             <div class="card main-card background-color">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="headline"><#if category.getID()??>${locale.getString("title.category.edit")}<#else>${locale.getString("title.category.new")}</#if></div>
+                        <div class="headline">${title}</div>
                     </div>
                 </div>
                 <div class="container">

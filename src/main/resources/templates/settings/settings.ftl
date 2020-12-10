@@ -2,7 +2,7 @@
     <head>
         <#import "../helpers/header.ftl" as header>
         <@header.globals/>
-		<@header.header "BudgetMaster"/>
+        <@header.header "BudgetMaster - ${locale.getString('menu.settings')}"/>
         <@header.style "settings"/>
         <#import "/spring.ftl" as s>
     </head>

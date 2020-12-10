@@ -2,7 +2,7 @@
     <head>
         <#import "helpers/header.ftl" as header>
         <@header.globals/>
-        <@header.header "BudgetMaster"/>
+        <@header.header "BudgetMaster - ${locale.getString('menu.about')}"/>
     </head>
     <body class="budgetmaster-blue-light">
         <#import "helpers/navbar.ftl" as navbar>
