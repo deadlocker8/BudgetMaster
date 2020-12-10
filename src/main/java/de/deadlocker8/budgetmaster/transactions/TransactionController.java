@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.transactions;
 
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
+import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.controller.BaseController;
@@ -269,7 +270,13 @@ public class TransactionController extends BaseController
 	public String highlight(Model model, @PathVariable("ID") Integer ID)
 	{
 		Transaction transaction = transactionService.getRepository().getOne(ID);
-		accountService.selectAccount(transaction.getAccount().getID());
+
+		Account currentAccount = helpers.getCurrentAccount();
+		if(currentAccount.getType() != AccountType.ALL || transaction.isTransfer())
+		{
+			accountService.selectAccount(transaction.getAccount().getID());
+		}
+
 		repeatingTransactionUpdater.updateRepeatingTransactions(transaction.getDate().dayOfMonth().withMaximumValue());
 
 		FilterConfiguration filterConfiguration = FilterConfiguration.DEFAULT;
