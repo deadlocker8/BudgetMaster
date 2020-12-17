@@ -123,3 +123,8 @@
 #button-new-transaction i {
     line-height: 36px;
 }
+
+.icon-repeating {
+    vertical-align: middle;
+    font-size: 2rem;
+}

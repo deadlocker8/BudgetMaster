@@ -55,6 +55,7 @@
 <#macro transactionName transaction suggestionsJSON>
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
+            <i class="material-icons prefix">edit</i>
             <input class="autocomplete" autocomplete="off" id="transaction-name" type="text" name="name" <@validation.validation "name"/> value="<#if transaction.getName()??>${transaction.getName()}</#if>">
             <label class="input-label" for="transaction-name">${locale.getString("transaction.new.label.name")}</label>
         </div>
@@ -72,6 +73,7 @@
 <#macro transactionAmount transaction>
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
+            <i class="material-icons prefix">euro</i>
             <input id="transaction-amount" type="text" <@validation.validation "amount"/> value="<#if transaction.getAmount()??>${currencyService.getAmountString(transaction.getAmount())}</#if>">
             <label class="input-label" for="transaction-amount">${locale.getString("transaction.new.label.amount")}</label>
         </div>
@@ -89,6 +91,7 @@
 <#macro categorySelect categories selectedCategory inputClasses labelText>
     <div class="row">
         <div class="input-field ${inputClasses}" id="categoryWrapper">
+            <i class="material-icons prefix">label</i>
             <select id="transaction-category" name="category" <@validation.validation "category"/>>
                 <#list categories as category>
                     <#assign categoryInfos=categoriesFunctions.getCategoryName(category) + "@@@" + category.getColor() + "@@@" + category.getAppropriateTextColor() + "@@@" + category.getID()?c>
@@ -137,6 +140,7 @@
                 <#assign startDate = dateService.getLongDateString(currentDate)/>
             </#if>
 
+            <i class="material-icons prefix">event</i>
             <input id="transaction-datepicker" type="text" class="datepicker<#if helpers.isUseSimpleDatepickerForTransactions()>-simple</#if>" name="date" value="${startDate}">
             <label class="input-label" for="transaction-datepicker">${locale.getString("transaction.new.label.date")}</label>
         </div>
@@ -151,6 +155,7 @@
 <#macro transactionDescription transaction>
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
+            <i class="material-icons prefix">article</i>
             <textarea id="transaction-description" class="materialize-textarea" name="description" data-length="250" <@validation.validation "description"/>><#if transaction.getDescription()??>${transaction.getDescription()}</#if></textarea>
             <label class="input-label" for="transaction-description">${locale.getString("transaction.new.label.description")}</label>
         </div>
@@ -189,6 +194,7 @@
 <#macro account accounts selectedAccount id name label disabled>
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2" id="accountWrapper">
+            <i class="material-icons prefix">account_balance</i>
             <select id="${id}" name="${name}" <@validation.validation "account"/> <#if disabled>disabled</#if>>
                 <#list accounts as account>
                     <#if (account.getType().name() != "CUSTOM")>
@@ -211,6 +217,7 @@
 <#macro transactionRepeating transaction currentDate>
     <div class="row">
         <div class="col s12 m12 l8 offset-l2">
+            <i class="material-icons icon-repeating">repeat</i>
             ${locale.getString("transaction.new.label.repeating")}
         </div>
     </div>
