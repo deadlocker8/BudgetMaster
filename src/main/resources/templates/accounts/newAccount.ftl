@@ -35,6 +35,7 @@
                         <#-- name -->
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
+                                <i class="material-icons prefix">edit</i>
                                 <input id="account-name" type="text" name="name" <@validation.validation "name"/> value="<#if account.getName()??>${account.getName()}</#if>">
                                 <label for="account-name">${locale.getString("account.new.label.name")}</label>
                             </div>

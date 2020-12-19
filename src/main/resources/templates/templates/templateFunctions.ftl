@@ -129,6 +129,7 @@
 <#macro templateNameInput template>
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
+            <i class="material-icons prefix">file_copy</i>
             <input id="template-name" type="text" name="templateName" <@validation.validation "templateName"/> value="<#if template.getTemplateName()??>${template.getTemplateName()}</#if>">
             <label for="template-name">${locale.getString("template.new.label.name")}</label>
         </div>
