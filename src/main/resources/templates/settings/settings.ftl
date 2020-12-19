@@ -32,6 +32,7 @@
                         <#-- password -->
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
+                                <i class="material-icons prefix">vpn_key</i>
                                 <input id="settings-password" type="password" name="password" <@validation.validation "password"/> value="•••••">
                                 <label for="settings-password">${locale.getString("settings.password")}</label>
                             </div>
@@ -40,6 +41,7 @@
                         <#-- password confirmation-->
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
+                                <i class="material-icons prefix">vpn_key</i>
                                 <input id="settings-password-confirmation" type="password" name="passwordConfirmation" <@validation.validation "passwordConfirmation"/> value="•••••">
                                 <label for="settings-password-confirmation">${locale.getString("settings.password.confirmation")}</label>
                             </div>
@@ -48,6 +50,7 @@
                         <#-- currency -->
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
+                                <i class="material-icons prefix">euro</i>
                                 <input id="settings-currency" type="text" name="currency" <@validation.validation "currency"/> value="<#if settings.getCurrency()??>${settings.getCurrency()}</#if>">
                                 <label for="settings-currency">${locale.getString("settings.currency")}</label>
                             </div>
@@ -59,6 +62,7 @@
                         <#-- language -->
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
+                                <i class="material-icons prefix">translate</i>
                                 <select id="settings-language" name="languageType" <@validation.validation "language"/>>
                                     <#list helpers.getAvailableLanguages() as language>
                                         <#if settings.getLanguage() == language>
@@ -75,6 +79,7 @@
                         <#-- search items per page -->
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
+                                <i class="material-icons prefix">search</i>
                                 <select id="settings-search-items-per-page" name="searchItemsPerPage" <@validation.validation "searchItemsPerPage"/>>
                                     <#list searchResultsPerPageOptions as number>
                                         <#if settings.getSearchItemsPerPage() == number>
@@ -113,6 +118,7 @@
 
                         <div class="row" id="settings-auto-backup">
                             <div class="input-field col s12 m12 l8 offset-l2">
+                                <i class="material-icons prefix">event</i>
                                 <input id="settings-backup-auto-days" type="text" <@validation.validation "autoBackupDays"/> value="<#if settings.getAutoBackupActivated()??>${settings.getAutoBackupDays()}</#if>">
                                 <label for="settings-backup-auto-days">${locale.getString("settings.backup.auto.days")}</label>
                             </div>
@@ -124,6 +130,7 @@
                             </script>
 
                             <div class="input-field col s12 m12 l8 offset-l2">
+                                <i class="material-icons prefix">schedule</i>
                                 <select id="settings-backup-auto-time" name="autoBackupTime" <@validation.validation "autoBackupTime"/>>
                                     <#list autoBackupTimes as time>
                                         <#if settings.getAutoBackupTime() == time>
@@ -137,6 +144,7 @@
                             </div>
 
                             <div class="input-field col s12 m12 l8 offset-l2">
+                                <i class="material-icons prefix">auto_delete</i>
                                 <input id="settings-backup-auto-files-to-keep" type="text" <@validation.validation "autoBackupFilesToKeep"/> value="<#if settings.getAutoBackupActivated()??>${settings.getAutoBackupFilesToKeep()}</#if>">
                                 <label for="settings-backup-auto-files-to-keep">${locale.getString("settings.backup.auto.files.to.keep")}</label>
                             </div>
