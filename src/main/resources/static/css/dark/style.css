@@ -225,7 +225,7 @@ ul.sidenav.sidenav-fixed > li:last-child {
 /* label underline focus color */
 .input-field input[type=text]:focus {
     border-bottom: 1px solid #2E79B9 !important;
-    box-shadow: 0 1px 0 0 #CCCCCC !important;
+    box-shadow: 0 1px 0 0 #2E79B9 !important;
 }
 
 /* input password color */
@@ -251,7 +251,7 @@ ul.sidenav.sidenav-fixed > li:last-child {
 /* label password underline focus color */
 .input-field input[type=password]:focus {
     border-bottom: 1px solid #2E79B9 !important;
-    box-shadow: 0 1px 0 0 #CCCCCC !important;
+    box-shadow: 0 1px 0 0 #2E79B9 !important;
 }
 
 textarea {
@@ -266,7 +266,7 @@ textarea {
 /* label underline focus color */
 .input-field textarea:focus {
     border-bottom: 1px solid #2E79B9 !important;
-    box-shadow: 0 1px 0 0 #CCCCCC !important;
+    box-shadow: 0 1px 0 0 #2E79B9 !important;
 }
 
 /* label focus color */

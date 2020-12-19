@@ -229,7 +229,7 @@ ul.sidenav.sidenav-fixed > li:last-child
 /* label chips underline focus color */
 .chips.focus {
     border-bottom: 1px solid #2E79B9 !important;
-    box-shadow: 0 1px 0 0 #2E79B9 !important;
+    box-shadow: 0 1px 0 0 #CCCCCC !important;
 }
 
 .main-card {
