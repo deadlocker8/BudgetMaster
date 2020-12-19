@@ -13,7 +13,7 @@
             <div class="card main-card background-color">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="headline">${locale.getString("menu.hotkeys")}</div>
+                        <div class="headline"><i class="material-icons">keyboard</i> ${locale.getString("menu.hotkeys")}</div>
                     </div>
                 </div>
 

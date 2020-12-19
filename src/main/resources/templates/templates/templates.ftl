@@ -18,7 +18,7 @@
             <div class="card main-card background-color">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="headline">${locale.getString("menu.templates")}</div>
+                        <div class="headline"><i class="material-icons">file_copy</i> ${locale.getString("menu.templates")}</div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12 m12 l8 offset-l2">

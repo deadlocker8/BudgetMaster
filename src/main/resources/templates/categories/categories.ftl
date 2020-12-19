@@ -17,7 +17,7 @@
             <div class="card main-card background-color">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="headline">${locale.getString("menu.categories")}</div>
+                        <div class="headline"><i class="material-icons">label</i> ${locale.getString("menu.categories")}</div>
                     </div>
                 </div>
                 <br>

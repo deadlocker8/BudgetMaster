@@ -20,7 +20,7 @@
             <div class="card main-card background-color">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="headline">${locale.getString("title.charts")}</div>
+                        <div class="headline"><i class="material-icons">show_chart</i> ${locale.getString("title.charts")}</div>
                     </div>
                 </div>
                 <br>
