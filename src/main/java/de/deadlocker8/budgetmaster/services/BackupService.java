@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.services;
 
 import de.deadlocker8.budgetmaster.backup.AutoBackupTime;
+import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import org.joda.time.DateTime;
@@ -19,23 +20,30 @@ import java.util.concurrent.ScheduledFuture;
 public class BackupService
 {
 	private final SettingsService settingsService;
+	private final DatabaseService databaseService;
 
-	private final BackupTask backupTask;
+	private Runnable backupTask;
 
 	private final TaskScheduler scheduler;
 	private final Map<Class<? extends Runnable>, ScheduledFuture<?>> jobsMap = new HashMap<>();
 
 	@Autowired
-	public BackupService(SettingsService settingsService, BackupTask backupTask, TaskScheduler scheduler)
+	public BackupService(SettingsService settingsService, DatabaseService databaseService, TaskScheduler scheduler)
 	{
 		this.settingsService = settingsService;
-		this.backupTask = backupTask;
+		this.databaseService = databaseService;
 		this.scheduler = scheduler;
 	}
 
-	public void startBackupCron(String cron)
+	public void startBackupCron(String cron, Runnable backupTask)
 	{
 		stopBackupCron();
+		this.backupTask = backupTask;
+
+		if(backupTask == null)
+		{
+			return;
+		}
 
 		ScheduledFuture<?> scheduledTask = scheduler.schedule(backupTask, new CronTrigger(cron, TimeZone.getDefault()));
 		jobsMap.put(backupTask.getClass(), scheduledTask);
@@ -43,6 +51,11 @@ public class BackupService
 
 	public void stopBackupCron()
 	{
+		if(backupTask == null)
+		{
+			return;
+		}
+
 		ScheduledFuture<?> scheduledTask = jobsMap.get(backupTask.getClass());
 		if(scheduledTask != null)
 		{
@@ -57,7 +70,8 @@ public class BackupService
 		final Settings settings = settingsService.getSettings();
 		if(settings.isAutoBackupActive())
 		{
-			startBackupCron(computeCron(settings.getAutoBackupTime(), settings.getAutoBackupDays()));
+			final Optional<Runnable> backupTaskOptional = settings.getAutoBackupStrategy().getBackupTask(databaseService);
+			backupTaskOptional.ifPresent(runnable -> startBackupCron(computeCron(settings.getAutoBackupTime(), settings.getAutoBackupDays()), runnable));
 		}
 	}
 

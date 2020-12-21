@@ -1,19 +1,25 @@
 package de.deadlocker8.budgetmaster.backup;
 
+import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.thecodelabs.utils.util.Localization;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.Optional;
 
 public enum AutoBackupStrategy
 {
-	NONE("settings.backup.auto.strategy.none"),
-	LOCAL("settings.backup.auto.strategy.local"),
-	GIT_LOCAL("settings.backup.auto.strategy.git.local"),
-	GIT_REMOTE("settings.backup.auto.strategy.git.remote");
+	NONE("settings.backup.auto.strategy.none", null),
+	LOCAL("settings.backup.auto.strategy.local", LocalBackupTask.class),
+	GIT_LOCAL("settings.backup.auto.strategy.git.local", LocalGitBackupTask.class),
+	GIT_REMOTE("settings.backup.auto.strategy.git.remote", RemoteGitBackupTask.class);
 
 	private String localizationKey;
+	private Class<? extends BackupTask> backupTaskType;
 
-	AutoBackupStrategy(String localizationKey)
+	AutoBackupStrategy(String localizationKey, Class<? extends BackupTask> backupTaskType)
 	{
 		this.localizationKey = localizationKey;
+		this.backupTaskType = backupTaskType;
 	}
 
 	public String getLocalizationKey()
@@ -21,10 +27,33 @@ public enum AutoBackupStrategy
 		return localizationKey;
 	}
 
+	public Class<? extends Runnable> getBackupTaskType()
+	{
+		return backupTaskType;
+	}
+
 	public String getName()
 	{
 		return Localization.getString(localizationKey);
 	}
+
+	public Optional<Runnable> getBackupTask(DatabaseService databaseService)
+	{
+		if(backupTaskType == null)
+		{
+			return Optional.empty();
+		}
+
+		try
+		{
+			return Optional.of(backupTaskType.getConstructor(DatabaseService.class).newInstance(databaseService));
+		}
+		catch(InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e)
+		{
+			throw new RuntimeException("Can't instantiate class " + backupTaskType.getName());
+		}
+	}
+
 	public static AutoBackupStrategy fromName(String name)
 	{
 		for(AutoBackupStrategy type : values())
@@ -37,5 +66,4 @@ public enum AutoBackupStrategy
 
 		return null;
 	}
-
 }

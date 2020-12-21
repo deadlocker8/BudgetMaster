@@ -1,32 +1,35 @@
 package de.deadlocker8.budgetmaster.backup;
 
 import de.deadlocker8.budgetmaster.Main;
+import de.deadlocker8.budgetmaster.database.DatabaseService;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.dircache.DirCache;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.joda.time.DateTime;
-import org.springframework.stereotype.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.MessageFormat;
 
-@Component
-public class RemoteGitBackupTask implements Runnable
+public class RemoteGitBackupTask extends BackupTask
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger(RemoteGitBackupTask.class);
 	private static final String DATE_PATTERN = "yyyy-MM-dd_HH-mm-ss";
 
 	private final Path gitFolder;
 	private final UsernamePasswordCredentialsProvider credentialsProvider;
 	private final String remote;
 
-	public RemoteGitBackupTask()
+	public RemoteGitBackupTask(DatabaseService databaseService)
 	{
-		final Path applicationSupportFolder = Main.getApplicationSupportFolder();
-		final Path backupFolder = applicationSupportFolder.resolve("backups");
-		this.gitFolder = backupFolder.resolve("git/.git");
+		super(databaseService);
+		this.gitFolder = Main.getApplicationSupportFolder().resolve(".git");
 
 		this.credentialsProvider = new UsernamePasswordCredentialsProvider("", "");
 		this.remote = "https://thecodelabs.de/deadlocker8/bm_test.git";
@@ -35,22 +38,41 @@ public class RemoteGitBackupTask implements Runnable
 	@Override
 	public void run()
 	{
+		LOGGER.debug(MessageFormat.format("Starting backup with strategy \"{0}\"", AutoBackupStrategy.GIT_REMOTE));
+
 		try
 		{
 			if(!Files.exists(gitFolder))
 			{
+				LOGGER.debug(MessageFormat.format("Cloning repository \"{0}\" to \"{1}\"...", remote, gitFolder.getParent()));
 				GitHelper.cloneRepository(this.remote, this.credentialsProvider, this.gitFolder.getParent());
 			}
 
-			final Repository repository = GitHelper.openRepository(gitFolder);
-			final Git git = new Git(repository);
+			LOGGER.debug(MessageFormat.format("Using git repository: \"{0}\"", gitFolder));
+			try(Repository repository = GitHelper.openRepository(gitFolder))
+			{
+				final Git git = new Git(repository);
 
-			GitHelper.setRemote(git, this.remote);
-			GitHelper.pullLatestChanges(git, credentialsProvider);
+				LOGGER.debug(MessageFormat.format("Set remote to \"{0}\"", remote));
+				GitHelper.setRemote(git, this.remote);
 
-			git.add().addFilepattern("*.mv.db").call();
-			GitHelper.commitChanges(git, DateTime.now().toString(DATE_PATTERN));
-			GitHelper.push(git, this.credentialsProvider);
+				LOGGER.debug("Pulling changes from remote...");
+				GitHelper.pullLatestChanges(git, credentialsProvider);
+
+				final DirCache dirCache = git.add().addFilepattern(DATABASE_FILE_NAME).call();
+				if(dirCache.getEntryCount() != 1)
+				{
+					throw new RuntimeException(MessageFormat.format("Error adding \"{0}\" to git", DATABASE_FILE_NAME));
+				}
+
+				LOGGER.debug(("Committing changes..."));
+				GitHelper.commitChanges(git, DateTime.now().toString(DATE_PATTERN));
+
+				LOGGER.debug(("Pushing commits to remote..."));
+				GitHelper.push(git, this.credentialsProvider);
+
+				LOGGER.debug("Backup DONE");
+			}
 		}
 		catch(IOException | GitAPIException | URISyntaxException | GitHelper.PullException e)
 		{
@@ -58,4 +80,3 @@ public class RemoteGitBackupTask implements Runnable
 		}
 	}
 }
-

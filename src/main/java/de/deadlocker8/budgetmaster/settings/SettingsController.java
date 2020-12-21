@@ -4,8 +4,7 @@ import de.deadlocker8.budgetmaster.Build;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
-import de.deadlocker8.budgetmaster.backup.AutoBackupTime;
-import de.deadlocker8.budgetmaster.backup.AutoBackupStrategy;
+import de.deadlocker8.budgetmaster.backup.*;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.controller.BaseController;
@@ -116,34 +115,23 @@ public class SettingsController extends BaseController
 			settings.setAutoBackupStrategy(AutoBackupStrategy.NONE);
 		}
 
-		String cron;
-		switch(settings.getAutoBackupStrategy())
+		final String cron = scheduleTaskService.computeCron(settings.getAutoBackupTime(), settings.getAutoBackupDays());
+		scheduleTaskService.stopBackupCron();
+		if(settings.getAutoBackupStrategy() == AutoBackupStrategy.NONE)
 		{
-			case NONE:
-				final Settings defaultSettings = Settings.getDefault();
-				settings.setAutoBackupDays(defaultSettings.getAutoBackupDays());
-				settings.setAutoBackupTime(defaultSettings.getAutoBackupTime());
-				settings.setAutoBackupFilesToKeep(defaultSettings.getAutoBackupFilesToKeep());
-				settings.setAutoBackupGitUserName(defaultSettings.getAutoBackupGitUserName());
-				settings.setAutoBackupGitPassword(defaultSettings.getAutoBackupGitPassword());
-				scheduleTaskService.stopBackupCron();
-				break;
-			case LOCAL:
-				scheduleTaskService.stopBackupCron();
-				cron = scheduleTaskService.computeCron(settings.getAutoBackupTime(), settings.getAutoBackupDays());
-				scheduleTaskService.startBackupCron(cron);
-				break;
-			case GIT_LOCAL:
-				scheduleTaskService.stopBackupCron();
-				cron = scheduleTaskService.computeCron(settings.getAutoBackupTime(), settings.getAutoBackupDays());
-				scheduleTaskService.startBackupCron(cron);
-				break;
-			case GIT_REMOTE:
-				scheduleTaskService.stopBackupCron();
-				cron = scheduleTaskService.computeCron(settings.getAutoBackupTime(), settings.getAutoBackupDays());
-				scheduleTaskService.startBackupCron(cron);
-				break;
+			final Settings defaultSettings = Settings.getDefault();
+			settings.setAutoBackupDays(defaultSettings.getAutoBackupDays());
+			settings.setAutoBackupTime(defaultSettings.getAutoBackupTime());
+			settings.setAutoBackupFilesToKeep(defaultSettings.getAutoBackupFilesToKeep());
+			settings.setAutoBackupGitUserName(defaultSettings.getAutoBackupGitUserName());
+			settings.setAutoBackupGitPassword(defaultSettings.getAutoBackupGitPassword());
 		}
+		else
+		{
+			final Optional<Runnable> backupTaskOptional = settings.getAutoBackupStrategy().getBackupTask(databaseService);
+			backupTaskOptional.ifPresent(runnable -> scheduleTaskService.startBackupCron(cron, runnable));
+		}
+
 
 		if(bindingResult.hasErrors())
 		{
