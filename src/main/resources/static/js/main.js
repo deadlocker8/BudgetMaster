@@ -69,7 +69,6 @@ function fetchAndShowWhatsNewModal(item, containerID)
         data: {},
         success: function(data)
         {
-
             $('#' + containerID).html(data);
             $(modalID).modal();
             $(modalID).modal('open');

@@ -21,6 +21,8 @@ import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.RandomUtils;
 import de.thecodelabs.versionizer.UpdateItem;
+import org.eclipse.jgit.transport.CredentialsProvider;
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -356,5 +358,17 @@ public class SettingsController extends BaseController
 	{
 		settingsService.disableFirstUseBanner();
 		return "redirect:/";
+	}
+
+	@PostMapping("/git/test")
+	public String testGit(@RequestParam(value = "autoBackupGitUrl") String autoBackupGitUrl,
+						  @RequestParam(value = "autoBackupGitUserName") String autoBackupGitUserName,
+						  @RequestParam(value = "autoBackupGitPassword") String autoBackupGitPassword)
+	{
+		final CredentialsProvider credentialsProvider = new UsernamePasswordCredentialsProvider(autoBackupGitUserName, autoBackupGitPassword);
+		final boolean isValidConnection = GitHelper.checkConnection(autoBackupGitUrl, credentialsProvider);
+
+		// TODO: return isValidConnection or json
+		return "1234";
 	}
 }

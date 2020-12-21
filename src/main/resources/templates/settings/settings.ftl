@@ -22,7 +22,7 @@
                 <div class="container">
                     <#import "../helpers/validation.ftl" as validation>
                     <form name="Settings" action="<@s.url '/settings/save'/>" method="post" onsubmit="return validateForm()">
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id="token"/>
                         <input type="hidden" name="ID" value="${settings.getID()?c}">
                         <input type="hidden" name="lastBackupReminderDate" value="${dateService.getLongDateString(settings.getLastBackupReminderDate())}">
                         <input type="hidden" name="installedVersionCode" value="${settings.getInstalledVersionCode()}">

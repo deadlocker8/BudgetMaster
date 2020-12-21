@@ -12,6 +12,7 @@ import org.eclipse.jgit.transport.URIish;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class GitHelper
@@ -82,6 +83,22 @@ public class GitHelper
 		final PushCommand pushCommand = git.push();
 		pushCommand.setCredentialsProvider(credentialsProvider);
 		pushCommand.call();
+	}
+
+	public static boolean checkConnection(String uri, CredentialsProvider credentialsProvider)
+	{
+		try
+		{
+			final Path tempDirectory = Files.createTempDirectory("TestGitRepo");
+			cloneRepository(uri, credentialsProvider, tempDirectory);
+		}
+		catch(GitAPIException | IOException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+
+		return true;
 	}
 }
 

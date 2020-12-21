@@ -239,5 +239,9 @@
             <input id="settings-backup-auto-git-password" name="autoBackupGitPassword" type="text" <@validation.validation "autoBackupGitPassword"/> value="•••••">
             <label for="settings-backup-auto-git-password">${locale.getString("settings.backup.auto.git.password")}</label>
         </div>
+
+        <div class="col s12 m12 l8 offset-l2">
+            <a id="settings-backup-auto-git-test" data-url="<@s.url '/settings/git/test'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">send</i>${locale.getString("settings.backup.auto.git.test")}</a>
+        </div>
     </div>
 </#macro>

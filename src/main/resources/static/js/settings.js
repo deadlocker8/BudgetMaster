@@ -22,6 +22,28 @@ $(document).ready(function()
         onAutoBackupStrategyChange(this.selectedIndex);
     });
 
+    $('#settings-backup-auto-git-test').click(function()
+    {
+        $.ajax({
+            type: 'POST',
+            url: $('#settings-backup-auto-git-test').attr('data-url'),
+            data: {
+                '_csrf': document.getElementById('token').value,
+                'autoBackupGitUrl': document.getElementById('settings-backup-auto-git-url').value,
+                'autoBackupGitUserName': document.getElementById('settings-backup-auto-git-user-name').value,
+                'autoBackupGitPassword': document.getElementById('settings-backup-auto-git-password').value,
+            },
+            success: function(data)
+            {
+                M.toast({html: data});
+            },
+            error: function(data)
+            {
+                console.log(data);
+            }
+        });
+    });
+
     let autoBackupDays = $('#settings-backup-auto-days');
     if(autoBackupDays.length)
     {
