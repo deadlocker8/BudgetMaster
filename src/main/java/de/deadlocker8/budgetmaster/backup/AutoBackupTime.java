@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.settings;
+package de.deadlocker8.budgetmaster.backup;
 
 import de.thecodelabs.utils.util.Localization;
 

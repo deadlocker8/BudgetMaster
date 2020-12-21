@@ -61,9 +61,9 @@ public class SettingsService
 		{
 			settings.setSearchItemsPerPage(defaultSettings.getSearchItemsPerPage());
 		}
-		if(settings.getAutoBackupActivated() == null)
+		if(settings.getAutoBackupStrategy() == null)
 		{
-			settings.setAutoBackupActivated(defaultSettings.getAutoBackupActivated());
+			settings.setAutoBackupStrategy(defaultSettings.getAutoBackupStrategy());
 		}
 		if(settings.getAutoBackupDays() == null)
 		{
@@ -76,6 +76,14 @@ public class SettingsService
 		if(settings.getAutoBackupFilesToKeep() == null)
 		{
 			settings.setAutoBackupFilesToKeep(defaultSettings.getAutoBackupFilesToKeep());
+		}
+		if(settings.getAutoBackupGitUserName() == null)
+		{
+			settings.setAutoBackupGitUserName(defaultSettings.getAutoBackupGitUserName());
+		}
+		if(settings.getAutoBackupGitPassword() == null)
+		{
+			settings.setAutoBackupGitPassword(defaultSettings.getAutoBackupGitPassword());
 		}
 		if(settings.getInstalledVersionCode() == null)
 		{

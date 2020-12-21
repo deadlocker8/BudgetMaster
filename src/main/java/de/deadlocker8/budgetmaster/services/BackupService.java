@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.services;
 
-import de.deadlocker8.budgetmaster.settings.AutoBackupTime;
+import de.deadlocker8.budgetmaster.backup.AutoBackupTime;
 import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import org.joda.time.DateTime;
@@ -55,7 +55,7 @@ public class BackupService
 	public void contextRefreshedEvent()
 	{
 		final Settings settings = settingsService.getSettings();
-		if(settings.getAutoBackupActivated())
+		if(settings.isAutoBackupActive())
 		{
 			startBackupCron(computeCron(settings.getAutoBackupTime(), settings.getAutoBackupDays()));
 		}
@@ -64,13 +64,14 @@ public class BackupService
 	public String computeCron(AutoBackupTime time, Integer days)
 	{
 		int hour = time.getCronTime();
+		// seconds minutes hours day_of_month month day_of_week
 		return String.format("0 0 %d */%d * *", hour, days);
 	}
 
 	public Optional<DateTime> getNextRun()
 	{
 		final Settings settings = settingsService.getSettings();
-		if(settings.getAutoBackupActivated())
+		if(settings.isAutoBackupActive())
 		{
 			final String cron = computeCron(settings.getAutoBackupTime(), settings.getAutoBackupDays());
 			CronSequenceGenerator cronTrigger = new CronSequenceGenerator(cron);

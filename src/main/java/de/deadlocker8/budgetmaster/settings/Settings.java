@@ -1,5 +1,7 @@
 package de.deadlocker8.budgetmaster.settings;
 
+import de.deadlocker8.budgetmaster.backup.AutoBackupTime;
+import de.deadlocker8.budgetmaster.backup.AutoBackupStrategy;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,10 +26,14 @@ public class Settings
 
 	private Integer searchItemsPerPage;
 
-	private Boolean autoBackupActivated;
+	private AutoBackupStrategy autoBackupStrategy;
 	private Integer autoBackupDays;
 	private AutoBackupTime autoBackupTime;
+
 	private Integer autoBackupFilesToKeep;
+	private String autoBackupGitUserName;
+	private String autoBackupGitPassword;
+
 	private Integer installedVersionCode;
 	private Boolean whatsNewShownForCurrentVersion;
 	private Boolean showFirstUseBanner;
@@ -47,10 +53,12 @@ public class Settings
 		defaultSettings.setBackupReminderActivated(true);
 		defaultSettings.setLastBackupReminderDate(DateTime.now());
 		defaultSettings.setSearchItemsPerPage(10);
-		defaultSettings.setAutoBackupActivated(false);
+		defaultSettings.setAutoBackupStrategy(AutoBackupStrategy.NONE);
 		defaultSettings.setAutoBackupDays(1);
 		defaultSettings.setAutoBackupTime(AutoBackupTime.TIME_00);
 		defaultSettings.setAutoBackupFilesToKeep(3);
+		defaultSettings.setAutoBackupGitUserName(null);
+		defaultSettings.setAutoBackupGitPassword(null);
 		defaultSettings.setInstalledVersionCode(0);
 		defaultSettings.setWhatsNewShownForCurrentVersion(false);
 		defaultSettings.setShowFirstUseBanner(true);
@@ -152,16 +160,6 @@ public class Settings
 		this.searchItemsPerPage = searchItemsPerPage;
 	}
 
-	public Boolean getAutoBackupActivated()
-	{
-		return autoBackupActivated;
-	}
-
-	public void setAutoBackupActivated(Boolean autoBackupActivated)
-	{
-		this.autoBackupActivated = autoBackupActivated;
-	}
-
 	public Integer getAutoBackupDays()
 	{
 		return autoBackupDays;
@@ -182,6 +180,21 @@ public class Settings
 		this.autoBackupTime = autoBackupTime;
 	}
 
+	public AutoBackupStrategy getAutoBackupStrategy()
+	{
+		return autoBackupStrategy;
+	}
+
+	public void setAutoBackupStrategy(AutoBackupStrategy autoBackupStrategy)
+	{
+		this.autoBackupStrategy = autoBackupStrategy;
+	}
+
+	public boolean isAutoBackupActive()
+	{
+		return this.autoBackupStrategy != AutoBackupStrategy.NONE;
+	}
+
 	public Integer getAutoBackupFilesToKeep()
 	{
 		return autoBackupFilesToKeep;
@@ -190,6 +203,26 @@ public class Settings
 	public void setAutoBackupFilesToKeep(Integer autoBackupFilesToKeep)
 	{
 		this.autoBackupFilesToKeep = autoBackupFilesToKeep;
+	}
+
+	public String getAutoBackupGitUserName()
+	{
+		return autoBackupGitUserName;
+	}
+
+	public void setAutoBackupGitUserName(String gitUserName)
+	{
+		this.autoBackupGitUserName = gitUserName;
+	}
+
+	public String getAutoBackupGitPassword()
+	{
+		return autoBackupGitPassword;
+	}
+
+	public void setAutoBackupGitPassword(String gitPassword)
+	{
+		this.autoBackupGitPassword = gitPassword;
 	}
 
 	public Integer getInstalledVersionCode()
@@ -240,10 +273,12 @@ public class Settings
 				", backupReminderActivated=" + backupReminderActivated +
 				", lastBackupReminderDate=" + lastBackupReminderDate +
 				", searchItemsPerPage=" + searchItemsPerPage +
-				", autoBackupActivated=" + autoBackupActivated +
 				", autoBackupDays=" + autoBackupDays +
 				", autoBackupTime=" + autoBackupTime +
+				", backupStrategy=" + autoBackupStrategy +
 				", autoBackupFilesToKeep=" + autoBackupFilesToKeep +
+				", gitUserName='" + autoBackupGitUserName + '\'' +
+				", gitPassword='" + autoBackupGitPassword + '\'' +
 				", installedVersionCode=" + installedVersionCode +
 				", whatsNewShownForCurrentVersion=" + whatsNewShownForCurrentVersion +
 				", showFirstUseBanner=" + showFirstUseBanner +

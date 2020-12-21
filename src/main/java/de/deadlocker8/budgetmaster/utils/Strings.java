@@ -29,6 +29,8 @@ public class Strings
 	public static final String WARNING_EMPTY_NUMBER = "warning.empty.number";
 	public static final String WARNING_EMPTY_NUMBER_ZERO_ALLOWED = "warning.empty.number.zero.allowed";
 	public static final String WARNING_DUPLICATE_TEMPLATE_NAME = "warning.duplicate.template.name";
+	public static final String WARNING_EMPTY_GIT_USER_NAME = "warning.empty.git.user.name";
+	public static final String WARNING_EMPTY_GIT_PASSWORD = "warning.empty.git.password";
 
 	//REPORT
 	public static final String REPORT_FOOTER_LEFT = "report.footer.left";

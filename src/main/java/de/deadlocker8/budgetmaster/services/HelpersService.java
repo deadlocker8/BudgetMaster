@@ -4,6 +4,7 @@ import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountRepository;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
+import de.deadlocker8.budgetmaster.backup.AutoBackupStrategy;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryRepository;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
@@ -56,6 +57,13 @@ public class HelpersService
 	public List<LanguageType> getAvailableLanguages()
 	{
 		return Arrays.asList(LanguageType.values());
+	}
+
+	public List<AutoBackupStrategy> getAvailableAutoBackupStrategies()
+	{
+		List<AutoBackupStrategy> autoBackupStrategies = new ArrayList<>(Arrays.asList(AutoBackupStrategy.values()));
+		autoBackupStrategies.remove(AutoBackupStrategy.NONE);
+		return autoBackupStrategies;
 	}
 
 	public List<String> getCategoryColorList()

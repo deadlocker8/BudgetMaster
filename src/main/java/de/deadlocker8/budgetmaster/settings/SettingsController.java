@@ -4,6 +4,8 @@ import de.deadlocker8.budgetmaster.Build;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
+import de.deadlocker8.budgetmaster.backup.AutoBackupTime;
+import de.deadlocker8.budgetmaster.backup.AutoBackupStrategy;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.controller.BaseController;
@@ -89,9 +91,11 @@ public class SettingsController extends BaseController
 	public String post(Model model, @ModelAttribute("Settings") Settings settings, BindingResult bindingResult,
 					   @RequestParam(value = "password") String password,
 					   @RequestParam(value = "passwordConfirmation") String passwordConfirmation,
-					   @RequestParam(value = "languageType") String languageType)
+					   @RequestParam(value = "languageType") String languageType,
+					   @RequestParam(value = "autoBackupStrategyType") String autoBackupStrategyType)
 	{
 		settings.setLanguage(LanguageType.fromName(languageType));
+		settings.setAutoBackupStrategy(AutoBackupStrategy.fromName(autoBackupStrategyType));
 
 		Optional<FieldError> passwordErrorOptional = validatePassword(password, passwordConfirmation);
 		if(passwordErrorOptional.isPresent())
@@ -107,23 +111,38 @@ public class SettingsController extends BaseController
 			settings.setBackupReminderActivated(false);
 		}
 
-		if(settings.getAutoBackupActivated() == null)
+		if(settings.getAutoBackupStrategy() == null)
 		{
-			settings.setAutoBackupActivated(false);
+			settings.setAutoBackupStrategy(AutoBackupStrategy.NONE);
 		}
 
-		if(settings.getAutoBackupActivated())
+		String cron;
+		switch(settings.getAutoBackupStrategy())
 		{
-			final String cron = scheduleTaskService.computeCron(settings.getAutoBackupTime(), settings.getAutoBackupDays());
-			scheduleTaskService.startBackupCron(cron);
-		}
-		else
-		{
-			final Settings defaultSettings = Settings.getDefault();
-			settings.setAutoBackupDays(defaultSettings.getAutoBackupDays());
-			settings.setAutoBackupTime(defaultSettings.getAutoBackupTime());
-			settings.setAutoBackupFilesToKeep(defaultSettings.getAutoBackupFilesToKeep());
-			scheduleTaskService.stopBackupCron();
+			case NONE:
+				final Settings defaultSettings = Settings.getDefault();
+				settings.setAutoBackupDays(defaultSettings.getAutoBackupDays());
+				settings.setAutoBackupTime(defaultSettings.getAutoBackupTime());
+				settings.setAutoBackupFilesToKeep(defaultSettings.getAutoBackupFilesToKeep());
+				settings.setAutoBackupGitUserName(defaultSettings.getAutoBackupGitUserName());
+				settings.setAutoBackupGitPassword(defaultSettings.getAutoBackupGitPassword());
+				scheduleTaskService.stopBackupCron();
+				break;
+			case LOCAL:
+				scheduleTaskService.stopBackupCron();
+				cron = scheduleTaskService.computeCron(settings.getAutoBackupTime(), settings.getAutoBackupDays());
+				scheduleTaskService.startBackupCron(cron);
+				break;
+			case GIT_LOCAL:
+				scheduleTaskService.stopBackupCron();
+				cron = scheduleTaskService.computeCron(settings.getAutoBackupTime(), settings.getAutoBackupDays());
+				scheduleTaskService.startBackupCron(cron);
+				break;
+			case GIT_REMOTE:
+				scheduleTaskService.stopBackupCron();
+				cron = scheduleTaskService.computeCron(settings.getAutoBackupTime(), settings.getAutoBackupDays());
+				scheduleTaskService.startBackupCron(cron);
+				break;
 		}
 
 		if(bindingResult.hasErrors())
