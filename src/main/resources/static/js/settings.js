@@ -17,6 +17,11 @@ $(document).ready(function()
         $('#settings-auto-backup').toggle($(this).prop("checked"));
     });
 
+    $('#settings-backup-auto-strategy').change(function()
+    {
+        onAutoBackupStrategyChange(this.selectedIndex);
+    });
+
     let autoBackupDays = $('#settings-backup-auto-days');
     if(autoBackupDays.length)
     {
@@ -26,7 +31,7 @@ $(document).ready(function()
         });
     }
 
-    let autoBackupFilesToKeep= $('#settings-backup-auto-files-to-keep');
+    let autoBackupFilesToKeep = $('#settings-backup-auto-files-to-keep');
     if(autoBackupFilesToKeep.length)
     {
         autoBackupFilesToKeep.on('change keydown paste input', function()
@@ -38,6 +43,7 @@ $(document).ready(function()
     // on initial page load
     let autoBackupCheckbox = document.getElementsByName("autoBackupActivated")[0];
     $('#settings-auto-backup').toggle(autoBackupCheckbox.checked);
+    onAutoBackupStrategyChange(document.getElementById('settings-backup-auto-strategy').selectedIndex);
 });
 
 function validateForm()
@@ -51,4 +57,11 @@ function validateForm()
     }
 
     return true;
+}
+
+function onAutoBackupStrategyChange(newSelectedIndex)
+{
+    $('#settings-auto-backup-local').toggle(newSelectedIndex === 0);  // local backup with file system copies
+    // index 1 --> git local doesn't have any settings
+    $('#settings-auto-backup-git-remote').toggle(newSelectedIndex === 2);  // git remote
 }

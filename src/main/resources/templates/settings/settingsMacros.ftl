@@ -196,16 +196,32 @@
                     </#if>
                 </#list>
             </select>
-            <label for="settings-language">${locale.getString("settings.backup.auto.strategy")}</label>
+            <label for="settings-backup-auto-strategy">${locale.getString("settings.backup.auto.strategy")}</label>
         </div>
 
+        <@autoBackupLocal/>
+
+        <@autoBackupGitRemote/>
+
+        <div class="col s12 m12 l8 offset-l2">
+            ${locale.getString("settings.backup.auto.next")}: <#if nextBackupTime??>${dateService.getDateTimeString(nextBackupTime)}<#else>-</#if>
+        </div>
+    </div>
+</#macro>
+
+<#macro autoBackupLocal>
+    <div id="settings-auto-backup-local">
         <div class="input-field col s12 m12 l8 offset-l2">
             <i class="material-icons prefix">auto_delete</i>
             <input id="settings-backup-auto-files-to-keep" type="text" <@validation.validation "autoBackupFilesToKeep"/> value="<#if settings.isAutoBackupActive()??>${settings.getAutoBackupFilesToKeep()}</#if>">
             <label for="settings-backup-auto-files-to-keep">${locale.getString("settings.backup.auto.files.to.keep")}</label>
         </div>
         <input type="hidden" id="hidden-settings-backup-auto-files-to-keep" name="autoBackupFilesToKeep" value="<#if settings.isAutoBackupActive()??>${settings.getAutoBackupFilesToKeep()}</#if>">
+    </div>
+</#macro>
 
+<#macro autoBackupGitRemote>
+    <div id="settings-auto-backup-git-remote">
         <div class="input-field col s12 m12 l8 offset-l2">
             <i class="material-icons prefix">language</i>
             <input id="settings-backup-auto-git-url" name="autoBackupGitUrl" type="text" <@validation.validation "autoBackupGitUrl"/> value="<#if settings.isAutoBackupActive()??>${settings.getAutoBackupGitUrl()}</#if>">
@@ -222,10 +238,6 @@
             <i class="material-icons prefix">vpn_key</i>
             <input id="settings-backup-auto-git-password" name="autoBackupGitPassword" type="text" <@validation.validation "autoBackupGitPassword"/> value="•••••">
             <label for="settings-backup-auto-git-password">${locale.getString("settings.backup.auto.git.password")}</label>
-        </div>
-
-        <div class="col s12 m12 l8 offset-l2">
-            ${locale.getString("settings.backup.auto.next")}: <#if nextBackupTime??>${dateService.getDateTimeString(nextBackupTime)}<#else>-</#if>
         </div>
     </div>
 </#macro>

@@ -116,6 +116,7 @@
                             </div>
                         </div>
 
+                        <#-- auto backup -->
                         <@settingsMacros.autoBackup/>
 
                         <br>

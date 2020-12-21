@@ -80,6 +80,7 @@ public class RemoteGitBackupTask extends BackupTask
 		}
 		catch(IOException | GitAPIException | URISyntaxException | GitHelper.PullException e)
 		{
+			// TODO: error handling
 			e.printStackTrace();
 		}
 	}
