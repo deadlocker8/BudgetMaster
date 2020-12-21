@@ -31,6 +31,7 @@ public class Settings
 	private AutoBackupTime autoBackupTime;
 
 	private Integer autoBackupFilesToKeep;
+	private String autoBackupGitUrl;
 	private String autoBackupGitUserName;
 	private String autoBackupGitPassword;
 
@@ -57,8 +58,9 @@ public class Settings
 		defaultSettings.setAutoBackupDays(1);
 		defaultSettings.setAutoBackupTime(AutoBackupTime.TIME_00);
 		defaultSettings.setAutoBackupFilesToKeep(3);
-		defaultSettings.setAutoBackupGitUserName(null);
-		defaultSettings.setAutoBackupGitPassword(null);
+		defaultSettings.setAutoBackupGitUrl("");
+		defaultSettings.setAutoBackupGitUserName("");
+		defaultSettings.setAutoBackupGitPassword("");
 		defaultSettings.setInstalledVersionCode(0);
 		defaultSettings.setWhatsNewShownForCurrentVersion(false);
 		defaultSettings.setShowFirstUseBanner(true);
@@ -205,6 +207,16 @@ public class Settings
 		this.autoBackupFilesToKeep = autoBackupFilesToKeep;
 	}
 
+	public String getAutoBackupGitUrl()
+	{
+		return autoBackupGitUrl;
+	}
+
+	public void setAutoBackupGitUrl(String autoBackupGitUrl)
+	{
+		this.autoBackupGitUrl = autoBackupGitUrl;
+	}
+
 	public String getAutoBackupGitUserName()
 	{
 		return autoBackupGitUserName;
@@ -273,12 +285,13 @@ public class Settings
 				", backupReminderActivated=" + backupReminderActivated +
 				", lastBackupReminderDate=" + lastBackupReminderDate +
 				", searchItemsPerPage=" + searchItemsPerPage +
+				", autoBackupStrategy=" + autoBackupStrategy +
 				", autoBackupDays=" + autoBackupDays +
 				", autoBackupTime=" + autoBackupTime +
-				", backupStrategy=" + autoBackupStrategy +
 				", autoBackupFilesToKeep=" + autoBackupFilesToKeep +
-				", gitUserName='" + autoBackupGitUserName + '\'' +
-				", gitPassword='" + autoBackupGitPassword + '\'' +
+				", autoBackupGitUrl='" + autoBackupGitUrl + '\'' +
+				", autoBackupGitUserName='" + autoBackupGitUserName + '\'' +
+				", autoBackupGitPassword='" + autoBackupGitPassword + '\'' +
 				", installedVersionCode=" + installedVersionCode +
 				", whatsNewShownForCurrentVersion=" + whatsNewShownForCurrentVersion +
 				", showFirstUseBanner=" + showFirstUseBanner +

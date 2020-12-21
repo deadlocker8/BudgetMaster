@@ -27,6 +27,7 @@ public class SettingsValidator implements Validator
 
 		if(settings.getAutoBackupStrategy() == AutoBackupStrategy.GIT_REMOTE)
 		{
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "autoBackupGitUrl", Strings.WARNING_EMPTY_GIT_URL);
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "autoBackupGitUserName", Strings.WARNING_EMPTY_GIT_USER_NAME);
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "autoBackupGitPassword", Strings.WARNING_EMPTY_GIT_PASSWORD);
 		}

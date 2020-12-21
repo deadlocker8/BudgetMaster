@@ -77,6 +77,10 @@ public class SettingsService
 		{
 			settings.setAutoBackupFilesToKeep(defaultSettings.getAutoBackupFilesToKeep());
 		}
+		if(settings.getAutoBackupGitUrl() == null)
+		{
+			settings.setAutoBackupGitUrl(defaultSettings.getAutoBackupGitUrl());
+		}
 		if(settings.getAutoBackupGitUserName() == null)
 		{
 			settings.setAutoBackupGitUserName(defaultSettings.getAutoBackupGitUserName());

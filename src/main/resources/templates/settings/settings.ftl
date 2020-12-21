@@ -116,58 +116,7 @@
                             </div>
                         </div>
 
-                        <div class="row" id="settings-auto-backup">
-                            <div class="input-field col s12 m12 l8 offset-l2">
-                                <i class="material-icons prefix">event</i>
-                                <input id="settings-backup-auto-days" type="text" <@validation.validation "autoBackupDays"/> value="<#if settings.isAutoBackupActive()??>${settings.getAutoBackupDays()}</#if>">
-                                <label for="settings-backup-auto-days">${locale.getString("settings.backup.auto.days")}</label>
-                            </div>
-                            <input type="hidden" id="hidden-settings-backup-auto-days" name="autoBackupDays" value="<#if settings.isAutoBackupActive()??>${settings.getAutoBackupDays()}</#if>">
-
-                            <script>
-                                numberValidationMessage = "${locale.getString("warning.empty.number")}";
-                                numberValidationMessageZeroAllowed = "${locale.getString("warning.empty.number.zero.allowed")}";
-                            </script>
-
-                            <div class="input-field col s12 m12 l8 offset-l2">
-                                <i class="material-icons prefix">schedule</i>
-                                <select id="settings-backup-auto-time" name="autoBackupTime" <@validation.validation "autoBackupTime"/>>
-                                    <#list autoBackupTimes as time>
-                                        <#if settings.getAutoBackupTime() == time>
-                                            <option selected value="${time}">${time.getLocalized()}</option>
-                                        <#else>
-                                            <option value="${time}">${time.getLocalized()}</option>
-                                        </#if>
-                                    </#list>
-                                </select>
-                                <label for="settings-backup-auto-time">${locale.getString("settings.backup.auto.time")}</label>
-                            </div>
-
-                            <div class="input-field col s12 m12 l8 offset-l2">
-                                <i class="material-icons prefix">source</i>
-                                <select id="settings-backup-auto-strategy" name="autoBackupStrategyType">
-                                    <#list helpers.getAvailableAutoBackupStrategies() as strategy>
-                                        <#if settings.getAutoBackupStrategy() == strategy>
-                                            <option selected value="${strategy.getName()}">${strategy.getName()}</option>
-                                        <#else>
-                                            <option value="${strategy.getName()}">${strategy.getName()}</option>
-                                        </#if>
-                                    </#list>
-                                </select>
-                                <label for="settings-language">${locale.getString("settings.backup.auto.strategy")}</label>
-                            </div>
-
-                            <div class="input-field col s12 m12 l8 offset-l2">
-                                <i class="material-icons prefix">auto_delete</i>
-                                <input id="settings-backup-auto-files-to-keep" type="text" <@validation.validation "autoBackupFilesToKeep"/> value="<#if settings.isAutoBackupActive()??>${settings.getAutoBackupFilesToKeep()}</#if>">
-                                <label for="settings-backup-auto-files-to-keep">${locale.getString("settings.backup.auto.files.to.keep")}</label>
-                            </div>
-                            <input type="hidden" id="hidden-settings-backup-auto-files-to-keep" name="autoBackupFilesToKeep" value="<#if settings.isAutoBackupActive()??>${settings.getAutoBackupFilesToKeep()}</#if>">
-
-                            <div class="col s12 m12 l8 offset-l2">
-                                ${locale.getString("settings.backup.auto.next")}: <#if nextBackupTime??>${dateService.getDateTimeString(nextBackupTime)}<#else>-</#if>
-                            </div>
-                        </div>
+                        <@settingsMacros.autoBackup/>
 
                         <br>
 
