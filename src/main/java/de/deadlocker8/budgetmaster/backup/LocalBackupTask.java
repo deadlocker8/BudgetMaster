@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.backup;
 
 import de.deadlocker8.budgetmaster.database.DatabaseService;
+import de.deadlocker8.budgetmaster.settings.SettingsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,9 +13,9 @@ public class LocalBackupTask extends BackupTask
 
 	private final DatabaseService databaseService;
 
-	public LocalBackupTask(DatabaseService databaseService)
+	public LocalBackupTask(DatabaseService databaseService, SettingsService settingsService)
 	{
-		super(databaseService);
+		super(databaseService, settingsService);
 		this.databaseService = databaseService;
 	}
 

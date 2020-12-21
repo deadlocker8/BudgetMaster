@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.backup;
 
 import de.deadlocker8.budgetmaster.database.DatabaseService;
+import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.thecodelabs.utils.util.Localization;
 
 import java.lang.reflect.InvocationTargetException;
@@ -37,7 +38,7 @@ public enum AutoBackupStrategy
 		return Localization.getString(localizationKey);
 	}
 
-	public Optional<Runnable> getBackupTask(DatabaseService databaseService)
+	public Optional<Runnable> getBackupTask(DatabaseService databaseService, SettingsService settingsService)
 	{
 		if(backupTaskType == null)
 		{
@@ -46,7 +47,8 @@ public enum AutoBackupStrategy
 
 		try
 		{
-			return Optional.of(backupTaskType.getConstructor(DatabaseService.class).newInstance(databaseService));
+			return Optional.of(backupTaskType.getConstructor(DatabaseService.class, SettingsService.class)
+					.newInstance(databaseService, settingsService));
 		}
 		catch(InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e)
 		{

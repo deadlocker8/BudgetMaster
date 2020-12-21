@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.services;
+package de.deadlocker8.budgetmaster.backup;
 
 import de.deadlocker8.budgetmaster.backup.AutoBackupTime;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
@@ -70,7 +70,7 @@ public class BackupService
 		final Settings settings = settingsService.getSettings();
 		if(settings.isAutoBackupActive())
 		{
-			final Optional<Runnable> backupTaskOptional = settings.getAutoBackupStrategy().getBackupTask(databaseService);
+			final Optional<Runnable> backupTaskOptional = settings.getAutoBackupStrategy().getBackupTask(databaseService, settingsService);
 			backupTaskOptional.ifPresent(runnable -> startBackupCron(computeCron(settings.getAutoBackupTime(), settings.getAutoBackupDays()), runnable));
 		}
 	}

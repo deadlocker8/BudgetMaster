@@ -2,6 +2,8 @@ package de.deadlocker8.budgetmaster.backup;
 
 import de.deadlocker8.budgetmaster.Main;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
+import de.deadlocker8.budgetmaster.settings.Settings;
+import de.deadlocker8.budgetmaster.settings.SettingsService;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.dircache.DirCache;
@@ -26,13 +28,15 @@ public class RemoteGitBackupTask extends BackupTask
 	private final UsernamePasswordCredentialsProvider credentialsProvider;
 	private final String remote;
 
-	public RemoteGitBackupTask(DatabaseService databaseService)
+	public RemoteGitBackupTask(DatabaseService databaseService, SettingsService settingsService)
 	{
-		super(databaseService);
+		super(databaseService, settingsService);
 		this.gitFolder = Main.getApplicationSupportFolder().resolve(".git");
 
-		this.credentialsProvider = new UsernamePasswordCredentialsProvider("", "");
-		this.remote = "https://thecodelabs.de/deadlocker8/bm_test.git";
+		final Settings settings = settingsService.getSettings();
+
+		this.credentialsProvider = new UsernamePasswordCredentialsProvider(settings.getAutoBackupGitUserName(), settings.getAutoBackupGitPassword());
+		this.remote = settings.getAutoBackupGitUrl();
 	}
 
 	@Override

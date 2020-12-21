@@ -12,7 +12,7 @@ import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.DatabaseParser;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
-import de.deadlocker8.budgetmaster.services.BackupService;
+import de.deadlocker8.budgetmaster.backup.BackupService;
 import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
@@ -115,6 +115,11 @@ public class SettingsController extends BaseController
 			settings.setAutoBackupStrategy(AutoBackupStrategy.NONE);
 		}
 
+		if(settings.getAutoBackupGitPassword().equals("•••••"))
+		{
+			settings.setAutoBackupGitPassword(settingsService.getSettings().getAutoBackupGitPassword());
+		}
+
 		final String cron = scheduleTaskService.computeCron(settings.getAutoBackupTime(), settings.getAutoBackupDays());
 		scheduleTaskService.stopBackupCron();
 		if(settings.getAutoBackupStrategy() == AutoBackupStrategy.NONE)
@@ -128,7 +133,7 @@ public class SettingsController extends BaseController
 		}
 		else
 		{
-			final Optional<Runnable> backupTaskOptional = settings.getAutoBackupStrategy().getBackupTask(databaseService);
+			final Optional<Runnable> backupTaskOptional = settings.getAutoBackupStrategy().getBackupTask(databaseService, settingsService);
 			backupTaskOptional.ifPresent(runnable -> scheduleTaskService.startBackupCron(cron, runnable));
 		}
 

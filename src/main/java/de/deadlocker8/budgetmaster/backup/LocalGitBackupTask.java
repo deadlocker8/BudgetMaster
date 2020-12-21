@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.backup;
 
 import de.deadlocker8.budgetmaster.Main;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
+import de.deadlocker8.budgetmaster.settings.SettingsService;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.dircache.DirCache;
@@ -22,9 +23,9 @@ public class LocalGitBackupTask extends BackupTask
 
 	private final Path gitFolder;
 
-	public LocalGitBackupTask(DatabaseService databaseService)
+	public LocalGitBackupTask(DatabaseService databaseService, SettingsService settingsService)
 	{
-		super(databaseService);
+		super(databaseService, settingsService);
 		this.gitFolder = Main.getApplicationSupportFolder().resolve(".git");
 	}
 
