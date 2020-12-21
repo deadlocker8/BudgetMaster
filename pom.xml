@@ -67,6 +67,7 @@
         <codemirror.version>5.50.0</codemirror.version>
         <selenium.version>3.141.59</selenium.version>
         <assertj-core.version>3.17.1</assertj-core.version>
+        <jgit.version>5.10.0.202012080955-r</jgit.version>
 
         <app.versionDate>${maven.build.timestamp}</app.versionDate>
         <maven.build.timestamp.format>dd.MM.yy</maven.build.timestamp.format>
@@ -195,6 +196,11 @@
             <groupId>org.webjars</groupId>
             <artifactId>codemirror</artifactId>
             <version>${codemirror.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jgit</groupId>
+            <artifactId>org.eclipse.jgit</artifactId>
+            <version>${jgit.version}</version>
         </dependency>
 
         <!-- selenium -->
