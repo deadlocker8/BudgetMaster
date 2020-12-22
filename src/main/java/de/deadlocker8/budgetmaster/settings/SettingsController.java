@@ -1,10 +1,14 @@
 package de.deadlocker8.budgetmaster.settings;
 
+import com.google.gson.JsonObject;
 import de.deadlocker8.budgetmaster.Build;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
-import de.deadlocker8.budgetmaster.backup.*;
+import de.deadlocker8.budgetmaster.backup.AutoBackupStrategy;
+import de.deadlocker8.budgetmaster.backup.AutoBackupTime;
+import de.deadlocker8.budgetmaster.backup.BackupService;
+import de.deadlocker8.budgetmaster.backup.GitHelper;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.controller.BaseController;
@@ -12,7 +16,6 @@ import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.DatabaseParser;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
-import de.deadlocker8.budgetmaster.backup.BackupService;
 import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
@@ -361,14 +364,25 @@ public class SettingsController extends BaseController
 	}
 
 	@PostMapping("/git/test")
-	public String testGit(@RequestParam(value = "autoBackupGitUrl") String autoBackupGitUrl,
+	public String testGit(Model model,
+						  @RequestParam(value = "autoBackupGitUrl") String autoBackupGitUrl,
 						  @RequestParam(value = "autoBackupGitUserName") String autoBackupGitUserName,
 						  @RequestParam(value = "autoBackupGitPassword") String autoBackupGitPassword)
 	{
 		final CredentialsProvider credentialsProvider = new UsernamePasswordCredentialsProvider(autoBackupGitUserName, autoBackupGitPassword);
 		final boolean isValidConnection = GitHelper.checkConnection(autoBackupGitUrl, credentialsProvider);
 
-		// TODO: return isValidConnection or json
-		return "1234";
+		String localizedMessage = Localization.getString("settings.backup.auto.git.test.fail");
+		if(isValidConnection)
+		{
+			localizedMessage = Localization.getString("settings.backup.auto.git.test.success");
+		}
+
+		final JsonObject data = new JsonObject();
+		data.addProperty("isValidConnection", isValidConnection);
+		data.addProperty("localizedMessage", localizedMessage);
+
+		model.addAttribute("data", data.toString());
+		return "helpers/sendData";
 	}
 }

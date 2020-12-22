@@ -35,11 +35,12 @@ $(document).ready(function()
             },
             success: function(data)
             {
-                M.toast({html: data});
-            },
-            error: function(data)
-            {
-                console.log(data);
+                let parsedData = JSON.parse(data);
+                let isValidConnection = parsedData['isValidConnection']
+                M.toast({
+                    html: parsedData['localizedMessage'],
+                    classes: isValidConnection ? 'green': 'red'
+                });
             }
         });
     });
