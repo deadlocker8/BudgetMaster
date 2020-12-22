@@ -185,6 +185,10 @@
             <label for="settings-backup-auto-time">${locale.getString("settings.backup.auto.time")}</label>
         </div>
 
+        <div class="col s12 m12 l8 offset-l2">
+            ${locale.getString("settings.backup.auto.next")}: <#if nextBackupTime??>${dateService.getDateTimeString(nextBackupTime)}<#else>-</#if>
+        </div>
+
         <div class="input-field col s12 m12 l8 offset-l2">
             <i class="material-icons prefix">source</i>
             <select id="settings-backup-auto-strategy" name="autoBackupStrategyType">
@@ -202,10 +206,6 @@
         <@autoBackupLocal/>
 
         <@autoBackupGitRemote/>
-
-        <div class="col s12 m12 l8 offset-l2">
-            ${locale.getString("settings.backup.auto.next")}: <#if nextBackupTime??>${dateService.getDateTimeString(nextBackupTime)}<#else>-</#if>
-        </div>
     </div>
 </#macro>
 
