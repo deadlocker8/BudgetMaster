@@ -53,6 +53,7 @@ import java.util.Optional;
 @RequestMapping(Mappings.SETTINGS)
 public class SettingsController extends BaseController
 {
+	private static final String PASSWORD_PLACEHOLDER = "•••••";
 	private final SettingsService settingsService;
 	private final UserRepository userRepository;
 	private final DatabaseService databaseService;
@@ -120,7 +121,7 @@ public class SettingsController extends BaseController
 			settings.setAutoBackupStrategy(AutoBackupStrategy.NONE);
 		}
 
-		if(settings.getAutoBackupGitPassword().equals("•••••"))
+		if(settings.getAutoBackupGitPassword().equals(PASSWORD_PLACEHOLDER))
 		{
 			settings.setAutoBackupGitPassword(settingsService.getSettings().getAutoBackupGitPassword());
 		}
@@ -152,7 +153,7 @@ public class SettingsController extends BaseController
 			return "settings/settings";
 		}
 
-		if(!password.equals("•••••"))
+		if(!password.equals(PASSWORD_PLACEHOLDER))
 		{
 			BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 			String encryptedPassword = bCryptPasswordEncoder.encode(password);
@@ -369,6 +370,11 @@ public class SettingsController extends BaseController
 						  @RequestParam(value = "autoBackupGitUserName") String autoBackupGitUserName,
 						  @RequestParam(value = "autoBackupGitPassword") String autoBackupGitPassword)
 	{
+		if(autoBackupGitPassword.equals(PASSWORD_PLACEHOLDER))
+		{
+			autoBackupGitPassword = settingsService.getSettings().getAutoBackupGitPassword();
+		}
+
 		final CredentialsProvider credentialsProvider = new UsernamePasswordCredentialsProvider(autoBackupGitUserName, autoBackupGitPassword);
 		final boolean isValidConnection = GitHelper.checkConnection(autoBackupGitUrl, credentialsProvider);
 
