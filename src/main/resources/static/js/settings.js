@@ -41,6 +41,13 @@ $(document).ready(function()
                     html: parsedData['localizedMessage'],
                     classes: isValidConnection ? 'green': 'red'
                 });
+            },
+            error: function(data)
+            {
+                M.toast({
+                    html: 'Error: ' + data,
+                    classes: 'red'
+                });
             }
         });
     });
