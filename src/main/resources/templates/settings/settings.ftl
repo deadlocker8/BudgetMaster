@@ -152,8 +152,26 @@
                             <div class="table-cell table-cell-spacer"></div>
 
                             <div class="table-cell">
-                                <div class="left-align" style="margin-bottom: 1em; margin-right: 5em">v${build.getVersionName()}</div>
-                                <div class="left-align">${updateCheckService.getAvailableVersionString()}</div>
+                                <div class="left-align" style="margin-bottom: 1em; margin-right: 5em">
+                                    <div class="banner budgetmaster-grey black-text">
+                                        v${build.getVersionName()}
+                                    </div>
+                                </div>
+                                <div class="left-align">
+                                    <#if updateCheckService.getAvailableVersionString() == "-">
+                                        <#assign bannerClasses="budgetmaster-grey black-text">
+                                    <#else>
+                                        <#if updateCheckService.isUpdateAvailable()>
+                                            <#assign bannerClasses="budgetmaster-orange black-text">
+                                        <#else>
+                                            <#assign bannerClasses="budgetmaster-green white-text">
+                                        </#if>
+                                    </#if>
+
+                                    <div class="banner ${bannerClasses}">
+                                        ${updateCheckService.getAvailableVersionString()}
+                                    </div>
+                              </div>
                             </div>
 
                             <div class="table-cell table-cell-valign">

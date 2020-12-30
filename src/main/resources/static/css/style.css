@@ -568,6 +568,14 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     cursor: pointer;
 }
 
+.banner {
+    width: auto;
+    border-radius: 5px;
+    padding: 0 3vmin;
+    display: inline-block;
+    font-weight: bold;
+}
+
 .invisible {
     opacity: 0;
 }
