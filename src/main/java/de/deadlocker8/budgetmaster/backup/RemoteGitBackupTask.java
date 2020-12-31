@@ -54,6 +54,9 @@ public class RemoteGitBackupTask extends BackupTask
 			{
 				final Git git = new Git(repository);
 
+				LOGGER.debug(MessageFormat.format("Rename branch from \"{0}\" to \"{1}\"", repository.getBranch(), settings.getAutoBackupGitBranchName()));
+				git.branchRename().setOldName(repository.getBranch()).setNewName(settings.getAutoBackupGitBranchName()).call();
+
 				LOGGER.debug(MessageFormat.format("Set remote to \"{0}\"", remote));
 				GitHelper.replaceRemote(git, remote);
 
