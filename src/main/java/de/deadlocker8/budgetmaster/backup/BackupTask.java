@@ -10,8 +10,8 @@ public abstract class BackupTask implements Runnable
 {
 	protected static final String DATABASE_FILE_NAME = "budgetmaster.mv.db";
 
-	private final DatabaseService databaseService;
-	private final SettingsService settingsService;
+	protected final DatabaseService databaseService;
+	protected final SettingsService settingsService;
 	private final Path backupFolder;
 
 	protected BackupTask(DatabaseService databaseService, SettingsService settingsService)
