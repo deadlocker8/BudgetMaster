@@ -54,8 +54,7 @@ public class RemoteGitBackupTask extends BackupTask
 			{
 				final Git git = new Git(repository);
 
-				LOGGER.debug(MessageFormat.format("Rename branch from \"{0}\" to \"{1}\"", repository.getBranch(), settings.getAutoBackupGitBranchName()));
-				git.branchRename().setOldName(repository.getBranch()).setNewName(settings.getAutoBackupGitBranchName()).call();
+				renameBranch(git, repository.getBranch(), settings.getAutoBackupGitBranchName());
 
 				LOGGER.debug(MessageFormat.format("Set remote to \"{0}\"", remote));
 				GitHelper.replaceRemote(git, remote);
@@ -63,7 +62,7 @@ public class RemoteGitBackupTask extends BackupTask
 				LOGGER.debug("Pulling changes from remote...");
 				GitHelper.pullLatestChanges(git, credentialsProvider, settings.getAutoBackupGitBranchName());
 
-				// skip if database file is not modified and not staged for commit
+				// skip if database file is not modified and not (already) staged for commit
 				if(!isDatabaseFileModified(git) && !isDatabaseFileAdded(git))
 				{
 					LOGGER.debug(MessageFormat.format("Skipping commit because \"{0}\" is not modified", DATABASE_FILE_NAME));
@@ -105,5 +104,16 @@ public class RemoteGitBackupTask extends BackupTask
 	{
 		final Set<String> changedFiles = git.status().call().getChanged();
 		return changedFiles.contains(DATABASE_FILE_NAME);
+	}
+
+	private void renameBranch(Git git, String currentBranchName, String newBranchName) throws GitAPIException
+	{
+		if(currentBranchName.equals(newBranchName))
+		{
+			return;
+		}
+
+		LOGGER.debug(MessageFormat.format("Rename branch from \"{0}\" to \"{1}\"", currentBranchName, newBranchName));
+		git.branchRename().setOldName(currentBranchName).setNewName(newBranchName).call();
 	}
 }
