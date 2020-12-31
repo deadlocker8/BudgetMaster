@@ -236,8 +236,8 @@
 
         <div class="input-field col s12 m12 l8 offset-l2">
             <i class="material-icons prefix">vpn_key</i>
-            <input id="settings-backup-auto-git-password" name="autoBackupGitPassword" type="text" <@validation.validation "autoBackupGitPassword"/> value="•••••">
-            <label for="settings-backup-auto-git-password">${locale.getString("settings.backup.auto.git.password")}</label>
+            <input id="settings-backup-auto-git-token" name="autoBackupGitToken" type="text" <@validation.validation "autoBackupGitToken"/> value="•••••">
+            <label for="settings-backup-auto-git-token">${locale.getString("settings.backup.auto.git.token")}</label>
         </div>
 
         <div class="col s12 m12 l8 offset-l2">

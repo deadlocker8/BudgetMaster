@@ -31,7 +31,7 @@ $(document).ready(function()
                 '_csrf': document.getElementById('token').value,
                 'autoBackupGitUrl': document.getElementById('settings-backup-auto-git-url').value,
                 'autoBackupGitUserName': document.getElementById('settings-backup-auto-git-user-name').value,
-                'autoBackupGitPassword': document.getElementById('settings-backup-auto-git-password').value,
+                'autoBackupGitToken': document.getElementById('settings-backup-auto-git-token').value,
             },
             success: function(data)
             {

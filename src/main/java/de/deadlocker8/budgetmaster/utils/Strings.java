@@ -31,7 +31,7 @@ public class Strings
 	public static final String WARNING_DUPLICATE_TEMPLATE_NAME = "warning.duplicate.template.name";
 	public static final String WARNING_EMPTY_GIT_URL = "warning.empty.git.url";
 	public static final String WARNING_EMPTY_GIT_USER_NAME = "warning.empty.git.user.name";
-	public static final String WARNING_EMPTY_GIT_PASSWORD = "warning.empty.git.password";
+	public static final String WARNING_EMPTY_GIT_TOKEN = "warning.empty.git.token";
 
 	//REPORT
 	public static final String REPORT_FOOTER_LEFT = "report.footer.left";

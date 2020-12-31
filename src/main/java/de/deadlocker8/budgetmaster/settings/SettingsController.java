@@ -121,9 +121,9 @@ public class SettingsController extends BaseController
 			settings.setAutoBackupStrategy(AutoBackupStrategy.NONE);
 		}
 
-		if(settings.getAutoBackupGitPassword().equals(PASSWORD_PLACEHOLDER))
+		if(settings.getAutoBackupGitToken().equals(PASSWORD_PLACEHOLDER))
 		{
-			settings.setAutoBackupGitPassword(settingsService.getSettings().getAutoBackupGitPassword());
+			settings.setAutoBackupGitToken(settingsService.getSettings().getAutoBackupGitToken());
 		}
 
 		final String cron = scheduleTaskService.computeCron(settings.getAutoBackupTime(), settings.getAutoBackupDays());
@@ -135,7 +135,7 @@ public class SettingsController extends BaseController
 			settings.setAutoBackupTime(defaultSettings.getAutoBackupTime());
 			settings.setAutoBackupFilesToKeep(defaultSettings.getAutoBackupFilesToKeep());
 			settings.setAutoBackupGitUserName(defaultSettings.getAutoBackupGitUserName());
-			settings.setAutoBackupGitPassword(defaultSettings.getAutoBackupGitPassword());
+			settings.setAutoBackupGitToken(defaultSettings.getAutoBackupGitToken());
 		}
 		else
 		{
@@ -368,14 +368,14 @@ public class SettingsController extends BaseController
 	public String testGit(Model model,
 						  @RequestParam(value = "autoBackupGitUrl") String autoBackupGitUrl,
 						  @RequestParam(value = "autoBackupGitUserName") String autoBackupGitUserName,
-						  @RequestParam(value = "autoBackupGitPassword") String autoBackupGitPassword)
+						  @RequestParam(value = "autoBackupGitToken") String autoBackupGitToken)
 	{
-		if(autoBackupGitPassword.equals(PASSWORD_PLACEHOLDER))
+		if(autoBackupGitToken.equals(PASSWORD_PLACEHOLDER))
 		{
-			autoBackupGitPassword = settingsService.getSettings().getAutoBackupGitPassword();
+			autoBackupGitToken = settingsService.getSettings().getAutoBackupGitToken();
 		}
 
-		final CredentialsProvider credentialsProvider = new UsernamePasswordCredentialsProvider(autoBackupGitUserName, autoBackupGitPassword);
+		final CredentialsProvider credentialsProvider = new UsernamePasswordCredentialsProvider(autoBackupGitUserName, autoBackupGitToken);
 		final boolean isValidConnection = GitHelper.checkConnection(autoBackupGitUrl, credentialsProvider);
 
 		String localizedMessage = Localization.getString("settings.backup.auto.git.test.fail");

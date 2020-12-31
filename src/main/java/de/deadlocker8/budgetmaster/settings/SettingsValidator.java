@@ -29,7 +29,7 @@ public class SettingsValidator implements Validator
 		{
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "autoBackupGitUrl", Strings.WARNING_EMPTY_GIT_URL);
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "autoBackupGitUserName", Strings.WARNING_EMPTY_GIT_USER_NAME);
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "autoBackupGitPassword", Strings.WARNING_EMPTY_GIT_PASSWORD);
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "autoBackupGitToken", Strings.WARNING_EMPTY_GIT_TOKEN);
 		}
 	}
 }

@@ -33,7 +33,7 @@ public class Settings
 	private Integer autoBackupFilesToKeep;
 	private String autoBackupGitUrl;
 	private String autoBackupGitUserName;
-	private String autoBackupGitPassword;
+	private String autoBackupGitToken;
 
 	private Integer installedVersionCode;
 	private Boolean whatsNewShownForCurrentVersion;
@@ -60,7 +60,7 @@ public class Settings
 		defaultSettings.setAutoBackupFilesToKeep(3);
 		defaultSettings.setAutoBackupGitUrl("");
 		defaultSettings.setAutoBackupGitUserName("");
-		defaultSettings.setAutoBackupGitPassword("");
+		defaultSettings.setAutoBackupGitToken("");
 		defaultSettings.setInstalledVersionCode(0);
 		defaultSettings.setWhatsNewShownForCurrentVersion(false);
 		defaultSettings.setShowFirstUseBanner(true);
@@ -227,14 +227,14 @@ public class Settings
 		this.autoBackupGitUserName = gitUserName;
 	}
 
-	public String getAutoBackupGitPassword()
+	public String getAutoBackupGitToken()
 	{
-		return autoBackupGitPassword;
+		return autoBackupGitToken;
 	}
 
-	public void setAutoBackupGitPassword(String gitPassword)
+	public void setAutoBackupGitToken(String gitToken)
 	{
-		this.autoBackupGitPassword = gitPassword;
+		this.autoBackupGitToken = gitToken;
 	}
 
 	public Integer getInstalledVersionCode()
@@ -291,7 +291,7 @@ public class Settings
 				", autoBackupFilesToKeep=" + autoBackupFilesToKeep +
 				", autoBackupGitUrl='" + autoBackupGitUrl + '\'' +
 				", autoBackupGitUserName='" + autoBackupGitUserName + '\'' +
-				", autoBackupGitPassword='" + autoBackupGitPassword + '\'' +
+				", autoBackupGitToken='" + autoBackupGitToken + '\'' +
 				", installedVersionCode=" + installedVersionCode +
 				", whatsNewShownForCurrentVersion=" + whatsNewShownForCurrentVersion +
 				", showFirstUseBanner=" + showFirstUseBanner +

@@ -38,7 +38,7 @@ public class RemoteGitBackupTask extends BackupTask
 		LOGGER.debug(MessageFormat.format("Starting backup with strategy \"{0}\"", AutoBackupStrategy.GIT_REMOTE));
 
 		final Settings settings = settingsService.getSettings();
-		final UsernamePasswordCredentialsProvider credentialsProvider = new UsernamePasswordCredentialsProvider(settings.getAutoBackupGitUserName(), settings.getAutoBackupGitPassword());
+		final UsernamePasswordCredentialsProvider credentialsProvider = new UsernamePasswordCredentialsProvider(settings.getAutoBackupGitUserName(), settings.getAutoBackupGitToken());
 		final String remote = settings.getAutoBackupGitUrl();
 
 		try

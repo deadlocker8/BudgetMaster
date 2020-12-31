@@ -85,9 +85,9 @@ public class SettingsService
 		{
 			settings.setAutoBackupGitUserName(defaultSettings.getAutoBackupGitUserName());
 		}
-		if(settings.getAutoBackupGitPassword() == null)
+		if(settings.getAutoBackupGitToken() == null)
 		{
-			settings.setAutoBackupGitPassword(defaultSettings.getAutoBackupGitPassword());
+			settings.setAutoBackupGitToken(defaultSettings.getAutoBackupGitToken());
 		}
 		if(settings.getInstalledVersionCode() == null)
 		{
