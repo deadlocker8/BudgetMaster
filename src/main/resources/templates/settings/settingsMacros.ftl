@@ -261,8 +261,12 @@
             <label for="settings-backup-auto-git-token">${locale.getString("settings.backup.auto.git.token")}</label>
         </div>
 
-        <div class="col s12 m12 l8 offset-l2">
+        <div class="col s6 m6 l4 offset-l2">
             <a id="settings-backup-auto-git-test" data-url="<@s.url '/settings/git/test'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">send</i>${locale.getString("settings.backup.auto.git.test")}</a>
+        </div>
+
+        <div class="col s6 m6 l4 right-align">
+            <a target="_blank" href="${locale.getString("settings.backup.auto.strategy.git.remote.help.url")}" class="waves-effect waves-light btn btn-flat text-color"><i class="material-icons left">help_outline</i>${locale.getString("settings.backup.auto.strategy.git.remote.help")}</a>
         </div>
     </div>
 </#macro>
