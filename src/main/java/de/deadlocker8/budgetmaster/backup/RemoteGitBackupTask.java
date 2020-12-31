@@ -58,12 +58,13 @@ public class RemoteGitBackupTask extends BackupTask
 				GitHelper.replaceRemote(git, remote);
 
 				LOGGER.debug("Pulling changes from remote...");
-				GitHelper.pullLatestChanges(git, credentialsProvider);
+				GitHelper.pullLatestChanges(git, credentialsProvider, settings.getAutoBackupGitBranchName());
 
 				// skip if database file is not modified and not staged for commit
 				if(!isDatabaseFileModified(git) && !isDatabaseFileAdded(git))
 				{
 					LOGGER.debug(MessageFormat.format("Skipping commit because \"{0}\" is not modified", DATABASE_FILE_NAME));
+					LOGGER.debug("Backup DONE");
 					return;
 				}
 

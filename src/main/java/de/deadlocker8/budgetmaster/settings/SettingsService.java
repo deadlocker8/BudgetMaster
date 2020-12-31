@@ -81,6 +81,10 @@ public class SettingsService
 		{
 			settings.setAutoBackupGitUrl(defaultSettings.getAutoBackupGitUrl());
 		}
+		if(settings.getAutoBackupGitBranchName() == null)
+		{
+			settings.setAutoBackupGitBranchName(defaultSettings.getAutoBackupGitBranchName());
+		}
 		if(settings.getAutoBackupGitUserName() == null)
 		{
 			settings.setAutoBackupGitUserName(defaultSettings.getAutoBackupGitUserName());

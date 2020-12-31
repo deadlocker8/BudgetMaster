@@ -59,12 +59,12 @@ public class GitHelper
 		git.remoteAdd().setName("origin").setUri(new URIish(remote)).call();
 	}
 
-	public static void pullLatestChanges(Git git, CredentialsProvider credentialsProvider) throws GitAPIException, PullException
+	public static void pullLatestChanges(Git git, CredentialsProvider credentialsProvider, String branchName) throws GitAPIException, PullException
 	{
 		final PullResult result = git.pull()
 				.setCredentialsProvider(credentialsProvider)
 				.setRemote("origin")
-				.setRemoteBranchName("master")
+				.setRemoteBranchName(branchName)
 				.call();
 
 		if(!result.isSuccessful())

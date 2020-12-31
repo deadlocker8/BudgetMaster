@@ -229,6 +229,12 @@
         </div>
 
         <div class="input-field col s12 m12 l8 offset-l2">
+            <i class="fas fa-code-branch prefix"></i>
+            <input id="settings-backup-auto-git-branch-name" name="autoBackupGitBranchName" type="text" <@validation.validation "autoBackupGitBranchName"/> value="<#if settings.isAutoBackupActive()??>${settings.getAutoBackupGitBranchName()}</#if>">
+            <label for="settings-backup-auto-git-branch-name">${locale.getString("settings.backup.auto.git.branch.name")}</label>
+        </div>
+
+        <div class="input-field col s12 m12 l8 offset-l2">
             <i class="material-icons prefix">person</i>
             <input id="settings-backup-auto-git-user-name" name="autoBackupGitUserName" type="text" <@validation.validation "autoBackupGitUserName"/> value="<#if settings.isAutoBackupActive()??>${settings.getAutoBackupGitUserName()}</#if>">
             <label for="settings-backup-auto-git-user-name">${locale.getString("settings.backup.auto.git.user.name")}</label>

@@ -32,6 +32,7 @@ public class Settings
 
 	private Integer autoBackupFilesToKeep;
 	private String autoBackupGitUrl;
+	private String autoBackupGitBranchName;
 	private String autoBackupGitUserName;
 	private String autoBackupGitToken;
 
@@ -59,6 +60,7 @@ public class Settings
 		defaultSettings.setAutoBackupTime(AutoBackupTime.TIME_00);
 		defaultSettings.setAutoBackupFilesToKeep(3);
 		defaultSettings.setAutoBackupGitUrl("");
+		defaultSettings.setAutoBackupGitBranchName("");
 		defaultSettings.setAutoBackupGitUserName("");
 		defaultSettings.setAutoBackupGitToken("");
 		defaultSettings.setInstalledVersionCode(0);
@@ -217,6 +219,16 @@ public class Settings
 		this.autoBackupGitUrl = autoBackupGitUrl;
 	}
 
+	public String getAutoBackupGitBranchName()
+	{
+		return autoBackupGitBranchName;
+	}
+
+	public void setAutoBackupGitBranchName(String autoBackupGitBranchName)
+	{
+		this.autoBackupGitBranchName = autoBackupGitBranchName;
+	}
+
 	public String getAutoBackupGitUserName()
 	{
 		return autoBackupGitUserName;
@@ -290,6 +302,7 @@ public class Settings
 				", autoBackupTime=" + autoBackupTime +
 				", autoBackupFilesToKeep=" + autoBackupFilesToKeep +
 				", autoBackupGitUrl='" + autoBackupGitUrl + '\'' +
+				", autoBackupGitBranchName='" + autoBackupGitBranchName + '\'' +
 				", autoBackupGitUserName='" + autoBackupGitUserName + '\'' +
 				", autoBackupGitToken='" + autoBackupGitToken + '\'' +
 				", installedVersionCode=" + installedVersionCode +

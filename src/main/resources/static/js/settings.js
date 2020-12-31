@@ -30,6 +30,7 @@ $(document).ready(function()
             data: {
                 '_csrf': document.getElementById('token').value,
                 'autoBackupGitUrl': document.getElementById('settings-backup-auto-git-url').value,
+                'autoBackupGitBranchName': document.getElementById('settings-backup-auto-git-branch-name').value,
                 'autoBackupGitUserName': document.getElementById('settings-backup-auto-git-user-name').value,
                 'autoBackupGitToken': document.getElementById('settings-backup-auto-git-token').value,
             },
