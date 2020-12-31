@@ -53,8 +53,9 @@ public class GitHelper
 				.build();
 	}
 
-	public static void setRemote(Git git, String remote) throws URISyntaxException, GitAPIException
+	public static void replaceRemote(Git git, String remote) throws URISyntaxException, GitAPIException
 	{
+		git.remoteRemove().setRemoteName("origin").call();
 		git.remoteAdd().setName("origin").setUri(new URIish(remote)).call();
 	}
 
