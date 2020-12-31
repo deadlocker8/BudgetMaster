@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Set;
 
 public class GitHelper
 {
@@ -106,6 +107,18 @@ public class GitHelper
 		}
 
 		return true;
+	}
+
+	public static boolean isFileModified(Git git, String fileName) throws GitAPIException
+	{
+		final Set<String> modifiedFiles = git.status().call().getModified();
+		return modifiedFiles.contains(fileName);
+	}
+
+	public static boolean isFileAdded(Git git, String fileName) throws GitAPIException
+	{
+		final Set<String> changedFiles = git.status().call().getChanged();
+		return changedFiles.contains(fileName);
 	}
 }
 

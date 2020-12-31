@@ -185,8 +185,23 @@
             <label for="settings-backup-auto-time">${locale.getString("settings.backup.auto.time")}</label>
         </div>
 
-        <div class="col s12 m12 l8 offset-l2">
+        <div class="col s6 m6 l4 offset-l2">
             ${locale.getString("settings.backup.auto.next")}: <#if nextBackupTime??>${dateService.getDateTimeString(nextBackupTime)}<#else>-</#if>
+        </div>
+
+        <div class="col s6 m6 l4 right-align">
+            <#if autoBackupHasErrors>
+                <#assign autoBackupStatusBannerClasses="budgetmaster-red white-text">
+                <#assign autoBackupStatusBannerText=locale.getString("settings.backup.auto.has.errors.true")>
+            <#else>
+                <#assign autoBackupStatusBannerClasses="budgetmaster-green white-text">
+                <#assign autoBackupStatusBannerText=locale.getString("settings.backup.auto.has.errors.false")>
+            </#if>
+
+            ${locale.getString("settings.backup.auto.has.errors")}:
+            <div class="banner ${autoBackupStatusBannerClasses} tooltipped" data-position="bottom" data-tooltip="${locale.getString("settings.backup.auto.has.errors.details")}">
+                ${autoBackupStatusBannerText}
+            </div>
         </div>
 
         <div class="input-field col s12 m12 l8 offset-l2">

@@ -1,6 +1,5 @@
 package de.deadlocker8.budgetmaster.backup;
 
-import de.deadlocker8.budgetmaster.backup.AutoBackupTime;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
@@ -22,7 +21,7 @@ public class BackupService
 	private final SettingsService settingsService;
 	private final DatabaseService databaseService;
 
-	private Runnable backupTask;
+	private BackupTask backupTask;
 
 	private final TaskScheduler scheduler;
 	private final Map<Class<? extends Runnable>, ScheduledFuture<?>> jobsMap = new HashMap<>();
@@ -35,7 +34,7 @@ public class BackupService
 		this.scheduler = scheduler;
 	}
 
-	public void startBackupCron(String cron, Runnable backupTask)
+	public void startBackupCron(String cron, BackupTask backupTask)
 	{
 		stopBackupCron();
 		this.backupTask = backupTask;
@@ -70,7 +69,7 @@ public class BackupService
 		final Settings settings = settingsService.getSettings();
 		if(settings.isAutoBackupActive())
 		{
-			final Optional<Runnable> backupTaskOptional = settings.getAutoBackupStrategy().getBackupTask(databaseService, settingsService);
+			final Optional<BackupTask> backupTaskOptional = settings.getAutoBackupStrategy().getBackupTask(databaseService, settingsService);
 			backupTaskOptional.ifPresent(runnable -> startBackupCron(computeCron(settings.getAutoBackupTime(), settings.getAutoBackupDays()), runnable));
 		}
 	}
@@ -94,5 +93,21 @@ public class BackupService
 			return Optional.of(new DateTime(next));
 		}
 		return Optional.empty();
+	}
+
+	public boolean hasErrors()
+	{
+		final Settings settings = settingsService.getSettings();
+		if(settings.isAutoBackupActive())
+		{
+			if(backupTask == null)
+			{
+				return false;
+			}
+
+			return backupTask.hasErrors();
+		}
+
+		return false;
 	}
 }

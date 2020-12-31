@@ -661,6 +661,10 @@ input[type="radio"]:not(:checked) + span::before, [type="radio"]:not(:checked) +
     font-weight: bold;
 }
 
+.tooltipped:hover {
+    cursor: pointer;
+}
+
 .invisible {
     opacity: 0;
 }

@@ -38,7 +38,7 @@ public enum AutoBackupStrategy
 		return Localization.getString(localizationKey);
 	}
 
-	public Optional<Runnable> getBackupTask(DatabaseService databaseService, SettingsService settingsService)
+	public Optional<BackupTask> getBackupTask(DatabaseService databaseService, SettingsService settingsService)
 	{
 		if(backupTaskType == null)
 		{

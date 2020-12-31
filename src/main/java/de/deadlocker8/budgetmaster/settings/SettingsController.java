@@ -5,10 +5,7 @@ import de.deadlocker8.budgetmaster.Build;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
-import de.deadlocker8.budgetmaster.backup.AutoBackupStrategy;
-import de.deadlocker8.budgetmaster.backup.AutoBackupTime;
-import de.deadlocker8.budgetmaster.backup.BackupService;
-import de.deadlocker8.budgetmaster.backup.GitHelper;
+import de.deadlocker8.budgetmaster.backup.*;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.controller.BaseController;
@@ -87,6 +84,7 @@ public class SettingsController extends BaseController
 
 		final Optional<DateTime> nextBackupTimeOptional = scheduleTaskService.getNextRun();
 		nextBackupTimeOptional.ifPresent(date -> model.addAttribute("nextBackupTime", date));
+		model.addAttribute("autoBackupHasErrors", scheduleTaskService.hasErrors());
 
 		request.removeAttribute("database", WebRequest.SCOPE_SESSION);
 		return "settings/settings";
@@ -139,7 +137,7 @@ public class SettingsController extends BaseController
 		}
 		else
 		{
-			final Optional<Runnable> backupTaskOptional = settings.getAutoBackupStrategy().getBackupTask(databaseService, settingsService);
+			final Optional<BackupTask> backupTaskOptional = settings.getAutoBackupStrategy().getBackupTask(databaseService, settingsService);
 			backupTaskOptional.ifPresent(runnable -> scheduleTaskService.startBackupCron(cron, runnable));
 		}
 

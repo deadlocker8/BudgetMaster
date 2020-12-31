@@ -44,7 +44,7 @@ main {
 }
 
 .budgetmaster-green-text {
-   color: #5cb85c;
+    color: #5cb85c;
 }
 
 .budgetmaster-dark-green {
@@ -60,7 +60,7 @@ main {
 }
 
 .budgetmaster-red-text {
-   color: #D82C29;
+    color: #D82C29;
 }
 
 .budgetmaster-orange {
@@ -96,7 +96,7 @@ main {
 }
 
 .budgetmaster-text-black {
-    color: rgba(0,0,0,0.87);
+    color: rgba(0, 0, 0, 0.87);
 }
 
 .budgetmaster-text-isPayment {
@@ -123,8 +123,7 @@ main {
     width: 350px;
 }
 
-ul.sidenav.sidenav-fixed > li:last-child
-{
+ul.sidenav.sidenav-fixed > li:last-child {
     margin-bottom: 160px;
 }
 
@@ -153,7 +152,7 @@ ul.sidenav.sidenav-fixed > li:last-child
 }
 
 .searchWrapper .input-field i,
-.searchWrapper .input-field label.active i{
+.searchWrapper .input-field label.active i {
     color: #212121;
 }
 
@@ -380,7 +379,7 @@ ul.sidenav.sidenav-fixed > li:last-child
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items:  center;
+    align-items: center;
     font-size: 1.8vmin;
 }
 
@@ -574,6 +573,10 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     padding: 0 3vmin;
     display: inline-block;
     font-weight: bold;
+}
+
+.tooltipped:hover {
+    cursor: pointer;
 }
 
 .invisible {
