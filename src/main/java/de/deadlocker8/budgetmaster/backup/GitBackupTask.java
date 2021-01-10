@@ -1,6 +1,5 @@
 package de.deadlocker8.budgetmaster.backup;
 
-import de.deadlocker8.budgetmaster.Main;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import org.eclipse.jgit.api.Git;
@@ -22,7 +21,7 @@ public abstract class GitBackupTask extends BackupTask
 	protected GitBackupTask(DatabaseService databaseService, SettingsService settingsService)
 	{
 		super(databaseService, settingsService);
-		this.gitFolder = Main.getApplicationSupportFolder().resolve(".git");
+		this.gitFolder = getBackupFolder().resolve("git/.git");
 	}
 
 	protected abstract AutoBackupStrategy getBackupStrategy();
