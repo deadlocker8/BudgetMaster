@@ -58,9 +58,6 @@ public class RemoteGitBackupTask extends GitBackupTask
 				LOGGER.debug(MessageFormat.format("Set remote to \"{0}\"", remote));
 				GitHelper.replaceRemote(git, remote);
 
-				LOGGER.debug("Pulling changes from remote...");
-				GitHelper.pullLatestChanges(git, credentialsProvider, settings.getAutoBackupGitBranchName());
-
 				final boolean needsPush = addAndCommitChanges(git);
 				if(needsPush)
 				{
@@ -72,7 +69,7 @@ public class RemoteGitBackupTask extends GitBackupTask
 				LOGGER.debug("Backup DONE");
 			}
 		}
-		catch(IOException | GitAPIException | URISyntaxException | GitHelper.PullException e)
+		catch(IOException | GitAPIException | URISyntaxException e)
 		{
 			e.printStackTrace();
 			setHasErrors(true);
