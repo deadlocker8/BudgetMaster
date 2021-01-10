@@ -26,7 +26,7 @@ public abstract class GitBackupTask extends BackupTask
 
 	protected abstract AutoBackupStrategy getBackupStrategy();
 
-	protected void addAndCommitChanges(Git git) throws GitAPIException
+	protected boolean addAndCommitChanges(Git git) throws GitAPIException
 	{
 		if(!GitHelper.isFileUntracked(git, DATABASE_FILE_NAME))
 		{
@@ -35,7 +35,7 @@ public abstract class GitBackupTask extends BackupTask
 			{
 				LOGGER.debug(MessageFormat.format("Skipping commit because \"{0}\" is not modified", DATABASE_FILE_NAME));
 				LOGGER.debug("Backup DONE");
-				return;
+				return false;
 			}
 		}
 
@@ -50,6 +50,7 @@ public abstract class GitBackupTask extends BackupTask
 
 		LOGGER.debug("Committing changes...");
 		GitHelper.commitChanges(git, DateTime.now().toString(DATE_PATTERN));
+		return true;
 	}
 
 	protected void exportDatabase()

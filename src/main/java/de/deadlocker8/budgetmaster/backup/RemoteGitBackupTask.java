@@ -61,10 +61,12 @@ public class RemoteGitBackupTask extends GitBackupTask
 				LOGGER.debug("Pulling changes from remote...");
 				GitHelper.pullLatestChanges(git, credentialsProvider, settings.getAutoBackupGitBranchName());
 
-				addAndCommitChanges(git);
-
-				LOGGER.debug(("Pushing commits to remote..."));
-				GitHelper.push(git, credentialsProvider);
+				final boolean needsPush = addAndCommitChanges(git);
+				if(needsPush)
+				{
+					LOGGER.debug(("Pushing commits to remote..."));
+					GitHelper.push(git, credentialsProvider);
+				}
 
 				setHasErrors(false);
 				LOGGER.debug("Backup DONE");
