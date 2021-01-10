@@ -137,6 +137,9 @@ public class SettingsController extends BaseController
 		}
 		else
 		{
+			final Optional<BackupTask> previousBackupTaskOptional = settings.getAutoBackupStrategy().getBackupTask(databaseService, settingsService);
+			previousBackupTaskOptional.ifPresent(runnable -> runnable.cleanup(settingsService.getSettings(), settings));
+
 			final Optional<BackupTask> backupTaskOptional = settings.getAutoBackupStrategy().getBackupTask(databaseService, settingsService);
 			backupTaskOptional.ifPresent(runnable -> scheduleTaskService.startBackupCron(cron, runnable));
 		}

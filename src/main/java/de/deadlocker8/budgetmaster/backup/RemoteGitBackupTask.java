@@ -9,10 +9,12 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.FileSystemUtils;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.MessageFormat;
 
 public class RemoteGitBackupTask extends GitBackupTask
@@ -85,5 +87,42 @@ public class RemoteGitBackupTask extends GitBackupTask
 
 		LOGGER.debug(MessageFormat.format("Rename branch from \"{0}\" to \"{1}\"", currentBranchName, newBranchName));
 		git.branchRename().setOldName(currentBranchName).setNewName(newBranchName).call();
+	}
+
+	@Override
+	public void cleanup(Settings previousSettings, Settings newSettings)
+	{
+		if(!needsCleanup(previousSettings, newSettings))
+		{
+			return;
+		}
+
+		final Path folderToDelete = gitFolder.getParent();
+		LOGGER.debug(MessageFormat.format("Deleting folder and all contents: \"{0}\"", folderToDelete));
+		try
+		{
+			FileSystemUtils.deleteRecursively(folderToDelete);
+		}
+		catch(IOException e)
+		{
+			LOGGER.error(MessageFormat.format("Error deleting folder: \"{0}\"", folderToDelete), e);
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public boolean needsCleanup(Settings previousSettings, Settings newSettings)
+	{
+		if(!previousSettings.getAutoBackupGitUrl().equals(newSettings.getAutoBackupGitUrl()))
+		{
+			return true;
+		}
+
+		if(!previousSettings.getAutoBackupGitBranchName().equals(newSettings.getAutoBackupGitBranchName()))
+		{
+			return true;
+		}
+
+		return false;
 	}
 }

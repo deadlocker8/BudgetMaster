@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.backup;
 
 import de.deadlocker8.budgetmaster.Main;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
+import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 
 import java.nio.file.Path;
@@ -40,4 +41,8 @@ public abstract class BackupTask implements Runnable
 	{
 		this.hasErrors = hasErrors;
 	}
+
+	public abstract void cleanup(Settings previousSettings, Settings newSettings);
+
+	protected abstract boolean needsCleanup(Settings previousSettings, Settings newSettings);
 }

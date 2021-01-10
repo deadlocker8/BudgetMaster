@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.backup;
 
 import de.deadlocker8.budgetmaster.database.DatabaseService;
+import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,5 +26,21 @@ public class LocalBackupTask extends BackupTask
 		LOGGER.debug(MessageFormat.format("Starting backup with strategy \"{0}\"", AutoBackupStrategy.LOCAL));
 		databaseService.backupDatabase(getBackupFolder());
 		LOGGER.debug("Backup DONE");
+	}
+
+	@Override
+	public void cleanup(Settings previousSettings, Settings newSettings)
+	{
+		if(!needsCleanup(previousSettings, newSettings))
+		{
+			return;
+		}
+	}
+
+	@Override
+	protected boolean needsCleanup(Settings previousSettings, Settings newSettings)
+	{
+		// nothing to do here, file system copies could remain inside the backup folder
+		return false;
 	}
 }

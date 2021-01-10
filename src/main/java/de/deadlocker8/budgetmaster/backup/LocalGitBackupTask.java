@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.backup;
 
 import de.deadlocker8.budgetmaster.database.DatabaseService;
+import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -56,6 +57,22 @@ public class LocalGitBackupTask extends GitBackupTask
 			e.printStackTrace();
 			setHasErrors(true);
 		}
+	}
+
+	@Override
+	public void cleanup(Settings previousSettings, Settings newSettings)
+	{
+		if(!needsCleanup(previousSettings, newSettings))
+		{
+			return;
+		}
+	}
+
+	@Override
+	protected boolean needsCleanup(Settings previousSettings, Settings newSettings)
+	{
+		// nothing to do here, local git repo can remain unchanged even if it was used as remote repo before
+		return false;
 	}
 }
 
