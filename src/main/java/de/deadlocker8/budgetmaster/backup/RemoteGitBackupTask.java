@@ -7,8 +7,10 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.FileSystemUtils;
 
 import java.io.IOException;
@@ -17,6 +19,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.MessageFormat;
 
+
+@RunWith(SpringJUnit4ClassRunner.class)
 public class RemoteGitBackupTask extends GitBackupTask
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(RemoteGitBackupTask.class);
@@ -50,31 +54,36 @@ public class RemoteGitBackupTask extends GitBackupTask
 			LOGGER.debug("Exporting database...");
 			exportDatabase();
 
-			LOGGER.debug(MessageFormat.format("Using git repository: \"{0}\"", gitFolder));
-			try(Repository repository = GitHelper.openRepository(gitFolder))
-			{
-				final Git git = new Git(repository);
-
-				renameBranch(git, repository.getBranch(), settings.getAutoBackupGitBranchName());
-
-				LOGGER.debug(MessageFormat.format("Set remote to \"{0}\"", remote));
-				GitHelper.replaceRemote(git, remote);
-
-				final boolean needsPush = addAndCommitChanges(git);
-				if(needsPush)
-				{
-					LOGGER.debug(("Pushing commits to remote..."));
-					GitHelper.push(git, credentialsProvider);
-				}
-
-				setHasErrors(false);
-				LOGGER.debug("Backup DONE");
-			}
+			handleChanges(credentialsProvider, remote, settings.getAutoBackupGitBranchName());
 		}
 		catch(IOException | GitAPIException | URISyntaxException e)
 		{
 			e.printStackTrace();
 			setHasErrors(true);
+		}
+	}
+
+	private void handleChanges(UsernamePasswordCredentialsProvider credentialsProvider, String remote, String branchName) throws GitAPIException, IOException, URISyntaxException
+	{
+		LOGGER.debug(MessageFormat.format("Using git repository: \"{0}\"", gitFolder));
+		try(Repository repository = GitHelper.openRepository(gitFolder))
+		{
+			final Git git = new Git(repository);
+
+			renameBranch(git, repository.getBranch(), branchName);
+
+			LOGGER.debug(MessageFormat.format("Set remote to \"{0}\"", remote));
+			GitHelper.replaceRemote(git, remote);
+
+			final boolean needsPush = addAndCommitChanges(git);
+			if(needsPush)
+			{
+				LOGGER.debug(("Pushing commits to remote..."));
+				GitHelper.push(git, credentialsProvider);
+			}
+
+			setHasErrors(false);
+			LOGGER.debug("Backup DONE");
 		}
 	}
 
