@@ -28,12 +28,15 @@ public abstract class GitBackupTask extends BackupTask
 
 	protected void addAndCommitChanges(Git git) throws GitAPIException
 	{
-		// skip if database file is not modified and not (already) staged for commit
-		if(!GitHelper.isFileModified(git, DATABASE_FILE_NAME) && !GitHelper.isFileAdded(git, DATABASE_FILE_NAME))
+		if(!GitHelper.isFileUntracked(git, DATABASE_FILE_NAME))
 		{
-			LOGGER.debug(MessageFormat.format("Skipping commit because \"{0}\" is not modified", DATABASE_FILE_NAME));
-			LOGGER.debug("Backup DONE");
-			return;
+			// skip if database file is not modified and not (already) staged for commit
+			if(!GitHelper.isFileModified(git, DATABASE_FILE_NAME) && !GitHelper.isFileAdded(git, DATABASE_FILE_NAME))
+			{
+				LOGGER.debug(MessageFormat.format("Skipping commit because \"{0}\" is not modified", DATABASE_FILE_NAME));
+				LOGGER.debug("Backup DONE");
+				return;
+			}
 		}
 
 		git.add().addFilepattern(DATABASE_FILE_NAME).call();
@@ -45,7 +48,12 @@ public abstract class GitBackupTask extends BackupTask
 			throw new RuntimeException(MessageFormat.format("Error adding \"{0}\" to git", DATABASE_FILE_NAME));
 		}
 
-		LOGGER.debug(("Committing changes..."));
+		LOGGER.debug("Committing changes...");
 		GitHelper.commitChanges(git, DateTime.now().toString(DATE_PATTERN));
+	}
+
+	protected void exportDatabase()
+	{
+		databaseService.exportDatabase(gitFolder.getParent().resolve(DATABASE_FILE_NAME));
 	}
 }

@@ -45,6 +45,9 @@ public class RemoteGitBackupTask extends GitBackupTask
 				GitHelper.cloneRepository(remote, credentialsProvider, this.gitFolder.getParent());
 			}
 
+			LOGGER.debug("Exporting database...");
+			exportDatabase();
+
 			LOGGER.debug(MessageFormat.format("Using git repository: \"{0}\"", gitFolder));
 			try(Repository repository = GitHelper.openRepository(gitFolder))
 			{

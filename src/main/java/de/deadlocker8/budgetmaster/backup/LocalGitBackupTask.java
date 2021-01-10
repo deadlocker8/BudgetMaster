@@ -38,6 +38,9 @@ public class LocalGitBackupTask extends GitBackupTask
 				GitHelper.createNewRepository(gitFolder);
 			}
 
+			LOGGER.debug("Exporting database...");
+			exportDatabase();
+
 			LOGGER.debug(MessageFormat.format("Using git repository: \"{0}\"", gitFolder));
 			try(Repository repository = GitHelper.openRepository(gitFolder))
 			{

@@ -8,7 +8,7 @@ import java.nio.file.Path;
 
 public abstract class BackupTask implements Runnable
 {
-	protected static final String DATABASE_FILE_NAME = "budgetmaster.mv.db";
+	protected static final String DATABASE_FILE_NAME = "BudgetMasterDatabase.json";
 
 	protected final DatabaseService databaseService;
 	protected final SettingsService settingsService;

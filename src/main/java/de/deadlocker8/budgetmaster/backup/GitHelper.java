@@ -118,7 +118,13 @@ public class GitHelper
 	public static boolean isFileAdded(Git git, String fileName) throws GitAPIException
 	{
 		final Set<String> changedFiles = git.status().call().getChanged();
-		return changedFiles.contains(fileName);
+		final Set<String> addedFiles = git.status().call().getAdded();
+		return changedFiles.contains(fileName) || addedFiles.contains(fileName);
+	}
+
+	public static boolean isFileUntracked(Git git, String fileName) throws GitAPIException
+	{
+		final Set<String> modifiedFiles = git.status().call().getUntracked();
+		return modifiedFiles.contains(fileName);
 	}
 }
-

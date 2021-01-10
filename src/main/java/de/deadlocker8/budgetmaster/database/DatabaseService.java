@@ -39,19 +39,19 @@ import java.util.stream.Stream;
 @Service
 public class DatabaseService
 {
-	public static Gson GSON = new GsonBuilder()
+	public static final  Gson GSON = new GsonBuilder()
 			.excludeFieldsWithoutExposeAnnotation()
 			.setPrettyPrinting()
 			.registerTypeAdapter(DateTime.class, (JsonSerializer<DateTime>) (json, typeOfSrc, context) -> new JsonPrimitive(ISODateTimeFormat.date().print(json)))
 			.create();
-
 	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseService.class);
-	private AccountService accountService;
-	private CategoryService categoryService;
-	private TransactionService transactionService;
-	private TagService tagService;
-	private TemplateService templateService;
-	private SettingsService settingsService;
+
+	private final AccountService accountService;
+	private final CategoryService categoryService;
+	private final TransactionService transactionService;
+	private final TagService tagService;
+	private final TemplateService templateService;
+	private final SettingsService settingsService;
 
 	@Autowired
 	public DatabaseService(AccountService accountService, CategoryService categoryService, TransactionService transactionService, TagService tagService, TemplateService templateService, SettingsService settingsService)
@@ -187,14 +187,21 @@ public class DatabaseService
 
 		rotatingBackup(backupFolderPath);
 
-		final Database databaseForJsonSerialization = getDatabaseForJsonSerialization();
 		final String fileName = getExportFileName(true);
-		final String backupPath = backupFolderPath.resolve(fileName).toString();
+		final Path backupPath = backupFolderPath.resolve(fileName);
 
-		try(Writer writer = new FileWriter(backupPath))
+		exportDatabase(backupPath);
+	}
+
+	@Transactional
+	public void exportDatabase(Path backupPath)
+	{
+		final Database database = getDatabaseForJsonSerialization();
+
+		try(Writer writer = new FileWriter(backupPath.toString()))
 		{
 			LOGGER.info("Backup database to: {}", backupPath);
-			DatabaseService.GSON.toJson(databaseForJsonSerialization, writer);
+			DatabaseService.GSON.toJson(database, writer);
 			LOGGER.info("Backup database DONE");
 		}
 		catch(IOException e)
