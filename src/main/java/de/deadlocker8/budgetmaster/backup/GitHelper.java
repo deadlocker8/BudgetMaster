@@ -115,7 +115,7 @@ public class GitHelper
 		return modifiedFiles.contains(fileName);
 	}
 
-	public static boolean isFileAdded(Git git, String fileName) throws GitAPIException
+	public static boolean isFileAddedOrChanged(Git git, String fileName) throws GitAPIException
 	{
 		final Set<String> changedFiles = git.status().call().getChanged();
 		final Set<String> addedFiles = git.status().call().getAdded();

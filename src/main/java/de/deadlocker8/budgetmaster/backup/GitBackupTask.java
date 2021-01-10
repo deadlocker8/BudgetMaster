@@ -31,7 +31,7 @@ public abstract class GitBackupTask extends BackupTask
 		if(!GitHelper.isFileUntracked(git, DATABASE_FILE_NAME))
 		{
 			// skip if database file is not modified and not (already) staged for commit
-			if(!GitHelper.isFileModified(git, DATABASE_FILE_NAME) && !GitHelper.isFileAdded(git, DATABASE_FILE_NAME))
+			if(!GitHelper.isFileModified(git, DATABASE_FILE_NAME) && !GitHelper.isFileAddedOrChanged(git, DATABASE_FILE_NAME))
 			{
 				LOGGER.debug(MessageFormat.format("Skipping commit because \"{0}\" is not modified", DATABASE_FILE_NAME));
 				LOGGER.debug("Backup DONE");
@@ -42,7 +42,7 @@ public abstract class GitBackupTask extends BackupTask
 		git.add().addFilepattern(DATABASE_FILE_NAME).call();
 
 		// check if database file is successfully added
-		if(!GitHelper.isFileAdded(git, DATABASE_FILE_NAME))
+		if(!GitHelper.isFileAddedOrChanged(git, DATABASE_FILE_NAME))
 		{
 			setHasErrors(true);
 			throw new RuntimeException(MessageFormat.format("Error adding \"{0}\" to git", DATABASE_FILE_NAME));
