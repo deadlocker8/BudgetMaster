@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.Set;
 
 public class GitHelper
@@ -87,7 +88,7 @@ public class GitHelper
 		pushCommand.call();
 	}
 
-	public static boolean checkConnection(String uri, CredentialsProvider credentialsProvider)
+	public static Optional<String> checkConnection(String uri, CredentialsProvider credentialsProvider)
 	{
 		try
 		{
@@ -97,10 +98,10 @@ public class GitHelper
 		catch(GitAPIException | IOException e)
 		{
 			e.printStackTrace();
-			return false;
+			return Optional.of(e.getMessage());
 		}
 
-		return true;
+		return Optional.empty();
 	}
 
 	public static boolean isFileModified(Git git, String fileName) throws GitAPIException

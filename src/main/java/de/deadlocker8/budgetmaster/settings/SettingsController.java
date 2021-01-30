@@ -355,9 +355,16 @@ public class SettingsController extends BaseController
 		}
 
 		final CredentialsProvider credentialsProvider = new UsernamePasswordCredentialsProvider(autoBackupGitUserName, autoBackupGitToken);
-		final boolean isValidConnection = GitHelper.checkConnection(autoBackupGitUrl, credentialsProvider);
+		final Optional<String> checkConnectionOptional = GitHelper.checkConnection(autoBackupGitUrl, credentialsProvider);
+		final boolean isValidConnection = checkConnectionOptional.isEmpty();
+		String errorText = "";
+		if(checkConnectionOptional.isPresent())
+		{
+			errorText = checkConnectionOptional.get();
+		}
 
-		String localizedMessage = Localization.getString("settings.backup.auto.git.test.fail");
+
+		String localizedMessage = Localization.getString("settings.backup.auto.git.test.fail", errorText);
 		if(isValidConnection)
 		{
 			localizedMessage = Localization.getString("settings.backup.auto.git.test.success");
