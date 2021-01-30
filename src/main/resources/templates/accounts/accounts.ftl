@@ -56,17 +56,9 @@
         </main>
 
         <#if currentAccount??>
-            <!-- confirm delete modal -->
-            <div id="modalConfirmDelete" class="modal background-color">
-                <div class="modal-content">
-                    <h4>${locale.getString("info.title.account.delete")}</h4>
-                    <p>${locale.getString("info.text.account.delete", currentAccount.getName(), currentAccount.getReferringTransactions()?size)}</p>
-                </div>
-                <div class="modal-footer background-color">
-                    <a href="<@s.url '/accounts'/>" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
-                    <a href="<@s.url '/accounts/${currentAccount.getID()?c}/delete'/>" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("info.button.account.delete")}</a>
-                </div>
-            </div>
+            <@header.modalConfirmDelete title=locale.getString("info.title.account.delete") confirmUrl='/accounts' cancelUrlBase="/accounts" itemId=currentAccount.getID() confirmButtonText=locale.getString("info.button.account.delete")>
+                <p>${locale.getString("info.text.account.delete", currentAccount.getName(), currentAccount.getReferringTransactions()?size)}</p>
+            </@header.modalConfirmDelete>
         </#if>
 
         <#if accountNotDeletable??>

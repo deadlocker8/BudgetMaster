@@ -57,17 +57,9 @@
             </div>
 
             <#if currentChart??>
-                <!-- confirm delete modal -->
-                <div id="modalConfirmDelete" class="modal background-color">
-                    <div class="modal-content">
-                        <h4>${locale.getString("info.title.chart.delete")}</h4>
-                        <p>${locale.getString("info.text.chart.delete", currentChart.getName())}</p>
-                    </div>
-                    <div class="modal-footer background-color">
-                        <a href="<@s.url '/charts/manage'/>" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
-                        <a href="<@s.url '/charts/${currentChart.getID()?c}/delete'/>" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("info.title.chart.delete")}</a>
-                    </div>
-                </div>
+                <@header.modalConfirmDelete title=locale.getString("info.title.chart.delete") confirmUrl='/charts/manage' cancelUrlBase='/charts' itemId=currentChart.getID() confirmButtonText=locale.getString("info.title.chart.delete")>
+                    <p>${locale.getString("info.text.chart.delete", currentChart.getName())}</p>
+                </@header.modalConfirmDelete>
             </#if>
         </main>
 

@@ -39,3 +39,17 @@
         <img class="${classes}" id="${id}" src="<@s.url '/images/Logo_with_text_medium_res.png'/>">
     </#if>
 </#macro>
+
+<#macro modalConfirmDelete title confirmUrl cancelUrlBase itemId confirmButtonText id="modalConfirmDelete" classes="">
+    <div id="${id}" class="modal background-color ${classes}">
+        <div class="modal-content">
+            <h4>${title}</h4>
+
+            <#nested>
+        </div>
+        <div class="modal-footer background-color">
+            <a href="<@s.url confirmUrl/>" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
+            <a href="<@s.url cancelUrlBase + "/" + itemId?c + "/delete" />" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${confirmButtonText}</a>
+        </div>
+    </div>
+</#macro>

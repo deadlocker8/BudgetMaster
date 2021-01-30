@@ -91,23 +91,6 @@
     </#if>
 </#macro>
 
-<#macro deleteModal transaction>
-    <div id="modalConfirmDelete" class="modal background-color">
-        <div class="modal-content">
-            <h4>${locale.getString("info.title.transaction.delete")}</h4>
-            <#if currentTransaction.isRepeating()>
-                <p>${locale.getString("info.text.transaction.repeating.delete", transaction.name)}</p>
-            <#else>
-                <p>${locale.getString("info.text.transaction.delete", transaction.name)}</p>
-            </#if>
-        </div>
-        <div class="modal-footer background-color">
-            <a href="<@s.url '/transactions'/>" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
-            <a href="<@s.url '/transactions/${transaction.ID?c}/delete'/>" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("delete")}</a>
-        </div>
-    </div>
-</#macro>
-
 <#macro buttons isFilterActive>
     <div class="row hide-on-small-only valign-wrapper">
         <div class="col s6 right-align transactions-buttons-col">

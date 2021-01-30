@@ -88,7 +88,13 @@
             </div>
 
             <#if currentTransaction??>
-                <@transactionsMacros.deleteModal currentTransaction/>
+                <@header.modalConfirmDelete title=locale.getString("info.title.transaction.delete") confirmUrl='/transactions' cancelUrlBase='/transactions' itemId=currentTransaction.getID() confirmButtonText=locale.getString("delete")>
+                    <#if currentTransaction.isRepeating()>
+                        <p>${locale.getString("info.text.transaction.repeating.delete", currentTransaction.name)}</p>
+                    <#else>
+                        <p>${locale.getString("info.text.transaction.delete", currentTransaction.name)}</p>
+                    </#if>
+                </@header.modalConfirmDelete>
             </#if>
 
             <@filterMacros.filterModal filterConfiguration/>
