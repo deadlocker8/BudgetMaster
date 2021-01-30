@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.unit.backup;
 
 import de.deadlocker8.budgetmaster.backup.AutoBackupStrategy;
 import de.deadlocker8.budgetmaster.backup.BackupStatus;
+import de.deadlocker8.budgetmaster.backup.BackupTask;
 import de.deadlocker8.budgetmaster.backup.LocalGitBackupTask;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
@@ -82,7 +83,8 @@ public class LocalGitBackupTaskTest
 		localGitBackupTask.setGitFolder(repositoryFolder);
 		localGitBackupTask.run();
 
-		assertThat(localGitBackupTask.getBackupStatus()).isEqualByComparingTo(BackupStatus.OK);
+		assertThat(localGitBackupTask.getBackupStatus())
+				.isEqualByComparingTo(BackupStatus.OK);
 		assertThat(Files.exists(repositoryFolder)).isTrue();
 	}
 
@@ -103,8 +105,15 @@ public class LocalGitBackupTaskTest
 		localGitBackupTask.run();
 
 		assertThat(localGitBackupTask.getBackupStatus()).isEqualByComparingTo(BackupStatus.OK);
-		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(), gitExecutable, "rev-list", "--all", "--count")).isEqualTo("1");
-		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(), gitExecutable, "log", "--pretty=%B", "-1")).startsWith("2021-01-30");
+		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(),
+				gitExecutable, "rev-list", "--all", "--count"))
+				.isEqualTo("1");
+		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(),
+				gitExecutable, "log", "--pretty=%B", "-1"))
+				.startsWith("2021-01-30");
+		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(),
+				gitExecutable, "show", "--name-only", "--oneline", "HEAD"))
+				.contains(BackupTask.DATABASE_FILE_NAME);
 	}
 
 	@Test
@@ -124,8 +133,11 @@ public class LocalGitBackupTaskTest
 		localGitBackupTask.run();
 		localGitBackupTask.run();
 
-		assertThat(localGitBackupTask.getBackupStatus()).isEqualByComparingTo(BackupStatus.OK);
-		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(), gitExecutable, "rev-list", "--all", "--count")).isEqualTo("1");
+		assertThat(localGitBackupTask.getBackupStatus())
+				.isEqualByComparingTo(BackupStatus.OK);
+		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(),
+				gitExecutable, "rev-list", "--all", "--count"))
+				.isEqualTo("1");
 	}
 
 	@Test
@@ -148,8 +160,16 @@ public class LocalGitBackupTaskTest
 		Mockito.when(databaseService.getDatabaseForJsonSerialization()).thenReturn(databaseModified);
 		localGitBackupTask.run();
 
-		assertThat(localGitBackupTask.getBackupStatus()).isEqualByComparingTo(BackupStatus.OK);
-		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(), gitExecutable, "rev-list", "--all", "--count")).isEqualTo("2");
-		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(), gitExecutable, "log", "--pretty=%B", "-1")).startsWith("2021-01-30");
+		assertThat(localGitBackupTask.getBackupStatus())
+				.isEqualByComparingTo(BackupStatus.OK);
+		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(),
+				gitExecutable, "rev-list", "--all", "--count"))
+				.isEqualTo("2");
+		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(),
+				gitExecutable, "log", "--pretty=%B", "-1"))
+				.startsWith("2021-01-30");
+		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(),
+				gitExecutable, "show", "--name-only", "--oneline", "HEAD"))
+				.contains(BackupTask.DATABASE_FILE_NAME);
 	}
 }

@@ -1,9 +1,6 @@
 package de.deadlocker8.budgetmaster.unit.backup;
 
-import de.deadlocker8.budgetmaster.backup.AutoBackupStrategy;
-import de.deadlocker8.budgetmaster.backup.BackupStatus;
-import de.deadlocker8.budgetmaster.backup.LocalGitBackupTask;
-import de.deadlocker8.budgetmaster.backup.RemoteGitBackupTask;
+import de.deadlocker8.budgetmaster.backup.*;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.database.Database;
@@ -150,13 +147,28 @@ public class RemoteGitBackupTaskTest
 		remoteGitBackupTask.run();
 
 		// check local git
-		assertThat(remoteGitBackupTask.getBackupStatus()).isEqualByComparingTo(BackupStatus.OK);
-		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(), gitExecutable, "rev-list", "--all", "--count")).isEqualTo("1");
-		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(), gitExecutable, "log", "--pretty=%B", "-1")).startsWith("2021-01-30");
+		assertThat(remoteGitBackupTask.getBackupStatus()).
+				isEqualByComparingTo(BackupStatus.OK);
+		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(),
+				gitExecutable, "rev-list", "--all", "--count"))
+				.isEqualTo("1");
+		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(),
+				gitExecutable, "log", "--pretty=%B", "-1"))
+				.startsWith("2021-01-30");
+		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(),
+				gitExecutable, "show", "--name-only", "--oneline", "HEAD"))
+				.contains(BackupTask.DATABASE_FILE_NAME);
 
 		// check remote git
-		assertThat(Helpers.runCommand(fakeServerFolder.toFile(), gitExecutable, "rev-list", "--all", "--count")).isEqualTo("1");
-		assertThat(Helpers.runCommand(fakeServerFolder.toFile(), gitExecutable, "log", "--pretty=%B", "-1")).startsWith("2021-01-30");
+		assertThat(Helpers.runCommand(fakeServerFolder.toFile(),
+				gitExecutable, "rev-list", "--all", "--count"))
+				.isEqualTo("1");
+		assertThat(Helpers.runCommand(fakeServerFolder.toFile(),
+				gitExecutable, "log", "--pretty=%B", "-1"))
+				.startsWith("2021-01-30");
+		assertThat(Helpers.runCommand(fakeServerFolder.toFile(),
+				gitExecutable, "show", "--name-only", "--oneline", "HEAD"))
+				.contains(BackupTask.DATABASE_FILE_NAME);
 	}
 
 	@Test
@@ -171,11 +183,16 @@ public class RemoteGitBackupTaskTest
 		remoteGitBackupTask.run();
 
 		// check local git
-		assertThat(remoteGitBackupTask.getBackupStatus()).isEqualByComparingTo(BackupStatus.OK);
-		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(), gitExecutable, "rev-list", "--all", "--count")).isEqualTo("1");
+		assertThat(remoteGitBackupTask.getBackupStatus())
+				.isEqualByComparingTo(BackupStatus.OK);
+		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(),
+				gitExecutable, "rev-list", "--all", "--count"))
+				.isEqualTo("1");
 
 		// check remote git
-		assertThat(Helpers.runCommand(fakeServerFolder.toFile(), gitExecutable, "rev-list", "--all", "--count")).isEqualTo("1");
+		assertThat(Helpers.runCommand(fakeServerFolder.toFile(),
+				gitExecutable, "rev-list", "--all", "--count"))
+				.isEqualTo("1");
 	}
 
 	@Test
@@ -194,12 +211,26 @@ public class RemoteGitBackupTaskTest
 
 		// check local git
 		assertThat(remoteGitBackupTask.getBackupStatus()).isEqualByComparingTo(BackupStatus.OK);
-		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(), gitExecutable, "rev-list", "--all", "--count")).isEqualTo("2");
-		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(), gitExecutable, "log", "--pretty=%B", "-1")).startsWith("2021-01-30");
+		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(),
+				gitExecutable, "rev-list", "--all", "--count"))
+				.isEqualTo("2");
+		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(),
+				gitExecutable, "log", "--pretty=%B", "-1"))
+				.startsWith("2021-01-30");
+		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(),
+				gitExecutable, "show", "--name-only", "--oneline", "HEAD"))
+				.contains(BackupTask.DATABASE_FILE_NAME);
 
 		// check remote git
-		assertThat(Helpers.runCommand(fakeServerFolder.toFile(), gitExecutable, "rev-list", "--all", "--count")).isEqualTo("2");
-		assertThat(Helpers.runCommand(fakeServerFolder.toFile(), gitExecutable, "log", "--pretty=%B", "-1")).startsWith("2021-01-30");
+		assertThat(Helpers.runCommand(fakeServerFolder.toFile(),
+				gitExecutable, "rev-list", "--all", "--count"))
+				.isEqualTo("2");
+		assertThat(Helpers.runCommand(fakeServerFolder.toFile(),
+				gitExecutable, "log", "--pretty=%B", "-1"))
+				.startsWith("2021-01-30");
+		assertThat(Helpers.runCommand(fakeServerFolder.toFile(),
+				gitExecutable, "show", "--name-only", "--oneline", "HEAD"))
+				.contains(BackupTask.DATABASE_FILE_NAME);
 	}
 
 	private RemoteGitBackupTask createBackupTask(Path repositoryFolder, Path fakeServerFolder)
