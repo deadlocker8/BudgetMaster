@@ -9,6 +9,7 @@ import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
+import de.deadlocker8.budgetmaster.unit.helpers.Helpers;
 import de.thecodelabs.utils.util.OS;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -102,8 +103,8 @@ public class LocalGitBackupTaskTest
 		localGitBackupTask.run();
 
 		assertThat(localGitBackupTask.getBackupStatus()).isEqualByComparingTo(BackupStatus.OK);
-		assertThat(runCommand(repositoryFolder.getParent().toFile(), gitExecutable, "rev-list", "--all", "--count")).isEqualTo("1");
-		assertThat(runCommand(repositoryFolder.getParent().toFile(), gitExecutable, "log", "--pretty=%B", "-1")).startsWith("2021-01-30");
+		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(), gitExecutable, "rev-list", "--all", "--count")).isEqualTo("1");
+		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(), gitExecutable, "log", "--pretty=%B", "-1")).startsWith("2021-01-30");
 	}
 
 	@Test
@@ -124,7 +125,7 @@ public class LocalGitBackupTaskTest
 		localGitBackupTask.run();
 
 		assertThat(localGitBackupTask.getBackupStatus()).isEqualByComparingTo(BackupStatus.OK);
-		assertThat(runCommand(repositoryFolder.getParent().toFile(), gitExecutable, "rev-list", "--all", "--count")).isEqualTo("1");
+		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(), gitExecutable, "rev-list", "--all", "--count")).isEqualTo("1");
 	}
 
 	@Test
@@ -148,43 +149,7 @@ public class LocalGitBackupTaskTest
 		localGitBackupTask.run();
 
 		assertThat(localGitBackupTask.getBackupStatus()).isEqualByComparingTo(BackupStatus.OK);
-		assertThat(runCommand(repositoryFolder.getParent().toFile(), gitExecutable, "rev-list", "--all", "--count")).isEqualTo("2");
-		assertThat(runCommand(repositoryFolder.getParent().toFile(), gitExecutable, "log", "--pretty=%B", "-1")).startsWith("2021-01-30");
-	}
-
-	private String runCommand(File directory, String... command)
-	{
-		final ProcessBuilder processBuilder = new ProcessBuilder()
-				.command(command)
-				.redirectErrorStream(true)
-				.directory(directory);
-
-		try
-		{
-			final Process process = processBuilder.start();
-
-			//read the output
-			final InputStreamReader inputStreamReader = new InputStreamReader(process.getInputStream());
-			final BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-			final StringBuilder stringBuilder = new StringBuilder();
-			String output = null;
-			while((output = bufferedReader.readLine()) != null)
-			{
-				stringBuilder.append(output);
-			}
-
-			process.waitFor();
-
-			bufferedReader.close();
-			process.destroy();
-
-			return stringBuilder.toString();
-		}
-		catch(IOException | InterruptedException e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(), gitExecutable, "rev-list", "--all", "--count")).isEqualTo("2");
+		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(), gitExecutable, "log", "--pretty=%B", "-1")).startsWith("2021-01-30");
 	}
 }
