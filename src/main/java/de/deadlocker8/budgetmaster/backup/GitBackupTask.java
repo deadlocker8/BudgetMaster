@@ -16,12 +16,17 @@ public abstract class GitBackupTask extends BackupTask
 	private static final Logger LOGGER = LoggerFactory.getLogger(GitBackupTask.class);
 	private static final String DATE_PATTERN = "yyyy-MM-dd_HH-mm-ss";
 
-	protected final Path gitFolder;
+	protected Path gitFolder;
 
 	protected GitBackupTask(DatabaseService databaseService, SettingsService settingsService)
 	{
 		super(databaseService, settingsService);
 		this.gitFolder = getBackupFolder().resolve("git/.git");
+	}
+
+	public void setGitFolder(Path gitFolder)
+	{
+		this.gitFolder = gitFolder;
 	}
 
 	protected abstract AutoBackupStrategy getBackupStrategy();

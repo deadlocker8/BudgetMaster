@@ -39,7 +39,7 @@ public class LocalBackupTask extends BackupTask
 	}
 
 	@Override
-	protected boolean needsCleanup(Settings previousSettings, Settings newSettings)
+	public boolean needsCleanup(Settings previousSettings, Settings newSettings)
 	{
 		// nothing to do here, file system copies could remain inside the backup folder
 		return false;

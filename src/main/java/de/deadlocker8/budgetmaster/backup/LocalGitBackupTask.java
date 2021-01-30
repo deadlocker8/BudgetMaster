@@ -69,7 +69,7 @@ public class LocalGitBackupTask extends GitBackupTask
 	}
 
 	@Override
-	protected boolean needsCleanup(Settings previousSettings, Settings newSettings)
+	public boolean needsCleanup(Settings previousSettings, Settings newSettings)
 	{
 		// nothing to do here, local git repo can remain unchanged even if it was used as remote repo before
 		return false;

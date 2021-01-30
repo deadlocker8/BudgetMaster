@@ -44,5 +44,5 @@ public abstract class BackupTask implements Runnable
 
 	public abstract void cleanup(Settings previousSettings, Settings newSettings);
 
-	protected abstract boolean needsCleanup(Settings previousSettings, Settings newSettings);
+	public abstract boolean needsCleanup(Settings previousSettings, Settings newSettings);
 }
