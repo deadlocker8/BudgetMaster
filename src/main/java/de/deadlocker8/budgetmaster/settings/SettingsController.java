@@ -78,14 +78,7 @@ public class SettingsController extends BaseController
 	@GetMapping
 	public String settings(WebRequest request, Model model)
 	{
-		model.addAttribute("settings", settingsService.getSettings());
-		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
-		model.addAttribute("autoBackupTimes", AutoBackupTime.values());
-
-		final Optional<DateTime> nextBackupTimeOptional = scheduleTaskService.getNextRun();
-		nextBackupTimeOptional.ifPresent(date -> model.addAttribute("nextBackupTime", date));
-		model.addAttribute("autoBackupHasErrors", scheduleTaskService.hasErrors());
-
+		prepareBasicModel(model, settingsService.getSettings());
 		request.removeAttribute("database", WebRequest.SCOPE_SESSION);
 		return "settings/settings";
 	}
@@ -148,9 +141,7 @@ public class SettingsController extends BaseController
 		if(bindingResult.hasErrors())
 		{
 			model.addAttribute("error", bindingResult);
-			model.addAttribute("settings", settings);
-			model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
-			model.addAttribute("autoBackupTimes", AutoBackupTime.values());
+			prepareBasicModel(model, settings);
 			return "settings/settings";
 		}
 
@@ -229,9 +220,7 @@ public class SettingsController extends BaseController
 		String verificationCode = RandomUtils.generateRandomString(RandomUtils.RandomType.BASE_58, 4, RandomUtils.RandomStringPolicy.UPPER, RandomUtils.RandomStringPolicy.DIGIT);
 		model.addAttribute("deleteDatabase", true);
 		model.addAttribute("verificationCode", verificationCode);
-		model.addAttribute("settings", settingsService.getSettings());
-		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
-		model.addAttribute("autoBackupTimes", AutoBackupTime.values());
+		prepareBasicModel(model, settingsService.getSettings());
 		return "settings/settings";
 	}
 
@@ -250,19 +239,14 @@ public class SettingsController extends BaseController
 			return "redirect:/settings/database/requestDelete";
 		}
 
-		model.addAttribute("settings", settingsService.getSettings());
-		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
-		model.addAttribute("autoBackupTimes", AutoBackupTime.values());
-		return "settings/settings";
+		return "redirect:/settings";
 	}
 
 	@GetMapping("/database/requestImport")
 	public String requestImportDatabase(Model model)
 	{
 		model.addAttribute("importDatabase", true);
-		model.addAttribute("settings", settingsService.getSettings());
-		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
-		model.addAttribute("autoBackupTimes", AutoBackupTime.values());
+		prepareBasicModel(model, settingsService.getSettings());
 		return "settings/settings";
 	}
 
@@ -288,9 +272,7 @@ public class SettingsController extends BaseController
 			e.printStackTrace();
 
 			model.addAttribute("errorImportDatabase", e.getMessage());
-			model.addAttribute("settings", settingsService.getSettings());
-			model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
-			model.addAttribute("autoBackupTimes", AutoBackupTime.values());
+			prepareBasicModel(model, settingsService.getSettings());
 			return "settings/settings";
 		}
 	}
@@ -309,9 +291,7 @@ public class SettingsController extends BaseController
 	{
 		importService.importDatabase((Database) request.getAttribute("database", WebRequest.SCOPE_SESSION), accountMatchList);
 		request.removeAttribute("database", RequestAttributes.SCOPE_SESSION);
-		model.addAttribute("settings", settingsService.getSettings());
-		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
-		model.addAttribute("autoBackupTimes", AutoBackupTime.values());
+		prepareBasicModel(model, settingsService.getSettings());
 		return "settings/settings";
 	}
 
@@ -327,9 +307,7 @@ public class SettingsController extends BaseController
 	{
 		model.addAttribute("performUpdate", true);
 		model.addAttribute("updateString", Localization.getString("info.text.update", Build.getInstance().getVersionName(), budgetMasterUpdateService.getAvailableVersionString()));
-		model.addAttribute("settings", settingsService.getSettings());
-		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
-		model.addAttribute("autoBackupTimes", AutoBackupTime.values());
+		prepareBasicModel(model, settingsService.getSettings());
 		return "settings/settings";
 	}
 
@@ -392,5 +370,16 @@ public class SettingsController extends BaseController
 
 		model.addAttribute("data", data.toString());
 		return "helpers/sendData";
+	}
+
+	private void prepareBasicModel(Model model, Settings settings)
+	{
+		model.addAttribute("settings", settings);
+		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
+		model.addAttribute("autoBackupTimes", AutoBackupTime.values());
+
+		final Optional<DateTime> nextBackupTimeOptional = scheduleTaskService.getNextRun();
+		nextBackupTimeOptional.ifPresent(date -> model.addAttribute("nextBackupTime", date));
+		model.addAttribute("autoBackupHasErrors", scheduleTaskService.hasErrors());
 	}
 }
