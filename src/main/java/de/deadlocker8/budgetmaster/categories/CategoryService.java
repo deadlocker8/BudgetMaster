@@ -108,7 +108,7 @@ public class CategoryService implements Resetable
 
 	public void localizeDefaultCategories()
 	{
-		LOGGER.debug("Updating localization for default categories");
+		LOGGER.trace("Updating localization for default categories");
 
 		final Category categoryNone = categoryRepository.findByType(CategoryType.NONE);
 		categoryNone.setName(Localization.getString(Strings.CATEGORY_NONE));
