@@ -87,20 +87,14 @@ public class GitHelper
 		pushCommand.call();
 	}
 
-	public static boolean checkConnection(String uri, CredentialsProvider credentialsProvider, String branchName)
+	public static boolean checkConnection(String uri, CredentialsProvider credentialsProvider)
 	{
 		try
 		{
 			final Path tempDirectory = Files.createTempDirectory("TestGitRepo");
 			cloneRepository(uri, credentialsProvider, tempDirectory);
-
-			try(Repository repository = GitHelper.openRepository(tempDirectory.resolve(".git")))
-			{
-				final Git git = new Git(repository);
-				pullLatestChanges(git, credentialsProvider, branchName);
-			}
 		}
-		catch(GitAPIException | IOException | PullException e)
+		catch(GitAPIException | IOException e)
 		{
 			e.printStackTrace();
 			return false;

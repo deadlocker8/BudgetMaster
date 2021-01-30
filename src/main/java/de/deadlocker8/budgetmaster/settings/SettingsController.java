@@ -346,7 +346,6 @@ public class SettingsController extends BaseController
 	@PostMapping("/git/test")
 	public String testGit(Model model,
 						  @RequestParam(value = "autoBackupGitUrl") String autoBackupGitUrl,
-						  @RequestParam(value = "autoBackupGitBranchName") String autoBackupGitBranchName,
 						  @RequestParam(value = "autoBackupGitUserName") String autoBackupGitUserName,
 						  @RequestParam(value = "autoBackupGitToken") String autoBackupGitToken)
 	{
@@ -356,7 +355,7 @@ public class SettingsController extends BaseController
 		}
 
 		final CredentialsProvider credentialsProvider = new UsernamePasswordCredentialsProvider(autoBackupGitUserName, autoBackupGitToken);
-		final boolean isValidConnection = GitHelper.checkConnection(autoBackupGitUrl, credentialsProvider, autoBackupGitBranchName);
+		final boolean isValidConnection = GitHelper.checkConnection(autoBackupGitUrl, credentialsProvider);
 
 		String localizedMessage = Localization.getString("settings.backup.auto.git.test.fail");
 		if(isValidConnection)
