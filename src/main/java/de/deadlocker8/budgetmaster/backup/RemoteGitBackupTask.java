@@ -7,10 +7,8 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
-import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.FileSystemUtils;
 
 import java.io.IOException;
@@ -20,7 +18,6 @@ import java.nio.file.Path;
 import java.text.MessageFormat;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
 public class RemoteGitBackupTask extends GitBackupTask
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(RemoteGitBackupTask.class);
