@@ -44,7 +44,7 @@ public abstract class GitBackupTask extends BackupTask
 		// check if database file is successfully added
 		if(!GitHelper.isFileAddedOrChanged(git, DATABASE_FILE_NAME))
 		{
-			setHasErrors(true);
+			setBackupStatus(BackupStatus.ERROR);
 			throw new RuntimeException(MessageFormat.format("Error adding \"{0}\" to git", DATABASE_FILE_NAME));
 		}
 

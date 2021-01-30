@@ -380,6 +380,6 @@ public class SettingsController extends BaseController
 
 		final Optional<DateTime> nextBackupTimeOptional = scheduleTaskService.getNextRun();
 		nextBackupTimeOptional.ifPresent(date -> model.addAttribute("nextBackupTime", date));
-		model.addAttribute("autoBackupHasErrors", scheduleTaskService.hasErrors());
+		model.addAttribute("autoBackupStatus", scheduleTaskService.getBackupStatus());
 	}
 }

@@ -14,7 +14,7 @@ public abstract class BackupTask implements Runnable
 	protected final DatabaseService databaseService;
 	protected final SettingsService settingsService;
 	private final Path backupFolder;
-	private boolean hasErrors;
+	private BackupStatus backupStatus;
 
 	protected BackupTask(DatabaseService databaseService, SettingsService settingsService)
 	{
@@ -24,7 +24,7 @@ public abstract class BackupTask implements Runnable
 		final Path applicationSupportFolder = Main.getApplicationSupportFolder();
 		this.backupFolder = applicationSupportFolder.resolve("backups");
 
-		this.hasErrors = false;
+		this.backupStatus = BackupStatus.UNKNOWN;
 	}
 
 	protected Path getBackupFolder()
@@ -32,14 +32,14 @@ public abstract class BackupTask implements Runnable
 		return backupFolder;
 	}
 
-	public boolean hasErrors()
+	public BackupStatus getBackupStatus()
 	{
-		return hasErrors;
+		return backupStatus;
 	}
 
-	protected void setHasErrors(boolean hasErrors)
+	public void setBackupStatus(BackupStatus backupStatus)
 	{
-		this.hasErrors = hasErrors;
+		this.backupStatus = backupStatus;
 	}
 
 	public abstract void cleanup(Settings previousSettings, Settings newSettings);

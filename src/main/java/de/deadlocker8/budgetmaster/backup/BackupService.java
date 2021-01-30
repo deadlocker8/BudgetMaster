@@ -95,19 +95,19 @@ public class BackupService
 		return Optional.empty();
 	}
 
-	public boolean hasErrors()
+	public BackupStatus getBackupStatus()
 	{
 		final Settings settings = settingsService.getSettings();
 		if(settings.isAutoBackupActive())
 		{
 			if(backupTask == null)
 			{
-				return false;
+				return BackupStatus.UNKNOWN;
 			}
 
-			return backupTask.hasErrors();
+			return backupTask.getBackupStatus();
 		}
 
-		return false;
+		return BackupStatus.UNKNOWN;
 	}
 }

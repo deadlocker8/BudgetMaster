@@ -190,16 +190,19 @@
         </div>
 
         <div class="col s6 m6 l4 right-align">
-            <#if autoBackupHasErrors>
+            <#if autoBackupStatus.name() == "ERROR">
                 <#assign autoBackupStatusBannerClasses="budgetmaster-red white-text">
-                <#assign autoBackupStatusBannerText=locale.getString("settings.backup.auto.has.errors.true")>
-            <#else>
+                <#assign autoBackupStatusBannerText=locale.getString("settings.backup.auto.status.error")>
+            <#elseif autoBackupStatus.name() == "OK">
                 <#assign autoBackupStatusBannerClasses="budgetmaster-green white-text">
-                <#assign autoBackupStatusBannerText=locale.getString("settings.backup.auto.has.errors.false")>
+                <#assign autoBackupStatusBannerText=locale.getString("settings.backup.auto.status.ok")>
+            <#elseif autoBackupStatus.name() == "UNKNOWN">
+                <#assign autoBackupStatusBannerClasses="budgetmaster-grey black-text">
+                <#assign autoBackupStatusBannerText=locale.getString("settings.backup.auto.status.unknown")>
             </#if>
 
-            ${locale.getString("settings.backup.auto.has.errors")}:
-            <div class="banner ${autoBackupStatusBannerClasses} tooltipped" data-position="bottom" data-tooltip="${locale.getString("settings.backup.auto.has.errors.details")}">
+            ${locale.getString("settings.backup.auto.status")}:
+            <div class="banner ${autoBackupStatusBannerClasses} tooltipped" data-position="bottom" data-tooltip="${locale.getString("settings.backup.auto.status.error.details")}">
                 ${autoBackupStatusBannerText}
             </div>
         </div>

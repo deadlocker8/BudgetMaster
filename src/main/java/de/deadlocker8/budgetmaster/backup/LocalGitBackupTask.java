@@ -48,14 +48,14 @@ public class LocalGitBackupTask extends GitBackupTask
 				final Git git = new Git(repository);
 				addAndCommitChanges(git);
 
-				setHasErrors(false);
+				setBackupStatus(BackupStatus.OK);
 				LOGGER.debug("Backup DONE");
 			}
 		}
 		catch(IOException | GitAPIException e)
 		{
 			e.printStackTrace();
-			setHasErrors(true);
+			setBackupStatus(BackupStatus.ERROR);
 		}
 	}
 

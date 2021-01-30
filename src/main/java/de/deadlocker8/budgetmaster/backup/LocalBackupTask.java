@@ -25,6 +25,7 @@ public class LocalBackupTask extends BackupTask
 	{
 		LOGGER.debug(MessageFormat.format("Starting backup with strategy \"{0}\"", AutoBackupStrategy.LOCAL));
 		databaseService.backupDatabase(getBackupFolder());
+		setBackupStatus(BackupStatus.OK);
 		LOGGER.debug("Backup DONE");
 	}
 

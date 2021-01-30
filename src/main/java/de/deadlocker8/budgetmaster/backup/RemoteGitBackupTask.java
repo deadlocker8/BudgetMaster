@@ -56,7 +56,7 @@ public class RemoteGitBackupTask extends GitBackupTask
 		catch(IOException | GitAPIException | URISyntaxException e)
 		{
 			e.printStackTrace();
-			setHasErrors(true);
+			setBackupStatus(BackupStatus.ERROR);
 		}
 	}
 
@@ -79,7 +79,7 @@ public class RemoteGitBackupTask extends GitBackupTask
 				GitHelper.push(git, credentialsProvider);
 			}
 
-			setHasErrors(false);
+			setBackupStatus(BackupStatus.OK);
 			LOGGER.debug("Backup DONE");
 		}
 	}
