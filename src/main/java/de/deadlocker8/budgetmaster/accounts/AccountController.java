@@ -99,6 +99,7 @@ public class AccountController extends BaseController
 	@GetMapping("/{ID}/delete")
 	public String deleteAccountAndReferringTransactions(Model model, @PathVariable("ID") Integer ID)
 	{
+		// at least one account is required (to delete a sole account another one has to be created first)
 		if(accountService.getRepository().findAllByType(AccountType.CUSTOM).size() > 1)
 		{
 			accountService.deleteAccount(ID);

@@ -2,7 +2,7 @@
     <head>
         <#import "../helpers/header.ftl" as header>
         <@header.globals/>
-		<@header.header "BudgetMaster - ${locale.getString('menu.categories')}"/>
+        <@header.header "BudgetMaster - ${locale.getString('menu.categories')}"/>
         <@header.style "categories"/>
         <#import "/spring.ftl" as s>
     </head>
@@ -17,11 +17,14 @@
             <div class="card main-card background-color">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="headline"><i class="material-icons">label</i> ${locale.getString("menu.categories")}</div>
+                        <div class="headline"><i class="material-icons">label</i> ${locale.getString("menu.categories")}
+                        </div>
                     </div>
                 </div>
                 <br>
-                <div class="center-align"><a href="<@s.url '/categories/newCategory'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.category.new")}</a></div>
+                <div class="center-align">
+                    <a href="<@s.url '/categories/newCategory'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.category.new")}
+                    </a></div>
                 <br>
                 <div class="container">
                     <table class="bordered">
@@ -37,22 +40,16 @@
                             <#assign categoryName=categoriesFunctions.getCategoryName(category)>
                             <#assign usageCount=helpers.getUsageCountForCategory(category)/>
                             <tr>
-                            <td>
-                                <div class="category-circle" style="background-color: ${category.color}">
-                                    <span style="color: ${category.getAppropriateTextColor()}">
-                                        ${categoryName?capitalize[0]}
-                                    </span>
-                                </div>
-                            </td>
-                            <td>${categoryName} </td>
-                            <td>${usageCount}</td>
-                            <td>
-                                <a href="<@s.url '/categories/${category.ID?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
-                                <#if (category.getType().name() == "CUSTOM")>
-                                    <a href="<@s.url '/categories/${category.ID?c}/requestDelete'/>" class="btn-flat no-padding text-color"><i class="material-icons left no-margin">delete</i></a>
-                                </#if>
-                            </td>
-                        </tr>
+                                <@categoryCircle category categoryName/>
+                                <td>${categoryName} </td>
+                                <td>${usageCount}</td>
+                                <td>
+                                    <a href="<@s.url '/categories/${category.ID?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
+                                    <#if (category.getType().name() == "CUSTOM")>
+                                        <a href="<@s.url '/categories/${category.ID?c}/requestDelete'/>" class="btn-flat no-padding text-color"><i class="material-icons left no-margin">delete</i></a>
+                                    </#if>
+                                </td>
+                            </tr>
                         </#list>
                     </table>
                     <#if categories?size == 0>
@@ -88,7 +85,7 @@
         <#-- pass selected account to JS in order to select current value for materialize select -->
         <script>
             <#if preselectedCategory??>
-                selectedCategory = "${preselectedCategory.getID()?c}";
+            selectedCategory = "${preselectedCategory.getID()?c}";
             </#if>
         </script>
 
@@ -98,3 +95,14 @@
         <script src="<@s.url '/js/categorySelect.js'/>"></script>
     </body>
 </html>
+
+
+<#macro categoryCircle category categoryName>
+    <td>
+        <div class="category-circle" style="background-color: ${category.color}">
+            <span style="color: ${category.getAppropriateTextColor()}">
+                ${categoryName?capitalize[0]}
+            </span>
+        </div>
+    </td>
+</#macro>
