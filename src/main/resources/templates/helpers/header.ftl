@@ -29,6 +29,8 @@
     <link rel="stylesheet" href="<@s.url "/webjars/materializecss/1.0.0/css/materialize.min.css"/>">
     <@style "style"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <link rel="apple-touch-icon" href="<@s.url "/touch_icon.png"/>">
 </#macro>
 
 <#macro logo id classes>

@@ -43,7 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 				.and()
 
 				.authorizeRequests()
-				.antMatchers("/css/**", "/js/**",  "/images/**", "/webjars/**", "/favicon.ico").permitAll()
+				.antMatchers("/css/**", "/js/**",  "/images/**", "/webjars/**", "/favicon.ico", "/touch_icon.png").permitAll()
 				.antMatchers("/**").authenticated()
 				.antMatchers("/login").permitAll()
 				.and()
