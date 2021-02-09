@@ -20,6 +20,10 @@
                 <br>
 
                 <div class="row">
+                    <div class="col s12 headline center-align">${locale.getString("hotkeys.general")}</div>
+                </div>
+
+                <div class="row">
                     <@cellKey locale.getString("hotkeys.transactions.new.normal.key")/>
                     <div class="col s8 m5 l5">${locale.getString("hotkeys.transactions.new.normal")}</div>
                 </div>
@@ -46,6 +50,22 @@
                 <div class="row">
                     <@cellKey locale.getString("hotkeys.search.key")/>
                     <div class="col s8 m5 l5">${locale.getString("hotkeys.search")}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col s12 headline center-align">${locale.getString("hotkeys.global.datepicker")}</div>
+                </div>
+                <div class="row">
+                    <@cellKey locale.getString("hotkeys.global.datepicker.previous.month.key")/>
+                    <div class="col s8 m5 l5">${locale.getString("hotkeys.global.datepicker.previous.month")}</div>
+                </div>
+                <div class="row">
+                    <@cellKey locale.getString("hotkeys.global.datepicker.next.month.key")/>
+                    <div class="col s8 m5 l5">${locale.getString("hotkeys.global.datepicker.next.month")}</div>
+                </div>
+                <div class="row">
+                    <@cellKey locale.getString("hotkeys.global.datepicker.today.key")/>
+                    <div class="col s8 m5 l5">${locale.getString("hotkeys.global.datepicker.today")}</div>
                 </div>
             </div>
         </main>
