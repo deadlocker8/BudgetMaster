@@ -24,7 +24,8 @@ public class HotKeysController extends BaseController
 	public String index(Model model)
 	{
 		model.addAttribute("settings", settingsService.getSettings());
-		model.addAttribute("hotkeysGeneral", HotKey.values());
+		model.addAttribute("hotkeysGeneral", GeneralHotKey.values());
+		model.addAttribute("hotkeysGlobalDatePicker", GlobalDatePickerHotKey.values());
 		return "hotkeys";
 	}
 }

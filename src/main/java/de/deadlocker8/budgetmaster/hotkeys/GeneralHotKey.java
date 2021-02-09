@@ -2,7 +2,7 @@ package de.deadlocker8.budgetmaster.hotkeys;
 
 import de.thecodelabs.utils.util.Localization;
 
-public enum HotKey
+public enum GeneralHotKey
 {
 	CREATE_TRANSACTION(null, "n", "hotkeys.transactions.new.normal"),
 	CREATE_RECURRING_TRANSACTION(null, "r", "hotkeys.transactions.new.repeating"),
@@ -16,7 +16,7 @@ public enum HotKey
 	private final String key;
 	private final String localizationKey;
 
-	HotKey(String modifier, String key, String localizationKey)
+	GeneralHotKey(String modifier, String key, String localizationKey)
 	{
 		this.modifier = modifier;
 		this.key = key;
@@ -46,7 +46,7 @@ public enum HotKey
 	@Override
 	public String toString()
 	{
-		return "HotKey{" +
+		return "GeneralHotKey{" +
 				"modifier='" + modifier + '\'' +
 				", combination='" + key + '\'' +
 				", localizationKey='" + localizationKey + '\'' +
