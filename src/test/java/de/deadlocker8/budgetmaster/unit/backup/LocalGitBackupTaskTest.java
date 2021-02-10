@@ -12,6 +12,8 @@ import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.unit.helpers.Helpers;
 import de.thecodelabs.utils.util.OS;
+import org.joda.time.DateTimeUtils;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -55,6 +57,14 @@ public class LocalGitBackupTaskTest
 		{
 			gitExecutable = "/usr/bin/git";
 		}
+
+		DateTimeUtils.setCurrentMillisFixed(1612004400000L);
+	}
+
+	@AfterClass
+	public static void cleanup()
+	{
+		DateTimeUtils.setCurrentMillisSystem();
 	}
 
 	@Test
