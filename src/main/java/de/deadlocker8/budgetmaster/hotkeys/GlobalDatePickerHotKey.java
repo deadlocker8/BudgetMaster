@@ -2,7 +2,7 @@ package de.deadlocker8.budgetmaster.hotkeys;
 
 import de.thecodelabs.utils.util.Localization;
 
-public enum GlobalDatePickerHotKey
+public enum GlobalDatePickerHotKey implements HotKey
 {
 	PREVIOUS_MONTH(null, "n", "hotkeys.global.datepicker.previous.month"),
 	NEXT_MONTH(null, "r", "hotkeys.global.datepicker.next.month"),

@@ -2,7 +2,7 @@ package de.deadlocker8.budgetmaster.hotkeys;
 
 import de.thecodelabs.utils.util.Localization;
 
-public enum GeneralHotKey
+public enum GeneralHotKey implements HotKey
 {
 	CREATE_TRANSACTION(null, "n", "hotkeys.transactions.new.normal"),
 	CREATE_RECURRING_TRANSACTION(null, "r", "hotkeys.transactions.new.repeating"),
