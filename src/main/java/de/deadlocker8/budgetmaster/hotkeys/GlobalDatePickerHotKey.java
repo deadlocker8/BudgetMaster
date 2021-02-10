@@ -2,76 +2,61 @@ package de.deadlocker8.budgetmaster.hotkeys;
 
 import de.thecodelabs.utils.util.Localization;
 
+import java.text.MessageFormat;
+
 public enum GlobalDatePickerHotKey implements HotKey
 {
-	PREVIOUS_MONTH(null, "hotkeys.global.datepicker.previous.month.key", "hotkeys.global.datepicker.previous.month"),
-	NEXT_MONTH(null, "hotkeys.global.datepicker.next.month.key", "hotkeys.global.datepicker.next.month"),
-	CURRENT_MONTH(null, "hotkeys.global.datepicker.today.key", "hotkeys.global.datepicker.today");
+	PREVIOUS_MONTH("hotkeys.global.datepicker.previous.month", false),
+	NEXT_MONTH("hotkeys.global.datepicker.next.month", false),
+	CURRENT_MONTH("hotkeys.global.datepicker.today", false);
 
-	private final String modifier;
-	private final String key;
-	private final String text;
+	private final String localizationKey;
+	private final boolean hasModifier;
 
-	GlobalDatePickerHotKey(String modifier, String key, String text)
+	GlobalDatePickerHotKey(String localizationKey, boolean hasModifier)
 	{
-		this.modifier = modifier;
-		this.key = key;
-		this.text = text;
-	}
-
-	@Override
-	public String getModifier()
-	{
-		return modifier;
+		this.localizationKey = localizationKey;
+		this.hasModifier = hasModifier;
 	}
 
 	@Override
 	public String getModifierLocalized()
 	{
-		return getLocalized(modifier);
-	}
-
-	@Override
-	public String getKey()
-	{
-		return key;
+		if(hasModifier)
+		{
+			return getLocalized("modifier");
+		}
+		return null;
 	}
 
 	@Override
 	public String getKeyLocalized()
 	{
-		return getLocalized(key);
-	}
-
-	@Override
-	public String getText()
-	{
-		return text;
+		return getLocalized("key");
 	}
 
 	@Override
 	public String getTextLocalized()
 	{
-		return getLocalized(text);
+		return getLocalized(null);
 	}
 
-	private String getLocalized(String localizationKey)
+	private String getLocalized(String keySuffix)
 	{
-		if(localizationKey == null)
+		if(keySuffix == null)
 		{
-			return "";
+			return Localization.getString(localizationKey);
 		}
 
-		return Localization.getString(localizationKey);
+		return Localization.getString(MessageFormat.format("{0}.{1}", localizationKey, keySuffix));
 	}
 
 	@Override
 	public String toString()
 	{
 		return "GlobalDatePickerHotKey{" +
-				"modifier='" + modifier + '\'' +
-				", key='" + key + '\'' +
-				", text='" + text + '\'' +
+				"localizationKey='" + localizationKey + '\'' +
+				", hasModifier=" + hasModifier +
 				"} " + super.toString();
 	}
 }

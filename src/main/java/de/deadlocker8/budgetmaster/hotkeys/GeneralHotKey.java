@@ -2,80 +2,65 @@ package de.deadlocker8.budgetmaster.hotkeys;
 
 import de.thecodelabs.utils.util.Localization;
 
+import java.text.MessageFormat;
+
 public enum GeneralHotKey implements HotKey
 {
-	CREATE_TRANSACTION(null, "hotkeys.transactions.new.normal.key", "hotkeys.transactions.new.normal"),
-	CREATE_RECURRING_TRANSACTION(null, "hotkeys.transactions.new.repeating.key", "hotkeys.transactions.new.repeating"),
-	CREATE_TRANSFER_TRANSACTION(null, "hotkeys.transactions.new.transfer.key", "hotkeys.transactions.new.transfer"),
-	CREATE_TRANSACTION_FROM_TEMPLATE(null, "hotkeys.transactions.new.template.key", "hotkeys.transactions.new.template"),
-	SAVE_TRANSACTION("hotkeys.transactions.save.modifier", "hotkeys.transactions.save.key", "hotkeys.transactions.save"),
-	FILTER(null, "hotkeys.transactions.filter.key", "hotkeys.transactions.filter"),
-	SEARCH(null, "hotkeys.search.key", "hotkeys.search");
+	CREATE_TRANSACTION("hotkeys.transactions.new.normal", false),
+	CREATE_RECURRING_TRANSACTION("hotkeys.transactions.new.repeating", false),
+	CREATE_TRANSFER_TRANSACTION("hotkeys.transactions.new.transfer", false),
+	CREATE_TRANSACTION_FROM_TEMPLATE("hotkeys.transactions.new.template", false),
+	SAVE_TRANSACTION("hotkeys.transactions.save", true),
+	FILTER("hotkeys.transactions.filter", false),
+	SEARCH("hotkeys.search", false);
 
-	private final String modifier;
-	private final String key;
-	private final String text;
+	private final String localizationKey;
+	private final boolean hasModifier;
 
-	GeneralHotKey(String modifier, String key, String text)
+	GeneralHotKey(String localizationKey, boolean hasModifier)
 	{
-		this.modifier = modifier;
-		this.key = key;
-		this.text = text;
-	}
-
-	@Override
-	public String getModifier()
-	{
-		return modifier;
+		this.localizationKey = localizationKey;
+		this.hasModifier = hasModifier;
 	}
 
 	@Override
 	public String getModifierLocalized()
 	{
-		return getLocalized(modifier);
-	}
-
-	@Override
-	public String getKey()
-	{
-		return key;
+		if(hasModifier)
+		{
+			return getLocalized("modifier");
+		}
+		return null;
 	}
 
 	@Override
 	public String getKeyLocalized()
 	{
-		return getLocalized(key);
-	}
-
-	@Override
-	public String getText()
-	{
-		return text;
+		return getLocalized("key");
 	}
 
 	@Override
 	public String getTextLocalized()
 	{
-		return getLocalized(text);
+		return getLocalized(null);
 	}
 
-	private String getLocalized(String localizationKey)
+	private String getLocalized(String keySuffix)
 	{
-		if(localizationKey == null)
+		if(keySuffix == null)
 		{
-			return "";
+			return Localization.getString(localizationKey);
 		}
 
-		return Localization.getString(localizationKey);
+		return Localization.getString(MessageFormat.format("{0}.{1}", localizationKey, keySuffix));
 	}
 
 	@Override
 	public String toString()
 	{
 		return "GeneralHotKey{" +
-				"modifier='" + modifier + '\'' +
-				", key='" + key + '\'' +
-				", text='" + text + '\'' +
+				"localizationKey='" + localizationKey + '\'' +
+				", hasModifier=" + hasModifier +
 				"} " + super.toString();
 	}
 }
