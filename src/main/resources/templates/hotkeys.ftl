@@ -25,8 +25,8 @@
 
                 <#list hotkeysGeneral as hotKey>
                     <div class="row">
-                        <@cellKeyWithModifier hotKey.getModifier()!'' hotKey.getKey()/>
-                        <div class="col s8 m5 l5">${hotKey.getLocalizedText()}</div>
+                        <@cellKeyWithModifier hotKey.getModifierLocalized()!'' hotKey.getKeyLocalized()/>
+                        <div class="col s8 m5 l5">${hotKey.getTextLocalized()}</div>
                     </div>
                 </#list>
 
@@ -36,8 +36,8 @@
 
                 <#list hotkeysGlobalDatePicker as hotKey>
                     <div class="row">
-                        <@cellKeyWithModifier hotKey.getModifier()!'' hotKey.getKey()/>
-                        <div class="col s8 m5 l5">${hotKey.getLocalizedText()}</div>
+                        <@cellKeyWithModifier hotKey.getModifierLocalized()!'' hotKey.getKeyLocalized()/>
+                        <div class="col s8 m5 l5">${hotKey.getTextLocalized()}</div>
                     </div>
                 </#list>
             </div>

@@ -5,9 +5,13 @@ public interface HotKey
 {
 	String getModifier();
 
+	String getModifierLocalized();
+
 	String getKey();
 
-	String getLocalizationKey();
+	String getKeyLocalized();
 
-	String getLocalizedText();
+	String getText();
+
+	String getTextLocalized();
 }
