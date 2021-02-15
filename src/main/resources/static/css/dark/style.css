@@ -28,14 +28,6 @@ main {
     background-color: #2E79B9;
 }
 
-.budgetmaster-blue-light {
-    background-color: rgba(80, 115, 146, 0.8);
-}
-
-.budgetmaster-blue-light-text {
-    color: rgba(80, 115, 146, 0.8);
-}
-
 .budgetmaster-grey {
     background-color: #CCCCCC !important;
 }

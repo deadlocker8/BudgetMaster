@@ -175,10 +175,10 @@ public class SearchTest
 
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		assertEquals(25, transactionsRows.size());
-		assertTrue(transactionsRows.get(0).getAttribute("class").contains("budgetmaster-blue-light"));
+		assertTrue(transactionsRows.get(0).getAttribute("class").contains("background-blue-light"));
 		for(int i = 1; i < transactionsRows.size(); i++)
 		{
-			assertFalse(transactionsRows.get(i).getAttribute("class").contains("budgetmaster-blue-light"));
+			assertFalse(transactionsRows.get(i).getAttribute("class").contains("background-blue-light"));
 		}
 	}
 }
