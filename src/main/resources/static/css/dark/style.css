@@ -28,10 +28,6 @@ main {
     background-color: #2E79B9;
 }
 
-.budgetmaster-blue-text {
-    color: #2E79B9;
-}
-
 .budgetmaster-blue-light {
     background-color: rgba(80, 115, 146, 0.8);
 }
@@ -44,66 +40,17 @@ main {
     background-color: #5cb85c !important;
 }
 
-.budgetmaster-green-text {
-    color: #5cb85c;
-}
-
-.budgetmaster-dark-green {
-    background-color: #468C46;
-}
-
-.budgetmaster-dark-green-text {
-    color: #468C46;
-}
-
 .budgetmaster-red {
     background-color: #D82C29 !important;
-}
-
-.budgetmaster-red-text {
-    color: #D82C29;
-}
-
-.budgetmaster-orange {
-    background-color: orange;
-}
-
-.budgetmaster-orange-text {
-    color: orange;
 }
 
 .budgetmaster-grey {
     background-color: #CCCCCC !important;
 }
 
-.budgetmaster-grey-text {
-    color: #CCCCCC;
-}
-
-.budgetmaster-baby-blue {
-    background-color: #4CABD3;
-}
-
-.budgetmaster-baby-blue-text {
-    color: #4CABD3;
-}
-
-.budgetmaster-purple {
-    background-color: #5856d6;
-}
-
-.budgetmaster-purple-text {
-    color: #5856d6;
-}
-
-.budgetmaster-text-black {
-    color: rgba(0, 0, 0, 0.87);
-}
-
 .budgetmaster-text-isPayment {
     color: rgba(0, 0, 0, 0.87);
 }
-
 
 .budgetmaster-text-update {
     color: #212121 !important;
