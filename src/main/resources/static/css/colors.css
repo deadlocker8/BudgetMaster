@@ -1,0 +1,133 @@
+:root, [data-theme="default"] {
+    --color-blue: #2E79B9;
+    --color-blue-light: rgba(46, 121, 185, 0.8);
+    --color-blue-baby: #4CABD3;
+
+    --color-purple: #5856D6;
+
+    --color-green: #5CB85C;
+    --color-green-dark: #468C46;
+
+    --color-yellow: #F7EB84;
+    --color-orange: orange;
+    --color-orange-dark: #FF7043;
+    --color-red: #D82C29;
+
+    --color-white: #FFFFFF;
+    --color-grey: #696969;
+    --color-black: rgba(0, 0, 0, 0.87);
+}
+
+[data-theme="dark"] {
+    --color-blue-light: rgba(80, 115, 146, 0.8);
+    --color-yellow: #E9C46A;
+    --color-grey: #cccccc;
+}
+
+/* background colors*/
+
+.background-blue {
+    background-color: var(--color-blue);
+}
+
+.background-blue-light {
+    background-color: var(--color-blue-light);
+}
+
+.background-blue-baby {
+    background-color: var(--color-blue-baby);
+}
+
+.background-purple {
+    background-color: var(--color-purple);
+}
+
+.background-green {
+    background-color: var(--color-green);
+}
+
+.background-green-dark {
+    background-color: var(--color-green-dark);
+}
+
+var.background-yellow {
+    background-color: var(--color-yellow);
+}
+
+.background-orange {
+    background-color: var(--color-orange);
+}
+
+.background-orange-dark {
+    background-color: var(--color-orange-dark);
+}
+
+.background-red {
+    background-color: var(--color-red);
+}
+
+.background-white {
+    background-color: var(--color-white);
+}
+
+.background-grey {
+    background-color: var(--color-grey);
+}
+
+.background-black {
+    background-color: var(--color-black);
+}
+
+/* text colors*/
+
+.text-blue {
+    color: var(--color-blue);
+}
+
+.text-blue-light {
+    color: var(--color-blue-light);
+}
+
+.text-blue-baby {
+    color: var(--color-blue-baby);
+}
+
+.text-purple {
+    color: var(--color-purple);
+}
+
+.text-green {
+    color: var(--color-green);
+}
+
+.text-green-dark {
+    color: var(--color-green-dark);
+}
+
+var.text-yellow {
+    color: var(--color-yellow);
+}
+
+.text-orange {
+    color: var(--color-orange);
+}
+
+.text-orange-dark {
+    color: var(--color-orange-dark);
+}
+
+.text-red {
+    color: var(--color-red);
+}
+
+.text-white {
+    color: var(--color-white);
+}
+
+.text-grey {
+    color: var(--color-grey);
+}
+
+.text-black {
+    color: var(--color-black);
+}
