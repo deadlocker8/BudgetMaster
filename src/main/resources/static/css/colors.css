@@ -19,8 +19,6 @@
 
     --color-text: #212121;
     --color-isPayment: var(--color-white);
-
-    color: var(--color-text);
 }
 
 [data-theme="dark"] {
@@ -29,8 +27,6 @@
     --color-grey: #CCCCCC;
     --color-text: #FFFFFF;
     --color-isPayment: var(--color-black);
-
-    color: var(--color-text);
 }
 
 /* background colors*/
