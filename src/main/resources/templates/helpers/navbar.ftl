@@ -133,7 +133,7 @@
 </#macro>
 
 <#macro itemUpdate link text icon>
-    <li><a href="<@s.url '${link}'/>" class="waves-effect budgetmaster-update budgetmaster-text-update"><i class="material-icons" id="icon-update">${icon}</i>${text}</a></li>
+    <li><a href="<@s.url '${link}'/>" class="waves-effect background-yellow budgetmaster-text-update"><i class="material-icons" id="icon-update">${icon}</i>${text}</a></li>
 </#macro>
 
 <#macro itemDebug text icon>
