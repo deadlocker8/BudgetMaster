@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="<@s.url '/webjars/font-awesome/5.15.1/css/all.min.css'/>">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="<@s.url "/webjars/materializecss/1.0.0/css/materialize.min.css"/>">
+    <link type="text/css" rel="stylesheet" href="<@s.url "/css/colors.css"/>"/>
     <@style "style"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
