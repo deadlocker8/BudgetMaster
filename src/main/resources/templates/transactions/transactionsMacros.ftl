@@ -117,24 +117,24 @@
 
 <#macro buttonNew listClasses>
     <div class="fixed-action-btn new-transaction-button">
-        <a class="btn-floating btn-large btn waves-effect waves-light budgetmaster-blue" id="button-new-transaction">
+        <a class="btn-floating btn-large btn waves-effect waves-light background-blue" id="button-new-transaction">
             <i class="material-icons left">add</i>${locale.getString("title.transaction.new.short")}
         </a>
         <ul class="${listClasses}">
             <li>
-                <a href="<@s.url '/templates'/>" class="btn-floating btn budgetmaster-baby-blue"><i class="material-icons">file_copy</i></a>
+                <a href="<@s.url '/templates'/>" class="btn-floating btn background-blue-baby"><i class="material-icons">file_copy</i></a>
                 <a href="<@s.url '/templates'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new.from.template")}</a>
             </li>
             <li>
-                <a href="<@s.url '/transactions/newTransaction/transfer'/>" class="btn-floating btn budgetmaster-dark-green"><i class="material-icons">swap_horiz</i></a>
+                <a href="<@s.url '/transactions/newTransaction/transfer'/>" class="btn-floating btn background-green-dark"><i class="material-icons">swap_horiz</i></a>
                 <a href="<@s.url '/transactions/newTransaction/transfer'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new.transfer")}</a>
             </li>
             <li>
-                <a href="<@s.url '/transactions/newTransaction/repeating'/>" class="btn-floating btn budgetmaster-blue"><i class="material-icons">repeat</i></a>
+                <a href="<@s.url '/transactions/newTransaction/repeating'/>" class="btn-floating btn background-blue"><i class="material-icons">repeat</i></a>
                 <a href="<@s.url '/transactions/newTransaction/repeating'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new.repeating")}</a>
             </li>
             <li>
-                <a href="<@s.url '/transactions/newTransaction/normal'/>" class="btn-floating btn budgetmaster-orange"><i class="material-icons">payment</i></a>
+                <a href="<@s.url '/transactions/newTransaction/normal'/>" class="btn-floating btn background-orange"><i class="material-icons">payment</i></a>
                 <a href="<@s.url '/transactions/newTransaction/normal'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new.normal")}</a>
             </li>
         </ul>
@@ -143,8 +143,8 @@
 
 <#macro buttonFilter isFilterActive>
     <#if isFilterActive>
-        <a href="#modalFilter" id="modalFilterTrigger" class="modal-trigger waves-effect waves-light btn budgetmaster-red"><i class="fas fa-filter left"></i>${locale.getString("filter.active")}</a>
+        <a href="#modalFilter" id="modalFilterTrigger" class="modal-trigger waves-effect waves-light btn background-red"><i class="fas fa-filter left"></i>${locale.getString("filter.active")}</a>
     <#else>
-        <a href="#modalFilter" id="modalFilterTrigger" class="modal-trigger waves-effect waves-light btn budgetmaster-blue"><i class="fas fa-filter left"></i>${locale.getString("title.filter")}</a>
+        <a href="#modalFilter" id="modalFilterTrigger" class="modal-trigger waves-effect waves-light btn background-blue"><i class="fas fa-filter left"></i>${locale.getString("title.filter")}</a>
     </#if>
 </#macro>
