@@ -24,10 +24,6 @@ main {
     color: #FFFFFF;
 }
 
-.budgetmaster-grey {
-    background-color: #CCCCCC !important;
-}
-
 .budgetmaster-text-isPayment {
     color: rgba(0, 0, 0, 0.87);
 }
