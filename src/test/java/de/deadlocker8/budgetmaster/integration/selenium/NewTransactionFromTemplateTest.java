@@ -99,7 +99,7 @@ public class NewTransactionFromTemplateTest
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Transaction"));
 
 		// assert
-		assertThat(driver.findElement(By.className("buttonExpenditure")).getAttribute("class")).contains("budgetmaster-red");
+		assertThat(driver.findElement(By.className("buttonExpenditure")).getAttribute("class")).contains(background);
 		assertThat(driver.findElement(By.id("transaction-name")).getAttribute("value")).isEqualTo("NameFromTemplate");
 		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEqualTo("15.00");
 		assertThat(driver.findElement(By.id("transaction-description")).getAttribute("value")).isEqualTo("DescriptionFromTemplate");

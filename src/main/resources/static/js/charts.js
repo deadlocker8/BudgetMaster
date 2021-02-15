@@ -130,13 +130,13 @@ function applyFilter(modal)
 
     if(isDefaultFilter())
     {
-        filterButton.classList.toggle("budgetmaster-blue", true);
-        filterButton.classList.toggle("budgetmaster-red", false);
+        filterButton.classList.toggle("background-blue", true);
+        filterButton.classList.toggle("background-red", false);
         filterButton.childNodes[1].nodeValue = filterNotActive;
     } else
     {
-        filterButton.classList.toggle("budgetmaster-blue", false);
-        filterButton.classList.toggle("budgetmaster-red", true);
+        filterButton.classList.toggle("background-blue", false);
+        filterButton.classList.toggle("background-red", true);
         filterButton.childNodes[1].nodeValue = filterActive;
     }
 

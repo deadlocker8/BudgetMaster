@@ -238,7 +238,7 @@ public class NewTransactionRecurringTest
 	{
 		driver.get(helper.getUrl() + "/transactions/6/edit");
 
-		assertThat(driver.findElement(By.className("buttonExpenditure")).getAttribute("class")).contains("budgetmaster-red");
+		assertThat(driver.findElement(By.className("buttonExpenditure")).getAttribute("class")).contains("background-red");
 		assertThat(driver.findElement(By.id("transaction-name")).getAttribute("value")).isEqualTo("beste");
 		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEqualTo("15.00");
 		assertThat(driver.findElement(By.id("transaction-datepicker")).getAttribute("value")).isEqualTo("01.05.2019");

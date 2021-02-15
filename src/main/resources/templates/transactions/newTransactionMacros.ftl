@@ -8,11 +8,11 @@
     </#if>
 
     <#if isExpenditure>
-        <#assign colorButtonIncome = "budgetmaster-grey budgetmaster-text-isPayment">
-        <#assign colorButtonExpenditure = "budgetmaster-red">
+        <#assign colorButtonIncome = "background-grey budgetmaster-text-isPayment">
+        <#assign colorButtonExpenditure = "background-red">
     <#else>
-        <#assign colorButtonIncome = "budgetmaster-green">
-        <#assign colorButtonExpenditure = "budgetmaster-grey budgetmaster-text-isPayment">
+        <#assign colorButtonIncome = "background-green">
+        <#assign colorButtonExpenditure = "background-grey budgetmaster-text-isPayment">
     </#if>
 
     <input type="hidden" name="isExpenditure" id="input-isPayment" value="${isExpenditure?c}">

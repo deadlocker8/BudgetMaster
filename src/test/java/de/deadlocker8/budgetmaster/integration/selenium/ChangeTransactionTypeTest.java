@@ -167,7 +167,7 @@ public class ChangeTransactionTypeTest
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.textToBe(By.cssSelector(".headline"), "Edit Transaction"));
 
-		assertThat(driver.findElement(By.className("buttonExpenditure")).getAttribute("class")).contains("budgetmaster-red");
+		assertThat(driver.findElement(By.className("buttonExpenditure")).getAttribute("class")).contains("background-red");
 		assertThat(driver.findElement(By.id("transaction-name")).getAttribute("value")).isEqualTo("beste");
 		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEqualTo("15.00");
 		assertThat(driver.findElement(By.id("transaction-datepicker")).getAttribute("value")).isEqualTo("01.05.2019");
@@ -191,7 +191,7 @@ public class ChangeTransactionTypeTest
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.textToBe(By.cssSelector(".headline"), "Edit Recurring Transaction"));
 
-		assertThat(driver.findElement(By.className("buttonExpenditure")).getAttribute("class")).contains("budgetmaster-red");
+		assertThat(driver.findElement(By.className("buttonExpenditure")).getAttribute("class")).contains("background-red");
 		assertThat(driver.findElement(By.id("transaction-name")).getAttribute("value")).isEqualTo("Transfer dings");
 		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEqualTo("3.00");
 		assertThat(driver.findElement(By.id("transaction-datepicker")).getAttribute("value")).isEqualTo("01.05.2019");

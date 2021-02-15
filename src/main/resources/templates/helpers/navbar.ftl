@@ -137,7 +137,7 @@
 </#macro>
 
 <#macro itemDebug text icon>
-    <li><a class="waves-effect budgetmaster-red budgetmaster-text-update"><i class="material-icons" id="icon-update">${icon}</i>${text}</a></li>
+    <li><a class="waves-effect background-red budgetmaster-text-update"><i class="material-icons" id="icon-update">${icon}</i>${text}</a></li>
 </#macro>
 
 <#macro backupReminder settings>

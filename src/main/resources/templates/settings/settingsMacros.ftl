@@ -46,15 +46,15 @@
 <#macro databaseNormal>
     <div class="row hide-on-small-only">
         <div class="col m4 l4 center-align">
-            <a href="<@s.url '/settings/database/requestImport'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">cloud_upload</i>${locale.getString("settings.database.import")}</a>
+            <a href="<@s.url '/settings/database/requestImport'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">cloud_upload</i>${locale.getString("settings.database.import")}</a>
         </div>
 
         <div class="col m4 l4 center-align">
-            <a href="<@s.url '/settings/database/requestExport'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">cloud_download</i>${locale.getString("settings.database.export")}</a>
+            <a href="<@s.url '/settings/database/requestExport'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">cloud_download</i>${locale.getString("settings.database.export")}</a>
         </div>
 
         <div class="col m4 l4 center-align">
-            <a href="<@s.url '/settings/database/requestDelete'/>" class="waves-effect waves-light btn budgetmaster-red"><i class="material-icons left">delete_forever</i>${locale.getString("settings.database.delete")}</a>
+            <a href="<@s.url '/settings/database/requestDelete'/>" class="waves-effect waves-light btn background-red"><i class="material-icons left">delete_forever</i>${locale.getString("settings.database.delete")}</a>
         </div>
     </div>
 </#macro>
@@ -63,19 +63,19 @@
     <div class="hide-on-med-and-up">
         <div class="row center-align">
             <div class="col s12">
-                <a href="<@s.url '/settings/database/requestImport'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">cloud_upload</i>${locale.getString("settings.database.import")}</a>
+                <a href="<@s.url '/settings/database/requestImport'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">cloud_upload</i>${locale.getString("settings.database.import")}</a>
             </div>
         </div>
 
         <div class="row center-align">
             <div class="col s12">
-                <a href="<@s.url '/settings/database/requestExport'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">cloud_download</i>${locale.getString("settings.database.export")}</a>
+                <a href="<@s.url '/settings/database/requestExport'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">cloud_download</i>${locale.getString("settings.database.export")}</a>
             </div>
         </div>
 
         <div class="row center-align">
             <div class="col s12">
-                <a href="<@s.url '/settings/database/requestDelete'/>" class="waves-effect waves-light btn budgetmaster-red"><i class="material-icons left">delete_forever</i>${locale.getString("settings.database.delete")}</a>
+                <a href="<@s.url '/settings/database/requestDelete'/>" class="waves-effect waves-light btn background-red"><i class="material-icons left">delete_forever</i>${locale.getString("settings.database.delete")}</a>
             </div>
         </div>
     </div>
@@ -191,13 +191,13 @@
 
         <div class="col s6 m6 l4 right-align">
             <#if autoBackupStatus.name() == "ERROR">
-                <#assign autoBackupStatusBannerClasses="budgetmaster-red white-text">
+                <#assign autoBackupStatusBannerClasses="background-red white-text">
                 <#assign autoBackupStatusBannerText=locale.getString("settings.backup.auto.status.error")>
             <#elseif autoBackupStatus.name() == "OK">
-                <#assign autoBackupStatusBannerClasses="budgetmaster-green white-text">
+                <#assign autoBackupStatusBannerClasses="background-green white-text">
                 <#assign autoBackupStatusBannerText=locale.getString("settings.backup.auto.status.ok")>
             <#elseif autoBackupStatus.name() == "UNKNOWN">
-                <#assign autoBackupStatusBannerClasses="budgetmaster-grey black-text">
+                <#assign autoBackupStatusBannerClasses="background-grey black-text">
                 <#assign autoBackupStatusBannerText=locale.getString("settings.backup.auto.status.unknown")>
             </#if>
 

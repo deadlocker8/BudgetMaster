@@ -205,15 +205,15 @@ $(document).ready(function()
     {
         $('.buttonIncome').each(function()
         {
-            $(this).removeClass("budgetmaster-grey");
+            $(this).removeClass("background-grey");
             $(this).removeClass("budgetmaster-text-isPayment");
-            $(this).addClass("budgetmaster-green");
+            $(this).addClass("background-green");
         });
 
         $('.buttonExpenditure').each(function()
         {
-            $(this).removeClass("budgetmaster-red");
-            $(this).addClass("budgetmaster-grey");
+            $(this).removeClass("background-red");
+            $(this).addClass("background-grey");
             $(this).addClass("budgetmaster-text-isPayment");
         });
 
@@ -226,7 +226,7 @@ $(document).ready(function()
         {
             $(this).removeClass("budgetmaster-grey");
             $(this).removeClass("budgetmaster-text-isPayment");
-            $(this).addClass("budgetmaster-red");
+            $(this).addClass("background-red");
         });
 
         $('.buttonIncome').each(function()
