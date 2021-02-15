@@ -15,7 +15,7 @@
         <@header.style "categories"/>
         <#import "/spring.ftl" as s>
     </head>
-    <body class="budgetmaster-blue-light">
+    <@header.body>
         <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "transactions" settings/>
 
@@ -89,5 +89,5 @@
         <script src="<@s.url '/js/transactions.js'/>"></script>
         <script src="<@s.url '/js/transactionActions.js'/>"></script>
         <script src="<@s.url '/js/categorySelect.js'/>"></script>
-    </body>
+    </@header.body>
 </html>

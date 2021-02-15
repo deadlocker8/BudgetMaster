@@ -15,7 +15,7 @@
         <link type="text/css" rel="stylesheet" href="<@s.url '${"/css/libs/spectrum.css"}'/>"/>
         <@header.style "categories"/>
     </head>
-    <body class="budgetmaster-blue-light">
+    <@header.body>
         <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "categories" settings/>
 
@@ -110,5 +110,5 @@
         <@scripts.scripts/>
         <script src="<@s.url '/js/libs/spectrum.js'/>"></script>
         <script src="<@s.url '/js/categories.js'/>"></script>
-    </body>
+    </@header.body>
 </html>

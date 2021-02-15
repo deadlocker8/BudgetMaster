@@ -56,3 +56,9 @@
         </div>
     </div>
 </#macro>
+
+<#macro body>
+    <body class="background-blue-light" <#if settings.isUseDarkTheme()>data-theme="dark"</#if>>
+        <#nested>
+    </body>
+</#macro>

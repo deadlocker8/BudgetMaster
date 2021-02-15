@@ -5,7 +5,7 @@
         <@header.header "BudgetMaster - ${locale.getString('menu.firstUseGuide')}"/>
         <#import "/spring.ftl" as s>
     </head>
-    <body class="budgetmaster-blue-light">
+    <@header.body>
         <#import "helpers/navbar.ftl" as navbar>
         <@navbar.navbar "firstUseGuide" settings/>
 
@@ -112,5 +112,5 @@
         <!--  Scripts-->
         <#import "helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
-    </body>
+    </@header.body>
 </html>

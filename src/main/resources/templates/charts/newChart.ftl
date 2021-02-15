@@ -14,7 +14,7 @@
         <link rel="stylesheet" href="<@s.url "/webjars/codemirror/5.50.0/lib/codemirror.css"/>">
         <@header.style "charts"/>
     </head>
-    <body class="budgetmaster-blue-light">
+    <@header.body>
         <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "charts" settings/>
 
@@ -106,5 +106,5 @@
         <script src="<@s.url '/webjars/codemirror/5.50.0/lib/codemirror.js'/>"></script>
         <script src="<@s.url '/webjars/codemirror/5.50.0/mode/javascript/javascript.js'/>"></script>
         <script src="<@s.url '/js/charts.js'/>"></script>
-    </body>
+    </@header.body>
 </html>

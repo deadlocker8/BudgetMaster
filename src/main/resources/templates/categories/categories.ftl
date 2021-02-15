@@ -6,7 +6,7 @@
         <@header.style "categories"/>
         <#import "/spring.ftl" as s>
     </head>
-    <body class="budgetmaster-blue-light">
+    <@header.body>
         <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "categories" settings/>
 
@@ -93,7 +93,7 @@
         <@scripts.scripts/>
         <script src="<@s.url '/js/categories.js'/>"></script>
         <script src="<@s.url '/js/categorySelect.js'/>"></script>
-    </body>
+    </@header.body>
 </html>
 
 

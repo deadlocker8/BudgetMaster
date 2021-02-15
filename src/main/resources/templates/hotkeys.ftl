@@ -5,7 +5,7 @@
         <@header.header "BudgetMaster - ${locale.getString('menu.hotkeys')}"/>
         <@header.style "hotkeys"/>
     </head>
-    <body class="budgetmaster-blue-light">
+    <@header.body>
         <#import "helpers/navbar.ftl" as navbar>
         <@navbar.navbar "hotkeys" settings/>
 
@@ -46,7 +46,7 @@
         <!--  Scripts-->
         <#import "helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
-    </body>
+    </@header.body>
 </html>
 
 <#macro cellKey key>

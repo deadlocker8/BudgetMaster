@@ -7,7 +7,7 @@
         <@header.style "templates"/>
         <#import "/spring.ftl" as s>
     </head>
-    <body class="budgetmaster-blue-light">
+    <@header.body>
         <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "templates" settings/>
 
@@ -50,5 +50,5 @@
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
         <script src="<@s.url '/js/templates.js'/>"></script>
-    </body>
+    </@header.body>
 </html>

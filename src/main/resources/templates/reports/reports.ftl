@@ -8,7 +8,7 @@
         <@header.style "collapsible"/>
         <#import "/spring.ftl" as s>
     </head>
-    <body class="budgetmaster-blue-light">
+    <@header.body>
         <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "reports" settings/>
 
@@ -117,5 +117,5 @@
         <script src="<@s.url '/js/globalDatePicker.js'/>"></script>
         <script src="<@s.url '/js/filter.js'/>"></script>
         <script>document.cookie = "currentDate=${dateService.getDateStringNormal(currentDate)}";</script>
-    </body>
+    </@header.body>
 </html>

@@ -5,7 +5,7 @@
 		<@header.header "BudgetMaster"/>
         <#import "/spring.ftl" as s>
     </head>
-    <body class="background-blue-light">
+    <@header.body>
         <#import "helpers/navbar.ftl" as navbar>
         <@navbar.navbar "home" settings/>
 
@@ -66,5 +66,5 @@
         <!--  Scripts-->
         <#import "helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
-    </body>
+    </@header.body>
 </html>

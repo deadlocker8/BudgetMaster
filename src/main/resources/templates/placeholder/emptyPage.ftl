@@ -4,12 +4,12 @@
         <@header.globals/>
 		<@header.header "BudgetMaster"/>
     </head>
-    <body class="budgetmaster-blue-light">
+    <@header.body>
         <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar active settings/>
 
         <!--  Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
-    </body>
+    </@header.body>
 </html>

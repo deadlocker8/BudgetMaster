@@ -4,7 +4,7 @@
         <@header.globals/>
         <@header.header "BudgetMaster - ${locale.getString('menu.about')}"/>
     </head>
-    <body class="budgetmaster-blue-light">
+    <@header.body>
         <#import "helpers/navbar.ftl" as navbar>
         <@navbar.navbar "about" settings/>
         <#import "/spring.ftl" as s>
@@ -53,7 +53,7 @@
         <#import "helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
         <script src="<@s.url '/js/about.js'/>"></script>
-    </body>
+    </@header.body>
 </html>
 
 <#macro cellKey key>

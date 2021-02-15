@@ -8,7 +8,7 @@
         <@header.style "charts"/>
         <#import "/spring.ftl" as s>
     </head>
-    <body class="budgetmaster-blue-light">
+    <@header.body>
         <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "charts" settings/>
 
@@ -98,7 +98,7 @@
                 ${chartScript}
             </script>
         </#if>
-    </body>
+    </@header.body>
 </html>
 
 

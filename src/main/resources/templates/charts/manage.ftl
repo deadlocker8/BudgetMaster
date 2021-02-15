@@ -5,7 +5,7 @@
         <@header.header "BudgetMaster - ${locale.getString('menu.charts')}"/>
         <#import "/spring.ftl" as s>
     </head>
-    <body class="budgetmaster-blue-light">
+    <@header.body>
         <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "charts" settings/>
 
@@ -66,5 +66,5 @@
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
         <script src="<@s.url '/js/charts.js'/>"></script>
-    </body>
+    </@header.body>
 </html>

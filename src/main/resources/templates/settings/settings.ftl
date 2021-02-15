@@ -6,7 +6,7 @@
         <@header.style "settings"/>
         <#import "/spring.ftl" as s>
     </head>
-    <body class="budgetmaster-blue-light">
+    <@header.body>
         <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "settings" settings/>
 
@@ -224,5 +224,5 @@
         <script src="<@s.url '/js/libs/spectrum.js'/>"></script>
         <script src="<@s.url '/js/helpers.js'/>"></script>
         <script src="<@s.url '/js/settings.js'/>"></script>
-    </body>
+    </@header.body>
 </html>

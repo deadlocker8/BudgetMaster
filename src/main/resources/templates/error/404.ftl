@@ -6,7 +6,7 @@
         <@header.style "login"/>
         <#import "/spring.ftl" as s>
     </head>
-    <body class="budgetmaster-blue-light">
+    <@header.body>
         <main>
             <div class="row valign-wrapper full-height">
                 <div class="col l4 offset-l4 m6 offset-m3 s10 offset-s1">
@@ -29,5 +29,5 @@
                 </div>
             </div>
         </main>
-    </body>
+    </@header.body>
 </html>
