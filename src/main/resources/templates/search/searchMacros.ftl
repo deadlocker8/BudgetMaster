@@ -30,7 +30,7 @@
             <div class="search-checkbox-container">
                 <label>
                     <input type="checkbox" name="searchName" <#if search.isSearchName()>checked="checked"</#if>>
-                    <span class="text-color">${locale.getString('search.in.name')}</span>
+                    <span class="text-default">${locale.getString('search.in.name')}</span>
                 </label>
             </div>
         </div>
@@ -38,7 +38,7 @@
             <div class="search-checkbox-container">
                 <label>
                     <input type="checkbox" name="searchDescription" <#if search.isSearchDescription()>checked="checked"</#if>>
-                    <span class="text-color">${locale.getString('search.in.description')}</span>
+                    <span class="text-default">${locale.getString('search.in.description')}</span>
                 </label>
             </div>
         </div>
@@ -46,7 +46,7 @@
             <div class="search-checkbox-container">
                 <label>
                     <input type="checkbox" name="searchCategory" <#if search.isSearchCategory()>checked="checked"</#if>>
-                    <span class="text-color">${locale.getString('search.in.category')}</span>
+                    <span class="text-default">${locale.getString('search.in.category')}</span>
                 </label>
             </div>
         </div>
@@ -54,7 +54,7 @@
             <div class="search-checkbox-container">
                 <label>
                     <input type="checkbox" name="searchTags" <#if search.isSearchTags()>checked="checked"</#if>>
-                    <span class="text-color">${locale.getString('search.in.tags')}</span>
+                    <span class="text-default">${locale.getString('search.in.tags')}</span>
                 </label>
             </div>
         </div>
@@ -66,11 +66,11 @@
         <div class="col s12 center-align">
             <#if page.getTotalPages() gt 0>
                 <ul class="pagination">
-                    <li class="text-color <#if page.getNumber() == 0>disabled</#if>"><a class="page-link" data-page="${page.getNumber()-1}"><i class="material-icons">chevron_left</i></a></li>
+                    <li class="text-default <#if page.getNumber() == 0>disabled</#if>"><a class="page-link" data-page="${page.getNumber()-1}"><i class="material-icons">chevron_left</i></a></li>
                         <#list 0..page.getTotalPages()-1 as i>
-                            <li class="waves-effect text-color <#if page.getNumber() == i>active</#if>"><a class="page-link" data-page="${i}">${i+1}</a></li>
+                            <li class="waves-effect text-default <#if page.getNumber() == i>active</#if>"><a class="page-link" data-page="${i}">${i+1}</a></li>
                         </#list>
-                    <li class="text-color <#if page.getNumber() == page.getTotalPages()-1>disabled</#if>"><a class="page-link" data-page="${page.getNumber()+1}"><i class="material-icons">chevron_right</i></a></li>
+                    <li class="text-default <#if page.getNumber() == page.getTotalPages()-1>disabled</#if>"><a class="page-link" data-page="${page.getNumber()+1}"><i class="material-icons">chevron_right</i></a></li>
                 </ul>
             </#if>
         </div>

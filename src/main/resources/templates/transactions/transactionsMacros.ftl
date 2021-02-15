@@ -55,8 +55,8 @@
 <#macro transactionButtons transaction>
         <div class="col s8 l2 xl1 right-align transaction-buttons no-wrap">
             <#if (transaction.category.type.name() != "REST") && !transaction.getAccount().isReadOnly()>
-                <a href="<@s.url '/transactions/${transaction.ID?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
-                <a href="<@s.url '/transactions/${transaction.ID?c}/requestDelete'/>" class="btn-flat no-padding text-color"><i class="material-icons left no-margin">delete</i></a>
+                <a href="<@s.url '/transactions/${transaction.ID?c}/edit'/>" class="btn-flat no-padding text-default"><i class="material-icons left">edit</i></a>
+                <a href="<@s.url '/transactions/${transaction.ID?c}/requestDelete'/>" class="btn-flat no-padding text-default"><i class="material-icons left no-margin">delete</i></a>
             </#if>
         </div>
 </#macro>
@@ -69,8 +69,8 @@
 
 <#macro transactionLinks transaction>
     <div class="col s4 l2 xl1 right-align transaction-buttons no-wrap">
-        <a href="<@s.url '/transactions/${transaction.ID?c}/highlight'/>" class="btn-flat no-padding text-color buttonHighlight"><i class="material-icons left">open_in_new</i></a>
-        <a href="<@s.url '/transactions/${transaction.ID?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left no-margin">edit</i></a>
+        <a href="<@s.url '/transactions/${transaction.ID?c}/highlight'/>" class="btn-flat no-padding text-default buttonHighlight"><i class="material-icons left">open_in_new</i></a>
+        <a href="<@s.url '/transactions/${transaction.ID?c}/edit'/>" class="btn-flat no-padding text-default"><i class="material-icons left no-margin">edit</i></a>
     </div>
 </#macro>
 

@@ -18,13 +18,13 @@
                 <div class="table-cell table-cell-spacer"></div>
                 <div class="table-cell">
                     <div class="switch-cell-margin">
-                        <a class="btn btn-flat tooltipped text-color" data-position="bottom" data-tooltip="${locale.getString("settings.rest.description")}"><i class="material-icons">help_outline</i></a>
+                        <a class="btn btn-flat tooltipped text-default" data-position="bottom" data-tooltip="${locale.getString("settings.rest.description")}"><i class="material-icons">help_outline</i></a>
                     </div>
                     <div class="switch-cell-margin">
-                        <a class="btn btn-flat tooltipped text-color" data-position="bottom" data-tooltip="${locale.getString("settings.darkTheme.description")}"><i class="material-icons">help_outline</i></a>
+                        <a class="btn btn-flat tooltipped text-default" data-position="bottom" data-tooltip="${locale.getString("settings.darkTheme.description")}"><i class="material-icons">help_outline</i></a>
                     </div>
                     <div class="switch-cell-margin">
-                        <a class="btn btn-flat tooltipped text-color" data-position="bottom" data-tooltip="${locale.getString("settings.updates.automatic.description")}"><i class="material-icons">help_outline</i></a>
+                        <a class="btn btn-flat tooltipped text-default" data-position="bottom" data-tooltip="${locale.getString("settings.updates.automatic.description")}"><i class="material-icons">help_outline</i></a>
                     </div>
                 </div>
             </div>
@@ -269,7 +269,7 @@
         </div>
 
         <div class="col s6 m6 l4 right-align">
-            <a target="_blank" href="${locale.getString("settings.backup.auto.strategy.git.remote.help.url")}" class="waves-effect waves-light btn btn-flat text-color"><i class="material-icons left">help_outline</i>${locale.getString("settings.backup.auto.strategy.git.remote.help")}</a>
+            <a target="_blank" href="${locale.getString("settings.backup.auto.strategy.git.remote.help.url")}" class="waves-effect waves-light btn btn-flat text-default"><i class="material-icons left">help_outline</i>${locale.getString("settings.backup.auto.strategy.git.remote.help")}</a>
         </div>
     </div>
 </#macro>

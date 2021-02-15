@@ -2,10 +2,10 @@
     <#import "/spring.ftl" as s>
      <div class="container">
          <div class="section center-align">
-             <a href="<@s.url '/previousMonth?target=${target}'/>" id="global-datepicker-previous-month" class="waves-effect text-color"><i class="material-icons icon-chevron">chevron_left</i></a>
-             <a href="#modalDate" class="waves-effect headline-date modal-trigger text-color datePicker-fixed-width">${dateService.getDateStringWithMonthAndYear(fullDate)}</a>
-             <a href="<@s.url '/nextMonth?target=${target}'/>" id="global-datepicker-next-month" class="waves-effect text-color"><i class="material-icons icon-chevron">chevron_right</i></a>
-             <a href="<@s.url '/today?target=${target}'/>" id="global-datepicker-today" class="waves-effect text-color"><i class="material-icons icon-today">event</i></a>
+             <a href="<@s.url '/previousMonth?target=${target}'/>" id="global-datepicker-previous-month" class="waves-effect text-default"><i class="material-icons icon-chevron">chevron_left</i></a>
+             <a href="#modalDate" class="waves-effect headline-date modal-trigger text-default datePicker-fixed-width">${dateService.getDateStringWithMonthAndYear(fullDate)}</a>
+             <a href="<@s.url '/nextMonth?target=${target}'/>" id="global-datepicker-next-month" class="waves-effect text-default"><i class="material-icons icon-chevron">chevron_right</i></a>
+             <a href="<@s.url '/today?target=${target}'/>" id="global-datepicker-today" class="waves-effect text-default"><i class="material-icons icon-today">event</i></a>
          </div>
      </div>
     <!-- modal to select specific month and year -->
@@ -37,8 +37,8 @@
     <div class="hidden" id="currentYear">${currentYear?c}</div>
 
     <div class="center-align">
-        <a class="waves-effect text-color global-datepicker-button" id="global-datepicker-previous"><i class="material-icons icon-chevron">chevron_left</i></a>
-        <a class="waves-effect text-color global-datepicker-button" id="global-datepicker-next"><i class="material-icons icon-chevron">chevron_right</i></a>
+        <a class="waves-effect text-default global-datepicker-button" id="global-datepicker-previous"><i class="material-icons icon-chevron">chevron_left</i></a>
+        <a class="waves-effect text-default global-datepicker-button" id="global-datepicker-next"><i class="material-icons icon-chevron">chevron_right</i></a>
     </div>
 
     <#assign years = [] />

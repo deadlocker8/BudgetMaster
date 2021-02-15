@@ -35,12 +35,12 @@
     <div class="row" id="firstUseBanner">
         <div class="col s12 center-align">
             <div class="home-firstUseBanner-wrapper">
-                <div class="home-firstUseBanner text-color">
-                    <a href="<@s.url "/firstUse"/>" class="text-color">
+                <div class="home-firstUseBanner text-default">
+                    <a href="<@s.url "/firstUse"/>" class="text-default">
                         <i class="fas fa-graduation-cap home-firstUseBanner-item"></i>
                         <span class="home-firstUseBanner-item">${locale.getString("home.first.use.teaser")}</span>
                     </a>
-                    <a href="<@s.url "/settings/hideFirstUseBanner"/>" class="text-color home-firstUseBanner-item home-firstUseBanner-clear">
+                    <a href="<@s.url "/settings/hideFirstUseBanner"/>" class="text-default home-firstUseBanner-item home-firstUseBanner-clear">
                         <i class="material-icons">clear</i>
                     </a>
                 </div>

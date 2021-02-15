@@ -92,7 +92,7 @@ public class NewTransactionFromTemplateTest
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Templates"));
 
-		driver.findElements(By.cssSelector(".template-item .btn-flat no-padding text-color"));
+		driver.findElements(By.cssSelector(".template-item .btn-flat no-padding text-default"));
 		driver.findElement(By.xpath("//li[contains(@class, 'template-item')]//a[contains(@href, '/templates/2/select')]")).click();
 
 		wait = new WebDriverWait(driver, 5);
@@ -120,7 +120,7 @@ public class NewTransactionFromTemplateTest
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Templates"));
 
-		driver.findElements(By.cssSelector(".template-item .btn-flat no-padding text-color"));
+		driver.findElements(By.cssSelector(".template-item .btn-flat no-padding text-default"));
 		driver.findElement(By.xpath("//li[contains(@class, 'template-item')]//a[contains(@href, '/templates/1/select')]")).click();
 
 		wait = new WebDriverWait(driver, 5);

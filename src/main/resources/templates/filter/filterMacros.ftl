@@ -128,19 +128,19 @@
                             <div class="col s12 m4 l4">
                                 <label>
                                     <input type="checkbox" name="${prefixValue}includeIncome" <#if filterConfiguration.isIncludeIncome()>checked="checked"</#if>>
-                                    <span class="text-color">${locale.getString('filter.type.income')}</span>
+                                    <span class="text-default">${locale.getString('filter.type.income')}</span>
                                 </label>
                             </div>
                             <div class="col s12 m4 l4">
                                 <label>
                                     <input type="checkbox" name="${prefixValue}includeExpenditure" <#if filterConfiguration.isIncludeExpenditure()>checked="checked"</#if>>
-                                    <span class="text-color">${locale.getString('filter.type.expenditure')}</span>
+                                    <span class="text-default">${locale.getString('filter.type.expenditure')}</span>
                                 </label>
                             </div>
                             <div class="col s12 m4 l4">
                                 <label>
                                     <input type="checkbox" name="${prefixValue}includeTransfer" <#if filterConfiguration.isIncludeTransfer()>checked="checked"</#if>>
-                                    <span class="text-color">${locale.getString('filter.type.transfer')}</span>
+                                    <span class="text-default">${locale.getString('filter.type.transfer')}</span>
                                 </label>
                             </div>
                         </div>
@@ -158,13 +158,13 @@
                             <div class="col s6 m6 l6">
                                 <label>
                                     <input type="checkbox" name="${prefixValue}includeNotRepeating" <#if filterConfiguration.isIncludeNotRepeating()>checked="checked"</#if>>
-                                    <span class="text-color">${locale.getString('filter.repeating.false')}</span>
+                                    <span class="text-default">${locale.getString('filter.repeating.false')}</span>
                                 </label>
                             </div>
                             <div class="col s6 m6 l6">
                                 <label>
                                     <input type="checkbox" name="${prefixValue}includeRepeating" <#if filterConfiguration.isIncludeRepeating()>checked="checked"</#if>>
-                                    <span class="text-color">${locale.getString('filter.repeating.true')}</span>
+                                    <span class="text-default">${locale.getString('filter.repeating.true')}</span>
                                 </label>
                             </div>
                         </div>
@@ -185,7 +185,7 @@
                                     <div>
                                         <label>
                                             <input type="checkbox" name="${prefixValue}filterCategories['${filterCategory?index}'].include" <#if filterCategory.isInclude()>checked="checked"</#if>>
-                                            <span class="text-color">${filterCategory.getName()}</span>
+                                            <span class="text-default">${filterCategory.getName()}</span>
                                         </label>
                                         <input type="hidden" name="${prefixValue}filterCategories['${filterCategory?index}'].ID" value="${filterCategory.getID()}"/>
                                         <input type="hidden" name="${prefixValue}filterCategories['${filterCategory?index}'].name" value="${filterCategory.getName()}"/>
@@ -210,7 +210,7 @@
                                     <div>
                                         <label>
                                             <input type="checkbox" name="${prefixValue}filterTags['${filterTag?index}'].include" <#if filterTag.isInclude()>checked="checked"</#if>>
-                                            <span class="text-color">${filterTag.getName()}</span>
+                                            <span class="text-default">${filterTag.getName()}</span>
                                         </label>
                                         <input type="hidden" name="${prefixValue}filterTags['${filterTag?index}'].ID" value="${filterTag.getID()}"/>
                                         <input type="hidden" name="${prefixValue}filterTags['${filterTag?index}'].name" value="${filterTag.getName()}"/>

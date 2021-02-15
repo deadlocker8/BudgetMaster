@@ -24,14 +24,14 @@
                             <div class="collapsible-header bold">
                                 <@templateHeader template/>
                                 <div class="collapsible-header-button">
-                                    <a href="<@s.url '/templates/${template.ID?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left no-margin">edit</i></a>
-                                    <a href="<@s.url '/templates/${template.ID?c}/requestDelete'/>" class="btn-flat no-padding text-color"><i class="material-icons left no-margin">delete</i></a>
+                                    <a href="<@s.url '/templates/${template.ID?c}/edit'/>" class="btn-flat no-padding text-default"><i class="material-icons left no-margin">edit</i></a>
+                                    <a href="<@s.url '/templates/${template.ID?c}/requestDelete'/>" class="btn-flat no-padding text-default"><i class="material-icons left no-margin">delete</i></a>
                                     <a href="<@s.url '/templates/${template.ID?c}/select'/>" class="waves-effect waves-light btn background-blue button-select-template"><i class="material-icons left no-margin">note_add</i></a>
                                 </div>
                             </div>
                             <div class="collapsible-body">
                                 <div class="row no-margin-bottom">
-                                    <table class="table-template-content text-color">
+                                    <table class="table-template-content text-default">
                                         <@templateName template/>
                                         <@templateAmount template/>
                                         <@templateCategory template/>
@@ -141,7 +141,7 @@
         <div class="input-field col s12 m12 l8 offset-l2">
             <label>
                 <input id="${id}" name="${name}" type="checkbox" <#if checked>checked</#if>>
-                <span class="columnName-checkbox-label text-color">${label}</span>
+                <span class="columnName-checkbox-label text-default">${label}</span>
             </label>
         </div>
     </div>

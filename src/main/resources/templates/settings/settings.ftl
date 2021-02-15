@@ -115,10 +115,10 @@
                                     <div class="table-cell table-cell-spacer"></div>
                                     <div class="table-cell">
                                         <div class="switch-cell-margin">
-                                            <a class="btn btn-flat tooltipped text-color" data-position="bottom" data-tooltip="${locale.getString("settings.backupReminder.description")}"><i class="material-icons">help_outline</i></a>
+                                            <a class="btn btn-flat tooltipped text-default" data-position="bottom" data-tooltip="${locale.getString("settings.backupReminder.description")}"><i class="material-icons">help_outline</i></a>
                                         </div>
                                         <div class="switch-cell-margin">
-                                            <a class="btn btn-flat tooltipped text-color" data-position="bottom" data-tooltip="${locale.getString("settings.backup.auto.description")}"><i class="material-icons">help_outline</i></a>
+                                            <a class="btn btn-flat tooltipped text-default" data-position="bottom" data-tooltip="${locale.getString("settings.backup.auto.description")}"><i class="material-icons">help_outline</i></a>
                                         </div>
                                     </div>
                                 </div>

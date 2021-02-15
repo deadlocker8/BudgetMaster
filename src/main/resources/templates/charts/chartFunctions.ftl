@@ -15,7 +15,7 @@
 <#macro infoMessage text>
     <div class="row no-margin-bottom">
         <div class="col s12 center-align">
-            <table class="text-color login-message no-border-table">
+            <table class="text-default login-message no-border-table">
                 <tr>
                     <td><i class="material-icons">info</i></td>
                     <td>${text}</td>

@@ -72,7 +72,7 @@
                 <input type="hidden" name="searchTags" value="true">
 
                 <div class="input-field">
-                    <input id="search" class="text-color mousetrap" name="searchText" type="search">
+                    <input id="search" class="text-default mousetrap" name="searchText" type="search">
                     <label class="label-icon" for="search"><i class="material-icons">search</i></label>
                     <i id="buttonSearch" class="material-icons">send</i>
                     <i id="buttonClearSearch" class="material-icons">close</i>
@@ -104,7 +104,7 @@
     <#else>
         <div class="account-budget ${greenTextColor}">${currencyService.getCurrencyString(accountBudget)}</div>
     </#if>
-    <div class="account-budget-date text-color">(${locale.getString("account.budget.asof")}: ${dateService.getDateStringNormal(dateService.getCurrentDate())})</div>
+    <div class="account-budget-date text-default">(${locale.getString("account.budget.asof")}: ${dateService.getDateStringNormal(dateService.getCurrentDate())})</div>
 </div>
 </#macro>
 

@@ -36,15 +36,15 @@
                                 <td>${chartName}</td>
                                 <td>
                                     <#if chart.getType().name() == "DEFAULT">
-                                        <a class="no-padding text-color"><i class="material-icons left">lock</i></a>
+                                        <a class="no-padding text-default"><i class="material-icons left">lock</i></a>
                                     <#else>
-                                        <a class="no-padding text-color"><i class="material-icons left">person</i></a>
+                                        <a class="no-padding text-default"><i class="material-icons left">person</i></a>
                                     </#if>
                                 </td>
                                 <td>
-                                    <a href="<@s.url '/charts/${chart.ID?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
+                                    <a href="<@s.url '/charts/${chart.ID?c}/edit'/>" class="btn-flat no-padding text-default"><i class="material-icons left">edit</i></a>
                                     <#if (chart.getType().name() == "CUSTOM")>
-                                        <a href="<@s.url '/charts/${chart.ID?c}/requestDelete'/>" class="btn-flat no-padding text-color"><i class="material-icons left">delete</i></a>
+                                        <a href="<@s.url '/charts/${chart.ID?c}/requestDelete'/>" class="btn-flat no-padding text-default"><i class="material-icons left">delete</i></a>
                                     </#if>
                                 </td>
                             </tr>

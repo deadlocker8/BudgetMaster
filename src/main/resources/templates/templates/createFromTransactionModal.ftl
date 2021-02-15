@@ -13,13 +13,13 @@
             <div class="col s12">
                 <label>
                     <input id="include-category" type="checkbox" checked="checked">
-                    <span class="columnName-checkbox-label text-color">${locale.getString('template.checkbox.include.category')}</span>
+                    <span class="columnName-checkbox-label text-default">${locale.getString('template.checkbox.include.category')}</span>
                 </label>
             </div>
             <div class="col s12">
                 <label>
                     <input id="include-account" type="checkbox">
-                    <span class="columnName-checkbox-label text-color">${locale.getString('template.checkbox.include.account')}</span>
+                    <span class="columnName-checkbox-label text-default">${locale.getString('template.checkbox.include.account')}</span>
                 </label>
             </div>
         </div>
