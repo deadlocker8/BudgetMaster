@@ -32,115 +32,115 @@
 /* background colors*/
 
 .background-blue {
-    background-color: var(--color-blue);
+    background-color: var(--color-blue) !important;
 }
 
 .background-blue-light {
-    background-color: var(--color-blue-light);
+    background-color: var(--color-blue-light) !important;
 }
 
 .background-blue-baby {
-    background-color: var(--color-blue-baby);
+    background-color: var(--color-blue-baby) !important;
 }
 
 .background-purple {
-    background-color: var(--color-purple);
+    background-color: var(--color-purple) !important;
 }
 
 .background-green {
-    background-color: var(--color-green);
+    background-color: var(--color-green) !important;
 }
 
 .background-green-dark {
-    background-color: var(--color-green-dark);
+    background-color: var(--color-green-dark) !important;
 }
 
 .background-yellow {
-    background-color: var(--color-yellow);
+    background-color: var(--color-yellow) !important;
 }
 
 .background-orange {
-    background-color: var(--color-orange);
+    background-color: var(--color-orange) !important;
 }
 
 .background-orange-dark {
-    background-color: var(--color-orange-dark);
+    background-color: var(--color-orange-dark) !important;
 }
 
 .background-red {
-    background-color: var(--color-red);
+    background-color: var(--color-red) !important;
 }
 
 .background-white {
-    background-color: var(--color-white);
+    background-color: var(--color-white) !important;
 }
 
 .background-grey {
-    background-color: var(--color-grey);
+    background-color: var(--color-grey) !important;
 }
 
 .background-black {
-    background-color: var(--color-black);
+    background-color: var(--color-black) !important;
 }
 
 /* text colors*/
 
 .text-blue {
-    color: var(--color-blue);
+    color: var(--color-blue) !important;
 }
 
 .text-blue-light {
-    color: var(--color-blue-light);
+    color: var(--color-blue-light) !important;
 }
 
 .text-blue-baby {
-    color: var(--color-blue-baby);
+    color: var(--color-blue-baby) !important;
 }
 
 .text-purple {
-    color: var(--color-purple);
+    color: var(--color-purple) !important;
 }
 
 .text-green {
-    color: var(--color-green);
+    color: var(--color-green) !important;
 }
 
 .text-green-dark {
-    color: var(--color-green-dark);
+    color: var(--color-green-dark) !important;
 }
 
 .text-yellow {
-    color: var(--color-yellow);
+    color: var(--color-yellow) !important;
 }
 
 .text-orange {
-    color: var(--color-orange);
+    color: var(--color-orange) !important;
 }
 
 .text-orange-dark {
-    color: var(--color-orange-dark);
+    color: var(--color-orange-dark) !important;
 }
 
 .text-red {
-    color: var(--color-red);
+    color: var(--color-red) !important;
 }
 
 .text-white {
-    color: var(--color-white);
+    color: var(--color-white) !important;
 }
 
 .text-grey {
-    color: var(--color-grey);
+    color: var(--color-grey) !important;
 }
 
 .text-black {
-    color: var(--color-black);
+    color: var(--color-black) !important;
 }
 
 .text-default {
-    color: var(--color-text);
+    color: var(--color-text) !important;
 }
 
 .text-isPayment {
-    color: var(--color-isPayment);
+    color: var(--color-isPayment) !important;
 }
