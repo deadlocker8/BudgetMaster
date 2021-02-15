@@ -18,6 +18,7 @@
     --color-black: rgba(0, 0, 0, 0.87);
 
     --color-text: #212121;
+    --color-isPayment: var(--color-white);
 
     color: var(--color-text);
 }
@@ -27,6 +28,7 @@
     --color-yellow: #E9C46A;
     --color-grey: #CCCCCC;
     --color-text: #FFFFFF;
+    --color-isPayment: var(--color-black);
 
     color: var(--color-text);
 }
@@ -141,4 +143,8 @@
 
 .text-default {
     color: var(--color-text);
+}
+
+.text-isPayment {
+    color: var(--color-isPayment);
 }

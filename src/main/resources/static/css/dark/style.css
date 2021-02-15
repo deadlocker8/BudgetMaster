@@ -24,10 +24,6 @@ main {
     color: #FFFFFF;
 }
 
-.budgetmaster-text-isPayment {
-    color: rgba(0, 0, 0, 0.87);
-}
-
 .budgetmaster-text-update {
     color: #212121 !important;
 }

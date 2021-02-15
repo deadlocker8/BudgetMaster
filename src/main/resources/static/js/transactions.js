@@ -206,7 +206,7 @@ $(document).ready(function()
         $('.buttonIncome').each(function()
         {
             $(this).removeClass("background-grey");
-            $(this).removeClass("budgetmaster-text-isPayment");
+            $(this).removeClass("text-isPayment");
             $(this).addClass("background-green");
         });
 
@@ -214,7 +214,7 @@ $(document).ready(function()
         {
             $(this).removeClass("background-red");
             $(this).addClass("background-grey");
-            $(this).addClass("budgetmaster-text-isPayment");
+            $(this).addClass("text-isPayment");
         });
 
         document.getElementById("input-isPayment").value = 0;
@@ -225,7 +225,7 @@ $(document).ready(function()
         $('.buttonExpenditure').each(function()
         {
             $(this).removeClass("background-grey");
-            $(this).removeClass("budgetmaster-text-isPayment");
+            $(this).removeClass("text-isPayment");
             $(this).addClass("background-red");
         });
 
@@ -233,7 +233,7 @@ $(document).ready(function()
         {
             $(this).removeClass("background-green");
             $(this).addClass("background-grey");
-            $(this).addClass("budgetmaster-text-isPayment");
+            $(this).addClass("text-isPayment");
         });
 
         document.getElementById("input-isPayment").value = 1;
