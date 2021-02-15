@@ -127,7 +127,7 @@ public class NewTransactionFromTemplateTest
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Transaction"));
 
 		// assert
-		assertThat(driver.findElement(By.className("buttonIncome")).getAttribute("class")).contains("budgetmaster-green");
+		assertThat(driver.findElement(By.className("buttonIncome")).getAttribute("class")).contains("background-green");
 	}
 
 	@Test

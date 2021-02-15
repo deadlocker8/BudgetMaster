@@ -224,15 +224,15 @@ $(document).ready(function()
     {
         $('.buttonExpenditure').each(function()
         {
-            $(this).removeClass("budgetmaster-grey");
+            $(this).removeClass("background-grey");
             $(this).removeClass("budgetmaster-text-isPayment");
             $(this).addClass("background-red");
         });
 
         $('.buttonIncome').each(function()
         {
-            $(this).removeClass("budgetmaster-green");
-            $(this).addClass("budgetmaster-grey");
+            $(this).removeClass("background-green");
+            $(this).addClass("background-grey");
             $(this).addClass("budgetmaster-text-isPayment");
         });
 

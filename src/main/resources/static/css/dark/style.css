@@ -36,10 +36,6 @@ main {
     color: rgba(80, 115, 146, 0.8);
 }
 
-.budgetmaster-green {
-    background-color: #5cb85c !important;
-}
-
 .budgetmaster-grey {
     background-color: #CCCCCC !important;
 }
