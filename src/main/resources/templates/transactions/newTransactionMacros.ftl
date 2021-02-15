@@ -398,13 +398,13 @@
                 <#if canChangeType>
                     <li>
                         <a class="btn-floating btn transaction-action mobile-fab-tip no-wrap" data-action-type="changeType" data-url="<@s.url '/transactions/${transaction.getID()?c}/changeTypeModal'/>">${locale.getString("transaction.change.type")}</a>
-                        <a class="btn-floating btn transaction-action budgetmaster-baby-blue" data-action-type="changeType" data-url="<@s.url '/transactions/${transaction.getID()?c}/changeTypeModal'/>"><i class="material-icons">shuffle</i></a>
+                        <a class="btn-floating btn transaction-action background-blue-baby" data-action-type="changeType" data-url="<@s.url '/transactions/${transaction.getID()?c}/changeTypeModal'/>"><i class="material-icons">shuffle</i></a>
                     </li>
                 </#if>
                 <#if canCreateTemplate>
                     <li>
                         <a class="btn-floating btn transaction-action mobile-fab-tip no-wrap" data-action-type="saveAsTemplate" data-url="<@s.url '/templates/fromTransactionModal'/>">${locale.getString("save.as.template")}</a>
-                        <a class="btn-floating btn transaction-action budgetmaster-dark-orange" data-action-type="saveAsTemplate" data-url="<@s.url '/templates/fromTransactionModal'/>"><i class="material-icons">file_copy</i></a>
+                        <a class="btn-floating btn transaction-action background-orange-dark" data-action-type="saveAsTemplate" data-url="<@s.url '/templates/fromTransactionModal'/>"><i class="material-icons">file_copy</i></a>
                     </li>
                 </#if>
             </ul>
