@@ -379,11 +379,11 @@
 </#macro>
 
 <#macro buttonCancel cancelURL>
-    <a href="<@s.url cancelURL/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
+    <a href="<@s.url cancelURL/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
 </#macro>
 
 <#macro buttonSave>
-    <button id="button-save-transaction" class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action">
+    <button id="button-save-transaction" class="btn waves-effect waves-light background-blue" type="submit" name="action">
         <i class="material-icons left">save</i>${locale.getString("save")}
     </button>
 </#macro>
@@ -391,7 +391,7 @@
 <#macro buttonTransactionActions canChangeType canCreateTemplate changetypeInProgress>
     <#if (canChangeType || canCreateTemplate) && !changetypeInProgress>
         <div class="fixed-action-btn" id="transaction-actions-button">
-            <a class="btn-floating btn-large waves-effect waves-light budgetmaster-blue">
+            <a class="btn-floating btn-large waves-effect waves-light background-blue">
                 <i class="material-icons left">settings</i>${locale.getString("save")}
             </a>
             <ul>

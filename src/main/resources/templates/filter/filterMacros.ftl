@@ -51,30 +51,30 @@
 </#macro>
 
 <#macro buttonReset>
-    <a href="<@s.url '/filter/reset'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">settings_backup_restore</i>${locale.getString("filter.reset")}</a>
+    <a href="<@s.url '/filter/reset'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">settings_backup_restore</i>${locale.getString("filter.reset")}</a>
 </#macro>
 
 <#macro buttonApply>
-    <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="buttonSave">
+    <button class="btn waves-effect waves-light background-blue" type="submit" name="buttonSave">
         <i class="fas fa-filter left"></i>${locale.getString("filter.apply")}
     </button>
 </#macro>
 
 <#macro buttonResetChart>
-    <a class="filter-button-reset waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">settings_backup_restore</i>${locale.getString("filter.reset")}</a>
+    <a class="filter-button-reset waves-effect waves-light btn background-blue"><i class="material-icons left">settings_backup_restore</i>${locale.getString("filter.reset")}</a>
 </#macro>
 
 <#macro buttonClose>
-    <a class="filter-button-close waves-effect waves-light budgetmaster-blue btn white-text"><i class="fas fa-filter left"></i>${locale.getString("filter.apply")}</a>
+    <a class="filter-button-close waves-effect waves-light background-blue btn white-text"><i class="fas fa-filter left"></i>${locale.getString("filter.apply")}</a>
 </#macro>
 
 <#macro buttonsAllOrNone>
     <div class="row no-margin">
         <div class="col s6 right-align">
-            <a class="waves-effect waves-light btn budgetmaster-blue filter-button-all">${locale.getString("filter.tags.button.all")}</a>
+            <a class="waves-effect waves-light btn background-blue filter-button-all">${locale.getString("filter.tags.button.all")}</a>
         </div>
         <div class="col s6">
-            <a class="waves-effect waves-light btn budgetmaster-blue filter-button-none">${locale.getString("filter.tags.button.none")}</a>
+            <a class="waves-effect waves-light btn background-blue filter-button-none">${locale.getString("filter.tags.button.none")}</a>
         </div>
     </div>
 </#macro>

@@ -115,7 +115,7 @@
             <form id="form-database-import" method="POST" action="<@s.url '/settings/database/upload'/>" enctype="multipart/form-data" accept-charset="UTF-8">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <div class="file-field input-field">
-                    <div class="btn budgetmaster-blue">
+                    <div class="btn background-blue">
                         <i class="material-icons">cloud_upload</i>
                         <input id="inputDatabaseImport" type="file" accept=".json" name="file">
                     </div>
@@ -265,7 +265,7 @@
         </div>
 
         <div class="col s6 m6 l4 offset-l2">
-            <a id="settings-backup-auto-git-test" data-url="<@s.url '/settings/git/test'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">send</i>${locale.getString("settings.backup.auto.git.test")}</a>
+            <a id="settings-backup-auto-git-test" data-url="<@s.url '/settings/git/test'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">send</i>${locale.getString("settings.backup.auto.git.test")}</a>
         </div>
 
         <div class="col s6 m6 l4 right-align">

@@ -17,7 +17,7 @@
                     </div>
                 </div>
                 <br>
-                <div class="center-align"><a href="<@s.url '/accounts/newAccount'/>" id="button-new-account" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.account.new")}</a></div>
+                <div class="center-align"><a href="<@s.url '/accounts/newAccount'/>" id="button-new-account" class="waves-effect waves-light btn background-blue"><i class="material-icons left">add</i>${locale.getString("title.account.new")}</a></div>
                 <br>
                 <div class="container account-container">
                     <table class="bordered">

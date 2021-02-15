@@ -11,12 +11,12 @@
 
         <div class="col s2 m3 l4">
             <div class="hide-on-small-only">
-                <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action">
+                <button class="btn waves-effect waves-light background-blue" type="submit" name="action">
                     <i class="material-icons left">search</i>${locale.getString("search.submit")}
                 </button>
             </div>
             <div class="hide-on-med-and-up">
-                <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action">
+                <button class="btn waves-effect waves-light background-blue" type="submit" name="action">
                     <i class="material-icons">search</i>
                 </button>
             </div>

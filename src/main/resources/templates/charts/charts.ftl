@@ -26,7 +26,7 @@
                 </div>
                 <br>
                 <div class="center-align">
-                    <a href="<@s.url '/charts/manage'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">edit</i>${locale.getString("home.menu.charts.action.manage")}
+                    <a href="<@s.url '/charts/manage'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">edit</i>${locale.getString("home.menu.charts.action.manage")}
                     </a></div>
                 <br>
                 <div class="container">
@@ -50,7 +50,7 @@
                         <#-- buttons -->
                         <div class="row center-align">
                             <div class="col s12">
-                                <button class="btn waves-effect waves-light budgetmaster-blue" type="submit"
+                                <button class="btn waves-effect waves-light background-blue" type="submit"
                                         name="buttonSave">
                                     <i class="material-icons left">show_chart</i>${locale.getString("chart.show")}
                                 </button>

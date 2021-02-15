@@ -97,7 +97,7 @@
                         <#-- button generate -->
                         <div class="row valign-wrapper">
                             <div class="col s12 center-align">
-                                <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="buttonSave">
+                                <button class="btn waves-effect waves-light background-blue" type="submit" name="buttonSave">
                                     <i class="material-icons left">save</i>${locale.getString("report.button.generate")}
                                 </button>
                             </div>

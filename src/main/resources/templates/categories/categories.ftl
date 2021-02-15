@@ -23,7 +23,7 @@
                 </div>
                 <br>
                 <div class="center-align">
-                    <a href="<@s.url '/categories/newCategory'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.category.new")}
+                    <a href="<@s.url '/categories/newCategory'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">add</i>${locale.getString("title.category.new")}
                     </a></div>
                 <br>
                 <div class="container">

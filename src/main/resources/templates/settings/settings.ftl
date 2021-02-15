@@ -133,7 +133,7 @@
                         <#-- buttons -->
                         <div class="row">
                             <div class="col s12 center-align">
-                                <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action">
+                                <button class="btn waves-effect waves-light background-blue" type="submit" name="action">
                                     <i class="material-icons left">save</i>${locale.getString("save")}
                                 </button>
                             </div>

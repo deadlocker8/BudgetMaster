@@ -26,11 +26,11 @@
 </#macro>
 
 <#macro buttonNew>
-    <a href="<@s.url '/charts/newChart'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.chart.new")}</a>
+    <a href="<@s.url '/charts/newChart'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">add</i>${locale.getString("title.chart.new")}</a>
 </#macro>
 
 <#macro buttonShow>
-    <a href="<@s.url '/charts'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">show_chart</i>${locale.getString("home.menu.charts.action.show")}</a>
+    <a href="<@s.url '/charts'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">show_chart</i>${locale.getString("home.menu.charts.action.show")}</a>
 </#macro>
 
 <#macro buttons>
