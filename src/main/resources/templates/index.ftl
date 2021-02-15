@@ -5,7 +5,7 @@
 		<@header.header "BudgetMaster"/>
         <#import "/spring.ftl" as s>
     </head>
-    <body class="budgetmaster-blue-light">
+    <body class="background-blue-light">
         <#import "helpers/navbar.ftl" as navbar>
         <@navbar.navbar "home" settings/>
 
@@ -35,26 +35,26 @@
                             <@indexFunctions.action url="/accounts/newAccount" name="home.menu.accounts.action.new"/>
                         </@indexFunctions.homeEntry>
 
-                        <@indexFunctions.homeEntry url="/transactions" icon="list" iconColor="budgetmaster-baby-blue-text" headlineText="menu.transactions" bodyText="home.menu.transactions">
+                        <@indexFunctions.homeEntry url="/transactions" icon="list" iconColor="text-blue-baby" headlineText="menu.transactions" bodyText="home.menu.transactions">
                             <@indexFunctions.action url="/transactions" name="home.menu.transactions.action.manage"/>
                             <@indexFunctions.action url="/transactions/newTransaction/normal" name="home.menu.transactions.action.new"/>
                         </@indexFunctions.homeEntry>
 
-                        <@indexFunctions.homeEntry url="/templates" icon="file_copy" iconColor="budgetmaster-dark-orange-text" headlineText="menu.templates" bodyText="home.menu.templates">
+                        <@indexFunctions.homeEntry url="/templates" icon="file_copy" iconColor="text-orange-dark" headlineText="menu.templates" bodyText="home.menu.templates">
                             <@indexFunctions.action url="/templates" name="home.menu.templates.action.manage"/>
                         </@indexFunctions.homeEntry>
 
-                        <@indexFunctions.homeEntry url="/charts" icon="show_chart" iconColor="budgetmaster-purple-text" headlineText="menu.charts" bodyText="home.menu.charts">
+                        <@indexFunctions.homeEntry url="/charts" icon="show_chart" iconColor="text-purple" headlineText="menu.charts" bodyText="home.menu.charts">
                             <@indexFunctions.action url="/charts/manage" name="home.menu.charts.action.manage"/>
                             <br>
                             <@indexFunctions.action url="/charts" name="home.menu.charts.action.show"/>
                         </@indexFunctions.homeEntry>
 
-                        <@indexFunctions.homeEntry url="/reports" icon="description" iconColor="budgetmaster-green-text" headlineText="menu.reports" bodyText="home.menu.reports">
+                        <@indexFunctions.homeEntry url="/reports" icon="description" iconColor="text-green" headlineText="menu.reports" bodyText="home.menu.reports">
                             <@indexFunctions.action url="/reports" name="home.menu.reports.action.new"/>
                         </@indexFunctions.homeEntry>
 
-                        <@indexFunctions.homeEntry url="/categories" icon="label" iconColor="budgetmaster-orange-text" headlineText="menu.categories" bodyText="home.menu.categories">
+                        <@indexFunctions.homeEntry url="/categories" icon="label" iconColor="text-orange" headlineText="menu.categories" bodyText="home.menu.categories">
                             <@indexFunctions.action url="/categories" name="home.menu.categories.action.manage"/>
                             <@indexFunctions.action url="/categories/newCategory" name="home.menu.categories.action.new"/>
                         </@indexFunctions.homeEntry>
