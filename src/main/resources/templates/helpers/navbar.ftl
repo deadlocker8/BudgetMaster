@@ -8,18 +8,18 @@
         <@itemDivider/>
         <@itemAccountSelect/>
         <@itemDivider/>
-        <@itemWithIcon "home", "/", locale.getString("menu.home"), "home", "budgetmaster-blue", activeID/>
-        <@itemWithIcon "transactions", "/transactions", locale.getString("menu.transactions"), "list", "budgetmaster-baby-blue", activeID/>
-        <@itemWithIcon "templates", "/templates", locale.getString("menu.templates"), "file_copy", "budgetmaster-dark-orange", activeID/>
-        <@itemWithIcon "charts" "/charts" locale.getString("menu.charts"), "show_chart" "budgetmaster-purple", activeID/>
-        <@itemWithIcon "reports", "/reports", locale.getString("menu.reports"), "description", "budgetmaster-green", activeID/>
-        <@itemWithIcon "categories", "/categories", locale.getString("menu.categories"), "label", "budgetmaster-orange", activeID/>
-        <@itemWithIcon "settings", "/settings", locale.getString("menu.settings"), "settings", "budgetmaster-red", activeID/>
+        <@itemWithIcon "home", "/", locale.getString("menu.home"), "home", "background-blue", activeID/>
+        <@itemWithIcon "transactions", "/transactions", locale.getString("menu.transactions"), "list", "background-blue-baby", activeID/>
+        <@itemWithIcon "templates", "/templates", locale.getString("menu.templates"), "file_copy", "background-orange-dark", activeID/>
+        <@itemWithIcon "charts" "/charts" locale.getString("menu.charts"), "show_chart" "background-purple", activeID/>
+        <@itemWithIcon "reports", "/reports", locale.getString("menu.reports"), "description", "background-green", activeID/>
+        <@itemWithIcon "categories", "/categories", locale.getString("menu.categories"), "label", "background-orange", activeID/>
+        <@itemWithIcon "settings", "/settings", locale.getString("menu.settings"), "settings", "background-red", activeID/>
 
         <@itemDivider/>
-        <@itemWithIcon "hotkeys", "/hotkeys", locale.getString("menu.hotkeys"), "keyboard", "budgetmaster-grey", activeID/>
-        <@itemWithFontawesomeIcon "firstUseGuide", "/firstUse", locale.getString("menu.firstUseGuide"), "fas fa-graduation-cap", "budgetmaster-grey", activeID/>
-        <@itemWithIcon "about", "/about", locale.getString("menu.about"), "info", "budgetmaster-grey", activeID/>
+        <@itemWithIcon "hotkeys", "/hotkeys", locale.getString("menu.hotkeys"), "keyboard", "background-grey", activeID/>
+        <@itemWithFontawesomeIcon "firstUseGuide", "/firstUse", locale.getString("menu.firstUseGuide"), "fas fa-graduation-cap", "background-grey", activeID/>
+        <@itemWithIcon "about", "/about", locale.getString("menu.about"), "info", "background-grey", activeID/>
 
         <@itemDivider/>
         <@itemLogout locale.getString("menu.logout") "lock"/>
