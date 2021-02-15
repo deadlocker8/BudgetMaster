@@ -143,11 +143,11 @@ public class NewTransactionRecurringTest
 		}
 
 		// submit form
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("modal-overlay")));
+
 		WebElement submitButton = driver.findElement(By.id("button-save-transaction"));
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", submitButton);
-
-		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.elementToBeClickable(submitButton));
 
 		submitButton.click();
 
