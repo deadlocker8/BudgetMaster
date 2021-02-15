@@ -38,7 +38,7 @@
                         </div>
                         <div class="col s4">
                             <div class="icon-block">
-                                <h1 class="center budgetmaster-blue-text budget-headline-icon"><i class="fas fa-piggy-bank icon-budget"></i></h1>
+                                <h1 class="center text-blue budget-headline-icon"><i class="fas fa-piggy-bank icon-budget"></i></h1>
                                 <h5 class="center budget">${currencyService.getCurrencyString(budget.getRest())}</h5>
                                 <h5 class="center budget-headline">${locale.getString("title.rest")}</h5>
                             </div>
@@ -53,7 +53,7 @@
                     <#list transactions as transaction>
                         <#assign shouldHighlight = highlightID?? && transaction.getID()?? && transaction.getID()==highlightID/>
 
-                        <div class="hide-on-large-only transaction-row-top <#if transaction.isFuture()>transaction-row-transparent</#if> <#if shouldHighlight>budgetmaster-blue-light transaction-row-transparent-override" id="highlighted-small"<#else>"</#if>>
+                        <div class="hide-on-large-only transaction-row-top <#if transaction.isFuture()>transaction-row-transparent</#if> <#if shouldHighlight>background-blue-light transaction-row-transparent-override" id="highlighted-small"<#else>"</#if>>
                             <div class="row valign-wrapper transaction-row-bottom">
                                 <div class="col s3 center-align bold transaction-text">
                                     ${dateService.getDateStringWithoutYear(transaction.date)}
@@ -67,7 +67,7 @@
                                 <@transactionsMacros.transactionAmount transaction account "s4"/>
                             </div>
                         </div>
-                        <div class="hide-on-med-and-down transaction-row-top transaction-row-bottom <#if transaction.isFuture()>transaction-row-transparent</#if> <#if shouldHighlight>budgetmaster-blue-light transaction-row-transparent-override" id="highlighted-large"<#else>"</#if>>
+                        <div class="hide-on-med-and-down transaction-row-top transaction-row-bottom <#if transaction.isFuture()>transaction-row-transparent</#if> <#if shouldHighlight>background-blue-light transaction-row-transparent-override" id="highlighted-large"<#else>"</#if>>
                             <div class="row valign-wrapper no-margin-bottom">
                                 <div class="col l1 xl1 bold transaction-text transaction-line-height">
                                     ${dateService.getDateStringWithoutYear(transaction.date)}
