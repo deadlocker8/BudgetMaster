@@ -162,18 +162,18 @@
 
                             <div class="table-cell">
                                 <div class="left-align" style="margin-bottom: 1em; margin-right: 5em">
-                                    <div class="banner budgetmaster-grey black-text">
+                                    <div class="banner background-grey black-text">
                                         v${build.getVersionName()}
                                     </div>
                                 </div>
                                 <div class="left-align">
                                     <#if updateCheckService.getAvailableVersionString() == "-">
-                                        <#assign bannerClasses="budgetmaster-grey black-text">
+                                        <#assign bannerClasses="background-grey black-text">
                                     <#else>
                                         <#if updateCheckService.isUpdateAvailable()>
-                                            <#assign bannerClasses="budgetmaster-orange black-text">
+                                            <#assign bannerClasses="background-orange black-text">
                                         <#else>
-                                            <#assign bannerClasses="budgetmaster-green white-text">
+                                            <#assign bannerClasses="background-green white-text">
                                         </#if>
                                     </#if>
 
@@ -184,7 +184,7 @@
                             </div>
 
                             <div class="table-cell table-cell-valign">
-                                <a href="<@s.url '/settings/updateSearch'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">refresh</i>${locale.getString("settings.updates.search")}</a>
+                                <a href="<@s.url '/settings/updateSearch'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">refresh</i>${locale.getString("settings.updates.search")}</a>
                             </div>
                         </div>
                     </div>
