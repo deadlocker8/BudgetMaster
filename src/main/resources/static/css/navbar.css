@@ -1,0 +1,94 @@
+.sidenav-trigger, .sidenav-trigger i {
+    font-size: 1.5em;
+}
+
+.sidenav {
+    width: 350px;
+}
+
+ul.sidenav.sidenav-fixed > li:last-child {
+    margin-bottom: 160px;
+}
+
+.sidenav li.active {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+/*active nav bar sub list items*/
+.sidenav .collapsible-body > ul:not(.collapsible) > li.active, .sidenav.fixed .collapsible-body > ul:not(.collapsible) > li.active {
+    background-color: rgba(0, 0, 0, 0.25);
+}
+
+/*text color for active nav bar sub list items*/
+.sidenav .collapsible-body > ul:not(.collapsible) > li.active a,
+.sidenav.fixed .collapsible-body > ul:not(.collapsible) > li.active a {
+    color: rgba(0, 0, 0, 0.87);
+}
+
+.sidenav li > a, .sidenav-sub li > a {
+    font-weight: 600;
+}
+
+.searchWrapper {
+    background-color: #FFFFFF;
+    box-shadow: none;
+}
+
+.searchWrapper .input-field i,
+.searchWrapper .input-field label.active i {
+    color: var(--color-text);
+}
+
+.sidenav #buttonSearch {
+    right: 3rem;
+}
+
+/* dark theme */
+
+[data-theme="dark"] .sidenav,
+[data-theme="dark"] .sidenav-sub,
+[data-theme="dark"] .searchWrapper {
+    background-color: #444444;
+    box-shadow: none;
+}
+
+[data-theme="dark"] .sidenav li > a,
+[data-theme="dark"] .sidenav-sub li > a {
+    color: #FFFFFF;
+    font-weight: 600;
+}
+
+[data-theme="dark"] .sidenav li > a:hover,
+[data-theme="dark"] .sidenav-sub li > a:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .sidenav li > a > i,
+[data-theme="dark"] .sidenav-sub li > a > i {
+    color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .sidenav li > a #icon-update {
+    color: #212121 !important;
+}
+
+[data-theme="dark"] .sidenav li > a:hover #icon-update {
+    color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .sidenav li.active {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+/*active nav bar sub list items*/
+[data-theme="dark"] .sidenav .collapsible-body > ul:not(.collapsible) > li.active,
+[data-theme="dark"] .sidenav.fixed .collapsible-body > ul:not(.collapsible) > li.active {
+    background-color: rgba(255, 255, 255, 0.35);
+}
+
+/*text color for active nav bar sub list items*/
+[data-theme="dark"] .sidenav .collapsible-body > ul:not(.collapsible) > li.active a,
+[data-theme="dark"] .sidenav.fixed .collapsible-body > ul:not(.collapsible) > li.active a {
+    color: rgba(255, 255, 255, 0.87);
+}
