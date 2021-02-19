@@ -14,11 +14,11 @@
 
 .global-datepicker-table td:hover {
     cursor: pointer;
-    border: 2px solid rgba(0, 0, 0, 0.25);
+    border: 2px solid var(--color-grey-dark);
 }
 
 .global-datepicker-selected {
-    background-color: rgba(0, 0, 0, 0.08);
+    background-color: var(--color-grey-dark-almost-transparent);
 }
 
 .global-datepicker-button {

@@ -15,16 +15,21 @@
 
     --color-white: #FFFFFF;
     --color-grey: #696969;
+    --color-grey-dark: rgba(0, 0, 0, 0.25);
+    --color-grey-dark-almost-transparent: rgba(0, 0, 0, 0.08);
     --color-black: rgba(0, 0, 0, 0.87);
 
     --color-text: #212121;
     --color-isPayment: var(--color-white);
+
 }
 
 [data-theme="dark"] {
     --color-blue-light: rgba(80, 115, 146, 0.8);
     --color-yellow: #E9C46A;
     --color-grey: #CCCCCC;
+    --color-grey-dark: rgba(255, 255, 255, 0.5);
+    --color-grey-dark-almost-transparent: rgba(255, 255, 255, 0.125);
     --color-text: #FFFFFF;
     --color-isPayment: var(--color-black);
 }
