@@ -191,13 +191,17 @@
 
         <div class="col s6 m6 l4 right-align">
             <#if autoBackupStatus.name() == "ERROR">
-                <#assign autoBackupStatusBannerClasses="background-red white-text">
+                <#assign autoBackupStatusBannerClasses="background-red text-white">
                 <#assign autoBackupStatusBannerText=locale.getString("settings.backup.auto.status.error")>
             <#elseif autoBackupStatus.name() == "OK">
-                <#assign autoBackupStatusBannerClasses="background-green white-text">
+                <#assign autoBackupStatusBannerClasses="background-green text-white">
                 <#assign autoBackupStatusBannerText=locale.getString("settings.backup.auto.status.ok")>
             <#elseif autoBackupStatus.name() == "UNKNOWN">
-                <#assign autoBackupStatusBannerClasses="background-grey black-text">
+                <#if settings.isUseDarkTheme()>
+                    <#assign autoBackupStatusBannerClasses="background-grey text-black">
+                <#else>
+                    <#assign autoBackupStatusBannerClasses="background-grey text-white">
+                </#if>
                 <#assign autoBackupStatusBannerText=locale.getString("settings.backup.auto.status.unknown")>
             </#if>
 

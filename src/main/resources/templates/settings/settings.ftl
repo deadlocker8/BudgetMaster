@@ -162,18 +162,22 @@
 
                             <div class="table-cell">
                                 <div class="left-align" style="margin-bottom: 1em; margin-right: 5em">
-                                    <div class="banner background-grey black-text">
+                                    <div class="banner background-grey <#if settings.isUseDarkTheme()>text-black<#else>text-white</#if>">
                                         v${build.getVersionName()}
                                     </div>
                                 </div>
                                 <div class="left-align">
                                     <#if updateCheckService.getAvailableVersionString() == "-">
-                                        <#assign bannerClasses="background-grey black-text">
+                                        <#if settings.isUseDarkTheme()>
+                                            <#assign bannerClasses="background-grey text-black">
+                                        <#else>
+                                            <#assign bannerClasses="background-grey text-white">
+                                        </#if>
                                     <#else>
                                         <#if updateCheckService.isUpdateAvailable()>
-                                            <#assign bannerClasses="background-orange black-text">
+                                            <#assign bannerClasses="background-orange text-black">
                                         <#else>
-                                            <#assign bannerClasses="background-green white-text">
+                                            <#assign bannerClasses="background-green text-white">
                                         </#if>
                                     </#if>
 
