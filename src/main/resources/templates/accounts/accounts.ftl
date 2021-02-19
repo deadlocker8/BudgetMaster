@@ -32,17 +32,17 @@
                                         <#else>
                                             <#assign toolTipText = locale.getString("account.tooltip.readonly.deactivate")/>
                                             <#assign lockIcon = '<i class="fas fa-lock-open"></i>'/>
-                                            <a href="<@s.url '/accounts/${account.getID()?c}/setAsDefault'/>" class="btn-flat no-padding text-defaultr tooltipped" data-position="left" data-tooltip="${locale.getString("account.tooltip.default")}"><i class="material-icons left"><#if account.isDefault()>star<#else>star_border</#if></i></a>
+                                            <a href="<@s.url '/accounts/${account.getID()?c}/setAsDefault'/>" class="btn-flat no-padding text-default tooltipped" data-position="left" data-tooltip="${locale.getString("account.tooltip.default")}"><i class="material-icons left"><#if account.isDefault()>star<#else>star_border</#if></i></a>
                                         </#if>
 
                                         <#if !account.isDefault()>
-                                            <a href="<@s.url '/accounts/${account.getID()?c}/toggleReadOnly'/>" class="btn-flat no-padding text-defaultr tooltipped" data-position="right" data-tooltip="${toolTipText}">${lockIcon}</a>
+                                            <a href="<@s.url '/accounts/${account.getID()?c}/toggleReadOnly'/>" class="btn-flat no-padding text-default tooltipped" data-position="right" data-tooltip="${toolTipText}">${lockIcon}</a>
                                         </#if>
                                     </td>
                                     <td>${account.getName()}</td>
                                     <td>
-                                        <a href="<@s.url '/accounts/${account.getID()?c}/edit'/>" class="btn-flat no-padding text-defaultr"><i class="material-icons left">edit</i></a>
-                                        <a href="<@s.url '/accounts/${account.getID()?c}/requestDelete'/>" class="btn-flat no-padding text-defaultr"><i class="material-icons left no-margin">delete</i></a>
+                                        <a href="<@s.url '/accounts/${account.getID()?c}/edit'/>" class="btn-flat no-padding text-default"><i class="material-icons left">edit</i></a>
+                                        <a href="<@s.url '/accounts/${account.getID()?c}/requestDelete'/>" class="btn-flat no-padding text-default"><i class="material-icons left no-margin">delete</i></a>
                                     </td>
                                 </tr>
                             </#if>

@@ -44,9 +44,9 @@
                                 <td>${categoryName} </td>
                                 <td>${usageCount}</td>
                                 <td>
-                                    <a href="<@s.url '/categories/${category.ID?c}/edit'/>" class="btn-flat no-padding text-defaultr"><i class="material-icons left">edit</i></a>
+                                    <a href="<@s.url '/categories/${category.ID?c}/edit'/>" class="btn-flat no-padding text-default"><i class="material-icons left">edit</i></a>
                                     <#if (category.getType().name() == "CUSTOM")>
-                                        <a href="<@s.url '/categories/${category.ID?c}/requestDelete'/>" class="btn-flat no-padding text-defaultr"><i class="material-icons left no-margin">delete</i></a>
+                                        <a href="<@s.url '/categories/${category.ID?c}/requestDelete'/>" class="btn-flat no-padding text-default"><i class="material-icons left no-margin">delete</i></a>
                                     </#if>
                                 </td>
                             </tr>
