@@ -97,8 +97,16 @@
     background-color: var(--color-white) !important;
 }
 
+.background-grey-light {
+    background-color: var(--color-grey-light) !important;
+}
+
 .background-grey {
     background-color: var(--color-grey) !important;
+}
+
+.background-grey-dark {
+    background-color: var(--color-grey-dark) !important;
 }
 
 .background-black {
@@ -155,8 +163,16 @@
     color: var(--color-white) !important;
 }
 
+.text-grey-light {
+    color: var(--color-grey-light) !important;
+}
+
 .text-grey {
     color: var(--color-grey) !important;
+}
+
+.text-grey-dark {
+    color: var(--color-grey-dark) !important;
 }
 
 .text-black {
