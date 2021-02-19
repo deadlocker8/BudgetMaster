@@ -22,6 +22,7 @@
     --color-text: #212121;
     --color-isPayment: var(--color-white);
 
+    --color-background: var(--color-white);
 }
 
 [data-theme="dark"] {
@@ -32,6 +33,8 @@
     --color-grey-dark-almost-transparent: rgba(255, 255, 255, 0.125);
     --color-text: #FFFFFF;
     --color-isPayment: var(--color-black);
+
+    --color-background: #444444;
 }
 
 /* background colors*/

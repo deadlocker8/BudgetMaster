@@ -29,5 +29,5 @@ main {
 }
 
 #card-login {
-    background-color: #FFFFFF;
+    background-color: var(--color-background);
 }
