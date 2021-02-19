@@ -1,13 +1,6 @@
 <#macro style name>
     <#import "/spring.ftl" as s>
-
-    <#assign blacklist = ['categories', 'charts', 'collapsible', 'datepicker', 'globalDatepicker', 'hotkeys', 'login', 'search', 'settings', 'templates', 'transactions', 'reports', 'style']>
-
-    <#if helpers.getSettings().isUseDarkTheme() && !blacklist?seq_contains(name)>
-        <link type="text/css" rel="stylesheet" href="<@s.url '${"/css/dark/" + name + ".css"}'/>"/>
-    <#else>
-        <link type="text/css" rel="stylesheet" href="<@s.url '${"/css/" + name + ".css"}'/>"/>
-    </#if>
+    <link type="text/css" rel="stylesheet" href="<@s.url '${"/css/" + name + ".css"}'/>"/>
 </#macro>
 
 <#macro globals>
@@ -30,9 +23,9 @@
     <link rel="stylesheet" href="<@s.url '/webjars/font-awesome/5.15.1/css/all.min.css'/>">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="<@s.url "/webjars/materializecss/1.0.0/css/materialize.min.css"/>">
-    <link type="text/css" rel="stylesheet" href="<@s.url "/css/colors.css"/>"/>
+    <@style "colors"/>
     <@style "style"/>
-    <@style "sidenav"/>
+    <@style "navbar"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
     <link rel="apple-touch-icon" href="<@s.url "/touch_icon.png"/>">
