@@ -32,7 +32,7 @@ main {
 
 .btn:focus,
 .btn-floating:focus {
-    background-color: #2E79B9;
+    background-color: var(--color-blue);
 }
 
 .bold {
@@ -49,7 +49,7 @@ main {
 
 /* label focus color */
 .input-field input[type=text]:focus + label {
-    color: #2E79B9 !important;
+    color: var(--color-blue) !important;
 }
 
 /* label underline focus color */
@@ -60,7 +60,7 @@ main {
 
 /* label password focus color */
 .input-field input[type=password]:focus + label {
-    color: #2E79B9 !important;
+    color: var(--color-blue) !important;
 }
 
 /* label password underline focus color */
@@ -71,7 +71,7 @@ main {
 
 /* label focus color */
 .input-field textarea:focus + label {
-    color: #2E79B9 !important;
+    color: var(--color-blue) !important;
 }
 
 /* label underline focus color */
@@ -82,7 +82,7 @@ main {
 
 /* label focus color */
 .chips-label.active {
-    color: #2E79B9 !important;
+    color: var(--color-blue) !important;
 }
 
 /* label chips underline focus color */
@@ -250,7 +250,7 @@ main {
 
 /* select font color */
 ul.dropdown-content.select-dropdown li span {
-    color: #2E79B9;
+    color: var(--color-blue);
 }
 
 ul.dropdown-content.select-dropdown li.selected {
@@ -263,7 +263,7 @@ ul.dropdown-content.select-dropdown li.selected {
 }
 
 .switch label input[type="checkbox"]:checked + .lever::after {
-    background-color: #2E79B9;
+    background-color: var(--color-blue);
 }
 
 /* normal checkbox*/
@@ -389,7 +389,7 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
 
 /* inputs with icon prefix */
 .input-field .prefix.active {
-    color: #2E79B9;
+    color: var(--color-blue);
 }
 
 .placeholder-icon {

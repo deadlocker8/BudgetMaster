@@ -60,7 +60,7 @@
 }
 
 .columnName-selected {
-    background-color: rgba(46, 121, 185, 0.8);
+    background-color: var(--color-blue-light);
 }
 
 

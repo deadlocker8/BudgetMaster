@@ -12,7 +12,7 @@
 }
 
 .chips .chip.selected {
-    background-color: #2E79B9;
+    background-color: var(--color-blue);
 }
 
 #transaction-chips {

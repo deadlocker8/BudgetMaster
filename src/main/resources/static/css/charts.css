@@ -10,7 +10,7 @@
 
 .quick-date:hover {
     cursor: pointer;
-    text-decoration: underline #2E79B9;
+    text-decoration: underline var(--color-blue);
 }
 
 .container-chart {

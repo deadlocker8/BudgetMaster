@@ -14,7 +14,7 @@
 }
 
 .pagination li.active {
-    background-color: #2E79B9;
+    background-color: var(--color-blue);
 }
 
 .page-link:hover {
