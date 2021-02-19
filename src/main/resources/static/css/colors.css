@@ -14,6 +14,7 @@
     --color-red: #D82C29;
 
     --color-white: #FFFFFF;
+    --color-grey-light: #EEEEEE;
     --color-grey: #696969;
     --color-grey-dark: rgba(0, 0, 0, 0.25);
     --color-grey-dark-almost-transparent: rgba(0, 0, 0, 0.08);
@@ -21,6 +22,8 @@
 
     --color-text: #212121;
     --color-isPayment: var(--color-white);
+    --color-headline-budget: #757575;
+    --color-disabled: #AAAAAA;
 
     --color-background: var(--color-white);
     --color-background-light: #FAFAFA;
@@ -29,11 +32,15 @@
 [data-theme="dark"] {
     --color-blue-light: rgba(80, 115, 146, 0.8);
     --color-yellow: #E9C46A;
+    --color-grey-light: #333333;
     --color-grey: #CCCCCC;
     --color-grey-dark: rgba(255, 255, 255, 0.5);
     --color-grey-dark-almost-transparent: rgba(255, 255, 255, 0.125);
+
     --color-text: #FFFFFF;
     --color-isPayment: var(--color-black);
+    --color-headline-budget: #A3A3A3;
+    --color-disabled: #777777;
 
     --color-background: #444444;
     --color-background-light: #666666;

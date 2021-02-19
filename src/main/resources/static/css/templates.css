@@ -14,7 +14,7 @@
 }
 
 .template-selected {
-    background-color: #EEEEEE;
+    background-color: var(--color-grey-light);
 }
 
 /* dark theme */

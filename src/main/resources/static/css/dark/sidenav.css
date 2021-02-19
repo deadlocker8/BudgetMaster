@@ -1,0 +1,57 @@
+.sidenav-trigger, .sidenav-trigger i {
+    font-size: 1.5em;
+}
+
+.sidenav {
+    width: 350px;
+}
+
+ul.sidenav.sidenav-fixed > li:last-child {
+    margin-bottom: 160px;
+}
+
+.sidenav, .sidenav-sub, .searchWrapper {
+    background-color: #444444;
+    box-shadow: none;
+}
+
+.sidenav #buttonSearch {
+    right: 3rem;
+}
+
+.sidenav li > a, .sidenav-sub li > a {
+    color: #FFFFFF;
+    font-weight: 600;
+}
+
+.sidenav li > a:hover, .sidenav-sub li > a:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #FFFFFF !important;
+}
+
+.sidenav li > a > i, .sidenav-sub li > a > i {
+    color: #FFFFFF !important;
+}
+
+.sidenav li > a #icon-update {
+    color: #212121 !important;
+}
+
+.sidenav li > a:hover #icon-update {
+    color: #FFFFFF !important;
+}
+
+.sidenav li.active {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+/*active nav bar sub list items*/
+.sidenav .collapsible-body > ul:not(.collapsible) > li.active, .sidenav.fixed .collapsible-body > ul:not(.collapsible) > li.active {
+    background-color: rgba(255, 255, 255, 0.35);
+}
+
+/*text color for active nav bar sub list items*/
+.sidenav .collapsible-body > ul:not(.collapsible) > li.active a,
+.sidenav.fixed .collapsible-body > ul:not(.collapsible) > li.active a {
+    color: rgba(255, 255, 255, 0.87);
+}

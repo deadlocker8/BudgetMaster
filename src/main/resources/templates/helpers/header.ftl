@@ -1,7 +1,7 @@
 <#macro style name>
     <#import "/spring.ftl" as s>
 
-    <#assign blacklist = ['categories', 'charts', 'collapsible', 'datepicker', 'globalDatepicker', 'hotkeys', 'login', 'search', 'settings', 'templates', 'transactions', 'reports']>
+    <#assign blacklist = ['categories', 'charts', 'collapsible', 'datepicker', 'globalDatepicker', 'hotkeys', 'login', 'search', 'settings', 'templates', 'transactions', 'reports', 'style']>
 
     <#if helpers.getSettings().isUseDarkTheme() && !blacklist?seq_contains(name)>
         <link type="text/css" rel="stylesheet" href="<@s.url '${"/css/dark/" + name + ".css"}'/>"/>
@@ -32,6 +32,7 @@
     <link rel="stylesheet" href="<@s.url "/webjars/materializecss/1.0.0/css/materialize.min.css"/>">
     <link type="text/css" rel="stylesheet" href="<@s.url "/css/colors.css"/>"/>
     <@style "style"/>
+    <@style "sidenav"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
     <link rel="apple-touch-icon" href="<@s.url "/touch_icon.png"/>">
