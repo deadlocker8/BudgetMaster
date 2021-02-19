@@ -16,9 +16,9 @@
 
     <#if helpers.getSettings().isUseDarkTheme()>
         <#global greenTextColor="text-green"/>
-        <#global redTextColor="text-light-red"/>
+        <#global redTextColor="text-red-light"/>
     <#else>
-        <#global greenTextColor="text-dark-green"/>
+        <#global greenTextColor="text-green-dark"/>
         <#global redTextColor="text-red"/>
     </#if>
 </#macro>

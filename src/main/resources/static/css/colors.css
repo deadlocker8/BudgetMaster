@@ -11,6 +11,7 @@
     --color-yellow: #F7EB84;
     --color-orange: orange;
     --color-orange-dark: #FF7043;
+    --color-red-light: #F55856;
     --color-red: #D82C29;
 
     --color-white: #FFFFFF;
@@ -84,6 +85,10 @@
     background-color: var(--color-orange-dark) !important;
 }
 
+.background-red-light {
+    background-color: var(--color-red-light) !important;
+}
+
 .background-red {
     background-color: var(--color-red) !important;
 }
@@ -136,6 +141,10 @@
 
 .text-orange-dark {
     color: var(--color-orange-dark) !important;
+}
+
+.text-red-light {
+    color: var(--color-red-light) !important;
 }
 
 .text-red {
