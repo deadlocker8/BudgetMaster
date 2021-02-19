@@ -23,6 +23,7 @@
     --color-isPayment: var(--color-white);
 
     --color-background: var(--color-white);
+    --color-background-light: #FAFAFA;
 }
 
 [data-theme="dark"] {
@@ -35,6 +36,7 @@
     --color-isPayment: var(--color-black);
 
     --color-background: #444444;
+    --color-background-light: #666666;
 }
 
 /* background colors*/

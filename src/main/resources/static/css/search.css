@@ -1,5 +1,5 @@
 .search-result {
-    background-color: #fafafa;
+    background-color: var(--color-background-light);
 }
 
 .search-checkbox-container input[type="checkbox"]:checked + span:not(.lever)::before {
@@ -10,7 +10,7 @@
 }
 
 .pagination li a {
-    color: #212121;
+    color: var(--color-text);
 }
 
 .pagination li.active {
@@ -19,4 +19,9 @@
 
 .page-link:hover {
     cursor: pointer;
+}
+
+/* dark theme */
+[data-theme="dark"] .search-checkbox-container input[type="checkbox"]:not(.filled-in) + span:not(.lever)::after {
+    border: 2px solid rgba(255, 255, 255, 0.7);
 }
