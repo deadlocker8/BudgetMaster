@@ -14,5 +14,10 @@
 }
 
 .template-selected {
-    background-color: rgb(238, 238, 238);
+    background-color: #EEEEEE;
+}
+
+/* dark theme */
+[data-theme="dark"] .template-selected {
+    background-color: #888888;
 }
