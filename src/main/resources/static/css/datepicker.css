@@ -36,3 +36,20 @@
 .datepicker-table td.is-selected .datepicker-day-button {
     color: #FFFFFF;
 }
+
+/* dark theme */
+[data-theme="dark"] .datepicker-calendar-container {
+    background-color: #333333;
+}
+
+[data-theme="dark"] .datepicker-row {
+    color: #FFFFFF;
+}
+
+[data-theme="dark"] .datepicker-controls .select-wrapper input {
+    color: #FFFFFF;
+}
+
+[data-theme="dark"]  .month-next svg, .month-prev svg {
+    fill: #FFFFFF;
+}
