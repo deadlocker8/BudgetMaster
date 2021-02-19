@@ -1,6 +1,9 @@
 <#macro style name>
     <#import "/spring.ftl" as s>
-    <#if helpers.getSettings().isUseDarkTheme()>
+
+    <#assign blacklist = ['categories']>
+
+    <#if helpers.getSettings().isUseDarkTheme() && !blacklist?seq_contains(name)>
         <link type="text/css" rel="stylesheet" href="<@s.url '${"/css/dark/" + name + ".css"}'/>"/>
     <#else>
         <link type="text/css" rel="stylesheet" href="<@s.url '${"/css/" + name + ".css"}'/>"/>
