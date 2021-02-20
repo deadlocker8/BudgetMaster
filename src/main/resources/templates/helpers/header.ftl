@@ -59,3 +59,13 @@
         <#nested>
     </body>
 </#macro>
+
+<#macro buttonLink url icon localizationKey id="" color="background-blue" classes="">
+    <a href="<@s.url url/>" id="${id}" class="waves-effect waves-light btn ${color} ${classes}"><i class="material-icons left">${icon}</i>${locale.getString(localizationKey)}</a>
+</#macro>
+
+<#macro buttonSubmit name icon localizationKey id="" color="background-blue" classes="">
+    <button id="${id}" class="btn waves-effect waves-light ${color} ${classes}" type="submit" name="${name}">
+        <i class="material-icons left">${icon}</i>${locale.getString(localizationKey)}
+    </button>
+</#macro>
