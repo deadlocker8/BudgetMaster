@@ -24,11 +24,11 @@
                             <i class="material-icons">show_chart</i> ${locale.getString("title.charts")}</div>
                     </div>
                 </div>
+
                 <br>
-                <div class="center-align">
-                    <a href="<@s.url '/charts/manage'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">edit</i>${locale.getString("home.menu.charts.action.manage")}
-                    </a></div>
+                <div class="center-align"><@header.buttonLink url='/charts/manage' icon='edit' localizationKey='home.menu.charts.action.manage'/></div>
                 <br>
+
                 <div class="container">
                     <form name="NewChartSettings" action="<@s.url '/charts'/>" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
