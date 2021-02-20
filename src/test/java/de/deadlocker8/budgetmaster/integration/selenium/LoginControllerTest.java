@@ -52,7 +52,7 @@ public class LoginControllerTest
 		@Override
 		protected void failed(Throwable e, Description description)
 		{
-			IntegrationTestHelper.saveScreenshots(driver, name, SearchTest.class);
+			IntegrationTestHelper.saveScreenshots(driver, name, LoginControllerTest.class);
 		}
 	};
 

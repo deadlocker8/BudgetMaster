@@ -49,7 +49,7 @@ public class ImportTest
 		@Override
 		protected void failed(Throwable e, Description description)
 		{
-			IntegrationTestHelper.saveScreenshots(driver, name, SearchTest.class);
+			IntegrationTestHelper.saveScreenshots(driver, name, ImportTest.class);
 		}
 	};
 
