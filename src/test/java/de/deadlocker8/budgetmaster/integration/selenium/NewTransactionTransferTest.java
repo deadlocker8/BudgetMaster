@@ -12,10 +12,7 @@ import org.junit.rules.TestName;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -94,7 +91,9 @@ public class NewTransactionTransferTest
 		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transfer')]")).click();
 
 		// click cancel button
-		driver.findElement(By.xpath("//a[contains(text(),'Cancel')]")).click();
+		WebElement cancelButton = driver.findElement(By.id("button-cancel-save-transaction"));
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", cancelButton);
+		cancelButton.click();
 
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));

@@ -45,7 +45,7 @@
                         <#-- buttons -->
                         <div class="row hide-on-small-only">
                             <div class="col s6 right-align">
-                                <@header.buttonLink url='/accounts' icon='clear' localizationKey='cancel'/>
+                                <@header.buttonLink url='/accounts' icon='clear' localizationKey='cancel' id='button-cancel-save-account'/>
                             </div>
 
                             <div class="col s6 left-align">
@@ -55,7 +55,7 @@
                         <div class="hide-on-med-and-up">
                             <div class="row center-align">
                                 <div class="col s12">
-                                    <@header.buttonLink url='/accounts' icon='clear' localizationKey='cancel'/>
+                                    <@header.buttonLink url='/accounts' icon='clear' localizationKey='cancel' id='button-cancel-save-account'/>
                                 </div>
                             </div>
                             <div class="row center-align">

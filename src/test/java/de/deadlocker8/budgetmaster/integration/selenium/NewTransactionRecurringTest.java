@@ -93,7 +93,9 @@ public class NewTransactionRecurringTest
 		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Recurring')]")).click();
 
 		// click cancel button
-		driver.findElement(By.xpath("//a[contains(text(),'Cancel')]")).click();
+		WebElement cancelButton = driver.findElement(By.id("button-cancel-save-transaction"));
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", cancelButton);
+		cancelButton.click();
 
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));

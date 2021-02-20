@@ -380,7 +380,7 @@
 </#macro>
 
 <#macro buttonCancel cancelURL>
-    <@header.buttonLink url=cancelURL icon='clear' localizationKey='cancel'/>
+    <@header.buttonLink url=cancelURL icon='clear' localizationKey='cancel' id='button-cancel-save-transaction'/>
 </#macro>
 
 <#macro buttonSave>

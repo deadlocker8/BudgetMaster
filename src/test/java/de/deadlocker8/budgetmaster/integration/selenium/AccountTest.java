@@ -13,6 +13,7 @@ import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -87,7 +88,9 @@ public class AccountTest
 		driver.findElement(By.id("button-new-account")).click();
 
 		// click cancel button
-		driver.findElement(By.xpath("//a[contains(text(),'Cancel')]")).click();
+		WebElement cancelButton = driver.findElement(By.id("button-cancel-save-account"));
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", cancelButton);
+		cancelButton.click();
 
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Accounts"));
