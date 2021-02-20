@@ -18,6 +18,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -67,7 +68,9 @@ public class ChangeTransactionTypeTest
 	{
 		driver.get(helper.getUrl() + "/transactions/" + transactionID + "/edit");
 
-		driver.findElement(By.id("transaction-actions-button")).click();
+		Actions builder = new Actions(driver);
+		WebElement element = driver.findElement(By.id("transaction-actions-button"));
+		builder.moveToElement(element).build().perform();
 
 		By changeTypeButtonSelector = By.xpath("//a[contains(@data-action-type, 'changeType')][1]");
 		WebDriverWait wait = new WebDriverWait(driver, 5);
