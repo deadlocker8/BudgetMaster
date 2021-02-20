@@ -54,9 +54,7 @@
 
                                 <div class="row login-margin-top">
                                     <div class="col s12 right-align">
-                                        <button class="btn waves-effect waves-light background-blue" type="submit" name="action">
-                                            <i class="material-icons left">send</i>${locale.getString("login.button")}
-                                        </button>
+                                        <@header.buttonSubmit name='action' icon='send' localizationKey='login.button'/>
                                     </div>
                                 </div>
                             </form>

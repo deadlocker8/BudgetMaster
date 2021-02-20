@@ -97,9 +97,7 @@
                                     <h5>${locale.getString("home.first.use.step.5.sub.4")}</h5>
 
                                     <p class="center-align">
-                                        <a href="<@s.url '/'/>" class="waves-effect waves-light btn background-blue">
-                                            <i class="material-icons left">home</i>${locale.getString("home.first.use.home")}
-                                        </a>
+                                        <@header.buttonLink url='/' icon='home' localizationKey='home.first.use.home'/>
                                     </p>
                                 </@indexFunctions.stepContent>
                             </div>
