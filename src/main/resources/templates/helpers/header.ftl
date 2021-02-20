@@ -74,3 +74,12 @@
         <i class="material-icons left <#if !localizationKey?has_content>no-margin</#if>">${icon}</i><#if localizationKey?has_content>${locale.getString(localizationKey)}</#if>
     </button>
 </#macro>
+
+<#macro buttonFlat url icon localizationKey id="" classes="" isDataUrl=false noUrl=false iconClasses=''>
+    <a <#if !isDataUrl && !noUrl>href="<@s.url url/>"</#if>
+       id="${id}"
+       class="waves-effect waves-light btn-flat ${classes}"
+            <#if isDataUrl>data-url="${url}"</#if>>
+        <i class="material-icons left <#if !localizationKey?has_content>no-margin</#if> ${iconClasses}">${icon}</i><#if localizationKey?has_content>${locale.getString(localizationKey)}</#if>
+    </a>
+</#macro>

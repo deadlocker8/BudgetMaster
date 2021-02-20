@@ -23,8 +23,8 @@
                             <div class="collapsible-header bold">
                                 <@templateHeader template/>
                                 <div class="collapsible-header-button">
-                                    <a href="<@s.url '/templates/${template.ID?c}/edit'/>" class="btn-flat no-padding text-default"><i class="material-icons left no-margin">edit</i></a>
-                                    <a href="<@s.url '/templates/${template.ID?c}/requestDelete'/>" class="btn-flat no-padding text-default"><i class="material-icons left no-margin">delete</i></a>
+                                    <@header.buttonFlat url='/templates/' + template.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default"/>
+                                    <@header.buttonFlat url='/templates/' + template.ID?c + '/requestDelete' icon='delete' localizationKey='' classes="no-padding text-default"/>
                                     <@header.buttonLink url='/templates/' + template.ID?c + '/select' icon='note_add' localizationKey='' classes='button-select-template'/>
                                 </div>
                             </div>

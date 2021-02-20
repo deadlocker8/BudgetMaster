@@ -42,9 +42,9 @@
                                     </#if>
                                 </td>
                                 <td>
-                                    <a href="<@s.url '/charts/${chart.ID?c}/edit'/>" class="btn-flat no-padding text-default"><i class="material-icons left">edit</i></a>
+                                    <@header.buttonFlat url='/charts/' + chart.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default"/>
                                     <#if (chart.getType().name() == "CUSTOM")>
-                                        <a href="<@s.url '/charts/${chart.ID?c}/requestDelete'/>" class="btn-flat no-padding text-default"><i class="material-icons left">delete</i></a>
+                                        <@header.buttonFlat url='/charts/' + chart.ID?c + '/requestDelete' icon='delete' localizationKey='' classes="no-padding text-default"/>
                                     </#if>
                                 </td>
                             </tr>
