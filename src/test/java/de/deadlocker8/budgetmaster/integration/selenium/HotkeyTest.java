@@ -5,6 +5,7 @@ import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
 import de.deadlocker8.budgetmaster.integration.helpers.TransactionTestHelper;
+import de.thecodelabs.utils.util.OS;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -32,6 +33,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assume.assumeTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -149,6 +151,8 @@ public class HotkeyTest
 	@Test
 	public void hotkey_saveTransaction()
 	{
+		assumeTrue(OS.isWindows());
+
 		// open transactions page
 		driver.get(helper.getUrl() + "/transactions/newTransaction/normal");
 
