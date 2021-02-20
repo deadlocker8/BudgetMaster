@@ -22,7 +22,7 @@
                                     </div>
                                 </div>
                                 <div class="center-align">
-                                    <a href="<@s.url '/'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">home</i>${locale.getString("errorpages.home")}</a>
+                                    <@header.buttonLink url='/' icon='home' localizationKey='errorpages.home'/>
                                 </div>
                             </div>
                         </div>
