@@ -1,5 +1,6 @@
 <#global locale = static["de.thecodelabs.utils.util.Localization"]>
 <#import "/spring.ftl" as s>
+<#import "../helpers/header.ftl" as header>
 
 <div id="modalChangeTransactionType" class="modal background-color">
     <div class="modal-content">
@@ -28,8 +29,8 @@
         </div>
     </div>
     <div class="modal-footer background-color">
-        <a class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
-        <a id="buttonChangeTransactionType" class="modal-action waves-effect waves-light green btn-flat white-text">${locale.getString("ok")}</a>
+        <@header.buttonLink url='' icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white'/>
+        <@header.buttonLink url='' icon='shuffle' localizationKey='ok' color='green' id='buttonChangeTransactionType' classes='"modal-action modal-close text-white' noUrl=true/>
     </div>
 
     <form id="formChangeTransactionType" class="hidden" action="<@s.url '/transactions/${transaction.getID()?c}/changeType'/>">

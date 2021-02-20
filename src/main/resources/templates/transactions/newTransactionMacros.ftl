@@ -1,5 +1,6 @@
 <#import "/spring.ftl" as s>
 <#import "../helpers/validation.ftl" as validation>
+<#import "../helpers/header.ftl" as header>
 
 <#macro isExpenditureSwitch transaction>
     <#assign isExpenditure = true/>
@@ -45,11 +46,11 @@
 </#macro>
 
 <#macro buttonIncome color>
-    <a class="waves-effect waves-light btn ${color} buttonIncome"><i class="material-icons left">file_download</i>${locale.getString("title.income")}</a>
+    <@header.buttonLink url='' icon='file_download' localizationKey='title.income' color=color classes='buttonIncome' noUrl=true/>
 </#macro>
 
 <#macro buttonExpenditure color>
-    <a class="waves-effect waves-light btn ${color} buttonExpenditure"><i class="material-icons left">file_upload</i>${locale.getString("title.expenditure")}</a>
+    <@header.buttonLink url='' icon='file_upload' localizationKey='title.expenditure' color=color classes='buttonExpenditure' noUrl=true/>
 </#macro>
 
 <#macro transactionName transaction suggestionsJSON>
@@ -379,13 +380,11 @@
 </#macro>
 
 <#macro buttonCancel cancelURL>
-    <a href="<@s.url cancelURL/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
+    <@header.buttonLink url=cancelURL icon='clear' localizationKey='cancel'/>
 </#macro>
 
 <#macro buttonSave>
-    <button id="button-save-transaction" class="btn waves-effect waves-light background-blue" type="submit" name="action">
-        <i class="material-icons left">save</i>${locale.getString("save")}
-    </button>
+    <@header.buttonSubmit name='action' icon='save' localizationKey='save' id='button-save-transaction'/>
 </#macro>
 
 <#macro buttonTransactionActions canChangeType canCreateTemplate changetypeInProgress>
