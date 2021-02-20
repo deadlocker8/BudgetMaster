@@ -1,5 +1,6 @@
 <#global locale = static["de.thecodelabs.utils.util.Localization"]>
 <#import "/spring.ftl" as s>
+<#import "../helpers/header.ftl" as header>
 
 <div id="modalCreateFromTransaction" class="modal background-color">
     <div class="modal-content">
@@ -25,8 +26,8 @@
         </div>
     </div>
     <div class="modal-footer background-color">
-        <a class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
-        <a id="buttonCreateTemplate" class="modal-action waves-effect waves-light green btn-flat white-text" data-url="<@s.url '/templates/fromTransaction'/>">${locale.getString("save.as.template")}</a>
+        <@header.buttonLink url='' icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white'/>
+        <@header.buttonLink url='/templates/fromTransaction' icon='file_copy' localizationKey='save.as.template' color='green' id='buttonCreateTemplate' classes='"modal-action modal-close text-white' isDataUrl=true/>
     </div>
 
     <script>

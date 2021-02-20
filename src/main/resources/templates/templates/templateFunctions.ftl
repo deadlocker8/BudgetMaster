@@ -2,8 +2,7 @@
 <#import "../helpers/validation.ftl" as validation>
 
 <#macro buttonNew>
-    <a href="<@s.url '/templates/newTemplate'/>" class="waves-effect waves-light btn background-blue"><i
-                class="material-icons left">add</i>${locale.getString("title.template.new")}</a>
+    <@header.buttonLink url='/templates/newTemplate' icon='add' localizationKey='title.template.new'/>
 </#macro>
 
 <#macro buttons>
@@ -26,7 +25,7 @@
                                 <div class="collapsible-header-button">
                                     <a href="<@s.url '/templates/${template.ID?c}/edit'/>" class="btn-flat no-padding text-default"><i class="material-icons left no-margin">edit</i></a>
                                     <a href="<@s.url '/templates/${template.ID?c}/requestDelete'/>" class="btn-flat no-padding text-default"><i class="material-icons left no-margin">delete</i></a>
-                                    <a href="<@s.url '/templates/${template.ID?c}/select'/>" class="waves-effect waves-light btn background-blue button-select-template"><i class="material-icons left no-margin">note_add</i></a>
+                                    <@header.buttonLink url='/templates/' + template.ID?c + '/select' icon='note_add' localizationKey='' classes='button-select-template'/>
                                 </div>
                             </div>
                             <div class="collapsible-body">

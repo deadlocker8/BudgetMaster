@@ -370,7 +370,7 @@ function validateForm(allowEmptyAmount = false)
     let datePickerId = 'transaction-datepicker';
     if(document.getElementById(datePickerId) !== null)
     {
-        let isValidDate = validateDate();
+        let isValidDate = validateDate(datePickerId);
         if(!isValidDate)
         {
             return false;
