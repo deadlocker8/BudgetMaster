@@ -42,7 +42,7 @@
                                     </td>
                                     <td class="import-text">${locale.getString("info.database.import.or")}</td>
                                     <td>
-                                        <a href="<@s.url '/accounts/newAccount'/>" class="btn waves-effect waves-light background-blue button-new-account"><i class="material-icons left">add</i>${locale.getString("title.account.new")}</a>
+                                        <@header.buttonLink url='/accounts/newAccount' icon='add' localizationKey='title.account.new' classes='button-new-account'/>
                                     </td>
                                 </tr>
                             </#list>
@@ -58,13 +58,11 @@
                         <#-- buttons -->
                         <div class="row">
                             <div class="col m6 l4 offset-l2 right-align">
-                                <a href="<@s.url '/settings'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
+                                <@header.buttonLink url='/settings' icon='clear' localizationKey='cancel'/>
                             </div>
 
                             <div class="col m6 l4 left-align">
-                                <button class="btn waves-effect waves-light background-blue" type="submit" name="action" id="buttonImport">
-                                    <i class="material-icons left">unarchive</i>${locale.getString("settings.database.import")}
-                                </button>
+                                <@header.buttonSubmit name='action' icon='unarchive' localizationKey='settings.database.import' id='buttonImport'/>
                             </div>
                         </div>
                     </form>

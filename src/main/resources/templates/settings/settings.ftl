@@ -133,9 +133,7 @@
                         <#-- buttons -->
                         <div class="row">
                             <div class="col s12 center-align">
-                                <button class="btn waves-effect waves-light background-blue" type="submit" name="action">
-                                    <i class="material-icons left">save</i>${locale.getString("save")}
-                                </button>
+                                <@header.buttonSubmit name='action' icon='save' localizationKey='save'/>
                             </div>
                         </div>
                     </form>
@@ -188,7 +186,7 @@
                             </div>
 
                             <div class="table-cell table-cell-valign">
-                                <a href="<@s.url '/settings/updateSearch'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">refresh</i>${locale.getString("settings.updates.search")}</a>
+                                <@header.buttonLink url='/settings/updateSearch' icon='refresh' localizationKey='settings.updates.search'/>
                             </div>
                         </div>
                     </div>

@@ -46,15 +46,15 @@
 <#macro databaseNormal>
     <div class="row hide-on-small-only">
         <div class="col m4 l4 center-align">
-            <a href="<@s.url '/settings/database/requestImport'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">cloud_upload</i>${locale.getString("settings.database.import")}</a>
+            <@header.buttonLink url='/settings/database/requestImport' icon='cloud_upload' localizationKey='settings.database.import'/>
         </div>
 
         <div class="col m4 l4 center-align">
-            <a href="<@s.url '/settings/database/requestExport'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">cloud_download</i>${locale.getString("settings.database.export")}</a>
+            <@header.buttonLink url='/settings/database/requestExport' icon='cloud_download' localizationKey='settings.database.export'/>
         </div>
 
         <div class="col m4 l4 center-align">
-            <a href="<@s.url '/settings/database/requestDelete'/>" class="waves-effect waves-light btn background-red"><i class="material-icons left">delete_forever</i>${locale.getString("settings.database.delete")}</a>
+            <@header.buttonLink url='/settings/database/requestDelete' icon='delete_forever' localizationKey='settings.database.delete' color='background-red'/>
         </div>
     </div>
 </#macro>
@@ -63,19 +63,19 @@
     <div class="hide-on-med-and-up">
         <div class="row center-align">
             <div class="col s12">
-                <a href="<@s.url '/settings/database/requestImport'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">cloud_upload</i>${locale.getString("settings.database.import")}</a>
+                <@header.buttonLink url='/settings/database/requestImport' icon='cloud_upload' localizationKey='settings.database.import'/>
             </div>
         </div>
 
         <div class="row center-align">
             <div class="col s12">
-                <a href="<@s.url '/settings/database/requestExport'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">cloud_download</i>${locale.getString("settings.database.export")}</a>
+                <@header.buttonLink url='/settings/database/requestExport' icon='cloud_download' localizationKey='settings.database.export'/>
             </div>
         </div>
 
         <div class="row center-align">
             <div class="col s12">
-                <a href="<@s.url '/settings/database/requestDelete'/>" class="waves-effect waves-light btn background-red"><i class="material-icons left">delete_forever</i>${locale.getString("settings.database.delete")}</a>
+                <@header.buttonLink url='/settings/database/requestDelete' icon='delete_forever' localizationKey='settings.database.delete' color='background-red'/>
             </div>
         </div>
     </div>
@@ -101,8 +101,8 @@
             </form>
         </div>
         <div class="modal-footer background-color">
-            <a href="<@s.url '/settings'/>" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
-            <a class="modal-action modal-close waves-effect waves-light green btn-flat white-text" id="button-confirm-database-delete">${locale.getString("delete")}</a>
+            <@header.buttonLink url='/settings' icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white'/>
+            <@header.buttonSubmit name='action' icon='delete_forever' localizationKey='delete' color='green' id='button-confirm-database-delete' classes='"modal-action modal-close text-white'/>
         </div>
     </div>
 </#macro>
@@ -126,8 +126,8 @@
             </form>
         </div>
         <div class="modal-footer background-color">
-            <a href="<@s.url '/settings'/>" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
-            <a class="modal-action modal-close waves-effect waves-light green btn-flat white-text" id="button-confirm-database-import">${locale.getString("settings.database.import")}</a>
+            <@header.buttonLink url='/settings' icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white'/>
+            <@header.buttonSubmit name='action' icon='cloud_upload' localizationKey='settings.database.import' color='green' id='button-confirm-database-import' classes='"modal-action modal-close text-white'/>
         </div>
     </div>
 </#macro>
@@ -139,20 +139,20 @@
             <p>${locale.getString("error.text.database.import", error)}</p>
         </div>
         <div class="modal-footer background-color">
-            <a href="<@s.url '/settings'/>" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("ok")}</a>
+            <@header.buttonLink url='/settings' icon='clear' localizationKey='ok' color='red' classes='modal-action modal-close text-white'/>
         </div>
     </div>
 </#macro>
 
 <#macro update>
-    <div id="modelPerformUpdate" class="modal background-color">
+    <div id="modalPerformUpdate" class="modal background-color">
         <div class="modal-content">
             <h4>${locale.getString("info.title.update")}</h4>
             <p>${updateString}</p>
         </div>
         <div class="modal-footer background-color">
-            <a href="<@s.url '/settings'/>" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
-            <a href="<@s.url '/settings/performUpdate'/>" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("settings.update.start")}</a>
+            <@header.buttonLink url='/settings' icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white'/>
+            <@header.buttonLink url='/settings/performUpdate' icon='system_update' localizationKey='settings.update.start' color='green' id='button-confirm-database-import' classes='"modal-action modal-close text-white'/>
         </div>
     </div>
 </#macro>
