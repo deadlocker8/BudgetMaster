@@ -1,4 +1,5 @@
 <#import "/spring.ftl" as s>
+<#import "../helpers/header.ftl" as header>
 
 <#macro searchTextAndButton search>
     <div class="row no-margin-bottom valign-wrapper">
@@ -11,14 +12,10 @@
 
         <div class="col s2 m3 l4">
             <div class="hide-on-small-only">
-                <button class="btn waves-effect waves-light background-blue" type="submit" name="action">
-                    <i class="material-icons left">search</i>${locale.getString("search.submit")}
-                </button>
+                <@header.buttonSubmit name='action' icon='search' localizationKey='search.submit' id='button-save-account'/>
             </div>
             <div class="hide-on-med-and-up">
-                <button class="btn waves-effect waves-light background-blue" type="submit" name="action">
-                    <i class="material-icons">search</i>
-                </button>
+                <@header.buttonSubmit name='action' icon='search' localizationKey='' id='button-save-account'/>
             </div>
         </div>
     </div>

@@ -61,11 +61,11 @@
 </#macro>
 
 <#macro buttonLink url icon localizationKey id="" color="background-blue" classes="">
-    <a href="<@s.url url/>" id="${id}" class="waves-effect waves-light btn ${color} ${classes}"><i class="material-icons left">${icon}</i>${locale.getString(localizationKey)}</a>
+    <a href="<@s.url url/>" id="${id}" class="waves-effect waves-light btn ${color} ${classes}"><i class="material-icons left">${icon}</i><#if localizationKey?has_content>${locale.getString(localizationKey)}</#if></a>
 </#macro>
 
 <#macro buttonSubmit name icon localizationKey id="" color="background-blue" classes="" disabled=false>
     <button id="${id}" class="btn waves-effect waves-light ${color} ${classes}" type="submit" name="${name}" <#if disabled>disabled</#if>>
-        <i class="material-icons left">${icon}</i>${locale.getString(localizationKey)}
+        <i class="material-icons left">${icon}</i><#if localizationKey?has_content>${locale.getString(localizationKey)}</#if>
     </button>
 </#macro>
