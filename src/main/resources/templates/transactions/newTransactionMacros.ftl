@@ -57,7 +57,7 @@
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
             <i class="material-icons prefix">edit</i>
-            <input class="autocomplete" autocomplete="off" id="transaction-name" type="text" name="name" <@validation.validation "name"/> value="<#if transaction.getName()??>${transaction.getName()}</#if>">
+            <input autocomplete="off" id="transaction-name" type="text" name="name" <@validation.validation "name" "autocomplete"/> value="<#if transaction.getName()??>${transaction.getName()}</#if>">
             <label class="input-label" for="transaction-name">${locale.getString("transaction.new.label.name")}</label>
         </div>
     </div>
