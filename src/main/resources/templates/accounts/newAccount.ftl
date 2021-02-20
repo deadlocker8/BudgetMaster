@@ -45,26 +45,22 @@
                         <#-- buttons -->
                         <div class="row hide-on-small-only">
                             <div class="col s6 right-align">
-                                <a href="<@s.url '/accounts'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
+                                <@header.buttonLink url='/accounts' icon='clear' localizationKey='cancel'/>
                             </div>
 
                             <div class="col s6 left-align">
-                                <button id="button-save-account" class="btn waves-effect waves-light background-blue" type="submit" name="action">
-                                    <i class="material-icons left">save</i>${locale.getString("save")}
-                                </button>
+                                <@header.buttonSubmit name='action' icon='save' localizationKey='save' id='button-save-account'/>
                             </div>
                         </div>
                         <div class="hide-on-med-and-up">
                             <div class="row center-align">
                                 <div class="col s12">
-                                    <a href="<@s.url '/accounts'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
+                                    <@header.buttonLink url='/accounts' icon='clear' localizationKey='cancel'/>
                                 </div>
                             </div>
                             <div class="row center-align">
                                 <div class="col s12">
-                                    <button id="button-save-account" class="btn waves-effect waves-light background-blue" type="submit" name="buttonSave">
-                                        <i class="material-icons left">save</i>${locale.getString("save")}
-                                    </button>
+                                    <@header.buttonSubmit name='action' icon='save' localizationKey='save' id='button-save-account'/>
                                 </div>
                             </div>
                         </div>
