@@ -40,7 +40,7 @@
     </#if>
 </#macro>
 
-<#macro modalConfirmDelete title confirmUrl cancelUrlBase itemId confirmButtonText id="modalConfirmDelete" classes="">
+<#macro modalConfirmDelete title confirmUrl cancelUrlBase itemId confirmButtonTextKey id="modalConfirmDelete" classes="">
     <div id="${id}" class="modal background-color ${classes}">
         <div class="modal-content">
             <h4>${title}</h4>
@@ -48,8 +48,8 @@
             <#nested>
         </div>
         <div class="modal-footer background-color">
-            <a href="<@s.url confirmUrl/>" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
-            <a href="<@s.url cancelUrlBase + "/" + itemId?c + "/delete" />" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${confirmButtonText}</a>
+            <@buttonLink url=confirmUrl icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white'/>
+            <@buttonLink url=cancelUrlBase + '/' + itemId?c + '/delete' icon='delete' localizationKey=confirmButtonTextKey color='green' classes='modal-action modal-close text-white'/>
         </div>
     </div>
 </#macro>

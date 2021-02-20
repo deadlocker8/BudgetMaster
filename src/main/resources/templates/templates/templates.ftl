@@ -41,7 +41,7 @@
             </div>
 
             <#if currentTemplate??>
-                <@header.modalConfirmDelete title=locale.getString("info.title.template.delete") confirmUrl='/templates' cancelUrlBase='/templates' itemId=currentTemplate.getID() confirmButtonText=locale.getString("info.title.template.delete")>
+                <@header.modalConfirmDelete title=locale.getString("info.title.template.delete") confirmUrl='/templates' cancelUrlBase='/templates' itemId=currentTemplate.getID() confirmButtonTextKey='info.title.template.delete'>
                     <p>${locale.getString("info.text.template.delete", currentTemplate.getTemplateName())}</p>
                 </@header.modalConfirmDelete>
             </#if>

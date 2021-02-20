@@ -74,8 +74,8 @@
                     </div>
 
                     <div class="modal-footer background-color">
-                        <a href="<@s.url '/categories'/>" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
-                        <a id="buttonDeleteCategory" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("delete")}</a>
+                        <@header.buttonLink url='/categories' icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white'/>
+                        <@header.buttonLink url='' icon='delete' localizationKey='delete' color='green' id='buttonDeleteCategory' classes='modal-action modal-close text-white' noUrl=true/>
                     </div>
                 </div>
             </#if>

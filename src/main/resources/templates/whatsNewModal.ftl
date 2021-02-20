@@ -35,7 +35,7 @@
         </div>
     </div>
     <div class="modal-footer background-color">
-        <@header.buttonLink url='/about/whatsNewModal/close' icon='done' localizationKey='ok' id='buttonCloseWhatsNew' classes='modal-action modal-close green text-white'/>
+        <@header.buttonLink url='/about/whatsNewModal/close' icon='done' localizationKey='ok' color='green' id='buttonCloseWhatsNew' classes='modal-action modal-close text-white'/>
     </div>
 </div>
 

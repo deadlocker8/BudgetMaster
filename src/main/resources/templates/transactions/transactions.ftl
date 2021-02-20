@@ -88,7 +88,7 @@
             </div>
 
             <#if currentTransaction??>
-                <@header.modalConfirmDelete title=locale.getString("info.title.transaction.delete") confirmUrl='/transactions' cancelUrlBase='/transactions' itemId=currentTransaction.getID() confirmButtonText=locale.getString("delete")>
+                <@header.modalConfirmDelete title=locale.getString("info.title.transaction.delete") confirmUrl='/transactions' cancelUrlBase='/transactions' itemId=currentTransaction.getID() confirmButtonTextKey='delete'>
                     <#if currentTransaction.isRepeating()>
                         <p>${locale.getString("info.text.transaction.repeating.delete", currentTransaction.name)}</p>
                     <#else>

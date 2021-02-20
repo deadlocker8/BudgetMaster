@@ -90,7 +90,7 @@
             </form>
         </div>
         <div class="modal-footer background-color">
-            <a href="" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
+            <@header.buttonLink url='' icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white'/>
         </div>
     </div>
 </#macro>
@@ -103,7 +103,7 @@
             <@buttonsCharts/>
         </div>
         <div class="modal-footer background-color">
-            <a class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
+            <@header.buttonLink url='' icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white'/>
         </div>
     </div>
 </#macro>

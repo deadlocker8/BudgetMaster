@@ -25,8 +25,8 @@
             </div>
         </div>
         <div class="modal-footer background-color">
-            <a href="#" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
-            <a href="<@s.url '/setDate?target=${target}'/>" id="buttonChooseDate" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("ok")}</a>
+            <@header.buttonLink url='' icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white'/>
+            <@header.buttonLink url='/setDate?target=' + target icon='done' localizationKey='ok' color='green' id='buttonChooseDate' classes='modal-action modal-close text-white' noUrl=true/>
         </div>
     </div>
 </#macro>

@@ -56,7 +56,7 @@
         </main>
 
         <#if currentAccount??>
-            <@header.modalConfirmDelete title=locale.getString("info.title.account.delete") confirmUrl='/accounts' cancelUrlBase="/accounts" itemId=currentAccount.getID() confirmButtonText=locale.getString("info.button.account.delete")>
+            <@header.modalConfirmDelete title=locale.getString("info.title.account.delete") confirmUrl='/accounts' cancelUrlBase="/accounts" itemId=currentAccount.getID() confirmButtonTextKey="info.button.account.delete">
                 <p>${locale.getString("info.text.account.delete", currentAccount.getName(), currentAccount.getReferringTransactions()?size)}</p>
             </@header.modalConfirmDelete>
         </#if>
@@ -69,7 +69,7 @@
                     <p>${locale.getString("warning.text.account.delete", currentAccount.getName())}</p>
                 </div>
                 <div class="modal-footer background-color">
-                    <a href="<@s.url '/accounts'/>" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("ok")}</a>
+                    <@header.buttonLink url='/accounts' icon='done' localizationKey='ok' color='green' id='buttonCloseWhatsNew' classes='modal-action modal-close text-white'/>
                 </div>
             </div>
         </#if>
