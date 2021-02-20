@@ -21,11 +21,11 @@
                         </div>
                     </div>
                 </div>
+
                 <br>
-                <div class="center-align">
-                    <a href="<@s.url '/categories/newCategory'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">add</i>${locale.getString("title.category.new")}
-                    </a></div>
+                <div class="center-align"><@header.buttonLink url='/categories/newCategory' icon='add' localizationKey='title.category.new'/></div>
                 <br>
+
                 <div class="container">
                     <table class="bordered">
                         <thead>

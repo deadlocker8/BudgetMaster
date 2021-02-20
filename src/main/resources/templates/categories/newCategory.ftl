@@ -77,26 +77,22 @@
                         <#-- buttons -->
                         <div class="row hide-on-small-only">
                             <div class="col s6 right-align">
-                                <a href="<@s.url '/categories'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
+                                <@header.buttonLink url='/categories' icon='clear' localizationKey='cancel'/>
                             </div>
 
                             <div class="col s6 left-align">
-                                <button class="btn waves-effect waves-light background-blue" type="submit" name="action">
-                                    <i class="material-icons left">save</i>${locale.getString("save")}
-                                </button>
+                                <@header.buttonSubmit name='action' icon='save' localizationKey='save'/>
                             </div>
                         </div>
                         <div class="hide-on-med-and-up">
                             <div class="row center-align">
                                 <div class="col s12">
-                                    <a href="<@s.url '/categories'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
+                                    <@header.buttonLink url='/categories' icon='clear' localizationKey='cancel'/>
                                 </div>
                             </div>
                             <div class="row center-align">
                                 <div class="col s12">
-                                    <button class="btn waves-effect waves-light background-blue" type="submit" name="buttonSave">
-                                        <i class="material-icons left">save</i>${locale.getString("save")}
-                                    </button>
+                                    <@header.buttonSubmit name='action' icon='save' localizationKey='save'/>
                                 </div>
                             </div>
                         </div>
