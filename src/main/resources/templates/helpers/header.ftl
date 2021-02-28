@@ -66,7 +66,9 @@
             <div class="notification-wrapper">
                 <div class="notification ${notification.getBackgroundColor()} ${notification.getTextColor()}">
                     <div>
-                        <i class="${notification.getIcon()} notification-item"></i>
+                        <#if notification.getIcon()??>
+                            <i class="${notification.getIcon()} notification-item"></i>
+                        </#if>
                         <span class="notification-item">${notification.getMessage()}</span>
                     </div>
                     <a class="notification-item notification-clear ${notification.getTextColor()}">
