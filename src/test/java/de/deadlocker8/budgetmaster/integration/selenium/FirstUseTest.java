@@ -84,7 +84,7 @@ public class FirstUseTest
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("firstUseBanner")));
 
-		driver.findElements(By.className("home-firstUseBanner-clear")).get(0).click();
+		driver.findElements(By.className("notification-clear")).get(0).click();
 
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("firstUseBanner")));
 		assertThat(driver.findElements(By.id("firstUseBanner"))).isEmpty();
@@ -96,7 +96,7 @@ public class FirstUseTest
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("firstUseBanner")));
 
-		driver.findElements(By.className("home-firstUseBanner")).get(0).click();
+		driver.findElements(By.className("notification")).get(0).click();
 
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "First use guide"));
 
