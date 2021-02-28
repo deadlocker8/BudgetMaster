@@ -206,7 +206,6 @@ main {
 }
 
 .notification {
-    border: 2px solid var(--color-text);
     border-radius: 5px;
     padding: 0 1vmin;
     display: flex;
@@ -214,6 +213,10 @@ main {
     justify-content: space-between;
     align-items: center;
     font-size: 1.8vmin;
+}
+
+.notification-border {
+    border: 2px solid var(--color-text);
 }
 
 .notification-item {
@@ -224,8 +227,12 @@ main {
     font-size: 2.5vmin;
 }
 
-.notification-wrapper-clear i {
+.notification-clear i {
     font-size: 1.8vmin;
+}
+
+.notification-clear:hover {
+    cursor: pointer;
 }
 
 .break-all {

@@ -60,6 +60,24 @@
     </body>
 </#macro>
 
+<#macro showNotification notification>
+    <div class="row">
+        <div class="col s12 center-align">
+            <div class="notification-wrapper">
+                <div class="notification ${notification.getBackgroundColor()} ${notification.getTextColor()}">
+                    <div>
+                        <i class="${notification.getIcon()} notification-item"></i>
+                        <span class="notification-item">${notification.getMessage()}</span>
+                    </div>
+                    <a class="notification-item notification-clear ${notification.getTextColor()}">
+                        <i class="material-icons">clear</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</#macro>
+
 <#macro buttonLink url icon localizationKey id="" color="background-blue" classes="" isDataUrl=false noUrl=false>
     <a <#if !isDataUrl && !noUrl>href="<@s.url url/>"</#if>
        id="${id}"

@@ -33,7 +33,7 @@
     <div class="row" id="firstUseBanner">
         <div class="col s12 center-align">
             <div class="notification-wrapper">
-                <div class="notification text-default">
+                <div class="notification notification-border text-default">
                     <a href="<@s.url "/firstUse"/>" class="text-default">
                         <i class="fas fa-graduation-cap notification-item"></i>
                         <span class="notification-item">${locale.getString("home.first.use.teaser")}</span>
