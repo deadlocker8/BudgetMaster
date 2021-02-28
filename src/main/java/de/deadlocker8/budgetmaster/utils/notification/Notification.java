@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.utils;
+package de.deadlocker8.budgetmaster.utils.notification;
 
 public class Notification
 {
@@ -6,6 +6,14 @@ public class Notification
 	private final String icon;
 	private final String backgroundColor;
 	private final String textColor;
+
+	public Notification(String message, NotificationType notificationType)
+	{
+		this.message = message;
+		this.icon = notificationType.getIcon();
+		this.backgroundColor = notificationType.getBackgroundColor();
+		this.textColor = notificationType.getTextColor();
+	}
 
 	public Notification(String message, String icon, String backgroundColor, String textColor)
 	{

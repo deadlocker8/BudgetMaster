@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.advices;
 
-import de.deadlocker8.budgetmaster.utils.Notification;
+import de.deadlocker8.budgetmaster.utils.notification.Notification;
 import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;

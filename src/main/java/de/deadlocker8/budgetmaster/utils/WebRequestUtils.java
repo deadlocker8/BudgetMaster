@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.utils;
 
+import de.deadlocker8.budgetmaster.utils.notification.Notification;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
