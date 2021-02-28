@@ -51,6 +51,11 @@ $(document).ready(function()
     {
         document.getElementById("search").value = "";
     });
+
+    $('.notification-clear').click(function()
+    {
+        document.getElementsByClassName("notification-wrapper")[0].style.display = "none";
+    });
 });
 
 
