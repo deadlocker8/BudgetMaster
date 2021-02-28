@@ -60,6 +60,14 @@
     </body>
 </#macro>
 
+<#macro content>
+    <#if notification??>
+        <@showNotification notification/>
+    </#if>
+
+    <#nested>
+</#macro>
+
 <#macro showNotification notification>
     <div class="row">
         <div class="col s12 center-align">
