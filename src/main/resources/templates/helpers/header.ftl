@@ -69,7 +69,7 @@
 </#macro>
 
 <#macro showNotification notification>
-    <div class="row">
+    <div class="row notification-row">
         <div class="col s12 center-align">
             <div class="notification-wrapper">
                 <div class="notification ${notification.getBackgroundColor()} ${notification.getTextColor()}">

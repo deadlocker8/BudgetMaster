@@ -54,7 +54,7 @@ $(document).ready(function()
 
     $('.notification-clear').click(function()
     {
-        document.getElementsByClassName("notification-wrapper")[0].style.display = "none";
+        document.getElementsByClassName("notification-row")[0].style.display = "none";
     });
 });
 
