@@ -27,7 +27,9 @@
                         <div class="headline">${title}</div>
                     </div>
                 </div>
-                <div class="container">
+
+                <@header.content>
+                    <div class="container">
                     <#import "../helpers/validation.ftl" as validation>
                     <form name="NewChart" action="<@s.url '/charts/newChart'/>" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -93,6 +95,7 @@
                         </div>
                     </form>
                 </div>
+                </@header.content>
             </div>
         </main>
 

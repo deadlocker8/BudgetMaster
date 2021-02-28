@@ -18,42 +18,45 @@
                         <div class="headline">${locale.getString("menu.charts")}</div>
                     </div>
                 </div>
-                <br>
-                <@chartFunctions.buttons/>
-                <br>
-                <div class="container">
-                    <table class="bordered">
-                        <thead>
-                            <tr>
-                                <th>${locale.getString("chart.new.label.name")}</th>
-                                <th>${locale.getString("chart.type")}</th>
-                                <th>${locale.getString("chart.actions")}</th>
-                            </tr>
-                        </thead>
-                        <#list charts as chart>
-                            <#assign chartName=chartFunctions.getChartName(chart)>
-                            <tr>
-                                <td>${chartName}</td>
-                                <td>
-                                    <#if chart.getType().name() == "DEFAULT">
-                                        <a class="no-padding text-default"><i class="material-icons left">lock</i></a>
-                                    <#else>
-                                        <a class="no-padding text-default"><i class="material-icons left">person</i></a>
-                                    </#if>
-                                </td>
-                                <td>
-                                    <@header.buttonFlat url='/charts/' + chart.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default"/>
-                                    <#if (chart.getType().name() == "CUSTOM")>
-                                        <@header.buttonFlat url='/charts/' + chart.ID?c + '/requestDelete' icon='delete' localizationKey='' classes="no-padding text-default"/>
-                                    </#if>
-                                </td>
-                            </tr>
-                        </#list>
-                    </table>
-                    <#if charts?size == 0>
-                        <div class="headline center-align">${locale.getString("placeholder")}</div>
-                    </#if>
-                </div>
+
+                <@header.content>
+                    <br>
+                    <@chartFunctions.buttons/>
+                    <br>
+                    <div class="container">
+                        <table class="bordered">
+                            <thead>
+                                <tr>
+                                    <th>${locale.getString("chart.new.label.name")}</th>
+                                    <th>${locale.getString("chart.type")}</th>
+                                    <th>${locale.getString("chart.actions")}</th>
+                                </tr>
+                            </thead>
+                            <#list charts as chart>
+                                <#assign chartName=chartFunctions.getChartName(chart)>
+                                <tr>
+                                    <td>${chartName}</td>
+                                    <td>
+                                        <#if chart.getType().name() == "DEFAULT">
+                                            <a class="no-padding text-default"><i class="material-icons left">lock</i></a>
+                                        <#else>
+                                            <a class="no-padding text-default"><i class="material-icons left">person</i></a>
+                                        </#if>
+                                    </td>
+                                    <td>
+                                        <@header.buttonFlat url='/charts/' + chart.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default"/>
+                                        <#if (chart.getType().name() == "CUSTOM")>
+                                            <@header.buttonFlat url='/charts/' + chart.ID?c + '/requestDelete' icon='delete' localizationKey='' classes="no-padding text-default"/>
+                                        </#if>
+                                    </td>
+                                </tr>
+                            </#list>
+                        </table>
+                        <#if charts?size == 0>
+                            <div class="headline center-align">${locale.getString("placeholder")}</div>
+                        </#if>
+                    </div>
+                </@header.content>
             </div>
 
             <#if currentChart??>

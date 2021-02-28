@@ -16,36 +16,39 @@
                         <@header.logo "logo-huge" "responsive-img"/>
                     </div>
                 </div>
-                <div class="hide-on-small-only"><br><br></div>
-                <div class="row">
-                    <@cellKey locale.getString("about.version")/>
-                    <div class="col s8 m5 l5">
-                        ${build.getVersionName()} (${build.getVersionCode()})
 
-                        <a class="whatsNewLink" data-url="<@s.url '/about/whatsNewModal'/>">${locale.getString("about.version.whatsnew")}?</a>
-                        <div id="whatsNewModelContainerOnDemand"></div>
+                <@header.content>
+                    <div class="hide-on-small-only"><br><br></div>
+                    <div class="row">
+                        <@cellKey locale.getString("about.version")/>
+                        <div class="col s8 m5 l5">
+                            ${build.getVersionName()} (${build.getVersionCode()})
+
+                            <a class="whatsNewLink" data-url="<@s.url '/about/whatsNewModal'/>">${locale.getString("about.version.whatsnew")}?</a>
+                            <div id="whatsNewModelContainerOnDemand"></div>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <@cellKey locale.getString("about.date")/>
-                    <div class="col s8 m5 l5">${build.getVersionDate()}</div>
-                </div>
-                <div class="row">
-                    <@cellKey locale.getString("about.author")/>
-                    <div class="col s8 m5 l5">${build.getAuthor()}</div>
-                </div>
-                <div class="row">
-                    <@cellKey locale.getString("about.roadmap")/>
-                    <div class="col s8 m5 l5"><a target="_blank" href="${locale.getString("roadmap.url")}">${locale.getString("about.roadmap.link")}</a></div>
-                </div>
-                <div class="row">
-                    <@cellKey locale.getString("about.sourcecode")/>
-                    <div class="col s8 m5 l5 break-all"><a target="_blank" href="${locale.getString("github.url")}">${locale.getString("github.url")}</a></div>
-                </div>
-                <div class="row">
-                    <@cellKey locale.getString("about.credits")/>
-                    <div class="col s8 m5 l5">${locale.getString("credits")}</div>
-                </div>
+                    <div class="row">
+                        <@cellKey locale.getString("about.date")/>
+                        <div class="col s8 m5 l5">${build.getVersionDate()}</div>
+                    </div>
+                    <div class="row">
+                        <@cellKey locale.getString("about.author")/>
+                        <div class="col s8 m5 l5">${build.getAuthor()}</div>
+                    </div>
+                    <div class="row">
+                        <@cellKey locale.getString("about.roadmap")/>
+                        <div class="col s8 m5 l5"><a target="_blank" href="${locale.getString("roadmap.url")}">${locale.getString("about.roadmap.link")}</a></div>
+                    </div>
+                    <div class="row">
+                        <@cellKey locale.getString("about.sourcecode")/>
+                        <div class="col s8 m5 l5 break-all"><a target="_blank" href="${locale.getString("github.url")}">${locale.getString("github.url")}</a></div>
+                    </div>
+                    <div class="row">
+                        <@cellKey locale.getString("about.credits")/>
+                        <div class="col s8 m5 l5">${locale.getString("credits")}</div>
+                    </div>
+                </@header.content>
             </div>
         </main>
 

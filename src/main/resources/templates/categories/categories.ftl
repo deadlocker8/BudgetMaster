@@ -22,11 +22,12 @@
                     </div>
                 </div>
 
-                <br>
-                <div class="center-align"><@header.buttonLink url='/categories/newCategory' icon='add' localizationKey='title.category.new'/></div>
-                <br>
+                <@header.content>
+                    <br>
+                    <div class="center-align"><@header.buttonLink url='/categories/newCategory' icon='add' localizationKey='title.category.new'/></div>
+                    <br>
 
-                <div class="container">
+                    <div class="container">
                     <table class="bordered">
                         <thead>
                             <tr>
@@ -56,6 +57,7 @@
                         <div class="headline center-align">${locale.getString("placeholder")}</div>
                     </#if>
                 </div>
+                </@header.content>
             </div>
 
             <#if currentCategory??>

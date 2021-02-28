@@ -20,9 +20,10 @@
                 <#import "../helpers/globalDatePicker.ftl" as datePicker>
                 <@datePicker.datePicker currentDate "/reports"/>
 
-                <br>
+                <@header.content>
+                    <br>
 
-                <div class="container">
+                    <div class="container">
                     <form name="NewReportSettings" action="<@s.url '/reports/generate'/>" method="post" onsubmit="return validateForm()">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="ID" value="${reportSettings.getID()?c}"/>
@@ -102,6 +103,7 @@
                         </div>
                     </form>
                 </div>
+                </@header.content>
             </div>
 
             <@filterMacros.filterModal filterConfiguration/>

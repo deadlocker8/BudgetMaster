@@ -17,29 +17,31 @@
                     </div>
                 </div>
 
-                <br>
+                <@header.content>
+                    <br>
 
-                <div class="row">
-                    <div class="col s12 headline center-align">${locale.getString("hotkeys.general")}</div>
-                </div>
-
-                <#list hotkeysGeneral as hotKey>
                     <div class="row">
-                        <@cellKeyWithModifier hotKey.getModifierLocalized()!'' hotKey.getKeyLocalized()/>
-                        <div class="col s8 m5 l5">${hotKey.getTextLocalized()}</div>
+                        <div class="col s12 headline center-align">${locale.getString("hotkeys.general")}</div>
                     </div>
-                </#list>
 
-                <div class="row">
-                    <div class="col s12 headline center-align">${locale.getString("hotkeys.global.datepicker")}</div>
-                </div>
+                    <#list hotkeysGeneral as hotKey>
+                        <div class="row">
+                            <@cellKeyWithModifier hotKey.getModifierLocalized()!'' hotKey.getKeyLocalized()/>
+                            <div class="col s8 m5 l5">${hotKey.getTextLocalized()}</div>
+                        </div>
+                    </#list>
 
-                <#list hotkeysGlobalDatePicker as hotKey>
                     <div class="row">
-                        <@cellKeyWithModifier hotKey.getModifierLocalized()!'' hotKey.getKeyLocalized()/>
-                        <div class="col s8 m5 l5">${hotKey.getTextLocalized()}</div>
+                        <div class="col s12 headline center-align">${locale.getString("hotkeys.global.datepicker")}</div>
                     </div>
-                </#list>
+
+                    <#list hotkeysGlobalDatePicker as hotKey>
+                        <div class="row">
+                            <@cellKeyWithModifier hotKey.getModifierLocalized()!'' hotKey.getKeyLocalized()/>
+                            <div class="col s8 m5 l5">${hotKey.getTextLocalized()}</div>
+                        </div>
+                    </#list>
+                </@header.content>
             </div>
         </main>
 

@@ -28,52 +28,55 @@
                         <div class="headline">${title}</div>
                     </div>
                 </div>
-                <div class="container">
-                    <#import "../helpers/validation.ftl" as validation>
-                    <form name="NewTransaction" action="<@s.url '/transactions/newTransaction/repeating'/>" method="post" onsubmit="return validateForm()">
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <input type="hidden" name="ID" value="<#if transaction.getID()??>${transaction.getID()?c}</#if>">
-                        <input type="hidden" name="isRepeating" value="${transaction.isRepeating()?c}">
-                        <input type="hidden" name="previousType" value="<#if previousType??>${previousType.name()}</#if>">
 
-                        <#-- isPayment switch -->
-                        <@newTransactionMacros.isExpenditureSwitch transaction/>
+                <@header.content>
+                    <div class="container">
+                        <#import "../helpers/validation.ftl" as validation>
+                        <form name="NewTransaction" action="<@s.url '/transactions/newTransaction/repeating'/>" method="post" onsubmit="return validateForm()">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            <input type="hidden" name="ID" value="<#if transaction.getID()??>${transaction.getID()?c}</#if>">
+                            <input type="hidden" name="isRepeating" value="${transaction.isRepeating()?c}">
+                            <input type="hidden" name="previousType" value="<#if previousType??>${previousType.name()}</#if>">
 
-                        <#-- name -->
-                        <@newTransactionMacros.transactionName transaction suggestionsJSON/>
+                            <#-- isPayment switch -->
+                            <@newTransactionMacros.isExpenditureSwitch transaction/>
 
-                        <#-- amount -->
-                        <@newTransactionMacros.transactionAmount transaction/>
+                            <#-- name -->
+                            <@newTransactionMacros.transactionName transaction suggestionsJSON/>
 
-                        <#-- category -->
-                        <@newTransactionMacros.categorySelect categories transaction.getCategory() "col s12 m12 l8 offset-l2" locale.getString("transaction.new.label.category")/>
+                            <#-- amount -->
+                            <@newTransactionMacros.transactionAmount transaction/>
 
-                        <#-- date -->
-                        <@newTransactionMacros.transactionStartDate transaction currentDate/>
+                            <#-- category -->
+                            <@newTransactionMacros.categorySelect categories transaction.getCategory() "col s12 m12 l8 offset-l2" locale.getString("transaction.new.label.category")/>
 
-                        <#-- description -->
-                        <@newTransactionMacros.transactionDescription transaction/>
+                            <#-- date -->
+                            <@newTransactionMacros.transactionStartDate transaction currentDate/>
 
-                        <#-- tags -->
-                        <@newTransactionMacros.transactionTags transaction/>
+                            <#-- description -->
+                            <@newTransactionMacros.transactionDescription transaction/>
 
-                        <#-- account -->
-                        <#if transaction.getAccount()??>
-                            <@newTransactionMacros.account accounts transaction.getAccount() "transaction-account" "account" locale.getString("transaction.new.label.account") false/>
-                        <#else>
-                            <@newTransactionMacros.account accounts helpers.getCurrentAccountOrDefault() "transaction-account" "account" locale.getString("transaction.new.label.account") false/>
-                        </#if>
+                            <#-- tags -->
+                            <@newTransactionMacros.transactionTags transaction/>
 
-                        <#-- repeating options -->
-                        <@newTransactionMacros.transactionRepeating transaction currentDate/>
-                        <br>
-                        <#-- buttons -->
-                        <@newTransactionMacros.buttons "/transactions"/>
-                        <@newTransactionMacros.buttonTransactionActions isEdit false previousType??/>
-                    </form>
+                            <#-- account -->
+                            <#if transaction.getAccount()??>
+                                <@newTransactionMacros.account accounts transaction.getAccount() "transaction-account" "account" locale.getString("transaction.new.label.account") false/>
+                            <#else>
+                                <@newTransactionMacros.account accounts helpers.getCurrentAccountOrDefault() "transaction-account" "account" locale.getString("transaction.new.label.account") false/>
+                            </#if>
 
-                    <div id="changeTransactionTypeModalContainer"></div>
-                </div>
+                            <#-- repeating options -->
+                            <@newTransactionMacros.transactionRepeating transaction currentDate/>
+                            <br>
+                            <#-- buttons -->
+                            <@newTransactionMacros.buttons "/transactions"/>
+                            <@newTransactionMacros.buttonTransactionActions isEdit false previousType??/>
+                        </form>
+
+                        <div id="changeTransactionTypeModalContainer"></div>
+                    </div>
+                </@header.content>
             </div>
         </main>
 

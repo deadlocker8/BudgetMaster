@@ -16,10 +16,12 @@
                         <div class="headline"><i class="material-icons">account_balance</i> ${locale.getString("menu.accounts")}</div>
                     </div>
                 </div>
-                <br>
-                <div class="center-align"><@header.buttonLink url='/accounts/newAccount' icon='add' localizationKey='title.account.new' id='button-new-account'/></div>
-                <br>
-                <div class="container account-container">
+
+                <@header.content>
+                    <br>
+                    <div class="center-align"><@header.buttonLink url='/accounts/newAccount' icon='add' localizationKey='title.account.new' id='button-new-account'/></div>
+                    <br>
+                    <div class="container account-container">
                     <table class="bordered">
                         <#list accounts as account>
                             <#if (account.getType().name() == "CUSTOM")>
@@ -52,6 +54,7 @@
                         <div class="headline center-align">${locale.getString("placeholder")}</div>
                     </#if>
                 </div>
+                </@header.content>
             </div>
         </main>
 

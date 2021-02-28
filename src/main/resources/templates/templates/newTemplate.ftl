@@ -29,7 +29,9 @@
                         <div class="headline">${title}</div>
                     </div>
                 </div>
-                <div class="container">
+
+                <@header.content>
+                    <div class="container">
                     <#import "../helpers/validation.ftl" as validation>
                     <form name="NewTemplate" action="<@s.url '/templates/newTemplate'/>" method="post" onsubmit="return validateForm(true)">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -79,6 +81,7 @@
                         <@newTransactionMacros.buttons "/templates"/>
                     </form>
                 </div>
+                </@header.content>
             </div>
         </main>
 

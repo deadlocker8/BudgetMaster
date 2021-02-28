@@ -25,45 +25,47 @@
                     </div>
                 </div>
 
-                <br>
-                <div class="center-align"><@header.buttonLink url='/charts/manage' icon='edit' localizationKey='home.menu.charts.action.manage'/></div>
-                <br>
+                <@header.content>
+                    <br>
+                    <div class="center-align"><@header.buttonLink url='/charts/manage' icon='edit' localizationKey='home.menu.charts.action.manage'/></div>
+                    <br>
 
-                <div class="container">
-                    <form name="NewChartSettings" action="<@s.url '/charts'/>" method="post">
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <div class="container">
+                        <form name="NewChartSettings" action="<@s.url '/charts'/>" method="post">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
-                        <div class="row">
-                            <div class="col s12">
-                                <ul class="collapsible z-depth-2">
-                                    <@stepOne/>
+                            <div class="row">
+                                <div class="col s12">
+                                    <ul class="collapsible z-depth-2">
+                                        <@stepOne/>
 
-                                    <@stepTwo/>
+                                        <@stepTwo/>
 
-                                    <@stepThree/>
-                                </ul>
+                                        <@stepThree/>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
 
-                        <@filterMacros.filterModalCharts chartSettings.getFilterConfiguration()/>
+                            <@filterMacros.filterModalCharts chartSettings.getFilterConfiguration()/>
 
-                        <#-- buttons -->
-                        <div class="row center-align">
-                            <div class="col s12">
-                                <button class="btn waves-effect waves-light background-blue" type="submit"
-                                        name="buttonSave">
-                                    <i class="material-icons left">show_chart</i>${locale.getString("chart.show")}
-                                </button>
+                            <#-- buttons -->
+                            <div class="row center-align">
+                                <div class="col s12">
+                                    <button class="btn waves-effect waves-light background-blue" type="submit"
+                                            name="buttonSave">
+                                        <i class="material-icons left">show_chart</i>${locale.getString("chart.show")}
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
+                        </form>
+                    </div>
 
-                <div class="container-chart">
-                    <#if containerID??>
-                        <div id="${containerID}" class="chart-canvas"></div>
-                    </#if>
-                </div>
+                    <div class="container-chart">
+                        <#if containerID??>
+                            <div id="${containerID}" class="chart-canvas"></div>
+                        </#if>
+                    </div>
+                </@header.content>
             </div>
         </main>
 

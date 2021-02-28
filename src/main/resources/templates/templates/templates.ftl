@@ -20,25 +20,28 @@
                     <div class="section center-align">
                         <div class="headline"><i class="material-icons">file_copy</i> ${locale.getString("menu.templates")}</div>
                     </div>
-                    <div class="row">
-                        <div class="input-field col s12 m12 l8 offset-l2">
-                            <i class="material-icons prefix">search</i>
-                            <input id="searchTemplate" type="text" class="mousetrap">
-                            <label for="searchTemplate">${locale.getString("search")}</label>
+
+                    <@header.content>
+                        <div class="row">
+                            <div class="input-field col s12 m12 l8 offset-l2">
+                                <i class="material-icons prefix">search</i>
+                                <input id="searchTemplate" type="text" class="mousetrap">
+                                <label for="searchTemplate">${locale.getString("search")}</label>
+                            </div>
                         </div>
                     </div>
+                    <br>
+                    <@templateFunctions.buttons/>
+                    <br>
+                    <#if templates?size == 0>
+                        <div class="container">
+                            <div class="headline center-align">${locale.getString("placeholder")}</div>
+                        </div>
+                    <#else>
+                        <@templateFunctions.listTemplates templates/>
+                    </#if>
                 </div>
-                <br>
-                <@templateFunctions.buttons/>
-                <br>
-                <#if templates?size == 0>
-                    <div class="container">
-                        <div class="headline center-align">${locale.getString("placeholder")}</div>
-                    </div>
-                <#else>
-                    <@templateFunctions.listTemplates templates/>
-                </#if>
-            </div>
+            </@header.content>
 
             <#if currentTemplate??>
                 <@header.modalConfirmDelete title=locale.getString("info.title.template.delete") confirmUrl='/templates' cancelUrlBase='/templates' itemId=currentTemplate.getID() confirmButtonTextKey='info.title.template.delete'>

@@ -28,76 +28,80 @@
                         <div class="headline">${title}</div>
                     </div>
                 </div>
-                <div class="container">
-                    <#import "../helpers/validation.ftl" as validation>
-                    <form name="NewCategory" action="<@s.url '/categories/newCategory'/>" method="post">
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <input type="hidden" name="ID" value="<#if category.getID()??>${category.getID()?c}</#if>">
-                        <input type="hidden" name="type" value="<#if category.getType()??>${category.getType()}</#if>">
 
-                        <#-- name -->
-                        <div class="row">
-                            <div class="input-field col s12 m12 l8 offset-l2">
-                                <#assign categoryName=categoriesFunctions.getCategoryName(category)>
-                                <#assign isNameEditingForbidden=category.getType()?? && (category.getType().name() == "NONE" || category.getType().name() == "REST")>
+                <@header.content>
 
-                                <i class="material-icons prefix">edit</i>
-                                <input id="category-name" type="text" name="name" <@validation.validation "name"/> value="${categoryName}" <#if isNameEditingForbidden>disabled</#if>>
-                                <label for="category-name">${locale.getString("category.new.label.name")}</label>
+                    <div class="container">
+                        <#import "../helpers/validation.ftl" as validation>
+                        <form name="NewCategory" action="<@s.url '/categories/newCategory'/>" method="post">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            <input type="hidden" name="ID" value="<#if category.getID()??>${category.getID()?c}</#if>">
+                            <input type="hidden" name="type" value="<#if category.getType()??>${category.getType()}</#if>">
+
+                            <#-- name -->
+                            <div class="row">
+                                <div class="input-field col s12 m12 l8 offset-l2">
+                                    <#assign categoryName=categoriesFunctions.getCategoryName(category)>
+                                    <#assign isNameEditingForbidden=category.getType()?? && (category.getType().name() == "NONE" || category.getType().name() == "REST")>
+
+                                    <i class="material-icons prefix">edit</i>
+                                    <input id="category-name" type="text" name="name" <@validation.validation "name"/> value="${categoryName}" <#if isNameEditingForbidden>disabled</#if>>
+                                    <label for="category-name">${locale.getString("category.new.label.name")}</label>
+                                </div>
                             </div>
-                        </div>
 
-                        <#-- color -->
-                        <input type="hidden" name="color" id="categoryColor" value="${category.getColor()}">
-                        <#list categoryColors as color>
-                            <#if color?counter == 1 || color?counter == 7 || color?counter == 13>
-                                <div class="row">
-                                    <div class="col s2 m1 offset-m3 no-padding">
+                            <#-- color -->
+                            <input type="hidden" name="color" id="categoryColor" value="${category.getColor()}">
+                            <#list categoryColors as color>
+                                <#if color?counter == 1 || color?counter == 7 || color?counter == 13>
+                                    <div class="row">
+                                        <div class="col s2 m1 offset-m3 no-padding">
+                                            <div class="category-color <#if color == category.getColor()>category-color-active</#if>" style="background-color: ${color}"></div>
+                                        </div>
+                                <#else>
+                                    <div class="col s2 m1 no-padding">
                                         <div class="category-color <#if color == category.getColor()>category-color-active</#if>" style="background-color: ${color}"></div>
                                     </div>
-                            <#else>
+                                </#if>
+
+                                <#if color?counter == 6 || color?counter == 12>
+                                    </div>
+                                </#if>
+                            </#list>
+                                <#--add custom color picker-->
                                 <div class="col s2 m1 no-padding">
-                                    <div class="category-color <#if color == category.getColor()>category-color-active</#if>" style="background-color: ${color}"></div>
-                                </div>
-                            </#if>
-
-                            <#if color?counter == 6 || color?counter == 12>
-                                </div>
-                            </#if>
-                        </#list>
-                            <#--add custom color picker-->
-                            <div class="col s2 m1 no-padding">
-                                <div id="customColorPickerContainer" class="category-color <#if customColor == category.getColor()>category-color-active</#if>" style="background-color: ${customColor}">
-                                    <input type="text" id="customColorPicker" value="${customColor}" placeholder="+"/>
+                                    <div id="customColorPickerContainer" class="category-color <#if customColor == category.getColor()>category-color-active</#if>" style="background-color: ${customColor}">
+                                        <input type="text" id="customColorPicker" value="${customColor}" placeholder="+"/>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <br>
+                            <br>
 
-                        <#-- buttons -->
-                        <div class="row hide-on-small-only">
-                            <div class="col s6 right-align">
-                                <@header.buttonLink url='/categories' icon='clear' localizationKey='cancel'/>
-                            </div>
-
-                            <div class="col s6 left-align">
-                                <@header.buttonSubmit name='action' icon='save' localizationKey='save'/>
-                            </div>
-                        </div>
-                        <div class="hide-on-med-and-up">
-                            <div class="row center-align">
-                                <div class="col s12">
+                            <#-- buttons -->
+                            <div class="row hide-on-small-only">
+                                <div class="col s6 right-align">
                                     <@header.buttonLink url='/categories' icon='clear' localizationKey='cancel'/>
                                 </div>
-                            </div>
-                            <div class="row center-align">
-                                <div class="col s12">
+
+                                <div class="col s6 left-align">
                                     <@header.buttonSubmit name='action' icon='save' localizationKey='save'/>
                                 </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
+                            <div class="hide-on-med-and-up">
+                                <div class="row center-align">
+                                    <div class="col s12">
+                                        <@header.buttonLink url='/categories' icon='clear' localizationKey='cancel'/>
+                                    </div>
+                                </div>
+                                <div class="row center-align">
+                                    <div class="col s12">
+                                        <@header.buttonSubmit name='action' icon='save' localizationKey='save'/>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </@header.content>
             </div>
         </main>
 
