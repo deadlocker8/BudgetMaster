@@ -4,12 +4,17 @@ import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
+import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
+import de.deadlocker8.budgetmaster.utils.notification.Notification;
+import de.deadlocker8.budgetmaster.utils.notification.NotificationType;
+import de.thecodelabs.utils.util.Localization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
@@ -97,17 +102,21 @@ public class AccountController extends BaseController
 	}
 
 	@GetMapping("/{ID}/delete")
-	public String deleteAccountAndReferringTransactions(Model model, @PathVariable("ID") Integer ID)
+	public String deleteAccountAndReferringTransactions(WebRequest request, Model model, @PathVariable("ID") Integer ID)
 	{
 		// at least one account is required (to delete a sole account another one has to be created first)
+		final Account accountToDelete = accountService.getRepository().getOne(ID);
 		if(accountService.getRepository().findAllByType(AccountType.CUSTOM).size() > 1)
 		{
 			accountService.deleteAccount(ID);
+
+			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.account.delete.success", accountToDelete.getName()), NotificationType.SUCCESS));
+
 			return "redirect:/accounts";
 		}
 
 		model.addAttribute("accounts", accountService.getAllAccountsAsc());
-		model.addAttribute("currentAccount", accountService.getRepository().getOne(ID));
+		model.addAttribute("currentAccount", accountToDelete);
 		model.addAttribute("accountNotDeletable", true);
 		model.addAttribute("settings", settingsService.getSettings());
 		return "accounts/accounts";
