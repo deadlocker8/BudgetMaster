@@ -302,9 +302,18 @@ public class SettingsController extends BaseController
 	@PostMapping("/database/import")
 	public String importDatabase(WebRequest request, @ModelAttribute("Import") AccountMatchList accountMatchList, Model model)
 	{
-		importService.importDatabase((Database) request.getAttribute("database", WebRequest.SCOPE_SESSION), accountMatchList);
+		final Map<ImportEntityType, Integer> numberOfImportedEntitiesByType = importService.importDatabase((Database) request.getAttribute("database", WebRequest.SCOPE_SESSION), accountMatchList);
 		request.removeAttribute("database", RequestAttributes.SCOPE_SESSION);
 		prepareBasicModel(model, settingsService.getSettings());
+
+		final String message = Localization.getString("notification.settings.database.import.success",
+				numberOfImportedEntitiesByType.get(ImportEntityType.ACCOUNT),
+				numberOfImportedEntitiesByType.get(ImportEntityType.TRANSACTION),
+				numberOfImportedEntitiesByType.get(ImportEntityType.CATEGORY),
+				numberOfImportedEntitiesByType.get(ImportEntityType.TEMPLATE),
+				numberOfImportedEntitiesByType.get(ImportEntityType.CHART));
+		WebRequestUtils.putNotification(request, new Notification(message, NotificationType.SUCCESS));
+
 		return "settings/settings";
 	}
 

@@ -21,7 +21,9 @@ import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ImportService
@@ -44,15 +46,21 @@ public class ImportService
 		this.tagRepository = tagRepository;
 	}
 
-	public void importDatabase(Database database, AccountMatchList accountMatchList)
+	public Map<ImportEntityType, Integer> importDatabase(Database database, AccountMatchList accountMatchList)
 	{
 		this.database = database;
+
+		final HashMap<ImportEntityType, Integer> numberOfImportedEntitiesByType = new HashMap<>();
+
 		LOGGER.debug("Importing database...");
-		importCategories();
-		importAccounts(accountMatchList);
-		importTransactions();
-		importTemplates();
+		numberOfImportedEntitiesByType.put(ImportEntityType.CATEGORY, importCategories());
+		numberOfImportedEntitiesByType.put(ImportEntityType.ACCOUNT, importAccounts(accountMatchList));
+		numberOfImportedEntitiesByType.put(ImportEntityType.TRANSACTION, importTransactions());
+		numberOfImportedEntitiesByType.put(ImportEntityType.TEMPLATE, importTemplates());
+		numberOfImportedEntitiesByType.put(ImportEntityType.CHART, 0);
 		LOGGER.debug("Importing database DONE");
+
+		return numberOfImportedEntitiesByType;
 	}
 
 	public Database getDatabase()
@@ -60,7 +68,7 @@ public class ImportService
 		return database;
 	}
 
-	private void importCategories()
+	private Integer importCategories()
 	{
 		List<Category> categories = database.getCategories();
 		LOGGER.debug(MessageFormat.format("Importing {0} categories...", categories.size()));
@@ -113,6 +121,7 @@ public class ImportService
 		}
 
 		LOGGER.debug("Importing categories DONE");
+		return categories.size();
 	}
 
 	public List<TransactionBase> updateCategoriesForItems(List<TransactionBase> items, int oldCategoryID, int newCategoryID)
@@ -136,7 +145,7 @@ public class ImportService
 		return updatedItems;
 	}
 
-	private void importAccounts(AccountMatchList accountMatchList)
+	private Integer importAccounts(AccountMatchList accountMatchList)
 	{
 		LOGGER.debug(MessageFormat.format("Importing {0} accounts...", accountMatchList.getAccountMatches().size()));
 		List<TransactionBase> alreadyUpdatedTransactions = new ArrayList<>();
@@ -161,6 +170,7 @@ public class ImportService
 		}
 
 		LOGGER.debug("Importing accounts DONE");
+		return accountMatchList.getAccountMatches().size();
 	}
 
 	public List<TransactionBase> updateAccountsForItems(List<TransactionBase> items, int oldAccountID, Account newAccount)
@@ -209,7 +219,7 @@ public class ImportService
 		return updatedTransactions;
 	}
 
-	private void importTransactions()
+	private Integer importTransactions()
 	{
 		List<Transaction> transactions = database.getTransactions();
 		LOGGER.debug(MessageFormat.format("Importing {0} transactions...", transactions.size()));
@@ -222,6 +232,7 @@ public class ImportService
 			transactionRepository.save(transaction);
 		}
 		LOGGER.debug("Importing transactions DONE");
+		return transactions.size();
 	}
 
 	public void updateTagsForItem(TransactionBase item)
@@ -243,7 +254,7 @@ public class ImportService
 		}
 	}
 
-	private void importTemplates()
+	private Integer importTemplates()
 	{
 		List<Template> templates = database.getTemplates();
 		LOGGER.debug(MessageFormat.format("Importing {0} templates...", templates.size()));
@@ -256,5 +267,6 @@ public class ImportService
 			templateRepository.save(template);
 		}
 		LOGGER.debug("Importing transactions DONE");
+		return templates.size();
 	}
 }
