@@ -22,10 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ImportService
@@ -54,7 +51,7 @@ public class ImportService
 	{
 		this.database = database;
 
-		final HashMap<ImportEntityType, Integer> numberOfImportedEntitiesByType = new HashMap<>();
+		final Map<ImportEntityType, Integer> numberOfImportedEntitiesByType = new EnumMap<>(ImportEntityType.class);
 
 		LOGGER.debug("Importing database...");
 		numberOfImportedEntitiesByType.put(ImportEntityType.CATEGORY, importCategories());
