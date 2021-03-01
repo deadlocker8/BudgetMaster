@@ -149,7 +149,7 @@
             </div>
             <div class="modal-footer background-color">
                 <@header.buttonLink url='/backupReminder/cancel' icon='clear' localizationKey='cancel' color='red' id='buttonCloseReminder' classes='modal-action modal-close text-white'/>
-                <@header.buttonLink url='/backupReminder/settings' icon='cogs' localizationKey='cancel' color='green' id='buttonCloseReminder' classes='info.button.backup.reminder'/>
+                <@header.buttonLink url='/backupReminder/settings' icon='settings' localizationKey='info.button.backup.reminder' color='green' id='buttonCloseReminder' classes='modal-action modal-close text-white'/>
             </div>
         </div>
     </#if>
