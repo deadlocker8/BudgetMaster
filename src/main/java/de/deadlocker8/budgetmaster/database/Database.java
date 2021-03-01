@@ -15,7 +15,7 @@ public class Database
 	private final String TYPE = "BUDGETMASTER_DATABASE";
 
 	@Expose
-	private final int VERSION = 4;
+	private final int VERSION = 5;
 
 	@Expose
 	private List<Category> categories;

@@ -21,6 +21,9 @@ public class DatabaseParser_v4 extends DatabaseParser_v3
 	final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private String jsonString;
 
+	protected List<Transaction> transactions;
+	protected List<Template> templates;
+
 	public DatabaseParser_v4(String json)
 	{
 		super(json);
@@ -33,8 +36,8 @@ public class DatabaseParser_v4 extends DatabaseParser_v3
 		final JsonObject root = JsonParser.parseString(jsonString).getAsJsonObject();
 		super.categories = super.parseCategories(root);
 		super.accounts = super.parseAccounts(root);
-		final List<Transaction> transactions = parseTransactions(root);
-		final List<Template> templates = parseTemplates(root);
+		this.transactions = parseTransactions(root);
+		this.templates = parseTemplates(root);
 
 		return new Database(categories, accounts, transactions, templates, new ArrayList<>());
 	}
@@ -43,8 +46,8 @@ public class DatabaseParser_v4 extends DatabaseParser_v3
 	protected List<Transaction> parseTransactions(JsonObject root)
 	{
 		List<Transaction> parsedTransactions = new ArrayList<>();
-		JsonArray transactions = root.get("transactions").getAsJsonArray();
-		for(JsonElement currentTransaction : transactions)
+		JsonArray transactionsToImport = root.get("transactions").getAsJsonArray();
+		for(JsonElement currentTransaction : transactionsToImport)
 		{
 			final JsonObject transactionObject = currentTransaction.getAsJsonObject();
 
@@ -89,8 +92,8 @@ public class DatabaseParser_v4 extends DatabaseParser_v3
 	protected List<Template> parseTemplates(JsonObject root)
 	{
 		final List<Template> parsedTemplates = new ArrayList<>();
-		final JsonArray templates = root.get("templates").getAsJsonArray();
-		for(JsonElement currentTemplate : templates)
+		final JsonArray templatesToImport = root.get("templates").getAsJsonArray();
+		for(JsonElement currentTemplate : templatesToImport)
 		{
 			final JsonObject templateObject = currentTemplate.getAsJsonObject();
 
@@ -164,5 +167,4 @@ public class DatabaseParser_v4 extends DatabaseParser_v3
 			transactionBase.setIsExpenditure(isExpenditure.getAsBoolean());
 		}
 	}
-
 }

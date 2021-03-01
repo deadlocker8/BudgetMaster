@@ -1,0 +1,270 @@
+{
+    "TYPE": "BUDGETMASTER_DATABASE",
+    "VERSION": 5,
+    "categories": [
+        {
+            "ID": 1,
+            "name": "Keine Kategorie",
+            "color": "#FFFFFF",
+            "type": "NONE"
+        },
+        {
+            "ID": 2,
+            "name": "Übertrag",
+            "color": "#FFFF00",
+            "type": "REST"
+        },
+        {
+            "ID": 3,
+            "name": "0815",
+            "color": "#ffcc00",
+            "type": "CUSTOM"
+        }
+    ],
+    "accounts": [
+        {
+            "ID": 1,
+            "name": "Placeholder",
+            "type": "ALL"
+        },
+        {
+            "ID": 2,
+            "name": "Default",
+            "type": "CUSTOM"
+        },
+        {
+            "ID": 3,
+            "name": "Second Account",
+            "type": "CUSTOM"
+        }
+    ],
+    "transactions": [
+        {
+            "ID": 5,
+            "amount": 35000,
+            "date": "2018-03-13",
+            "account": {
+                "ID": 2,
+                "name": "Default"
+            },
+            "category": {
+                "ID": 1,
+                "name": "Keine Kategorie",
+                "color": "#FFFFFF",
+                "type": "NONE"
+            },
+            "name": "Income",
+            "description": "Lorem Ipsum",
+            "tags": []
+        },
+        {
+            "ID": 12,
+            "amount": -2000,
+            "date": "2018-06-15",
+            "account": {
+                "ID": 3,
+                "name": "Second Account"
+            },
+            "category": {
+                "ID": 3,
+                "name": "0815",
+                "color": "#ffcc00",
+                "type": "CUSTOM"
+            },
+            "name": "Simple",
+            "description": "",
+            "tags": [
+                {
+                    "ID": 1,
+                    "name": "0815"
+                }
+            ]
+        },
+        {
+            "ID": 13,
+            "amount": -12300,
+            "date": "2018-03-13",
+            "account": {
+                "ID": 2,
+                "name": "Default"
+            },
+            "category": {
+                "ID": 1,
+                "name": "Keine Kategorie",
+                "color": "#FFFFFF",
+                "type": "NONE"
+            },
+            "name": "Test",
+            "description": "",
+            "tags": [],
+            "repeatingOption": {
+                "ID": 2,
+                "startDate": "2018-03-13",
+                "modifier": {
+                    "ID": 3,
+                    "quantity": 10,
+                    "localizationKey": "repeating.modifier.days"
+                },
+                "endOption": {
+                    "times": 2,
+                    "ID": 3,
+                    "localizationKey": "repeating.end.key.afterXTimes"
+                }
+            }
+        },
+        {
+            "ID": 14,
+            "amount": -12300,
+            "date": "2018-03-23",
+            "account": {
+                "ID": 2,
+                "name": "Default"
+            },
+            "category": {
+                "ID": 1,
+                "name": "Keine Kategorie",
+                "color": "#FFFFFF",
+                "type": "NONE"
+            },
+            "name": "Test",
+            "description": "",
+            "tags": [],
+            "repeatingOption": {
+                "ID": 2,
+                "startDate": "2018-03-13",
+                "modifier": {
+                    "ID": 3,
+                    "quantity": 10,
+                    "localizationKey": "repeating.modifier.days"
+                },
+                "endOption": {
+                    "times": 2,
+                    "ID": 3,
+                    "localizationKey": "repeating.end.key.afterXTimes"
+                }
+            }
+        },
+        {
+            "ID": 15,
+            "amount": -12300,
+            "date": "2018-04-02",
+            "account": {
+                "ID": 2,
+                "name": "Default"
+            },
+            "category": {
+                "ID": 1,
+                "name": "Keine Kategorie",
+                "color": "#FFFFFF",
+                "type": "NONE"
+            },
+            "name": "Test",
+            "description": "",
+            "tags": [],
+            "repeatingOption": {
+                "ID": 2,
+                "startDate": "2018-03-13",
+                "modifier": {
+                    "ID": 3,
+                    "quantity": 10,
+                    "localizationKey": "repeating.modifier.days"
+                },
+                "endOption": {
+                    "times": 2,
+                    "ID": 3,
+                    "localizationKey": "repeating.end.key.afterXTimes"
+                }
+            }
+        },
+        {
+            "ID": 16,
+            "amount": -250,
+            "date": "2018-06-15",
+            "account": {
+                "ID": 3,
+                "name": "Second Account"
+            },
+            "category": {
+                "ID": 3,
+                "name": "0815",
+                "color": "#ffcc00",
+                "type": "CUSTOM"
+            },
+            "name": "Transfer",
+            "description": "",
+            "tags": [],
+            "transferAccount": {
+                "ID": 2,
+                "name": "Default",
+                "type": "CUSTOM"
+            }
+        }
+    ],
+    "templates": [
+        {
+            "ID": 5,
+            "amount": 1500,
+            "account": {
+                "ID": 2,
+                "name": "Default"
+            },
+            "category": {
+                "ID": 1,
+                "name": "Keine Kategorie",
+                "color": "#FFFFFF",
+                "type": "NONE"
+            },
+            "name": "Income",
+            "templateName": "My Simple Template",
+            "description": "Lorem Ipsum",
+            "tags": [
+                {
+                    "ID": 1,
+                    "name": "0815"
+                }
+            ]
+        },
+        {
+            "ID": 6,
+            "templateName": "My Minimal Template",
+            "tags": []
+        },
+        {
+            "ID": 7,
+            "amount": -35000,
+            "account": {
+                "ID": 3,
+                "name": "Second Account"
+            },
+            "category": {
+                "ID": 3,
+                "name": "0815",
+                "color": "#ffcc00",
+                "type": "CUSTOM"
+            },
+            "name": "Income",
+            "templateName": "My Transfer Template",
+            "description": "Lorem Ipsum",
+            "tags": [
+                {
+                    "ID": 1,
+                    "name": "0815"
+                }
+            ],
+            "transferAccount": {
+                "ID": 2,
+                "name": "Default",
+                "type": "CUSTOM"
+            }
+        }
+    ],
+    "charts": [
+        {
+            "ID": 9,
+            "name": "The best chart",
+            "script": "/* This list will be dynamically filled with all the transactions between\r\n* the start and and date you select on the \"Show Chart\" page\r\n* and filtered according to your specified filter.\r\n* An example entry for this list and tutorial about how to create custom charts ca be found in the BudgetMaster wiki:\r\n* https://github.com/deadlocker8/BudgetMaster/wiki/How-to-create-custom-charts\r\n*/\r\nvar transactionData \u003d [];\r\n\r\n// Prepare your chart settings here (mandatory)\r\nvar plotlyData \u003d [{\r\n    x: [],\r\n    y: [],\r\n    type: \u0027bar\u0027\r\n}];\r\n\r\n// Add your Plotly layout settings here (optional)\r\nvar plotlyLayout \u003d {};\r\n\r\n// Add your Plotly configuration settings here (optional)\r\nvar plotlyConfig \u003d {\r\n    showSendToCloud: false,\r\n    displaylogo: false,\r\n    showLink: false,\r\n    responsive: true\r\n};\r\n\r\n// Don\u0027t touch this line\r\nPlotly.newPlot(\"containerID\", plotlyData, plotlyLayout, plotlyConfig);\r\n",
+            "type": "CUSTOM",
+            "version": 7
+        }
+    ]
+}
