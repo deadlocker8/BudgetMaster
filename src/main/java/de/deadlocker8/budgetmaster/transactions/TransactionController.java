@@ -19,6 +19,10 @@ import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
+import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
+import de.deadlocker8.budgetmaster.utils.notification.Notification;
+import de.deadlocker8.budgetmaster.utils.notification.NotificationType;
+import de.thecodelabs.utils.util.Localization;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +31,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
@@ -99,9 +104,13 @@ public class TransactionController extends BaseController
 	}
 
 	@GetMapping("/{ID}/delete")
-	public String deleteTransaction(@PathVariable("ID") Integer ID)
+	public String deleteTransaction(WebRequest request, @PathVariable("ID") Integer ID)
 	{
+		final Transaction transactionToDelete = transactionService.getRepository().getOne(ID);
 		transactionService.deleteTransaction(ID);
+
+		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.transaction.delete.success", transactionToDelete.getName()), NotificationType.SUCCESS));
+
 		return "redirect:/transactions";
 	}
 
