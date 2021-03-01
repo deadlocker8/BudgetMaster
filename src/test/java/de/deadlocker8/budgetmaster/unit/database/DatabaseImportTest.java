@@ -421,6 +421,10 @@ public class DatabaseImportTest
 		// act
 		Mockito.when(tagRepository.save(Mockito.any(Tag.class))).thenReturn(tag1);
 
+		Mockito.when(chartService.getHighestUsedID()).thenReturn(8);
+		final ChartRepository chartRepositoryMock = Mockito.mock(ChartRepository.class);
+		Mockito.when(chartService.getRepository()).thenReturn(chartRepositoryMock);
+
 		importService.importDatabase(database, accountMatchList);
 		Database databaseResult = importService.getDatabase();
 
