@@ -43,7 +43,6 @@ public class DatabaseParser_v5 extends DatabaseParser_v4
 		for(JsonElement currentChart : chartsToImport)
 		{
 			parsedCharts.add(new Gson().fromJson(currentChart, Chart.class));
-
 		}
 
 		return parsedCharts;

@@ -161,7 +161,7 @@ public class ChartController extends BaseController
 				}
 			}
 
-			if (chart.getID() == null)
+			if(chart.getID() == null)
 			{
 				final int highestUsedID = chartService.getHighestUsedID();
 				chart.setID(highestUsedID + 1);
