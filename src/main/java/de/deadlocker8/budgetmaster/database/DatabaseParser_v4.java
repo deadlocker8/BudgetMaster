@@ -36,7 +36,7 @@ public class DatabaseParser_v4 extends DatabaseParser_v3
 		final List<Transaction> transactions = parseTransactions(root);
 		final List<Template> templates = parseTemplates(root);
 
-		return new Database(categories, accounts, transactions, templates);
+		return new Database(categories, accounts, transactions, templates, new ArrayList<>());
 	}
 
 	@Override

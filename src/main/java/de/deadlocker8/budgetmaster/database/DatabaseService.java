@@ -8,6 +8,9 @@ import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
+import de.deadlocker8.budgetmaster.charts.Chart;
+import de.deadlocker8.budgetmaster.charts.ChartService;
+import de.deadlocker8.budgetmaster.charts.ChartType;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.tags.TagService;
@@ -51,16 +54,18 @@ public class DatabaseService
 	private final TransactionService transactionService;
 	private final TagService tagService;
 	private final TemplateService templateService;
+	private final ChartService chartService;
 	private final SettingsService settingsService;
 
 	@Autowired
-	public DatabaseService(AccountService accountService, CategoryService categoryService, TransactionService transactionService, TagService tagService, TemplateService templateService, SettingsService settingsService)
+	public DatabaseService(AccountService accountService, CategoryService categoryService, TransactionService transactionService, TagService tagService, TemplateService templateService, ChartService chartService, SettingsService settingsService)
 	{
 		this.accountService = accountService;
 		this.categoryService = categoryService;
 		this.transactionService = transactionService;
 		this.tagService = tagService;
 		this.templateService = templateService;
+		this.chartService = chartService;
 		this.settingsService = settingsService;
 	}
 
@@ -228,10 +233,11 @@ public class DatabaseService
 		List<Transaction> transactions = transactionService.getRepository().findAll();
 		List<Transaction> filteredTransactions = filterRepeatingTransactions(transactions);
 		List<Template> templates = templateService.getRepository().findAll();
+		List<Chart> charts = chartService.getRepository().findAllByType(ChartType.CUSTOM);
 		LOGGER.debug(MessageFormat.format("Reduced {0} transactions to {1}", transactions.size(), filteredTransactions.size()));
 
-		Database database = new Database(categories, accounts, filteredTransactions, templates);
-		LOGGER.debug(MessageFormat.format("Created database for JSON with {0} transactions, {1} categories and {2} accounts and {3} templates", database.getTransactions().size(), database.getCategories().size(), database.getAccounts().size(), database.getTemplates().size()));
+		Database database = new Database(categories, accounts, filteredTransactions, templates, charts);
+		LOGGER.debug(MessageFormat.format("Created database for JSON with {0} transactions, {1} categories and {2} accounts and {3} templates and {4} charts", database.getTransactions().size(), database.getCategories().size(), database.getAccounts().size(), database.getTemplates().size(), database.getCharts().size()));
 		return database;
 	}
 

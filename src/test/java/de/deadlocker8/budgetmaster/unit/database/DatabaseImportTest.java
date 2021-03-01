@@ -360,7 +360,7 @@ public class DatabaseImportTest
 		templates.add(template2);
 
 		// database
-		Database database = new Database(new ArrayList<>(), accounts, transactions, templates);
+		Database database = new Database(new ArrayList<>(), accounts, transactions, templates, new ArrayList<>());
 
 		// account matches
 		AccountMatch match1 = new AccountMatch(sourceAccount1);

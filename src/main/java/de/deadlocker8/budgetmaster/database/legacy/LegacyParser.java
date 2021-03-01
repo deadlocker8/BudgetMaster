@@ -53,7 +53,7 @@ public class LegacyParser
 		List<Account> accounts = new ArrayList<>();
 		accounts.add(account);
 
-		return new Database(categories, accounts, transactions, new ArrayList<>());
+		return new Database(categories, accounts, transactions, new ArrayList<>(), new ArrayList<>());
 	}
 
 	private Set<Category> parseCategories(JsonObject root)
