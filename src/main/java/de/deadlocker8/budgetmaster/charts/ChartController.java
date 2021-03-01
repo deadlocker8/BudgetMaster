@@ -13,6 +13,10 @@ import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
+import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
+import de.deadlocker8.budgetmaster.utils.notification.Notification;
+import de.deadlocker8.budgetmaster.utils.notification.NotificationType;
+import de.thecodelabs.utils.util.Localization;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -182,11 +187,17 @@ public class ChartController extends BaseController
 	}
 
 	@GetMapping(value = "/{ID}/delete")
-	public String deleteChart(Model model, @PathVariable("ID") Integer ID)
+	public String deleteChart(WebRequest request, @PathVariable("ID") Integer ID)
 	{
 		if(chartService.isDeletable(ID))
 		{
+			final Chart chartToDelete = chartService.getRepository().getOne(ID);
 			chartService.getRepository().deleteById(ID);
+			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.chart.delete.success", chartToDelete.getName()), NotificationType.SUCCESS));
+		}
+		else
+		{
+			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.chart.delete.not.deletable", String.valueOf(ID)), NotificationType.ERROR));
 		}
 
 		return "redirect:/charts/manage";
