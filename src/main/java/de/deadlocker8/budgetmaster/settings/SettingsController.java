@@ -13,11 +13,16 @@ import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.DatabaseParser;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
+import de.deadlocker8.budgetmaster.services.ImportEntityType;
 import de.deadlocker8.budgetmaster.services.ImportService;
+import de.deadlocker8.budgetmaster.services.UpdateCheckService;
 import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.Strings;
+import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
+import de.deadlocker8.budgetmaster.utils.notification.Notification;
+import de.deadlocker8.budgetmaster.utils.notification.NotificationType;
 import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.RandomUtils;
 import de.thecodelabs.versionizer.UpdateItem;
@@ -43,6 +48,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -58,12 +64,13 @@ public class SettingsController extends BaseController
 	private final CategoryService categoryService;
 	private final ImportService importService;
 	private final BudgetMasterUpdateService budgetMasterUpdateService;
+	private final UpdateCheckService updateCheckService;
 	private final BackupService scheduleTaskService;
 
 	private final List<Integer> SEARCH_RESULTS_PER_PAGE_OPTIONS = Arrays.asList(10, 20, 25, 30, 50, 100);
 
 	@Autowired
-	public SettingsController(SettingsService settingsService, UserRepository userRepository, DatabaseService databaseService, AccountService accountService, CategoryService categoryService, ImportService importService, BudgetMasterUpdateService budgetMasterUpdateService, BackupService scheduleTaskService)
+	public SettingsController(SettingsService settingsService, UserRepository userRepository, DatabaseService databaseService, AccountService accountService, CategoryService categoryService, ImportService importService, BudgetMasterUpdateService budgetMasterUpdateService, UpdateCheckService updateCheckService, BackupService scheduleTaskService)
 	{
 		this.settingsService = settingsService;
 		this.userRepository = userRepository;
@@ -72,6 +79,7 @@ public class SettingsController extends BaseController
 		this.categoryService = categoryService;
 		this.importService = importService;
 		this.budgetMasterUpdateService = budgetMasterUpdateService;
+		this.updateCheckService = updateCheckService;
 		this.scheduleTaskService = scheduleTaskService;
 	}
 
@@ -84,7 +92,8 @@ public class SettingsController extends BaseController
 	}
 
 	@PostMapping(value = "/save")
-	public String post(Model model, @ModelAttribute("Settings") Settings settings, BindingResult bindingResult,
+	public String post(WebRequest request, Model model,
+					   @ModelAttribute("Settings") Settings settings, BindingResult bindingResult,
 					   @RequestParam(value = "password") String password,
 					   @RequestParam(value = "passwordConfirmation") String passwordConfirmation,
 					   @RequestParam(value = "languageType") String languageType,
@@ -159,6 +168,8 @@ public class SettingsController extends BaseController
 		Localization.load();
 		categoryService.localizeDefaultCategories();
 
+		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.settings.saved"), NotificationType.SUCCESS));
+
 		return "redirect:/settings";
 	}
 
@@ -225,7 +236,7 @@ public class SettingsController extends BaseController
 	}
 
 	@PostMapping(value = "/database/delete")
-	public String deleteDatabase(Model model, @RequestParam("verificationCode") String verificationCode,
+	public String deleteDatabase(WebRequest request, @RequestParam("verificationCode") String verificationCode,
 								 @RequestParam("verificationUserInput") String verificationUserInput)
 	{
 		if(verificationUserInput.equals(verificationCode))
@@ -233,13 +244,15 @@ public class SettingsController extends BaseController
 			LOGGER.info("Deleting database...");
 			databaseService.reset();
 			LOGGER.info("Deleting database DONE.");
+
+			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.settings.database.delete.success"), NotificationType.SUCCESS));
+
+			return "redirect:/settings";
 		}
 		else
 		{
 			return "redirect:/settings/database/requestDelete";
 		}
-
-		return "redirect:/settings";
 	}
 
 	@GetMapping("/database/requestImport")
@@ -296,9 +309,14 @@ public class SettingsController extends BaseController
 	}
 
 	@GetMapping("/updateSearch")
-	public String updateSearch()
+	public String updateSearch(WebRequest request)
 	{
 		budgetMasterUpdateService.getUpdateService().fetchCurrentVersion();
+
+		if(updateCheckService.isUpdateAvailable())
+		{
+			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.settings.update.available", updateCheckService.getAvailableVersionString()), NotificationType.INFO));
+		}
 		return "redirect:/settings";
 	}
 
