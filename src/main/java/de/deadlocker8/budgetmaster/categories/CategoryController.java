@@ -3,15 +3,17 @@ package de.deadlocker8.budgetmaster.categories;
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
-import de.deadlocker8.budgetmaster.utils.Colors;
-import de.deadlocker8.budgetmaster.utils.Mappings;
-import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
+import de.deadlocker8.budgetmaster.utils.*;
+import de.deadlocker8.budgetmaster.utils.notification.Notification;
+import de.deadlocker8.budgetmaster.utils.notification.NotificationType;
 import de.thecodelabs.utils.util.ColorUtilsNonJavaFX;
+import de.thecodelabs.utils.util.Localization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -65,11 +67,21 @@ public class CategoryController extends BaseController
 	}
 
 	@PostMapping(value = "/{ID}/delete")
-	public String deleteCategory(@PathVariable("ID") Integer ID, @ModelAttribute("DestinationCategory") DestinationCategory destinationCategory)
+	public String deleteCategory(WebRequest request, @PathVariable("ID") Integer ID, @ModelAttribute("DestinationCategory") DestinationCategory destinationCategory)
 	{
 		if(categoryService.isDeletable(ID))
 		{
-			categoryService.deleteCategory(ID, destinationCategory.getCategory());
+			final Optional<Category> categoryOptional = categoryService.findById(ID);
+			if(categoryOptional.isPresent())
+			{
+				final Category categoryToDelete = categoryOptional.get();
+				categoryService.deleteCategory(ID, destinationCategory.getCategory());
+				WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.category.delete.success", categoryToDelete.getName()), NotificationType.SUCCESS));
+			}
+		}
+		else
+		{
+			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.category.delete.not.deletable", String.valueOf(ID)), NotificationType.ERROR));
 		}
 
 		return "redirect:/categories";
@@ -83,6 +95,7 @@ public class CategoryController extends BaseController
 		Category emptyCategory = new Category(null, ColorUtilsNonJavaFX.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase(), CategoryType.CUSTOM);
 		model.addAttribute("category", emptyCategory);
 		model.addAttribute("settings", settingsService.getSettings());
+
 		return "categories/newCategory";
 	}
 
