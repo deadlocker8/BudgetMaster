@@ -4,6 +4,8 @@ import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryRepository;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
+import de.deadlocker8.budgetmaster.charts.Chart;
+import de.deadlocker8.budgetmaster.charts.ChartService;
 import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
@@ -34,16 +36,18 @@ public class ImportService
 	private final TransactionRepository transactionRepository;
 	private final TemplateRepository templateRepository;
 	private final TagRepository tagRepository;
+	private final ChartService chartService;
 
 	private Database database;
 
 	@Autowired
-	public ImportService(CategoryRepository categoryRepository, TransactionRepository transactionRepository, TemplateRepository templateRepository, TagRepository tagRepository)
+	public ImportService(CategoryRepository categoryRepository, TransactionRepository transactionRepository, TemplateRepository templateRepository, TagRepository tagRepository, ChartService chartService)
 	{
 		this.categoryRepository = categoryRepository;
 		this.transactionRepository = transactionRepository;
 		this.templateRepository = templateRepository;
 		this.tagRepository = tagRepository;
+		this.chartService = chartService;
 	}
 
 	public Map<ImportEntityType, Integer> importDatabase(Database database, AccountMatchList accountMatchList)
@@ -57,7 +61,7 @@ public class ImportService
 		numberOfImportedEntitiesByType.put(ImportEntityType.ACCOUNT, importAccounts(accountMatchList));
 		numberOfImportedEntitiesByType.put(ImportEntityType.TRANSACTION, importTransactions());
 		numberOfImportedEntitiesByType.put(ImportEntityType.TEMPLATE, importTemplates());
-		numberOfImportedEntitiesByType.put(ImportEntityType.CHART, 0);
+		numberOfImportedEntitiesByType.put(ImportEntityType.CHART, importCharts());
 		LOGGER.debug("Importing database DONE");
 
 		return numberOfImportedEntitiesByType;
@@ -266,7 +270,25 @@ public class ImportService
 			template.setID(null);
 			templateRepository.save(template);
 		}
-		LOGGER.debug("Importing transactions DONE");
+		LOGGER.debug("Importing templates DONE");
 		return templates.size();
+	}
+
+	private Integer importCharts()
+	{
+		List<Chart> charts = database.getCharts();
+		LOGGER.debug(MessageFormat.format("Importing {0} charts...", charts.size()));
+		for(int i = 0; i < charts.size(); i++)
+		{
+			Chart chart = charts.get(i);
+			LOGGER.debug(MessageFormat.format("Importing chart {0}/{1} (name: {2})", i + 1, charts.size(), chart.getName()));
+
+			final int highestUsedID = chartService.getHighestUsedID();
+			chart.setID(highestUsedID + 1);
+
+			chartService.getRepository().save(chart);
+		}
+		LOGGER.debug("Importing charts DONE");
+		return charts.size();
 	}
 }
