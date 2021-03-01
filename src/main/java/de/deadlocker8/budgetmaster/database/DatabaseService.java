@@ -228,10 +228,10 @@ public class DatabaseService
 		List<Transaction> transactions = transactionService.getRepository().findAll();
 		List<Transaction> filteredTransactions = filterRepeatingTransactions(transactions);
 		List<Template> templates = templateService.getRepository().findAll();
-		LOGGER.debug("Reduced " + transactions.size() + " transactions to " + filteredTransactions.size());
+		LOGGER.debug(MessageFormat.format("Reduced {0} transactions to {1}", transactions.size(), filteredTransactions.size()));
 
 		Database database = new Database(categories, accounts, filteredTransactions, templates);
-		LOGGER.debug("Created database for JSON with " + database.getTransactions().size() + " transactions, " + database.getCategories().size() + " categories and " + database.getAccounts().size() + " accounts and " + database.getTemplates().size() + " templates");
+		LOGGER.debug(MessageFormat.format("Created database for JSON with {0} transactions, {1} categories and {2} accounts and {3} templates", database.getTransactions().size(), database.getCategories().size(), database.getAccounts().size(), database.getTemplates().size()));
 		return database;
 	}
 
