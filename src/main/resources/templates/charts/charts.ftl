@@ -161,11 +161,17 @@
                                 <td class="quick-date" data-quick="2">${locale.getString("chart.quick.this.year")}</td>
                                 <td class="quick-date" data-quick="3">${locale.getString("chart.quick.all")}</td>
                             </tr>
+                             <tr>
+                                <td class="quick-date" data-quick="4">${locale.getString("chart.quick.last.week")}</td>
+                                <td class="quick-date" data-quick="5">${locale.getString("chart.quick.last.month")}</td>
+                                <td class="quick-date" data-quick="6">${locale.getString("chart.quick.last.year")}</td>
+                                <td class="quick-date" data-quick="7">${locale.getString("chart.quick.until.endOfLastYear")}</td>
+                            </tr>
                             <tr>
-                                <td class="quick-date" data-quick="4">${locale.getString("chart.quick.last.week.days")}</td>
-                                <td class="quick-date" data-quick="5">${locale.getString("chart.quick.last.month.days")}</td>
-                                <td class="quick-date" data-quick="6">${locale.getString("chart.quick.last.year.days")}</td>
-                                <td class="quick-date" data-quick="7">${locale.getString("chart.quick.until.today")}</td>
+                                <td class="quick-date" data-quick="8">${locale.getString("chart.quick.last.week.days")}</td>
+                                <td class="quick-date" data-quick="9">${locale.getString("chart.quick.last.month.days")}</td>
+                                <td class="quick-date" data-quick="10">${locale.getString("chart.quick.last.year.days")}</td>
+                                <td class="quick-date" data-quick="11">${locale.getString("chart.quick.until.today")}</td>
                             </tr>
                         </table>
                     </div>
