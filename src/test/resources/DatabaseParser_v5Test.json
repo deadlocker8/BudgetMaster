@@ -18,7 +18,8 @@
             "ID": 3,
             "name": "0815",
             "color": "#ffcc00",
-            "type": "CUSTOM"
+            "type": "CUSTOM",
+            "icon": "fas fa-icons"
         }
     ],
     "accounts": [
@@ -69,7 +70,8 @@
                 "ID": 3,
                 "name": "0815",
                 "color": "#ffcc00",
-                "type": "CUSTOM"
+                "type": "CUSTOM",
+                "icon": "fas fa-icons"
             },
             "name": "Simple",
             "description": "",
@@ -188,7 +190,8 @@
                 "ID": 3,
                 "name": "0815",
                 "color": "#ffcc00",
-                "type": "CUSTOM"
+                "type": "CUSTOM",
+                "icon": "fas fa-icons"
             },
             "name": "Transfer",
             "description": "",
@@ -240,7 +243,8 @@
                 "ID": 3,
                 "name": "0815",
                 "color": "#ffcc00",
-                "type": "CUSTOM"
+                "type": "CUSTOM",
+                "icon": "fas fa-icons"
             },
             "name": "Income",
             "templateName": "My Transfer Template",

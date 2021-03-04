@@ -1,5 +1,7 @@
 package de.deadlocker8.budgetmaster.unit.database;
 
+import de.deadlocker8.budgetmaster.categories.Category;
+import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.charts.Chart;
 import de.deadlocker8.budgetmaster.charts.ChartType;
 import de.deadlocker8.budgetmaster.database.Database;
@@ -55,6 +57,27 @@ public class DatabaseParser_v5Test
 
 			assertThat(database.getCharts()).hasSize(1)
 					.contains(chart);
+		}
+		catch(IOException | URISyntaxException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void test_Categories()
+	{
+		try
+		{
+			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v5Test.json").toURI())));
+			DatabaseParser_v4 importer = new DatabaseParser_v5(json);
+			Database database = importer.parseDatabaseFromJSON();
+
+			final Category category = new Category("0815", "#ffcc00", CategoryType.CUSTOM, "fas fa-icons");
+			category.setID(3);
+
+			assertThat(database.getCategories()).hasSize(3)
+					.contains(category);
 		}
 		catch(IOException | URISyntaxException e)
 		{
