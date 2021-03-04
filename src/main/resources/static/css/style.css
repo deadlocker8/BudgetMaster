@@ -560,6 +560,10 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     background-color: rgba(0, 0, 0, 0.35);
 }
 
+[data-theme="dark"] ul.dropdown-content.select-dropdown li:hover {
+    background-color: rgba(0, 0, 0, 0.08);
+}
+
 /* switch color */
 [data-theme="dark"] .switch label input[type="checkbox"]:checked + .lever {
     background-color: rgba(131, 190, 240, 0.6)
