@@ -103,7 +103,11 @@
     <td>
         <div class="category-circle" style="background-color: ${category.color}">
             <span style="color: ${category.getAppropriateTextColor()}">
-                ${categoryName?capitalize[0]}
+                <#if category.getIcon()??>
+                    <i class="${category.getIcon()}"></i>
+                <#else>
+                    ${categoryName?capitalize[0]}
+                </#if>
             </span>
         </div>
     </td>
