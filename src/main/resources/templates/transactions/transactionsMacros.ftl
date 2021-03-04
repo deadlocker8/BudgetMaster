@@ -17,18 +17,10 @@
     <#import "../categories/categoriesFunctions.ftl" as categoriesFunctions>
     <div class="col s3 l1 xl1 ${alignment}">
         <div class="hide-on-med-and-down">
-            <div class="category-circle" style="background-color: ${transaction.category.color}">
-                <span style="color: ${transaction.category.getAppropriateTextColor()}">
-                    ${categoriesFunctions.getCategoryName(transaction.category)?capitalize[0]}
-                </span>
-            </div>
+            <@categoriesFunctions.categoryCircle transaction.category/>
         </div>
         <div class="hide-on-large-only">
-            <div class="category-circle-small" style="background-color: ${transaction.category.color}">
-                <span style="color: ${transaction.category.getAppropriateTextColor()}">
-                    ${categoriesFunctions.getCategoryName(transaction.category)?capitalize[0]}
-                </span>
-            </div>
+            <@categoriesFunctions.categoryCircle transaction.category "category-circle-small"/>
         </div>
     </div>
 </#macro>

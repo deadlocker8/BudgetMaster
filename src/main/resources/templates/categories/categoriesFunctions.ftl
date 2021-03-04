@@ -11,3 +11,17 @@
         <#return "">
     </#if>
 </#function>
+
+<#macro categoryCircle category classes="">
+    <#assign categoryName=getCategoryName(category)>
+
+    <div class="category-circle ${classes}" style="background-color: ${category.color}">
+        <span style="color: ${category.getAppropriateTextColor()}">
+            <#if category.getIcon()??>
+                <i class="${category.getIcon()}"></i>
+            <#else>
+                ${categoryName?capitalize[0]}
+            </#if>
+        </span>
+    </div>
+</#macro>

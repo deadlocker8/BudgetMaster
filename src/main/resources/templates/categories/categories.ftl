@@ -41,7 +41,7 @@
                             <#assign categoryName=categoriesFunctions.getCategoryName(category)>
                             <#assign usageCount=helpers.getUsageCountForCategory(category)/>
                             <tr>
-                                <@categoryCircle category categoryName/>
+                                <td><@categoriesFunctions.categoryCircle category/></td>
                                 <td>${categoryName} </td>
                                 <td>${usageCount}</td>
                                 <td>
@@ -97,18 +97,3 @@
         <script src="<@s.url '/js/categorySelect.js'/>"></script>
     </@header.body>
 </html>
-
-
-<#macro categoryCircle category categoryName>
-    <td>
-        <div class="category-circle" style="background-color: ${category.color}">
-            <span style="color: ${category.getAppropriateTextColor()}">
-                <#if category.getIcon()??>
-                    <i class="${category.getIcon()}"></i>
-                <#else>
-                    ${categoryName?capitalize[0]}
-                </#if>
-            </span>
-        </div>
-    </td>
-</#macro>
