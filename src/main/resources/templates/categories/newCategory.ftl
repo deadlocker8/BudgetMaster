@@ -75,6 +75,16 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <#-- icon -->
+                            <div class="row">
+                                <div class="input-field col s12 m12 l8 offset-l2">
+                                    <i class="fas fa-icons prefix"></i>
+                                    <input id="category-icon" type="text" name="icon" <@validation.validation "icon"/> value="<#if category.getIcon()??>${category.getIcon()}</#if>">
+                                    <label for="category-icon">${locale.getString("category.new.label.icon")}</label>
+                                </div>
+                            </div>
+
                             <br>
 
                             <#-- buttons -->
