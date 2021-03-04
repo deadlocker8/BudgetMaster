@@ -23,19 +23,30 @@ public class Category
 	@Size(min = 1)
 	@Expose
 	private String name;
+
 	@Expose
 	private String color;
+
 	@Expose
 	private CategoryType type;
+
+	@Expose
+	private String icon;
 
 	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
 	private List<Transaction> referringTransactions;
 
 	public Category(String name, String color, CategoryType type)
 	{
+		this(name, color, type, null);
+	}
+
+	public Category(String name, String color, CategoryType type, String icon)
+	{
 		this.name = name;
 		this.color = color;
 		this.type = type;
+		this.icon = icon;
 	}
 
 	public Category()
@@ -82,6 +93,16 @@ public class Category
 		this.type = type;
 	}
 
+	public String getIcon()
+	{
+		return icon;
+	}
+
+	public void setIcon(String icon)
+	{
+		this.icon = icon;
+	}
+
 	public List<Transaction> getReferringTransactions()
 	{
 		return referringTransactions;
@@ -105,6 +126,7 @@ public class Category
 				", name='" + name + '\'' +
 				", color='" + color + '\'' +
 				", type=" + type +
+				", icon='" + icon + '\'' +
 				'}';
 	}
 
@@ -117,12 +139,13 @@ public class Category
 		return Objects.equals(ID, category.ID) &&
 				Objects.equals(name, category.name) &&
 				Objects.equals(color, category.color) &&
-				type == category.type;
+				type == category.type &&
+				Objects.equals(icon, category.icon);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, name, color, type);
+		return Objects.hash(ID, name, color, type, icon);
 	}
 }
