@@ -14,7 +14,9 @@ $(document).ready(function()
                 this.parentNode.querySelector('.category-select-option.selected').classList.remove('selected');
                 this.classList.add('selected');
 
-                this.closest('.category-select').querySelector('.category-select__trigger #category-select-selected-category').innerHTML = this.innerHTML;
+                let categorySelector = this.closest('.category-select').querySelector('.category-select__trigger #category-select-selected-category');
+                categorySelector.innerHTML = this.innerHTML;
+                categorySelector.querySelector('.category-circle').classList.add('no-margin-left');
 
                 document.getElementById('hidden-input-category').value = this.dataset.value;
             }

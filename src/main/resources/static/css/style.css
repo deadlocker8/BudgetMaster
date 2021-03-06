@@ -134,6 +134,10 @@ main {
     margin-top: 0;
 }
 
+.no-margin-left {
+    margin-left: 0 !important;
+}
+
 .no-margin {
     margin: 0 !important;
 }

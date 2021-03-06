@@ -96,7 +96,7 @@
             <label class="input-label" for="transaction-category">${labelText}</label>
             <div class="category-select-wrapper" id="transaction-category">
                 <div class="category-select">
-                    <div class="category-select__trigger"><div id="category-select-selected-category"><#if selectedCategory??><@categorySelectOptionContent selectedCategory/></#if></div>
+                    <div class="category-select__trigger"><div id="category-select-selected-category"><#if selectedCategory??><@categorySelectOptionContent selectedCategory "no-margin-left"/></#if></div>
                         <div class="category-select-arrow"></div>
                     </div>
                     <div class="category-select-options">
@@ -136,8 +136,8 @@
     </div>
 </#macro>
 
-<#macro categorySelectOptionContent category>
-        <@categoriesFunctions.categoryCircle category "category-circle-small"/>
+<#macro categorySelectOptionContent category classes="">
+        <@categoriesFunctions.categoryCircle category "category-circle-small ${classes}"/>
         ${categoriesFunctions.getCategoryName(category)}
 </#macro>
 
