@@ -96,13 +96,11 @@
             <label class="input-label" for="transaction-category">${labelText}</label>
             <div class="category-select-wrapper" id="transaction-category">
                 <div class="category-select">
-                    <div class="category-select__trigger"><span><#if selectedCategory??>${categoriesFunctions.getCategoryName(selectedCategory)}</#if></span>
+                    <div class="category-select__trigger"><div id="category-select-selected-category"><#if selectedCategory??><@categorySelectOptionContent selectedCategory/></#if></div>
                         <div class="category-select-arrow"></div>
                     </div>
                     <div class="category-select-options">
                         <#list categories as category>
-                            <#assign categoryInfos=categoriesFunctions.getCategoryName(category) + "@@@" + category.getColor() + "@@@" + category.getAppropriateTextColor() + "@@@" + category.getID()?c>
-
                             <#if category.getType() == "REST">
                                 <#continue>
                             </#if>
@@ -134,9 +132,13 @@
 
 <#macro categorySelectOption category isSelected>
     <div class="category-select-option <#if isSelected>selected</#if>" data-value="${category.getID()?c}">
-        <@categoriesFunctions.categoryCircle category "category-circle-small"/>
-        <span class="category-select-category-name">${categoriesFunctions.getCategoryName(category)}</span>
+        <@categorySelectOptionContent category/>
     </div>
+</#macro>
+
+<#macro categorySelectOptionContent category>
+        <@categoriesFunctions.categoryCircle category "category-circle-small"/>
+        ${categoriesFunctions.getCategoryName(category)}
 </#macro>
 
 <#macro transactionStartDate transaction currentDate>

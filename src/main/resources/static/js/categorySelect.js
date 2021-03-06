@@ -14,8 +14,7 @@ $(document).ready(function()
                 this.parentNode.querySelector('.category-select-option.selected').classList.remove('selected');
                 this.classList.add('selected');
 
-                let categoryName = this.querySelector('.category-select-category-name').textContent;
-                this.closest('.category-select').querySelector('.category-select__trigger span').textContent = categoryName;
+                this.closest('.category-select').querySelector('.category-select__trigger #category-select-selected-category').innerHTML = this.innerHTML;
 
                 document.getElementById('hidden-input-category').value = this.dataset.value;
             }
