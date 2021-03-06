@@ -245,7 +245,7 @@ public class NewTransactionRecurringTest
 		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEqualTo("15.00");
 		assertThat(driver.findElement(By.id("transaction-datepicker")).getAttribute("value")).isEqualTo("01.05.2019");
 		assertThat(driver.findElement(By.id("transaction-description")).getAttribute("value")).isEqualTo("Lorem Ipsum");
-		assertThat(driver.findElement(By.id("transaction-category")).getAttribute("value")).isEqualTo("3");
+		assertThat(driver.findElement(By.cssSelector("#category-select-selected-category .category-circle")).getAttribute("data-value")).isEqualTo("3");
 
 		final List<WebElement> chips = driver.findElements(By.cssSelector("#transaction-chips .chip"));
 		assertThat(chips).hasSize(1);
