@@ -17,7 +17,7 @@
 
     <div class="category-circle ${classes}" style="background-color: ${category.color}">
         <span style="color: ${category.getAppropriateTextColor()}">
-            <#if category.getIcon()??>
+            <#if category.getIcon()?has_content>
                 <i class="${category.getIcon()}"></i>
             <#else>
                 ${categoryName?capitalize[0]}
