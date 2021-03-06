@@ -125,7 +125,7 @@ public class NewTransactionRecurringTest
 		driver.findElement(By.id("transaction-name")).sendKeys(name);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
 		driver.findElement(By.id("transaction-description")).sendKeys(description);
-		TransactionTestHelper.selectOptionFromDropdown(driver, By.id("categoryWrapper"), categoryName);
+		TransactionTestHelper.selectCategoryByName(driver, categoryName);
 
 		// fill repeating options
 		driver.findElement(By.id("transaction-repeating-modifier")).sendKeys(repeatingModifier);
@@ -189,7 +189,7 @@ public class NewTransactionRecurringTest
 		driver.findElement(By.id("transaction-name")).sendKeys(name);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
 		driver.findElement(By.id("transaction-description")).sendKeys(description);
-		TransactionTestHelper.selectOptionFromDropdown(driver, By.id("categoryWrapper"), categoryName);
+		TransactionTestHelper.selectCategoryByName(driver, categoryName);
 
 		// fill repeating options
 		driver.findElement(By.id("transaction-repeating-modifier")).sendKeys(repeatingModifier);

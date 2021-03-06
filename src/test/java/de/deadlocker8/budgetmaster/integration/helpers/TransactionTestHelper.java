@@ -56,4 +56,13 @@ public class TransactionTestHelper
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", itemToSelect);
 		itemToSelect.click();
 	}
+
+	public static void selectCategoryByName(WebDriver driver, String categoryName)
+	{
+		final WebElement categorySelect = driver.findElement(By.className("category-select"));
+		categorySelect.click();
+		driver.findElements(By.className("category-select-category-name")).stream()
+				.filter(webElement -> webElement.getText().equals(categoryName))
+				.findFirst().orElseThrow().click();
+	}
 }

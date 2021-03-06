@@ -120,7 +120,7 @@ public class NewTransactionTransferTest
 		driver.findElement(By.id("transaction-name")).sendKeys(name);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
 		driver.findElement(By.id("transaction-description")).sendKeys(description);
-		TransactionTestHelper.selectOptionFromDropdown(driver, By.id("categoryWrapper"), categoryName);
+		TransactionTestHelper.selectCategoryByName(driver, categoryName);
 
 		// submit form
 		driver.findElement(By.id("button-save-transaction")).click();

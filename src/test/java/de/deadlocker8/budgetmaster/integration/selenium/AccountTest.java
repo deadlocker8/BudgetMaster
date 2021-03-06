@@ -222,7 +222,7 @@ public class AccountTest
 		// fill form
 		driver.findElement(By.id("transaction-name")).sendKeys("My transaction");
 		driver.findElement(By.id("transaction-amount")).sendKeys("15.00");
-		TransactionTestHelper.selectOptionFromDropdown(driver, By.id("categoryWrapper"), "sdfdsf");
+		TransactionTestHelper.selectCategoryByName(driver, "sdfdsf");
 
 		// submit form
 		driver.findElement(By.id("button-save-transaction")).click();

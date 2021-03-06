@@ -159,9 +159,9 @@ public class HotkeyTest
 		// fill mandatory inputs
 		driver.findElement(By.id("transaction-name")).sendKeys("My Transaction");
 		driver.findElement(By.id("transaction-amount")).sendKeys("15.00");
-		TransactionTestHelper.selectOptionFromDropdown(driver, By.id("categoryWrapper"), "sdfdsf");
+		TransactionTestHelper.selectCategoryByName(driver, "sdfdsf");
 
-		WebElement categoryWrapper = driver.findElement(By.id("categoryWrapper"));
+		WebElement categoryWrapper = driver.findElement(By.className("category-select"));
 		Action seriesOfActions = new Actions(driver)
 				.keyDown(categoryWrapper, Keys.CONTROL)
 				.sendKeys(categoryWrapper, Keys.ENTER)
