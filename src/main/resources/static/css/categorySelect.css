@@ -101,3 +101,19 @@
     left: 3px;
     transform: rotate(-45deg);
 }
+
+
+/* dark theme */
+
+[data-theme="dark"] .category-select-options,
+[data-theme="dark"] .category-select-option {
+    background-color: #CCCCCC;
+}
+
+[data-theme="dark"] .category-select-option.selected {
+    background-color: #A6A6A6;
+}
+
+[data-theme="dark"] .category-select-option:hover {
+    background-color: #EBEBEB;
+}
