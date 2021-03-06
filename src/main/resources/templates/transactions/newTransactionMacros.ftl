@@ -91,45 +91,52 @@
 <#import "../categories/categoriesFunctions.ftl" as categoriesFunctions>
 <#macro categorySelect categories selectedCategory inputClasses labelText>
     <div class="row">
-        <div class="input-field ${inputClasses}" id="categoryWrapper">
+        <div class="input-field ${inputClasses}">
             <i class="material-icons prefix">label</i>
-            <select id="transaction-category" name="category" <@validation.validation "category"/>>
-                <#list categories as category>
-                    <#assign categoryInfos=categoriesFunctions.getCategoryName(category) + "@@@" + category.getColor() + "@@@" + category.getAppropriateTextColor() + "@@@" + category.getID()?c>
-
-                    <#if category.getType() == "REST">
-                        <#continue>
-                    </#if>
-
-                    <#if selectedCategory??>
-                        <#if selectedCategory.getID()?c == category.getID()?c>
-                            <option selected value="${category.getID()?c}">${categoryInfos}</option>
-                        <#else>
-                            <option value="${category.getID()?c}">${categoryInfos}</option>
-                        </#if>
-                        <#continue>
-                    </#if>
-
-                    <#if category.getType() == "NONE">
-                        <option selected value="${category.getID()?c}">${categoryInfos}</option>
-                        <#continue>
-                    </#if>
-
-                    <option value="${category.getID()?c}">${categoryInfos}</option>
-                </#list>
-            </select>
             <label class="input-label" for="transaction-category">${labelText}</label>
+            <div class="category-select-wrapper" id="transaction-category">
+                <div class="category-select">
+                    <div class="category-select__trigger"><span><#if selectedCategory??>${categoriesFunctions.getCategoryName(selectedCategory)}</#if></span>
+                        <div class="category-select-arrow"></div>
+                    </div>
+                    <div class="category-select-options">
+                        <#list categories as category>
+                            <#assign categoryInfos=categoriesFunctions.getCategoryName(category) + "@@@" + category.getColor() + "@@@" + category.getAppropriateTextColor() + "@@@" + category.getID()?c>
+
+                            <#if category.getType() == "REST">
+                                <#continue>
+                            </#if>
+
+                            <#if selectedCategory??>
+                                <#if selectedCategory.getID()?c == category.getID()?c>
+                                    <@categorySelectOption category true/>
+                                <#else>
+                                    <@categorySelectOption category false/>
+                                </#if>
+                                <#continue>
+                            </#if>
+
+                            <#if category.getType() == "NONE">
+                                <@categorySelectOption category true/>
+                                <#continue>
+                            </#if>
+
+                            <@categorySelectOption category false/>
+                        </#list>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <#-- pass selected category to JS in order to select current value for materialize select -->
-    <script>
-        <#if selectedCategory??>
-        selectedCategory = "${selectedCategory.getID()?c}";
-        <#else>
-        selectedCategory = "${helpers.getIDOfNoCatgeory()?c}";
-        </#if>
-    </script>
+    <input type="hidden" name="category" id="hidden-input-category"/>
+</#macro>
+
+<#macro categorySelectOption category isSelected>
+    <div class="category-select-option <#if isSelected>selected</#if>" data-value="${category.getID()?c}">
+        <@categoriesFunctions.categoryCircle category "category-circle-small"/>
+        <span class="category-select-category-name">${categoriesFunctions.getCategoryName(category)}</span>
+    </div>
 </#macro>
 
 <#macro transactionStartDate transaction currentDate>

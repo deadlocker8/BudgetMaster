@@ -1,0 +1,109 @@
+.category-select-wrapper {
+    position: relative;
+    user-select: none;
+    margin-left: 3rem;
+    margin-top: 3rem
+}
+
+.category-select {
+    display: flex;
+    flex-direction: column;
+    border-width: 0 2px 0 2px;
+    border-style: solid;
+    border-color: #394a6d;
+}
+
+.category-select__trigger {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 22px;
+    font-size: 20px;
+    font-weight: 300;
+    color: #3b3b3b;
+    height: 60px;
+    line-height: 60px;
+    background: #ffffff;
+    cursor: pointer;
+    border-width: 2px 0 2px 0;
+    border-style: solid;
+    border-color: #394a6d;
+}
+
+.category-select-options {
+    position: absolute;
+    display: block;
+    top: 100%;
+    left: 0;
+    right: 0;
+    border: 2px solid #394a6d;
+    border-top: 0;
+    background: #fff;
+    transition: all 0.5s;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.category-select.open .category-select-options {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+}
+
+.category-select-option {
+    position: relative;
+    display: block;
+    font-size: 1.2rem;
+    color: #3b3b3b;
+    line-height: 3rem;
+    cursor: pointer;
+}
+
+.category-select-option:hover {
+    cursor: pointer;
+    background-color: #b2b2b2;
+}
+
+.category-select-option.selected {
+    color: #ffffff;
+    background-color: #305c91;
+}
+
+.category-select-arrow {
+    position: relative;
+    height: 15px;
+    width: 15px;
+}
+
+.category-select-arrow::before,
+.category-select-arrow::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 0.15rem;
+    height: 100%;
+    background-color: #394a6d;
+}
+
+.category-select-arrow::before {
+    left: -5px;
+    transform: rotate(-45deg);
+}
+
+.category-select-arrow::after {
+    left: 5px;
+    transform: rotate(45deg);
+}
+
+.open .category-select-arrow::before {
+    left: -5px;
+    transform: rotate(45deg);
+}
+
+.open .category-select-arrow::after {
+    left: 5px;
+    transform: rotate(-45deg);
+}

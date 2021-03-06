@@ -13,6 +13,7 @@
         <@header.style "datepicker"/>
         <@header.style "categories"/>
         <@header.style "collapsible"/>
+        <@header.style "categorySelect"/>
         <#import "/spring.ftl" as s>
     </head>
     <@header.body>

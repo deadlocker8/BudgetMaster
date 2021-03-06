@@ -1,75 +1,35 @@
 $(document).ready(function()
 {
-    if($("#transaction-category").length)
+    document.querySelector('.category-select-wrapper').addEventListener('click', function()
     {
-        beautifyCategorySelect();
+        this.querySelector('.category-select').classList.toggle('open');
+    })
+
+    for(const option of document.querySelectorAll(".category-select-option"))
+    {
+        option.addEventListener('click', function()
+        {
+            if(!this.classList.contains('selected'))
+            {
+                this.parentNode.querySelector('.category-select-option.selected').classList.remove('selected');
+                this.classList.add('selected');
+
+                let categoryName = this.querySelector('.category-select-category-name').textContent;
+                this.closest('.category-select').querySelector('.category-select__trigger span').textContent = categoryName;
+
+                document.getElementById('hidden-input-category').value = this.dataset.value;
+            }
+        })
     }
+
+    window.addEventListener('click', function(e)
+    {
+        for(const select of document.querySelectorAll('.category-select'))
+        {
+            if(!select.contains(e.target))
+            {
+                select.classList.remove('open');
+            }
+        }
+    });
 });
-
-function beautifyCategorySelect()
-{
-    let counter = 0;
-
-    let select = M.FormSelect.init(document.getElementById('transaction-category'), {
-        dropdownOptions: {
-            onCloseStart: function()
-            {
-                let listItems = select.dropdownOptions.childNodes;
-                let selectedItem;
-                for(let i = 0; i < listItems.length; i++)
-                {
-                    let currentItem = listItems[i];
-                    if(currentItem.classList.contains("selected"))
-                    {
-                        selectedItem = currentItem.textContent;
-                        break;
-                    }
-                }
-                select.input.value = selectedItem;
-            }
-        }
-    });
-
-    select.dropdownOptions.childNodes.forEach(function(item)
-    {
-        let currentSpan = jQuery(item.querySelector('span'));
-        let categoryInfo = currentSpan.text().split("@@@");
-        let categoryName = categoryInfo[0];
-        let firstLetter = capitalizeFirstLetter(categoryName);
-        let categoryColor = categoryInfo[1];
-        let appropriateTextColor = categoryInfo[2];
-
-        currentSpan.text(categoryName);
-        currentSpan.data("infos", categoryInfo);
-        currentSpan.addClass("category-select");
-        currentSpan.parent().prepend('<div class="category-circle-small category-select" id="category-' + counter + '" style="background-color: ' + categoryColor + '"><span></span></div>');
-        $('#categoryWrapper').parent().append('<style>#category-' + counter + ':after{content: "' + firstLetter + '"; color: ' + appropriateTextColor + ';}</style>');
-
-        currentSpan.click(function()
-        {
-            select.input.value = categoryName;
-        });
-        counter++;
-    });
-
-    // select current category from code again in order to avoid showing the full infos text (e.g. Test@@@#FFFFFF@#000000@@@1) in the input field by materialize
-    if(typeof selectedCategory !== 'undefined')
-    {
-        let listItems = select.dropdownOptions.childNodes;
-        for(let i = 0; i < listItems.length; i++)
-        {
-            let currentSpan = jQuery(listItems[i].querySelector('span.category-select'));
-            let categoryID = currentSpan.data("infos")[3];
-            if(categoryID === selectedCategory)
-            {
-                currentSpan.trigger("click");
-                break;
-            }
-        }
-    }
-}
-
-function capitalizeFirstLetter(text)
-{
-    return text.charAt(0).toUpperCase();
-}
