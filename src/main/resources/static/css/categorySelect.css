@@ -38,6 +38,8 @@
     pointer-events: none;
     z-index: 2;
     background-color: var(--color-white);
+    overflow: auto;
+    max-height: 25rem;
 }
 
 .category-select.open .category-select-options {
