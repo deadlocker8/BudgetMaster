@@ -127,7 +127,7 @@
         </div>
     </div>
 
-    <input type="hidden" name="category" id="hidden-input-category"/>
+    <input type="hidden" name="category" id="hidden-input-category" <#if selectedCategory??>value="${selectedCategory.getID()?c}"</#if>/>
 </#macro>
 
 <#macro categorySelectOption category isSelected>
