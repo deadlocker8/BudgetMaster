@@ -37,9 +37,8 @@ $(document).ready(function()
     if($("#searchTemplate").length)
     {
         document.getElementById('searchTemplate').focus();
+        enableTemplateHotKeys();
     }
-
-    enableHotKeys();
 });
 
 let selectedTemplateName = null;
@@ -111,7 +110,7 @@ function searchTemplates(searchText)
     handleKeyUpOrDown(null);
 }
 
-function enableHotKeys()
+function enableTemplateHotKeys()
 {
     Mousetrap.bind('up', function()
     {
