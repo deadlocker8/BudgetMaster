@@ -136,9 +136,9 @@
     </div>
 </#macro>
 
-<#macro categorySelectOptionContent category classes="">
-        <@categoriesFunctions.categoryCircle category "category-circle-small ${classes}"/>
-        ${categoriesFunctions.getCategoryName(category)}
+<#macro categorySelectOptionContent category classes="" datasetValue="">
+        <@categoriesFunctions.categoryCircle category "category-circle-small ${classes}" datasetValue=""/>
+        <span class="category-select-category-name">${categoriesFunctions.getCategoryName(category)}</span>
 </#macro>
 
 <#macro transactionStartDate transaction currentDate>
