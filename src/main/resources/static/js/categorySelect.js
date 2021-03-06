@@ -1,11 +1,23 @@
 $(document).ready(function()
 {
-    document.querySelector('.category-select-wrapper').addEventListener('click', function()
+    let categorySelectTrigger = document.querySelector('.category-select-wrapper');
+    categorySelectTrigger.addEventListener('click', function()
     {
-        this.querySelector('.category-select').classList.toggle('open');
-        let categoryItems = document.getElementsByClassName('category-select-option');
-        selectCategoryItem(categoryItems, getIndexOfCategoryId(categoryItems, resetSelectedCategoryId()));
-    })
+        openCategorySelect();
+    });
+
+    categorySelectTrigger.addEventListener("keyup", function(event)
+    {
+        if(event.key === "Enter")
+        {
+            openCategorySelect();
+        }
+
+        if(event.key === "Escape")
+        {
+            closeCategorySelect();
+        }
+    });
 
     for(const option of document.querySelectorAll(".category-select-option"))
     {
@@ -21,7 +33,7 @@ $(document).ready(function()
 
         if(!categorySelect.contains(e.target))
         {
-            categorySelect.classList.remove('open');
+            closeCategorySelect();
             resetSelectedCategoryId();
             resetCategorySelection();
         }
@@ -29,6 +41,20 @@ $(document).ready(function()
 
     enableCategorySelectHotKeys();
 });
+
+function openCategorySelect()
+{
+    let categorySelectTrigger = document.querySelector('.category-select-wrapper');
+    categorySelectTrigger.querySelector('.category-select').classList.toggle('open');
+    let categoryItems = document.getElementsByClassName('category-select-option');
+    selectCategoryItem(categoryItems, getIndexOfCategoryId(categoryItems, resetSelectedCategoryId()));
+}
+
+function closeCategorySelect()
+{
+    let categorySelectTrigger = document.querySelector('.category-select-wrapper');
+    categorySelectTrigger.querySelector('.category-select').classList.remove('open');
+}
 
 function enableCategorySelectHotKeys()
 {
@@ -154,8 +180,7 @@ function confirmCategory(categoryItem)
 
         resetSelectedCategoryId();
         resetCategorySelection();
-
-        document.querySelector('.category-select').classList.remove('open');
+        closeCategorySelect();
     }
 }
 
