@@ -30,7 +30,7 @@ $(document).ready(function()
         {
             closeCategorySelect();
             resetSelectedCategoryId();
-            resetCategorySelection();
+            removeSelectionStyleClassFromAll();
         }
     });
 
@@ -65,31 +65,24 @@ function enableCategorySelectHotKeys()
 
     Mousetrap.bind('enter', function(event)
     {
-        if(!isSearchFocused())
+        if(isSearchFocused())
         {
-            if(isCategorySelectFocused())
-            {
-                confirmCategorySelection();
-            }
-            else
-            {
-                openCategorySelect();
-            }
+            return;
+        }
+
+        if(isCategorySelectFocused())
+        {
+            confirmCategorySelection();
+        }
+        else
+        {
+            openCategorySelect();
         }
     });
 }
 
 let selectedCategoryId = null;
 resetSelectedCategoryId();
-
-function resetCategorySelection()
-{
-    let categoryItems = document.getElementsByClassName('category-select-option');
-    for(let i = 0; i < categoryItems.length; i++)
-    {
-        toggleCategoryItemSelection(categoryItems[i], false);
-    }
-}
 
 function resetSelectedCategoryId()
 {
@@ -101,7 +94,7 @@ function resetSelectedCategoryId()
 
 function handleCategorySelectKeyUpOrDown(isUp)
 {
-    resetCategorySelection();
+    removeSelectionStyleClassFromAll();
 
     let categoryItems = document.getElementsByClassName('category-select-option');
     let previousIndex = getIndexOfCategoryId(categoryItems, selectedCategoryId);
@@ -114,6 +107,15 @@ function handleCategorySelectKeyUpOrDown(isUp)
     else
     {
         selectNextCategoryItemOnDown(categoryItems, previousIndex);
+    }
+}
+
+function removeSelectionStyleClassFromAll()
+{
+    let categoryItems = document.getElementsByClassName('category-select-option');
+    for(let i = 0; i < categoryItems.length; i++)
+    {
+        toggleCategoryItemSelection(categoryItems[i], false);
     }
 }
 
@@ -173,7 +175,7 @@ function confirmCategory(categoryItem)
     document.getElementById('hidden-input-category').value = categoryItem.dataset.value;
 
     resetSelectedCategoryId();
-    resetCategorySelection();
+    removeSelectionStyleClassFromAll();
     closeCategorySelect();
 }
 
