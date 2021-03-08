@@ -6,13 +6,8 @@ $(document).ready(function()
         openCategorySelect();
     });
 
-    categorySelectTrigger.addEventListener("keyup", function(event)
+    categorySelectTrigger.addEventListener("keydown", function(event)
     {
-        if(event.key === "Enter")
-        {
-            openCategorySelect();
-        }
-
         if(event.key === "Escape")
         {
             closeCategorySelect();
@@ -68,11 +63,19 @@ function enableCategorySelectHotKeys()
         handleCategorySelectKeyUpOrDown(false);
     });
 
-    Mousetrap.bind('enter', function()
+    Mousetrap.bind('enter', function(event)
     {
         if(!isSearchFocused())
         {
-            confirmCategorySelection();
+            let isCategorySelectOpen = document.querySelector('.category-select').classList.contains('open');
+            if(isCategorySelectOpen)
+            {
+                confirmCategorySelection();
+            }
+            else
+            {
+                openCategorySelect();
+            }
         }
     });
 }
@@ -103,12 +106,6 @@ function handleCategorySelectKeyUpOrDown(isUp)
 
     let categoryItems = document.getElementsByClassName('category-select-option');
     let previousIndex = getIndexOfCategoryId(categoryItems, selectedCategoryId);
-
-    if(isUp === null)
-    {
-        selectCategoryItem(categoryItems, previousIndex);
-        return;
-    }
 
     // select next item
     if(isUp)
@@ -164,24 +161,21 @@ function confirmCategorySelection()
 
 function confirmCategory(categoryItem)
 {
-    if(!categoryItem.classList.contains('selected'))
-    {
-        categoryItem.parentNode.querySelector('.category-select-option.selected').classList.remove('selected');
-        categoryItem.classList.add('selected');
+    categoryItem.parentNode.querySelector('.category-select-option.selected').classList.remove('selected');
+    categoryItem.classList.add('selected');
 
-        let categorySelector = document.querySelector('#category-select-selected-category');
-        categorySelector.innerHTML = categoryItem.innerHTML;
+    let categorySelector = document.querySelector('#category-select-selected-category');
+    categorySelector.innerHTML = categoryItem.innerHTML;
 
-        let categoryCircle = categorySelector.querySelector('.category-circle');
-        categoryCircle.classList.add('no-margin-left');
-        categoryCircle.dataset.value = categoryItem.dataset.value;
+    let categoryCircle = categorySelector.querySelector('.category-circle');
+    categoryCircle.classList.add('no-margin-left');
+    categoryCircle.dataset.value = categoryItem.dataset.value;
 
-        document.getElementById('hidden-input-category').value = categoryItem.dataset.value;
+    document.getElementById('hidden-input-category').value = categoryItem.dataset.value;
 
-        resetSelectedCategoryId();
-        resetCategorySelection();
-        closeCategorySelect();
-    }
+    resetSelectedCategoryId();
+    resetCategorySelection();
+    closeCategorySelect();
 }
 
 function selectNextCategoryItemOnDown(categoryItems, previousIndex)
