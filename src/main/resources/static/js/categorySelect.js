@@ -67,8 +67,7 @@ function enableCategorySelectHotKeys()
     {
         if(!isSearchFocused())
         {
-            let isCategorySelectOpen = document.querySelector('.category-select').classList.contains('open');
-            if(isCategorySelectOpen)
+            if(isCategorySelectFocused())
             {
                 confirmCategorySelection();
             }

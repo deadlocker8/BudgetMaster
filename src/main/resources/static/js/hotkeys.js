@@ -83,6 +83,9 @@ function isTemplateSearchFocused()
 
 function isCategorySelectFocused()
 {
-    let activeElement = document.activeElement;
-    return activeElement.id.includes('select-options');
+    let categorySelect = document.querySelector('.category-select');
+    if(categorySelect)
+    {
+        return categorySelect.classList.contains('open');
+    }
 }
