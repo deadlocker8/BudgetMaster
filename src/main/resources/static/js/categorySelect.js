@@ -12,6 +12,8 @@ $(document).ready(function()
         {
             closeCategorySelect();
         }
+
+        jumpToCategoryByFirstLetter(event.key)
     });
 
     for(const option of document.querySelectorAll(".category-select-option"))
@@ -203,4 +205,29 @@ function selectNextCategoryItemOnUp(categoryItems, previousIndex)
     {
         selectCategoryItem(categoryItems, previousIndex - 1);
     }
+}
+
+function jumpToCategoryByFirstLetter(firstLetter)
+{
+    let categoryItems = document.querySelectorAll('.category-select-option');
+    let index = getIndexOfCategoryStartingWithLetter(categoryItems, firstLetter);
+    if(index !== null)
+    {
+        removeSelectionStyleClassFromAll();
+        selectCategoryItem(categoryItems, index);
+    }
+}
+
+function getIndexOfCategoryStartingWithLetter(categoryItems, letter)
+{
+    for(let i = 0; i < categoryItems.length; i++)
+    {
+        let categoryName = categoryItems[i].querySelector('.category-select-category-name').textContent;
+        if(categoryName.toLowerCase().startsWith(letter.toLowerCase()))
+        {
+            return i;
+        }
+    }
+
+    return null;
 }

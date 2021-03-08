@@ -173,4 +173,22 @@ public class CategorySelectTest
 		assertThat(driver.findElement(By.className("category-select-category-name")))
 				.hasFieldOrPropertyWithValue("text", "12sd");
 	}
+
+	@Test
+	public void test_newTransaction_jumpToCategoryByFirstLetter()
+	{
+		// open new transaction page
+		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]")).click();
+
+		// open category select
+		driver.findElement(By.className("category-select__trigger")).click();
+
+		driver.findElement(By.tagName("body")).sendKeys("s");
+
+		// assert
+		List<WebElement> selectOptions = driver.findElements(By.cssSelector(".category-select-option.category-select-option-hovered"));
+		assertThat(selectOptions).hasSize(1);
+		assertThat(selectOptions.get(0).findElement(By.className("category-select-category-name")))
+				.hasFieldOrPropertyWithValue("text", "sdfdsf");
+	}
 }
