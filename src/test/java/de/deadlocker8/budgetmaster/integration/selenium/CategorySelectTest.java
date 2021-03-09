@@ -95,6 +95,8 @@ public class CategorySelectTest
 
 		// open category select
 		driver.findElement(By.tagName("body")).sendKeys(Keys.ENTER);
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("category-select-option")));
 
 		// assert
 		List<WebElement> selectOptions = driver.findElements(By.cssSelector(".category-select-option"));
@@ -110,6 +112,8 @@ public class CategorySelectTest
 
 		// open category select
 		driver.findElement(By.className("category-select__trigger")).click();
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("category-select-option")));
 
 		driver.findElement(By.tagName("body")).sendKeys(Keys.DOWN);
 
@@ -136,6 +140,8 @@ public class CategorySelectTest
 
 		// open category select
 		driver.findElement(By.className("category-select__trigger")).click();
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("category-select-option")));
 
 		driver.findElement(By.tagName("body")).sendKeys(Keys.UP);
 
@@ -182,6 +188,9 @@ public class CategorySelectTest
 
 		// open category select
 		driver.findElement(By.className("category-select__trigger")).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("category-select-option")));
 
 		driver.findElement(By.tagName("body")).sendKeys("s");
 
