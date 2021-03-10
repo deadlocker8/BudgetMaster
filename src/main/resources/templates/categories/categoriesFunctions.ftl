@@ -31,15 +31,18 @@
 <#macro modalIconSelect>
     <div id="modalIconSelect" class="modal modal-fixed-footer background-color">
         <div class="modal-content">
-            <h4>${locale.getString("category.new.label.icon")}</h4>
-
-            <div class="row">
+            <div class="row no-margin-bottom">
                 <div class="input-field col s12 m12 l8 offset-l2">
                     <i class="material-icons prefix">search</i>
                     <input id="searchIcons" type="text">
                     <label for="searchIcons">${locale.getString("search")}</label>
                 </div>
             </div>
+            <div class="row">
+                <div class="col s12 center-align" id="numberOfCategories">${fontawesomeIcons?size}/${fontawesomeIcons?size} ${locale.getString("category.new.icons")}</div>
+            </div>
+
+            <hr>
 
             <div class="row">
                 <#list fontawesomeIcons as icon>
