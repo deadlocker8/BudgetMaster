@@ -45,8 +45,8 @@
 }
 
 #category-icon {
-    margin-left: 3rem;
     margin-top: 3rem;
+    justify-content: center;
 }
 
 #category-icon-preview {
