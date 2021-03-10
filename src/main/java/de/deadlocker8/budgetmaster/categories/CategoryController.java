@@ -95,6 +95,7 @@ public class CategoryController extends BaseController
 		Category emptyCategory = new Category(null, ColorUtilsNonJavaFX.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase(), CategoryType.CUSTOM);
 		model.addAttribute("category", emptyCategory);
 		model.addAttribute("settings", settingsService.getSettings());
+		model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
 
 		return "categories/newCategory";
 	}
@@ -121,6 +122,7 @@ public class CategoryController extends BaseController
 
 		model.addAttribute("category", category);
 		model.addAttribute("settings", settingsService.getSettings());
+		model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
 		return "categories/newCategory";
 	}
 

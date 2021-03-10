@@ -29,7 +29,7 @@
 </#macro>
 
 <#macro modalIconSelect>
-    <div id="modalIconSelect" class="modal background-color">
+    <div id="modalIconSelect" class="modal modal-fixed-footer background-color">
         <div class="modal-content">
             <h4>${locale.getString("category.new.label.icon")}</h4>
 
@@ -42,14 +42,9 @@
             </div>
 
             <div class="row">
-                <@categoryIconOption 'fas fa-check'/>
-                <@categoryIconOption 'fas fa-adjust'/>
-                <@categoryIconOption 'fas fa-angular'/>
-                <@categoryIconOption 'fas fa-check'/>
-                <@categoryIconOption 'fas fa-check'/>
-                <@categoryIconOption 'fas fa-check'/>
-                <@categoryIconOption 'fas fa-check'/>
-                <@categoryIconOption 'fas fa-check'/>
+                <#list fontawesomeIcons as icon>
+                    <@categoryIconOption icon/>
+                </#list>
             </div>
 
         </div>
@@ -64,7 +59,7 @@
     <div class="col s2 category-icon-option-column">
         <div class="category-icon-option">
             <i class="category-icon-option-icon ${icon}"></i>
-            <div class="category-icon-option-name">${icon}</div>
+            <div class="category-icon-option-name truncate">${icon}</div>
         </div>
     </div>
 </#macro>
