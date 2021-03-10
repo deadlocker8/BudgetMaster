@@ -80,8 +80,15 @@
                             <div class="row">
                                 <div class="input-field col s12 m12 l8 offset-l2">
                                     <i class="fas fa-icons prefix"></i>
-                                    <input id="category-icon" type="text" name="icon" <@validation.validation "icon"/> value="<#if category.getIcon()??>${category.getIcon()}</#if>">
-                                    <label for="category-icon">${locale.getString("category.new.label.icon")}</label>
+                                    <label class="input-label" for="category-icon">${locale.getString("category.new.label.icon")}</label>
+                                    <div id="category-icon" class="valign-wrapper">
+                                        <div id="category-icon-preview">
+                                            <i id="category-icon-preview-icon" class="<#if category.getIcon()?has_content>${category.getIcon()}<#else>hidden</#if>"></i>
+                                            <div id="category-icon-placeholder" class="<#if category.getIcon()?has_content>hidden</#if>">${locale.getString("category.new.icon.placeholder")}</div>
+                                        </div>
+                                    <@header.buttonFlat url='' icon='delete' id='button-remove-category-icon' localizationKey='' classes="no-padding text-default" noUrl=true/>
+                                    </div>
+                                    <input id="hidden-input-category-icon" type="hidden" name="icon" value="<#if category.getIcon()??>${category.getIcon()}</#if>">
                                 </div>
                             </div>
 

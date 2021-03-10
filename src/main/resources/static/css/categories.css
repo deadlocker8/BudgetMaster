@@ -44,6 +44,33 @@
     overflow-y: visible !important;
 }
 
+#category-icon {
+    margin-left: 3rem;
+    margin-top: 3rem;
+}
+
+#category-icon-preview {
+    text-align: center;
+    border: 2px solid var(--color-text);
+    padding: 1rem;
+}
+
+#category-icon-preview i {
+    font-size: 3rem;
+}
+
+#category-icon-preview:hover {
+    cursor: pointer;
+}
+
+#button-remove-category-icon {
+    margin-left: 1rem;
+}
+
+#button-remove-category-icon i {
+    font-size: 1.8rem;
+}
+
 /*style spectrum color picker*/
 
 /*hide spectrum color picker arrow*/

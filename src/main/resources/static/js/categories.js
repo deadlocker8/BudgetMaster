@@ -39,6 +39,13 @@ $(document).ready(function()
     {
         document.getElementById("formDestinationCategory").submit();
     });
+
+    $('#button-remove-category-icon').click(function()
+    {
+        document.getElementById("category-icon-preview-icon").classList.toggle('hidden', true);
+        document.getElementById("category-icon-placeholder").classList.toggle('hidden', false);
+        document.getElementById("hidden-input-category-icon").value = '';
+    });
 });
 
 function removeActive()
