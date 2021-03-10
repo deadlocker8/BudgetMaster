@@ -56,7 +56,7 @@
 </#macro>
 
 <#macro categoryIconOption icon>
-    <div class="col s2 category-icon-option-column">
+    <div class="col s4 m2 l2 category-icon-option-column">
         <div class="category-icon-option">
             <i class="category-icon-option-icon ${icon}"></i>
             <div class="category-icon-option-name truncate">${icon}</div>
