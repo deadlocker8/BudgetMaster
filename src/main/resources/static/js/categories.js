@@ -54,7 +54,8 @@ $(document).ready(function()
         let previewIcon = document.getElementById("category-icon-preview-icon");
         previewIcon.className = '';  // clear class list
 
-        icon.split(' ').forEach(function(cssClass) {
+        icon.split(' ').forEach(function(cssClass)
+        {
             previewIcon.classList.add(cssClass);
         });
 
@@ -81,4 +82,27 @@ function removeActive()
     {
         removeClass(colors[i], "category-color-active");
     }
+}
+
+function searchCategoryIcons()
+{
+    let searchWord = document.getElementById('searchIcons').value.toLowerCase();
+
+    let allIcons = document.querySelectorAll('.category-icon-option-column');
+    let numberOfMatchingIcons = 0;
+    for(let i = 0; i < allIcons.length; i++)
+    {
+        let iconName = allIcons[i].querySelector('.category-icon-option-name').textContent;
+        if(iconName.toLowerCase().includes(searchWord))
+        {
+            allIcons[i].classList.toggle('hidden', false);
+            numberOfMatchingIcons++;
+        }
+        else
+        {
+            allIcons[i].classList.toggle('hidden', true);
+        }
+    }
+
+    document.getElementById('numberOfMatchingIcons').innerText = numberOfMatchingIcons.toString();
 }
