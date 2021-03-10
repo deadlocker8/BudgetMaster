@@ -46,6 +46,32 @@ $(document).ready(function()
         document.getElementById("category-icon-placeholder").classList.toggle('hidden', false);
         document.getElementById("hidden-input-category-icon").value = '';
     });
+
+    $('#button-category-icon-confirm').click(function()
+    {
+        let icon = document.querySelector('.category-icon-option.selected .category-icon-option-name').textContent;
+
+        let previewIcon = document.getElementById("category-icon-preview-icon");
+        previewIcon.className = '';  // clear class list
+
+        icon.split(' ').forEach(function(cssClass) {
+            previewIcon.classList.add(cssClass);
+        });
+
+        document.getElementById("category-icon-placeholder").classList.toggle('hidden', true);
+        document.getElementById("hidden-input-category-icon").value = icon;
+    });
+
+    $('.category-icon-option').click(function()
+    {
+        let allIconOptions = document.querySelectorAll('.category-icon-option');
+        for(let i = 0; i < allIconOptions.length; i++)
+        {
+            allIconOptions[i].classList.remove('selected');
+        }
+
+        this.classList.add('selected');
+    });
 });
 
 function removeActive()

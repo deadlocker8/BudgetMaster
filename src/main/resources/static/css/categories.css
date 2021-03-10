@@ -53,14 +53,11 @@
     text-align: center;
     border: 2px solid var(--color-text);
     padding: 1rem;
+    color: var(--color-text);
 }
 
 #category-icon-preview i {
     font-size: 3rem;
-}
-
-#category-icon-preview:hover {
-    cursor: pointer;
 }
 
 #button-remove-category-icon {
@@ -69,6 +66,28 @@
 
 #button-remove-category-icon i {
     font-size: 1.8rem;
+}
+
+.category-icon-option-column {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.category-icon-option {
+    padding: 0.5rem;
+    border: 2px solid transparent;
+}
+
+.category-icon-option:hover {
+    cursor: pointer;
+}
+
+.category-icon-option.selected {
+    border: 2px solid var(--color-text);
+}
+
+.category-icon-option-icon {
+    font-size: 2rem;
 }
 
 /*style spectrum color picker*/

@@ -82,15 +82,17 @@
                                     <i class="fas fa-icons prefix"></i>
                                     <label class="input-label" for="category-icon">${locale.getString("category.new.label.icon")}</label>
                                     <div id="category-icon" class="valign-wrapper">
-                                        <div id="category-icon-preview">
+                                        <a href="#modalIconSelect" id="category-icon-preview" class="modal-trigger">
                                             <i id="category-icon-preview-icon" class="<#if category.getIcon()?has_content>${category.getIcon()}<#else>hidden</#if>"></i>
                                             <div id="category-icon-placeholder" class="<#if category.getIcon()?has_content>hidden</#if>">${locale.getString("category.new.icon.placeholder")}</div>
-                                        </div>
+                                        </a>
                                     <@header.buttonFlat url='' icon='delete' id='button-remove-category-icon' localizationKey='' classes="no-padding text-default" noUrl=true/>
                                     </div>
                                     <input id="hidden-input-category-icon" type="hidden" name="icon" value="<#if category.getIcon()??>${category.getIcon()}</#if>">
                                 </div>
                             </div>
+
+                            <@categoriesFunctions.modalIconSelect/>
 
                             <br>
 
