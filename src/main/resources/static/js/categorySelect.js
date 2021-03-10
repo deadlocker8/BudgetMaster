@@ -20,9 +20,10 @@ $(document).ready(function()
 
         for(const option of document.querySelectorAll(".category-select-option"))
         {
-            option.addEventListener('click', function()
+            option.addEventListener('click', function(event)
             {
                 confirmCategory(this);
+                event.stopPropagation();
             })
         }
 
@@ -52,8 +53,7 @@ function openCategorySelect()
 
 function closeCategorySelect()
 {
-    let categorySelectTrigger = document.querySelector('.category-select-wrapper');
-    categorySelectTrigger.querySelector('.category-select').classList.remove('open');
+    document.querySelector('.category-select-wrapper .category-select').classList.remove('open');
 }
 
 function enableCategorySelectHotKeys()
