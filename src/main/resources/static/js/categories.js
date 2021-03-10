@@ -49,7 +49,13 @@ $(document).ready(function()
 
     $('#button-category-icon-confirm').click(function()
     {
-        let icon = document.querySelector('.category-icon-option.selected .category-icon-option-name').textContent;
+        let icon = document.querySelector('.category-icon-option.selected .category-icon-option-name');
+        if(icon === null)
+        {
+            return false;
+        }
+
+        icon = icon.textContent;
 
         let previewIcon = document.getElementById("category-icon-preview-icon");
         previewIcon.className = '';  // clear class list
