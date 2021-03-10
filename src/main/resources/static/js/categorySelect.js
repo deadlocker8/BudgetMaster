@@ -1,42 +1,45 @@
 $(document).ready(function()
 {
-    let categorySelectTrigger = document.querySelector('.category-select-wrapper');
-    categorySelectTrigger.addEventListener('click', function()
+    if($('.category-select-wrapper').length)
     {
-        openCategorySelect();
-    });
-
-    categorySelectTrigger.addEventListener("keydown", function(event)
-    {
-        if(event.key === "Escape")
+        let categorySelectTrigger = document.querySelector('.category-select-wrapper');
+        categorySelectTrigger.addEventListener('click', function()
         {
-            closeCategorySelect();
+            openCategorySelect();
+        });
+
+        categorySelectTrigger.addEventListener("keydown", function(event)
+        {
+            if(event.key === "Escape")
+            {
+                closeCategorySelect();
+            }
+
+            jumpToCategoryByFirstLetter(event.key)
+        });
+
+        for(const option of document.querySelectorAll(".category-select-option"))
+        {
+            option.addEventListener('click', function()
+            {
+                confirmCategory(this);
+            })
         }
 
-        jumpToCategoryByFirstLetter(event.key)
-    });
-
-    for(const option of document.querySelectorAll(".category-select-option"))
-    {
-        option.addEventListener('click', function()
+        window.addEventListener('click', function(e)
         {
-            confirmCategory(this);
-        })
+            let categorySelect = document.querySelector('.category-select')
+
+            if(!categorySelect.contains(e.target))
+            {
+                closeCategorySelect();
+                resetSelectedCategoryId();
+                removeSelectionStyleClassFromAll();
+            }
+        });
+
+        enableCategorySelectHotKeys();
     }
-
-    window.addEventListener('click', function(e)
-    {
-        let categorySelect = document.querySelector('.category-select')
-
-        if(!categorySelect.contains(e.target))
-        {
-            closeCategorySelect();
-            resetSelectedCategoryId();
-            removeSelectionStyleClassFromAll();
-        }
-    });
-
-    enableCategorySelectHotKeys();
 });
 
 function openCategorySelect()
@@ -84,7 +87,10 @@ function enableCategorySelectHotKeys()
 }
 
 let selectedCategoryId = null;
-resetSelectedCategoryId();
+if($('.category-select-wrapper').length)
+{
+    resetSelectedCategoryId();
+}
 
 function resetSelectedCategoryId()
 {
