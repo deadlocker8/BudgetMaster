@@ -81,12 +81,28 @@ $(document).ready(function()
         this.classList.add('selected');
     });
 
-    M.Modal.init(document.getElementById('modalIconSelect'), {
-        onOpenEnd: function f()
+    if($('#modalIconSelect').length)
+    {
+        let modalIconSelect = document.getElementById('modalIconSelect');
+        M.Modal.init(modalIconSelect, {
+            onOpenEnd: function f()
+            {
+                document.getElementById('searchIcons').focus();
+            },
+            onCloseEnd: function f()
+            {
+                document.getElementById('category-name').focus();
+            }
+        });
+
+        modalIconSelect.addEventListener('keypress', function(event)
         {
-            document.getElementById('searchIcons').focus();
-        }
-    });
+            if(event.key === 'Enter')
+            {
+                event.preventDefault();
+            }
+        });
+    }
 });
 
 function removeActive()
