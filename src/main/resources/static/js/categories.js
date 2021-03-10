@@ -63,6 +63,7 @@ $(document).ready(function()
         document.getElementById("hidden-input-category-icon").value = icon;
     });
 
+    // select an icon option
     $('.category-icon-option').click(function()
     {
         let allIconOptions = document.querySelectorAll('.category-icon-option');
@@ -72,6 +73,13 @@ $(document).ready(function()
         }
 
         this.classList.add('selected');
+    });
+
+    M.Modal.init(document.getElementById('modalIconSelect'), {
+        onOpenEnd: function f()
+        {
+            document.getElementById('searchIcons').focus();
+        }
     });
 });
 
