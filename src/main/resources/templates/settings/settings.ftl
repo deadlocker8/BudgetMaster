@@ -49,17 +49,34 @@
                                 </div>
                             </div>
 
-                            <#-- currency -->
                             <div class="row">
-                                <div class="input-field col s12 m12 l8 offset-l2">
-                                    <i class="material-icons prefix">euro</i>
-                                    <input id="settings-currency" type="text" name="currency" <@validation.validation "currency"/> value="<#if settings.getCurrency()??>${settings.getCurrency()}</#if>">
-                                    <label for="settings-currency">${locale.getString("settings.currency")}</label>
+                                <div class="col s12">
+                                    <div class="table-container">
+                                        <div class="table-cell">
+                                            <div class="switch-cell-margin">${locale.getString("settings.updates.automatic")}</div>
+                                        </div>
+                                        <div class="table-cell table-cell-spacer"></div>
+                                        <div class="table-cell">
+                                            <@settingsMacros.switch "updates.automatic" "autoUpdateCheckEnabled" settings.isAutoUpdateCheckEnabled()/>
+                                        </div>
+                                        <div class="table-cell table-cell-spacer"></div>
+                                        <div class="table-cell">
+                                            <div class="switch-cell-margin">
+                                                <a class="btn btn-flat tooltipped text-default" data-position="bottom" data-tooltip="${locale.getString("settings.updates.automatic.description")}"><i class="material-icons">help_outline</i></a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <#-- rest, dark theme and backup reminder switch -->
-                            <@settingsMacros.switches settings/>
+                            <hr>
+
+                            <#-- appearance -->
+                            <div class="container">
+                                <div class="section center-align">
+                                    <div class="headline">${locale.getString("settings.appearance")}</div>
+                                </div>
+                            </div>
 
                             <#-- language -->
                             <div class="row">
@@ -78,6 +95,18 @@
                                 </div>
                             </div>
 
+                            <#-- currency -->
+                            <div class="row">
+                                <div class="input-field col s12 m12 l8 offset-l2">
+                                    <i class="material-icons prefix">euro</i>
+                                    <input id="settings-currency" type="text" name="currency" <@validation.validation "currency"/> value="<#if settings.getCurrency()??>${settings.getCurrency()}</#if>">
+                                    <label for="settings-currency">${locale.getString("settings.currency")}</label>
+                                </div>
+                            </div>
+
+                            <#-- rest, dark theme and category style -->
+                            <@settingsMacros.switches settings/>
+
                             <#-- search items per page -->
                             <div class="row">
                                 <div class="input-field col s12 m12 l8 offset-l2">
@@ -94,6 +123,8 @@
                                     <label for="settings-search-items-per-page">${locale.getString("settings.search.itemsPerPage")}</label>
                                 </div>
                             </div>
+
+                            <hr>
 
                             <#-- backups -->
                             <div class="container">
