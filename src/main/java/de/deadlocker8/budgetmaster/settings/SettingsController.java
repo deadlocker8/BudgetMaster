@@ -146,6 +146,11 @@ public class SettingsController extends BaseController
 			backupTaskOptional.ifPresent(runnable -> scheduleTaskService.startBackupCron(cron, runnable));
 		}
 
+		if(settings.getShowCategoriesAsCircles() == null)
+		{
+			settings.setShowCategoriesAsCircles(false);
+		}
+
 
 		if(bindingResult.hasErrors())
 		{
