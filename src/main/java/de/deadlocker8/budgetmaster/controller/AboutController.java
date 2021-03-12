@@ -37,10 +37,7 @@ public class AboutController extends BaseController
 	public String whatsNewModal(Model model)
 	{
 		final List<NewsEntry> newsEntries =  new ArrayList<>();
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.changeType.headline", "news.changeType.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.readonlyAccounts.headline", "news.readonlyAccounts.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.firstUseWizard.headline", "news.firstUseWizard.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.java11.headline", "news.java11.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.bugfix.headline", "news.bugfix.description"));
 
 		model.addAttribute("newsEntries", newsEntries);
 		return "whatsNewModal";

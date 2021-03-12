@@ -367,10 +367,14 @@ function validateForm(allowEmptyAmount = false)
     }
 
     // start date
-    let isValidDate = validateDate('transaction-datepicker');
-    if(!isValidDate)
+    let datePickerId = 'transaction-datepicker';
+    if(document.getElementById(datePickerId) !== null)
     {
-        return false;
+        let isValidDate = validateDate();
+        if(!isValidDate)
+        {
+            return false;
+        }
     }
 
     // description
