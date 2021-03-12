@@ -14,6 +14,7 @@
         <@itemWithIcon "charts" "/charts" locale.getString("menu.charts"), "show_chart" "background-purple", activeID/>
         <@itemWithIcon "reports", "/reports", locale.getString("menu.reports"), "description", "background-green", activeID/>
         <@itemWithIcon "categories", "/categories", locale.getString("menu.categories"), "label", "background-orange", activeID/>
+        <@itemWithIcon "statistics", "/statistics", locale.getString("menu.statistics"), "insert_chart", "background-grey", activeID/>
         <@itemWithIcon "settings", "/settings", locale.getString("menu.settings"), "settings", "background-red", activeID/>
 
         <@itemDivider/>

@@ -32,4 +32,11 @@ public class IndexController extends BaseController
 		model.addAttribute("settings", settingsService.getSettings());
 		return "firstUse";
 	}
+
+	@GetMapping("/statistics")
+	public String statistics(Model model)
+	{
+		model.addAttribute("settings", settingsService.getSettings());
+		return "statistics";
+	}
 }
