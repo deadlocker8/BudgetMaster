@@ -21,6 +21,10 @@
     margin: 14px 16px;
 }
 
+.category-square {
+    border-radius: 0;
+}
+
 .category-color {
     height: 35px;
     width: 90%;

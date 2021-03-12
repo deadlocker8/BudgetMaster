@@ -105,6 +105,10 @@ public class SettingsService
 		{
 			settings.setShowFirstUseBanner(defaultSettings.getShowFirstUseBanner());
 		}
+		if(settings.getShowCategoriesAsCircles() == null)
+		{
+			settings.setShowCategoriesAsCircles(defaultSettings.getShowCategoriesAsCircles());
+		}
 	}
 
 	@SuppressWarnings("OptionalGetWithoutIsPresent")

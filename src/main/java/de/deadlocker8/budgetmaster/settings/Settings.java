@@ -15,9 +15,12 @@ public class Settings
 	@Id
 	private int ID;
 	private String currency;
-	private LanguageType language;
 	private boolean restActivated;
+
+	private LanguageType language;
 	private boolean useDarkTheme;
+	private Boolean showCategoriesAsCircles;
+
 	private boolean autoUpdateCheckEnabled;
 
 	private Boolean backupReminderActivated;
@@ -51,6 +54,7 @@ public class Settings
 		defaultSettings.setLanguage(LanguageType.ENGLISH);
 		defaultSettings.setRestActivated(true);
 		defaultSettings.setUseDarkTheme(false);
+		defaultSettings.setShowCategoriesAsCircles(true);
 		defaultSettings.setAutoUpdateCheckEnabled(true);
 		defaultSettings.setBackupReminderActivated(true);
 		defaultSettings.setLastBackupReminderDate(DateTime.now());
@@ -113,6 +117,16 @@ public class Settings
 	public void setUseDarkTheme(boolean useDarkTheme)
 	{
 		this.useDarkTheme = useDarkTheme;
+	}
+
+	public Boolean getShowCategoriesAsCircles()
+	{
+		return showCategoriesAsCircles;
+	}
+
+	public void setShowCategoriesAsCircles(Boolean showCategoriesAsCircles)
+	{
+		this.showCategoriesAsCircles = showCategoriesAsCircles;
 	}
 
 	public boolean isAutoUpdateCheckEnabled()
@@ -293,6 +307,7 @@ public class Settings
 				", language=" + language +
 				", restActivated=" + restActivated +
 				", useDarkTheme=" + useDarkTheme +
+				", showCategoriesAsCircles=" + showCategoriesAsCircles +
 				", autoUpdateCheckEnabled=" + autoUpdateCheckEnabled +
 				", backupReminderActivated=" + backupReminderActivated +
 				", lastBackupReminderDate=" + lastBackupReminderDate +

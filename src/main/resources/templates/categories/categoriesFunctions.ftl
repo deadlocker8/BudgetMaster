@@ -17,7 +17,7 @@
 <#macro categoryCircle category classes="" datasetValue="">
     <#assign categoryName=getCategoryName(category)>
 
-    <div class="category-circle ${classes}" style="background-color: ${category.color}" <#if datasetValue?has_content>data-value="${category.getID()}"</#if>>
+    <div class="category-circle ${classes} <#if settings.getShowCategoriesAsCircles() == false>category-square</#if>" style="background-color: ${category.color}" <#if datasetValue?has_content>data-value="${category.getID()}"</#if>>
         <span style="color: ${category.getAppropriateTextColor()}">
             <#if category.getIcon()?has_content>
                 <i class="${category.getIcon()}"></i>
