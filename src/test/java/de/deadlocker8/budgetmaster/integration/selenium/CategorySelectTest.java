@@ -96,7 +96,7 @@ public class CategorySelectTest
 		// open category select
 		driver.findElement(By.tagName("body")).sendKeys(Keys.ENTER);
 		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("category-select-option")));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".category-select-option.selected")));
 
 		// assert
 		List<WebElement> selectOptions = driver.findElements(By.cssSelector(".category-select-option"));
@@ -113,7 +113,7 @@ public class CategorySelectTest
 		// open category select
 		driver.findElement(By.className("category-select__trigger")).click();
 		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("category-select-option")));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".category-select-option.selected")));
 
 		driver.findElement(By.tagName("body")).sendKeys(Keys.DOWN);
 
@@ -141,7 +141,7 @@ public class CategorySelectTest
 		// open category select
 		driver.findElement(By.className("category-select__trigger")).click();
 		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("category-select-option")));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".category-select-option.selected")));
 
 		driver.findElement(By.tagName("body")).sendKeys(Keys.UP);
 
@@ -174,7 +174,7 @@ public class CategorySelectTest
 
 		// assert
 		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("category-select-option")));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".category-select-option.selected")));
 
 		assertThat(driver.findElement(By.className("category-select-category-name")))
 				.hasFieldOrPropertyWithValue("text", "12sd");
@@ -190,7 +190,7 @@ public class CategorySelectTest
 		driver.findElement(By.className("category-select__trigger")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("category-select-option")));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".category-select-option.selected")));
 
 		driver.findElement(By.tagName("body")).sendKeys("s");
 
