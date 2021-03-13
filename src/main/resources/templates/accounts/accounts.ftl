@@ -41,6 +41,7 @@
                                             <a href="<@s.url '/accounts/${account.getID()?c}/toggleReadOnly'/>" class="btn-flat no-padding text-default tooltipped" data-position="right" data-tooltip="${toolTipText}">${lockIcon}</a>
                                         </#if>
                                     </td>
+                                    <td><#if account.getIconPath()?has_content><i class="${account.getIconPath()}"></i></#if></td>
                                     <td>${account.getName()}</td>
                                     <td>
                                         <a href="<@s.url '/accounts/${account.getID()?c}/edit'/>" class="btn-flat no-padding text-default"><i class="material-icons left">edit</i></a>
