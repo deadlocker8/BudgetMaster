@@ -10,6 +10,7 @@
         </#if>
 
         <@header.header "BudgetMaster - ${title}"/>
+        <@header.style "accounts"/>
         <#import "/spring.ftl" as s>
     </head>
     <@header.body>
@@ -47,8 +48,16 @@
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
                                 <i class="fas fa-icons prefix"></i>
-                                <input id="account-icon" type="text" name="iconPath" <@validation.validation "iconPath"/> value="<#if account.getIconPath()??>${account.getIconPath()}</#if>">
-                                <label for="account-icon">${locale.getString("account.new.label.icon")}</label>
+                                <label class="input-label" for="account-icon">${locale.getString("account.new.label.icon")}</label>
+
+                                <div id="account-icon" class="valign-wrapper">
+                                    <a href="#modalAccountIconSelect" id="account-icon-preview" class="modal-trigger">
+                                        <img src="<#if account.getIconPath()?has_content>${account.getIconPath()}</#if>" class="account-icon-preview <#if account.getIconPath()?has_content == false>hidden</#if>"/>
+                                        <div id="account-icon-placeholder" class="<#if account.getIconPath()?has_content>hidden</#if>">${locale.getString("account.new.icon.placeholder")}</div>
+                                    </a>
+                                    <@header.buttonFlat url='' icon='delete' id='button-remove-account-icon' localizationKey='' classes="no-padding text-default" noUrl=true/>
+                                    <input id="hidden-input-account-icon" type="hidden" name="iconPath" value="<#if account.getIconPath()??>${account.getIconPath()}</#if>">
+                                </div>
                             </div>
                         </div>
 

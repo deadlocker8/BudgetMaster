@@ -1,0 +1,19 @@
+#account-icon {
+    margin-top: 3rem;
+    justify-content: center;
+}
+
+#account-icon-preview {
+    text-align: center;
+    border: 2px solid var(--color-text);
+    padding: 1rem;
+    color: var(--color-text);
+}
+
+#button-remove-account-icon {
+    margin-left: 1rem;
+}
+
+#button-remove-account-icon i {
+    font-size: 1.8rem;
+}

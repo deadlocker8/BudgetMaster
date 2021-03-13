@@ -437,6 +437,10 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     height: 2.6rem;
 }
 
+.account-icon-preview  {
+    height: 5rem;
+}
+
 .tooltipped:hover {
     cursor: pointer;
 }
