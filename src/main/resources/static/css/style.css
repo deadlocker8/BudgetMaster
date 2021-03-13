@@ -429,6 +429,14 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     font-size: 1.5rem;
 }
 
+.account-overview-row {
+    line-height: 2.6rem;
+}
+
+.account-icon  {
+    height: 2.6rem;
+}
+
 .tooltipped:hover {
     cursor: pointer;
 }
