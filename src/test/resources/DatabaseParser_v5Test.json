@@ -36,7 +36,8 @@
         {
             "ID": 3,
             "name": "Second Account",
-            "type": "CUSTOM"
+            "type": "CUSTOM",
+            "iconPath": "myPath/to/fancy/icon.png"
         }
     ],
     "transactions": [

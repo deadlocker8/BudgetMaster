@@ -36,14 +36,19 @@ public class Account
 	@Expose
 	private AccountType type;
 
-
-	public Account(String name, AccountType type)
+	public Account(String name, AccountType type, String iconPath)
 	{
 		this.name = name;
 		this.type = type;
 		this.isSelected = false;
 		this.isDefault = false;
 		this.isReadOnly = false;
+		this.iconPath = iconPath;
+	}
+
+	public Account(String name, AccountType type)
+	{
+		this(name, type, null);
 	}
 
 	public Account()
