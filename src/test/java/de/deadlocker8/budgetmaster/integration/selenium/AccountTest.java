@@ -288,6 +288,6 @@ public class AccountTest
 		assertThat(icons).hasSize(numberOfVisibleIcons);
 
 		// name
-		assertThat(columns.get(1)).hasFieldOrPropertyWithValue("text", name);
+		assertThat(columns.get(2)).hasFieldOrPropertyWithValue("text", name);
 	}
 }
