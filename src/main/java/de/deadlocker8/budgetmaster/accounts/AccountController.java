@@ -153,7 +153,9 @@ public class AccountController extends BaseController
 		AccountValidator accountValidator = new AccountValidator();
 		accountValidator.validate(account, bindingResult);
 
-		if(accountService.getRepository().findByName(account.getName()) != null)
+		boolean isNewAccount = account.getID() == null;
+
+		if(isNewAccount && accountService.getRepository().findByName(account.getName()) != null)
 		{
 			bindingResult.addError(new FieldError("NewAccount", "name", "", false, new String[]{"warning.duplicate.account.name"}, null, null));
 		}
