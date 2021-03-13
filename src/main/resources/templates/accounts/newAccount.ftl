@@ -42,6 +42,16 @@
                                 <label for="account-name">${locale.getString("account.new.label.name")}</label>
                             </div>
                         </div>
+
+                        <#-- icon -->
+                        <div class="row">
+                            <div class="input-field col s12 m12 l8 offset-l2">
+                                <i class="fas fa-icons prefix"></i>
+                                <input id="account-icon" type="text" name="iconPath" <@validation.validation "iconPath"/> value="<#if account.getIconPath()??>${account.getIconPath()}</#if>">
+                                <label for="account-icon">${locale.getString("account.new.label.icon")}</label>
+                            </div>
+                        </div>
+
                         <br>
 
                         <#-- buttons -->
