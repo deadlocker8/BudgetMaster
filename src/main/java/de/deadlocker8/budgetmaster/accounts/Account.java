@@ -31,6 +31,9 @@ public class Account
 	private Boolean isReadOnly = false;
 
 	@Expose
+	private String iconPath;
+
+	@Expose
 	private AccountType type;
 
 
@@ -117,6 +120,16 @@ public class Account
 		this.type = type;
 	}
 
+	public String getIconPath()
+	{
+		return iconPath;
+	}
+
+	public void setIconPath(String iconPath)
+	{
+		this.iconPath = iconPath;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -128,6 +141,7 @@ public class Account
 				", isDefault=" + isDefault +
 				", isReadOnly=" + isReadOnly +
 				", type=" + type +
+				", iconPath=" + iconPath +
 				'}';
 	}
 
@@ -142,12 +156,13 @@ public class Account
 				isReadOnly == account.isReadOnly &&
 				Objects.equals(ID, account.ID) &&
 				Objects.equals(name, account.name) &&
-				type == account.type;
+				type == account.type &&
+				Objects.equals(iconPath, account.iconPath);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, name, isSelected, isDefault, isReadOnly, type);
+		return Objects.hash(ID, name, isSelected, isDefault, isReadOnly, type, iconPath);
 	}
 }
