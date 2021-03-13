@@ -36,4 +36,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 	List<Transaction> findAllByTransferAccount(Account account);
 
 	List<Transaction> findAllByOrderByDateDesc();
+
+	Transaction findFirstByOrderByDate();
 }
