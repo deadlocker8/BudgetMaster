@@ -2,7 +2,7 @@
     <head>
         <#import "helpers/header.ftl" as header>
         <@header.globals/>
-        <@header.header "BudgetMaster - ${locale.getString('menu.firstUseGuide')}"/>
+        <@header.header "BudgetMaster - ${locale.getString('menu.statistics')}"/>
         <#import "/spring.ftl" as s>
     </head>
     <@header.body>
@@ -22,13 +22,16 @@
                 <@header.content>
                     <br>
 
-                    <div class="container">
-                        <div class="container center-align">
-                            <div class="row left-align">
-                                <div class="col s12">
-                                    Lorem Ipsum
+                    <div class="container center-align">
+                        <div class="row left-align">
+                            <#list statisticItems as item>
+                                <div class="col s12 m6 xl4 statistics-item">
+                                    <div class="card-panel ${item.getBackgroundColor()} ${item.getTextColor()} center-align">
+                                        <i class="material-icons">${item.getIcon()}</i>
+                                        <div>${item.getText()}</div>
+                                    </div>
                                 </div>
-                            </div>
+                            </#list>
                         </div>
                     </div>
                 </@header.content>

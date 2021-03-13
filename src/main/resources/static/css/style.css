@@ -421,6 +421,14 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     font-weight: bold;
 }
 
+.statistics-item o {
+    font-size: 3rem;
+}
+
+.statistics-item {
+    font-size: 1.5rem;
+}
+
 .tooltipped:hover {
     cursor: pointer;
 }
