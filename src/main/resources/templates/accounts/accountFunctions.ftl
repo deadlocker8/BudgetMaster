@@ -4,7 +4,7 @@
     <div id="modalAccountIconSelect" class="modal modal-fixed-footer background-color">
         <div class="modal-content">
             <div class="row">
-                <#list iconImages as image>
+                <#list availableImages as image>
                     <@accountIconOption image/>
                 </#list>
             </div>
@@ -16,10 +16,10 @@
     </div>
 </#macro>
 
-<#macro accountIconOption icon>
+<#macro accountIconOption image>
     <div class="col s4 m2 l2 account-icon-option-column">
         <div class="account-icon-option">
-            <img src="${icon}" class="account-icon-preview" alt="${icon}" data-image-id="1"/>
+            <img src="${image.getImagePath()}" class="account-icon-preview" alt="${image.getImagePath()}" data-image-id="${image.getID()}"/>
         </div>
     </div>
 </#macro>

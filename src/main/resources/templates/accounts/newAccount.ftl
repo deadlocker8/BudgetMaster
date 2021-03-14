@@ -54,11 +54,12 @@
 
                                 <div id="account-icon" class="valign-wrapper">
                                     <a href="#modalAccountIconSelect" id="account-icon-preview" class="modal-trigger">
-                                        <img id="account-icon-preview-icon" src="<#if account.getIconPath()?has_content>${account.getIconPath()}</#if>" class="account-icon-preview <#if account.getIconPath()?has_content == false>hidden</#if>"/>
-                                        <div id="account-icon-placeholder" class="<#if account.getIconPath()?has_content>hidden</#if>">${locale.getString("account.new.icon.placeholder")}</div>
+                                        <img id="account-icon-preview-icon" src="<#if account.getIcon()??>${account.getIcon().getImagePath()}</#if>" class="account-icon-preview <#if account.getIcon()?? == false>hidden</#if>"/>
+                                        <div id="account-icon-placeholder" class="<#if account.getIcon()??>hidden</#if>">${locale.getString("account.new.icon.placeholder")}</div>
                                     </a>
                                     <@header.buttonFlat url='' icon='delete' id='button-remove-account-icon' localizationKey='' classes="no-padding text-default" noUrl=true/>
-                                    <input id="hidden-input-account-icon" type="hidden" name="iconPath" value="<#if account.getIconPath()??>${account.getIconPath()}</#if>">
+
+                                    <input id="hidden-input-account-icon" type="hidden" name="icon" value="<#if account.getIcon()??>${account.getIcon().getID()?c}</#if>">
                                 </div>
                             </div>
                         </div>

@@ -8,6 +8,7 @@ import de.deadlocker8.budgetmaster.charts.Chart;
 import de.deadlocker8.budgetmaster.charts.ChartType;
 import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.DatabaseParser_v5;
+import de.deadlocker8.budgetmaster.images.Image;
 import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.Localization.LocalizationDelegate;
 import org.junit.Before;
@@ -95,7 +96,8 @@ public class DatabaseParser_v5Test
 			DatabaseParser_v5 importer = new DatabaseParser_v5(json);
 			Database database = importer.parseDatabaseFromJSON();
 
-			final Account account = new Account("Second Account", AccountType.CUSTOM, "myPath/to/fancy/icon.png");
+			// TODO
+			final Account account = new Account("Second Account", AccountType.CUSTOM, new Image());
 			account.setID(3);
 
 			assertThat(database.getAccounts()).hasSize(3)

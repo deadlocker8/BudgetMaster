@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.accounts;
 
 import com.google.gson.annotations.Expose;
+import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 
 import javax.persistence.*;
@@ -30,20 +31,21 @@ public class Account
 	private Boolean isDefault = false;
 	private Boolean isReadOnly = false;
 
+	@ManyToOne
 	@Expose
-	private String iconPath;
+	private Image icon;
 
 	@Expose
 	private AccountType type;
 
-	public Account(String name, AccountType type, String iconPath)
+	public Account(String name, AccountType type, Image icon)
 	{
 		this.name = name;
 		this.type = type;
 		this.isSelected = false;
 		this.isDefault = false;
 		this.isReadOnly = false;
-		this.iconPath = iconPath;
+		this.icon = icon;
 	}
 
 	public Account(String name, AccountType type)
@@ -125,14 +127,14 @@ public class Account
 		this.type = type;
 	}
 
-	public String getIconPath()
+	public Image getIcon()
 	{
-		return iconPath;
+		return icon;
 	}
 
-	public void setIconPath(String iconPath)
+	public void setIcon(Image icon)
 	{
-		this.iconPath = iconPath;
+		this.icon = icon;
 	}
 
 	@Override
@@ -146,7 +148,7 @@ public class Account
 				", isDefault=" + isDefault +
 				", isReadOnly=" + isReadOnly +
 				", type=" + type +
-				", iconPath=" + iconPath +
+				", icon=" + icon +
 				'}';
 	}
 
@@ -162,12 +164,12 @@ public class Account
 				Objects.equals(ID, account.ID) &&
 				Objects.equals(name, account.name) &&
 				type == account.type &&
-				Objects.equals(iconPath, account.iconPath);
+				Objects.equals(icon, account.icon);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, name, isSelected, isDefault, isReadOnly, type, iconPath);
+		return Objects.hash(ID, name, isSelected, isDefault, isReadOnly, type, icon);
 	}
 }
