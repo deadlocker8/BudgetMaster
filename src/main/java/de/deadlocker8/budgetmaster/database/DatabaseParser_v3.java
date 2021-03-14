@@ -36,7 +36,7 @@ public class DatabaseParser_v3
 		accounts = parseAccounts(root);
 		List<Transaction> transactions = parseTransactions(root);
 
-		return new Database(categories, accounts, transactions, new ArrayList<>(), new ArrayList<>());
+		return new Database(categories, accounts, transactions, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 	}
 
 	protected List<Category> parseCategories(JsonObject root)

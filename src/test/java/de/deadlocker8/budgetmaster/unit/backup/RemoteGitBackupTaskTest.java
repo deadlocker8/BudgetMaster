@@ -215,7 +215,7 @@ public class RemoteGitBackupTaskTest
 		final RemoteGitBackupTask remoteGitBackupTask = createBackupTask(repositoryFolder, fakeServerFolder);
 		remoteGitBackupTask.run();
 
-		final Database databaseModified = new Database(List.of(new Category("myCategory", "#FF0000", CategoryType.CUSTOM)), List.of(), List.of(), List.of(), List.of());
+		final Database databaseModified = new Database(List.of(new Category("myCategory", "#FF0000", CategoryType.CUSTOM)), List.of(), List.of(), List.of(), List.of(), List.of());
 		Mockito.when(databaseService.getDatabaseForJsonSerialization()).thenReturn(databaseModified);
 		remoteGitBackupTask.run();
 

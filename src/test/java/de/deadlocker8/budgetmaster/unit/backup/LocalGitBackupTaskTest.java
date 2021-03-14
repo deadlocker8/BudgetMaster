@@ -163,7 +163,7 @@ public class LocalGitBackupTaskTest
 		localGitBackupTask.setGitFolder(repositoryFolder);
 		localGitBackupTask.run();
 
-		final Database databaseModified = new Database(List.of(new Category("myCategory", "#FF0000", CategoryType.CUSTOM)), List.of(), List.of(), List.of(), List.of());
+		final Database databaseModified = new Database(List.of(new Category("myCategory", "#FF0000", CategoryType.CUSTOM)), List.of(), List.of(), List.of(), List.of(), List.of());
 		Mockito.when(databaseService.getDatabaseForJsonSerialization()).thenReturn(databaseModified);
 		localGitBackupTask.run();
 

@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.database;
 
 import com.google.gson.*;
 import de.deadlocker8.budgetmaster.charts.Chart;
+import de.deadlocker8.budgetmaster.images.Image;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +15,7 @@ public class DatabaseParser_v5 extends DatabaseParser_v4
 	private String jsonString;
 
 	protected List<Chart> charts;
+	protected List<Image> images;
 
 	public DatabaseParser_v5(String json)
 	{
@@ -31,8 +33,9 @@ public class DatabaseParser_v5 extends DatabaseParser_v4
 		super.templates = super.parseTemplates(root);
 
 		this.charts = parseCharts(root);
+		this.images = parseImages(root);
 
-		return new Database(categories, accounts, transactions, templates, charts);
+		return new Database(categories, accounts, transactions, templates, charts, images);
 	}
 
 	protected List<Chart> parseCharts(JsonObject root)
@@ -46,5 +49,18 @@ public class DatabaseParser_v5 extends DatabaseParser_v4
 		}
 
 		return parsedCharts;
+	}
+
+	protected List<Image> parseImages(JsonObject root)
+	{
+		List<Image> parsedImages = new ArrayList<>();
+
+		JsonArray imagesToImport = root.get("charts").getAsJsonArray();
+		for(JsonElement currentImage : imagesToImport)
+		{
+			parsedImages.add(new Gson().fromJson(currentImage, Image.class));
+		}
+
+		return parsedImages;
 	}
 }

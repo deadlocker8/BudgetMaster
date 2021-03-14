@@ -11,6 +11,7 @@ import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.charts.Chart;
 import de.deadlocker8.budgetmaster.charts.ChartService;
 import de.deadlocker8.budgetmaster.charts.ChartType;
+import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
@@ -255,10 +256,11 @@ public class DatabaseService
 		List<Transaction> filteredTransactions = filterRepeatingTransactions(transactions);
 		List<Template> templates = templateService.getRepository().findAll();
 		List<Chart> charts = chartService.getRepository().findAllByType(ChartType.CUSTOM);
+		List<Image> images = imageService.getRepository().findAll();
 		LOGGER.debug(MessageFormat.format("Reduced {0} transactions to {1}", transactions.size(), filteredTransactions.size()));
 
-		Database database = new Database(categories, accounts, filteredTransactions, templates, charts);
-		LOGGER.debug(MessageFormat.format("Created database for JSON with {0} transactions, {1} categories and {2} accounts and {3} templates and {4} charts", database.getTransactions().size(), database.getCategories().size(), database.getAccounts().size(), database.getTemplates().size(), database.getCharts().size()));
+		Database database = new Database(categories, accounts, filteredTransactions, templates, charts, images);
+		LOGGER.debug(MessageFormat.format("Created database for JSON with {0} transactions, {1} categories, {2} accounts, {3} templates, {4} charts and {5} images", database.getTransactions().size(), database.getCategories().size(), database.getAccounts().size(), database.getTemplates().size(), database.getCharts().size(), database.getImages()));
 		return database;
 	}
 

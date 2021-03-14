@@ -8,7 +8,6 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.text.MessageFormat;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -100,17 +99,13 @@ public class Image
 	{
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
-		Image other = (Image) o;
-		return Objects.equals(ID, other.ID) &&
-				Arrays.equals(image, other.image) &&
-				Objects.equals(fileExtension, other.fileExtension);
+		Image image = (Image) o;
+		return Objects.equals(ID, image.ID) && Objects.equals(fileExtension, image.fileExtension);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		int result = Objects.hash(ID, fileExtension);
-		result = 31 * result + Arrays.hashCode(image);
-		return result;
+		return Objects.hash(ID, fileExtension);
 	}
 }

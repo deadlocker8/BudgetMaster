@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.charts.Chart;
+import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 
@@ -32,17 +33,21 @@ public class Database
 	@Expose
 	private List<Chart> charts;
 
+	@Expose
+	private List<Image> images;
+
 	public Database()
 	{
 	}
 
-	public Database(List<Category> categories, List<Account> accounts, List<Transaction> transactions, List<Template> templates, List<Chart> charts)
+	public Database(List<Category> categories, List<Account> accounts, List<Transaction> transactions, List<Template> templates, List<Chart> charts, List<Image> images)
 	{
 		this.categories = categories;
 		this.accounts = accounts;
 		this.transactions = transactions;
 		this.templates = templates;
 		this.charts = charts;
+		this.images = images;
 	}
 
 	public List<Category> getCategories()
@@ -68,5 +73,10 @@ public class Database
 	public List<Chart> getCharts()
 	{
 		return charts;
+	}
+
+	public List<Image> getImages()
+	{
+		return images;
 	}
 }

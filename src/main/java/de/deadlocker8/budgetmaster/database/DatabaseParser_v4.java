@@ -39,7 +39,7 @@ public class DatabaseParser_v4 extends DatabaseParser_v3
 		this.transactions = parseTransactions(root);
 		this.templates = parseTemplates(root);
 
-		return new Database(categories, accounts, transactions, templates, new ArrayList<>());
+		return new Database(categories, accounts, transactions, templates, new ArrayList<>(), new ArrayList<>());
 	}
 
 	@Override

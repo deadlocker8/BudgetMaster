@@ -17,7 +17,9 @@ import org.junit.Test;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -96,12 +98,15 @@ public class DatabaseParser_v5Test
 			DatabaseParser_v5 importer = new DatabaseParser_v5(json);
 			Database database = importer.parseDatabaseFromJSON();
 
-			// TODO
-			final Account account = new Account("Second Account", AccountType.CUSTOM, new Image());
+			final Image accountImage = new Image(new Byte[0], "png");
+			accountImage.setID(1);
+			final Account account = new Account("Second Account", AccountType.CUSTOM, accountImage);
 			account.setID(3);
 
 			assertThat(database.getAccounts()).hasSize(3)
 					.contains(account);
+			assertThat(database.getAccounts().get(2).getIcon().getImage())
+					.hasSizeGreaterThan(1);
 		}
 		catch(IOException | URISyntaxException e)
 		{
