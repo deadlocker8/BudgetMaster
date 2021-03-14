@@ -56,6 +56,11 @@ $(document).ready(function()
     {
         openSelectAccountIconModal(this);
     });
+
+    $('#button-upload-new-image').click(function()
+    {
+        uploadImage();
+    });
 });
 
 function openSelectAccountIconModal(item)
@@ -72,7 +77,7 @@ function openSelectAccountIconModal(item)
             // select an icon option
             $('.account-icon-option').click(function()
             {
-               selectIcon(this);
+                selectIcon(this);
             });
 
             $(modalID).modal();
@@ -90,4 +95,37 @@ function selectIcon(item)
     }
 
     item.classList.add('selected');
+}
+
+function uploadImage()
+{
+    let formID = 'form-upload-account-image';
+    let form = document.getElementById(formID);
+
+    $.ajax({
+        url: form.action,
+        enctype: 'multipart/form-data',
+        type: 'post',
+        processData: false,
+        contentType: false,
+        cache: false,
+        data: new FormData(form),
+        success: function(response)
+        {
+            let parsedData = JSON.parse(response);
+            let isUploadSuccessful = parsedData['isUploadSuccessful']
+            M.toast({
+                html: parsedData['localizedMessage'],
+                classes: isUploadSuccessful ? 'green' : 'red'
+            });
+        },
+        error: function(response)
+        {
+            let parsedData = JSON.parse(response);
+            M.toast({
+                html: parsedData['localizedMessage'],
+                classes: 'red'
+            });
+        }
+    });
 }

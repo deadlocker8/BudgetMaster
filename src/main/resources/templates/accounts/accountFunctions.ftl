@@ -1,3 +1,4 @@
+<#import "/spring.ftl" as s>
 <#import "../helpers/header.ftl" as header>
 
 <#macro modalAccountIconSelect>
@@ -32,7 +33,8 @@
 </#macro>
 
 <#macro uploadImageForm>
-    <form id="form-upload-account-image" method="POST" action="/media" enctype="multipart/form-data">
+    <form></form>
+    <form id="form-upload-account-image" method="post" action="<@s.url '/media/uploadImage'/>" enctype="multipart/form-data">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <div class="file-field input-field col s12">
             <div class="container">
@@ -41,10 +43,10 @@
                     ${locale.getString("account.new.icon.upload.choose.file")}
                     <input id="inputUploadFile" type="file" accept="image/png, image/jpeg" name="file">
                 </div>
-                <div class="file-path-wrapper" id="abc">
-                    <input id="def" class="file-path validate" type="text">
+                <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text">
                 </div>
-                <@header.buttonSubmit name='action' icon='upload' localizationKey='account.new.icon.upload' classes="right"/>
+                <@header.buttonLink url='' icon='upload' localizationKey='account.new.icon.upload' id='button-upload-new-image' classes='right' noUrl=true/>
             </div>
         </div>
     </form>
