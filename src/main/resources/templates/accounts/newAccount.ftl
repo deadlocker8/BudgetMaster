@@ -54,7 +54,7 @@
 
                                 <div id="account-icon" class="valign-wrapper">
                                     <a href="#modalAccountIconSelect" id="account-icon-preview" class="modal-trigger">
-                                        <img id="account-icon-preview-icon" src="<#if account.getIcon()??>${account.getIcon().getImagePath()}</#if>" class="account-icon-preview <#if account.getIcon()?? == false>hidden</#if>"/>
+                                        <img id="account-icon-preview-icon" src="<#if account.getIcon()??>${account.getIcon().getBase64EncodedImage()}</#if>" class="account-icon-preview <#if account.getIcon()?? == false>hidden</#if>"/>
                                         <div id="account-icon-placeholder" class="<#if account.getIcon()??>hidden</#if>">${locale.getString("account.new.icon.placeholder")}</div>
                                     </a>
                                     <@header.buttonFlat url='' icon='delete' id='button-remove-account-icon' localizationKey='' classes="no-padding text-default" noUrl=true/>

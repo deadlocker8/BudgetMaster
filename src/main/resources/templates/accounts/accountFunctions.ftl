@@ -19,7 +19,7 @@
 <#macro accountIconOption image>
     <div class="col s4 m2 l2 account-icon-option-column">
         <div class="account-icon-option">
-            <img src="${image.getImagePath()}" class="account-icon-preview" alt="${image.getImagePath()}" data-image-id="${image.getID()}"/>
+            <img src="${image.getBase64EncodedImage()}" class="account-icon-preview" data-image-id="${image.getID()}"/>
         </div>
     </div>
 </#macro>

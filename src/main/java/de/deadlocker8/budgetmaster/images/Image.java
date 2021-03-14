@@ -2,10 +2,13 @@ package de.deadlocker8.budgetmaster.images;
 
 import com.google.gson.annotations.Expose;
 import de.deadlocker8.budgetmaster.accounts.Account;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.tomcat.util.codec.binary.Base64;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,16 +21,23 @@ public class Image
 	private Integer ID;
 
 	@NotNull
-	@Size(min = 1)
 	@Expose
-	private String imagePath;
+	@Lob
+	private Byte[] image;
+
+	@NotNull
+	@Expose
+	private String fileExtension;
 
 	@OneToMany(mappedBy = "icon", fetch = FetchType.LAZY)
 	private List<Account> referringAccounts;
 
-	public Image(String imagePath)
+	private static final String BASE_64_IMAGE_FORMAT = "data:image/{0};base64,{1}";
+
+	public Image(@NotNull Byte[] image, String fileExtension)
 	{
-		this.imagePath = imagePath;
+		this.image = image;
+		this.fileExtension = fileExtension;
 	}
 
 	public Image()
@@ -44,14 +54,30 @@ public class Image
 		this.ID = ID;
 	}
 
-	public String getImagePath()
+	public Byte[] getImage()
 	{
-		return imagePath;
+		return image;
 	}
 
-	public void setImagePath(String imagePath)
+	public void setImage(Byte[] image)
 	{
-		this.imagePath = imagePath;
+		this.image = image;
+	}
+
+	public String getBase64EncodedImage()
+	{
+		final String encoded = Base64.encodeBase64String(ArrayUtils.toPrimitive(this.image));
+		return MessageFormat.format(BASE_64_IMAGE_FORMAT, fileExtension, encoded);
+	}
+
+	public String getFileExtension()
+	{
+		return fileExtension;
+	}
+
+	public void setFileExtension(String fileExtension)
+	{
+		this.fileExtension = fileExtension;
 	}
 
 	public List<Account> getReferringAccounts()
@@ -64,7 +90,8 @@ public class Image
 	{
 		return "Image{" +
 				"ID=" + ID +
-				", imagePath='" + imagePath + '\'' +
+				", image='" + image + '\'' +
+				", fileExtension='" + fileExtension + '\'' +
 				'}';
 	}
 
@@ -73,13 +100,17 @@ public class Image
 	{
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
-		Image image = (Image) o;
-		return Objects.equals(ID, image.ID) && Objects.equals(imagePath, image.imagePath);
+		Image other = (Image) o;
+		return Objects.equals(ID, other.ID) &&
+				Arrays.equals(image, other.image) &&
+				Objects.equals(fileExtension, other.fileExtension);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, imagePath);
+		int result = Objects.hash(ID, fileExtension);
+		result = 31 * result + Arrays.hashCode(image);
+		return result;
 	}
 }
