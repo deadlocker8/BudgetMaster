@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Controller
 @RequestMapping(Mappings.MEDIA)
@@ -57,6 +58,28 @@ public class MediaController extends BaseController
 
 		final JsonObject data = new JsonObject();
 		data.addProperty("isUploadSuccessful", success);
+		data.addProperty("localizedMessage", localizedMessage);
+
+		return data.toString();
+	}
+
+	@GetMapping("/deleteImage/{ID}")
+	@ResponseBody
+	public String deleteImage(@PathVariable("ID") Integer ID)
+	{
+		boolean success = false;
+		String localizedMessage = Localization.getString("delete.image.error.not.existing", ID);
+
+		Optional<Image> imageOptional = imageService.getRepository().findById(ID);
+		if(imageOptional.isPresent())
+		{
+			success = true;
+			localizedMessage = Localization.getString("delete.image.success");
+			imageService.deleteImage(imageOptional.get());
+		}
+
+		final JsonObject data = new JsonObject();
+		data.addProperty("isDeleteSuccessful", success);
 		data.addProperty("localizedMessage", localizedMessage);
 
 		return data.toString();

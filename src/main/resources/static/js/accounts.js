@@ -84,6 +84,11 @@ function getAvailableImages(callback)
                 selectIcon(this);
             });
 
+            $('.account-icon-option-delete').click(function()
+            {
+                deleteImage(this);
+            });
+
             callback();
         }
     });
@@ -117,6 +122,36 @@ function uploadImage()
         {
             let parsedData = JSON.parse(response);
             let isUploadSuccessful = parsedData['isUploadSuccessful']
+            M.toast({
+                html: parsedData['localizedMessage'],
+                classes: isUploadSuccessful ? 'green' : 'red'
+            });
+
+            getAvailableImages(function()
+            {
+            });
+        },
+        error: function(response)
+        {
+            let parsedData = JSON.parse(response);
+            M.toast({
+                html: parsedData['localizedMessage'],
+                classes: 'red'
+            });
+        }
+    });
+}
+
+function deleteImage(item)
+{
+    $.ajax({
+        type: 'GET',
+        url: $(item).attr('data-url'),
+        data: {},
+        success: function(response)
+        {
+            let parsedData = JSON.parse(response);
+            let isUploadSuccessful = parsedData['isDeleteSuccessful']
             M.toast({
                 html: parsedData['localizedMessage'],
                 classes: isUploadSuccessful ? 'green' : 'red'

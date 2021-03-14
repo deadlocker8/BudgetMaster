@@ -34,6 +34,7 @@ public class ImageService implements Resetable
 	}
 
 	@Override
+	@Transactional
 	public void deleteAll()
 	{
 		final List<Image> images = imageRepository.findAll();
@@ -53,6 +54,8 @@ public class ImageService implements Resetable
 		{
 			account.setIcon(null);
 		}
+
+		getRepository().delete(image);
 	}
 
 	@Override
