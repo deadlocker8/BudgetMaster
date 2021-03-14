@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.images;
 
+import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.services.Resetable;
 import de.thecodelabs.utils.util.Localization;
 import org.slf4j.Logger;
@@ -35,25 +36,28 @@ public class ImageService implements Resetable
 	@Override
 	public void deleteAll()
 	{
-		// TODO: set placeholder image for all accounts
+		final List<Image> images = imageRepository.findAll();
+		for(Image image : images)
+		{
+			deleteImage(image);
+		}
+
 		imageRepository.deleteAll();
+	}
+
+	@Transactional
+	public void deleteImage(Image image)
+	{
+		final List<Account> referringAccounts = image.getReferringAccounts();
+		for(Account account : referringAccounts)
+		{
+			account.setIcon(null);
+		}
 	}
 
 	@Override
 	public void createDefaults()
 	{
-		if(imageRepository.findAll().isEmpty())
-		{
-			// TODO: insert placeholder image
-//			Account placeholder = new Account("Placeholder", AccountType.ALL);
-//			accountRepository.save(placeholder);
-//			LOGGER.debug("Created placeholder account");
-//
-//			Account account = accountRepository.save(new Account(Localization.getString(Strings.ACCOUNT_DEFAULT_NAME), AccountType.CUSTOM));
-//			selectAccount(account.getID());
-//			setAsDefaultAccount(account.getID());
-//			LOGGER.debug("Created default account");
-		}
 	}
 
 	@Transactional
