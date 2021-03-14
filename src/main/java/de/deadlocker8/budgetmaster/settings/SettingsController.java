@@ -376,8 +376,8 @@ public class SettingsController extends BaseController
 	}
 
 	@PostMapping("/git/test")
-	public String testGit(Model model,
-						  @RequestParam(value = "autoBackupGitUrl") String autoBackupGitUrl,
+	@ResponseBody
+	public String testGit(@RequestParam(value = "autoBackupGitUrl") String autoBackupGitUrl,
 						  @RequestParam(value = "autoBackupGitUserName") String autoBackupGitUserName,
 						  @RequestParam(value = "autoBackupGitToken") String autoBackupGitToken)
 	{
@@ -406,8 +406,7 @@ public class SettingsController extends BaseController
 		data.addProperty("isValidConnection", isValidConnection);
 		data.addProperty("localizedMessage", localizedMessage);
 
-		model.addAttribute("data", data.toString());
-		return "helpers/sendData";
+		return data.toString();
 	}
 
 	private void prepareBasicModel(Model model, Settings settings)
