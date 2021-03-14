@@ -33,6 +33,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -506,7 +507,7 @@ public class DatabaseImportTest
 
 		final ImageRepository imageRepositoryMock = Mockito.mock(ImageRepository.class);
 		Mockito.when(imageService.getRepository()).thenReturn(imageRepositoryMock);
-		Mockito.when(imageRepositoryMock.findByImage(Mockito.any())).thenReturn(null);
+		Mockito.when(imageRepositoryMock.findById(Mockito.any())).thenReturn(Optional.empty());
 		Mockito.when(imageRepositoryMock.save(Mockito.any())).thenReturn(newImage);
 
 		Database database = new Database(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(image));
@@ -523,12 +524,10 @@ public class DatabaseImportTest
 
 		final ImageRepository imageRepositoryMock = Mockito.mock(ImageRepository.class);
 		Mockito.when(imageService.getRepository()).thenReturn(imageRepositoryMock);
-		Mockito.when(imageRepositoryMock.findByImage(Mockito.any())).thenReturn(image);
+		Mockito.when(imageRepositoryMock.findById(Mockito.any())).thenReturn(Optional.of(image));
 
 		Database database = new Database(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(image));
 		importService.importDatabase(database, new AccountMatchList(List.of()));
-		Database databaseResult = importService.getDatabase();
-
 
 		Mockito.verify(imageRepositoryMock, Mockito.never()).save(image);
 	}

@@ -304,11 +304,11 @@ public class ImportService
 		{
 			Image image = images.get(i);
 			LOGGER.debug(MessageFormat.format("Importing image {0}/{1} (ID: {2})", i + 1, images.size(), image.getID()));
-			Image existingImage = imageService.getRepository().findByImage(image.getImage());
+			final Optional<Image> existingImageOptional = imageService.getRepository().findById(image.getID());
 
 			int oldImageID = image.getID();
 			int newImageID;
-			if(existingImage == null)
+			if(existingImageOptional.isEmpty())
 			{
 				//image does not exist --> create it
 				image.setID(null);
@@ -318,7 +318,7 @@ public class ImportService
 			else
 			{
 				//image already exists
-				newImageID = existingImage.getID();
+				newImageID = existingImageOptional.get().getID();
 			}
 
 			if(oldImageID == newImageID)

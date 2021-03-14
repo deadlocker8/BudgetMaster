@@ -55,7 +55,7 @@ public class DatabaseParser_v5 extends DatabaseParser_v4
 	{
 		List<Image> parsedImages = new ArrayList<>();
 
-		JsonArray imagesToImport = root.get("charts").getAsJsonArray();
+		JsonArray imagesToImport = root.get("images").getAsJsonArray();
 		for(JsonElement currentImage : imagesToImport)
 		{
 			parsedImages.add(new Gson().fromJson(currentImage, Image.class));

@@ -106,6 +106,30 @@ public class DatabaseParser_v5Test
 			assertThat(database.getAccounts()).hasSize(3)
 					.contains(account);
 			assertThat(database.getAccounts().get(2).getIcon().getImage())
+					.isNotNull()
+					.hasSizeGreaterThan(1);
+		}
+		catch(IOException | URISyntaxException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void test_Images()
+	{
+		try
+		{
+			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v5Test.json").toURI())));
+			DatabaseParser_v5 importer = new DatabaseParser_v5(json);
+			Database database = importer.parseDatabaseFromJSON();
+
+			final Image image = new Image(new Byte[0], "png");
+			image.setID(1);
+
+			assertThat(database.getImages()).hasSize(1);
+			assertThat(database.getImages().get(0).getImage())
+					.isNotNull()
 					.hasSizeGreaterThan(1);
 		}
 		catch(IOException | URISyntaxException e)
