@@ -48,6 +48,12 @@ public class MediaController extends BaseController
 			success = false;
 			localizedMessage = Localization.getString("upload.image.error", e.getMessage());
 		}
+		catch(InvalidFileExtensionException e)
+		{
+			e.printStackTrace();
+			success = false;
+			localizedMessage = e.getMessage();
+		}
 
 		final JsonObject data = new JsonObject();
 		data.addProperty("isUploadSuccessful", success);
