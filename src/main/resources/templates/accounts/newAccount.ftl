@@ -53,7 +53,7 @@
                                 <label class="input-label" for="account-icon">${locale.getString("account.new.label.icon")}</label>
 
                                 <div id="account-icon" class="valign-wrapper">
-                                    <a href="#modalAccountIconSelect" id="account-icon-preview" class="modal-trigger">
+                                    <a id="account-icon-preview" data-url="<@s.url '/media/getAvailableImages'/>">
                                         <img id="account-icon-preview-icon" src="<#if account.getIcon()??>${account.getIcon().getBase64EncodedImage()}</#if>" class="account-icon-preview <#if account.getIcon()?? == false>hidden</#if>"/>
                                         <div id="account-icon-placeholder" class="<#if account.getIcon()??>hidden</#if>">${locale.getString("account.new.icon.placeholder")}</div>
                                     </a>

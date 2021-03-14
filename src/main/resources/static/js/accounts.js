@@ -41,18 +41,6 @@ $(document).ready(function()
         document.getElementById("hidden-input-account-icon").value = iconId;
     });
 
-    // select an icon option
-    $('.account-icon-option').click(function()
-    {
-        let allIconOptions = document.querySelectorAll('.account-icon-option');
-        for(let i = 0; i < allIconOptions.length; i++)
-        {
-            allIconOptions[i].classList.remove('selected');
-        }
-
-        this.classList.add('selected');
-    });
-
     if($('#modalAccountIconSelect').length)
     {
         let modalAccountIconSelect = document.getElementById('modalAccountIconSelect');
@@ -63,4 +51,43 @@ $(document).ready(function()
             }
         });
     }
+
+    $('#account-icon-preview').click(function()
+    {
+        openSelectAccountIconModal(this);
+    });
 });
+
+function openSelectAccountIconModal(item)
+{
+    $.ajax({
+        type: 'GET',
+        url: $(item).attr('data-url'),
+        data: {},
+        success: function(data)
+        {
+            let modalID = '#modalAccountIconSelect';
+            $('#available-images').html(data);
+
+            // select an icon option
+            $('.account-icon-option').click(function()
+            {
+               selectIcon(this);
+            });
+
+            $(modalID).modal();
+            $(modalID).modal('open');
+        }
+    });
+}
+
+function selectIcon(item)
+{
+    let allIconOptions = document.querySelectorAll('.account-icon-option');
+    for(let i = 0; i < allIconOptions.length; i++)
+    {
+        allIconOptions[i].classList.remove('selected');
+    }
+
+    item.classList.add('selected');
+}

@@ -39,3 +39,7 @@
 .account-icon-preview-icon {
     height: 5rem;
 }
+
+#account-icon-preview:hover {
+    cursor: pointer;
+}
