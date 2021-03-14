@@ -6,5 +6,6 @@ public enum ImportEntityType
 	TRANSACTION,
 	CATEGORY,
 	TEMPLATE,
-	CHART
+	CHART,
+	IMAGE
 }

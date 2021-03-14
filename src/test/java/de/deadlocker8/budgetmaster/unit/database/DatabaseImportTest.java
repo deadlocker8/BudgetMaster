@@ -12,6 +12,9 @@ import de.deadlocker8.budgetmaster.charts.ChartType;
 import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
+import de.deadlocker8.budgetmaster.images.Image;
+import de.deadlocker8.budgetmaster.images.ImageRepository;
+import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.TagRepository;
@@ -50,6 +53,9 @@ public class DatabaseImportTest
 
 	@Mock
 	private ChartService chartService;
+
+	@Mock
+	private ImageService imageService;
 
 	@InjectMocks
 	private ImportService importService;
@@ -466,5 +472,64 @@ public class DatabaseImportTest
 		// assert
 		assertThat(databaseResult.getCharts().get(0))
 				.hasFieldOrPropertyWithValue("ID", highestUsedID + 1);
+	}
+
+	@Test
+	public void test_updateImagesForAccounts()
+	{
+		Image image1 = new Image(new Byte[0], "png");
+		image1.setID(3);
+
+		Image image2 = new Image(new Byte[0], "jpg");
+		image2.setID(4);
+
+		Account account1 = new Account("Account_1", AccountType.CUSTOM, image1);
+		Account account2 = new Account("Account_2", AccountType.CUSTOM, image2);
+
+		final List<Account> accountList = List.of(account1, account2);
+
+		List<Account> updatedAccounts = importService.updateImagesForAccounts(accountList, 3, 5);
+		assertThat(updatedAccounts).hasSize(1);
+		final Image icon = updatedAccounts.get(0).getIcon();
+		assertThat(icon.getBase64EncodedImage()).isEqualTo("data:image/png;base64,");
+		assertThat(icon.getID()).isEqualTo(5);
+	}
+
+	@Test
+	public void test_importImages_notExisting()
+	{
+		Image image = new Image(new Byte[0], "png");
+		image.setID(3);
+
+		Image newImage = new Image(new Byte[0], "png");
+		newImage.setID(5);
+
+		final ImageRepository imageRepositoryMock = Mockito.mock(ImageRepository.class);
+		Mockito.when(imageService.getRepository()).thenReturn(imageRepositoryMock);
+		Mockito.when(imageRepositoryMock.findByImage(Mockito.any())).thenReturn(null);
+		Mockito.when(imageRepositoryMock.save(Mockito.any())).thenReturn(newImage);
+
+		Database database = new Database(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(image));
+		importService.importDatabase(database, new AccountMatchList(List.of()));
+
+		Mockito.verify(imageRepositoryMock, Mockito.atLeast(1)).save(image);
+	}
+
+	@Test
+	public void test_importImages_alreadyExisting()
+	{
+		Image image = new Image(new Byte[0], "png");
+		image.setID(3);
+
+		final ImageRepository imageRepositoryMock = Mockito.mock(ImageRepository.class);
+		Mockito.when(imageService.getRepository()).thenReturn(imageRepositoryMock);
+		Mockito.when(imageRepositoryMock.findByImage(Mockito.any())).thenReturn(image);
+
+		Database database = new Database(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(image));
+		importService.importDatabase(database, new AccountMatchList(List.of()));
+		Database databaseResult = importService.getDatabase();
+
+
+		Mockito.verify(imageRepositoryMock, Mockito.never()).save(image);
 	}
 }

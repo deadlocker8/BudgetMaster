@@ -9,6 +9,8 @@ import de.deadlocker8.budgetmaster.charts.ChartService;
 import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
+import de.deadlocker8.budgetmaster.images.Image;
+import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.TagRepository;
 import de.deadlocker8.budgetmaster.templates.Template;
@@ -34,17 +36,19 @@ public class ImportService
 	private final TemplateRepository templateRepository;
 	private final TagRepository tagRepository;
 	private final ChartService chartService;
+	private final ImageService imageService;
 
 	private Database database;
 
 	@Autowired
-	public ImportService(CategoryRepository categoryRepository, TransactionRepository transactionRepository, TemplateRepository templateRepository, TagRepository tagRepository, ChartService chartService)
+	public ImportService(CategoryRepository categoryRepository, TransactionRepository transactionRepository, TemplateRepository templateRepository, TagRepository tagRepository, ChartService chartService, ImageService imageService)
 	{
 		this.categoryRepository = categoryRepository;
 		this.transactionRepository = transactionRepository;
 		this.templateRepository = templateRepository;
 		this.tagRepository = tagRepository;
 		this.chartService = chartService;
+		this.imageService = imageService;
 	}
 
 	public Map<ImportEntityType, Integer> importDatabase(Database database, AccountMatchList accountMatchList)
@@ -59,6 +63,8 @@ public class ImportService
 		numberOfImportedEntitiesByType.put(ImportEntityType.TRANSACTION, importTransactions());
 		numberOfImportedEntitiesByType.put(ImportEntityType.TEMPLATE, importTemplates());
 		numberOfImportedEntitiesByType.put(ImportEntityType.CHART, importCharts());
+		numberOfImportedEntitiesByType.put(ImportEntityType.IMAGE, importImages());
+
 		LOGGER.debug("Importing database DONE");
 
 		return numberOfImportedEntitiesByType;
@@ -89,6 +95,7 @@ public class ImportService
 				existingCategory = categoryRepository.findByNameAndColorAndType(category.getName(), category.getColor(), category.getType());
 			}
 
+			int oldCategoryID = category.getID();
 			int newCategoryID;
 			if(existingCategory == null)
 			{
@@ -104,8 +111,6 @@ public class ImportService
 				//category already exists
 				newCategoryID = existingCategory.getID();
 			}
-
-			int oldCategoryID = category.getID();
 
 			if(oldCategoryID == newCategoryID)
 			{
@@ -287,5 +292,67 @@ public class ImportService
 		}
 		LOGGER.debug("Importing charts DONE");
 		return charts.size();
+	}
+
+	private Integer importImages()
+	{
+		List<Image> images = database.getImages();
+		LOGGER.debug(MessageFormat.format("Importing {0} images...", images.size()));
+		List<Account> alreadyUpdatedAccounts = new ArrayList<>();
+
+		for(int i = 0; i < images.size(); i++)
+		{
+			Image image = images.get(i);
+			LOGGER.debug(MessageFormat.format("Importing image {0}/{1} (ID: {2})", i + 1, images.size(), image.getID()));
+			Image existingImage = imageService.getRepository().findByImage(image.getImage());
+
+			int oldImageID = image.getID();
+			int newImageID;
+			if(existingImage == null)
+			{
+				//image does not exist --> create it
+				image.setID(null);
+				final Image savedImage = imageService.getRepository().save(image);
+				newImageID = savedImage.getID();
+			}
+			else
+			{
+				//image already exists
+				newImageID = existingImage.getID();
+			}
+
+			if(oldImageID == newImageID)
+			{
+				continue;
+			}
+
+			List<Account> accounts = new ArrayList<>(database.getAccounts());
+			accounts.removeAll(alreadyUpdatedAccounts);
+			alreadyUpdatedAccounts.addAll(updateImagesForAccounts(accounts, oldImageID, newImageID));
+		}
+
+		LOGGER.debug("Importing images DONE");
+		return images.size();
+	}
+
+	public List<Account> updateImagesForAccounts(List<Account> items, int oldImageId, int newImageID)
+	{
+		List<Account> updatedItems = new ArrayList<>();
+		for(Account item : items)
+		{
+			final Image image = item.getIcon();
+			if(image == null)
+			{
+				continue;
+			}
+
+			if(image.getID() == oldImageId)
+			{
+				image.setID(newImageID);
+				updatedItems.add(item);
+			}
+		}
+
+		return updatedItems;
 	}
 }
