@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="modal-footer background-color">
-            <@header.buttonLink url='' icon='save' localizationKey='cancel' color='red' classes='modal-action modal-close text-white' noUrl=true/>
+            <@header.buttonLink url='' icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white' noUrl=true/>
             <@header.buttonLink url='' icon='done' id='button-account-icon-confirm' localizationKey='ok' color='green' classes='modal-action modal-close text-white' noUrl=true/>
         </div>
     </div>
