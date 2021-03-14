@@ -11,6 +11,7 @@ import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.charts.Chart;
 import de.deadlocker8.budgetmaster.charts.ChartService;
 import de.deadlocker8.budgetmaster.charts.ChartType;
+import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.tags.TagService;
@@ -56,9 +57,10 @@ public class DatabaseService
 	private final TemplateService templateService;
 	private final ChartService chartService;
 	private final SettingsService settingsService;
+	private final ImageService imageService;
 
 	@Autowired
-	public DatabaseService(AccountService accountService, CategoryService categoryService, TransactionService transactionService, TagService tagService, TemplateService templateService, ChartService chartService, SettingsService settingsService)
+	public DatabaseService(AccountService accountService, CategoryService categoryService, TransactionService transactionService, TagService tagService, TemplateService templateService, ChartService chartService, SettingsService settingsService, ImageService imageService)
 	{
 		this.accountService = accountService;
 		this.categoryService = categoryService;
@@ -67,6 +69,7 @@ public class DatabaseService
 		this.templateService = templateService;
 		this.chartService = chartService;
 		this.settingsService = settingsService;
+		this.imageService = imageService;
 	}
 
 	public void reset()
@@ -76,6 +79,8 @@ public class DatabaseService
 		resetCategories();
 		resetAccounts();
 		resetTags();
+		resetCharts();
+		resetImages();
 	}
 
 	private void resetAccounts()
@@ -116,6 +121,22 @@ public class DatabaseService
 		templateService.deleteAll();
 		templateService.createDefaults();
 		LOGGER.info("All templates reset.");
+	}
+
+	private void resetCharts()
+	{
+		LOGGER.info("Resetting charts...");
+		chartService.deleteAll();
+		chartService.createDefaults();
+		LOGGER.info("All charts reset.");
+	}
+
+	private void resetImages()
+	{
+		LOGGER.info("Resetting images...");
+		imageService.deleteAll();
+		imageService.createDefaults();
+		LOGGER.info("All images reset.");
 	}
 
 	public void rotatingBackup(Path backupFolderPath)
