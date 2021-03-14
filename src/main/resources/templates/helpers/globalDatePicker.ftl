@@ -26,7 +26,7 @@
         </div>
         <div class="modal-footer background-color">
             <@header.buttonLink url='' icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white'/>
-            <@header.buttonLink url='/setDate?target=' + target icon='done' localizationKey='ok' color='green' id='buttonChooseDate' classes='modal-action modal-close text-white' noUrl=true/>
+            <@header.buttonLink url='/setDate?target=' + target icon='done' localizationKey='ok' color='green' id='buttonChooseDate' classes='modal-action modal-close text-white'/>
         </div>
     </div>
 </#macro>
