@@ -33,7 +33,6 @@
 </#macro>
 
 <#macro uploadImageForm>
-    <form></form>
     <form id="form-upload-account-image" method="post" action="<@s.url '/media/uploadImage'/>" enctype="multipart/form-data">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <div class="file-field input-field col s12">

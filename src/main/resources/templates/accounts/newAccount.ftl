@@ -64,8 +64,6 @@
                             </div>
                         </div>
 
-                        <@accountFunctions.modalAccountIconSelect/>
-
                         <br>
 
                         <#-- buttons -->
@@ -95,6 +93,8 @@
                 </@header.content>
             </div>
         </main>
+
+        <@accountFunctions.modalAccountIconSelect/>
 
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>

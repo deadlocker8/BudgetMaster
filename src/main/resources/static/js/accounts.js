@@ -54,7 +54,12 @@ $(document).ready(function()
 
     $('#account-icon-preview').click(function()
     {
-        openSelectAccountIconModal(this);
+        getAvailableImages(function()
+        {
+            let modalID = '#modalAccountIconSelect';
+            $(modalID).modal();
+            $(modalID).modal('open');
+        });
     });
 
     $('#button-upload-new-image').click(function()
@@ -63,15 +68,14 @@ $(document).ready(function()
     });
 });
 
-function openSelectAccountIconModal(item)
+function getAvailableImages(callback)
 {
     $.ajax({
         type: 'GET',
-        url: $(item).attr('data-url'),
+        url: $('#account-icon-preview').attr('data-url'),
         data: {},
         success: function(data)
         {
-            let modalID = '#modalAccountIconSelect';
             $('#available-images').html(data);
 
             // select an icon option
@@ -80,8 +84,7 @@ function openSelectAccountIconModal(item)
                 selectIcon(this);
             });
 
-            $(modalID).modal();
-            $(modalID).modal('open');
+            callback();
         }
     });
 }
@@ -118,6 +121,8 @@ function uploadImage()
                 html: parsedData['localizedMessage'],
                 classes: isUploadSuccessful ? 'green' : 'red'
             });
+
+            getAvailableImages(function(){});
         },
         error: function(response)
         {
