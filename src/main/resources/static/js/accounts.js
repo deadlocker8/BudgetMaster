@@ -122,7 +122,9 @@ function uploadImage()
                 classes: isUploadSuccessful ? 'green' : 'red'
             });
 
-            getAvailableImages(function(){});
+            getAvailableImages(function()
+            {
+            });
         },
         error: function(response)
         {
