@@ -17,6 +17,8 @@
         <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "accounts" settings/>
 
+        <#import "accountFunctions.ftl" as accountFunctions>
+
         <main>
             <div class="card main-card background-color">
                 <div class="container">
@@ -52,7 +54,7 @@
 
                                 <div id="account-icon" class="valign-wrapper">
                                     <a href="#modalAccountIconSelect" id="account-icon-preview" class="modal-trigger">
-                                        <img src="<#if account.getIconPath()?has_content>${account.getIconPath()}</#if>" class="account-icon-preview <#if account.getIconPath()?has_content == false>hidden</#if>"/>
+                                        <img id="account-icon-preview-icon" src="<#if account.getIconPath()?has_content>${account.getIconPath()}</#if>" class="account-icon-preview <#if account.getIconPath()?has_content == false>hidden</#if>"/>
                                         <div id="account-icon-placeholder" class="<#if account.getIconPath()?has_content>hidden</#if>">${locale.getString("account.new.icon.placeholder")}</div>
                                     </a>
                                     <@header.buttonFlat url='' icon='delete' id='button-remove-account-icon' localizationKey='' classes="no-padding text-default" noUrl=true/>
@@ -60,6 +62,8 @@
                                 </div>
                             </div>
                         </div>
+
+                        <@accountFunctions.modalAccountIconSelect/>
 
                         <br>
 

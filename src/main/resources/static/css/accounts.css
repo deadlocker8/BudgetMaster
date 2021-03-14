@@ -17,3 +17,25 @@
 #button-remove-account-icon i {
     font-size: 1.8rem;
 }
+
+.account-icon-option-column {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.account-icon-option {
+    padding: 0.5rem;
+    border: 2px solid transparent;
+}
+
+.account-icon-option:hover {
+    cursor: pointer;
+}
+
+.account-icon-option.selected {
+    border: 2px solid var(--color-text);
+}
+
+.account-icon-preview-icon {
+    height: 5rem;
+}

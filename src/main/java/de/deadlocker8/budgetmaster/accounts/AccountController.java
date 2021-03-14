@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -128,6 +129,7 @@ public class AccountController extends BaseController
 		Account emptyAccount = new Account();
 		model.addAttribute("account", emptyAccount);
 		model.addAttribute("settings", settingsService.getSettings());
+		model.addAttribute("iconImages", List.of("https://localhost:9000/touch_icon.png", "https://localhost:9000/touch_icon.png"));
 		return "accounts/newAccount";
 	}
 
@@ -142,6 +144,7 @@ public class AccountController extends BaseController
 
 		model.addAttribute("account", accountOptional.get());
 		model.addAttribute("settings", settingsService.getSettings());
+		model.addAttribute("iconImages", List.of("https://localhost:9000/touch_icon.png", "https://localhost:9000/touch_icon.png"));
 		return "accounts/newAccount";
 	}
 
@@ -165,6 +168,7 @@ public class AccountController extends BaseController
 			model.addAttribute("error", bindingResult);
 			model.addAttribute("account", account);
 			model.addAttribute("settings", settingsService.getSettings());
+			model.addAttribute("iconImages", List.of("https://localhost:9000/touch_icon.png", "https://localhost:9000/touch_icon.png"));
 			return "accounts/newAccount";
 		}
 		else
