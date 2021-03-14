@@ -52,4 +52,15 @@ $(document).ready(function()
 
         this.classList.add('selected');
     });
+
+    if($('#modalAccountIconSelect').length)
+    {
+        let modalAccountIconSelect = document.getElementById('modalAccountIconSelect');
+        M.Modal.init(modalAccountIconSelect, {
+            onCloseEnd: function f()
+            {
+                document.getElementById('account-name').focus();
+            }
+        });
+    }
 });
