@@ -316,7 +316,8 @@ public class SettingsController extends BaseController
 				numberOfImportedEntitiesByType.get(ImportEntityType.TRANSACTION),
 				numberOfImportedEntitiesByType.get(ImportEntityType.CATEGORY),
 				numberOfImportedEntitiesByType.get(ImportEntityType.TEMPLATE),
-				numberOfImportedEntitiesByType.get(ImportEntityType.CHART));
+				numberOfImportedEntitiesByType.get(ImportEntityType.CHART),
+				numberOfImportedEntitiesByType.get(ImportEntityType.IMAGE));
 		WebRequestUtils.putNotification(request, new Notification(message, NotificationType.SUCCESS));
 
 		return "settings/settings";
