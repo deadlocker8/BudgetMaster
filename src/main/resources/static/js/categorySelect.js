@@ -216,7 +216,7 @@ function selectNextCategoryItemOnUp(categoryItems, previousIndex)
 function jumpToCategoryByFirstLetter(firstLetter)
 {
     let categoryItems = document.querySelectorAll('.category-select-option');
-    let index = getIndexOfCategoryStartingWithLetter(categoryItems, firstLetter);
+    let index = getIndexOfItemStartingWithLetter(categoryItems, firstLetter);
     if(index !== null)
     {
         removeSelectionStyleClassFromAll();
@@ -224,12 +224,12 @@ function jumpToCategoryByFirstLetter(firstLetter)
     }
 }
 
-function getIndexOfCategoryStartingWithLetter(categoryItems, letter)
+function getIndexOfItemStartingWithLetter(items, letter)
 {
-    for(let i = 0; i < categoryItems.length; i++)
+    for(let i = 0; i < items.length; i++)
     {
-        let categoryName = categoryItems[i].querySelector('.custom-select-item-name').textContent;
-        if(categoryName.toLowerCase().startsWith(letter.toLowerCase()))
+        let name = items[i].querySelector('.custom-select-item-name').textContent;
+        if(name.toLowerCase().startsWith(letter.toLowerCase()))
         {
             return i;
         }
