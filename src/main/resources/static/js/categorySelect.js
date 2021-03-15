@@ -1,32 +1,36 @@
 $(document).ready(function()
 {
-    if($('.category-select-wrapper').length)
+    let selectorCategorySelect = '.category-select-wrapper';
+
+    if($(selectorCategorySelect).length)
     {
-        let categorySelectTrigger = document.querySelector('.category-select-wrapper');
+        resetSelectedCategoryId();
+
+        let categorySelectTrigger = document.querySelector(selectorCategorySelect);
         categorySelectTrigger.addEventListener('click', function()
         {
-            openCategorySelect('.category-select-wrapper');
+            openCategorySelect(selectorCategorySelect);
         });
 
         categorySelectTrigger.addEventListener("keydown", function(event)
         {
             if(event.key === "Escape")
             {
-                closeCustomSelect('.category-select-wrapper');
+                closeCustomSelect(selectorCategorySelect);
             }
 
-            let resultId = jumpToItemByFirstLetter('.category-select-wrapper', event.key);
+            let resultId = jumpToItemByFirstLetter(selectorCategorySelect, event.key);
             if(resultId !== null)
             {
                 selectedCategoryId = resultId;
             }
         });
 
-        for(const option of document.querySelectorAll(".category-select-option"))
+        for(const option of document.querySelectorAll(selectorCategorySelect + ' .category-select-option'))
         {
             option.addEventListener('click', function(event)
             {
-                confirmCustomSelectItem(this);
+                confirmCustomSelectItem(selectorCategorySelect, this);
                 event.stopPropagation();
             })
         }
@@ -37,13 +41,13 @@ $(document).ready(function()
 
             if(!categorySelect.contains(e.target))
             {
-                closeCustomSelect('.category-select-wrapper');
+                closeCustomSelect(selectorCategorySelect);
                 resetSelectedCategoryId();
-                removeSelectionStyleClassFromAll('.category-select-wrapper');
+                removeSelectionStyleClassFromAll(selectorCategorySelect);
             }
         });
 
-        enableCategorySelectHotKeys();
+        enableCategorySelectHotKeys(selectorCategorySelect);
     }
 });
 
@@ -60,16 +64,16 @@ function closeCustomSelect(selector)
     document.querySelector(selector + ' .custom-select').classList.remove('open');
 }
 
-function enableCategorySelectHotKeys()
+function enableCategorySelectHotKeys(selector)
 {
     Mousetrap.bind('up', function()
     {
-        selectedCategoryId = handleCategorySelectKeyUpOrDown('.category-select-wrapper', true);
+        selectedCategoryId = handleCategorySelectKeyUpOrDown(selector, true);
     });
 
     Mousetrap.bind('down', function()
     {
-        selectedCategoryId = handleCategorySelectKeyUpOrDown('.category-select-wrapper', false);
+        selectedCategoryId = handleCategorySelectKeyUpOrDown(selector, false);
     });
 
     Mousetrap.bind('enter', function()
@@ -81,20 +85,16 @@ function enableCategorySelectHotKeys()
 
         if(isCategorySelectFocused())
         {
-            confirmCustomSelectSelection('.category-select-wrapper', selectedCategoryId);
+            confirmCustomSelectSelection(selector, selectedCategoryId);
         }
         else
         {
-            openCategorySelect('.category-select-wrapper');
+            openCategorySelect(selector);
         }
     });
 }
 
 let selectedCategoryId = null;
-if($('.category-select-wrapper').length)
-{
-    resetSelectedCategoryId();
-}
 
 function resetSelectedCategoryId()
 {
@@ -169,10 +169,10 @@ function confirmCustomSelectSelection(selector, selectedId)
 {
     let items = document.querySelectorAll(selector + ' .category-select-option');
     let index = getIndexOfCustomSelectItemId(items, selectedId);
-    confirmCustomSelectItem(items[index]);
+    confirmCustomSelectItem(selector, items[index]);
 }
 
-function confirmCustomSelectItem(item)
+function confirmCustomSelectItem(selector, item)
 {
     // remove old selection
     item.parentNode.querySelector('.category-select-option.selected').classList.remove('selected');
@@ -189,8 +189,8 @@ function confirmCustomSelectItem(item)
     document.getElementById('hidden-input-category').value = item.dataset.value;
 
     resetSelectedCategoryId();
-    removeSelectionStyleClassFromAll('.category-select-wrapper');
-    closeCustomSelect('.category-select-wrapper');
+    removeSelectionStyleClassFromAll(selector);
+    closeCustomSelect(selector);
 }
 
 function selectNextCustomSelectItemOnDown(items, previousIndex)
