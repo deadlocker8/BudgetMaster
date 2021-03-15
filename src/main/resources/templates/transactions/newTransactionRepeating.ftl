@@ -92,6 +92,6 @@
         <script src="<@s.url '/js/helpers.js'/>"></script>
         <script src="<@s.url '/js/transactions.js'/>"></script>
         <script src="<@s.url '/js/transactionActions.js'/>"></script>
-        <script src="<@s.url '/js/categorySelect.js'/>"></script>
+        <script src="<@s.url '/js/customSelect.js'/>"></script>
     </@header.body>
 </html>
