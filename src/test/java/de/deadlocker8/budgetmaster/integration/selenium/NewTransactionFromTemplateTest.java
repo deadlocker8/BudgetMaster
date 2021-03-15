@@ -109,7 +109,7 @@ public class NewTransactionFromTemplateTest
 		assertThat(chips).hasSize(1);
 		assertThat(chips.get(0)).hasFieldOrPropertyWithValue("text", "TagFromTemplate\nclose");
 
-		assertThat(driver.findElement(By.id("transaction-account")).getAttribute("value")).isEqualTo("3");
+		assertThat(driver.findElement(By.cssSelector(".account-select-wrapper #custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("3");
 	}
 
 	@Test
