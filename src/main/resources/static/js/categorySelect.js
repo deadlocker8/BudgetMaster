@@ -15,7 +15,11 @@ $(document).ready(function()
                 closeCustomSelect('.category-select-wrapper');
             }
 
-            jumpToItemByFirstLetter('.category-select-wrapper', event.key)
+            let resultId = jumpToItemByFirstLetter('.category-select-wrapper', event.key);
+            if(resultId !== null)
+            {
+                selectedCategoryId = resultId;
+            }
         });
 
         for(const option of document.querySelectorAll(".category-select-option"))
@@ -35,7 +39,7 @@ $(document).ready(function()
             {
                 closeCustomSelect('.category-select-wrapper');
                 resetSelectedCategoryId();
-                removeSelectionStyleClassFromAll();
+                removeSelectionStyleClassFromAll('.category-select-wrapper');
             }
         });
 
@@ -48,7 +52,7 @@ function openCategorySelect(selector)
     let categorySelectTrigger = document.querySelector(selector);
     categorySelectTrigger.querySelector('.custom-select').classList.toggle('open');
     let categoryItems = document.getElementsByClassName('category-select-option');
-    selectCustomSelectItem(categoryItems, getIndexOfCustomSelectItemId(categoryItems, resetSelectedCategoryId()));
+    selectedCategoryId = selectCustomSelectItem(categoryItems, getIndexOfCustomSelectItemId(categoryItems, resetSelectedCategoryId()));
 }
 
 function closeCustomSelect(selector)
@@ -60,15 +64,15 @@ function enableCategorySelectHotKeys()
 {
     Mousetrap.bind('up', function()
     {
-        handleCategorySelectKeyUpOrDown(true);
+        selectedCategoryId = handleCategorySelectKeyUpOrDown('.category-select-wrapper', true);
     });
 
     Mousetrap.bind('down', function()
     {
-        handleCategorySelectKeyUpOrDown(false);
+        selectedCategoryId = handleCategorySelectKeyUpOrDown('.category-select-wrapper', false);
     });
 
-    Mousetrap.bind('enter', function(event)
+    Mousetrap.bind('enter', function()
     {
         if(isSearchFocused())
         {
@@ -100,27 +104,27 @@ function resetSelectedCategoryId()
     return categoryId;
 }
 
-function handleCategorySelectKeyUpOrDown(isUp)
+function handleCategorySelectKeyUpOrDown(selector, isUp)
 {
-    removeSelectionStyleClassFromAll();
+    removeSelectionStyleClassFromAll(selector);
 
-    let items = document.getElementsByClassName('category-select-option');
+    let items = document.querySelectorAll(selector + ' .category-select-option');
     let previousIndex = getIndexOfCustomSelectItemId(items, selectedCategoryId);
 
     // select next item
     if(isUp)
     {
-        selectNextCustomSelectItemOnUp(items, previousIndex);
+        return selectNextCustomSelectItemOnUp(items, previousIndex);
     }
     else
     {
-        selectNextCustomSelectItemOnDown(items, previousIndex);
+       return selectNextCustomSelectItemOnDown(items, previousIndex);
     }
 }
 
-function removeSelectionStyleClassFromAll()
+function removeSelectionStyleClassFromAll(selector)
 {
-    let items = document.getElementsByClassName('category-select-option');
+    let items = document.querySelectorAll(selector + ' .category-select-option');
     for(let i = 0; i < items.length; i++)
     {
         toggleCustomSelectItemSelection(items[i], false);
@@ -153,7 +157,7 @@ function selectCustomSelectItem(items, index)
         behavior: 'smooth',
         block: 'start'
     });
-    selectedCategoryId = getCustomSelectItemId(items[index]);
+    return getCustomSelectItemId(items[index]);
 }
 
 function toggleCustomSelectItemSelection(item, isSelected)
@@ -183,7 +187,7 @@ function confirmCategory(categoryItem)
     document.getElementById('hidden-input-category').value = categoryItem.dataset.value;
 
     resetSelectedCategoryId();
-    removeSelectionStyleClassFromAll();
+    removeSelectionStyleClassFromAll('.category-select-wrapper');
     closeCustomSelect('.category-select-wrapper');
 }
 
@@ -192,11 +196,11 @@ function selectNextCustomSelectItemOnDown(items, previousIndex)
     let isLastItemSelected = previousIndex + 1 === items.length;
     if(isLastItemSelected)
     {
-        selectCustomSelectItem(items, 0);
+        return selectCustomSelectItem(items, 0);
     }
     else
     {
-        selectCustomSelectItem(items, previousIndex + 1);
+        return selectCustomSelectItem(items, previousIndex + 1);
     }
 }
 
@@ -205,26 +209,28 @@ function selectNextCustomSelectItemOnUp(items, previousIndex)
     let isFirstItemSelected = previousIndex === 0;
     if(isFirstItemSelected)
     {
-        selectCustomSelectItem(items, items.length - 1);
+        return selectCustomSelectItem(items, items.length - 1);
     }
     else
     {
-        selectCustomSelectItem(items, previousIndex - 1);
+        return selectCustomSelectItem(items, previousIndex - 1);
     }
 }
 
 function jumpToItemByFirstLetter(selector, firstLetter)
 {
     let items = document.querySelectorAll(selector + ' .category-select-option');
-    let index = getIndexOfItemStartingWithLetter(items, firstLetter);
+    let index = getIndexOfCustomSelectItemStartingWithLetter(items, firstLetter);
     if(index !== null)
     {
-        removeSelectionStyleClassFromAll();
-        selectCustomSelectItem(items, index);
+        removeSelectionStyleClassFromAll(selector);
+        return selectCustomSelectItem(items, index);
     }
+
+    return null;
 }
 
-function getIndexOfItemStartingWithLetter(items, letter)
+function getIndexOfCustomSelectItemStartingWithLetter(items, letter)
 {
     for(let i = 0; i < items.length; i++)
     {
