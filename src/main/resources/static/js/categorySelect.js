@@ -48,7 +48,7 @@ function openCategorySelect(selector)
     let categorySelectTrigger = document.querySelector(selector);
     categorySelectTrigger.querySelector('.custom-select').classList.toggle('open');
     let categoryItems = document.getElementsByClassName('category-select-option');
-    selectCustomSelectItem(categoryItems, getIndexOfCategoryId(categoryItems, resetSelectedCategoryId()));
+    selectCustomSelectItem(categoryItems, getIndexOfCustomSelectItemId(categoryItems, resetSelectedCategoryId()));
 }
 
 function closeCustomSelect(selector)
@@ -104,35 +104,35 @@ function handleCategorySelectKeyUpOrDown(isUp)
 {
     removeSelectionStyleClassFromAll();
 
-    let categoryItems = document.getElementsByClassName('category-select-option');
-    let previousIndex = getIndexOfCategoryId(categoryItems, selectedCategoryId);
+    let items = document.getElementsByClassName('category-select-option');
+    let previousIndex = getIndexOfCustomSelectItemId(items, selectedCategoryId);
 
     // select next item
     if(isUp)
     {
-        selectNextCustomSelectItemOnUp(categoryItems, previousIndex);
+        selectNextCustomSelectItemOnUp(items, previousIndex);
     }
     else
     {
-        selectNextCustomSelectItemOnDown(categoryItems, previousIndex);
+        selectNextCustomSelectItemOnDown(items, previousIndex);
     }
 }
 
 function removeSelectionStyleClassFromAll()
 {
-    let categoryItems = document.getElementsByClassName('category-select-option');
-    for(let i = 0; i < categoryItems.length; i++)
+    let items = document.getElementsByClassName('category-select-option');
+    for(let i = 0; i < items.length; i++)
     {
-        toggleCustomSelectItemSelection(categoryItems[i], false);
+        toggleCustomSelectItemSelection(items[i], false);
     }
 }
 
-function getIndexOfCategoryId(categoryItems, categoryId)
+function getIndexOfCustomSelectItemId(items, id)
 {
-    for(let i = 0; i < categoryItems.length; i++)
+    for(let i = 0; i < items.length; i++)
     {
-        let currentCategoryId = getCategoryId(categoryItems[i]);
-        if(currentCategoryId === categoryId)
+        let currentCategoryId = getCustomSelectItemId(items[i]);
+        if(currentCategoryId === id)
         {
             return i;
         }
@@ -141,9 +141,9 @@ function getIndexOfCategoryId(categoryItems, categoryId)
     return null;
 }
 
-function getCategoryId(categoryItem)
+function getCustomSelectItemId(item)
 {
-    return categoryItem.dataset.value;
+    return item.dataset.value;
 }
 
 function selectCustomSelectItem(items, index)
@@ -153,7 +153,7 @@ function selectCustomSelectItem(items, index)
         behavior: 'smooth',
         block: 'start'
     });
-    selectedCategoryId = getCategoryId(items[index]);
+    selectedCategoryId = getCustomSelectItemId(items[index]);
 }
 
 function toggleCustomSelectItemSelection(item, isSelected)
@@ -164,7 +164,7 @@ function toggleCustomSelectItemSelection(item, isSelected)
 function confirmCategorySelection()
 {
     let categoryItems = document.querySelectorAll('.category-select-option');
-    let index = getIndexOfCategoryId(categoryItems, selectedCategoryId);
+    let index = getIndexOfCustomSelectItemId(categoryItems, selectedCategoryId);
     confirmCategory(categoryItems[index]);
 }
 
