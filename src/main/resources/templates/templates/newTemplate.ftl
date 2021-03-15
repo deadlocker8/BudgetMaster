@@ -22,6 +22,8 @@
 
         <#import "../transactions/newTransactionMacros.ftl" as newTransactionMacros>
         <#import "templateFunctions.ftl" as templateFunctions>
+        <#import "../helpers/customSelectMacros.ftl" as customSelectMacros>
+
 
         <main>
             <div class="card main-card background-color">
@@ -51,7 +53,7 @@
                         <@newTransactionMacros.transactionAmount template/>
 
                         <#-- category -->
-                        <@newTransactionMacros.customSelect categories template.getCategory() "col s12 m12 l8 offset-l2" locale.getString("transaction.new.label.category")/>
+                        <@customSelectMacros.customSelect categories template.getCategory() "col s12 m12 l8 offset-l2" locale.getString("transaction.new.label.category")/>
 
                         <#-- description -->
                         <@newTransactionMacros.transactionDescription template/>

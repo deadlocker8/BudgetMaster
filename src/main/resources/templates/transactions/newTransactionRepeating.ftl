@@ -21,6 +21,7 @@
         <@navbar.navbar "transactions" settings/>
 
         <#import "newTransactionMacros.ftl" as newTransactionMacros>
+        <#import "../helpers/customSelectMacros.ftl" as customSelectMacros>
 
         <main>
             <div class="card main-card background-color">
@@ -49,7 +50,7 @@
                             <@newTransactionMacros.transactionAmount transaction/>
 
                             <#-- category -->
-                            <@newTransactionMacros.customSelect categories transaction.getCategory() "col s12 m12 l8 offset-l2" locale.getString("transaction.new.label.category")/>
+                            <@customSelectMacros.customSelect categories transaction.getCategory() "col s12 m12 l8 offset-l2" locale.getString("transaction.new.label.category")/>
 
                             <#-- date -->
                             <@newTransactionMacros.transactionStartDate transaction currentDate/>

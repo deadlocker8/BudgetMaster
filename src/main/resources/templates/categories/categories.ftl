@@ -13,6 +13,7 @@
 
         <#import "categoriesFunctions.ftl" as categoriesFunctions>
         <#import "../transactions/newTransactionMacros.ftl" as newTransactionMacros>
+        <#import "../helpers/customSelectMacros.ftl" as customSelectMacros>
 
         <main>
             <div class="card main-card background-color">
@@ -72,7 +73,7 @@
                         <form name="DestinationCategory" id="formDestinationCategory" action="<@s.url '/categories/${currentCategory.ID?c}/delete'/>" method="post">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             <#import "../helpers/validation.ftl" as validation>
-                            <@newTransactionMacros.customSelect availableCategories preselectedCategory "col s12 m12 l8 offset-l2" locale.getString("info.title.category.delete.move")/>
+                            <@customSelectMacros.customSelect availableCategories preselectedCategory "col s12 m12 l8 offset-l2" locale.getString("info.title.category.delete.move")/>
                         </form>
                     </div>
 
