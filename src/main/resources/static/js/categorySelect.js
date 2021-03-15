@@ -15,7 +15,7 @@ $(document).ready(function()
                 closeCustomSelect('.category-select-wrapper');
             }
 
-            jumpToCategoryByFirstLetter(event.key)
+            jumpToItemByFirstLetter('.category-select-wrapper', event.key)
         });
 
         for(const option of document.querySelectorAll(".category-select-option"))
@@ -213,14 +213,14 @@ function selectNextCategoryItemOnUp(categoryItems, previousIndex)
     }
 }
 
-function jumpToCategoryByFirstLetter(firstLetter)
+function jumpToItemByFirstLetter(selector, firstLetter)
 {
-    let categoryItems = document.querySelectorAll('.category-select-option');
-    let index = getIndexOfItemStartingWithLetter(categoryItems, firstLetter);
+    let items = document.querySelectorAll(selector + ' .category-select-option');
+    let index = getIndexOfItemStartingWithLetter(items, firstLetter);
     if(index !== null)
     {
         removeSelectionStyleClassFromAll();
-        selectCategoryItem(categoryItems, index);
+        selectCategoryItem(items, index);
     }
 }
 
