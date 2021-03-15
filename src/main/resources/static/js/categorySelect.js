@@ -5,47 +5,18 @@ $(document).ready(function()
     if($(selectorCategorySelect).length)
     {
         let categorySelect = new CustomSelect(selectorCategorySelect);
-
-        categorySelect.resetSelectedItemId()
-
-        let customSelectTrigger = document.querySelector(selectorCategorySelect);
-        customSelectTrigger.addEventListener('click', function()
-        {
-            categorySelect.open();
-        });
-
-        customSelectTrigger.addEventListener("keydown", function(event)
-        {
-            if(event.key === "Escape")
-            {
-                categorySelect.close();
-            }
-
-            categorySelect.jumpToItemByFirstLetter(event.key);
-        });
-
-        for(const option of document.querySelectorAll(selectorCategorySelect + ' .custom-select-option'))
-        {
-            option.addEventListener('click', function(event)
-            {
-                categorySelect.confirmItem(this);
-                event.stopPropagation();
-            })
-        }
+        categorySelect.init();
 
         window.addEventListener('click', function(e)
         {
-            let expectedTarget = document.querySelector(selectorCategorySelect + ' .custom-select')
-
-            if(!expectedTarget.contains(e.target))
+            let openCustomSelect = document.querySelector('.custom-select.open');
+            if(!openCustomSelect.contains(e.target))
             {
                 categorySelect.close();
                 categorySelect.resetSelectedItemId();
                 categorySelect.removeSelectionStyleClassFromAll();
             }
         });
-
-        categorySelect.enableHotkeys();
     }
 });
 
@@ -57,6 +28,37 @@ class CustomSelect
         this.selectedId = null;
     }
 
+    init()
+    {
+        let self = this;
+        let customSelectTrigger = document.querySelector(this.selector);
+        customSelectTrigger.addEventListener('click', function()
+        {
+            self.open();
+        });
+
+        customSelectTrigger.addEventListener("keydown", function(event)
+        {
+            if(event.key === "Escape")
+            {
+                self.close();
+            }
+
+            self.jumpToItemByFirstLetter(event.key);
+        });
+
+        for(const option of document.querySelectorAll(this.selector + ' .custom-select-option'))
+        {
+            option.addEventListener('click', function(event)
+            {
+                self.confirmItem(this);
+                event.stopPropagation();
+            })
+        }
+
+        this.resetSelectedItemId()
+    }
+
     open()
     {
         let trigger = document.querySelector(this.selector);
@@ -64,11 +66,13 @@ class CustomSelect
         let items = document.querySelectorAll(this.selector + ' .custom-select-option');
         this.resetSelectedItemId();
         this.selectItem(items, this.getIndexOfItemById(items, this.selectedId));
+        this.enableHotkeys();
     }
 
     close()
     {
         document.querySelector(this.selector + ' .custom-select').classList.remove('open');
+        this.disableHotKeys();
     }
 
     enableHotkeys()
@@ -102,6 +106,13 @@ class CustomSelect
         });
     }
 
+    disableHotKeys()
+    {
+        Mousetrap.unbind('up');
+        Mousetrap.unbind('down');
+        Mousetrap.unbind('enter');
+    }
+
     resetSelectedItemId()
     {
         let itemSelector = document.querySelector(this.selector + ' #custom-select-selected-item');
@@ -114,7 +125,6 @@ class CustomSelect
 
         let items = document.querySelectorAll(this.selector + ' .custom-select-option');
         let previousIndex = this.getIndexOfItemById(items, this.selectedId);
-        console.log("previousIndex " + previousIndex + " this.selectedId " + this.selectedId);
 
         // select next item
         if(isUp)
@@ -157,8 +167,6 @@ class CustomSelect
 
     selectItem(items, index)
     {
-        console.log(items);
-        console.log(index);
         this.toggleItemSelection(items[index], true);
         items[index].scrollIntoView({
             behavior: 'smooth',
