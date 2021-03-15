@@ -99,7 +99,7 @@
                     <div class="category-select__trigger" tabindex="0"><div id="custom-select-selected-item"><#if selectedCategory??><@categorySelectOptionContent selectedCategory "no-margin-left"/></#if></div>
                         <div class="category-select-arrow"></div>
                     </div>
-                    <div class="category-select-options">
+                    <div class="custom-select-options">
                         <#list categories as category>
                             <#if category.getType() == "REST">
                                 <#continue>
@@ -131,7 +131,7 @@
 </#macro>
 
 <#macro categorySelectOption category isSelected>
-    <div class="category-select-option <#if isSelected>selected</#if>" data-value="${category.getID()?c}">
+    <div class="custom-select-option <#if isSelected>selected</#if>" data-value="${category.getID()?c}">
         <@categorySelectOptionContent category/>
     </div>
 </#macro>

@@ -26,7 +26,7 @@ $(document).ready(function()
             }
         });
 
-        for(const option of document.querySelectorAll(selectorCategorySelect + ' .category-select-option'))
+        for(const option of document.querySelectorAll(selectorCategorySelect + ' .custom-select-option'))
         {
             option.addEventListener('click', function(event)
             {
@@ -57,7 +57,7 @@ function openCustomSelect(selector)
 {
     let trigger = document.querySelector(selector);
     trigger.querySelector('.custom-select').classList.toggle('open');
-    let items = document.getElementsByClassName('category-select-option');
+    let items = document.getElementsByClassName(selector + ' .custom-select-option');
     return selectCustomSelectItem(items, getIndexOfCustomSelectItemId(items, resetCustomSelectSelectedItemId(selector)));
 }
 
@@ -106,7 +106,7 @@ function handleCustomSelectKeyUpOrDown(selector, isUp)
 {
     removeSelectionStyleClassFromAll(selector);
 
-    let items = document.querySelectorAll(selector + ' .category-select-option');
+    let items = document.querySelectorAll(selector + ' .custom-select-option');
     let previousIndex = getIndexOfCustomSelectItemId(items, selectedCategoryId);
 
     // select next item
@@ -122,7 +122,7 @@ function handleCustomSelectKeyUpOrDown(selector, isUp)
 
 function removeSelectionStyleClassFromAll(selector)
 {
-    let items = document.querySelectorAll(selector + ' .category-select-option');
+    let items = document.querySelectorAll(selector + ' .custom-select-option');
     for(let i = 0; i < items.length; i++)
     {
         toggleCustomSelectItemSelection(items[i], false);
@@ -165,7 +165,7 @@ function toggleCustomSelectItemSelection(item, isSelected)
 
 function confirmCustomSelectSelection(selector, selectedId)
 {
-    let items = document.querySelectorAll(selector + ' .category-select-option');
+    let items = document.querySelectorAll(selector + ' .custom-select-option');
     let index = getIndexOfCustomSelectItemId(items, selectedId);
     return confirmCustomSelectItem(selector, items[index]);
 }
@@ -173,7 +173,7 @@ function confirmCustomSelectSelection(selector, selectedId)
 function confirmCustomSelectItem(selector, item)
 {
     // remove old selection
-    item.parentNode.querySelector('.category-select-option.selected').classList.remove('selected');
+    item.parentNode.querySelector('.custom-select-option.selected').classList.remove('selected');
 
     item.classList.add('selected');
 
@@ -219,7 +219,7 @@ function selectNextCustomSelectItemOnUp(items, previousIndex)
 
 function jumpToItemByFirstLetter(selector, firstLetter)
 {
-    let items = document.querySelectorAll(selector + ' .category-select-option');
+    let items = document.querySelectorAll(selector + ' .custom-select-option');
     let index = getIndexOfCustomSelectItemStartingWithLetter(items, firstLetter);
     if(index !== null)
     {

@@ -24,7 +24,7 @@
     padding-right: 1rem;
 }
 
-.category-select-options {
+.custom-select-options {
     position: absolute;
     display: block;
     top: 100%;
@@ -42,13 +42,13 @@
     max-height: 25rem;
 }
 
-.custom-select.open .category-select-options {
+.custom-select.open .custom-select-options {
     opacity: 1;
     visibility: visible;
     pointer-events: all;
 }
 
-.category-select-option {
+.custom-select-option {
     position: relative;
     display: block;
     font-size: 1.2rem;
@@ -58,7 +58,7 @@
     cursor: pointer;
 }
 
-.category-select-option:hover {
+.custom-select-option:hover {
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.15);
 }
@@ -67,7 +67,7 @@
     background-color: rgba(0, 0, 0, 0.25) !important;
 }
 
-.category-select-option.selected {
+.custom-select-option.selected {
     color: var(--color-blue);
     background-color: rgba(0, 0, 0, 0.15);
 }
@@ -111,16 +111,16 @@
 
 /* dark theme */
 
-[data-theme="dark"] .category-select-options,
-[data-theme="dark"] .category-select-option {
+[data-theme="dark"] .custom-select-options,
+[data-theme="dark"] .custom-select-option {
     background-color: #CCCCCC;
 }
 
-[data-theme="dark"] .category-select-option.selected {
+[data-theme="dark"] .custom-select-option.selected {
     background-color: #A6A6A6;
 }
 
-[data-theme="dark"] .category-select-option:hover {
+[data-theme="dark"] .custom-select-option:hover {
     background-color: #EBEBEB;
 }
 
