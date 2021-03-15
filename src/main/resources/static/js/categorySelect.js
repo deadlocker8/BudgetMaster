@@ -26,7 +26,7 @@ $(document).ready(function()
         {
             option.addEventListener('click', function(event)
             {
-                confirmCategory(this);
+                confirmCustomSelectItem(this);
                 event.stopPropagation();
             })
         }
@@ -81,7 +81,7 @@ function enableCategorySelectHotKeys()
 
         if(isCategorySelectFocused())
         {
-            confirmCategorySelection();
+            confirmCustomSelectSelection('.category-select-wrapper', selectedCategoryId);
         }
         else
         {
@@ -165,26 +165,28 @@ function toggleCustomSelectItemSelection(item, isSelected)
     item.classList.toggle('custom-select-option-hovered', isSelected);
 }
 
-function confirmCategorySelection()
+function confirmCustomSelectSelection(selector, selectedId)
 {
-    let categoryItems = document.querySelectorAll('.category-select-option');
-    let index = getIndexOfCustomSelectItemId(categoryItems, selectedCategoryId);
-    confirmCategory(categoryItems[index]);
+    let items = document.querySelectorAll(selector + ' .category-select-option');
+    let index = getIndexOfCustomSelectItemId(items, selectedId);
+    confirmCustomSelectItem(items[index]);
 }
 
-function confirmCategory(categoryItem)
+function confirmCustomSelectItem(item)
 {
-    categoryItem.parentNode.querySelector('.category-select-option.selected').classList.remove('selected');
-    categoryItem.classList.add('selected');
+    // remove old selection
+    item.parentNode.querySelector('.category-select-option.selected').classList.remove('selected');
+
+    item.classList.add('selected');
 
     let categorySelector = document.querySelector('#category-select-selected-category');
-    categorySelector.innerHTML = categoryItem.innerHTML;
+    categorySelector.innerHTML = item.innerHTML;
 
     let categoryCircle = categorySelector.querySelector('.category-circle');
     categoryCircle.classList.add('no-margin-left');
-    categoryCircle.dataset.value = categoryItem.dataset.value;
+    categoryCircle.dataset.value = item.dataset.value;
 
-    document.getElementById('hidden-input-category').value = categoryItem.dataset.value;
+    document.getElementById('hidden-input-category').value = item.dataset.value;
 
     resetSelectedCategoryId();
     removeSelectionStyleClassFromAll('.category-select-wrapper');
