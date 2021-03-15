@@ -70,12 +70,12 @@ function enableCustomSelectHotKeys(selector)
 {
     Mousetrap.bind('up', function()
     {
-        selectedCategoryId = handleCustomSelectKeyUpOrDown(selector, true);
+        selectedCategoryId = handleCustomSelectKeyUpOrDown(selector, true, selectedCategoryId);
     });
 
     Mousetrap.bind('down', function()
     {
-        selectedCategoryId = handleCustomSelectKeyUpOrDown(selector, false);
+        selectedCategoryId = handleCustomSelectKeyUpOrDown(selector, false, selectedCategoryId);
     });
 
     Mousetrap.bind('enter', function()
@@ -98,16 +98,16 @@ function enableCustomSelectHotKeys(selector)
 
 function resetCustomSelectSelectedItemId(selector)
 {
-    let categorySelector = document.querySelector(selector + ' #custom-select-selected-item');
-    return categorySelector.querySelector('.category-circle').dataset.value;
+    let itemSelector = document.querySelector(selector + ' #custom-select-selected-item');
+    return itemSelector.querySelector('.category-circle').dataset.value;
 }
 
-function handleCustomSelectKeyUpOrDown(selector, isUp)
+function handleCustomSelectKeyUpOrDown(selector, isUp, selectedId)
 {
     removeSelectionStyleClassFromAll(selector);
 
     let items = document.querySelectorAll(selector + ' .custom-select-option');
-    let previousIndex = getIndexOfCustomSelectItemId(items, selectedCategoryId);
+    let previousIndex = getIndexOfCustomSelectItemId(items, selectedId);
 
     // select next item
     if(isUp)
