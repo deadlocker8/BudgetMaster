@@ -507,7 +507,6 @@ public class DatabaseImportTest
 
 		final ImageRepository imageRepositoryMock = Mockito.mock(ImageRepository.class);
 		Mockito.when(imageService.getRepository()).thenReturn(imageRepositoryMock);
-		Mockito.when(imageRepositoryMock.findById(Mockito.any())).thenReturn(Optional.empty());
 		Mockito.when(imageRepositoryMock.save(Mockito.any())).thenReturn(newImage);
 
 		Database database = new Database(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(image));
@@ -522,13 +521,16 @@ public class DatabaseImportTest
 		Image image = new Image(new Byte[0], "png");
 		image.setID(3);
 
+		Image newImage = new Image(new Byte[0], "png");
+		newImage.setID(5);
+
 		final ImageRepository imageRepositoryMock = Mockito.mock(ImageRepository.class);
 		Mockito.when(imageService.getRepository()).thenReturn(imageRepositoryMock);
-		Mockito.when(imageRepositoryMock.findById(Mockito.any())).thenReturn(Optional.of(image));
+		Mockito.when(imageRepositoryMock.save(Mockito.any())).thenReturn(newImage);
 
 		Database database = new Database(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(image));
 		importService.importDatabase(database, new AccountMatchList(List.of()));
 
-		Mockito.verify(imageRepositoryMock, Mockito.never()).save(image);
+		Mockito.verify(imageRepositoryMock, Mockito.atLeast(1)).save(image);
 	}
 }

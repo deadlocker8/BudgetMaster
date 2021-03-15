@@ -304,27 +304,12 @@ public class ImportService
 		{
 			Image image = images.get(i);
 			LOGGER.debug(MessageFormat.format("Importing image {0}/{1} (ID: {2})", i + 1, images.size(), image.getID()));
-			final Optional<Image> existingImageOptional = imageService.getRepository().findById(image.getID());
 
+			// always create new image
 			int oldImageID = image.getID();
-			int newImageID;
-			if(existingImageOptional.isEmpty())
-			{
-				//image does not exist --> create it
-				image.setID(null);
-				final Image savedImage = imageService.getRepository().save(image);
-				newImageID = savedImage.getID();
-			}
-			else
-			{
-				//image already exists
-				newImageID = existingImageOptional.get().getID();
-			}
-
-			if(oldImageID == newImageID)
-			{
-				continue;
-			}
+			image.setID(null);
+			final Image savedImage = imageService.getRepository().save(image);
+			int newImageID = savedImage.getID();
 
 			List<Account> accounts = new ArrayList<>(database.getAccounts());
 			accounts.removeAll(alreadyUpdatedAccounts);
