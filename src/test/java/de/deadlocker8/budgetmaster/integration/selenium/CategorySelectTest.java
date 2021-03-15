@@ -120,7 +120,7 @@ public class CategorySelectTest
 		// assert
 		List<WebElement> selectOptions = driver.findElements(By.cssSelector(".category-select-option.category-select-option-hovered"));
 		assertThat(selectOptions).hasSize(1);
-		assertThat(selectOptions.get(0).findElement(By.className("category-select-category-name")))
+		assertThat(selectOptions.get(0).findElement(By.className("custom-select-item-name")))
 				.hasFieldOrPropertyWithValue("text", "sdfdsf");
 
 		driver.findElement(By.tagName("body")).sendKeys(Keys.DOWN);
@@ -128,7 +128,7 @@ public class CategorySelectTest
 		// assert
 		selectOptions = driver.findElements(By.cssSelector(".category-select-option.category-select-option-hovered"));
 		assertThat(selectOptions).hasSize(1);
-		assertThat(selectOptions.get(0).findElement(By.className("category-select-category-name")))
+		assertThat(selectOptions.get(0).findElement(By.className("ccustom-select-item-name")))
 				.hasFieldOrPropertyWithValue("text", "12sd");
 	}
 
@@ -148,7 +148,7 @@ public class CategorySelectTest
 		// assert
 		List<WebElement> selectOptions = driver.findElements(By.cssSelector(".category-select-option.category-select-option-hovered"));
 		assertThat(selectOptions).hasSize(1);
-		assertThat(selectOptions.get(0).findElement(By.className("category-select-category-name")))
+		assertThat(selectOptions.get(0).findElement(By.className("custom-select-item-name")))
 				.hasFieldOrPropertyWithValue("text", "12sd");
 
 		driver.findElement(By.tagName("body")).sendKeys(Keys.UP);
@@ -156,7 +156,7 @@ public class CategorySelectTest
 		// assert
 		selectOptions = driver.findElements(By.cssSelector(".category-select-option.category-select-option-hovered"));
 		assertThat(selectOptions).hasSize(1);
-		assertThat(selectOptions.get(0).findElement(By.className("category-select-category-name")))
+		assertThat(selectOptions.get(0).findElement(By.className("custom-select-item-name")))
 				.hasFieldOrPropertyWithValue("text", "sdfdsf");
 	}
 
@@ -176,7 +176,7 @@ public class CategorySelectTest
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".category-select-option.selected")));
 
-		assertThat(driver.findElement(By.className("category-select-category-name")))
+		assertThat(driver.findElement(By.className("custom-select-item-name")))
 				.hasFieldOrPropertyWithValue("text", "12sd");
 	}
 
@@ -197,7 +197,7 @@ public class CategorySelectTest
 		// assert
 		List<WebElement> selectOptions = driver.findElements(By.cssSelector(".category-select-option.category-select-option-hovered"));
 		assertThat(selectOptions).hasSize(1);
-		assertThat(selectOptions.get(0).findElement(By.className("category-select-category-name")))
+		assertThat(selectOptions.get(0).findElement(By.className("custom-select-item-name")))
 				.hasFieldOrPropertyWithValue("text", "sdfdsf");
 	}
 }

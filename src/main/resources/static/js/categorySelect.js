@@ -228,7 +228,7 @@ function getIndexOfCategoryStartingWithLetter(categoryItems, letter)
 {
     for(let i = 0; i < categoryItems.length; i++)
     {
-        let categoryName = categoryItems[i].querySelector('.category-select-category-name').textContent;
+        let categoryName = categoryItems[i].querySelector('.custom-select-item-name').textContent;
         if(categoryName.toLowerCase().startsWith(letter.toLowerCase()))
         {
             return i;

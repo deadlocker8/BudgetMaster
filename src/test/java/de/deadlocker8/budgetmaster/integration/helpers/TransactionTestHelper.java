@@ -61,7 +61,7 @@ public class TransactionTestHelper
 	{
 		final WebElement categorySelect = driver.findElement(By.className("custom-select"));
 		categorySelect.click();
-		driver.findElements(By.className("category-select-category-name")).stream()
+		driver.findElements(By.className("custom-select-item-name")).stream()
 				.filter(webElement -> webElement.getText().equals(categoryName))
 				.findFirst().orElseThrow().click();
 	}
