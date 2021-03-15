@@ -213,11 +213,11 @@ class CustomSelect
         let isLastItemSelected = previousIndex + 1 === items.length;
         if(isLastItemSelected)
         {
-            this.selectedId = this.selectItem(items, 0);
+           this.selectItem(items, 0);
         }
         else
         {
-            this.selectedId = this.selectItem(items, previousIndex + 1);
+            this.selectItem(items, previousIndex + 1);
         }
     }
 
