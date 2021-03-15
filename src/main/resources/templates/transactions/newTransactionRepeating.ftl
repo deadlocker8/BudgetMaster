@@ -13,7 +13,7 @@
         <@header.style "transactions"/>
         <@header.style "datepicker"/>
         <@header.style "categories"/>
-        <@header.style "categorySelect"/>
+        <@header.style "customSelect"/>
         <@header.style "accounts"/>
         <#import "/spring.ftl" as s>
     </head>
