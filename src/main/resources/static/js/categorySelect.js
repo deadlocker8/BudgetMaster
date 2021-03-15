@@ -51,6 +51,8 @@ $(document).ready(function()
     }
 });
 
+let selectedCategoryId = null;
+
 function openCustomSelect(selector)
 {
     let trigger = document.querySelector(selector);
@@ -94,8 +96,6 @@ function enableCustomSelectHotKeys(selector)
     });
 }
 
-let selectedCategoryId = null;
-
 function resetCustomSelectSelectedItemId(selector)
 {
     let categorySelector = document.querySelector(selector + ' #custom-select-selected-item');
@@ -133,8 +133,8 @@ function getIndexOfCustomSelectItemId(items, id)
 {
     for(let i = 0; i < items.length; i++)
     {
-        let currentCategoryId = getCustomSelectItemId(items[i]);
-        if(currentCategoryId === id)
+        let currentItemId = getCustomSelectItemId(items[i]);
+        if(currentItemId === id)
         {
             return i;
         }
@@ -177,14 +177,14 @@ function confirmCustomSelectItem(selector, item)
 
     item.classList.add('selected');
 
-    let categorySelector = document.querySelector(selector + ' #custom-select-selected-item');
-    categorySelector.innerHTML = item.innerHTML;
+    let itemSelector = document.querySelector(selector + ' #custom-select-selected-item');
+    itemSelector.innerHTML = item.innerHTML;
 
-    let categoryCircle = categorySelector.querySelector('.category-circle');
-    categoryCircle.classList.add('no-margin-left');
-    categoryCircle.dataset.value = item.dataset.value;
+    let itemCircle = itemSelector.querySelector('.category-circle');
+    itemCircle.classList.add('no-margin-left');
+    itemCircle.dataset.value = item.dataset.value;
 
-    document.getElementById('hidden-input-category').value = item.dataset.value;
+    document.querySelector(selector + ' .hidden-input-custom-select').value = item.dataset.value;
 
     removeSelectionStyleClassFromAll(selector);
     closeCustomSelect(selector);

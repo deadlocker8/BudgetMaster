@@ -123,11 +123,11 @@
                         </#list>
                     </div>
                 </div>
+
+                <input type="hidden" name="category" class="hidden-input-custom-select" <#if selectedCategory??>value="${selectedCategory.getID()?c}"</#if>/>
             </div>
         </div>
     </div>
-
-    <input type="hidden" name="category" id="hidden-input-category" <#if selectedCategory??>value="${selectedCategory.getID()?c}"</#if>/>
 </#macro>
 
 <#macro categorySelectOption category isSelected>
