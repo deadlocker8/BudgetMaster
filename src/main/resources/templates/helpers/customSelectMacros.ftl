@@ -7,7 +7,7 @@
             <label class="input-label" for="transaction-category">${labelText}</label>
             <div class="custom-select-wrapper category-select-wrapper" id="transaction-category">
                 <div class="custom-select">
-                    <div class="custom-select-trigger" tabindex="0"><div id="custom-select-selected-item"><#if selectedCategory??><@customSelectOptionCategoryContent selectedCategory "no-margin-left"/></#if></div>
+                    <div class="custom-select-trigger" tabindex="0"><div class="custom-select-selected-item"><#if selectedCategory??><@customSelectOptionCategoryContent selectedCategory "no-margin-left"/></#if></div>
                         <div class="custom-select-arrow"></div>
                     </div>
                     <div class="custom-select-options">
@@ -48,7 +48,7 @@
             <label class="input-label" for="transaction-account">${labelText}</label>
             <div class="custom-select-wrapper account-select-wrapper" id="transaction-account">
                 <div class="custom-select">
-                    <div class="custom-select-trigger" tabindex="0"><div id="custom-select-selected-item"><#if selectedAccount??><@customSelectOptionAccountContent selectedAccount "no-margin-left"/></#if></div>
+                    <div class="custom-select-trigger" tabindex="0"><div class="custom-select-selected-item"><#if selectedAccount??><@customSelectOptionAccountContent selectedAccount "no-margin-left"/></#if></div>
                         <div class="custom-select-arrow"></div>
                     </div>
                     <div class="custom-select-options">

@@ -152,7 +152,7 @@ class CustomSelect
 
     resetSelectedItemId()
     {
-        let itemSelector = document.querySelector(this.selector + ' #custom-select-selected-item');
+        let itemSelector = document.querySelector(this.selector + ' .custom-select-selected-item');
         this.selectedId = itemSelector.querySelector('.category-circle').dataset.value;
     }
 
@@ -231,7 +231,7 @@ class CustomSelect
 
         item.classList.add('selected');
 
-        let itemSelector = document.querySelector(this.selector + ' #custom-select-selected-item');
+        let itemSelector = document.querySelector(this.selector + ' .custom-select-selected-item');
         itemSelector.innerHTML = item.innerHTML;
 
         let itemCircle = itemSelector.querySelector('.category-circle');
