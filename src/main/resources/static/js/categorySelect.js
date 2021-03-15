@@ -110,11 +110,11 @@ function handleCategorySelectKeyUpOrDown(isUp)
     // select next item
     if(isUp)
     {
-        selectNextCategoryItemOnUp(categoryItems, previousIndex);
+        selectNextItemOnUp(categoryItems, previousIndex);
     }
     else
     {
-        selectNextCategoryItemOnDown(categoryItems, previousIndex);
+        selectNextItemOnDown(categoryItems, previousIndex);
     }
 }
 
@@ -123,7 +123,7 @@ function removeSelectionStyleClassFromAll()
     let categoryItems = document.getElementsByClassName('category-select-option');
     for(let i = 0; i < categoryItems.length; i++)
     {
-        toggleCategoryItemSelection(categoryItems[i], false);
+        toggleItemSelection(categoryItems[i], false);
     }
 }
 
@@ -148,7 +148,7 @@ function getCategoryId(categoryItem)
 
 function selectCategoryItem(categoryItems, index)
 {
-    toggleCategoryItemSelection(categoryItems[index], true);
+    toggleItemSelection(categoryItems[index], true);
     categoryItems[index].scrollIntoView({
         behavior: 'smooth',
         block: 'start'
@@ -156,9 +156,9 @@ function selectCategoryItem(categoryItems, index)
     selectedCategoryId = getCategoryId(categoryItems[index]);
 }
 
-function toggleCategoryItemSelection(categoryItem, isSelected)
+function toggleItemSelection(item, isSelected)
 {
-    categoryItem.classList.toggle('category-select-option-hovered', isSelected);
+    item.classList.toggle('custom-select-option-hovered', isSelected);
 }
 
 function confirmCategorySelection()
@@ -187,29 +187,29 @@ function confirmCategory(categoryItem)
     closeCustomSelect('.category-select-wrapper');
 }
 
-function selectNextCategoryItemOnDown(categoryItems, previousIndex)
+function selectNextItemOnDown(items, previousIndex)
 {
-    let isLastItemSelected = previousIndex + 1 === categoryItems.length;
+    let isLastItemSelected = previousIndex + 1 === items.length;
     if(isLastItemSelected)
     {
-        selectCategoryItem(categoryItems, 0);
+        selectCategoryItem(items, 0);
     }
     else
     {
-        selectCategoryItem(categoryItems, previousIndex + 1);
+        selectCategoryItem(items, previousIndex + 1);
     }
 }
 
-function selectNextCategoryItemOnUp(categoryItems, previousIndex)
+function selectNextItemOnUp(items, previousIndex)
 {
     let isFirstItemSelected = previousIndex === 0;
     if(isFirstItemSelected)
     {
-        selectCategoryItem(categoryItems, categoryItems.length - 1);
+        selectCategoryItem(items, items.length - 1);
     }
     else
     {
-        selectCategoryItem(categoryItems, previousIndex - 1);
+        selectCategoryItem(items, previousIndex - 1);
     }
 }
 

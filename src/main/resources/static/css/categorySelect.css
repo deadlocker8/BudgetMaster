@@ -63,7 +63,7 @@
     background-color: rgba(0, 0, 0, 0.15);
 }
 
-.category-select-option-hovered {
+.custom-select-option-hovered {
     background-color: rgba(0, 0, 0, 0.25) !important;
 }
 
@@ -124,6 +124,6 @@
     background-color: #EBEBEB;
 }
 
-[data-theme="dark"] .category-select-option-hovered {
+[data-theme="dark"] .custom-select-option-hovered {
     background-color: var(--color-white) !important;
 }
