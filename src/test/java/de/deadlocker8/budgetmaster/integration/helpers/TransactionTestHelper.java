@@ -59,7 +59,7 @@ public class TransactionTestHelper
 
 	public static void selectCategoryByName(WebDriver driver, String categoryName)
 	{
-		final WebElement categorySelect = driver.findElement(By.className("category-select"));
+		final WebElement categorySelect = driver.findElement(By.className("custom-select"));
 		categorySelect.click();
 		driver.findElements(By.className("category-select-category-name")).stream()
 				.filter(webElement -> webElement.getText().equals(categoryName))

@@ -161,7 +161,7 @@ public class HotkeyTest
 		driver.findElement(By.id("transaction-amount")).sendKeys("15.00");
 		TransactionTestHelper.selectCategoryByName(driver, "sdfdsf");
 
-		WebElement categoryWrapper = driver.findElement(By.className("category-select"));
+		WebElement categoryWrapper = driver.findElement(By.className("custom-select"));
 		Action seriesOfActions = new Actions(driver)
 				.keyDown(categoryWrapper, Keys.CONTROL)
 				.sendKeys(categoryWrapper, Keys.ENTER)

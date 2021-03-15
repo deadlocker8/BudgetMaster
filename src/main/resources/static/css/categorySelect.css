@@ -5,7 +5,7 @@
     margin-top: 3rem
 }
 
-.category-select {
+.custom-select {
     display: flex;
     flex-direction: column;
 }
@@ -42,7 +42,7 @@
     max-height: 25rem;
 }
 
-.category-select.open .category-select-options {
+.custom-select.open .category-select-options {
     opacity: 1;
     visibility: visible;
     pointer-events: all;
