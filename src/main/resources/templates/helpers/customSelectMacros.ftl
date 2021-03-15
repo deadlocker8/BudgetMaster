@@ -7,7 +7,7 @@
             <label class="input-label" for="transaction-category">${labelText}</label>
             <div class="category-select-wrapper" id="transaction-category">
                 <div class="custom-select">
-                    <div class="custom-select-trigger" tabindex="0"><div id="custom-select-selected-item"><#if selectedCategory??><@customSelectOptionContent selectedCategory "no-margin-left"/></#if></div>
+                    <div class="custom-select-trigger" tabindex="0"><div id="custom-select-selected-item"><#if selectedCategory??><@customSelectOptionCategoryContent selectedCategory "no-margin-left"/></#if></div>
                         <div class="category-select-arrow"></div>
                     </div>
                     <div class="custom-select-options">
@@ -18,19 +18,19 @@
 
                             <#if selectedCategory??>
                                 <#if selectedCategory.getID()?c == category.getID()?c>
-                                    <@customSelectOption category true/>
+                                    <@customSelectCategoryOption category true/>
                                 <#else>
-                                    <@customSelectOption category false/>
+                                    <@customSelectCategoryOption category false/>
                                 </#if>
                                 <#continue>
                             </#if>
 
                             <#if category.getType() == "NONE">
-                                <@customSelectOption category true/>
+                                <@customSelectCategoryOption category true/>
                                 <#continue>
                             </#if>
 
-                            <@customSelectOption category false/>
+                            <@customSelectCategoryOption category false/>
                         </#list>
                     </div>
                 </div>
@@ -42,13 +42,19 @@
 </#macro>
 
 
-<#macro customSelectOption category isSelected>
-    <div class="custom-select-option <#if isSelected>selected</#if>" data-value="${category.getID()?c}">
-        <@customSelectOptionContent category/>
+                <input type="hidden" name="account" class="hidden-input-custom-select" <#if selectedAccount??>value="${selectedAccount.getID()?c}"</#if>/>
+            </div>
+        </div>
     </div>
 </#macro>
 
-<#macro customSelectOptionContent category classes="" datasetValue="">
+<#macro customSelectCategoryOption category isSelected>
+    <div class="custom-select-option <#if isSelected>selected</#if>" data-value="${category.getID()?c}">
+        <@customSelectOptionCategoryContent category/>
+    </div>
+</#macro>
+
+<#macro customSelectOptionCategoryContent category classes="" datasetValue="">
     <@categoriesFunctions.categoryCircle category "category-circle-small ${classes}" datasetValue=""/>
     <span class="custom-select-item-name">${categoriesFunctions.getCategoryName(category)}</span>
 </#macro>
