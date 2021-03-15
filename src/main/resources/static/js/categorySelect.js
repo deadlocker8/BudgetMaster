@@ -4,242 +4,255 @@ $(document).ready(function()
 
     if($(selectorCategorySelect).length)
     {
-        selectedCategoryId = resetCustomSelectSelectedItemId(selectorCategorySelect);
+        let categorySelect = new CustomSelect(selectorCategorySelect);
+
+        categorySelect.resetSelectedItemId()
 
         let customSelectTrigger = document.querySelector(selectorCategorySelect);
         customSelectTrigger.addEventListener('click', function()
         {
-            selectedCategoryId = openCustomSelect(selectorCategorySelect);
+            categorySelect.open();
         });
 
         customSelectTrigger.addEventListener("keydown", function(event)
         {
             if(event.key === "Escape")
             {
-                closeCustomSelect(selectorCategorySelect);
+                categorySelect.close();
             }
 
-            let resultId = jumpToItemByFirstLetter(selectorCategorySelect, event.key);
-            if(resultId !== null)
-            {
-                selectedCategoryId = resultId;
-            }
+            categorySelect.jumpToItemByFirstLetter(event.key);
         });
 
         for(const option of document.querySelectorAll(selectorCategorySelect + ' .custom-select-option'))
         {
             option.addEventListener('click', function(event)
             {
-                selectedCategoryId = confirmCustomSelectItem(selectorCategorySelect, this);
+                categorySelect.confirmItem(this);
                 event.stopPropagation();
             })
         }
 
         window.addEventListener('click', function(e)
         {
-            let categorySelect = document.querySelector('.custom-select')
+            let expectedTarget = document.querySelector(selectorCategorySelect + ' .custom-select')
 
-            if(!categorySelect.contains(e.target))
+            if(!expectedTarget.contains(e.target))
             {
-                closeCustomSelect(selectorCategorySelect);
-                selectedCategoryId = resetCustomSelectSelectedItemId(selectorCategorySelect);
-                removeSelectionStyleClassFromAll(selectorCategorySelect);
+                categorySelect.close();
+                categorySelect.resetSelectedItemId();
+                categorySelect.removeSelectionStyleClassFromAll();
             }
         });
 
-        enableCustomSelectHotKeys(selectorCategorySelect);
+        categorySelect.enableHotkeys();
     }
 });
 
-let selectedCategoryId = null;
-
-function openCustomSelect(selector)
+class CustomSelect
 {
-    let trigger = document.querySelector(selector);
-    trigger.querySelector('.custom-select').classList.toggle('open');
-    let items = document.getElementsByClassName(selector + ' .custom-select-option');
-    return selectCustomSelectItem(items, getIndexOfCustomSelectItemId(items, resetCustomSelectSelectedItemId(selector)));
-}
-
-function closeCustomSelect(selector)
-{
-    document.querySelector(selector + ' .custom-select').classList.remove('open');
-}
-
-function enableCustomSelectHotKeys(selector)
-{
-    Mousetrap.bind('up', function()
+    constructor(selector)
     {
-        selectedCategoryId = handleCustomSelectKeyUpOrDown(selector, true, selectedCategoryId);
-    });
+        this.selector = selector;
+        this.selectedId = null;
+    }
 
-    Mousetrap.bind('down', function()
+    open()
     {
-        selectedCategoryId = handleCustomSelectKeyUpOrDown(selector, false, selectedCategoryId);
-    });
+        let trigger = document.querySelector(this.selector);
+        trigger.querySelector('.custom-select').classList.toggle('open');
+        let items = document.querySelectorAll(this.selector + ' .custom-select-option');
+        this.resetSelectedItemId();
+        this.selectItem(items, this.getIndexOfItemById(items, this.selectedId));
+    }
 
-    Mousetrap.bind('enter', function()
+    close()
     {
-        if(isSearchFocused())
+        document.querySelector(this.selector + ' .custom-select').classList.remove('open');
+    }
+
+    enableHotkeys()
+    {
+        let self = this;
+        Mousetrap.bind('up', function()
         {
-            return;
-        }
+            self.handleKeyUpOrDown(true);
+        });
 
-        if(isCustomSelectFocused())
+        Mousetrap.bind('down', function()
         {
-            selectedCategoryId = confirmCustomSelectSelection(selector, selectedCategoryId);
+            self.handleKeyUpOrDown(false);
+        });
+
+        Mousetrap.bind('enter', function()
+        {
+            if(isSearchFocused())
+            {
+                return;
+            }
+
+            if(isCustomSelectFocused())
+            {
+                self.confirmSelection(self.selector, self.selectedId);
+            }
+            else
+            {
+                self.open(self.selector);
+            }
+        });
+    }
+
+    resetSelectedItemId()
+    {
+        let itemSelector = document.querySelector(this.selector + ' #custom-select-selected-item');
+        this.selectedId = itemSelector.querySelector('.category-circle').dataset.value;
+    }
+
+    handleKeyUpOrDown(isUp)
+    {
+        this.removeSelectionStyleClassFromAll();
+
+        let items = document.querySelectorAll(this.selector + ' .custom-select-option');
+        let previousIndex = this.getIndexOfItemById(items, this.selectedId);
+        console.log("previousIndex " + previousIndex + " this.selectedId " + this.selectedId);
+
+        // select next item
+        if(isUp)
+        {
+            this.selectNextItemOnUp(items, previousIndex);
         }
         else
         {
-            selectedCategoryId = openCustomSelect(selector);
+            this.selectNextItemOnDown(items, previousIndex);
         }
-    });
-}
-
-function resetCustomSelectSelectedItemId(selector)
-{
-    let itemSelector = document.querySelector(selector + ' #custom-select-selected-item');
-    return itemSelector.querySelector('.category-circle').dataset.value;
-}
-
-function handleCustomSelectKeyUpOrDown(selector, isUp, selectedId)
-{
-    removeSelectionStyleClassFromAll(selector);
-
-    let items = document.querySelectorAll(selector + ' .custom-select-option');
-    let previousIndex = getIndexOfCustomSelectItemId(items, selectedId);
-
-    // select next item
-    if(isUp)
-    {
-        return selectNextCustomSelectItemOnUp(items, previousIndex);
     }
-    else
-    {
-       return selectNextCustomSelectItemOnDown(items, previousIndex);
-    }
-}
 
-function removeSelectionStyleClassFromAll(selector)
-{
-    let items = document.querySelectorAll(selector + ' .custom-select-option');
-    for(let i = 0; i < items.length; i++)
+    removeSelectionStyleClassFromAll()
     {
-        toggleCustomSelectItemSelection(items[i], false);
-    }
-}
-
-function getIndexOfCustomSelectItemId(items, id)
-{
-    for(let i = 0; i < items.length; i++)
-    {
-        let currentItemId = getCustomSelectItemId(items[i]);
-        if(currentItemId === id)
+        let items = document.querySelectorAll(this.selector + ' .custom-select-option');
+        for(let i = 0; i < items.length; i++)
         {
-            return i;
+            this.toggleItemSelection(items[i], false);
         }
     }
 
-    return null;
-}
-
-function getCustomSelectItemId(item)
-{
-    return item.dataset.value;
-}
-
-function selectCustomSelectItem(items, index)
-{
-    toggleCustomSelectItemSelection(items[index], true);
-    items[index].scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-    });
-    return getCustomSelectItemId(items[index]);
-}
-
-function toggleCustomSelectItemSelection(item, isSelected)
-{
-    item.classList.toggle('custom-select-option-hovered', isSelected);
-}
-
-function confirmCustomSelectSelection(selector, selectedId)
-{
-    let items = document.querySelectorAll(selector + ' .custom-select-option');
-    let index = getIndexOfCustomSelectItemId(items, selectedId);
-    return confirmCustomSelectItem(selector, items[index]);
-}
-
-function confirmCustomSelectItem(selector, item)
-{
-    // remove old selection
-    item.parentNode.querySelector('.custom-select-option.selected').classList.remove('selected');
-
-    item.classList.add('selected');
-
-    let itemSelector = document.querySelector(selector + ' #custom-select-selected-item');
-    itemSelector.innerHTML = item.innerHTML;
-
-    let itemCircle = itemSelector.querySelector('.category-circle');
-    itemCircle.classList.add('no-margin-left');
-    itemCircle.dataset.value = item.dataset.value;
-
-    document.querySelector(selector + ' .hidden-input-custom-select').value = item.dataset.value;
-
-    removeSelectionStyleClassFromAll(selector);
-    closeCustomSelect(selector);
-    return resetCustomSelectSelectedItemId(selector);
-}
-
-function selectNextCustomSelectItemOnDown(items, previousIndex)
-{
-    let isLastItemSelected = previousIndex + 1 === items.length;
-    if(isLastItemSelected)
+    getIndexOfItemById(items, id)
     {
-        return selectCustomSelectItem(items, 0);
-    }
-    else
-    {
-        return selectCustomSelectItem(items, previousIndex + 1);
-    }
-}
-
-function selectNextCustomSelectItemOnUp(items, previousIndex)
-{
-    let isFirstItemSelected = previousIndex === 0;
-    if(isFirstItemSelected)
-    {
-        return selectCustomSelectItem(items, items.length - 1);
-    }
-    else
-    {
-        return selectCustomSelectItem(items, previousIndex - 1);
-    }
-}
-
-function jumpToItemByFirstLetter(selector, firstLetter)
-{
-    let items = document.querySelectorAll(selector + ' .custom-select-option');
-    let index = getIndexOfCustomSelectItemStartingWithLetter(items, firstLetter);
-    if(index !== null)
-    {
-        removeSelectionStyleClassFromAll(selector);
-        return selectCustomSelectItem(items, index);
-    }
-
-    return null;
-}
-
-function getIndexOfCustomSelectItemStartingWithLetter(items, letter)
-{
-    for(let i = 0; i < items.length; i++)
-    {
-        let name = items[i].querySelector('.custom-select-item-name').textContent;
-        if(name.toLowerCase().startsWith(letter.toLowerCase()))
+        for(let i = 0; i < items.length; i++)
         {
-            return i;
+            let currentItemId = this.getItemId(items[i]);
+            if(currentItemId === id)
+            {
+                return i;
+            }
+        }
+
+        return null;
+    }
+
+    getItemId(item)
+    {
+        return item.dataset.value;
+    }
+
+    selectItem(items, index)
+    {
+        console.log(items);
+        console.log(index);
+        this.toggleItemSelection(items[index], true);
+        items[index].scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+        this.selectedId = this.getItemId(items[index]);
+    }
+
+    toggleItemSelection(item, isSelected)
+    {
+        item.classList.toggle('custom-select-option-hovered', isSelected);
+    }
+
+    confirmSelection()
+    {
+        let items = document.querySelectorAll(this.selector + ' .custom-select-option');
+        let index = this.getIndexOfItemById(items, this.selectedId);
+        this.selectedId = this.confirmItem(items[index]);
+    }
+
+    confirmItem(item)
+    {
+        // remove old selection
+        item.parentNode.querySelector('.custom-select-option.selected').classList.remove('selected');
+
+        item.classList.add('selected');
+
+        let itemSelector = document.querySelector(this.selector + ' #custom-select-selected-item');
+        itemSelector.innerHTML = item.innerHTML;
+
+        let itemCircle = itemSelector.querySelector('.category-circle');
+        itemCircle.classList.add('no-margin-left');
+        itemCircle.dataset.value = item.dataset.value;
+
+        document.querySelector(this.selector + ' .hidden-input-custom-select').value = item.dataset.value;
+
+        this.removeSelectionStyleClassFromAll();
+        this.close(this.selector);
+        this.selectedId = this.resetSelectedItemId();
+    }
+
+    selectNextItemOnDown(items, previousIndex)
+    {
+        let isLastItemSelected = previousIndex + 1 === items.length;
+        if(isLastItemSelected)
+        {
+            this.selectedId = this.selectItem(items, 0);
+        }
+        else
+        {
+            this.selectedId = this.selectItem(items, previousIndex + 1);
         }
     }
 
-    return null;
+    selectNextItemOnUp(items, previousIndex)
+    {
+        let isFirstItemSelected = previousIndex === 0;
+        if(isFirstItemSelected)
+        {
+            this.selectItem(items, items.length - 1);
+        }
+        else
+        {
+            this.selectItem(items, previousIndex - 1);
+        }
+    }
+
+    jumpToItemByFirstLetter(firstLetter)
+    {
+        let items = document.querySelectorAll(this.selector + ' .custom-select-option');
+        let index = this.getIndexOfCustomSelectItemStartingWithLetter(items, firstLetter);
+        if(index !== null)
+        {
+            this.removeSelectionStyleClassFromAll(this.selector);
+            this.selectedId = this.selectItem(items, index);
+        }
+    }
+
+    getIndexOfCustomSelectItemStartingWithLetter(items, letter)
+    {
+        for(let i = 0; i < items.length; i++)
+        {
+            let name = items[i].querySelector('.custom-select-item-name').textContent;
+            if(name.toLowerCase().startsWith(letter.toLowerCase()))
+            {
+                return i;
+            }
+        }
+
+        return null;
+    }
+
 }
+
+let selectedCategoryId = null;
+
+
