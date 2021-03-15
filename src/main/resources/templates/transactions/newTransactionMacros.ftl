@@ -89,7 +89,7 @@
 </#macro>
 
 <#import "../categories/categoriesFunctions.ftl" as categoriesFunctions>
-<#macro categorySelect categories selectedCategory inputClasses labelText>
+<#macro customSelect categories selectedCategory inputClasses labelText>
     <div class="row">
         <div class="input-field ${inputClasses}">
             <i class="material-icons prefix">label</i>
