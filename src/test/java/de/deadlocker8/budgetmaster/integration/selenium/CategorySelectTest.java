@@ -111,7 +111,7 @@ public class CategorySelectTest
 		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]")).click();
 
 		// open category select
-		driver.findElement(By.className("category-select__trigger")).click();
+		driver.findElement(By.cssSelector(".category-select-wrapper .custom-select-trigger")).click();
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".category-select-wrapper .custom-select-option.selected")));
 
@@ -139,7 +139,7 @@ public class CategorySelectTest
 		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]")).click();
 
 		// open category select
-		driver.findElement(By.className("category-select__trigger")).click();
+		driver.findElement(By.cssSelector(".category-select-wrapper .custom-select-trigger")).click();
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".category-select-wrapper .custom-select-option.selected")));
 
@@ -167,7 +167,7 @@ public class CategorySelectTest
 		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]")).click();
 
 		// open category select
-		driver.findElement(By.className("category-select__trigger")).click();
+		driver.findElement(By.cssSelector(".category-select-wrapper .custom-select-trigger")).click();
 
 		driver.findElement(By.tagName("body")).sendKeys(Keys.UP);
 		driver.findElement(By.tagName("body")).sendKeys(Keys.ENTER);
@@ -187,7 +187,7 @@ public class CategorySelectTest
 		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]")).click();
 
 		// open category select
-		driver.findElement(By.className("category-select__trigger")).click();
+		driver.findElement(By.cssSelector(".category-select-wrapper .custom-select-trigger")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".category-select-wrapper .custom-select-option.selected")));

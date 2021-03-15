@@ -10,7 +10,7 @@
     flex-direction: column;
 }
 
-.category-select__trigger {
+.custom-select-trigger {
     position: relative;
     display: flex;
     align-items: center;
