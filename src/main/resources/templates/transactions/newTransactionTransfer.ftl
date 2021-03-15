@@ -15,6 +15,7 @@
         <@header.style "categories"/>
         <@header.style "collapsible"/>
         <@header.style "categorySelect"/>
+        <@header.style "accounts"/>
         <#import "/spring.ftl" as s>
     </head>
     <@header.body>

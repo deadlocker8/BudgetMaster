@@ -43,3 +43,8 @@
 #account-icon-preview:hover {
     cursor: pointer;
 }
+
+.account-select-icon {
+    height: 34px;
+    width: 34px;
+}

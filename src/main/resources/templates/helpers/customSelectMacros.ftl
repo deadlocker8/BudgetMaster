@@ -100,13 +100,13 @@
 </#macro>
 
 <#macro accountIcon account classes="" datasetValue="">
-    <div class="category-circle ${classes} category-square" style="background-color: #FF0000" <#if datasetValue?has_content>data-value="${account.getID()}"</#if>>
-        <span style="color: #FFFFFF}">
-<#--            <#if account.getIcon()??>-->
-<#--                <i class="${category.getIcon()}"></i>-->
-<#--            <#else>-->
+    <div class="category-circle ${classes} category-square <#if account.getIcon()?? == false>background-blue</#if>" <#if datasetValue?has_content>data-value="${account.getID()}"</#if>>
+        <#if account.getIcon()??>
+            <img src="${account.getIcon().getBase64EncodedImage()}" class="account-select-icon"/>
+        <#else>
+            <span class="text-white">
                 ${account.getName()?capitalize[0]}
-<#--            </#if>-->
-        </span>
+            </span>
+        </#if>
     </div>
 </#macro>
