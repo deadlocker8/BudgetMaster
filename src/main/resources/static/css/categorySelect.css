@@ -1,4 +1,4 @@
-.category-select-wrapper {
+.custom-select-wrapper {
     position: relative;
     user-select: none;
     margin-left: 3rem;
@@ -72,14 +72,14 @@
     background-color: rgba(0, 0, 0, 0.15);
 }
 
-.category-select-arrow {
+.custom-select-arrow {
     position: relative;
     height: 10px;
     width: 10px;
 }
 
-.category-select-arrow::before,
-.category-select-arrow::after {
+.custom-select-arrow::before,
+.custom-select-arrow::after {
     content: "";
     position: absolute;
     bottom: 0;
@@ -88,22 +88,22 @@
     background-color: #394a6d;
 }
 
-.category-select-arrow::before {
+.custom-select-arrow::before {
     left: -3px;
     transform: rotate(-45deg);
 }
 
-.category-select-arrow::after {
+.custom-select-arrow::after {
     left: 3px;
     transform: rotate(45deg);
 }
 
-.open .category-select-arrow::before {
+.open .custom-select-arrow::before {
     left: -3px;
     transform: rotate(45deg);
 }
 
-.open .category-select-arrow::after {
+.open .custom-select-arrow::after {
     left: 3px;
     transform: rotate(-45deg);
 }

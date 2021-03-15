@@ -5,10 +5,10 @@
         <div class="input-field ${inputClasses}">
             <i class="material-icons prefix">label</i>
             <label class="input-label" for="transaction-category">${labelText}</label>
-            <div class="category-select-wrapper" id="transaction-category">
+            <div class="custom-select-wrapper category-select-wrapper" id="transaction-category">
                 <div class="custom-select">
                     <div class="custom-select-trigger" tabindex="0"><div id="custom-select-selected-item"><#if selectedCategory??><@customSelectOptionCategoryContent selectedCategory "no-margin-left"/></#if></div>
-                        <div class="category-select-arrow"></div>
+                        <div class="custom-select-arrow"></div>
                     </div>
                     <div class="custom-select-options">
                         <#list categories as category>
