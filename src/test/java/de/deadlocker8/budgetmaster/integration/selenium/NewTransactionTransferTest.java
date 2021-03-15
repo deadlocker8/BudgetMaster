@@ -154,7 +154,7 @@ public class NewTransactionTransferTest
 		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEqualTo("3.00");
 		assertThat(driver.findElement(By.id("transaction-datepicker")).getAttribute("value")).isEqualTo("01.05.2019");
 		assertThat(driver.findElement(By.id("transaction-description")).getAttribute("value")).isEmpty();
-		assertThat(driver.findElement(By.cssSelector("#category-select-selected-category .category-circle")).getAttribute("data-value")).isEqualTo("1");
+		assertThat(driver.findElement(By.cssSelector(".category-select-wrapper #custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("1");
 
 		final List<WebElement> chips = driver.findElements(By.cssSelector("#transaction-chips .chip"));
 		assertThat(chips).hasSize(1);

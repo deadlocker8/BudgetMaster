@@ -4,7 +4,7 @@ $(document).ready(function()
 
     if($(selectorCategorySelect).length)
     {
-        selectedCategoryId = resetCustomSelectSelectedItemId();
+        selectedCategoryId = resetCustomSelectSelectedItemId(selectorCategorySelect);
 
         let customSelectTrigger = document.querySelector(selectorCategorySelect);
         customSelectTrigger.addEventListener('click', function()
@@ -42,7 +42,7 @@ $(document).ready(function()
             if(!categorySelect.contains(e.target))
             {
                 closeCustomSelect(selectorCategorySelect);
-                selectedCategoryId = resetCustomSelectSelectedItemId();
+                selectedCategoryId = resetCustomSelectSelectedItemId(selectorCategorySelect);
                 removeSelectionStyleClassFromAll(selectorCategorySelect);
             }
         });
@@ -56,7 +56,7 @@ function openCustomSelect(selector)
     let trigger = document.querySelector(selector);
     trigger.querySelector('.custom-select').classList.toggle('open');
     let items = document.getElementsByClassName('category-select-option');
-    return selectCustomSelectItem(items, getIndexOfCustomSelectItemId(items, resetCustomSelectSelectedItemId()));
+    return selectCustomSelectItem(items, getIndexOfCustomSelectItemId(items, resetCustomSelectSelectedItemId(selector)));
 }
 
 function closeCustomSelect(selector)
@@ -83,7 +83,7 @@ function enableCustomSelectHotKeys(selector)
             return;
         }
 
-        if(isCategorySelectFocused())
+        if(isCustomSelectFocused())
         {
             selectedCategoryId = confirmCustomSelectSelection(selector, selectedCategoryId);
         }
@@ -96,9 +96,9 @@ function enableCustomSelectHotKeys(selector)
 
 let selectedCategoryId = null;
 
-function resetCustomSelectSelectedItemId()
+function resetCustomSelectSelectedItemId(selector)
 {
-    let categorySelector = document.querySelector('#category-select-selected-category');
+    let categorySelector = document.querySelector(selector + ' #custom-select-selected-item');
     return categorySelector.querySelector('.category-circle').dataset.value;
 }
 
@@ -177,7 +177,7 @@ function confirmCustomSelectItem(selector, item)
 
     item.classList.add('selected');
 
-    let categorySelector = document.querySelector('#category-select-selected-category');
+    let categorySelector = document.querySelector(selector + ' #custom-select-selected-item');
     categorySelector.innerHTML = item.innerHTML;
 
     let categoryCircle = categorySelector.querySelector('.category-circle');
@@ -188,7 +188,7 @@ function confirmCustomSelectItem(selector, item)
 
     removeSelectionStyleClassFromAll(selector);
     closeCustomSelect(selector);
-    return resetCustomSelectSelectedItemId();
+    return resetCustomSelectSelectedItemId(selector);
 }
 
 function selectNextCustomSelectItemOnDown(items, previousIndex)

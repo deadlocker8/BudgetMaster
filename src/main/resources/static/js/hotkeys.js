@@ -66,7 +66,7 @@ if(saveTransactionOrTemplateButton !== null)
 
 function areHotKeysEnabled()
 {
-    return !isSearchFocused() && !isCategorySelectFocused()  && !isTemplateSearchFocused();
+    return !isSearchFocused() && !isCustomSelectFocused()  && !isTemplateSearchFocused();
 }
 
 function isSearchFocused()
@@ -81,7 +81,7 @@ function isTemplateSearchFocused()
     return document.activeElement === templateSearchElement;
 }
 
-function isCategorySelectFocused()
+function isCustomSelectFocused()
 {
    let customSelects = document.querySelectorAll('.custom-select');
     for(let i = 0; i < customSelects.length; i++)
