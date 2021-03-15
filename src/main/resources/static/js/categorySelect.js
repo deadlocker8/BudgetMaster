@@ -5,7 +5,7 @@ $(document).ready(function()
         let categorySelectTrigger = document.querySelector('.category-select-wrapper');
         categorySelectTrigger.addEventListener('click', function()
         {
-            openCategorySelect();
+            openCategorySelect('.category-select-wrapper');
         });
 
         categorySelectTrigger.addEventListener("keydown", function(event)
@@ -43,9 +43,9 @@ $(document).ready(function()
     }
 });
 
-function openCategorySelect()
+function openCategorySelect(selector)
 {
-    let categorySelectTrigger = document.querySelector('.category-select-wrapper');
+    let categorySelectTrigger = document.querySelector(selector);
     categorySelectTrigger.querySelector('.custom-select').classList.toggle('open');
     let categoryItems = document.getElementsByClassName('category-select-option');
     selectCategoryItem(categoryItems, getIndexOfCategoryId(categoryItems, resetSelectedCategoryId()));
@@ -81,7 +81,7 @@ function enableCategorySelectHotKeys()
         }
         else
         {
-            openCategorySelect();
+            openCategorySelect('.category-select-wrapper');
         }
     });
 }
