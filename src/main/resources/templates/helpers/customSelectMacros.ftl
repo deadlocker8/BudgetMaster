@@ -41,6 +41,35 @@
     </div>
 </#macro>
 
+<#macro customAccountSelect accounts selectedAccount inputClasses labelText>
+    <div class="row">
+        <div class="input-field ${inputClasses}">
+            <i class="material-icons prefix">account_balance</i>
+            <label class="input-label" for="transaction-account">${labelText}</label>
+            <div class="custom-select-wrapper account-select-wrapper" id="transaction-account">
+                <div class="custom-select">
+                    <div class="custom-select-trigger" tabindex="0"><div id="custom-select-selected-item"><#if selectedAccount??><@customSelectOptionAccountContent selectedAccount "no-margin-left"/></#if></div>
+                        <div class="custom-select-arrow"></div>
+                    </div>
+                    <div class="custom-select-options">
+                        <#list accounts as account>
+                            <#if (account.getType().name() != "CUSTOM")>
+                                <#continue>
+                            </#if>
+
+                            <#if selectedAccount??>
+                                <#if selectedAccount.getID()?c == account.getID()?c>
+                                    <@customSelectAccountOption account true/>
+                                <#else>
+                                    <@customSelectAccountOption account false/>
+                                </#if>
+                                <#continue>
+                            </#if>
+
+                            <@customSelectAccountOption account false/>
+                        </#list>
+                    </div>
+                </div>
 
                 <input type="hidden" name="account" class="hidden-input-custom-select" <#if selectedAccount??>value="${selectedAccount.getID()?c}"</#if>/>
             </div>
@@ -57,4 +86,27 @@
 <#macro customSelectOptionCategoryContent category classes="" datasetValue="">
     <@categoriesFunctions.categoryCircle category "category-circle-small ${classes}" datasetValue=""/>
     <span class="custom-select-item-name">${categoriesFunctions.getCategoryName(category)}</span>
+</#macro>
+
+<#macro customSelectAccountOption account isSelected>
+    <div class="custom-select-option <#if isSelected>selected</#if>" data-value="${account.getID()?c}">
+        <@customSelectOptionAccountContent account/>
+    </div>
+</#macro>
+
+<#macro customSelectOptionAccountContent account classes="" datasetValue="">
+    <@accountIcon account "category-circle-small ${classes}" datasetValue=""/>
+    <span class="custom-select-item-name">${account.getName()}</span>
+</#macro>
+
+<#macro accountIcon account classes="" datasetValue="">
+    <div class="category-circle ${classes} category-square" style="background-color: #FF0000" <#if datasetValue?has_content>data-value="${account.getID()}"</#if>>
+        <span style="color: #FFFFFF}">
+<#--            <#if account.getIcon()??>-->
+<#--                <i class="${category.getIcon()}"></i>-->
+<#--            <#else>-->
+                ${account.getName()?capitalize[0]}
+<#--            </#if>-->
+        </span>
+    </div>
 </#macro>

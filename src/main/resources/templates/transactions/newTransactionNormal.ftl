@@ -65,10 +65,11 @@
 
                             <#-- account -->
                             <#if transaction.getAccount()??>
-                                <@newTransactionMacros.account accounts transaction.getAccount() "transaction-account" "account" locale.getString("transaction.new.label.account") false/>
+                                <#assign selectedAccount = transaction.getAccount()/>
                             <#else>
-                                <@newTransactionMacros.account accounts helpers.getCurrentAccountOrDefault() "transaction-account" "account" locale.getString("transaction.new.label.account") false/>
+                                <#assign selectedAccount = helpers.getCurrentAccountOrDefault()/>
                             </#if>
+                            <@customSelectMacros.customAccountSelect accounts selectedAccount "col s12 m12 l8 offset-l2" locale.getString("transaction.new.label.account")/>
 
                             <br>
                             <#-- buttons -->

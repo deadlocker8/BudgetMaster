@@ -10,6 +10,14 @@ $(document).ready(function()
         allCustomSelects.push(categorySelect);
     }
 
+    let selectorAccountSelect = '.account-select-wrapper';
+    if($(selectorAccountSelect).length)
+    {
+        let accountSelect = new CustomSelect(selectorAccountSelect);
+        accountSelect.init();
+        allCustomSelects.push(accountSelect);
+    }
+
     window.addEventListener('click', function(e)
     {
         let openCustomSelect = document.querySelector('.custom-select.open');
