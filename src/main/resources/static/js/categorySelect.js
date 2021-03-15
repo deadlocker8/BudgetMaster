@@ -1,23 +1,38 @@
 $(document).ready(function()
 {
-    let selectorCategorySelect = '.category-select-wrapper';
+    let allCustomSelects = [];
 
+    let selectorCategorySelect = '.category-select-wrapper';
     if($(selectorCategorySelect).length)
     {
         let categorySelect = new CustomSelect(selectorCategorySelect);
         categorySelect.init();
-
-        window.addEventListener('click', function(e)
-        {
-            let openCustomSelect = document.querySelector('.custom-select.open');
-            if(!openCustomSelect.contains(e.target))
-            {
-                categorySelect.close();
-                categorySelect.resetSelectedItemId();
-                categorySelect.removeSelectionStyleClassFromAll();
-            }
-        });
+        allCustomSelects.push(categorySelect);
     }
+
+    window.addEventListener('click', function(e)
+    {
+        let openCustomSelect = document.querySelector('.custom-select.open');
+        if(openCustomSelect === null)
+        {
+            return;
+        }
+
+        if(!openCustomSelect.contains(e.target))
+        {
+            for(let i = 0; i < allCustomSelects.length; i++)
+            {
+                let currentCustomSelect = allCustomSelects[i];
+                let currentSelector = currentCustomSelect.getSelector().replace('.', '');
+                if(openCustomSelect.parentElement.classList.contains(currentSelector))
+                {
+                    currentCustomSelect.close();
+                    currentCustomSelect.resetSelectedItemId();
+                    currentCustomSelect.removeSelectionStyleClassFromAll();
+                }
+            }
+        }
+    });
 });
 
 class CustomSelect
@@ -26,6 +41,11 @@ class CustomSelect
     {
         this.selector = selector;
         this.selectedId = null;
+    }
+
+    getSelector()
+    {
+        return this.selector;
     }
 
     init()
