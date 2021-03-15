@@ -120,7 +120,7 @@ public class CategorySelectTest
 		// assert
 		List<WebElement> selectOptions = driver.findElements(By.cssSelector(".category-select-wrapper .custom-select-option.custom-select-option-hovered"));
 		assertThat(selectOptions).hasSize(1);
-		assertThat(selectOptions.get(0).findElement(By.className("custom-select-item-name")))
+		assertThat(selectOptions.get(0).findElement(By.cssSelector(".category-select-wrapper .custom-select-item-name")))
 				.hasFieldOrPropertyWithValue("text", "sdfdsf");
 
 		driver.findElement(By.tagName("body")).sendKeys(Keys.DOWN);
@@ -128,7 +128,7 @@ public class CategorySelectTest
 		// assert
 		selectOptions = driver.findElements(By.cssSelector(".category-select-wrapper .custom-select-option.custom-select-option-hovered"));
 		assertThat(selectOptions).hasSize(1);
-		assertThat(selectOptions.get(0).findElement(By.className("ccustom-select-item-name")))
+		assertThat(selectOptions.get(0).findElement(By.cssSelector(".category-select-wrapper .custom-select-item-name")))
 				.hasFieldOrPropertyWithValue("text", "12sd");
 	}
 
@@ -148,7 +148,7 @@ public class CategorySelectTest
 		// assert
 		List<WebElement> selectOptions = driver.findElements(By.cssSelector(".category-select-wrapper .custom-select-option.custom-select-option-hovered"));
 		assertThat(selectOptions).hasSize(1);
-		assertThat(selectOptions.get(0).findElement(By.className("custom-select-item-name")))
+		assertThat(selectOptions.get(0).findElement(By.cssSelector(".category-select-wrapper .custom-select-item-name")))
 				.hasFieldOrPropertyWithValue("text", "12sd");
 
 		driver.findElement(By.tagName("body")).sendKeys(Keys.UP);
@@ -156,7 +156,7 @@ public class CategorySelectTest
 		// assert
 		selectOptions = driver.findElements(By.cssSelector(".category-select-wrapper .custom-select-option.custom-select-option-hovered"));
 		assertThat(selectOptions).hasSize(1);
-		assertThat(selectOptions.get(0).findElement(By.className("custom-select-item-name")))
+		assertThat(selectOptions.get(0).findElement(By.cssSelector(".category-select-wrapper .custom-select-item-name")))
 				.hasFieldOrPropertyWithValue("text", "sdfdsf");
 	}
 

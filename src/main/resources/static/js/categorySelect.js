@@ -33,6 +33,33 @@ $(document).ready(function()
             }
         }
     });
+
+    Mousetrap.bind('enter', function(event)
+    {
+        if(isSearchFocused())
+        {
+            return;
+        }
+
+        for(let i = 0; i < allCustomSelects.length; i++)
+        {
+            let currentCustomSelect = allCustomSelects[i];
+            let currentDomItem = document.querySelector(currentCustomSelect.getSelector());
+            if(currentDomItem.contains(event.target))
+            {
+                if(isCustomSelectFocused())
+                {
+                    currentCustomSelect.confirmSelection();
+                }
+                else
+                {
+                    currentCustomSelect.open();
+                }
+
+                break;
+            }
+        }
+    });
 });
 
 class CustomSelect
@@ -107,30 +134,12 @@ class CustomSelect
         {
             self.handleKeyUpOrDown(false);
         });
-
-        Mousetrap.bind('enter', function()
-        {
-            if(isSearchFocused())
-            {
-                return;
-            }
-
-            if(isCustomSelectFocused())
-            {
-                self.confirmSelection(self.selector, self.selectedId);
-            }
-            else
-            {
-                self.open(self.selector);
-            }
-        });
     }
 
     disableHotKeys()
     {
         Mousetrap.unbind('up');
         Mousetrap.unbind('down');
-        Mousetrap.unbind('enter');
     }
 
     resetSelectedItemId()
