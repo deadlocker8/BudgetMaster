@@ -1,6 +1,6 @@
 <#import "../categories/categoriesFunctions.ftl" as categoriesFunctions>
 
-<#macro customSelect categories selectedCategory inputClasses labelText>
+<#macro customCategorySelect categories selectedCategory inputClasses labelText>
     <div class="row">
         <div class="input-field ${inputClasses}">
             <i class="material-icons prefix">label</i>
@@ -40,6 +40,7 @@
         </div>
     </div>
 </#macro>
+
 
 <#macro customSelectOption category isSelected>
     <div class="custom-select-option <#if isSelected>selected</#if>" data-value="${category.getID()?c}">
