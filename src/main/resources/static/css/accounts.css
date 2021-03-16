@@ -48,3 +48,8 @@
     height: 34px;
     width: 34px;
 }
+
+.account-square-border {
+    border: 3px solid var(--color-blue);
+    line-height: 28px !important;
+}
