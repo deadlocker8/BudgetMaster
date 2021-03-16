@@ -156,7 +156,7 @@ public class ChangeTransactionTypeTest
 		assertThat(chips).hasSize(1);
 		assertThat(chips.get(0)).hasFieldOrPropertyWithValue("text", "123\nclose");
 
-		assertThat(driver.findElement(By.id("transaction-account")).getAttribute("value")).isEqualTo("3");
+		assertThat(driver.findElement(By.cssSelector(".account-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("3");
 		assertThat(driver.findElement(By.id("transaction-transfer-account")).getAttribute("value")).isEqualTo("2");
 	}
 
@@ -181,7 +181,7 @@ public class ChangeTransactionTypeTest
 		assertThat(chips).hasSize(1);
 		assertThat(chips.get(0)).hasFieldOrPropertyWithValue("text", "123\nclose");
 
-		assertThat(driver.findElement(By.id("transaction-account")).getAttribute("value")).isEqualTo("3");
+		assertThat(driver.findElement(By.cssSelector(".account-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("3");
 	}
 
 	@Test
@@ -205,7 +205,7 @@ public class ChangeTransactionTypeTest
 		assertThat(chips).hasSize(1);
 		assertThat(chips.get(0)).hasFieldOrPropertyWithValue("text", "123\nclose");
 
-		assertThat(driver.findElement(By.id("transaction-account")).getAttribute("value")).isEqualTo("3");
+		assertThat(driver.findElement(By.cssSelector(".account-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("3");
 
 		assertThat(driver.findElement(By.id("transaction-repeating-modifier")).getAttribute("value")).isEmpty();
 		assertThat(driver.findElement(By.id("transaction-repeating-modifier-type")).getAttribute("value")).isEqualTo("Months");
