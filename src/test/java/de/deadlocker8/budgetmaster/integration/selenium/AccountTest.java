@@ -198,12 +198,9 @@ public class AccountTest
 		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]")).click();
 
 		// assert
-		WebElement select = driver.findElement(By.id("accountWrapper"));
-		select.findElement(By.className("select-dropdown")).click();
-
-		List<WebElement> items = select.findElements(By.xpath(".//ul/li/span"));
+		List<WebElement> items = driver.findElements(By.cssSelector(".account-select-wrapper .custom-select-options .custom-select-item-name"));
 		List<String> itemNames = items.stream()
-				.map(WebElement::getText)
+				.map(webElement -> webElement.getAttribute("innerHTML").trim())
 				.collect(Collectors.toList());
 		assertThat(itemNames).containsExactly("Default Account", "DefaultAccount0815");
 	}
