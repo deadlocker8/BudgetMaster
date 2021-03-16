@@ -41,12 +41,12 @@
     </div>
 </#macro>
 
-<#macro customAccountSelect accounts selectedAccount inputClasses labelText>
+<#macro customAccountSelect selector inputName accounts selectedAccount inputClasses labelText>
     <div class="row">
         <div class="input-field ${inputClasses}">
             <i class="material-icons prefix">account_balance</i>
             <label class="input-label" for="transaction-account">${labelText}</label>
-            <div class="custom-select-wrapper account-select-wrapper" id="transaction-account">
+            <div class="custom-select-wrapper ${selector}" id="transaction-account">
                 <div class="custom-select">
                     <div class="custom-select-trigger" tabindex="0"><div class="custom-select-selected-item"><#if selectedAccount??><@customSelectOptionAccountContent selectedAccount "no-margin-left"/></#if></div>
                         <div class="custom-select-arrow"></div>
@@ -71,7 +71,7 @@
                     </div>
                 </div>
 
-                <input type="hidden" name="account" class="hidden-input-custom-select" <#if selectedAccount??>value="${selectedAccount.getID()?c}"</#if>/>
+                <input type="hidden" name="${inputName}" class="hidden-input-custom-select" <#if selectedAccount??>value="${selectedAccount.getID()?c}"</#if>/>
             </div>
         </div>
     </div>

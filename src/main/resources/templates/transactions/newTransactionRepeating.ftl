@@ -68,7 +68,7 @@
                             <#else>
                                 <#assign selectedAccount = helpers.getCurrentAccountOrDefault()/>
                             </#if>
-                            <@customSelectMacros.customAccountSelect accounts selectedAccount "col s12 m12 l8 offset-l2" locale.getString("transaction.new.label.account")/>
+                            <@customSelectMacros.customAccountSelect "account-select-wrapper" "account" accounts selectedAccount "col s12 m12 l8 offset-l2" locale.getString("transaction.new.label.account")/>
 
                             <#-- repeating options -->
                             <@newTransactionMacros.transactionRepeating transaction currentDate/>

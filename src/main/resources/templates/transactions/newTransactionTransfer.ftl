@@ -68,14 +68,15 @@
                             <#else>
                                 <#assign selectedAccount = helpers.getCurrentAccountOrDefault()/>
                             </#if>
-                            <@customSelectMacros.customAccountSelect accounts selectedAccount "col s12 m12 l8 offset-l2" locale.getString("transaction.new.label.account")/>
+                            <@customSelectMacros.customAccountSelect "account-select-wrapper" "account" accounts selectedAccount "col s12 m12 l8 offset-l2" locale.getString("transaction.new.label.account")/>
 
                             <#-- transfer account -->
                             <#if transaction.getTransferAccount()??>
-                                <@newTransactionMacros.account accounts transaction.getTransferAccount() "transaction-transfer-account" "transferAccount" locale.getString("transaction.new.label.transfer.account") false/>
+                                <#assign selectedTransferAccount = transaction.getTransferAccount()/>
                             <#else>
-                                <@newTransactionMacros.account accounts helpers.getCurrentAccountOrDefault() "transaction-transfer-account" "transferAccount" locale.getString("transaction.new.label.transfer.account") false/>
+                                <#assign selectedTransferAccount = helpers.getCurrentAccountOrDefault()/>
                             </#if>
+                            <@customSelectMacros.customAccountSelect "transfer-account-select-wrapper" "transferAccount" accounts selectedTransferAccount "col s12 m12 l8 offset-l2" locale.getString("transaction.new.label.transfer.account")/>
 
                             <br>
                             <#-- buttons -->

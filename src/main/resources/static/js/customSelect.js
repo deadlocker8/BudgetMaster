@@ -18,6 +18,14 @@ $(document).ready(function()
         allCustomSelects.push(accountSelect);
     }
 
+    let selectorTransferAccountSelect = '.transfer-account-select-wrapper';
+    if($(selectorTransferAccountSelect).length)
+    {
+        let transferAccountSelect = new CustomSelect(selectorTransferAccountSelect);
+        transferAccountSelect.init();
+        allCustomSelects.push(transferAccountSelect);
+    }
+
     window.addEventListener('click', function(e)
     {
         let openCustomSelect = document.querySelector('.custom-select.open');
