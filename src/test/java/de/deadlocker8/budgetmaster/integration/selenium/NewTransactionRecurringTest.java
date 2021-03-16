@@ -144,8 +144,11 @@ public class NewTransactionRecurringTest
 			}
 		}
 
-		// submit form
 		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector(".modal-overlay"))));
+
+		// submit form
+		wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("modal-overlay")));
 
 		WebElement submitButton = driver.findElement(By.id("button-save-transaction"));
@@ -208,11 +211,14 @@ public class NewTransactionRecurringTest
 			}
 		}
 
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector(".modal-overlay"))));
+
 		// submit form
 		WebElement submitButton = driver.findElement(By.xpath("//button[@type='submit']"));
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", submitButton);
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.elementToBeClickable(submitButton));
 
 		submitButton.click();
