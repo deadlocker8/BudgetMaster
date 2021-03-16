@@ -67,6 +67,7 @@ public class NewTransactionFromTemplateTest
 	{
 		FirefoxOptions options = new FirefoxOptions();
 		options.setHeadless(false);
+		options.addPreference("devtools.console.stdout.content", true);
 		driver = new FirefoxDriver(options);
 
 		// prepare

@@ -88,6 +88,7 @@ public class ChangeTransactionTypeTest
 	{
 		FirefoxOptions options = new FirefoxOptions();
 		options.setHeadless(false);
+		options.addPreference("devtools.console.stdout.content", true);
 		driver = new FirefoxDriver(options);
 
 		// prepare
@@ -144,7 +145,7 @@ public class ChangeTransactionTypeTest
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.textToBe(By.cssSelector(".headline"), "Edit Transfer"));
 
-		assertThatThrownBy(()->driver.findElement(By.className("buttonExpenditure"))).isInstanceOf(NoSuchElementException.class);
+		assertThatThrownBy(() -> driver.findElement(By.className("buttonExpenditure"))).isInstanceOf(NoSuchElementException.class);
 
 		assertThat(driver.findElement(By.id("transaction-name")).getAttribute("value")).isEqualTo("Test");
 		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEqualTo("15.00");

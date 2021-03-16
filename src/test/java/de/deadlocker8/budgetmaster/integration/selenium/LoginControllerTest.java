@@ -61,6 +61,7 @@ public class LoginControllerTest
 	{
 		FirefoxOptions options = new FirefoxOptions();
 		options.setHeadless(false);
+		options.addPreference("devtools.console.stdout.content", true);
 		driver = new FirefoxDriver(options);
 	}
 
@@ -115,7 +116,7 @@ public class LoginControllerTest
 		helper.hideWhatsNewDialog();
 
 		WebElement buttonLogout = driver.findElement(By.xpath("//body/ul/li/a[contains(text(), 'Logout')]"));
-		JavascriptExecutor js = (JavascriptExecutor)driver;
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].scrollIntoView(true);", buttonLogout);
 		buttonLogout.click();
 
