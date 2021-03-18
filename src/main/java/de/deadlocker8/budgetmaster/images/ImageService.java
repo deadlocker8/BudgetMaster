@@ -3,8 +3,7 @@ package de.deadlocker8.budgetmaster.images;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.services.Resetable;
 import de.thecodelabs.utils.util.Localization;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +16,6 @@ import java.util.Optional;
 @Service
 public class ImageService implements Resetable
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(ImageService.class);
 	private static final List<String> ALLOWED_IMAGE_EXTENSIONS = List.of("png", "jpeg", "jpg");
 
 	private final ImageRepository imageRepository;
@@ -66,14 +64,6 @@ public class ImageService implements Resetable
 	@Transactional
 	public void saveImageFile(MultipartFile file) throws IOException, InvalidFileExtensionException
 	{
-		Byte[] byteObjects = new Byte[file.getBytes().length];
-
-		int i = 0;
-		for(byte b : file.getBytes())
-		{
-			byteObjects[i++] = b;
-		}
-
 		final String originalFilename = file.getOriginalFilename();
 		final Optional<String> fileExtensionOptional = getFileExtension(originalFilename);
 		if(fileExtensionOptional.isEmpty())
@@ -87,14 +77,15 @@ public class ImageService implements Resetable
 			throw new InvalidFileExtensionException(Localization.getString("upload.image.error.invalid.extension", fileExtension));
 		}
 
+		final Byte[] byteObjects = ArrayUtils.toObject(file.getBytes());
 		final Image image = new Image(byteObjects, originalFilename, fileExtension);
 		imageRepository.save(image);
 	}
 
-	private Optional<String> getFileExtension(String filename)
+	public static Optional<String> getFileExtension(String filename)
 	{
 		return Optional.ofNullable(filename)
 				.filter(f -> f.contains("."))
-				.map(f -> f.substring(filename.lastIndexOf(".") + 1));
+				.map(f -> f.substring(filename.lastIndexOf(".") + 1).toLowerCase());
 	}
 }
