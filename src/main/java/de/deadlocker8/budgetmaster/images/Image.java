@@ -26,6 +26,10 @@ public class Image
 
 	@NotNull
 	@Expose
+	private String fileName;
+
+	@NotNull
+	@Expose
 	private String fileExtension;
 
 	@OneToMany(mappedBy = "icon", fetch = FetchType.LAZY)
@@ -33,9 +37,10 @@ public class Image
 
 	private static final String BASE_64_IMAGE_FORMAT = "data:image/{0};base64,{1}";
 
-	public Image(@NotNull Byte[] image, String fileExtension)
+	public Image(@NotNull Byte[] image, String fileName, String fileExtension)
 	{
 		this.image = image;
+		this.fileName = fileName;
 		this.fileExtension = fileExtension;
 	}
 
@@ -69,6 +74,16 @@ public class Image
 		return MessageFormat.format(BASE_64_IMAGE_FORMAT, fileExtension, encoded);
 	}
 
+	public String getFileName()
+	{
+		return fileName;
+	}
+
+	public void setFileName(String fileName)
+	{
+		this.fileName = fileName;
+	}
+
 	public String getFileExtension()
 	{
 		return fileExtension;
@@ -90,6 +105,7 @@ public class Image
 		return "Image{" +
 				"ID=" + ID +
 				", image='" + image + '\'' +
+				", fileName='" + fileName + '\'' +
 				", fileExtension='" + fileExtension + '\'' +
 				'}';
 	}
@@ -100,12 +116,14 @@ public class Image
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
 		Image image = (Image) o;
-		return Objects.equals(ID, image.ID) && Objects.equals(fileExtension, image.fileExtension);
+		return Objects.equals(ID, image.ID) &&
+				Objects.equals(fileName, image.fileName) &&
+				Objects.equals(fileExtension, image.fileExtension);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, fileExtension);
+		return Objects.hash(ID, fileName, fileExtension);
 	}
 }

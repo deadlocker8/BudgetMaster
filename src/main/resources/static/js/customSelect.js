@@ -305,7 +305,3 @@ class CustomSelect
     }
 
 }
-
-let selectedCategoryId = null;
-
-

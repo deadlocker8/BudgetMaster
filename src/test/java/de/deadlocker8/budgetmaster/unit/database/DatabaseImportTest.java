@@ -478,10 +478,10 @@ public class DatabaseImportTest
 	@Test
 	public void test_updateImagesForAccounts()
 	{
-		Image image1 = new Image(new Byte[0], "png");
+		Image image1 = new Image(new Byte[0], "awesomeIcon.png", "png");
 		image1.setID(3);
 
-		Image image2 = new Image(new Byte[0], "jpg");
+		Image image2 = new Image(new Byte[0], "awesomeIcon.png", "jpg");
 		image2.setID(4);
 
 		Account account1 = new Account("Account_1", AccountType.CUSTOM, image1);
@@ -499,10 +499,10 @@ public class DatabaseImportTest
 	@Test
 	public void test_importImages_notExisting()
 	{
-		Image image = new Image(new Byte[0], "png");
+		Image image = new Image(new Byte[0], "awesomeIcon.png", "png");
 		image.setID(3);
 
-		Image newImage = new Image(new Byte[0], "png");
+		Image newImage = new Image(new Byte[0], "awesomeIcon.png", "png");
 		newImage.setID(5);
 
 		final ImageRepository imageRepositoryMock = Mockito.mock(ImageRepository.class);
@@ -518,10 +518,10 @@ public class DatabaseImportTest
 	@Test
 	public void test_importImages_alreadyExisting()
 	{
-		Image image = new Image(new Byte[0], "png");
+		Image image = new Image(new Byte[0], "awesomeIcon.png", "png");
 		image.setID(3);
 
-		Image newImage = new Image(new Byte[0], "png");
+		Image newImage = new Image(new Byte[0], "awesomeIcon.png", "png");
 		newImage.setID(5);
 
 		final ImageRepository imageRepositoryMock = Mockito.mock(ImageRepository.class);

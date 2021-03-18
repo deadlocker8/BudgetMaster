@@ -74,10 +74,11 @@ public class ImageService implements Resetable
 			byteObjects[i++] = b;
 		}
 
-		final Optional<String> fileExtensionOptional = getFileExtension(file.getOriginalFilename());
+		final String originalFilename = file.getOriginalFilename();
+		final Optional<String> fileExtensionOptional = getFileExtension(originalFilename);
 		if(fileExtensionOptional.isEmpty())
 		{
-			throw new IllegalArgumentException("Could not determine file extension from file name: " + file.getOriginalFilename());
+			throw new IllegalArgumentException("Could not determine file extension from file name: " + originalFilename);
 		}
 
 		final String fileExtension = fileExtensionOptional.get();
@@ -86,7 +87,7 @@ public class ImageService implements Resetable
 			throw new InvalidFileExtensionException(Localization.getString("upload.image.error.invalid.extension", fileExtension));
 		}
 
-		final Image image = new Image(byteObjects, fileExtension);
+		final Image image = new Image(byteObjects, originalFilename, fileExtension);
 		imageRepository.save(image);
 	}
 

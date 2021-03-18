@@ -98,7 +98,7 @@ public class DatabaseParser_v5Test
 			DatabaseParser_v5 importer = new DatabaseParser_v5(json);
 			Database database = importer.parseDatabaseFromJSON();
 
-			final Image accountImage = new Image(new Byte[0], "png");
+			final Image accountImage = new Image(new Byte[0], "awesomeIcon.png", "png");
 			accountImage.setID(1);
 			final Account account = new Account("Second Account", AccountType.CUSTOM, accountImage);
 			account.setID(3);
@@ -124,7 +124,7 @@ public class DatabaseParser_v5Test
 			DatabaseParser_v5 importer = new DatabaseParser_v5(json);
 			Database database = importer.parseDatabaseFromJSON();
 
-			final Image image = new Image(new Byte[0], "png");
+			final Image image = new Image(new Byte[0], "awesomeIcon.png", "png");
 			image.setID(1);
 
 			assertThat(database.getImages()).hasSize(1);
