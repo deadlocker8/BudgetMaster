@@ -30,14 +30,14 @@ public class Image
 
 	@NotNull
 	@Expose
-	private String fileExtension;
+	private ImageFileExtension fileExtension;
 
 	@OneToMany(mappedBy = "icon", fetch = FetchType.LAZY)
 	private List<Account> referringAccounts;
 
 	private static final String BASE_64_IMAGE_FORMAT = "data:image/{0};base64,{1}";
 
-	public Image(@NotNull Byte[] image, String fileName, String fileExtension)
+	public Image(@NotNull Byte[] image, String fileName, ImageFileExtension fileExtension)
 	{
 		this.image = image;
 		this.fileName = fileName;
@@ -71,7 +71,7 @@ public class Image
 	public String getBase64EncodedImage()
 	{
 		final String encoded = Base64.encodeBase64String(ArrayUtils.toPrimitive(this.image));
-		return MessageFormat.format(BASE_64_IMAGE_FORMAT, fileExtension, encoded);
+		return MessageFormat.format(BASE_64_IMAGE_FORMAT, fileExtension.getBase64Type(), encoded);
 	}
 
 	public String getFileName()
@@ -84,12 +84,12 @@ public class Image
 		this.fileName = fileName;
 	}
 
-	public String getFileExtension()
+	public ImageFileExtension getFileExtension()
 	{
 		return fileExtension;
 	}
 
-	public void setFileExtension(String fileExtension)
+	public void setFileExtension(ImageFileExtension fileExtension)
 	{
 		this.fileExtension = fileExtension;
 	}

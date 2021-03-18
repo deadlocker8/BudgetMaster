@@ -16,8 +16,6 @@ import java.util.Optional;
 @Service
 public class ImageService implements Resetable
 {
-	private static final List<String> ALLOWED_IMAGE_EXTENSIONS = List.of("png", "jpeg", "jpg");
-
 	private final ImageRepository imageRepository;
 
 	@Autowired
@@ -72,13 +70,14 @@ public class ImageService implements Resetable
 		}
 
 		final String fileExtension = fileExtensionOptional.get();
-		if(!ALLOWED_IMAGE_EXTENSIONS.contains(fileExtension))
+		final Optional<ImageFileExtension> imageFileExtensionOptional = ImageFileExtension.getByExtension(fileExtension);
+		if(imageFileExtensionOptional.isEmpty())
 		{
 			throw new InvalidFileExtensionException(Localization.getString("upload.image.error.invalid.extension", fileExtension));
 		}
 
 		final Byte[] byteObjects = ArrayUtils.toObject(file.getBytes());
-		final Image image = new Image(byteObjects, originalFilename, fileExtension);
+		final Image image = new Image(byteObjects, originalFilename, imageFileExtensionOptional.get());
 		imageRepository.save(image);
 	}
 

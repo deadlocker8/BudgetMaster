@@ -9,6 +9,7 @@ import de.deadlocker8.budgetmaster.charts.ChartType;
 import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.DatabaseParser_v5;
 import de.deadlocker8.budgetmaster.images.Image;
+import de.deadlocker8.budgetmaster.images.ImageFileExtension;
 import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.Localization.LocalizationDelegate;
 import org.junit.Before;
@@ -98,7 +99,7 @@ public class DatabaseParser_v5Test
 			DatabaseParser_v5 importer = new DatabaseParser_v5(json);
 			Database database = importer.parseDatabaseFromJSON();
 
-			final Image accountImage = new Image(new Byte[0], "awesomeIcon.png", "png");
+			final Image accountImage = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
 			accountImage.setID(1);
 			final Account account = new Account("Second Account", AccountType.CUSTOM, accountImage);
 			account.setID(3);
@@ -124,10 +125,11 @@ public class DatabaseParser_v5Test
 			DatabaseParser_v5 importer = new DatabaseParser_v5(json);
 			Database database = importer.parseDatabaseFromJSON();
 
-			final Image image = new Image(new Byte[0], "awesomeIcon.png", "png");
+			final Image image = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
 			image.setID(1);
 
 			assertThat(database.getImages()).hasSize(1);
+			assertThat(database.getImages().get(0)).hasFieldOrPropertyWithValue("fileExtension", ImageFileExtension.PNG);
 			assertThat(database.getImages().get(0).getImage())
 					.isNotNull()
 					.hasSizeGreaterThan(1);

@@ -40,7 +40,7 @@
                 <div class="btn background-blue">
                     <i class="material-icons left">folder</i>
                     ${locale.getString("account.new.icon.upload.choose.file")}
-                    <input id="inputUploadFile" type="file" accept="image/png, image/jpeg" name="file">
+                    <input id="inputUploadFile" type="file" accept="${helpers.getValidImageUploadTypes()}" name="file">
                 </div>
                 <div class="file-path-wrapper">
                     <input class="file-path validate" type="text">

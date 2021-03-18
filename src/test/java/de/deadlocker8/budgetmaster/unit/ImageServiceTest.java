@@ -1,9 +1,6 @@
 package de.deadlocker8.budgetmaster.unit;
 
-import de.deadlocker8.budgetmaster.images.Image;
-import de.deadlocker8.budgetmaster.images.ImageRepository;
-import de.deadlocker8.budgetmaster.images.ImageService;
-import de.deadlocker8.budgetmaster.images.InvalidFileExtensionException;
+import de.deadlocker8.budgetmaster.images.*;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.deadlocker8.budgetmaster.unit.helpers.LocalizedTest;
@@ -84,7 +81,7 @@ public class ImageServiceTest
 
 		imageService.saveImageFile(multipartFile);
 
-		final Image expectedImage = new Image(new Byte[0], "abc.png", "png");
+		final Image expectedImage = new Image(new Byte[0], "abc.png", ImageFileExtension.PNG);
 		Mockito.verify(imageRepository, Mockito.atLeast(1)).save(expectedImage);
 	}
 

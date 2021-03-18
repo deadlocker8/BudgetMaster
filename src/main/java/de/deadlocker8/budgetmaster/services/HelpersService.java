@@ -10,6 +10,7 @@ import de.deadlocker8.budgetmaster.categories.CategoryRepository;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
+import de.deadlocker8.budgetmaster.images.ImageFileExtension;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierType;
 import de.deadlocker8.budgetmaster.reports.Budget;
 import de.deadlocker8.budgetmaster.settings.Settings;
@@ -29,6 +30,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class HelpersService
@@ -211,5 +213,12 @@ public class HelpersService
 	public boolean isUseSimpleDatepickerForTransactions()
 	{
 		return useSimpleDatepickerForTransactions;
+	}
+
+	public String getValidImageUploadTypes()
+	{
+		return Arrays.stream(ImageFileExtension.values())
+				.map(e -> "image/" + e.getBase64Type())
+				.collect(Collectors.joining(", "));
 	}
 }

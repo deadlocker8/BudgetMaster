@@ -13,6 +13,7 @@ import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
 import de.deadlocker8.budgetmaster.images.Image;
+import de.deadlocker8.budgetmaster.images.ImageFileExtension;
 import de.deadlocker8.budgetmaster.images.ImageRepository;
 import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.services.ImportService;
@@ -478,10 +479,10 @@ public class DatabaseImportTest
 	@Test
 	public void test_updateImagesForAccounts()
 	{
-		Image image1 = new Image(new Byte[0], "awesomeIcon.png", "png");
+		Image image1 = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
 		image1.setID(3);
 
-		Image image2 = new Image(new Byte[0], "awesomeIcon.png", "jpg");
+		Image image2 = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.JPG);
 		image2.setID(4);
 
 		Account account1 = new Account("Account_1", AccountType.CUSTOM, image1);
@@ -499,10 +500,10 @@ public class DatabaseImportTest
 	@Test
 	public void test_importImages_notExisting()
 	{
-		Image image = new Image(new Byte[0], "awesomeIcon.png", "png");
+		Image image = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
 		image.setID(3);
 
-		Image newImage = new Image(new Byte[0], "awesomeIcon.png", "png");
+		Image newImage = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
 		newImage.setID(5);
 
 		final ImageRepository imageRepositoryMock = Mockito.mock(ImageRepository.class);
@@ -518,10 +519,10 @@ public class DatabaseImportTest
 	@Test
 	public void test_importImages_alreadyExisting()
 	{
-		Image image = new Image(new Byte[0], "awesomeIcon.png", "png");
+		Image image = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
 		image.setID(3);
 
-		Image newImage = new Image(new Byte[0], "awesomeIcon.png", "png");
+		Image newImage = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
 		newImage.setID(5);
 
 		final ImageRepository imageRepositoryMock = Mockito.mock(ImageRepository.class);
