@@ -1,80 +1,76 @@
 <#import "../categories/categoriesFunctions.ftl" as categoriesFunctions>
 
-<#macro customCategorySelect categories selectedCategory inputClasses labelText>
+<#macro customSelect selector items selectedItem inputClasses labelText id inputName icon>
     <div class="row">
         <div class="input-field ${inputClasses}">
-            <i class="material-icons prefix">label</i>
-            <label class="input-label" for="transaction-category">${labelText}</label>
-            <div class="custom-select-wrapper category-select-wrapper" id="transaction-category">
+            <i class="material-icons prefix">${icon}</i>
+            <label class="input-label" for="${id}">${labelText}</label>
+            <div class="custom-select-wrapper ${selector}" id="${id}">
                 <div class="custom-select">
-                    <div class="custom-select-trigger" tabindex="0"><div class="custom-select-selected-item"><#if selectedCategory??><@customSelectOptionCategoryContent selectedCategory "no-margin-left"/></#if></div>
-                        <div class="custom-select-arrow"></div>
-                    </div>
-                    <div class="custom-select-options">
-                        <#list categories as category>
-                            <#if category.getType() == "REST">
-                                <#continue>
-                            </#if>
-
-                            <#if selectedCategory??>
-                                <#if selectedCategory.getID()?c == category.getID()?c>
-                                    <@customSelectCategoryOption category true/>
-                                <#else>
-                                    <@customSelectCategoryOption category false/>
-                                </#if>
-                                <#continue>
-                            </#if>
-
-                            <#if category.getType() == "NONE">
-                                <@customSelectCategoryOption category true/>
-                                <#continue>
-                            </#if>
-
-                            <@customSelectCategoryOption category false/>
-                        </#list>
-                    </div>
+                    <#nested>
                 </div>
 
-                <input type="hidden" name="category" class="hidden-input-custom-select" <#if selectedCategory??>value="${selectedCategory.getID()?c}"</#if>/>
+                <input type="hidden" name="${inputName}" class="hidden-input-custom-select" <#if selectedItem??>value="${selectedItem.getID()?c}"</#if>/>
             </div>
         </div>
     </div>
 </#macro>
 
-<#macro customAccountSelect selector inputName accounts selectedAccount inputClasses labelText>
-    <div class="row">
-        <div class="input-field ${inputClasses}">
-            <i class="material-icons prefix">account_balance</i>
-            <label class="input-label" for="transaction-account">${labelText}</label>
-            <div class="custom-select-wrapper ${selector}" id="transaction-account">
-                <div class="custom-select">
-                    <div class="custom-select-trigger" tabindex="0"><div class="custom-select-selected-item"><#if selectedAccount??><@customSelectOptionAccountContent selectedAccount "no-margin-left"/></#if></div>
-                        <div class="custom-select-arrow"></div>
-                    </div>
-                    <div class="custom-select-options">
-                        <#list accounts as account>
-                            <#if (account.getType().name() != "CUSTOM")>
-                                <#continue>
-                            </#if>
-
-                            <#if selectedAccount??>
-                                <#if selectedAccount.getID()?c == account.getID()?c>
-                                    <@customSelectAccountOption account true/>
-                                <#else>
-                                    <@customSelectAccountOption account false/>
-                                </#if>
-                                <#continue>
-                            </#if>
-
-                            <@customSelectAccountOption account false/>
-                        </#list>
-                    </div>
-                </div>
-
-                <input type="hidden" name="${inputName}" class="hidden-input-custom-select" <#if selectedAccount??>value="${selectedAccount.getID()?c}"</#if>/>
-            </div>
+<#macro customCategorySelect categories selectedCategory inputClasses labelText>
+    <@customSelect "category-select-wrapper" categories selectedCategory inputClasses labelText "transaction-category" "category" "label">
+        <div class="custom-select-trigger" tabindex="0"><div class="custom-select-selected-item"><#if selectedCategory??><@customSelectOptionCategoryContent selectedCategory "no-margin-left"/></#if></div>
+            <div class="custom-select-arrow"></div>
         </div>
-    </div>
+        <div class="custom-select-options">
+            <#list categories as category>
+                <#if category.getType() == "REST">
+                    <#continue>
+                </#if>
+
+                <#if selectedCategory??>
+                    <#if selectedCategory.getID()?c == category.getID()?c>
+                        <@customSelectCategoryOption category true/>
+                    <#else>
+                        <@customSelectCategoryOption category false/>
+                    </#if>
+                    <#continue>
+                </#if>
+
+                <#if category.getType() == "NONE">
+                    <@customSelectCategoryOption category true/>
+                    <#continue>
+                </#if>
+
+                <@customSelectCategoryOption category false/>
+            </#list>
+        </div>
+    </@customSelect>
+</#macro>
+
+<#macro customAccountSelect selector inputName accounts selectedAccount inputClasses labelText id>
+    <@customSelect selector accounts selectedAccount inputClasses labelText id inputName "account_balance">
+        <div class="custom-select-trigger" tabindex="0"><div class="custom-select-selected-item"><#if selectedAccount??><@customSelectOptionAccountContent selectedAccount "no-margin-left"/></#if></div>
+            <div class="custom-select-arrow"></div>
+        </div>
+        <div class="custom-select-options">
+            <#list accounts as account>
+                <#if (account.getType().name() != "CUSTOM")>
+                    <#continue>
+                </#if>
+
+                <#if selectedAccount??>
+                    <#if selectedAccount.getID()?c == account.getID()?c>
+                        <@customSelectAccountOption account true/>
+                    <#else>
+                        <@customSelectAccountOption account false/>
+                    </#if>
+                    <#continue>
+                </#if>
+
+                <@customSelectAccountOption account false/>
+            </#list>
+        </div>
+    </@customSelect>
 </#macro>
 
 <#macro customSelectCategoryOption category isSelected>
