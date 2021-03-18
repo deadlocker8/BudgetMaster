@@ -153,29 +153,6 @@
     </script>
 </#macro>
 
-<#macro account accounts selectedAccount id name label disabled>
-    <div class="row">
-        <div class="input-field col s12 m12 l8 offset-l2" id="accountWrapper">
-            <i class="material-icons prefix">account_balance</i>
-            <select id="${id}" name="${name}" <@validation.validation "account"/> <#if disabled>disabled</#if>>
-                <#list accounts as account>
-                    <#if (account.getType().name() != "CUSTOM")>
-                        <#continue>
-                    </#if>
-
-                    <#if selectedAccount == account>
-                        <option selected value="${account.getID()?c}">${account.getName()}</option>
-                        <#continue>
-                    </#if>
-
-                    <option value="${account.getID()?c}">${account.getName()}</option>
-                </#list>
-            </select>
-            <label class="input-label" for="${id}">${label}</label>
-        </div>
-    </div>
-</#macro>
-
 <#macro transactionRepeating transaction currentDate>
     <div class="row">
         <div class="col s12 m12 l8 offset-l2">
