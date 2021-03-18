@@ -1,11 +1,11 @@
 <#import "../categories/categoriesFunctions.ftl" as categoriesFunctions>
 
-<#macro customSelect selector items selectedItem inputClasses labelText id inputName icon>
+<#macro customSelect selector items selectedItem inputClasses labelText id inputName icon disabled=false>
     <div class="row">
         <div class="input-field ${inputClasses}">
             <i class="material-icons prefix">${icon}</i>
             <label class="input-label" for="${id}">${labelText}</label>
-            <div class="custom-select-wrapper ${selector}" id="${id}">
+            <div class="custom-select-wrapper ${selector} <#if disabled>disabled</#if>" id="${id}">
                 <div class="custom-select">
                     <#nested>
                 </div>
@@ -18,7 +18,10 @@
 
 <#macro customCategorySelect categories selectedCategory inputClasses labelText>
     <@customSelect "category-select-wrapper" categories selectedCategory inputClasses labelText "transaction-category" "category" "label">
-        <div class="custom-select-trigger" tabindex="0"><div class="custom-select-selected-item"><#if selectedCategory??><@customSelectOptionCategoryContent selectedCategory "no-margin-left"/></#if></div>
+        <div class="custom-select-trigger" tabindex="0">
+            <div class="custom-select-selected-item">
+                <#if selectedCategory??><@customSelectOptionCategoryContent selectedCategory "no-margin-left"/></#if>
+            </div>
             <div class="custom-select-arrow"></div>
         </div>
         <div class="custom-select-options">
@@ -47,9 +50,12 @@
     </@customSelect>
 </#macro>
 
-<#macro customAccountSelect selector inputName accounts selectedAccount inputClasses labelText id>
-    <@customSelect selector accounts selectedAccount inputClasses labelText id inputName "account_balance">
-        <div class="custom-select-trigger" tabindex="0"><div class="custom-select-selected-item"><#if selectedAccount??><@customSelectOptionAccountContent selectedAccount "no-margin-left"/></#if></div>
+<#macro customAccountSelect selector inputName accounts selectedAccount inputClasses labelText id disabled=false>
+    <@customSelect selector accounts selectedAccount inputClasses labelText id inputName "account_balance" disabled>
+        <div class="custom-select-trigger" tabindex="0">
+            <div class="custom-select-selected-item">
+                <#if selectedAccount??><@customSelectOptionAccountContent selectedAccount "no-margin-left"/></#if>
+            </div>
             <div class="custom-select-arrow"></div>
         </div>
         <div class="custom-select-options">

@@ -31,7 +31,7 @@ $(document).ready(function()
 
     if($("#include-transfer-account").length)
     {
-        handleIncludeAccountCheckbox('include-transfer-account', 'transaction-transfer-account')
+        handleIncludeAccountCheckbox('include-transfer-account', 'transaction-destination-account')
     }
 
     if($("#searchTemplate").length)
@@ -47,11 +47,8 @@ function handleIncludeAccountCheckbox(checkboxID, selectID)
 {
     document.getElementById(checkboxID).addEventListener('change', (event) =>
     {
-        let accountSelect = document.getElementById(selectID)
-        let accountSelectInstance = M.FormSelect.getInstance(accountSelect);
-        accountSelectInstance.destroy();
-        accountSelect.disabled = !event.target.checked;
-        M.FormSelect.init(document.querySelectorAll('#' + selectID), {});
+        let accountSelect = document.getElementById(selectID);
+        accountSelect.classList.toggle("disabled", !event.target.checked);
     });
 }
 

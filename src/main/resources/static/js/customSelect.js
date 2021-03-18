@@ -69,7 +69,10 @@ $(document).ready(function()
                 }
                 else
                 {
-                    currentCustomSelect.open();
+                    if(!currentCustomSelect.isDisabled())
+                    {
+                        currentCustomSelect.open();
+                    }
                 }
 
                 break;
@@ -97,7 +100,10 @@ class CustomSelect
         let customSelectTrigger = document.querySelector(this.selector);
         customSelectTrigger.addEventListener('click', function()
         {
-            self.open();
+            if(!self.isDisabled())
+            {
+                self.open();
+            }
         });
 
         customSelectTrigger.addEventListener("keydown", function(event)
@@ -120,6 +126,12 @@ class CustomSelect
         }
 
         this.resetSelectedItemId()
+    }
+
+    isDisabled()
+    {
+        let customSelectTrigger = document.querySelector(this.selector);
+        return customSelectTrigger.classList.contains("disabled");
     }
 
     open()

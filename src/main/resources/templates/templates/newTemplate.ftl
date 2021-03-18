@@ -14,6 +14,7 @@
         <@header.style "categories"/>
         <@header.style "collapsible"/>
         <@header.style "customSelect"/>
+        <@header.style "accounts"/>
         <#import "/spring.ftl" as s>
     </head>
     <@header.body>
@@ -64,19 +65,19 @@
                         <#-- account -->
                         <#if template.getAccount()??>
                             <@templateFunctions.templateIncludeAccountCheckbox "include-account" "includeAccount" locale.getString('template.checkbox.include.account') true/>
-                            <@newTransactionMacros.account accounts template.getAccount() "transaction-account" "account" "" false/>
+                            <@customSelectMacros.customAccountSelect "account-select-wrapper" "account" accounts template.getAccount() "col s12 m12 l8 offset-l2" "" "transaction-account" false/>
                         <#else>
                             <@templateFunctions.templateIncludeAccountCheckbox "include-account" "includeAccount" locale.getString('template.checkbox.include.account') false/>
-                            <@newTransactionMacros.account accounts helpers.getCurrentAccountOrDefault() "transaction-account" "account" "", true/>
+                            <@customSelectMacros.customAccountSelect "account-select-wrapper" "account" accounts helpers.getCurrentAccountOrDefault() "col s12 m12 l8 offset-l2" "" "transaction-account" true/>
                         </#if>
 
                         <#-- transfer account -->
                         <#if template.getTransferAccount()??>
                             <@templateFunctions.templateIncludeAccountCheckbox "include-transfer-account" "includeTransferAccount" locale.getString('template.checkbox.include.account.transfer') true/>
-                            <@newTransactionMacros.account accounts template.getTransferAccount() "transaction-transfer-account" "transferAccount" "" false/>
+                            <@customSelectMacros.customAccountSelect "transfer-account-select-wrapper" "transferAccount" accounts template.getTransferAccount() "col s12 m12 l8 offset-l2" "" "transaction-destination-account" false/>
                         <#else>
                             <@templateFunctions.templateIncludeAccountCheckbox "include-transfer-account" "includeTransferAccount" locale.getString('template.checkbox.include.account.transfer') false/>
-                            <@newTransactionMacros.account accounts helpers.getCurrentAccountOrDefault() "transaction-transfer-account" "transferAccount" "", true/>
+                            <@customSelectMacros.customAccountSelect "transfer-account-select-wrapper" "transferAccount" accounts helpers.getCurrentAccountOrDefault() "col s12 m12 l8 offset-l2" "" "transaction-destination-account" true/>
                         </#if>
 
                         <br>
