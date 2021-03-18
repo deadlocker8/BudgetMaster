@@ -39,21 +39,30 @@ public class MediaController extends BaseController
 		boolean success = true;
 		String localizedMessage = Localization.getString("upload.image.success");
 
-		try
+		if(file.isEmpty())
 		{
-			imageService.saveImageFile(file);
-		}
-		catch(IOException e)
-		{
-			e.printStackTrace();
 			success = false;
-			localizedMessage = Localization.getString("upload.image.error", e.getMessage());
+			localizedMessage = Localization.getString("upload.image.error.no.file");
 		}
-		catch(InvalidFileExtensionException e)
+		else
 		{
-			e.printStackTrace();
-			success = false;
-			localizedMessage = e.getMessage();
+
+			try
+			{
+				imageService.saveImageFile(file);
+			}
+			catch(IOException e)
+			{
+				e.printStackTrace();
+				success = false;
+				localizedMessage = Localization.getString("upload.image.error", e.getMessage());
+			}
+			catch(InvalidFileExtensionException e)
+			{
+				e.printStackTrace();
+				success = false;
+				localizedMessage = e.getMessage();
+			}
 		}
 
 		final JsonObject data = new JsonObject();
