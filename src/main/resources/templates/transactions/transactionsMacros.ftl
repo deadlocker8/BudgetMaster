@@ -61,7 +61,7 @@
 </#macro>
 
 <#macro transactionAccountIcon transaction>
-    <#if helpers.getCurrentAccount().getType() == "ALL" && transaction.getAccount()??>
+    <#if helpers.getCurrentAccount().getType().name() == "ALL" && transaction.getAccount()??>
         <#import "../helpers/customSelectMacros.ftl" as customSelectMacros>
         <div class="col s2 l1 xl1 tooltipped no-padding" data-position="bottom" data-tooltip="${transaction.getAccount().getName()}">
             <div class="hide-on-med-and-down">

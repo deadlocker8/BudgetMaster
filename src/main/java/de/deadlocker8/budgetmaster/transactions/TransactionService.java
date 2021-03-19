@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmaster.transactions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.accounts.AccountState;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
@@ -193,7 +194,7 @@ public class TransactionService implements Resetable
 					return false;
 				}
 
-				return !transaction.getAccount().isReadOnly();
+				return transaction.getAccount().getAccountState() == AccountState.FULL_ACCESS;
 			}
 		}
 		return false;

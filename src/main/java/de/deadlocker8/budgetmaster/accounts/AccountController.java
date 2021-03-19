@@ -133,6 +133,7 @@ public class AccountController extends BaseController
 		model.addAttribute("account", emptyAccount);
 		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("availableImages", imageService.getRepository().findAll());
+		model.addAttribute("availableAccountStates", AccountState.values());
 		return "accounts/newAccount";
 	}
 
@@ -148,6 +149,7 @@ public class AccountController extends BaseController
 		model.addAttribute("account", accountOptional.get());
 		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("availableImages", imageService.getRepository().findAll());
+		model.addAttribute("availableAccountStates", AccountState.values());
 		return "accounts/newAccount";
 	}
 
@@ -172,6 +174,7 @@ public class AccountController extends BaseController
 			model.addAttribute("account", account);
 			model.addAttribute("settings", settingsService.getSettings());
 			model.addAttribute("availableImages", imageService.getRepository().findAll());
+			model.addAttribute("availableAccountStates", AccountState.values());
 			return "accounts/newAccount";
 		}
 		else

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
+import de.deadlocker8.budgetmaster.accounts.AccountState;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.services.Resetable;
@@ -86,7 +87,7 @@ public class TemplateService implements Resetable
 		}
 
 		final Account account = template.getAccount();
-		if(account != null && account.isReadOnly())
+		if(account != null && account.getAccountState() != AccountState.FULL_ACCESS)
 		{
 			template.setAccount(accountService.getRepository().findByIsDefault(true));
 		}

@@ -29,7 +29,12 @@ public class Account
 
 	private Boolean isSelected = false;
 	private Boolean isDefault = false;
+
+	@Deprecated
 	private Boolean isReadOnly = false;
+
+	@Expose
+	private AccountState accountState;
 
 	@ManyToOne
 	@Expose
@@ -44,7 +49,7 @@ public class Account
 		this.type = type;
 		this.isSelected = false;
 		this.isDefault = false;
-		this.isReadOnly = false;
+		this.accountState = AccountState.FULL_ACCESS;
 		this.icon = icon;
 	}
 
@@ -107,14 +112,26 @@ public class Account
 		isDefault = aDefault;
 	}
 
+	@Deprecated
 	public Boolean isReadOnly()
 	{
 		return isReadOnly;
 	}
 
+	@Deprecated
 	public void setReadOnly(Boolean readOnly)
 	{
 		isReadOnly = readOnly;
+	}
+
+	public AccountState getAccountState()
+	{
+		return accountState;
+	}
+
+	public void setAccountState(AccountState accountState)
+	{
+		this.accountState = accountState;
 	}
 
 	public AccountType getType()
@@ -146,7 +163,7 @@ public class Account
 				", referringTransactions=" + referringTransactions +
 				", isSelected=" + isSelected +
 				", isDefault=" + isDefault +
-				", isReadOnly=" + isReadOnly +
+				", accountState=" + accountState +
 				", type=" + type +
 				", icon=" + icon +
 				'}';
@@ -158,18 +175,17 @@ public class Account
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
 		Account account = (Account) o;
-		return isSelected == account.isSelected &&
-				isDefault == account.isDefault &&
-				isReadOnly == account.isReadOnly &&
-				Objects.equals(ID, account.ID) &&
+		return Objects.equals(ID, account.ID) &&
 				Objects.equals(name, account.name) &&
-				type == account.type &&
-				Objects.equals(icon, account.icon);
+				Objects.equals(isSelected, account.isSelected) &&
+				Objects.equals(isDefault, account.isDefault) &&
+				accountState == account.accountState &&
+				Objects.equals(icon, account.icon) && type == account.type;
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, name, isSelected, isDefault, isReadOnly, type, icon);
+		return Objects.hash(ID, name, isSelected, isDefault, accountState, icon, type);
 	}
 }

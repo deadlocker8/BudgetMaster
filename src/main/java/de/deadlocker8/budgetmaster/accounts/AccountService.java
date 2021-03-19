@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -105,15 +106,7 @@ public class AccountService implements Resetable
 			LOGGER.debug("Created default account");
 		}
 
-		// handle null values for new field "isReadOnly"
-		for(Account account : accountRepository.findAll())
-		{
-			if(account.isReadOnly() == null)
-			{
-				account.setReadOnly(false);
-			}
-			accountRepository.save(account);
-		}
+		updateMissingAttributes();
 
 		Account defaultAccount = accountRepository.findByIsDefault(true);
 		if(defaultAccount == null)
@@ -122,6 +115,27 @@ public class AccountService implements Resetable
 			setAsDefaultAccount(account.getID());
 		}
 		setAsDefaultAccount(accountRepository.findByIsDefault(true).getID());
+	}
+
+	private void updateMissingAttributes()
+	{
+		// handle null values for new field "accountState"
+		for(Account account : accountRepository.findAll())
+		{
+			if(account.getAccountState() == null)
+			{
+				if(account.isReadOnly() == null || !account.isReadOnly())
+				{
+					account.setAccountState(AccountState.FULL_ACCESS);
+				}
+				else
+				{
+					account.setAccountState(AccountState.READ_ONLY);
+				}
+				LOGGER.debug(MessageFormat.format("Updated account {0}: Set missing attribute \"accountState\" to {1}", account.getName(), account.getAccountState()));
+			}
+			accountRepository.save(account);
+		}
 	}
 
 	private void deselectAllAccounts()
@@ -165,7 +179,7 @@ public class AccountService implements Resetable
 		}
 
 		Account accountToSelect = accountToSelectOptional.get();
-		if(accountToSelect.isReadOnly())
+		if(accountToSelect.getAccountState() != AccountState.FULL_ACCESS)
 		{
 			return;
 		}

@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.transactions;
 
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
+import de.deadlocker8.budgetmaster.accounts.AccountState;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
@@ -249,7 +250,7 @@ public class TransactionController extends BaseController
 
 		Transaction transaction = transactionOptional.get();
 
-		if(transaction.getAccount().isReadOnly())
+		if(transaction.getAccount().getAccountState() != AccountState.FULL_ACCESS)
 		{
 			return "redirect:/transactions";
 		}

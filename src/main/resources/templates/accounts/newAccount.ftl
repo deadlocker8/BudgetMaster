@@ -34,7 +34,6 @@
                         <input type="hidden" name="ID" value="<#if account.getID()??>${account.getID()?c}</#if>">
                         <input type="hidden" name="isSelected" value="<#if account.isSelected()??>${account.isSelected()?c}</#if>">
                         <input type="hidden" name="isDefault" value="<#if account.isDefault()??>${account.isDefault()?c}</#if>">
-                        <input type="hidden" name="isReadOnly" value="<#if account.isReadOnly()??>${account.isReadOnly()?c}</#if>">
 
                         <#-- name -->
                         <div class="row">
@@ -60,6 +59,17 @@
 
                                     <input id="hidden-input-account-icon" type="hidden" name="icon" value="<#if account.getIcon()??>${account.getIcon().getID()?c}</#if>">
                                 </div>
+                            </div>
+                        </div>
+
+                        <#-- state -->
+                        <div class="row">
+                            <div class="input-field col s12 m12 l8 offset-l2">
+                                <select name="accountState">
+                                    <#list availableAccountStates as state>
+                                        <option value="${state}">${state}</option>
+                                    </#list>
+                                </select>
                             </div>
                         </div>
 

@@ -27,7 +27,7 @@
                             <#if (account.getType().name() == "CUSTOM")>
                                 <tr class="account-overview-row">
                                     <td>
-                                        <#if account.isReadOnly()>
+                                        <#if account.getAccountState().name() == "READ_ONLY">
                                             <#assign toolTipText = locale.getString("account.tooltip.readonly.activate")/>
                                             <#assign lockIcon = '<i class="fas fa-lock"></i>'/>
                                             <div class="placeholder-icon"></div>
