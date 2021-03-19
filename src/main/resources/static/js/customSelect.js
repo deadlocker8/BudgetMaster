@@ -316,7 +316,7 @@ class CustomSelect
         if(index !== null)
         {
             this.removeSelectionStyleClassFromAll(this.selector);
-            this.selectedId = this.selectItem(items, index);
+            this.selectItem(items, index);
         }
     }
 
