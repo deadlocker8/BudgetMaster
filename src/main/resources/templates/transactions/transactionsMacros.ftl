@@ -15,7 +15,7 @@
 
 <#macro transactionCategory transaction alignment>
     <#import "../categories/categoriesFunctions.ftl" as categoriesFunctions>
-    <div class="col s3 l1 xl1 ${alignment}">
+    <div class="col s2 l1 xl1 ${alignment}">
         <div class="hide-on-med-and-down">
             <@categoriesFunctions.categoryCircle transaction.category/>
         </div>
@@ -60,6 +60,20 @@
     </div>
 </#macro>
 
+<#macro transactionAccountIcon transaction>
+    <#if helpers.getCurrentAccount().getType() == "ALL" && transaction.getAccount()??>
+        <#import "../helpers/customSelectMacros.ftl" as customSelectMacros>
+        <div class="col s2 l1 xl1 tooltipped no-padding" data-position="bottom" data-tooltip="${transaction.getAccount().getName()}">
+            <div class="hide-on-med-and-down">
+                <@customSelectMacros.accountIcon transaction.getAccount() transaction.getAccount().getName()/>
+            </div>
+            <div class="hide-on-large-only">
+                <@customSelectMacros.accountIcon transaction.getAccount() transaction.getAccount().getName() "category-circle-small"/>
+            </div>
+        </div>
+    </#if>
+
+</#macro>
 <#macro transactionLinks transaction>
     <div class="col s4 l2 xl1 right-align transaction-buttons no-wrap">
         <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/highlight' icon='open_in_new' localizationKey='' classes="no-padding text-default buttonHighlight"/>

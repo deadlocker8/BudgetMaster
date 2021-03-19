@@ -63,7 +63,8 @@
                                     <@transactionsMacros.transactionButtons transaction/>
                                 </div>
                                 <div class="row valign-wrapper transaction-row-bottom">
-                                    <@transactionsMacros.transactionCategory transaction "center-align"/>
+                                    <@transactionsMacros.transactionCategory transaction "left-align no-margin-left"/>
+                                    <@transactionsMacros.transactionAccountIcon transaction/>
                                     <@transactionsMacros.transactionNameAndDescription transaction "s5"/>
                                     <@transactionsMacros.transactionAmount transaction account "s4"/>
                                 </div>
@@ -74,6 +75,7 @@
                                         ${dateService.getDateStringWithoutYear(transaction.date)}
                                     </div>
                                     <@transactionsMacros.transactionCategory transaction "left-align"/>
+                                    <@transactionsMacros.transactionAccountIcon transaction/>
                                     <@transactionsMacros.transactionType transaction/>
                                     <@transactionsMacros.transactionNameAndDescription transaction "l4 xl5"/>
                                     <@transactionsMacros.transactionAmount transaction account "l3 xl3"/>
