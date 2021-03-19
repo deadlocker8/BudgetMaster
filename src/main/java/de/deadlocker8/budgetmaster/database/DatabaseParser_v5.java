@@ -1,6 +1,9 @@
 package de.deadlocker8.budgetmaster.database;
 
 import com.google.gson.*;
+import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.accounts.AccountState;
+import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.charts.Chart;
 import de.deadlocker8.budgetmaster.images.Image;
 import org.slf4j.Logger;
@@ -27,15 +30,52 @@ public class DatabaseParser_v5 extends DatabaseParser_v4
 	public Database parseDatabaseFromJSON() throws IllegalArgumentException
 	{
 		final JsonObject root = JsonParser.parseString(jsonString).getAsJsonObject();
+
+		this.images = parseImages(root);
+		super.accounts = parseAccounts(root);
+
 		super.categories = super.parseCategories(root);
-		super.accounts = super.parseAccounts(root);
 		super.transactions = super.parseTransactions(root);
 		super.templates = super.parseTemplates(root);
 
 		this.charts = parseCharts(root);
-		this.images = parseImages(root);
 
 		return new Database(categories, accounts, transactions, templates, charts, images);
+	}
+
+	@Override
+	protected List<Account> parseAccounts(JsonObject root)
+	{
+		List<Account> parsedAccounts = new ArrayList<>();
+		JsonArray accounts = root.get("accounts").getAsJsonArray();
+		for(JsonElement currentAccount : accounts)
+		{
+			final JsonObject accountObject = currentAccount.getAsJsonObject();
+			Integer ID = accountObject.get("ID").getAsInt();
+			String name = accountObject.get("name").getAsString();
+			AccountType accountType = AccountType.valueOf(accountObject.get("type").getAsString());
+
+			AccountState accountState = AccountState.FULL_ACCESS;
+			if(accountObject.has("accountState"))
+			{
+				accountState = AccountState.valueOf(accountObject.get("accountState").getAsString());
+			}
+
+			Image icon = null;
+			if(accountObject.has("icon"))
+			{
+				final Integer iconID = accountObject.get("icon").getAsJsonObject().get("ID").getAsInt();
+				icon = this.images.stream().filter(image -> image.getID().equals(iconID)).findFirst().orElseThrow();
+			}
+
+			Account parsedAccount = new Account(name, accountType, icon);
+			parsedAccount.setID(ID);
+			parsedAccount.setAccountState(accountState);
+
+			parsedAccounts.add(parsedAccount);
+		}
+
+		return parsedAccounts;
 	}
 
 	protected List<Chart> parseCharts(JsonObject root)

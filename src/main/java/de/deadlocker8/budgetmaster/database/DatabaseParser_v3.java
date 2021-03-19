@@ -2,12 +2,15 @@ package de.deadlocker8.budgetmaster.database;
 
 import com.google.gson.*;
 import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.accounts.AccountState;
+import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.categories.Category;
-import de.deadlocker8.budgetmaster.tags.Tag;
-import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.repeating.endoption.*;
-import de.deadlocker8.budgetmaster.repeating.modifier.*;
+import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifier;
+import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierType;
+import de.deadlocker8.budgetmaster.tags.Tag;
+import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.thecodelabs.utils.util.Localization;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -58,7 +61,22 @@ public class DatabaseParser_v3
 		JsonArray accounts = root.get("accounts").getAsJsonArray();
 		for(JsonElement currentAccount : accounts)
 		{
-			parsedAccounts.add(new Gson().fromJson(currentAccount, Account.class));
+			final JsonObject accountObject = currentAccount.getAsJsonObject();
+			Integer ID = accountObject.get("ID").getAsInt();
+			String name = accountObject.get("name").getAsString();
+			AccountType accountType = AccountType.valueOf(accountObject.get("type").getAsString());
+
+			AccountState accountState = AccountState.FULL_ACCESS;
+			if(accountObject.has("accountState"))
+			{
+				accountState = AccountState.valueOf(accountObject.get("accountState").getAsString());
+			}
+
+			Account parsedAccount = new Account(name, accountType, null);
+			parsedAccount.setID(ID);
+			parsedAccount.setAccountState(accountState);
+
+			parsedAccounts.add(parsedAccount);
 		}
 
 		return parsedAccounts;
