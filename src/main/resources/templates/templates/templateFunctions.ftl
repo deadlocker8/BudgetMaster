@@ -1,5 +1,7 @@
 <#import "/spring.ftl" as s>
 <#import "../helpers/validation.ftl" as validation>
+<#import "../categories/categoriesFunctions.ftl" as categoriesFunctions>
+
 
 <#macro buttonNew>
     <@header.buttonLink url='/templates/newTemplate' icon='add' localizationKey='title.template.new'/>
