@@ -64,30 +64,6 @@ public class AccountController extends BaseController
 		return "redirect:" + referer;
 	}
 
-	@GetMapping(value = "/{ID}/toggleReadOnly")
-	public String toggleReadOnly(HttpServletRequest request, @PathVariable("ID") Integer ID)
-	{
-		final Optional<Account> accountOptional = accountService.getRepository().findById(ID);
-		if(accountOptional.isEmpty())
-		{
-			throw new ResourceNotFoundException();
-		}
-
-		final Account account = accountOptional.get();
-		if(!account.isDefault())
-		{
-			account.setReadOnly(!account.isReadOnly());
-			accountService.getRepository().save(account);
-		}
-
-		String referer = request.getHeader("Referer");
-		if(referer.contains("database/import"))
-		{
-			return "redirect:/settings";
-		}
-		return "redirect:" + referer;
-	}
-
 	@GetMapping
 	public String accounts(Model model)
 	{
