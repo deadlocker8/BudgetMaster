@@ -170,6 +170,7 @@ public class AccountController extends BaseController
 					Account existingAccount = existingAccountOptional.get();
 					existingAccount.setName(account.getName());
 					existingAccount.setIcon(account.getIcon());
+					existingAccount.setAccountState(account.getAccountState());
 					accountService.getRepository().save(existingAccount);
 				}
 			}
