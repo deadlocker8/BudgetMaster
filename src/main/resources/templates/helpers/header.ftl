@@ -108,6 +108,6 @@
        id="${id}"
        class="waves-effect waves-light btn-flat ${classes}"
             <#if isDataUrl>data-url="${url}"</#if>>
-        <i class="material-icons left <#if !localizationKey?has_content>no-margin</#if> ${iconClasses}">${icon}</i><#if localizationKey?has_content>${locale.getString(localizationKey)}</#if>
+        <i class="material-icons left <#if !localizationKey?has_content>no-margin</#if> ${iconClasses}">${icon}</i><#if localizationKey?has_content><span>${locale.getString(localizationKey)}</span></#if>
     </a>
 </#macro>

@@ -53,3 +53,19 @@
     border: 3px solid var(--color-blue);
     line-height: 28px !important;
 }
+
+.account-icon-option-delete span {
+    display: none;
+}
+
+.account-icon-option-delete i.left {
+    margin-right: 0;
+}
+
+.account-icon-option-delete-confirm {
+    color: var(--color-red) !important;
+}
+
+.account-icon-option-delete-confirm span {
+    display: inline-block;
+}

@@ -84,9 +84,17 @@ function getAvailableImages(callback)
                 selectIcon(this);
             });
 
+            let classDeleteConfirm = 'account-icon-option-delete-confirm';
             $('.account-icon-option-delete').click(function()
             {
-                deleteImage(this);
+                if(this.classList.contains(classDeleteConfirm))
+                {
+                    deleteImage(this);
+                }
+                else
+                {
+                    this.classList.add(classDeleteConfirm);
+                }
             });
 
             callback();
