@@ -28,17 +28,14 @@
                                 <tr class="account-overview-row">
                                     <td>
                                         <#if account.getAccountState().name() == "READ_ONLY">
-                                            <#assign toolTipText = locale.getString("account.tooltip.readonly.activate")/>
-                                            <#assign lockIcon = '<i class="fas fa-lock"></i>'/>
                                             <div class="placeholder-icon"></div>
+                                            <i class="fas fa-lock"></i>
+                                        <#elseif account.getAccountState().name() == "HIDDEN">
+                                            <div class="placeholder-icon"></div>
+                                            <i class="far fa-eye-slash"></i>
                                         <#else>
-                                            <#assign toolTipText = locale.getString("account.tooltip.readonly.deactivate")/>
-                                            <#assign lockIcon = '<i class="fas fa-lock-open"></i>'/>
                                             <a href="<@s.url '/accounts/${account.getID()?c}/setAsDefault'/>" class="btn-flat no-padding text-default tooltipped" data-position="left" data-tooltip="${locale.getString("account.tooltip.default")}"><i class="material-icons left"><#if account.isDefault()>star<#else>star_border</#if></i></a>
-                                        </#if>
-
-                                        <#if !account.isDefault()>
-                                            <a href="<@s.url '/accounts/${account.getID()?c}/toggleReadOnly'/>" class="btn-flat no-padding text-default tooltipped" data-position="right" data-tooltip="${toolTipText}">${lockIcon}</a>
+                                            <i class="fas fa-edit"></i>
                                         </#if>
                                     </td>
                                     <td><#if account.getIcon()??><img src="${account.getIcon().getBase64EncodedImage()}" class="account-icon"/></#if></td>

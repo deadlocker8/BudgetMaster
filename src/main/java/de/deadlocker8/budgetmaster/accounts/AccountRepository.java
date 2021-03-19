@@ -15,6 +15,8 @@ public interface AccountRepository extends JpaRepository<Account, Integer>
 
 	List<Account> findAllByType(AccountType accountType);
 
+	List<Account> findAllByTypeAndAccountStateOrderByNameAsc(AccountType accountType, AccountState accountState);
+
 	Account findByIsSelected(boolean isSelected);
 
 	Account findByIsDefault(boolean isDefault);

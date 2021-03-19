@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class AccountService implements Resetable
 	public List<Account> getAllActivatedAccountsAsc()
 	{
 		List<Account> accounts = accountRepository.findAllByType(AccountType.ALL);
-		accounts.addAll(accountRepository.findAllByTypeAndIsReadOnlyOrderByNameAsc(AccountType.CUSTOM, false));
+		accounts.addAll(accountRepository.findAllByTypeAndAccountStateOrderByNameAsc(AccountType.CUSTOM, AccountState.FULL_ACCESS));
 		return accounts;
 	}
 
@@ -72,7 +73,7 @@ public class AccountService implements Resetable
 		// set new default if necessary
 		if(accountToDelete.isDefault())
 		{
-			List<Account> accounts = accountRepository.findAllByType(AccountType.CUSTOM);
+			List<Account> accounts = accountRepository.findAllByTypeAndAccountStateOrderByNameAsc(AccountType.CUSTOM, AccountState.FULL_ACCESS);
 			accounts.remove(accountToDelete);
 			setAsDefaultAccount(accounts.get(0).getID());
 		}
@@ -92,6 +93,7 @@ public class AccountService implements Resetable
 	}
 
 	@Override
+	@Transactional
 	public void createDefaults()
 	{
 		if(accountRepository.findAll().isEmpty())
@@ -111,7 +113,7 @@ public class AccountService implements Resetable
 		Account defaultAccount = accountRepository.findByIsDefault(true);
 		if(defaultAccount == null)
 		{
-			Account account = accountRepository.findAllByType(AccountType.CUSTOM).get(0);
+			Account account = accountRepository.findAllByTypeAndAccountStateOrderByNameAsc(AccountType.CUSTOM, AccountState.FULL_ACCESS).get(0);
 			setAsDefaultAccount(account.getID());
 		}
 		setAsDefaultAccount(accountRepository.findByIsDefault(true).getID());
@@ -148,6 +150,7 @@ public class AccountService implements Resetable
 		}
 	}
 
+	@Transactional
 	public void selectAccount(int ID)
 	{
 		deselectAllAccounts();
@@ -170,6 +173,7 @@ public class AccountService implements Resetable
 		}
 	}
 
+	@Transactional
 	public void setAsDefaultAccount(int ID)
 	{
 		Optional<Account> accountToSelectOptional = accountRepository.findById(ID);
@@ -190,7 +194,8 @@ public class AccountService implements Resetable
 		accountRepository.save(accountToSelect);
 	}
 
-	private void unsetDefaultForAllAccounts()
+	@Transactional
+	public void unsetDefaultForAllAccounts()
 	{
 		List<Account> accounts = accountRepository.findAll();
 		for(Account currentAccount : accounts)
