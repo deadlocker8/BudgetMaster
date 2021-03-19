@@ -61,8 +61,17 @@ public class TransactionTestHelper
 	{
 		final WebElement categorySelect = driver.findElement(By.cssSelector(".category-select-wrapper .custom-select"));
 		categorySelect.click();
-		driver.findElements(By.className("custom-select-item-name")).stream()
+		driver.findElements(By.cssSelector(".category-select-wrapper .custom-select-item-name")).stream()
 				.filter(webElement -> webElement.getText().equals(categoryName))
+				.findFirst().orElseThrow().click();
+	}
+
+	public static void selectGlobalAccountByName(WebDriver driver, String accountName)
+	{
+		final WebElement globalAccountSelect = driver.findElement(By.cssSelector(".global-account-select-wrapper .custom-select"));
+		globalAccountSelect.click();
+		driver.findElements(By.cssSelector(".global-account-select-wrapper .custom-select-item-name")).stream()
+				.filter(webElement -> webElement.getText().equals(accountName))
 				.findFirst().orElseThrow().click();
 	}
 }

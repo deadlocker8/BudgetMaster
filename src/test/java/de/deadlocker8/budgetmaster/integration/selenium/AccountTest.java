@@ -1,6 +1,9 @@
 package de.deadlocker8.budgetmaster.integration.selenium;
 
 import de.deadlocker8.budgetmaster.Main;
+import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.accounts.AccountState;
+import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
@@ -78,8 +81,18 @@ public class AccountTest
 		helper.hideBackupReminder();
 		helper.hideWhatsNewDialog();
 
-		String path = getClass().getClassLoader().getResource("SearchDatabase.json").getFile().replace("/", File.separator);
-		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf"), Arrays.asList("DefaultAccount0815", "Account2"));
+		String path = getClass().getClassLoader().getResource("AccountDatabase.json").getFile().replace("/", File.separator);
+
+		final Account account1 = new Account("DefaultAccount0815", AccountType.CUSTOM);
+		final Account account2 = new Account("sfsdf", AccountType.CUSTOM);
+		final Account account3 = new Account("read only account", AccountType.CUSTOM);
+		account3.setAccountState(AccountState.READ_ONLY);
+		final Account account4 = new Account("hidden account", AccountType.CUSTOM);
+		account4.setAccountState(AccountState.HIDDEN);
+
+		final List<Account> destinationAccounts = List.of(account1, account2, account3, account4);
+
+		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf", "read only account", "hidden account"), destinationAccounts);
 	}
 
 	@Test
@@ -100,7 +113,7 @@ public class AccountTest
 		assertThat(driver.getCurrentUrl()).endsWith("/accounts");
 
 		List<WebElement> accountRows = driver.findElements(By.cssSelector(".account-container tr"));
-		assertThat(accountRows).hasSize(3);
+		assertThat(accountRows).hasSize(5);
 	}
 
 	@Test
@@ -124,12 +137,14 @@ public class AccountTest
 		assertThat(driver.getCurrentUrl()).endsWith("/accounts");
 
 		List<WebElement> accountRows = driver.findElements(By.cssSelector(".account-container tr"));
-		assertThat(accountRows).hasSize(4);
+		assertThat(accountRows).hasSize(6);
 
-		assertAccountColumns(accountRows.get(0).findElements(By.tagName("td")), true, false, true, false, "Account2");
-		assertAccountColumns(accountRows.get(1).findElements(By.tagName("td")), true, true, false, false, "Default Account");
-		assertAccountColumns(accountRows.get(2).findElements(By.tagName("td")), true, false, true, false, "DefaultAccount0815");
-		assertAccountColumns(accountRows.get(3).findElements(By.tagName("td")), true, false, true, false, name);
+		assertAccountColumns(accountRows.get(0).findElements(By.tagName("td")), true, true, AccountState.FULL_ACCESS, "Default Account");
+		assertAccountColumns(accountRows.get(1).findElements(By.tagName("td")), true, false, AccountState.FULL_ACCESS, "DefaultAccount0815");
+		assertAccountColumns(accountRows.get(2).findElements(By.tagName("td")), true, false, AccountState.FULL_ACCESS, name);
+		assertAccountColumns(accountRows.get(3).findElements(By.tagName("td")), false, false, AccountState.HIDDEN, "hidden account");
+		assertAccountColumns(accountRows.get(4).findElements(By.tagName("td")), false, false, AccountState.READ_ONLY, "read only account");
+		assertAccountColumns(accountRows.get(5).findElements(By.tagName("td")), true, false, AccountState.FULL_ACCESS, "sfsdf");
 	}
 
 	@Test
@@ -141,59 +156,8 @@ public class AccountTest
 	}
 
 	@Test
-	public void test_setAsDefault()
-	{
-		driver.get(helper.getUrl() + "/accounts");
-
-		List<WebElement> accountRows = driver.findElements(By.cssSelector(".account-container tr"));
-		final List<WebElement> columns = accountRows.get(0).findElements(By.tagName("td"));
-		final List<WebElement> icons = columns.get(0).findElements(By.tagName("i"));
-
-		icons.get(0).click();
-
-		// assert
-		assertThat(driver.getCurrentUrl()).endsWith("/accounts");
-
-		accountRows = driver.findElements(By.cssSelector(".account-container tr"));
-		assertThat(accountRows).hasSize(3);
-
-		assertAccountColumns(accountRows.get(0).findElements(By.tagName("td")), true, true, false, false, "Account2");
-		assertAccountColumns(accountRows.get(1).findElements(By.tagName("td")), true, false, true, false, "Default Account");
-		assertAccountColumns(accountRows.get(2).findElements(By.tagName("td")), true, false, true, false, "DefaultAccount0815");
-	}
-
-	@Test
-	public void test_setReadOnly()
-	{
-		setAsReadOnly();
-
-		// assert
-		assertThat(driver.getCurrentUrl()).endsWith("/accounts");
-
-		List<WebElement> accountRows = driver.findElements(By.cssSelector(".account-container tr"));
-		assertThat(accountRows).hasSize(3);
-
-		assertAccountColumns(accountRows.get(0).findElements(By.tagName("td")), false, false, true, true, "Account2");
-		assertAccountColumns(accountRows.get(1).findElements(By.tagName("td")), true, true, false, false, "Default Account");
-		assertAccountColumns(accountRows.get(2).findElements(By.tagName("td")), true, false, true, false, "DefaultAccount0815");
-	}
-
-	private void setAsReadOnly()
-	{
-		driver.get(helper.getUrl() + "/accounts");
-
-		List<WebElement> accountRows = driver.findElements(By.cssSelector(".account-container tr"));
-		final List<WebElement> columns = accountRows.get(0).findElements(By.tagName("td"));
-		final List<WebElement> icons = columns.get(0).findElements(By.tagName("i"));
-
-		icons.get(1).click();
-	}
-
-	@Test
 	public void test_readOnly_newTransaction_listOnlyReadableAccounts()
 	{
-		setAsReadOnly();
-
 		driver.get(helper.getUrl() + "/transactions");
 		driver.findElement(By.id("button-new-transaction")).click();
 		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]")).click();
@@ -203,14 +167,14 @@ public class AccountTest
 		List<String> itemNames = items.stream()
 				.map(webElement -> webElement.getAttribute("innerHTML").trim())
 				.collect(Collectors.toList());
-		assertThat(itemNames).containsExactly("Default Account", "DefaultAccount0815");
+		assertThat(itemNames).containsExactlyInAnyOrder("Default Account", "DefaultAccount0815", "sfsdf");
 	}
 
 	@Test
 	public void test_readOnly_preventTransactionDeleteAndEdit()
 	{
-		// select "Account2"
-		TransactionTestHelper.selectOptionFromDropdown(driver, By.id("selectWrapper"), "Account2");
+		// select "sfsdf"
+		TransactionTestHelper.selectGlobalAccountByName(driver, "sfsdf");
 
 		// open new transaction page
 		driver.get(helper.getUrl() + "/transactions");
@@ -225,13 +189,13 @@ public class AccountTest
 		// submit form
 		driver.findElement(By.id("button-save-transaction")).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
-
-		// set used account as readonly
-		setAsReadOnly();
+		// set account as readonly
+		setAccountState(4, AccountState.READ_ONLY);
 
 		driver.get(helper.getUrl() + "/transactions");
+
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
 
 		// assert
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
@@ -245,7 +209,7 @@ public class AccountTest
 		assertThat(icons).isEmpty();
 	}
 
-	public static void assertAccountColumns(List<WebElement> columns, boolean isDefaultIconVisible, boolean isDefaultIconSelected, boolean isReadOnlyIconVisible, boolean isReadOnlyIconSelected, String name)
+	public static void assertAccountColumns(List<WebElement> columns, boolean isDefaultIconVisible, boolean isDefaultIconSelected, AccountState expectedAccountState, String name)
 	{
 		// icons
 		final List<WebElement> icons = columns.get(0).findElements(By.tagName("i"));
@@ -267,25 +231,43 @@ public class AccountTest
 			numberOfVisibleIcons++;
 		}
 
-		if(isReadOnlyIconVisible)
+		final WebElement icon = icons.get(numberOfVisibleIcons);
+		assertThat(icon.isDisplayed()).isTrue();
+		switch(expectedAccountState)
 		{
-			final WebElement icon = icons.get(numberOfVisibleIcons);
-			assertThat(icon.isDisplayed()).isTrue();
-			if(isReadOnlyIconSelected)
-			{
+			case FULL_ACCESS:
+				assertThat(icon.getAttribute("class")).contains("fa-edit");
+				break;
+			case READ_ONLY:
 				assertThat(icon.getAttribute("class")).contains("fa-lock");
-			}
-			else
-			{
-				assertThat(icon.getAttribute("class")).contains("fa-lock-open");
-			}
-
-			numberOfVisibleIcons++;
+				break;
+			case HIDDEN:
+				assertThat(icon.getAttribute("class")).contains("fa-eye-slash");
+				break;
 		}
+
+		numberOfVisibleIcons++;
 
 		assertThat(icons).hasSize(numberOfVisibleIcons);
 
 		// name
 		assertThat(columns.get(2)).hasFieldOrPropertyWithValue("text", name);
+	}
+
+	private void setAccountState(int accountID, AccountState accountState)
+	{
+		driver.get(helper.getUrl() + "/accounts/" + accountID + "/edit");
+
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("account-name")));
+
+		final WebElement accountStateSelect = driver.findElement(By.id("account-state"));
+		accountStateSelect.findElement(By.className("select-dropdown")).click();
+
+		WebElement itemToSelect = accountStateSelect.findElement(By.xpath(".//ul/li/span[text()='" + accountState.name() + "']"));
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", itemToSelect);
+		itemToSelect.click();
+
+		driver.findElement(By.id("button-save-account")).click();
 	}
 }

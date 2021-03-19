@@ -1,6 +1,8 @@
 package de.deadlocker8.budgetmaster.integration.selenium;
 
 import de.deadlocker8.budgetmaster.Main;
+import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
@@ -80,8 +82,10 @@ public class NewTransactionRecurringTest
 		helper.hideWhatsNewDialog();
 
 		String path = getClass().getClassLoader().getResource("SearchDatabase.json").getFile().replace("/", File.separator);
-		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf"), Arrays.asList("DefaultAccount0815", "Account2"));
+		final Account account1 = new Account("DefaultAccount0815", AccountType.CUSTOM);
+		final Account account2 = new Account("Account2", AccountType.CUSTOM);
 
+		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf"), List.of(account1, account2));
 		// open transactions page
 		driver.get(helper.getUrl() + "/transactions");
 		driver.findElement(By.id("button-new-transaction")).click();

@@ -1,5 +1,7 @@
 package de.deadlocker8.budgetmaster.integration.helpers;
 
+import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.accounts.AccountState;
 import de.thecodelabs.utils.util.Localization;
 import org.junit.rules.TestName;
 import org.openqa.selenium.*;
@@ -87,7 +89,7 @@ public class IntegrationTestHelper
 		}
 	}
 
-	public void uploadDatabase(String path, List<String> sourceAccounts, List<String> destinationAccounts)
+	public void uploadDatabase(String path, List<String> sourceAccounts, List<Account> destinationAccounts)
 	{
 		if(path.startsWith("\\"))
 		{
@@ -113,9 +115,9 @@ public class IntegrationTestHelper
 		driver.findElement(By.id("button-confirm-database-import")).click();
 
 		// create new accounts
-		for(String account : destinationAccounts)
+		for(Account account : destinationAccounts)
 		{
-			createAccountOnImport(account);
+			createAccountOnImport(account.getName(), account.getAccountState());
 		}
 
 		// account matching
@@ -135,7 +137,7 @@ public class IntegrationTestHelper
 		start();
 	}
 
-	private void createAccountOnImport(String accountName)
+	private void createAccountOnImport(String accountName, AccountState accountState)
 	{
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("button-new-account")));
@@ -144,10 +146,18 @@ public class IntegrationTestHelper
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("account-name")));
 		WebElement inputAccountName = driver.findElement(By.id("account-name"));
 		inputAccountName.sendKeys(accountName);
+
+		final WebElement accountStateSelect = driver.findElement(By.id("account-state"));
+		accountStateSelect.findElement(By.className("select-dropdown")).click();
+
+		WebElement itemToSelect = accountStateSelect.findElement(By.xpath(".//ul/li/span[text()='" + accountState.name() + "']"));
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", itemToSelect);
+		itemToSelect.click();
+
 		driver.findElement(By.id("button-save-account")).click();
 	}
 
-	private void matchAccounts(List<String> sourceAccounts, List<String> destinationAccounts)
+	private void matchAccounts(List<String> sourceAccounts, List<Account> destinationAccounts)
 	{
 		WebElement headlineImport = driver.findElement(By.className("headline"));
 		assertEquals(Localization.getString("info.title.database.import.dialog"), IntegrationTestHelper.getTextNode(headlineImport));
@@ -157,7 +167,7 @@ public class IntegrationTestHelper
 
 		for(int i = 0; i < destinationAccounts.size(); i++)
 		{
-			String account = destinationAccounts.get(i);
+			String account = destinationAccounts.get(i).getName();
 
 			WebElement row = tableRows.get(i);
 			WebElement sourceAccount = row.findElement(By.className("account-source"));

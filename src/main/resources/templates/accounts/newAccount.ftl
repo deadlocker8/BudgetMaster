@@ -64,7 +64,7 @@
 
                         <#-- state -->
                         <div class="row">
-                            <div class="input-field col s12 m12 l8 offset-l2">
+                            <div class="input-field col s12 m12 l8 offset-l2" id="account-state">
                                 <select name="accountState">
                                     <#list availableAccountStates as state>
                                         <option value="${state}">${state}</option>
