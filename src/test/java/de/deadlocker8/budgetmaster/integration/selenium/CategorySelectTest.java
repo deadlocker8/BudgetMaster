@@ -175,9 +175,9 @@ public class CategorySelectTest
 
 		// assert
 		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".category-select-wrapper .custom-select-option.selected")));
+		wait.until(ExpectedConditions.not(ExpectedConditions.attributeContains(By.cssSelector(".category-select-wrapper .custom-select"), "class", "open")));
 
-		assertThat(driver.findElement(By.className("custom-select-item-name")))
+		assertThat(driver.findElement(By.cssSelector(".category-select-wrapper .custom-select-item-name")))
 				.hasFieldOrPropertyWithValue("text", "12sd");
 	}
 
