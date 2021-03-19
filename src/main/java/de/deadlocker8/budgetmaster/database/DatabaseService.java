@@ -46,7 +46,6 @@ public class DatabaseService
 {
 	public static final  Gson GSON = new GsonBuilder()
 			.excludeFieldsWithoutExposeAnnotation()
-			.setPrettyPrinting()
 			.registerTypeAdapter(DateTime.class, (JsonSerializer<DateTime>) (json, typeOfSrc, context) -> new JsonPrimitive(ISODateTimeFormat.date().print(json)))
 			.create();
 	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseService.class);
