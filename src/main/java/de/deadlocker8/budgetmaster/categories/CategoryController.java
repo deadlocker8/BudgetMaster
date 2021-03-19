@@ -151,6 +151,7 @@ public class CategoryController extends BaseController
 			}
 			model.addAttribute("category", category);
 			model.addAttribute("settings", settingsService.getSettings());
+			model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
 			return "categories/newCategory";
 		}
 		else
