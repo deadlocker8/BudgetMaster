@@ -240,7 +240,7 @@ class CustomSelect
         this.toggleItemSelection(items[index], true);
         items[index].scrollIntoView({
             behavior: 'smooth',
-            block: 'start'
+            block: 'nearest'
         });
         this.selectedId = this.getItemId(items[index]);
     }
