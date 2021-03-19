@@ -90,7 +90,7 @@
                     <div class="custom-select-arrow"></div>
                 </div>
                 <div class="custom-select-options">
-                    <#list helpers.getAllAccounts() as account>
+                    <#list helpers.getAllReadableAccounts() as account>
                         <@customSelectAccountOption account account.isSelected()/>
                     </#list>
                 </div>

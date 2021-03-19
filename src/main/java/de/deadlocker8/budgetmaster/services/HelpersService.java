@@ -102,6 +102,11 @@ public class HelpersService
 		return accountService.getAllAccountsAsc();
 	}
 
+	public List<Account> getAllReadableAccounts()
+	{
+		return accountService.getAllReadableAccounts();
+	}
+
 	public Account getCurrentAccount()
 	{
 		Account selectedAccount = accountRepository.findByIsSelected(true);
