@@ -12,9 +12,6 @@
         <@header.header "BudgetMaster - ${title}"/>
         <@header.style "transactions"/>
         <@header.style "datepicker"/>
-        <@header.style "categories"/>
-        <@header.style "customSelect"/>
-        <@header.style "accounts"/>
         <#import "/spring.ftl" as s>
     </head>
     <@header.body>
@@ -95,6 +92,5 @@
         <script src="<@s.url '/js/helpers.js'/>"></script>
         <script src="<@s.url '/js/transactions.js'/>"></script>
         <script src="<@s.url '/js/transactionActions.js'/>"></script>
-        <script src="<@s.url '/js/customSelect.js'/>"></script>
     </@header.body>
 </html>

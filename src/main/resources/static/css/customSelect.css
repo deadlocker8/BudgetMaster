@@ -5,6 +5,13 @@
     margin-top: 3rem
 }
 
+.global-account-select-wrapper {
+    position: inherit;
+    margin-left: 0;
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
 .custom-select {
     display: flex;
     flex-direction: column;

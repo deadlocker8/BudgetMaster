@@ -84,29 +84,22 @@
 </#macro>
 
 <#macro itemAccountSelect>
-<div class="account-navbar center-align">
-    <div class="input-field no-margin" id="selectWrapper">
-        <select id="selectAccount">
-            <#list helpers.getAllAccounts() as account>
-                <#if (account.getType().name() == "ALL")>
-                    <option <#if account.isSelected()>selected</#if> value="${account.getID()?c}">${locale.getString("account.all")}</option>
-                <#else>
-                    <option <#if account.isSelected()>selected</#if> value="${account.getID()?c}">${account.getName()}</option>
-                </#if>
-            </#list>
-        </select>
+    <div class="account-navbar">
+        <#import 'customSelectMacros.ftl' as customSelectMacros/>
+        <@customSelectMacros.globalAccountSelect/>
+
+        <div class="center-align">
+            <a href="<@s.url '/accounts'/>">${locale.getString("home.menu.accounts.action.manage")}</a>
+
+            <#assign accountBudget = helpers.getAccountBudget()/>
+            <#if accountBudget <= 0>
+                <div class="account-budget ${redTextColor}">${currencyService.getCurrencyString(accountBudget)}</div>
+            <#else>
+                <div class="account-budget ${greenTextColor}">${currencyService.getCurrencyString(accountBudget)}</div>
+            </#if>
+            <div class="account-budget-date text-default">(${locale.getString("account.budget.asof")}: ${dateService.getDateStringNormal(dateService.getCurrentDate())})</div>
+        </div>
     </div>
-
-    <a href="<@s.url '/accounts'/>">${locale.getString("home.menu.accounts.action.manage")}</a>
-
-    <#assign accountBudget = helpers.getAccountBudget()/>
-    <#if accountBudget <= 0>
-        <div class="account-budget ${redTextColor}">${currencyService.getCurrencyString(accountBudget)}</div>
-    <#else>
-        <div class="account-budget ${greenTextColor}">${currencyService.getCurrencyString(accountBudget)}</div>
-    </#if>
-    <div class="account-budget-date text-default">(${locale.getString("account.budget.asof")}: ${dateService.getDateStringNormal(dateService.getCurrentDate())})</div>
-</div>
 </#macro>
 
 <#macro itemPlain ID link text activeID>

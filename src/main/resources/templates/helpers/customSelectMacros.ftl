@@ -79,6 +79,28 @@
     </@customSelect>
 </#macro>
 
+<#macro globalAccountSelect>
+    <div class="input-field no-margin">
+        <div class="custom-select-wrapper global-account-select-wrapper">
+            <div class="custom-select">
+                <div class="custom-select-trigger" tabindex="0">
+                    <div class="custom-select-selected-item">
+                        <@customSelectOptionAccountContent helpers.getCurrentAccount() "no-margin-left"/>
+                    </div>
+                    <div class="custom-select-arrow"></div>
+                </div>
+                <div class="custom-select-options">
+                    <#list helpers.getAllAccounts() as account>
+                        <@customSelectAccountOption account account.isSelected()/>
+                    </#list>
+                </div>
+            </div>
+
+            <input type="hidden" class="hidden-input-custom-select" value="${helpers.getCurrentAccount().getID()?c}"/>
+        </div>
+    </div>
+</#macro>
+
 <#macro customSelectCategoryOption category isSelected>
     <div class="custom-select-option <#if isSelected>selected</#if>" data-value="${category.getID()?c}">
         <@customSelectOptionCategoryContent category/>
@@ -92,22 +114,28 @@
 
 <#macro customSelectAccountOption account isSelected>
     <div class="custom-select-option <#if isSelected>selected</#if>" data-value="${account.getID()?c}">
-        <@customSelectOptionAccountContent account/>
+        <@customSelectOptionAccountContent account=account/>
     </div>
 </#macro>
 
 <#macro customSelectOptionAccountContent account classes="" datasetValue="">
-    <@accountIcon account "category-circle-small ${classes}" datasetValue=""/>
-    <span class="custom-select-item-name">${account.getName()}</span>
+    <#if account.getType().name() == "ALL">
+        <#assign accountName=locale.getString("account.all")/>
+    <#else>
+        <#assign accountName=account.getName()/>
+    </#if>
+
+    <@accountIcon account accountName "category-circle-small ${classes}" datasetValue=""/>
+    <span class="custom-select-item-name">${accountName}</span>
 </#macro>
 
-<#macro accountIcon account classes="" datasetValue="">
+<#macro accountIcon account accountName classes="" datasetValue="">
     <div class="category-circle ${classes} category-square <#if account.getIcon()?? == false>account-square-border</#if>" <#if datasetValue?has_content>data-value="${account.getID()}"</#if>>
         <#if account.getIcon()??>
             <img src="${account.getIcon().getBase64EncodedImage()}" class="account-select-icon"/>
         <#else>
             <span class="text-blue">
-                ${account.getName()?capitalize[0]}
+                ${accountName?capitalize[0]}
             </span>
         </#if>
     </div>

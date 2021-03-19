@@ -8,6 +8,7 @@
     </script>
     <script src="<@s.url '/js/hotkeys.js'/>"></script>
     <script src="<@s.url '/js/main.js'/>"></script>
+    <script src="<@s.url '/js/customSelect.js'/>"></script>
     <script>
         accountPlaceholderName = "${locale.getString("account.all")}";
     </script>

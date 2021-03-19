@@ -26,6 +26,18 @@ $(document).ready(function()
         allCustomSelects.push(transferAccountSelect);
     }
 
+    let selectorGlobalAccountSelect = '.global-account-select-wrapper';
+    if($(selectorGlobalAccountSelect).length)
+    {
+        let globalAccountSelect = new CustomSelect(selectorGlobalAccountSelect, function()
+        {
+            let accountID = document.querySelector(globalAccountSelect.getSelector() + ' .hidden-input-custom-select').value;
+            window.location = rootURL + "/accounts/" + accountID + "/select";
+        });
+        globalAccountSelect.init();
+        allCustomSelects.push(globalAccountSelect);
+    }
+
     window.addEventListener('click', function(e)
     {
         let openCustomSelect = document.querySelector('.custom-select.open');
@@ -83,10 +95,11 @@ $(document).ready(function()
 
 class CustomSelect
 {
-    constructor(selector)
+    constructor(selector, confirmSelectionCallback)
     {
         this.selector = selector;
         this.selectedId = null;
+        this.confirmSelectionCallback = confirmSelectionCallback;
     }
 
     getSelector()
@@ -241,7 +254,7 @@ class CustomSelect
     {
         let items = document.querySelectorAll(this.selector + ' .custom-select-option');
         let index = this.getIndexOfItemById(items, this.selectedId);
-        this.selectedId = this.confirmItem(items[index]);
+        this.confirmItem(items[index]);
     }
 
     confirmItem(item)
@@ -263,6 +276,11 @@ class CustomSelect
         this.removeSelectionStyleClassFromAll();
         this.close(this.selector);
         this.selectedId = this.resetSelectedItemId();
+
+        if(this.confirmSelectionCallback && typeof (this.confirmSelectionCallback) == "function")
+        {
+            this.confirmSelectionCallback();
+        }
     }
 
     selectNextItemOnDown(items, previousIndex)
@@ -270,7 +288,7 @@ class CustomSelect
         let isLastItemSelected = previousIndex + 1 === items.length;
         if(isLastItemSelected)
         {
-           this.selectItem(items, 0);
+            this.selectItem(items, 0);
         }
         else
         {

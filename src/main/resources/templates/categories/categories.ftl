@@ -3,7 +3,6 @@
         <#import "../helpers/header.ftl" as header>
         <@header.globals/>
         <@header.header "BudgetMaster - ${locale.getString('menu.categories')}"/>
-        <@header.style "categories"/>
         <@header.style "customSelect"/>
         <#import "/spring.ftl" as s>
     </head>
@@ -96,6 +95,5 @@
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
         <script src="<@s.url '/js/categories.js'/>"></script>
-        <script src="<@s.url '/js/customSelect.js'/>"></script>
     </@header.body>
 </html>

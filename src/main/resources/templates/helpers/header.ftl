@@ -26,6 +26,10 @@
     <@style "colors"/>
     <@style "style"/>
     <@style "navbar"/>
+    <@style "categories"/>
+    <@style "accounts"/>
+    <@style "customSelect"/>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
     <link rel="apple-touch-icon" href="<@s.url "/touch_icon.png"/>">

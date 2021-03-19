@@ -4,7 +4,6 @@
         <@header.globals/>
         <@header.header "BudgetMaster - ${locale.getString('search')}"/>
         <@header.style "transactions"/>
-        <@header.style "categories"/>
         <@header.style "search"/>
         <#import "/spring.ftl" as s>
     </head>
