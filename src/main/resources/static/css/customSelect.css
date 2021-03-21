@@ -92,7 +92,7 @@
     bottom: 0;
     width: 0.15rem;
     height: 100%;
-    background-color: #394a6d;
+    background-color: var(--color-text);
 }
 
 .custom-select-arrow::before {

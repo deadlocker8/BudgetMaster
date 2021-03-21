@@ -205,11 +205,6 @@ public class HelpersService
 		return accountMatches;
 	}
 
-	public int getIDOfNoCatgeory()
-	{
-		return categoryRepository.findByType(CategoryType.NONE).getID();
-	}
-
 	public Long getUsageCountForCategory(Category category)
 	{
 		return transactionService.getRepository().countByCategory(category);
