@@ -140,7 +140,7 @@ public class ReportGeneratorService
 	{
 		PdfPCell cell = new PdfPCell(new Phrase(getProperty(transaction, columnType, position), font));
 		cell.setBackgroundColor(getBaseColor(Color.WHITE));
-		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		cell.setHorizontalAlignment(columnType.getAlignment());
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		return cell;
 	}
