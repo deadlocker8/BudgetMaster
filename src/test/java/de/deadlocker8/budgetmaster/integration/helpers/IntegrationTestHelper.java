@@ -147,13 +147,18 @@ public class IntegrationTestHelper
 		WebElement inputAccountName = driver.findElement(By.id("account-name"));
 		inputAccountName.sendKeys(accountName);
 
+		selectAccountStateByName(accountState);
+
+		driver.findElement(By.id("button-save-account")).click();
+	}
+
+	public void selectAccountStateByName(AccountState accountState)
+	{
 		final WebElement accountStateSelect = driver.findElement(By.cssSelector(".account-state-select-wrapper .custom-select"));
 		accountStateSelect.click();
 		driver.findElements(By.cssSelector(".account-state-select-wrapper .custom-select-item-name")).stream()
 				.filter(webElement -> webElement.getText().equals(Localization.getString(accountState.getLocalizationKey())))
 				.findFirst().orElseThrow().click();
-
-		driver.findElement(By.id("button-save-account")).click();
 	}
 
 	private void matchAccounts(List<String> sourceAccounts, List<Account> destinationAccounts)

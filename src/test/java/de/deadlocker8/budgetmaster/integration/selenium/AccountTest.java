@@ -126,6 +126,7 @@ public class AccountTest
 
 		// fill form
 		driver.findElement(By.id("account-name")).sendKeys(name);
+		helper.selectAccountStateByName(AccountState.READ_ONLY);
 
 		// submit form
 		driver.findElement(By.id("button-save-account")).click();
@@ -141,7 +142,7 @@ public class AccountTest
 
 		assertAccountColumns(accountRows.get(0).findElements(By.tagName("td")), true, true, AccountState.FULL_ACCESS, "Default Account");
 		assertAccountColumns(accountRows.get(1).findElements(By.tagName("td")), true, false, AccountState.FULL_ACCESS, "DefaultAccount0815");
-		assertAccountColumns(accountRows.get(2).findElements(By.tagName("td")), true, false, AccountState.FULL_ACCESS, name);
+		assertAccountColumns(accountRows.get(2).findElements(By.tagName("td")), false, false, AccountState.READ_ONLY, name);
 		assertAccountColumns(accountRows.get(3).findElements(By.tagName("td")), false, false, AccountState.HIDDEN, "hidden account");
 		assertAccountColumns(accountRows.get(4).findElements(By.tagName("td")), false, false, AccountState.READ_ONLY, "read only account");
 		assertAccountColumns(accountRows.get(5).findElements(By.tagName("td")), true, false, AccountState.FULL_ACCESS, "sfsdf");
@@ -153,6 +154,7 @@ public class AccountTest
 		driver.get(helper.getUrl() + "/accounts/2/edit");
 
 		assertThat(driver.findElement(By.id("account-name")).getAttribute("value")).isEqualTo("Default Account");
+		assertThat(driver.findElement(By.cssSelector(".account-state-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo(AccountState.FULL_ACCESS.name());
 	}
 
 	@Test
@@ -261,12 +263,7 @@ public class AccountTest
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("account-name")));
 
-		final WebElement accountStateSelect = driver.findElement(By.id("account-state"));
-		accountStateSelect.findElement(By.className("select-dropdown")).click();
-
-		WebElement itemToSelect = accountStateSelect.findElement(By.xpath(".//ul/li/span[text()='" + accountState.name() + "']"));
-		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", itemToSelect);
-		itemToSelect.click();
+		helper.selectAccountStateByName(accountState);
 
 		driver.findElement(By.id("button-save-account")).click();
 	}
