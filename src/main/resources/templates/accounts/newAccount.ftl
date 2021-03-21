@@ -17,6 +17,7 @@
         <@navbar.navbar "accounts" settings/>
 
         <#import "accountFunctions.ftl" as accountFunctions>
+        <#import "../helpers/customSelectMacros.ftl" as customSelectMacros>
 
         <main>
             <div class="card main-card background-color">
@@ -63,15 +64,12 @@
                         </div>
 
                         <#-- state -->
-                        <div class="row">
-                            <div class="input-field col s12 m12 l8 offset-l2" id="account-state">
-                                <select name="accountState">
-                                    <#list availableAccountStates as state>
-                                        <option value="${state}">${state}</option>
-                                    </#list>
-                                </select>
-                            </div>
-                        </div>
+                        <#if account.getAccountState()??>
+                            <#assign selectedState=account.getAccountState()>
+                        <#else>
+                            <#assign selectedState=availableAccountStates[0]>
+                        </#if>
+                        <@customSelectMacros.customAccountStateSelect "account-state-select-wrapper" "accountState" availableAccountStates selectedState "col s12 m12 l8 offset-l2" locale.getString("account.new.label.state") "account-state"/>
 
                         <br>
 

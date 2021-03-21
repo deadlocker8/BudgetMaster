@@ -26,6 +26,14 @@ $(document).ready(function()
         allCustomSelects.push(transferAccountSelect);
     }
 
+    let selectorAccountStateSelect = '.account-state-select-wrapper';
+    if($(selectorAccountStateSelect).length)
+    {
+        let accountStateSelect = new CustomSelect(selectorAccountStateSelect);
+        accountStateSelect.init();
+        allCustomSelects.push(accountStateSelect);
+    }
+
     let selectorGlobalAccountSelect = '.global-account-select-wrapper';
     if($(selectorGlobalAccountSelect).length)
     {

@@ -101,6 +101,41 @@
     </div>
 </#macro>
 
+<#macro customAccountStateSelect selector inputName availableStates selectedState inputClasses labelText id >
+    <div class="row">
+        <div class="input-field ${inputClasses}">
+            <i class="material-icons prefix">visibility</i>
+            <label class="input-label" for="${id}">${labelText}</label>
+            <div class="custom-select-wrapper ${selector}" id="${id}">
+                <div class="custom-select">
+                    <div class="custom-select-trigger" tabindex="0">
+                        <div class="custom-select-selected-item">
+                            <#if selectedState??><@customSelectOptionAccountStateContent selectedState "no-margin-left"/></#if>
+                        </div>
+                        <div class="custom-select-arrow"></div>
+                    </div>
+                    <div class="custom-select-options">
+                        <#list availableStates as state>
+                            <#if selectedState??>
+                                <#if selectedState == state>
+                                    <@customSelectAccountStateOption state true/>
+                                <#else>
+                                    <@customSelectAccountStateOption state false/>
+                                </#if>
+                                <#continue>
+                            </#if>
+
+                            <@customSelectAccountStateOption state false/>
+                        </#list>
+                    </div>
+                </div>
+
+                <input type="hidden" name="${inputName}" class="hidden-input-custom-select" <#if selectedState??>value="${selectedState.name()}"</#if>/>
+            </div>
+        </div>
+    </div>
+</#macro>
+
 <#macro customSelectCategoryOption category isSelected>
     <div class="custom-select-option <#if isSelected>selected</#if>" data-value="${category.getID()?c}">
         <@customSelectOptionCategoryContent category/>
@@ -139,4 +174,19 @@
             </span>
         </#if>
     </div>
+</#macro>
+
+<#macro customSelectAccountStateOption state isSelected>
+    <div class="custom-select-option <#if isSelected>selected</#if>" data-value="${state.name()}">
+        <@customSelectOptionAccountStateContent state=state/>
+    </div>
+</#macro>
+
+<#macro customSelectOptionAccountStateContent state classes="">
+    <div class="category-circle category-circle-small ${classes}" data-value="${state.name()}">
+        <span class="text-blue">
+            <i class="${state.getIcon()}"></i>
+        </span>
+    </div>
+    <span class="custom-select-item-name">${locale.getString(state.getLocalizationKey())}</span>
 </#macro>
