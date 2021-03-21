@@ -147,12 +147,11 @@ public class IntegrationTestHelper
 		WebElement inputAccountName = driver.findElement(By.id("account-name"));
 		inputAccountName.sendKeys(accountName);
 
-		final WebElement accountStateSelect = driver.findElement(By.id("account-state"));
-		accountStateSelect.findElement(By.className("select-dropdown")).click();
-
-		WebElement itemToSelect = accountStateSelect.findElement(By.xpath(".//ul/li/span[text()='" + accountState.name() + "']"));
-		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", itemToSelect);
-		itemToSelect.click();
+		final WebElement accountStateSelect = driver.findElement(By.cssSelector(".account-state-select-wrapper .custom-select"));
+		accountStateSelect.click();
+		driver.findElements(By.cssSelector(".account-state-select-wrapper .custom-select-item-name")).stream()
+				.filter(webElement -> webElement.getText().equals(Localization.getString(accountState.getLocalizationKey())))
+				.findFirst().orElseThrow().click();
 
 		driver.findElement(By.id("button-save-account")).click();
 	}

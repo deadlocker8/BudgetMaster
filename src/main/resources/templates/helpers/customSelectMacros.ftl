@@ -19,7 +19,7 @@
 </#macro>
 
 <#macro customCategorySelect categories selectedCategory inputClasses labelText>
-    <@customSelectStart "category-select-wrapper" categories inputClasses labelText "category" "label">
+    <@customSelectStart "category-select-wrapper" categories inputClasses labelText "transaction-category" "label">
         <div class="custom-select-trigger" tabindex="0">
             <div class="custom-select-selected-item">
                 <#if selectedCategory??><@customSelectOptionCategoryContent selectedCategory "no-margin-left"/></#if>
@@ -50,7 +50,7 @@
             </#list>
         </div>
     </@customSelectStart>
-    <@customSelectEnd "transaction-category" selectedCategory/>
+    <@customSelectEnd "category" selectedCategory/>
 </#macro>
 
 <#macro customAccountSelect selector inputName accounts selectedAccount inputClasses labelText id disabled=false>
@@ -105,7 +105,7 @@
     </div>
 </#macro>
 
-<#macro customAccountStateSelect selector inputName availableStates selectedState inputClasses labelText id >
+<#macro customAccountStateSelect selector inputName availableStates selectedState inputClasses labelText id>
     <@customSelectStart selector availableStates inputClasses labelText id "visibility">
         <div class="custom-select-trigger" tabindex="0">
             <div class="custom-select-selected-item">
