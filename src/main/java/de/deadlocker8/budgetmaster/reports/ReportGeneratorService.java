@@ -102,10 +102,7 @@ public class ReportGeneratorService
 				for(ReportColumn column : columns)
 				{
 					ColumnType columnType = ColumnType.getByName(column.getKey());
-					PdfPCell cell = new PdfPCell(new Phrase(getProperty(currentItem, columnType, index), font));
-					cell.setBackgroundColor(getBaseColor(Color.WHITE));
-					cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					PdfPCell cell = getTransactionTableCell(currentItem, columnType, index, font);
 					table.addCell(cell);
 				}
 			}
@@ -137,6 +134,15 @@ public class ReportGeneratorService
 			return table;
 		}
 		return null;
+	}
+
+	private PdfPCell getTransactionTableCell(Transaction transaction, ColumnType columnType, int position, Font font)
+	{
+		PdfPCell cell = new PdfPCell(new Phrase(getProperty(transaction, columnType, position), font));
+		cell.setBackgroundColor(getBaseColor(Color.WHITE));
+		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+		return cell;
 	}
 
 	public byte[] generate(ReportConfiguration reportConfiguration) throws DocumentException
