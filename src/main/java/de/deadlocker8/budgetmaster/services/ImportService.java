@@ -100,8 +100,8 @@ public class ImportService
 			if(existingCategory == null)
 			{
 				//category does not exist --> create it
-				category.setID(null);
-				categoryRepository.save(category);
+				Category categoryToCreate = new Category(category.getName(), category.getColor(), category.getType(), category.getIcon());
+				categoryRepository.save(categoryToCreate);
 
 				Category newCategory = categoryRepository.findByNameAndColorAndType(category.getName(), category.getColor(), category.getType());
 				newCategoryID = newCategory.getID();
@@ -157,6 +157,7 @@ public class ImportService
 		List<TransactionBase> alreadyUpdatedTransactions = new ArrayList<>();
 		List<TransactionBase> alreadyUpdatedTransferTransactions = new ArrayList<>();
 		List<TransactionBase> alreadyUpdatedTemplates = new ArrayList<>();
+		List<TransactionBase> alreadyUpdatedTransferTemplates = new ArrayList<>();
 
 		for(AccountMatch accountMatch : accountMatchList.getAccountMatches())
 		{
@@ -168,11 +169,15 @@ public class ImportService
 
 			List<TransactionBase> transferTransactions = new ArrayList<>(database.getTransactions());
 			transferTransactions.removeAll(alreadyUpdatedTransferTransactions);
-			alreadyUpdatedTransferTransactions.addAll(updateTransferAccountsForTransactions(transferTransactions, accountMatch.getAccountSource().getID(), accountMatch.getAccountDestination()));
+			alreadyUpdatedTransferTransactions.addAll(updateTransferAccountsForItems(transferTransactions, accountMatch.getAccountSource().getID(), accountMatch.getAccountDestination()));
 
 			List<TransactionBase> templates = new ArrayList<>(database.getTemplates());
 			templates.removeAll(alreadyUpdatedTemplates);
 			alreadyUpdatedTemplates.addAll(updateAccountsForItems(templates, accountMatch.getAccountSource().getID(), accountMatch.getAccountDestination()));
+
+			List<TransactionBase> transferTemplates = new ArrayList<>(database.getTemplates());
+			transferTemplates.removeAll(alreadyUpdatedTransferTemplates);
+			alreadyUpdatedTransferTemplates.addAll(updateTransferAccountsForItems(transferTemplates, accountMatch.getAccountSource().getID(), accountMatch.getAccountDestination()));
 		}
 
 		LOGGER.debug("Importing accounts DONE");
@@ -210,7 +215,7 @@ public class ImportService
 		return updatedTransactions;
 	}
 
-	public List<TransactionBase> updateTransferAccountsForTransactions(List<TransactionBase> transactions, int oldAccountID, Account newAccount)
+	public List<TransactionBase> updateTransferAccountsForItems(List<TransactionBase> transactions, int oldAccountID, Account newAccount)
 	{
 		List<TransactionBase> updatedTransactions = new ArrayList<>();
 		for(TransactionBase transaction : transactions)
@@ -307,8 +312,9 @@ public class ImportService
 
 			// always create new image
 			int oldImageID = image.getID();
-			image.setID(null);
-			final Image savedImage = imageService.getRepository().save(image);
+			Image imageToCreate = new Image(image.getImage(), image.getFileName(), image.getFileExtension());
+
+			final Image savedImage = imageService.getRepository().save(imageToCreate);
 			int newImageID = savedImage.getID();
 
 			List<Account> accounts = new ArrayList<>(database.getAccounts());

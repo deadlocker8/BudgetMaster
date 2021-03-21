@@ -34,7 +34,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -218,7 +217,7 @@ public class DatabaseImportTest
 		expectedTransaction.setAmount(-525);
 		expectedTransaction.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
 
-		assertThat(importService.updateTransferAccountsForTransactions(transactionList, transferAccount.getID(), destinationAccount))
+		assertThat(importService.updateTransferAccountsForItems(transactionList, transferAccount.getID(), destinationAccount))
 				.hasSize(1)
 				.contains(expectedTransaction);
 	}
@@ -255,6 +254,41 @@ public class DatabaseImportTest
 		List<TransactionBase> updatedTransactions = importService.updateAccountsForItems(templateList, account1.getID(), destinationAccount);
 		assertThat(updatedTransactions).hasSize(1);
 		assertThat(updatedTransactions.get(0).getAccount().getID()).isEqualTo(5);
+	}
+
+	@Test
+	public void test_updateTransferAccountsForTemplates()
+	{
+		Account account1 = new Account("Account_1", AccountType.CUSTOM);
+		account1.setID(2);
+		Account transferAccount = new Account("TransferAccount", AccountType.CUSTOM);
+		transferAccount.setID(3);
+
+		Account destinationAccount = new Account("DestinationAccount_1", AccountType.CUSTOM);
+		destinationAccount.setID(5);
+
+		Template template1 = new Template();
+		template1.setAccount(account1);
+		template1.setTemplateName("ShouldGoInAccount_1");
+		template1.setAmount(200);
+		template1.setName("Test");
+		template1.setTags(new ArrayList<>());
+
+		Template template2 = new Template();
+		template2.setAccount(account1);
+		template2.setTemplateName("ImPartOfAccount_2");
+		template2.setAmount(-525);
+		template2.setName("Test_2");
+		template2.setTransferAccount(transferAccount);
+		template2.setTags(new ArrayList<>());
+
+		List<TransactionBase> templateList = new ArrayList<>();
+		templateList.add(template1);
+		templateList.add(template2);
+
+		List<TransactionBase> updatedTemplates = importService.updateTransferAccountsForItems(templateList, transferAccount.getID(), destinationAccount);
+		assertThat(updatedTemplates).hasSize(1);
+		assertThat(updatedTemplates.get(0).getTransferAccount().getID()).isEqualTo(5);
 	}
 
 	@Test
@@ -368,6 +402,7 @@ public class DatabaseImportTest
 
 		Template template2 = new Template();
 		template2.setTemplateName("MyTemplate2");
+		template2.setTransferAccount(sourceAccount2);
 		template2.setTags(new ArrayList<>());
 
 		List<Template> templates = new ArrayList<>();
@@ -383,7 +418,6 @@ public class DatabaseImportTest
 		chart.setScript("/* This list will be dynamically filled with all the transactions between\r\n* the start and and date you select on the \"Show Chart\" page\r\n* and filtered according to your specified filter.\r\n* An example entry for this list and tutorial about how to create custom charts ca be found in the BudgetMaster wiki:\r\n* https://github.com/deadlocker8/BudgetMaster/wiki/How-to-create-custom-charts\r\n*/\r\nvar transactionData \u003d [];\r\n\r\n// Prepare your chart settings here (mandatory)\r\nvar plotlyData \u003d [{\r\n    x: [],\r\n    y: [],\r\n    type: \u0027bar\u0027\r\n}];\r\n\r\n// Add your Plotly layout settings here (optional)\r\nvar plotlyLayout \u003d {};\r\n\r\n// Add your Plotly configuration settings here (optional)\r\nvar plotlyConfig \u003d {\r\n    showSendToCloud: false,\r\n    displaylogo: false,\r\n    showLink: false,\r\n    responsive: true\r\n};\r\n\r\n// Don\u0027t touch this line\r\nPlotly.newPlot(\"containerID\", plotlyData, plotlyLayout, plotlyConfig);\r\n");
 
 		// database
-		//TODO
 		Database database = new Database(new ArrayList<>(), accounts, transactions, templates, List.of(chart), List.of());
 
 		// account matches
@@ -425,6 +459,7 @@ public class DatabaseImportTest
 
 		Template expectedTemplate2 = new Template();
 		expectedTemplate2.setTemplateName("MyTemplate2");
+		expectedTemplate2.setTransferAccount(destAccount2);
 		expectedTemplate2.setTags(new ArrayList<>());
 
 		// act
@@ -513,7 +548,8 @@ public class DatabaseImportTest
 		Database database = new Database(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(image));
 		importService.importDatabase(database, new AccountMatchList(List.of()));
 
-		Mockito.verify(imageRepositoryMock, Mockito.atLeast(1)).save(image);
+		Image expectedImage = new Image(image.getImage(), image.getFileName(), image.getFileExtension());
+		Mockito.verify(imageRepositoryMock, Mockito.atLeast(1)).save(expectedImage);
 	}
 
 	@Test
@@ -532,6 +568,7 @@ public class DatabaseImportTest
 		Database database = new Database(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(image));
 		importService.importDatabase(database, new AccountMatchList(List.of()));
 
-		Mockito.verify(imageRepositoryMock, Mockito.atLeast(1)).save(image);
+		Image expectedImage = new Image(image.getImage(), image.getFileName(), image.getFileExtension());
+		Mockito.verify(imageRepositoryMock, Mockito.atLeast(1)).save(expectedImage);
 	}
 }
