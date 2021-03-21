@@ -145,7 +145,7 @@ public class ReportGeneratorService
 		PdfWriter writer = PdfWriter.getInstance(document, byteArrayOutputStream);
 		writer.setPageEvent(new HeaderFooterPageEvent());
 		document.open();
-		document.setMargins(50, 45, 50, 70);
+		document.setMargins(50, 45, 25, 70);
 		Font headerFont = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 14, Font.BOLD, BaseColor.BLACK);
 		Font smallHeaderFont = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 12, Font.BOLD, BaseColor.BLACK);
 
