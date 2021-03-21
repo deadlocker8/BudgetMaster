@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 public class ReportGeneratorService
 {
 	private static final String FONT = Fonts.OPEN_SANS;
+	private static final int DEFAULT_SPACING_AFTER_HEADLINES = 10;
 
 	private final CurrencyService currencyService;
 	private final SettingsService settingsService;
@@ -168,19 +169,22 @@ public class ReportGeneratorService
 			paragraph.add(new Chunk(Localization.getString(Strings.REPORT_BUDGET_REST) + currencyService.getCurrencyString(budget.getIncomeSum() + budget.getExpenditureSum()), fontBlack));
 			paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
 
-			document.add(new Paragraph(Localization.getString(Strings.REPORT_BUDGET), headerFont));
-			document.add(Chunk.NEWLINE);
+			final Paragraph paragraphBudgetHeadline = new Paragraph(Localization.getString(Strings.REPORT_BUDGET), headerFont);
+			paragraphBudgetHeadline.setSpacingAfter(DEFAULT_SPACING_AFTER_HEADLINES);
+			document.add(paragraphBudgetHeadline);
 			document.add(paragraph);
 			document.add(Chunk.NEWLINE);
 		}
 
-		document.add(new Paragraph(Localization.getString(Strings.REPORT_HEADLINE_TRANSACTIONS_OVERVIEW), headerFont));
-		document.add(Chunk.NEWLINE);
+		final Paragraph paragraphTransactionsHeadline = new Paragraph(Localization.getString(Strings.REPORT_HEADLINE_TRANSACTIONS_OVERVIEW), headerFont);
+		paragraphTransactionsHeadline.setSpacingAfter(DEFAULT_SPACING_AFTER_HEADLINES);
+		document.add(paragraphTransactionsHeadline);
 
 		if(reportConfiguration.getReportSettings().isSplitTables())
 		{
-			document.add(new Paragraph(Localization.getString(Strings.TITLE_INCOMES), smallHeaderFont));
-			document.add(Chunk.NEWLINE);
+			final Paragraph paragraphIncomes = new Paragraph(Localization.getString(Strings.TITLE_INCOMES), smallHeaderFont);
+			paragraphIncomes.setSpacingAfter(DEFAULT_SPACING_AFTER_HEADLINES);
+			document.add(paragraphIncomes);
 
 			PdfPTable table = generateTable(reportConfiguration, 100, AmountType.INCOME);
 			if(table != null)
@@ -189,8 +193,9 @@ public class ReportGeneratorService
 			}
 
 			document.add(Chunk.NEWLINE);
-			document.add(new Paragraph(Localization.getString(Strings.TITLE_EXPENDITURES), smallHeaderFont));
-			document.add(Chunk.NEWLINE);
+			final Paragraph paragraphExpenditures = new Paragraph(Localization.getString(Strings.TITLE_EXPENDITURES), smallHeaderFont);
+			paragraphExpenditures.setSpacingAfter(DEFAULT_SPACING_AFTER_HEADLINES);
+			document.add(paragraphExpenditures);
 
 			table = generateTable(reportConfiguration, 100, AmountType.EXPENDITURE);
 			if(table != null)
@@ -210,8 +215,9 @@ public class ReportGeneratorService
 		if(reportConfiguration.getReportSettings().isIncludeCategoryBudgets())
 		{
 			document.add(Chunk.NEWLINE);
-			document.add(new Paragraph(Localization.getString(Strings.TITLE_CATEGORY_BUDGETS), smallHeaderFont));
-			document.add(Chunk.NEWLINE);
+			final Paragraph paragraphCategoryConsumptions = new Paragraph(Localization.getString(Strings.TITLE_CATEGORY_BUDGETS), smallHeaderFont);
+			paragraphCategoryConsumptions.setSpacingAfter(DEFAULT_SPACING_AFTER_HEADLINES);
+			document.add(paragraphCategoryConsumptions);
 
 			PdfPTable table = generateCategoryBudgets(reportConfiguration);
 			document.add(table);
