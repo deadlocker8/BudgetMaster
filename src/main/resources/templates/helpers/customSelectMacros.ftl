@@ -1,6 +1,6 @@
 <#import "../categories/categoriesFunctions.ftl" as categoriesFunctions>
 
-<#macro customSelect selector items selectedItem inputClasses labelText id inputName icon disabled=false>
+<#macro customSelectStart selector items inputClasses labelText id icon disabled=false>
     <div class="row">
         <div class="input-field ${inputClasses}">
             <i class="material-icons prefix">${icon}</i>
@@ -9,7 +9,9 @@
                 <div class="custom-select">
                     <#nested>
                 </div>
+</#macro>
 
+<#macro customSelectEnd inputName selectedItem>
                 <input type="hidden" name="${inputName}" class="hidden-input-custom-select" <#if selectedItem??>value="${selectedItem.getID()?c}"</#if>/>
             </div>
         </div>
@@ -17,7 +19,7 @@
 </#macro>
 
 <#macro customCategorySelect categories selectedCategory inputClasses labelText>
-    <@customSelect "category-select-wrapper" categories selectedCategory inputClasses labelText "transaction-category" "category" "label">
+    <@customSelectStart "category-select-wrapper" categories inputClasses labelText "category" "label">
         <div class="custom-select-trigger" tabindex="0">
             <div class="custom-select-selected-item">
                 <#if selectedCategory??><@customSelectOptionCategoryContent selectedCategory "no-margin-left"/></#if>
@@ -47,11 +49,12 @@
                 <@customSelectCategoryOption category false/>
             </#list>
         </div>
-    </@customSelect>
+    </@customSelectStart>
+    <@customSelectEnd "transaction-category" selectedCategory/>
 </#macro>
 
 <#macro customAccountSelect selector inputName accounts selectedAccount inputClasses labelText id disabled=false>
-    <@customSelect selector accounts selectedAccount inputClasses labelText id inputName "account_balance" disabled>
+    <@customSelectStart selector accounts inputClasses labelText id "account_balance" disabled>
         <div class="custom-select-trigger" tabindex="0">
             <div class="custom-select-selected-item">
                 <#if selectedAccount??><@customSelectOptionAccountContent selectedAccount "no-margin-left"/></#if>
@@ -76,7 +79,8 @@
                 <@customSelectAccountOption account false/>
             </#list>
         </div>
-    </@customSelect>
+    </@customSelectStart>
+    <@customSelectEnd inputName selectedAccount/>
 </#macro>
 
 <#macro globalAccountSelect>
@@ -102,34 +106,28 @@
 </#macro>
 
 <#macro customAccountStateSelect selector inputName availableStates selectedState inputClasses labelText id >
-    <div class="row">
-        <div class="input-field ${inputClasses}">
-            <i class="material-icons prefix">visibility</i>
-            <label class="input-label" for="${id}">${labelText}</label>
-            <div class="custom-select-wrapper ${selector}" id="${id}">
-                <div class="custom-select">
-                    <div class="custom-select-trigger" tabindex="0">
-                        <div class="custom-select-selected-item">
-                            <#if selectedState??><@customSelectOptionAccountStateContent selectedState "no-margin-left"/></#if>
-                        </div>
-                        <div class="custom-select-arrow"></div>
-                    </div>
-                    <div class="custom-select-options">
-                        <#list availableStates as state>
-                            <#if selectedState??>
-                                <#if selectedState == state>
-                                    <@customSelectAccountStateOption state true/>
-                                <#else>
-                                    <@customSelectAccountStateOption state false/>
-                                </#if>
-                                <#continue>
-                            </#if>
+    <@customSelectStart selector availableStates inputClasses labelText id "visibility">
+        <div class="custom-select-trigger" tabindex="0">
+            <div class="custom-select-selected-item">
+                <#if selectedState??><@customSelectOptionAccountStateContent selectedState "no-margin-left"/></#if>
+            </div>
+            <div class="custom-select-arrow"></div>
+        </div>
+        <div class="custom-select-options">
+            <#list availableStates as state>
+                <#if selectedState??>
+                    <#if selectedState == state>
+                        <@customSelectAccountStateOption state true/>
+                    <#else>
+                        <@customSelectAccountStateOption state false/>
+                    </#if>
+                    <#continue>
+                </#if>
 
-                            <@customSelectAccountStateOption state false/>
-                        </#list>
-                    </div>
-                </div>
-
+                <@customSelectAccountStateOption state false/>
+            </#list>
+        </div>
+    </@customSelectStart>
                 <input type="hidden" name="${inputName}" class="hidden-input-custom-select" <#if selectedState??>value="${selectedState.name()}"</#if>/>
             </div>
         </div>
