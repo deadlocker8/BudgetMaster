@@ -93,8 +93,8 @@ public class TransactionController extends BaseController
 
 	private void prepareModelTransactions(FilterConfiguration filterConfiguration, Model model, DateTime date)
 	{
-		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear(), settingsService.getSettings().isRestActivated(), filterConfiguration);
 		Account currentAccount = helpers.getCurrentAccount();
+		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(currentAccount, date.getMonthOfYear(), date.getYear(), settingsService.getSettings().isRestActivated(), filterConfiguration);
 
 		model.addAttribute("transactions", transactions);
 		model.addAttribute("account", currentAccount);

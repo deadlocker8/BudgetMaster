@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.transactions;
 
 import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.accounts.AccountState;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.Tag_;
 import org.joda.time.DateTime;
@@ -90,6 +91,8 @@ public class TransactionSpecifications
 				predicates.add(builder.like(builder.lower(transaction.get(Transaction_.name)), "%" + name.toLowerCase() + "%"));
 			}
 
+			predicates.add(transaction.get(Transaction_.account).get("accountState").in(List.of(AccountState.FULL_ACCESS, AccountState.READ_ONLY)));
+
 			query.orderBy(builder.desc(transaction.get(Transaction_.date)));
 
 			Predicate[] predicatesArray = new Predicate[predicates.size()];
@@ -102,14 +105,13 @@ public class TransactionSpecifications
 				generalPredicates = builder.and(generalPredicates, accountPredicate);
 			}
 
-			final Predicate transferPredicates = builder.and(dateConstraint, predicatesCombined, transferBackReference);
-
 			if(transferBackReference == null)
 			{
 				return generalPredicates;
 			}
 			else
 			{
+				final Predicate transferPredicates = builder.and(dateConstraint, predicatesCombined, transferBackReference);
 				return builder.or(generalPredicates, transferPredicates);
 			}
 		};
