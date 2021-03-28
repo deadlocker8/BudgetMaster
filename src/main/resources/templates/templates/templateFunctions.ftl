@@ -52,7 +52,9 @@
 </#macro>
 
 <#macro templateHeader template>
-    <#if template.getTransferAccount()??>
+    <#if template.getIcon()??>
+       <img src="${template.getIcon().getBase64EncodedImage()}" class="template-icon"/>
+    <#elseif template.getTransferAccount()??>
         <i class="material-icons">swap_horiz</i>
     <#else>
         <i class="material-icons">payment</i>
