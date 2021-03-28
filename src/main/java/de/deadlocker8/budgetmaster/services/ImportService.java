@@ -61,9 +61,9 @@ public class ImportService
 		numberOfImportedEntitiesByType.put(ImportEntityType.CATEGORY, importCategories());
 		numberOfImportedEntitiesByType.put(ImportEntityType.ACCOUNT, importAccounts(accountMatchList));
 		numberOfImportedEntitiesByType.put(ImportEntityType.TRANSACTION, importTransactions());
-		numberOfImportedEntitiesByType.put(ImportEntityType.TEMPLATE, importTemplates());
 		numberOfImportedEntitiesByType.put(ImportEntityType.CHART, importCharts());
 		numberOfImportedEntitiesByType.put(ImportEntityType.IMAGE, importImages());
+		numberOfImportedEntitiesByType.put(ImportEntityType.TEMPLATE, importTemplates());
 
 		LOGGER.debug("Importing database DONE");
 
@@ -304,6 +304,7 @@ public class ImportService
 		List<Image> images = database.getImages();
 		LOGGER.debug(MessageFormat.format("Importing {0} images...", images.size()));
 		List<Account> alreadyUpdatedAccounts = new ArrayList<>();
+		List<Template> alreadyUpdatedTemplates = new ArrayList<>();
 
 		for(int i = 0; i < images.size(); i++)
 		{
@@ -320,6 +321,10 @@ public class ImportService
 			List<Account> accounts = new ArrayList<>(database.getAccounts());
 			accounts.removeAll(alreadyUpdatedAccounts);
 			alreadyUpdatedAccounts.addAll(updateImagesForAccounts(accounts, oldImageID, newImageID));
+
+			List<Template> templates = new ArrayList<>(database.getTemplates());
+			templates.removeAll(alreadyUpdatedTemplates);
+			alreadyUpdatedTemplates.addAll(updateImagesForTemplates(templates, oldImageID, newImageID));
 		}
 
 		LOGGER.debug("Importing images DONE");
@@ -330,6 +335,27 @@ public class ImportService
 	{
 		List<Account> updatedItems = new ArrayList<>();
 		for(Account item : items)
+		{
+			final Image image = item.getIcon();
+			if(image == null)
+			{
+				continue;
+			}
+
+			if(image.getID() == oldImageId)
+			{
+				image.setID(newImageID);
+				updatedItems.add(item);
+			}
+		}
+
+		return updatedItems;
+	}
+
+	public List<Template> updateImagesForTemplates(List<Template> items, int oldImageId, int newImageID)
+	{
+		List<Template> updatedItems = new ArrayList<>();
+		for(Template item : items)
 		{
 			final Image image = item.getIcon();
 			if(image == null)

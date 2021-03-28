@@ -571,4 +571,34 @@ public class DatabaseImportTest
 		Image expectedImage = new Image(image.getImage(), image.getFileName(), image.getFileExtension());
 		Mockito.verify(imageRepositoryMock, Mockito.atLeast(1)).save(expectedImage);
 	}
+
+	@Test
+	public void test_updateImagesForTemplates()
+	{
+		Image image1 = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
+		image1.setID(3);
+
+		Image image2 = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.JPG);
+		image2.setID(4);
+
+		Template template1 = new Template();
+		template1.setTemplateName("Template with icon 1");
+		template1.setIsExpenditure(true);
+		template1.setIcon(image1);
+		template1.setTags(List.of());
+
+		Template template2 = new Template();
+		template2.setTemplateName("Template with icon 2");
+		template2.setIsExpenditure(true);
+		template2.setIcon(image2);
+		template2.setTags(List.of());
+
+		final List<Template> templateList = List.of(template1, template2);
+
+		List<Template> updatedTemplates = importService.updateImagesForTemplates(templateList, 3, 5);
+		assertThat(updatedTemplates).hasSize(1);
+		final Image icon = updatedTemplates.get(0).getIcon();
+		assertThat(icon.getBase64EncodedImage()).isEqualTo("data:image/png;base64,");
+		assertThat(icon.getID()).isEqualTo(5);
+	}
 }
