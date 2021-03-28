@@ -93,5 +93,6 @@
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
         <script src="<@s.url '/js/accounts.js'/>"></script>
+        <script src="<@s.url '/js/imageSelect.js'/>"></script>
     </@header.body>
 </html>
