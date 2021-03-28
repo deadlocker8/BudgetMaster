@@ -21,8 +21,8 @@
 </#macro>
 
 
-<#macro modalIconSelect>
-    <div id="modalIconSelect" class="modal modal-fixed-footer background-color">
+<#macro modalIconSelect idToFocusOnClose>
+    <div id="modalIconSelect" class="modal modal-fixed-footer background-color" data-focus-on-close="${idToFocusOnClose}">
         <div class="modal-content center-align">
             <div class="row">
                 <div class="col s12">

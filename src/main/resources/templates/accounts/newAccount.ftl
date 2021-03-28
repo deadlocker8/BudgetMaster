@@ -87,7 +87,7 @@
             </div>
         </main>
 
-        <@imageSelectMacros.modalIconSelect/>
+        <@imageSelectMacros.modalIconSelect idToFocusOnClose="account-name"/>
 
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>

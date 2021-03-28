@@ -26,23 +26,20 @@ $(document).ready(function()
         document.getElementById("hidden-input-icon").value = iconId;
     });
 
-    if($('#modalIconSelect').length)
-    {
-        let modalIconSelect = document.getElementById('modalIconSelect');
-        M.Modal.init(modalIconSelect, {
-            onCloseEnd: function f()
-            {
-                document.getElementById('account-name').focus();
-            }
-        });
-    }
-
     $('#item-icon-preview').click(function()
     {
         getAvailableImages(function()
         {
             let modalID = '#modalIconSelect';
-            $(modalID).modal();
+            let modalIconSelect = document.getElementById('modalIconSelect');
+            let idToFocusOnClose = modalIconSelect.dataset.focusOnClose;
+
+            $(modalID).modal({
+                onCloseEnd: function f()
+                {
+                    document.getElementById(idToFocusOnClose).focus();
+                }
+            });
             $(modalID).modal('open');
         });
     });
