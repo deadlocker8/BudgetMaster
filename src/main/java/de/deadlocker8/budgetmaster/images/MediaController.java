@@ -29,7 +29,7 @@ public class MediaController extends BaseController
 	public String getAvailableImages(Model model)
 	{
 		model.addAttribute("availableImages", imageService.getRepository().findAll());
-		return "accounts/availableImages";
+		return "helpers/availableImages";
 	}
 
 	@PostMapping("uploadImage")

@@ -1,5 +1,5 @@
 <#import "/spring.ftl" as s>
-<#import "../helpers/header.ftl" as header>
+<#import "header.ftl" as header>
 
 <@header.globals/>
 
