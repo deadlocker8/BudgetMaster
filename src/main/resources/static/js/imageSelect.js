@@ -1,15 +1,15 @@
 $(document).ready(function()
 {
-    $('#button-remove-account-icon').click(function()
+    $('.button-remove-icon-from-item').click(function()
     {
-        document.getElementById("account-icon-preview-icon").classList.toggle('hidden', true);
-        document.getElementById("account-icon-placeholder").classList.toggle('hidden', false);
-        document.getElementById("hidden-input-account-icon").value = '';
+        document.getElementById("item-icon-preview-icon").classList.toggle('hidden', true);
+        document.getElementById("item-icon-placeholder").classList.toggle('hidden', false);
+        document.getElementById("hidden-input-icon").value = '';
     });
 
-    $('#button-account-icon-confirm').click(function()
+    $('#button-icon-confirm').click(function()
     {
-        let icon = document.querySelector('.account-icon-option.selected .account-icon-preview');
+        let icon = document.querySelector('.item-icon-option.selected .item-icon-preview');
         if(icon === null)
         {
             return false;
@@ -18,18 +18,18 @@ $(document).ready(function()
         let iconPath = icon.src;
         let iconId = icon.dataset.imageId;
 
-        let previewIcon = document.getElementById("account-icon-preview-icon");
+        let previewIcon = document.getElementById("item-icon-preview-icon");
         previewIcon.src = iconPath;
 
-        document.getElementById("account-icon-preview-icon").classList.toggle('hidden', false);
-        document.getElementById("account-icon-placeholder").classList.toggle('hidden', true);
-        document.getElementById("hidden-input-account-icon").value = iconId;
+        document.getElementById("item-icon-preview-icon").classList.toggle('hidden', false);
+        document.getElementById("item-icon-placeholder").classList.toggle('hidden', true);
+        document.getElementById("hidden-input-icon").value = iconId;
     });
 
-    if($('#modalAccountIconSelect').length)
+    if($('#modalIconSelect').length)
     {
-        let modalAccountIconSelect = document.getElementById('modalAccountIconSelect');
-        M.Modal.init(modalAccountIconSelect, {
+        let modalIconSelect = document.getElementById('modalIconSelect');
+        M.Modal.init(modalIconSelect, {
             onCloseEnd: function f()
             {
                 document.getElementById('account-name').focus();
@@ -37,11 +37,11 @@ $(document).ready(function()
         });
     }
 
-    $('#account-icon-preview').click(function()
+    $('#item-icon-preview').click(function()
     {
         getAvailableImages(function()
         {
-            let modalID = '#modalAccountIconSelect';
+            let modalID = '#modalIconSelect';
             $(modalID).modal();
             $(modalID).modal('open');
         });
@@ -57,20 +57,20 @@ function getAvailableImages(callback)
 {
     $.ajax({
         type: 'GET',
-        url: $('#account-icon-preview').attr('data-url'),
+        url: $('#item-icon-preview').attr('data-url'),
         data: {},
         success: function(data)
         {
             $('#available-images').html(data);
 
             // select an icon option
-            $('.account-icon-option').click(function()
+            $('.item-icon-option').click(function()
             {
                 selectIcon(this);
             });
 
-            let classDeleteConfirm = 'account-icon-option-delete-confirm';
-            $('.account-icon-option-delete').click(function()
+            let classDeleteConfirm = 'item-icon-option-delete-confirm';
+            $('.item-icon-option-delete').click(function()
             {
                 if(this.classList.contains(classDeleteConfirm))
                 {
@@ -89,7 +89,7 @@ function getAvailableImages(callback)
 
 function selectIcon(item)
 {
-    let allIconOptions = document.querySelectorAll('.account-icon-option');
+    let allIconOptions = document.querySelectorAll('.item-icon-option');
     for(let i = 0; i < allIconOptions.length; i++)
     {
         allIconOptions[i].classList.remove('selected');
@@ -100,7 +100,7 @@ function selectIcon(item)
 
 function uploadImage()
 {
-    let formID = 'form-upload-account-image';
+    let formID = 'form-upload-image';
     let form = document.getElementById(formID);
 
     $.ajax({

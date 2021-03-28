@@ -16,7 +16,6 @@
         <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "accounts" settings/>
 
-        <#import "accountFunctions.ftl" as accountFunctions>
         <#import "../helpers/customSelectMacros.ftl" as customSelectMacros>
         <#import "../helpers/imageSelect.ftl" as imageSelectMacros>
 
@@ -87,7 +86,7 @@
             </div>
         </main>
 
-        <@accountFunctions.modalAccountIconSelect/>
+        <@imageSelectMacros.modalIconSelect/>
 
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>

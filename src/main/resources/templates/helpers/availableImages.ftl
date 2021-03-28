@@ -4,7 +4,7 @@
 <@header.globals/>
 
 <#list availableImages as image>
-    <@imageOption image 'account-icon'/>
+    <@imageOption image 'item-icon'/>
 </#list>
 
 <#macro imageOption image classPrefix>

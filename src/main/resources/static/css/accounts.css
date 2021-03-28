@@ -3,45 +3,49 @@
     justify-content: center;
 }
 
-#account-icon-preview {
+#item-icon-preview {
     text-align: center;
     border: 2px solid var(--color-text);
     padding: 1rem;
     color: var(--color-text);
 }
 
-#button-remove-account-icon {
+.button-remove-icon-from-item {
     margin-left: 1rem;
 }
 
-#button-remove-account-icon i {
+.button-remove-icon-from-item i {
     font-size: 1.8rem;
 }
 
-.account-icon-option-column {
+.item-icon-option-column {
     text-align: center;
     margin-bottom: 1.5rem;
 }
 
-.account-icon-option {
+.item-icon-option {
     padding: 0.5rem;
     border: 2px solid transparent;
 }
 
-.account-icon-option:hover {
+.item-icon-option:hover {
     cursor: pointer;
 }
 
-.account-icon-option.selected {
+.item-icon-option.selected {
     border: 2px solid var(--color-text);
 }
 
-.account-icon-preview-icon {
+.item-icon-preview-icon {
     height: 5rem;
 }
 
-#account-icon-preview:hover {
+#item-icon-preview:hover {
     cursor: pointer;
+}
+
+.item-icon-preview  {
+    height: 5rem;
 }
 
 .account-select-icon {
@@ -54,18 +58,18 @@
     line-height: 28px !important;
 }
 
-.account-icon-option-delete span {
+.item-icon-option-delete span {
     display: none;
 }
 
-.account-icon-option-delete i.left {
+.item-icon-option-delete i.left {
     margin-right: 0;
 }
 
-.account-icon-option-delete-confirm {
+.item-icon-option-delete-confirm {
     color: var(--color-red) !important;
 }
 
-.account-icon-option-delete-confirm span {
+.item-icon-option-delete-confirm span {
     display: inline-block;
 }
