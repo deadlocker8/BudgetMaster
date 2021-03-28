@@ -18,6 +18,7 @@
 
         <#import "accountFunctions.ftl" as accountFunctions>
         <#import "../helpers/customSelectMacros.ftl" as customSelectMacros>
+        <#import "../helpers/imageSelect.ftl" as imageSelectMacros>
 
         <main>
             <div class="card main-card background-color">
@@ -46,22 +47,7 @@
                         </div>
 
                         <#-- icon -->
-                        <div class="row">
-                            <div class="input-field col s12 m12 l8 offset-l2">
-                                <i class="fas fa-icons prefix"></i>
-                                <label class="input-label" for="account-icon">${locale.getString("account.new.label.icon")}</label>
-
-                                <div id="account-icon" class="valign-wrapper">
-                                    <a id="account-icon-preview" data-url="<@s.url '/media/getAvailableImages'/>">
-                                        <img id="account-icon-preview-icon" src="<#if account.getIcon()??>${account.getIcon().getBase64EncodedImage()}</#if>" class="account-icon-preview <#if account.getIcon()?? == false>hidden</#if>"/>
-                                        <div id="account-icon-placeholder" class="<#if account.getIcon()??>hidden</#if>">${locale.getString("account.new.icon.placeholder")}</div>
-                                    </a>
-                                    <@header.buttonFlat url='' icon='delete' id='button-remove-account-icon' localizationKey='' classes="no-padding text-default" noUrl=true/>
-
-                                    <input id="hidden-input-account-icon" type="hidden" name="icon" value="<#if account.getIcon()??>${account.getIcon().getID()?c}</#if>">
-                                </div>
-                            </div>
-                        </div>
+                        <@imageSelectMacros.imageSelect id="account-icon" item=account/>
 
                         <#-- state -->
                         <#if account.getAccountState()??>
