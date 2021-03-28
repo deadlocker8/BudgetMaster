@@ -87,6 +87,7 @@
         weekDays = [${weekDays}];
         weekDaysShort = [${weekDaysShort}];
         weekDaysLetters = [${weekDaysLetters}];
+        buttonCancel = '${locale.getString("cancel")}';
         buttonClose = '${locale.getString("ok")}';
     </script>
 </#macro>

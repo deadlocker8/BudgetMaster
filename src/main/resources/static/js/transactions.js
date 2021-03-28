@@ -62,6 +62,7 @@ $(document).ready(function()
                 weekdaysAbbrev: weekDaysLetters,
 
                 // Buttons
+                cancel: buttonCancel,
                 done: buttonClose,
 
                 // Accessibility labels

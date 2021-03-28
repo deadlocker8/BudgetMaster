@@ -21,8 +21,7 @@ public enum MonthNames
 	MONTH_NOVEMBER("month.november"),
 	MONTH_DECEMBER("month.december");
 
-	private static List<String> localized;
-	private String key;
+	private final String key;
 
 	MonthNames(String key)
 	{
@@ -36,13 +35,8 @@ public enum MonthNames
 
 	public static List<String> getLocalizedStrings()
 	{
-		if(localized == null)
-		{
-			localized = Stream.of(MonthNames.values())
-					.map(monthName -> Localization.getString(monthName.getKey()))
-					.collect(Collectors.toList());
-		}
-
-		return localized;
+		return Stream.of(MonthNames.values())
+				.map(monthName -> Localization.getString(monthName.getKey()))
+				.collect(Collectors.toList());
 	}
 }
