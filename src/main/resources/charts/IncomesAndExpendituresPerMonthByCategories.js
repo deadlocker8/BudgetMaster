@@ -111,7 +111,7 @@ var plotlyLayout = {
     yaxis: {
         rangemode: 'tozero',
         tickformat: '.0f',
-        ticksuffix: '%',
+        ticksuffix: localizedCurrency,
         showline: true
     }
 };
@@ -124,11 +124,13 @@ for(var i = 0; i < dates.length; i++)
         var currentValues = values[i];
         var currentName = currentValues[NAME][j];
 
-        var percentageIncome = (100 / totalIncomeSums[i]) * currentValues[INCOME][j];
-        var textIncome = prepareHoverText(currentName, percentageIncome, currentValues[INCOME][j]);
+        var currentIncomeValue = currentValues[INCOME][j];
+        var percentageIncome = (100 / totalIncomeSums[i]) * currentIncomeValue;
+        var textIncome = prepareHoverText(currentName, percentageIncome, currentIncomeValue);
 
-        var percentageExpenditure = (100 / totalExpenditureSums[i]) * currentValues[EXPENDITURE][j];
-        var textExpenditure = prepareHoverText(currentName, percentageExpenditure, currentValues[EXPENDITURE][j]);
+        var currentExpenditureValue = currentValues[EXPENDITURE][j];
+        var percentageExpenditure = (100 / totalExpenditureSums[i]) * currentExpenditureValue;
+        var textExpenditure = prepareHoverText(currentName, percentageExpenditure, currentExpenditureValue);
 
         // add border if category color is white
         var borderWidth = 0;
@@ -139,7 +141,7 @@ for(var i = 0; i < dates.length; i++)
 
         plotlyData.push({
             x: [localizedData['label2'], localizedData['label1']],
-            y: [percentageIncome, percentageExpenditure],
+            y: [currentIncomeValue / 100.0, currentExpenditureValue / 100.0],
             type: 'bar',
             hoverinfo: 'text',
             text: [textIncome, textExpenditure],

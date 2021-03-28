@@ -40,7 +40,7 @@ public class DefaultCharts
 
 	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_BY_CATEGORIES = new Chart("charts.default.incomesAndExpendituresPerMonthByCategories",
 			getChartFromFile("charts/IncomesAndExpendituresPerMonthByCategories.js"),
-			ChartType.DEFAULT, 14);
+			ChartType.DEFAULT, 17);
 
 	private static final Chart CHART_REST_PER_MONTH = new Chart("charts.default.restPerMonth",
 			getChartFromFile("charts/RestPerMonth.js"),
