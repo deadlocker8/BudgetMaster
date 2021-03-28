@@ -138,7 +138,7 @@ public class DatabaseParser_v4 extends DatabaseParser_v3
 		return parsedTemplates;
 	}
 
-	private Optional<Integer> parseIDOfElementIfExists(JsonObject jsonObject, String elementName)
+	protected Optional<Integer> parseIDOfElementIfExists(JsonObject jsonObject, String elementName)
 	{
 		final JsonElement element = jsonObject.get(elementName);
 		if(element != null)
@@ -148,7 +148,7 @@ public class DatabaseParser_v4 extends DatabaseParser_v3
 		return Optional.empty();
 	}
 
-	private void handleIsExpenditure(JsonObject jsonObject, TransactionBase transactionBase)
+	protected void handleIsExpenditure(JsonObject jsonObject, TransactionBase transactionBase)
 	{
 		final JsonElement isExpenditure = jsonObject.get("isExpenditure");
 		if(isExpenditure == null)

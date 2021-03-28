@@ -6,11 +6,13 @@ import de.deadlocker8.budgetmaster.accounts.AccountState;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.charts.Chart;
 import de.deadlocker8.budgetmaster.images.Image;
+import de.deadlocker8.budgetmaster.templates.Template;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class DatabaseParser_v5 extends DatabaseParser_v4
 {
@@ -36,7 +38,8 @@ public class DatabaseParser_v5 extends DatabaseParser_v4
 
 		super.categories = super.parseCategories(root);
 		super.transactions = super.parseTransactions(root);
-		super.templates = super.parseTemplates(root);
+
+		super.templates = parseTemplates(root);
 
 		this.charts = parseCharts(root);
 
@@ -102,5 +105,61 @@ public class DatabaseParser_v5 extends DatabaseParser_v4
 		}
 
 		return parsedImages;
+	}
+
+	@Override
+	protected List<Template> parseTemplates(JsonObject root)
+	{
+		final List<Template> parsedTemplates = new ArrayList<>();
+		final JsonArray templatesToImport = root.get("templates").getAsJsonArray();
+		for(JsonElement currentTemplate : templatesToImport)
+		{
+			final JsonObject templateObject = currentTemplate.getAsJsonObject();
+
+			final String templateName = templateObject.get("templateName").getAsString();
+
+			final Template template = new Template();
+			template.setTemplateName(templateName);
+			template.setTags(super.parseTags(templateObject));
+
+			final JsonElement element = templateObject.get("amount");
+			if(element != null)
+			{
+				template.setAmount(element.getAsInt());
+			}
+
+			final JsonElement name = templateObject.get("name");
+			if(name != null)
+			{
+				template.setName(name.getAsString());
+			}
+
+			final JsonElement description = templateObject.get("description");
+			if(description != null)
+			{
+				template.setDescription(description.getAsString());
+			}
+
+			if(templateObject.has("icon"))
+			{
+				final Integer iconID = templateObject.get("icon").getAsJsonObject().get("ID").getAsInt();
+				template.setIcon(this.images.stream().filter(image -> image.getID().equals(iconID)).findFirst().orElseThrow());
+			}
+
+			final Optional<Integer> categoryOptional = parseIDOfElementIfExists(templateObject, "category");
+			categoryOptional.ifPresent(integer -> template.setCategory(super.getCategoryByID(integer)));
+
+			final Optional<Integer> accountOptional = parseIDOfElementIfExists(templateObject, "account");
+			accountOptional.ifPresent(integer -> template.setAccount(super.getAccountByID(integer)));
+
+			final Optional<Integer> transferAccountOptional = parseIDOfElementIfExists(templateObject, "transferAccount");
+			transferAccountOptional.ifPresent(integer -> template.setTransferAccount(super.getAccountByID(integer)));
+
+			handleIsExpenditure(templateObject, template);
+
+			parsedTemplates.add(template);
+		}
+
+		return parsedTemplates;
 	}
 }

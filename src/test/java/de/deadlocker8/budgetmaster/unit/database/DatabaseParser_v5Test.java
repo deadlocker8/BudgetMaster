@@ -10,6 +10,7 @@ import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.DatabaseParser_v5;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.images.ImageFileExtension;
+import de.deadlocker8.budgetmaster.templates.Template;
 import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.Localization.LocalizationDelegate;
 import org.junit.Before;
@@ -21,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -131,6 +133,35 @@ public class DatabaseParser_v5Test
 			assertThat(database.getImages()).hasSize(1);
 			assertThat(database.getImages().get(0)).hasFieldOrPropertyWithValue("fileExtension", ImageFileExtension.PNG);
 			assertThat(database.getImages().get(0).getImage())
+					.isNotNull()
+					.hasSizeGreaterThan(1);
+		}
+		catch(IOException | URISyntaxException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void test_Templates()
+	{
+		try
+		{
+			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v5Test.json").toURI())));
+			DatabaseParser_v5 importer = new DatabaseParser_v5(json);
+			Database database = importer.parseDatabaseFromJSON();
+
+			final Image templateImage = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
+			templateImage.setID(1);
+			final Template template = new Template();
+			template.setTemplateName("Template with icon");
+			template.setIsExpenditure(true);
+			template.setIcon(templateImage);
+			template.setTags(List.of());
+
+			assertThat(database.getTemplates()).hasSize(4)
+					.contains(template);
+			assertThat(database.getTemplates().get(3).getIcon().getImage())
 					.isNotNull()
 					.hasSizeGreaterThan(1);
 		}
