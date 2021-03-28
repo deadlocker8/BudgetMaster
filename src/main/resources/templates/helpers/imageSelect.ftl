@@ -7,7 +7,7 @@
             <i class="fas fa-icons prefix"></i>
             <label class="input-label" for="${id}">${locale.getString("account.new.label.icon")}</label>
 
-            <div id="${id}" class="valign-wrapper">
+            <div id="${id}" class="valign-wrapper item-icon">
                 <a id="item-icon-preview" data-url="<@s.url '/media/getAvailableImages'/>">
                     <img id="item-icon-preview-icon" src="<#if item.getIcon()??>${item.getIcon().getBase64EncodedImage()}</#if>" class="item-icon-preview <#if item.getIcon()?? == false>hidden</#if>"/>
                     <div id="item-icon-placeholder" class="<#if item.getIcon()??>hidden</#if>">${locale.getString("account.new.icon.placeholder")}</div>

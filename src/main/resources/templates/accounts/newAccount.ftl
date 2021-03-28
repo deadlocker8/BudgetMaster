@@ -10,6 +10,7 @@
         </#if>
 
         <@header.header "BudgetMaster - ${title}"/>
+        <@header.style "imageSelect"/>
         <#import "/spring.ftl" as s>
     </head>
     <@header.body>
