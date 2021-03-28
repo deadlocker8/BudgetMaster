@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmaster.templates;
 import com.google.gson.annotations.Expose;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.categories.Category;
+import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionBase;
@@ -42,6 +43,10 @@ public class Template implements TransactionBase
 	@Expose
 	private String description;
 
+	@ManyToOne
+	@Expose
+	private Image icon;
+
 	@ManyToMany
 	@Expose
 	@JoinTable(
@@ -70,6 +75,7 @@ public class Template implements TransactionBase
 		this.category = template.getCategory();
 		this.name = template.getName();
 		this.description = template.getDescription();
+		this.icon = template.getIcon();
 		this.tags = new ArrayList<>(template.getTags());
 		this.transferAccount = template.getTransferAccount();
 	}
@@ -88,6 +94,7 @@ public class Template implements TransactionBase
 		this.category = transaction.getCategory();
 		this.name = transaction.getName();
 		this.description = transaction.getDescription();
+		this.icon = null;
 		if(transaction.getTags() == null)
 		{
 			this.tags = new ArrayList<>();
@@ -184,6 +191,16 @@ public class Template implements TransactionBase
 		this.description = description;
 	}
 
+	public Image getIcon()
+	{
+		return icon;
+	}
+
+	public void setIcon(Image icon)
+	{
+		this.icon = icon;
+	}
+
 	public List<Tag> getTags()
 	{
 		return tags;
@@ -220,6 +237,7 @@ public class Template implements TransactionBase
 				", category=" + category +
 				", name='" + name + '\'' +
 				", description='" + description + '\'' +
+				", icon='" + icon + '\'' +
 				", tags=" + tags;
 
 		if(account == null)
@@ -258,6 +276,7 @@ public class Template implements TransactionBase
 				Objects.equals(category, template.category) &&
 				Objects.equals(name, template.name) &&
 				Objects.equals(description, template.description) &&
+				Objects.equals(icon, template.icon) &&
 				Objects.equals(tags, template.tags) &&
 				Objects.equals(transferAccount, template.transferAccount);
 	}
@@ -265,6 +284,6 @@ public class Template implements TransactionBase
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, templateName, amount, isExpenditure, account, category, name, description, tags, transferAccount);
+		return Objects.hash(ID, templateName, amount, isExpenditure, account, category, name, description, icon, tags, transferAccount);
 	}
 }
