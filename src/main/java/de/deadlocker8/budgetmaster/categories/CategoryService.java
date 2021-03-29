@@ -106,6 +106,13 @@ public class CategoryService implements Resetable
 				.collect(Collectors.toList());
 	}
 
+	public List<Category> getAllCustomCategories()
+	{
+		return categoryRepository.findAllByTypeOrderByNameAsc(CategoryType.CUSTOM).stream()
+				.sorted(Comparator.comparing(c -> c.getName().toLowerCase()))
+				.collect(Collectors.toList());
+	}
+
 	public void localizeDefaultCategories()
 	{
 		LOGGER.trace("Updating localization for default categories");

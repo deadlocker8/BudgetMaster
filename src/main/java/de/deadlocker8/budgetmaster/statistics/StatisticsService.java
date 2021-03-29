@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.statistics;
 
 import de.deadlocker8.budgetmaster.accounts.AccountService;
+import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.charts.ChartService;
 import de.deadlocker8.budgetmaster.charts.ChartType;
@@ -42,11 +43,11 @@ public class StatisticsService
 	public List<StatisticItem> getStatisticItems()
 	{
 		final List<StatisticItem> statisticItems = new ArrayList<>();
-		statisticItems.add(new StatisticItem("account_balance", Localization.getString("statistics.number.of.accounts", accountService.getAllAccountsAsc().size()), "background-red", TEXT_WHITE));
+		statisticItems.add(new StatisticItem("account_balance", Localization.getString("statistics.number.of.accounts", accountService.getRepository().findAllByType(AccountType.CUSTOM).size()), "background-red", TEXT_WHITE));
 		statisticItems.add(new StatisticItem("list", Localization.getString("statistics.number.of.transactions", transactionService.getRepository().findAll().size()), "background-blue-baby", TEXT_BLACK));
 		statisticItems.add(new StatisticItem("file_copy", Localization.getString("statistics.number.of.templates", templateService.getRepository().findAll().size()), "background-orange-dark", TEXT_BLACK));
 		statisticItems.add(new StatisticItem("show_chart", Localization.getString("statistics.number.of.custom.charts", chartService.getRepository().findAllByType(ChartType.CUSTOM).size()), "background-purple", TEXT_WHITE));
-		statisticItems.add(new StatisticItem("label", Localization.getString("statistics.number.of.categories", categoryService.getAllCategories().size()), "background-orange", TEXT_BLACK));
+		statisticItems.add(new StatisticItem("label", Localization.getString("statistics.number.of.categories", categoryService.getAllCustomCategories().size()), "background-orange", TEXT_BLACK));
 		statisticItems.add(new StatisticItem("event", Localization.getString("statistics.first.transaction", getFirstTransactionDate()), "background-grey", TEXT_BLACK));
 		return statisticItems;
 	}
