@@ -26,7 +26,7 @@ public class RepeatingTransactionUpdater
 		List<RepeatingOption> repeatingOptions = repeatingOptionRepository.findAllByOrderByStartDateAsc();
 		for(RepeatingOption option : repeatingOptions)
 		{
-			List<Transaction> transactions = option.getReferringTransactions();
+			List<Transaction> transactions = transactionService.getRepository().findAllByRepeatingOption(option);
 			List<DateTime> correctDates = option.getRepeatingDates(now);
 			for(DateTime currentDate : correctDates)
 			{

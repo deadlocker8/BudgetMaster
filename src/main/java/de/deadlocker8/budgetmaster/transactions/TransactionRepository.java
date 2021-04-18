@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.transactions;
 
 import de.deadlocker8.budgetmaster.categories.Category;
+import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import org.joda.time.DateTime;
@@ -38,4 +39,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 	List<Transaction> findAllByOrderByDateDesc();
 
 	Transaction findFirstByOrderByDate();
+
+	List<Transaction> findAllByRepeatingOption(RepeatingOption repeatingOption);
 }

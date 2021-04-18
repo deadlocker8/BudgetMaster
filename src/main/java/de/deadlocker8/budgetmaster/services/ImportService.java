@@ -11,6 +11,7 @@ import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.images.ImageService;
+import de.deadlocker8.budgetmaster.repeating.RepeatingTransactionUpdater;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.TagRepository;
 import de.deadlocker8.budgetmaster.templates.Template;
@@ -18,13 +19,17 @@ import de.deadlocker8.budgetmaster.templates.TemplateRepository;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionBase;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ImportService
@@ -37,11 +42,13 @@ public class ImportService
 	private final TagRepository tagRepository;
 	private final ChartService chartService;
 	private final ImageService imageService;
+	private final RepeatingTransactionUpdater repeatingTransactionUpdater;
 
 	private Database database;
 
 	@Autowired
-	public ImportService(CategoryRepository categoryRepository, TransactionRepository transactionRepository, TemplateRepository templateRepository, TagRepository tagRepository, ChartService chartService, ImageService imageService)
+	public ImportService(CategoryRepository categoryRepository, TransactionRepository transactionRepository, TemplateRepository templateRepository,
+						 TagRepository tagRepository, ChartService chartService, ImageService imageService, RepeatingTransactionUpdater repeatingTransactionUpdater)
 	{
 		this.categoryRepository = categoryRepository;
 		this.transactionRepository = transactionRepository;
@@ -49,6 +56,7 @@ public class ImportService
 		this.tagRepository = tagRepository;
 		this.chartService = chartService;
 		this.imageService = imageService;
+		this.repeatingTransactionUpdater = repeatingTransactionUpdater;
 	}
 
 	public Map<ImportEntityType, Integer> importDatabase(Database database, AccountMatchList accountMatchList)
@@ -64,6 +72,9 @@ public class ImportService
 		numberOfImportedEntitiesByType.put(ImportEntityType.CHART, importCharts());
 		numberOfImportedEntitiesByType.put(ImportEntityType.IMAGE, importImages());
 		numberOfImportedEntitiesByType.put(ImportEntityType.TEMPLATE, importTemplates());
+
+		LOGGER.debug("Updating repeating transactions...");
+		repeatingTransactionUpdater.updateRepeatingTransactions(DateTime.now());
 
 		LOGGER.debug("Importing database DONE");
 
