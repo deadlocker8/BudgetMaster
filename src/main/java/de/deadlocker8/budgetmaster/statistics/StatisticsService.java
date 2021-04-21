@@ -14,7 +14,6 @@ import de.thecodelabs.utils.util.Localization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,27 +46,22 @@ public class StatisticsService
 		final List<StatisticItem> statisticItems = new ArrayList<>();
 
 		final int numberOfAccounts = accountService.getRepository().findAllByType(AccountType.CUSTOM).size();
-		statisticItems.add(new StatisticItem(EntityType.ACCOUNT.getIcon(), getTextForEntityType(EntityType.ACCOUNT, numberOfAccounts), EntityType.ACCOUNT.getColor(), TEXT_WHITE));
+		statisticItems.add(new StatisticItem(EntityType.ACCOUNT, numberOfAccounts, TEXT_WHITE));
 
 		final int numberOfTransactions = transactionService.getRepository().findAll().size();
-		statisticItems.add(new StatisticItem(EntityType.TRANSACTION.getIcon(), getTextForEntityType(EntityType.TRANSACTION, numberOfTransactions), EntityType.TRANSACTION.getColor(), TEXT_BLACK));
+		statisticItems.add(new StatisticItem(EntityType.TRANSACTION, numberOfTransactions, TEXT_BLACK));
 
 		final int numberOfTemplates = templateService.getRepository().findAll().size();
-		statisticItems.add(new StatisticItem(EntityType.TEMPLATE.getIcon(), getTextForEntityType(EntityType.TEMPLATE, numberOfTemplates), EntityType.TEMPLATE.getColor(), TEXT_BLACK));
+		statisticItems.add(new StatisticItem(EntityType.TEMPLATE, numberOfTemplates, TEXT_BLACK));
 
 		final int numberOfCharts = chartService.getRepository().findAllByType(ChartType.CUSTOM).size();
-		statisticItems.add(new StatisticItem(EntityType.CHART.getIcon(), getTextForEntityType(EntityType.CHART, numberOfCharts), EntityType.CHART.getColor(), TEXT_WHITE));
+		statisticItems.add(new StatisticItem(EntityType.CHART, numberOfCharts, TEXT_WHITE));
 
 		final int numberOfCategories = categoryService.getAllCustomCategories().size();
-		statisticItems.add(new StatisticItem(EntityType.CATEGORY.getIcon(), getTextForEntityType(EntityType.CATEGORY, numberOfCategories), EntityType.CATEGORY.getColor(), TEXT_BLACK));
+		statisticItems.add(new StatisticItem(EntityType.CATEGORY, numberOfCategories, TEXT_BLACK));
 
 		statisticItems.add(new StatisticItem("event", Localization.getString("statistics.first.transaction", getFirstTransactionDate()), "background-grey", TEXT_BLACK));
 		return statisticItems;
-	}
-
-	private String getTextForEntityType(EntityType entityType, int numberOfItems)
-	{
-		return MessageFormat.format("{0} {1}", numberOfItems, Localization.getString(entityType.getLocalizationKey()));
 	}
 
 	private String getFirstTransactionDate()
