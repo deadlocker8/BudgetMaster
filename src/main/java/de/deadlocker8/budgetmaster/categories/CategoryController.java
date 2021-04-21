@@ -104,18 +104,7 @@ public class CategoryController extends BaseController
 		}
 
 		Category category = categoryOptional.get();
-
-		if(helpers.getCategoryColorList().contains(category.getColor()))
-		{
-			model.addAttribute("customColor", WHITE);
-		}
-		else
-		{
-			model.addAttribute("customColor", category.getColor());
-		}
-
-		model.addAttribute("category", category);
-		model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
+		prepareModel(model, category);
 		return "categories/newCategory";
 	}
 
@@ -129,32 +118,37 @@ public class CategoryController extends BaseController
 		{
 			model.addAttribute("error", bindingResult);
 
-			if(helpers.getCategoryColorList().contains(category.getColor()))
-			{
-				model.addAttribute("customColor", WHITE);
-			}
-			else
-			{
-				model.addAttribute("customColor", category.getColor());
-			}
-
-			if(category.getColor() == null)
-			{
-				category.setColor(ColorUtilsNonJavaFX.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase());
-			}
-			model.addAttribute("category", category);
-			model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
+			prepareModel(model, category);
 			return "categories/newCategory";
 		}
-		else
+
+		if(category.getType() == null)
 		{
-			if(category.getType() == null)
-			{
-				category.setType(CategoryType.CUSTOM);
-			}
-			categoryService.save(category);
+			category.setType(CategoryType.CUSTOM);
 		}
+		categoryService.save(category);
 
 		return "redirect:/categories";
 	}
+
+	private void prepareModel(Model model, Category category)
+	{
+		if(helpers.getCategoryColorList().contains(category.getColor()))
+		{
+			model.addAttribute("customColor", WHITE);
+		}
+		else
+		{
+			model.addAttribute("customColor", category.getColor());
+		}
+
+		if(category.getColor() == null)
+		{
+			category.setColor(ColorUtilsNonJavaFX.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase());
+		}
+
+		model.addAttribute("category", category);
+		model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
+	}
+
 }
