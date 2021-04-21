@@ -83,9 +83,7 @@ public class AccountController extends BaseController
 		if(accountService.getRepository().findAllByType(AccountType.CUSTOM).size() > 1)
 		{
 			accountService.deleteAccount(ID);
-
 			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.account.delete.success", accountToDelete.getName()), NotificationType.SUCCESS));
-
 			return "redirect:/accounts";
 		}
 
@@ -129,8 +127,8 @@ public class AccountController extends BaseController
 		accountValidator.validate(account, bindingResult);
 
 		boolean isNewAccount = account.getID() == null;
-
-		if(isNewAccount && accountService.getRepository().findByName(account.getName()) != null)
+		boolean isNameAlreadyUsed = accountService.getRepository().findByName(account.getName()) != null;
+		if(isNewAccount && isNameAlreadyUsed)
 		{
 			bindingResult.addError(new FieldError("NewAccount", "name", "", false, new String[]{"warning.duplicate.account.name"}, null, null));
 		}
@@ -143,27 +141,15 @@ public class AccountController extends BaseController
 			model.addAttribute("availableAccountStates", AccountState.values());
 			return "accounts/newAccount";
 		}
-		else
+
+		if(isNewAccount)
 		{
 			account.setType(AccountType.CUSTOM);
-			if(account.getID() == null)
-			{
-				// new account
-				accountService.getRepository().save(account);
-			}
-			else
-			{
-				// edit existing account
-				Optional<Account> existingAccountOptional = accountService.getRepository().findById(account.getID());
-				if(existingAccountOptional.isPresent())
-				{
-					Account existingAccount = existingAccountOptional.get();
-					existingAccount.setName(account.getName());
-					existingAccount.setIcon(account.getIcon());
-					existingAccount.setAccountState(account.getAccountState());
-					accountService.getRepository().save(existingAccount);
-				}
-			}
+			accountService.getRepository().save(account);
+		}
+		else
+		{
+			updateExistingAccount(account);
 		}
 
 		if(request.getSession().getAttribute("database") != null)
@@ -172,5 +158,19 @@ public class AccountController extends BaseController
 		}
 
 		return "redirect:/accounts";
+	}
+
+	private void updateExistingAccount(Account newAccount)
+	{
+		Optional<Account> existingAccountOptional = accountService.getRepository().findById(newAccount.getID());
+		if(existingAccountOptional.isPresent())
+		{
+			Account existingAccount = existingAccountOptional.get();
+			existingAccount.setName(newAccount.getName());
+			existingAccount.setIcon(newAccount.getIcon());
+			existingAccount.setType(AccountType.CUSTOM);
+			existingAccount.setAccountState(newAccount.getAccountState());
+			accountService.getRepository().save(existingAccount);
+		}
 	}
 }
