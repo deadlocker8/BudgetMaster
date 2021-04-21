@@ -8,7 +8,7 @@ public enum DateFormatStyle
 	LONG_MONTH_AND_YEAR("MMMM yyyy"),
 	DATE_TIME("dd.MM.yyyy HH:mm");
 
-	private String key;
+	private final String key;
 
 	DateFormatStyle(String key)
 	{

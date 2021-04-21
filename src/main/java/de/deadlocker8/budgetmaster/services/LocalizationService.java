@@ -12,7 +12,7 @@ import java.util.Locale;
 @Service
 public class LocalizationService implements  Localization.LocalizationDelegate
 {
-	private SettingsService settingsService;
+	private final SettingsService settingsService;
 
 	@Autowired
 	public LocalizationService(SettingsService settingsService)
