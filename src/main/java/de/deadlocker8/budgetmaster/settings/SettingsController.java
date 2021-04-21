@@ -3,7 +3,6 @@ package de.deadlocker8.budgetmaster.settings;
 import com.google.gson.JsonObject;
 import de.deadlocker8.budgetmaster.Build;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
-import de.deadlocker8.budgetmaster.authentication.UserRepository;
 import de.deadlocker8.budgetmaster.backup.*;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
@@ -61,12 +60,12 @@ public class SettingsController extends BaseController
 	private final ImportService importService;
 	private final BudgetMasterUpdateService budgetMasterUpdateService;
 	private final UpdateCheckService updateCheckService;
-	private final BackupService scheduleTaskService;
+	private final BackupService backupService;
 
 	private final List<Integer> SEARCH_RESULTS_PER_PAGE_OPTIONS = Arrays.asList(10, 20, 25, 30, 50, 100);
 
 	@Autowired
-	public SettingsController(SettingsService settingsService, UserRepository userRepository, DatabaseService databaseService, AccountService accountService, CategoryService categoryService, ImportService importService, BudgetMasterUpdateService budgetMasterUpdateService, UpdateCheckService updateCheckService, BackupService scheduleTaskService)
+	public SettingsController(SettingsService settingsService, DatabaseService databaseService, AccountService accountService, CategoryService categoryService, ImportService importService, BudgetMasterUpdateService budgetMasterUpdateService, UpdateCheckService updateCheckService, BackupService backupService)
 	{
 		this.settingsService = settingsService;
 		this.databaseService = databaseService;
@@ -75,7 +74,7 @@ public class SettingsController extends BaseController
 		this.importService = importService;
 		this.budgetMasterUpdateService = budgetMasterUpdateService;
 		this.updateCheckService = updateCheckService;
-		this.scheduleTaskService = scheduleTaskService;
+		this.backupService = backupService;
 	}
 
 	@GetMapping
@@ -120,13 +119,9 @@ public class SettingsController extends BaseController
 			settingsService.savePassword(password);
 		}
 
-		settingsService.updateSettings(settings);
-
-		Localization.load();
-		categoryService.localizeDefaultCategories();
+		updateSettings(settings);
 
 		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.settings.saved"), NotificationType.SUCCESS));
-
 		return "redirect:/settings";
 	}
 
@@ -156,22 +151,31 @@ public class SettingsController extends BaseController
 			settings.setAutoBackupGitUserName(defaultSettings.getAutoBackupGitUserName());
 			settings.setAutoBackupGitToken(defaultSettings.getAutoBackupGitToken());
 		}
-		else
-		{
-			final String cron = scheduleTaskService.computeCron(settings.getAutoBackupTime(), settings.getAutoBackupDays());
-			scheduleTaskService.stopBackupCron();
-
-			final Optional<BackupTask> previousBackupTaskOptional = settings.getAutoBackupStrategy().getBackupTask(databaseService, settingsService);
-			previousBackupTaskOptional.ifPresent(runnable -> runnable.cleanup(settingsService.getSettings(), settings));
-
-			final Optional<BackupTask> backupTaskOptional = settings.getAutoBackupStrategy().getBackupTask(databaseService, settingsService);
-			backupTaskOptional.ifPresent(runnable -> scheduleTaskService.startBackupCron(cron, runnable));
-		}
 
 		if(settings.getShowCategoriesAsCircles() == null)
 		{
 			settings.setShowCategoriesAsCircles(false);
 		}
+	}
+
+	public void updateSettings(Settings settings)
+	{
+		final Settings previousSettings = settingsService.getSettings();
+		settingsService.updateSettings(settings);
+
+		backupService.stopBackupCron();
+		if(settings.getAutoBackupStrategy() != AutoBackupStrategy.NONE)
+		{
+			final Optional<BackupTask> previousBackupTaskOptional = settings.getAutoBackupStrategy().getBackupTask(databaseService, settingsService);
+			previousBackupTaskOptional.ifPresent(runnable -> runnable.cleanup(previousSettings, settings));
+
+			final Optional<BackupTask> backupTaskOptional = settings.getAutoBackupStrategy().getBackupTask(databaseService, settingsService);
+			final String cron = backupService.computeCron(settings.getAutoBackupTime(), settings.getAutoBackupDays());
+			backupTaskOptional.ifPresent(runnable -> backupService.startBackupCron(cron, runnable));
+		}
+
+		Localization.load();
+		categoryService.localizeDefaultCategories();
 	}
 
 
@@ -388,8 +392,8 @@ public class SettingsController extends BaseController
 		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
 		model.addAttribute("autoBackupTimes", AutoBackupTime.values());
 
-		final Optional<DateTime> nextBackupTimeOptional = scheduleTaskService.getNextRun();
+		final Optional<DateTime> nextBackupTimeOptional = backupService.getNextRun();
 		nextBackupTimeOptional.ifPresent(date -> model.addAttribute("nextBackupTime", date));
-		model.addAttribute("autoBackupStatus", scheduleTaskService.getBackupStatus());
+		model.addAttribute("autoBackupStatus", backupService.getBackupStatus());
 	}
 }
