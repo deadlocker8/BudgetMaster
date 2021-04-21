@@ -16,6 +16,7 @@ import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.images.ImageFileExtension;
 import de.deadlocker8.budgetmaster.images.ImageRepository;
 import de.deadlocker8.budgetmaster.images.ImageService;
+import de.deadlocker8.budgetmaster.repeating.RepeatingTransactionUpdater;
 import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.TagRepository;
@@ -57,6 +58,9 @@ public class DatabaseImportTest
 
 	@Mock
 	private ImageService imageService;
+
+	@Mock
+	private RepeatingTransactionUpdater repeatingTransactionUpdater;
 
 	@InjectMocks
 	private ImportService importService;
