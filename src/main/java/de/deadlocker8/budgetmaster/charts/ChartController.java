@@ -135,30 +135,27 @@ public class ChartController extends BaseController
 			model.addAttribute("chart", chart);
 			return "charts/newChart";
 		}
+
+		boolean isNewChart = chart.getID() == null;
+		if(isNewChart)
+		{
+			final int highestUsedID = chartService.getHighestUsedID();
+			chart.setID(highestUsedID + 1);
+		}
 		else
 		{
-			// editing an existing chart
-			if(chart.getID() != null)
+			// reject editing of default chart
+			Optional<Chart> existingChartOptional = chartService.getRepository().findById(chart.getID());
+			if(existingChartOptional.isPresent())
 			{
-				// reject editing of default chart
-
-				Optional<Chart> existingChartOptional = chartService.getRepository().findById(chart.getID());
-				if(existingChartOptional.isPresent())
+				if(existingChartOptional.get().getType() != ChartType.CUSTOM)
 				{
-					if(existingChartOptional.get().getType() != ChartType.CUSTOM)
-					{
-						return "error/400";
-					}
+					return "error/400";
 				}
 			}
-
-			if(chart.getID() == null)
-			{
-				final int highestUsedID = chartService.getHighestUsedID();
-				chart.setID(highestUsedID + 1);
-			}
-			chartService.getRepository().save(chart);
 		}
+
+		chartService.getRepository().save(chart);
 
 		return "redirect:/charts/manage";
 	}
