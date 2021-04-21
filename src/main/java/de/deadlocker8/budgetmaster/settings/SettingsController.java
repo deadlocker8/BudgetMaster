@@ -3,7 +3,6 @@ package de.deadlocker8.budgetmaster.settings;
 import com.google.gson.JsonObject;
 import de.deadlocker8.budgetmaster.Build;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
-import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
 import de.deadlocker8.budgetmaster.backup.*;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
@@ -19,7 +18,6 @@ import de.deadlocker8.budgetmaster.services.UpdateCheckService;
 import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.deadlocker8.budgetmaster.utils.Mappings;
-import de.deadlocker8.budgetmaster.utils.Strings;
 import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
 import de.deadlocker8.budgetmaster.utils.notification.Notification;
 import de.deadlocker8.budgetmaster.utils.notification.NotificationType;
@@ -30,7 +28,6 @@ import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -58,7 +55,6 @@ public class SettingsController extends BaseController
 {
 	private static final String PASSWORD_PLACEHOLDER = "•••••";
 	private final SettingsService settingsService;
-	private final UserRepository userRepository;
 	private final DatabaseService databaseService;
 	private final AccountService accountService;
 	private final CategoryService categoryService;
@@ -73,7 +69,6 @@ public class SettingsController extends BaseController
 	public SettingsController(SettingsService settingsService, UserRepository userRepository, DatabaseService databaseService, AccountService accountService, CategoryService categoryService, ImportService importService, BudgetMasterUpdateService budgetMasterUpdateService, UpdateCheckService updateCheckService, BackupService scheduleTaskService)
 	{
 		this.settingsService = settingsService;
-		this.userRepository = userRepository;
 		this.databaseService = databaseService;
 		this.accountService = accountService;
 		this.categoryService = categoryService;
@@ -102,7 +97,7 @@ public class SettingsController extends BaseController
 		settings.setLanguage(LanguageType.fromName(languageType));
 		settings.setAutoBackupStrategy(AutoBackupStrategy.fromName(autoBackupStrategyType));
 
-		Optional<FieldError> passwordErrorOptional = validatePassword(password, passwordConfirmation);
+		Optional<FieldError> passwordErrorOptional = settingsService.validatePassword(password, passwordConfirmation);
 		if(passwordErrorOptional.isPresent())
 		{
 			bindingResult.addError(passwordErrorOptional.get());
@@ -111,6 +106,32 @@ public class SettingsController extends BaseController
 		SettingsValidator settingsValidator = new SettingsValidator();
 		settingsValidator.validate(settings, bindingResult);
 
+		fillMissingFieldsWithDefaults(settings);
+
+		if(bindingResult.hasErrors())
+		{
+			model.addAttribute("error", bindingResult);
+			prepareBasicModel(model, settings);
+			return "settings/settings";
+		}
+
+		if(!password.equals(PASSWORD_PLACEHOLDER))
+		{
+			settingsService.savePassword(password);
+		}
+
+		settingsService.updateSettings(settings);
+
+		Localization.load();
+		categoryService.localizeDefaultCategories();
+
+		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.settings.saved"), NotificationType.SUCCESS));
+
+		return "redirect:/settings";
+	}
+
+	private void fillMissingFieldsWithDefaults(Settings settings)
+	{
 		if(settings.getBackupReminderActivated() == null)
 		{
 			settings.setBackupReminderActivated(false);
@@ -126,8 +147,6 @@ public class SettingsController extends BaseController
 			settings.setAutoBackupGitToken(settingsService.getSettings().getAutoBackupGitToken());
 		}
 
-		final String cron = scheduleTaskService.computeCron(settings.getAutoBackupTime(), settings.getAutoBackupDays());
-		scheduleTaskService.stopBackupCron();
 		if(settings.getAutoBackupStrategy() == AutoBackupStrategy.NONE)
 		{
 			final Settings defaultSettings = Settings.getDefault();
@@ -139,6 +158,9 @@ public class SettingsController extends BaseController
 		}
 		else
 		{
+			final String cron = scheduleTaskService.computeCron(settings.getAutoBackupTime(), settings.getAutoBackupDays());
+			scheduleTaskService.stopBackupCron();
+
 			final Optional<BackupTask> previousBackupTaskOptional = settings.getAutoBackupStrategy().getBackupTask(databaseService, settingsService);
 			previousBackupTaskOptional.ifPresent(runnable -> runnable.cleanup(settingsService.getSettings(), settings));
 
@@ -150,57 +172,8 @@ public class SettingsController extends BaseController
 		{
 			settings.setShowCategoriesAsCircles(false);
 		}
-
-
-		if(bindingResult.hasErrors())
-		{
-			model.addAttribute("error", bindingResult);
-			prepareBasicModel(model, settings);
-			return "settings/settings";
-		}
-
-		if(!password.equals(PASSWORD_PLACEHOLDER))
-		{
-			BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-			String encryptedPassword = bCryptPasswordEncoder.encode(password);
-			User user = userRepository.findByName("Default");
-			user.setPassword(encryptedPassword);
-			userRepository.save(user);
-		}
-
-		settingsService.updateSettings(settings);
-
-		Localization.load();
-		categoryService.localizeDefaultCategories();
-
-		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.settings.saved"), NotificationType.SUCCESS));
-
-		return "redirect:/settings";
 	}
 
-	private Optional<FieldError> validatePassword(String password, String passwordConfirmation)
-	{
-		if(password == null || password.equals(""))
-		{
-			return Optional.of(new FieldError("Settings", "password", password, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_EMPTY}, null, Strings.WARNING_SETTINGS_PASSWORD_EMPTY));
-		}
-		else if(password.length() < 3)
-		{
-			return Optional.of(new FieldError("Settings", "password", password, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_LENGTH}, null, Strings.WARNING_SETTINGS_PASSWORD_LENGTH));
-		}
-
-		if(passwordConfirmation == null || passwordConfirmation.equals(""))
-		{
-			return Optional.of(new FieldError("Settings", "passwordConfirmation", passwordConfirmation, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_EMPTY}, null, Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_EMPTY));
-		}
-
-		if(!password.equals(passwordConfirmation))
-		{
-			return Optional.of(new FieldError("Settings", "passwordConfirmation", passwordConfirmation, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_WRONG}, null, Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_WRONG));
-		}
-
-		return Optional.empty();
-	}
 
 	@GetMapping("/database/requestExport")
 	public void downloadFile(HttpServletResponse response)
