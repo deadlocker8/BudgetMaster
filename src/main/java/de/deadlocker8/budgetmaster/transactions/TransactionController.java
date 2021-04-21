@@ -101,7 +101,6 @@ public class TransactionController extends BaseController
 		model.addAttribute("budget", helpers.getBudget(transactions, currentAccount));
 		model.addAttribute("currentDate", date);
 		model.addAttribute("filterConfiguration", filterConfiguration);
-		model.addAttribute("settings", settingsService.getSettings());
 	}
 
 	@GetMapping("/{ID}/delete")

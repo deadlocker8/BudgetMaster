@@ -2,7 +2,6 @@ package de.deadlocker8.budgetmaster.accounts;
 
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.images.ImageService;
-import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -27,14 +25,12 @@ import java.util.Optional;
 public class AccountController extends BaseController
 {
 	private final AccountService accountService;
-	private final SettingsService settingsService;
 	private final ImageService imageService;
 
 	@Autowired
-	public AccountController(AccountService accountService, SettingsService settingsService, ImageService imageService)
+	public AccountController(AccountService accountService, ImageService imageService)
 	{
 		this.accountService = accountService;
-		this.settingsService = settingsService;
 		this.imageService = imageService;
 	}
 
@@ -68,7 +64,6 @@ public class AccountController extends BaseController
 	public String accounts(Model model)
 	{
 		model.addAttribute("accounts", accountService.getAllAccountsAsc());
-		model.addAttribute("settings", settingsService.getSettings());
 		return "accounts/accounts";
 	}
 
@@ -77,7 +72,6 @@ public class AccountController extends BaseController
 	{
 		model.addAttribute("accounts", accountService.getAllAccountsAsc());
 		model.addAttribute("currentAccount", accountService.getRepository().getOne(ID));
-		model.addAttribute("settings", settingsService.getSettings());
 		return "accounts/accounts";
 	}
 
@@ -98,7 +92,6 @@ public class AccountController extends BaseController
 		model.addAttribute("accounts", accountService.getAllAccountsAsc());
 		model.addAttribute("currentAccount", accountToDelete);
 		model.addAttribute("accountNotDeletable", true);
-		model.addAttribute("settings", settingsService.getSettings());
 		return "accounts/accounts";
 	}
 
@@ -107,7 +100,6 @@ public class AccountController extends BaseController
 	{
 		Account emptyAccount = new Account();
 		model.addAttribute("account", emptyAccount);
-		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("availableImages", imageService.getRepository().findAll());
 		model.addAttribute("availableAccountStates", AccountState.values());
 		return "accounts/newAccount";
@@ -123,7 +115,6 @@ public class AccountController extends BaseController
 		}
 
 		model.addAttribute("account", accountOptional.get());
-		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("availableImages", imageService.getRepository().findAll());
 		model.addAttribute("availableAccountStates", AccountState.values());
 		return "accounts/newAccount";
@@ -148,7 +139,6 @@ public class AccountController extends BaseController
 		{
 			model.addAttribute("error", bindingResult);
 			model.addAttribute("account", account);
-			model.addAttribute("settings", settingsService.getSettings());
 			model.addAttribute("availableImages", imageService.getRepository().findAll());
 			model.addAttribute("availableAccountStates", AccountState.values());
 			return "accounts/newAccount";

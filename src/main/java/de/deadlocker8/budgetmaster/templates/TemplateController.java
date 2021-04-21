@@ -36,7 +36,6 @@ public class TemplateController extends BaseController
 			.create();
 
 	private final TemplateService templateService;
-	private final SettingsService settingsService;
 	private final TransactionService transactionService;
 	private final DateService dateService;
 	private final AccountService accountService;
@@ -45,7 +44,6 @@ public class TemplateController extends BaseController
 	public TemplateController(TemplateService templateService, SettingsService settingsService, TransactionService transactionService, DateService dateService, AccountService accountService)
 	{
 		this.templateService = templateService;
-		this.settingsService = settingsService;
 		this.transactionService = transactionService;
 		this.dateService = dateService;
 		this.accountService = accountService;
@@ -54,7 +52,6 @@ public class TemplateController extends BaseController
 	@GetMapping
 	public String showTemplates(Model model)
 	{
-		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("templates", templateService.getRepository().findAllByOrderByTemplateNameAsc());
 		return "templates/templates";
 	}
@@ -100,7 +97,6 @@ public class TemplateController extends BaseController
 			throw new ResourceNotFoundException();
 		}
 
-		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("templates", templateService.getRepository().findAllByOrderByTemplateNameAsc());
 		model.addAttribute("currentTemplate", templateOptional.get());
 		return "templates/templates";

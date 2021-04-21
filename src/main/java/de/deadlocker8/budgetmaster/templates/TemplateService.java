@@ -29,7 +29,6 @@ public class TemplateService implements Resetable
 	private final TemplateRepository templateRepository;
 	private final AccountService accountService;
 	private final CategoryService categoryService;
-	private final SettingsService settingsService;
 
 
 	@Autowired
@@ -38,7 +37,6 @@ public class TemplateService implements Resetable
 		this.templateRepository = templateRepository;
 		this.accountService = accountService;
 		this.categoryService = categoryService;
-		this.settingsService = settingsService;
 	}
 
 	public TemplateRepository getRepository()
@@ -99,7 +97,6 @@ public class TemplateService implements Resetable
 		model.addAttribute("categories", categoryService.getAllCategories());
 		model.addAttribute("accounts", accounts);
 		model.addAttribute("template", item);
-		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("suggestionsJSON", GSON.toJson(new ArrayList<String>()));
 	}
 

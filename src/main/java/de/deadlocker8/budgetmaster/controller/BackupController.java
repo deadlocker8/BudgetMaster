@@ -26,7 +26,6 @@ public class BackupController extends BaseController
 	public String cancel(HttpServletRequest request, Model model)
 	{
 		settingsService.updateLastBackupReminderDate();
-		model.addAttribute("settings", settingsService.getSettings());
 		return "redirect:" + request.getHeader("Referer");
 	}
 

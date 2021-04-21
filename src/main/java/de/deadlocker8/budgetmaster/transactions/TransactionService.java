@@ -46,7 +46,6 @@ public class TransactionService implements Resetable
 	private final RepeatingOptionRepository repeatingOptionRepository;
 	private final CategoryService categoryService;
 	private final TagService tagService;
-	private final SettingsService settingsService;
 
 	@Autowired
 	public TransactionService(TransactionRepository transactionRepository, RepeatingOptionRepository repeatingOptionRepository, CategoryService categoryService, TagService tagService, SettingsService settingsService)
@@ -55,7 +54,6 @@ public class TransactionService implements Resetable
 		this.repeatingOptionRepository = repeatingOptionRepository;
 		this.categoryService = categoryService;
 		this.tagService = tagService;
-		this.settingsService = settingsService;
 	}
 
 	public TransactionRepository getRepository()
@@ -298,7 +296,6 @@ public class TransactionService implements Resetable
 		model.addAttribute("categories", categoryService.getAllCategories());
 		model.addAttribute("accounts", accounts);
 		model.addAttribute("transaction", item);
-		model.addAttribute("settings", settingsService.getSettings());
 
 		final List<Transaction> allByOrderByDateDesc = getRepository().findAllByOrderByDateDesc();
 		final List<String> nameSuggestions = allByOrderByDateDesc.stream()

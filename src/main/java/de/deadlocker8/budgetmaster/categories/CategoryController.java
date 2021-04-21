@@ -2,7 +2,6 @@ package de.deadlocker8.budgetmaster.categories;
 
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.services.HelpersService;
-import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.utils.*;
 import de.deadlocker8.budgetmaster.utils.notification.Notification;
 import de.deadlocker8.budgetmaster.utils.notification.NotificationType;
@@ -28,21 +27,18 @@ public class CategoryController extends BaseController
 
 	private final CategoryService categoryService;
 	private final HelpersService helpers;
-	private final SettingsService settingsService;
 
 	@Autowired
-	public CategoryController(CategoryService categoryService, HelpersService helpers, SettingsService settingsService)
+	public CategoryController(CategoryService categoryService, HelpersService helpers)
 	{
 		this.categoryService = categoryService;
 		this.helpers = helpers;
-		this.settingsService = settingsService;
 	}
 
 	@GetMapping
 	public String categories(Model model)
 	{
 		model.addAttribute("categories", categoryService.getAllCategories());
-		model.addAttribute("settings", settingsService.getSettings());
 		return "categories/categories";
 	}
 
@@ -62,7 +58,6 @@ public class CategoryController extends BaseController
 		model.addAttribute("preselectedCategory", categoryService.findByType(CategoryType.NONE));
 
 		model.addAttribute("currentCategory", categoryService.findById(ID).get());
-		model.addAttribute("settings", settingsService.getSettings());
 		return "categories/categories";
 	}
 
@@ -94,7 +89,6 @@ public class CategoryController extends BaseController
 		model.addAttribute("customColor", WHITE);
 		Category emptyCategory = new Category(null, ColorUtilsNonJavaFX.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase(), CategoryType.CUSTOM);
 		model.addAttribute("category", emptyCategory);
-		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
 
 		return "categories/newCategory";
@@ -121,7 +115,6 @@ public class CategoryController extends BaseController
 		}
 
 		model.addAttribute("category", category);
-		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
 		return "categories/newCategory";
 	}
@@ -150,7 +143,6 @@ public class CategoryController extends BaseController
 				category.setColor(ColorUtilsNonJavaFX.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase());
 			}
 			model.addAttribute("category", category);
-			model.addAttribute("settings", settingsService.getSettings());
 			model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
 			return "categories/newCategory";
 		}

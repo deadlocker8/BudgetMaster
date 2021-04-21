@@ -8,7 +8,6 @@ import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
 import de.deadlocker8.budgetmaster.filter.FilterHelpersService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
-import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.deadlocker8.budgetmaster.utils.Mappings;
@@ -42,16 +41,14 @@ public class ChartController extends BaseController
 
 	private final ChartService chartService;
 	private final HelpersService helpers;
-	private final SettingsService settingsService;
 	private final FilterHelpersService filterHelpersService;
 	private final TransactionService transactionService;
 
 	@Autowired
-	public ChartController(ChartService chartService, HelpersService helpers, SettingsService settingsService, FilterHelpersService filterHelpersService, TransactionService transactionService)
+	public ChartController(ChartService chartService, HelpersService helpers, FilterHelpersService filterHelpersService, TransactionService transactionService)
 	{
 		this.chartService = chartService;
 		this.helpers = helpers;
-		this.settingsService = settingsService;
 		this.filterHelpersService = filterHelpersService;
 		this.transactionService = transactionService;
 	}
@@ -69,7 +66,6 @@ public class ChartController extends BaseController
 
 		model.addAttribute("chartSettings", defaultChartSettings);
 		model.addAttribute("charts", charts);
-		model.addAttribute("settings", settingsService.getSettings());
 		return "charts/charts";
 	}
 
@@ -88,7 +84,6 @@ public class ChartController extends BaseController
 
 		model.addAttribute("chartSettings", chartSettings);
 		model.addAttribute("charts", chartService.getRepository().findAllByOrderByNameAsc());
-		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("chart", chartOptional.get());
 		model.addAttribute("containerID", UUID.randomUUID());
 		model.addAttribute("transactionData", transactionJson);
@@ -99,7 +94,6 @@ public class ChartController extends BaseController
 	public String manage(Model model)
 	{
 		model.addAttribute("charts", chartService.getRepository().findAllByOrderByNameAsc());
-		model.addAttribute("settings", settingsService.getSettings());
 		return "charts/manage";
 	}
 
@@ -108,7 +102,6 @@ public class ChartController extends BaseController
 	{
 		Chart emptyChart = DefaultCharts.CHART_DEFAULT;
 		model.addAttribute("chart", emptyChart);
-		model.addAttribute("settings", settingsService.getSettings());
 		return "charts/newChart";
 	}
 
@@ -122,7 +115,6 @@ public class ChartController extends BaseController
 		}
 
 		model.addAttribute("chart", chartOptional.get());
-		model.addAttribute("settings", settingsService.getSettings());
 		return "charts/newChart";
 	}
 
@@ -141,7 +133,6 @@ public class ChartController extends BaseController
 		{
 			model.addAttribute("error", bindingResult);
 			model.addAttribute("chart", chart);
-			model.addAttribute("settings", settingsService.getSettings());
 			return "charts/newChart";
 		}
 		else
@@ -182,7 +173,6 @@ public class ChartController extends BaseController
 
 		model.addAttribute("charts", chartService.getRepository().findAllByOrderByNameAsc());
 		model.addAttribute("currentChart", chartService.getRepository().getOne(ID));
-		model.addAttribute("settings", settingsService.getSettings());
 		return "charts/manage";
 	}
 

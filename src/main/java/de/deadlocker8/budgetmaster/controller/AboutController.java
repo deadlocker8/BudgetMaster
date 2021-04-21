@@ -29,14 +29,13 @@ public class AboutController extends BaseController
 	@GetMapping
 	public String index(Model model)
 	{
-		model.addAttribute("settings", settingsService.getSettings());
 		return "about";
 	}
 
 	@GetMapping("/whatsNewModal")
 	public String whatsNewModal(Model model)
 	{
-		final List<NewsEntry> newsEntries =  new ArrayList<>();
+		final List<NewsEntry> newsEntries = new ArrayList<>();
 		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.changeType.headline", "news.changeType.description"));
 		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.readonlyAccounts.headline", "news.readonlyAccounts.description"));
 		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.firstUseWizard.headline", "news.firstUseWizard.description"));
@@ -48,10 +47,9 @@ public class AboutController extends BaseController
 
 	@RequestMapping("/whatsNewModal/close")
 	@Transactional
-	public String whatsNewModalClose(HttpServletRequest request, Model model)
+	public String whatsNewModalClose(HttpServletRequest request)
 	{
 		settingsService.getSettings().setWhatsNewShownForCurrentVersion(true);
-		model.addAttribute("settings", settingsService.getSettings());
 		return "redirect:" + request.getHeader("Referer");
 	}
 }

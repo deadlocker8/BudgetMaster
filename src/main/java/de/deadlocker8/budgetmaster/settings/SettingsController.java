@@ -300,7 +300,6 @@ public class SettingsController extends BaseController
 	{
 		model.addAttribute("database", request.getAttribute("database", WebRequest.SCOPE_SESSION));
 		model.addAttribute("availableAccounts", accountService.getAllAccountsAsc());
-		model.addAttribute("settings", settingsService.getSettings());
 		return "settings/import";
 	}
 
