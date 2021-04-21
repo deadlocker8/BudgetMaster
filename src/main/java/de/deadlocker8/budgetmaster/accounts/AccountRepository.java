@@ -9,8 +9,6 @@ public interface AccountRepository extends JpaRepository<Account, Integer>
 {
 	List<Account> findAllByTypeOrderByNameAsc(AccountType accountType);
 
-	List<Account> findAllByTypeAndIsReadOnlyOrderByNameAsc(AccountType accountType, Boolean isReadOnly);
-
 	Account findByName(String name);
 
 	List<Account> findAllByType(AccountType accountType);
