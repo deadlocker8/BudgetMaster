@@ -11,7 +11,7 @@ import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.DatabaseParser;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
-import de.deadlocker8.budgetmaster.services.ImportEntityType;
+import de.deadlocker8.budgetmaster.services.EntityType;
 import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.services.UpdateCheckService;
 import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
@@ -283,17 +283,17 @@ public class SettingsController extends BaseController
 	@PostMapping("/database/import")
 	public String importDatabase(WebRequest request, @ModelAttribute("Import") AccountMatchList accountMatchList, Model model)
 	{
-		final Map<ImportEntityType, Integer> numberOfImportedEntitiesByType = importService.importDatabase((Database) request.getAttribute("database", WebRequest.SCOPE_SESSION), accountMatchList);
+		final Map<EntityType, Integer> numberOfImportedEntitiesByType = importService.importDatabase((Database) request.getAttribute("database", WebRequest.SCOPE_SESSION), accountMatchList);
 		request.removeAttribute("database", RequestAttributes.SCOPE_SESSION);
 		prepareBasicModel(model, settingsService.getSettings());
 
 		final String message = Localization.getString("notification.settings.database.import.success",
-				numberOfImportedEntitiesByType.get(ImportEntityType.ACCOUNT),
-				numberOfImportedEntitiesByType.get(ImportEntityType.TRANSACTION),
-				numberOfImportedEntitiesByType.get(ImportEntityType.CATEGORY),
-				numberOfImportedEntitiesByType.get(ImportEntityType.TEMPLATE),
-				numberOfImportedEntitiesByType.get(ImportEntityType.CHART),
-				numberOfImportedEntitiesByType.get(ImportEntityType.IMAGE));
+				numberOfImportedEntitiesByType.get(EntityType.ACCOUNT),
+				numberOfImportedEntitiesByType.get(EntityType.TRANSACTION),
+				numberOfImportedEntitiesByType.get(EntityType.CATEGORY),
+				numberOfImportedEntitiesByType.get(EntityType.TEMPLATE),
+				numberOfImportedEntitiesByType.get(EntityType.CHART),
+				numberOfImportedEntitiesByType.get(EntityType.IMAGE));
 		WebRequestUtils.putNotification(request, new Notification(message, NotificationType.SUCCESS));
 
 		return "settings/settings";

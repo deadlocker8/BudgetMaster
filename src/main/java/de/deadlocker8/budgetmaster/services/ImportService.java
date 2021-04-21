@@ -59,19 +59,19 @@ public class ImportService
 		this.repeatingTransactionUpdater = repeatingTransactionUpdater;
 	}
 
-	public Map<ImportEntityType, Integer> importDatabase(Database database, AccountMatchList accountMatchList)
+	public Map<EntityType, Integer> importDatabase(Database database, AccountMatchList accountMatchList)
 	{
 		this.database = database;
 
-		final Map<ImportEntityType, Integer> numberOfImportedEntitiesByType = new EnumMap<>(ImportEntityType.class);
+		final Map<EntityType, Integer> numberOfImportedEntitiesByType = new EnumMap<>(EntityType.class);
 
 		LOGGER.debug("Importing database...");
-		numberOfImportedEntitiesByType.put(ImportEntityType.CATEGORY, importCategories());
-		numberOfImportedEntitiesByType.put(ImportEntityType.ACCOUNT, importAccounts(accountMatchList));
-		numberOfImportedEntitiesByType.put(ImportEntityType.TRANSACTION, importTransactions());
-		numberOfImportedEntitiesByType.put(ImportEntityType.CHART, importCharts());
-		numberOfImportedEntitiesByType.put(ImportEntityType.IMAGE, importImages());
-		numberOfImportedEntitiesByType.put(ImportEntityType.TEMPLATE, importTemplates());
+		numberOfImportedEntitiesByType.put(EntityType.CATEGORY, importCategories());
+		numberOfImportedEntitiesByType.put(EntityType.ACCOUNT, importAccounts(accountMatchList));
+		numberOfImportedEntitiesByType.put(EntityType.TRANSACTION, importTransactions());
+		numberOfImportedEntitiesByType.put(EntityType.CHART, importCharts());
+		numberOfImportedEntitiesByType.put(EntityType.IMAGE, importImages());
+		numberOfImportedEntitiesByType.put(EntityType.TEMPLATE, importTemplates());
 
 		LOGGER.debug("Updating repeating transactions...");
 		repeatingTransactionUpdater.updateRepeatingTransactions(DateTime.now());
