@@ -35,6 +35,11 @@ public enum EntityType
 		return color;
 	}
 
+	public String getColorAsTextColor()
+	{
+		return color.replace("background", "text");
+	}
+
 	public String getLocalizationKey()
 	{
 		return "entity." + this.name().toLowerCase();
