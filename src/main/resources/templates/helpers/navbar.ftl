@@ -8,19 +8,20 @@
         <@itemDivider/>
         <@itemAccountSelect/>
         <@itemDivider/>
-        <@itemWithIcon "home", "/", locale.getString("menu.home"), "home", "background-blue", activeID/>
-        <@itemWithIcon "transactions", "/transactions", locale.getString("menu.transactions"), "list", "background-blue-baby", activeID/>
-        <@itemWithIcon "templates", "/templates", locale.getString("menu.templates"), "file_copy", "background-orange-dark", activeID/>
-        <@itemWithIcon "charts" "/charts" locale.getString("menu.charts"), "show_chart" "background-purple", activeID/>
-        <@itemWithIcon "reports", "/reports", locale.getString("menu.reports"), "description", "background-green", activeID/>
-        <@itemWithIcon "categories", "/categories", locale.getString("menu.categories"), "label", "background-orange", activeID/>
-        <@itemWithIcon "statistics", "/statistics", locale.getString("menu.statistics"), "insert_chart", "background-grey", activeID/>
-        <@itemWithIcon "settings", "/settings", locale.getString("menu.settings"), "settings", "background-red", activeID/>
+
+        <@itemWithIcon "home", "/", locale.getString("menu.home"), entityType.HOME.getIcon(), entityType.HOME.getColor(), activeID/>
+        <@itemWithIcon "transactions", "/transactions", locale.getString("menu.transactions"), entityType.TRANSACTION.getIcon(), entityType.TRANSACTION.getColor(), activeID/>
+        <@itemWithIcon "templates", "/templates", locale.getString("menu.templates"), entityType.TEMPLATE.getIcon(), entityType.TEMPLATE.getColor(), activeID/>
+        <@itemWithIcon "charts" "/charts" locale.getString("menu.charts"), entityType.CHART.getIcon(), entityType.CHART.getColor(), activeID/>
+        <@itemWithIcon "reports", "/reports", locale.getString("menu.reports"), entityType.REPORT.getIcon(), entityType.REPORT.getColor(), activeID/>
+        <@itemWithIcon "categories", "/categories", locale.getString("menu.categories"), entityType.CATEGORY.getIcon(), entityType.CATEGORY.getColor(), activeID/>
+        <@itemWithIcon "statistics", "/statistics", locale.getString("menu.statistics"), entityType.STATISTICS.getIcon(), entityType.STATISTICS.getColor(), activeID/>
+        <@itemWithIcon "settings", "/settings", locale.getString("menu.settings"), entityType.SETTINGS.getIcon(), entityType.SETTINGS.getColor(), activeID/>
 
         <@itemDivider/>
-        <@itemWithIcon "hotkeys", "/hotkeys", locale.getString("menu.hotkeys"), "keyboard", "background-grey", activeID/>
+        <@itemWithIcon "hotkeys", "/hotkeys", locale.getString("menu.hotkeys"), entityType.HOTKEYS.getIcon(), entityType.HOTKEYS.getColor(), activeID/>
         <@itemWithFontawesomeIcon "firstUseGuide", "/firstUse", locale.getString("menu.firstUseGuide"), "fas fa-graduation-cap", "background-grey", activeID/>
-        <@itemWithIcon "about", "/about", locale.getString("menu.about"), "info", "background-grey", activeID/>
+        <@itemWithIcon "about", "/about", locale.getString("menu.about"), entityType.ABOUT.getIcon(), entityType.ABOUT.getColor(), activeID/>
 
         <@itemDivider/>
         <@itemLogout locale.getString("menu.logout") "lock"/>

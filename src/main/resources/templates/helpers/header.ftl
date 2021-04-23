@@ -6,6 +6,7 @@
 <#macro globals>
     <#global locale = static["de.thecodelabs.utils.util.Localization"]>
     <#global programArgs = static["de.deadlocker8.budgetmaster.ProgramArgs"]>
+    <#global entityType = static["de.deadlocker8.budgetmaster.services.EntityType"]>
 
     <#if helpers.getSettings().isUseDarkTheme()>
         <#global greenTextColor="text-green"/>
