@@ -14,9 +14,36 @@
                 <div class="container">
                     <div class="section center-align">
                         <div class="headline">${locale.getString("info.title.database.import.dialog")}</div>
-                        <div>${locale.getString("info.subtitle.database.import")}</div>
                     </div>
                 </div>
+
+                <div class="container">
+                    <div class="section center-align">
+                        <div class="headline-small">${locale.getString("info.database.import")}</div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col s10 offset-s1 m8 offset-m2 l6 offset-l3">
+                            <table>
+                                <#list database.getNumberOfEntitiesByType() as entityType, numberOfItems>
+                                    <tr>
+                                        <td class="valign-wrapper"><i class="material-icons">${entityType.getIcon()}</i><div class="import-entity-name">${locale.getString(entityType.getLocalizationKey())}</div></td>
+                                        <td>${numberOfItems}</td>
+                                    </tr>
+                                </#list>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="section center-align">
+                        <div class="headline-small">${locale.getString("info.database.import.match.accounts")}</div>
+                    </div>
+                </div>
+
                 <div class="container">
                     <#import "../helpers/validation.ftl" as validation>
                     <form name="Import" action="<@s.url '/settings/database/import'/>" method="post" onsubmit="return validateForm()">

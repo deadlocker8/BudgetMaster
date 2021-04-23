@@ -166,6 +166,11 @@ main {
     color: var(--color-text);
 }
 
+.headline-small {
+    font-size: 1.5rem;
+    text-transform: initial;
+}
+
 .headline-advice {
     color: var(--color-text);
     opacity: 0.7;
@@ -435,6 +440,10 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
 
 .account-icon  {
     height: 2.6rem;
+}
+
+.import-entity-name {
+    margin-left: 1rem;
 }
 
 .tooltipped:hover {
