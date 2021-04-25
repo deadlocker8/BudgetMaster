@@ -473,7 +473,7 @@ public class DatabaseImportTest
 		final ChartRepository chartRepositoryMock = Mockito.mock(ChartRepository.class);
 		Mockito.when(chartService.getRepository()).thenReturn(chartRepositoryMock);
 
-		importService.importDatabase(database, accountMatchList);
+		importService.importDatabase(database, accountMatchList, true, true);
 		Database databaseResult = importService.getDatabase();
 
 		// assert
@@ -507,7 +507,7 @@ public class DatabaseImportTest
 		final ChartRepository chartRepositoryMock = Mockito.mock(ChartRepository.class);
 		Mockito.when(chartService.getRepository()).thenReturn(chartRepositoryMock);
 
-		importService.importDatabase(database, new AccountMatchList(List.of()));
+		importService.importDatabase(database, new AccountMatchList(List.of()), true, true);
 		Database databaseResult = importService.getDatabase();
 
 		// assert
@@ -550,7 +550,7 @@ public class DatabaseImportTest
 		Mockito.when(imageRepositoryMock.save(Mockito.any())).thenReturn(newImage);
 
 		Database database = new Database(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(image));
-		importService.importDatabase(database, new AccountMatchList(List.of()));
+		importService.importDatabase(database, new AccountMatchList(List.of()), true, true);
 
 		Image expectedImage = new Image(image.getImage(), image.getFileName(), image.getFileExtension());
 		Mockito.verify(imageRepositoryMock, Mockito.atLeast(1)).save(expectedImage);
@@ -570,7 +570,7 @@ public class DatabaseImportTest
 		Mockito.when(imageRepositoryMock.save(Mockito.any())).thenReturn(newImage);
 
 		Database database = new Database(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(image));
-		importService.importDatabase(database, new AccountMatchList(List.of()));
+		importService.importDatabase(database, new AccountMatchList(List.of()), true, true);
 
 		Image expectedImage = new Image(image.getImage(), image.getFileName(), image.getFileExtension());
 		Mockito.verify(imageRepositoryMock, Mockito.atLeast(1)).save(expectedImage);
@@ -604,5 +604,47 @@ public class DatabaseImportTest
 		final Image icon = updatedTemplates.get(0).getIcon();
 		assertThat(icon.getBase64EncodedImage()).isEqualTo("data:image/png;base64,");
 		assertThat(icon.getID()).isEqualTo(5);
+	}
+
+	@Test
+	public void test_skipTemplates()
+	{
+		Template template = new Template();
+		template.setTemplateName("myTemplate");
+		template.setAmount(200);
+		template.setName("Test");
+		template.setTags(new ArrayList<>());
+
+		// database
+		Database database = new Database(List.of(), List.of(), List.of(), List.of(template), List.of(), List.of());
+
+		// act
+		importService.importDatabase(database, new AccountMatchList(List.of()), false, true);
+
+		// assert
+		Mockito.verify(templateRepository, Mockito.never()).save(Mockito.any());
+	}
+
+	@Test
+	public void test_skipCarts()
+	{
+		Chart chart = new Chart();
+		chart.setID(9);
+		chart.setName("The best chart");
+		chart.setType(ChartType.CUSTOM);
+		chart.setVersion(7);
+
+		// database
+		Database database = new Database(List.of(), List.of(), List.of(), List.of(), List.of(chart), List.of());
+
+		Mockito.when(chartService.getHighestUsedID()).thenReturn(8);
+		final ChartRepository chartRepositoryMock = Mockito.mock(ChartRepository.class);
+		Mockito.when(chartService.getRepository()).thenReturn(chartRepositoryMock);
+
+		// act
+		importService.importDatabase(database, new AccountMatchList(List.of()), true, false);
+
+		// assert
+		Mockito.verify(chartRepositoryMock, Mockito.never()).save(Mockito.any());
 	}
 }

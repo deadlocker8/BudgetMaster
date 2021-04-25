@@ -303,7 +303,11 @@ public class SettingsController extends BaseController
 	@PostMapping("/database/import/step3")
 	public String importDatabase(WebRequest request, @ModelAttribute("Import") AccountMatchList accountMatchList, Model model)
 	{
-		final Map<EntityType, Integer> numberOfImportedEntitiesByType = importService.importDatabase((Database) request.getAttribute("database", WebRequest.SCOPE_SESSION), accountMatchList);
+		final Database database = (Database) request.getAttribute("database", WebRequest.SCOPE_SESSION);
+		final Boolean importTemplates = (Boolean) request.getAttribute("importTemplates", WebRequest.SCOPE_SESSION);
+		final Boolean importCharts = (Boolean) request.getAttribute("importCharts", WebRequest.SCOPE_SESSION);
+
+		final Map<EntityType, Integer> numberOfImportedEntitiesByType = importService.importDatabase(database, accountMatchList, importTemplates, importCharts);
 		request.removeAttribute("database", RequestAttributes.SCOPE_SESSION);
 		prepareBasicModel(model, settingsService.getSettings());
 

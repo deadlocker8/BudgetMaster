@@ -59,7 +59,7 @@ public class ImportService
 		this.repeatingTransactionUpdater = repeatingTransactionUpdater;
 	}
 
-	public Map<EntityType, Integer> importDatabase(Database database, AccountMatchList accountMatchList)
+	public Map<EntityType, Integer> importDatabase(Database database, AccountMatchList accountMatchList, Boolean importTemplates, Boolean importCharts)
 	{
 		this.database = database;
 
@@ -69,9 +69,26 @@ public class ImportService
 		numberOfImportedEntitiesByType.put(EntityType.CATEGORY, importCategories());
 		numberOfImportedEntitiesByType.put(EntityType.ACCOUNT, importAccounts(accountMatchList));
 		numberOfImportedEntitiesByType.put(EntityType.TRANSACTION, importTransactions());
-		numberOfImportedEntitiesByType.put(EntityType.CHART, importCharts());
+
+		if(importCharts)
+		{
+			numberOfImportedEntitiesByType.put(EntityType.CHART, importCharts());
+		}
+		else
+		{
+			numberOfImportedEntitiesByType.put(EntityType.CHART, 0);
+		}
+
 		numberOfImportedEntitiesByType.put(EntityType.IMAGE, importImages());
-		numberOfImportedEntitiesByType.put(EntityType.TEMPLATE, importTemplates());
+
+		if(importTemplates)
+		{
+			numberOfImportedEntitiesByType.put(EntityType.TEMPLATE, importTemplates());
+		}
+		else
+		{
+			numberOfImportedEntitiesByType.put(EntityType.TEMPLATE, 0);
+		}
 
 		LOGGER.debug("Updating repeating transactions...");
 		repeatingTransactionUpdater.updateRepeatingTransactions(DateTime.now());
