@@ -12,7 +12,7 @@ public class PreLoginUrlBlacklist
 		blacklist = new ArrayList<>();
 		blacklist.add("login");
 		blacklist.add("performUpdate");
-		blacklist.add("accountMatcher");
+		blacklist.add("import");
 	}
 
 	public boolean isBlacklisted(String preLoginUrl)

@@ -260,7 +260,7 @@ public class SettingsController extends BaseController
 			Database database = importer.parseDatabaseFromJSON();
 
 			request.setAttribute("database", database, WebRequest.SCOPE_SESSION);
-			return "redirect:/settings/database/accountMatcher";
+			return "redirect:/settings/database/import/step1";
 		}
 		catch(Exception e)
 		{
@@ -272,15 +272,35 @@ public class SettingsController extends BaseController
 		}
 	}
 
-	@GetMapping("/database/accountMatcher")
-	public String openAccountMatcher(WebRequest request, Model model)
+	@GetMapping("/database/import/step1")
+	public String importStepOne(WebRequest request, Model model)
+	{
+		model.addAttribute("database", request.getAttribute("database", WebRequest.SCOPE_SESSION));
+		return "settings/importStepOne";
+	}
+
+	@PostMapping("/database/import/step2")
+	public String importStepTwoPost(WebRequest request, Model model,
+									@RequestParam(value = "TEMPLATE", required = false) boolean importTemplates,
+									@RequestParam(value = "CHART", required = false) boolean importCharts)
+	{
+		request.setAttribute("importTemplates", importTemplates, WebRequest.SCOPE_SESSION);
+		request.setAttribute("importCharts", importCharts, WebRequest.SCOPE_SESSION);
+
+		model.addAttribute("database", request.getAttribute("database", WebRequest.SCOPE_SESSION));
+		model.addAttribute("availableAccounts", accountService.getAllAccountsAsc());
+		return "redirect:/settings/database/import/step2";
+	}
+
+	@GetMapping("/database/import/step2")
+	public String importStepTwo(WebRequest request, Model model)
 	{
 		model.addAttribute("database", request.getAttribute("database", WebRequest.SCOPE_SESSION));
 		model.addAttribute("availableAccounts", accountService.getAllAccountsAsc());
-		return "settings/import";
+		return "settings/importStepTwo";
 	}
 
-	@PostMapping("/database/import")
+	@PostMapping("/database/import/step3")
 	public String importDatabase(WebRequest request, @ModelAttribute("Import") AccountMatchList accountMatchList, Model model)
 	{
 		final Map<EntityType, Integer> numberOfImportedEntitiesByType = importService.importDatabase((Database) request.getAttribute("database", WebRequest.SCOPE_SESSION), accountMatchList);

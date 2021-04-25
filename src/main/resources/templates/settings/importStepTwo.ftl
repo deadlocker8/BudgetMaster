@@ -19,56 +19,13 @@
 
                 <div class="container">
                     <div class="section center-align">
-                        <div class="headline-small">${locale.getString("info.database.import")}</div>
-                    </div>
-                </div>
-
-                <div class="container">
-                    <div class="row">
-                        <div class="col s10 offset-s1 m8 offset-m2 l6 offset-l3">
-                            <table>
-                                <#list database.getNumberOfEntitiesByType() as entityType, numberOfItems>
-                                    <tr>
-                                        <td>
-                                            <label>
-                                                <input type="checkbox" checked="checked" name="${entityType.name()}" <#if entityType.getImportRequired().name() == "REQUIRED">disabled="disabled"</#if>>
-                                                <span></span>
-                                            </label>
-                                        </td>
-                                        <td><i class="material-icons left">${entityType.getIcon()}</i>
-                                            <div class="import-entity-name">${locale.getString(entityType.getLocalizationKey())}</div>
-                                        </td>
-                                        <td>${numberOfItems}</td>
-                                        <td><a class="btn btn-flat text-default import-entity-help-button"
-                                               data-title="${locale.getString(entityType.getLocalizationKey())}"
-                                               data-text="${locale.getString("import.entity." + entityType.name()?lower_case)}"><i class="material-icons">help_outline</i></a>
-                                        </td>
-                                    </tr>
-                                </#list>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="modal-import-entity-help" class="modal background-color">
-                    <div class="modal-content">
-                        <h4 id="modal-import-entity-help-title"></h4>
-                        <p id="modal-import-entity-help-content"></p>
-                    </div>
-                    <div class="modal-footer background-color">
-                        <@header.buttonLink url='' icon='done' localizationKey='ok' color='green' classes='modal-action modal-close text-white' noUrl=true/>
-                    </div>
-                </div>
-
-                <div class="container">
-                    <div class="section center-align">
                         <div class="headline-small">${locale.getString("info.database.import.match.accounts")}</div>
                     </div>
                 </div>
 
                 <div class="container">
                     <#import "../helpers/validation.ftl" as validation>
-                    <form name="Import" action="<@s.url '/settings/database/import'/>" method="post" onsubmit="return validateForm()">
+                    <form name="Import" action="<@s.url '/settings/database/import/step3'/>" method="post" onsubmit="return validateForm()">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                         <table class="bordered">

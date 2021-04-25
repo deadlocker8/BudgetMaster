@@ -154,7 +154,7 @@ public class AccountController extends BaseController
 
 		if(request.getSession().getAttribute("database") != null)
 		{
-			return "redirect:/settings/database/accountMatcher";
+			return "redirect:/settings/database/import/step2";
 		}
 
 		return "redirect:/accounts";
