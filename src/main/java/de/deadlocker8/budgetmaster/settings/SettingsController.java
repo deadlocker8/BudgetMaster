@@ -82,6 +82,9 @@ public class SettingsController extends BaseController
 	{
 		prepareBasicModel(model, settingsService.getSettings());
 		request.removeAttribute("database", WebRequest.SCOPE_SESSION);
+		request.removeAttribute("importTemplates", WebRequest.SCOPE_SESSION);
+		request.removeAttribute("importCharts", WebRequest.SCOPE_SESSION);
+
 		return "settings/settings";
 	}
 
@@ -304,11 +307,15 @@ public class SettingsController extends BaseController
 	public String importDatabase(WebRequest request, @ModelAttribute("Import") AccountMatchList accountMatchList, Model model)
 	{
 		final Database database = (Database) request.getAttribute("database", WebRequest.SCOPE_SESSION);
+		request.removeAttribute("database", RequestAttributes.SCOPE_SESSION);
+
 		final Boolean importTemplates = (Boolean) request.getAttribute("importTemplates", WebRequest.SCOPE_SESSION);
+		request.removeAttribute("importTemplates", RequestAttributes.SCOPE_SESSION);
+
 		final Boolean importCharts = (Boolean) request.getAttribute("importCharts", WebRequest.SCOPE_SESSION);
+		request.removeAttribute("importCharts", RequestAttributes.SCOPE_SESSION);
 
 		final Map<EntityType, Integer> numberOfImportedEntitiesByType = importService.importDatabase(database, accountMatchList, importTemplates, importCharts);
-		request.removeAttribute("database", RequestAttributes.SCOPE_SESSION);
 		prepareBasicModel(model, settingsService.getSettings());
 
 		final String message = Localization.getString("notification.settings.database.import.success",
