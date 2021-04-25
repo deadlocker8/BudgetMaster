@@ -114,6 +114,11 @@ public class IntegrationTestHelper
 		// confirm upload
 		driver.findElement(By.id("button-confirm-database-import")).click();
 
+		// confirm import step 1
+		driver.findElement(By.id("buttonImport")).click();
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("button-new-account")));
+
 		// create new accounts
 		for(Account account : destinationAccounts)
 		{
@@ -124,7 +129,7 @@ public class IntegrationTestHelper
 		matchAccounts(sourceAccounts, destinationAccounts);
 
 		// confirm import
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("buttonImport")));
 		final WebElement buttonImport = driver.findElement(By.id("buttonImport"));
 		buttonImport.sendKeys("");
