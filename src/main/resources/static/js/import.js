@@ -10,6 +10,19 @@ $(document).ready(function()
             return false;
         }
     });
+
+    $('.import-entity-help-button').click(function()
+    {
+        let modalTitle = document.getElementById('modal-import-entity-help-title');
+        modalTitle.innerHTML = this.dataset.title;
+
+        let modalContent = document.getElementById('modal-import-entity-help-content');
+        modalContent.innerHTML = this.dataset.text;
+
+        let modalElement = document.getElementById('modal-import-entity-help');
+        let modalInstance = M.Modal.getInstance(modalElement);
+        modalInstance.open();
+    });
 });
 
 function validateForm()

@@ -90,9 +90,9 @@ public class Database
 		numberOfEntitiesByType.put(EntityType.CATEGORY, categories.size());
 		numberOfEntitiesByType.put(EntityType.ACCOUNT, accounts.size());
 		numberOfEntitiesByType.put(EntityType.TRANSACTION, transactions.size());
-		numberOfEntitiesByType.put(EntityType.CHART, charts.size());
-		numberOfEntitiesByType.put(EntityType.IMAGE, images.size());
 		numberOfEntitiesByType.put(EntityType.TEMPLATE, templates.size());
+		numberOfEntitiesByType.put(EntityType.IMAGE, images.size());
+		numberOfEntitiesByType.put(EntityType.CHART, charts.size());
 		return numberOfEntitiesByType;
 	}
 }

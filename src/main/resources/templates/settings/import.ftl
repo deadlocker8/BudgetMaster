@@ -29,12 +29,25 @@
                             <table>
                                 <#list database.getNumberOfEntitiesByType() as entityType, numberOfItems>
                                     <tr>
-                                        <td class="valign-wrapper"><i class="material-icons">${entityType.getIcon()}</i><div class="import-entity-name">${locale.getString(entityType.getLocalizationKey())}</div></td>
+                                        <td><i class="material-icons left">${entityType.getIcon()}</i><div class="import-entity-name">${locale.getString(entityType.getLocalizationKey())}</div></td>
                                         <td>${numberOfItems}</td>
+                                        <td><a class="btn btn-flat text-default import-entity-help-button"
+                                               data-title="${locale.getString(entityType.getLocalizationKey())}"
+                                               data-text="${locale.getString("import.entity." + entityType.name()?lower_case)}"><i class="material-icons">help_outline</i></a></td>
                                     </tr>
                                 </#list>
                             </table>
                         </div>
+                    </div>
+                </div>
+
+                <div id="modal-import-entity-help" class="modal background-color">
+                    <div class="modal-content">
+                        <h4 id="modal-import-entity-help-title"></h4>
+                        <p id="modal-import-entity-help-content"></p>
+                    </div>
+                    <div class="modal-footer background-color">
+                        <@header.buttonLink url='' icon='done' localizationKey='ok' color='green' classes='modal-action modal-close text-white' noUrl=true/>
                     </div>
                 </div>
 
