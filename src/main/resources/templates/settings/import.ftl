@@ -29,11 +29,20 @@
                             <table>
                                 <#list database.getNumberOfEntitiesByType() as entityType, numberOfItems>
                                     <tr>
-                                        <td><i class="material-icons left">${entityType.getIcon()}</i><div class="import-entity-name">${locale.getString(entityType.getLocalizationKey())}</div></td>
+                                        <td>
+                                            <label>
+                                                <input type="checkbox" checked="checked" name="${entityType.name()}" <#if entityType.getImportRequired().name() == "REQUIRED">disabled="disabled"</#if>>
+                                                <span></span>
+                                            </label>
+                                        </td>
+                                        <td><i class="material-icons left">${entityType.getIcon()}</i>
+                                            <div class="import-entity-name">${locale.getString(entityType.getLocalizationKey())}</div>
+                                        </td>
                                         <td>${numberOfItems}</td>
                                         <td><a class="btn btn-flat text-default import-entity-help-button"
                                                data-title="${locale.getString(entityType.getLocalizationKey())}"
-                                               data-text="${locale.getString("import.entity." + entityType.name()?lower_case)}"><i class="material-icons">help_outline</i></a></td>
+                                               data-text="${locale.getString("import.entity." + entityType.name()?lower_case)}"><i class="material-icons">help_outline</i></a>
+                                        </td>
                                     </tr>
                                 </#list>
                             </table>

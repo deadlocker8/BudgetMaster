@@ -290,6 +290,13 @@ input[type="checkbox"]:checked + span:not(.lever)::before {
     border-bottom: 3px solid var(--color-blue);
 }
 
+input[type="checkbox"]:checked:disabled + span:not(.lever)::before {
+    border-top: 3px solid transparent;
+    border-left: 3px solid transparent;
+    border-right: 3px solid var(--color-disabled);
+    border-bottom: 3px solid var(--color-disabled);
+}
+
 /* chips autocomplete dropdown */
 .autocomplete-content li span {
     color: var(--color-blue);
@@ -579,6 +586,13 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     border-left: 3px solid transparent;
     border-right: 3px solid #45A0EF;
     border-bottom: 3px solid #45A0EF;
+}
+
+[data-theme="dark"] input[type="checkbox"]:checked:disabled + span:not(.lever)::before {
+    border-top: 3px solid transparent;
+    border-left: 3px solid transparent;
+    border-right: 3px solid var(--color-disabled);
+    border-bottom: 3px solid var(--color-disabled);
 }
 
 [data-theme="dark"] ul.dropdown-content.select-dropdown li {
