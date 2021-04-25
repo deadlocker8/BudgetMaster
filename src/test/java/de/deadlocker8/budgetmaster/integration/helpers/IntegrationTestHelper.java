@@ -135,10 +135,13 @@ public class IntegrationTestHelper
 		buttonImport.sendKeys("");
 		buttonImport.click();
 
+		wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("import-entity-name")));
+
+		// close result page
+		driver.findElement(By.id("button-finish-import")).click();
 		assertEquals(Localization.getString("menu.settings"), IntegrationTestHelper.getTextNode(driver.findElement(By.className("headline"))));
 
-		// open transactions page in order to update repeating transactions
-		driver.get(url + "/transactions");
 		start();
 	}
 
