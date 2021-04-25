@@ -315,19 +315,12 @@ public class SettingsController extends BaseController
 		final Boolean importCharts = (Boolean) request.getAttribute("importCharts", RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute("importCharts", RequestAttributes.SCOPE_SESSION);
 
-		final Map<EntityType, Integer> numberOfImportedEntitiesByType = importService.importDatabase(database, accountMatchList, importTemplates, importCharts);
 		prepareBasicModel(model, settingsService.getSettings());
 
-		final String message = Localization.getString("notification.settings.database.import.success",
-				numberOfImportedEntitiesByType.get(EntityType.ACCOUNT),
-				numberOfImportedEntitiesByType.get(EntityType.TRANSACTION),
-				numberOfImportedEntitiesByType.get(EntityType.CATEGORY),
-				numberOfImportedEntitiesByType.get(EntityType.TEMPLATE),
-				numberOfImportedEntitiesByType.get(EntityType.CHART),
-				numberOfImportedEntitiesByType.get(EntityType.IMAGE));
-		WebRequestUtils.putNotification(request, new Notification(message, NotificationType.SUCCESS));
+		final Map<EntityType, Integer> numberOfImportedEntitiesByType = importService.importDatabase(database, accountMatchList, importTemplates, importCharts);
+		model.addAttribute("numberOfImportedEntitiesByType", numberOfImportedEntitiesByType);
 
-		return "settings/settings";
+		return "settings/importResult";
 	}
 
 	@GetMapping("/updateSearch")
