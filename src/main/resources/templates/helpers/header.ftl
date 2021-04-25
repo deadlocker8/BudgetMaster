@@ -53,8 +53,8 @@
             <#nested>
         </div>
         <div class="modal-footer background-color">
-            <@buttonLink url=confirmUrl icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white'/>
-            <@buttonLink url=cancelUrlBase + '/' + itemId?c + '/delete' icon='delete' localizationKey=confirmButtonTextKey color='green' classes='modal-action modal-close text-white'/>
+            <@buttonLink url=cancelUrlBase icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white'/>
+            <@buttonLink url=confirmUrl + '/' + itemId?c + '/delete' icon='delete' localizationKey=confirmButtonTextKey color='green' classes='modal-action modal-close text-white'/>
         </div>
     </div>
 </#macro>

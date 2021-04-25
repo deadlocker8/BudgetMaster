@@ -60,7 +60,7 @@
             </div>
 
             <#if currentChart??>
-                <@header.modalConfirmDelete title=locale.getString("info.title.chart.delete") confirmUrl='/charts/manage' cancelUrlBase='/charts' itemId=currentChart.getID() confirmButtonTextKey='info.title.chart.delete'>
+                <@header.modalConfirmDelete title=locale.getString("info.title.chart.delete") confirmUrl='/charts' cancelUrlBase='/charts/manage' itemId=currentChart.getID() confirmButtonTextKey='info.title.chart.delete'>
                     <p>${locale.getString("info.text.chart.delete", currentChart.getName())}</p>
                 </@header.modalConfirmDelete>
             </#if>
