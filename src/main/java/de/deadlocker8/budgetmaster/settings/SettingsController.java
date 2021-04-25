@@ -81,9 +81,9 @@ public class SettingsController extends BaseController
 	public String settings(WebRequest request, Model model)
 	{
 		prepareBasicModel(model, settingsService.getSettings());
-		request.removeAttribute("database", WebRequest.SCOPE_SESSION);
-		request.removeAttribute("importTemplates", WebRequest.SCOPE_SESSION);
-		request.removeAttribute("importCharts", WebRequest.SCOPE_SESSION);
+		request.removeAttribute("database", RequestAttributes.SCOPE_SESSION);
+		request.removeAttribute("importTemplates", RequestAttributes.SCOPE_SESSION);
+		request.removeAttribute("importCharts", RequestAttributes.SCOPE_SESSION);
 
 		return "settings/settings";
 	}
@@ -262,7 +262,7 @@ public class SettingsController extends BaseController
 			DatabaseParser importer = new DatabaseParser(jsonString, categoryService.findByType(CategoryType.NONE));
 			Database database = importer.parseDatabaseFromJSON();
 
-			request.setAttribute("database", database, WebRequest.SCOPE_SESSION);
+			request.setAttribute("database", database, RequestAttributes.SCOPE_SESSION);
 			return "redirect:/settings/database/import/step1";
 		}
 		catch(Exception e)
@@ -278,7 +278,7 @@ public class SettingsController extends BaseController
 	@GetMapping("/database/import/step1")
 	public String importStepOne(WebRequest request, Model model)
 	{
-		model.addAttribute("database", request.getAttribute("database", WebRequest.SCOPE_SESSION));
+		model.addAttribute("database", request.getAttribute("database", RequestAttributes.SCOPE_SESSION));
 		return "settings/importStepOne";
 	}
 
@@ -287,10 +287,10 @@ public class SettingsController extends BaseController
 									@RequestParam(value = "TEMPLATE", required = false) boolean importTemplates,
 									@RequestParam(value = "CHART", required = false) boolean importCharts)
 	{
-		request.setAttribute("importTemplates", importTemplates, WebRequest.SCOPE_SESSION);
-		request.setAttribute("importCharts", importCharts, WebRequest.SCOPE_SESSION);
+		request.setAttribute("importTemplates", importTemplates, RequestAttributes.SCOPE_SESSION);
+		request.setAttribute("importCharts", importCharts, RequestAttributes.SCOPE_SESSION);
 
-		model.addAttribute("database", request.getAttribute("database", WebRequest.SCOPE_SESSION));
+		model.addAttribute("database", request.getAttribute("database", RequestAttributes.SCOPE_SESSION));
 		model.addAttribute("availableAccounts", accountService.getAllAccountsAsc());
 		return "redirect:/settings/database/import/step2";
 	}
@@ -298,7 +298,7 @@ public class SettingsController extends BaseController
 	@GetMapping("/database/import/step2")
 	public String importStepTwo(WebRequest request, Model model)
 	{
-		model.addAttribute("database", request.getAttribute("database", WebRequest.SCOPE_SESSION));
+		model.addAttribute("database", request.getAttribute("database", RequestAttributes.SCOPE_SESSION));
 		model.addAttribute("availableAccounts", accountService.getAllAccountsAsc());
 		return "settings/importStepTwo";
 	}
@@ -306,13 +306,13 @@ public class SettingsController extends BaseController
 	@PostMapping("/database/import/step3")
 	public String importDatabase(WebRequest request, @ModelAttribute("Import") AccountMatchList accountMatchList, Model model)
 	{
-		final Database database = (Database) request.getAttribute("database", WebRequest.SCOPE_SESSION);
+		final Database database = (Database) request.getAttribute("database", RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute("database", RequestAttributes.SCOPE_SESSION);
 
-		final Boolean importTemplates = (Boolean) request.getAttribute("importTemplates", WebRequest.SCOPE_SESSION);
+		final Boolean importTemplates = (Boolean) request.getAttribute("importTemplates", RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute("importTemplates", RequestAttributes.SCOPE_SESSION);
 
-		final Boolean importCharts = (Boolean) request.getAttribute("importCharts", WebRequest.SCOPE_SESSION);
+		final Boolean importCharts = (Boolean) request.getAttribute("importCharts", RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute("importCharts", RequestAttributes.SCOPE_SESSION);
 
 		final Map<EntityType, Integer> numberOfImportedEntitiesByType = importService.importDatabase(database, accountMatchList, importTemplates, importCharts);
