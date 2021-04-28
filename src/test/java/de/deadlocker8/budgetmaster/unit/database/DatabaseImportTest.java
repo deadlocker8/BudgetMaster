@@ -17,6 +17,8 @@ import de.deadlocker8.budgetmaster.images.ImageFileExtension;
 import de.deadlocker8.budgetmaster.images.ImageRepository;
 import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.repeating.RepeatingTransactionUpdater;
+import de.deadlocker8.budgetmaster.services.EntityType;
+import de.deadlocker8.budgetmaster.services.ImportResultItem;
 import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.TagRepository;
@@ -486,6 +488,7 @@ public class DatabaseImportTest
 		assertThat(databaseResult.getCharts())
 				.hasSize(1)
 				.contains(chart);
+		assertThat(importService.getCollectedErrorMessages()).isEmpty();
 	}
 
 	@Test
@@ -646,5 +649,27 @@ public class DatabaseImportTest
 
 		// assert
 		Mockito.verify(chartRepositoryMock, Mockito.never()).save(Mockito.any());
+	}
+
+	@Test
+	public void test_errorWhileImportingCategory_shouldBeCollected()
+	{
+		Category category1 = new Category("Category1", "#ff0000", CategoryType.CUSTOM);
+		category1.setID(3);
+
+		Category category2 = new Category("Category2", "#ff0000", CategoryType.CUSTOM);
+		category2.setID(4);
+
+		// raise exception
+		Mockito.when(categoryRepository.findByNameAndColorAndType(Mockito.eq("Category1"), Mockito.any(), Mockito.any())).thenThrow(new NullPointerException());
+		Mockito.when(categoryRepository.findByNameAndColorAndType(Mockito.eq("Category2"), Mockito.any(), Mockito.any())).thenReturn(category2);
+
+		Database database = new Database(List.of(category1, category2), List.of(), List.of(), List.of(), List.of(), List.of());
+		final List<ImportResultItem> importResultItems = importService.importDatabase(database, new AccountMatchList(List.of()), false, false);
+
+		assertThat(importResultItems).hasSize(6)
+				.contains(new ImportResultItem(EntityType.CATEGORY, 1, 2));
+		assertThat(importService.getCollectedErrorMessages()).hasSize(1)
+				.contains("Error while importing category with ID 3: java.lang.NullPointerException (null)");
 	}
 }

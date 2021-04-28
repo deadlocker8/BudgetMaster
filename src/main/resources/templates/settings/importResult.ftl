@@ -27,12 +27,12 @@
                     <div class="row">
                         <div class="col s10 offset-s1 m8 offset-m2 l6 offset-l3">
                             <table>
-                                <#list numberOfImportedEntitiesByType as entityType, numberOfItems>
+                                <#list importResultItems as item>
                                     <tr>
-                                        <td><i class="material-icons left">${entityType.getIcon()}</i>
-                                            <div class="import-entity-name">${locale.getString(entityType.getLocalizationKey())}</div>
+                                        <td><i class="material-icons left">${item.getEntityType().getIcon()}</i>
+                                            <div class="import-entity-name">${locale.getString(item.getEntityType().getLocalizationKey())}</div>
                                         </td>
-                                        <td>${numberOfItems}</td>
+                                        <td>${item.getNumberOfImportedItems()}/${item.getNumberOfAvailableItems()}</td>
                                     </tr>
                                 </#list>
                             </table>

@@ -26,7 +26,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ImportService
@@ -42,6 +43,7 @@ public class ImportService
 	private final RepeatingTransactionUpdater repeatingTransactionUpdater;
 
 	private Database database;
+	private List<String> collectedErrorMessages;
 
 	@Autowired
 	public ImportService(CategoryRepository categoryRepository, TransactionRepository transactionRepository, TemplateRepository templateRepository,
@@ -56,44 +58,43 @@ public class ImportService
 		this.repeatingTransactionUpdater = repeatingTransactionUpdater;
 	}
 
-	public Map<EntityType, Integer> importDatabase(Database database, AccountMatchList accountMatchList, Boolean importTemplates, Boolean importCharts)
+	public List<ImportResultItem> importDatabase(Database database, AccountMatchList accountMatchList, Boolean importTemplates, Boolean importCharts)
 	{
 		this.database = database;
+		this.collectedErrorMessages = new ArrayList<>();
 
-		final Map<EntityType, Integer> numberOfImportedEntitiesByType = new LinkedHashMap<>();
+		final List<ImportResultItem> importResultItems = new ArrayList<>();
 
 		LOGGER.debug("Importing database...");
-		numberOfImportedEntitiesByType.put(EntityType.CATEGORY, importCategories());
-		numberOfImportedEntitiesByType.put(EntityType.ACCOUNT, importAccounts(accountMatchList));
-		numberOfImportedEntitiesByType.put(EntityType.TRANSACTION, importTransactions());
+		importResultItems.add(importCategories());
+		importResultItems.add(importAccounts(accountMatchList));
+		importResultItems.add(importTransactions());
 
-		numberOfImportedEntitiesByType.put(EntityType.IMAGE, importImages());
+		importResultItems.add(importImages());
 
 		if(importTemplates)
 		{
-			numberOfImportedEntitiesByType.put(EntityType.TEMPLATE, importTemplates());
+			importResultItems.add(importTemplates());
 		}
 		else
 		{
-			numberOfImportedEntitiesByType.put(EntityType.TEMPLATE, 0);
+			importResultItems.add(new ImportResultItem(EntityType.TEMPLATE, 0, 0));
 		}
 
 		if(importCharts)
 		{
-			numberOfImportedEntitiesByType.put(EntityType.CHART, importCharts());
+			importResultItems.add(importCharts());
 		}
 		else
 		{
-			numberOfImportedEntitiesByType.put(EntityType.CHART, 0);
+			importResultItems.add(new ImportResultItem(EntityType.CHART, 0, 0));
 		}
-
 
 		LOGGER.debug("Updating repeating transactions...");
 		repeatingTransactionUpdater.updateRepeatingTransactions(DateTime.now());
 
 		LOGGER.debug("Importing database DONE");
-
-		return numberOfImportedEntitiesByType;
+		return importResultItems;
 	}
 
 	public Database getDatabase()
@@ -101,35 +102,59 @@ public class ImportService
 		return database;
 	}
 
-	private Integer importCategories()
+	public List<String> getCollectedErrorMessages()
+	{
+		return collectedErrorMessages;
+	}
+
+	private String formatErrorMessage(String errorMessage, Exception e)
+	{
+		return MessageFormat.format("{0}: {1} ({2})", errorMessage, e.getClass().getName(), e.getMessage());
+	}
+
+	private ImportResultItem importCategories()
 	{
 		List<Category> categories = database.getCategories();
 		LOGGER.debug(MessageFormat.format("Importing {0} categories...", categories.size()));
 		List<TransactionBase> alreadyUpdatedTransactions = new ArrayList<>();
 		List<TransactionBase> alreadyUpdatedTemplates = new ArrayList<>();
+		int numberOfImportedCategories = 0;
 
 		for(Category category : categories)
 		{
 			LOGGER.debug(MessageFormat.format("Importing category {0}", category.getName()));
-			int oldCategoryID = category.getID();
-			int newCategoryID = importCategory(category);
 
-			if(oldCategoryID == newCategoryID)
+			try
 			{
-				continue;
+				int oldCategoryID = category.getID();
+				int newCategoryID = importCategory(category);
+
+				if(oldCategoryID == newCategoryID)
+				{
+					numberOfImportedCategories++;
+					continue;
+				}
+
+				List<TransactionBase> transactions = new ArrayList<>(database.getTransactions());
+				transactions.removeAll(alreadyUpdatedTransactions);
+				alreadyUpdatedTransactions.addAll(updateCategoriesForItems(transactions, oldCategoryID, newCategoryID));
+
+				List<TransactionBase> templates = new ArrayList<>(database.getTemplates());
+				templates.removeAll(alreadyUpdatedTemplates);
+				alreadyUpdatedTemplates.addAll(updateCategoriesForItems(templates, oldCategoryID, newCategoryID));
+
+				numberOfImportedCategories++;
 			}
-
-			List<TransactionBase> transactions = new ArrayList<>(database.getTransactions());
-			transactions.removeAll(alreadyUpdatedTransactions);
-			alreadyUpdatedTransactions.addAll(updateCategoriesForItems(transactions, oldCategoryID, newCategoryID));
-
-			List<TransactionBase> templates = new ArrayList<>(database.getTemplates());
-			templates.removeAll(alreadyUpdatedTemplates);
-			alreadyUpdatedTemplates.addAll(updateCategoriesForItems(templates, oldCategoryID, newCategoryID));
+			catch(Exception e)
+			{
+				final String errorMessage = MessageFormat.format("Error while importing category with ID {0}", category.getID());
+				LOGGER.error(errorMessage, e);
+				collectedErrorMessages.add(formatErrorMessage(errorMessage, e));
+			}
 		}
 
-		LOGGER.debug("Importing categories DONE");
-		return categories.size();
+		LOGGER.debug(MessageFormat.format("Importing categories DONE ({0}/{1})", numberOfImportedCategories, categories.size()));
+		return new ImportResultItem(EntityType.CATEGORY, numberOfImportedCategories, categories.size());
 	}
 
 	private int importCategory(Category category)
@@ -183,7 +208,7 @@ public class ImportService
 		return updatedItems;
 	}
 
-	private Integer importAccounts(AccountMatchList accountMatchList)
+	private ImportResultItem importAccounts(AccountMatchList accountMatchList)
 	{
 		LOGGER.debug(MessageFormat.format("Importing {0} accounts...", accountMatchList.getAccountMatches().size()));
 		List<TransactionBase> alreadyUpdatedTransactions = new ArrayList<>();
@@ -191,29 +216,42 @@ public class ImportService
 		List<TransactionBase> alreadyUpdatedTemplates = new ArrayList<>();
 		List<TransactionBase> alreadyUpdatedTransferTemplates = new ArrayList<>();
 
+		int numberOfImportedAccounts = 0;
+
 		for(AccountMatch accountMatch : accountMatchList.getAccountMatches())
 		{
 			LOGGER.debug(MessageFormat.format("Importing account {0} -> {1}", accountMatch.getAccountSource().getName(), accountMatch.getAccountDestination().getName()));
 
-			List<TransactionBase> transactions = new ArrayList<>(database.getTransactions());
-			transactions.removeAll(alreadyUpdatedTransactions);
-			alreadyUpdatedTransactions.addAll(updateAccountsForItems(transactions, accountMatch.getAccountSource().getID(), accountMatch.getAccountDestination()));
+			try
+			{
+				List<TransactionBase> transactions = new ArrayList<>(database.getTransactions());
+				transactions.removeAll(alreadyUpdatedTransactions);
+				alreadyUpdatedTransactions.addAll(updateAccountsForItems(transactions, accountMatch.getAccountSource().getID(), accountMatch.getAccountDestination()));
 
-			List<TransactionBase> transferTransactions = new ArrayList<>(database.getTransactions());
-			transferTransactions.removeAll(alreadyUpdatedTransferTransactions);
-			alreadyUpdatedTransferTransactions.addAll(updateTransferAccountsForItems(transferTransactions, accountMatch.getAccountSource().getID(), accountMatch.getAccountDestination()));
+				List<TransactionBase> transferTransactions = new ArrayList<>(database.getTransactions());
+				transferTransactions.removeAll(alreadyUpdatedTransferTransactions);
+				alreadyUpdatedTransferTransactions.addAll(updateTransferAccountsForItems(transferTransactions, accountMatch.getAccountSource().getID(), accountMatch.getAccountDestination()));
 
-			List<TransactionBase> templates = new ArrayList<>(database.getTemplates());
-			templates.removeAll(alreadyUpdatedTemplates);
-			alreadyUpdatedTemplates.addAll(updateAccountsForItems(templates, accountMatch.getAccountSource().getID(), accountMatch.getAccountDestination()));
+				List<TransactionBase> templates = new ArrayList<>(database.getTemplates());
+				templates.removeAll(alreadyUpdatedTemplates);
+				alreadyUpdatedTemplates.addAll(updateAccountsForItems(templates, accountMatch.getAccountSource().getID(), accountMatch.getAccountDestination()));
 
-			List<TransactionBase> transferTemplates = new ArrayList<>(database.getTemplates());
-			transferTemplates.removeAll(alreadyUpdatedTransferTemplates);
-			alreadyUpdatedTransferTemplates.addAll(updateTransferAccountsForItems(transferTemplates, accountMatch.getAccountSource().getID(), accountMatch.getAccountDestination()));
+				List<TransactionBase> transferTemplates = new ArrayList<>(database.getTemplates());
+				transferTemplates.removeAll(alreadyUpdatedTransferTemplates);
+				alreadyUpdatedTransferTemplates.addAll(updateTransferAccountsForItems(transferTemplates, accountMatch.getAccountSource().getID(), accountMatch.getAccountDestination()));
+
+				numberOfImportedAccounts++;
+			}
+			catch(Exception e)
+			{
+				final String errorMessage = MessageFormat.format("Error while importing account with name \"{0}\"", accountMatch.getAccountSource().getName());
+				LOGGER.error(errorMessage, e);
+				collectedErrorMessages.add(formatErrorMessage(errorMessage, e));
+			}
 		}
 
-		LOGGER.debug("Importing accounts DONE");
-		return accountMatchList.getAccountMatches().size();
+		LOGGER.debug(MessageFormat.format("Importing accounts DONE ({0}/{1})", numberOfImportedAccounts, accountMatchList.getAccountMatches().size()));
+		return new ImportResultItem(EntityType.ACCOUNT, numberOfImportedAccounts, accountMatchList.getAccountMatches().size());
 	}
 
 	public List<TransactionBase> updateAccountsForItems(List<TransactionBase> items, int oldAccountID, Account newAccount)
@@ -262,20 +300,35 @@ public class ImportService
 		return updatedTransactions;
 	}
 
-	private Integer importTransactions()
+	private ImportResultItem importTransactions()
 	{
 		List<Transaction> transactions = database.getTransactions();
 		LOGGER.debug(MessageFormat.format("Importing {0} transactions...", transactions.size()));
+
+		int numberOfImportedTransactions = 0;
+
 		for(int i = 0; i < transactions.size(); i++)
 		{
 			Transaction transaction = transactions.get(i);
-			LOGGER.debug(MessageFormat.format("Importing transaction {0}/{1} (name: {2}, date: {3})", i + 1, transactions.size(), transaction.getName(), transaction.getDate()));
-			updateTagsForItem(transaction);
-			transaction.setID(null);
-			transactionRepository.save(transaction);
+			try
+			{
+				LOGGER.debug(MessageFormat.format("Importing transaction {0}/{1} (name: {2}, date: {3})", i + 1, transactions.size(), transaction.getName(), transaction.getDate()));
+				updateTagsForItem(transaction);
+				transaction.setID(null);
+				transactionRepository.save(transaction);
+
+				numberOfImportedTransactions++;
+			}
+			catch(Exception e)
+			{
+				final String errorMessage = MessageFormat.format("Error while importing transaction with ID {0}", transaction.getID());
+				LOGGER.error(errorMessage, e);
+				collectedErrorMessages.add(formatErrorMessage(errorMessage, e));
+			}
 		}
-		LOGGER.debug("Importing transactions DONE");
-		return transactions.size();
+
+		LOGGER.debug(MessageFormat.format("Importing transactions DONE ({0}/{1})", numberOfImportedTransactions, transactions.size()));
+		return new ImportResultItem(EntityType.TRANSACTION, numberOfImportedTransactions, transactions.size());
 	}
 
 	public void updateTagsForItem(TransactionBase item)
@@ -297,70 +350,114 @@ public class ImportService
 		}
 	}
 
-	private Integer importTemplates()
+	private ImportResultItem importTemplates()
 	{
 		List<Template> templates = database.getTemplates();
 		LOGGER.debug(MessageFormat.format("Importing {0} templates...", templates.size()));
+
+		int numberOfImportedTemplates = 0;
+
 		for(int i = 0; i < templates.size(); i++)
 		{
 			Template template = templates.get(i);
-			LOGGER.debug(MessageFormat.format("Importing template {0}/{1} (templateName: {2})", i + 1, templates.size(), template.getTemplateName()));
-			updateTagsForItem(template);
-			template.setID(null);
-			templateRepository.save(template);
+			try
+			{
+				LOGGER.debug(MessageFormat.format("Importing template {0}/{1} (templateName: {2})", i + 1, templates.size(), template.getTemplateName()));
+				updateTagsForItem(template);
+				template.setID(null);
+				templateRepository.save(template);
+
+				numberOfImportedTemplates++;
+			}
+			catch(Exception e)
+			{
+				final String errorMessage = MessageFormat.format("Error while importing template with ID {0}", template.getID());
+				LOGGER.error(errorMessage, e);
+				collectedErrorMessages.add(formatErrorMessage(errorMessage, e));
+			}
 		}
-		LOGGER.debug("Importing templates DONE");
-		return templates.size();
+
+		LOGGER.debug(MessageFormat.format("Importing templates DONE ({0}/{1})", numberOfImportedTemplates, templates.size()));
+		return new ImportResultItem(EntityType.TEMPLATE, numberOfImportedTemplates, templates.size());
 	}
 
-	private Integer importCharts()
+	private ImportResultItem importCharts()
 	{
 		List<Chart> charts = database.getCharts();
 		LOGGER.debug(MessageFormat.format("Importing {0} charts...", charts.size()));
+
+		int numberOfImportedCharts = 0;
+
 		for(int i = 0; i < charts.size(); i++)
 		{
 			Chart chart = charts.get(i);
-			LOGGER.debug(MessageFormat.format("Importing chart {0}/{1} (name: {2})", i + 1, charts.size(), chart.getName()));
+			try
+			{
+				LOGGER.debug(MessageFormat.format("Importing chart {0}/{1} (name: {2})", i + 1, charts.size(), chart.getName()));
 
-			final int highestUsedID = chartService.getHighestUsedID();
-			chart.setID(highestUsedID + 1);
+				final int highestUsedID = chartService.getHighestUsedID();
+				chart.setID(highestUsedID + 1);
 
-			chartService.getRepository().save(chart);
+				chartService.getRepository().save(chart);
+
+				numberOfImportedCharts++;
+			}
+			catch(Exception e)
+			{
+				final String errorMessage = MessageFormat.format("Error while importing chart with ID {0}", chart.getID());
+				LOGGER.error(errorMessage, e);
+				collectedErrorMessages.add(formatErrorMessage(errorMessage, e));
+			}
 		}
-		LOGGER.debug("Importing charts DONE");
-		return charts.size();
+
+		LOGGER.debug(MessageFormat.format("Importing charts DONE ({0}/{1})", numberOfImportedCharts, charts.size()));
+		return new ImportResultItem(EntityType.CHART, numberOfImportedCharts, charts.size());
+
 	}
 
-	private Integer importImages()
+	private ImportResultItem importImages()
 	{
 		List<Image> images = database.getImages();
 		LOGGER.debug(MessageFormat.format("Importing {0} images...", images.size()));
 		List<Account> alreadyUpdatedAccounts = new ArrayList<>();
 		List<Template> alreadyUpdatedTemplates = new ArrayList<>();
 
+		int numberOfImportedImages = 0;
+
 		for(int i = 0; i < images.size(); i++)
 		{
 			Image image = images.get(i);
-			LOGGER.debug(MessageFormat.format("Importing image {0}/{1} (ID: {2})", i + 1, images.size(), image.getID()));
+			try
+			{
+				LOGGER.debug(MessageFormat.format("Importing image {0}/{1} (ID: {2})", i + 1, images.size(), image.getID()));
 
-			// always create new image
-			int oldImageID = image.getID();
-			Image imageToCreate = new Image(image.getImage(), image.getFileName(), image.getFileExtension());
+				// always create new image
+				int oldImageID = image.getID();
+				Image imageToCreate = new Image(image.getImage(), image.getFileName(), image.getFileExtension());
 
-			final Image savedImage = imageService.getRepository().save(imageToCreate);
-			int newImageID = savedImage.getID();
+				final Image savedImage = imageService.getRepository().save(imageToCreate);
+				int newImageID = savedImage.getID();
 
-			List<Account> accounts = new ArrayList<>(database.getAccounts());
-			accounts.removeAll(alreadyUpdatedAccounts);
-			alreadyUpdatedAccounts.addAll(updateImagesForAccounts(accounts, oldImageID, newImageID));
+				List<Account> accounts = new ArrayList<>(database.getAccounts());
+				accounts.removeAll(alreadyUpdatedAccounts);
+				alreadyUpdatedAccounts.addAll(updateImagesForAccounts(accounts, oldImageID, newImageID));
 
-			List<Template> templates = new ArrayList<>(database.getTemplates());
-			templates.removeAll(alreadyUpdatedTemplates);
-			alreadyUpdatedTemplates.addAll(updateImagesForTemplates(templates, oldImageID, newImageID));
+				List<Template> templates = new ArrayList<>(database.getTemplates());
+				templates.removeAll(alreadyUpdatedTemplates);
+				alreadyUpdatedTemplates.addAll(updateImagesForTemplates(templates, oldImageID, newImageID));
+
+				numberOfImportedImages++;
+			}
+			catch(Exception e)
+			{
+				final String errorMessage = MessageFormat.format("Error while importing image with ID {0}", image.getID());
+				LOGGER.error(errorMessage, e);
+				collectedErrorMessages.add(formatErrorMessage(errorMessage, e));
+			}
 		}
 
-		LOGGER.debug("Importing images DONE");
-		return images.size();
+		LOGGER.debug(MessageFormat.format("Importing images DONE ({0}/{1})", numberOfImportedImages, images.size()));
+		return new ImportResultItem(EntityType.IMAGE, numberOfImportedImages, images.size());
 	}
 
 	public List<Account> updateImagesForAccounts(List<Account> items, int oldImageId, int newImageID)

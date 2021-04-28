@@ -11,7 +11,7 @@ import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.DatabaseParser;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
-import de.deadlocker8.budgetmaster.services.EntityType;
+import de.deadlocker8.budgetmaster.services.ImportResultItem;
 import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.services.UpdateCheckService;
 import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
@@ -44,7 +44,6 @@ import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 
@@ -317,8 +316,8 @@ public class SettingsController extends BaseController
 
 		prepareBasicModel(model, settingsService.getSettings());
 
-		final Map<EntityType, Integer> numberOfImportedEntitiesByType = importService.importDatabase(database, accountMatchList, importTemplates, importCharts);
-		model.addAttribute("numberOfImportedEntitiesByType", numberOfImportedEntitiesByType);
+		final List<ImportResultItem> importResultItems = importService.importDatabase(database, accountMatchList, importTemplates, importCharts);
+		model.addAttribute("importResultItems", importResultItems);
 
 		return "settings/importResult";
 	}
