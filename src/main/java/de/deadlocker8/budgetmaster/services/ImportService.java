@@ -111,32 +111,8 @@ public class ImportService
 		for(Category category : categories)
 		{
 			LOGGER.debug(MessageFormat.format("Importing category {0}", category.getName()));
-			Category existingCategory;
-			if(category.getType().equals(CategoryType.NONE) || category.getType().equals(CategoryType.REST))
-			{
-				existingCategory = categoryRepository.findByType(category.getType());
-			}
-			else
-			{
-				existingCategory = categoryRepository.findByNameAndColorAndType(category.getName(), category.getColor(), category.getType());
-			}
-
 			int oldCategoryID = category.getID();
-			int newCategoryID;
-			if(existingCategory == null)
-			{
-				//category does not exist --> create it
-				Category categoryToCreate = new Category(category.getName(), category.getColor(), category.getType(), category.getIcon());
-				categoryRepository.save(categoryToCreate);
-
-				Category newCategory = categoryRepository.findByNameAndColorAndType(category.getName(), category.getColor(), category.getType());
-				newCategoryID = newCategory.getID();
-			}
-			else
-			{
-				//category already exists
-				newCategoryID = existingCategory.getID();
-			}
+			int newCategoryID = importCategory(category);
 
 			if(oldCategoryID == newCategoryID)
 			{
@@ -154,6 +130,36 @@ public class ImportService
 
 		LOGGER.debug("Importing categories DONE");
 		return categories.size();
+	}
+
+	private int importCategory(Category category)
+	{
+		Category existingCategory;
+		if(category.getType().equals(CategoryType.NONE) || category.getType().equals(CategoryType.REST))
+		{
+			existingCategory = categoryRepository.findByType(category.getType());
+		}
+		else
+		{
+			existingCategory = categoryRepository.findByNameAndColorAndType(category.getName(), category.getColor(), category.getType());
+		}
+
+		int newCategoryID;
+		if(existingCategory == null)
+		{
+			//category does not exist --> create it
+			Category categoryToCreate = new Category(category.getName(), category.getColor(), category.getType(), category.getIcon());
+			categoryRepository.save(categoryToCreate);
+
+			Category newCategory = categoryRepository.findByNameAndColorAndType(category.getName(), category.getColor(), category.getType());
+			newCategoryID = newCategory.getID();
+		}
+		else
+		{
+			//category already exists
+			newCategoryID = existingCategory.getID();
+		}
+		return newCategoryID;
 	}
 
 	public List<TransactionBase> updateCategoriesForItems(List<TransactionBase> items, int oldCategoryID, int newCategoryID)
