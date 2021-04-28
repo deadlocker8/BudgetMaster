@@ -23,6 +23,8 @@ $(document).ready(function()
         let modalInstance = M.Modal.getInstance(modalElement);
         modalInstance.open();
     });
+
+    $('.collapsible').collapsible();
 });
 
 function validateForm()

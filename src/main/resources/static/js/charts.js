@@ -4,7 +4,6 @@ let chartPickerEndDate;
 
 $(document).ready(function()
 {
-
     if($("#chart-script").length)
     {
         let editor = CodeMirror.fromTextArea(document.getElementById('chart-script'), {

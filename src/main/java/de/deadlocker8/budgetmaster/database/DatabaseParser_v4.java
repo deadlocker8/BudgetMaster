@@ -51,7 +51,6 @@ public class DatabaseParser_v4 extends DatabaseParser_v3
 		{
 			final JsonObject transactionObject = currentTransaction.getAsJsonObject();
 
-
 			int amount = transactionObject.get("amount").getAsInt();
 			String name = transactionObject.get("name").getAsString();
 			String description = transactionObject.get("description").getAsString();

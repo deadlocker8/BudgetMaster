@@ -318,6 +318,7 @@ public class SettingsController extends BaseController
 
 		final List<ImportResultItem> importResultItems = importService.importDatabase(database, accountMatchList, importTemplates, importCharts);
 		model.addAttribute("importResultItems", importResultItems);
+		model.addAttribute("errorMessages", importService.getCollectedErrorMessages());
 
 		return "settings/importResult";
 	}

@@ -4,6 +4,7 @@
         <@header.globals/>
         <@header.header "BudgetMaster - ${locale.getString('settings.database.import')}"/>
         <#import "/spring.ftl" as s>
+        <@header.style "collapsible"/>
     </head>
     <@header.body>
         <#import "../helpers/navbar.ftl" as navbar>
@@ -26,7 +27,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col s10 offset-s1 m8 offset-m2 l6 offset-l3">
-                            <table>
+                            <table class="bordered">
                                 <#list importResultItems as item>
                                     <tr>
                                         <td><i class="material-icons left">${item.getEntityType().getIcon()}</i>
@@ -39,6 +40,33 @@
                         </div>
                     </div>
                 </div>
+
+                <#if errorMessages?has_content>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col s12">
+                                <ul class="collapsible">
+                                    <li>
+                                        <div class="collapsible-header bold">
+                                            <i class="fas fa-exclamation-triangle text-red"></i>
+                                            ${locale.getString("info.database.import.result.errors")}
+                                        </div>
+                                        <div class="collapsible-body">
+                                            <table class="bordered">
+                                                <#list errorMessages as error>
+                                                    <tr>
+                                                        <td><i class="fas fa-exclamation-triangle text-red"></i></td>
+                                                        <td>${error}</td>
+                                                    </tr>
+                                                </#list>
+                                            </table>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </#if>
 
                 <div class="container">
                     <div class="row">

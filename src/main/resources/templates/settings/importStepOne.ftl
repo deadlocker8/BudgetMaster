@@ -28,8 +28,8 @@
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                         <div class="row">
-                            <div class="col s10 offset-s1 m8 offset-m2 l6 offset-l3">
-                                <table>
+                            <div class="col s12 m10 offset-m1 l10 offset-l1 xl8 offset-xl2">
+                                <table class="bordered">
                                     <#list database.getNumberOfEntitiesByType() as entityType, numberOfItems>
                                         <tr>
                                             <td>
