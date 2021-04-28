@@ -71,8 +71,8 @@ public class ImportService
 		importResultItems.add(importTransactions());
 
 		importResultItems.add(importImages());
-
 		if(importTemplates)
+
 		{
 			importResultItems.add(importTemplates());
 		}
@@ -147,7 +147,7 @@ public class ImportService
 			}
 			catch(Exception e)
 			{
-				final String errorMessage = MessageFormat.format("Error while importing category with ID {0}", category.getID());
+				final String errorMessage = MessageFormat.format("Error while importing category with name \"{0}\"", category.getName());
 				LOGGER.error(errorMessage, e);
 				collectedErrorMessages.add(formatErrorMessage(errorMessage, e));
 			}
@@ -321,7 +321,7 @@ public class ImportService
 			}
 			catch(Exception e)
 			{
-				final String errorMessage = MessageFormat.format("Error while importing transaction with ID {0}", transaction.getID());
+				final String errorMessage = MessageFormat.format("Error while importing transaction with name \"{0}\" from {1}", transaction.getName(), transaction.getDate().toString(DateFormatStyle.NORMAL.getKey()));
 				LOGGER.error(errorMessage, e);
 				collectedErrorMessages.add(formatErrorMessage(errorMessage, e));
 			}
@@ -371,7 +371,7 @@ public class ImportService
 			}
 			catch(Exception e)
 			{
-				final String errorMessage = MessageFormat.format("Error while importing template with ID {0}", template.getID());
+				final String errorMessage = MessageFormat.format("Error while importing template with name \"{0}\"", template.getName());
 				LOGGER.error(errorMessage, e);
 				collectedErrorMessages.add(formatErrorMessage(errorMessage, e));
 			}
@@ -404,7 +404,7 @@ public class ImportService
 			}
 			catch(Exception e)
 			{
-				final String errorMessage = MessageFormat.format("Error while importing chart with ID {0}", chart.getID());
+				final String errorMessage = MessageFormat.format("Error while importing chart with name \"{0}\"", chart.getName());
 				LOGGER.error(errorMessage, e);
 				collectedErrorMessages.add(formatErrorMessage(errorMessage, e));
 			}
