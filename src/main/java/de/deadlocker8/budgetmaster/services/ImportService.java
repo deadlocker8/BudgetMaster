@@ -26,10 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ImportService
@@ -63,21 +60,12 @@ public class ImportService
 	{
 		this.database = database;
 
-		final Map<EntityType, Integer> numberOfImportedEntitiesByType = new EnumMap<>(EntityType.class);
+		final Map<EntityType, Integer> numberOfImportedEntitiesByType = new LinkedHashMap<>();
 
 		LOGGER.debug("Importing database...");
 		numberOfImportedEntitiesByType.put(EntityType.CATEGORY, importCategories());
 		numberOfImportedEntitiesByType.put(EntityType.ACCOUNT, importAccounts(accountMatchList));
 		numberOfImportedEntitiesByType.put(EntityType.TRANSACTION, importTransactions());
-
-		if(importCharts)
-		{
-			numberOfImportedEntitiesByType.put(EntityType.CHART, importCharts());
-		}
-		else
-		{
-			numberOfImportedEntitiesByType.put(EntityType.CHART, 0);
-		}
 
 		numberOfImportedEntitiesByType.put(EntityType.IMAGE, importImages());
 
@@ -89,6 +77,16 @@ public class ImportService
 		{
 			numberOfImportedEntitiesByType.put(EntityType.TEMPLATE, 0);
 		}
+
+		if(importCharts)
+		{
+			numberOfImportedEntitiesByType.put(EntityType.CHART, importCharts());
+		}
+		else
+		{
+			numberOfImportedEntitiesByType.put(EntityType.CHART, 0);
+		}
+
 
 		LOGGER.debug("Updating repeating transactions...");
 		repeatingTransactionUpdater.updateRepeatingTransactions(DateTime.now());
