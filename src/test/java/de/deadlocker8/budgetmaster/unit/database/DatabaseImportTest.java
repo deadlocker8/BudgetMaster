@@ -670,6 +670,6 @@ public class DatabaseImportTest
 		assertThat(importResultItems).hasSize(6)
 				.contains(new ImportResultItem(EntityType.CATEGORY, 1, 2));
 		assertThat(importService.getCollectedErrorMessages()).hasSize(1)
-				.contains("Error while importing category with ID 3: java.lang.NullPointerException (null)");
+				.contains("Error while importing category with name \"Category1\": java.lang.NullPointerException (null)");
 	}
 }
