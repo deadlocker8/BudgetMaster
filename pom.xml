@@ -68,6 +68,10 @@
         <selenium.version>3.141.59</selenium.version>
         <assertj-core.version>3.17.1</assertj-core.version>
         <jgit.version>5.10.0.202012080955-r</jgit.version>
+        <natorder.version>1.0.1</natorder.version>
+        <h2database.version>1.4.199</h2database.version>
+        <itextpdf.version>5.5.13</itextpdf.version>
+        <usertype-core.version>6.0.1.GA</usertype-core.version>
 
         <app.versionDate>${maven.build.timestamp}</app.versionDate>
         <maven.build.timestamp.format>dd.MM.yy</maven.build.timestamp.format>
@@ -119,7 +123,7 @@
         <dependency>
             <groupId>org.jadira.usertype</groupId>
             <artifactId>usertype.core</artifactId>
-            <version>6.0.1.GA</version>
+            <version>${usertype-core.version}</version>
         </dependency>
 
         <dependency>
@@ -152,13 +156,13 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>1.4.199</version>
+            <version>${h2database.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>itextpdf</artifactId>
-            <version>5.5.13</version>
+            <version>${itextpdf.version}</version>
         </dependency>
 
         <!--Webjars-->
@@ -205,7 +209,7 @@
         <dependency>
             <groupId>org.padler</groupId>
             <artifactId>natorder</artifactId>
-            <version>1.0.1</version>
+            <version>${natorder.version}</version>
         </dependency>
 
         <!-- selenium -->
