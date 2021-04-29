@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.charts;
 
 import de.deadlocker8.budgetmaster.services.Resetable;
+import org.padler.natorder.NaturalOrderComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,5 +100,12 @@ public class ChartService implements Resetable
 				getRepository().save(userChart);
 			}
 		}
+	}
+
+	public List<Chart> getAllChartsAsc()
+	{
+		final List<Chart> charts = chartRepository.findAllByOrderByNameAsc();
+		charts.sort((c1, c2) -> new NaturalOrderComparator().compare(c1.getName(), c2.getName()));
+		return charts;
 	}
 }

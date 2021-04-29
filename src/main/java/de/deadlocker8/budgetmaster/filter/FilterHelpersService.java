@@ -82,7 +82,7 @@ public class FilterHelpersService
 
 	public List<FilterObject> getFilterTags()
 	{
-		List<Tag> tags = tagService.getRepository().findAllByOrderByNameAsc();
+		List<Tag> tags = tagService.getAllTagsAsc();
 		List<FilterObject> filterTags = new ArrayList<>();
 		for(Tag tag : tags)
 		{

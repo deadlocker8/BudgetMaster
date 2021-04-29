@@ -17,6 +17,7 @@ import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.TagRepository;
+import de.deadlocker8.budgetmaster.tags.TagService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.deadlocker8.budgetmaster.utils.Colors;
@@ -39,7 +40,7 @@ public class HelpersService
 	private SettingsService settingsService;
 
 	@Autowired
-	private TagRepository tagRepository;
+	private TagService tagService;
 
 	@Autowired
 	private AccountRepository accountRepository;
@@ -94,7 +95,7 @@ public class HelpersService
 
 	public List<Tag> getAllTags()
 	{
-		return tagRepository.findAllByOrderByNameAsc();
+		return tagService.getAllTagsAsc();
 	}
 
 	public List<Account> getAllAccounts()

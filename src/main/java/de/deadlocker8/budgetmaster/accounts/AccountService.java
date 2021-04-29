@@ -6,6 +6,7 @@ import de.deadlocker8.budgetmaster.services.Resetable;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
+import org.padler.natorder.NaturalOrderComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,7 @@ public class AccountService implements Resetable
 	{
 		List<Account> accounts = accountRepository.findAllByType(AccountType.ALL);
 		accounts.addAll(accountRepository.findAllByTypeOrderByNameAsc(AccountType.CUSTOM));
+		accounts.sort((a1, a2) -> new NaturalOrderComparator().compare(a1.getName(), a2.getName()));
 		return accounts;
 	}
 
@@ -52,6 +54,7 @@ public class AccountService implements Resetable
 	{
 		List<Account> accounts = accountRepository.findAllByType(AccountType.ALL);
 		accounts.addAll(accountRepository.findAllByTypeAndAccountStateOrderByNameAsc(AccountType.CUSTOM, AccountState.FULL_ACCESS));
+		accounts.sort((a1, a2) -> new NaturalOrderComparator().compare(a1.getName(), a2.getName()));
 		return accounts;
 	}
 
@@ -60,6 +63,7 @@ public class AccountService implements Resetable
 		List<Account> accounts = accountRepository.findAllByType(AccountType.ALL);
 		accounts.addAll(accountRepository.findAllByTypeAndAccountStateOrderByNameAsc(AccountType.CUSTOM, AccountState.FULL_ACCESS));
 		accounts.addAll(accountRepository.findAllByTypeAndAccountStateOrderByNameAsc(AccountType.CUSTOM, AccountState.READ_ONLY));
+		accounts.sort((a1, a2) -> new NaturalOrderComparator().compare(a1.getName(), a2.getName()));
 		return accounts;
 	}
 

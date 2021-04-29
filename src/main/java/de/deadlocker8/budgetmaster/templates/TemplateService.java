@@ -11,6 +11,7 @@ import de.deadlocker8.budgetmaster.services.Resetable;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionBase;
+import org.padler.natorder.NaturalOrderComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -105,5 +106,12 @@ public class TemplateService implements Resetable
 		return getRepository().findAll().stream()
 				.map(Template::getTemplateName)
 				.collect(Collectors.toList());
+	}
+
+	public List<Template> getAllTemplatesAsc()
+	{
+		final List<Template> templates = templateRepository.findAllByOrderByTemplateNameAsc();
+		templates.sort((t1, t2) -> new NaturalOrderComparator().compare(t1.getName(), t2.getName()));
+		return templates;
 	}
 }
