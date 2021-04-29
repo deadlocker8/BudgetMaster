@@ -4,11 +4,13 @@ import de.deadlocker8.budgetmaster.services.Resetable;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
+import org.padler.natorder.NaturalOrderComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -101,16 +103,16 @@ public class CategoryService implements Resetable
 	public List<Category> getAllCategories()
 	{
 		localizeDefaultCategories();
-		return categoryRepository.findAllByOrderByNameAsc().stream()
-				.sorted(Comparator.comparing(c -> c.getName().toLowerCase()))
-				.collect(Collectors.toList());
+		final List<Category> categories = categoryRepository.findAllByOrderByNameAsc();
+		categories.sort((c1, c2) -> new NaturalOrderComparator().compare(c1.getName(), c2.getName()));
+		return categories;
 	}
 
 	public List<Category> getAllCustomCategories()
 	{
-		return categoryRepository.findAllByTypeOrderByNameAsc(CategoryType.CUSTOM).stream()
-				.sorted(Comparator.comparing(c -> c.getName().toLowerCase()))
-				.collect(Collectors.toList());
+		final List<Category> categories = categoryRepository.findAllByTypeOrderByNameAsc(CategoryType.CUSTOM);
+		categories.sort((c1, c2) -> new NaturalOrderComparator().compare(c1.getName(), c2.getName()));
+		return categories;
 	}
 
 	public void localizeDefaultCategories()

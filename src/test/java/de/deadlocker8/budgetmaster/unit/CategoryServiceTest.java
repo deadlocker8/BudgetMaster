@@ -44,8 +44,17 @@ public class CategoryServiceTest
 		Category category_AA = new Category("AA", "#ff0000", CategoryType.CUSTOM);
 		categories.add(category_AA);
 
-		Category category_0 = new Category("0", "#ff0000", CategoryType.CUSTOM);
-		categories.add(category_0);
+		Category category_1 = new Category("1", "#ff0000", CategoryType.CUSTOM);
+		categories.add(category_1);
+
+		Category category_11 = new Category("11", "#ff0000", CategoryType.CUSTOM);
+		categories.add(category_11);
+
+		Category category_2 = new Category("2", "#ff0000", CategoryType.CUSTOM);
+		categories.add(category_2);
+
+		Category category_AABB = new Category("AABB", "#ff0000", CategoryType.CUSTOM);
+		categories.add(category_AABB);
 
 		Category category_aa = new Category("aa", "#ff0000", CategoryType.CUSTOM);
 		categories.add(category_aa);
@@ -54,8 +63,11 @@ public class CategoryServiceTest
 		Mockito.when(categoryRepository.findByType(CategoryType.REST)).thenReturn(CATEGORY_REST);
 		Mockito.when(categoryRepository.findAllByOrderByNameAsc()).thenReturn(categories);
 
-		assertThat(categoryService.getAllCategories()).hasSize(6)
-				.containsExactly(category_0, category_AA, category_aa, category_BB, CATEGORY_NONE, CATEGORY_REST);
+		System.out.println(List.of(category_1, category_2, category_11, category_AA, category_aa, category_AABB, category_BB, CATEGORY_NONE, CATEGORY_REST));
+		System.out.println(categoryService.getAllCategories());
+
+		assertThat(categoryService.getAllCategories()).hasSize(9)
+				.containsExactly(category_1, category_2, category_11, category_AA, category_aa, category_AABB, category_BB, CATEGORY_NONE, CATEGORY_REST);
 	}
 
 	@Test

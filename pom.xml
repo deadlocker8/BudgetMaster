@@ -202,6 +202,11 @@
             <artifactId>org.eclipse.jgit</artifactId>
             <version>${jgit.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.padler</groupId>
+            <artifactId>natorder</artifactId>
+            <version>1.0.1</version>
+        </dependency>
 
         <!-- selenium -->
         <dependency>
