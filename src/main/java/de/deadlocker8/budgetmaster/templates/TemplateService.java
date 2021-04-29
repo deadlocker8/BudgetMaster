@@ -7,6 +7,7 @@ import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.accounts.AccountState;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
+import de.deadlocker8.budgetmaster.services.AccessAllEntities;
 import de.deadlocker8.budgetmaster.services.Resetable;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class TemplateService implements Resetable
+public class TemplateService implements Resetable, AccessAllEntities<Template>
 {
 	private static final Gson GSON = new GsonBuilder()
 			.setPrettyPrinting()
@@ -95,7 +96,7 @@ public class TemplateService implements Resetable
 	public void prepareModelNewOrEdit(Model model, boolean isEdit, TransactionBase item, List<Account> accounts)
 	{
 		model.addAttribute("isEdit", isEdit);
-		model.addAttribute("categories", categoryService.getAllCategories());
+		model.addAttribute("categories", categoryService.getAllEntitiesAsc());
 		model.addAttribute("accounts", accounts);
 		model.addAttribute("template", item);
 		model.addAttribute("suggestionsJSON", GSON.toJson(new ArrayList<String>()));
@@ -108,7 +109,8 @@ public class TemplateService implements Resetable
 				.collect(Collectors.toList());
 	}
 
-	public List<Template> getAllTemplatesAsc()
+	@Override
+	public List<Template> getAllEntitiesAsc()
 	{
 		final List<Template> templates = templateRepository.findAllByOrderByTemplateNameAsc();
 		templates.sort((t1, t2) -> new NaturalOrderComparator().compare(t1.getName(), t2.getName()));

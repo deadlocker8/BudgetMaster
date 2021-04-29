@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.categories;
 
+import de.deadlocker8.budgetmaster.services.AccessAllEntities;
 import de.deadlocker8.budgetmaster.services.Resetable;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.utils.Strings;
@@ -10,14 +11,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
-public class CategoryService implements Resetable
+public class CategoryService implements Resetable, AccessAllEntities<Category>
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CategoryService.class);
 	private final CategoryRepository categoryRepository;
@@ -100,7 +98,8 @@ public class CategoryService implements Resetable
 		}
 	}
 
-	public List<Category> getAllCategories()
+	@Override
+	public List<Category> getAllEntitiesAsc()
 	{
 		localizeDefaultCategories();
 		final List<Category> categories = categoryRepository.findAllByOrderByNameAsc();

@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.accounts;
 
 import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
+import de.deadlocker8.budgetmaster.services.AccessAllEntities;
 import de.deadlocker8.budgetmaster.services.Resetable;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.deadlocker8.budgetmaster.utils.Strings;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AccountService implements Resetable
+public class AccountService implements Resetable, AccessAllEntities<Account>
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AccountService.class);
 
@@ -42,7 +43,8 @@ public class AccountService implements Resetable
 		return accountRepository;
 	}
 
-	public List<Account> getAllAccountsAsc()
+	@Override
+	public List<Account> getAllEntitiesAsc()
 	{
 		List<Account> accounts = accountRepository.findAllByType(AccountType.ALL);
 		accounts.addAll(accountRepository.findAllByTypeOrderByNameAsc(AccountType.CUSTOM));

@@ -63,14 +63,14 @@ public class AccountController extends BaseController
 	@GetMapping
 	public String accounts(Model model)
 	{
-		model.addAttribute("accounts", accountService.getAllAccountsAsc());
+		model.addAttribute("accounts", accountService.getAllEntitiesAsc());
 		return "accounts/accounts";
 	}
 
 	@GetMapping("/{ID}/requestDelete")
 	public String requestDeleteAccount(Model model, @PathVariable("ID") Integer ID)
 	{
-		model.addAttribute("accounts", accountService.getAllAccountsAsc());
+		model.addAttribute("accounts", accountService.getAllEntitiesAsc());
 		model.addAttribute("currentAccount", accountService.getRepository().getOne(ID));
 		return "accounts/accounts";
 	}
@@ -87,7 +87,7 @@ public class AccountController extends BaseController
 			return "redirect:/accounts";
 		}
 
-		model.addAttribute("accounts", accountService.getAllAccountsAsc());
+		model.addAttribute("accounts", accountService.getAllEntitiesAsc());
 		model.addAttribute("currentAccount", accountToDelete);
 		model.addAttribute("accountNotDeletable", true);
 		return "accounts/accounts";

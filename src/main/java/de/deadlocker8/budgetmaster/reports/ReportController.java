@@ -96,7 +96,7 @@ public class ReportController extends BaseController
 				.setReportSettings(reportSettings)
 				.setTransactions(transactions)
 				.setAccountName(accountName)
-				.setCategoryBudgets(CategoryBudgetHandler.getCategoryBudgets(transactions, categoryService.getAllCategories()))
+				.setCategoryBudgets(CategoryBudgetHandler.getCategoryBudgets(transactions, categoryService.getAllEntitiesAsc()))
 				.createReportConfiguration();
 
 		String month = reportSettings.getDate().toString("MM");

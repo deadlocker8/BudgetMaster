@@ -38,7 +38,7 @@ public class CategoryController extends BaseController
 	@GetMapping
 	public String categories(Model model)
 	{
-		model.addAttribute("categories", categoryService.getAllCategories());
+		model.addAttribute("categories", categoryService.getAllEntitiesAsc());
 		return "categories/categories";
 	}
 
@@ -50,7 +50,7 @@ public class CategoryController extends BaseController
 			return "redirect:/categories";
 		}
 
-		List<Category> allCategories = categoryService.getAllCategories();
+		List<Category> allCategories = categoryService.getAllEntitiesAsc();
 		List<Category> availableCategories = allCategories.stream().filter(category -> !category.getID().equals(ID)).collect(Collectors.toList());
 
 		model.addAttribute("categories", allCategories);

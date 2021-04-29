@@ -7,7 +7,6 @@ import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.backup.AutoBackupStrategy;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryRepository;
-import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
 import de.deadlocker8.budgetmaster.images.ImageFileExtension;
@@ -16,7 +15,6 @@ import de.deadlocker8.budgetmaster.reports.Budget;
 import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.tags.Tag;
-import de.deadlocker8.budgetmaster.tags.TagRepository;
 import de.deadlocker8.budgetmaster.tags.TagService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
@@ -95,12 +93,12 @@ public class HelpersService
 
 	public List<Tag> getAllTags()
 	{
-		return tagService.getAllTagsAsc();
+		return tagService.getAllEntitiesAsc();
 	}
 
 	public List<Account> getAllAccounts()
 	{
-		return accountService.getAllAccountsAsc();
+		return accountService.getAllEntitiesAsc();
 	}
 
 	public List<Account> getAllReadableAccounts()

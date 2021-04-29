@@ -56,7 +56,7 @@ public class ChartController extends BaseController
 	@GetMapping
 	public String charts(Model model)
 	{
-		List<Chart> charts = chartService.getAllChartsAsc();
+		List<Chart> charts = chartService.getAllEntitiesAsc();
 
 		FilterConfiguration defaultFilterConfiguration = FilterConfiguration.DEFAULT;
 		defaultFilterConfiguration.setFilterCategories(filterHelpersService.getFilterCategories());
@@ -83,7 +83,7 @@ public class ChartController extends BaseController
 		String transactionJson = GSON.toJson(transactions);
 
 		model.addAttribute("chartSettings", chartSettings);
-		model.addAttribute("charts", chartService.getAllChartsAsc());
+		model.addAttribute("charts", chartService.getAllEntitiesAsc());
 		model.addAttribute("chart", chartOptional.get());
 		model.addAttribute("containerID", UUID.randomUUID());
 		model.addAttribute("transactionData", transactionJson);
@@ -93,7 +93,7 @@ public class ChartController extends BaseController
 	@GetMapping("/manage")
 	public String manage(Model model)
 	{
-		model.addAttribute("charts", chartService.getAllChartsAsc());
+		model.addAttribute("charts", chartService.getAllEntitiesAsc());
 		return "charts/manage";
 	}
 
@@ -168,7 +168,7 @@ public class ChartController extends BaseController
 			return "redirect:/charts/manage";
 		}
 
-		model.addAttribute("charts", chartService.getAllChartsAsc());
+		model.addAttribute("charts", chartService.getAllEntitiesAsc());
 		model.addAttribute("currentChart", chartService.getRepository().getOne(ID));
 		return "charts/manage";
 	}

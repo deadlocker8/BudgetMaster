@@ -64,9 +64,9 @@ public class CategoryServiceTest
 		Mockito.when(categoryRepository.findAllByOrderByNameAsc()).thenReturn(categories);
 
 		System.out.println(List.of(category_1, category_2, category_11, category_AA, category_aa, category_AABB, category_BB, CATEGORY_NONE, CATEGORY_REST));
-		System.out.println(categoryService.getAllCategories());
+		System.out.println(categoryService.getAllEntitiesAsc());
 
-		assertThat(categoryService.getAllCategories()).hasSize(9)
+		assertThat(categoryService.getAllEntitiesAsc()).hasSize(9)
 				.containsExactly(category_1, category_2, category_11, category_AA, category_aa, category_AABB, category_BB, CATEGORY_NONE, CATEGORY_REST);
 	}
 

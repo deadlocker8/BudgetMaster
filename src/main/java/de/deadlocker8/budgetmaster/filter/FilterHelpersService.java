@@ -60,7 +60,7 @@ public class FilterHelpersService
 
 	public List<FilterObject> getFilterCategories()
 	{
-		List<Category> categories = categoryService.getAllCategories();
+		List<Category> categories = categoryService.getAllEntitiesAsc();
 		List<FilterObject> filterCategories = new ArrayList<>();
 		for(Category category : categories)
 		{
@@ -82,7 +82,7 @@ public class FilterHelpersService
 
 	public List<FilterObject> getFilterTags()
 	{
-		List<Tag> tags = tagService.getAllTagsAsc();
+		List<Tag> tags = tagService.getAllEntitiesAsc();
 		List<FilterObject> filterTags = new ArrayList<>();
 		for(Tag tag : tags)
 		{

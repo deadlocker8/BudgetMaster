@@ -293,7 +293,7 @@ public class TransactionService implements Resetable
 		model.addAttribute("isEdit", isEdit);
 		model.addAttribute("currentDate", date);
 		model.addAttribute("previousType", previousType);
-		model.addAttribute("categories", categoryService.getAllCategories());
+		model.addAttribute("categories", categoryService.getAllEntitiesAsc());
 		model.addAttribute("accounts", accounts);
 		model.addAttribute("transaction", item);
 

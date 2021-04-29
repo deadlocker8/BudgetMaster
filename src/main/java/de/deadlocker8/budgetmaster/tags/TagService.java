@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.tags;
 
+import de.deadlocker8.budgetmaster.services.AccessAllEntities;
 import de.deadlocker8.budgetmaster.services.Resetable;
 import org.padler.natorder.NaturalOrderComparator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class TagService implements Resetable
+public class TagService implements Resetable, AccessAllEntities<Tag>
 {
 	private final TagRepository tagRepository;
 
@@ -34,7 +35,8 @@ public class TagService implements Resetable
 	{
 	}
 
-	public List<Tag> getAllTagsAsc()
+	@Override
+	public List<Tag> getAllEntitiesAsc()
 	{
 		final List<Tag> tags = tagRepository.findAllByOrderByNameAsc();
 		tags.sort((t1, t2) -> new NaturalOrderComparator().compare(t1.getName(), t2.getName()));

@@ -290,7 +290,7 @@ public class SettingsController extends BaseController
 		request.setAttribute("importCharts", importCharts, RequestAttributes.SCOPE_SESSION);
 
 		model.addAttribute("database", request.getAttribute("database", RequestAttributes.SCOPE_SESSION));
-		model.addAttribute("availableAccounts", accountService.getAllAccountsAsc());
+		model.addAttribute("availableAccounts", accountService.getAllEntitiesAsc());
 		return "redirect:/settings/database/import/step2";
 	}
 
@@ -298,7 +298,7 @@ public class SettingsController extends BaseController
 	public String importStepTwo(WebRequest request, Model model)
 	{
 		model.addAttribute("database", request.getAttribute("database", RequestAttributes.SCOPE_SESSION));
-		model.addAttribute("availableAccounts", accountService.getAllAccountsAsc());
+		model.addAttribute("availableAccounts", accountService.getAllEntitiesAsc());
 		return "settings/importStepTwo";
 	}
 

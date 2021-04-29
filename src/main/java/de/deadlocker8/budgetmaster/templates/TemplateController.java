@@ -52,7 +52,7 @@ public class TemplateController extends BaseController
 	@GetMapping
 	public String showTemplates(Model model)
 	{
-		model.addAttribute("templates", templateService.getAllTemplatesAsc());
+		model.addAttribute("templates", templateService.getAllEntitiesAsc());
 		return "templates/templates";
 	}
 
@@ -97,7 +97,7 @@ public class TemplateController extends BaseController
 			throw new ResourceNotFoundException();
 		}
 
-		model.addAttribute("templates", templateService.getAllTemplatesAsc());
+		model.addAttribute("templates", templateService.getAllEntitiesAsc());
 		model.addAttribute("currentTemplate", templateOptional.get());
 		return "templates/templates";
 	}
