@@ -25,7 +25,6 @@ import de.thecodelabs.utils.util.RandomUtils;
 import de.thecodelabs.versionizer.UpdateItem;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,6 +41,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -416,7 +416,7 @@ public class SettingsController extends BaseController
 		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
 		model.addAttribute("autoBackupTimes", AutoBackupTime.values());
 
-		final Optional<DateTime> nextBackupTimeOptional = backupService.getNextRun();
+		final Optional<LocalDateTime> nextBackupTimeOptional = backupService.getNextRun();
 		nextBackupTimeOptional.ifPresent(date -> model.addAttribute("nextBackupTime", date));
 		model.addAttribute("autoBackupStatus", backupService.getBackupStatus());
 	}

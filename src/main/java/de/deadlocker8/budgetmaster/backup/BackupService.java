@@ -3,16 +3,19 @@ package de.deadlocker8.budgetmaster.backup;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.TaskScheduler;
-import org.springframework.scheduling.support.CronSequenceGenerator;
+import org.springframework.scheduling.support.CronExpression;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.TimeZone;
 import java.util.concurrent.ScheduledFuture;
 
 @Service
@@ -81,16 +84,16 @@ public class BackupService
 		return String.format("0 0 %d */%d * *", hour, days);
 	}
 
-	public Optional<DateTime> getNextRun()
+	public Optional<LocalDateTime> getNextRun()
 	{
 		final Settings settings = settingsService.getSettings();
 		if(settings.isAutoBackupActive())
 		{
 			final String cron = computeCron(settings.getAutoBackupTime(), settings.getAutoBackupDays());
-			CronSequenceGenerator cronTrigger = new CronSequenceGenerator(cron);
-			Date next = cronTrigger.next(new Date());
+			final CronExpression cronExpression = CronExpression.parse(cron);
+			final LocalDateTime next = cronExpression.next(LocalDateTime.now());
 
-			return Optional.of(new DateTime(next));
+			return Optional.ofNullable(next);
 		}
 		return Optional.empty();
 	}
