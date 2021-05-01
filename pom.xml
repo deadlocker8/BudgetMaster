@@ -35,7 +35,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.11.RELEASE</version>
+        <version>2.3.10.RELEASE</version>
         <relativePath/>
     </parent>
 
@@ -72,6 +72,7 @@
         <h2database.version>1.4.199</h2database.version>
         <itextpdf.version>5.5.13.2</itextpdf.version>
         <usertype-core.version>6.0.1.GA</usertype-core.version>
+        <joda-time.version>2.10.10</joda-time.version>
 
         <app.versionDate>${maven.build.timestamp}</app.versionDate>
         <maven.build.timestamp.format>dd.MM.yy</maven.build.timestamp.format>
@@ -116,8 +117,14 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
+            <version>${joda-time.version}</version>
         </dependency>
 
         <dependency>
@@ -165,6 +172,18 @@
             <version>${itextpdf.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.eclipse.jgit</groupId>
+            <artifactId>org.eclipse.jgit</artifactId>
+            <version>${jgit.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.padler</groupId>
+            <artifactId>natorder</artifactId>
+            <version>${natorder.version}</version>
+        </dependency>
+
         <!--Webjars-->
         <dependency>
             <groupId>org.webjars</groupId>
@@ -200,16 +219,6 @@
             <groupId>org.webjars</groupId>
             <artifactId>codemirror</artifactId>
             <version>${codemirror.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jgit</groupId>
-            <artifactId>org.eclipse.jgit</artifactId>
-            <version>${jgit.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.padler</groupId>
-            <artifactId>natorder</artifactId>
-            <version>${natorder.version}</version>
         </dependency>
 
         <!-- selenium -->
