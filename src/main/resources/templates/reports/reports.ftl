@@ -112,7 +112,7 @@
         <!--  Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
-        <script src="<@s.url '/webjars/sortablejs/1.10.2/Sortable.min.js'/>"></script>
+        <script src="<@s.url '/webjars/sortablejs/1.13.0/Sortable.min.js'/>"></script>
         <script src="<@s.url '/js/reports.js'/>"></script>
         <script src="<@s.url '/js/globalDatePicker.js'/>"></script>
         <script src="<@s.url '/js/filter.js'/>"></script>
