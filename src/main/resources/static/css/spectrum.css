@@ -1,0 +1,10 @@
+#customColorPickerContainer .sp-replacer {
+    border: none;
+    padding: 0;
+}
+
+#customColorPickerContainer .sp-preview {
+    border: none;
+    height: 100%;
+    width: 100%;
+}

@@ -13,6 +13,7 @@
 
         <@header.header "BudgetMaster - ${title}"/>
         <link type="text/css" rel="stylesheet" href="<@s.url '${"/css/libs/spectrum.css"}'/>"/>
+        <@header.style "spectrum"/>
     </head>
     <@header.body>
         <#import "../helpers/navbar.ftl" as navbar>
