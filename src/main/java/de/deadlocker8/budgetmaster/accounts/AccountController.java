@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -119,7 +120,7 @@ public class AccountController extends BaseController
 	}
 
 	@PostMapping(value = "/newAccount")
-	public String post(HttpServletRequest request, Model model,
+	public String post(HttpServletRequest request, WebRequest webRequest, Model model,
 					   @ModelAttribute("NewAccount") Account account,
 					   BindingResult bindingResult)
 	{
@@ -131,6 +132,15 @@ public class AccountController extends BaseController
 		if(isNewAccount && isNameAlreadyUsed)
 		{
 			bindingResult.addError(new FieldError("NewAccount", "name", "", false, new String[]{"warning.duplicate.account.name"}, null, null));
+		}
+
+		List<Account> activatedAccounts = accountService.getRepository().findAllByTypeAndAccountStateOrderByNameAsc(AccountType.CUSTOM, AccountState.FULL_ACCESS);
+		boolean newAccountStateWouldLeaveNoFullAccessAccounts = activatedAccounts.size() == 1 && account.getAccountState() != AccountState.FULL_ACCESS;
+		if(!isNewAccount && newAccountStateWouldLeaveNoFullAccessAccounts)
+		{
+			final String warningMessage = Localization.getString("warning.account.edit.state", Localization.getString(AccountState.FULL_ACCESS.getLocalizationKey()));
+			WebRequestUtils.putNotification(webRequest, new Notification(warningMessage, NotificationType.WARNING));
+			bindingResult.addError(new FieldError("NewAccount", "state", account.getAccountState(), false, new String[]{"warning.account.edit.state"}, null, null));
 		}
 
 		if(bindingResult.hasErrors())
@@ -171,6 +181,15 @@ public class AccountController extends BaseController
 			existingAccount.setType(AccountType.CUSTOM);
 			existingAccount.setAccountState(newAccount.getAccountState());
 			accountService.getRepository().save(existingAccount);
+
+			if(existingAccount.isDefault() && existingAccount.getAccountState() != AccountState.FULL_ACCESS)
+			{
+				// set any activated account as new default account
+				accountService.unsetDefaultForAllAccounts();
+				List<Account> activatedAccounts = accountService.getRepository().findAllByTypeAndAccountStateOrderByNameAsc(AccountType.CUSTOM, AccountState.FULL_ACCESS);
+				Account newDefaultAccount = activatedAccounts.get(0);
+				accountService.setAsDefaultAccount(newDefaultAccount.getID());
+			}
 		}
 	}
 }
