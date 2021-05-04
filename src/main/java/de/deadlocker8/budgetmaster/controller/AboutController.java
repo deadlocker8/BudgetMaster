@@ -36,10 +36,15 @@ public class AboutController extends BaseController
 	public String whatsNewModal(Model model)
 	{
 		final List<NewsEntry> newsEntries = new ArrayList<>();
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.changeType.headline", "news.changeType.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.readonlyAccounts.headline", "news.readonlyAccounts.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.firstUseWizard.headline", "news.firstUseWizard.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.java11.headline", "news.java11.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.designOffensive.headline", "news.designOffensive.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.gitBackup.headline", "news.gitBackup.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.backupCharts.headline", "news.backupCharts.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.importProcess.headline", "news.importProcess.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.hideAccounts.headline", "news.hideAccounts.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.statistics.headline", "news.statistics.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.hotkeysMonth.headline", "news.hotkeysMonth.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.importBugfixes.headline", "news.importBugfixes.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.chartRelative.headline", "news.chartRelative.description"));
 
 		model.addAttribute("newsEntries", newsEntries);
 		return "whatsNewModal";
