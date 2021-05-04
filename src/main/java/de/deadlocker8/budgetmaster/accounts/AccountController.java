@@ -159,7 +159,7 @@ public class AccountController extends BaseController
 		}
 		else
 		{
-			updateExistingAccount(account);
+			accountService.updateExistingAccount(account);
 		}
 
 		if(request.getSession().getAttribute("database") != null)
@@ -168,34 +168,5 @@ public class AccountController extends BaseController
 		}
 
 		return "redirect:/accounts";
-	}
-
-	private void updateExistingAccount(Account newAccount)
-	{
-		Optional<Account> existingAccountOptional = accountService.getRepository().findById(newAccount.getID());
-		if(existingAccountOptional.isPresent())
-		{
-			Account existingAccount = existingAccountOptional.get();
-			existingAccount.setName(newAccount.getName());
-			existingAccount.setIcon(newAccount.getIcon());
-			existingAccount.setType(AccountType.CUSTOM);
-			existingAccount.setAccountState(newAccount.getAccountState());
-			accountService.getRepository().save(existingAccount);
-
-			if(existingAccount.isDefault() && existingAccount.getAccountState() != AccountState.FULL_ACCESS)
-			{
-				// set any activated account as new default account
-				accountService.unsetDefaultForAllAccounts();
-				List<Account> activatedAccounts = accountService.getRepository().findAllByTypeAndAccountStateOrderByNameAsc(AccountType.CUSTOM, AccountState.FULL_ACCESS);
-				Account newDefaultAccount = activatedAccounts.get(0);
-				accountService.setAsDefaultAccount(newDefaultAccount.getID());
-			}
-
-			if(existingAccount.isSelected() && existingAccount.getAccountState() == AccountState.HIDDEN)
-			{
-				// select "all accounts" as selected account
-				accountService.selectAccount(accountService.getRepository().findAllByType(AccountType.ALL).get(0).getID());
-			}
-		}
 	}
 }

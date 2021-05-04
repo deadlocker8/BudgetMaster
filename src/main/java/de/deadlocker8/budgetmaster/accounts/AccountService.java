@@ -218,4 +218,35 @@ public class AccountService implements Resetable, AccessAllEntities<Account>
 			accountRepository.save(currentAccount);
 		}
 	}
+
+	public void updateExistingAccount(Account newAccount)
+	{
+		Optional<Account> existingAccountOptional = accountRepository.findById(newAccount.getID());
+		if(existingAccountOptional.isEmpty())
+		{
+			return;
+		}
+
+		Account existingAccount = existingAccountOptional.get();
+		existingAccount.setName(newAccount.getName());
+		existingAccount.setIcon(newAccount.getIcon());
+		existingAccount.setType(AccountType.CUSTOM);
+		existingAccount.setAccountState(newAccount.getAccountState());
+		accountRepository.save(existingAccount);
+
+		if(existingAccount.isDefault() && existingAccount.getAccountState() != AccountState.FULL_ACCESS)
+		{
+			// set any activated account as new default account
+			unsetDefaultForAllAccounts();
+			List<Account> activatedAccounts = accountRepository.findAllByTypeAndAccountStateOrderByNameAsc(AccountType.CUSTOM, AccountState.FULL_ACCESS);
+			Account newDefaultAccount = activatedAccounts.get(0);
+			setAsDefaultAccount(newDefaultAccount.getID());
+		}
+
+		if(existingAccount.isSelected() && existingAccount.getAccountState() == AccountState.HIDDEN)
+		{
+			// select "all accounts" as selected account
+			selectAccount(accountRepository.findAllByType(AccountType.ALL).get(0).getID());
+		}
+	}
 }
