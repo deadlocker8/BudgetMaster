@@ -17,7 +17,7 @@ Manage your monthly budget easily with BudgetMaster
 - Localization - English and German supported.
 - Search and Filter - Search for individual transactions or filter your view.
 - Visualize your data - Use one of the pre-defined charts or create your one by using the chart framework to visualize and analyze your data.
-- Auto Backup - Schedule an automatic export of your database content (as JSON export, local or remote git).
+- Auto Backup - Schedule an automatic export of your database content (as JSON export or as commit to a local or remote git repository).
 - Icons - Assign icons to accounts, categories and templates.
 
 ## Available Languages
