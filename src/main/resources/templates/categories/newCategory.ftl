@@ -45,7 +45,7 @@
                                     <#assign isNameEditingForbidden=category.getType()?? && (category.getType().name() == "NONE" || category.getType().name() == "REST")>
 
                                     <i class="material-icons prefix">edit</i>
-                                    <input id="category-name" type="text" name="name" <@validation.validation "name"/> value="${categoryName}" <#if isNameEditingForbidden>disabled</#if>>
+                                    <input id="category-name" type="text" name="name" <#if !isNameEditingForbidden><@validation.validation "name"/></#if> value="${categoryName}" <#if isNameEditingForbidden>readonly</#if>>
                                     <label for="category-name">${locale.getString("category.new.label.name")}</label>
                                 </div>
                             </div>
