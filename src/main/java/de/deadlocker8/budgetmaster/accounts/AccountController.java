@@ -190,6 +190,12 @@ public class AccountController extends BaseController
 				Account newDefaultAccount = activatedAccounts.get(0);
 				accountService.setAsDefaultAccount(newDefaultAccount.getID());
 			}
+
+			if(existingAccount.isSelected() && existingAccount.getAccountState() == AccountState.HIDDEN)
+			{
+				// select "all accounts" as selected account
+				accountService.selectAccount(accountService.getRepository().findAllByType(AccountType.ALL).get(0).getID());
+			}
 		}
 	}
 }
