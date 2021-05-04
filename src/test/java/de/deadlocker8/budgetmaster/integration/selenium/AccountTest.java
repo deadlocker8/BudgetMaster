@@ -142,8 +142,8 @@ public class AccountTest
 
 		assertAccountColumns(accountRows.get(0).findElements(By.tagName("td")), true, true, AccountState.FULL_ACCESS, "Default Account");
 		assertAccountColumns(accountRows.get(1).findElements(By.tagName("td")), true, false, AccountState.FULL_ACCESS, "DefaultAccount0815");
-		assertAccountColumns(accountRows.get(2).findElements(By.tagName("td")), false, false, AccountState.READ_ONLY, name);
-		assertAccountColumns(accountRows.get(3).findElements(By.tagName("td")), false, false, AccountState.HIDDEN, "hidden account");
+		assertAccountColumns(accountRows.get(2).findElements(By.tagName("td")), false, false, AccountState.HIDDEN, "hidden account");
+		assertAccountColumns(accountRows.get(3).findElements(By.tagName("td")), false, false, AccountState.READ_ONLY, name);
 		assertAccountColumns(accountRows.get(4).findElements(By.tagName("td")), false, false, AccountState.READ_ONLY, "read only account");
 		assertAccountColumns(accountRows.get(5).findElements(By.tagName("td")), true, false, AccountState.FULL_ACCESS, "sfsdf");
 	}
