@@ -14,6 +14,7 @@ import org.springframework.validation.FieldError;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.Field;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -54,7 +55,7 @@ public class SettingsService
 		Optional<Settings> settingsOptional = settingsRepository.findById(0);
 		if(settingsOptional.isEmpty())
 		{
-			throw new RuntimeException("Missing Settings in database");
+			throw new NoSuchElementException("Missing Settings in database");
 		}
 
 		Settings settings = settingsOptional.get();
@@ -120,10 +121,9 @@ public class SettingsService
 		}
 	}
 
-	@SuppressWarnings("OptionalGetWithoutIsPresent")
 	public Settings getSettings()
 	{
-		return settingsRepository.findById(0).get();
+		return settingsRepository.findById(0).orElseThrow();
 	}
 
 	@Transactional

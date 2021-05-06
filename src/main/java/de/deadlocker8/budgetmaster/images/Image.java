@@ -115,10 +115,10 @@ public class Image
 	{
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
-		Image image = (Image) o;
-		return Objects.equals(ID, image.ID) &&
-				Objects.equals(fileName, image.fileName) &&
-				Objects.equals(fileExtension, image.fileExtension);
+		Image other = (Image) o;
+		return Objects.equals(ID, other.ID) &&
+				Objects.equals(fileName, other.fileName) &&
+				Objects.equals(fileExtension, other.fileExtension);
 	}
 
 	@Override

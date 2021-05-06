@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class DatePickerController extends BaseController
 {
+	private static final String COOKIE_NAME = "currentDate";
+
 	private final SettingsService settingsService;
 	private final DateService dateService;
 
@@ -30,34 +32,34 @@ public class DatePickerController extends BaseController
 	}
 
 	@RequestMapping(value = "/previousMonth")
-	public String previousMonth(HttpServletResponse response, @CookieValue("currentDate") String date, @RequestParam("target") String target)
+	public String previousMonth(HttpServletResponse response, @CookieValue(COOKIE_NAME) String date, @RequestParam("target") String target)
 	{
 		Settings settings = settingsService.getSettings();
 		DateTime currentDate = DateTime.parse(date, DateTimeFormat.forPattern(DateFormatStyle.NORMAL.getKey()).withLocale(settings.getLanguage().getLocale()));
 		currentDate = currentDate.minusMonths(1);
 
-		response.addCookie(new Cookie("currentDate", dateService.getDateStringNormal(currentDate)));
+		response.addCookie(new Cookie(COOKIE_NAME, dateService.getDateStringNormal(currentDate)));
 		return "redirect:" + target;
 	}
 
 	@RequestMapping(value = "/nextMonth")
-	public String nextMonth(HttpServletResponse response, @CookieValue("currentDate") String date, @RequestParam("target") String target)
+	public String nextMonth(HttpServletResponse response, @CookieValue(COOKIE_NAME) String date, @RequestParam("target") String target)
 	{
 		Settings settings = settingsService.getSettings();
 		DateTime currentDate = DateTime.parse(date, DateTimeFormat.forPattern(DateFormatStyle.NORMAL.getKey()).withLocale(settings.getLanguage().getLocale()));
 		currentDate = currentDate.plusMonths(1);
 
-		response.addCookie(new Cookie("currentDate", dateService.getDateStringNormal(currentDate)));
+		response.addCookie(new Cookie(COOKIE_NAME, dateService.getDateStringNormal(currentDate)));
 		return "redirect:" + target;
 	}
 
 	@RequestMapping(value = "/setDate")
-	public String setDate(HttpServletResponse response, @CookieValue("currentDate") String date, @RequestParam("target") String target)
+	public String setDate(HttpServletResponse response, @CookieValue(COOKIE_NAME) String date, @RequestParam("target") String target)
 	{
 		Settings settings = settingsService.getSettings();
 		DateTime currentDate = DateTime.parse(date, DateTimeFormat.forPattern(DateFormatStyle.NORMAL.getKey()).withLocale(settings.getLanguage().getLocale()));
 
-		response.addCookie(new Cookie("currentDate", dateService.getDateStringNormal(currentDate)));
+		response.addCookie(new Cookie(COOKIE_NAME, dateService.getDateStringNormal(currentDate)));
 		return "redirect:" + target;
 	}
 
@@ -65,7 +67,7 @@ public class DatePickerController extends BaseController
 	public String today(HttpServletResponse response, @RequestParam("target") String target)
 	{
 		DateTime currentDate = DateTime.now();
-		response.addCookie(new Cookie("currentDate", dateService.getDateStringNormal(currentDate)));
+		response.addCookie(new Cookie(COOKIE_NAME, dateService.getDateStringNormal(currentDate)));
 		return "redirect:" + target;
 	}
 }

@@ -180,7 +180,7 @@ public class DatabaseService
 		for(int i = 0; i < allowedNumberOfFiles; i++)
 		{
 			final Path oldBackup = Paths.get(existingBackups.get(i));
-			LOGGER.debug(MessageFormat.format("Schedule old backup for deletion: {0}", oldBackup.toString()));
+			LOGGER.debug(MessageFormat.format("Schedule old backup for deletion: {0}", oldBackup));
 			filesToDelete.add(oldBackup);
 		}
 

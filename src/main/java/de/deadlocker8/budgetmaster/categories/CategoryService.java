@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -48,7 +49,7 @@ public class CategoryService implements Resetable, AccessAllEntities<Category>
 		Optional<Category> categoryOptional = categoryRepository.findById(ID);
 		if(categoryOptional.isEmpty())
 		{
-			throw new RuntimeException("Can't delete non-existing category with ID: " + ID);
+			throw new NoSuchElementException("Can't delete non-existing category with ID: " + ID);
 		}
 
 		Category categoryToDelete = categoryOptional.get();

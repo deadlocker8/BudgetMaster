@@ -146,12 +146,9 @@ public class ChartController extends BaseController
 		{
 			// reject editing of default chart
 			Optional<Chart> existingChartOptional = chartService.getRepository().findById(chart.getID());
-			if(existingChartOptional.isPresent())
+			if(existingChartOptional.isPresent() && existingChartOptional.get().getType() != ChartType.CUSTOM)
 			{
-				if(existingChartOptional.get().getType() != ChartType.CUSTOM)
-				{
-					return "error/400";
-				}
+				return "error/400";
 			}
 		}
 

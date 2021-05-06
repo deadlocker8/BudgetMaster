@@ -14,12 +14,11 @@ public class SettingsAdvice
 	@Autowired
 	private SettingsRepository settingsRepository;
 
-	@SuppressWarnings("OptionalGetWithoutIsPresent")
 	@ModelAttribute("settings")
 	public Settings getSettings()
 	{
 		Optional<Settings> settingsOptional = settingsRepository.findById(0);
-		return settingsOptional.get();
+		return settingsOptional.orElseThrow();
 	}
 }
 

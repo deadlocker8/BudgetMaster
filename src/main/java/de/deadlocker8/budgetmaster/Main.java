@@ -114,12 +114,12 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 			}
 			else
 			{
-				LOGGER.error(MessageFormat.format("Ignoring option --customFolder: provided path ''{0}'' is not absolute", customFolder.toString()));
+				LOGGER.error(MessageFormat.format("Ignoring option --customFolder: provided path ''{0}'' is not absolute", customFolder));
 			}
 		}
 
 		savePath = determineFolder(savePath);
-		LOGGER.info(MessageFormat.format("Used save path: {0}", savePath.toString()));
+		LOGGER.info(MessageFormat.format("Used save path: {0}", savePath));
 		return savePath;
 	}
 

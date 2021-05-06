@@ -69,12 +69,12 @@ public class TransactionSpecifications
 				predicates.add(builder.isNull(transaction.get(Transaction_.transferAccount)));
 			}
 
-			if(categoryIDs != null)
+			if(!categoryIDs.isEmpty())
 			{
 				predicates.add(transaction.get(Transaction_.category).get("ID").in(categoryIDs));
 			}
 
-			if(tagIDs != null)
+			if(!tagIDs.isEmpty())
 			{
 				Join<Transaction, Tag> join = transaction.join(Transaction_.tags);
 				Predicate tagPredicate = builder.disjunction();

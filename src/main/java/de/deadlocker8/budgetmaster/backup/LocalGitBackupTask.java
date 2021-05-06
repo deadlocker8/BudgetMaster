@@ -62,10 +62,7 @@ public class LocalGitBackupTask extends GitBackupTask
 	@Override
 	public void cleanup(Settings previousSettings, Settings newSettings)
 	{
-		if(!needsCleanup(previousSettings, newSettings))
-		{
-			return;
-		}
+		// nothing to cleanup that could interfere with future backup executions
 	}
 
 	@Override

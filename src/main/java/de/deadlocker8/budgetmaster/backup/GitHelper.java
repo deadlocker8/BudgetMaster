@@ -19,6 +19,8 @@ import java.util.Set;
 
 public class GitHelper
 {
+	private static final String REMOTE_NAME = "origin";
+
 	static class PullException extends Exception
 	{
 		public PullException(String message)
@@ -57,15 +59,15 @@ public class GitHelper
 
 	public static void replaceRemote(Git git, String remote) throws URISyntaxException, GitAPIException
 	{
-		git.remoteRemove().setRemoteName("origin").call();
-		git.remoteAdd().setName("origin").setUri(new URIish(remote)).call();
+		git.remoteRemove().setRemoteName(REMOTE_NAME).call();
+		git.remoteAdd().setName(REMOTE_NAME).setUri(new URIish(remote)).call();
 	}
 
 	public static void pullLatestChanges(Git git, CredentialsProvider credentialsProvider, String branchName) throws GitAPIException, PullException
 	{
 		final PullResult result = git.pull()
 				.setCredentialsProvider(credentialsProvider)
-				.setRemote("origin")
+				.setRemote(REMOTE_NAME)
 				.setRemoteBranchName(branchName)
 				.call();
 
