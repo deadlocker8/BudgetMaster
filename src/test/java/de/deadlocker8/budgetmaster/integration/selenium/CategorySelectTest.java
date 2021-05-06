@@ -127,6 +127,8 @@ public class CategorySelectTest
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".category-select-wrapper .custom-select-option.selected")));
 
 		driver.findElement(By.tagName("body")).sendKeys(Keys.DOWN);
+		wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".category-select-wrapper .custom-select-option.custom-select-option-hovered[data-value=\"3\"]")));
 
 		// assert
 		List<WebElement> selectOptions = driver.findElements(By.cssSelector(".category-select-wrapper .custom-select-option.custom-select-option-hovered"));
@@ -135,6 +137,8 @@ public class CategorySelectTest
 				.hasFieldOrPropertyWithValue("text", "sdfdsf");
 
 		driver.findElement(By.tagName("body")).sendKeys(Keys.DOWN);
+		wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".category-select-wrapper .custom-select-option.custom-select-option-hovered[data-value=\"4\"]")));
 
 		// assert
 		selectOptions = driver.findElements(By.cssSelector(".category-select-wrapper .custom-select-option.custom-select-option-hovered"));
@@ -155,6 +159,8 @@ public class CategorySelectTest
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".category-select-wrapper .custom-select-option.selected")));
 
 		driver.findElement(By.tagName("body")).sendKeys(Keys.UP);
+		wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".category-select-wrapper .custom-select-option.custom-select-option-hovered[data-value=\"4\"]")));
 
 		// assert
 		List<WebElement> selectOptions = driver.findElements(By.cssSelector(".category-select-wrapper .custom-select-option.custom-select-option-hovered"));
@@ -163,6 +169,8 @@ public class CategorySelectTest
 				.hasFieldOrPropertyWithValue("text", "12sd");
 
 		driver.findElement(By.tagName("body")).sendKeys(Keys.UP);
+		wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".category-select-wrapper .custom-select-option.custom-select-option-hovered[data-value=\"3\"]")));
 
 		// assert
 		selectOptions = driver.findElements(By.cssSelector(".category-select-wrapper .custom-select-option.custom-select-option-hovered"));
@@ -181,10 +189,13 @@ public class CategorySelectTest
 		driver.findElement(By.cssSelector(".category-select-wrapper .custom-select-trigger")).click();
 
 		driver.findElement(By.tagName("body")).sendKeys(Keys.UP);
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".category-select-wrapper .custom-select-option.custom-select-option-hovered[data-value=\"4\"]")));
+
 		driver.findElement(By.tagName("body")).sendKeys(Keys.ENTER);
 
 		// assert
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.not(ExpectedConditions.attributeContains(By.cssSelector(".category-select-wrapper .custom-select"), "class", "open")));
 
 		assertThat(driver.findElement(By.cssSelector(".category-select-wrapper .custom-select-item-name")))
