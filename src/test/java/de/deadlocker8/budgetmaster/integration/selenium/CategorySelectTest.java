@@ -98,11 +98,15 @@ public class CategorySelectTest
 
 		// navigate to category select with tab traversal
 		driver.findElement(By.tagName("body")).sendKeys(Keys.TAB);
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("label[for=transaction-amount].active")));
+
 		driver.findElement(By.tagName("body")).sendKeys(Keys.TAB);
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("label[for=transaction-amount].active")));
 
 		// open category select
 		driver.findElement(By.tagName("body")).sendKeys(Keys.ENTER);
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".category-select-wrapper .custom-select-option.selected")));
 
 		// assert
