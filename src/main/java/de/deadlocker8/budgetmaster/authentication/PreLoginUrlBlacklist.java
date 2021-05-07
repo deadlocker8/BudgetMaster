@@ -5,7 +5,7 @@ import java.util.List;
 
 public class PreLoginUrlBlacklist
 {
-	private List<String> blacklist;
+	private final List<String> blacklist;
 
 	public PreLoginUrlBlacklist()
 	{

@@ -150,5 +150,4 @@ public class CategoryController extends BaseController
 		model.addAttribute("category", category);
 		model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
 	}
-
 }

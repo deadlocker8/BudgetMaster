@@ -4,9 +4,9 @@ import java.util.Objects;
 
 public class ImportResultItem
 {
-	private EntityType entityType;
-	private int numberOfImportedItems;
-	private int numberOfAvailableItems;
+	private final EntityType entityType;
+	private final int numberOfImportedItems;
+	private final int numberOfAvailableItems;
 
 	public ImportResultItem(EntityType entityType, int numberOfImportedItems, int numberOfAvailableItems)
 	{

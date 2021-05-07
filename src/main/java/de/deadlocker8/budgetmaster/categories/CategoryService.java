@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.categories;
 
 import de.deadlocker8.budgetmaster.services.AccessAllEntities;
-import de.deadlocker8.budgetmaster.services.Resetable;
+import de.deadlocker8.budgetmaster.services.Resettable;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
@@ -16,7 +16,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
-public class CategoryService implements Resetable, AccessAllEntities<Category>
+public class CategoryService implements Resettable, AccessAllEntities<Category>
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CategoryService.class);
 	private final CategoryRepository categoryRepository;

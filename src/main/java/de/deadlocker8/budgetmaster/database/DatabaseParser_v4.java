@@ -19,7 +19,7 @@ import java.util.Optional;
 public class DatabaseParser_v4 extends DatabaseParser_v3
 {
 	final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-	private String jsonString;
+	private final String jsonString;
 
 	protected List<Transaction> transactions;
 	protected List<Template> templates;

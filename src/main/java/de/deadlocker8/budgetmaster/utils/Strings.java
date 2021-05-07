@@ -2,10 +2,13 @@ package de.deadlocker8.budgetmaster.utils;
 
 public class Strings
 {
+	private Strings()
+	{
+	}
+
 	//MISC
 	public static final String CATEGORY_NONE = "category.none";
 	public static final String CATEGORY_REST = "category.rest";
-	public static final String VERSION = "version";
 	public static final String TITLE_INCOMES = "title.incomes";
 	public static final String TITLE_EXPENDITURES = "title.expenditures";
 	public static final String TITLE_CATEGORY_BUDGETS = "title.category.budgets";
@@ -59,8 +62,4 @@ public class Strings
 	public static final String REPORT_INCOMES = "report.incomes";
 	public static final String REPORT_PAYMENTS = "report.expenditures";
 	public static final String REPORT_BUDGET_REST = "report.budget.rest";
-
-	private Strings()
-	{
-	}
 }

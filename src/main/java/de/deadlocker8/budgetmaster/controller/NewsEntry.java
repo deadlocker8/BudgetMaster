@@ -4,8 +4,8 @@ import de.thecodelabs.utils.util.Localization;
 
 public class NewsEntry
 {
-	private String headline;
-	private String description;
+	private final String headline;
+	private final String description;
 
 	public NewsEntry(String headline, String description)
 	{

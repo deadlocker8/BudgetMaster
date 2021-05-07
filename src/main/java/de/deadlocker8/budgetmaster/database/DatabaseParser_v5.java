@@ -17,7 +17,7 @@ import java.util.Optional;
 public class DatabaseParser_v5 extends DatabaseParser_v4
 {
 	final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-	private String jsonString;
+	private final String jsonString;
 
 	protected List<Chart> charts;
 	protected List<Image> images;

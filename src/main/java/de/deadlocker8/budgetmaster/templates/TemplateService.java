@@ -8,7 +8,7 @@ import de.deadlocker8.budgetmaster.accounts.AccountState;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.services.AccessAllEntities;
-import de.deadlocker8.budgetmaster.services.Resetable;
+import de.deadlocker8.budgetmaster.services.Resettable;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionBase;
@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class TemplateService implements Resetable, AccessAllEntities<Template>
+public class TemplateService implements Resettable, AccessAllEntities<Template>
 {
 	private static final Gson GSON = new GsonBuilder()
 			.setPrettyPrinting()

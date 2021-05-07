@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.tags;
 
 import de.deadlocker8.budgetmaster.services.AccessAllEntities;
-import de.deadlocker8.budgetmaster.services.Resetable;
+import de.deadlocker8.budgetmaster.services.Resettable;
 import org.padler.natorder.NaturalOrderComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class TagService implements Resetable, AccessAllEntities<Tag>
+public class TagService implements Resettable, AccessAllEntities<Tag>
 {
 	private final TagRepository tagRepository;
 

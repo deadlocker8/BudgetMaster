@@ -11,8 +11,8 @@ import java.util.List;
 
 public class TemplateValidator implements Validator
 {
-	private String previousTemplateName;
-	private List<String> existingTemplateNames;
+	private final String previousTemplateName;
+	private final List<String> existingTemplateNames;
 
 	public TemplateValidator(String previousTemplateName, List<String> existingTemplateNames)
 	{

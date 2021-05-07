@@ -16,7 +16,8 @@ public class UserDetailsServiceImpl implements UserDetailsService
 	private final UserRepository userRepository;
 
 	@Autowired
-	public UserDetailsServiceImpl(UserRepository userRepository) {
+	public UserDetailsServiceImpl(UserRepository userRepository)
+	{
 		this.userRepository = userRepository;
 	}
 
@@ -26,7 +27,7 @@ public class UserDetailsServiceImpl implements UserDetailsService
 	{
 		User user = userRepository.findByName(username);
 
-		if (user == null)
+		if(user == null)
 		{
 			throw new UsernameNotFoundException(username);
 		}

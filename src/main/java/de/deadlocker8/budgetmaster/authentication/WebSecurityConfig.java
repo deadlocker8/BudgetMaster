@@ -18,9 +18,9 @@ import org.springframework.security.web.RedirectStrategy;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 {
-	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+	private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 	private final UserDetailsService userDetailsService;
-	private PreLoginUrlBlacklist preLoginUrlBlacklist;
+	private final PreLoginUrlBlacklist preLoginUrlBlacklist;
 
 	@Autowired
 	public WebSecurityConfig(UserDetailsServiceImpl userDetailsService)

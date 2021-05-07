@@ -14,8 +14,8 @@ public enum AutoBackupStrategy
 	GIT_LOCAL("settings.backup.auto.strategy.git.local", LocalGitBackupTask.class),
 	GIT_REMOTE("settings.backup.auto.strategy.git.remote", RemoteGitBackupTask.class);
 
-	private String localizationKey;
-	private Class<? extends BackupTask> backupTaskType;
+	private final String localizationKey;
+	private final Class<? extends BackupTask> backupTaskType;
 
 	AutoBackupStrategy(String localizationKey, Class<? extends BackupTask> backupTaskType)
 	{

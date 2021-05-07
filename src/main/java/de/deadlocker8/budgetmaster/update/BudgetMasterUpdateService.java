@@ -88,12 +88,12 @@ public class BudgetMasterUpdateService
 	@Bean
 	public Artifact artifact()
 	{
-		Artifact artifact = new Artifact();
-		artifact.setVersion(Build.getInstance().getVersionName());
-		artifact.setGroupId("de.deadlocker8");
-		artifact.setArtifactId("BudgetMaster");
-		artifact.setArtifactType(Artifact.ArtifactType.RUNTIME);
-		return artifact;
+		Artifact newArtifact = new Artifact();
+		newArtifact.setVersion(Build.getInstance().getVersionName());
+		newArtifact.setGroupId("de.deadlocker8");
+		newArtifact.setArtifactId("BudgetMaster");
+		newArtifact.setArtifactType(Artifact.ArtifactType.RUNTIME);
+		return newArtifact;
 	}
 
 	@Bean
@@ -103,12 +103,12 @@ public class BudgetMasterUpdateService
 		Repository repository = Storage.load(classLoader.getResourceAsStream("repositories.json"), StorageTypes.JSON, Repository.class);
 
 		VersionizerItem versionizerItem = new VersionizerItem(repository, executablePath);
-		UpdateService updateService = UpdateService.startVersionizer(versionizerItem, updateStrategy, UpdateService.InteractionType.HEADLESS, UpdateService.RepositoryType.RELEASE);
+		UpdateService versionizerUpdateService = UpdateService.startVersionizer(versionizerItem, updateStrategy, UpdateService.InteractionType.HEADLESS, UpdateService.RepositoryType.RELEASE);
 		if(executablePath != null)
 		{
-			updateService.addArtifact(artifact, Paths.get(executablePath));
+			versionizerUpdateService.addArtifact(artifact, Paths.get(executablePath));
 		}
-		return updateService;
+		return versionizerUpdateService;
 	}
 
 	public UpdateService getUpdateService()

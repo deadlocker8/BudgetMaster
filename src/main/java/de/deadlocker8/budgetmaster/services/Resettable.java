@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.services;
 
-public interface Resetable
+public interface Resettable
 {
 	void deleteAll();
 

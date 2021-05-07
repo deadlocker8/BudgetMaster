@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.images;
 
 import de.deadlocker8.budgetmaster.accounts.Account;
-import de.deadlocker8.budgetmaster.services.Resetable;
+import de.deadlocker8.budgetmaster.services.Resettable;
 import de.thecodelabs.utils.util.Localization;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ImageService implements Resetable
+public class ImageService implements Resettable
 {
 	private final ImageRepository imageRepository;
 

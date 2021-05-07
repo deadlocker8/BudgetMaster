@@ -23,7 +23,7 @@ import java.util.List;
 public class DatabaseParser_v3
 {
 	final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-	private String jsonString;
+	private final String jsonString;
 	protected List<Category> categories;
 	protected List<Account> accounts;
 

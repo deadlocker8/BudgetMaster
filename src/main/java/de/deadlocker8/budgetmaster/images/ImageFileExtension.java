@@ -8,7 +8,6 @@ public enum ImageFileExtension
 	JPG("jpg", "jpeg"),
 	SVG("svg", "svg+xml");
 
-
 	private final String fileExtension;
 	private final String base64Type;
 

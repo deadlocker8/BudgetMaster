@@ -8,11 +8,11 @@ import java.util.List;
 
 public class ReportConfiguration
 {
-	private List<Transaction> transactions;
-	private String accountName;
-	private List<CategoryBudget> categoryBudgets;
-	private ReportSettings reportSettings;
-	private Budget budget;
+	private final List<Transaction> transactions;
+	private final String accountName;
+	private final List<CategoryBudget> categoryBudgets;
+	private final ReportSettings reportSettings;
+	private final Budget budget;
 
 	public ReportConfiguration(List<Transaction> transactions, String accountName, List<CategoryBudget> categoryBudgets, ReportSettings reportSettings, Budget budget)
 	{

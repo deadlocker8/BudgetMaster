@@ -13,8 +13,8 @@ import java.text.MessageFormat;
 public class DatabaseParser
 {
 	final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-	private String jsonString;
-	private Category categoryNone;
+	private final String jsonString;
+	private final Category categoryNone;
 
 	public DatabaseParser(String json, Category categoryNone)
 	{

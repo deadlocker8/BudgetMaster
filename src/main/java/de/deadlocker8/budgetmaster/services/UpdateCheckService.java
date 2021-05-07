@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UpdateCheckService
 {
-	private BudgetMasterUpdateService budgetMasterUpdateService;
+	private final BudgetMasterUpdateService budgetMasterUpdateService;
 
 	@Autowired
 	public UpdateCheckService(BudgetMasterUpdateService budgetMasterUpdateService)

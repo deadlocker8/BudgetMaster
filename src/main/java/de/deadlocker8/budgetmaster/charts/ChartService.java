@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.charts;
 
 import de.deadlocker8.budgetmaster.services.AccessAllEntities;
-import de.deadlocker8.budgetmaster.services.Resetable;
+import de.deadlocker8.budgetmaster.services.Resettable;
 import org.padler.natorder.NaturalOrderComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,14 +13,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ChartService implements Resetable, AccessAllEntities<Chart>
+public class ChartService implements Resettable, AccessAllEntities<Chart>
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ChartService.class);
 
 	private static final String PATTERN_OLD_CONTAINER_ID = "Plotly.newPlot('chart-canvas',";
 	private static final String PATTERN_DYNAMIC_CONTAINER_ID = "Plotly.newPlot('containerID',";
 
-	private ChartRepository chartRepository;
+	private final ChartRepository chartRepository;
 
 	@Autowired
 	public ChartService(ChartRepository categoryRepository)

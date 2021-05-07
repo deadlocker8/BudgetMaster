@@ -46,7 +46,6 @@ public class MediaController extends BaseController
 		}
 		else
 		{
-
 			try
 			{
 				imageService.saveImageFile(file);

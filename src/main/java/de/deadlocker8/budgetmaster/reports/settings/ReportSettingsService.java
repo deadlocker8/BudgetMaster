@@ -34,7 +34,7 @@ public class ReportSettingsService
 	private void createDefaultReportSettingsIfNotExists()
 	{
 		Optional<ReportSettings> reportSettingsOptional = reportSettingsRepository.findById(0);
-		if(!reportSettingsOptional.isPresent())
+		if(reportSettingsOptional.isEmpty())
 		{
 			ReportSettings reportSettings = ReportSettings.getDefault();
 			reportSettings.setID(0);
