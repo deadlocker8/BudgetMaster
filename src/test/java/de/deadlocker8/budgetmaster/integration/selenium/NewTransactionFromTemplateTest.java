@@ -92,9 +92,12 @@ public class NewTransactionFromTemplateTest
 	@Test
 	public void test_newTransactionFromTemplate_FullTemplate()
 	{
-		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'From template')]")).click();
-
 		WebDriverWait wait = new WebDriverWait(driver, 5);
+		final By locator = By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'From template')]");
+		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+		driver.findElement(locator).click();
+
+		wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Templates"));
 
 		driver.findElements(By.cssSelector(".template-item .btn-flat no-padding text-default"));
@@ -120,9 +123,12 @@ public class NewTransactionFromTemplateTest
 	@Test
 	public void test_newTransactionFromTemplate_OnlyIncome()
 	{
-		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'From template')]")).click();
-
 		WebDriverWait wait = new WebDriverWait(driver, 5);
+		final By locator = By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'From template')]");
+		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+		driver.findElement(locator).click();
+
+		wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Templates"));
 
 		driver.findElements(By.cssSelector(".template-item .btn-flat no-padding text-default"));

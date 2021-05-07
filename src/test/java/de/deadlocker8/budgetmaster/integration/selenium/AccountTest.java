@@ -162,7 +162,14 @@ public class AccountTest
 	{
 		driver.get(helper.getUrl() + "/transactions");
 		driver.findElement(By.id("button-new-transaction")).click();
-		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]")).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		final By locator = By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]");
+		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+		driver.findElement(locator).click();
+
+		wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Transaction"));
 
 		// assert
 		List<WebElement> items = driver.findElements(By.cssSelector(".account-select-wrapper .custom-select-options .custom-select-item-name"));
@@ -181,7 +188,14 @@ public class AccountTest
 		// open new transaction page
 		driver.get(helper.getUrl() + "/transactions");
 		driver.findElement(By.id("button-new-transaction")).click();
-		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]")).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		final By locator = By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]");
+		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+		driver.findElement(locator).click();
+
+		wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Transaction"));
 
 		// fill form
 		driver.findElement(By.id("transaction-name")).sendKeys("My transaction");
@@ -196,7 +210,7 @@ public class AccountTest
 
 		driver.get(helper.getUrl() + "/transactions");
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
 
 		// assert

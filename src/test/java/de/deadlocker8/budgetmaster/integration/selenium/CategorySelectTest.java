@@ -88,14 +88,19 @@ public class CategorySelectTest
 		// open transactions page
 		driver.get(helper.getUrl() + "/transactions");
 		driver.findElement(By.id("button-new-transaction")).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		final By locator = By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]");
+		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+		driver.findElement(locator).click();
+
+		wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Transaction"));
 	}
 
 	@Test
 	public void test_newTransaction_openWithEnter()
 	{
-		// open new transaction page
-		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]")).click();
-
 		// navigate to category select with tab traversal
 		driver.findElement(By.tagName("body")).sendKeys(Keys.TAB);
 		WebDriverWait wait = new WebDriverWait(driver, 5);
@@ -118,9 +123,6 @@ public class CategorySelectTest
 	@Test
 	public void test_newTransaction_goDownWithKey()
 	{
-		// open new transaction page
-		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]")).click();
-
 		// open category select
 		driver.findElement(By.cssSelector(".category-select-wrapper .custom-select-trigger")).click();
 		WebDriverWait wait = new WebDriverWait(driver, 5);
@@ -150,9 +152,6 @@ public class CategorySelectTest
 	@Test
 	public void test_newTransaction_goUpWithKey()
 	{
-		// open new transaction page
-		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]")).click();
-
 		// open category select
 		driver.findElement(By.cssSelector(".category-select-wrapper .custom-select-trigger")).click();
 		WebDriverWait wait = new WebDriverWait(driver, 5);
@@ -182,9 +181,6 @@ public class CategorySelectTest
 	@Test
 	public void test_newTransaction_confirmWithEnter()
 	{
-		// open new transaction page
-		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]")).click();
-
 		// open category select
 		driver.findElement(By.cssSelector(".category-select-wrapper .custom-select-trigger")).click();
 
@@ -205,9 +201,6 @@ public class CategorySelectTest
 	@Test
 	public void test_newTransaction_jumpToCategoryByFirstLetter()
 	{
-		// open new transaction page
-		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]")).click();
-
 		// open category select
 		driver.findElement(By.cssSelector(".category-select-wrapper .custom-select-trigger")).click();
 

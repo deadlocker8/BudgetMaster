@@ -89,14 +89,19 @@ public class NewTransactionRecurringTest
 		// open transactions page
 		driver.get(helper.getUrl() + "/transactions");
 		driver.findElement(By.id("button-new-transaction")).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		final By locator = By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Recurring')]");
+		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+		driver.findElement(locator).click();
+
+		wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Recurring Transaction"));
 	}
 
 	@Test
 	public void test_newTransaction_cancel()
 	{
-		// open new transaction page
-		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Recurring')]")).click();
-
 		// click cancel button
 		WebElement cancelButton = driver.findElement(By.id("button-cancel-save-transaction"));
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", cancelButton);
@@ -115,9 +120,6 @@ public class NewTransactionRecurringTest
 	@Test
 	public void test_newTransaction_income()
 	{
-		// open new transaction page
-		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Recurring')]")).click();
-
 		String name = "My recurring transaction";
 		String amount = "15.00";
 		String description = "Lorem Ipsum dolor sit amet";
@@ -182,9 +184,6 @@ public class NewTransactionRecurringTest
 	@Test
 	public void test_newTransaction_expenditure()
 	{
-		// open new transaction page
-		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Recurring')]")).click();
-
 		String name = "My recurring transaction";
 		String amount = "15.00";
 		String description = "Lorem Ipsum dolor sit amet";
