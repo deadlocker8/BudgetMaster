@@ -134,9 +134,8 @@ public class AccountController extends BaseController
 			bindingResult.addError(new FieldError("NewAccount", "name", "", false, new String[]{"warning.duplicate.account.name"}, null, null));
 		}
 
-		List<Account> activatedAccounts = accountService.getRepository().findAllByTypeAndAccountStateOrderByNameAsc(AccountType.CUSTOM, AccountState.FULL_ACCESS);
-		boolean newAccountStateWouldLeaveNoFullAccessAccounts = activatedAccounts.size() == 1 && account.getAccountState() != AccountState.FULL_ACCESS;
-		if(!isNewAccount && newAccountStateWouldLeaveNoFullAccessAccounts)
+		boolean isAccountStateAllowed = isAccountStateAllowed(account);
+		if(!isNewAccount && !isAccountStateAllowed)
 		{
 			final String warningMessage = Localization.getString("warning.account.edit.state", Localization.getString(AccountState.FULL_ACCESS.getLocalizationKey()));
 			WebRequestUtils.putNotification(webRequest, new Notification(warningMessage, NotificationType.WARNING));
@@ -168,5 +167,25 @@ public class AccountController extends BaseController
 		}
 
 		return "redirect:/accounts";
+	}
+
+	private boolean isAccountStateAllowed(Account account)
+	{
+		List<Account> activatedAccounts = accountService.getRepository().findAllByTypeAndAccountStateOrderByNameAsc(AccountType.CUSTOM, AccountState.FULL_ACCESS);
+		if(activatedAccounts.size() > 1)
+		{
+			return true;
+		}
+
+		final Account lastActivatedAccount = activatedAccounts.get(0);
+		final boolean currentAccountIsLastActivated = lastActivatedAccount.getID().equals(account.getID());
+		if(currentAccountIsLastActivated)
+		{
+			return account.getAccountState() == AccountState.FULL_ACCESS;
+		}
+		else
+		{
+			return true;
+		}
 	}
 }
