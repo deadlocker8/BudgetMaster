@@ -139,13 +139,13 @@ public class TemplateController extends BaseController
 
 		if(newTransaction.getAmount() == null && newTransaction.isExpenditure() == null)
 		{
-			template.setIsExpenditure(true);
+			newTransaction.setIsExpenditure(true);
 		}
 
 		final DateTime date = dateService.getDateTimeFromCookie(cookieDate);
-		transactionService.prepareModelNewOrEdit(model, false, date, null, template, accountService.getAllActivatedAccountsAsc());
+		transactionService.prepareModelNewOrEdit(model, false, date, null, newTransaction, accountService.getAllActivatedAccountsAsc());
 
-		if(template.isTransfer())
+		if(newTransaction.isTransfer())
 		{
 			return "transactions/newTransactionTransfer";
 		}

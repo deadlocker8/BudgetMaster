@@ -91,6 +91,12 @@ public class TemplateService implements Resettable, AccessAllEntities<Template>
 		{
 			template.setAccount(accountService.getRepository().findByIsDefault(true));
 		}
+
+		final Account transferAccount = template.getTransferAccount();
+		if(transferAccount != null && transferAccount.getAccountState() != AccountState.FULL_ACCESS)
+		{
+			template.setTransferAccount(accountService.getRepository().findByIsDefault(true));
+		}
 	}
 
 	public void prepareModelNewOrEdit(Model model, boolean isEdit, TransactionBase item, List<Account> accounts)
