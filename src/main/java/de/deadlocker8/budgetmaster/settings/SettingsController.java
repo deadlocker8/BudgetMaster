@@ -93,7 +93,8 @@ public class SettingsController extends BaseController
 					   @RequestParam(value = "password") String password,
 					   @RequestParam(value = "passwordConfirmation") String passwordConfirmation,
 					   @RequestParam(value = "languageType") String languageType,
-					   @RequestParam(value = "autoBackupStrategyType", required = false) String autoBackupStrategyType)
+					   @RequestParam(value = "autoBackupStrategyType", required = false) String autoBackupStrategyType,
+					   @RequestParam(value = "runBackup", required = false) Boolean runBackup)
 	{
 		settings.setLanguage(LanguageType.fromName(languageType));
 		if(autoBackupStrategyType == null)
@@ -130,8 +131,33 @@ public class SettingsController extends BaseController
 
 		updateSettings(settings);
 
+		runBackup(request, runBackup);
+
 		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.settings.saved"), NotificationType.SUCCESS));
 		return "redirect:/settings";
+	}
+
+	private void runBackup(WebRequest request, Boolean runBackup)
+	{
+		if(runBackup == null)
+		{
+			return;
+		}
+
+		if(runBackup)
+		{
+			backupService.runNow();
+
+			BackupStatus backupStatus = backupService.getBackupStatus();
+			if(backupStatus == BackupStatus.OK)
+			{
+				WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.settings.backup.run.success"), NotificationType.SUCCESS));
+			}
+			else
+			{
+				WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.settings.backup.run.error"), NotificationType.ERROR));
+			}
+		}
 	}
 
 	private void fillMissingFieldsWithDefaults(Settings settings)

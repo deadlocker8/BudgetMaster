@@ -71,6 +71,11 @@ $(document).ready(function()
         });
     }
 
+    $('#settings-backup-run-now').click(function()
+    {
+        document.getElementById('runBackupInput').value = 1;
+    });
+
     // on initial page load
     let autoBackupCheckbox = document.getElementsByName("autoBackupActivated")[0];
     $('#settings-auto-backup').toggle(autoBackupCheckbox.checked);

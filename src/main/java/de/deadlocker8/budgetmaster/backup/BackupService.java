@@ -3,6 +3,8 @@ package de.deadlocker8.budgetmaster.backup;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -21,6 +23,8 @@ import java.util.concurrent.ScheduledFuture;
 @Service
 public class BackupService
 {
+	private final Logger LOGGER = LoggerFactory.getLogger(BackupService.class);
+
 	private final SettingsService settingsService;
 	private final DatabaseService databaseService;
 
@@ -112,5 +116,11 @@ public class BackupService
 		}
 
 		return BackupStatus.UNKNOWN;
+	}
+
+	public void runNow()
+	{
+		LOGGER.debug("Backup triggered manually");
+		backupTask.run();
 	}
 }
