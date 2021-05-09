@@ -9,6 +9,15 @@
     font-size: 20px;
 }
 
+.category-circle .fa,
+.category-circle .fab,
+.category-circle .fad,
+.category-circle .fal,
+.category-circle .far,
+.category-circle .fas {
+    line-height: 40px;
+}
+
 .category-circle-small {
     width: 34px;
     height: 34px;
@@ -20,6 +29,16 @@
     vertical-align: middle;
     margin: 14px 16px;
 }
+
+.category-circle-small .fa,
+.category-circle-small .fab,
+.category-circle-small .fad,
+.category-circle-small .fal,
+.category-circle-small .far,
+.category-circle-small .fas {
+    line-height: 34px !important;
+}
+
 
 .category-square {
     border-radius: 10%;
