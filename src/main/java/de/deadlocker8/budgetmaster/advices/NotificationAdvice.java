@@ -6,12 +6,14 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.context.request.WebRequest;
 
+import java.util.List;
+
 @ControllerAdvice
 public class NotificationAdvice
 {
-	@ModelAttribute("notification")
-	public Notification getToast(WebRequest request)
+	@ModelAttribute("notifications")
+	public List<Notification> getNotifications(WebRequest request)
 	{
-		return WebRequestUtils.popNotification(request);
+		return WebRequestUtils.getNotifications(request);
 	}
 }

@@ -66,31 +66,33 @@
 </#macro>
 
 <#macro content>
-    <#if notification??>
-        <@showNotification notification/>
+    <#if notifications??>
+        <@showNotifications notifications/>
     </#if>
 
     <#nested>
 </#macro>
 
-<#macro showNotification notification>
-    <div class="row notification-row">
-        <div class="col s12 center-align">
-            <div class="notification-wrapper">
-                <div class="notification ${notification.getBackgroundColor()} ${notification.getTextColor()}">
-                    <div>
-                        <#if notification.getIcon()??>
-                            <i class="${notification.getIcon()} notification-item"></i>
-                        </#if>
-                        <span class="notification-item">${notification.getMessage()}</span>
+<#macro showNotifications notifications>
+    <#list notifications as notification>
+        <div class="row notification-row" id="notification-${notification?index}">
+            <div class="col s12 center-align">
+                <div class="notification-wrapper">
+                    <div class="notification ${notification.getBackgroundColor()} ${notification.getTextColor()}">
+                        <div>
+                            <#if notification.getIcon()??>
+                                <i class="${notification.getIcon()} notification-item"></i>
+                            </#if>
+                            <span class="notification-item">${notification.getMessage()}</span>
+                        </div>
+                        <a class="notification-item notification-clear ${notification.getTextColor()}" data-id="notification-${notification?index}">
+                            <i class="material-icons">clear</i>
+                        </a>
                     </div>
-                    <a class="notification-item notification-clear ${notification.getTextColor()}">
-                        <i class="material-icons">clear</i>
-                    </a>
                 </div>
             </div>
         </div>
-    </div>
+    </#list>
 </#macro>
 
 <#macro buttonLink url icon localizationKey id="" color="background-blue" classes="" isDataUrl=false noUrl=false disabled=false>

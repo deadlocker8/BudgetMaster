@@ -4,9 +4,12 @@ import de.deadlocker8.budgetmaster.utils.notification.Notification;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class WebRequestUtils
 {
-	private static final String ATTR_NOTIFICATION = "notification";
+	private static final String ATTR_NOTIFICATIONS = "notifications";
 
 	private WebRequestUtils()
 	{
@@ -14,24 +17,32 @@ public class WebRequestUtils
 
 	public static void putNotification(WebRequest request, Notification notification)
 	{
-		put(request, notification, ATTR_NOTIFICATION);
+		List<Notification> notifications = getNotifications(request, ATTR_NOTIFICATIONS);
+		notifications.add(notification);
+		put(request, notifications, ATTR_NOTIFICATIONS);
 	}
 
-	public static Notification popNotification(WebRequest request)
+	public static List<Notification> getNotifications(WebRequest request)
 	{
-		return (Notification) pop(request, ATTR_NOTIFICATION);
+		List<Notification> notifications = getNotifications(request, ATTR_NOTIFICATIONS);
+		request.removeAttribute(ATTR_NOTIFICATIONS, RequestAttributes.SCOPE_SESSION);
+		return notifications;
+	}
+
+	@SuppressWarnings("unchecked")
+	private static List<Notification> getNotifications(WebRequest request, String key)
+	{
+		Object notifications = request.getAttribute(key, RequestAttributes.SCOPE_SESSION);
+		if(notifications == null)
+		{
+			return new ArrayList<>();
+		}
+
+		return (List<Notification>) notifications;
 	}
 
 	private static void put(WebRequest request, Object any, String key)
 	{
 		request.setAttribute(key, any, RequestAttributes.SCOPE_SESSION);
-	}
-
-	public static Object pop(WebRequest request, String key)
-	{
-		final Object any = request.getAttribute(key, RequestAttributes.SCOPE_SESSION);
-		request.removeAttribute(key, RequestAttributes.SCOPE_SESSION);
-
-		return any;
 	}
 }
