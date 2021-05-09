@@ -161,12 +161,13 @@
                             <#-- auto backup -->
                             <@settingsMacros.autoBackup/>
 
+                            <hr>
                             <br>
 
                             <#-- buttons -->
                             <div class="row">
                                 <div class="col s12 center-align">
-                                    <@header.buttonSubmit name='action' icon='save' localizationKey='save'/>
+                                    <@header.buttonSubmit name='action' icon='save' localizationKey='save' color='background-green'/>
                                 </div>
                             </div>
                         </form>
