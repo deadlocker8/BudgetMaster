@@ -115,7 +115,7 @@ class CustomSelect
 
         for(const option of document.querySelectorAll(this.selector + ' .custom-select-option'))
         {
-            option.addEventListener('click', function(event)
+            option.addEventListener('mousedown', function(event)
             {
                 self.confirmItem(this);
                 event.stopPropagation();
