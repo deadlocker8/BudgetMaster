@@ -71,7 +71,9 @@
 <#macro transactionLinks transaction>
     <div class="col s4 l2 xl1 right-align transaction-buttons no-wrap">
         <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/highlight' icon='open_in_new' localizationKey='' classes="no-padding text-default buttonHighlight"/>
-        <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default"/>
+        <#if transaction.getAccount().getAccountState().name() == 'FULL_ACCESS'>
+            <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default"/>
+        </#if>
     </div>
 </#macro>
 
