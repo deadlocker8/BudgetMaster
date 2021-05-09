@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.unit;
 
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountRepository;
+import de.deadlocker8.budgetmaster.accounts.AccountState;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryRepository;
@@ -41,6 +42,7 @@ public class TransactionSearchSpecificationsTest
 	private Transaction transaction2;
 	private Transaction repeatingTransaction;
 	private Transaction transferTransaction;
+	private Transaction transactionFromHiddenAccount;
 
 	@Autowired
 	private CategoryRepository categoryRepository;
@@ -51,6 +53,7 @@ public class TransactionSearchSpecificationsTest
 	private AccountRepository accountRepository;
 	private Account account;
 	private Account account2;
+	private Account accountHidden;
 
 	@Autowired
 	private TagRepository tagRepository;
@@ -66,6 +69,8 @@ public class TransactionSearchSpecificationsTest
 	{
 		account = accountRepository.save(new Account("TestAccount", AccountType.CUSTOM));
 		account2 = accountRepository.save(new Account("TestAccount2", AccountType.CUSTOM));
+		accountHidden = accountRepository.save(new Account("Hidden account", AccountType.CUSTOM));
+		accountHidden.setAccountState(AccountState.HIDDEN);
 
 		category1 = categoryRepository.save(new Category("Category1", "#ff0000", CategoryType.CUSTOM));
 		category2 = categoryRepository.save(new Category("xxx", "#ff0000", CategoryType.CUSTOM));
@@ -121,6 +126,14 @@ public class TransactionSearchSpecificationsTest
 		transferTransaction.setAccount(account);
 		transferTransaction.setTransferAccount(account2);
 		transferTransaction = transactionRepository.save(transferTransaction);
+
+		transactionFromHiddenAccount = new Transaction();
+		transactionFromHiddenAccount.setName("inside hidden account");
+		transactionFromHiddenAccount.setAmount(-525);
+		transactionFromHiddenAccount.setDate(new DateTime(2018, 11, 3, 12, 0, 0, 0));
+		transactionFromHiddenAccount.setCategory(category2);
+		transactionFromHiddenAccount.setAccount(accountHidden);
+		transactionFromHiddenAccount = transactionRepository.save(transactionFromHiddenAccount);
 	}
 
 	@Test
@@ -246,5 +259,15 @@ public class TransactionSearchSpecificationsTest
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).hasSize(1)
 				.contains(transaction1);
+	}
+
+	@Test
+	public void getMatches_IgnoreTransactionsFromHiddenAccounts()
+	{
+		Search search = new Search("hidden", true, false, false, false, 0);
+		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
+
+		List<Transaction> results = transactionRepository.findAll(spec);
+		assertThat(results).isEmpty();
 	}
 }
