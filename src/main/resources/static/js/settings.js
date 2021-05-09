@@ -86,6 +86,10 @@ function validateForm()
         let autoBackupFilesToKeepValid = validateNumber($('#settings-backup-auto-files-to-keep').val(), "settings-backup-auto-files-to-keep", "hidden-settings-backup-auto-files-to-keep", numberValidationMessageZeroAllowed, REGEX_NUMBER);
         return autoBackupDaysValid && autoBackupFilesToKeepValid;
     }
+    else
+    {
+        document.getElementById('settings-backup-auto-strategy').name = '';
+    }
 
     return true;
 }

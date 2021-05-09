@@ -93,10 +93,17 @@ public class SettingsController extends BaseController
 					   @RequestParam(value = "password") String password,
 					   @RequestParam(value = "passwordConfirmation") String passwordConfirmation,
 					   @RequestParam(value = "languageType") String languageType,
-					   @RequestParam(value = "autoBackupStrategyType") String autoBackupStrategyType)
+					   @RequestParam(value = "autoBackupStrategyType", required = false) String autoBackupStrategyType)
 	{
 		settings.setLanguage(LanguageType.fromName(languageType));
-		settings.setAutoBackupStrategy(AutoBackupStrategy.fromName(autoBackupStrategyType));
+		if(autoBackupStrategyType == null)
+		{
+			settings.setAutoBackupStrategy(AutoBackupStrategy.NONE);
+		}
+		else
+		{
+			settings.setAutoBackupStrategy(AutoBackupStrategy.fromName(autoBackupStrategyType));
+		}
 
 		Optional<FieldError> passwordErrorOptional = settingsService.validatePassword(password, passwordConfirmation);
 		if(passwordErrorOptional.isPresent())
