@@ -93,11 +93,12 @@
     </div>
 </#macro>
 
-<#macro buttonLink url icon localizationKey id="" color="background-blue" classes="" isDataUrl=false noUrl=false>
+<#macro buttonLink url icon localizationKey id="" color="background-blue" classes="" isDataUrl=false noUrl=false disabled=false>
     <a <#if !isDataUrl && !noUrl>href="<@s.url url/>"</#if>
        id="${id}"
        class="waves-effect waves-light btn ${color} ${classes}"
-        <#if isDataUrl>data-url="${url}"</#if>>
+        <#if isDataUrl>data-url="${url}"</#if>
+        <#if disabled>disabled</#if>>
         <i class="material-icons left <#if !localizationKey?has_content>no-margin</#if>">${icon}</i><#if localizationKey?has_content>${locale.getString(localizationKey)}</#if>
     </a>
 </#macro>

@@ -93,6 +93,7 @@ function selectIcon(item)
     }
 
     item.classList.add('selected');
+    document.getElementById('button-icon-confirm').removeAttribute('disabled');
 }
 
 function uploadImage()

@@ -79,6 +79,7 @@ $(document).ready(function()
         }
 
         this.classList.add('selected');
+        document.getElementById('button-category-icon-confirm').removeAttribute('disabled');
     });
 
     if($('#modalIconSelect').length)
