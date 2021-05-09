@@ -54,12 +54,6 @@
         </div>
 </#macro>
 
-<#macro transactionAccount transaction>
-    <div class="col s4 l2 xl2 truncate">
-        ${transaction.getAccount().getName()}
-    </div>
-</#macro>
-
 <#macro transactionAccountIcon transaction>
     <#if helpers.getCurrentAccount().getType().name() == "ALL" && transaction.getAccount()??>
         <#import "../helpers/customSelectMacros.ftl" as customSelectMacros>
