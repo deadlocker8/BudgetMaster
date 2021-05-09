@@ -46,26 +46,26 @@ public class AccountService implements Resettable, AccessAllEntities<Account>
 	@Override
 	public List<Account> getAllEntitiesAsc()
 	{
-		List<Account> accounts = accountRepository.findAllByType(AccountType.ALL);
-		accounts.addAll(accountRepository.findAllByTypeOrderByNameAsc(AccountType.CUSTOM));
+		final List<Account> accounts = accountRepository.findAllByTypeOrderByNameAsc(AccountType.CUSTOM);
 		accounts.sort((a1, a2) -> new NaturalOrderComparator().compare(a1.getName(), a2.getName()));
+		accounts.addAll(0, accountRepository.findAllByType(AccountType.ALL));
 		return accounts;
 	}
 
 	public List<Account> getAllActivatedAccountsAsc()
 	{
-		List<Account> accounts = accountRepository.findAllByType(AccountType.ALL);
-		accounts.addAll(accountRepository.findAllByTypeAndAccountStateOrderByNameAsc(AccountType.CUSTOM, AccountState.FULL_ACCESS));
+		List<Account> accounts = accountRepository.findAllByTypeAndAccountStateOrderByNameAsc(AccountType.CUSTOM, AccountState.FULL_ACCESS);
 		accounts.sort((a1, a2) -> new NaturalOrderComparator().compare(a1.getName(), a2.getName()));
+		accounts.addAll(0, accountRepository.findAllByType(AccountType.ALL));
 		return accounts;
 	}
 
 	public List<Account> getAllReadableAccounts()
 	{
-		List<Account> accounts = accountRepository.findAllByType(AccountType.ALL);
-		accounts.addAll(accountRepository.findAllByTypeAndAccountStateOrderByNameAsc(AccountType.CUSTOM, AccountState.FULL_ACCESS));
+		List<Account> accounts = accountRepository.findAllByTypeAndAccountStateOrderByNameAsc(AccountType.CUSTOM, AccountState.FULL_ACCESS);
 		accounts.addAll(accountRepository.findAllByTypeAndAccountStateOrderByNameAsc(AccountType.CUSTOM, AccountState.READ_ONLY));
 		accounts.sort((a1, a2) -> new NaturalOrderComparator().compare(a1.getName(), a2.getName()));
+		accounts.addAll(0, accountRepository.findAllByType(AccountType.ALL));
 		return accounts;
 	}
 
