@@ -228,6 +228,8 @@
         <@autoBackupLocal/>
 
         <@autoBackupGitRemote/>
+
+        <@autoBackupHelpButton/>
     </div>
 </#macro>
 
@@ -271,8 +273,12 @@
         <div class="col s6 m6 l4 offset-l2">
             <a id="settings-backup-auto-git-test" data-url="<@s.url '/settings/git/test'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">send</i>${locale.getString("settings.backup.auto.git.test")}</a>
         </div>
+    </div>
+</#macro>
 
-        <div class="col s6 m6 l4 right-align">
+<#macro autoBackupHelpButton>
+    <div class="row">
+        <div class="col s12 m12 l8 offset-l2 center-align">
             <a target="_blank" href="${locale.getString("settings.backup.auto.strategy.git.remote.help.url")}" class="waves-effect waves-light btn btn-flat text-default"><i class="material-icons left">help_outline</i>${locale.getString("settings.backup.auto.strategy.git.remote.help")}</a>
         </div>
     </div>
