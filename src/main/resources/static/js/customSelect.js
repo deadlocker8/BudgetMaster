@@ -46,30 +46,6 @@ $(document).ready(function()
         allCustomSelects.push(globalAccountSelect);
     }
 
-    window.addEventListener('click', function(e)
-    {
-        let openCustomSelect = document.querySelector('.custom-select.open');
-        if(openCustomSelect === null)
-        {
-            return;
-        }
-
-        if(!openCustomSelect.contains(e.target))
-        {
-            for(let i = 0; i < allCustomSelects.length; i++)
-            {
-                let currentCustomSelect = allCustomSelects[i];
-                let currentSelector = currentCustomSelect.getSelector().replace('.', '');
-                if(openCustomSelect.parentElement.classList.contains(currentSelector))
-                {
-                    currentCustomSelect.close();
-                    currentCustomSelect.resetSelectedItemId();
-                    currentCustomSelect.removeSelectionStyleClassFromAll();
-                }
-            }
-        }
-    });
-
     Mousetrap.bind('enter', function(event)
     {
         if(isSearchFocused())
@@ -147,6 +123,10 @@ class CustomSelect
         }
 
         this.resetSelectedItemId()
+
+        customSelectTrigger.addEventListener('focusout', () => {
+            this.close();
+        });
     }
 
     isDisabled()
@@ -169,6 +149,8 @@ class CustomSelect
     {
         document.querySelector(this.selector + ' .custom-select').classList.remove('open');
         this.disableHotKeys();
+        this.resetSelectedItemId();
+        this.removeSelectionStyleClassFromAll();
     }
 
     enableHotkeys()
