@@ -38,7 +38,7 @@ public class ProgramArgs
 				.filter(arg -> arg.startsWith("--customFolder"))
 				.findFirst();
 
-		if(!customFolderOptional.isPresent())
+		if(customFolderOptional.isEmpty())
 		{
 			return Optional.empty();
 		}

@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.unit;
 
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountRepository;
+import de.deadlocker8.budgetmaster.accounts.AccountState;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryRepository;
@@ -41,6 +42,7 @@ public class TransactionSpecificationsTest
 	private Transaction repeatingTransaction;
 	private Transaction transferTransaction;
 	private Transaction transferTransactionWrongAccount;
+	private Transaction transactionInHiddenAccount;
 
 	@Autowired
 	private CategoryRepository categoryRepository;
@@ -52,6 +54,7 @@ public class TransactionSpecificationsTest
 	private AccountRepository accountRepository;
 	private Account account;
 	private Account account2;
+	private Account accountHidden;
 
 	@Autowired
 	private TagRepository tagRepository;
@@ -71,6 +74,8 @@ public class TransactionSpecificationsTest
 	{
 		account = accountRepository.save(new Account("TestAccount", AccountType.CUSTOM));
 		account2 = accountRepository.save(new Account("TestAccount2", AccountType.CUSTOM));
+		accountHidden = accountRepository.save(new Account("Hidden Account", AccountType.CUSTOM));
+		accountHidden.setAccountState(AccountState.HIDDEN);
 
 		categoryUnused = categoryRepository.save(new Category("CategoryUnused", "#00ff00", CategoryType.CUSTOM));
 		category1 = categoryRepository.save(new Category("Category1", "#ff0000", CategoryType.CUSTOM));
@@ -136,12 +141,19 @@ public class TransactionSpecificationsTest
 		transferTransactionWrongAccount.setAccount(account2);
 		transferTransactionWrongAccount.setTransferAccount(account2);
 		transferTransactionWrongAccount = transactionRepository.save(transferTransactionWrongAccount);
+
+		transactionInHiddenAccount = new Transaction();
+		transactionInHiddenAccount.setName("Transaction in Hidden Account");
+		transactionInHiddenAccount.setAmount(-1100);
+		transactionInHiddenAccount.setDate(new DateTime(2018, 9, 18, 12, 0, 0, 0));
+		transactionInHiddenAccount.setAccount(accountHidden);
+		transactionInHiddenAccount = transactionRepository.save(transactionInHiddenAccount);
 	}
 
 	@Test
 	public void getIncomesAndExpendituresAndTransfers()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, true, null, null, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, true, null, List.of(), List.of(), null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).hasSize(4)
@@ -154,7 +166,7 @@ public class TransactionSpecificationsTest
 	@Test
 	public void getIncomesAndExpenditures()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, false, null, null, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, false, null, List.of(), List.of(), null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).hasSize(3)
@@ -166,7 +178,7 @@ public class TransactionSpecificationsTest
 	@Test
 	public void getIncomes()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, false, false, null, null, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, false, false, null, List.of(), List.of(), null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).hasSize(1)
@@ -176,7 +188,7 @@ public class TransactionSpecificationsTest
 	@Test
 	public void getExpenditures()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, false, true, false, null, null, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, false, true, false, null, List.of(), List.of(), null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).hasSize(2)
@@ -187,7 +199,7 @@ public class TransactionSpecificationsTest
 	@Test
 	public void getTransfers()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, false, false, true, null, null, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, false, false, true, null, List.of(), List.of(), null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).hasSize(1)
@@ -197,7 +209,7 @@ public class TransactionSpecificationsTest
 	@Test
 	public void incomesAndExpendituresFalse()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, false, false, false, null, null, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, false, false, false, null, List.of(), List.of(), null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).hasSize(3)
@@ -209,7 +221,7 @@ public class TransactionSpecificationsTest
 	@Test
 	public void getTransferBackReferences_NoReferences()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, false, true, null, null, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, false, true, null, List.of(), List.of(), null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).hasSize(1)
@@ -219,7 +231,7 @@ public class TransactionSpecificationsTest
 	@Test
 	public void getTransferBackReferences()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account2, false, false, true, null, null, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account2, false, false, true, null, List.of(), List.of(), null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).hasSize(2)
@@ -231,7 +243,7 @@ public class TransactionSpecificationsTest
 	public void getTransferBackReferences_WithStartDate()
 	{
 		DateTime startDate2019 = new DateTime(2019, 1, 1, 12, 0, 0, 0);
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate2019, DateTime.now(), account2, false, false, true, null, null, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate2019, DateTime.now(), account2, false, false, true, null, List.of(), List.of(), null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).isEmpty();
@@ -240,7 +252,7 @@ public class TransactionSpecificationsTest
 	@Test
 	public void getRepeating()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, false, true, null, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, false, true, List.of(), List.of(), null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).hasSize(1)
@@ -250,7 +262,7 @@ public class TransactionSpecificationsTest
 	@Test
 	public void noRepeating()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, true, false, null, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, true, false, List.of(), List.of(), null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).hasSize(3)
@@ -264,7 +276,7 @@ public class TransactionSpecificationsTest
 	{
 		List<Integer> categoryIDs = new ArrayList<>();
 		categoryIDs.add(categoryUnused.getID());
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, true, null, categoryIDs, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, true, null, categoryIDs, List.of(), null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).isEmpty();
@@ -275,7 +287,7 @@ public class TransactionSpecificationsTest
 	{
 		List<Integer> categoryIDs = new ArrayList<>();
 		categoryIDs.add(category1.getID());
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, true, null, categoryIDs, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, true, null, categoryIDs, List.of(), null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).hasSize(2)
@@ -286,7 +298,7 @@ public class TransactionSpecificationsTest
 	@Test
 	public void getByFullName()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, true, null, null, null, "Repeating");
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, true, null, List.of(), List.of(), "Repeating");
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).hasSize(1)
@@ -296,7 +308,7 @@ public class TransactionSpecificationsTest
 	@Test
 	public void getByPartialName()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, true, null, null, null, "tin");
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, true, null, List.of(), List.of(), "tin");
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).hasSize(1)
@@ -306,7 +318,7 @@ public class TransactionSpecificationsTest
 	@Test
 	public void getByPartialName_ExcludeTransfersWithWrongAccount()
 	{
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account2, true, true, true, null, null, null, "tion");
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account2, true, true, true, null, List.of(), List.of(), "tion");
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).hasSize(1)
@@ -319,7 +331,7 @@ public class TransactionSpecificationsTest
 		List<Integer> tagIDs = new ArrayList<>();
 		tagIDs.add(tag1.getID());
 
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, true, null, null, tagIDs, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, true, null, List.of(), tagIDs, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).hasSize(1)
@@ -333,7 +345,7 @@ public class TransactionSpecificationsTest
 		tagIDs.add(tag1.getID());
 		tagIDs.add(tag2.getID());
 
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, true,null, null, tagIDs, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, true,null, List.of(), tagIDs, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).hasSize(2)
@@ -348,7 +360,7 @@ public class TransactionSpecificationsTest
 		List<Integer> tagIDs = new ArrayList<>();
 		tagIDs.add(tagUnused.getID());
 
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, true, null, null, tagIDs, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, true, null, List.of(), tagIDs, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).isEmpty();
@@ -372,10 +384,10 @@ public class TransactionSpecificationsTest
 	}
 
 	@Test
-	public void getFromAllAccountsExceptTransfersWithSpecificEndDate()
+	public void getFromAllAccountsExceptTransfersWithSpecificEndDateOrWithHiddenAccount()
 	{
 		DateTime endDate = new DateTime(2018, 11, 30, 12, 0, 0, 0);
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, endDate, null, true, true, false, null, null, null, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, endDate, null, true, true, false, null, List.of(), List.of(), null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).hasSize(2)

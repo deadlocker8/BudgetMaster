@@ -10,6 +10,10 @@ import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
+import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
+import de.deadlocker8.budgetmaster.utils.notification.Notification;
+import de.deadlocker8.budgetmaster.utils.notification.NotificationType;
+import de.thecodelabs.utils.util.Localization;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
@@ -31,7 +36,6 @@ public class TemplateController extends BaseController
 			.create();
 
 	private final TemplateService templateService;
-	private final SettingsService settingsService;
 	private final TransactionService transactionService;
 	private final DateService dateService;
 	private final AccountService accountService;
@@ -40,7 +44,6 @@ public class TemplateController extends BaseController
 	public TemplateController(TemplateService templateService, SettingsService settingsService, TransactionService transactionService, DateService dateService, AccountService accountService)
 	{
 		this.templateService = templateService;
-		this.settingsService = settingsService;
 		this.transactionService = transactionService;
 		this.dateService = dateService;
 		this.accountService = accountService;
@@ -49,8 +52,7 @@ public class TemplateController extends BaseController
 	@GetMapping
 	public String showTemplates(Model model)
 	{
-		model.addAttribute("settings", settingsService.getSettings());
-		model.addAttribute("templates", templateService.getRepository().findAllByOrderByTemplateNameAsc());
+		model.addAttribute("templates", templateService.getAllEntitiesAsc());
 		return "templates/templates";
 	}
 
@@ -62,7 +64,8 @@ public class TemplateController extends BaseController
 	}
 
 	@PostMapping(value = "/fromTransaction")
-	public String postFromTransaction(@RequestParam(value = "templateName") String templateName,
+	public String postFromTransaction(WebRequest request,
+									  @RequestParam(value = "templateName") String templateName,
 									  @ModelAttribute("NewTransaction") Transaction transaction,
 									  @RequestParam(value = "includeCategory") Boolean includeCategory,
 									  @RequestParam(value = "includeAccount") Boolean includeAccount)
@@ -79,6 +82,9 @@ public class TemplateController extends BaseController
 		}
 
 		templateService.createFromTransaction(templateName, transaction, includeCategory, includeAccount);
+
+		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.template.add.success", templateName), NotificationType.SUCCESS));
+
 		return "redirect:/templates";
 	}
 
@@ -91,16 +97,19 @@ public class TemplateController extends BaseController
 			throw new ResourceNotFoundException();
 		}
 
-		model.addAttribute("settings", settingsService.getSettings());
-		model.addAttribute("templates", templateService.getRepository().findAllByOrderByTemplateNameAsc());
+		model.addAttribute("templates", templateService.getAllEntitiesAsc());
 		model.addAttribute("currentTemplate", templateOptional.get());
 		return "templates/templates";
 	}
 
 	@GetMapping("/{ID}/delete")
-	public String deleteTemplate(@PathVariable("ID") Integer ID)
+	public String deleteTemplate(WebRequest request, @PathVariable("ID") Integer ID)
 	{
+		final Template templateToDelete = templateService.getRepository().getOne(ID);
 		templateService.getRepository().deleteById(ID);
+
+		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.template.delete.success", templateToDelete.getTemplateName()), NotificationType.SUCCESS));
+
 		return "redirect:/templates";
 	}
 
@@ -130,13 +139,13 @@ public class TemplateController extends BaseController
 
 		if(newTransaction.getAmount() == null && newTransaction.isExpenditure() == null)
 		{
-			template.setIsExpenditure(true);
+			newTransaction.setIsExpenditure(true);
 		}
 
 		final DateTime date = dateService.getDateTimeFromCookie(cookieDate);
-		transactionService.prepareModelNewOrEdit(model, false, date, null, template, accountService.getAllActivatedAccountsAsc());
+		transactionService.prepareModelNewOrEdit(model, false, date, null, newTransaction, accountService.getAllActivatedAccountsAsc());
 
-		if(template.isTransfer())
+		if(newTransaction.isTransfer())
 		{
 			return "transactions/newTransactionTransfer";
 		}

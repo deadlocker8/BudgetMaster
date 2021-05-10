@@ -2,16 +2,17 @@ package de.deadlocker8.budgetmaster.categories;
 
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.services.HelpersService;
-import de.deadlocker8.budgetmaster.settings.SettingsService;
-import de.deadlocker8.budgetmaster.utils.Colors;
-import de.deadlocker8.budgetmaster.utils.Mappings;
-import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
+import de.deadlocker8.budgetmaster.utils.*;
+import de.deadlocker8.budgetmaster.utils.notification.Notification;
+import de.deadlocker8.budgetmaster.utils.notification.NotificationType;
 import de.thecodelabs.utils.util.ColorUtilsNonJavaFX;
+import de.thecodelabs.utils.util.Localization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,21 +27,18 @@ public class CategoryController extends BaseController
 
 	private final CategoryService categoryService;
 	private final HelpersService helpers;
-	private final SettingsService settingsService;
 
 	@Autowired
-	public CategoryController(CategoryService categoryService, HelpersService helpers, SettingsService settingsService)
+	public CategoryController(CategoryService categoryService, HelpersService helpers)
 	{
 		this.categoryService = categoryService;
 		this.helpers = helpers;
-		this.settingsService = settingsService;
 	}
 
 	@GetMapping
 	public String categories(Model model)
 	{
-		model.addAttribute("categories", categoryService.getAllCategories());
-		model.addAttribute("settings", settingsService.getSettings());
+		model.addAttribute("categories", categoryService.getAllEntitiesAsc());
 		return "categories/categories";
 	}
 
@@ -52,24 +50,33 @@ public class CategoryController extends BaseController
 			return "redirect:/categories";
 		}
 
-		List<Category> allCategories = categoryService.getAllCategories();
+		List<Category> allCategories = categoryService.getAllEntitiesAsc();
 		List<Category> availableCategories = allCategories.stream().filter(category -> !category.getID().equals(ID)).collect(Collectors.toList());
 
 		model.addAttribute("categories", allCategories);
 		model.addAttribute("availableCategories", availableCategories);
 		model.addAttribute("preselectedCategory", categoryService.findByType(CategoryType.NONE));
 
-		model.addAttribute("currentCategory", categoryService.findById(ID).get());
-		model.addAttribute("settings", settingsService.getSettings());
+		model.addAttribute("currentCategory", categoryService.findById(ID).orElseThrow());
 		return "categories/categories";
 	}
 
 	@PostMapping(value = "/{ID}/delete")
-	public String deleteCategory(@PathVariable("ID") Integer ID, @ModelAttribute("DestinationCategory") DestinationCategory destinationCategory)
+	public String deleteCategory(WebRequest request, @PathVariable("ID") Integer ID, @ModelAttribute("DestinationCategory") DestinationCategory destinationCategory)
 	{
 		if(categoryService.isDeletable(ID))
 		{
-			categoryService.deleteCategory(ID, destinationCategory.getCategory());
+			final Optional<Category> categoryOptional = categoryService.findById(ID);
+			if(categoryOptional.isPresent())
+			{
+				final Category categoryToDelete = categoryOptional.get();
+				categoryService.deleteCategory(ID, destinationCategory.getCategory());
+				WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.category.delete.success", categoryToDelete.getName()), NotificationType.SUCCESS));
+			}
+		}
+		else
+		{
+			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.category.delete.not.deletable", String.valueOf(ID)), NotificationType.ERROR));
 		}
 
 		return "redirect:/categories";
@@ -82,7 +89,8 @@ public class CategoryController extends BaseController
 		model.addAttribute("customColor", WHITE);
 		Category emptyCategory = new Category(null, ColorUtilsNonJavaFX.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase(), CategoryType.CUSTOM);
 		model.addAttribute("category", emptyCategory);
-		model.addAttribute("settings", settingsService.getSettings());
+		model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
+
 		return "categories/newCategory";
 	}
 
@@ -96,18 +104,7 @@ public class CategoryController extends BaseController
 		}
 
 		Category category = categoryOptional.get();
-
-		if(helpers.getCategoryColorList().contains(category.getColor()))
-		{
-			model.addAttribute("customColor", WHITE);
-		}
-		else
-		{
-			model.addAttribute("customColor", category.getColor());
-		}
-
-		model.addAttribute("category", category);
-		model.addAttribute("settings", settingsService.getSettings());
+		prepareModel(model, category);
 		return "categories/newCategory";
 	}
 
@@ -121,32 +118,36 @@ public class CategoryController extends BaseController
 		{
 			model.addAttribute("error", bindingResult);
 
-			if(helpers.getCategoryColorList().contains(category.getColor()))
-			{
-				model.addAttribute("customColor", WHITE);
-			}
-			else
-			{
-				model.addAttribute("customColor", category.getColor());
-			}
-
-			if(category.getColor() == null)
-			{
-				category.setColor(ColorUtilsNonJavaFX.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase());
-			}
-			model.addAttribute("category", category);
-			model.addAttribute("settings", settingsService.getSettings());
+			prepareModel(model, category);
 			return "categories/newCategory";
+		}
+
+		if(category.getType() == null)
+		{
+			category.setType(CategoryType.CUSTOM);
+		}
+		categoryService.save(category);
+
+		return "redirect:/categories";
+	}
+
+	private void prepareModel(Model model, Category category)
+	{
+		if(helpers.getCategoryColorList().contains(category.getColor()))
+		{
+			model.addAttribute("customColor", WHITE);
 		}
 		else
 		{
-			if(category.getType() == null)
-			{
-				category.setType(CategoryType.CUSTOM);
-			}
-			categoryService.save(category);
+			model.addAttribute("customColor", category.getColor());
 		}
 
-		return "redirect:/categories";
+		if(category.getColor() == null)
+		{
+			category.setColor(ColorUtilsNonJavaFX.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase());
+		}
+
+		model.addAttribute("category", category);
+		model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
 	}
 }

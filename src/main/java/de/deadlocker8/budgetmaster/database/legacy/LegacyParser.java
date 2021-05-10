@@ -53,14 +53,14 @@ public class LegacyParser
 		List<Account> accounts = new ArrayList<>();
 		accounts.add(account);
 
-		return new Database(categories, accounts, transactions, new ArrayList<>());
+		return new Database(categories, accounts, transactions, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 	}
 
 	private Set<Category> parseCategories(JsonObject root)
 	{
 		Set<Category> parsedCategories = new HashSet<>();
-		JsonArray categories = root.get("categories").getAsJsonArray();
-		for(JsonElement currentCategory : categories)
+		JsonArray jsonCategories = root.get("categories").getAsJsonArray();
+		for(JsonElement currentCategory : jsonCategories)
 		{
 			int ID = currentCategory.getAsJsonObject().get("ID").getAsInt();
 			String name = currentCategory.getAsJsonObject().get("name").getAsString();
@@ -82,8 +82,8 @@ public class LegacyParser
 	private List<Tag> parseTags(JsonObject root)
 	{
 		List<Tag> parsedTags = new ArrayList<>();
-		JsonArray tags = root.get("tags").getAsJsonArray();
-		for(JsonElement currentTag : tags)
+		JsonArray jsonTags = root.get("tags").getAsJsonArray();
+		for(JsonElement currentTag : jsonTags)
 		{
 			int ID = currentTag.getAsJsonObject().get("ID").getAsInt();
 			String name = currentTag.getAsJsonObject().get("name").getAsString();
@@ -97,8 +97,8 @@ public class LegacyParser
 	private List<TagMatch> parseTagMatches(JsonObject root)
 	{
 		List<TagMatch> parsedTagMatches = new ArrayList<>();
-		JsonArray tagMatches = root.get("tagMatches").getAsJsonArray();
-		for(JsonElement currentTagMatch : tagMatches)
+		JsonArray jsonTagMatches = root.get("tagMatches").getAsJsonArray();
+		for(JsonElement currentTagMatch : jsonTagMatches)
 		{
 			int tagID = currentTagMatch.getAsJsonObject().get("tagID").getAsInt();
 			int paymentID = currentTagMatch.getAsJsonObject().get("paymentID").getAsInt();
@@ -241,15 +241,15 @@ public class LegacyParser
 
 	private List<de.deadlocker8.budgetmaster.tags.Tag> getTagsByPaymentID(int paymentID)
 	{
-		List<de.deadlocker8.budgetmaster.tags.Tag> tags = new ArrayList<>();
+		List<de.deadlocker8.budgetmaster.tags.Tag> paymentTags = new ArrayList<>();
 		for(TagMatch tagMatch : tagMatches)
 		{
 			if(tagMatch.getPaymentID() == paymentID)
 			{
-				tags.add(new de.deadlocker8.budgetmaster.tags.Tag(tagMatch.getTagName()));
+				paymentTags.add(new de.deadlocker8.budgetmaster.tags.Tag(tagMatch.getTagName()));
 			}
 		}
 
-		return tags;
+		return paymentTags;
 	}
 }

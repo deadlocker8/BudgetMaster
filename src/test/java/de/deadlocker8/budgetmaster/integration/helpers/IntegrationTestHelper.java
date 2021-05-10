@@ -1,5 +1,7 @@
 package de.deadlocker8.budgetmaster.integration.helpers;
 
+import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.accounts.AccountState;
 import de.thecodelabs.utils.util.Localization;
 import org.junit.rules.TestName;
 import org.openqa.selenium.*;
@@ -87,7 +89,7 @@ public class IntegrationTestHelper
 		}
 	}
 
-	public void uploadDatabase(String path, List<String> sourceAccounts, List<String> destinationAccounts)
+	public void uploadDatabase(String path, List<String> sourceAccounts, List<Account> destinationAccounts)
 	{
 		if(path.startsWith("\\"))
 		{
@@ -112,30 +114,38 @@ public class IntegrationTestHelper
 		// confirm upload
 		driver.findElement(By.id("button-confirm-database-import")).click();
 
+		// confirm import step 1
+		driver.findElement(By.id("buttonImport")).click();
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("button-new-account")));
+
 		// create new accounts
-		for(String account : destinationAccounts)
+		for(Account account : destinationAccounts)
 		{
-			createAccountOnImport(account);
+			createAccountOnImport(account.getName(), account.getAccountState());
 		}
 
 		// account matching
 		matchAccounts(sourceAccounts, destinationAccounts);
 
 		// confirm import
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("buttonImport")));
 		final WebElement buttonImport = driver.findElement(By.id("buttonImport"));
 		buttonImport.sendKeys("");
 		buttonImport.click();
 
+		wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("import-entity-name")));
+
+		// close result page
+		driver.findElement(By.id("button-finish-import")).click();
 		assertEquals(Localization.getString("menu.settings"), IntegrationTestHelper.getTextNode(driver.findElement(By.className("headline"))));
 
-		// open transactions page in order to update repeating transactions
-		driver.get(url + "/transactions");
 		start();
 	}
 
-	private void createAccountOnImport(String accountName)
+	private void createAccountOnImport(String accountName, AccountState accountState)
 	{
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("button-new-account")));
@@ -144,10 +154,22 @@ public class IntegrationTestHelper
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("account-name")));
 		WebElement inputAccountName = driver.findElement(By.id("account-name"));
 		inputAccountName.sendKeys(accountName);
+
+		selectAccountStateByName(accountState);
+
 		driver.findElement(By.id("button-save-account")).click();
 	}
 
-	private void matchAccounts(List<String> sourceAccounts, List<String> destinationAccounts)
+	public void selectAccountStateByName(AccountState accountState)
+	{
+		final WebElement accountStateSelect = driver.findElement(By.cssSelector(".account-state-select-wrapper .custom-select"));
+		accountStateSelect.click();
+		driver.findElements(By.cssSelector(".account-state-select-wrapper .custom-select-item-name")).stream()
+				.filter(webElement -> webElement.getText().equals(Localization.getString(accountState.getLocalizationKey())))
+				.findFirst().orElseThrow().click();
+	}
+
+	private void matchAccounts(List<String> sourceAccounts, List<Account> destinationAccounts)
 	{
 		WebElement headlineImport = driver.findElement(By.className("headline"));
 		assertEquals(Localization.getString("info.title.database.import.dialog"), IntegrationTestHelper.getTextNode(headlineImport));
@@ -157,7 +179,7 @@ public class IntegrationTestHelper
 
 		for(int i = 0; i < destinationAccounts.size(); i++)
 		{
-			String account = destinationAccounts.get(i);
+			String account = destinationAccounts.get(i).getName();
 
 			WebElement row = tableRows.get(i);
 			WebElement sourceAccount = row.findElement(By.className("account-source"));

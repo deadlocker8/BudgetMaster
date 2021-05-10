@@ -34,7 +34,7 @@ public class ReportSettingsService
 	private void createDefaultReportSettingsIfNotExists()
 	{
 		Optional<ReportSettings> reportSettingsOptional = reportSettingsRepository.findById(0);
-		if(!reportSettingsOptional.isPresent())
+		if(reportSettingsOptional.isEmpty())
 		{
 			ReportSettings reportSettings = ReportSettings.getDefault();
 			reportSettings.setID(0);
@@ -48,7 +48,7 @@ public class ReportSettingsService
 		}
 
 		reportSettingsOptional = reportSettingsRepository.findById(0);
-		if(!reportSettingsOptional.isPresent())
+		if(reportSettingsOptional.isEmpty())
 		{
 			throw new ResourceNotFoundException();
 		}
@@ -56,9 +56,8 @@ public class ReportSettingsService
 		reportColumnService.createDefaultsWithReportSettings(reportSettingsOptional.get());
 	}
 
-	@SuppressWarnings("OptionalGetWithoutIsPresent")
 	public ReportSettings getReportSettings()
 	{
-		return reportSettingsRepository.findById(0).get();
+		return reportSettingsRepository.findById(0).orElseThrow();
 	}
 }

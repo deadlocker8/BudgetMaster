@@ -8,6 +8,11 @@ import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
+import de.deadlocker8.budgetmaster.charts.Chart;
+import de.deadlocker8.budgetmaster.charts.ChartService;
+import de.deadlocker8.budgetmaster.charts.ChartType;
+import de.deadlocker8.budgetmaster.images.Image;
+import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.tags.TagService;
@@ -39,29 +44,32 @@ import java.util.stream.Stream;
 @Service
 public class DatabaseService
 {
-	public static Gson GSON = new GsonBuilder()
+	public static final  Gson GSON = new GsonBuilder()
 			.excludeFieldsWithoutExposeAnnotation()
-			.setPrettyPrinting()
 			.registerTypeAdapter(DateTime.class, (JsonSerializer<DateTime>) (json, typeOfSrc, context) -> new JsonPrimitive(ISODateTimeFormat.date().print(json)))
 			.create();
-
 	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseService.class);
-	private AccountService accountService;
-	private CategoryService categoryService;
-	private TransactionService transactionService;
-	private TagService tagService;
-	private TemplateService templateService;
-	private SettingsService settingsService;
+
+	private final AccountService accountService;
+	private final CategoryService categoryService;
+	private final TransactionService transactionService;
+	private final TagService tagService;
+	private final TemplateService templateService;
+	private final ChartService chartService;
+	private final SettingsService settingsService;
+	private final ImageService imageService;
 
 	@Autowired
-	public DatabaseService(AccountService accountService, CategoryService categoryService, TransactionService transactionService, TagService tagService, TemplateService templateService, SettingsService settingsService)
+	public DatabaseService(AccountService accountService, CategoryService categoryService, TransactionService transactionService, TagService tagService, TemplateService templateService, ChartService chartService, SettingsService settingsService, ImageService imageService)
 	{
 		this.accountService = accountService;
 		this.categoryService = categoryService;
 		this.transactionService = transactionService;
 		this.tagService = tagService;
 		this.templateService = templateService;
+		this.chartService = chartService;
 		this.settingsService = settingsService;
+		this.imageService = imageService;
 	}
 
 	public void reset()
@@ -71,6 +79,8 @@ public class DatabaseService
 		resetCategories();
 		resetAccounts();
 		resetTags();
+		resetCharts();
+		resetImages();
 	}
 
 	private void resetAccounts()
@@ -111,6 +121,22 @@ public class DatabaseService
 		templateService.deleteAll();
 		templateService.createDefaults();
 		LOGGER.info("All templates reset.");
+	}
+
+	private void resetCharts()
+	{
+		LOGGER.info("Resetting charts...");
+		chartService.deleteAll();
+		chartService.createDefaults();
+		LOGGER.info("All charts reset.");
+	}
+
+	private void resetImages()
+	{
+		LOGGER.info("Resetting images...");
+		imageService.deleteAll();
+		imageService.createDefaults();
+		LOGGER.info("All images reset.");
 	}
 
 	public void rotatingBackup(Path backupFolderPath)
@@ -154,7 +180,7 @@ public class DatabaseService
 		for(int i = 0; i < allowedNumberOfFiles; i++)
 		{
 			final Path oldBackup = Paths.get(existingBackups.get(i));
-			LOGGER.debug(MessageFormat.format("Schedule old backup for deletion: {0}", oldBackup.toString()));
+			LOGGER.debug(MessageFormat.format("Schedule old backup for deletion: {0}", oldBackup));
 			filesToDelete.add(oldBackup);
 		}
 
@@ -187,14 +213,21 @@ public class DatabaseService
 
 		rotatingBackup(backupFolderPath);
 
-		final Database databaseForJsonSerialization = getDatabaseForJsonSerialization();
 		final String fileName = getExportFileName(true);
-		final String backupPath = backupFolderPath.resolve(fileName).toString();
+		final Path backupPath = backupFolderPath.resolve(fileName);
 
-		try(Writer writer = new FileWriter(backupPath))
+		exportDatabase(backupPath);
+	}
+
+	@Transactional
+	public void exportDatabase(Path backupPath)
+	{
+		final Database database = getDatabaseForJsonSerialization();
+
+		try(Writer writer = new FileWriter(backupPath.toString()))
 		{
 			LOGGER.info("Backup database to: {}", backupPath);
-			DatabaseService.GSON.toJson(databaseForJsonSerialization, writer);
+			DatabaseService.GSON.toJson(database, writer);
 			LOGGER.info("Backup database DONE");
 		}
 		catch(IOException e)
@@ -216,15 +249,17 @@ public class DatabaseService
 
 	public Database getDatabaseForJsonSerialization()
 	{
-		List<Category> categories = categoryService.getAllCategories();
+		List<Category> categories = categoryService.getAllEntitiesAsc();
 		List<Account> accounts = accountService.getRepository().findAll();
 		List<Transaction> transactions = transactionService.getRepository().findAll();
 		List<Transaction> filteredTransactions = filterRepeatingTransactions(transactions);
 		List<Template> templates = templateService.getRepository().findAll();
-		LOGGER.debug("Reduced " + transactions.size() + " transactions to " + filteredTransactions.size());
+		List<Chart> charts = chartService.getRepository().findAllByType(ChartType.CUSTOM);
+		List<Image> images = imageService.getRepository().findAll();
+		LOGGER.debug(MessageFormat.format("Reduced {0} transactions to {1}", transactions.size(), filteredTransactions.size()));
 
-		Database database = new Database(categories, accounts, filteredTransactions, templates);
-		LOGGER.debug("Created database for JSON with " + database.getTransactions().size() + " transactions, " + database.getCategories().size() + " categories and " + database.getAccounts().size() + " accounts and " + database.getTemplates().size() + " templates");
+		Database database = new Database(categories, accounts, filteredTransactions, templates, charts, images);
+		LOGGER.debug(MessageFormat.format("Created database for JSON with {0} transactions, {1} categories, {2} accounts, {3} templates, {4} charts and {5} images", database.getTransactions().size(), database.getCategories().size(), database.getAccounts().size(), database.getTemplates().size(), database.getCharts().size(), database.getImages()));
 		return database;
 	}
 

@@ -1,5 +1,7 @@
 package de.deadlocker8.budgetmaster.settings;
 
+import de.deadlocker8.budgetmaster.backup.AutoBackupTime;
+import de.deadlocker8.budgetmaster.backup.AutoBackupStrategy;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,9 +15,12 @@ public class Settings
 	@Id
 	private int ID;
 	private String currency;
-	private LanguageType language;
 	private boolean restActivated;
+
+	private LanguageType language;
 	private boolean useDarkTheme;
+	private Boolean showCategoriesAsCircles;
+
 	private boolean autoUpdateCheckEnabled;
 
 	private Boolean backupReminderActivated;
@@ -24,10 +29,16 @@ public class Settings
 
 	private Integer searchItemsPerPage;
 
-	private Boolean autoBackupActivated;
+	private AutoBackupStrategy autoBackupStrategy;
 	private Integer autoBackupDays;
 	private AutoBackupTime autoBackupTime;
+
 	private Integer autoBackupFilesToKeep;
+	private String autoBackupGitUrl;
+	private String autoBackupGitBranchName;
+	private String autoBackupGitUserName;
+	private String autoBackupGitToken;
+
 	private Integer installedVersionCode;
 	private Boolean whatsNewShownForCurrentVersion;
 	private Boolean showFirstUseBanner;
@@ -43,14 +54,19 @@ public class Settings
 		defaultSettings.setLanguage(LanguageType.ENGLISH);
 		defaultSettings.setRestActivated(true);
 		defaultSettings.setUseDarkTheme(false);
+		defaultSettings.setShowCategoriesAsCircles(true);
 		defaultSettings.setAutoUpdateCheckEnabled(true);
 		defaultSettings.setBackupReminderActivated(true);
 		defaultSettings.setLastBackupReminderDate(DateTime.now());
 		defaultSettings.setSearchItemsPerPage(10);
-		defaultSettings.setAutoBackupActivated(false);
+		defaultSettings.setAutoBackupStrategy(AutoBackupStrategy.NONE);
 		defaultSettings.setAutoBackupDays(1);
 		defaultSettings.setAutoBackupTime(AutoBackupTime.TIME_00);
 		defaultSettings.setAutoBackupFilesToKeep(3);
+		defaultSettings.setAutoBackupGitUrl("");
+		defaultSettings.setAutoBackupGitBranchName("");
+		defaultSettings.setAutoBackupGitUserName("");
+		defaultSettings.setAutoBackupGitToken("");
 		defaultSettings.setInstalledVersionCode(0);
 		defaultSettings.setWhatsNewShownForCurrentVersion(false);
 		defaultSettings.setShowFirstUseBanner(true);
@@ -103,6 +119,16 @@ public class Settings
 		this.useDarkTheme = useDarkTheme;
 	}
 
+	public Boolean getShowCategoriesAsCircles()
+	{
+		return showCategoriesAsCircles;
+	}
+
+	public void setShowCategoriesAsCircles(Boolean showCategoriesAsCircles)
+	{
+		this.showCategoriesAsCircles = showCategoriesAsCircles;
+	}
+
 	public boolean isAutoUpdateCheckEnabled()
 	{
 		return autoUpdateCheckEnabled;
@@ -152,16 +178,6 @@ public class Settings
 		this.searchItemsPerPage = searchItemsPerPage;
 	}
 
-	public Boolean getAutoBackupActivated()
-	{
-		return autoBackupActivated;
-	}
-
-	public void setAutoBackupActivated(Boolean autoBackupActivated)
-	{
-		this.autoBackupActivated = autoBackupActivated;
-	}
-
 	public Integer getAutoBackupDays()
 	{
 		return autoBackupDays;
@@ -182,6 +198,21 @@ public class Settings
 		this.autoBackupTime = autoBackupTime;
 	}
 
+	public AutoBackupStrategy getAutoBackupStrategy()
+	{
+		return autoBackupStrategy;
+	}
+
+	public void setAutoBackupStrategy(AutoBackupStrategy autoBackupStrategy)
+	{
+		this.autoBackupStrategy = autoBackupStrategy;
+	}
+
+	public boolean isAutoBackupActive()
+	{
+		return this.autoBackupStrategy != AutoBackupStrategy.NONE;
+	}
+
 	public Integer getAutoBackupFilesToKeep()
 	{
 		return autoBackupFilesToKeep;
@@ -190,6 +221,46 @@ public class Settings
 	public void setAutoBackupFilesToKeep(Integer autoBackupFilesToKeep)
 	{
 		this.autoBackupFilesToKeep = autoBackupFilesToKeep;
+	}
+
+	public String getAutoBackupGitUrl()
+	{
+		return autoBackupGitUrl;
+	}
+
+	public void setAutoBackupGitUrl(String autoBackupGitUrl)
+	{
+		this.autoBackupGitUrl = autoBackupGitUrl;
+	}
+
+	public String getAutoBackupGitBranchName()
+	{
+		return autoBackupGitBranchName;
+	}
+
+	public void setAutoBackupGitBranchName(String autoBackupGitBranchName)
+	{
+		this.autoBackupGitBranchName = autoBackupGitBranchName;
+	}
+
+	public String getAutoBackupGitUserName()
+	{
+		return autoBackupGitUserName;
+	}
+
+	public void setAutoBackupGitUserName(String gitUserName)
+	{
+		this.autoBackupGitUserName = gitUserName;
+	}
+
+	public String getAutoBackupGitToken()
+	{
+		return autoBackupGitToken;
+	}
+
+	public void setAutoBackupGitToken(String gitToken)
+	{
+		this.autoBackupGitToken = gitToken;
 	}
 
 	public Integer getInstalledVersionCode()
@@ -236,14 +307,19 @@ public class Settings
 				", language=" + language +
 				", restActivated=" + restActivated +
 				", useDarkTheme=" + useDarkTheme +
+				", showCategoriesAsCircles=" + showCategoriesAsCircles +
 				", autoUpdateCheckEnabled=" + autoUpdateCheckEnabled +
 				", backupReminderActivated=" + backupReminderActivated +
 				", lastBackupReminderDate=" + lastBackupReminderDate +
 				", searchItemsPerPage=" + searchItemsPerPage +
-				", autoBackupActivated=" + autoBackupActivated +
+				", autoBackupStrategy=" + autoBackupStrategy +
 				", autoBackupDays=" + autoBackupDays +
 				", autoBackupTime=" + autoBackupTime +
 				", autoBackupFilesToKeep=" + autoBackupFilesToKeep +
+				", autoBackupGitUrl='" + autoBackupGitUrl + '\'' +
+				", autoBackupGitBranchName='" + autoBackupGitBranchName + '\'' +
+				", autoBackupGitUserName='" + autoBackupGitUserName + '\'' +
+				", autoBackupGitToken='" + autoBackupGitToken + '\'' +
 				", installedVersionCode=" + installedVersionCode +
 				", whatsNewShownForCurrentVersion=" + whatsNewShownForCurrentVersion +
 				", showFirstUseBanner=" + showFirstUseBanner +

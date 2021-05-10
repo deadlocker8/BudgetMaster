@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.RoundingMode;
+import java.text.MessageFormat;
 import java.text.NumberFormat;
 
 @Service
@@ -26,7 +27,7 @@ public class CurrencyService
 
 	public String getCurrencyString(double amount)
 	{
-		return getAmountString(amount, true) + " " + settingsService.getSettings().getCurrency();
+		return MessageFormat.format("{0} {1}", getAmountString(amount, true), settingsService.getSettings().getCurrency());
 	}
 
 	public String getAmountString(int amount)

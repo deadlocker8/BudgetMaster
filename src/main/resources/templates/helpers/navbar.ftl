@@ -8,18 +8,20 @@
         <@itemDivider/>
         <@itemAccountSelect/>
         <@itemDivider/>
-        <@itemWithIcon "home", "/", locale.getString("menu.home"), "home", "budgetmaster-blue", activeID/>
-        <@itemWithIcon "transactions", "/transactions", locale.getString("menu.transactions"), "list", "budgetmaster-baby-blue", activeID/>
-        <@itemWithIcon "templates", "/templates", locale.getString("menu.templates"), "file_copy", "budgetmaster-dark-orange", activeID/>
-        <@itemWithIcon "charts" "/charts" locale.getString("menu.charts"), "show_chart" "budgetmaster-purple", activeID/>
-        <@itemWithIcon "reports", "/reports", locale.getString("menu.reports"), "description", "budgetmaster-green", activeID/>
-        <@itemWithIcon "categories", "/categories", locale.getString("menu.categories"), "label", "budgetmaster-orange", activeID/>
-        <@itemWithIcon "settings", "/settings", locale.getString("menu.settings"), "settings", "budgetmaster-red", activeID/>
+
+        <@itemWithIcon "home", "/", locale.getString("menu.home"), entityType.HOME.getIcon(), entityType.HOME.getColor(), activeID/>
+        <@itemWithIcon "transactions", "/transactions", locale.getString("menu.transactions"), entityType.TRANSACTION.getIcon(), entityType.TRANSACTION.getColor(), activeID/>
+        <@itemWithIcon "templates", "/templates", locale.getString("menu.templates"), entityType.TEMPLATE.getIcon(), entityType.TEMPLATE.getColor(), activeID/>
+        <@itemWithIcon "charts" "/charts" locale.getString("menu.charts"), entityType.CHART.getIcon(), entityType.CHART.getColor(), activeID/>
+        <@itemWithIcon "reports", "/reports", locale.getString("menu.reports"), entityType.REPORT.getIcon(), entityType.REPORT.getColor(), activeID/>
+        <@itemWithIcon "categories", "/categories", locale.getString("menu.categories"), entityType.CATEGORY.getIcon(), entityType.CATEGORY.getColor(), activeID/>
+        <@itemWithIcon "statistics", "/statistics", locale.getString("menu.statistics"), entityType.STATISTICS.getIcon(), entityType.STATISTICS.getColor(), activeID/>
+        <@itemWithIcon "settings", "/settings", locale.getString("menu.settings"), entityType.SETTINGS.getIcon(), entityType.SETTINGS.getColor(), activeID/>
 
         <@itemDivider/>
-        <@itemWithIcon "hotkeys", "/hotkeys", locale.getString("menu.hotkeys"), "keyboard", "budgetmaster-grey", activeID/>
-        <@itemWithFontawesomeIcon "firstUseGuide", "/firstUse", locale.getString("menu.firstUseGuide"), "fas fa-graduation-cap", "budgetmaster-grey", activeID/>
-        <@itemWithIcon "about", "/about", locale.getString("menu.about"), "info", "budgetmaster-grey", activeID/>
+        <@itemWithIcon "hotkeys", "/hotkeys", locale.getString("menu.hotkeys"), entityType.HOTKEYS.getIcon(), entityType.HOTKEYS.getColor(), activeID/>
+        <@itemWithFontawesomeIcon "firstUseGuide", "/firstUse", locale.getString("menu.firstUseGuide"), "fas fa-graduation-cap", "background-grey", activeID/>
+        <@itemWithIcon "about", "/about", locale.getString("menu.about"), entityType.ABOUT.getIcon(), entityType.ABOUT.getColor(), activeID/>
 
         <@itemDivider/>
         <@itemLogout locale.getString("menu.logout") "lock"/>
@@ -72,7 +74,7 @@
                 <input type="hidden" name="searchTags" value="true">
 
                 <div class="input-field">
-                    <input id="search" class="text-color mousetrap" name="searchText" type="search">
+                    <input id="search" class="mousetrap" name="searchText" type="search">
                     <label class="label-icon" for="search"><i class="material-icons">search</i></label>
                     <i id="buttonSearch" class="material-icons">send</i>
                     <i id="buttonClearSearch" class="material-icons">close</i>
@@ -83,29 +85,22 @@
 </#macro>
 
 <#macro itemAccountSelect>
-<div class="account-navbar center-align">
-    <div class="input-field no-margin" id="selectWrapper">
-        <select id="selectAccount">
-            <#list helpers.getAllAccounts() as account>
-                <#if (account.getType().name() == "ALL")>
-                    <option <#if account.isSelected()>selected</#if> value="${account.getID()?c}">${locale.getString("account.all")}</option>
-                <#else>
-                    <option <#if account.isSelected()>selected</#if> value="${account.getID()?c}">${account.getName()}</option>
-                </#if>
-            </#list>
-        </select>
+    <div class="account-navbar">
+        <#import 'customSelectMacros.ftl' as customSelectMacros/>
+        <@customSelectMacros.globalAccountSelect/>
+
+        <div class="center-align">
+            <a href="<@s.url '/accounts'/>">${locale.getString("home.menu.accounts.action.manage")}</a>
+
+            <#assign accountBudget = helpers.getAccountBudget()/>
+            <#if accountBudget <= 0>
+                <div class="account-budget ${redTextColor}">${currencyService.getCurrencyString(accountBudget)}</div>
+            <#else>
+                <div class="account-budget ${greenTextColor}">${currencyService.getCurrencyString(accountBudget)}</div>
+            </#if>
+            <div class="account-budget-date text-default">(${locale.getString("account.budget.asof")}: ${dateService.getDateStringNormal(dateService.getCurrentDate())})</div>
+        </div>
     </div>
-
-    <a href="<@s.url '/accounts'/>">${locale.getString("home.menu.accounts.action.manage")}</a>
-
-    <#assign accountBudget = helpers.getAccountBudget()/>
-    <#if accountBudget <= 0>
-        <div class="account-budget ${redTextColor}">${currencyService.getCurrencyString(accountBudget)}</div>
-    <#else>
-        <div class="account-budget ${greenTextColor}">${currencyService.getCurrencyString(accountBudget)}</div>
-    </#if>
-    <div class="account-budget-date text-color">(${locale.getString("account.budget.asof")}: ${dateService.getDateStringNormal(dateService.getCurrentDate())})</div>
-</div>
 </#macro>
 
 <#macro itemPlain ID link text activeID>
@@ -133,11 +128,11 @@
 </#macro>
 
 <#macro itemUpdate link text icon>
-    <li><a href="<@s.url '${link}'/>" class="waves-effect budgetmaster-update budgetmaster-text-update"><i class="material-icons" id="icon-update">${icon}</i>${text}</a></li>
+    <li><a href="<@s.url '${link}'/>" class="waves-effect background-yellow budgetmaster-text-update"><i class="material-icons" id="icon-update">${icon}</i>${text}</a></li>
 </#macro>
 
 <#macro itemDebug text icon>
-    <li><a class="waves-effect budgetmaster-red budgetmaster-text-update"><i class="material-icons" id="icon-update">${icon}</i>${text}</a></li>
+    <li><a class="waves-effect background-red budgetmaster-text-update"><i class="material-icons" id="icon-update">${icon}</i>${text}</a></li>
 </#macro>
 
 <#macro backupReminder settings>
@@ -148,8 +143,8 @@
                 <p>${locale.getString("info.text.backup.reminder")}</p>
             </div>
             <div class="modal-footer background-color">
-                <a href="<@s.url '/backupReminder/cancel'/>" id="buttonCloseReminder" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
-                <a href="<@s.url '/backupReminder/settings'/>" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("info.button.backup.reminder")}</a>
+                <@header.buttonLink url='/backupReminder/cancel' icon='clear' localizationKey='cancel' color='red' id='buttonCloseReminder' classes='modal-action modal-close text-white'/>
+                <@header.buttonLink url='/backupReminder/settings' icon='settings' localizationKey='info.button.backup.reminder' color='green' id='buttonCloseReminder' classes='modal-action modal-close text-white'/>
             </div>
         </div>
     </#if>

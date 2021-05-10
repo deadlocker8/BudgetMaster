@@ -1,9 +1,9 @@
 package de.deadlocker8.budgetmaster.settings;
 
+import com.google.gson.JsonObject;
 import de.deadlocker8.budgetmaster.Build;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
-import de.deadlocker8.budgetmaster.authentication.User;
-import de.deadlocker8.budgetmaster.authentication.UserRepository;
+import de.deadlocker8.budgetmaster.backup.*;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.controller.BaseController;
@@ -11,18 +11,21 @@ import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.DatabaseParser;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
-import de.deadlocker8.budgetmaster.services.BackupService;
+import de.deadlocker8.budgetmaster.services.ImportResultItem;
 import de.deadlocker8.budgetmaster.services.ImportService;
+import de.deadlocker8.budgetmaster.services.UpdateCheckService;
 import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.deadlocker8.budgetmaster.utils.Mappings;
-import de.deadlocker8.budgetmaster.utils.Strings;
+import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
+import de.deadlocker8.budgetmaster.utils.notification.Notification;
+import de.deadlocker8.budgetmaster.utils.notification.NotificationType;
 import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.RandomUtils;
 import de.thecodelabs.versionizer.UpdateItem;
-import org.joda.time.DateTime;
+import org.eclipse.jgit.transport.CredentialsProvider;
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,6 +41,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -47,53 +51,62 @@ import java.util.Optional;
 @RequestMapping(Mappings.SETTINGS)
 public class SettingsController extends BaseController
 {
+	private static final String PASSWORD_PLACEHOLDER = "•••••";
 	private final SettingsService settingsService;
-	private final UserRepository userRepository;
 	private final DatabaseService databaseService;
 	private final AccountService accountService;
 	private final CategoryService categoryService;
 	private final ImportService importService;
 	private final BudgetMasterUpdateService budgetMasterUpdateService;
-	private final BackupService scheduleTaskService;
+	private final UpdateCheckService updateCheckService;
+	private final BackupService backupService;
 
 	private final List<Integer> SEARCH_RESULTS_PER_PAGE_OPTIONS = Arrays.asList(10, 20, 25, 30, 50, 100);
 
 	@Autowired
-	public SettingsController(SettingsService settingsService, UserRepository userRepository, DatabaseService databaseService, AccountService accountService, CategoryService categoryService, ImportService importService, BudgetMasterUpdateService budgetMasterUpdateService, BackupService scheduleTaskService)
+	public SettingsController(SettingsService settingsService, DatabaseService databaseService, AccountService accountService, CategoryService categoryService, ImportService importService, BudgetMasterUpdateService budgetMasterUpdateService, UpdateCheckService updateCheckService, BackupService backupService)
 	{
 		this.settingsService = settingsService;
-		this.userRepository = userRepository;
 		this.databaseService = databaseService;
 		this.accountService = accountService;
 		this.categoryService = categoryService;
 		this.importService = importService;
 		this.budgetMasterUpdateService = budgetMasterUpdateService;
-		this.scheduleTaskService = scheduleTaskService;
+		this.updateCheckService = updateCheckService;
+		this.backupService = backupService;
 	}
 
 	@GetMapping
 	public String settings(WebRequest request, Model model)
 	{
-		model.addAttribute("settings", settingsService.getSettings());
-		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
-		model.addAttribute("autoBackupTimes", AutoBackupTime.values());
+		prepareBasicModel(model, settingsService.getSettings());
+		request.removeAttribute("database", RequestAttributes.SCOPE_SESSION);
+		request.removeAttribute("importTemplates", RequestAttributes.SCOPE_SESSION);
+		request.removeAttribute("importCharts", RequestAttributes.SCOPE_SESSION);
 
-		final Optional<DateTime> nextBackupTimeOptional = scheduleTaskService.getNextRun();
-		nextBackupTimeOptional.ifPresent(date -> model.addAttribute("nextBackupTime", date));
-
-		request.removeAttribute("database", WebRequest.SCOPE_SESSION);
 		return "settings/settings";
 	}
 
 	@PostMapping(value = "/save")
-	public String post(Model model, @ModelAttribute("Settings") Settings settings, BindingResult bindingResult,
+	public String post(WebRequest request, Model model,
+					   @ModelAttribute("Settings") Settings settings, BindingResult bindingResult,
 					   @RequestParam(value = "password") String password,
 					   @RequestParam(value = "passwordConfirmation") String passwordConfirmation,
-					   @RequestParam(value = "languageType") String languageType)
+					   @RequestParam(value = "languageType") String languageType,
+					   @RequestParam(value = "autoBackupStrategyType", required = false) String autoBackupStrategyType,
+					   @RequestParam(value = "runBackup", required = false) Boolean runBackup)
 	{
 		settings.setLanguage(LanguageType.fromName(languageType));
+		if(autoBackupStrategyType == null)
+		{
+			settings.setAutoBackupStrategy(AutoBackupStrategy.NONE);
+		}
+		else
+		{
+			settings.setAutoBackupStrategy(AutoBackupStrategy.fromName(autoBackupStrategyType));
+		}
 
-		Optional<FieldError> passwordErrorOptional = validatePassword(password, passwordConfirmation);
+		Optional<FieldError> passwordErrorOptional = settingsService.validatePassword(password, passwordConfirmation);
 		if(passwordErrorOptional.isPresent())
 		{
 			bindingResult.addError(passwordErrorOptional.get());
@@ -102,79 +115,104 @@ public class SettingsController extends BaseController
 		SettingsValidator settingsValidator = new SettingsValidator();
 		settingsValidator.validate(settings, bindingResult);
 
+		fillMissingFieldsWithDefaults(settings);
+
+		if(bindingResult.hasErrors())
+		{
+			model.addAttribute("error", bindingResult);
+			prepareBasicModel(model, settings);
+			return "settings/settings";
+		}
+
+		if(!password.equals(PASSWORD_PLACEHOLDER))
+		{
+			settingsService.savePassword(password);
+		}
+
+		updateSettings(settings);
+
+		runBackup(request, runBackup);
+
+		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.settings.saved"), NotificationType.SUCCESS));
+		return "redirect:/settings";
+	}
+
+	private void runBackup(WebRequest request, Boolean runBackup)
+	{
+		if(runBackup == null)
+		{
+			return;
+		}
+
+		if(runBackup)
+		{
+			backupService.runNow();
+
+			BackupStatus backupStatus = backupService.getBackupStatus();
+			if(backupStatus == BackupStatus.OK)
+			{
+				WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.settings.backup.run.success"), NotificationType.SUCCESS));
+			}
+			else
+			{
+				WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.settings.backup.run.error"), NotificationType.ERROR));
+			}
+		}
+	}
+
+	private void fillMissingFieldsWithDefaults(Settings settings)
+	{
 		if(settings.getBackupReminderActivated() == null)
 		{
 			settings.setBackupReminderActivated(false);
 		}
 
-		if(settings.getAutoBackupActivated() == null)
+		if(settings.getAutoBackupStrategy() == null)
 		{
-			settings.setAutoBackupActivated(false);
+			settings.setAutoBackupStrategy(AutoBackupStrategy.NONE);
 		}
 
-		if(settings.getAutoBackupActivated())
+		if(settings.getAutoBackupGitToken().equals(PASSWORD_PLACEHOLDER))
 		{
-			final String cron = scheduleTaskService.computeCron(settings.getAutoBackupTime(), settings.getAutoBackupDays());
-			scheduleTaskService.startBackupCron(cron);
+			settings.setAutoBackupGitToken(settingsService.getSettings().getAutoBackupGitToken());
 		}
-		else
+
+		if(settings.getAutoBackupStrategy() == AutoBackupStrategy.NONE)
 		{
 			final Settings defaultSettings = Settings.getDefault();
 			settings.setAutoBackupDays(defaultSettings.getAutoBackupDays());
 			settings.setAutoBackupTime(defaultSettings.getAutoBackupTime());
 			settings.setAutoBackupFilesToKeep(defaultSettings.getAutoBackupFilesToKeep());
-			scheduleTaskService.stopBackupCron();
+			settings.setAutoBackupGitUserName(defaultSettings.getAutoBackupGitUserName());
+			settings.setAutoBackupGitToken(defaultSettings.getAutoBackupGitToken());
 		}
 
-		if(bindingResult.hasErrors())
+		if(settings.getShowCategoriesAsCircles() == null)
 		{
-			model.addAttribute("error", bindingResult);
-			model.addAttribute("settings", settings);
-			model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
-			model.addAttribute("autoBackupTimes", AutoBackupTime.values());
-			return "settings/settings";
+			settings.setShowCategoriesAsCircles(false);
 		}
+	}
 
-		if(!password.equals("•••••"))
-		{
-			BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-			String encryptedPassword = bCryptPasswordEncoder.encode(password);
-			User user = userRepository.findByName("Default");
-			user.setPassword(encryptedPassword);
-			userRepository.save(user);
-		}
-
+	public void updateSettings(Settings settings)
+	{
+		final Settings previousSettings = settingsService.getSettings();
 		settingsService.updateSettings(settings);
+
+		backupService.stopBackupCron();
+		if(settings.getAutoBackupStrategy() != AutoBackupStrategy.NONE)
+		{
+			final Optional<BackupTask> previousBackupTaskOptional = settings.getAutoBackupStrategy().getBackupTask(databaseService, settingsService);
+			previousBackupTaskOptional.ifPresent(runnable -> runnable.cleanup(previousSettings, settings));
+
+			final Optional<BackupTask> backupTaskOptional = settings.getAutoBackupStrategy().getBackupTask(databaseService, settingsService);
+			final String cron = backupService.computeCron(settings.getAutoBackupTime(), settings.getAutoBackupDays());
+			backupTaskOptional.ifPresent(runnable -> backupService.startBackupCron(cron, runnable));
+		}
 
 		Localization.load();
 		categoryService.localizeDefaultCategories();
-
-		return "redirect:/settings";
 	}
 
-	private Optional<FieldError> validatePassword(String password, String passwordConfirmation)
-	{
-		if(password == null || password.equals(""))
-		{
-			return Optional.of(new FieldError("Settings", "password", password, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_EMPTY}, null, Strings.WARNING_SETTINGS_PASSWORD_EMPTY));
-		}
-		else if(password.length() < 3)
-		{
-			return Optional.of(new FieldError("Settings", "password", password, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_LENGTH}, null, Strings.WARNING_SETTINGS_PASSWORD_LENGTH));
-		}
-
-		if(passwordConfirmation == null || passwordConfirmation.equals(""))
-		{
-			return Optional.of(new FieldError("Settings", "passwordConfirmation", passwordConfirmation, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_EMPTY}, null, Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_EMPTY));
-		}
-
-		if(!password.equals(passwordConfirmation))
-		{
-			return Optional.of(new FieldError("Settings", "passwordConfirmation", passwordConfirmation, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_WRONG}, null, Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_WRONG));
-		}
-
-		return Optional.empty();
-	}
 
 	@GetMapping("/database/requestExport")
 	public void downloadFile(HttpServletResponse response)
@@ -210,14 +248,12 @@ public class SettingsController extends BaseController
 		String verificationCode = RandomUtils.generateRandomString(RandomUtils.RandomType.BASE_58, 4, RandomUtils.RandomStringPolicy.UPPER, RandomUtils.RandomStringPolicy.DIGIT);
 		model.addAttribute("deleteDatabase", true);
 		model.addAttribute("verificationCode", verificationCode);
-		model.addAttribute("settings", settingsService.getSettings());
-		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
-		model.addAttribute("autoBackupTimes", AutoBackupTime.values());
+		prepareBasicModel(model, settingsService.getSettings());
 		return "settings/settings";
 	}
 
 	@PostMapping(value = "/database/delete")
-	public String deleteDatabase(Model model, @RequestParam("verificationCode") String verificationCode,
+	public String deleteDatabase(WebRequest request, @RequestParam("verificationCode") String verificationCode,
 								 @RequestParam("verificationUserInput") String verificationUserInput)
 	{
 		if(verificationUserInput.equals(verificationCode))
@@ -225,25 +261,22 @@ public class SettingsController extends BaseController
 			LOGGER.info("Deleting database...");
 			databaseService.reset();
 			LOGGER.info("Deleting database DONE.");
+
+			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.settings.database.delete.success"), NotificationType.SUCCESS));
+
+			return "redirect:/settings";
 		}
 		else
 		{
 			return "redirect:/settings/database/requestDelete";
 		}
-
-		model.addAttribute("settings", settingsService.getSettings());
-		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
-		model.addAttribute("autoBackupTimes", AutoBackupTime.values());
-		return "settings/settings";
 	}
 
 	@GetMapping("/database/requestImport")
 	public String requestImportDatabase(Model model)
 	{
 		model.addAttribute("importDatabase", true);
-		model.addAttribute("settings", settingsService.getSettings());
-		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
-		model.addAttribute("autoBackupTimes", AutoBackupTime.values());
+		prepareBasicModel(model, settingsService.getSettings());
 		return "settings/settings";
 	}
 
@@ -261,45 +294,77 @@ public class SettingsController extends BaseController
 			DatabaseParser importer = new DatabaseParser(jsonString, categoryService.findByType(CategoryType.NONE));
 			Database database = importer.parseDatabaseFromJSON();
 
-			request.setAttribute("database", database, WebRequest.SCOPE_SESSION);
-			return "redirect:/settings/database/accountMatcher";
+			request.setAttribute("database", database, RequestAttributes.SCOPE_SESSION);
+			return "redirect:/settings/database/import/step1";
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 
 			model.addAttribute("errorImportDatabase", e.getMessage());
-			model.addAttribute("settings", settingsService.getSettings());
-			model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
-			model.addAttribute("autoBackupTimes", AutoBackupTime.values());
+			prepareBasicModel(model, settingsService.getSettings());
 			return "settings/settings";
 		}
 	}
 
-	@GetMapping("/database/accountMatcher")
-	public String openAccountMatcher(WebRequest request, Model model)
+	@GetMapping("/database/import/step1")
+	public String importStepOne(WebRequest request, Model model)
 	{
-		model.addAttribute("database", request.getAttribute("database", WebRequest.SCOPE_SESSION));
-		model.addAttribute("availableAccounts", accountService.getAllActivatedAccountsAsc());
-		model.addAttribute("settings", settingsService.getSettings());
-		return "settings/import";
+		model.addAttribute("database", request.getAttribute("database", RequestAttributes.SCOPE_SESSION));
+		return "settings/importStepOne";
 	}
 
-	@PostMapping("/database/import")
+	@PostMapping("/database/import/step2")
+	public String importStepTwoPost(WebRequest request, Model model,
+									@RequestParam(value = "TEMPLATE", required = false) boolean importTemplates,
+									@RequestParam(value = "CHART", required = false) boolean importCharts)
+	{
+		request.setAttribute("importTemplates", importTemplates, RequestAttributes.SCOPE_SESSION);
+		request.setAttribute("importCharts", importCharts, RequestAttributes.SCOPE_SESSION);
+
+		model.addAttribute("database", request.getAttribute("database", RequestAttributes.SCOPE_SESSION));
+		model.addAttribute("availableAccounts", accountService.getAllEntitiesAsc());
+		return "redirect:/settings/database/import/step2";
+	}
+
+	@GetMapping("/database/import/step2")
+	public String importStepTwo(WebRequest request, Model model)
+	{
+		model.addAttribute("database", request.getAttribute("database", RequestAttributes.SCOPE_SESSION));
+		model.addAttribute("availableAccounts", accountService.getAllEntitiesAsc());
+		return "settings/importStepTwo";
+	}
+
+	@PostMapping("/database/import/step3")
 	public String importDatabase(WebRequest request, @ModelAttribute("Import") AccountMatchList accountMatchList, Model model)
 	{
-		importService.importDatabase((Database) request.getAttribute("database", WebRequest.SCOPE_SESSION), accountMatchList);
+		final Database database = (Database) request.getAttribute("database", RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute("database", RequestAttributes.SCOPE_SESSION);
-		model.addAttribute("settings", settingsService.getSettings());
-		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
-		model.addAttribute("autoBackupTimes", AutoBackupTime.values());
-		return "settings/settings";
+
+		final Boolean importTemplates = (Boolean) request.getAttribute("importTemplates", RequestAttributes.SCOPE_SESSION);
+		request.removeAttribute("importTemplates", RequestAttributes.SCOPE_SESSION);
+
+		final Boolean importCharts = (Boolean) request.getAttribute("importCharts", RequestAttributes.SCOPE_SESSION);
+		request.removeAttribute("importCharts", RequestAttributes.SCOPE_SESSION);
+
+		prepareBasicModel(model, settingsService.getSettings());
+
+		final List<ImportResultItem> importResultItems = importService.importDatabase(database, accountMatchList, importTemplates, importCharts);
+		model.addAttribute("importResultItems", importResultItems);
+		model.addAttribute("errorMessages", importService.getCollectedErrorMessages());
+
+		return "settings/importResult";
 	}
 
 	@GetMapping("/updateSearch")
-	public String updateSearch()
+	public String updateSearch(WebRequest request)
 	{
 		budgetMasterUpdateService.getUpdateService().fetchCurrentVersion();
+
+		if(updateCheckService.isUpdateAvailable())
+		{
+			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.settings.update.available", updateCheckService.getAvailableVersionString()), NotificationType.INFO));
+		}
 		return "redirect:/settings";
 	}
 
@@ -308,9 +373,7 @@ public class SettingsController extends BaseController
 	{
 		model.addAttribute("performUpdate", true);
 		model.addAttribute("updateString", Localization.getString("info.text.update", Build.getInstance().getVersionName(), budgetMasterUpdateService.getAvailableVersionString()));
-		model.addAttribute("settings", settingsService.getSettings());
-		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
-		model.addAttribute("autoBackupTimes", AutoBackupTime.values());
+		prepareBasicModel(model, settingsService.getSettings());
 		return "settings/settings";
 	}
 
@@ -344,5 +407,50 @@ public class SettingsController extends BaseController
 	{
 		settingsService.disableFirstUseBanner();
 		return "redirect:/";
+	}
+
+	@PostMapping("/git/test")
+	@ResponseBody
+	public String testGit(@RequestParam(value = "autoBackupGitUrl") String autoBackupGitUrl,
+						  @RequestParam(value = "autoBackupGitUserName") String autoBackupGitUserName,
+						  @RequestParam(value = "autoBackupGitToken") String autoBackupGitToken)
+	{
+		if(autoBackupGitToken.equals(PASSWORD_PLACEHOLDER))
+		{
+			autoBackupGitToken = settingsService.getSettings().getAutoBackupGitToken();
+		}
+
+		final CredentialsProvider credentialsProvider = new UsernamePasswordCredentialsProvider(autoBackupGitUserName, autoBackupGitToken);
+		final Optional<String> checkConnectionOptional = GitHelper.checkConnection(autoBackupGitUrl, credentialsProvider);
+		final boolean isValidConnection = checkConnectionOptional.isEmpty();
+		String errorText = "";
+		if(checkConnectionOptional.isPresent())
+		{
+			errorText = checkConnectionOptional.get();
+		}
+
+
+		String localizedMessage = Localization.getString("settings.backup.auto.git.test.fail", errorText);
+		if(isValidConnection)
+		{
+			localizedMessage = Localization.getString("settings.backup.auto.git.test.success");
+		}
+
+		final JsonObject data = new JsonObject();
+		data.addProperty("isValidConnection", isValidConnection);
+		data.addProperty("localizedMessage", localizedMessage);
+
+		return data.toString();
+	}
+
+	private void prepareBasicModel(Model model, Settings settings)
+	{
+		model.addAttribute("settings", settings);
+		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
+		model.addAttribute("autoBackupTimes", AutoBackupTime.values());
+
+		final Optional<LocalDateTime> nextBackupTimeOptional = backupService.getNextRun();
+		nextBackupTimeOptional.ifPresent(date -> model.addAttribute("nextBackupTime", date));
+		model.addAttribute("autoBackupStatus", backupService.getBackupStatus());
 	}
 }

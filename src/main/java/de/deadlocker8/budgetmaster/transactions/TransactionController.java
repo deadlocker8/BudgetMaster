@@ -2,6 +2,8 @@ package de.deadlocker8.budgetmaster.transactions;
 
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
+import de.deadlocker8.budgetmaster.accounts.AccountState;
+import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.controller.BaseController;
@@ -18,6 +20,10 @@ import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
+import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
+import de.deadlocker8.budgetmaster.utils.notification.Notification;
+import de.deadlocker8.budgetmaster.utils.notification.NotificationType;
+import de.thecodelabs.utils.util.Localization;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +32,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
@@ -86,21 +93,24 @@ public class TransactionController extends BaseController
 
 	private void prepareModelTransactions(FilterConfiguration filterConfiguration, Model model, DateTime date)
 	{
-		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(helpers.getCurrentAccount(), date.getMonthOfYear(), date.getYear(), settingsService.getSettings().isRestActivated(), filterConfiguration);
 		Account currentAccount = helpers.getCurrentAccount();
+		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(currentAccount, date.getMonthOfYear(), date.getYear(), settingsService.getSettings().isRestActivated(), filterConfiguration);
 
 		model.addAttribute("transactions", transactions);
 		model.addAttribute("account", currentAccount);
 		model.addAttribute("budget", helpers.getBudget(transactions, currentAccount));
 		model.addAttribute("currentDate", date);
 		model.addAttribute("filterConfiguration", filterConfiguration);
-		model.addAttribute("settings", settingsService.getSettings());
 	}
 
 	@GetMapping("/{ID}/delete")
-	public String deleteTransaction(@PathVariable("ID") Integer ID)
+	public String deleteTransaction(WebRequest request, @PathVariable("ID") Integer ID)
 	{
+		final Transaction transactionToDelete = transactionService.getRepository().getOne(ID);
 		transactionService.deleteTransaction(ID);
+
+		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.transaction.delete.success", transactionToDelete.getName()), NotificationType.SUCCESS));
+
 		return "redirect:/transactions";
 	}
 
@@ -239,7 +249,7 @@ public class TransactionController extends BaseController
 
 		Transaction transaction = transactionOptional.get();
 
-		if(transaction.getAccount().isReadOnly())
+		if(transaction.getAccount().getAccountState() != AccountState.FULL_ACCESS)
 		{
 			return "redirect:/transactions";
 		}
@@ -269,7 +279,13 @@ public class TransactionController extends BaseController
 	public String highlight(Model model, @PathVariable("ID") Integer ID)
 	{
 		Transaction transaction = transactionService.getRepository().getOne(ID);
-		accountService.selectAccount(transaction.getAccount().getID());
+
+		Account currentAccount = helpers.getCurrentAccount();
+		if(currentAccount.getType() != AccountType.ALL || transaction.isTransfer())
+		{
+			accountService.selectAccount(transaction.getAccount().getID());
+		}
+
 		repeatingTransactionUpdater.updateRepeatingTransactions(transaction.getDate().dayOfMonth().withMaximumValue());
 
 		FilterConfiguration filterConfiguration = FilterConfiguration.DEFAULT;

@@ -12,11 +12,27 @@
 }
 
 .chips .chip.selected {
-    background-color: #2E79B9;
+    background-color: var(--color-blue);
 }
 
-.chips .input {
-    width: auto !important;
+#transaction-chips {
+    margin-top: 0;
+}
+
+.transaction-tags {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.transaction-tags .prefix {
+    margin-right: 1.3rem;
+}
+
+.transaction-tags-input {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
 
 .input-min-width {
@@ -122,4 +138,9 @@
 
 #button-new-transaction i {
     line-height: 36px;
+}
+
+.icon-repeating {
+    vertical-align: middle;
+    font-size: 2rem;
 }

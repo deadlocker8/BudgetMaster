@@ -31,12 +31,6 @@ $(document).ready(function()
         }
     });
 
-    $("#selectAccount").on('change', function()
-    {
-        let accountID = $(this).val();
-        window.location = rootURL + "/accounts/" + accountID + "/select";
-    });
-
     if($("#login-password").length)
     {
         document.getElementById("login-password").focus();
@@ -50,6 +44,11 @@ $(document).ready(function()
     $("#buttonClearSearch").click(function()
     {
         document.getElementById("search").value = "";
+    });
+
+    $('.notification-clear').click(function()
+    {
+        document.getElementById(this.dataset.id).style.display = "none";
     });
 });
 
@@ -69,7 +68,6 @@ function fetchAndShowWhatsNewModal(item, containerID)
         data: {},
         success: function(data)
         {
-
             $('#' + containerID).html(data);
             $(modalID).modal();
             $(modalID).modal('open');

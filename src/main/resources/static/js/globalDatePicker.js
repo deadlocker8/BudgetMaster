@@ -26,6 +26,8 @@ $(document).ready(function()
     {
         selectMonth($("#global-datepicker-select-month .global-datepicker-item").index(this) + 1);
     });
+
+    enableGlobalDatePickerHotKeys();
 });
 
 let year;
@@ -52,7 +54,8 @@ function updateYearGrid(modifier, currentYear)
             if(items[i].innerText === currentYear)
             {
                 items[i].classList.add("global-datepicker-selected");
-            } else
+            }
+            else
             {
                 items[i].classList.remove("global-datepicker-selected");
             }
@@ -76,4 +79,22 @@ function selectMonth(selectedMonth)
     let dateString = "01." + selectedMonth + "." + year;
     document.cookie = "currentDate=" + dateString;
     document.getElementById('buttonChooseDate').click();
+}
+
+function enableGlobalDatePickerHotKeys()
+{
+    Mousetrap.bind('left', function()
+    {
+        document.getElementById('global-datepicker-previous-month').click();
+    });
+
+    Mousetrap.bind('right', function()
+    {
+        document.getElementById('global-datepicker-next-month').click();
+    });
+
+    Mousetrap.bind('0', function()
+    {
+        document.getElementById('global-datepicker-today').click();
+    });
 }

@@ -1,5 +1,6 @@
 <#global locale = static["de.thecodelabs.utils.util.Localization"]>
 <#import "/spring.ftl" as s>
+<#import "helpers/header.ftl" as header>
 
 <div id="modalWhatsNew" class="modal modal-fixed-footer background-color">
     <div class="modal-content">
@@ -34,7 +35,7 @@
         </div>
     </div>
     <div class="modal-footer background-color">
-        <a id="buttonCloseWhatsNew" href="<@s.url '/about/whatsNewModal/close'/>" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("ok")}</a>
+        <@header.buttonLink url='/about/whatsNewModal/close' icon='done' localizationKey='ok' color='green' id='buttonCloseWhatsNew' classes='modal-action modal-close text-white'/>
     </div>
 </div>
 

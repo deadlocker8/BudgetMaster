@@ -69,7 +69,7 @@ public class DatabaseParser_v3Test
 			category3.setID(3);
 
 			assertThat(database.getCategories()).hasSize(3)
-					.contains(categoryNone, categoryRest, category3);
+					.containsExactlyInAnyOrder(categoryNone, categoryRest, category3);
 		}
 		catch(IOException | URISyntaxException e)
 		{
@@ -86,10 +86,17 @@ public class DatabaseParser_v3Test
 			DatabaseParser_v3 importer = new DatabaseParser_v3(json);
 			Database database = importer.parseDatabaseFromJSON();
 
-			assertThat(database.getAccounts()).hasSize(3);
-			assertThat(database.getAccounts().get(0)).hasFieldOrPropertyWithValue("name", "Placeholder");
-			assertThat(database.getAccounts().get(1)).hasFieldOrPropertyWithValue("name", "Default");
-			assertThat(database.getAccounts().get(2)).hasFieldOrPropertyWithValue("name", "Second Account");
+			final Account expectedAccount1 = new Account("Placeholder", AccountType.ALL);
+			expectedAccount1.setID(1);
+
+			final Account expectedAccount2 = new Account("Default", AccountType.CUSTOM);
+			expectedAccount2.setID(2);
+
+			final Account expectedAccount3 = new Account("Second Account", AccountType.CUSTOM);
+			expectedAccount3.setID(3);
+
+			assertThat(database.getAccounts()).hasSize(3)
+					.containsExactlyInAnyOrder(expectedAccount1, expectedAccount2, expectedAccount3);
 		}
 		catch(IOException | URISyntaxException e)
 		{

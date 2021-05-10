@@ -4,12 +4,15 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
+import de.deadlocker8.budgetmaster.accounts.AccountState;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
-import de.deadlocker8.budgetmaster.services.Resetable;
+import de.deadlocker8.budgetmaster.services.AccessAllEntities;
+import de.deadlocker8.budgetmaster.services.Resettable;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionBase;
+import org.padler.natorder.NaturalOrderComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -19,7 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class TemplateService implements Resetable
+public class TemplateService implements Resettable, AccessAllEntities<Template>
 {
 	private static final Gson GSON = new GsonBuilder()
 			.setPrettyPrinting()
@@ -28,7 +31,6 @@ public class TemplateService implements Resetable
 	private final TemplateRepository templateRepository;
 	private final AccountService accountService;
 	private final CategoryService categoryService;
-	private final SettingsService settingsService;
 
 
 	@Autowired
@@ -37,7 +39,6 @@ public class TemplateService implements Resetable
 		this.templateRepository = templateRepository;
 		this.accountService = accountService;
 		this.categoryService = categoryService;
-		this.settingsService = settingsService;
 	}
 
 	public TemplateRepository getRepository()
@@ -86,19 +87,24 @@ public class TemplateService implements Resetable
 		}
 
 		final Account account = template.getAccount();
-		if(account != null && account.isReadOnly())
+		if(account != null && account.getAccountState() != AccountState.FULL_ACCESS)
 		{
 			template.setAccount(accountService.getRepository().findByIsDefault(true));
+		}
+
+		final Account transferAccount = template.getTransferAccount();
+		if(transferAccount != null && transferAccount.getAccountState() != AccountState.FULL_ACCESS)
+		{
+			template.setTransferAccount(accountService.getRepository().findByIsDefault(true));
 		}
 	}
 
 	public void prepareModelNewOrEdit(Model model, boolean isEdit, TransactionBase item, List<Account> accounts)
 	{
 		model.addAttribute("isEdit", isEdit);
-		model.addAttribute("categories", categoryService.getAllCategories());
+		model.addAttribute("categories", categoryService.getAllEntitiesAsc());
 		model.addAttribute("accounts", accounts);
 		model.addAttribute("template", item);
-		model.addAttribute("settings", settingsService.getSettings());
 		model.addAttribute("suggestionsJSON", GSON.toJson(new ArrayList<String>()));
 	}
 
@@ -107,5 +113,13 @@ public class TemplateService implements Resetable
 		return getRepository().findAll().stream()
 				.map(Template::getTemplateName)
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	public List<Template> getAllEntitiesAsc()
+	{
+		final List<Template> templates = templateRepository.findAllByOrderByTemplateNameAsc();
+		templates.sort((t1, t2) -> new NaturalOrderComparator().compare(t1.getName(), t2.getName()));
+		return templates;
 	}
 }

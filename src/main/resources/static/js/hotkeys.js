@@ -66,7 +66,7 @@ if(saveTransactionOrTemplateButton !== null)
 
 function areHotKeysEnabled()
 {
-    return !isSearchFocused() && !isCategorySelectFocused()  && !isTemplateSearchFocused();
+    return !isSearchFocused() && !isCustomSelectFocused()  && !isTemplateSearchFocused();
 }
 
 function isSearchFocused()
@@ -81,8 +81,16 @@ function isTemplateSearchFocused()
     return document.activeElement === templateSearchElement;
 }
 
-function isCategorySelectFocused()
+function isCustomSelectFocused()
 {
-    let activeElement = document.activeElement;
-    return activeElement.id.includes('select-options');
+   let customSelects = document.querySelectorAll('.custom-select');
+    for(let i = 0; i < customSelects.length; i++)
+    {
+        if(customSelects[i].classList.contains('open'))
+        {
+            return true;
+        }
+    }
+
+    return false;
 }

@@ -29,15 +29,22 @@ public class AboutController extends BaseController
 	@GetMapping
 	public String index(Model model)
 	{
-		model.addAttribute("settings", settingsService.getSettings());
 		return "about";
 	}
 
 	@GetMapping("/whatsNewModal")
 	public String whatsNewModal(Model model)
 	{
-		final List<NewsEntry> newsEntries =  new ArrayList<>();
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.bugfix.headline", "news.bugfix.description"));
+		final List<NewsEntry> newsEntries = new ArrayList<>();
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.designOffensive.headline", "news.designOffensive.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.gitBackup.headline", "news.gitBackup.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.backupCharts.headline", "news.backupCharts.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.importProcess.headline", "news.importProcess.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.hideAccounts.headline", "news.hideAccounts.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.statistics.headline", "news.statistics.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.hotkeysMonth.headline", "news.hotkeysMonth.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.importBugfixes.headline", "news.importBugfixes.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.chartRelative.headline", "news.chartRelative.description"));
 
 		model.addAttribute("newsEntries", newsEntries);
 		return "whatsNewModal";
@@ -45,10 +52,9 @@ public class AboutController extends BaseController
 
 	@RequestMapping("/whatsNewModal/close")
 	@Transactional
-	public String whatsNewModalClose(HttpServletRequest request, Model model)
+	public String whatsNewModalClose(HttpServletRequest request)
 	{
 		settingsService.getSettings().setWhatsNewShownForCurrentVersion(true);
-		model.addAttribute("settings", settingsService.getSettings());
 		return "redirect:" + request.getHeader("Referer");
 	}
 }

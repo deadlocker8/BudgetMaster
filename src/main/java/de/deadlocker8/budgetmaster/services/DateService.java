@@ -6,6 +6,9 @@ import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Service
 public class DateService
 {
@@ -62,5 +65,11 @@ public class DateService
 	public DateTime getCurrentDate()
 	{
 		return DateTime.now();
+	}
+
+	public String getDateTimeString(LocalDateTime localDateTime)
+	{
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DateFormatStyle.DATE_TIME.getKey()).withLocale(settingsService.getSettings().getLanguage().getLocale());
+		return localDateTime.format(formatter);
 	}
 }

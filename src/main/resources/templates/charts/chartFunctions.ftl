@@ -1,4 +1,5 @@
 <#import "/spring.ftl" as s>
+<#import "../helpers/header.ftl" as header>
 
 <#function getChartName chart>
     <#if chart?? && chart.getName()??>
@@ -15,7 +16,7 @@
 <#macro infoMessage text>
     <div class="row no-margin-bottom">
         <div class="col s12 center-align">
-            <table class="text-color login-message no-border-table">
+            <table class="text-default login-message no-border-table">
                 <tr>
                     <td><i class="material-icons">info</i></td>
                     <td>${text}</td>
@@ -26,11 +27,11 @@
 </#macro>
 
 <#macro buttonNew>
-    <a href="<@s.url '/charts/newChart'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">add</i>${locale.getString("title.chart.new")}</a>
+    <@header.buttonLink url='/charts/newChart' icon='add' localizationKey='title.chart.new'/>
 </#macro>
 
 <#macro buttonShow>
-    <a href="<@s.url '/charts'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">show_chart</i>${locale.getString("home.menu.charts.action.show")}</a>
+    <@header.buttonLink url='/charts' icon='show_chart' localizationKey='home.menu.charts.action.show'/>
 </#macro>
 
 <#macro buttons>

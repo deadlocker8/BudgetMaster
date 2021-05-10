@@ -68,7 +68,6 @@ public class ReportController extends BaseController
 		model.addAttribute("reportSettings", reportSettingsService.getReportSettings());
 		model.addAttribute("currentDate", date);
 		model.addAttribute("filterConfiguration", filterHelpers.getFilterConfiguration(request));
-		model.addAttribute("settings", settingsService.getSettings());
 		return "reports/reports";
 	}
 
@@ -97,7 +96,7 @@ public class ReportController extends BaseController
 				.setReportSettings(reportSettings)
 				.setTransactions(transactions)
 				.setAccountName(accountName)
-				.setCategoryBudgets(CategoryBudgetHandler.getCategoryBudgets(transactions, categoryService.getAllCategories()))
+				.setCategoryBudgets(CategoryBudgetHandler.getCategoryBudgets(transactions, categoryService.getAllEntitiesAsc()))
 				.createReportConfiguration();
 
 		String month = reportSettings.getDate().toString("MM");

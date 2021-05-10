@@ -19,7 +19,10 @@ import java.util.Optional;
 public class DatabaseParser_v4 extends DatabaseParser_v3
 {
 	final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-	private String jsonString;
+	private final String jsonString;
+
+	protected List<Transaction> transactions;
+	protected List<Template> templates;
 
 	public DatabaseParser_v4(String json)
 	{
@@ -33,21 +36,20 @@ public class DatabaseParser_v4 extends DatabaseParser_v3
 		final JsonObject root = JsonParser.parseString(jsonString).getAsJsonObject();
 		super.categories = super.parseCategories(root);
 		super.accounts = super.parseAccounts(root);
-		final List<Transaction> transactions = parseTransactions(root);
-		final List<Template> templates = parseTemplates(root);
+		this.transactions = parseTransactions(root);
+		this.templates = parseTemplates(root);
 
-		return new Database(categories, accounts, transactions, templates);
+		return new Database(categories, accounts, transactions, templates, new ArrayList<>(), new ArrayList<>());
 	}
 
 	@Override
 	protected List<Transaction> parseTransactions(JsonObject root)
 	{
 		List<Transaction> parsedTransactions = new ArrayList<>();
-		JsonArray transactions = root.get("transactions").getAsJsonArray();
-		for(JsonElement currentTransaction : transactions)
+		JsonArray transactionsToImport = root.get("transactions").getAsJsonArray();
+		for(JsonElement currentTransaction : transactionsToImport)
 		{
 			final JsonObject transactionObject = currentTransaction.getAsJsonObject();
-
 
 			int amount = transactionObject.get("amount").getAsInt();
 			String name = transactionObject.get("name").getAsString();
@@ -89,8 +91,8 @@ public class DatabaseParser_v4 extends DatabaseParser_v3
 	protected List<Template> parseTemplates(JsonObject root)
 	{
 		final List<Template> parsedTemplates = new ArrayList<>();
-		final JsonArray templates = root.get("templates").getAsJsonArray();
-		for(JsonElement currentTemplate : templates)
+		final JsonArray templatesToImport = root.get("templates").getAsJsonArray();
+		for(JsonElement currentTemplate : templatesToImport)
 		{
 			final JsonObject templateObject = currentTemplate.getAsJsonObject();
 
@@ -135,7 +137,7 @@ public class DatabaseParser_v4 extends DatabaseParser_v3
 		return parsedTemplates;
 	}
 
-	private Optional<Integer> parseIDOfElementIfExists(JsonObject jsonObject, String elementName)
+	protected Optional<Integer> parseIDOfElementIfExists(JsonObject jsonObject, String elementName)
 	{
 		final JsonElement element = jsonObject.get(elementName);
 		if(element != null)
@@ -145,7 +147,7 @@ public class DatabaseParser_v4 extends DatabaseParser_v3
 		return Optional.empty();
 	}
 
-	private void handleIsExpenditure(JsonObject jsonObject, TransactionBase transactionBase)
+	protected void handleIsExpenditure(JsonObject jsonObject, TransactionBase transactionBase)
 	{
 		final JsonElement isExpenditure = jsonObject.get("isExpenditure");
 		if(isExpenditure == null)
@@ -164,5 +166,4 @@ public class DatabaseParser_v4 extends DatabaseParser_v3
 			transactionBase.setIsExpenditure(isExpenditure.getAsBoolean());
 		}
 	}
-
 }

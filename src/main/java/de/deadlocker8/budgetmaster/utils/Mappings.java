@@ -14,6 +14,7 @@ public final class Mappings
 	public static final String ERROR = "/error";
 	public static final String FILTER = "/filter";
 	public static final String HOTKEYS = "/hotkeys";
+	public static final String MEDIA = "/media";
 	public static final String LOGIN = "/login";
 	public static final String REPORTS = "/reports";
 	public static final String SEARCH = "/search";

@@ -16,8 +16,7 @@ public enum WeekDay
 	FRIDAY("friday"),
 	SATURDAY("saturday");
 
-	private static List<String> localized;
-	private String key;
+	private final String key;
 
 	WeekDay(String key)
 	{
@@ -31,13 +30,8 @@ public enum WeekDay
 
 	public static List<String> getLocalizedStrings()
 	{
-		if(localized == null)
-		{
-			localized = Stream.of(WeekDay.values())
-					.map(weekDay -> Localization.getString(weekDay.getKey()))
-					.collect(Collectors.toList());
-		}
-
-		return localized;
+		return Stream.of(WeekDay.values())
+				.map(weekDay -> Localization.getString(weekDay.getKey()))
+				.collect(Collectors.toList());
 	}
 }

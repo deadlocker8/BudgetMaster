@@ -125,6 +125,10 @@ function openChangeTransactionTypeModal(item)
         success: function(data)
         {
             createAndOpenModalSelectNewType(data)
+        },
+        error: function(data)
+        {
+            console.log(data);
         }
     });
 }

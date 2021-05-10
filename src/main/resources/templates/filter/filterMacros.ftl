@@ -51,30 +51,30 @@
 </#macro>
 
 <#macro buttonReset>
-    <a href="<@s.url '/filter/reset'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">settings_backup_restore</i>${locale.getString("filter.reset")}</a>
+    <a href="<@s.url '/filter/reset'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">settings_backup_restore</i>${locale.getString("filter.reset")}</a>
 </#macro>
 
 <#macro buttonApply>
-    <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="buttonSave">
+    <button class="btn waves-effect waves-light background-blue" type="submit" name="buttonSave">
         <i class="fas fa-filter left"></i>${locale.getString("filter.apply")}
     </button>
 </#macro>
 
 <#macro buttonResetChart>
-    <a class="filter-button-reset waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">settings_backup_restore</i>${locale.getString("filter.reset")}</a>
+    <a class="filter-button-reset waves-effect waves-light btn background-blue"><i class="material-icons left">settings_backup_restore</i>${locale.getString("filter.reset")}</a>
 </#macro>
 
 <#macro buttonClose>
-    <a class="filter-button-close waves-effect waves-light budgetmaster-blue btn white-text"><i class="fas fa-filter left"></i>${locale.getString("filter.apply")}</a>
+    <a class="filter-button-close waves-effect waves-light background-blue btn white-text"><i class="fas fa-filter left"></i>${locale.getString("filter.apply")}</a>
 </#macro>
 
 <#macro buttonsAllOrNone>
     <div class="row no-margin">
         <div class="col s6 right-align">
-            <a class="waves-effect waves-light btn budgetmaster-blue filter-button-all">${locale.getString("filter.tags.button.all")}</a>
+            <a class="waves-effect waves-light btn background-blue filter-button-all">${locale.getString("filter.tags.button.all")}</a>
         </div>
         <div class="col s6">
-            <a class="waves-effect waves-light btn budgetmaster-blue filter-button-none">${locale.getString("filter.tags.button.none")}</a>
+            <a class="waves-effect waves-light btn background-blue filter-button-none">${locale.getString("filter.tags.button.none")}</a>
         </div>
     </div>
 </#macro>
@@ -90,7 +90,7 @@
             </form>
         </div>
         <div class="modal-footer background-color">
-            <a href="" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
+            <@header.buttonLink url='' icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white'/>
         </div>
     </div>
 </#macro>
@@ -103,7 +103,7 @@
             <@buttonsCharts/>
         </div>
         <div class="modal-footer background-color">
-            <a class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
+            <@header.buttonLink url='' icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white'/>
         </div>
     </div>
 </#macro>
@@ -128,19 +128,19 @@
                             <div class="col s12 m4 l4">
                                 <label>
                                     <input type="checkbox" name="${prefixValue}includeIncome" <#if filterConfiguration.isIncludeIncome()>checked="checked"</#if>>
-                                    <span class="text-color">${locale.getString('filter.type.income')}</span>
+                                    <span class="text-default">${locale.getString('filter.type.income')}</span>
                                 </label>
                             </div>
                             <div class="col s12 m4 l4">
                                 <label>
                                     <input type="checkbox" name="${prefixValue}includeExpenditure" <#if filterConfiguration.isIncludeExpenditure()>checked="checked"</#if>>
-                                    <span class="text-color">${locale.getString('filter.type.expenditure')}</span>
+                                    <span class="text-default">${locale.getString('filter.type.expenditure')}</span>
                                 </label>
                             </div>
                             <div class="col s12 m4 l4">
                                 <label>
                                     <input type="checkbox" name="${prefixValue}includeTransfer" <#if filterConfiguration.isIncludeTransfer()>checked="checked"</#if>>
-                                    <span class="text-color">${locale.getString('filter.type.transfer')}</span>
+                                    <span class="text-default">${locale.getString('filter.type.transfer')}</span>
                                 </label>
                             </div>
                         </div>
@@ -158,13 +158,13 @@
                             <div class="col s6 m6 l6">
                                 <label>
                                     <input type="checkbox" name="${prefixValue}includeNotRepeating" <#if filterConfiguration.isIncludeNotRepeating()>checked="checked"</#if>>
-                                    <span class="text-color">${locale.getString('filter.repeating.false')}</span>
+                                    <span class="text-default">${locale.getString('filter.repeating.false')}</span>
                                 </label>
                             </div>
                             <div class="col s6 m6 l6">
                                 <label>
                                     <input type="checkbox" name="${prefixValue}includeRepeating" <#if filterConfiguration.isIncludeRepeating()>checked="checked"</#if>>
-                                    <span class="text-color">${locale.getString('filter.repeating.true')}</span>
+                                    <span class="text-default">${locale.getString('filter.repeating.true')}</span>
                                 </label>
                             </div>
                         </div>
@@ -185,7 +185,7 @@
                                     <div>
                                         <label>
                                             <input type="checkbox" name="${prefixValue}filterCategories['${filterCategory?index}'].include" <#if filterCategory.isInclude()>checked="checked"</#if>>
-                                            <span class="text-color">${filterCategory.getName()}</span>
+                                            <span class="text-default">${filterCategory.getName()}</span>
                                         </label>
                                         <input type="hidden" name="${prefixValue}filterCategories['${filterCategory?index}'].ID" value="${filterCategory.getID()}"/>
                                         <input type="hidden" name="${prefixValue}filterCategories['${filterCategory?index}'].name" value="${filterCategory.getName()}"/>
@@ -210,7 +210,7 @@
                                     <div>
                                         <label>
                                             <input type="checkbox" name="${prefixValue}filterTags['${filterTag?index}'].include" <#if filterTag.isInclude()>checked="checked"</#if>>
-                                            <span class="text-color">${filterTag.getName()}</span>
+                                            <span class="text-default">${filterTag.getName()}</span>
                                         </label>
                                         <input type="hidden" name="${prefixValue}filterTags['${filterTag?index}'].ID" value="${filterTag.getID()}"/>
                                         <input type="hidden" name="${prefixValue}filterTags['${filterTag?index}'].name" value="${filterTag.getName()}"/>

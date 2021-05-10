@@ -1,6 +1,8 @@
 package de.deadlocker8.budgetmaster.integration.selenium;
 
 import de.deadlocker8.budgetmaster.Main;
+import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
@@ -66,6 +68,7 @@ public class SearchTest
 	{
 		FirefoxOptions options = new FirefoxOptions();
 		options.setHeadless(false);
+		options.addPreference("devtools.console.stdout.content", true);
 		driver = new FirefoxDriver(options);
 		driver.manage().window().maximize();
 
@@ -77,8 +80,10 @@ public class SearchTest
 		helper.hideWhatsNewDialog();
 
 		String path = getClass().getClassLoader().getResource("SearchDatabase.json").getFile().replace("/", File.separator);
-		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf"), Arrays.asList("DefaultAccount0815", "Account2"));
+		final Account account1 = new Account("DefaultAccount0815", AccountType.CUSTOM);
+		final Account account2 = new Account("Account2", AccountType.CUSTOM);
 
+		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf"), List.of(account1, account2));
 		// search
 		WebElement inputSearch = driver.findElement(By.id("search"));
 		inputSearch.sendKeys("e");
@@ -175,10 +180,10 @@ public class SearchTest
 
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		assertEquals(25, transactionsRows.size());
-		assertTrue(transactionsRows.get(0).getAttribute("class").contains("budgetmaster-blue-light"));
+		assertTrue(transactionsRows.get(0).getAttribute("class").contains("background-blue-light"));
 		for(int i = 1; i < transactionsRows.size(); i++)
 		{
-			assertFalse(transactionsRows.get(i).getAttribute("class").contains("budgetmaster-blue-light"));
+			assertFalse(transactionsRows.get(i).getAttribute("class").contains("background-blue-light"));
 		}
 	}
 }

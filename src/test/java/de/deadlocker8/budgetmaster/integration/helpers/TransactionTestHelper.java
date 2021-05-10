@@ -56,4 +56,22 @@ public class TransactionTestHelper
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", itemToSelect);
 		itemToSelect.click();
 	}
+
+	public static void selectCategoryByName(WebDriver driver, String categoryName)
+	{
+		final WebElement categorySelect = driver.findElement(By.cssSelector(".category-select-wrapper .custom-select"));
+		categorySelect.click();
+		driver.findElements(By.cssSelector(".category-select-wrapper .custom-select-item-name")).stream()
+				.filter(webElement -> webElement.getText().equals(categoryName))
+				.findFirst().orElseThrow().click();
+	}
+
+	public static void selectGlobalAccountByName(WebDriver driver, String accountName)
+	{
+		final WebElement globalAccountSelect = driver.findElement(By.cssSelector(".global-account-select-wrapper .custom-select"));
+		globalAccountSelect.click();
+		driver.findElements(By.cssSelector(".global-account-select-wrapper .custom-select-item-name")).stream()
+				.filter(webElement -> webElement.getText().equals(accountName))
+				.findFirst().orElseThrow().click();
+	}
 }

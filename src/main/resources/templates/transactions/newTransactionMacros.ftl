@@ -1,5 +1,6 @@
 <#import "/spring.ftl" as s>
 <#import "../helpers/validation.ftl" as validation>
+<#import "../helpers/header.ftl" as header>
 
 <#macro isExpenditureSwitch transaction>
     <#assign isExpenditure = true/>
@@ -8,11 +9,11 @@
     </#if>
 
     <#if isExpenditure>
-        <#assign colorButtonIncome = "budgetmaster-grey budgetmaster-text-isPayment">
-        <#assign colorButtonExpenditure = "budgetmaster-red">
+        <#assign colorButtonIncome = "background-grey text-isPayment">
+        <#assign colorButtonExpenditure = "background-red">
     <#else>
-        <#assign colorButtonIncome = "budgetmaster-green">
-        <#assign colorButtonExpenditure = "budgetmaster-grey budgetmaster-text-isPayment">
+        <#assign colorButtonIncome = "background-green">
+        <#assign colorButtonExpenditure = "background-grey text-isPayment">
     </#if>
 
     <input type="hidden" name="isExpenditure" id="input-isPayment" value="${isExpenditure?c}">
@@ -45,17 +46,18 @@
 </#macro>
 
 <#macro buttonIncome color>
-    <a class="waves-effect waves-light btn ${color} buttonIncome"><i class="material-icons left">file_download</i>${locale.getString("title.income")}</a>
+    <@header.buttonLink url='' icon='file_download' localizationKey='title.income' color=color classes='buttonIncome' noUrl=true/>
 </#macro>
 
 <#macro buttonExpenditure color>
-    <a class="waves-effect waves-light btn ${color} buttonExpenditure"><i class="material-icons left">file_upload</i>${locale.getString("title.expenditure")}</a>
+    <@header.buttonLink url='' icon='file_upload' localizationKey='title.expenditure' color=color classes='buttonExpenditure' noUrl=true/>
 </#macro>
 
 <#macro transactionName transaction suggestionsJSON>
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
-            <input class="autocomplete" autocomplete="off" id="transaction-name" type="text" name="name" <@validation.validation "name"/> value="<#if transaction.getName()??>${transaction.getName()}</#if>">
+            <i class="material-icons prefix">edit</i>
+            <input autocomplete="off" id="transaction-name" type="text" name="name" <@validation.validation "name" "autocomplete"/> value="<#if transaction.getName()??>${transaction.getName()}</#if>">
             <label class="input-label" for="transaction-name">${locale.getString("transaction.new.label.name")}</label>
         </div>
     </div>
@@ -72,6 +74,7 @@
 <#macro transactionAmount transaction>
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
+            <i class="material-icons prefix">euro</i>
             <input id="transaction-amount" type="text" <@validation.validation "amount"/> value="<#if transaction.getAmount()??>${currencyService.getAmountString(transaction.getAmount())}</#if>">
             <label class="input-label" for="transaction-amount">${locale.getString("transaction.new.label.amount")}</label>
         </div>
@@ -85,49 +88,6 @@
     </script>
 </#macro>
 
-<#import "../categories/categoriesFunctions.ftl" as categoriesFunctions>
-<#macro categorySelect categories selectedCategory inputClasses labelText>
-    <div class="row">
-        <div class="input-field ${inputClasses}" id="categoryWrapper">
-            <select id="transaction-category" name="category" <@validation.validation "category"/>>
-                <#list categories as category>
-                    <#assign categoryInfos=categoriesFunctions.getCategoryName(category) + "@@@" + category.getColor() + "@@@" + category.getAppropriateTextColor() + "@@@" + category.getID()?c>
-
-                    <#if category.getType() == "REST">
-                        <#continue>
-                    </#if>
-
-                    <#if selectedCategory??>
-                        <#if selectedCategory.getID()?c == category.getID()?c>
-                            <option selected value="${category.getID()?c}">${categoryInfos}</option>
-                        <#else>
-                            <option value="${category.getID()?c}">${categoryInfos}</option>
-                        </#if>
-                        <#continue>
-                    </#if>
-
-                    <#if category.getType() == "NONE">
-                        <option selected value="${category.getID()?c}">${categoryInfos}</option>
-                        <#continue>
-                    </#if>
-
-                    <option value="${category.getID()?c}">${categoryInfos}</option>
-                </#list>
-            </select>
-            <label class="input-label" for="transaction-category">${labelText}</label>
-        </div>
-    </div>
-
-    <#-- pass selected category to JS in order to select current value for materialize select -->
-    <script>
-        <#if selectedCategory??>
-        selectedCategory = "${selectedCategory.getID()?c}";
-        <#else>
-        selectedCategory = "${helpers.getIDOfNoCatgeory()?c}";
-        </#if>
-    </script>
-</#macro>
-
 <#macro transactionStartDate transaction currentDate>
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
@@ -137,6 +97,7 @@
                 <#assign startDate = dateService.getLongDateString(currentDate)/>
             </#if>
 
+            <i class="material-icons prefix">event</i>
             <input id="transaction-datepicker" type="text" class="datepicker<#if helpers.isUseSimpleDatepickerForTransactions()>-simple</#if>" name="date" value="${startDate}">
             <label class="input-label" for="transaction-datepicker">${locale.getString("transaction.new.label.date")}</label>
         </div>
@@ -151,6 +112,7 @@
 <#macro transactionDescription transaction>
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
+            <i class="material-icons prefix">article</i>
             <textarea id="transaction-description" class="materialize-textarea" name="description" data-length="250" <@validation.validation "description"/>><#if transaction.getDescription()??>${transaction.getDescription()}</#if></textarea>
             <label class="input-label" for="transaction-description">${locale.getString("transaction.new.label.description")}</label>
         </div>
@@ -160,8 +122,13 @@
 <#macro transactionTags transaction>
     <div class="row">
         <div class="col s12 m12 l8 offset-l2">
-            <label class="input-label" class="chips-label" for="transaction-chips">${locale.getString("transaction.new.label.tags")}</label>
-            <div id="transaction-chips" class="chips chips-placeholder chips-autocomplete"></div>
+            <div class="transaction-tags">
+                <i class="material-icons prefix">local_offer</i>
+                <div class="transaction-tags-input">
+                    <label class="input-label" class="chips-label" for="transaction-chips">${locale.getString("transaction.new.label.tags")}</label>
+                    <div id="transaction-chips" class="chips chips-placeholder chips-autocomplete"></div>
+                </div>
+            </div>
         </div>
         <div id="hidden-transaction-tags"></div>
         <script>
@@ -186,31 +153,10 @@
     </script>
 </#macro>
 
-<#macro account accounts selectedAccount id name label disabled>
-    <div class="row">
-        <div class="input-field col s12 m12 l8 offset-l2" id="accountWrapper">
-            <select id="${id}" name="${name}" <@validation.validation "account"/> <#if disabled>disabled</#if>>
-                <#list accounts as account>
-                    <#if (account.getType().name() != "CUSTOM")>
-                        <#continue>
-                    </#if>
-
-                    <#if selectedAccount == account>
-                        <option selected value="${account.getID()?c}">${account.getName()}</option>
-                        <#continue>
-                    </#if>
-
-                    <option value="${account.getID()?c}">${account.getName()}</option>
-                </#list>
-            </select>
-            <label class="input-label" for="${id}">${label}</label>
-        </div>
-    </div>
-</#macro>
-
 <#macro transactionRepeating transaction currentDate>
     <div class="row">
         <div class="col s12 m12 l8 offset-l2">
+            <i class="material-icons icon-repeating">repeat</i>
             ${locale.getString("transaction.new.label.repeating")}
         </div>
     </div>
@@ -367,32 +313,30 @@
 </#macro>
 
 <#macro buttonCancel cancelURL>
-    <a href="<@s.url cancelURL/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
+    <@header.buttonLink url=cancelURL icon='clear' localizationKey='cancel' id='button-cancel-save-transaction'/>
 </#macro>
 
 <#macro buttonSave>
-    <button id="button-save-transaction" class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action">
-        <i class="material-icons left">save</i>${locale.getString("save")}
-    </button>
+    <@header.buttonSubmit name='action' icon='save' localizationKey='save' id='button-save-transaction'/>
 </#macro>
 
 <#macro buttonTransactionActions canChangeType canCreateTemplate changetypeInProgress>
     <#if (canChangeType || canCreateTemplate) && !changetypeInProgress>
         <div class="fixed-action-btn" id="transaction-actions-button">
-            <a class="btn-floating btn-large waves-effect waves-light budgetmaster-blue">
+            <a class="btn-floating btn-large waves-effect waves-light background-blue">
                 <i class="material-icons left">settings</i>${locale.getString("save")}
             </a>
             <ul>
                 <#if canChangeType>
                     <li>
                         <a class="btn-floating btn transaction-action mobile-fab-tip no-wrap" data-action-type="changeType" data-url="<@s.url '/transactions/${transaction.getID()?c}/changeTypeModal'/>">${locale.getString("transaction.change.type")}</a>
-                        <a class="btn-floating btn transaction-action budgetmaster-baby-blue" data-action-type="changeType" data-url="<@s.url '/transactions/${transaction.getID()?c}/changeTypeModal'/>"><i class="material-icons">shuffle</i></a>
+                        <a class="btn-floating btn transaction-action background-blue-baby" data-action-type="changeType" data-url="<@s.url '/transactions/${transaction.getID()?c}/changeTypeModal'/>"><i class="material-icons">shuffle</i></a>
                     </li>
                 </#if>
                 <#if canCreateTemplate>
                     <li>
                         <a class="btn-floating btn transaction-action mobile-fab-tip no-wrap" data-action-type="saveAsTemplate" data-url="<@s.url '/templates/fromTransactionModal'/>">${locale.getString("save.as.template")}</a>
-                        <a class="btn-floating btn transaction-action budgetmaster-dark-orange" data-action-type="saveAsTemplate" data-url="<@s.url '/templates/fromTransactionModal'/>"><i class="material-icons">file_copy</i></a>
+                        <a class="btn-floating btn transaction-action background-orange-dark" data-action-type="saveAsTemplate" data-url="<@s.url '/templates/fromTransactionModal'/>"><i class="material-icons">file_copy</i></a>
                     </li>
                 </#if>
             </ul>

@@ -2,10 +2,13 @@ package de.deadlocker8.budgetmaster.utils;
 
 public class Strings
 {
+	private Strings()
+	{
+	}
+
 	//MISC
 	public static final String CATEGORY_NONE = "category.none";
 	public static final String CATEGORY_REST = "category.rest";
-	public static final String VERSION = "version";
 	public static final String TITLE_INCOMES = "title.incomes";
 	public static final String TITLE_EXPENDITURES = "title.expenditures";
 	public static final String TITLE_CATEGORY_BUDGETS = "title.category.budgets";
@@ -29,6 +32,10 @@ public class Strings
 	public static final String WARNING_EMPTY_NUMBER = "warning.empty.number";
 	public static final String WARNING_EMPTY_NUMBER_ZERO_ALLOWED = "warning.empty.number.zero.allowed";
 	public static final String WARNING_DUPLICATE_TEMPLATE_NAME = "warning.duplicate.template.name";
+	public static final String WARNING_EMPTY_GIT_URL = "warning.empty.git.url";
+	public static final String WARNING_EMPTY_GIT_BRANCH_NAME = "warning.empty.git.branch.name";
+	public static final String WARNING_EMPTY_GIT_USER_NAME = "warning.empty.git.user.name";
+	public static final String WARNING_EMPTY_GIT_TOKEN = "warning.empty.git.token";
 
 	//REPORT
 	public static final String REPORT_FOOTER_LEFT = "report.footer.left";
@@ -55,8 +62,4 @@ public class Strings
 	public static final String REPORT_INCOMES = "report.incomes";
 	public static final String REPORT_PAYMENTS = "report.expenditures";
 	public static final String REPORT_BUDGET_REST = "report.budget.rest";
-
-	private Strings()
-	{
-	}
 }

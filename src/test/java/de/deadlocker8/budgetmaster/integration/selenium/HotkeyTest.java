@@ -1,10 +1,13 @@
 package de.deadlocker8.budgetmaster.integration.selenium;
 
 import de.deadlocker8.budgetmaster.Main;
+import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
 import de.deadlocker8.budgetmaster.integration.helpers.TransactionTestHelper;
+import de.thecodelabs.utils.util.OS;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -32,6 +35,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assume.assumeTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -69,6 +73,7 @@ public class HotkeyTest
 	{
 		FirefoxOptions options = new FirefoxOptions();
 		options.setHeadless(false);
+		options.addPreference("devtools.console.stdout.content", true);
 		driver = new FirefoxDriver(options);
 
 		// prepare
@@ -79,8 +84,10 @@ public class HotkeyTest
 		helper.hideWhatsNewDialog();
 
 		String path = getClass().getClassLoader().getResource("SearchDatabase.json").getFile().replace("/", File.separator);
-		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf"), Arrays.asList("DefaultAccount0815", "Account2"));
-	}
+		final Account account1 = new Account("DefaultAccount0815", AccountType.CUSTOM);
+		final Account account2 = new Account("Account2", AccountType.CUSTOM);
+
+		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf"), List.of(account1, account2));	}
 
 	@Test
 	public void hotkey_newTransaction_normal()
@@ -149,15 +156,17 @@ public class HotkeyTest
 	@Test
 	public void hotkey_saveTransaction()
 	{
+		assumeTrue(OS.isWindows());
+
 		// open transactions page
 		driver.get(helper.getUrl() + "/transactions/newTransaction/normal");
 
 		// fill mandatory inputs
 		driver.findElement(By.id("transaction-name")).sendKeys("My Transaction");
 		driver.findElement(By.id("transaction-amount")).sendKeys("15.00");
-		TransactionTestHelper.selectOptionFromDropdown(driver, By.id("categoryWrapper"), "sdfdsf");
+		TransactionTestHelper.selectCategoryByName(driver, "sdfdsf");
 
-		WebElement categoryWrapper = driver.findElement(By.id("categoryWrapper"));
+		WebElement categoryWrapper = driver.findElement(By.className("custom-select"));
 		Action seriesOfActions = new Actions(driver)
 				.keyDown(categoryWrapper, Keys.CONTROL)
 				.sendKeys(categoryWrapper, Keys.ENTER)

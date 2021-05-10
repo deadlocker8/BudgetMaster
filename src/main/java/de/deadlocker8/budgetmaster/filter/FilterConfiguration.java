@@ -125,7 +125,7 @@ public class FilterConfiguration
 	{
 		if(objects == null)
 		{
-			return null;
+			return new ArrayList<>();
 		}
 
 		List<Integer> includedIDs = new ArrayList<>();
@@ -139,7 +139,7 @@ public class FilterConfiguration
 
 		if(includedIDs.size() == objects.size())
 		{
-			return null;
+			return new ArrayList<>();
 		}
 
 		return includedIDs;

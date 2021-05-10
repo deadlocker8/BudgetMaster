@@ -2,12 +2,15 @@ package de.deadlocker8.budgetmaster.database;
 
 import com.google.gson.*;
 import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.accounts.AccountState;
+import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.categories.Category;
-import de.deadlocker8.budgetmaster.tags.Tag;
-import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.repeating.endoption.*;
-import de.deadlocker8.budgetmaster.repeating.modifier.*;
+import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifier;
+import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierType;
+import de.deadlocker8.budgetmaster.tags.Tag;
+import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.thecodelabs.utils.util.Localization;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -20,7 +23,7 @@ import java.util.List;
 public class DatabaseParser_v3
 {
 	final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-	private String jsonString;
+	private final String jsonString;
 	protected List<Category> categories;
 	protected List<Account> accounts;
 
@@ -36,14 +39,14 @@ public class DatabaseParser_v3
 		accounts = parseAccounts(root);
 		List<Transaction> transactions = parseTransactions(root);
 
-		return new Database(categories, accounts, transactions, new ArrayList<>());
+		return new Database(categories, accounts, transactions, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 	}
 
 	protected List<Category> parseCategories(JsonObject root)
 	{
 		List<Category> parsedCategories = new ArrayList<>();
-		JsonArray categories = root.get("categories").getAsJsonArray();
-		for(JsonElement currentCategory : categories)
+		JsonArray jsonCategories = root.get("categories").getAsJsonArray();
+		for(JsonElement currentCategory : jsonCategories)
 		{
 			Category parsedCategory = new Gson().fromJson(currentCategory, Category.class);
 			parsedCategories.add(parsedCategory);
@@ -55,10 +58,25 @@ public class DatabaseParser_v3
 	protected List<Account> parseAccounts(JsonObject root)
 	{
 		List<Account> parsedAccounts = new ArrayList<>();
-		JsonArray accounts = root.get("accounts").getAsJsonArray();
-		for(JsonElement currentAccount : accounts)
+		JsonArray jsonAccounts = root.get("accounts").getAsJsonArray();
+		for(JsonElement currentAccount : jsonAccounts)
 		{
-			parsedAccounts.add(new Gson().fromJson(currentAccount, Account.class));
+			final JsonObject accountObject = currentAccount.getAsJsonObject();
+			Integer ID = accountObject.get("ID").getAsInt();
+			String name = accountObject.get("name").getAsString();
+			AccountType accountType = AccountType.valueOf(accountObject.get("type").getAsString());
+
+			AccountState accountState = AccountState.FULL_ACCESS;
+			if(accountObject.has("accountState"))
+			{
+				accountState = AccountState.valueOf(accountObject.get("accountState").getAsString());
+			}
+
+			Account parsedAccount = new Account(name, accountType, null);
+			parsedAccount.setID(ID);
+			parsedAccount.setAccountState(accountState);
+
+			parsedAccounts.add(parsedAccount);
 		}
 
 		return parsedAccounts;

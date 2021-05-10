@@ -1,6 +1,8 @@
 package de.deadlocker8.budgetmaster.integration.selenium;
 
 import de.deadlocker8.budgetmaster.Main;
+import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
@@ -49,7 +51,7 @@ public class ImportTest
 		@Override
 		protected void failed(Throwable e, Description description)
 		{
-			IntegrationTestHelper.saveScreenshots(driver, name, SearchTest.class);
+			IntegrationTestHelper.saveScreenshots(driver, name, ImportTest.class);
 		}
 	};
 
@@ -58,8 +60,10 @@ public class ImportTest
 	{
 		FirefoxOptions options = new FirefoxOptions();
 		options.setHeadless(false);
+		options.addPreference("devtools.console.stdout.content", true);
 		driver = new FirefoxDriver(options);
 	}
+
 	@Test
 	public void requestImport()
 	{
@@ -71,7 +75,8 @@ public class ImportTest
 
 		String path = getClass().getClassLoader().getResource("SearchDatabase.json").getFile().replace("/", File.separator);
 		List<String> sourceAccounts = Arrays.asList("DefaultAccount0815", "sfsdf");
-		List<String> destinationAccounts = Arrays.asList("DefaultAccount0815", "Account2");
-		helper.uploadDatabase(path, sourceAccounts, destinationAccounts);
+		final Account account1 = new Account("DefaultAccount0815", AccountType.CUSTOM);
+		final Account account2 = new Account("Account2", AccountType.CUSTOM);
+		helper.uploadDatabase(path, sourceAccounts, List.of(account1, account2));
 	}
 }

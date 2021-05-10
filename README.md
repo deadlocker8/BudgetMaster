@@ -2,7 +2,7 @@
 Manage your monthly budget easily with BudgetMaster
 
 - __start:__ 17.12.16
-- __current release:__ v2.5.1 (30) from 12.03.21
+- __current release:__ v2.6.0 (31) from 10.05.21
 
 ## Key Features
 - Keep your data private - Host your own BudgetMaster server or use it in standalone mode. All data remains on your machines.
@@ -17,7 +17,8 @@ Manage your monthly budget easily with BudgetMaster
 - Localization - English and German supported.
 - Search and Filter - Search for individual transactions or filter your view.
 - Visualize your data - Use one of the pre-defined charts or create your one by using the chart framework to visualize and analyze your data.
-- Auto Backup - Schedule an automatic export of your database content.
+- Auto Backup - Schedule an automatic export of your database content (as JSON export or as commit to a local or remote git repository).
+- Icons - Assign icons to accounts, categories and templates.
 
 ## Available Languages
 - English [Roadmap](https://roadmaps.thecodelabs.de/roadmap/2)
@@ -41,4 +42,3 @@ Manage your monthly budget easily with BudgetMaster
 ### Build from source
 
 `mvn package -f pom.xml`
-

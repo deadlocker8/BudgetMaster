@@ -4,17 +4,18 @@ import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountRepository;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
+import de.deadlocker8.budgetmaster.backup.AutoBackupStrategy;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryRepository;
-import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
+import de.deadlocker8.budgetmaster.images.ImageFileExtension;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierType;
 import de.deadlocker8.budgetmaster.reports.Budget;
 import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.tags.Tag;
-import de.deadlocker8.budgetmaster.tags.TagRepository;
+import de.deadlocker8.budgetmaster.tags.TagService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.deadlocker8.budgetmaster.utils.Colors;
@@ -28,6 +29,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class HelpersService
@@ -36,7 +38,7 @@ public class HelpersService
 	private SettingsService settingsService;
 
 	@Autowired
-	private TagRepository tagRepository;
+	private TagService tagService;
 
 	@Autowired
 	private AccountRepository accountRepository;
@@ -56,6 +58,13 @@ public class HelpersService
 	public List<LanguageType> getAvailableLanguages()
 	{
 		return Arrays.asList(LanguageType.values());
+	}
+
+	public List<AutoBackupStrategy> getAvailableAutoBackupStrategies()
+	{
+		List<AutoBackupStrategy> autoBackupStrategies = new ArrayList<>(Arrays.asList(AutoBackupStrategy.values()));
+		autoBackupStrategies.remove(AutoBackupStrategy.NONE);
+		return autoBackupStrategies;
 	}
 
 	public List<String> getCategoryColorList()
@@ -84,12 +93,17 @@ public class HelpersService
 
 	public List<Tag> getAllTags()
 	{
-		return tagRepository.findAllByOrderByNameAsc();
+		return tagService.getAllEntitiesAsc();
 	}
 
 	public List<Account> getAllAccounts()
 	{
-		return accountService.getAllAccountsAsc();
+		return accountService.getAllEntitiesAsc();
+	}
+
+	public List<Account> getAllReadableAccounts()
+	{
+		return accountService.getAllReadableAccounts();
 	}
 
 	public Account getCurrentAccount()
@@ -190,11 +204,6 @@ public class HelpersService
 		return accountMatches;
 	}
 
-	public int getIDOfNoCatgeory()
-	{
-		return categoryRepository.findByType(CategoryType.NONE).getID();
-	}
-
 	public Long getUsageCountForCategory(Category category)
 	{
 		return transactionService.getRepository().countByCategory(category);
@@ -203,5 +212,12 @@ public class HelpersService
 	public boolean isUseSimpleDatepickerForTransactions()
 	{
 		return useSimpleDatepickerForTransactions;
+	}
+
+	public String getValidImageUploadTypes()
+	{
+		return Arrays.stream(ImageFileExtension.values())
+				.map(e -> "image/" + e.getBase64Type())
+				.collect(Collectors.joining(", "));
 	}
 }

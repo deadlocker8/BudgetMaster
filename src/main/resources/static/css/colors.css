@@ -1,0 +1,188 @@
+:root, [data-theme="default"] {
+    --color-blue: #2E79B9;
+    --color-blue-light: rgba(46, 121, 185, 0.8);
+    --color-blue-baby: #4CABD3;
+
+    --color-purple: #5856D6;
+
+    --color-green: #5CB85C;
+    --color-green-dark: #468C46;
+
+    --color-yellow: #F7EB84;
+    --color-orange: orange;
+    --color-orange-dark: #FF7043;
+    --color-red-light: #F55856;
+    --color-red: #D82C29;
+
+    --color-white: #FFFFFF;
+    --color-grey-light: #EEEEEE;
+    --color-grey: #696969;
+    --color-grey-dark: rgba(0, 0, 0, 0.25);
+    --color-grey-dark-almost-transparent: rgba(0, 0, 0, 0.08);
+    --color-black: rgba(0, 0, 0, 0.87);
+
+    --color-text: #212121;
+    --color-isPayment: var(--color-white);
+    --color-headline-budget: #757575;
+    --color-disabled: #AAAAAA;
+
+    --color-background: var(--color-white);
+    --color-background-light: #FAFAFA;
+}
+
+[data-theme="dark"] {
+    --color-blue-light: rgba(80, 115, 146, 0.8);
+    --color-yellow: #E9C46A;
+    --color-grey-light: #333333;
+    --color-grey: #CCCCCC;
+    --color-grey-dark: rgba(255, 255, 255, 0.5);
+    --color-grey-dark-almost-transparent: rgba(255, 255, 255, 0.125);
+
+    --color-text: #FFFFFF;
+    --color-isPayment: var(--color-black);
+    --color-headline-budget: #A3A3A3;
+    --color-disabled: #777777;
+
+    --color-background: #444444;
+    --color-background-light: #666666;
+}
+
+/* background colors*/
+
+.background-blue {
+    background-color: var(--color-blue) !important;
+}
+
+.background-blue-light {
+    background-color: var(--color-blue-light) !important;
+}
+
+.background-blue-baby {
+    background-color: var(--color-blue-baby) !important;
+}
+
+.background-purple {
+    background-color: var(--color-purple) !important;
+}
+
+.background-green {
+    background-color: var(--color-green) !important;
+}
+
+.background-green-dark {
+    background-color: var(--color-green-dark) !important;
+}
+
+.background-yellow {
+    background-color: var(--color-yellow) !important;
+}
+
+.background-orange {
+    background-color: var(--color-orange) !important;
+}
+
+.background-orange-dark {
+    background-color: var(--color-orange-dark) !important;
+}
+
+.background-red-light {
+    background-color: var(--color-red-light) !important;
+}
+
+.background-red {
+    background-color: var(--color-red) !important;
+}
+
+.background-white {
+    background-color: var(--color-white) !important;
+}
+
+.background-grey-light {
+    background-color: var(--color-grey-light) !important;
+}
+
+.background-grey {
+    background-color: var(--color-grey) !important;
+}
+
+.background-grey-dark {
+    background-color: var(--color-grey-dark) !important;
+}
+
+.background-black {
+    background-color: var(--color-black) !important;
+}
+
+/* text colors*/
+
+.text-blue {
+    color: var(--color-blue) !important;
+}
+
+.text-blue-light {
+    color: var(--color-blue-light) !important;
+}
+
+.text-blue-baby {
+    color: var(--color-blue-baby) !important;
+}
+
+.text-purple {
+    color: var(--color-purple) !important;
+}
+
+.text-green {
+    color: var(--color-green) !important;
+}
+
+.text-green-dark {
+    color: var(--color-green-dark) !important;
+}
+
+.text-yellow {
+    color: var(--color-yellow) !important;
+}
+
+.text-orange {
+    color: var(--color-orange) !important;
+}
+
+.text-orange-dark {
+    color: var(--color-orange-dark) !important;
+}
+
+.text-red-light {
+    color: var(--color-red-light) !important;
+}
+
+.text-red {
+    color: var(--color-red) !important;
+}
+
+.text-white {
+    color: var(--color-white) !important;
+}
+
+.text-grey-light {
+    color: var(--color-grey-light) !important;
+}
+
+.text-grey {
+    color: var(--color-grey) !important;
+}
+
+.text-grey-dark {
+    color: var(--color-grey-dark) !important;
+}
+
+.text-black {
+    color: var(--color-black) !important;
+}
+
+.text-default {
+    color: var(--color-text) !important;
+}
+
+.text-isPayment {
+    color: var(--color-isPayment) !important;
+}

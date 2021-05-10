@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.transactions;
 
+import de.deadlocker8.budgetmaster.accounts.AccountState;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.search.Search;
 import de.deadlocker8.budgetmaster.tags.Tag;
@@ -47,9 +48,13 @@ public class TransactionSearchSpecifications
 				predicates.add(builder.like(builder.lower(tagJoin.get(Tag_.name).as(String.class)), pattern));
 			}
 
-			query.orderBy(builder.desc(transaction.get(Transaction_.date)));
 			Predicate[] predicatesArray = new Predicate[predicates.size()];
-			return builder.or(predicates.toArray(predicatesArray));
+			Predicate predicatesCombined = builder.or(predicates.toArray(predicatesArray));
+
+			Predicate accountStatePredicate = transaction.get(Transaction_.account).get("accountState").in(List.of(AccountState.FULL_ACCESS, AccountState.READ_ONLY));
+
+			query.orderBy(builder.desc(transaction.get(Transaction_.date)));
+			return builder.and(accountStatePredicate, predicatesCombined);
 		};
 	}
 }

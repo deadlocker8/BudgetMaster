@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
 
@@ -26,7 +27,7 @@ public class FilterController extends BaseController
 	@PostMapping(value = "/apply")
 	public String post(WebRequest request, @ModelAttribute("NewFilterConfiguration") FilterConfiguration filterConfiguration)
 	{
-		request.setAttribute("filterConfiguration", filterConfiguration, WebRequest.SCOPE_SESSION);
+		request.setAttribute("filterConfiguration", filterConfiguration, RequestAttributes.SCOPE_SESSION);
 		return "redirect:" + request.getHeader("Referer");
 	}
 
@@ -36,7 +37,7 @@ public class FilterController extends BaseController
 		FilterConfiguration filterConfiguration = FilterConfiguration.DEFAULT;
 		filterConfiguration.setFilterCategories(filterHelpers.getFilterCategories());
 		filterConfiguration.setFilterTags(filterHelpers.getFilterTags());
-		request.setAttribute("filterConfiguration", filterConfiguration, WebRequest.SCOPE_SESSION);
+		request.setAttribute("filterConfiguration", filterConfiguration, RequestAttributes.SCOPE_SESSION);
 		return "redirect:" + request.getHeader("Referer");
 	}
 }

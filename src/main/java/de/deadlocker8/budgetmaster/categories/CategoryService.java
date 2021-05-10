@@ -1,21 +1,22 @@
 package de.deadlocker8.budgetmaster.categories;
 
-import de.deadlocker8.budgetmaster.services.Resetable;
+import de.deadlocker8.budgetmaster.services.AccessAllEntities;
+import de.deadlocker8.budgetmaster.services.Resettable;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
+import org.padler.natorder.NaturalOrderComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
-public class CategoryService implements Resetable
+public class CategoryService implements Resettable, AccessAllEntities<Category>
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CategoryService.class);
 	private final CategoryRepository categoryRepository;
@@ -48,7 +49,7 @@ public class CategoryService implements Resetable
 		Optional<Category> categoryOptional = categoryRepository.findById(ID);
 		if(categoryOptional.isEmpty())
 		{
-			throw new RuntimeException("Can't delete non-existing category with ID: " + ID);
+			throw new NoSuchElementException("Can't delete non-existing category with ID: " + ID);
 		}
 
 		Category categoryToDelete = categoryOptional.get();
@@ -98,17 +99,25 @@ public class CategoryService implements Resetable
 		}
 	}
 
-	public List<Category> getAllCategories()
+	@Override
+	public List<Category> getAllEntitiesAsc()
 	{
 		localizeDefaultCategories();
-		return categoryRepository.findAllByOrderByNameAsc().stream()
-				.sorted(Comparator.comparing(c -> c.getName().toLowerCase()))
-				.collect(Collectors.toList());
+		final List<Category> categories = categoryRepository.findAllByOrderByNameAsc();
+		categories.sort((c1, c2) -> new NaturalOrderComparator().compare(c1.getName(), c2.getName()));
+		return categories;
+	}
+
+	public List<Category> getAllCustomCategories()
+	{
+		final List<Category> categories = categoryRepository.findAllByTypeOrderByNameAsc(CategoryType.CUSTOM);
+		categories.sort((c1, c2) -> new NaturalOrderComparator().compare(c1.getName(), c2.getName()));
+		return categories;
 	}
 
 	public void localizeDefaultCategories()
 	{
-		LOGGER.debug("Updating localization for default categories");
+		LOGGER.trace("Updating localization for default categories");
 
 		final Category categoryNone = categoryRepository.findByType(CategoryType.NONE);
 		categoryNone.setName(Localization.getString(Strings.CATEGORY_NONE));

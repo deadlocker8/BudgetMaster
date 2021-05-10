@@ -62,9 +62,9 @@ public class Search
 		return searchCategory;
 	}
 
-	public void setSearchCategory(boolean searchCatgeory)
+	public void setSearchCategory(boolean searchCategory)
 	{
-		this.searchCategory = searchCatgeory;
+		this.searchCategory = searchCategory;
 	}
 
 	public boolean isSearchTags()

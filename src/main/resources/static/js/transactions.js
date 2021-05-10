@@ -62,6 +62,7 @@ $(document).ready(function()
                 weekdaysAbbrev: weekDaysLetters,
 
                 // Buttons
+                cancel: buttonCancel,
                 done: buttonClose,
 
                 // Accessibility labels
@@ -205,16 +206,16 @@ $(document).ready(function()
     {
         $('.buttonIncome').each(function()
         {
-            $(this).removeClass("budgetmaster-grey");
-            $(this).removeClass("budgetmaster-text-isPayment");
-            $(this).addClass("budgetmaster-green");
+            $(this).removeClass("background-grey");
+            $(this).removeClass("text-isPayment");
+            $(this).addClass("background-green");
         });
 
         $('.buttonExpenditure').each(function()
         {
-            $(this).removeClass("budgetmaster-red");
-            $(this).addClass("budgetmaster-grey");
-            $(this).addClass("budgetmaster-text-isPayment");
+            $(this).removeClass("background-red");
+            $(this).addClass("background-grey");
+            $(this).addClass("text-isPayment");
         });
 
         document.getElementById("input-isPayment").value = 0;
@@ -224,16 +225,16 @@ $(document).ready(function()
     {
         $('.buttonExpenditure').each(function()
         {
-            $(this).removeClass("budgetmaster-grey");
-            $(this).removeClass("budgetmaster-text-isPayment");
-            $(this).addClass("budgetmaster-red");
+            $(this).removeClass("background-grey");
+            $(this).removeClass("text-isPayment");
+            $(this).addClass("background-red");
         });
 
         $('.buttonIncome').each(function()
         {
-            $(this).removeClass("budgetmaster-green");
-            $(this).addClass("budgetmaster-grey");
-            $(this).addClass("budgetmaster-text-isPayment");
+            $(this).removeClass("background-green");
+            $(this).addClass("background-grey");
+            $(this).addClass("text-isPayment");
         });
 
         document.getElementById("input-isPayment").value = 1;
@@ -370,7 +371,7 @@ function validateForm(allowEmptyAmount = false)
     let datePickerId = 'transaction-datepicker';
     if(document.getElementById(datePickerId) !== null)
     {
-        let isValidDate = validateDate();
+        let isValidDate = validateDate(datePickerId);
         if(!isValidDate)
         {
             return false;

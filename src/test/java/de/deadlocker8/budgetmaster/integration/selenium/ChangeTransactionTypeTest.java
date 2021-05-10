@@ -1,6 +1,8 @@
 package de.deadlocker8.budgetmaster.integration.selenium;
 
 import de.deadlocker8.budgetmaster.Main;
+import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
@@ -18,6 +20,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -67,7 +70,9 @@ public class ChangeTransactionTypeTest
 	{
 		driver.get(helper.getUrl() + "/transactions/" + transactionID + "/edit");
 
-		driver.findElement(By.id("transaction-actions-button")).click();
+		Actions builder = new Actions(driver);
+		WebElement element = driver.findElement(By.id("transaction-actions-button"));
+		builder.moveToElement(element).build().perform();
 
 		By changeTypeButtonSelector = By.xpath("//a[contains(@data-action-type, 'changeType')][1]");
 		WebDriverWait wait = new WebDriverWait(driver, 5);
@@ -85,6 +90,7 @@ public class ChangeTransactionTypeTest
 	{
 		FirefoxOptions options = new FirefoxOptions();
 		options.setHeadless(false);
+		options.addPreference("devtools.console.stdout.content", true);
 		driver = new FirefoxDriver(options);
 
 		// prepare
@@ -95,7 +101,10 @@ public class ChangeTransactionTypeTest
 		helper.hideWhatsNewDialog();
 
 		String path = getClass().getClassLoader().getResource("SearchDatabase.json").getFile().replace("/", File.separator);
-		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf"), Arrays.asList("DefaultAccount0815", "Account2"));
+		final Account account1 = new Account("DefaultAccount0815", AccountType.CUSTOM);
+		final Account account2 = new Account("Account2", AccountType.CUSTOM);
+
+		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf"), List.of(account1, account2));
 	}
 
 	@Test
@@ -141,20 +150,20 @@ public class ChangeTransactionTypeTest
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.textToBe(By.cssSelector(".headline"), "Edit Transfer"));
 
-		assertThatThrownBy(()->driver.findElement(By.className("buttonExpenditure"))).isInstanceOf(NoSuchElementException.class);
+		assertThatThrownBy(() -> driver.findElement(By.className("buttonExpenditure"))).isInstanceOf(NoSuchElementException.class);
 
 		assertThat(driver.findElement(By.id("transaction-name")).getAttribute("value")).isEqualTo("Test");
 		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEqualTo("15.00");
 		assertThat(driver.findElement(By.id("transaction-datepicker")).getAttribute("value")).isEqualTo("01.05.2019");
 		assertThat(driver.findElement(By.id("transaction-description")).getAttribute("value")).isEqualTo("Lorem Ipsum");
-		assertThat(driver.findElement(By.id("transaction-category")).getAttribute("value")).isEqualTo("4");
+		assertThat(driver.findElement(By.cssSelector(".category-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("4");
 
 		final List<WebElement> chips = driver.findElements(By.cssSelector("#transaction-chips .chip"));
 		assertThat(chips).hasSize(1);
 		assertThat(chips.get(0)).hasFieldOrPropertyWithValue("text", "123\nclose");
 
-		assertThat(driver.findElement(By.id("transaction-account")).getAttribute("value")).isEqualTo("3");
-		assertThat(driver.findElement(By.id("transaction-transfer-account")).getAttribute("value")).isEqualTo("2");
+		assertThat(driver.findElement(By.cssSelector(".account-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("3");
+		assertThat(driver.findElement(By.cssSelector(".transfer-account-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("2");
 	}
 
 	@Test
@@ -167,18 +176,18 @@ public class ChangeTransactionTypeTest
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.textToBe(By.cssSelector(".headline"), "Edit Transaction"));
 
-		assertThat(driver.findElement(By.className("buttonExpenditure")).getAttribute("class")).contains("budgetmaster-red");
+		assertThat(driver.findElement(By.className("buttonExpenditure")).getAttribute("class")).contains("background-red");
 		assertThat(driver.findElement(By.id("transaction-name")).getAttribute("value")).isEqualTo("beste");
 		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEqualTo("15.00");
 		assertThat(driver.findElement(By.id("transaction-datepicker")).getAttribute("value")).isEqualTo("01.05.2019");
 		assertThat(driver.findElement(By.id("transaction-description")).getAttribute("value")).isEqualTo("Lorem Ipsum");
-		assertThat(driver.findElement(By.id("transaction-category")).getAttribute("value")).isEqualTo("3");
+		assertThat(driver.findElement(By.cssSelector(".category-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("3");
 
 		final List<WebElement> chips = driver.findElements(By.cssSelector("#transaction-chips .chip"));
 		assertThat(chips).hasSize(1);
 		assertThat(chips.get(0)).hasFieldOrPropertyWithValue("text", "123\nclose");
 
-		assertThat(driver.findElement(By.id("transaction-account")).getAttribute("value")).isEqualTo("3");
+		assertThat(driver.findElement(By.cssSelector(".account-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("3");
 	}
 
 	@Test
@@ -191,18 +200,18 @@ public class ChangeTransactionTypeTest
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.textToBe(By.cssSelector(".headline"), "Edit Recurring Transaction"));
 
-		assertThat(driver.findElement(By.className("buttonExpenditure")).getAttribute("class")).contains("budgetmaster-red");
+		assertThat(driver.findElement(By.className("buttonExpenditure")).getAttribute("class")).contains("background-red");
 		assertThat(driver.findElement(By.id("transaction-name")).getAttribute("value")).isEqualTo("Transfer dings");
 		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEqualTo("3.00");
 		assertThat(driver.findElement(By.id("transaction-datepicker")).getAttribute("value")).isEqualTo("01.05.2019");
 		assertThat(driver.findElement(By.id("transaction-description")).getAttribute("value")).isEmpty();
-		assertThat(driver.findElement(By.id("transaction-category")).getAttribute("value")).isEqualTo("1");
+		assertThat(driver.findElement(By.cssSelector(".category-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("1");
 
 		final List<WebElement> chips = driver.findElements(By.cssSelector("#transaction-chips .chip"));
 		assertThat(chips).hasSize(1);
 		assertThat(chips.get(0)).hasFieldOrPropertyWithValue("text", "123\nclose");
 
-		assertThat(driver.findElement(By.id("transaction-account")).getAttribute("value")).isEqualTo("3");
+		assertThat(driver.findElement(By.cssSelector(".account-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("3");
 
 		assertThat(driver.findElement(By.id("transaction-repeating-modifier")).getAttribute("value")).isEmpty();
 		assertThat(driver.findElement(By.id("transaction-repeating-modifier-type")).getAttribute("value")).isEqualTo("Months");

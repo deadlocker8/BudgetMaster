@@ -1,72 +1,83 @@
 <html>
     <head>
         <#import "../helpers/header.ftl" as header>
-        <@header.header "BudgetMaster"/>
+        <@header.globals/>
+        <#assign title = locale.getString("title.transaction.new.repeating.long")/>
+        <#if isEdit>
+            <#assign title=locale.getString("title.transaction.edit", title)/>
+        <#else>
+            <#assign title=locale.getString("title.transaction.new", title)/>
+        </#if>
+
+        <@header.header "BudgetMaster - ${title}"/>
         <@header.style "transactions"/>
         <@header.style "datepicker"/>
-        <@header.style "categories"/>
         <#import "/spring.ftl" as s>
     </head>
-    <body class="budgetmaster-blue-light">
+    <@header.body>
         <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "transactions" settings/>
 
         <#import "newTransactionMacros.ftl" as newTransactionMacros>
+        <#import "../helpers/customSelectMacros.ftl" as customSelectMacros>
 
         <main>
             <div class="card main-card background-color">
                 <div class="container">
                     <div class="section center-align">
-                        <#assign title = locale.getString("title.transaction.new.repeating.long")/>
-                        <div class="headline"><#if isEdit>${locale.getString("title.transaction.edit", title)}<#else>${locale.getString("title.transaction.new", title)}</#if></div>
+                        <div class="headline">${title}</div>
                     </div>
                 </div>
-                <div class="container">
-                    <#import "../helpers/validation.ftl" as validation>
-                    <form name="NewTransaction" action="<@s.url '/transactions/newTransaction/repeating'/>" method="post" onsubmit="return validateForm()">
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <input type="hidden" name="ID" value="<#if transaction.getID()??>${transaction.getID()?c}</#if>">
-                        <input type="hidden" name="isRepeating" value="${transaction.isRepeating()?c}">
-                        <input type="hidden" name="previousType" value="<#if previousType??>${previousType.name()}</#if>">
 
-                        <#-- isPayment switch -->
-                        <@newTransactionMacros.isExpenditureSwitch transaction/>
+                <@header.content>
+                    <div class="container">
+                        <#import "../helpers/validation.ftl" as validation>
+                        <form name="NewTransaction" action="<@s.url '/transactions/newTransaction/repeating'/>" method="post" onsubmit="return validateForm()">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            <input type="hidden" name="ID" value="<#if transaction.getID()??>${transaction.getID()?c}</#if>">
+                            <input type="hidden" name="isRepeating" value="${transaction.isRepeating()?c}">
+                            <input type="hidden" name="previousType" value="<#if previousType??>${previousType.name()}</#if>">
 
-                        <#-- name -->
-                        <@newTransactionMacros.transactionName transaction suggestionsJSON/>
+                            <#-- isPayment switch -->
+                            <@newTransactionMacros.isExpenditureSwitch transaction/>
 
-                        <#-- amount -->
-                        <@newTransactionMacros.transactionAmount transaction/>
+                            <#-- name -->
+                            <@newTransactionMacros.transactionName transaction suggestionsJSON/>
 
-                        <#-- category -->
-                        <@newTransactionMacros.categorySelect categories transaction.getCategory() "col s12 m12 l8 offset-l2" locale.getString("transaction.new.label.category")/>
+                            <#-- amount -->
+                            <@newTransactionMacros.transactionAmount transaction/>
 
-                        <#-- date -->
-                        <@newTransactionMacros.transactionStartDate transaction currentDate/>
+                            <#-- category -->
+                            <@customSelectMacros.customCategorySelect categories transaction.getCategory() "col s12 m12 l8 offset-l2" locale.getString("transaction.new.label.category")/>
 
-                        <#-- description -->
-                        <@newTransactionMacros.transactionDescription transaction/>
+                            <#-- date -->
+                            <@newTransactionMacros.transactionStartDate transaction currentDate/>
 
-                        <#-- tags -->
-                        <@newTransactionMacros.transactionTags transaction/>
+                            <#-- description -->
+                            <@newTransactionMacros.transactionDescription transaction/>
 
-                        <#-- account -->
-                        <#if transaction.getAccount()??>
-                            <@newTransactionMacros.account accounts transaction.getAccount() "transaction-account" "account" locale.getString("transaction.new.label.account") false/>
-                        <#else>
-                            <@newTransactionMacros.account accounts helpers.getCurrentAccountOrDefault() "transaction-account" "account" locale.getString("transaction.new.label.account") false/>
-                        </#if>
+                            <#-- tags -->
+                            <@newTransactionMacros.transactionTags transaction/>
 
-                        <#-- repeating options -->
-                        <@newTransactionMacros.transactionRepeating transaction currentDate/>
-                        <br>
-                        <#-- buttons -->
-                        <@newTransactionMacros.buttons "/transactions"/>
-                        <@newTransactionMacros.buttonTransactionActions isEdit false previousType??/>
-                    </form>
+                            <#-- account -->
+                            <#if transaction.getAccount()??>
+                                <#assign selectedAccount = transaction.getAccount()/>
+                            <#else>
+                                <#assign selectedAccount = helpers.getCurrentAccountOrDefault()/>
+                            </#if>
+                            <@customSelectMacros.customAccountSelect "account-select-wrapper" "account" accounts selectedAccount "col s12 m12 l8 offset-l2" locale.getString("transaction.new.label.account") "transaction-account"/>
 
-                    <div id="changeTransactionTypeModalContainer"></div>
-                </div>
+                            <#-- repeating options -->
+                            <@newTransactionMacros.transactionRepeating transaction currentDate/>
+                            <br>
+                            <#-- buttons -->
+                            <@newTransactionMacros.buttons "/transactions"/>
+                            <@newTransactionMacros.buttonTransactionActions isEdit false previousType??/>
+                        </form>
+
+                        <div id="changeTransactionTypeModalContainer"></div>
+                    </div>
+                </@header.content>
             </div>
         </main>
 
@@ -81,6 +92,5 @@
         <script src="<@s.url '/js/helpers.js'/>"></script>
         <script src="<@s.url '/js/transactions.js'/>"></script>
         <script src="<@s.url '/js/transactionActions.js'/>"></script>
-        <script src="<@s.url '/js/categorySelect.js'/>"></script>
-    </body>
+    </@header.body>
 </html>

@@ -1,9 +1,9 @@
+let modalFilter;
+let chartPickerStartDate;
+let chartPickerEndDate;
+
 $(document).ready(function()
 {
-    let modalFilter;
-    let pickerStartDate;
-    let pickerEndDate;
-
     if($("#chart-script").length)
     {
         let editor = CodeMirror.fromTextArea(document.getElementById('chart-script'), {
@@ -26,7 +26,7 @@ $(document).ready(function()
 
     if($(".datepicker").length)
     {
-        pickerStartDate = M.Datepicker.init(document.getElementById('chart-datepicker'), {
+        chartPickerStartDate = M.Datepicker.init(document.getElementById('chart-datepicker'), {
             yearRange: 25,
             firstDay: 1,
             showClearBtn: false,
@@ -55,10 +55,11 @@ $(document).ready(function()
 
             onSelect: function()
             {
-                if(typeof pickerEndDate !== "undefined")
+                if(typeof chartPickerEndDate !== "undefined")
                 {
-                    pickerEndDate.destroy();
-                    pickerEndDate = createDatePickerEnd(this.date, pickerEndDate.date);
+                    let selectedDate = chartPickerEndDate.date;
+                    chartPickerEndDate.destroy();
+                    chartPickerEndDate = createDatePickerEnd(this.date, selectedDate);
                 }
             }
         });
@@ -66,45 +67,8 @@ $(document).ready(function()
         // picker end date
         if(typeof endDate !== "undefined")
         {
-            pickerEndDate = createDatePickerEnd(pickerStartDate.date, endDate);
+            chartPickerEndDate = createDatePickerEnd(chartPickerStartDate.date, endDate);
         }
-    }
-
-    function createDatePickerEnd(minDate, selectedDate)
-    {
-        if(selectedDate < minDate)
-        {
-            selectedDate = minDate;
-        }
-
-        return M.Datepicker.init(document.getElementById('chart-datepicker-end'), {
-            yearRange: 50,
-            firstDay: 1,
-            showClearBtn: false,
-            setDefaultDate: true,
-            minDate: minDate,
-            defaultDate: selectedDate,
-
-            i18n: {
-                // Strings and translations
-                months: monthNames,
-                monthsShort: monthNamesShort,
-                weekdays: weekDays,
-                weekdaysShort: weekDaysShort,
-                weekdaysAbbrev: weekDaysLetters,
-
-                // Buttons
-                done: buttonClose,
-
-                // Accessibility labels
-                labelMonthNext: '>',
-                labelMonthPrev: '<'
-            },
-
-            // Formats
-            format: 'dd.mm.yyyy',
-            formatSubmit: 'dd.mm.yyyy'
-        });
     }
 
     $(".filter-button-close").click(function()
@@ -120,9 +84,46 @@ $(document).ready(function()
 
     $(".quick-date").click(function()
     {
-        handleQuickDate(this, pickerStartDate, pickerEndDate);
+        handleQuickDate(this);
     });
 });
+
+function createDatePickerEnd(minDate, selectedDate)
+{
+    if(selectedDate < minDate)
+    {
+        selectedDate = minDate;
+    }
+
+    return M.Datepicker.init(document.getElementById('chart-datepicker-end'), {
+        yearRange: 50,
+        firstDay: 1,
+        showClearBtn: false,
+        setDefaultDate: true,
+        minDate: minDate,
+        defaultDate: selectedDate,
+
+        i18n: {
+            // Strings and translations
+            months: monthNames,
+            monthsShort: monthNamesShort,
+            weekdays: weekDays,
+            weekdaysShort: weekDaysShort,
+            weekdaysAbbrev: weekDaysLetters,
+
+            // Buttons
+            done: buttonClose,
+
+            // Accessibility labels
+            labelMonthNext: '>',
+            labelMonthPrev: '<'
+        },
+
+        // Formats
+        format: 'dd.mm.yyyy',
+        formatSubmit: 'dd.mm.yyyy'
+    });
+}
 
 function applyFilter(modal)
 {
@@ -130,13 +131,13 @@ function applyFilter(modal)
 
     if(isDefaultFilter())
     {
-        filterButton.classList.toggle("budgetmaster-blue", true);
-        filterButton.classList.toggle("budgetmaster-red", false);
+        filterButton.classList.toggle("background-blue", true);
+        filterButton.classList.toggle("background-red", false);
         filterButton.childNodes[1].nodeValue = filterNotActive;
     } else
     {
-        filterButton.classList.toggle("budgetmaster-blue", false);
-        filterButton.classList.toggle("budgetmaster-red", true);
+        filterButton.classList.toggle("background-blue", false);
+        filterButton.classList.toggle("background-red", true);
         filterButton.childNodes[1].nodeValue = filterActive;
     }
 
@@ -156,7 +157,7 @@ function resetFilter()
     $("#filter-name").val('');
 }
 
-function handleQuickDate(element, pickerStartDate, pickerEndDate)
+function handleQuickDate(element)
 {
     let quickType = element.dataset.quick;
     let startDate;
@@ -181,31 +182,47 @@ function handleQuickDate(element, pickerStartDate, pickerEndDate)
             endDate = moment("2100-01-01");
             break;
         case '4':
+            startDate = moment().subtract(1,'weeks').startOf('isoWeek');
+            endDate = moment().subtract(1,'weeks').endOf('isoWeek');
+            break;
+        case '5':
+            startDate = moment().subtract(1,'months').startOf('month');
+            endDate = moment().subtract(1,'months').endOf('month');
+            break;
+        case '6':
+            startDate = moment().subtract(1,'years').startOf('year');
+            endDate = moment().subtract(1,'years').endOf('year');
+            break;
+        case '7':
+            startDate = moment("2000-01-01");
+            endDate = moment().subtract(1, 'years').endOf('year');
+            break;
+        case '8':
             startDate = moment().subtract(7, 'days');
             endDate = moment();
             break;
-        case '5':
+        case '9':
             startDate = moment().subtract(30, 'days');
             endDate = moment();
             break;
-        case '6':
+        case '10':
             startDate = moment().subtract(365, 'days');
             endDate = moment();
             break;
-        case '7':
+        case '11':
             startDate = moment("2000-01-01");
             endDate = moment();
             break;
     }
 
-    setDateRange(startDate, endDate, pickerStartDate, pickerEndDate);
+    setDateRange(startDate, endDate);
 }
 
-function setDateRange(startDate, endDate, pickerStartDate, pickerEndDate)
+function setDateRange(startDate, endDate)
 {
-    pickerStartDate.setDate(startDate.toDate());
-    pickerStartDate.setInputValue();
+    chartPickerStartDate.setDate(startDate.startOf('day').toDate());
+    chartPickerStartDate.setInputValue();
 
-    pickerEndDate.setDate(endDate.toDate());
-    pickerEndDate.setInputValue();
+    chartPickerEndDate.destroy();
+    chartPickerEndDate = createDatePickerEnd(chartPickerStartDate.date, endDate.startOf('day').toDate());
 }

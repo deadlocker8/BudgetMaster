@@ -1,9 +1,9 @@
 .datepicker-date-display {
-    background-color: #2E79B9;
+    background-color: var(--color-blue);
 }
 
 .datepicker-table td.is-selected {
-    background-color: #2E79B9;
+    background-color: var(--color-blue);
 }
 
 .datepicker-day-button:focus {
@@ -11,13 +11,13 @@
 }
 
 .datepicker-cancel, .datepicker-done, .datepicker-clear {
-    color: #2E79B9;
+    color: var(--color-blue);
     font-weight: bold;
 }
 
 .datepicker-cancel:hover, .datepicker-done:hover, .datepicker-clear:hover {
     background-color: rgba(46, 121, 185, 0.2);
-    color: #2E79B9;
+    color: var(--color-blue);
     font-weight: bold;
 }
 
@@ -26,7 +26,7 @@
 }
 
 .datepicker-table td.is-today {
-    color: #2E79B9;
+    color: var(--color-blue);
 }
 
 .datepicker-table td.is-today .datepicker-day-button{
@@ -34,5 +34,22 @@
 }
 
 .datepicker-table td.is-selected .datepicker-day-button {
-    color: #FFFFFF;
+    color: var(--color-white);
+}
+
+/* dark theme */
+[data-theme="dark"] .datepicker-calendar-container {
+    background-color: #333333;
+}
+
+[data-theme="dark"] .datepicker-row {
+    color: var(--color-white);
+}
+
+[data-theme="dark"] .datepicker-controls .select-wrapper input {
+    color: var(--color-white);
+}
+
+[data-theme="dark"]  .month-next svg, .month-prev svg {
+    fill: var(--color-white);
 }

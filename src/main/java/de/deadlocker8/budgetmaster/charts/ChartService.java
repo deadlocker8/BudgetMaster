@@ -1,6 +1,8 @@
 package de.deadlocker8.budgetmaster.charts;
 
-import de.deadlocker8.budgetmaster.services.Resetable;
+import de.deadlocker8.budgetmaster.services.AccessAllEntities;
+import de.deadlocker8.budgetmaster.services.Resettable;
+import org.padler.natorder.NaturalOrderComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +13,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ChartService implements Resetable
+public class ChartService implements Resettable, AccessAllEntities<Chart>
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ChartService.class);
-	
+
 	private static final String PATTERN_OLD_CONTAINER_ID = "Plotly.newPlot('chart-canvas',";
 	private static final String PATTERN_DYNAMIC_CONTAINER_ID = "Plotly.newPlot('containerID',";
 
-	private ChartRepository chartRepository;
+	private final ChartRepository chartRepository;
 
 	@Autowired
 	public ChartService(ChartRepository categoryRepository)
@@ -99,5 +101,13 @@ public class ChartService implements Resetable
 				getRepository().save(userChart);
 			}
 		}
+	}
+
+	@Override
+	public List<Chart> getAllEntitiesAsc()
+	{
+		final List<Chart> charts = chartRepository.findAllByOrderByNameAsc();
+		charts.sort((c1, c2) -> new NaturalOrderComparator().compare(c1.getName(), c2.getName()));
+		return charts;
 	}
 }

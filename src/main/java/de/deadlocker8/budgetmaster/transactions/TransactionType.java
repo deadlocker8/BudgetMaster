@@ -8,7 +8,7 @@ public enum TransactionType
 	REPEATING(2),
 	TRANSFER(3);
 
-	private int typeID;
+	private final int typeID;
 
 	TransactionType(int typeID)
 	{

@@ -1,9 +1,10 @@
 <#import "/spring.ftl" as s>
 <#import "../helpers/validation.ftl" as validation>
+<#import "../categories/categoriesFunctions.ftl" as categoriesFunctions>
+
 
 <#macro buttonNew>
-    <a href="<@s.url '/templates/newTemplate'/>" class="waves-effect waves-light btn budgetmaster-blue"><i
-                class="material-icons left">add</i>${locale.getString("title.template.new")}</a>
+    <@header.buttonLink url='/templates/newTemplate' icon='add' localizationKey='title.template.new'/>
 </#macro>
 
 <#macro buttons>
@@ -24,14 +25,14 @@
                             <div class="collapsible-header bold">
                                 <@templateHeader template/>
                                 <div class="collapsible-header-button">
-                                    <a href="<@s.url '/templates/${template.ID?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left no-margin">edit</i></a>
-                                    <a href="<@s.url '/templates/${template.ID?c}/requestDelete'/>" class="btn-flat no-padding text-color"><i class="material-icons left no-margin">delete</i></a>
-                                    <a href="<@s.url '/templates/${template.ID?c}/select'/>" class="waves-effect waves-light btn budgetmaster-blue button-select-template"><i class="material-icons left no-margin">note_add</i></a>
+                                    <@header.buttonFlat url='/templates/' + template.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default"/>
+                                    <@header.buttonFlat url='/templates/' + template.ID?c + '/requestDelete' icon='delete' localizationKey='' classes="no-padding text-default"/>
+                                    <@header.buttonLink url='/templates/' + template.ID?c + '/select' icon='note_add' localizationKey='' classes='button-select-template'/>
                                 </div>
                             </div>
                             <div class="collapsible-body">
                                 <div class="row no-margin-bottom">
-                                    <table class="table-template-content text-color">
+                                    <table class="table-template-content text-default">
                                         <@templateName template/>
                                         <@templateAmount template/>
                                         <@templateCategory template/>
@@ -51,7 +52,9 @@
 </#macro>
 
 <#macro templateHeader template>
-    <#if template.getTransferAccount()??>
+    <#if template.getIcon()??>
+       <img src="${template.getIcon().getBase64EncodedImage()}" class="template-icon"/>
+    <#elseif template.getTransferAccount()??>
         <i class="material-icons">swap_horiz</i>
     <#else>
         <i class="material-icons">payment</i>
@@ -129,6 +132,7 @@
 <#macro templateNameInput template>
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
+            <i class="material-icons prefix">file_copy</i>
             <input id="template-name" type="text" name="templateName" <@validation.validation "templateName"/> value="<#if template.getTemplateName()??>${template.getTemplateName()}</#if>">
             <label for="template-name">${locale.getString("template.new.label.name")}</label>
         </div>
@@ -140,7 +144,7 @@
         <div class="input-field col s12 m12 l8 offset-l2">
             <label>
                 <input id="${id}" name="${name}" type="checkbox" <#if checked>checked</#if>>
-                <span class="columnName-checkbox-label text-color">${label}</span>
+                <span class="columnName-checkbox-label text-default">${label}</span>
             </label>
         </div>
     </div>

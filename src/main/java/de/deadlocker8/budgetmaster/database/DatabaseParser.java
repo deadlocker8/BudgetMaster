@@ -13,8 +13,8 @@ import java.text.MessageFormat;
 public class DatabaseParser
 {
 	final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-	private String jsonString;
-	private Category categoryNone;
+	private final String jsonString;
+	private final Category categoryNone;
 
 	public DatabaseParser(String json, Category categoryNone)
 	{
@@ -57,10 +57,18 @@ public class DatabaseParser
 				return database;
 			}
 
+			if(version == 5)
+			{
+				final Database database = new DatabaseParser_v5(jsonString).parseDatabaseFromJSON();
+				LOGGER.debug(MessageFormat.format("Parsed database with {0} transactions, {1} categories, {2} accounts, {3} templates and {4} charts", database.getTransactions().size(), database.getCategories().size(), database.getAccounts().size(), database.getTemplates().size(), database.getCharts().size()));
+				return database;
+			}
+
 			throw new IllegalArgumentException(Localization.getString("error.database.import.unknown.version"));
 		}
 		catch(Exception e)
 		{
+			e.printStackTrace();
 			throw new IllegalArgumentException(Localization.getString("error.database.import.invalid.json"), e);
 		}
 	}

@@ -9,6 +9,15 @@
     font-size: 20px;
 }
 
+.category-circle .fa,
+.category-circle .fab,
+.category-circle .fad,
+.category-circle .fal,
+.category-circle .far,
+.category-circle .fas {
+    line-height: 40px;
+}
+
 .category-circle-small {
     width: 34px;
     height: 34px;
@@ -21,8 +30,18 @@
     margin: 14px 16px;
 }
 
-.category-select {
-    display: inline-block !important;
+.category-circle-small .fa,
+.category-circle-small .fab,
+.category-circle-small .fad,
+.category-circle-small .fal,
+.category-circle-small .far,
+.category-circle-small .fas {
+    line-height: 34px !important;
+}
+
+
+.category-square {
+    border-radius: 10%;
 }
 
 .category-color {
@@ -46,6 +65,56 @@
 
 .categoryDeleteModal {
     overflow-y: visible !important;
+}
+
+#category-icon {
+    margin-top: 3rem;
+    justify-content: center;
+}
+
+#category-icon-preview {
+    text-align: center;
+    border: 2px solid var(--color-text);
+    padding: 1rem;
+    color: var(--color-text);
+}
+
+#category-icon-preview i {
+    font-size: 3rem;
+}
+
+#button-remove-category-icon {
+    margin-left: 1rem;
+}
+
+#button-remove-category-icon i {
+    font-size: 1.8rem;
+}
+
+.category-icon-option-column {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.category-icon-option {
+    padding: 0.5rem;
+    border: 2px solid transparent;
+}
+
+.category-icon-option:hover {
+    cursor: pointer;
+}
+
+.category-icon-option.selected {
+    border: 2px solid var(--color-text);
+}
+
+.category-icon-option-icon {
+    font-size: 2rem;
+}
+
+#numberOfIcons {
+    font-size: 1.1rem;
 }
 
 /*style spectrum color picker*/

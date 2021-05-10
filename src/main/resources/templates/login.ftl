@@ -1,11 +1,12 @@
 <html>
     <head>
         <#import "helpers/header.ftl" as header>
-        <@header.header "BudgetMaster"/>
+        <@header.globals/>
+        <@header.header "BudgetMaster - ${locale.getString('login.button')}"/>
         <@header.style "login"/>
         <#import "/spring.ftl" as s>
     </head>
-    <body class="budgetmaster-blue-light">
+    <@header.body>
         <main>
             <div class="row valign-wrapper full-height">
                 <div class="col l4 offset-l4 m6 offset-m3 s10 offset-s1">
@@ -53,9 +54,7 @@
 
                                 <div class="row login-margin-top">
                                     <div class="col s12 right-align">
-                                        <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action">
-                                            <i class="material-icons left">send</i>${locale.getString("login.button")}
-                                        </button>
+                                        <@header.buttonSubmit name='action' icon='send' localizationKey='login.button'/>
                                     </div>
                                 </div>
                             </form>
@@ -69,5 +68,5 @@
         <#import "helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
         <script>document.cookie = "currentDate=${dateService.getDateStringNormal(currentDate)}";</script>
-    </body>
+    </@header.body>
 </html>

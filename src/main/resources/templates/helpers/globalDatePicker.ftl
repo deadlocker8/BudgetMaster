@@ -2,10 +2,10 @@
     <#import "/spring.ftl" as s>
      <div class="container">
          <div class="section center-align">
-             <a href="<@s.url '/previousMonth?target=${target}'/>" class="waves-effect text-color"><i class="material-icons icon-chevron">chevron_left</i></a>
-             <a href="#modalDate" class="waves-effect headline-date modal-trigger text-color datePicker-fixed-width">${dateService.getDateStringWithMonthAndYear(fullDate)}</a>
-             <a href="<@s.url '/nextMonth?target=${target}'/>" class="waves-effect text-color"><i class="material-icons icon-chevron">chevron_right</i></a>
-             <a href="<@s.url '/today?target=${target}'/>" class="waves-effect text-color"><i class="material-icons icon-today">event</i></a>
+             <a href="<@s.url '/previousMonth?target=${target}'/>" id="global-datepicker-previous-month" class="waves-effect text-default"><i class="material-icons icon-chevron">chevron_left</i></a>
+             <a href="#modalDate" class="waves-effect headline-date modal-trigger text-default datePicker-fixed-width">${dateService.getDateStringWithMonthAndYear(fullDate)}</a>
+             <a href="<@s.url '/nextMonth?target=${target}'/>" id="global-datepicker-next-month" class="waves-effect text-default"><i class="material-icons icon-chevron">chevron_right</i></a>
+             <a href="<@s.url '/today?target=${target}'/>" id="global-datepicker-today" class="waves-effect text-default"><i class="material-icons icon-today">event</i></a>
          </div>
      </div>
     <!-- modal to select specific month and year -->
@@ -25,8 +25,8 @@
             </div>
         </div>
         <div class="modal-footer background-color">
-            <a href="#" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
-            <a href="<@s.url '/setDate?target=${target}'/>" id="buttonChooseDate" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("ok")}</a>
+            <@header.buttonLink url='' icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white'/>
+            <@header.buttonLink url='/setDate?target=' + target icon='done' localizationKey='ok' color='green' id='buttonChooseDate' classes='modal-action modal-close text-white'/>
         </div>
     </div>
 </#macro>
@@ -37,8 +37,8 @@
     <div class="hidden" id="currentYear">${currentYear?c}</div>
 
     <div class="center-align">
-        <a class="waves-effect text-color global-datepicker-button" id="global-datepicker-previous"><i class="material-icons icon-chevron">chevron_left</i></a>
-        <a class="waves-effect text-color global-datepicker-button" id="global-datepicker-next"><i class="material-icons icon-chevron">chevron_right</i></a>
+        <a class="waves-effect text-default global-datepicker-button" id="global-datepicker-previous"><i class="material-icons icon-chevron">chevron_left</i></a>
+        <a class="waves-effect text-default global-datepicker-button" id="global-datepicker-next"><i class="material-icons icon-chevron">chevron_right</i></a>
     </div>
 
     <#assign years = [] />
@@ -87,6 +87,7 @@
         weekDays = [${weekDays}];
         weekDaysShort = [${weekDaysShort}];
         weekDaysLetters = [${weekDaysLetters}];
+        buttonCancel = '${locale.getString("cancel")}';
         buttonClose = '${locale.getString("ok")}';
     </script>
 </#macro>

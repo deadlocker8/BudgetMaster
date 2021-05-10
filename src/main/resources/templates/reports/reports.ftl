@@ -1,13 +1,14 @@
 <html>
     <head>
         <#import "../helpers/header.ftl" as header>
-        <@header.header "BudgetMaster"/>
+        <@header.globals/>
+		<@header.header "BudgetMaster - ${locale.getString('menu.reports')}"/>
         <@header.style "reports"/>
         <@header.style "globalDatepicker"/>
         <@header.style "collapsible"/>
         <#import "/spring.ftl" as s>
     </head>
-    <body class="budgetmaster-blue-light">
+    <@header.body>
         <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "reports" settings/>
 
@@ -19,9 +20,10 @@
                 <#import "../helpers/globalDatePicker.ftl" as datePicker>
                 <@datePicker.datePicker currentDate "/reports"/>
 
-                <br>
+                <@header.content>
+                    <br>
 
-                <div class="container">
+                    <div class="container">
                     <form name="NewReportSettings" action="<@s.url '/reports/generate'/>" method="post" onsubmit="return validateForm()">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="ID" value="${reportSettings.getID()?c}"/>
@@ -36,7 +38,7 @@
                         <#-- settings -->
                         <div class="row">
                             <div class="col s12 center-align">
-                                <div class="headline-small text-color">${locale.getString("report.settings")}</div>
+                                <div class="headline-small text-default">${locale.getString("report.settings")}</div>
                             </div>
                         </div>
                         <div class="row">
@@ -44,19 +46,19 @@
                                 <div class="report-checkbox-container">
                                     <label>
                                         <input type="checkbox" name="includeBudget" <#if reportSettings.includeBudget>checked="checked"</#if>>
-                                        <span class="columnName-checkbox-label text-color">${locale.getString('report.checkbox.include.budget')}</span>
+                                        <span class="columnName-checkbox-label text-default">${locale.getString('report.checkbox.include.budget')}</span>
                                     </label>
                                 </div>
                                 <div class="report-checkbox-container">
                                     <label>
                                         <input type="checkbox" name="splitTables" <#if reportSettings.splitTables>checked="checked"</#if>>
-                                        <span class="columnName-checkbox-label text-color">${locale.getString('report.checkbox.split.tables')}</span>
+                                        <span class="columnName-checkbox-label text-default">${locale.getString('report.checkbox.split.tables')}</span>
                                     </label>
                                 </div>
                                 <div class="report-checkbox-container">
                                     <label>
                                         <input type="checkbox" name="includeCategoryBudgets" <#if reportSettings.includeCategoryBudgets>checked="checked"</#if>/>
-                                        <span class="columnName-checkbox-label text-color">${locale.getString('report.checkbox.inclue.categorybudgets')}</span>
+                                        <span class="columnName-checkbox-label text-default">${locale.getString('report.checkbox.inclue.categorybudgets')}</span>
                                     </label>
                                 </div>
                             </div>
@@ -66,7 +68,7 @@
                         <#-- columns -->
                         <div class="row no-margin">
                             <div class="col s12 center-align">
-                                <div class="headline-small text-color">${locale.getString("report.columns")}</div>
+                                <div class="headline-small text-default">${locale.getString("report.columns")}</div>
                                 <table class="no-border-table table-advice">
                                     <tr>
                                         <td><i class="material-icons">info_outline</i></td>
@@ -96,13 +98,12 @@
                         <#-- button generate -->
                         <div class="row valign-wrapper">
                             <div class="col s12 center-align">
-                                <button class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="buttonSave">
-                                    <i class="material-icons left">save</i>${locale.getString("report.button.generate")}
-                                </button>
+                                <@header.buttonSubmit name='buttonSave' icon='save' localizationKey='report.button.generate'/>
                             </div>
                         </div>
                     </form>
                 </div>
+                </@header.content>
             </div>
 
             <@filterMacros.filterModal filterConfiguration/>
@@ -111,10 +112,10 @@
         <!--  Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
-        <script src="<@s.url '/webjars/sortablejs/1.10.2/Sortable.min.js'/>"></script>
+        <script src="<@s.url '/webjars/sortablejs/1.13.0/Sortable.min.js'/>"></script>
         <script src="<@s.url '/js/reports.js'/>"></script>
         <script src="<@s.url '/js/globalDatePicker.js'/>"></script>
         <script src="<@s.url '/js/filter.js'/>"></script>
         <script>document.cookie = "currentDate=${dateService.getDateStringNormal(currentDate)}";</script>
-    </body>
+    </@header.body>
 </html>

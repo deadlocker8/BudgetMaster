@@ -1,4 +1,5 @@
 <#import "/spring.ftl" as s>
+<#import "../helpers/header.ftl" as header>
 
 <#macro transactionType transaction>
     <div class="col s1 l1 xl1">
@@ -14,20 +15,12 @@
 
 <#macro transactionCategory transaction alignment>
     <#import "../categories/categoriesFunctions.ftl" as categoriesFunctions>
-    <div class="col s3 l1 xl1 ${alignment}">
+    <div class="col s2 l1 xl1 ${alignment}">
         <div class="hide-on-med-and-down">
-            <div class="category-circle" style="background-color: ${transaction.category.color}">
-                <span style="color: ${transaction.category.getAppropriateTextColor()}">
-                    ${categoriesFunctions.getCategoryName(transaction.category)?capitalize[0]}
-                </span>
-            </div>
+            <@categoriesFunctions.categoryCircle transaction.category/>
         </div>
         <div class="hide-on-large-only">
-            <div class="category-circle-small" style="background-color: ${transaction.category.color}">
-                <span style="color: ${transaction.category.getAppropriateTextColor()}">
-                    ${categoriesFunctions.getCategoryName(transaction.category)?capitalize[0]}
-                </span>
-            </div>
+            <@categoriesFunctions.categoryCircle transaction.category "category-circle-small"/>
         </div>
     </div>
 </#macro>
@@ -54,23 +47,33 @@
 
 <#macro transactionButtons transaction>
         <div class="col s8 l2 xl1 right-align transaction-buttons no-wrap">
-            <#if (transaction.category.type.name() != "REST") && !transaction.getAccount().isReadOnly()>
-                <a href="<@s.url '/transactions/${transaction.ID?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left">edit</i></a>
-                <a href="<@s.url '/transactions/${transaction.ID?c}/requestDelete'/>" class="btn-flat no-padding text-color"><i class="material-icons left no-margin">delete</i></a>
+            <#if (transaction.category.type.name() != "REST") && transaction.getAccount().getAccountState().name() == "FULL_ACCESS">
+                <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default"/>
+                <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/requestDelete' icon='delete' localizationKey='' classes="no-padding text-default"/>
             </#if>
         </div>
 </#macro>
 
-<#macro transactionAccount transaction>
-    <div class="col s4 l2 xl2 truncate">
-        ${transaction.getAccount().getName()}
-    </div>
-</#macro>
+<#macro transactionAccountIcon transaction>
+    <#if helpers.getCurrentAccount().getType().name() == "ALL" && transaction.getAccount()??>
+        <#import "../helpers/customSelectMacros.ftl" as customSelectMacros>
+        <div class="col s2 l1 xl1 tooltipped no-padding" data-position="bottom" data-tooltip="${transaction.getAccount().getName()}">
+            <div class="hide-on-med-and-down">
+                <@customSelectMacros.accountIcon transaction.getAccount() transaction.getAccount().getName()/>
+            </div>
+            <div class="hide-on-large-only">
+                <@customSelectMacros.accountIcon transaction.getAccount() transaction.getAccount().getName() "category-circle-small"/>
+            </div>
+        </div>
+    </#if>
 
+</#macro>
 <#macro transactionLinks transaction>
     <div class="col s4 l2 xl1 right-align transaction-buttons no-wrap">
-        <a href="<@s.url '/transactions/${transaction.ID?c}/highlight'/>" class="btn-flat no-padding text-color buttonHighlight"><i class="material-icons left">open_in_new</i></a>
-        <a href="<@s.url '/transactions/${transaction.ID?c}/edit'/>" class="btn-flat no-padding text-color"><i class="material-icons left no-margin">edit</i></a>
+        <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/highlight' icon='open_in_new' localizationKey='' classes="no-padding text-default buttonHighlight"/>
+        <#if transaction.getAccount().getAccountState().name() == 'FULL_ACCESS'>
+            <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default"/>
+        </#if>
     </div>
 </#macro>
 
@@ -89,23 +92,6 @@
             </div>
         </div>
     </#if>
-</#macro>
-
-<#macro deleteModal transaction>
-    <div id="modalConfirmDelete" class="modal background-color">
-        <div class="modal-content">
-            <h4>${locale.getString("info.title.transaction.delete")}</h4>
-            <#if currentTransaction.isRepeating()>
-                <p>${locale.getString("info.text.transaction.repeating.delete", transaction.name)}</p>
-            <#else>
-                <p>${locale.getString("info.text.transaction.delete", transaction.name)}</p>
-            </#if>
-        </div>
-        <div class="modal-footer background-color">
-            <a href="<@s.url '/transactions'/>" class="modal-action modal-close waves-effect waves-light red btn-flat white-text">${locale.getString("cancel")}</a>
-            <a href="<@s.url '/transactions/${transaction.ID?c}/delete'/>" class="modal-action modal-close waves-effect waves-light green btn-flat white-text">${locale.getString("delete")}</a>
-        </div>
-    </div>
 </#macro>
 
 <#macro buttons isFilterActive>
@@ -134,24 +120,24 @@
 
 <#macro buttonNew listClasses>
     <div class="fixed-action-btn new-transaction-button">
-        <a class="btn-floating btn-large btn waves-effect waves-light budgetmaster-blue" id="button-new-transaction">
+        <a class="btn-floating btn-large btn waves-effect waves-light background-blue" id="button-new-transaction">
             <i class="material-icons left">add</i>${locale.getString("title.transaction.new.short")}
         </a>
         <ul class="${listClasses}">
             <li>
-                <a href="<@s.url '/templates'/>" class="btn-floating btn budgetmaster-baby-blue"><i class="material-icons">file_copy</i></a>
+                <a href="<@s.url '/templates'/>" class="btn-floating btn background-blue-baby"><i class="material-icons">file_copy</i></a>
                 <a href="<@s.url '/templates'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new.from.template")}</a>
             </li>
             <li>
-                <a href="<@s.url '/transactions/newTransaction/transfer'/>" class="btn-floating btn budgetmaster-dark-green"><i class="material-icons">swap_horiz</i></a>
+                <a href="<@s.url '/transactions/newTransaction/transfer'/>" class="btn-floating btn background-green-dark"><i class="material-icons">swap_horiz</i></a>
                 <a href="<@s.url '/transactions/newTransaction/transfer'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new.transfer")}</a>
             </li>
             <li>
-                <a href="<@s.url '/transactions/newTransaction/repeating'/>" class="btn-floating btn budgetmaster-blue"><i class="material-icons">repeat</i></a>
+                <a href="<@s.url '/transactions/newTransaction/repeating'/>" class="btn-floating btn background-blue"><i class="material-icons">repeat</i></a>
                 <a href="<@s.url '/transactions/newTransaction/repeating'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new.repeating")}</a>
             </li>
             <li>
-                <a href="<@s.url '/transactions/newTransaction/normal'/>" class="btn-floating btn budgetmaster-orange"><i class="material-icons">payment</i></a>
+                <a href="<@s.url '/transactions/newTransaction/normal'/>" class="btn-floating btn background-orange"><i class="material-icons">payment</i></a>
                 <a href="<@s.url '/transactions/newTransaction/normal'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new.normal")}</a>
             </li>
         </ul>
@@ -160,8 +146,8 @@
 
 <#macro buttonFilter isFilterActive>
     <#if isFilterActive>
-        <a href="#modalFilter" id="modalFilterTrigger" class="modal-trigger waves-effect waves-light btn budgetmaster-red"><i class="fas fa-filter left"></i>${locale.getString("filter.active")}</a>
+        <a href="#modalFilter" id="modalFilterTrigger" class="modal-trigger waves-effect waves-light btn background-red"><i class="fas fa-filter left"></i>${locale.getString("filter.active")}</a>
     <#else>
-        <a href="#modalFilter" id="modalFilterTrigger" class="modal-trigger waves-effect waves-light btn budgetmaster-blue"><i class="fas fa-filter left"></i>${locale.getString("title.filter")}</a>
+        <a href="#modalFilter" id="modalFilterTrigger" class="modal-trigger waves-effect waves-light btn background-blue"><i class="fas fa-filter left"></i>${locale.getString("title.filter")}</a>
     </#if>
 </#macro>

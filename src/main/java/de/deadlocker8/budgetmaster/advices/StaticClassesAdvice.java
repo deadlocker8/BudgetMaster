@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 public class StaticClassesAdvice
 {
 	@ModelAttribute("static")
-	public TemplateHashModel getLocalization()
+	public TemplateHashModel getStaticClasses()
 	{
 		BeansWrapperBuilder builder = new BeansWrapperBuilder(Configuration.VERSION_2_3_27);
 		builder.setUseModelCache(true);

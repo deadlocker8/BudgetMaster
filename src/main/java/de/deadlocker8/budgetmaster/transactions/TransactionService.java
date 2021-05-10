@@ -3,12 +3,13 @@ package de.deadlocker8.budgetmaster.transactions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.accounts.AccountState;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOptionRepository;
-import de.deadlocker8.budgetmaster.services.Resetable;
+import de.deadlocker8.budgetmaster.services.Resettable;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.TagRepository;
@@ -32,7 +33,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class TransactionService implements Resetable
+public class TransactionService implements Resettable
 {
 	private static final int MAX_SUGGESTIONS = 25;
 	private static final Gson GSON = new GsonBuilder()
@@ -45,7 +46,6 @@ public class TransactionService implements Resetable
 	private final RepeatingOptionRepository repeatingOptionRepository;
 	private final CategoryService categoryService;
 	private final TagService tagService;
-	private final SettingsService settingsService;
 
 	@Autowired
 	public TransactionService(TransactionRepository transactionRepository, RepeatingOptionRepository repeatingOptionRepository, CategoryService categoryService, TagService tagService, SettingsService settingsService)
@@ -54,7 +54,6 @@ public class TransactionService implements Resetable
 		this.repeatingOptionRepository = repeatingOptionRepository;
 		this.categoryService = categoryService;
 		this.tagService = tagService;
-		this.settingsService = settingsService;
 	}
 
 	public TransactionRepository getRepository()
@@ -193,7 +192,7 @@ public class TransactionService implements Resetable
 					return false;
 				}
 
-				return !transaction.getAccount().isReadOnly();
+				return transaction.getAccount().getAccountState() == AccountState.FULL_ACCESS;
 			}
 		}
 		return false;
@@ -294,10 +293,9 @@ public class TransactionService implements Resetable
 		model.addAttribute("isEdit", isEdit);
 		model.addAttribute("currentDate", date);
 		model.addAttribute("previousType", previousType);
-		model.addAttribute("categories", categoryService.getAllCategories());
+		model.addAttribute("categories", categoryService.getAllEntitiesAsc());
 		model.addAttribute("accounts", accounts);
 		model.addAttribute("transaction", item);
-		model.addAttribute("settings", settingsService.getSettings());
 
 		final List<Transaction> allByOrderByDateDesc = getRepository().findAllByOrderByDateDesc();
 		final List<String> nameSuggestions = allByOrderByDateDesc.stream()

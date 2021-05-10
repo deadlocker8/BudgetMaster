@@ -5,14 +5,14 @@ import java.util.List;
 
 public class PreLoginUrlBlacklist
 {
-	private List<String> blacklist;
+	private final List<String> blacklist;
 
 	public PreLoginUrlBlacklist()
 	{
 		blacklist = new ArrayList<>();
 		blacklist.add("login");
 		blacklist.add("performUpdate");
-		blacklist.add("accountMatcher");
+		blacklist.add("import");
 	}
 
 	public boolean isBlacklisted(String preLoginUrl)

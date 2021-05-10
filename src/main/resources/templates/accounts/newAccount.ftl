@@ -1,72 +1,98 @@
 <html>
     <head>
         <#import "../helpers/header.ftl" as header>
-        <@header.header "BudgetMaster"/>
+        <@header.globals/>
+
+        <#if account.getID()??>
+            <#assign title=locale.getString("title.account.edit")/>
+        <#else>
+            <#assign title=locale.getString("title.account.new")/>
+        </#if>
+
+        <@header.header "BudgetMaster - ${title}"/>
+        <@header.style "imageSelect"/>
         <#import "/spring.ftl" as s>
     </head>
-    <body class="budgetmaster-blue-light">
+    <@header.body>
         <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "accounts" settings/>
+
+        <#import "../helpers/customSelectMacros.ftl" as customSelectMacros>
+        <#import "../helpers/imageSelect.ftl" as imageSelectMacros>
 
         <main>
             <div class="card main-card background-color">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="headline"><#if account.getID()??>${locale.getString("title.account.edit")}<#else>${locale.getString("title.account.new")}</#if></div>
+                        <div class="headline">${title}</div>
                     </div>
                 </div>
-                <div class="container">
+
+                <@header.content>
+                    <div class="container">
                     <#import "../helpers/validation.ftl" as validation>
                     <form name="NewAccount" action="<@s.url '/accounts/newAccount'/>" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="ID" value="<#if account.getID()??>${account.getID()?c}</#if>">
                         <input type="hidden" name="isSelected" value="<#if account.isSelected()??>${account.isSelected()?c}</#if>">
                         <input type="hidden" name="isDefault" value="<#if account.isDefault()??>${account.isDefault()?c}</#if>">
-                        <input type="hidden" name="isReadOnly" value="<#if account.isReadOnly()??>${account.isReadOnly()?c}</#if>">
 
                         <#-- name -->
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
+                                <i class="material-icons prefix">edit</i>
                                 <input id="account-name" type="text" name="name" <@validation.validation "name"/> value="<#if account.getName()??>${account.getName()}</#if>">
                                 <label for="account-name">${locale.getString("account.new.label.name")}</label>
                             </div>
                         </div>
+
+                        <#-- icon -->
+                        <@imageSelectMacros.imageSelect id="account-icon" item=account/>
+
+                        <#-- state -->
+                        <#if account.getAccountState()??>
+                            <#assign selectedState=account.getAccountState()>
+                        <#else>
+                            <#assign selectedState=availableAccountStates[0]>
+                        </#if>
+                        <@customSelectMacros.customAccountStateSelect "account-state-select-wrapper" "accountState" availableAccountStates selectedState "col s12 m12 l8 offset-l2" locale.getString("account.new.label.state") "account-state"/>
+
                         <br>
 
                         <#-- buttons -->
                         <div class="row hide-on-small-only">
                             <div class="col s6 right-align">
-                                <a href="<@s.url '/accounts'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
+                                <@header.buttonLink url='/accounts' icon='clear' localizationKey='cancel' id='button-cancel-save-account'/>
                             </div>
 
                             <div class="col s6 left-align">
-                                <button id="button-save-account" class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="action">
-                                    <i class="material-icons left">save</i>${locale.getString("save")}
-                                </button>
+                                <@header.buttonSubmit name='action' icon='save' localizationKey='save' id='button-save-account'/>
                             </div>
                         </div>
                         <div class="hide-on-med-and-up">
                             <div class="row center-align">
                                 <div class="col s12">
-                                    <a href="<@s.url '/accounts'/>" class="waves-effect waves-light btn budgetmaster-blue"><i class="material-icons left">clear</i>${locale.getString("cancel")}</a>
+                                    <@header.buttonLink url='/accounts' icon='clear' localizationKey='cancel' id='button-cancel-save-account'/>
                                 </div>
                             </div>
                             <div class="row center-align">
                                 <div class="col s12">
-                                    <button id="button-save-account" class="btn waves-effect waves-light budgetmaster-blue" type="submit" name="buttonSave">
-                                        <i class="material-icons left">save</i>${locale.getString("save")}
-                                    </button>
+                                    <@header.buttonSubmit name='action' icon='save' localizationKey='save' id='button-save-account'/>
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
+                </@header.content>
             </div>
         </main>
+
+        <@imageSelectMacros.modalIconSelect idToFocusOnClose="account-name"/>
 
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
         <script src="<@s.url '/js/accounts.js'/>"></script>
-    </body>
+        <script src="<@s.url '/js/imageSelect.js'/>"></script>
+    </@header.body>
 </html>

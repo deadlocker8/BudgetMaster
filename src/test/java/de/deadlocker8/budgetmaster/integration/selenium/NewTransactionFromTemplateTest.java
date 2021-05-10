@@ -1,6 +1,8 @@
 package de.deadlocker8.budgetmaster.integration.selenium;
 
 import de.deadlocker8.budgetmaster.Main;
+import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
@@ -67,6 +69,7 @@ public class NewTransactionFromTemplateTest
 	{
 		FirefoxOptions options = new FirefoxOptions();
 		options.setHeadless(false);
+		options.addPreference("devtools.console.stdout.content", true);
 		driver = new FirefoxDriver(options);
 
 		// prepare
@@ -77,8 +80,10 @@ public class NewTransactionFromTemplateTest
 		helper.hideWhatsNewDialog();
 
 		String path = getClass().getClassLoader().getResource("SearchDatabase.json").getFile().replace("/", File.separator);
-		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf"), Arrays.asList("DefaultAccount0815", "Account2"));
+		final Account account1 = new Account("DefaultAccount0815", AccountType.CUSTOM);
+		final Account account2 = new Account("Account2", AccountType.CUSTOM);
 
+		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf"), List.of(account1, account2));
 		// open transactions page
 		driver.get(helper.getUrl() + "/transactions");
 		driver.findElement(By.id("button-new-transaction")).click();
@@ -87,47 +92,53 @@ public class NewTransactionFromTemplateTest
 	@Test
 	public void test_newTransactionFromTemplate_FullTemplate()
 	{
-		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'From template')]")).click();
-
 		WebDriverWait wait = new WebDriverWait(driver, 5);
+		final By locator = By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'From template')]");
+		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+		driver.findElement(locator).click();
+
+		wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Templates"));
 
-		driver.findElements(By.cssSelector(".template-item .btn-flat no-padding text-color"));
+		driver.findElements(By.cssSelector(".template-item .btn-flat no-padding text-default"));
 		driver.findElement(By.xpath("//li[contains(@class, 'template-item')]//a[contains(@href, '/templates/2/select')]")).click();
 
 		wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Transaction"));
 
 		// assert
-		assertThat(driver.findElement(By.className("buttonExpenditure")).getAttribute("class")).contains("budgetmaster-red");
+		assertThat(driver.findElement(By.className("buttonExpenditure")).getAttribute("class")).contains("background-red");
 		assertThat(driver.findElement(By.id("transaction-name")).getAttribute("value")).isEqualTo("NameFromTemplate");
 		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEqualTo("15.00");
 		assertThat(driver.findElement(By.id("transaction-description")).getAttribute("value")).isEqualTo("DescriptionFromTemplate");
-		assertThat(driver.findElement(By.id("transaction-category")).getAttribute("value")).isEqualTo("1");
+		assertThat(driver.findElement(By.cssSelector(".category-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("1");
 
 		final List<WebElement> chips = driver.findElements(By.cssSelector("#transaction-chips .chip"));
 		assertThat(chips).hasSize(1);
 		assertThat(chips.get(0)).hasFieldOrPropertyWithValue("text", "TagFromTemplate\nclose");
 
-		assertThat(driver.findElement(By.id("transaction-account")).getAttribute("value")).isEqualTo("3");
+		assertThat(driver.findElement(By.cssSelector(".account-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("3");
 	}
 
 	@Test
 	public void test_newTransactionFromTemplate_OnlyIncome()
 	{
-		driver.findElement(By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'From template')]")).click();
-
 		WebDriverWait wait = new WebDriverWait(driver, 5);
+		final By locator = By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'From template')]");
+		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+		driver.findElement(locator).click();
+
+		wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Templates"));
 
-		driver.findElements(By.cssSelector(".template-item .btn-flat no-padding text-color"));
+		driver.findElements(By.cssSelector(".template-item .btn-flat no-padding text-default"));
 		driver.findElement(By.xpath("//li[contains(@class, 'template-item')]//a[contains(@href, '/templates/1/select')]")).click();
 
 		wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Transaction"));
 
 		// assert
-		assertThat(driver.findElement(By.className("buttonIncome")).getAttribute("class")).contains("budgetmaster-green");
+		assertThat(driver.findElement(By.className("buttonIncome")).getAttribute("class")).contains("background-green");
 	}
 
 	@Test
