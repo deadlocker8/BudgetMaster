@@ -26,7 +26,7 @@
         <div class="modal-content center-align">
             <div class="row">
                 <div class="col s12">
-                    <div class="headline">Upload image</div>
+                    <div class="headline">${locale.getString('upload.image.headline')}</div>
                 </div>
             </div>
 
@@ -38,7 +38,7 @@
 
             <div class="row">
                 <div class="col s12">
-                    <div class="headline">Available images</div>
+                    <div class="headline">${locale.getString('available.images')}</div>
                 </div>
             </div>
 
