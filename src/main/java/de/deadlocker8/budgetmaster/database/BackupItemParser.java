@@ -9,6 +9,10 @@ import java.util.List;
 
 public class BackupItemParser
 {
+	private BackupItemParser()
+	{
+	}
+
 	public static <T> List<T> parseItems(JsonArray jsonArray, Class<T> itemType)
 	{
 		List<T> parsedItems = new ArrayList<>();

@@ -24,6 +24,7 @@ public class BackupTransaction_v4 implements BackupTransactionBase_v4, Upgradeab
 
 	public BackupTransaction_v4()
 	{
+		// for GSON
 	}
 
 	public Integer getAmount()

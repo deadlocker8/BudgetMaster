@@ -15,8 +15,8 @@ public class DatabaseParser
 {
 	final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
-	private final int MINIMUM_VERSION = 4;
-	private final int LATEST_VERSION = 5;
+	private static final int MINIMUM_VERSION = 4;
+	private static final int LATEST_VERSION = 5;
 
 	private final String jsonString;
 

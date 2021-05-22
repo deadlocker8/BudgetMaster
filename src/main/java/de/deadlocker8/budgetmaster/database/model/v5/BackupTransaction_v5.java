@@ -21,6 +21,7 @@ public class BackupTransaction_v5
 
 	public BackupTransaction_v5()
 	{
+		// for GSON
 	}
 
 	public BackupTransaction_v5(Integer amount, Boolean isExpenditure, String date, BackupAccount_v5 account, BackupCategory_v5 category, String name, String description, List<Tag> tags, BackupRepeatingOption_v4 repeatingOption, BackupAccount_v5 transferAccount)

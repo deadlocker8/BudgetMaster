@@ -23,6 +23,7 @@ public class BackupTemplate_v4 implements BackupTransactionBase_v4, Upgradeable<
 
 	public BackupTemplate_v4()
 	{
+		// for GSON
 	}
 
 	public String getTemplateName()

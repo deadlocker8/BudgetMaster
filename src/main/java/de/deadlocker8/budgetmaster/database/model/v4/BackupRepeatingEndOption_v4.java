@@ -10,6 +10,7 @@ public class BackupRepeatingEndOption_v4
 
 	public BackupRepeatingEndOption_v4()
 	{
+		// for GSON
 	}
 
 	public String getLocalizationKey()
