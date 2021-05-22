@@ -41,7 +41,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-public class DatabaseImportTest
+public class ImportServiceTest
 {
 	@Mock
 	private CategoryRepository categoryRepository;
