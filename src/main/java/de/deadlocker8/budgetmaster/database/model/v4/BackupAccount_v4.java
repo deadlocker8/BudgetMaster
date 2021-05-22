@@ -15,6 +15,7 @@ public class BackupAccount_v4 implements Upgradeable<BackupAccount_v5>
 
 	public BackupAccount_v4()
 	{
+		// for GSON
 	}
 
 	public BackupAccount_v4(Integer ID, String name, AccountType type)

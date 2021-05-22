@@ -9,6 +9,7 @@ public class BackupRepeatingModifier_v4
 
 	public BackupRepeatingModifier_v4()
 	{
+		// for GSON
 	}
 
 	public BackupRepeatingModifier_v4(Integer quantity, String localizationKey)

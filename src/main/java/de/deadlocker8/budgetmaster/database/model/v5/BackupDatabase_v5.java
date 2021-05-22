@@ -32,6 +32,7 @@ public class BackupDatabase_v5 implements BackupDatabase
 
 	public BackupDatabase_v5()
 	{
+		// for GSON
 	}
 
 	public BackupDatabase_v5(List<BackupCategory_v5> categories, List<BackupAccount_v5> accounts, List<BackupTransaction_v5> transactions, List<BackupTemplate_v5> templates, List<BackupChart_v5> charts, List<BackupImage_v5> images)

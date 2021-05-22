@@ -15,6 +15,7 @@ public class BackupCategory_v4 implements Upgradeable<BackupCategory_v5>
 
 	public BackupCategory_v4()
 	{
+		// for GSON
 	}
 
 	public BackupCategory_v4(Integer ID, String name, String color, CategoryType type)

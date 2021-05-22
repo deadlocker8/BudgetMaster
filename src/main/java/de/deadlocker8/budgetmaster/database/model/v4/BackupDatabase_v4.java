@@ -24,6 +24,7 @@ public class BackupDatabase_v4 implements BackupDatabase
 
 	public BackupDatabase_v4()
 	{
+		// for GSON
 	}
 
 	public BackupDatabase_v4(List<BackupCategory_v4> categories, List<BackupAccount_v4> accounts, List<BackupTransaction_v4> transactions, List<BackupTemplate_v4> templates)

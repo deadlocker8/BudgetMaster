@@ -14,6 +14,7 @@ public class BackupChart_v5
 
 	public BackupChart_v5()
 	{
+		// for GSON
 	}
 
 	public BackupChart_v5(Integer ID, String name, String script, ChartType type, int version)

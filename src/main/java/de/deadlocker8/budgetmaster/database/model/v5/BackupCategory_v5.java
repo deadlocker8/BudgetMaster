@@ -14,6 +14,7 @@ public class BackupCategory_v5
 
 	public BackupCategory_v5()
 	{
+		// for GSON
 	}
 
 	public BackupCategory_v5(Integer ID, String name, String color, CategoryType type, String icon)

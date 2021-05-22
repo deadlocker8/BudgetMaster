@@ -20,6 +20,7 @@ public class BackupTemplate_v5
 
 	public BackupTemplate_v5()
 	{
+		// for GSON
 	}
 
 	public BackupTemplate_v5(String templateName, Integer amount, Boolean isExpenditure, BackupAccount_v5 account, BackupCategory_v5 category, String name, String description, BackupImage_v5 icon, List<Tag> tags, BackupAccount_v5 transferAccount)

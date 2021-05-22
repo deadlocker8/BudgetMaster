@@ -10,6 +10,7 @@ public class BackupRepeatingOption_v4
 
 	public BackupRepeatingOption_v4()
 	{
+		// for GSON
 	}
 
 	public BackupRepeatingOption_v4(String startDate, BackupRepeatingModifier_v4 modifier, BackupRepeatingEndOption_v4 endOption)

@@ -15,6 +15,7 @@ public class BackupAccount_v5
 
 	public BackupAccount_v5()
 	{
+		// for GSON
 	}
 
 	public BackupAccount_v5(Integer ID, String name, AccountState accountState, AccountType type, BackupImage_v5 icon)

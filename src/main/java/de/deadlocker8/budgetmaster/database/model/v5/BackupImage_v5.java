@@ -13,6 +13,7 @@ public class BackupImage_v5
 
 	public BackupImage_v5()
 	{
+		// for GSON
 	}
 
 	public BackupImage_v5(Integer ID, Byte[] image, String fileName, ImageFileExtension fileExtension)
