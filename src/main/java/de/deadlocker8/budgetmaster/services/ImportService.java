@@ -6,7 +6,7 @@ import de.deadlocker8.budgetmaster.categories.CategoryRepository;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.charts.Chart;
 import de.deadlocker8.budgetmaster.charts.ChartService;
-import de.deadlocker8.budgetmaster.database.Database;
+import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
 import de.deadlocker8.budgetmaster.images.Image;
@@ -42,7 +42,7 @@ public class ImportService
 	private final ImageService imageService;
 	private final RepeatingTransactionUpdater repeatingTransactionUpdater;
 
-	private Database database;
+	private InternalDatabase database;
 	private List<String> collectedErrorMessages;
 
 	@Autowired
@@ -58,7 +58,7 @@ public class ImportService
 		this.repeatingTransactionUpdater = repeatingTransactionUpdater;
 	}
 
-	public List<ImportResultItem> importDatabase(Database database, AccountMatchList accountMatchList, Boolean importTemplates, Boolean importCharts)
+	public List<ImportResultItem> importDatabase(InternalDatabase database, AccountMatchList accountMatchList, Boolean importTemplates, Boolean importCharts)
 	{
 		this.database = database;
 		this.collectedErrorMessages = new ArrayList<>();
@@ -97,7 +97,7 @@ public class ImportService
 		return importResultItems;
 	}
 
-	public Database getDatabase()
+	public InternalDatabase getDatabase()
 	{
 		return database;
 	}

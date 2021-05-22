@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.unit.database;
 
-import de.deadlocker8.budgetmaster.database.Database;
+import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.DatabaseParser;
 import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.Localization.LocalizationDelegate;
@@ -52,7 +52,7 @@ public class DatabaseParserTest
 	{
 		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v5Test.json").toURI())));
 		DatabaseParser importer = new DatabaseParser(json);
-		final Database database = importer.parseDatabaseFromJSON();
+		final InternalDatabase database = importer.parseDatabaseFromJSON();
 		assertThat(database.getTransactions())
 				.hasSize(4);
 	}
@@ -62,7 +62,7 @@ public class DatabaseParserTest
 	{
 		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v4Test.json").toURI())));
 		DatabaseParser importer = new DatabaseParser(json);
-		final Database database = importer.parseDatabaseFromJSON();
+		final InternalDatabase database = importer.parseDatabaseFromJSON();
 		assertThat(database.getTransactions())
 				.hasSize(4);
 	}

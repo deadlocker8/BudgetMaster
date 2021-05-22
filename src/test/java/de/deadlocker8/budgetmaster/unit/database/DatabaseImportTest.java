@@ -9,7 +9,7 @@ import de.deadlocker8.budgetmaster.charts.Chart;
 import de.deadlocker8.budgetmaster.charts.ChartRepository;
 import de.deadlocker8.budgetmaster.charts.ChartService;
 import de.deadlocker8.budgetmaster.charts.ChartType;
-import de.deadlocker8.budgetmaster.database.Database;
+import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
 import de.deadlocker8.budgetmaster.images.Image;
@@ -424,7 +424,7 @@ public class DatabaseImportTest
 		chart.setScript("/* This list will be dynamically filled with all the transactions between\r\n* the start and and date you select on the \"Show Chart\" page\r\n* and filtered according to your specified filter.\r\n* An example entry for this list and tutorial about how to create custom charts ca be found in the BudgetMaster wiki:\r\n* https://github.com/deadlocker8/BudgetMaster/wiki/How-to-create-custom-charts\r\n*/\r\nvar transactionData \u003d [];\r\n\r\n// Prepare your chart settings here (mandatory)\r\nvar plotlyData \u003d [{\r\n    x: [],\r\n    y: [],\r\n    type: \u0027bar\u0027\r\n}];\r\n\r\n// Add your Plotly layout settings here (optional)\r\nvar plotlyLayout \u003d {};\r\n\r\n// Add your Plotly configuration settings here (optional)\r\nvar plotlyConfig \u003d {\r\n    showSendToCloud: false,\r\n    displaylogo: false,\r\n    showLink: false,\r\n    responsive: true\r\n};\r\n\r\n// Don\u0027t touch this line\r\nPlotly.newPlot(\"containerID\", plotlyData, plotlyLayout, plotlyConfig);\r\n");
 
 		// database
-		Database database = new Database(new ArrayList<>(), accounts, transactions, templates, List.of(chart), List.of());
+		InternalDatabase database = new InternalDatabase(new ArrayList<>(), accounts, transactions, templates, List.of(chart), List.of());
 
 		// account matches
 		AccountMatch match1 = new AccountMatch(sourceAccount1);
@@ -476,7 +476,7 @@ public class DatabaseImportTest
 		Mockito.when(chartService.getRepository()).thenReturn(chartRepositoryMock);
 
 		importService.importDatabase(database, accountMatchList, true, true);
-		Database databaseResult = importService.getDatabase();
+		InternalDatabase databaseResult = importService.getDatabase();
 
 		// assert
 		assertThat(databaseResult.getTransactions())
@@ -502,7 +502,7 @@ public class DatabaseImportTest
 		chart.setScript("/* This list will be dynamically filled with all the transactions between\r\n* the start and and date you select on the \"Show Chart\" page\r\n* and filtered according to your specified filter.\r\n* An example entry for this list and tutorial about how to create custom charts ca be found in the BudgetMaster wiki:\r\n* https://github.com/deadlocker8/BudgetMaster/wiki/How-to-create-custom-charts\r\n*/\r\nvar transactionData \u003d [];\r\n\r\n// Prepare your chart settings here (mandatory)\r\nvar plotlyData \u003d [{\r\n    x: [],\r\n    y: [],\r\n    type: \u0027bar\u0027\r\n}];\r\n\r\n// Add your Plotly layout settings here (optional)\r\nvar plotlyLayout \u003d {};\r\n\r\n// Add your Plotly configuration settings here (optional)\r\nvar plotlyConfig \u003d {\r\n    showSendToCloud: false,\r\n    displaylogo: false,\r\n    showLink: false,\r\n    responsive: true\r\n};\r\n\r\n// Don\u0027t touch this line\r\nPlotly.newPlot(\"containerID\", plotlyData, plotlyLayout, plotlyConfig);\r\n");
 
 		// database
-		Database database = new Database(List.of(), List.of(), List.of(), List.of(), List.of(chart), List.of());
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(chart), List.of());
 
 		// act
 		int highestUsedID = 22;
@@ -511,7 +511,7 @@ public class DatabaseImportTest
 		Mockito.when(chartService.getRepository()).thenReturn(chartRepositoryMock);
 
 		importService.importDatabase(database, new AccountMatchList(List.of()), true, true);
-		Database databaseResult = importService.getDatabase();
+		InternalDatabase databaseResult = importService.getDatabase();
 
 		// assert
 		assertThat(databaseResult.getCharts().get(0))
@@ -552,7 +552,7 @@ public class DatabaseImportTest
 		Mockito.when(imageService.getRepository()).thenReturn(imageRepositoryMock);
 		Mockito.when(imageRepositoryMock.save(Mockito.any())).thenReturn(newImage);
 
-		Database database = new Database(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(image));
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(image));
 		importService.importDatabase(database, new AccountMatchList(List.of()), true, true);
 
 		Image expectedImage = new Image(image.getImage(), image.getFileName(), image.getFileExtension());
@@ -572,7 +572,7 @@ public class DatabaseImportTest
 		Mockito.when(imageService.getRepository()).thenReturn(imageRepositoryMock);
 		Mockito.when(imageRepositoryMock.save(Mockito.any())).thenReturn(newImage);
 
-		Database database = new Database(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(image));
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(image));
 		importService.importDatabase(database, new AccountMatchList(List.of()), true, true);
 
 		Image expectedImage = new Image(image.getImage(), image.getFileName(), image.getFileExtension());
@@ -619,7 +619,7 @@ public class DatabaseImportTest
 		template.setTags(new ArrayList<>());
 
 		// database
-		Database database = new Database(List.of(), List.of(), List.of(), List.of(template), List.of(), List.of());
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(template), List.of(), List.of());
 
 		// act
 		importService.importDatabase(database, new AccountMatchList(List.of()), false, true);
@@ -638,7 +638,7 @@ public class DatabaseImportTest
 		chart.setVersion(7);
 
 		// database
-		Database database = new Database(List.of(), List.of(), List.of(), List.of(), List.of(chart), List.of());
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(chart), List.of());
 
 		Mockito.when(chartService.getHighestUsedID()).thenReturn(8);
 		final ChartRepository chartRepositoryMock = Mockito.mock(ChartRepository.class);
@@ -664,7 +664,7 @@ public class DatabaseImportTest
 		Mockito.when(categoryRepository.findByNameAndColorAndType(Mockito.eq("Category1"), Mockito.any(), Mockito.any())).thenThrow(new NullPointerException());
 		Mockito.when(categoryRepository.findByNameAndColorAndType(Mockito.eq("Category2"), Mockito.any(), Mockito.any())).thenReturn(category2);
 
-		Database database = new Database(List.of(category1, category2), List.of(), List.of(), List.of(), List.of(), List.of());
+		InternalDatabase database = new InternalDatabase(List.of(category1, category2), List.of(), List.of(), List.of(), List.of(), List.of());
 		final List<ImportResultItem> importResultItems = importService.importDatabase(database, new AccountMatchList(List.of()), false, false);
 
 		assertThat(importResultItems).hasSize(6)

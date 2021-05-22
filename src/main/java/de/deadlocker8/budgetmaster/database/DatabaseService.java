@@ -253,7 +253,7 @@ public class DatabaseService
 		List<Image> images = imageService.getRepository().findAll();
 		LOGGER.debug(MessageFormat.format("Reduced {0} transactions to {1}", transactions.size(), filteredTransactions.size()));
 
-		Database database = new Database(categories, accounts, filteredTransactions, templates, charts, images);
+		InternalDatabase database = new InternalDatabase(categories, accounts, filteredTransactions, templates, charts, images);
 		LOGGER.debug(MessageFormat.format("Created database for JSON with {0} transactions, {1} categories, {2} accounts, {3} templates, {4} charts and {5} images", database.getTransactions().size(), database.getCategories().size(), database.getAccounts().size(), database.getTemplates().size(), database.getCharts().size(), database.getImages()));
 
 		BackupDatabase_v5 databaseInExternalForm = BackupDatabase_v5.createFromInternalEntities(database);

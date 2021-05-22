@@ -25,7 +25,7 @@ public class DatabaseParser
 		this.jsonString = json;
 	}
 
-	public Database parseDatabaseFromJSON() throws IllegalArgumentException
+	public InternalDatabase parseDatabaseFromJSON() throws IllegalArgumentException
 	{
 		int version = parseVersion();
 
@@ -80,7 +80,7 @@ public class DatabaseParser
 		}
 	}
 
-	private Database upgradeDatabase(BackupDatabase importedDatabase)
+	private InternalDatabase upgradeDatabase(BackupDatabase importedDatabase)
 	{
 		BackupDatabase upgradedDatabase = importedDatabase;
 		while(upgradedDatabase.getVersion() < LATEST_VERSION)

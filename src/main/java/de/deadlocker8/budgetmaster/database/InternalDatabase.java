@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class Database
+public class InternalDatabase
 {
 	@Expose
 	private final String TYPE = "BUDGETMASTER_DATABASE";
@@ -41,11 +41,11 @@ public class Database
 	@Expose
 	private List<Image> images;
 
-	public Database()
+	public InternalDatabase()
 	{
 	}
 
-	public Database(List<Category> categories, List<Account> accounts, List<Transaction> transactions, List<Template> templates, List<Chart> charts, List<Image> images)
+	public InternalDatabase(List<Category> categories, List<Account> accounts, List<Transaction> transactions, List<Template> templates, List<Chart> charts, List<Image> images)
 	{
 		this.categories = categories;
 		this.accounts = accounts;

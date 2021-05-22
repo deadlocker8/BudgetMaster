@@ -1,10 +1,8 @@
 package de.deadlocker8.budgetmaster.database.model.v4;
 
-import de.deadlocker8.budgetmaster.database.Database;
+import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
 import de.deadlocker8.budgetmaster.database.model.Upgradeable;
-import de.deadlocker8.budgetmaster.database.model.v5.BackupAccount_v5;
-import de.deadlocker8.budgetmaster.database.model.v5.BackupCategory_v5;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupDatabase_v5;
 
 import java.util.ArrayList;
@@ -102,7 +100,7 @@ public class BackupDatabase_v4 implements BackupDatabase
 	}
 
 	@Override
-	public Database convertToInternal()
+	public InternalDatabase convertToInternal()
 	{
 		return null;
 	}

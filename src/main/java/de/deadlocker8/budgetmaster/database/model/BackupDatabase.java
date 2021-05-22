@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.database.model;
 
-import de.deadlocker8.budgetmaster.database.Database;
+import de.deadlocker8.budgetmaster.database.InternalDatabase;
 
 public interface BackupDatabase
 {
@@ -8,5 +8,5 @@ public interface BackupDatabase
 
 	BackupDatabase upgrade();
 
-	Database convertToInternal();
+	InternalDatabase convertToInternal();
 }

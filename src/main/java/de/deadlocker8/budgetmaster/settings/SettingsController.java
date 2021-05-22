@@ -6,7 +6,7 @@ import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.backup.*;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.controller.BaseController;
-import de.deadlocker8.budgetmaster.database.Database;
+import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.DatabaseParser;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
@@ -292,7 +292,7 @@ public class SettingsController extends BaseController
 		{
 			String jsonString = new String(file.getBytes(), StandardCharsets.UTF_8);
 			DatabaseParser importer = new DatabaseParser(jsonString);
-			Database database = importer.parseDatabaseFromJSON();
+			InternalDatabase database = importer.parseDatabaseFromJSON();
 
 			request.setAttribute("database", database, RequestAttributes.SCOPE_SESSION);
 			return "redirect:/settings/database/import/step1";
@@ -338,7 +338,7 @@ public class SettingsController extends BaseController
 	@PostMapping("/database/import/step3")
 	public String importDatabase(WebRequest request, @ModelAttribute("Import") AccountMatchList accountMatchList, Model model)
 	{
-		final Database database = (Database) request.getAttribute("database", RequestAttributes.SCOPE_SESSION);
+		final InternalDatabase database = (InternalDatabase) request.getAttribute("database", RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute("database", RequestAttributes.SCOPE_SESSION);
 
 		final Boolean importTemplates = (Boolean) request.getAttribute("importTemplates", RequestAttributes.SCOPE_SESSION);

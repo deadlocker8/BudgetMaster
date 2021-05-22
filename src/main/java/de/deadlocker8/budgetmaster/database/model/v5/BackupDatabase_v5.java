@@ -3,7 +3,7 @@ package de.deadlocker8.budgetmaster.database.model.v5;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.charts.Chart;
-import de.deadlocker8.budgetmaster.database.Database;
+import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
 import de.deadlocker8.budgetmaster.database.model.Converter;
 import de.deadlocker8.budgetmaster.database.model.v5.converter.*;
@@ -99,7 +99,7 @@ public class BackupDatabase_v5 implements BackupDatabase
 		this.images = images;
 	}
 
-	public Database convertToInternal()
+	public InternalDatabase convertToInternal()
 	{
 		final List<Category> convertedCategories = convertItemsToInternal(categories, new CategoryConverter_v5());
 		final List<Account> convertedAccounts = convertItemsToInternal(accounts, new AccountConverter_v5());
@@ -108,7 +108,7 @@ public class BackupDatabase_v5 implements BackupDatabase
 		final List<Chart> convertedCharts = convertItemsToInternal(this.charts, new ChartConverter_v5());
 		final List<Image> convertedImages = convertItemsToInternal(this.images, new ImageConverter_v5());
 
-		return new Database(convertedCategories, convertedAccounts, convertedTransactions, convertedTemplates, convertedCharts, convertedImages);
+		return new InternalDatabase(convertedCategories, convertedAccounts, convertedTransactions, convertedTemplates, convertedCharts, convertedImages);
 	}
 
 	private <T, S> List<T> convertItemsToInternal(List<S> backupItems, Converter<T, S> converter)
@@ -133,7 +133,7 @@ public class BackupDatabase_v5 implements BackupDatabase
 		return null;
 	}
 
-	public static BackupDatabase_v5 createFromInternalEntities(Database database)
+	public static BackupDatabase_v5 createFromInternalEntities(InternalDatabase database)
 	{
 		final List<BackupCategory_v5> convertedCategories = convertItemsToExternal(database.getCategories(), new CategoryConverter_v5());
 		final List<BackupAccount_v5> convertedAccounts = convertItemsToExternal(database.getAccounts(), new AccountConverter_v5());
