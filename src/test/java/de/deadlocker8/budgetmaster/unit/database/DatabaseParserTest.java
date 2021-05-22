@@ -63,7 +63,7 @@ public class DatabaseParserTest
 		DatabaseParser importer = new DatabaseParser(json, categoryNone);
 		final Database database = importer.parseDatabaseFromJSON();
 		assertThat(database.getTransactions())
-				.hasSize(6);
+				.hasSize(4);
 	}
 
 	@Test
