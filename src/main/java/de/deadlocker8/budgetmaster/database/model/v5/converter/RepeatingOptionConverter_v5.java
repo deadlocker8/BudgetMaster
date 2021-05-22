@@ -1,15 +1,15 @@
 package de.deadlocker8.budgetmaster.database.model.v5.converter;
 
 import de.deadlocker8.budgetmaster.database.Converter;
-import de.deadlocker8.budgetmaster.database.model.v5.BackupRepeatingOption_v5;
+import de.deadlocker8.budgetmaster.database.model.v4.BackupRepeatingOption_v4;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
-public class RepeatingOptionConverter_v5 implements Converter<RepeatingOption, BackupRepeatingOption_v5>
+public class RepeatingOptionConverter_v5 implements Converter<RepeatingOption, BackupRepeatingOption_v4>
 {
 	@Override
-	public RepeatingOption convert(BackupRepeatingOption_v5 backupItem)
+	public RepeatingOption convert(BackupRepeatingOption_v4 backupItem)
 	{
 		if(backupItem == null)
 		{

@@ -43,6 +43,7 @@
             "ID": 5,
             "amount": 35000,
             "date": "2018-03-13",
+            "isExpenditure": false,
             "account": {
                 "ID": 2,
                 "name": "Default"

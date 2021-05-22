@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.database.model.v5;
 
+import de.deadlocker8.budgetmaster.database.model.v4.BackupRepeatingOption_v4;
 import de.deadlocker8.budgetmaster.tags.Tag;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public class BackupTransaction_v5
 	private String name;
 	private String description;
 	private List<Tag> tags;
-	private BackupRepeatingOption_v5 repeatingOption;
+	private BackupRepeatingOption_v4 repeatingOption;
 	private BackupAccount_v5 transferAccount;
 
 	public BackupTransaction_v5()
@@ -102,12 +103,12 @@ public class BackupTransaction_v5
 		this.tags = tags;
 	}
 
-	public BackupRepeatingOption_v5 getRepeatingOption()
+	public BackupRepeatingOption_v4 getRepeatingOption()
 	{
 		return repeatingOption;
 	}
 
-	public void setRepeatingOption(BackupRepeatingOption_v5 repeatingOption)
+	public void setRepeatingOption(BackupRepeatingOption_v4 repeatingOption)
 	{
 		this.repeatingOption = repeatingOption;
 	}

@@ -1,16 +1,14 @@
-package de.deadlocker8.budgetmaster.database.model.v5;
-
-import org.joda.time.DateTime;
+package de.deadlocker8.budgetmaster.database.model.v4;
 
 import java.util.Objects;
 
-public class BackupRepeatingEndOption_v5
+public class BackupRepeatingEndOption_v4
 {
 	private String localizationKey;
 	private int times;
 	private String endDate;
 
-	public BackupRepeatingEndOption_v5()
+	public BackupRepeatingEndOption_v4()
 	{
 	}
 
@@ -49,7 +47,7 @@ public class BackupRepeatingEndOption_v5
 	{
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
-		BackupRepeatingEndOption_v5 that = (BackupRepeatingEndOption_v5) o;
+		BackupRepeatingEndOption_v4 that = (BackupRepeatingEndOption_v4) o;
 		return times == that.times && Objects.equals(localizationKey, that.localizationKey) && Objects.equals(endDate, that.endDate);
 	}
 
@@ -62,7 +60,7 @@ public class BackupRepeatingEndOption_v5
 	@Override
 	public String toString()
 	{
-		return "BackupRepeatingEndOption_v5{" +
+		return "BackupRepeatingEndOption_v4{" +
 				"localizationKey='" + localizationKey + '\'' +
 				", times=" + times +
 				", endDate='" + endDate + '\'' +

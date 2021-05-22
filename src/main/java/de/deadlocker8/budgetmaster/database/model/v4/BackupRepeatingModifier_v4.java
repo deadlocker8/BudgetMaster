@@ -1,17 +1,17 @@
-package de.deadlocker8.budgetmaster.database.model.v5;
+package de.deadlocker8.budgetmaster.database.model.v4;
 
 import java.util.Objects;
 
-public class BackupRepeatingModifier_v5
+public class BackupRepeatingModifier_v4
 {
 	private Integer quantity;
 	private String localizationKey;
 
-	public BackupRepeatingModifier_v5()
+	public BackupRepeatingModifier_v4()
 	{
 	}
 
-	public BackupRepeatingModifier_v5(Integer quantity, String localizationKey)
+	public BackupRepeatingModifier_v4(Integer quantity, String localizationKey)
 	{
 		this.quantity = quantity;
 		this.localizationKey = localizationKey;
@@ -42,7 +42,7 @@ public class BackupRepeatingModifier_v5
 	{
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
-		BackupRepeatingModifier_v5 that = (BackupRepeatingModifier_v5) o;
+		BackupRepeatingModifier_v4 that = (BackupRepeatingModifier_v4) o;
 		return Objects.equals(quantity, that.quantity) && Objects.equals(localizationKey, that.localizationKey);
 	}
 
@@ -55,7 +55,7 @@ public class BackupRepeatingModifier_v5
 	@Override
 	public String toString()
 	{
-		return "BackupRepeatingModifier_v5{" +
+		return "BackupRepeatingModifier_v4{" +
 				"quantity=" + quantity +
 				", localizationKey='" + localizationKey + '\'' +
 				'}';
