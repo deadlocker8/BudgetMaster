@@ -53,25 +53,7 @@ public class DatabaseParser_v5
 		JsonArray accounts = root.get("accounts").getAsJsonArray();
 		for(JsonElement currentAccount : accounts)
 		{
-			final JsonObject accountObject = currentAccount.getAsJsonObject();
-			Integer ID = accountObject.get("ID").getAsInt();
-			String name = accountObject.get("name").getAsString();
-			AccountType accountType = AccountType.valueOf(accountObject.get("type").getAsString());
-
-			AccountState accountState = AccountState.FULL_ACCESS;
-			if(accountObject.has("accountState"))
-			{
-				accountState = AccountState.valueOf(accountObject.get("accountState").getAsString());
-			}
-
-			BackupImage_v5 icon = null;
-			if(accountObject.has("icon"))
-			{
-				final Integer iconID = accountObject.get("icon").getAsJsonObject().get("ID").getAsInt();
-				icon = database.getImages().stream().filter(image -> image.getID().equals(iconID)).findFirst().orElseThrow();
-			}
-
-			parsedAccounts.add(new BackupAccount_v5(ID, name, accountState, accountType, icon));
+			parsedAccounts.add(new Gson().fromJson(currentAccount, BackupAccount_v5.class));
 		}
 
 		return parsedAccounts;
@@ -83,8 +65,7 @@ public class DatabaseParser_v5
 		JsonArray jsonCategories = root.get("categories").getAsJsonArray();
 		for(JsonElement currentCategory : jsonCategories)
 		{
-			BackupCategory_v5 parsedCategory = new Gson().fromJson(currentCategory, BackupCategory_v5.class);
-			parsedCategories.add(parsedCategory);
+			parsedCategories.add(new Gson().fromJson(currentCategory, BackupCategory_v5.class));
 		}
 
 		return parsedCategories;
@@ -96,85 +77,10 @@ public class DatabaseParser_v5
 		JsonArray transactionsToImport = root.get("transactions").getAsJsonArray();
 		for(JsonElement currentTransaction : transactionsToImport)
 		{
-			final JsonObject transactionObject = currentTransaction.getAsJsonObject();
-
-			int amount = transactionObject.get("amount").getAsInt();
-			String name = transactionObject.get("name").getAsString();
-			String description = transactionObject.get("description").getAsString();
-
-			BackupTransaction_v5 transaction = new BackupTransaction_v5();
-			transaction.setAmount(amount);
-			transaction.setName(name);
-			transaction.setDescription(description);
-			transaction.setTags(parseTags(transactionObject));
-
-			int categoryID = transactionObject.get("category").getAsJsonObject().get("ID").getAsInt();
-			transaction.setCategory(getCategoryByID(categoryID));
-
-			int accountID = transactionObject.get("account").getAsJsonObject().get("ID").getAsInt();
-			transaction.setAccount(getAccountByID(accountID));
-
-			JsonElement transferAccount = transactionObject.get("transferAccount");
-			if(transferAccount != null)
-			{
-				int transferAccountID = transferAccount.getAsJsonObject().get("ID").getAsInt();
-				transaction.setTransferAccount(getAccountByID(transferAccountID));
-			}
-
-			String date = transactionObject.get("date").getAsString();
-			DateTime parsedDate = DateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd"));
-			transaction.setDate(parsedDate);
-
-			transaction.setRepeatingOption(parseRepeatingOption(transactionObject, parsedDate));
-
-			handleIsExpenditureForTransactions(transactionObject, transaction);
-
-			parsedTransactions.add(transaction);
+			parsedTransactions.add(new Gson().fromJson(currentTransaction, BackupTransaction_v5.class));
 		}
 
 		return parsedTransactions;
-	}
-
-	private RepeatingOption parseRepeatingOption(JsonObject transaction, DateTime startDate)
-	{
-		if(!transaction.has("repeatingOption"))
-		{
-			return null;
-		}
-
-		JsonObject option = transaction.get("repeatingOption").getAsJsonObject();
-
-		JsonObject repeatingModifier = option.get("modifier").getAsJsonObject();
-		String repeatingModifierType = repeatingModifier.get("localizationKey").getAsString();
-
-		RepeatingModifierType type = RepeatingModifierType.getByLocalization(Localization.getString(repeatingModifierType));
-		RepeatingModifier modifier = RepeatingModifier.fromModifierType(type, repeatingModifier.get("quantity").getAsInt());
-
-		JsonObject repeatingEnd = option.get("endOption").getAsJsonObject();
-		String repeatingEndType = repeatingEnd.get("localizationKey").getAsString();
-
-		RepeatingEnd endOption = null;
-		RepeatingEndType endType = RepeatingEndType.getByLocalization(Localization.getString(repeatingEndType));
-		switch(endType)
-		{
-			case NEVER:
-				endOption = new RepeatingEndNever();
-				break;
-			case AFTER_X_TIMES:
-				endOption = new RepeatingEndAfterXTimes(repeatingEnd.get("times").getAsInt());
-				break;
-			case DATE:
-				DateTime endDate = DateTime.parse(repeatingEnd.get("endDate").getAsString(), DateTimeFormat.forPattern("yyyy-MM-dd"));
-				endOption = new RepeatingEndDate(endDate);
-				break;
-		}
-
-		RepeatingOption repeatingOption = new RepeatingOption();
-		repeatingOption.setStartDate(startDate);
-		repeatingOption.setEndOption(endOption);
-		repeatingOption.setModifier(modifier);
-
-		return repeatingOption;
 	}
 
 	private List<BackupChart_v5> parseCharts(JsonObject root)
@@ -209,140 +115,9 @@ public class DatabaseParser_v5
 		final JsonArray templatesToImport = root.get("templates").getAsJsonArray();
 		for(JsonElement currentTemplate : templatesToImport)
 		{
-			final JsonObject templateObject = currentTemplate.getAsJsonObject();
-
-			final String templateName = templateObject.get("templateName").getAsString();
-
-			final BackupTemplate_v5 template = new BackupTemplate_v5();
-			template.setTemplateName(templateName);
-			template.setTags(parseTags(templateObject));
-
-			final JsonElement element = templateObject.get("amount");
-			if(element != null)
-			{
-				template.setAmount(element.getAsInt());
-			}
-
-			final JsonElement name = templateObject.get("name");
-			if(name != null)
-			{
-				template.setName(name.getAsString());
-			}
-
-			final JsonElement description = templateObject.get("description");
-			if(description != null)
-			{
-				template.setDescription(description.getAsString());
-			}
-
-			if(templateObject.has("icon"))
-			{
-				final Integer iconID = templateObject.get("icon").getAsJsonObject().get("ID").getAsInt();
-				template.setIcon(database.getImages().stream().filter(image -> image.getID().equals(iconID)).findFirst().orElseThrow());
-			}
-
-			final Optional<Integer> categoryOptional = parseIDOfElementIfExists(templateObject, "category");
-			categoryOptional.ifPresent(integer -> template.setCategory(getCategoryByID(integer)));
-
-			final Optional<Integer> accountOptional = parseIDOfElementIfExists(templateObject, "account");
-			accountOptional.ifPresent(integer -> template.setAccount(getAccountByID(integer)));
-
-			final Optional<Integer> transferAccountOptional = parseIDOfElementIfExists(templateObject, "transferAccount");
-			transferAccountOptional.ifPresent(integer -> template.setTransferAccount(getAccountByID(integer)));
-
-			handleIsExpenditure(templateObject, template);
-
-			parsedTemplates.add(template);
+			parsedTemplates.add(new Gson().fromJson(currentTemplate, BackupTemplate_v5.class));
 		}
 
 		return parsedTemplates;
-	}
-
-	private void handleIsExpenditure(JsonObject jsonObject, BackupTemplate_v5 template)
-	{
-		final JsonElement isExpenditure = jsonObject.get("isExpenditure");
-		if(isExpenditure == null)
-		{
-			if(template.getAmount() == null)
-			{
-				template.setExpenditure(true);
-			}
-			else
-			{
-				template.setExpenditure(template.getAmount() <= 0);
-			}
-		}
-		else
-		{
-			template.setExpenditure(isExpenditure.getAsBoolean());
-		}
-	}
-
-	private void handleIsExpenditureForTransactions(JsonObject jsonObject, BackupTransaction_v5 transaction)
-	{
-		final JsonElement isExpenditure = jsonObject.get("isExpenditure");
-		if(isExpenditure == null)
-		{
-			if(transaction.getAmount() == null)
-			{
-				transaction.setExpenditure(true);
-			}
-			else
-			{
-				transaction.setExpenditure(transaction.getAmount() <= 0);
-			}
-		}
-		else
-		{
-			transaction.setExpenditure(isExpenditure.getAsBoolean());
-		}
-	}
-
-	private Optional<Integer> parseIDOfElementIfExists(JsonObject jsonObject, String elementName)
-	{
-		final JsonElement element = jsonObject.get(elementName);
-		if(element != null)
-		{
-			return Optional.of(element.getAsJsonObject().get("ID").getAsInt());
-		}
-		return Optional.empty();
-	}
-
-	private List<Tag> parseTags(JsonObject transaction)
-	{
-		List<Tag> parsedTags = new ArrayList<>();
-		JsonArray tags = transaction.get("tags").getAsJsonArray();
-		for(JsonElement currentTag : tags)
-		{
-			parsedTags.add(new Gson().fromJson(currentTag, Tag.class));
-		}
-
-		return parsedTags;
-	}
-
-	private BackupCategory_v5 getCategoryByID(int ID)
-	{
-		for(BackupCategory_v5 category : database.getCategories())
-		{
-			if(category.getID() == ID)
-			{
-				return category;
-			}
-		}
-
-		return null;
-	}
-
-	private BackupAccount_v5 getAccountByID(int ID)
-	{
-		for(BackupAccount_v5 account : database.getAccounts())
-		{
-			if(account.getID() == ID)
-			{
-				return account;
-			}
-		}
-
-		return null;
 	}
 }

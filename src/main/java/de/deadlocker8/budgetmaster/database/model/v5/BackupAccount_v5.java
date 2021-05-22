@@ -9,8 +9,6 @@ public class BackupAccount_v5
 {
 	private Integer ID;
 	private String name;
-	private Boolean isSelected;
-	private Boolean isDefault;
 	private AccountState accountState;
 	private AccountType type;
 	private BackupImage_v5 icon;
@@ -23,8 +21,6 @@ public class BackupAccount_v5
 	{
 		this.ID = ID;
 		this.name = name;
-		this.isSelected = false;
-		this.isDefault = false;
 		this.accountState = accountState;
 		this.type = type;
 		this.icon = icon;
@@ -48,26 +44,6 @@ public class BackupAccount_v5
 	public void setName(String name)
 	{
 		this.name = name;
-	}
-
-	public Boolean getSelected()
-	{
-		return isSelected;
-	}
-
-	public void setSelected(Boolean selected)
-	{
-		isSelected = selected;
-	}
-
-	public Boolean getDefault()
-	{
-		return isDefault;
-	}
-
-	public void setDefault(Boolean aDefault)
-	{
-		isDefault = aDefault;
 	}
 
 	public AccountState getAccountState()
@@ -106,13 +82,13 @@ public class BackupAccount_v5
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
 		BackupAccount_v5 that = (BackupAccount_v5) o;
-		return Objects.equals(ID, that.ID) && Objects.equals(name, that.name) && Objects.equals(isSelected, that.isSelected) && Objects.equals(isDefault, that.isDefault) && accountState == that.accountState && type == that.type && Objects.equals(icon, that.icon);
+		return Objects.equals(ID, that.ID) && Objects.equals(name, that.name) && accountState == that.accountState && type == that.type && Objects.equals(icon, that.icon);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, name, isSelected, isDefault, accountState, type, icon);
+		return Objects.hash(ID, name, accountState, type, icon);
 	}
 
 	@Override
@@ -121,8 +97,6 @@ public class BackupAccount_v5
 		return "BackupAccount_v5{" +
 				"ID=" + ID +
 				", name='" + name + '\'' +
-				", isSelected=" + isSelected +
-				", isDefault=" + isDefault +
 				", accountState=" + accountState +
 				", type=" + type +
 				", icon=" + icon +

@@ -7,7 +7,6 @@ import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.charts.Chart;
 import de.deadlocker8.budgetmaster.charts.ChartType;
 import de.deadlocker8.budgetmaster.database.Database;
-import de.deadlocker8.budgetmaster.database.DatabaseParser_v4;
 import de.deadlocker8.budgetmaster.database.DatabaseParser_v5;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.images.ImageFileExtension;
@@ -27,10 +26,8 @@ import org.junit.Test;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -247,23 +244,7 @@ public class DatabaseParser_v5Test
 			repeatingTransaction_1.setTags(new ArrayList<>());
 			repeatingTransaction_1.setIsExpenditure(true);
 
-			Transaction repeatingTransaction_2 = new Transaction();
-			repeatingTransaction_2.setAmount(-12300);
-			DateTime repeatingTransactionDate_2 = DateTime.parse("2018-03-23", DateTimeFormat.forPattern("yyyy-MM-dd"));
-			repeatingTransaction_2.setDate(repeatingTransactionDate_2);
-			repeatingTransaction_2.setCategory(categoryNone);
-			repeatingTransaction_2.setName("Test");
-			repeatingTransaction_2.setDescription("");
-			repeatingTransaction_2.setAccount(account1);
-			RepeatingOption repeatingOption_2 = new RepeatingOption();
-			repeatingOption_2.setModifier(new RepeatingModifierDays(10));
-			repeatingOption_2.setStartDate(repeatingTransactionDate_2);
-			repeatingOption_2.setEndOption(new RepeatingEndAfterXTimes(2));
-			repeatingTransaction_2.setRepeatingOption(repeatingOption_2);
-			repeatingTransaction_2.setTags(new ArrayList<>());
-			repeatingTransaction_2.setIsExpenditure(true);
-
-			Transaction transferTransaction = new Transaction();
+		    Transaction transferTransaction = new Transaction();
 			transferTransaction.setAmount(-250);
 			transferTransaction.setDate(DateTime.parse("2018-06-15", DateTimeFormat.forPattern("yyyy-MM-dd")));
 			transferTransaction.setName("Transfer");
@@ -274,11 +255,10 @@ public class DatabaseParser_v5Test
 			transferTransaction.setTags(new ArrayList<>());
 			transferTransaction.setIsExpenditure(true);
 
-			assertThat(database.getTransactions()).hasSize(6)
+			assertThat(database.getTransactions()).hasSize(4)
 					.contains(normalTransaction_1,
 							normalTransaction_2,
 							repeatingTransaction_1,
-							repeatingTransaction_2,
 							transferTransaction);
 
 		}

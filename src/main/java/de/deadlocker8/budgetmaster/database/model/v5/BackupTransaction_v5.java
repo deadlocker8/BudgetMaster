@@ -1,38 +1,25 @@
 package de.deadlocker8.budgetmaster.database.model.v5;
 
-import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.tags.Tag;
-import org.joda.time.DateTime;
 
 import java.util.List;
 import java.util.Objects;
 
 public class BackupTransaction_v5
 {
-	private Integer ID;
 	private Integer amount;
 	private Boolean isExpenditure;
-	private DateTime date;
+	private String date;
 	private BackupAccount_v5 account;
 	private BackupCategory_v5 category;
 	private String name;
 	private String description;
 	private List<Tag> tags;
-	private RepeatingOption repeatingOption;
+	private BackupRepeatingOption_v5 repeatingOption;
 	private BackupAccount_v5 transferAccount;
 
 	public BackupTransaction_v5()
 	{
-	}
-
-	public Integer getID()
-	{
-		return ID;
-	}
-
-	public void setID(Integer ID)
-	{
-		this.ID = ID;
 	}
 
 	public Integer getAmount()
@@ -55,12 +42,12 @@ public class BackupTransaction_v5
 		isExpenditure = expenditure;
 	}
 
-	public DateTime getDate()
+	public String getDate()
 	{
 		return date;
 	}
 
-	public void setDate(DateTime date)
+	public void setDate(String date)
 	{
 		this.date = date;
 	}
@@ -115,12 +102,12 @@ public class BackupTransaction_v5
 		this.tags = tags;
 	}
 
-	public RepeatingOption getRepeatingOption()
+	public BackupRepeatingOption_v5 getRepeatingOption()
 	{
 		return repeatingOption;
 	}
 
-	public void setRepeatingOption(RepeatingOption repeatingOption)
+	public void setRepeatingOption(BackupRepeatingOption_v5 repeatingOption)
 	{
 		this.repeatingOption = repeatingOption;
 	}
@@ -141,20 +128,19 @@ public class BackupTransaction_v5
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
 		BackupTransaction_v5 that = (BackupTransaction_v5) o;
-		return Objects.equals(ID, that.ID) && Objects.equals(amount, that.amount) && Objects.equals(isExpenditure, that.isExpenditure) && Objects.equals(date, that.date) && Objects.equals(account, that.account) && Objects.equals(category, that.category) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(tags, that.tags) && Objects.equals(repeatingOption, that.repeatingOption) && Objects.equals(transferAccount, that.transferAccount);
+		return Objects.equals(amount, that.amount) && Objects.equals(isExpenditure, that.isExpenditure) && Objects.equals(date, that.date) && Objects.equals(account, that.account) && Objects.equals(category, that.category) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(tags, that.tags) && Objects.equals(repeatingOption, that.repeatingOption) && Objects.equals(transferAccount, that.transferAccount);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, amount, isExpenditure, date, account, category, name, description, tags, repeatingOption, transferAccount);
+		return Objects.hash(amount, isExpenditure, date, account, category, name, description, tags, repeatingOption, transferAccount);
 	}
 
 	@Override
 	public String toString()
 	{
 		return "BackupTransaction_v5{" +
-				"ID=" + ID +
 				", amount=" + amount +
 				", isExpenditure=" + isExpenditure +
 				", date=" + date +

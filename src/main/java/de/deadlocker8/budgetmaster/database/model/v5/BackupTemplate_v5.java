@@ -7,7 +7,6 @@ import java.util.Objects;
 
 public class BackupTemplate_v5
 {
-	private Integer ID;
 	private String templateName;
 	private Integer amount;
 	private Boolean isExpenditure;
@@ -21,16 +20,6 @@ public class BackupTemplate_v5
 
 	public BackupTemplate_v5()
 	{
-	}
-
-	public Integer getID()
-	{
-		return ID;
-	}
-
-	public void setID(Integer ID)
-	{
-		this.ID = ID;
 	}
 
 	public String getTemplateName()
@@ -139,20 +128,19 @@ public class BackupTemplate_v5
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
 		BackupTemplate_v5 that = (BackupTemplate_v5) o;
-		return Objects.equals(ID, that.ID) && Objects.equals(templateName, that.templateName) && Objects.equals(amount, that.amount) && Objects.equals(isExpenditure, that.isExpenditure) && Objects.equals(account, that.account) && Objects.equals(category, that.category) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(icon, that.icon) && Objects.equals(tags, that.tags) && Objects.equals(transferAccount, that.transferAccount);
+		return Objects.equals(templateName, that.templateName) && Objects.equals(amount, that.amount) && Objects.equals(isExpenditure, that.isExpenditure) && Objects.equals(account, that.account) && Objects.equals(category, that.category) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(icon, that.icon) && Objects.equals(tags, that.tags) && Objects.equals(transferAccount, that.transferAccount);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, templateName, amount, isExpenditure, account, category, name, description, icon, tags, transferAccount);
+		return Objects.hash(templateName, amount, isExpenditure, account, category, name, description, icon, tags, transferAccount);
 	}
 
 	@Override
 	public String toString()
 	{
 		return "BackupTemplate_v5{" +
-				"ID=" + ID +
 				", templateName='" + templateName + '\'' +
 				", amount=" + amount +
 				", isExpenditure=" + isExpenditure +

@@ -15,8 +15,8 @@ public class AccountConverter_v5 implements Converter<Account, BackupAccount_v5>
 		final Account account = new Account();
 		account.setID(backupAccount.getID());
 		account.setName(backupAccount.getName());
-		account.setDefault(backupAccount.getDefault());
-		account.setSelected(backupAccount.getSelected());
+		account.setDefault(false);
+		account.setSelected(false);
 		account.setAccountState(backupAccount.getAccountState());
 		account.setType(backupAccount.getType());
 		account.setIcon(new ImageConverter_v5().convert(backupAccount.getIcon()));

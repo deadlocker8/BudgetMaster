@@ -13,12 +13,20 @@ public class TemplateConverter_v5 implements Converter<Template, BackupTemplate_
 		}
 
 		final Template template = new Template();
-		template.setID(backupTemplate.getID());
 		template.setAmount(backupTemplate.getAmount());
 		template.setName(backupTemplate.getName());
 		template.setCategory(new CategoryConverter_v5().convert(backupTemplate.getCategory()));
 		template.setDescription(backupTemplate.getDescription());
-		template.setIsExpenditure(backupTemplate.getExpenditure());
+
+		if(backupTemplate.getExpenditure() == null)
+		{
+			template.setIsExpenditure(true);
+		}
+		else
+		{
+			template.setIsExpenditure(backupTemplate.getExpenditure());
+		}
+
 		template.setAccount(new AccountConverter_v5().convert(backupTemplate.getAccount()));
 		template.setTransferAccount(new AccountConverter_v5().convert(backupTemplate.getTransferAccount()));
 		template.setTags(backupTemplate.getTags());
