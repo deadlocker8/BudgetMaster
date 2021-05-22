@@ -8,5 +8,5 @@ public interface BackupDatabase
 
 	BackupDatabase upgrade();
 
-	Database convert();
+	Database convertToInternal();
 }

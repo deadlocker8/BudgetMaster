@@ -102,7 +102,7 @@ public class BackupDatabase_v4 implements BackupDatabase
 	}
 
 	@Override
-	public Database convert()
+	public Database convertToInternal()
 	{
 		return null;
 	}
