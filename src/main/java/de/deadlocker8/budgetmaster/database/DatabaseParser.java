@@ -20,12 +20,10 @@ public class DatabaseParser
 	private final int LATEST_VERSION = 5;
 
 	private final String jsonString;
-	private final Category categoryNone;
 
-	public DatabaseParser(String json, Category categoryNone)
+	public DatabaseParser(String json)
 	{
 		this.jsonString = json;
-		this.categoryNone = categoryNone;
 	}
 
 	public Database parseDatabaseFromJSON() throws IllegalArgumentException

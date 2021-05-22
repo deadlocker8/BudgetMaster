@@ -5,7 +5,6 @@ import de.deadlocker8.budgetmaster.Build;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.backup.*;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
-import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.DatabaseParser;
@@ -291,7 +290,7 @@ public class SettingsController extends BaseController
 		try
 		{
 			String jsonString = new String(file.getBytes(), StandardCharsets.UTF_8);
-			DatabaseParser importer = new DatabaseParser(jsonString, categoryService.findByType(CategoryType.NONE));
+			DatabaseParser importer = new DatabaseParser(jsonString);
 			Database database = importer.parseDatabaseFromJSON();
 
 			request.setAttribute("database", database, RequestAttributes.SCOPE_SESSION);

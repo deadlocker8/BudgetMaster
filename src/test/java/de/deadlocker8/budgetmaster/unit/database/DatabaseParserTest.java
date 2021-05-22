@@ -1,7 +1,5 @@
 package de.deadlocker8.budgetmaster.unit.database;
 
-import de.deadlocker8.budgetmaster.categories.Category;
-import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.DatabaseParser;
 import de.thecodelabs.utils.util.Localization;
@@ -53,10 +51,7 @@ public class DatabaseParserTest
 	public void test_v5() throws URISyntaxException, IOException
 	{
 		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v5Test.json").toURI())));
-		final Category categoryNone = new Category("NONE", "#FFFFFF", CategoryType.NONE);
-		categoryNone.setID(1);
-
-		DatabaseParser importer = new DatabaseParser(json, categoryNone);
+		DatabaseParser importer = new DatabaseParser(json);
 		final Database database = importer.parseDatabaseFromJSON();
 		assertThat(database.getTransactions())
 				.hasSize(4);
@@ -66,10 +61,7 @@ public class DatabaseParserTest
 	public void test_v4() throws URISyntaxException, IOException
 	{
 		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v4Test.json").toURI())));
-		final Category categoryNone = new Category("NONE", "#FFFFFF", CategoryType.NONE);
-		categoryNone.setID(1);
-
-		DatabaseParser importer = new DatabaseParser(json, categoryNone);
+		DatabaseParser importer = new DatabaseParser(json);
 		final Database database = importer.parseDatabaseFromJSON();
 		assertThat(database.getTransactions())
 				.hasSize(4);
@@ -79,10 +71,7 @@ public class DatabaseParserTest
 	public void test_v3() throws URISyntaxException, IOException
 	{
 		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v3Test.json").toURI())));
-		final Category categoryNone = new Category("NONE", "#FFFFFF", CategoryType.NONE);
-		categoryNone.setID(1);
-
-		DatabaseParser importer = new DatabaseParser(json, categoryNone);
+		DatabaseParser importer = new DatabaseParser(json);
 		assertThatThrownBy(importer::parseDatabaseFromJSON)
 				.isInstanceOf(IllegalArgumentException.class)
 				.hasMessageContaining("too old");
@@ -92,10 +81,7 @@ public class DatabaseParserTest
 	public void test_v2() throws URISyntaxException, IOException
 	{
 		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("LegacyParserTest.json").toURI())));
-		final Category categoryNone = new Category("NONE", "#FFFFFF", CategoryType.NONE);
-		categoryNone.setID(1);
-
-		DatabaseParser importer = new DatabaseParser(json, categoryNone);
+		DatabaseParser importer = new DatabaseParser(json);
 		assertThatThrownBy(importer::parseDatabaseFromJSON)
 				.isInstanceOf(IllegalArgumentException.class)
 				.hasMessageContaining("too old");
