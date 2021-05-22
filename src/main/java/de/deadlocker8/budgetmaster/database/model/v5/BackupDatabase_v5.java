@@ -5,6 +5,7 @@ import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.charts.Chart;
 import de.deadlocker8.budgetmaster.database.Converter;
 import de.deadlocker8.budgetmaster.database.Database;
+import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
 import de.deadlocker8.budgetmaster.database.model.v5.converter.*;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.templates.Template;
@@ -13,9 +14,8 @@ import de.deadlocker8.budgetmaster.transactions.Transaction;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BackupDatabase_v5
+public class BackupDatabase_v5 implements BackupDatabase
 {
-	private final String TYPE = "BUDGETMASTER_DATABASE";
 	private final int VERSION = 5;
 
 	private List<BackupCategory_v5> categories;
@@ -119,5 +119,17 @@ public class BackupDatabase_v5
 			convertedItems.add(converter.convert(backupItem));
 		}
 		return convertedItems;
+	}
+
+	@Override
+	public int getVersion()
+	{
+		return this.VERSION;
+	}
+
+	@Override
+	public BackupDatabase upgrade()
+	{
+		return null;
 	}
 }
