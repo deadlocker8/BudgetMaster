@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import de.deadlocker8.budgetmaster.database.legacy.LegacyParser;
 import de.deadlocker8.budgetmaster.categories.Category;
+import de.deadlocker8.budgetmaster.database.model.v5.BackupDatabase_v5;
 import de.thecodelabs.utils.util.Localization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,9 +60,9 @@ public class DatabaseParser
 
 			if(version == 5)
 			{
-				final Database database = new DatabaseParser_v5(jsonString).parseDatabaseFromJSON();
+				final BackupDatabase_v5 database = new DatabaseParser_v5(jsonString).parseDatabaseFromJSON();
 				LOGGER.debug(MessageFormat.format("Parsed database with {0} transactions, {1} categories, {2} accounts, {3} templates and {4} charts", database.getTransactions().size(), database.getCategories().size(), database.getAccounts().size(), database.getTemplates().size(), database.getCharts().size()));
-				return database;
+				return database.convert();
 			}
 
 			throw new IllegalArgumentException(Localization.getString("error.database.import.unknown.version"));
