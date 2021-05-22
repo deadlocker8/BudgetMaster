@@ -4,6 +4,7 @@ import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.charts.Chart;
 import de.deadlocker8.budgetmaster.database.InternalDatabase;
+import de.deadlocker8.budgetmaster.database.JSONIdentifier;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
 import de.deadlocker8.budgetmaster.database.model.Converter;
 import de.deadlocker8.budgetmaster.database.model.v5.converter.*;
@@ -16,6 +17,10 @@ import java.util.List;
 
 public class BackupDatabase_v5 implements BackupDatabase
 {
+	@SuppressWarnings("unused")
+	private final String TYPE = JSONIdentifier.BUDGETMASTER_DATABASE.toString();
+
+	@SuppressWarnings("FieldCanBeLocal")
 	private final int VERSION = 5;
 
 	private List<BackupCategory_v5> categories;
@@ -124,7 +129,7 @@ public class BackupDatabase_v5 implements BackupDatabase
 	@Override
 	public int getVersion()
 	{
-		return this.VERSION;
+		return VERSION;
 	}
 
 	@Override

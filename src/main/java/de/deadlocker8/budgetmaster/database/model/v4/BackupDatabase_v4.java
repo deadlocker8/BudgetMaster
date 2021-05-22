@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.database.model.v4;
 
 import de.deadlocker8.budgetmaster.database.InternalDatabase;
+import de.deadlocker8.budgetmaster.database.JSONIdentifier;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
 import de.deadlocker8.budgetmaster.database.model.Upgradeable;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupDatabase_v5;
@@ -10,6 +11,10 @@ import java.util.List;
 
 public class BackupDatabase_v4 implements BackupDatabase
 {
+	@SuppressWarnings("unused")
+	private final String TYPE = JSONIdentifier.BUDGETMASTER_DATABASE.toString();
+
+	@SuppressWarnings("FieldCanBeLocal")
 	private final int VERSION = 4;
 
 	private List<BackupCategory_v4> categories;
