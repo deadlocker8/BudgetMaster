@@ -2,7 +2,6 @@ package de.deadlocker8.budgetmaster.database;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
 import de.deadlocker8.budgetmaster.database.model.v4.BackupDatabase_v4;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupDatabase_v5;
@@ -91,6 +90,6 @@ public class DatabaseParser
 		}
 
 		LOGGER.debug(MessageFormat.format("Converting database with version {0} to internal entities", upgradedDatabase.getVersion()));
-		return upgradedDatabase.convert();
+		return upgradedDatabase.convertToInternal();
 	}
 }

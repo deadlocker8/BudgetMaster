@@ -6,7 +6,7 @@ import de.deadlocker8.budgetmaster.images.Image;
 
 public class ImageConverter_v5 implements Converter<Image, BackupImage_v5>
 {
-	public Image convert(BackupImage_v5 backupImage)
+	public Image convertToInternalForm(BackupImage_v5 backupImage)
 	{
 		if(backupImage == null)
 		{
@@ -18,6 +18,22 @@ public class ImageConverter_v5 implements Converter<Image, BackupImage_v5>
 		image.setFileName(backupImage.getFileName());
 		image.setFileExtension(backupImage.getFileExtension());
 		image.setImage(backupImage.getImage());
+		return image;
+	}
+
+	@Override
+	public BackupImage_v5 convertToExternalForm(Image internalItem)
+	{
+		if(internalItem == null)
+		{
+			return null;
+		}
+
+		final BackupImage_v5 image = new BackupImage_v5();
+		image.setID(internalItem.getID());
+		image.setFileName(internalItem.getFileName());
+		image.setFileExtension(internalItem.getFileExtension());
+		image.setImage(internalItem.getImage());
 		return image;
 	}
 }

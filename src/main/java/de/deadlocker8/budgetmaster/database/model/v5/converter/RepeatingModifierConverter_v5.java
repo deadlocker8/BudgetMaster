@@ -9,7 +9,7 @@ import de.thecodelabs.utils.util.Localization;
 public class RepeatingModifierConverter_v5 implements Converter<RepeatingModifier, BackupRepeatingModifier_v4>
 {
 	@Override
-	public RepeatingModifier convert(BackupRepeatingModifier_v4 backupItem)
+	public RepeatingModifier convertToInternalForm(BackupRepeatingModifier_v4 backupItem)
 	{
 		if(backupItem == null)
 		{
@@ -18,5 +18,16 @@ public class RepeatingModifierConverter_v5 implements Converter<RepeatingModifie
 
 		RepeatingModifierType type = RepeatingModifierType.getByLocalization(Localization.getString(backupItem.getLocalizationKey()));
 		return RepeatingModifier.fromModifierType(type, backupItem.getQuantity());
+	}
+
+	@Override
+	public BackupRepeatingModifier_v4 convertToExternalForm(RepeatingModifier internalItem)
+	{
+		if(internalItem == null)
+		{
+			return null;
+		}
+
+		return new BackupRepeatingModifier_v4(internalItem.getQuantity(), internalItem.getLocalizationKey());
 	}
 }

@@ -99,24 +99,24 @@ public class BackupDatabase_v5 implements BackupDatabase
 		this.images = images;
 	}
 
-	public Database convert()
+	public Database convertToInternal()
 	{
-		final List<Category> convertedCategories = convertItems(categories, new CategoryConverter_v5());
-		final List<Account> convertedAccounts = convertItems(accounts, new AccountConverter_v5());
-		final List<Transaction> convertedTransactions = convertItems(this.transactions, new TransactionConverter_v5());
-		final List<Template> convertedTemplates = convertItems(this.templates, new TemplateConverter_v5());
-		final List<Chart> convertedCharts = convertItems(this.charts, new ChartConverter_v5());
-		final List<Image> convertedImages = convertItems(this.images, new ImageConverter_v5());
+		final List<Category> convertedCategories = convertItemsToInternal(categories, new CategoryConverter_v5());
+		final List<Account> convertedAccounts = convertItemsToInternal(accounts, new AccountConverter_v5());
+		final List<Transaction> convertedTransactions = convertItemsToInternal(this.transactions, new TransactionConverter_v5());
+		final List<Template> convertedTemplates = convertItemsToInternal(this.templates, new TemplateConverter_v5());
+		final List<Chart> convertedCharts = convertItemsToInternal(this.charts, new ChartConverter_v5());
+		final List<Image> convertedImages = convertItemsToInternal(this.images, new ImageConverter_v5());
 
 		return new Database(convertedCategories, convertedAccounts, convertedTransactions, convertedTemplates, convertedCharts, convertedImages);
 	}
 
-	private <T, S> List<T> convertItems(List<S> backupItems, Converter<T, S> converter)
+	private <T, S> List<T> convertItemsToInternal(List<S> backupItems, Converter<T, S> converter)
 	{
 		List<T> convertedItems = new ArrayList<>();
 		for(S backupItem : backupItems)
 		{
-			convertedItems.add(converter.convert(backupItem));
+			convertedItems.add(converter.convertToInternalForm(backupItem));
 		}
 		return convertedItems;
 	}

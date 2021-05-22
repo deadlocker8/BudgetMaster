@@ -10,7 +10,7 @@ import org.joda.time.format.DateTimeFormat;
 public class RepeatingEndOptionConverter_v5 implements Converter<RepeatingEnd, BackupRepeatingEndOption_v4>
 {
 	@Override
-	public RepeatingEnd convert(BackupRepeatingEndOption_v4 backupItem)
+	public RepeatingEnd convertToInternalForm(BackupRepeatingEndOption_v4 backupItem)
 	{
 		if(backupItem == null)
 		{
@@ -34,5 +34,32 @@ public class RepeatingEndOptionConverter_v5 implements Converter<RepeatingEnd, B
 		}
 
 		return endOption;
+	}
+
+	@Override
+	public BackupRepeatingEndOption_v4 convertToExternalForm(RepeatingEnd internalItem)
+	{
+		if(internalItem == null)
+		{
+			return null;
+		}
+
+		final BackupRepeatingEndOption_v4 repeatingEndOption = new BackupRepeatingEndOption_v4();
+		repeatingEndOption.setLocalizationKey(internalItem.getLocalizationKey());
+
+		if(internalItem instanceof RepeatingEndDate)
+		{
+			RepeatingEndDate repeatingEndDate = (RepeatingEndDate) internalItem;
+			final DateTime endDate = (DateTime) repeatingEndDate.getValue();
+			repeatingEndOption.setEndDate(endDate.toString(DateTimeFormat.forPattern("yyyy-MM-dd")));
+		}
+
+		if(internalItem instanceof RepeatingEndAfterXTimes)
+		{
+			RepeatingEndAfterXTimes repeatingEndAfterXTimes = (RepeatingEndAfterXTimes) internalItem;
+			repeatingEndOption.setTimes((int) repeatingEndAfterXTimes.getValue());
+		}
+
+		return repeatingEndOption;
 	}
 }

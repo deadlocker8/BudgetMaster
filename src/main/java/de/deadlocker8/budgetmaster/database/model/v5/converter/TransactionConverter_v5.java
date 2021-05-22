@@ -8,7 +8,7 @@ import org.joda.time.format.DateTimeFormat;
 
 public class TransactionConverter_v5 implements Converter<Transaction, BackupTransaction_v5>
 {
-	public Transaction convert(BackupTransaction_v5 backupTransaction)
+	public Transaction convertToInternalForm(BackupTransaction_v5 backupTransaction)
 	{
 		if(backupTransaction == null)
 		{
@@ -18,14 +18,36 @@ public class TransactionConverter_v5 implements Converter<Transaction, BackupTra
 		final Transaction transaction = new Transaction();
 		transaction.setAmount(backupTransaction.getAmount());
 		transaction.setName(backupTransaction.getName());
-		transaction.setCategory(new CategoryConverter_v5().convert(backupTransaction.getCategory()));
+		transaction.setCategory(new CategoryConverter_v5().convertToInternalForm(backupTransaction.getCategory()));
 		transaction.setDescription(backupTransaction.getDescription());
 		transaction.setIsExpenditure(backupTransaction.getExpenditure());
-		transaction.setAccount(new AccountConverter_v5().convert(backupTransaction.getAccount()));
-		transaction.setTransferAccount(new AccountConverter_v5().convert(backupTransaction.getTransferAccount()));
+		transaction.setAccount(new AccountConverter_v5().convertToInternalForm(backupTransaction.getAccount()));
+		transaction.setTransferAccount(new AccountConverter_v5().convertToInternalForm(backupTransaction.getTransferAccount()));
 		transaction.setDate(DateTime.parse(backupTransaction.getDate(), DateTimeFormat.forPattern("yyyy-MM-dd")));
 		transaction.setTags(backupTransaction.getTags());
-		transaction.setRepeatingOption(new RepeatingOptionConverter_v5().convert(backupTransaction.getRepeatingOption()));
+		transaction.setRepeatingOption(new RepeatingOptionConverter_v5().convertToInternalForm(backupTransaction.getRepeatingOption()));
+		return transaction;
+	}
+
+	@Override
+	public BackupTransaction_v5 convertToExternalForm(Transaction internalItem)
+	{
+		if(internalItem == null)
+		{
+			return null;
+		}
+
+		final BackupTransaction_v5 transaction = new BackupTransaction_v5();
+		transaction.setAmount(internalItem.getAmount());
+		transaction.setName(internalItem.getName());
+		transaction.setCategory(new CategoryConverter_v5().convertToExternalForm(internalItem.getCategory()));
+		transaction.setDescription(internalItem.getDescription());
+		transaction.setExpenditure(internalItem.getExpenditure());
+		transaction.setAccount(new AccountConverter_v5().convertToExternalForm(internalItem.getAccount()));
+		transaction.setTransferAccount(new AccountConverter_v5().convertToExternalForm(internalItem.getTransferAccount()));
+		transaction.setDate(internalItem.getDate().toString(DateTimeFormat.forPattern("yyyy-MM-dd")));
+		transaction.setTags(internalItem.getTags());
+		transaction.setRepeatingOption(new RepeatingOptionConverter_v5().convertToExternalForm(internalItem.getRepeatingOption()));
 		return transaction;
 	}
 }
