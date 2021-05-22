@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.database.model.v5.converter;
 
+import de.deadlocker8.budgetmaster.database.Converter;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupTemplate_v5;
 import de.deadlocker8.budgetmaster.templates.Template;
 

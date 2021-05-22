@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmaster.database.model.v5;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.charts.Chart;
+import de.deadlocker8.budgetmaster.database.Converter;
 import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.model.v5.converter.*;
 import de.deadlocker8.budgetmaster.images.Image;

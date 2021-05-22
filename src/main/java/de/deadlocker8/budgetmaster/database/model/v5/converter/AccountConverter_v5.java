@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.database.model.v5.converter;
 
 import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.database.Converter;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupAccount_v5;
 
 public class AccountConverter_v5 implements Converter<Account, BackupAccount_v5>

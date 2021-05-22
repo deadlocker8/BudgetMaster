@@ -1,23 +1,12 @@
 package de.deadlocker8.budgetmaster.database;
 
 import com.google.gson.*;
-import de.deadlocker8.budgetmaster.accounts.AccountState;
-import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.database.model.v5.*;
-import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
-import de.deadlocker8.budgetmaster.repeating.endoption.*;
-import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifier;
-import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierType;
-import de.deadlocker8.budgetmaster.tags.Tag;
-import de.thecodelabs.utils.util.Localization;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class DatabaseParser_v5
 {
