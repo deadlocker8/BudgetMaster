@@ -6,6 +6,8 @@ import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.DatabaseParser;
 import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.Localization.LocalizationDelegate;
+import de.thecodelabs.utils.util.localization.LocalizationMessageFormatter;
+import de.thecodelabs.utils.util.localization.formatter.JavaMessageFormatter;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,6 +18,7 @@ import java.nio.file.Paths;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
 public class DatabaseParserTest
@@ -29,6 +32,12 @@ public class DatabaseParserTest
 			public Locale getLocale()
 			{
 				return Locale.ENGLISH;
+			}
+
+			@Override
+			public LocalizationMessageFormatter messageFormatter()
+			{
+				return new JavaMessageFormatter();
 			}
 
 			@Override
@@ -74,9 +83,9 @@ public class DatabaseParserTest
 		categoryNone.setID(1);
 
 		DatabaseParser importer = new DatabaseParser(json, categoryNone);
-		final Database database = importer.parseDatabaseFromJSON();
-		assertThat(database.getTransactions())
-				.hasSize(6);
+		assertThatThrownBy(importer::parseDatabaseFromJSON)
+				.isInstanceOf(IllegalArgumentException.class)
+				.hasMessageContaining("too old");
 	}
 
 	@Test
@@ -87,8 +96,8 @@ public class DatabaseParserTest
 		categoryNone.setID(1);
 
 		DatabaseParser importer = new DatabaseParser(json, categoryNone);
-		final Database database = importer.parseDatabaseFromJSON();
-		assertThat(database.getTransactions())
-				.hasSize(4);
+		assertThatThrownBy(importer::parseDatabaseFromJSON)
+				.isInstanceOf(IllegalArgumentException.class)
+				.hasMessageContaining("too old");
 	}
 }

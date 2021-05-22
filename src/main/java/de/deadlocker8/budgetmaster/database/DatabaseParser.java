@@ -3,7 +3,6 @@ package de.deadlocker8.budgetmaster.database;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import de.deadlocker8.budgetmaster.categories.Category;
-import de.deadlocker8.budgetmaster.database.legacy.LegacyParser;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
 import de.deadlocker8.budgetmaster.database.model.v4.BackupDatabase_v4;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupDatabase_v5;
@@ -17,6 +16,7 @@ public class DatabaseParser
 {
 	final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
+	private final int MINIMUM_VERSION = 4;
 	private final int LATEST_VERSION = 5;
 
 	private final String jsonString;
@@ -30,6 +30,39 @@ public class DatabaseParser
 
 	public Database parseDatabaseFromJSON() throws IllegalArgumentException
 	{
+		int version = parseVersion();
+
+		if(version < MINIMUM_VERSION)
+		{
+			throw new IllegalArgumentException(Localization.getString("error.database.import.version.too.old", version, MINIMUM_VERSION));
+		}
+
+		BackupDatabase importedDatabase = null;
+
+		if(version == 4)
+		{
+			BackupDatabase_v4 parsedDatabase = new DatabaseParser_v4(jsonString).parseDatabaseFromJSON();
+			LOGGER.debug(MessageFormat.format("Parsed database with {0} transactions, {1} categories, {2} accounts and {3} templates", parsedDatabase.getTransactions().size(), parsedDatabase.getCategories().size(), parsedDatabase.getAccounts().size(), parsedDatabase.getTemplates().size()));
+			importedDatabase = parsedDatabase;
+		}
+
+		if(version == 5)
+		{
+			BackupDatabase_v5 parsedDatabase = new DatabaseParser_v5(jsonString).parseDatabaseFromJSON();
+			LOGGER.debug(MessageFormat.format("Parsed database with {0} transactions, {1} categories, {2} accounts, {3} templates {4} charts and {5} images", parsedDatabase.getTransactions().size(), parsedDatabase.getCategories().size(), parsedDatabase.getAccounts().size(), parsedDatabase.getTemplates().size(), parsedDatabase.getCharts().size(), parsedDatabase.getImages().size()));
+			importedDatabase = parsedDatabase;
+		}
+
+		if(importedDatabase == null)
+		{
+			throw new IllegalArgumentException(Localization.getString("error.database.import.unknown.version"));
+		}
+
+		return upgradeDatabase(importedDatabase);
+	}
+
+	private int parseVersion()
+	{
 		try
 		{
 			final JsonObject root = JsonParser.parseString(jsonString).getAsJsonObject();
@@ -41,43 +74,7 @@ public class DatabaseParser
 
 			int version = root.get("VERSION").getAsInt();
 			LOGGER.info(MessageFormat.format("Parsing BudgetMaster database with version {0}", version));
-
-			BackupDatabase importedDatabase = null;
-
-			if(version == 2)
-			{
-				final Database database = new LegacyParser(jsonString, categoryNone).parseDatabaseFromJSON();
-				LOGGER.debug(MessageFormat.format("Parsed database with {0} transactions, {1} categories and {2} accounts", database.getTransactions().size(), database.getCategories().size(), database.getAccounts().size()));
-				return database;
-			}
-
-			if(version == 3)
-			{
-				final Database database = new DatabaseParser_v3(jsonString).parseDatabaseFromJSON();
-				LOGGER.debug(MessageFormat.format("Parsed database with {0} transactions, {1} categories and {2} accounts", database.getTransactions().size(), database.getCategories().size(), database.getAccounts().size()));
-				return database;
-			}
-
-			if(version == 4)
-			{
-				BackupDatabase_v4 parsedDatabase = new DatabaseParser_v4(jsonString).parseDatabaseFromJSON();
-				LOGGER.debug(MessageFormat.format("Parsed database with {0} transactions, {1} categories, {2} accounts and {3} templates", parsedDatabase.getTransactions().size(), parsedDatabase.getCategories().size(), parsedDatabase.getAccounts().size(), parsedDatabase.getTemplates().size()));
-				importedDatabase = parsedDatabase;
-			}
-
-			if(version == 5)
-			{
-				BackupDatabase_v5 parsedDatabase = new DatabaseParser_v5(jsonString).parseDatabaseFromJSON();
-				LOGGER.debug(MessageFormat.format("Parsed database with {0} transactions, {1} categories, {2} accounts, {3} templates {4} charts and {5} images", parsedDatabase.getTransactions().size(), parsedDatabase.getCategories().size(), parsedDatabase.getAccounts().size(), parsedDatabase.getTemplates().size(), parsedDatabase.getCharts().size(), parsedDatabase.getImages().size()));
-				importedDatabase = parsedDatabase;
-			}
-
-			if(importedDatabase == null)
-			{
-				throw new IllegalArgumentException(Localization.getString("error.database.import.unknown.version"));
-			}
-
-			return upgradeDatabase(importedDatabase);
+			return version;
 		}
 		catch(Exception e)
 		{
