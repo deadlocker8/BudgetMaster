@@ -29,6 +29,7 @@ public class RepeatingEndOptionConverter_v5 implements Converter<RepeatingEnd, B
 				break;
 			case DATE:
 				DateTime endDate = DateTime.parse(backupItem.getEndDate(), DateTimeFormat.forPattern("yyyy-MM-dd"));
+				endDate = endDate.withHourOfDay(12).withMinuteOfHour(0).withSecondOfMinute(0);
 				endOption = new RepeatingEndDate(endDate);
 				break;
 		}

@@ -17,7 +17,11 @@ public class RepeatingOptionConverter_v5 implements Converter<RepeatingOption, B
 		}
 
 		final RepeatingOption repeatingOption = new RepeatingOption();
-		repeatingOption.setStartDate(DateTime.parse(backupItem.getStartDate(), DateTimeFormat.forPattern("yyyy-MM-dd")));
+
+		DateTime startDate = DateTime.parse(backupItem.getStartDate(), DateTimeFormat.forPattern("yyyy-MM-dd"));
+		startDate = startDate.withHourOfDay(12).withMinuteOfHour(0).withSecondOfMinute(0);
+		repeatingOption.setStartDate(startDate);
+
 		repeatingOption.setModifier(new RepeatingModifierConverter_v5().convertToInternalForm(backupItem.getModifier()));
 		repeatingOption.setEndOption(new RepeatingEndOptionConverter_v5().convertToInternalForm(backupItem.getEndOption()));
 		return repeatingOption;

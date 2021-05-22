@@ -23,7 +23,11 @@ public class TransactionConverter_v5 implements Converter<Transaction, BackupTra
 		transaction.setIsExpenditure(backupTransaction.getExpenditure());
 		transaction.setAccount(new AccountConverter_v5().convertToInternalForm(backupTransaction.getAccount()));
 		transaction.setTransferAccount(new AccountConverter_v5().convertToInternalForm(backupTransaction.getTransferAccount()));
-		transaction.setDate(DateTime.parse(backupTransaction.getDate(), DateTimeFormat.forPattern("yyyy-MM-dd")));
+
+		DateTime date = DateTime.parse(backupTransaction.getDate(), DateTimeFormat.forPattern("yyyy-MM-dd"));
+		date = date.withHourOfDay(12).withMinuteOfHour(0).withSecondOfMinute(0);
+		transaction.setDate(date);
+
 		transaction.setTags(backupTransaction.getTags());
 		transaction.setRepeatingOption(new RepeatingOptionConverter_v5().convertToInternalForm(backupTransaction.getRepeatingOption()));
 		return transaction;
