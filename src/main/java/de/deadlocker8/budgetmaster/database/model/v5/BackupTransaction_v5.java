@@ -23,6 +23,20 @@ public class BackupTransaction_v5
 	{
 	}
 
+	public BackupTransaction_v5(Integer amount, Boolean isExpenditure, String date, BackupAccount_v5 account, BackupCategory_v5 category, String name, String description, List<Tag> tags, BackupRepeatingOption_v4 repeatingOption, BackupAccount_v5 transferAccount)
+	{
+		this.amount = amount;
+		this.isExpenditure = isExpenditure;
+		this.date = date;
+		this.account = account;
+		this.category = category;
+		this.name = name;
+		this.description = description;
+		this.tags = tags;
+		this.repeatingOption = repeatingOption;
+		this.transferAccount = transferAccount;
+	}
+
 	public Integer getAmount()
 	{
 		return amount;
@@ -141,8 +155,7 @@ public class BackupTransaction_v5
 	@Override
 	public String toString()
 	{
-		return "BackupTransaction_v5{" +
-				", amount=" + amount +
+		return "BackupTransaction_v5{amount=" + amount +
 				", isExpenditure=" + isExpenditure +
 				", date=" + date +
 				", account=" + account +

@@ -22,6 +22,20 @@ public class BackupTemplate_v5
 	{
 	}
 
+	public BackupTemplate_v5(String templateName, Integer amount, Boolean isExpenditure, BackupAccount_v5 account, BackupCategory_v5 category, String name, String description, BackupImage_v5 icon, List<Tag> tags, BackupAccount_v5 transferAccount)
+	{
+		this.templateName = templateName;
+		this.amount = amount;
+		this.isExpenditure = isExpenditure;
+		this.account = account;
+		this.category = category;
+		this.name = name;
+		this.description = description;
+		this.icon = icon;
+		this.tags = tags;
+		this.transferAccount = transferAccount;
+	}
+
 	public String getTemplateName()
 	{
 		return templateName;
@@ -140,8 +154,7 @@ public class BackupTemplate_v5
 	@Override
 	public String toString()
 	{
-		return "BackupTemplate_v5{" +
-				", templateName='" + templateName + '\'' +
+		return "BackupTemplate_v5{templateName='" + templateName + '\'' +
 				", amount=" + amount +
 				", isExpenditure=" + isExpenditure +
 				", account=" + account +
