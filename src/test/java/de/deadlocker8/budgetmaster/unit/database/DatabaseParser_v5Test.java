@@ -205,7 +205,9 @@ public class DatabaseParser_v5Test
 
 			Transaction normalTransaction_1 = new Transaction();
 			normalTransaction_1.setAmount(35000);
-			normalTransaction_1.setDate(DateTime.parse("2018-03-13", DateTimeFormat.forPattern("yyyy-MM-dd")));
+			DateTime normalTransactionDate = DateTime.parse("2018-03-13", DateTimeFormat.forPattern("yyyy-MM-dd"));
+			normalTransactionDate = normalTransactionDate.withHourOfDay(12).withMinuteOfHour(0).withSecondOfMinute(0);
+			normalTransaction_1.setDate(normalTransactionDate);
 			normalTransaction_1.setCategory(categoryNone);
 			normalTransaction_1.setName("Income");
 			normalTransaction_1.setDescription("Lorem Ipsum");
@@ -215,7 +217,9 @@ public class DatabaseParser_v5Test
 
 			Transaction normalTransaction_2 = new Transaction();
 			normalTransaction_2.setAmount(-2000);
-			normalTransaction_2.setDate(DateTime.parse("2018-06-15", DateTimeFormat.forPattern("yyyy-MM-dd")));
+			DateTime normalTransaction_2Date = DateTime.parse("2018-06-15", DateTimeFormat.forPattern("yyyy-MM-dd"));
+			normalTransaction_2Date = normalTransaction_2Date.withHourOfDay(12).withMinuteOfHour(0).withSecondOfMinute(0);
+			normalTransaction_2.setDate(normalTransaction_2Date);
 			normalTransaction_2.setName("Simple");
 			normalTransaction_2.setDescription("");
 			normalTransaction_2.setAccount(account2);
@@ -230,15 +234,16 @@ public class DatabaseParser_v5Test
 
 			Transaction repeatingTransaction_1 = new Transaction();
 			repeatingTransaction_1.setAmount(-12300);
-			DateTime repeatingTransactionDate_1 = DateTime.parse("2018-03-13", DateTimeFormat.forPattern("yyyy-MM-dd"));
-			repeatingTransaction_1.setDate(repeatingTransactionDate_1);
+			DateTime repeatingTransaction_1Date = DateTime.parse("2018-03-13", DateTimeFormat.forPattern("yyyy-MM-dd"));
+			repeatingTransaction_1Date = repeatingTransaction_1Date.withHourOfDay(12).withMinuteOfHour(0).withSecondOfMinute(0);
+			repeatingTransaction_1.setDate(repeatingTransaction_1Date);
 			repeatingTransaction_1.setCategory(categoryNone);
 			repeatingTransaction_1.setName("Test");
 			repeatingTransaction_1.setDescription("");
 			repeatingTransaction_1.setAccount(account1);
 			RepeatingOption repeatingOption_1 = new RepeatingOption();
 			repeatingOption_1.setModifier(new RepeatingModifierDays(10));
-			repeatingOption_1.setStartDate(repeatingTransactionDate_1);
+			repeatingOption_1.setStartDate(repeatingTransaction_1Date);
 			repeatingOption_1.setEndOption(new RepeatingEndAfterXTimes(2));
 			repeatingTransaction_1.setRepeatingOption(repeatingOption_1);
 			repeatingTransaction_1.setTags(new ArrayList<>());
@@ -246,7 +251,9 @@ public class DatabaseParser_v5Test
 
 		    Transaction transferTransaction = new Transaction();
 			transferTransaction.setAmount(-250);
-			transferTransaction.setDate(DateTime.parse("2018-06-15", DateTimeFormat.forPattern("yyyy-MM-dd")));
+			DateTime transferTransactionDate = DateTime.parse("2018-06-15", DateTimeFormat.forPattern("yyyy-MM-dd"));
+			transferTransactionDate = transferTransactionDate.withHourOfDay(12).withMinuteOfHour(0).withSecondOfMinute(0);
+			transferTransaction.setDate(transferTransactionDate);
 			transferTransaction.setName("Transfer");
 			transferTransaction.setDescription("");
 			transferTransaction.setAccount(account2);
