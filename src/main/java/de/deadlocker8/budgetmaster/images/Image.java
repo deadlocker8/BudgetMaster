@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.images;
 
 import com.google.gson.annotations.Expose;
 import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.utils.ProvidesID;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
 
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Image
+public class Image implements ProvidesID
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

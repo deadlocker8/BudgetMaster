@@ -106,14 +106,7 @@ public class BackupDatabase_v5 implements BackupDatabase
 
 	public InternalDatabase convertToInternal()
 	{
-		final List<Category> convertedCategories = convertItemsToInternal(categories, new CategoryConverter_v5());
-		final List<Account> convertedAccounts = convertItemsToInternal(accounts, new AccountConverter_v5());
-		final List<Transaction> convertedTransactions = convertItemsToInternal(this.transactions, new TransactionConverter_v5());
-		final List<Template> convertedTemplates = convertItemsToInternal(this.templates, new TemplateConverter_v5());
-		final List<Chart> convertedCharts = convertItemsToInternal(this.charts, new ChartConverter_v5());
-		final List<Image> convertedImages = convertItemsToInternal(this.images, new ImageConverter_v5());
-
-		return new InternalDatabase(convertedCategories, convertedAccounts, convertedTransactions, convertedTemplates, convertedCharts, convertedImages);
+		throw new UnsupportedOperationException();
 	}
 
 	@Override

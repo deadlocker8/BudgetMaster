@@ -108,6 +108,12 @@ public class BackupAccount_v5 implements Upgradeable<BackupAccount_v6>
 
 	public BackupAccount_v6 upgrade()
 	{
-		return new BackupAccount_v6(ID, name, accountState, type, icon.getID());
+		Integer iconID = null;
+		if(icon != null)
+		{
+			iconID = icon.getID();
+		}
+
+		return new BackupAccount_v6(ID, name, accountState, type, iconID);
 	}
 }

@@ -9,7 +9,7 @@ import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupCategory_v5;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupChart_v5;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupImage_v5;
-import de.deadlocker8.budgetmaster.database.model.v5.converter.*;
+import de.deadlocker8.budgetmaster.database.model.v6.converter.*;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
@@ -22,7 +22,7 @@ public class BackupDatabase_v6 implements BackupDatabase
 	private final String TYPE = JSONIdentifier.BUDGETMASTER_DATABASE.toString();
 
 	@SuppressWarnings("FieldCanBeLocal")
-	private final int VERSION = 5;
+	private final int VERSION = 6;
 
 	private List<BackupCategory_v5> categories;
 	private List<BackupAccount_v6> accounts;
@@ -108,15 +108,14 @@ public class BackupDatabase_v6 implements BackupDatabase
 
 	public InternalDatabase convertToInternal()
 	{
-//		final List<Category> convertedCategories = convertItemsToInternal(categories, new CategoryConverter_v5());
-//		final List<Account> convertedAccounts = convertItemsToInternal(accounts, new AccountConverter_v5());
-//		final List<Transaction> convertedTransactions = convertItemsToInternal(this.transactions, new TransactionConverter_v5());
-//		final List<Template> convertedTemplates = convertItemsToInternal(this.templates, new TemplateConverter_v5());
-//		final List<Chart> convertedCharts = convertItemsToInternal(this.charts, new ChartConverter_v5());
-//		final List<Image> convertedImages = convertItemsToInternal(this.images, new ImageConverter_v5());
-//
-//		return new InternalDatabase(convertedCategories, convertedAccounts, convertedTransactions, convertedTemplates, convertedCharts, convertedImages);
-		return null;
+		final List<Image> convertedImages = convertItemsToInternal(this.images, new ImageConverter());
+		final List<Category> convertedCategories = convertItemsToInternal(categories, new CategoryConverter());
+		final List<Account> convertedAccounts = convertItemsToInternal(accounts, new AccountConverter(convertedImages));
+		final List<Transaction> convertedTransactions = convertItemsToInternal(this.transactions, new TransactionConverter(convertedCategories, convertedAccounts));
+		final List<Template> convertedTemplates = convertItemsToInternal(this.templates, new TemplateConverter(convertedImages, convertedCategories, convertedAccounts));
+		final List<Chart> convertedCharts = convertItemsToInternal(this.charts, new ChartConverter());
+
+		return new InternalDatabase(convertedCategories, convertedAccounts, convertedTransactions, convertedTemplates, convertedCharts, convertedImages);
 	}
 
 	@Override
