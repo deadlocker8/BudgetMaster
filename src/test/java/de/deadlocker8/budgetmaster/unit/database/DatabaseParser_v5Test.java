@@ -4,11 +4,9 @@ import de.deadlocker8.budgetmaster.accounts.AccountState;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.charts.ChartType;
+import de.deadlocker8.budgetmaster.database.DatabaseParser_v4;
 import de.deadlocker8.budgetmaster.database.DatabaseParser_v5;
-import de.deadlocker8.budgetmaster.database.model.v4.BackupRepeatingEndOption_v4;
-import de.deadlocker8.budgetmaster.database.model.v4.BackupRepeatingModifier_v4;
-import de.deadlocker8.budgetmaster.database.model.v4.BackupRepeatingOption_v4;
-import de.deadlocker8.budgetmaster.database.model.v4.BackupTag_v4;
+import de.deadlocker8.budgetmaster.database.model.v4.*;
 import de.deadlocker8.budgetmaster.database.model.v5.*;
 import de.deadlocker8.budgetmaster.images.ImageFileExtension;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndAfterXTimes;
@@ -27,6 +25,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
 public class DatabaseParser_v5Test
@@ -250,4 +249,15 @@ public class DatabaseParser_v5Test
 			e.printStackTrace();
 		}
 	}
+	@Test
+	public void test_convertToInternalShouldFail() throws URISyntaxException, IOException
+	{
+		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v5Test.json").toURI())));
+		DatabaseParser_v5 parser = new DatabaseParser_v5(json);
+		BackupDatabase_v5 database = parser.parseDatabaseFromJSON();
+
+		assertThatThrownBy(database::convertToInternal)
+				.isInstanceOf(UnsupportedOperationException.class);
+	}
+
 }

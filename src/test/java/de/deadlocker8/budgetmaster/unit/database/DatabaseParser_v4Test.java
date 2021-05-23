@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 
 public class DatabaseParser_v4Test
@@ -222,5 +222,16 @@ public class DatabaseParser_v4Test
 		{
 			e.printStackTrace();
 		}
+	}
+
+	@Test
+	public void test_convertToInternalShouldFail() throws URISyntaxException, IOException
+	{
+		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v4Test.json").toURI())));
+		DatabaseParser_v4 parser = new DatabaseParser_v4(json);
+		BackupDatabase_v4 database = parser.parseDatabaseFromJSON();
+
+		assertThatThrownBy(database::convertToInternal)
+				.isInstanceOf(UnsupportedOperationException.class);
 	}
 }

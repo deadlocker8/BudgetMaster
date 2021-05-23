@@ -49,18 +49,8 @@
             "amount": 35000,
             "isExpenditure": false,
             "date": "2018-03-13",
-            "account": {
-                "ID": 2,
-                "name": "Default",
-                "accountState": "FULL_ACCESS",
-                "type": "CUSTOM"
-            },
-            "category": {
-                "ID": 1,
-                "name": "Keine Kategorie",
-                "color": "#FFFFFF",
-                "type": "NONE"
-            },
+            "accountID": 2,
+            "categoryID": 1,
             "name": "Income",
             "description": "Lorem Ipsum",
             "tags": []
@@ -70,20 +60,8 @@
             "amount": -2000,
             "isExpenditure": true,
             "date": "2018-06-15",
-            "account": {
-                "ID": 3,
-                "name": "Second Account",
-                "accountState": "FULL_ACCESS",
-                "type": "CUSTOM",
-                "iconID": 1
-            },
-            "category": {
-                "ID": 3,
-                "name": "0815",
-                "color": "#ffcc00",
-                "type": "CUSTOM",
-                "icon": "fas fa-icons"
-            },
+            "accountID": 3,
+            "categoryID": 3,
             "name": "Simple",
             "description": "",
             "tags": [
@@ -98,18 +76,8 @@
             "amount": -12300,
             "isExpenditure": true,
             "date": "2018-03-13",
-            "account": {
-                "ID": 2,
-                "name": "Default",
-                "accountState": "FULL_ACCESS",
-                "type": "CUSTOM"
-            },
-            "category": {
-                "ID": 1,
-                "name": "Keine Kategorie",
-                "color": "#FFFFFF",
-                "type": "NONE"
-            },
+            "accountID": 2,
+            "categoryID": 1,
             "name": "Test",
             "description": "",
             "tags": [],
@@ -133,47 +101,20 @@
             "amount": -250,
             "isExpenditure": true,
             "date": "2018-06-15",
-            "account": {
-                "ID": 3,
-                "name": "Second Account",
-                "accountState": "FULL_ACCESS",
-                "type": "CUSTOM",
-                "iconID": 1
-            },
-            "category": {
-                "ID": 3,
-                "name": "0815",
-                "color": "#ffcc00",
-                "type": "CUSTOM",
-                "icon": "fas fa-icons"
-            },
+            "accountID": 3,
+            "categoryID": 3,
             "name": "Transfer",
             "description": "",
             "tags": [],
-            "transferAccount": {
-                "ID": 2,
-                "name": "Default",
-                "accountState": "FULL_ACCESS",
-                "type": "CUSTOM"
-            }
+            "transferAccountID": 2
         }
     ],
     "templates": [
         {
             "ID": 5,
             "amount": 1500,
-            "account": {
-                "ID": 2,
-                "name": "Default",
-                "accountState": "FULL_ACCESS",
-                "type": "CUSTOM"
-            },
-            "category": {
-                "ID": 1,
-                "name": "Keine Kategorie",
-                "color": "#FFFFFF",
-                "type": "NONE"
-            },
+            "accountID": 2,
+            "categoryID": 1,
             "name": "Income",
             "templateName": "My Simple Template",
             "description": "Lorem Ipsum",
@@ -191,20 +132,8 @@
         {
             "ID": 7,
             "amount": -35000,
-            "account": {
-                "ID": 3,
-                "name": "Second Account",
-                "accountState": "FULL_ACCESS",
-                "type": "CUSTOM",
-                "iconID": 1
-            },
-            "category": {
-                "ID": 3,
-                "name": "0815",
-                "color": "#ffcc00",
-                "type": "CUSTOM",
-                "icon": "fas fa-icons"
-            },
+            "accountID": 3,
+            "categoryID": 3,
             "name": "Income",
             "templateName": "My Transfer Template",
             "description": "Lorem Ipsum",
@@ -213,16 +142,12 @@
                     "name": "0815"
                 }
             ],
-            "transferAccount": {
-                "ID": 2,
-                "name": "Default",
-                "accountState": "FULL_ACCESS",
-                "type": "CUSTOM"
-            }
+            "transferAccountID": 2
         },
         {
             "ID": 8,
             "templateName": "Template with icon",
+            "isExpenditure": true,
             "tags": [],
             "iconID": 1
         }
