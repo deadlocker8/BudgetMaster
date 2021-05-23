@@ -3,7 +3,6 @@ package de.deadlocker8.budgetmaster.database.model.v4;
 import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.JSONIdentifier;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
-import de.deadlocker8.budgetmaster.database.model.Upgradeable;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupDatabase_v5;
 
 import java.util.ArrayList;
@@ -93,16 +92,6 @@ public class BackupDatabase_v4 implements BackupDatabase
 		upgradedDatabase.setImages(new ArrayList<>());
 
 		return upgradedDatabase;
-	}
-
-	private <T> List<T> upgradeItems(List<? extends Upgradeable<T>> items)
-	{
-		List<T> upgradedItems = new ArrayList<>();
-		for(Upgradeable<T> item : items)
-		{
-			upgradedItems.add(item.upgrade());
-		}
-		return upgradedItems;
 	}
 
 	@Override
