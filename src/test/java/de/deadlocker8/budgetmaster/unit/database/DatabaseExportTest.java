@@ -150,7 +150,7 @@ public class DatabaseExportTest
 		JsonObject root = JsonParser.parseString(fileContent).getAsJsonObject();
 
 		assertThat(root.get("TYPE").getAsString()).isEqualTo(JSONIdentifier.BUDGETMASTER_DATABASE.toString());
-		assertThat(root.get("VERSION").getAsInt()).isEqualTo(5);
+		assertThat(root.get("VERSION").getAsInt()).isEqualTo(DatabaseParser.LATEST_VERSION);
 	}
 
 	@Test
@@ -158,7 +158,9 @@ public class DatabaseExportTest
 	{
 		// categories
 		Category categoryNone = new Category("NONE", "#000000", CategoryType.NONE);
+		categoryNone.setID(1);
 		Category categoryCustom = new Category("my First Category", "#FF0000", CategoryType.CUSTOM);
+		categoryCustom.setID(2);
 		Mockito.when(categoryService.getAllEntitiesAsc()).thenReturn(List.of(categoryNone, categoryCustom));
 
 		// accounts

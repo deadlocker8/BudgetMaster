@@ -12710,6 +12710,7 @@
             "ID": 8,
             "templateName": "Template with icon",
             "tags": [],
+            "isExpenditure": true,
             "icon": {
                 "ID": 1,
                 "image": [
