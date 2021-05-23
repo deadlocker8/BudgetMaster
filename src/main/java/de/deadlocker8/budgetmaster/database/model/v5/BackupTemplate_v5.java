@@ -1,12 +1,13 @@
 package de.deadlocker8.budgetmaster.database.model.v5;
 
+import de.deadlocker8.budgetmaster.database.model.Upgradeable;
 import de.deadlocker8.budgetmaster.database.model.v4.BackupTag_v4;
-import de.deadlocker8.budgetmaster.tags.Tag;
+import de.deadlocker8.budgetmaster.database.model.v6.BackupTemplate_v6;
 
 import java.util.List;
 import java.util.Objects;
 
-public class BackupTemplate_v5
+public class BackupTemplate_v5 implements Upgradeable<BackupTemplate_v6>
 {
 	private String templateName;
 	private Integer amount;
@@ -167,5 +168,35 @@ public class BackupTemplate_v5
 				", tags=" + tags +
 				", transferAccount=" + transferAccount +
 				'}';
+	}
+
+	@Override
+	public BackupTemplate_v6 upgrade()
+	{
+		Integer accountID = null;
+		if(account != null)
+		{
+			accountID = account.getID();
+		}
+
+		Integer categoryID = null;
+		if(category != null)
+		{
+			categoryID = category.getID();
+		}
+
+		Integer iconID = null;
+		if(icon != null)
+		{
+			iconID = icon.getID();
+		}
+
+		Integer transferAccountID = null;
+		if(transferAccount != null)
+		{
+			transferAccountID = transferAccount.getID();
+		}
+
+		return new BackupTemplate_v6(templateName, amount, isExpenditure, accountID, categoryID, name, description, iconID, tags, transferAccountID);
 	}
 }

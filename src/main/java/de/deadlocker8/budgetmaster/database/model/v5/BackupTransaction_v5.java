@@ -1,12 +1,14 @@
 package de.deadlocker8.budgetmaster.database.model.v5;
 
+import de.deadlocker8.budgetmaster.database.model.Upgradeable;
 import de.deadlocker8.budgetmaster.database.model.v4.BackupRepeatingOption_v4;
 import de.deadlocker8.budgetmaster.database.model.v4.BackupTag_v4;
+import de.deadlocker8.budgetmaster.database.model.v6.BackupTransaction_v6;
 
 import java.util.List;
 import java.util.Objects;
 
-public class BackupTransaction_v5
+public class BackupTransaction_v5 implements Upgradeable<BackupTransaction_v6>
 {
 	private Integer amount;
 	private Boolean isExpenditure;
@@ -167,5 +169,17 @@ public class BackupTransaction_v5
 				", repeatingOption=" + repeatingOption +
 				", transferAccount=" + transferAccount +
 				'}';
+	}
+
+	@Override
+	public BackupTransaction_v6 upgrade()
+	{
+		Integer transferAccountID = null;
+		if(transferAccount != null)
+		{
+			transferAccountID = transferAccount.getID();
+		}
+
+		return new BackupTransaction_v6(amount, isExpenditure, date, account.getID(), category.getID(), name, description, tags, repeatingOption, transferAccountID);
 	}
 }
