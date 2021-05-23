@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.database.model.v6.converter;
+package de.deadlocker8.budgetmaster.database.model.converter;
 
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.categories.Category;

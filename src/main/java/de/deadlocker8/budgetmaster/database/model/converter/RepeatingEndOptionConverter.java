@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.database.model.v6.converter;
+package de.deadlocker8.budgetmaster.database.model.converter;
 
 import de.deadlocker8.budgetmaster.database.model.Converter;
 import de.deadlocker8.budgetmaster.database.model.v4.BackupRepeatingEndOption_v4;
