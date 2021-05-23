@@ -5,6 +5,7 @@ import com.google.gson.JsonParser;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
 import de.deadlocker8.budgetmaster.database.model.v4.BackupDatabase_v4;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupDatabase_v5;
+import de.deadlocker8.budgetmaster.database.model.v6.BackupDatabase_v6;
 import de.thecodelabs.utils.util.Localization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +47,13 @@ public class DatabaseParser
 		if(version == 5)
 		{
 			BackupDatabase_v5 parsedDatabase = new DatabaseParser_v5(jsonString).parseDatabaseFromJSON();
+			LOGGER.debug(MessageFormat.format("Parsed database with {0} transactions, {1} categories, {2} accounts, {3} templates {4} charts and {5} images", parsedDatabase.getTransactions().size(), parsedDatabase.getCategories().size(), parsedDatabase.getAccounts().size(), parsedDatabase.getTemplates().size(), parsedDatabase.getCharts().size(), parsedDatabase.getImages().size()));
+			importedDatabase = parsedDatabase;
+		}
+
+		if(version == 6)
+		{
+			BackupDatabase_v6 parsedDatabase = new DatabaseParser_v6(jsonString).parseDatabaseFromJSON();
 			LOGGER.debug(MessageFormat.format("Parsed database with {0} transactions, {1} categories, {2} accounts, {3} templates {4} charts and {5} images", parsedDatabase.getTransactions().size(), parsedDatabase.getCategories().size(), parsedDatabase.getAccounts().size(), parsedDatabase.getTemplates().size(), parsedDatabase.getCharts().size(), parsedDatabase.getImages().size()));
 			importedDatabase = parsedDatabase;
 		}

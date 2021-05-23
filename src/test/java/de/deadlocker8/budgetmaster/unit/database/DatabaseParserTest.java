@@ -48,6 +48,16 @@ public class DatabaseParserTest
 	}
 
 	@Test
+	public void test_v6() throws URISyntaxException, IOException
+	{
+		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v6Test.json").toURI())));
+		DatabaseParser importer = new DatabaseParser(json);
+		final InternalDatabase database = importer.parseDatabaseFromJSON();
+		assertThat(database.getTransactions())
+				.hasSize(4);
+	}
+
+	@Test
 	public void test_v5() throws URISyntaxException, IOException
 	{
 		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v5Test.json").toURI())));
