@@ -7,6 +7,7 @@ import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.JSONIdentifier;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
 import de.deadlocker8.budgetmaster.database.model.v5.converter.*;
+import de.deadlocker8.budgetmaster.database.model.v6.BackupDatabase_v6;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
@@ -124,7 +125,16 @@ public class BackupDatabase_v5 implements BackupDatabase
 	@Override
 	public BackupDatabase upgrade()
 	{
-		throw new UnsupportedOperationException();
+		final BackupDatabase_v6 upgradedDatabase = new BackupDatabase_v6();
+
+		upgradedDatabase.setCategories(categories);
+		upgradedDatabase.setAccounts(upgradeItems(accounts));
+		upgradedDatabase.setTransactions(upgradeItems(transactions));
+		upgradedDatabase.setTemplates(upgradeItems(templates));
+		upgradedDatabase.setCharts(charts);
+		upgradedDatabase.setImages(images);
+
+		return upgradedDatabase;
 	}
 
 	public static BackupDatabase_v5 createFromInternalEntities(InternalDatabase database)

@@ -80,6 +80,7 @@ public class BackupDatabase_v4 implements BackupDatabase
 		return this.VERSION;
 	}
 
+	@Override
 	public BackupDatabase upgrade()
 	{
 		final BackupDatabase_v5 upgradedDatabase = new BackupDatabase_v5();
