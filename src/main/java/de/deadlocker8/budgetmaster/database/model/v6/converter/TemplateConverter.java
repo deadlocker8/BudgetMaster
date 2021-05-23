@@ -4,7 +4,6 @@ import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.database.model.Converter;
 import de.deadlocker8.budgetmaster.database.model.v4.BackupTag_v4;
-import de.deadlocker8.budgetmaster.database.model.v5.converter.TagConverter_v5;
 import de.deadlocker8.budgetmaster.database.model.v6.BackupTemplate_v6;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.tags.Tag;
@@ -52,7 +51,7 @@ public class TemplateConverter implements Converter<Template, BackupTemplate_v6>
 		template.setTransferAccount(getItemById(availableAccounts, backupTemplate.getTransferAccountID()));
 
 		List<Tag> convertedTags = new ArrayList<>();
-		TagConverter_v5 tagConverter = new TagConverter_v5();
+		TagConverter tagConverter = new TagConverter();
 		for(BackupTag_v4 tag : backupTemplate.getTags())
 		{
 			convertedTags.add(tagConverter.convertToInternalForm(tag));
@@ -95,7 +94,7 @@ public class TemplateConverter implements Converter<Template, BackupTemplate_v6>
 		}
 
 		List<BackupTag_v4> convertedTags = new ArrayList<>();
-		TagConverter_v5 tagConverter = new TagConverter_v5();
+		TagConverter tagConverter = new TagConverter();
 		for(Tag tag : internalItem.getTags())
 		{
 			convertedTags.add(tagConverter.convertToExternalForm(tag));

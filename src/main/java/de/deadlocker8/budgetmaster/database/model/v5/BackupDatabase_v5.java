@@ -1,16 +1,9 @@
 package de.deadlocker8.budgetmaster.database.model.v5;
 
-import de.deadlocker8.budgetmaster.accounts.Account;
-import de.deadlocker8.budgetmaster.categories.Category;
-import de.deadlocker8.budgetmaster.charts.Chart;
 import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.JSONIdentifier;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
-import de.deadlocker8.budgetmaster.database.model.v5.converter.*;
 import de.deadlocker8.budgetmaster.database.model.v6.BackupDatabase_v6;
-import de.deadlocker8.budgetmaster.images.Image;
-import de.deadlocker8.budgetmaster.templates.Template;
-import de.deadlocker8.budgetmaster.transactions.Transaction;
 
 import java.util.List;
 
@@ -128,19 +121,5 @@ public class BackupDatabase_v5 implements BackupDatabase
 		upgradedDatabase.setImages(images);
 
 		return upgradedDatabase;
-	}
-
-	public static BackupDatabase_v5 createFromInternalEntities(InternalDatabase database)
-	{
-		final BackupDatabase_v5 externalDatabase = new BackupDatabase_v5();
-
-		externalDatabase.setCategories(externalDatabase.convertItemsToExternal(database.getCategories(), new CategoryConverter_v5()));
-		externalDatabase.setAccounts(externalDatabase.convertItemsToExternal(database.getAccounts(), new AccountConverter_v5()));
-		externalDatabase.setTransactions(externalDatabase.convertItemsToExternal(database.getTransactions(), new TransactionConverter_v5()));
-		externalDatabase.setTemplates(externalDatabase.convertItemsToExternal(database.getTemplates(), new TemplateConverter_v5()));
-		externalDatabase.setCharts(externalDatabase.convertItemsToExternal(database.getCharts(), new ChartConverter_v5()));
-		externalDatabase.setImages(externalDatabase.convertItemsToExternal(database.getImages(), new ImageConverter_v5()));
-
-		return externalDatabase;
 	}
 }

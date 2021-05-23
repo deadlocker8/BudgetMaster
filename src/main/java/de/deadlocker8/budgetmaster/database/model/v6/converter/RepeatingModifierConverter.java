@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.database.model.v5.converter;
+package de.deadlocker8.budgetmaster.database.model.v6.converter;
 
 import de.deadlocker8.budgetmaster.database.model.Converter;
 import de.deadlocker8.budgetmaster.database.model.v4.BackupRepeatingModifier_v4;
@@ -6,7 +6,7 @@ import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifier;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierType;
 import de.thecodelabs.utils.util.Localization;
 
-public class RepeatingModifierConverter_v5 implements Converter<RepeatingModifier, BackupRepeatingModifier_v4>
+public class RepeatingModifierConverter implements Converter<RepeatingModifier, BackupRepeatingModifier_v4>
 {
 	@Override
 	public RepeatingModifier convertToInternalForm(BackupRepeatingModifier_v4 backupItem)

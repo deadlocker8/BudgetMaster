@@ -4,8 +4,6 @@ import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.database.model.Converter;
 import de.deadlocker8.budgetmaster.database.model.v4.BackupTag_v4;
-import de.deadlocker8.budgetmaster.database.model.v5.converter.RepeatingOptionConverter_v5;
-import de.deadlocker8.budgetmaster.database.model.v5.converter.TagConverter_v5;
 import de.deadlocker8.budgetmaster.database.model.v6.BackupTransaction_v6;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
@@ -47,14 +45,14 @@ public class TransactionConverter implements Converter<Transaction, BackupTransa
 		transaction.setDate(date);
 
 		List<Tag> convertedTags = new ArrayList<>();
-		TagConverter_v5 tagConverter = new TagConverter_v5();
+		TagConverter tagConverter = new TagConverter();
 		for(BackupTag_v4 tag : backupTransaction.getTags())
 		{
 			convertedTags.add(tagConverter.convertToInternalForm(tag));
 		}
 		transaction.setTags(convertedTags);
 
-		transaction.setRepeatingOption(new RepeatingOptionConverter_v5().convertToInternalForm(backupTransaction.getRepeatingOption()));
+		transaction.setRepeatingOption(new RepeatingOptionConverter().convertToInternalForm(backupTransaction.getRepeatingOption()));
 		return transaction;
 	}
 
@@ -82,14 +80,14 @@ public class TransactionConverter implements Converter<Transaction, BackupTransa
 		transaction.setDate(internalItem.getDate().toString(DateTimeFormat.forPattern("yyyy-MM-dd")));
 
 		List<BackupTag_v4> convertedTags = new ArrayList<>();
-		TagConverter_v5 tagConverter = new TagConverter_v5();
+		TagConverter tagConverter = new TagConverter();
 		for(Tag tag : internalItem.getTags())
 		{
 			convertedTags.add(tagConverter.convertToExternalForm(tag));
 		}
 		transaction.setTags(convertedTags);
 
-		transaction.setRepeatingOption(new RepeatingOptionConverter_v5().convertToExternalForm(internalItem.getRepeatingOption()));
+		transaction.setRepeatingOption(new RepeatingOptionConverter().convertToExternalForm(internalItem.getRepeatingOption()));
 		return transaction;
 	}
 }

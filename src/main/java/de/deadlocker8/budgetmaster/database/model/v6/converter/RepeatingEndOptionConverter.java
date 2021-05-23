@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.database.model.v5.converter;
+package de.deadlocker8.budgetmaster.database.model.v6.converter;
 
 import de.deadlocker8.budgetmaster.database.model.Converter;
 import de.deadlocker8.budgetmaster.database.model.v4.BackupRepeatingEndOption_v4;
@@ -7,7 +7,7 @@ import de.thecodelabs.utils.util.Localization;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
-public class RepeatingEndOptionConverter_v5 implements Converter<RepeatingEnd, BackupRepeatingEndOption_v4>
+public class RepeatingEndOptionConverter implements Converter<RepeatingEnd, BackupRepeatingEndOption_v4>
 {
 	@Override
 	public RepeatingEnd convertToInternalForm(BackupRepeatingEndOption_v4 backupItem)

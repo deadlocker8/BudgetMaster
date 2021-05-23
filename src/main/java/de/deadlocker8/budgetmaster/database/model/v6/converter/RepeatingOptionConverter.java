@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.database.model.v5.converter;
+package de.deadlocker8.budgetmaster.database.model.v6.converter;
 
 import de.deadlocker8.budgetmaster.database.model.Converter;
 import de.deadlocker8.budgetmaster.database.model.v4.BackupRepeatingOption_v4;
@@ -6,7 +6,7 @@ import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
-public class RepeatingOptionConverter_v5 implements Converter<RepeatingOption, BackupRepeatingOption_v4>
+public class RepeatingOptionConverter implements Converter<RepeatingOption, BackupRepeatingOption_v4>
 {
 	@Override
 	public RepeatingOption convertToInternalForm(BackupRepeatingOption_v4 backupItem)
@@ -22,8 +22,8 @@ public class RepeatingOptionConverter_v5 implements Converter<RepeatingOption, B
 		startDate = startDate.withHourOfDay(12).withMinuteOfHour(0).withSecondOfMinute(0);
 		repeatingOption.setStartDate(startDate);
 
-		repeatingOption.setModifier(new RepeatingModifierConverter_v5().convertToInternalForm(backupItem.getModifier()));
-		repeatingOption.setEndOption(new RepeatingEndOptionConverter_v5().convertToInternalForm(backupItem.getEndOption()));
+		repeatingOption.setModifier(new RepeatingModifierConverter().convertToInternalForm(backupItem.getModifier()));
+		repeatingOption.setEndOption(new RepeatingEndOptionConverter().convertToInternalForm(backupItem.getEndOption()));
 		return repeatingOption;
 	}
 
@@ -37,8 +37,8 @@ public class RepeatingOptionConverter_v5 implements Converter<RepeatingOption, B
 
 		final BackupRepeatingOption_v4 repeatingOption = new BackupRepeatingOption_v4();
 		repeatingOption.setStartDate(internalItem.getStartDate().toString(DateTimeFormat.forPattern("yyyy-MM-dd")));
-		repeatingOption.setModifier(new RepeatingModifierConverter_v5().convertToExternalForm(internalItem.getModifier()));
-		repeatingOption.setEndOption(new RepeatingEndOptionConverter_v5().convertToExternalForm(internalItem.getEndOption()));
+		repeatingOption.setModifier(new RepeatingModifierConverter().convertToExternalForm(internalItem.getModifier()));
+		repeatingOption.setEndOption(new RepeatingEndOptionConverter().convertToExternalForm(internalItem.getEndOption()));
 		return repeatingOption;
 	}
 }
