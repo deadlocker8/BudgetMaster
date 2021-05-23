@@ -6,10 +6,10 @@ import de.deadlocker8.budgetmaster.charts.Chart;
 import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.JSONIdentifier;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
+import de.deadlocker8.budgetmaster.database.model.converter.*;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupCategory_v5;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupChart_v5;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupImage_v5;
-import de.deadlocker8.budgetmaster.database.model.converter.*;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
@@ -133,14 +133,14 @@ public class BackupDatabase_v6 implements BackupDatabase
 	public static BackupDatabase_v6 createFromInternalEntities(InternalDatabase database)
 	{
 		final BackupDatabase_v6 externalDatabase = new BackupDatabase_v6();
-//
-//		externalDatabase.setCategories(externalDatabase.convertItemsToExternal(database.getCategories(), new CategoryConverter_v5()));
-//		externalDatabase.setAccounts(externalDatabase.convertItemsToExternal(database.getAccounts(), new AccountConverter_v5()));
-//		externalDatabase.setTransactions(externalDatabase.convertItemsToExternal(database.getTransactions(), new TransactionConverter_v5()));
-//		externalDatabase.setTemplates(externalDatabase.convertItemsToExternal(database.getTemplates(), new TemplateConverter_v5()));
-//		externalDatabase.setCharts(externalDatabase.convertItemsToExternal(database.getCharts(), new ChartConverter_v5()));
-//		externalDatabase.setImages(externalDatabase.convertItemsToExternal(database.getImages(), new ImageConverter_v5()));
-//
+
+		externalDatabase.setCategories(externalDatabase.convertItemsToExternal(database.getCategories(), new CategoryConverter()));
+		externalDatabase.setAccounts(externalDatabase.convertItemsToExternal(database.getAccounts(), new AccountConverter(null)));
+		externalDatabase.setTransactions(externalDatabase.convertItemsToExternal(database.getTransactions(), new TransactionConverter(null, null)));
+		externalDatabase.setTemplates(externalDatabase.convertItemsToExternal(database.getTemplates(), new TemplateConverter(null, null, null)));
+		externalDatabase.setCharts(externalDatabase.convertItemsToExternal(database.getCharts(), new ChartConverter()));
+		externalDatabase.setImages(externalDatabase.convertItemsToExternal(database.getImages(), new ImageConverter()));
+
 		return externalDatabase;
 	}
 }

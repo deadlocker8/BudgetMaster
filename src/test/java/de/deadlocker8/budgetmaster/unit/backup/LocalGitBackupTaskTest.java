@@ -7,7 +7,7 @@ import de.deadlocker8.budgetmaster.backup.LocalGitBackupTask;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupCategory_v5;
-import de.deadlocker8.budgetmaster.database.model.v5.BackupDatabase_v5;
+import de.deadlocker8.budgetmaster.database.model.v6.BackupDatabase_v6;
 import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.unit.helpers.Helpers;
@@ -103,7 +103,7 @@ public class LocalGitBackupTaskTest
 
 		final Path repositoryFolder = tempFolder.newFolder().toPath().resolve(".git");
 
-		final BackupDatabase_v5 database = new BackupDatabase_v5();
+		final BackupDatabase_v6 database = new BackupDatabase_v6();
 		Mockito.when(databaseService.getDatabaseForJsonSerialization()).thenReturn(database);
 		Mockito.doCallRealMethod().when(databaseService).exportDatabase(Mockito.any());
 
@@ -131,7 +131,7 @@ public class LocalGitBackupTaskTest
 
 		final Path repositoryFolder = tempFolder.newFolder().toPath().resolve(".git");
 
-		final BackupDatabase_v5 database = new BackupDatabase_v5();
+		final BackupDatabase_v6 database = new BackupDatabase_v6();
 		Mockito.when(databaseService.getDatabaseForJsonSerialization()).thenReturn(database);
 		Mockito.doCallRealMethod().when(databaseService).exportDatabase(Mockito.any());
 
@@ -155,7 +155,7 @@ public class LocalGitBackupTaskTest
 
 		final Path repositoryFolder = tempFolder.newFolder().toPath().resolve(".git");
 
-		final BackupDatabase_v5 database = new BackupDatabase_v5();
+		final BackupDatabase_v6 database = new BackupDatabase_v6();
 		Mockito.when(databaseService.getDatabaseForJsonSerialization()).thenReturn(database);
 		Mockito.doCallRealMethod().when(databaseService).exportDatabase(Mockito.any());
 
@@ -163,7 +163,7 @@ public class LocalGitBackupTaskTest
 		localGitBackupTask.setGitFolder(repositoryFolder);
 		localGitBackupTask.run();
 
-		final BackupDatabase_v5 databaseModified = new BackupDatabase_v5(List.of(new BackupCategory_v5(5, "myCategory", "#FF0000", CategoryType.CUSTOM, null)), List.of(), List.of(), List.of(), List.of(), List.of());
+		final BackupDatabase_v6 databaseModified = new BackupDatabase_v6(List.of(new BackupCategory_v5(5, "myCategory", "#FF0000", CategoryType.CUSTOM, null)), List.of(), List.of(), List.of(), List.of(), List.of());
 		Mockito.when(databaseService.getDatabaseForJsonSerialization()).thenReturn(databaseModified);
 		localGitBackupTask.run();
 
