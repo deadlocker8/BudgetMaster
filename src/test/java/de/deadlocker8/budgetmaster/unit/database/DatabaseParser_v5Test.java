@@ -57,8 +57,8 @@ public class DatabaseParser_v5Test
 		try
 		{
 			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v5Test.json").toURI())));
-			DatabaseParser_v5 importer = new DatabaseParser_v5(json);
-			BackupDatabase_v5 database = importer.parseDatabaseFromJSON();
+			DatabaseParser_v5 parser = new DatabaseParser_v5(json);
+			BackupDatabase_v5 database = parser.parseDatabaseFromJSON();
 
 			final BackupChart_v5 chart = new BackupChart_v5(9, "The best chart", "/* This list will be dynamically filled with all the transactions between\r\n* the start and and date you select on the \"Show Chart\" page\r\n* and filtered according to your specified filter.\r\n* An example entry for this list and tutorial about how to create custom charts ca be found in the BudgetMaster wiki:\r\n* https://github.com/deadlocker8/BudgetMaster/wiki/How-to-create-custom-charts\r\n*/\r\nvar transactionData \u003d [];\r\n\r\n// Prepare your chart settings here (mandatory)\r\nvar plotlyData \u003d [{\r\n    x: [],\r\n    y: [],\r\n    type: \u0027bar\u0027\r\n}];\r\n\r\n// Add your Plotly layout settings here (optional)\r\nvar plotlyLayout \u003d {};\r\n\r\n// Add your Plotly configuration settings here (optional)\r\nvar plotlyConfig \u003d {\r\n    showSendToCloud: false,\r\n    displaylogo: false,\r\n    showLink: false,\r\n    responsive: true\r\n};\r\n\r\n// Don\u0027t touch this line\r\nPlotly.newPlot(\"containerID\", plotlyData, plotlyLayout, plotlyConfig);\r\n", ChartType.CUSTOM, 7);
 
@@ -77,8 +77,8 @@ public class DatabaseParser_v5Test
 		try
 		{
 			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v5Test.json").toURI())));
-			DatabaseParser_v5 importer = new DatabaseParser_v5(json);
-			BackupDatabase_v5 database = importer.parseDatabaseFromJSON();
+			DatabaseParser_v5 parser = new DatabaseParser_v5(json);
+			BackupDatabase_v5 database = parser.parseDatabaseFromJSON();
 
 			final BackupCategory_v5 category = new BackupCategory_v5(3, "0815", "#ffcc00", CategoryType.CUSTOM, "fas fa-icons");
 
@@ -97,8 +97,8 @@ public class DatabaseParser_v5Test
 		try
 		{
 			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v5Test.json").toURI())));
-			DatabaseParser_v5 importer = new DatabaseParser_v5(json);
-			BackupDatabase_v5 database = importer.parseDatabaseFromJSON();
+			DatabaseParser_v5 parser = new DatabaseParser_v5(json);
+			BackupDatabase_v5 database = parser.parseDatabaseFromJSON();
 
 			final BackupImage_v5 accountImage = new BackupImage_v5(1, new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
 			final BackupAccount_v5 account = new BackupAccount_v5(3, "Second Account", AccountState.FULL_ACCESS, AccountType.CUSTOM, accountImage);
@@ -121,8 +121,8 @@ public class DatabaseParser_v5Test
 		try
 		{
 			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v5Test.json").toURI())));
-			DatabaseParser_v5 importer = new DatabaseParser_v5(json);
-			BackupDatabase_v5 database = importer.parseDatabaseFromJSON();
+			DatabaseParser_v5 parser = new DatabaseParser_v5(json);
+			BackupDatabase_v5 database = parser.parseDatabaseFromJSON();
 
 			assertThat(database.getImages()).hasSize(1);
 			assertThat(database.getImages().get(0)).hasFieldOrPropertyWithValue("fileExtension", ImageFileExtension.PNG);
@@ -142,8 +142,8 @@ public class DatabaseParser_v5Test
 		try
 		{
 			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v5Test.json").toURI())));
-			DatabaseParser_v5 importer = new DatabaseParser_v5(json);
-			BackupDatabase_v5 database = importer.parseDatabaseFromJSON();
+			DatabaseParser_v5 parser = new DatabaseParser_v5(json);
+			BackupDatabase_v5 database = parser.parseDatabaseFromJSON();
 
 			BackupImage_v5 templateImage = new BackupImage_v5(1, new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
 
@@ -171,8 +171,8 @@ public class DatabaseParser_v5Test
 		try
 		{
 			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v5Test.json").toURI())));
-			DatabaseParser_v5 importer = new DatabaseParser_v5(json);
-			BackupDatabase_v5 database = importer.parseDatabaseFromJSON();
+			DatabaseParser_v5 parser = new DatabaseParser_v5(json);
+			BackupDatabase_v5 database = parser.parseDatabaseFromJSON();
 
 			BackupAccount_v5 account1 = new BackupAccount_v5(2, "Default", AccountState.FULL_ACCESS, AccountType.CUSTOM, null);
 

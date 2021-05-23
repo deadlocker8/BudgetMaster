@@ -51,8 +51,8 @@ public class DatabaseParser_v4Test
 		try
 		{
 			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v4Test.json").toURI())));
-			DatabaseParser_v4 importer = new DatabaseParser_v4(json);
-			BackupDatabase_v4 database = importer.parseDatabaseFromJSON();
+			DatabaseParser_v4 parser = new DatabaseParser_v4(json);
+			BackupDatabase_v4 database = parser.parseDatabaseFromJSON();
 
 			final BackupCategory_v4 categoryNone = new BackupCategory_v4(1, "Keine Kategorie", "#FFFFFF", CategoryType.NONE);
 			final BackupCategory_v4 categoryRest = new BackupCategory_v4(2, "Übertrag", "#FFFF00", CategoryType.REST);
@@ -73,8 +73,8 @@ public class DatabaseParser_v4Test
 		try
 		{
 			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v4Test.json").toURI())));
-			DatabaseParser_v4 importer = new DatabaseParser_v4(json);
-			BackupDatabase_v4 database = importer.parseDatabaseFromJSON();
+			DatabaseParser_v4 parser = new DatabaseParser_v4(json);
+			BackupDatabase_v4 database = parser.parseDatabaseFromJSON();
 
 			assertThat(database.getAccounts()).hasSize(3);
 			assertThat(database.getAccounts().get(0)).hasFieldOrPropertyWithValue("name", "Placeholder");
@@ -93,8 +93,8 @@ public class DatabaseParser_v4Test
 		try
 		{
 			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v4Test.json").toURI())));
-			DatabaseParser_v4 importer = new DatabaseParser_v4(json);
-			BackupDatabase_v4 database = importer.parseDatabaseFromJSON();
+			DatabaseParser_v4 parser = new DatabaseParser_v4(json);
+			BackupDatabase_v4 database = parser.parseDatabaseFromJSON();
 
 			BackupAccount_v4 account1 = new BackupAccount_v4(2, "Default", AccountType.CUSTOM);
 			BackupAccount_v4 account2 = new BackupAccount_v4(3, "Second Account", AccountType.CUSTOM);
@@ -175,8 +175,8 @@ public class DatabaseParser_v4Test
 		try
 		{
 			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v4Test.json").toURI())));
-			DatabaseParser_v4 importer = new DatabaseParser_v4(json);
-			BackupDatabase_v4 database = importer.parseDatabaseFromJSON();
+			DatabaseParser_v4 parser = new DatabaseParser_v4(json);
+			BackupDatabase_v4 database = parser.parseDatabaseFromJSON();
 
 			BackupAccount_v4 account1 = new BackupAccount_v4(2, "Default", AccountType.CUSTOM);
 			BackupAccount_v4 account2 = new BackupAccount_v4(3, "Second Account", AccountType.CUSTOM);
