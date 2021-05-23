@@ -121,9 +121,8 @@ public class DatabaseParser_v4Test
 			normalTransaction_2.setCategory(category3);
 			normalTransaction_2.setExpenditure(true);
 
-			List<Tag> tags = new ArrayList<>();
-			Tag tag = new Tag("0815");
-			tag.setID(1);
+			List<BackupTag_v4> tags = new ArrayList<>();
+			BackupTag_v4 tag = new BackupTag_v4("0815");
 			tags.add(tag);
 			normalTransaction_2.setTags(tags);
 
@@ -194,9 +193,8 @@ public class DatabaseParser_v4Test
 			normalTemplate.setCategory(categoryNone);
 			normalTemplate.setExpenditure(false);
 
-			List<Tag> tags = new ArrayList<>();
-			Tag tag = new Tag("0815");
-			tag.setID(1);
+			List<BackupTag_v4> tags = new ArrayList<>();
+			BackupTag_v4 tag = new BackupTag_v4("0815");
 			tags.add(tag);
 			normalTemplate.setTags(tags);
 

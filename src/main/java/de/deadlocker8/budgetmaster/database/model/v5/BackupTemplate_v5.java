@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.database.model.v5;
 
+import de.deadlocker8.budgetmaster.database.model.v4.BackupTag_v4;
 import de.deadlocker8.budgetmaster.tags.Tag;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public class BackupTemplate_v5
 	private String name;
 	private String description;
 	private BackupImage_v5 icon;
-	private List<Tag> tags;
+	private List<BackupTag_v4> tags;
 	private BackupAccount_v5 transferAccount;
 
 	public BackupTemplate_v5()
@@ -23,7 +24,7 @@ public class BackupTemplate_v5
 		// for GSON
 	}
 
-	public BackupTemplate_v5(String templateName, Integer amount, Boolean isExpenditure, BackupAccount_v5 account, BackupCategory_v5 category, String name, String description, BackupImage_v5 icon, List<Tag> tags, BackupAccount_v5 transferAccount)
+	public BackupTemplate_v5(String templateName, Integer amount, Boolean isExpenditure, BackupAccount_v5 account, BackupCategory_v5 category, String name, String description, BackupImage_v5 icon, List<BackupTag_v4> tags, BackupAccount_v5 transferAccount)
 	{
 		this.templateName = templateName;
 		this.amount = amount;
@@ -117,12 +118,12 @@ public class BackupTemplate_v5
 		this.icon = icon;
 	}
 
-	public List<Tag> getTags()
+	public List<BackupTag_v4> getTags()
 	{
 		return tags;
 	}
 
-	public void setTags(List<Tag> tags)
+	public void setTags(List<BackupTag_v4> tags)
 	{
 		this.tags = tags;
 	}

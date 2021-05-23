@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.database.model.v5;
 
 import de.deadlocker8.budgetmaster.database.model.v4.BackupRepeatingOption_v4;
-import de.deadlocker8.budgetmaster.tags.Tag;
+import de.deadlocker8.budgetmaster.database.model.v4.BackupTag_v4;
 
 import java.util.List;
 import java.util.Objects;
@@ -15,7 +15,7 @@ public class BackupTransaction_v5
 	private BackupCategory_v5 category;
 	private String name;
 	private String description;
-	private List<Tag> tags;
+	private List<BackupTag_v4> tags;
 	private BackupRepeatingOption_v4 repeatingOption;
 	private BackupAccount_v5 transferAccount;
 
@@ -24,7 +24,7 @@ public class BackupTransaction_v5
 		// for GSON
 	}
 
-	public BackupTransaction_v5(Integer amount, Boolean isExpenditure, String date, BackupAccount_v5 account, BackupCategory_v5 category, String name, String description, List<Tag> tags, BackupRepeatingOption_v4 repeatingOption, BackupAccount_v5 transferAccount)
+	public BackupTransaction_v5(Integer amount, Boolean isExpenditure, String date, BackupAccount_v5 account, BackupCategory_v5 category, String name, String description, List<BackupTag_v4> tags, BackupRepeatingOption_v4 repeatingOption, BackupAccount_v5 transferAccount)
 	{
 		this.amount = amount;
 		this.isExpenditure = isExpenditure;
@@ -108,12 +108,12 @@ public class BackupTransaction_v5
 		this.description = description;
 	}
 
-	public List<Tag> getTags()
+	public List<BackupTag_v4> getTags()
 	{
 		return tags;
 	}
 
-	public void setTags(List<Tag> tags)
+	public void setTags(List<BackupTag_v4> tags)
 	{
 		this.tags = tags;
 	}

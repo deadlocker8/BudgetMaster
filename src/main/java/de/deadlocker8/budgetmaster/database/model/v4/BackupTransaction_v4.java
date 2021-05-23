@@ -18,7 +18,7 @@ public class BackupTransaction_v4 implements BackupTransactionBase_v4, Upgradeab
 	private BackupCategory_v4 category;
 	private String name;
 	private String description;
-	private List<Tag> tags;
+	private List<BackupTag_v4> tags;
 	private BackupRepeatingOption_v4 repeatingOption;
 	private BackupAccount_v4 transferAccount;
 
@@ -97,12 +97,12 @@ public class BackupTransaction_v4 implements BackupTransactionBase_v4, Upgradeab
 		this.description = description;
 	}
 
-	public List<Tag> getTags()
+	public List<BackupTag_v4> getTags()
 	{
 		return tags;
 	}
 
-	public void setTags(List<Tag> tags)
+	public void setTags(List<BackupTag_v4> tags)
 	{
 		this.tags = tags;
 	}

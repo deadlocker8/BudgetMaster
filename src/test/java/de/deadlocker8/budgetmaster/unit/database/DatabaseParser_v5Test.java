@@ -228,7 +228,6 @@ public class DatabaseParser_v5Test
 
 			List<Tag> tags = new ArrayList<>();
 			Tag tag = new Tag("0815");
-			tag.setID(1);
 			tags.add(tag);
 			normalTransaction_2.setTags(tags);
 
