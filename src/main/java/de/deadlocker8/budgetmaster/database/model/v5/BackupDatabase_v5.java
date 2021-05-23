@@ -136,7 +136,7 @@ public class BackupDatabase_v5 implements BackupDatabase
 	@Override
 	public BackupDatabase upgrade()
 	{
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	public static BackupDatabase_v5 createFromInternalEntities(InternalDatabase database)

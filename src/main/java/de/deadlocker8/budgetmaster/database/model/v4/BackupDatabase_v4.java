@@ -108,6 +108,6 @@ public class BackupDatabase_v4 implements BackupDatabase
 	@Override
 	public InternalDatabase convertToInternal()
 	{
-		return null;
+		throw new UnsupportedOperationException();
 	}
 }
