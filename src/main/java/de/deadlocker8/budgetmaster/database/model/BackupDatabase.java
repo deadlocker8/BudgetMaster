@@ -22,4 +22,24 @@ public interface BackupDatabase
 		}
 		return upgradedItems;
 	}
+
+	default <T, S> List<T> convertItemsToInternal(List<S> backupItems, Converter<T, S> converter)
+	{
+		List<T> convertedItems = new ArrayList<>();
+		for(S backupItem : backupItems)
+		{
+			convertedItems.add(converter.convertToInternalForm(backupItem));
+		}
+		return convertedItems;
+	}
+
+	default <T, S> List<S> convertItemsToExternal(List<T> backupItems, Converter<T, S> converter)
+	{
+		List<S> convertedItems = new ArrayList<>();
+		for(T backupItem : backupItems)
+		{
+			convertedItems.add(converter.convertToExternalForm(backupItem));
+		}
+		return convertedItems;
+	}
 }

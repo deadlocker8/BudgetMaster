@@ -6,13 +6,11 @@ import de.deadlocker8.budgetmaster.charts.Chart;
 import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.JSONIdentifier;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
-import de.deadlocker8.budgetmaster.database.model.Converter;
 import de.deadlocker8.budgetmaster.database.model.v5.converter.*;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BackupDatabase_v5 implements BackupDatabase
@@ -117,16 +115,6 @@ public class BackupDatabase_v5 implements BackupDatabase
 		return new InternalDatabase(convertedCategories, convertedAccounts, convertedTransactions, convertedTemplates, convertedCharts, convertedImages);
 	}
 
-	private <T, S> List<T> convertItemsToInternal(List<S> backupItems, Converter<T, S> converter)
-	{
-		List<T> convertedItems = new ArrayList<>();
-		for(S backupItem : backupItems)
-		{
-			convertedItems.add(converter.convertToInternalForm(backupItem));
-		}
-		return convertedItems;
-	}
-
 	@Override
 	public int getVersion()
 	{
@@ -141,23 +129,15 @@ public class BackupDatabase_v5 implements BackupDatabase
 
 	public static BackupDatabase_v5 createFromInternalEntities(InternalDatabase database)
 	{
-		final List<BackupCategory_v5> convertedCategories = convertItemsToExternal(database.getCategories(), new CategoryConverter_v5());
-		final List<BackupAccount_v5> convertedAccounts = convertItemsToExternal(database.getAccounts(), new AccountConverter_v5());
-		final List<BackupTransaction_v5> convertedTransactions = convertItemsToExternal(database.getTransactions(), new TransactionConverter_v5());
-		final List<BackupTemplate_v5> convertedTemplates = convertItemsToExternal(database.getTemplates(), new TemplateConverter_v5());
-		final List<BackupChart_v5> convertedCharts = convertItemsToExternal(database.getCharts(), new ChartConverter_v5());
-		final List<BackupImage_v5> convertedImages = convertItemsToExternal(database.getImages(), new ImageConverter_v5());
+		final BackupDatabase_v5 externalDatabase = new BackupDatabase_v5();
 
-		return new BackupDatabase_v5(convertedCategories, convertedAccounts, convertedTransactions, convertedTemplates, convertedCharts, convertedImages);
-	}
+		externalDatabase.setCategories(externalDatabase.convertItemsToExternal(database.getCategories(), new CategoryConverter_v5()));
+		externalDatabase.setAccounts(externalDatabase.convertItemsToExternal(database.getAccounts(), new AccountConverter_v5()));
+		externalDatabase.setTransactions(externalDatabase.convertItemsToExternal(database.getTransactions(), new TransactionConverter_v5()));
+		externalDatabase.setTemplates(externalDatabase.convertItemsToExternal(database.getTemplates(), new TemplateConverter_v5()));
+		externalDatabase.setCharts(externalDatabase.convertItemsToExternal(database.getCharts(), new ChartConverter_v5()));
+		externalDatabase.setImages(externalDatabase.convertItemsToExternal(database.getImages(), new ImageConverter_v5()));
 
-	private static <T, S> List<S> convertItemsToExternal(List<T> backupItems, Converter<T, S> converter)
-	{
-		List<S> convertedItems = new ArrayList<>();
-		for(T backupItem : backupItems)
-		{
-			convertedItems.add(converter.convertToExternalForm(backupItem));
-		}
-		return convertedItems;
+		return externalDatabase;
 	}
 }
