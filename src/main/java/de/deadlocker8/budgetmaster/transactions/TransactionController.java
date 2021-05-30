@@ -115,8 +115,15 @@ public class TransactionController extends BaseController
 	}
 
 	@GetMapping("/newTransaction/{type}")
-	public String newTransaction(Model model, @CookieValue("currentDate") String cookieDate, @PathVariable String type)
+	public String newTransaction(WebRequest request, Model model, @CookieValue("currentDate") String cookieDate, @PathVariable String type)
 	{
+		final AccountState accountState = helpers.getCurrentAccount().getAccountState();
+		if(accountState != AccountState.FULL_ACCESS)
+		{
+			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.transaction.add.warning", Localization.getString(accountState.getLocalizationKey())), NotificationType.WARNING));
+			return "redirect:/transactions";
+		}
+
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 		Transaction emptyTransaction = new Transaction();
 		emptyTransaction.setCategory(categoryService.findByType(CategoryType.NONE));

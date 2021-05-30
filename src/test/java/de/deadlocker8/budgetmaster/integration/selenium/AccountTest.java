@@ -225,6 +225,25 @@ public class AccountTest
 		assertThat(icons).isEmpty();
 	}
 
+	@Test
+	public void test_readOnly_preventNewTransaction()
+	{
+		TransactionTestHelper.selectGlobalAccountByName(driver, "read only account");
+
+		driver.get(helper.getUrl() + "/transactions");
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("modalFilterTrigger")));
+
+		assertThat(driver.findElements(By.id("button-new-transaction"))).isEmpty();
+
+		// try to open new transaction page
+		driver.get(helper.getUrl() + "/transactions/newTransaction/normal");
+		wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("modalFilterTrigger")));
+
+		assertThat(driver.findElement(By.cssSelector(".notification.background-yellow")).isDisplayed()).isTrue();
+	}
+
 	public static void assertAccountColumns(List<WebElement> columns, boolean isDefaultIconVisible, boolean isDefaultIconSelected, AccountState expectedAccountState, String name)
 	{
 		// icons

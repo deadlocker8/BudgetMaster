@@ -5,12 +5,12 @@ import de.deadlocker8.budgetmaster.Build;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.backup.*;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
-import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.controller.BaseController;
-import de.deadlocker8.budgetmaster.database.Database;
 import de.deadlocker8.budgetmaster.database.DatabaseParser;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
+import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
+import de.deadlocker8.budgetmaster.database.model.v6.BackupDatabase_v6;
 import de.deadlocker8.budgetmaster.services.ImportResultItem;
 import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.services.UpdateCheckService;
@@ -219,7 +219,7 @@ public class SettingsController extends BaseController
 	{
 		LOGGER.debug("Exporting database...");
 
-		final Database databaseForJsonSerialization = databaseService.getDatabaseForJsonSerialization();
+		final BackupDatabase_v6 databaseForJsonSerialization = databaseService.getDatabaseForJsonSerialization();
 		String data = DatabaseService.GSON.toJson(databaseForJsonSerialization);
 		byte[] dataBytes = data.getBytes(StandardCharsets.UTF_8);
 
@@ -291,8 +291,8 @@ public class SettingsController extends BaseController
 		try
 		{
 			String jsonString = new String(file.getBytes(), StandardCharsets.UTF_8);
-			DatabaseParser importer = new DatabaseParser(jsonString, categoryService.findByType(CategoryType.NONE));
-			Database database = importer.parseDatabaseFromJSON();
+			DatabaseParser importer = new DatabaseParser(jsonString);
+			InternalDatabase database = importer.parseDatabaseFromJSON();
 
 			request.setAttribute("database", database, RequestAttributes.SCOPE_SESSION);
 			return "redirect:/settings/database/import/step1";
@@ -338,7 +338,7 @@ public class SettingsController extends BaseController
 	@PostMapping("/database/import/step3")
 	public String importDatabase(WebRequest request, @ModelAttribute("Import") AccountMatchList accountMatchList, Model model)
 	{
-		final Database database = (Database) request.getAttribute("database", RequestAttributes.SCOPE_SESSION);
+		final InternalDatabase database = (InternalDatabase) request.getAttribute("database", RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute("database", RequestAttributes.SCOPE_SESSION);
 
 		final Boolean importTemplates = (Boolean) request.getAttribute("importTemplates", RequestAttributes.SCOPE_SESSION);

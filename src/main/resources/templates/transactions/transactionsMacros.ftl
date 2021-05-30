@@ -96,12 +96,18 @@
 
 <#macro buttons isFilterActive>
     <div class="row hide-on-small-only valign-wrapper">
-        <div class="col s6 right-align transactions-buttons-col">
-            <@buttonNew "new-transaction-button-list new-transaction-button-list-large"/>
-        </div>
-        <div class="col s6 left-align">
-            <@buttonFilter isFilterActive/>
-        </div>
+        <#if helpers.getCurrentAccount().getAccountState().name() == 'FULL_ACCESS'>
+            <div class="col s6 right-align transactions-buttons-col">
+                <@buttonNew "new-transaction-button-list new-transaction-button-list-large" helpers.getCurrentAccount()/>
+            </div>
+            <div class="col s6 left-align">
+                <@buttonFilter isFilterActive/>
+            </div>
+        <#else>
+            <div class="col s12 center-align">
+                <@buttonFilter isFilterActive/>
+            </div>
+        </#if>
     </div>
 
     <div class="hide-on-med-and-up center-align">
@@ -112,13 +118,17 @@
                 </div>
             </div>
             <div class="col s12 transactions-buttons-col">
-                <@buttonNew "new-transaction-button-list "/>
+                <@buttonNew "new-transaction-button-list " helpers.getCurrentAccount()/>
             </div>
         </div>
     </div>
 </#macro>
 
-<#macro buttonNew listClasses>
+<#macro buttonNew listClasses currentAccount>
+    <#if currentAccount.getAccountState().name() != 'FULL_ACCESS'>
+        <#return/>
+    </#if>
+
     <div class="fixed-action-btn new-transaction-button">
         <a class="btn-floating btn-large btn waves-effect waves-light background-blue" id="button-new-transaction">
             <i class="material-icons left">add</i>${locale.getString("title.transaction.new.short")}

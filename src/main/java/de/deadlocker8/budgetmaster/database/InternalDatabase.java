@@ -1,6 +1,5 @@
 package de.deadlocker8.budgetmaster.database;
 
-import com.google.gson.annotations.Expose;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.categories.Category;
@@ -15,37 +14,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class Database
+public class InternalDatabase
 {
-	@Expose
-	private final String TYPE = "BUDGETMASTER_DATABASE";
-
-	@Expose
-	private final int VERSION = 5;
-
-	@Expose
 	private List<Category> categories;
-
-	@Expose
 	private List<Account> accounts;
-
-	@Expose
 	private List<Transaction> transactions;
-
-	@Expose
 	private List<Template> templates;
-
-	@Expose
 	private List<Chart> charts;
-
-	@Expose
 	private List<Image> images;
 
-	public Database()
+	public InternalDatabase()
 	{
 	}
 
-	public Database(List<Category> categories, List<Account> accounts, List<Transaction> transactions, List<Template> templates, List<Chart> charts, List<Image> images)
+	public InternalDatabase(List<Category> categories, List<Account> accounts, List<Transaction> transactions, List<Template> templates, List<Chart> charts, List<Image> images)
 	{
 		this.categories = categories;
 		this.accounts = accounts;

@@ -147,7 +147,7 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 		Path applicationSupportFolder = prepare(args);
 		Path logPath = applicationSupportFolder.resolve("error.log");
 
-		String loggingArgument = "--logging.file=" + logPath.toString();
+		String loggingArgument = "--logging.file.name=" + logPath;
 		List<String> arguments = new ArrayList<>(ProgramArgs.getArgs());
 		if(!arguments.contains(loggingArgument))
 		{

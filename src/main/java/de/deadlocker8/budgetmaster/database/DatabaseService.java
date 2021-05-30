@@ -2,8 +2,6 @@ package de.deadlocker8.budgetmaster.database;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializer;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.categories.Category;
@@ -11,6 +9,8 @@ import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.charts.Chart;
 import de.deadlocker8.budgetmaster.charts.ChartService;
 import de.deadlocker8.budgetmaster.charts.ChartType;
+import de.deadlocker8.budgetmaster.database.model.v5.BackupDatabase_v5;
+import de.deadlocker8.budgetmaster.database.model.v6.BackupDatabase_v6;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
@@ -22,7 +22,6 @@ import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.thecodelabs.utils.io.PathUtils;
 import org.joda.time.DateTime;
-import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +43,7 @@ import java.util.stream.Stream;
 @Service
 public class DatabaseService
 {
-	public static final  Gson GSON = new GsonBuilder()
-			.excludeFieldsWithoutExposeAnnotation()
-			.registerTypeAdapter(DateTime.class, (JsonSerializer<DateTime>) (json, typeOfSrc, context) -> new JsonPrimitive(ISODateTimeFormat.date().print(json)))
-			.create();
+	public static final Gson GSON = new GsonBuilder().create();
 	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseService.class);
 
 	private final AccountService accountService;
@@ -222,7 +218,7 @@ public class DatabaseService
 	@Transactional
 	public void exportDatabase(Path backupPath)
 	{
-		final Database database = getDatabaseForJsonSerialization();
+		final BackupDatabase_v6 database = getDatabaseForJsonSerialization();
 
 		try(Writer writer = new FileWriter(backupPath.toString()))
 		{
@@ -247,7 +243,7 @@ public class DatabaseService
 		return "BudgetMasterDatabase_" + DateTime.now().toString(formatString) + ".json";
 	}
 
-	public Database getDatabaseForJsonSerialization()
+	public BackupDatabase_v6 getDatabaseForJsonSerialization()
 	{
 		List<Category> categories = categoryService.getAllEntitiesAsc();
 		List<Account> accounts = accountService.getRepository().findAll();
@@ -258,9 +254,12 @@ public class DatabaseService
 		List<Image> images = imageService.getRepository().findAll();
 		LOGGER.debug(MessageFormat.format("Reduced {0} transactions to {1}", transactions.size(), filteredTransactions.size()));
 
-		Database database = new Database(categories, accounts, filteredTransactions, templates, charts, images);
+		InternalDatabase database = new InternalDatabase(categories, accounts, filteredTransactions, templates, charts, images);
 		LOGGER.debug(MessageFormat.format("Created database for JSON with {0} transactions, {1} categories, {2} accounts, {3} templates, {4} charts and {5} images", database.getTransactions().size(), database.getCategories().size(), database.getAccounts().size(), database.getTemplates().size(), database.getCharts().size(), database.getImages()));
-		return database;
+
+		BackupDatabase_v6 databaseInExternalForm = BackupDatabase_v6.createFromInternalEntities(database);
+		LOGGER.debug("Converted database to external form");
+		return databaseInExternalForm;
 	}
 
 	private List<Transaction> filterRepeatingTransactions(List<Transaction> transactions)
