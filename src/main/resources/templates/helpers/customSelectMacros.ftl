@@ -22,7 +22,7 @@
     <@customSelectStart "category-select-wrapper" categories inputClasses labelText "transaction-category" "label">
         <div class="custom-select-trigger" tabindex="0">
             <div class="custom-select-selected-item">
-                <#if selectedCategory??><@customSelectOptionCategoryContent selectedCategory "no-margin-left"/></#if>
+                <#if selectedCategory??><@customSelectOptionCategoryContent category=selectedCategory classes="no-margin-left" datasetValue=true/></#if>
             </div>
             <div class="custom-select-arrow"></div>
         </div>
@@ -140,8 +140,8 @@
     </div>
 </#macro>
 
-<#macro customSelectOptionCategoryContent category classes="" datasetValue="">
-    <@categoriesFunctions.categoryCircle category=category classes="category-circle-small ${classes}" datasetValue=""/>
+<#macro customSelectOptionCategoryContent category classes="" datasetValue=false>
+    <@categoriesFunctions.categoryCircle category=category classes="category-circle-small ${classes}" datasetValue=datasetValue/>
     <span class="custom-select-item-name">${categoriesFunctions.getCategoryName(category)}</span>
 </#macro>
 

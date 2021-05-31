@@ -15,14 +15,14 @@
     </#if>
 </#function>
 
-<#macro categoryCircle category classes="" datasetValue="" enableSearchWrapper=false>
+<#macro categoryCircle category classes="" datasetValue=false enableSearchWrapper=false>
     <#assign categoryName=getCategoryName(category)>
 
     <#if enableSearchWrapper>
         <a href="<@s.url '/search?searchCategory=true&searchText=' + category.getName()/>">
     </#if>
 
-    <div class="category-circle ${classes} <#if settings.getShowCategoriesAsCircles()?? && settings.getShowCategoriesAsCircles() == false>category-square</#if>" style="background-color: ${category.color}" <#if datasetValue?has_content>data-value="${category.getID()}"</#if>>
+    <div class="category-circle ${classes} <#if settings.getShowCategoriesAsCircles()?? && settings.getShowCategoriesAsCircles() == false>category-square</#if>" style="background-color: ${category.color}" <#if datasetValue>data-value="${category.getID()}"</#if>>
         <span style="color: ${category.getAppropriateTextColor()}">
             <#if category.getIcon()?has_content>
                 <i class="${category.getIcon()}"></i>
