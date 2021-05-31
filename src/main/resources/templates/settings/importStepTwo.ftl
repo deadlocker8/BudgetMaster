@@ -24,18 +24,22 @@
                 </div>
 
                 <div class="container">
-                    <div class="section center-align">
-                        <@header.buttonLink url='/accounts/newAccount' icon='add' localizationKey='title.account.new' classes='button-new-account'/>
-                    </div>
-                </div>
-
-                <div class="container">
                     <#import "../helpers/validation.ftl" as validation>
-                    <form name="Import" action="<@s.url '/settings/database/import/step3'/>" method="post" onsubmit="return validateForm()">
+                    <form name="Import" method="post" onsubmit="return validateForm()">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
+                        <div class="section center-align">
+                            <@header.buttonSubmit name='action' icon='add' localizationKey='title.account.new' id='buttonImport' classes='button-new-account' formaction='/settings/database/import/step2/createAccount'/>
+                        </div>
+
                         <table class="bordered">
-                            <#list helpers.getAccountMatches(database.getAccounts()) as accountMatch>
+                            <#if accountMatchList??>
+                                <#assign accountMatches=accountMatchList.getAccountMatches()>
+                            <#else>
+                                <#assign accountMatches=helpers.getAccountMatches(database.getAccounts())>
+                            </#if>
+
+                            <#list accountMatches as accountMatch>
                                 <tr>
                                     <td class="import-text">${locale.getString("info.database.import.source")}</td>
                                     <td class="account-source-id hidden"><#if accountMatch.getAccountSource().getID()??>${accountMatch.getAccountSource().getID()?c}<#else>-1</#if> </td>
@@ -44,11 +48,11 @@
                                     <td>
                                         <div class="input-field no-margin">
                                             <select class="account-destination">
-                                                <#list availableAccounts as account>
-                                                    <#if (account.getType().name() == "CUSTOM")>
-                                                        <option value="${account.getID()?c}">${account.getName()}</option>
-                                                    </#if>
-                                                </#list>
+                                                <#if accountMatch.getAccountDestination()??>
+                                                    <@accountSelect selectedAccountID=accountMatch.getAccountDestination().getID()/>
+                                                <#else>
+                                                    <@accountSelect/>
+                                                </#if>
                                             </select>
                                         </div>
                                     </td>
@@ -70,7 +74,7 @@
                             </div>
 
                             <div class="col m6 l4 left-align">
-                                <@header.buttonSubmit name='action' icon='unarchive' localizationKey='settings.database.import' id='buttonImport'/>
+                                <@header.buttonSubmit name='action' icon='unarchive' localizationKey='settings.database.import' id='buttonImport' formaction='/settings/database/import/step3'/>
                             </div>
                         </div>
                     </form>
@@ -84,3 +88,11 @@
         <script src="<@s.url '/js/import.js'/>"></script>
     </@header.body>
 </html>
+
+<#macro accountSelect selectedAccountID=-1>
+    <#list availableAccounts as account>
+        <#if (account.getType().name() == "CUSTOM")>
+            <option value="${account.getID()?c}" <#if account.getID() == selectedAccountID>selected</#if>>${account.getName()}</option>
+        </#if>
+    </#list>
+</#macro>

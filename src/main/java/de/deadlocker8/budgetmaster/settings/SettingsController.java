@@ -34,7 +34,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -281,7 +280,7 @@ public class SettingsController extends BaseController
 	}
 
 	@RequestMapping("/database/upload")
-	public String upload(WebRequest request, Model model, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
+	public String upload(WebRequest request, Model model, @RequestParam("file") MultipartFile file)
 	{
 		if(file.isEmpty())
 		{
@@ -330,9 +329,24 @@ public class SettingsController extends BaseController
 	@GetMapping("/database/import/step2")
 	public String importStepTwo(WebRequest request, Model model)
 	{
+		Object accountMatches = request.getAttribute("accountMatchList", RequestAttributes.SCOPE_SESSION);
+		if(accountMatches != null)
+		{
+			final AccountMatchList accountMatchList = (AccountMatchList) accountMatches;
+			model.addAttribute("accountMatchList", accountMatchList);
+			request.removeAttribute("accountMatchList", RequestAttributes.SCOPE_SESSION);
+		}
+
 		model.addAttribute("database", request.getAttribute("database", RequestAttributes.SCOPE_SESSION));
 		model.addAttribute("availableAccounts", accountService.getAllEntitiesAsc());
 		return "settings/importStepTwo";
+	}
+
+	@PostMapping("/database/import/step2/createAccount")
+	public String importCreateAccount(WebRequest request, @ModelAttribute("Import") AccountMatchList accountMatchList, Model model)
+	{
+		request.setAttribute("accountMatchList", accountMatchList, RequestAttributes.SCOPE_SESSION);
+		return "redirect:/accounts/newAccount";
 	}
 
 	@PostMapping("/database/import/step3")

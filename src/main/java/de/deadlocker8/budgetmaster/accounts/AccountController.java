@@ -161,7 +161,7 @@ public class AccountController extends BaseController
 			accountService.updateExistingAccount(account);
 		}
 
-		if(request.getSession().getAttribute("database") != null)
+		if(request.getSession().getAttribute("accountMatchList") != null)
 		{
 			return "redirect:/settings/database/import/step2";
 		}
