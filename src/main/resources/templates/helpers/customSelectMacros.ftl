@@ -141,7 +141,7 @@
 </#macro>
 
 <#macro customSelectOptionCategoryContent category classes="" datasetValue="">
-    <@categoriesFunctions.categoryCircle category "category-circle-small ${classes}" datasetValue=""/>
+    <@categoriesFunctions.categoryCircle category=category classes="category-circle-small ${classes}" datasetValue=""/>
     <span class="custom-select-item-name">${categoriesFunctions.getCategoryName(category)}</span>
 </#macro>
 

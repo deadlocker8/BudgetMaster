@@ -42,7 +42,7 @@
                             <#assign categoryName=categoriesFunctions.getCategoryName(category)>
                             <#assign usageCount=helpers.getUsageCountForCategory(category)/>
                             <tr>
-                                <td><@categoriesFunctions.categoryCircle category/></td>
+                                <td><@categoriesFunctions.categoryCircle category=category enableSearchWrapper=true/></td>
                                 <td>${categoryName} </td>
                                 <td><a href="<@s.url '/search?searchCategory=true&searchText=' + categoryName/>" class="waves-effect waves-light text-default">${usageCount}</a></td>
                                 <td>

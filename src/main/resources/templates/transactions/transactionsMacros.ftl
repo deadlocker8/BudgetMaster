@@ -17,10 +17,10 @@
     <#import "../categories/categoriesFunctions.ftl" as categoriesFunctions>
     <div class="col s2 l1 xl1 ${alignment}">
         <div class="hide-on-med-and-down">
-            <@categoriesFunctions.categoryCircle transaction.category/>
+            <@categoriesFunctions.categoryCircle category=transaction.category enableSearchWrapper=true/>
         </div>
         <div class="hide-on-large-only">
-            <@categoriesFunctions.categoryCircle transaction.category "category-circle-small"/>
+            <@categoriesFunctions.categoryCircle category=transaction.category classes="category-circle-small" enableSearchWrapper=true/>
         </div>
     </div>
 </#macro>
