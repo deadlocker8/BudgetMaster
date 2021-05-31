@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.unit.database;
 
 import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.accounts.AccountRepository;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryRepository;
@@ -37,6 +38,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -63,6 +65,9 @@ public class ImportServiceTest
 
 	@Mock
 	private RepeatingTransactionUpdater repeatingTransactionUpdater;
+
+	@Mock
+	private AccountRepository accountRepository;
 
 	@InjectMocks
 	private ImportService importService;
@@ -577,6 +582,35 @@ public class ImportServiceTest
 
 		Image expectedImage = new Image(image.getImage(), image.getFileName(), image.getFileExtension());
 		Mockito.verify(imageRepositoryMock, Mockito.atLeast(1)).save(expectedImage);
+	}
+
+	@Test
+	public void test_importAccounts_icon()
+	{
+		Image image = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
+		image.setID(3);
+
+		Account accountSource = new Account("my account with icon", AccountType.CUSTOM, image);
+		accountSource.setID(1);
+		Account accountDestination = new Account("destination", AccountType.CUSTOM);
+		accountDestination.setID(15);
+
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(accountSource), List.of(), List.of(), List.of(), List.of(image));
+		AccountMatch accountMatch = new AccountMatch(accountSource);
+		accountMatch.setAccountDestination(accountDestination);
+
+		Account expectedAccount = new Account("destination", AccountType.CUSTOM, image);
+		expectedAccount.setID(15);
+		Mockito.when(accountRepository.save(Mockito.any())).thenReturn(expectedAccount);
+		Mockito.when(accountRepository.findById(15)).thenReturn(Optional.of(accountDestination));
+
+		ImageRepository imageRepositoryMock = Mockito.mock(ImageRepository.class);
+		Mockito.when(imageService.getRepository()).thenReturn(imageRepositoryMock);
+		Mockito.when(imageRepositoryMock.save(Mockito.any())).thenReturn(image);
+
+		importService.importDatabase(database, new AccountMatchList(List.of(accountMatch)), true, true);
+
+		Mockito.verify(accountRepository, Mockito.atLeast(1)).save(expectedAccount);
 	}
 
 	@Test

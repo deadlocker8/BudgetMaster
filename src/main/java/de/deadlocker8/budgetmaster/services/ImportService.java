@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.services;
 
 import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.accounts.AccountRepository;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryRepository;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
@@ -41,13 +42,15 @@ public class ImportService
 	private final ChartService chartService;
 	private final ImageService imageService;
 	private final RepeatingTransactionUpdater repeatingTransactionUpdater;
+	private final AccountRepository accountRepository;
+
 
 	private InternalDatabase database;
 	private List<String> collectedErrorMessages;
 
 	@Autowired
 	public ImportService(CategoryRepository categoryRepository, TransactionRepository transactionRepository, TemplateRepository templateRepository,
-						 TagRepository tagRepository, ChartService chartService, ImageService imageService, RepeatingTransactionUpdater repeatingTransactionUpdater)
+						 TagRepository tagRepository, ChartService chartService, ImageService imageService, RepeatingTransactionUpdater repeatingTransactionUpdater, AccountRepository accountRepository)
 	{
 		this.categoryRepository = categoryRepository;
 		this.transactionRepository = transactionRepository;
@@ -56,6 +59,7 @@ public class ImportService
 		this.chartService = chartService;
 		this.imageService = imageService;
 		this.repeatingTransactionUpdater = repeatingTransactionUpdater;
+		this.accountRepository = accountRepository;
 	}
 
 	public List<ImportResultItem> importDatabase(InternalDatabase database, AccountMatchList accountMatchList, Boolean importTemplates, Boolean importCharts)
@@ -66,13 +70,12 @@ public class ImportService
 		final List<ImportResultItem> importResultItems = new ArrayList<>();
 
 		LOGGER.debug("Importing database...");
+		importResultItems.add(importImages());
 		importResultItems.add(importCategories());
 		importResultItems.add(importAccounts(accountMatchList));
 		importResultItems.add(importTransactions());
 
-		importResultItems.add(importImages());
 		if(importTemplates)
-
 		{
 			importResultItems.add(importTemplates());
 		}
@@ -224,6 +227,21 @@ public class ImportService
 
 			try
 			{
+				Account sourceAccount = database.getAccounts().stream()
+						.filter(account -> account.getID().equals(accountMatch.getAccountSource().getID()))
+						.findFirst()
+						.orElseThrow();
+
+				Account destinationAccount = accountRepository.findById(accountMatch.getAccountDestination().getID()).orElseThrow();
+
+				Image sourceIcon = sourceAccount.getIcon();
+				if(sourceIcon != null)
+				{
+					LOGGER.debug("Overwriting destination account icon");
+					destinationAccount.setIcon(sourceIcon);
+					accountRepository.save(destinationAccount);
+				}
+
 				List<TransactionBase> transactions = new ArrayList<>(database.getTransactions());
 				transactions.removeAll(alreadyUpdatedTransactions);
 				alreadyUpdatedTransactions.addAll(updateAccountsForItems(transactions, accountMatch.getAccountSource().getID(), accountMatch.getAccountDestination()));
