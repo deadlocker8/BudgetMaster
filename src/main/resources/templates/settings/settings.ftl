@@ -255,6 +255,10 @@
             <@settingsMacros.update/>
         </#if>
 
+        <script>
+            copiedToClipboard = '${locale.getString("copied")}';
+        </script>
+
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>

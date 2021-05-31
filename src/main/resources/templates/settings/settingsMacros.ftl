@@ -86,7 +86,7 @@
         <div class="modal-content">
             <h4>${locale.getString("info.title.database.delete")}</h4>
             <p>${locale.getString("info.header.text.database.delete")}</p>
-            <p>${locale.getString("info.text.database.delete", verificationCode)}</p>
+            <p class="valign-wrapper">${locale.getString("info.text.database.delete")} <span id="verificationCode">${verificationCode}</span></p>
 
             <form id="form-confirm-database-delete" action="<@s.url '/settings/database/delete'/>" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>

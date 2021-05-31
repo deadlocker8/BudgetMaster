@@ -20,3 +20,14 @@
     margin-top: 2em;
     margin-bottom: 2em;
 }
+
+#verificationCode {
+    font-weight: bold;
+    margin-left: 1rem;
+    border: 2px solid var(--color-text);
+    padding: 0.3rem 0.5rem;
+}
+
+#verificationCode:hover {
+    cursor: pointer;
+}

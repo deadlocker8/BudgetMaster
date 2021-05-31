@@ -76,6 +76,17 @@ $(document).ready(function()
         document.getElementById('runBackupInput').value = 1;
     });
 
+    $('#verificationCode').click(function()
+    {
+        let verificationCodeElement = document.getElementsByName('verificationCode')[0];
+        verificationCodeElement.type = 'text';
+        verificationCodeElement.select();
+        document.execCommand('copy');
+        verificationCodeElement.type = 'hidden';
+
+        M.toast({html: copiedToClipboard, classes: 'green'});
+    });
+
     // on initial page load
     let autoBackupCheckbox = document.getElementsByName("autoBackupActivated")[0];
     $('#settings-auto-backup').toggle(autoBackupCheckbox.checked);
