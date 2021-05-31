@@ -312,7 +312,7 @@
                             <headerType>gui</headerType>
                             <jar>${project.outputDirectory}/${project.artifactName}.jar</jar>
                             <outfile>${project.exe}</outfile>
-                            <downloadUrl>https://java.com/download</downloadUrl>
+                            <downloadUrl>https://adoptopenjdk.net/</downloadUrl>
                             <classPath>
                                 <mainClass>${project.groupId}${project.artifactId}.Main</mainClass>
                             </classPath>
@@ -321,7 +321,7 @@
                                 <bundledJreAsFallback>false</bundledJreAsFallback>
                                 <minVersion>11</minVersion>
                                 <jdkPreference>preferJre</jdkPreference>
-                                <runtimeBits>64/32</runtimeBits>
+                                <runtimeBits>64</runtimeBits>
                             </jre>
                             <icon>build/icon.ico</icon>
                         </configuration>
