@@ -29,7 +29,7 @@
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                         <div class="section center-align">
-                            <@header.buttonSubmit name='action' icon='add' localizationKey='title.account.new' id='buttonImport' classes='button-new-account' formaction='/settings/database/import/step2/createAccount'/>
+                            <@header.buttonSubmit name='action' icon='add' localizationKey='title.account.new' id='buttonImportCreateAccount' classes='button-new-account' formaction='/settings/database/import/step2/createAccount'/>
                         </div>
 
                         <table class="bordered">
