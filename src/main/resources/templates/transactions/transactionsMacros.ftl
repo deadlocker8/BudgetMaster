@@ -57,14 +57,16 @@
 <#macro transactionAccountIcon transaction>
     <#if helpers.getCurrentAccount().getType().name() == "ALL" && transaction.getAccount()??>
         <#import "../helpers/customSelectMacros.ftl" as customSelectMacros>
-        <div class="col s2 l1 xl1 tooltipped no-padding" data-position="bottom" data-tooltip="${transaction.getAccount().getName()}">
-            <div class="hide-on-med-and-down">
-                <@customSelectMacros.accountIcon transaction.getAccount() transaction.getAccount().getName()/>
+        <a href="<@s.url '/accounts/' + transaction.getAccount().getID() + '/select'/>">
+            <div class="col s2 l1 xl1 tooltipped no-padding" data-position="bottom" data-tooltip="${transaction.getAccount().getName()}">
+                <div class="hide-on-med-and-down">
+                    <@customSelectMacros.accountIcon transaction.getAccount() transaction.getAccount().getName()/>
+                </div>
+                <div class="hide-on-large-only">
+                    <@customSelectMacros.accountIcon transaction.getAccount() transaction.getAccount().getName() "category-circle-small"/>
+                </div>
             </div>
-            <div class="hide-on-large-only">
-                <@customSelectMacros.accountIcon transaction.getAccount() transaction.getAccount().getName() "category-circle-small"/>
-            </div>
-        </div>
+        </a>
     </#if>
 
 </#macro>
