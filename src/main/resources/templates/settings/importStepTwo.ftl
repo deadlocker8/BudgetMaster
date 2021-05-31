@@ -24,6 +24,12 @@
                 </div>
 
                 <div class="container">
+                    <div class="section center-align">
+                        <@header.buttonLink url='/accounts/newAccount' icon='add' localizationKey='title.account.new' classes='button-new-account'/>
+                    </div>
+                </div>
+
+                <div class="container">
                     <#import "../helpers/validation.ftl" as validation>
                     <form name="Import" action="<@s.url '/settings/database/import/step3'/>" method="post" onsubmit="return validateForm()">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -45,10 +51,6 @@
                                                 </#list>
                                             </select>
                                         </div>
-                                    </td>
-                                    <td class="import-text">${locale.getString("info.database.import.or")}</td>
-                                    <td>
-                                        <@header.buttonLink url='/accounts/newAccount' icon='add' localizationKey='title.account.new' classes='button-new-account'/>
                                     </td>
                                 </tr>
                             </#list>
