@@ -44,7 +44,7 @@
                             <tr>
                                 <td><@categoriesFunctions.categoryCircle category/></td>
                                 <td>${categoryName} </td>
-                                <td>${usageCount}</td>
+                                <td><a href="<@s.url '/search?searchCategory=true&searchText=' + categoryName/>" class="waves-effect waves-light text-default">${usageCount}</a></td>
                                 <td>
                                     <@header.buttonFlat url='/categories/' + category.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default"/>
                                     <#if (category.getType().name() == "CUSTOM")>
