@@ -480,6 +480,9 @@ public class ImportServiceTest
 		final ChartRepository chartRepositoryMock = Mockito.mock(ChartRepository.class);
 		Mockito.when(chartService.getRepository()).thenReturn(chartRepositoryMock);
 
+		Mockito.when(accountRepository.findById(5)).thenReturn(Optional.of(destAccount1));
+		Mockito.when(accountRepository.findById(2)).thenReturn(Optional.of(destAccount2));
+
 		importService.importDatabase(database, accountMatchList, true, true);
 		InternalDatabase databaseResult = importService.getDatabase();
 
