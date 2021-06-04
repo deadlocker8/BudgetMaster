@@ -26,10 +26,10 @@
                     ${locale.getString("about.date")} ${build.getVersionDate()}
                 </div>
                 <div>
-                    ${locale.getString("news.all.releases")} <a href="${locale.getString("roadmap.url")}">${locale.getString("about.roadmap.link")}</a>
+                    ${locale.getString("news.all.releases")} <a target="_blank" href="${locale.getString("roadmap.url")}">${locale.getString("about.roadmap.link")}</a>
                 </div>
                 <div>
-                    ${locale.getString("news.detailed")} <a href="https://github.com/deadlocker8/BudgetMaster/releases/tag/v${build.getVersionName()}">GitHub</a>
+                    ${locale.getString("news.detailed")} <a target="_blank" href="https://github.com/deadlocker8/BudgetMaster/releases/tag/v${build.getVersionName()}">GitHub</a>
                 </div>
             </div>
         </div>
