@@ -47,6 +47,7 @@
                                 <td><a href="<@s.url '/search?searchCategory=true&searchText=' + categoryName/>" class="waves-effect waves-light text-default">${usageCount}</a></td>
                                 <td>
                                     <@header.buttonFlat url='/categories/' + category.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default"/>
+                                    <@header.buttonFlat url='/search?searchCategory=true&searchText=' + categoryName icon='search' localizationKey='' classes="no-padding text-default"/>
                                     <#if (category.getType().name() == "CUSTOM")>
                                         <@header.buttonFlat url='/categories/' + category.ID?c + '/requestDelete' icon='delete' localizationKey='' classes="no-padding text-default"/>
                                     </#if>
