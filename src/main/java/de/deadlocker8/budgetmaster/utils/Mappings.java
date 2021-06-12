@@ -22,4 +22,5 @@ public final class Mappings
 	public static final String TEAPOT = "/418";
 	public static final String TEMPLATES = "/templates";
 	public static final String TRANSACTIONS = "/transactions";
+	public static final String TAGS = "/tags";
 }

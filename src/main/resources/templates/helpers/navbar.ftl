@@ -15,6 +15,7 @@
         <@itemWithIcon "charts" "/charts" locale.getString("menu.charts"), entityType.CHART.getIcon(), entityType.CHART.getColor(), activeID/>
         <@itemWithIcon "reports", "/reports", locale.getString("menu.reports"), entityType.REPORT.getIcon(), entityType.REPORT.getColor(), activeID/>
         <@itemWithIcon "categories", "/categories", locale.getString("menu.categories"), entityType.CATEGORY.getIcon(), entityType.CATEGORY.getColor(), activeID/>
+        <@itemWithIcon "tags", "/tags", locale.getString("menu.tags"), entityType.TAGS.getIcon(), entityType.TAGS.getColor(), activeID/>
         <@itemWithIcon "statistics", "/statistics", locale.getString("menu.statistics"), entityType.STATISTICS.getIcon(), entityType.STATISTICS.getColor(), activeID/>
         <@itemWithIcon "settings", "/settings", locale.getString("menu.settings"), entityType.SETTINGS.getIcon(), entityType.SETTINGS.getColor(), activeID/>
 

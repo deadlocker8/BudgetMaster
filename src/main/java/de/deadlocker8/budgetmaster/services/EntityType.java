@@ -9,6 +9,7 @@ public enum EntityType
 	CHART("show_chart", "background-purple", ImportRequired.OPTIONAL),
 	REPORT("description", "background-green", ImportRequired.NONE),
 	CATEGORY("label", "background-orange", ImportRequired.REQUIRED),
+	TAGS("local_offer", "background-grey", ImportRequired.NONE),
 	STATISTICS("insert_chart", "background-grey", ImportRequired.NONE),
 	SETTINGS("settings", "background-red", ImportRequired.NONE),
 	IMAGE("image", "background-grey", ImportRequired.REQUIRED),
