@@ -47,7 +47,7 @@
 
 <#macro transactionButtons transaction>
         <div class="col s8 l2 xl1 right-align transaction-buttons no-wrap">
-            <#if (transaction.category.type.name() != "REST") && transaction.getAccount().getAccountState().name() == "FULL_ACCESS">
+            <#if transaction.isEditable()>
                 <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default"/>
                 <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/requestDelete' icon='delete' localizationKey='' classes="no-padding text-default"/>
             </#if>

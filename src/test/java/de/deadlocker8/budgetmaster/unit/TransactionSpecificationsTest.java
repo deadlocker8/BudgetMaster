@@ -322,7 +322,7 @@ public class TransactionSpecificationsTest
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).hasSize(1)
-			.contains(transferTransaction);
+				.contains(transferTransaction);
 	}
 
 	@Test
@@ -345,7 +345,7 @@ public class TransactionSpecificationsTest
 		tagIDs.add(tag1.getID());
 		tagIDs.add(tag2.getID());
 
-		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, true,null, List.of(), tagIDs, null);
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateTime.now(), account, true, true, true, null, List.of(), tagIDs, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).hasSize(2)
@@ -384,14 +384,15 @@ public class TransactionSpecificationsTest
 	}
 
 	@Test
-	public void getFromAllAccountsExceptTransfersWithSpecificEndDateOrWithHiddenAccount()
+	public void getFromAllAccountsExceptTransfersWithSpecificEndDate()
 	{
 		DateTime endDate = new DateTime(2018, 11, 30, 12, 0, 0, 0);
 		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, endDate, null, true, true, false, null, List.of(), List.of(), null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertThat(results).hasSize(2)
+		assertThat(results).hasSize(3)
 				.contains(transaction1)
-				.contains(repeatingTransaction);
+				.contains(repeatingTransaction)
+				.contains(transactionInHiddenAccount);
 	}
 }
