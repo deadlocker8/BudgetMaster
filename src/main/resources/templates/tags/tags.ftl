@@ -19,7 +19,7 @@
 
                 <@header.content>
                     <div class="container">
-                        <#if tags?size == 0>
+                        <#if tagUsages?keys?size == 0>
                             <div class="headline center-align">${locale.getString("placeholder")}</div>
                         <#else>
                             <table class="bordered">
@@ -30,14 +30,14 @@
                                         <th>${locale.getString("categories.actions")}</th>
                                     </tr>
                                 </thead>
-                                <#list tags as tag>
+                                <#list tagUsages as tagName, usageCount>
                                     <tr>
-                                        <td>${tag.getName()} </td>
+                                        <td>${tagName} </td>
                                         <td>
-                                            <a href="<@s.url '/search?searchCategory=true&searchText=' + tag.getName()/>" class="waves-effect waves-light text-default">?</a>
+                                            <a href="<@s.url '/search?searchTags=true&searchText=' + tagName/>" class="waves-effect waves-light text-default">${usageCount}</a>
                                         </td>
                                         <td>
-                                            <@header.buttonFlat url='/search?searchCategory=true&searchText=' + tag.getName() icon='search' localizationKey='' classes="no-padding text-default"/>
+                                            <@header.buttonFlat url='/search?searchTags=true&searchText=' + tagName icon='search' localizationKey='' classes="no-padding text-default"/>
                                         </td>
                                     </tr>
                                 </#list>

@@ -24,7 +24,7 @@ public class TagController extends BaseController
 	@GetMapping
 	public String tags(Model model)
 	{
-		model.addAttribute("tags", tagService.getAllEntitiesAsc());
+		model.addAttribute("tagUsages", tagService.getUsageCounts());
 		return "tags/tags";
 	}
 }
