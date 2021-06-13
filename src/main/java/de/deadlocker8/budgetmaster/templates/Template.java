@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmaster.templates;
 import com.google.gson.annotations.Expose;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.categories.Category;
+import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
@@ -45,7 +46,12 @@ public class Template implements TransactionBase
 
 	@ManyToOne
 	@Expose
+	@Deprecated(since = "v2.7.0", forRemoval = true)
 	private Image icon;
+
+	@ManyToOne
+	@Expose
+	private Icon iconReference;
 
 	@ManyToMany
 	@Expose
@@ -76,6 +82,7 @@ public class Template implements TransactionBase
 		this.name = template.getName();
 		this.description = template.getDescription();
 		this.icon = template.getIcon();
+		this.iconReference = template.getIconReference();
 		this.tags = new ArrayList<>(template.getTags());
 		this.transferAccount = template.getTransferAccount();
 	}
@@ -95,6 +102,7 @@ public class Template implements TransactionBase
 		this.name = transaction.getName();
 		this.description = transaction.getDescription();
 		this.icon = null;
+		this.iconReference = null;
 		if(transaction.getTags() == null)
 		{
 			this.tags = new ArrayList<>();
@@ -191,14 +199,26 @@ public class Template implements TransactionBase
 		this.description = description;
 	}
 
+	@Deprecated(since = "v2.7.0", forRemoval = true)
 	public Image getIcon()
 	{
 		return icon;
 	}
 
+	@Deprecated(since = "v2.7.0", forRemoval = true)
 	public void setIcon(Image icon)
 	{
 		this.icon = icon;
+	}
+
+	public Icon getIconReference()
+	{
+		return iconReference;
+	}
+
+	public void setIconReference(Icon iconReference)
+	{
+		this.iconReference = iconReference;
 	}
 
 	public List<Tag> getTags()
@@ -238,6 +258,7 @@ public class Template implements TransactionBase
 				", name='" + name + '\'' +
 				", description='" + description + '\'' +
 				", icon='" + icon + '\'' +
+				", iconReference='" + iconReference + '\'' +
 				", tags=" + tags;
 
 		if(account == null)
@@ -277,6 +298,7 @@ public class Template implements TransactionBase
 				Objects.equals(name, template.name) &&
 				Objects.equals(description, template.description) &&
 				Objects.equals(icon, template.icon) &&
+				Objects.equals(iconReference, template.iconReference) &&
 				Objects.equals(tags, template.tags) &&
 				Objects.equals(transferAccount, template.transferAccount);
 	}
@@ -284,6 +306,6 @@ public class Template implements TransactionBase
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, templateName, amount, isExpenditure, account, category, name, description, icon, tags, transferAccount);
+		return Objects.hash(ID, templateName, amount, isExpenditure, account, category, name, description, icon, iconReference, tags, transferAccount);
 	}
 }
