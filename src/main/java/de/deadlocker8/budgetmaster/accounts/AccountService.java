@@ -2,6 +2,10 @@ package de.deadlocker8.budgetmaster.accounts;
 
 import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
+import de.deadlocker8.budgetmaster.icon.Icon;
+import de.deadlocker8.budgetmaster.icon.IconService;
+import de.deadlocker8.budgetmaster.images.Image;
+import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.services.AccessAllEntities;
 import de.deadlocker8.budgetmaster.services.Resettable;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
@@ -27,13 +31,17 @@ public class AccountService implements Resettable, AccessAllEntities<Account>
 	private final AccountRepository accountRepository;
 	private final TransactionService transactionService;
 	private final UserRepository userRepository;
+	private final ImageService imageService;
+	private final IconService iconService;
 
 	@Autowired
-	public AccountService(AccountRepository accountRepository, TransactionService transactionService, UserRepository userRepository)
+	public AccountService(AccountRepository accountRepository, TransactionService transactionService, UserRepository userRepository, ImageService imageService, IconService iconService)
 	{
 		this.accountRepository = accountRepository;
 		this.transactionService = transactionService;
 		this.userRepository = userRepository;
+		this.imageService = imageService;
+		this.iconService = iconService;
 
 		createDefaults();
 	}
@@ -135,22 +143,40 @@ public class AccountService implements Resettable, AccessAllEntities<Account>
 
 	private void updateMissingAttributes()
 	{
-		// handle null values for new field "accountState"
 		for(Account account : accountRepository.findAll())
 		{
-			if(account.getAccountState() == null)
+			handleNullValuesForAccountState(account);
+
+			if(account.getIcon() != null && account.getIconReference() == null)
 			{
-				if(account.isReadOnly() == null || !account.isReadOnly())
-				{
-					account.setAccountState(AccountState.FULL_ACCESS);
-				}
-				else
-				{
-					account.setAccountState(AccountState.READ_ONLY);
-				}
-				LOGGER.debug(MessageFormat.format("Updated account {0}: Set missing attribute \"accountState\" to {1}", account.getName(), account.getAccountState()));
+				Integer imageID = account.getIcon().getID();
+				Image image = imageService.getRepository().findById(imageID).orElseThrow();
+
+				Icon iconReference = new Icon(image);
+				iconService.getRepository().save(iconReference);
+
+				account.setIconReference(iconReference);
+				account.setIcon(null);
+				LOGGER.debug(MessageFormat.format("Updated account {0}: Converted attribute \"icon\" to \"iconReference\" {1}", account.getName(), image.getFileName()));
 			}
+
 			accountRepository.save(account);
+		}
+	}
+
+	private void handleNullValuesForAccountState(Account account)
+	{
+		if(account.getAccountState() == null)
+		{
+			if(account.isReadOnly() == null || !account.isReadOnly())
+			{
+				account.setAccountState(AccountState.FULL_ACCESS);
+			}
+			else
+			{
+				account.setAccountState(AccountState.READ_ONLY);
+			}
+			LOGGER.debug(MessageFormat.format("Updated account {0}: Set missing attribute \"accountState\" to {1}", account.getName(), account.getAccountState()));
 		}
 	}
 
