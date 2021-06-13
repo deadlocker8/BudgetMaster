@@ -7,16 +7,23 @@ import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.accounts.AccountState;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
+import de.deadlocker8.budgetmaster.icon.Icon;
+import de.deadlocker8.budgetmaster.icon.IconService;
+import de.deadlocker8.budgetmaster.images.Image;
+import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.services.AccessAllEntities;
 import de.deadlocker8.budgetmaster.services.Resettable;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionBase;
 import org.padler.natorder.NaturalOrderComparator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +31,8 @@ import java.util.stream.Collectors;
 @Service
 public class TemplateService implements Resettable, AccessAllEntities<Template>
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger(TemplateService.class);
+
 	private static final Gson GSON = new GsonBuilder()
 			.setPrettyPrinting()
 			.create();
@@ -31,14 +40,19 @@ public class TemplateService implements Resettable, AccessAllEntities<Template>
 	private final TemplateRepository templateRepository;
 	private final AccountService accountService;
 	private final CategoryService categoryService;
-
+	private final ImageService imageService;
+	private final IconService iconService;
 
 	@Autowired
-	public TemplateService(TemplateRepository templateRepository, AccountService accountService, CategoryService categoryService, SettingsService settingsService)
+	public TemplateService(TemplateRepository templateRepository, AccountService accountService, CategoryService categoryService, SettingsService settingsService, ImageService imageService, IconService iconService)
 	{
 		this.templateRepository = templateRepository;
 		this.accountService = accountService;
 		this.categoryService = categoryService;
+		this.imageService = imageService;
+		this.iconService = iconService;
+
+		createDefaults();
 	}
 
 	public TemplateRepository getRepository()
@@ -55,6 +69,28 @@ public class TemplateService implements Resettable, AccessAllEntities<Template>
 	@Override
 	public void createDefaults()
 	{
+		updateMissingAttributes();
+	}
+
+	private void updateMissingAttributes()
+	{
+		for(Template template : templateRepository.findAll())
+		{
+			if(template.getIcon() != null && template.getIconReference() == null)
+			{
+				Integer imageID = template.getIcon().getID();
+				Image image = imageService.getRepository().findById(imageID).orElseThrow();
+
+				Icon iconReference = new Icon(image);
+				iconService.getRepository().save(iconReference);
+
+				template.setIconReference(iconReference);
+				template.setIcon(null);
+
+				templateRepository.save(template);
+				LOGGER.debug(MessageFormat.format("Updated template {0}: Converted attribute \"icon\" to \"iconReference\" {1}", template.getName(), image.getFileName()));
+			}
+		}
 	}
 
 	public void createFromTransaction(String templateName, Transaction transaction, boolean includeCategory, boolean includeAccount)
