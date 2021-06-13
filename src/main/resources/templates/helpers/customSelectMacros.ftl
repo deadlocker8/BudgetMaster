@@ -163,9 +163,9 @@
 </#macro>
 
 <#macro accountIcon account accountName classes="" datasetValue="">
-    <div class="category-circle ${classes} category-square <#if account.getIcon()?? == false>account-square-border</#if>" <#if datasetValue?has_content>data-value="${account.getID()}"</#if>>
-        <#if account.getIcon()??>
-            <img src="${account.getIcon().getBase64EncodedImage()}" class="account-select-icon"/>
+    <div class="category-circle ${classes} category-square <#if account.getIconReference()?? == false>account-square-border</#if>" <#if datasetValue?has_content>data-value="${account.getID()}"</#if>>
+        <#if account.getIconReference()??>
+            <@header.entityIcon entity=account classes="account-select-icon"/>
         <#else>
             <span class="text-blue">
                 ${accountName?capitalize[0]}

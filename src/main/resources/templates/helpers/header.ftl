@@ -119,3 +119,13 @@
         <i class="material-icons left <#if !localizationKey?has_content>no-margin</#if> ${iconClasses}">${icon}</i><#if localizationKey?has_content><span>${locale.getString(localizationKey)}</span></#if>
     </a>
 </#macro>
+
+<#macro entityIcon entity classes="">
+    <#if entity.getIconReference()??>
+        <#if entity.getIconReference().isBuiltinIcon()>
+            <i class="${entity.getIconReference().getBuiltinIdentifier()} ${classes}"></i>
+        <#else>
+            <img src="${entity.getIconReference().getImage().getBase64EncodedImage()}" class="${classes}"/>
+        </#if>
+    </#if>
+</#macro>

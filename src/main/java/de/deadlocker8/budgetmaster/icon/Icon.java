@@ -65,6 +65,11 @@ public class Icon
 		this.builtinIdentifier = builtinIdentifier;
 	}
 
+	public boolean isBuiltinIcon()
+	{
+		return image == null;
+	}
+
 	@Override
 	public boolean equals(Object o)
 	{

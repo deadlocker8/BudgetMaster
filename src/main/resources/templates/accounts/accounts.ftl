@@ -38,7 +38,7 @@
                                             <i class="fas fa-edit"></i>
                                         </#if>
                                     </td>
-                                    <td><#if account.getIcon()??><img src="${account.getIcon().getBase64EncodedImage()}" class="account-icon"/></#if></td>
+                                    <td><@header.entityIcon entity=account classes="account-icon"/></td>
                                     <td>${account.getName()}</td>
                                     <td>
                                         <a href="<@s.url '/accounts/${account.getID()?c}/edit'/>" class="btn-flat no-padding text-default"><i class="material-icons left">edit</i></a>
