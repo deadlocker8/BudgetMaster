@@ -31,7 +31,7 @@ public class Account implements ProvidesID
 	private Boolean isSelected = false;
 	private Boolean isDefault = false;
 
-	@Deprecated
+	@Deprecated(since = "v2.6.0", forRemoval = true)
 	private Boolean isReadOnly = false;
 
 	@Expose
@@ -39,6 +39,7 @@ public class Account implements ProvidesID
 
 	@ManyToOne
 	@Expose
+	@Deprecated(since = "v2.7.0", forRemoval = true)
 	private Image icon;
 
 	@Expose
@@ -113,13 +114,13 @@ public class Account implements ProvidesID
 		isDefault = aDefault;
 	}
 
-	@Deprecated
+	@Deprecated(since = "v2.6.0", forRemoval = true)
 	public Boolean isReadOnly()
 	{
 		return isReadOnly;
 	}
 
-	@Deprecated
+	@Deprecated(since = "v2.6.0", forRemoval = true)
 	public void setReadOnly(Boolean readOnly)
 	{
 		isReadOnly = readOnly;
@@ -145,11 +146,13 @@ public class Account implements ProvidesID
 		this.type = type;
 	}
 
+	@Deprecated(since = "v2.7.0", forRemoval = true)
 	public Image getIcon()
 	{
 		return icon;
 	}
 
+	@Deprecated(since = "v2.7.0", forRemoval = true)
 	public void setIcon(Image icon)
 	{
 		this.icon = icon;
