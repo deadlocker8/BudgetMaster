@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.controller.BaseController;
+import de.deadlocker8.budgetmaster.icon.Icon;
+import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.services.DateService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
@@ -39,14 +41,16 @@ public class TemplateController extends BaseController
 	private final TransactionService transactionService;
 	private final DateService dateService;
 	private final AccountService accountService;
+	private final IconService iconService;
 
 	@Autowired
-	public TemplateController(TemplateService templateService, SettingsService settingsService, TransactionService transactionService, DateService dateService, AccountService accountService)
+	public TemplateController(TemplateService templateService, SettingsService settingsService, TransactionService transactionService, DateService dateService, AccountService accountService, IconService iconService)
 	{
 		this.templateService = templateService;
 		this.transactionService = transactionService;
 		this.dateService = dateService;
 		this.accountService = accountService;
+		this.iconService = iconService;
 	}
 
 	@GetMapping
@@ -165,7 +169,9 @@ public class TemplateController extends BaseController
 	public String post(Model model,
 					   @ModelAttribute("NewTemplate") Template template, BindingResult bindingResult,
 					   @RequestParam(value = "includeAccount", required = false) boolean includeAccount,
-					   @RequestParam(value = "includeTransferAccount", required = false) boolean includeTransferAccount)
+					   @RequestParam(value = "includeTransferAccount", required = false) boolean includeTransferAccount,
+					   @RequestParam(value = "iconImageID", required = false) Integer iconImageID,
+					   @RequestParam(value = "builtinIconIdentifier", required = false) String builtinIconIdentifier)
 	{
 		template.setTemplateName(template.getTemplateName().trim());
 
@@ -210,6 +216,14 @@ public class TemplateController extends BaseController
 		{
 			template.setTransferAccount(null);
 		}
+
+		final Icon iconReference = iconService.createIconReference(iconImageID, builtinIconIdentifier);
+		if(iconReference != null)
+		{
+			iconService.getRepository().save(iconReference);
+		}
+		iconService.deleteIcon(template.getIconReference());
+		template.setIconReference(iconReference);
 
 		templateService.getRepository().save(template);
 		return "redirect:/templates";

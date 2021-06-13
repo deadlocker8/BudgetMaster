@@ -52,8 +52,8 @@
 </#macro>
 
 <#macro templateHeader template>
-    <#if template.getIcon()??>
-       <img src="${template.getIcon().getBase64EncodedImage()}" class="template-icon"/>
+    <#if template.getIconReference()??>
+        <@header.entityIcon entity=template classes="template-icon"/>
     <#elseif template.getTransferAccount()??>
         <i class="material-icons">swap_horiz</i>
     <#else>
