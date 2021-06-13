@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.accounts;
 
 import com.google.gson.annotations.Expose;
+import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.utils.ProvidesID;
@@ -42,17 +43,21 @@ public class Account implements ProvidesID
 	@Deprecated(since = "v2.7.0", forRemoval = true)
 	private Image icon;
 
+	@ManyToOne
+	@Expose
+	private Icon iconReference;
+
 	@Expose
 	private AccountType type;
 
-	public Account(String name, AccountType type, Image icon)
+	public Account(String name, AccountType type, Icon iconReference)
 	{
 		this.name = name;
 		this.type = type;
 		this.isSelected = false;
 		this.isDefault = false;
 		this.accountState = AccountState.FULL_ACCESS;
-		this.icon = icon;
+		this.iconReference = iconReference;
 	}
 
 	public Account(String name, AccountType type)
@@ -158,6 +163,16 @@ public class Account implements ProvidesID
 		this.icon = icon;
 	}
 
+	public Icon getIconReference()
+	{
+		return iconReference;
+	}
+
+	public void setIconReference(Icon iconReference)
+	{
+		this.iconReference = iconReference;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -170,6 +185,7 @@ public class Account implements ProvidesID
 				", accountState=" + accountState +
 				", type=" + type +
 				", icon=" + icon +
+				", iconReference=" + iconReference +
 				'}';
 	}
 
@@ -184,12 +200,14 @@ public class Account implements ProvidesID
 				Objects.equals(isSelected, account.isSelected) &&
 				Objects.equals(isDefault, account.isDefault) &&
 				accountState == account.accountState &&
-				Objects.equals(icon, account.icon) && type == account.type;
+				Objects.equals(icon, account.icon) &&
+				Objects.equals(iconReference, account.iconReference) &&
+				type == account.type;
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, name, isSelected, isDefault, accountState, icon, type);
+		return Objects.hash(ID, name, isSelected, isDefault, accountState, icon, iconReference, type);
 	}
 }
