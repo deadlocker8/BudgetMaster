@@ -26,29 +26,42 @@
         <div class="modal-content center-align">
             <div class="row">
                 <div class="col s12">
-                    <div class="headline">${locale.getString('upload.image.headline')}</div>
+                    <ul class="tabs">
+                        <li class="tab col s6"><a class="text-blue valign-wrapper active" href="#tabImages"><i class="fas fa-image"></i> Custom Images</a></li>
+                        <li class="tab col s6"><a class="text-blue valign-wrapper" href="#tabBuiltinIcons"><i class="fas fa-icons"></i> Built-in Icons</a></li>
+                    </ul>
                 </div>
-            </div>
-
-            <div class="row">
-                <@uploadImageForm/>
-            </div>
-
-            <hr>
-
-            <div class="row">
-                <div class="col s12">
-                    <div class="headline">${locale.getString('available.images')}</div>
-                </div>
-            </div>
-
-            <div class="row" id="available-images">
+                <div id="tabImages" class="col s12"><@tabImages/></div>
+                <div id="tabBuiltinIcons" class="col s12">Built-in Icons</div>
             </div>
         </div>
         <div class="modal-footer background-color">
             <@header.buttonLink url='' icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white' noUrl=true/>
             <@header.buttonLink url='' icon='done' id='button-icon-confirm' localizationKey='ok' color='green' classes='modal-action modal-close text-white' noUrl=true disabled=true/>
         </div>
+    </div>
+</#macro>
+
+<#macro tabImages>
+     <div class="row">
+        <div class="col s12">
+            <div class="headline">${locale.getString('upload.image.headline')}</div>
+        </div>
+    </div>
+
+    <div class="row">
+        <@uploadImageForm/>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="headline">${locale.getString('available.images')}</div>
+        </div>
+    </div>
+
+    <div class="row" id="available-images">
     </div>
 </#macro>
 

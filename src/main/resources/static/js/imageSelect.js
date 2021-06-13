@@ -35,6 +35,10 @@ $(document).ready(function()
             let idToFocusOnClose = modalIconSelect.dataset.focusOnClose;
 
             $(modalID).modal({
+                onOpenEnd: function f()
+                {
+                    M.Tabs.init(document.querySelector('.tabs'), {});
+                },
                 onCloseEnd: function f()
                 {
                     document.getElementById(idToFocusOnClose).focus();
