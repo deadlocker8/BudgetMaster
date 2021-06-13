@@ -115,7 +115,7 @@ public class BackupDatabase_v6 implements BackupDatabase
 		final List<Template> convertedTemplates = convertItemsToInternal(this.templates, new TemplateConverter(convertedImages, convertedCategories, convertedAccounts));
 		final List<Chart> convertedCharts = convertItemsToInternal(this.charts, new ChartConverter());
 
-		return new InternalDatabase(convertedCategories, convertedAccounts, convertedTransactions, convertedTemplates, convertedCharts, convertedImages);
+		return new InternalDatabase(convertedCategories, convertedAccounts, convertedTransactions, convertedTemplates, convertedCharts, convertedImages, List.of());
 	}
 
 	@Override

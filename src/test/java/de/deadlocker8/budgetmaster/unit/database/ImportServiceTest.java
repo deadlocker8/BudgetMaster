@@ -13,6 +13,7 @@ import de.deadlocker8.budgetmaster.charts.ChartType;
 import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
+import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.images.ImageFileExtension;
 import de.deadlocker8.budgetmaster.images.ImageRepository;
@@ -429,7 +430,7 @@ public class ImportServiceTest
 		chart.setScript("/* This list will be dynamically filled with all the transactions between\r\n* the start and and date you select on the \"Show Chart\" page\r\n* and filtered according to your specified filter.\r\n* An example entry for this list and tutorial about how to create custom charts ca be found in the BudgetMaster wiki:\r\n* https://github.com/deadlocker8/BudgetMaster/wiki/How-to-create-custom-charts\r\n*/\r\nvar transactionData \u003d [];\r\n\r\n// Prepare your chart settings here (mandatory)\r\nvar plotlyData \u003d [{\r\n    x: [],\r\n    y: [],\r\n    type: \u0027bar\u0027\r\n}];\r\n\r\n// Add your Plotly layout settings here (optional)\r\nvar plotlyLayout \u003d {};\r\n\r\n// Add your Plotly configuration settings here (optional)\r\nvar plotlyConfig \u003d {\r\n    showSendToCloud: false,\r\n    displaylogo: false,\r\n    showLink: false,\r\n    responsive: true\r\n};\r\n\r\n// Don\u0027t touch this line\r\nPlotly.newPlot(\"containerID\", plotlyData, plotlyLayout, plotlyConfig);\r\n");
 
 		// database
-		InternalDatabase database = new InternalDatabase(new ArrayList<>(), accounts, transactions, templates, List.of(chart), List.of());
+		InternalDatabase database = new InternalDatabase(new ArrayList<>(), accounts, transactions, templates, List.of(chart), List.of(), List.of());
 
 		// account matches
 		AccountMatch match1 = new AccountMatch(sourceAccount1);
@@ -510,7 +511,7 @@ public class ImportServiceTest
 		chart.setScript("/* This list will be dynamically filled with all the transactions between\r\n* the start and and date you select on the \"Show Chart\" page\r\n* and filtered according to your specified filter.\r\n* An example entry for this list and tutorial about how to create custom charts ca be found in the BudgetMaster wiki:\r\n* https://github.com/deadlocker8/BudgetMaster/wiki/How-to-create-custom-charts\r\n*/\r\nvar transactionData \u003d [];\r\n\r\n// Prepare your chart settings here (mandatory)\r\nvar plotlyData \u003d [{\r\n    x: [],\r\n    y: [],\r\n    type: \u0027bar\u0027\r\n}];\r\n\r\n// Add your Plotly layout settings here (optional)\r\nvar plotlyLayout \u003d {};\r\n\r\n// Add your Plotly configuration settings here (optional)\r\nvar plotlyConfig \u003d {\r\n    showSendToCloud: false,\r\n    displaylogo: false,\r\n    showLink: false,\r\n    responsive: true\r\n};\r\n\r\n// Don\u0027t touch this line\r\nPlotly.newPlot(\"containerID\", plotlyData, plotlyLayout, plotlyConfig);\r\n");
 
 		// database
-		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(chart), List.of());
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(chart), List.of(), List.of());
 
 		// act
 		int highestUsedID = 22;
@@ -535,14 +536,14 @@ public class ImportServiceTest
 		Image image2 = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.JPG);
 		image2.setID(4);
 
-		Account account1 = new Account("Account_1", AccountType.CUSTOM, image1);
-		Account account2 = new Account("Account_2", AccountType.CUSTOM, image2);
+		Icon icon1 = new Icon(image1);
+		Icon icon2 = new Icon(image2);
 
-		final List<Account> accountList = List.of(account1, account2);
+		final List<Icon> iconList = List.of(icon1, icon2);
 
-		List<Account> updatedAccounts = importService.updateImagesForAccounts(accountList, 3, 5);
-		assertThat(updatedAccounts).hasSize(1);
-		final Image icon = updatedAccounts.get(0).getIcon();
+		List<Icon> updatedIcons = importService.updateImagesForIcons(iconList, 3, 5);
+		assertThat(updatedIcons).hasSize(1);
+		final Image icon = updatedIcons.get(0).getImage();
 		assertThat(icon.getBase64EncodedImage()).isEqualTo("data:image/png;base64,");
 		assertThat(icon.getID()).isEqualTo(5);
 	}
@@ -560,7 +561,7 @@ public class ImportServiceTest
 		Mockito.when(imageService.getRepository()).thenReturn(imageRepositoryMock);
 		Mockito.when(imageRepositoryMock.save(Mockito.any())).thenReturn(newImage);
 
-		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(image));
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(image), List.of());
 		importService.importDatabase(database, new AccountMatchList(List.of()), true, true);
 
 		Image expectedImage = new Image(image.getImage(), image.getFileName(), image.getFileExtension());
@@ -580,7 +581,7 @@ public class ImportServiceTest
 		Mockito.when(imageService.getRepository()).thenReturn(imageRepositoryMock);
 		Mockito.when(imageRepositoryMock.save(Mockito.any())).thenReturn(newImage);
 
-		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(image));
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(image), List.of());
 		importService.importDatabase(database, new AccountMatchList(List.of()), true, true);
 
 		Image expectedImage = new Image(image.getImage(), image.getFileName(), image.getFileExtension());
@@ -592,17 +593,18 @@ public class ImportServiceTest
 	{
 		Image image = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
 		image.setID(3);
+		Icon icon = new Icon(image);
 
-		Account accountSource = new Account("my account with icon", AccountType.CUSTOM, image);
+		Account accountSource = new Account("my account with icon", AccountType.CUSTOM, icon);
 		accountSource.setID(1);
 		Account accountDestination = new Account("destination", AccountType.CUSTOM);
 		accountDestination.setID(15);
 
-		InternalDatabase database = new InternalDatabase(List.of(), List.of(accountSource), List.of(), List.of(), List.of(), List.of(image));
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(accountSource), List.of(), List.of(), List.of(), List.of(image), List.of(icon));
 		AccountMatch accountMatch = new AccountMatch(accountSource);
 		accountMatch.setAccountDestination(accountDestination);
 
-		Account expectedAccount = new Account("destination", AccountType.CUSTOM, image);
+		Account expectedAccount = new Account("destination", AccountType.CUSTOM, icon);
 		expectedAccount.setID(15);
 		Mockito.when(accountRepository.save(Mockito.any())).thenReturn(expectedAccount);
 		Mockito.when(accountRepository.findById(15)).thenReturn(Optional.of(accountDestination));
@@ -617,36 +619,6 @@ public class ImportServiceTest
 	}
 
 	@Test
-	public void test_updateImagesForTemplates()
-	{
-		Image image1 = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
-		image1.setID(3);
-
-		Image image2 = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.JPG);
-		image2.setID(4);
-
-		Template template1 = new Template();
-		template1.setTemplateName("Template with icon 1");
-		template1.setIsExpenditure(true);
-		template1.setIcon(image1);
-		template1.setTags(List.of());
-
-		Template template2 = new Template();
-		template2.setTemplateName("Template with icon 2");
-		template2.setIsExpenditure(true);
-		template2.setIcon(image2);
-		template2.setTags(List.of());
-
-		final List<Template> templateList = List.of(template1, template2);
-
-		List<Template> updatedTemplates = importService.updateImagesForTemplates(templateList, 3, 5);
-		assertThat(updatedTemplates).hasSize(1);
-		final Image icon = updatedTemplates.get(0).getIcon();
-		assertThat(icon.getBase64EncodedImage()).isEqualTo("data:image/png;base64,");
-		assertThat(icon.getID()).isEqualTo(5);
-	}
-
-	@Test
 	public void test_skipTemplates()
 	{
 		Template template = new Template();
@@ -656,7 +628,7 @@ public class ImportServiceTest
 		template.setTags(new ArrayList<>());
 
 		// database
-		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(template), List.of(), List.of());
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(template), List.of(), List.of(), List.of());
 
 		// act
 		importService.importDatabase(database, new AccountMatchList(List.of()), false, true);
@@ -675,7 +647,7 @@ public class ImportServiceTest
 		chart.setVersion(7);
 
 		// database
-		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(chart), List.of());
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(chart), List.of(), List.of());
 
 		Mockito.when(chartService.getHighestUsedID()).thenReturn(8);
 		final ChartRepository chartRepositoryMock = Mockito.mock(ChartRepository.class);
@@ -701,7 +673,7 @@ public class ImportServiceTest
 		Mockito.when(categoryRepository.findByNameAndColorAndType(Mockito.eq("Category1"), Mockito.any(), Mockito.any())).thenThrow(new NullPointerException());
 		Mockito.when(categoryRepository.findByNameAndColorAndType(Mockito.eq("Category2"), Mockito.any(), Mockito.any())).thenReturn(category2);
 
-		InternalDatabase database = new InternalDatabase(List.of(category1, category2), List.of(), List.of(), List.of(), List.of(), List.of());
+		InternalDatabase database = new InternalDatabase(List.of(category1, category2), List.of(), List.of(), List.of(), List.of(), List.of(), List.of());
 		final List<ImportResultItem> importResultItems = importService.importDatabase(database, new AccountMatchList(List.of()), false, false);
 
 		assertThat(importResultItems).hasSize(6)

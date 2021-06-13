@@ -109,8 +109,9 @@ public class DatabaseParser_v6_convertToInternalTest
 
 			final Image accountImage = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
 			accountImage.setID(1);
-			final Account account = new Account("Second Account", AccountType.CUSTOM, accountImage);
+			final Account account = new Account("Second Account", AccountType.CUSTOM, null);
 			account.setID(3);
+			account.setIcon(accountImage);
 
 			assertThat(database.getAccounts()).hasSize(3)
 					.contains(account);

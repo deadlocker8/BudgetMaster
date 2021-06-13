@@ -10,6 +10,7 @@ import de.deadlocker8.budgetmaster.charts.ChartService;
 import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
+import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.repeating.RepeatingTransactionUpdater;
@@ -234,11 +235,11 @@ public class ImportService
 
 				Account destinationAccount = accountRepository.findById(accountMatch.getAccountDestination().getID()).orElseThrow();
 
-				Image sourceIcon = sourceAccount.getIcon();
+				Icon sourceIcon = sourceAccount.getIconReference();
 				if(sourceIcon != null)
 				{
 					LOGGER.debug("Overwriting destination account icon");
-					destinationAccount.setIcon(sourceIcon);
+					destinationAccount.setIconReference(sourceIcon);
 					accountRepository.save(destinationAccount);
 				}
 
@@ -437,8 +438,7 @@ public class ImportService
 	{
 		List<Image> images = database.getImages();
 		LOGGER.debug(MessageFormat.format("Importing {0} images...", images.size()));
-		List<Account> alreadyUpdatedAccounts = new ArrayList<>();
-		List<Template> alreadyUpdatedTemplates = new ArrayList<>();
+		List<Icon> alreadyUpdatedIcons = new ArrayList<>();
 
 		int numberOfImportedImages = 0;
 
@@ -456,13 +456,9 @@ public class ImportService
 				final Image savedImage = imageService.getRepository().save(imageToCreate);
 				int newImageID = savedImage.getID();
 
-				List<Account> accounts = new ArrayList<>(database.getAccounts());
-				accounts.removeAll(alreadyUpdatedAccounts);
-				alreadyUpdatedAccounts.addAll(updateImagesForAccounts(accounts, oldImageID, newImageID));
-
-				List<Template> templates = new ArrayList<>(database.getTemplates());
-				templates.removeAll(alreadyUpdatedTemplates);
-				alreadyUpdatedTemplates.addAll(updateImagesForTemplates(templates, oldImageID, newImageID));
+				List<Icon> icons = new ArrayList<>(database.getIcons());
+				icons.removeAll(alreadyUpdatedIcons);
+				alreadyUpdatedIcons.addAll(updateImagesForIcons(icons, oldImageID, newImageID));
 
 				numberOfImportedImages++;
 			}
@@ -478,33 +474,12 @@ public class ImportService
 		return new ImportResultItem(EntityType.IMAGE, numberOfImportedImages, images.size());
 	}
 
-	public List<Account> updateImagesForAccounts(List<Account> items, int oldImageId, int newImageID)
+	public List<Icon> updateImagesForIcons(List<Icon> items, int oldImageId, int newImageID)
 	{
-		List<Account> updatedItems = new ArrayList<>();
-		for(Account item : items)
+		List<Icon> updatedItems = new ArrayList<>();
+		for(Icon item : items)
 		{
-			final Image image = item.getIcon();
-			if(image == null)
-			{
-				continue;
-			}
-
-			if(image.getID() == oldImageId)
-			{
-				image.setID(newImageID);
-				updatedItems.add(item);
-			}
-		}
-
-		return updatedItems;
-	}
-
-	public List<Template> updateImagesForTemplates(List<Template> items, int oldImageId, int newImageID)
-	{
-		List<Template> updatedItems = new ArrayList<>();
-		for(Template item : items)
-		{
-			final Image image = item.getIcon();
+			final Image image = item.getImage();
 			if(image == null)
 			{
 				continue;
