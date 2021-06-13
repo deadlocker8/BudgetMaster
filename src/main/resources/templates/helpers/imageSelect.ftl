@@ -9,14 +9,12 @@
 
             <div id="${id}" class="valign-wrapper item-icon">
                 <a id="item-icon-preview" data-url="<@s.url '/media/getAvailableImages'/>">
-                    <img id="item-icon-preview-icon" src="<#if item.getIcon()??>${item.getIcon().getBase64EncodedImage()}</#if>" class="item-icon-preview <#if item.getIcon()?? == false>hidden</#if>"/>
-                    <div id="item-icon-placeholder" class="<#if item.getIcon()??>hidden</#if>">${locale.getString("account.new.icon.placeholder")}</div>
+                    <img id="item-icon-preview-icon" src="<#if item.getIconReference()?? && item.getIconReference().getImage()??>${item.getIconReference().getImage().getBase64EncodedImage()}</#if>" class="item-icon-preview <#if item.getIconReference()?? && item.getIconReference().getImage()?? == false>hidden</#if>"/>
+                    <div id="item-icon-placeholder" class="<#if item.getIconReference()?? && item.getIconReference().getImage()??>hidden</#if>">${locale.getString("account.new.icon.placeholder")}</div>
                 </a>
                 <@header.buttonFlat url='' icon='delete' id='' localizationKey='' classes="no-padding text-default button-remove-icon-from-item" noUrl=true/>
 
-                <#-- TODO: remove first input after templates are migrated too -->
-                <input id="hidden-input-icon" type="hidden" name="icon" value="<#if item.getIcon()??>${item.getIcon().getID()?c}</#if>">
-                <input id="hidden-input-icon-image-id" type="hidden" name="iconImageID" value="<#if item.getIcon()??>${item.getIcon().getID()?c}</#if>">
+                <input id="hidden-input-icon-image-id" type="hidden" name="iconImageID" value="<#if item.getIconReference()?? && item.getIconReference().getImage()??>${item.getIconReference().getImage().getID()?c}</#if>">
             </div>
         </div>
     </div>

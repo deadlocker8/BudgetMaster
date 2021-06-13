@@ -4,7 +4,6 @@ $(document).ready(function()
     {
         document.getElementById("item-icon-preview-icon").classList.toggle('hidden', true);
         document.getElementById("item-icon-placeholder").classList.toggle('hidden', false);
-        document.getElementById("hidden-input-icon").value = '';
         document.getElementById("hidden-input-icon-image-id").value = '';
     });
 
@@ -24,7 +23,6 @@ $(document).ready(function()
 
         document.getElementById("item-icon-preview-icon").classList.toggle('hidden', false);
         document.getElementById("item-icon-placeholder").classList.toggle('hidden', true);
-        document.getElementById("hidden-input-icon").value = iconId;
         document.getElementById("hidden-input-icon-image-id").value = iconId;
     });
 
