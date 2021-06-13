@@ -256,6 +256,7 @@ public class AccountService implements Resettable, AccessAllEntities<Account>
 		Account existingAccount = existingAccountOptional.get();
 		existingAccount.setName(newAccount.getName());
 		existingAccount.setIcon(newAccount.getIcon());
+		existingAccount.setIconReference(newAccount.getIconReference());
 		existingAccount.setType(AccountType.CUSTOM);
 		existingAccount.setAccountState(newAccount.getAccountState());
 		accountRepository.save(existingAccount);

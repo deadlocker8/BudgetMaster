@@ -5,6 +5,7 @@ $(document).ready(function()
         document.getElementById("item-icon-preview-icon").classList.toggle('hidden', true);
         document.getElementById("item-icon-placeholder").classList.toggle('hidden', false);
         document.getElementById("hidden-input-icon").value = '';
+        document.getElementById("hidden-input-icon-image-id").value = '';
     });
 
     $('#button-icon-confirm').click(function()
@@ -24,6 +25,7 @@ $(document).ready(function()
         document.getElementById("item-icon-preview-icon").classList.toggle('hidden', false);
         document.getElementById("item-icon-placeholder").classList.toggle('hidden', true);
         document.getElementById("hidden-input-icon").value = iconId;
+        document.getElementById("hidden-input-icon-image-id").value = iconId;
     });
 
     $('#item-icon-preview').click(function()

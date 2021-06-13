@@ -15,6 +15,7 @@
                 <@header.buttonFlat url='' icon='delete' id='' localizationKey='' classes="no-padding text-default button-remove-icon-from-item" noUrl=true/>
 
                 <input id="hidden-input-icon" type="hidden" name="icon" value="<#if item.getIcon()??>${item.getIcon().getID()?c}</#if>">
+                <input id="hidden-input-icon-image-id" type="hidden" name="iconImageID" value="<#if item.getIcon()??>${item.getIcon().getID()?c}</#if>">
             </div>
         </div>
     </div>

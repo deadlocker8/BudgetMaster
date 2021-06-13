@@ -1,6 +1,8 @@
 package de.deadlocker8.budgetmaster.accounts;
 
 import de.deadlocker8.budgetmaster.controller.BaseController;
+import de.deadlocker8.budgetmaster.icon.Icon;
+import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
@@ -27,12 +29,14 @@ public class AccountController extends BaseController
 {
 	private final AccountService accountService;
 	private final ImageService imageService;
+	private final IconService iconService;
 
 	@Autowired
-	public AccountController(AccountService accountService, ImageService imageService)
+	public AccountController(AccountService accountService, ImageService imageService, IconService iconService)
 	{
 		this.accountService = accountService;
 		this.imageService = imageService;
+		this.iconService = iconService;
 	}
 
 	@GetMapping(value = "/{ID}/select")
@@ -122,6 +126,8 @@ public class AccountController extends BaseController
 	@PostMapping(value = "/newAccount")
 	public String post(HttpServletRequest request, WebRequest webRequest, Model model,
 					   @ModelAttribute("NewAccount") Account account,
+					   @RequestParam(value = "iconImageID", required = false) Integer iconImageID,
+					   @RequestParam(value = "builtinIconIdentifier", required = false) String builtinIconIdentifier,
 					   BindingResult bindingResult)
 	{
 		AccountValidator accountValidator = new AccountValidator();
@@ -150,6 +156,14 @@ public class AccountController extends BaseController
 			model.addAttribute("availableAccountStates", AccountState.values());
 			return "accounts/newAccount";
 		}
+
+		final Icon iconReference = iconService.createIconReference(iconImageID, builtinIconIdentifier);
+		if(iconReference != null)
+		{
+			iconService.getRepository().save(iconReference);
+		}
+		iconService.deleteIcon(account.getIconReference());
+		account.setIconReference(iconReference);
 
 		if(isNewAccount)
 		{
