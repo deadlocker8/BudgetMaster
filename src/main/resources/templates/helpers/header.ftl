@@ -126,7 +126,7 @@
             <#if wrapInCircle>
                 <div class="category-circle">
             </#if>
-                <i class="${entity.getIconReference().getBuiltinIdentifier()} text-default ${classes}"></i>
+                <i class="${entity.getIconReference().getBuiltinIdentifier()} ${classes}"></i>
             <#if wrapInCircle>
                 </div>
             </#if>
