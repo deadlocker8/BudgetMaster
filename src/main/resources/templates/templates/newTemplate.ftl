@@ -12,7 +12,7 @@
         <@header.style "transactions"/>
         <@header.style "datepicker"/>
         <@header.style "collapsible"/>
-        <@header.style "imageSelect"/>
+        <@header.style "iconSelect"/>
         <#import "/spring.ftl" as s>
     </head>
     <@header.body>
@@ -22,7 +22,7 @@
         <#import "../transactions/newTransactionMacros.ftl" as newTransactionMacros>
         <#import "templateFunctions.ftl" as templateFunctions>
         <#import "../helpers/customSelectMacros.ftl" as customSelectMacros>
-        <#import "../helpers/imageSelect.ftl" as imageSelectMacros>
+        <#import "../helpers/iconSelect.ftl" as iconSelectMacros>
 
         <main>
             <div class="card main-card background-color">
@@ -79,7 +79,7 @@
                         </#if>
 
                         <#-- icon -->
-                        <@imageSelectMacros.imageSelect id="template-icon" item=template/>
+                        <@iconSelectMacros.iconSelect id="template-icon" item=template/>
 
                         <br>
                         <#-- buttons -->
@@ -90,7 +90,7 @@
             </div>
         </main>
 
-        <@imageSelectMacros.modalIconSelect idToFocusOnClose="template-name"/>
+        <@iconSelectMacros.modalIconSelect idToFocusOnClose="template-name"/>
 
         <!-- Pass localization to JS -->
         <#import "../helpers/globalDatePicker.ftl" as datePicker>
@@ -103,6 +103,6 @@
         <script src="<@s.url '/js/helpers.js'/>"></script>
         <script src="<@s.url '/js/transactions.js'/>"></script>
         <script src="<@s.url '/js/templates.js'/>"></script>
-        <script src="<@s.url '/js/imageSelect.js'/>"></script>
+        <script src="<@s.url '/js/iconSelect.js'/>"></script>
     </@header.body>
 </html>

@@ -1,7 +1,7 @@
 <#import "/spring.ftl" as s>
 <#import "../helpers/header.ftl" as header>
 
-<#macro imageSelect id item>
+<#macro iconSelect id item>
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
             <i class="fas fa-icons prefix"></i>
