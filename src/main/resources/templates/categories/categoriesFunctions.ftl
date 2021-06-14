@@ -25,7 +25,7 @@
     <div class="category-circle ${classes} <#if settings.getShowCategoriesAsCircles()?? && settings.getShowCategoriesAsCircles() == false>category-square</#if>" style="background-color: ${category.color}" <#if datasetValue>data-value="${category.getID()}"</#if>>
         <span style="color: ${category.getAppropriateTextColor()}">
             <#if category.getIconReference()??>
-                <@header.entityIcon entity=category/>
+                <@header.entityIcon entity=category classes="category-icon"/>
             <#else>
                 ${categoryName?capitalize[0]}
             </#if>

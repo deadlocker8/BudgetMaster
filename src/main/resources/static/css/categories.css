@@ -18,6 +18,11 @@
     line-height: 40px;
 }
 
+.category-icon{
+    height: 100%;
+    width: 100%;
+}
+
 .category-circle-small {
     width: 34px;
     height: 34px;
