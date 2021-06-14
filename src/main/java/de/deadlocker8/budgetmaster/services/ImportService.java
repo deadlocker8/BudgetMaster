@@ -177,7 +177,7 @@ public class ImportService
 		if(existingCategory == null)
 		{
 			//category does not exist --> create it
-			Category categoryToCreate = new Category(category.getName(), category.getColor(), category.getType(), category.getIcon());
+			Category categoryToCreate = new Category(category.getName(), category.getColor(), category.getType(), category.getIconReference());
 			categoryRepository.save(categoryToCreate);
 
 			Category newCategory = categoryRepository.findByNameAndColorAndType(category.getName(), category.getColor(), category.getType());

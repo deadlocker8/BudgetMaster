@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.categories;
 
 import com.google.gson.annotations.Expose;
+import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.utils.ProvidesID;
 import de.thecodelabs.utils.util.Color;
@@ -32,7 +33,12 @@ public class Category implements ProvidesID
 	private CategoryType type;
 
 	@Expose
+	@Deprecated(since = "v2.7.0", forRemoval = true)
 	private String icon;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@Expose
+	private Icon iconReference;
 
 	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
 	private List<Transaction> referringTransactions;
@@ -42,12 +48,12 @@ public class Category implements ProvidesID
 		this(name, color, type, null);
 	}
 
-	public Category(String name, String color, CategoryType type, String icon)
+	public Category(String name, String color, CategoryType type, Icon iconReference)
 	{
 		this.name = name;
 		this.color = color;
 		this.type = type;
-		this.icon = icon;
+		this.iconReference = iconReference;
 	}
 
 	public Category()
@@ -94,14 +100,26 @@ public class Category implements ProvidesID
 		this.type = type;
 	}
 
+	@Deprecated(since = "v2.7.0", forRemoval = true)
 	public String getIcon()
 	{
 		return icon;
 	}
 
+	@Deprecated(since = "v2.7.0", forRemoval = true)
 	public void setIcon(String icon)
 	{
 		this.icon = icon;
+	}
+
+	public Icon getIconReference()
+	{
+		return iconReference;
+	}
+
+	public void setIconReference(Icon iconReference)
+	{
+		this.iconReference = iconReference;
 	}
 
 	public List<Transaction> getReferringTransactions()
@@ -128,6 +146,7 @@ public class Category implements ProvidesID
 				", color='" + color + '\'' +
 				", type=" + type +
 				", icon='" + icon + '\'' +
+				", iconReference='" + iconReference + '\'' +
 				'}';
 	}
 
@@ -141,12 +160,13 @@ public class Category implements ProvidesID
 				Objects.equals(name, category.name) &&
 				Objects.equals(color, category.color) &&
 				type == category.type &&
-				Objects.equals(icon, category.icon);
+				Objects.equals(icon, category.icon) &&
+				Objects.equals(iconReference, category.iconReference);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, name, color, type, icon);
+		return Objects.hash(ID, name, color, type, icon, iconReference);
 	}
 }

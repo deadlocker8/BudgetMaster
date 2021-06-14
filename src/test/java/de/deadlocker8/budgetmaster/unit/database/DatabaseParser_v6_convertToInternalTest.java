@@ -86,8 +86,9 @@ public class DatabaseParser_v6_convertToInternalTest
 			DatabaseParser_v6 importer = new DatabaseParser_v6(json);
 			InternalDatabase database = importer.parseDatabaseFromJSON().convertToInternal();
 
-			final Category category = new Category("0815", "#ffcc00", CategoryType.CUSTOM, "fas fa-icons");
+			final Category category = new Category("0815", "#ffcc00", CategoryType.CUSTOM, null);
 			category.setID(3);
+			category.setIcon("fas fa-icons");
 
 			assertThat(database.getCategories()).hasSize(3)
 					.contains(category);
