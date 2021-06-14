@@ -39,7 +39,7 @@
                     </ul>
                 </div>
                 <div id="tabImages" class="col s12"><@tabImages/></div>
-                <div id="tabBuiltinIcons" class="col s12"><@tabBuiltinIcons/></div>
+                <div id="tabBuiltinIcons" class="col s12"><@tabBuiltinIcons item/></div>
             </div>
         </div>
         <div class="modal-footer background-color">
@@ -72,7 +72,7 @@
     </div>
 </#macro>
 
-<#macro tabBuiltinIcons>
+<#macro tabBuiltinIcons item>
     <div class="row no-margin-bottom">
         <div class="input-field col s12 m12 l8 offset-l2">
             <i class="material-icons prefix">search</i>
@@ -88,14 +88,21 @@
 
     <div class="row">
         <#list fontawesomeIcons as icon>
-            <@builtinIconOption icon/>
+            <@builtinIconOption icon item/>
         </#list>
     </div>
 </#macro>
 
-<#macro builtinIconOption icon>
+<#macro builtinIconOption icon item>
+    <#assign hasBuiltinIcon=item.getIconReference()?? && item.getIconReference().getBuiltinIdentifier()??/>
+    <#if hasBuiltinIcon>
+        <#assign selectedIconName=item.getIconReference().getBuiltinIdentifier()/>
+    <#else>
+         <#assign selectedIconName=""/>
+    </#if>
+
     <div class="col s4 m2 l2 builtin-icon-option-column">
-        <div class="builtin-icon-option">
+        <div class="builtin-icon-option <#if selectedIconName==icon>selected</#if>">
             <i class="builtin-icon-option-icon ${icon}"></i>
             <div class="builtin-icon-option-name truncate">${icon}</div>
         </div>
