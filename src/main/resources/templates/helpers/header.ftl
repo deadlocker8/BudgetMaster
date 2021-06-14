@@ -120,10 +120,16 @@
     </a>
 </#macro>
 
-<#macro entityIcon entity classes="">
+<#macro entityIcon entity wrapInCircle=true classes="">
     <#if entity.getIconReference()??>
         <#if entity.getIconReference().isBuiltinIcon()>
-            <i class="${entity.getIconReference().getBuiltinIdentifier()} ${classes}"></i>
+            <#if wrapInCircle>
+                <div class="category-circle">
+            </#if>
+                <i class="${entity.getIconReference().getBuiltinIdentifier()} text-default ${classes}"></i>
+            <#if wrapInCircle>
+                </div>
+            </#if>
         <#else>
             <img src="${entity.getIconReference().getImage().getBase64EncodedImage()}" class="${classes}"/>
         </#if>
