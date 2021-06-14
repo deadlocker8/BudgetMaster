@@ -9,7 +9,7 @@
 
             <div id="${id}" class="valign-wrapper item-icon">
                 <a id="item-icon-preview" data-url="<@s.url '/media/getAvailableImages'/>">
-                    <img id="item-icon-preview-icon" src="<#if item.getIconReference()?? && item.getIconReference().getImage()??>${item.getIconReference().getImage().getBase64EncodedImage()}</#if>" class="item-icon-preview <#if item.getIconReference()?? && item.getIconReference().getImage()?? == false>hidden</#if>"/>
+                    <img id="item-icon-preview-icon" src="<#if item.getIconReference()?? && item.getIconReference().getImage()??>${item.getIconReference().getImage().getBase64EncodedImage()}</#if>" class="item-icon-preview <#if item.getIconReference()?? == false || item.getIconReference().getImage()?? == false>hidden</#if>"/>
                     <div id="item-icon-placeholder" class="<#if item.getIconReference()?? && item.getIconReference().getImage()??>hidden</#if>">${locale.getString("account.new.icon.placeholder")}</div>
                 </a>
                 <@header.buttonFlat url='' icon='delete' id='' localizationKey='' classes="no-padding text-default button-remove-icon-from-item" noUrl=true/>
