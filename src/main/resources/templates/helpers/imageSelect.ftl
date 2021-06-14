@@ -27,12 +27,12 @@
             <div class="row">
                 <div class="col s12">
                     <ul class="tabs">
-                        <li class="tab col s6"><a class="text-blue valign-wrapper active" href="#tabImages"><i class="fas fa-image"></i> Custom Images</a></li>
-                        <li class="tab col s6"><a class="text-blue valign-wrapper" href="#tabBuiltinIcons"><i class="fas fa-icons"></i> Built-in Icons</a></li>
+                        <li class="tab col s6"><a class="text-blue valign-wrapper active" href="#tabImages"><i class="fas fa-image"></i> ${locale.getString(("icons.images"))}</a></li>
+                        <li class="tab col s6"><a class="text-blue valign-wrapper" href="#tabBuiltinIcons"><i class="fas fa-icons"></i> ${locale.getString(("icons.builtin"))}</a></li>
                     </ul>
                 </div>
                 <div id="tabImages" class="col s12"><@tabImages/></div>
-                <div id="tabBuiltinIcons" class="col s12">Built-in Icons</div>
+                <div id="tabBuiltinIcons" class="col s12"><@tabBuiltinIcons/></div>
             </div>
         </div>
         <div class="modal-footer background-color">
@@ -63,6 +63,10 @@
 
     <div class="row" id="available-images">
     </div>
+</#macro>
+
+<#macro tabBuiltinIcons>
+
 </#macro>
 
 <#macro uploadImageForm>
