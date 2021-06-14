@@ -33,7 +33,12 @@ $(document).ready(function()
             $(modalID).modal({
                 onOpenEnd: function f()
                 {
-                    M.Tabs.init(document.querySelector('.tabs'), {});
+                    M.Tabs.init(document.querySelector('#iconTabs'), {
+                        onShow: function()
+                        {
+                            deselectAll();
+                        }
+                    });
                 },
                 onCloseEnd: function f()
                 {
@@ -103,13 +108,20 @@ function getAvailableImages(callback)
     });
 }
 
-function selectIcon(item, selectorForSiblings)
+function deselectAll()
 {
-    let allIconOptions = document.querySelectorAll(selectorForSiblings);
+    let allIconOptions = document.querySelectorAll('.builtin-icon-option, .item-icon-option');
     for(let i = 0; i < allIconOptions.length; i++)
     {
         allIconOptions[i].classList.remove('selected');
     }
+
+    document.getElementById('button-icon-confirm').setAttribute('disabled', 'true');
+}
+
+function selectIcon(item)
+{
+    deselectAll();
 
     item.classList.add('selected');
     document.getElementById('button-icon-confirm').removeAttribute('disabled');
