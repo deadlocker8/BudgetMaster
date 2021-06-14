@@ -110,7 +110,7 @@ public class CategoryService implements Resettable, AccessAllEntities<Category>
 	{
 		for(Category category : categoryRepository.findAll())
 		{
-			if(category.getIcon() != null && category.getIconReference() == null)
+			if(category.getIcon() != null && !category.getIcon().isEmpty() &&category.getIconReference() == null)
 			{
 				final String iconName = category.getIcon();
 				Icon iconReference = new Icon(iconName);
