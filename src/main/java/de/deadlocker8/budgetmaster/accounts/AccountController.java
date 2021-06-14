@@ -4,6 +4,7 @@ import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.images.ImageService;
+import de.deadlocker8.budgetmaster.utils.FontAwesomeIcons;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
@@ -103,8 +104,8 @@ public class AccountController extends BaseController
 	{
 		Account emptyAccount = new Account();
 		model.addAttribute("account", emptyAccount);
-		model.addAttribute("availableImages", imageService.getRepository().findAll());
 		model.addAttribute("availableAccountStates", AccountState.values());
+		model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
 		return "accounts/newAccount";
 	}
 
@@ -118,8 +119,8 @@ public class AccountController extends BaseController
 		}
 
 		model.addAttribute("account", accountOptional.get());
-		model.addAttribute("availableImages", imageService.getRepository().findAll());
 		model.addAttribute("availableAccountStates", AccountState.values());
+		model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
 		return "accounts/newAccount";
 	}
 

@@ -9,12 +9,14 @@
 
             <div id="${id}" class="valign-wrapper item-icon">
                 <a id="item-icon-preview" data-url="<@s.url '/media/getAvailableImages'/>">
+                    <i id="category-icon-preview-icon" class="<#if item.getIconReference()?? && item.getIconReference().getBuiltinIdentifier()??>${item.getIconReference().getBuiltinIdentifier()}<#else>hidden</#if>"></i>
                     <img id="item-icon-preview-icon" src="<#if item.getIconReference()?? && item.getIconReference().getImage()??>${item.getIconReference().getImage().getBase64EncodedImage()}</#if>" class="item-icon-preview <#if item.getIconReference()?? == false || item.getIconReference().getImage()?? == false>hidden</#if>"/>
-                    <div id="item-icon-placeholder" class="<#if item.getIconReference()?? && item.getIconReference().getImage()??>hidden</#if>">${locale.getString("account.new.icon.placeholder")}</div>
+                    <div id="item-icon-placeholder" class="<#if item.getIconReference()?? && (item.getIconReference().getImage()?? || item.getIconReference().getBuiltinIdentifier()??)>hidden</#if>">${locale.getString("account.new.icon.placeholder")}</div>
                 </a>
                 <@header.buttonFlat url='' icon='delete' id='' localizationKey='' classes="no-padding text-default button-remove-icon-from-item" noUrl=true/>
 
                 <input id="hidden-input-icon-image-id" type="hidden" name="iconImageID" value="<#if item.getIconReference()?? && item.getIconReference().getImage()??>${item.getIconReference().getImage().getID()?c}</#if>">
+                <input id="hidden-input-icon-builtin-identifier" type="hidden" name="builtinIconIdentifier" value="<#if item.getIconReference()?? && item.getIconReference().getBuiltinIdentifier()??>${item.getIconReference().getBuiltinIdentifier()}</#if>">
             </div>
         </div>
     </div>
@@ -26,9 +28,9 @@
         <div class="modal-content center-align">
             <div class="row">
                 <div class="col s12">
-                    <ul class="tabs">
-                        <li class="tab col s6"><a class="text-blue valign-wrapper active" href="#tabImages"><i class="fas fa-image"></i> ${locale.getString(("icons.images"))}</a></li>
-                        <li class="tab col s6"><a class="text-blue valign-wrapper" href="#tabBuiltinIcons"><i class="fas fa-icons"></i> ${locale.getString(("icons.builtin"))}</a></li>
+                    <ul class="tabs" id="iconTabs">
+                        <li class="tab col s6"><a class="text-blue valign-wrapper active" href="#tabImages" data-name="images"><i class="fas fa-image"></i> ${locale.getString(("icons.images"))}</a></li>
+                        <li class="tab col s6"><a class="text-blue valign-wrapper" href="#tabBuiltinIcons" data-name="builtinIcons"><i class="fas fa-icons"></i> ${locale.getString(("icons.builtin"))}</a></li>
                     </ul>
                 </div>
                 <div id="tabImages" class="col s12"><@tabImages/></div>
@@ -66,7 +68,33 @@
 </#macro>
 
 <#macro tabBuiltinIcons>
+    <div class="row no-margin-bottom">
+        <div class="input-field col s12 m12 l8 offset-l2">
+            <i class="material-icons prefix">search</i>
+            <input id="searchIcons" type="text" onchange="searchCategoryIcons();" onkeypress="searchCategoryIcons();" onpaste="searchCategoryIcons()" oninput="searchCategoryIcons();">
+            <label for="searchIcons">${locale.getString("search")}</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12 center-align" id="numberOfIcons"><span id="numberOfMatchingIcons">${fontawesomeIcons?size?c}</span>/${fontawesomeIcons?size?c} ${locale.getString("category.new.icons")}</div>
+    </div>
 
+    <hr>
+
+    <div class="row">
+        <#list fontawesomeIcons as icon>
+            <@categoryIconOption icon/>
+        </#list>
+    </div>
+</#macro>
+
+<#macro categoryIconOption icon>
+    <div class="col s4 m2 l2 category-icon-option-column">
+        <div class="category-icon-option">
+            <i class="category-icon-option-icon ${icon}"></i>
+            <div class="category-icon-option-name truncate">${icon}</div>
+        </div>
+    </div>
 </#macro>
 
 <#macro uploadImageForm>

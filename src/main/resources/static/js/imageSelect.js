@@ -4,26 +4,22 @@ $(document).ready(function()
     {
         document.getElementById("item-icon-preview-icon").classList.toggle('hidden', true);
         document.getElementById("item-icon-placeholder").classList.toggle('hidden', false);
-        document.getElementById("hidden-input-icon-image-id").value = '';
+        document.getElementById("hidden-input-icon-image-id").value = null;
+        document.getElementById("category-icon-preview-icon").classList.toggle('hidden', true);
+        document.getElementById("hidden-input-icon-builtin-identifier").value = null;
     });
 
     $('#button-icon-confirm').click(function()
     {
-        let icon = document.querySelector('.item-icon-option.selected .item-icon-preview');
-        if(icon === null)
+        let activeTabName = document.querySelector('#iconTabs .tab a.active').dataset.name;
+        if(activeTabName === 'images')
         {
-            return false;
+            confirmImageIcon();
         }
-
-        let iconPath = icon.src;
-        let iconId = icon.dataset.imageId;
-
-        let previewIcon = document.getElementById("item-icon-preview-icon");
-        previewIcon.src = iconPath;
-
-        document.getElementById("item-icon-preview-icon").classList.toggle('hidden', false);
-        document.getElementById("item-icon-placeholder").classList.toggle('hidden', true);
-        document.getElementById("hidden-input-icon-image-id").value = iconId;
+        else
+        {
+            confirmBuiltinIcon();
+        }
     });
 
     $('#item-icon-preview').click(function()
@@ -52,6 +48,25 @@ $(document).ready(function()
     {
         uploadImage();
     });
+
+    if($('#modalIconSelect').length)
+    {
+        // prevent modal closing if "ENTER" is pressed in search
+        let modalIconSelect = document.getElementById('modalIconSelect');
+        modalIconSelect.addEventListener('keypress', function(event)
+        {
+            if(event.key === 'Enter')
+            {
+                event.preventDefault();
+            }
+        });
+    }
+
+    // select a built-in icon option
+    $('.category-icon-option').click(function()
+    {
+        selectIcon(this, '.category-icon-option');
+    });
 });
 
 function getAvailableImages(callback)
@@ -67,7 +82,7 @@ function getAvailableImages(callback)
             // select an icon option
             $('.item-icon-option').click(function()
             {
-                selectIcon(this);
+                selectIcon(this, '.item-icon-option');
             });
 
             let classDeleteConfirm = 'item-icon-option-delete-confirm';
@@ -88,9 +103,9 @@ function getAvailableImages(callback)
     });
 }
 
-function selectIcon(item)
+function selectIcon(item, selectorForSiblings)
 {
-    let allIconOptions = document.querySelectorAll('.item-icon-option');
+    let allIconOptions = document.querySelectorAll(selectorForSiblings);
     for(let i = 0; i < allIconOptions.length; i++)
     {
         allIconOptions[i].classList.remove('selected');
@@ -165,4 +180,73 @@ function deleteImage(item)
             });
         }
     });
+}
+
+function confirmImageIcon()
+{
+    let icon = document.querySelector('.item-icon-option.selected .item-icon-preview');
+    if(icon === null)
+    {
+        return false;
+    }
+
+    let iconPath = icon.src;
+    let iconId = icon.dataset.imageId;
+
+    let previewIcon = document.getElementById("item-icon-preview-icon");
+    previewIcon.src = iconPath;
+
+    document.getElementById("item-icon-preview-icon").classList.toggle('hidden', false);
+    document.getElementById("category-icon-preview-icon").classList.toggle('hidden', true);
+    document.getElementById("item-icon-placeholder").classList.toggle('hidden', true);
+    document.getElementById("hidden-input-icon-image-id").value = iconId;
+    document.getElementById("hidden-input-icon-builtin-identifier").value = null;
+}
+
+function confirmBuiltinIcon()
+{
+    let icon = document.querySelector('.category-icon-option.selected .category-icon-option-name');
+    if(icon === null)
+    {
+        return false;
+    }
+
+    let iconIdentifier = icon.textContent;
+
+    let previewIcon = document.getElementById("category-icon-preview-icon");
+    previewIcon.className = '';  // clear class list
+
+    iconIdentifier.split(' ').forEach(function(cssClass)
+    {
+        previewIcon.classList.add(cssClass);
+    });
+
+    document.getElementById("item-icon-preview-icon").classList.toggle('hidden', true);
+    document.getElementById("category-icon-preview-icon").classList.toggle('hidden', false);
+    document.getElementById("item-icon-placeholder").classList.toggle('hidden', true);
+    document.getElementById("hidden-input-icon-image-id").value = null;
+    document.getElementById("hidden-input-icon-builtin-identifier").value = iconIdentifier;
+}
+
+function searchCategoryIcons()
+{
+    let searchWord = document.getElementById('searchIcons').value.toLowerCase();
+
+    let allIcons = document.querySelectorAll('.category-icon-option-column');
+    let numberOfMatchingIcons = 0;
+    for(let i = 0; i < allIcons.length; i++)
+    {
+        let iconName = allIcons[i].querySelector('.category-icon-option-name').textContent;
+        if(iconName.toLowerCase().includes(searchWord))
+        {
+            allIcons[i].classList.toggle('hidden', false);
+            numberOfMatchingIcons++;
+        }
+        else
+        {
+            allIcons[i].classList.toggle('hidden', true);
+        }
+    }
+
+    document.getElementById('numberOfMatchingIcons').innerText = numberOfMatchingIcons.toString();
 }

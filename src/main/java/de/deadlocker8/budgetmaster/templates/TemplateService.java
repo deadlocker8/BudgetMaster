@@ -16,6 +16,7 @@ import de.deadlocker8.budgetmaster.services.Resettable;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionBase;
+import de.deadlocker8.budgetmaster.utils.FontAwesomeIcons;
 import org.padler.natorder.NaturalOrderComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -142,6 +143,7 @@ public class TemplateService implements Resettable, AccessAllEntities<Template>
 		model.addAttribute("accounts", accounts);
 		model.addAttribute("template", item);
 		model.addAttribute("suggestionsJSON", GSON.toJson(new ArrayList<String>()));
+		model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
 	}
 
 	public List<String> getExistingTemplateNames()

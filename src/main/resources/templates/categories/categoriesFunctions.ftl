@@ -40,24 +40,7 @@
 <#macro modalIconSelect>
     <div id="modalIconSelect" class="modal modal-fixed-footer background-color">
         <div class="modal-content">
-            <div class="row no-margin-bottom">
-                <div class="input-field col s12 m12 l8 offset-l2">
-                    <i class="material-icons prefix">search</i>
-                    <input id="searchIcons" type="text" onchange="searchCategoryIcons();" onkeypress="searchCategoryIcons();" onpaste="searchCategoryIcons()" oninput="searchCategoryIcons();">
-                    <label for="searchIcons">${locale.getString("search")}</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s12 center-align" id="numberOfIcons"><span id="numberOfMatchingIcons">${fontawesomeIcons?size?c}</span>/${fontawesomeIcons?size?c} ${locale.getString("category.new.icons")}</div>
-            </div>
 
-            <hr>
-
-            <div class="row">
-                <#list fontawesomeIcons as icon>
-                    <@categoryIconOption icon/>
-                </#list>
-            </div>
 
         </div>
         <div class="modal-footer background-color">
@@ -67,11 +50,3 @@
     </div>
 </#macro>
 
-<#macro categoryIconOption icon>
-    <div class="col s4 m2 l2 category-icon-option-column">
-        <div class="category-icon-option">
-            <i class="category-icon-option-icon ${icon}"></i>
-            <div class="category-icon-option-name truncate">${icon}</div>
-        </div>
-    </div>
-</#macro>
