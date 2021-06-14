@@ -43,7 +43,7 @@ public class Account implements ProvidesID
 	@Deprecated(since = "v2.7.0", forRemoval = true)
 	private Image icon;
 
-	@ManyToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@Expose
 	private Icon iconReference;
 
