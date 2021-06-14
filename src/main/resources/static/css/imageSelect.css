@@ -10,6 +10,10 @@
     color: var(--color-text);
 }
 
+#item-icon-preview i {
+    font-size: 3rem;
+}
+
 .button-remove-icon-from-item {
     margin-left: 1rem;
 }
@@ -18,22 +22,34 @@
     font-size: 1.8rem;
 }
 
-.item-icon-option-column {
+.item-icon-option-column,
+.builtin-icon-option-column {
     text-align: center;
     margin-bottom: 1.5rem;
 }
 
-.item-icon-option {
+.item-icon-option,
+.builtin-icon-option {
     padding: 0.5rem;
     border: 2px solid transparent;
 }
 
-.item-icon-option:hover {
+.item-icon-option:hover,
+.builtin-icon-option:hover {
     cursor: pointer;
 }
 
-.item-icon-option.selected {
+.item-icon-option.selected,
+.builtin-icon-option.selected {
     border: 2px solid var(--color-text);
+}
+
+.builtin-icon-option-icon {
+    font-size: 2rem;
+}
+
+#numberOfIcons {
+    font-size: 1.1rem;
 }
 
 .item-icon-preview-icon {

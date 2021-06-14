@@ -9,7 +9,7 @@
 
             <div id="${id}" class="valign-wrapper item-icon">
                 <a id="item-icon-preview" data-url="<@s.url '/media/getAvailableImages'/>">
-                    <i id="category-icon-preview-icon" class="<#if item.getIconReference()?? && item.getIconReference().getBuiltinIdentifier()??>${item.getIconReference().getBuiltinIdentifier()}<#else>hidden</#if>"></i>
+                    <i id="builtin-icon-preview-icon" class="<#if item.getIconReference()?? && item.getIconReference().getBuiltinIdentifier()??>${item.getIconReference().getBuiltinIdentifier()}<#else>hidden</#if>"></i>
                     <img id="item-icon-preview-icon" src="<#if item.getIconReference()?? && item.getIconReference().getImage()??>${item.getIconReference().getImage().getBase64EncodedImage()}</#if>" class="item-icon-preview <#if item.getIconReference()?? == false || item.getIconReference().getImage()?? == false>hidden</#if>"/>
                     <div id="item-icon-placeholder" class="<#if item.getIconReference()?? && (item.getIconReference().getImage()?? || item.getIconReference().getBuiltinIdentifier()??)>hidden</#if>">${locale.getString("account.new.icon.placeholder")}</div>
                 </a>
@@ -71,28 +71,28 @@
     <div class="row no-margin-bottom">
         <div class="input-field col s12 m12 l8 offset-l2">
             <i class="material-icons prefix">search</i>
-            <input id="searchIcons" type="text" onchange="searchCategoryIcons();" onkeypress="searchCategoryIcons();" onpaste="searchCategoryIcons()" oninput="searchCategoryIcons();">
+            <input id="searchIcons" type="text" onchange="searchBuiltinIcons();" onkeypress="searchBuiltinIcons();" onpaste="searchBuiltinIcons()" oninput="searchBuiltinIcons();">
             <label for="searchIcons">${locale.getString("search")}</label>
         </div>
     </div>
     <div class="row">
-        <div class="col s12 center-align" id="numberOfIcons"><span id="numberOfMatchingIcons">${fontawesomeIcons?size?c}</span>/${fontawesomeIcons?size?c} ${locale.getString("category.new.icons")}</div>
+        <div class="col s12 center-align" id="numberOfIcons"><span id="numberOfMatchingIcons">${fontawesomeIcons?size?c}</span>/${fontawesomeIcons?size?c} ${locale.getString("icons.numberOf")}</div>
     </div>
 
     <hr>
 
     <div class="row">
         <#list fontawesomeIcons as icon>
-            <@categoryIconOption icon/>
+            <@builtinIconOption icon/>
         </#list>
     </div>
 </#macro>
 
-<#macro categoryIconOption icon>
-    <div class="col s4 m2 l2 category-icon-option-column">
-        <div class="category-icon-option">
-            <i class="category-icon-option-icon ${icon}"></i>
-            <div class="category-icon-option-name truncate">${icon}</div>
+<#macro builtinIconOption icon>
+    <div class="col s4 m2 l2 builtin-icon-option-column">
+        <div class="builtin-icon-option">
+            <i class="builtin-icon-option-icon ${icon}"></i>
+            <div class="builtin-icon-option-name truncate">${icon}</div>
         </div>
     </div>
 </#macro>

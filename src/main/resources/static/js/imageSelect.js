@@ -5,7 +5,7 @@ $(document).ready(function()
         document.getElementById("item-icon-preview-icon").classList.toggle('hidden', true);
         document.getElementById("item-icon-placeholder").classList.toggle('hidden', false);
         document.getElementById("hidden-input-icon-image-id").value = null;
-        document.getElementById("category-icon-preview-icon").classList.toggle('hidden', true);
+        document.getElementById("builtin-icon-preview-icon").classList.toggle('hidden', true);
         document.getElementById("hidden-input-icon-builtin-identifier").value = null;
     });
 
@@ -63,9 +63,9 @@ $(document).ready(function()
     }
 
     // select a built-in icon option
-    $('.category-icon-option').click(function()
+    $('.builtin-icon-option').click(function()
     {
-        selectIcon(this, '.category-icon-option');
+        selectIcon(this, '.builtin-icon-option');
     });
 });
 
@@ -197,7 +197,7 @@ function confirmImageIcon()
     previewIcon.src = iconPath;
 
     document.getElementById("item-icon-preview-icon").classList.toggle('hidden', false);
-    document.getElementById("category-icon-preview-icon").classList.toggle('hidden', true);
+    document.getElementById("builtin-icon-preview-icon").classList.toggle('hidden', true);
     document.getElementById("item-icon-placeholder").classList.toggle('hidden', true);
     document.getElementById("hidden-input-icon-image-id").value = iconId;
     document.getElementById("hidden-input-icon-builtin-identifier").value = null;
@@ -205,7 +205,7 @@ function confirmImageIcon()
 
 function confirmBuiltinIcon()
 {
-    let icon = document.querySelector('.category-icon-option.selected .category-icon-option-name');
+    let icon = document.querySelector('.builtin-icon-option.selected .builtin-icon-option-name');
     if(icon === null)
     {
         return false;
@@ -213,7 +213,7 @@ function confirmBuiltinIcon()
 
     let iconIdentifier = icon.textContent;
 
-    let previewIcon = document.getElementById("category-icon-preview-icon");
+    let previewIcon = document.getElementById("builtin-icon-preview-icon");
     previewIcon.className = '';  // clear class list
 
     iconIdentifier.split(' ').forEach(function(cssClass)
@@ -222,21 +222,21 @@ function confirmBuiltinIcon()
     });
 
     document.getElementById("item-icon-preview-icon").classList.toggle('hidden', true);
-    document.getElementById("category-icon-preview-icon").classList.toggle('hidden', false);
+    document.getElementById("builtin-icon-preview-icon").classList.toggle('hidden', false);
     document.getElementById("item-icon-placeholder").classList.toggle('hidden', true);
     document.getElementById("hidden-input-icon-image-id").value = null;
     document.getElementById("hidden-input-icon-builtin-identifier").value = iconIdentifier;
 }
 
-function searchCategoryIcons()
+function searchBuiltinIcons()
 {
     let searchWord = document.getElementById('searchIcons').value.toLowerCase();
 
-    let allIcons = document.querySelectorAll('.category-icon-option-column');
+    let allIcons = document.querySelectorAll('.builtin-icon-option-column');
     let numberOfMatchingIcons = 0;
     for(let i = 0; i < allIcons.length; i++)
     {
-        let iconName = allIcons[i].querySelector('.category-icon-option-name').textContent;
+        let iconName = allIcons[i].querySelector('.builtin-icon-option-name').textContent;
         if(iconName.toLowerCase().includes(searchWord))
         {
             allIcons[i].classList.toggle('hidden', false);
