@@ -90,7 +90,7 @@
             </div>
         </main>
 
-        <@iconSelectMacros.modalIconSelect idToFocusOnClose="template-name"/>
+        <@iconSelectMacros.modalIconSelect idToFocusOnClose="template-name" item=template/>
 
         <!-- Pass localization to JS -->
         <#import "../helpers/globalDatePicker.ftl" as datePicker>
