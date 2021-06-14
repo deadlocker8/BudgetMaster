@@ -78,7 +78,7 @@ function getAvailableImages(callback)
 {
     $.ajax({
         type: 'GET',
-        url: $('#item-icon-preview').attr('data-url'),
+        url: $('#available-images').attr('data-url'),
         data: {},
         success: function(data)
         {

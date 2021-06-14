@@ -11,7 +11,7 @@
             <#assign hasBuiltinIcon=item.getIconReference()?? && item.getIconReference().getBuiltinIdentifier()??/>
 
             <div id="${id}" class="valign-wrapper item-icon">
-                <a id="item-icon-preview" data-url="<@s.url '/media/getAvailableImages'/>">
+                <a id="item-icon-preview">
                     <i id="builtin-icon-preview-icon" class="<#if hasBuiltinIcon>${item.getIconReference().getBuiltinIdentifier()}<#else>hidden</#if>"></i>
                     <img id="item-icon-preview-icon" src="<#if hasImageIcon>${item.getIconReference().getImage().getBase64EncodedImage()}</#if>" class="item-icon-preview <#if hasImageIcon == false>hidden</#if>"/>
                     <div id="item-icon-placeholder" class="<#if hasImageIcon || hasBuiltinIcon>hidden</#if>">${locale.getString("account.new.icon.placeholder")}</div>
@@ -38,7 +38,7 @@
                         <li class="tab col s6"><a class="text-blue valign-wrapper <#if hasBuiltinIcon>active</#if>" href="#tabBuiltinIcons" data-name="builtinIcons"><i class="fas fa-icons"></i> ${locale.getString(("icons.builtin"))}</a></li>
                     </ul>
                 </div>
-                <div id="tabImages" class="col s12"><@tabImages/></div>
+                <div id="tabImages" class="col s12"><@tabImages item/></div>
                 <div id="tabBuiltinIcons" class="col s12"><@tabBuiltinIcons item/></div>
             </div>
         </div>
@@ -49,7 +49,7 @@
     </div>
 </#macro>
 
-<#macro tabImages>
+<#macro tabImages item>
      <div class="row">
         <div class="col s12">
             <div class="headline">${locale.getString('upload.image.headline')}</div>
@@ -68,7 +68,14 @@
         </div>
     </div>
 
-    <div class="row" id="available-images">
+    <#assign hasImageIcon=item.getIconReference()?? && item.getIconReference().getImage()??/>
+    <#if hasImageIcon>
+        <#assign selectedImageID=item.getIconReference().getImage().getID()?c/>
+    <#else>
+        <#assign selectedImageID=""/>
+    </#if>
+
+    <div class="row" id="available-images" data-url="<@s.url '/media/getAvailableImages/' + selectedImageID/>">
     </div>
 </#macro>
 
