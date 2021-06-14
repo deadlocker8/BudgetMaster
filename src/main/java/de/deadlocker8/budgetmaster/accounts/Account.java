@@ -39,7 +39,6 @@ public class Account implements ProvidesID
 	private AccountState accountState;
 
 	@ManyToOne
-	@Expose
 	@Deprecated(since = "v2.7.0", forRemoval = true)
 	private Image icon;
 

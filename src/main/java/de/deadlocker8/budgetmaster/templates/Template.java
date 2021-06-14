@@ -45,7 +45,6 @@ public class Template implements TransactionBase
 	private String description;
 
 	@ManyToOne
-	@Expose
 	@Deprecated(since = "v2.7.0", forRemoval = true)
 	private Image icon;
 
