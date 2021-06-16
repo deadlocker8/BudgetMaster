@@ -218,7 +218,7 @@ public class TemplateController extends BaseController
 			template.setTransferAccount(null);
 		}
 
-		Iconizable.updateIcon(iconService, iconImageID, builtinIconIdentifier, template);
+		template.updateIcon(iconService, iconImageID, builtinIconIdentifier);
 
 		templateService.getRepository().save(template);
 		return "redirect:/templates";

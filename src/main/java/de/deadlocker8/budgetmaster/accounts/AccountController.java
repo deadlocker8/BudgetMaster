@@ -159,7 +159,7 @@ public class AccountController extends BaseController
 			return "accounts/newAccount";
 		}
 
-		Iconizable.updateIcon(iconService, iconImageID, builtinIconIdentifier, account);
+		account.updateIcon(iconService, iconImageID, builtinIconIdentifier);
 
 		if(isNewAccount)
 		{

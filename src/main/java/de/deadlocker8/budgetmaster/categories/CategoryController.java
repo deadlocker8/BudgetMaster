@@ -137,7 +137,7 @@ public class CategoryController extends BaseController
 			category.setType(CategoryType.CUSTOM);
 		}
 
-		Iconizable.updateIcon(iconService, iconImageID, builtinIconIdentifier, category);
+		category.updateIcon(iconService, iconImageID, builtinIconIdentifier);
 
 		categoryService.save(category);
 

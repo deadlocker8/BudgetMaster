@@ -8,19 +8,19 @@ public interface Iconizable
 
 	Icon getIconReference();
 
-	static void updateIcon(IconService iconService, Integer iconImageID, String builtinIconIdentifier, Iconizable iconizable)
+	default void updateIcon(IconService iconService, Integer iconImageID, String builtinIconIdentifier)
 	{
-		iconService.deleteIcon(iconizable.getIconReference());
+		iconService.deleteIcon(this.getIconReference());
 
 		final Optional<Icon> iconOptional = iconService.createIconReference(iconImageID, builtinIconIdentifier);
 		if(iconOptional.isEmpty())
 		{
-			iconizable.setIconReference(null);
+			this.setIconReference(null);
 			return;
 		}
 
 		final Icon icon = iconOptional.get();
 		iconService.getRepository().save(icon);
-		iconizable.setIconReference(icon);
+		this.setIconReference(icon);
 	}
 }
