@@ -1,5 +1,7 @@
 package de.deadlocker8.budgetmaster.icon;
 
+import java.util.Optional;
+
 public interface Iconizable
 {
 	void setIconReference(Icon icon);
@@ -8,13 +10,17 @@ public interface Iconizable
 
 	static void updateIcon(IconService iconService, Integer iconImageID, String builtinIconIdentifier, Iconizable iconizable)
 	{
-		final Icon iconReference = iconService.createIconReference(iconImageID, builtinIconIdentifier);
-		if(iconReference != null)
+		iconService.deleteIcon(iconizable.getIconReference());
+
+		final Optional<Icon> iconOptional = iconService.createIconReference(iconImageID, builtinIconIdentifier);
+		if(iconOptional.isEmpty())
 		{
-			iconService.getRepository().save(iconReference);
+			iconizable.setIconReference(null);
+			return;
 		}
 
-		iconService.deleteIcon(iconizable.getIconReference());
-		iconizable.setIconReference(iconReference);
+		final Icon icon = iconOptional.get();
+		iconService.getRepository().save(icon);
+		iconizable.setIconReference(icon);
 	}
 }

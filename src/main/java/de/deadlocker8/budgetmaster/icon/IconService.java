@@ -56,7 +56,7 @@ public class IconService implements Resettable
 	{
 	}
 
-	public Icon createIconReference(Integer iconImageID, String builtinIconIdentifier)
+	public Optional<Icon> createIconReference(Integer iconImageID, String builtinIconIdentifier)
 	{
 		if(iconImageID != null)
 		{
@@ -66,14 +66,14 @@ public class IconService implements Resettable
 				throw new ResourceNotFoundException();
 			}
 
-			return new Icon(imageByIdOptional.get());
+			return Optional.of(new Icon(imageByIdOptional.get()));
 		}
 
 		if(builtinIconIdentifier != null && !builtinIconIdentifier.isEmpty())
 		{
-			return new Icon(builtinIconIdentifier);
+			return Optional.of(new Icon(builtinIconIdentifier));
 		}
 
-		return null;
+		return Optional.empty();
 	}
 }
