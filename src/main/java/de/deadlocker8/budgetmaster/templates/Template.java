@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.icon.Icon;
+import de.deadlocker8.budgetmaster.icon.Iconizable;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Template implements TransactionBase
+public class Template implements TransactionBase, Iconizable
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

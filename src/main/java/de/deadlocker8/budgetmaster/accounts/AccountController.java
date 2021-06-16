@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmaster.accounts;
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.IconService;
+import de.deadlocker8.budgetmaster.icon.Iconizable;
 import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.utils.FontAwesomeIcons;
 import de.deadlocker8.budgetmaster.utils.Mappings;
@@ -158,13 +159,7 @@ public class AccountController extends BaseController
 			return "accounts/newAccount";
 		}
 
-		final Icon iconReference = iconService.createIconReference(iconImageID, builtinIconIdentifier);
-		if(iconReference != null)
-		{
-			iconService.getRepository().save(iconReference);
-		}
-		iconService.deleteIcon(account.getIconReference());
-		account.setIconReference(iconReference);
+		Iconizable.updateIcon(iconService, iconImageID, builtinIconIdentifier, account);
 
 		if(isNewAccount)
 		{

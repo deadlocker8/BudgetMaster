@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmaster.categories;
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.IconService;
+import de.deadlocker8.budgetmaster.icon.Iconizable;
 import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.utils.*;
@@ -136,13 +137,7 @@ public class CategoryController extends BaseController
 			category.setType(CategoryType.CUSTOM);
 		}
 
-		final Icon iconReference = iconService.createIconReference(iconImageID, builtinIconIdentifier);
-		if(iconReference != null)
-		{
-			iconService.getRepository().save(iconReference);
-		}
-		iconService.deleteIcon(category.getIconReference());
-		category.setIconReference(iconReference);
+		Iconizable.updateIcon(iconService, iconImageID, builtinIconIdentifier, category);
 
 		categoryService.save(category);
 

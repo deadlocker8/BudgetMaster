@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.accounts;
 
 import com.google.gson.annotations.Expose;
 import de.deadlocker8.budgetmaster.icon.Icon;
+import de.deadlocker8.budgetmaster.icon.Iconizable;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.utils.ProvidesID;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Account implements ProvidesID
+public class Account implements ProvidesID, Iconizable
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

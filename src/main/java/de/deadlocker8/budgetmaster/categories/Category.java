@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.categories;
 
 import com.google.gson.annotations.Expose;
 import de.deadlocker8.budgetmaster.icon.Icon;
+import de.deadlocker8.budgetmaster.icon.Iconizable;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.utils.ProvidesID;
 import de.thecodelabs.utils.util.Color;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Category implements ProvidesID
+public class Category implements ProvidesID, Iconizable
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
