@@ -18,9 +18,10 @@
     line-height: 40px;
 }
 
-.category-icon{
+.category-icon:not(i) {
     height: 100%;
     width: 100%;
+    padding: 15%;
 }
 
 .category-circle-small {
