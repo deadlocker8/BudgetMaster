@@ -38,7 +38,7 @@
                                             <i class="fas fa-edit"></i>
                                         </#if>
                                     </td>
-                                    <td><@header.entityIcon entity=account classes="account-icon text-default"/></td>
+                                    <td><@header.entityIcon entity=account classes="account-icon text-blue"/></td>
                                     <td>${account.getName()}</td>
                                     <td>
                                         <a href="<@s.url '/accounts/${account.getID()?c}/edit'/>" class="btn-flat no-padding text-default"><i class="material-icons left">edit</i></a>
