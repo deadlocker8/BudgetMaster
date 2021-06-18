@@ -17,6 +17,9 @@ import de.deadlocker8.budgetmaster.database.DatabaseParser;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.JSONIdentifier;
+import de.deadlocker8.budgetmaster.icon.Icon;
+import de.deadlocker8.budgetmaster.icon.IconRepository;
+import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.images.ImageFileExtension;
 import de.deadlocker8.budgetmaster.images.ImageRepository;
@@ -102,6 +105,9 @@ public class DatabaseExportTest
 	@Mock
 	private ImageService imageService;
 
+	@Mock
+	private IconService iconService;
+
 	@InjectMocks
 	private DatabaseService databaseService;
 
@@ -138,6 +144,11 @@ public class DatabaseExportTest
 		ImageRepository imageRepositoryMock = Mockito.mock(ImageRepository.class);
 		Mockito.when(imageRepositoryMock.findAll()).thenReturn(List.of());
 		Mockito.when(imageService.getRepository()).thenReturn(imageRepositoryMock);
+
+		// icons
+		IconRepository iconRepositoryMock = Mockito.mock(IconRepository.class);
+		Mockito.when(iconRepositoryMock.findAll()).thenReturn(List.of());
+		Mockito.when(iconService.getRepository()).thenReturn(iconRepositoryMock);
 
 
 		// act
@@ -247,6 +258,17 @@ public class DatabaseExportTest
 		Mockito.when(imageRepositoryMock.findAll()).thenReturn(List.of(image));
 		Mockito.when(imageService.getRepository()).thenReturn(imageRepositoryMock);
 
+		// icons
+		final Icon iconImage = new Icon(image);
+		iconImage.setID(38);
+
+		final Icon iconBuiltin = new Icon("fas fa-icons");
+		iconBuiltin.setID(39);
+
+		IconRepository iconRepositoryMock = Mockito.mock(IconRepository.class);
+		Mockito.when(iconRepositoryMock.findAll()).thenReturn(List.of(iconImage, iconBuiltin));
+		Mockito.when(iconService.getRepository()).thenReturn(iconRepositoryMock);
+
 
 		// act
 		Path exportPath = tempFolder.newFile("exportTest.json").toPath();
@@ -263,5 +285,6 @@ public class DatabaseExportTest
 		assertThat(importedDatabase.getTemplates()).containsExactly(template1, template2);
 		assertThat(importedDatabase.getCharts()).containsExactly(chart);
 		assertThat(importedDatabase.getImages()).containsExactly(image);
+		assertThat(importedDatabase.getIcons()).containsExactly(iconImage, iconBuiltin);
 	}
 }
