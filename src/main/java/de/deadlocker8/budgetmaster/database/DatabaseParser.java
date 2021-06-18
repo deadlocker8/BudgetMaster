@@ -6,6 +6,7 @@ import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
 import de.deadlocker8.budgetmaster.database.model.v4.BackupDatabase_v4;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupDatabase_v5;
 import de.deadlocker8.budgetmaster.database.model.v6.BackupDatabase_v6;
+import de.deadlocker8.budgetmaster.database.model.v7.BackupDatabase_v7;
 import de.thecodelabs.utils.util.Localization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +18,7 @@ public class DatabaseParser
 	final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
 	private static final int MINIMUM_VERSION = 4;
-	public static final int LATEST_VERSION = 6;
+	public static final int LATEST_VERSION = 7;
 
 	private final String jsonString;
 
@@ -55,6 +56,13 @@ public class DatabaseParser
 		{
 			BackupDatabase_v6 parsedDatabase = new DatabaseParser_v6(jsonString).parseDatabaseFromJSON();
 			LOGGER.debug(MessageFormat.format("Parsed database with {0} transactions, {1} categories, {2} accounts, {3} templates {4} charts and {5} images", parsedDatabase.getTransactions().size(), parsedDatabase.getCategories().size(), parsedDatabase.getAccounts().size(), parsedDatabase.getTemplates().size(), parsedDatabase.getCharts().size(), parsedDatabase.getImages().size()));
+			importedDatabase = parsedDatabase;
+		}
+
+		if(version == 7)
+		{
+			BackupDatabase_v7 parsedDatabase = new DatabaseParser_v7(jsonString).parseDatabaseFromJSON();
+			LOGGER.debug(MessageFormat.format("Parsed database with {0} transactions, {1} categories, {2} accounts, {3} templates {4} charts {5} images and {6} icons", parsedDatabase.getTransactions().size(), parsedDatabase.getCategories().size(), parsedDatabase.getAccounts().size(), parsedDatabase.getTemplates().size(), parsedDatabase.getCharts().size(), parsedDatabase.getImages().size(), parsedDatabase.getIcons().size()));
 			importedDatabase = parsedDatabase;
 		}
 
