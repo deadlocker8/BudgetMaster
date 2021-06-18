@@ -5,7 +5,7 @@ import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.database.model.BackupInfo;
 import de.deadlocker8.budgetmaster.database.model.Upgradeable;
 import de.deadlocker8.budgetmaster.database.model.v7.BackupAccount_v7;
-import de.deadlocker8.budgetmaster.icon.Icon;
+import de.deadlocker8.budgetmaster.database.model.v7.BackupIcon_v7;
 
 import java.util.List;
 import java.util.Objects;
@@ -115,10 +115,10 @@ public class BackupAccount_v6 implements Upgradeable<BackupAccount_v7>
 		Integer iconReferenceID = null;
 		if(iconID != null)
 		{
-			final Icon iconReference = backupInfoItems.stream()
-					.map(Icon.class::cast)
-					.filter(icon -> !icon.isBuiltinIcon())
-					.filter(icon -> icon.getImage().getID().equals(iconID))
+			final BackupIcon_v7 iconReference = backupInfoItems.stream()
+					.map(BackupIcon_v7.class::cast)
+					.filter(icon -> icon.getImageID() != null)
+					.filter(icon -> icon.getImageID().equals(iconID))
 					.findFirst()
 					.orElseThrow();
 

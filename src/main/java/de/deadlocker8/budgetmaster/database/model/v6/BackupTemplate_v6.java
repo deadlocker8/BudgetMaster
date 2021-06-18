@@ -3,8 +3,8 @@ package de.deadlocker8.budgetmaster.database.model.v6;
 import de.deadlocker8.budgetmaster.database.model.BackupInfo;
 import de.deadlocker8.budgetmaster.database.model.Upgradeable;
 import de.deadlocker8.budgetmaster.database.model.v4.BackupTag_v4;
+import de.deadlocker8.budgetmaster.database.model.v7.BackupIcon_v7;
 import de.deadlocker8.budgetmaster.database.model.v7.BackupTemplate_v7;
-import de.deadlocker8.budgetmaster.icon.Icon;
 
 import java.util.List;
 import java.util.Objects;
@@ -186,10 +186,10 @@ public class BackupTemplate_v6 implements Upgradeable<BackupTemplate_v7>
 			return null;
 		}
 
-		final Icon iconReference = backupInfoItems.stream()
-				.map(Icon.class::cast)
-				.filter(icon -> !icon.isBuiltinIcon())
-				.filter(icon -> icon.getImage().getID().equals(iconID))
+		final BackupIcon_v7 iconReference = backupInfoItems.stream()
+				.map(BackupIcon_v7.class::cast)
+				.filter(icon -> icon.getImageID() != null)
+				.filter(icon -> icon.getImageID().equals(iconID))
 				.findFirst()
 				.orElseThrow();
 
