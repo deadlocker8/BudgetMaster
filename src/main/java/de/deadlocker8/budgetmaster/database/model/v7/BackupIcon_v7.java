@@ -1,8 +1,10 @@
 package de.deadlocker8.budgetmaster.database.model.v7;
 
+import de.deadlocker8.budgetmaster.database.model.BackupInfo;
+
 import java.util.Objects;
 
-public class BackupIcon_v7
+public class BackupIcon_v7 implements BackupInfo
 {
 	private Integer ID;
 	private Integer imageID;

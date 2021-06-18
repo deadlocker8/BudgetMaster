@@ -2,12 +2,13 @@ package de.deadlocker8.budgetmaster.icon;
 
 import com.google.gson.annotations.Expose;
 import de.deadlocker8.budgetmaster.images.Image;
+import de.deadlocker8.budgetmaster.utils.ProvidesID;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Icon
+public class Icon implements ProvidesID
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

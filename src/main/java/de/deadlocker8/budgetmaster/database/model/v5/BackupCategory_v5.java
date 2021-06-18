@@ -1,10 +1,15 @@
 package de.deadlocker8.budgetmaster.database.model.v5;
 
 import de.deadlocker8.budgetmaster.categories.CategoryType;
+import de.deadlocker8.budgetmaster.database.model.BackupInfo;
+import de.deadlocker8.budgetmaster.database.model.Upgradeable;
+import de.deadlocker8.budgetmaster.database.model.v7.BackupCategory_v7;
+import de.deadlocker8.budgetmaster.icon.Icon;
 
+import java.util.List;
 import java.util.Objects;
 
-public class BackupCategory_v5
+public class BackupCategory_v5 implements Upgradeable<BackupCategory_v7>
 {
 	private Integer ID;
 	private String name;
@@ -101,5 +106,24 @@ public class BackupCategory_v5
 				", type=" + type +
 				", icon='" + icon + '\'' +
 				'}';
+	}
+
+	@Override
+	public BackupCategory_v7 upgrade(List<? extends BackupInfo> backupInfoItems)
+	{
+		Integer iconReferenceID = null;
+		if(icon != null)
+		{
+			final Icon iconReference = backupInfoItems.stream()
+					.map(Icon.class::cast)
+					.filter(Icon::isBuiltinIcon)
+					.filter(i -> i.getBuiltinIdentifier().equals(icon))
+					.findFirst()
+					.orElseThrow();
+
+			iconReferenceID = iconReference.getID();
+		}
+
+		return new BackupCategory_v7(ID, name, color, type, iconReferenceID);
 	}
 }

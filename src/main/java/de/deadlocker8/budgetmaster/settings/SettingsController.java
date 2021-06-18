@@ -11,6 +11,7 @@ import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
 import de.deadlocker8.budgetmaster.database.model.v6.BackupDatabase_v6;
+import de.deadlocker8.budgetmaster.database.model.v7.BackupDatabase_v7;
 import de.deadlocker8.budgetmaster.services.ImportResultItem;
 import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.services.UpdateCheckService;
@@ -218,7 +219,7 @@ public class SettingsController extends BaseController
 	{
 		LOGGER.debug("Exporting database...");
 
-		final BackupDatabase_v6 databaseForJsonSerialization = databaseService.getDatabaseForJsonSerialization();
+		final BackupDatabase_v7 databaseForJsonSerialization = databaseService.getDatabaseForJsonSerialization();
 		String data = DatabaseService.GSON.toJson(databaseForJsonSerialization);
 		byte[] dataBytes = data.getBytes(StandardCharsets.UTF_8);
 

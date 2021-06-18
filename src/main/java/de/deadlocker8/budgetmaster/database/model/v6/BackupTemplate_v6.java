@@ -1,11 +1,15 @@
 package de.deadlocker8.budgetmaster.database.model.v6;
 
+import de.deadlocker8.budgetmaster.database.model.BackupInfo;
+import de.deadlocker8.budgetmaster.database.model.Upgradeable;
 import de.deadlocker8.budgetmaster.database.model.v4.BackupTag_v4;
+import de.deadlocker8.budgetmaster.database.model.v7.BackupTemplate_v7;
+import de.deadlocker8.budgetmaster.icon.Icon;
 
 import java.util.List;
 import java.util.Objects;
 
-public class BackupTemplate_v6
+public class BackupTemplate_v6 implements Upgradeable<BackupTemplate_v7>
 {
 	private String templateName;
 	private Integer amount;
@@ -166,5 +170,29 @@ public class BackupTemplate_v6
 				", tags=" + tags +
 				", transferAccountID=" + transferAccountID +
 				'}';
+	}
+
+	@Override
+	public BackupTemplate_v7 upgrade(List<? extends BackupInfo> backupInfoItems)
+	{
+		final Integer iconReferenceID = determineIconReferenceID(backupInfoItems, iconID);
+		return new BackupTemplate_v7(templateName, amount, isExpenditure, accountID, categoryID, name, description, iconReferenceID, tags, transferAccountID);
+	}
+
+	private Integer determineIconReferenceID(List<? extends BackupInfo> backupInfoItems, Integer iconID)
+	{
+		if(iconID == null)
+		{
+			return null;
+		}
+
+		final Icon iconReference = backupInfoItems.stream()
+				.map(Icon.class::cast)
+				.filter(icon -> !icon.isBuiltinIcon())
+				.filter(icon -> icon.getImage().getID().equals(iconID))
+				.findFirst()
+				.orElseThrow();
+
+		return iconReference.getID();
 	}
 }

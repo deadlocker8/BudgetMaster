@@ -1,20 +1,19 @@
 package de.deadlocker8.budgetmaster.database.model.v6;
 
-import de.deadlocker8.budgetmaster.accounts.Account;
-import de.deadlocker8.budgetmaster.categories.Category;
-import de.deadlocker8.budgetmaster.charts.Chart;
 import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.JSONIdentifier;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
-import de.deadlocker8.budgetmaster.database.model.converter.*;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupCategory_v5;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupChart_v5;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupImage_v5;
-import de.deadlocker8.budgetmaster.images.Image;
-import de.deadlocker8.budgetmaster.templates.Template;
-import de.deadlocker8.budgetmaster.transactions.Transaction;
+import de.deadlocker8.budgetmaster.database.model.v7.BackupDatabase_v7;
+import de.deadlocker8.budgetmaster.database.model.v7.BackupIcon_v7;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class BackupDatabase_v6 implements BackupDatabase
 {
@@ -108,14 +107,7 @@ public class BackupDatabase_v6 implements BackupDatabase
 
 	public InternalDatabase convertToInternal()
 	{
-		final List<Image> convertedImages = convertItemsToInternal(this.images, new ImageConverter());
-		final List<Category> convertedCategories = convertItemsToInternal(categories, new CategoryConverter());
-		final List<Account> convertedAccounts = convertItemsToInternal(accounts, new AccountConverter(convertedImages));
-		final List<Transaction> convertedTransactions = convertItemsToInternal(this.transactions, new TransactionConverter(convertedCategories, convertedAccounts));
-		final List<Template> convertedTemplates = convertItemsToInternal(this.templates, new TemplateConverter(convertedImages, convertedCategories, convertedAccounts));
-		final List<Chart> convertedCharts = convertItemsToInternal(this.charts, new ChartConverter());
-
-		return new InternalDatabase(convertedCategories, convertedAccounts, convertedTransactions, convertedTemplates, convertedCharts, convertedImages, List.of());
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -127,20 +119,45 @@ public class BackupDatabase_v6 implements BackupDatabase
 	@Override
 	public BackupDatabase upgrade()
 	{
-		throw new UnsupportedOperationException();
-	}
+		final BackupDatabase_v7 upgradedDatabase = new BackupDatabase_v7();
 
-	public static BackupDatabase_v6 createFromInternalEntities(InternalDatabase database)
-	{
-		final BackupDatabase_v6 externalDatabase = new BackupDatabase_v6();
+		final List<BackupIcon_v7> newIcons = new ArrayList<>();
 
-		externalDatabase.setCategories(externalDatabase.convertItemsToExternal(database.getCategories(), new CategoryConverter()));
-		externalDatabase.setAccounts(externalDatabase.convertItemsToExternal(database.getAccounts(), new AccountConverter(null)));
-		externalDatabase.setTransactions(externalDatabase.convertItemsToExternal(database.getTransactions(), new TransactionConverter(null, null)));
-		externalDatabase.setTemplates(externalDatabase.convertItemsToExternal(database.getTemplates(), new TemplateConverter(null, null, null)));
-		externalDatabase.setCharts(externalDatabase.convertItemsToExternal(database.getCharts(), new ChartConverter()));
-		externalDatabase.setImages(externalDatabase.convertItemsToExternal(database.getImages(), new ImageConverter()));
+		final List<String> builtInIcons = categories.stream()
+				.filter(category -> category.getIcon() != null && !category.getIcon().isEmpty())
+				.map(BackupCategory_v5::getIcon)
+				.collect(Collectors.toList());
 
-		return externalDatabase;
+		for(String builtInIcon : builtInIcons)
+		{
+			final BackupIcon_v7 icon = new BackupIcon_v7(newIcons.size(), null, builtInIcon);
+			newIcons.add(icon);
+		}
+
+		final Set<Integer> usedImageIDs = accounts.stream()
+				.map(BackupAccount_v6::getIconID)
+				.filter(Objects::nonNull)
+				.collect(Collectors.toSet());
+
+		usedImageIDs.addAll(templates.stream()
+				.map(BackupTemplate_v6::getIconID)
+				.filter(Objects::nonNull)
+				.collect(Collectors.toSet()));
+
+		for(Integer imageID : usedImageIDs)
+		{
+			final BackupIcon_v7 icon = new BackupIcon_v7(newIcons.size(), imageID, null);
+			newIcons.add(icon);
+		}
+
+		upgradedDatabase.setCategories(upgradeItems(categories, newIcons));
+		upgradedDatabase.setAccounts(upgradeItems(accounts, newIcons));
+		upgradedDatabase.setTransactions(transactions);
+		upgradedDatabase.setTemplates(upgradeItems(templates, newIcons));
+		upgradedDatabase.setCharts(charts);
+		upgradedDatabase.setImages(images);
+		upgradedDatabase.setIcons(newIcons);
+
+		return upgradedDatabase;
 	}
 }

@@ -10,6 +10,7 @@ import de.deadlocker8.budgetmaster.database.model.converter.*;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupChart_v5;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupImage_v5;
 import de.deadlocker8.budgetmaster.database.model.v6.BackupTransaction_v6;
+import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
@@ -30,13 +31,14 @@ public class BackupDatabase_v7 implements BackupDatabase
 	private List<BackupTemplate_v7> templates;
 	private List<BackupChart_v5> charts;
 	private List<BackupImage_v5> images;
+	private List<BackupIcon_v7> icons;
 
 	public BackupDatabase_v7()
 	{
 		// for GSON
 	}
 
-	public BackupDatabase_v7(List<BackupCategory_v7> categories, List<BackupAccount_v7> accounts, List<BackupTransaction_v6> transactions, List<BackupTemplate_v7> templates, List<BackupChart_v5> charts, List<BackupImage_v5> images)
+	public BackupDatabase_v7(List<BackupCategory_v7> categories, List<BackupAccount_v7> accounts, List<BackupTransaction_v6> transactions, List<BackupTemplate_v7> templates, List<BackupChart_v5> charts, List<BackupImage_v5> images, List<BackupIcon_v7> icons)
 	{
 		this.categories = categories;
 		this.accounts = accounts;
@@ -44,6 +46,7 @@ public class BackupDatabase_v7 implements BackupDatabase
 		this.templates = templates;
 		this.charts = charts;
 		this.images = images;
+		this.icons = icons;
 	}
 
 	public List<BackupCategory_v7> getCategories()
@@ -106,16 +109,27 @@ public class BackupDatabase_v7 implements BackupDatabase
 		this.images = images;
 	}
 
+	public List<BackupIcon_v7> getIcons()
+	{
+		return icons;
+	}
+
+	public void setIcons(List<BackupIcon_v7> icons)
+	{
+		this.icons = icons;
+	}
+
 	public InternalDatabase convertToInternal()
 	{
 		final List<Image> convertedImages = convertItemsToInternal(this.images, new ImageConverter());
-		final List<Category> convertedCategories = convertItemsToInternal(categories, new CategoryConverter());
-		final List<Account> convertedAccounts = convertItemsToInternal(accounts, new AccountConverter(convertedImages));
+		final List<Icon> convertedIcons = convertItemsToInternal(this.icons, new IconConverter(convertedImages));
+		final List<Category> convertedCategories = convertItemsToInternal(categories, new CategoryConverter(convertedIcons));
+		final List<Account> convertedAccounts = convertItemsToInternal(accounts, new AccountConverter(convertedIcons));
 		final List<Transaction> convertedTransactions = convertItemsToInternal(this.transactions, new TransactionConverter(convertedCategories, convertedAccounts));
-		final List<Template> convertedTemplates = convertItemsToInternal(this.templates, new TemplateConverter(convertedImages, convertedCategories, convertedAccounts));
+		final List<Template> convertedTemplates = convertItemsToInternal(this.templates, new TemplateConverter(convertedIcons, convertedCategories, convertedAccounts));
 		final List<Chart> convertedCharts = convertItemsToInternal(this.charts, new ChartConverter());
 
-		return new InternalDatabase(convertedCategories, convertedAccounts, convertedTransactions, convertedTemplates, convertedCharts, convertedImages, List.of());
+		return new InternalDatabase(convertedCategories, convertedAccounts, convertedTransactions, convertedTemplates, convertedCharts, convertedImages, convertedIcons);
 	}
 
 	@Override
@@ -134,7 +148,8 @@ public class BackupDatabase_v7 implements BackupDatabase
 	{
 		final BackupDatabase_v7 externalDatabase = new BackupDatabase_v7();
 
-		externalDatabase.setCategories(externalDatabase.convertItemsToExternal(database.getCategories(), new CategoryConverter()));
+		externalDatabase.setIcons(externalDatabase.convertItemsToExternal(database.getIcons(), new IconConverter(null)));
+		externalDatabase.setCategories(externalDatabase.convertItemsToExternal(database.getCategories(), new CategoryConverter(null)));
 		externalDatabase.setAccounts(externalDatabase.convertItemsToExternal(database.getAccounts(), new AccountConverter(null)));
 		externalDatabase.setTransactions(externalDatabase.convertItemsToExternal(database.getTransactions(), new TransactionConverter(null, null)));
 		externalDatabase.setTemplates(externalDatabase.convertItemsToExternal(database.getTemplates(), new TemplateConverter(null, null, null)));

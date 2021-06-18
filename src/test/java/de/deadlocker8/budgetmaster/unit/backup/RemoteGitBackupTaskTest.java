@@ -6,8 +6,8 @@ import de.deadlocker8.budgetmaster.backup.BackupTask;
 import de.deadlocker8.budgetmaster.backup.RemoteGitBackupTask;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
-import de.deadlocker8.budgetmaster.database.model.v5.BackupCategory_v5;
-import de.deadlocker8.budgetmaster.database.model.v6.BackupDatabase_v6;
+import de.deadlocker8.budgetmaster.database.model.v7.BackupCategory_v7;
+import de.deadlocker8.budgetmaster.database.model.v7.BackupDatabase_v7;
 import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.unit.helpers.Helpers;
@@ -217,7 +217,7 @@ public class RemoteGitBackupTaskTest
 		final RemoteGitBackupTask remoteGitBackupTask = createBackupTask(repositoryFolder, fakeServerFolder);
 		remoteGitBackupTask.run();
 
-		final BackupDatabase_v6 databaseModified = new BackupDatabase_v6(List.of(new BackupCategory_v5(5, "myCategory", "#FF0000", CategoryType.CUSTOM, null)), List.of(), List.of(), List.of(), List.of(), List.of());
+		final BackupDatabase_v7 databaseModified = new BackupDatabase_v7(List.of(new BackupCategory_v7(5, "myCategory", "#FF0000", CategoryType.CUSTOM, null)), List.of(), List.of(), List.of(), List.of(), List.of(), List.of());
 		Mockito.when(databaseService.getDatabaseForJsonSerialization()).thenReturn(databaseModified);
 		remoteGitBackupTask.run();
 
@@ -257,7 +257,7 @@ public class RemoteGitBackupTaskTest
 		settings.setAutoBackupGitToken("0815");
 		Mockito.when(settingsService.getSettings()).thenReturn(settings);
 
-		final BackupDatabase_v6 database = new BackupDatabase_v6();
+		final BackupDatabase_v7 database = new BackupDatabase_v7();
 		Mockito.when(databaseService.getDatabaseForJsonSerialization()).thenReturn(database);
 		Mockito.doCallRealMethod().when(databaseService).exportDatabase(Mockito.any());
 

@@ -1,9 +1,11 @@
 package de.deadlocker8.budgetmaster.database.model.v4;
 
 import de.deadlocker8.budgetmaster.categories.CategoryType;
+import de.deadlocker8.budgetmaster.database.model.BackupInfo;
 import de.deadlocker8.budgetmaster.database.model.Upgradeable;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupCategory_v5;
 
+import java.util.List;
 import java.util.Objects;
 
 public class BackupCategory_v4 implements Upgradeable<BackupCategory_v5>
@@ -92,7 +94,8 @@ public class BackupCategory_v4 implements Upgradeable<BackupCategory_v5>
 				'}';
 	}
 
-	public BackupCategory_v5 upgrade()
+	@Override
+	public BackupCategory_v5 upgrade(List<? extends BackupInfo> backupInfoItems)
 	{
 		return new BackupCategory_v5(ID, name, color, type, null);
 	}

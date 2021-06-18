@@ -85,10 +85,10 @@ public class BackupDatabase_v4 implements BackupDatabase
 	{
 		final BackupDatabase_v5 upgradedDatabase = new BackupDatabase_v5();
 
-		upgradedDatabase.setCategories(upgradeItems(categories));
-		upgradedDatabase.setAccounts(upgradeItems(accounts));
-		upgradedDatabase.setTransactions(upgradeItems(transactions));
-		upgradedDatabase.setTemplates(upgradeItems(templates));
+		upgradedDatabase.setCategories(upgradeItems(categories, List.of()));
+		upgradedDatabase.setAccounts(upgradeItems(accounts, List.of()));
+		upgradedDatabase.setTransactions(upgradeItems(transactions, List.of()));
+		upgradedDatabase.setTemplates(upgradeItems(templates, List.of()));
 		upgradedDatabase.setCharts(new ArrayList<>());
 		upgradedDatabase.setImages(new ArrayList<>());
 
