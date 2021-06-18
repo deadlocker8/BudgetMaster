@@ -99,7 +99,7 @@ public class BackupCategory_v7
 				", name='" + name + '\'' +
 				", color='" + color + '\'' +
 				", type=" + type +
-				", icon='" + iconReferenceID + '\'' +
+				", iconReferenceID='" + iconReferenceID + '\'' +
 				'}';
 	}
 }

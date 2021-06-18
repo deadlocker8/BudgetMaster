@@ -162,7 +162,7 @@ public class BackupTemplate_v7
 				", categoryID=" + categoryID +
 				", name='" + name + '\'' +
 				", description='" + description + '\'' +
-				", iconID=" + iconReferenceID +
+				", iconReferenceID=" + iconReferenceID +
 				", tags=" + tags +
 				", transferAccountID=" + transferAccountID +
 				'}';
