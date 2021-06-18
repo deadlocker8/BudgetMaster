@@ -11,6 +11,8 @@ import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
 import de.deadlocker8.budgetmaster.icon.Icon;
+import de.deadlocker8.budgetmaster.icon.IconService;
+import de.deadlocker8.budgetmaster.icon.Iconizable;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.repeating.RepeatingTransactionUpdater;
@@ -44,6 +46,7 @@ public class ImportService
 	private final ImageService imageService;
 	private final RepeatingTransactionUpdater repeatingTransactionUpdater;
 	private final AccountRepository accountRepository;
+	private final IconService iconService;
 
 
 	private InternalDatabase database;
@@ -51,7 +54,7 @@ public class ImportService
 
 	@Autowired
 	public ImportService(CategoryRepository categoryRepository, TransactionRepository transactionRepository, TemplateRepository templateRepository,
-						 TagRepository tagRepository, ChartService chartService, ImageService imageService, RepeatingTransactionUpdater repeatingTransactionUpdater, AccountRepository accountRepository)
+						 TagRepository tagRepository, ChartService chartService, ImageService imageService, RepeatingTransactionUpdater repeatingTransactionUpdater, AccountRepository accountRepository, IconService iconService)
 	{
 		this.categoryRepository = categoryRepository;
 		this.transactionRepository = transactionRepository;
@@ -61,6 +64,7 @@ public class ImportService
 		this.imageService = imageService;
 		this.repeatingTransactionUpdater = repeatingTransactionUpdater;
 		this.accountRepository = accountRepository;
+		this.iconService = iconService;
 	}
 
 	public List<ImportResultItem> importDatabase(InternalDatabase database, AccountMatchList accountMatchList, Boolean importTemplates, Boolean importCharts)
@@ -72,6 +76,7 @@ public class ImportService
 
 		LOGGER.debug("Importing database...");
 		importResultItems.add(importImages());
+		importIcons();
 		importResultItems.add(importCategories());
 		importResultItems.add(importAccounts(accountMatchList));
 		importResultItems.add(importTransactions());
@@ -488,6 +493,78 @@ public class ImportService
 			if(image.getID() == oldImageId)
 			{
 				image.setID(newImageID);
+				updatedItems.add(item);
+			}
+		}
+
+		return updatedItems;
+	}
+
+	private void importIcons()
+	{
+		List<Icon> icons = database.getIcons();
+		LOGGER.debug(MessageFormat.format("Importing {0} icons...", icons.size()));
+		List<Iconizable> alreadyUpdatedAccounts = new ArrayList<>();
+		List<Iconizable> alreadyUpdatedTemplates = new ArrayList<>();
+		List<Iconizable> alreadyUpdatedCategories = new ArrayList<>();
+
+		int numberOfImportedIcons = 0;
+
+		for(int i = 0; i < icons.size(); i++)
+		{
+			Icon icon = icons.get(i);
+			try
+			{
+				LOGGER.debug(MessageFormat.format("Importing icon {0}/{1} (ID: {2})", i + 1, icons.size(), icon.getID()));
+
+				// always create new image
+				int oldIconID = icon.getID();
+				Icon iconToCreate = new Icon();
+				iconToCreate.setImage(icon.getImage());
+				iconToCreate.setBuiltinIdentifier(icon.getBuiltinIdentifier());
+
+				final Icon savedIcon = iconService.getRepository().save(iconToCreate);
+				int newIconID = savedIcon.getID();
+
+				List<Iconizable> accounts = new ArrayList<>(database.getAccounts());
+				accounts.removeAll(alreadyUpdatedAccounts);
+				alreadyUpdatedAccounts.addAll(updateIconsForItems(accounts, oldIconID, newIconID));
+
+				List<Iconizable> templates = new ArrayList<>(database.getTemplates());
+				templates.removeAll(alreadyUpdatedTemplates);
+				alreadyUpdatedTemplates.addAll(updateIconsForItems(templates, oldIconID, newIconID));
+
+				List<Iconizable> categories = new ArrayList<>(database.getCategories());
+				templates.removeAll(alreadyUpdatedCategories);
+				alreadyUpdatedCategories.addAll(updateIconsForItems(categories, oldIconID, newIconID));
+
+				numberOfImportedIcons++;
+			}
+			catch(Exception e)
+			{
+				final String errorMessage = MessageFormat.format("Error while importing icon with ID {0}", icon.getID());
+				LOGGER.error(errorMessage, e);
+				collectedErrorMessages.add(formatErrorMessage(errorMessage, e));
+			}
+		}
+
+		LOGGER.debug(MessageFormat.format("Importing icon DONE ({0}/{1})", numberOfImportedIcons, icons.size()));
+	}
+
+	public List<Iconizable> updateIconsForItems(List<? extends Iconizable> items, int oldIconID, int newIconID)
+	{
+		List<Iconizable> updatedItems = new ArrayList<>();
+		for(Iconizable item : items)
+		{
+			final Icon iconReference = item.getIconReference();
+			if(iconReference == null)
+			{
+				continue;
+			}
+
+			if(iconReference.getID() == oldIconID)
+			{
+				iconReference.setID(newIconID);
 				updatedItems.add(item);
 			}
 		}
