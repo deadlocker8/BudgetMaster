@@ -43,7 +43,7 @@ public class Account implements ProvidesID, Iconizable
 	@Deprecated(since = "v2.7.0", forRemoval = true)
 	private Image icon;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.REMOVE)
 	@Expose
 	private Icon iconReference;
 
