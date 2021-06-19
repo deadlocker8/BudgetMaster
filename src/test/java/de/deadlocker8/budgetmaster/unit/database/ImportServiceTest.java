@@ -16,6 +16,7 @@ import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
 import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.IconRepository;
 import de.deadlocker8.budgetmaster.icon.IconService;
+import de.deadlocker8.budgetmaster.icon.Iconizable;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.images.ImageFileExtension;
 import de.deadlocker8.budgetmaster.images.ImageRepository;
@@ -533,7 +534,7 @@ public class ImportServiceTest
 	}
 
 	@Test
-	public void test_updateImagesForAccounts()
+	public void test_updateImagesForIcons()
 	{
 		Image image1 = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
 		image1.setID(3);
@@ -693,5 +694,36 @@ public class ImportServiceTest
 				.contains(new ImportResultItem(EntityType.CATEGORY, 1, 2));
 		assertThat(importService.getCollectedErrorMessages()).hasSize(1)
 				.contains("Error while importing category with name \"Category1\": java.lang.NullPointerException (null)");
+	}
+
+	@Test
+	public void test_updateIconsForAccounts()
+	{
+		Image image1 = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
+		image1.setID(3);
+
+		Icon icon1 = new Icon(image1);
+		icon1.setID(3);
+
+		Icon icon2 = new Icon("fas fa-icons");
+		icon2.setID(4);
+
+		Account account1 = new Account("account with image icon", AccountType.CUSTOM, icon1);
+		Account account2 = new Account("account with built-in icon", AccountType.CUSTOM, icon2);
+		List<Account> accounts = List.of(account1, account2);
+
+		List<Iconizable> updatedAccounts = importService.updateIconsForItems(accounts, 3, 5);
+		assertThat(updatedAccounts).hasSize(1);
+		assertThat(updatedAccounts.get(0).getIconReference())
+				.hasFieldOrPropertyWithValue("ID", 5)
+				.hasFieldOrPropertyWithValue("image", image1)
+				.hasFieldOrPropertyWithValue("builtinIdentifier", null);
+
+		updatedAccounts = importService.updateIconsForItems(accounts, 4, 6);
+		assertThat(updatedAccounts).hasSize(1);
+		assertThat(updatedAccounts.get(0).getIconReference())
+				.hasFieldOrPropertyWithValue("ID", 6)
+				.hasFieldOrPropertyWithValue("image", null)
+				.hasFieldOrPropertyWithValue("builtinIdentifier", "fas fa-icons");
 	}
 }
