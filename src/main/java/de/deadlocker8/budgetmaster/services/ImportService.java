@@ -395,7 +395,7 @@ public class ImportService
 			}
 			catch(Exception e)
 			{
-				final String errorMessage = MessageFormat.format("Error while importing template with name \"{0}\"", template.getName());
+				final String errorMessage = MessageFormat.format("Error while importing template with name \"{0}\"", template.getTemplateName());
 				LOGGER.error(errorMessage, e);
 				collectedErrorMessages.add(formatErrorMessage(errorMessage, e));
 			}
@@ -517,7 +517,7 @@ public class ImportService
 			{
 				LOGGER.debug(MessageFormat.format("Importing icon {0}/{1} (ID: {2})", i + 1, icons.size(), icon.getID()));
 
-				// always create new image
+				// always create new icon
 				int oldIconID = icon.getID();
 				Icon iconToCreate = new Icon();
 				iconToCreate.setImage(icon.getImage());
@@ -535,7 +535,7 @@ public class ImportService
 				alreadyUpdatedTemplates.addAll(updateIconsForItems(templates, oldIconID, newIconID));
 
 				List<Iconizable> categories = new ArrayList<>(database.getCategories());
-				templates.removeAll(alreadyUpdatedCategories);
+				categories.removeAll(alreadyUpdatedCategories);
 				alreadyUpdatedCategories.addAll(updateIconsForItems(categories, oldIconID, newIconID));
 
 				numberOfImportedIcons++;
