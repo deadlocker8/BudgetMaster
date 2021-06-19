@@ -79,6 +79,7 @@ public class DatabaseService
 		resetAccounts();
 		resetTags();
 		resetCharts();
+		resetIcons();
 		resetImages();
 	}
 
@@ -136,6 +137,14 @@ public class DatabaseService
 		imageService.deleteAll();
 		imageService.createDefaults();
 		LOGGER.info("All images reset.");
+	}
+
+	private void resetIcons()
+	{
+		LOGGER.info("Resetting icons...");
+		iconService.deleteAll();
+		iconService.createDefaults();
+		LOGGER.info("All icons reset.");
 	}
 
 	public void rotatingBackup(Path backupFolderPath)
