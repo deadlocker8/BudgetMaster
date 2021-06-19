@@ -418,6 +418,10 @@ public class ImportServiceTest
 		tags2.add(tag1);
 		template1.setTags(tags2);
 
+		Icon icon1 = new Icon("fas fa-icons");
+		icon1.setID(12);
+		template1.setIconReference(icon1);
+
 		Template template2 = new Template();
 		template2.setTemplateName("MyTemplate2");
 		template2.setTransferAccount(sourceAccount2);
@@ -436,7 +440,7 @@ public class ImportServiceTest
 		chart.setScript("/* This list will be dynamically filled with all the transactions between\r\n* the start and and date you select on the \"Show Chart\" page\r\n* and filtered according to your specified filter.\r\n* An example entry for this list and tutorial about how to create custom charts ca be found in the BudgetMaster wiki:\r\n* https://github.com/deadlocker8/BudgetMaster/wiki/How-to-create-custom-charts\r\n*/\r\nvar transactionData \u003d [];\r\n\r\n// Prepare your chart settings here (mandatory)\r\nvar plotlyData \u003d [{\r\n    x: [],\r\n    y: [],\r\n    type: \u0027bar\u0027\r\n}];\r\n\r\n// Add your Plotly layout settings here (optional)\r\nvar plotlyLayout \u003d {};\r\n\r\n// Add your Plotly configuration settings here (optional)\r\nvar plotlyConfig \u003d {\r\n    showSendToCloud: false,\r\n    displaylogo: false,\r\n    showLink: false,\r\n    responsive: true\r\n};\r\n\r\n// Don\u0027t touch this line\r\nPlotly.newPlot(\"containerID\", plotlyData, plotlyLayout, plotlyConfig);\r\n");
 
 		// database
-		InternalDatabase database = new InternalDatabase(new ArrayList<>(), accounts, transactions, templates, List.of(chart), List.of(), List.of());
+		InternalDatabase database = new InternalDatabase(new ArrayList<>(), accounts, transactions, templates, List.of(chart), List.of(), List.of(icon1));
 
 		// account matches
 		AccountMatch match1 = new AccountMatch(sourceAccount1);
@@ -475,6 +479,10 @@ public class ImportServiceTest
 		expectedTemplateTags.add(tag1);
 		expectedTemplate1.setTags(expectedTemplateTags);
 
+		Icon expectedIcon = new Icon("fas fa-icons");
+		expectedIcon.setID(28);
+		expectedTemplate1.setIconReference(expectedIcon);
+
 		Template expectedTemplate2 = new Template();
 		expectedTemplate2.setTemplateName("MyTemplate2");
 		expectedTemplate2.setTransferAccount(destAccount2);
@@ -489,6 +497,10 @@ public class ImportServiceTest
 
 		Mockito.when(accountRepository.findById(5)).thenReturn(Optional.of(destAccount1));
 		Mockito.when(accountRepository.findById(2)).thenReturn(Optional.of(destAccount2));
+
+		IconRepository iconRepositoryMock = Mockito.mock(IconRepository.class);
+		Mockito.when(iconService.getRepository()).thenReturn(iconRepositoryMock);
+		Mockito.when(iconRepositoryMock.save(Mockito.any())).thenReturn(expectedIcon);
 
 		importService.importDatabase(database, accountMatchList, true, true);
 		InternalDatabase databaseResult = importService.getDatabase();
