@@ -14,6 +14,8 @@ import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
 import de.deadlocker8.budgetmaster.icon.Icon;
+import de.deadlocker8.budgetmaster.icon.IconRepository;
+import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.images.ImageFileExtension;
 import de.deadlocker8.budgetmaster.images.ImageRepository;
@@ -69,6 +71,9 @@ public class ImportServiceTest
 
 	@Mock
 	private AccountRepository accountRepository;
+
+	@Mock
+	private IconService iconService;
 
 	@InjectMocks
 	private ImportService importService;
@@ -594,6 +599,7 @@ public class ImportServiceTest
 		Image image = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
 		image.setID(3);
 		Icon icon = new Icon(image);
+		icon.setID(15);
 
 		Account accountSource = new Account("my account with icon", AccountType.CUSTOM, icon);
 		accountSource.setID(1);
@@ -604,7 +610,10 @@ public class ImportServiceTest
 		AccountMatch accountMatch = new AccountMatch(accountSource);
 		accountMatch.setAccountDestination(accountDestination);
 
-		Account expectedAccount = new Account("destination", AccountType.CUSTOM, icon);
+		Icon expectedIcon = new Icon(image);
+		expectedIcon.setID(1);
+
+		Account expectedAccount = new Account("destination", AccountType.CUSTOM, expectedIcon);
 		expectedAccount.setID(15);
 		Mockito.when(accountRepository.save(Mockito.any())).thenReturn(expectedAccount);
 		Mockito.when(accountRepository.findById(15)).thenReturn(Optional.of(accountDestination));
@@ -612,6 +621,10 @@ public class ImportServiceTest
 		ImageRepository imageRepositoryMock = Mockito.mock(ImageRepository.class);
 		Mockito.when(imageService.getRepository()).thenReturn(imageRepositoryMock);
 		Mockito.when(imageRepositoryMock.save(Mockito.any())).thenReturn(image);
+
+		IconRepository iconRepositoryMock = Mockito.mock(IconRepository.class);
+		Mockito.when(iconService.getRepository()).thenReturn(iconRepositoryMock);
+		Mockito.when(iconRepositoryMock.save(Mockito.any())).thenReturn(expectedIcon);
 
 		importService.importDatabase(database, new AccountMatchList(List.of(accountMatch)), true, true);
 
