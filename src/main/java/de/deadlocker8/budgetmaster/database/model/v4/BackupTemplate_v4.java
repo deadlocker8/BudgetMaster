@@ -147,7 +147,7 @@ public class BackupTemplate_v4 implements BackupTransactionBase_v4, Upgradeable<
 	}
 
 	@Override
-	public BackupTemplate_v5 upgrade(List<? extends BackupInfo> backupInfoItems)
+	public BackupTemplate_v5 upgrade(List<BackupInfo> backupInfoItems)
 	{
 		BackupAccount_v5 upgradedAccount = null;
 		if(account != null)

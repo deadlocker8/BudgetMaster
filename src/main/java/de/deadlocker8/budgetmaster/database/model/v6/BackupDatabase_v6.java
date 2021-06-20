@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmaster.database.model.v6;
 import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.JSONIdentifier;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
+import de.deadlocker8.budgetmaster.database.model.BackupInfo;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupCategory_v5;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupChart_v5;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupImage_v5;
@@ -11,8 +12,6 @@ import de.deadlocker8.budgetmaster.database.model.v7.BackupIcon_v7;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class BackupDatabase_v6 implements BackupDatabase
@@ -121,34 +120,7 @@ public class BackupDatabase_v6 implements BackupDatabase
 	{
 		final BackupDatabase_v7 upgradedDatabase = new BackupDatabase_v7();
 
-		final List<BackupIcon_v7> newIcons = new ArrayList<>();
-
-		final List<String> builtInIcons = categories.stream()
-				.filter(category -> category.getIcon() != null && !category.getIcon().isEmpty())
-				.map(BackupCategory_v5::getIcon)
-				.collect(Collectors.toList());
-
-		for(String builtInIcon : builtInIcons)
-		{
-			final BackupIcon_v7 icon = new BackupIcon_v7(newIcons.size(), null, builtInIcon);
-			newIcons.add(icon);
-		}
-
-		final Set<Integer> usedImageIDs = accounts.stream()
-				.map(BackupAccount_v6::getIconID)
-				.filter(Objects::nonNull)
-				.collect(Collectors.toSet());
-
-		usedImageIDs.addAll(templates.stream()
-				.map(BackupTemplate_v6::getIconID)
-				.filter(Objects::nonNull)
-				.collect(Collectors.toSet()));
-
-		for(Integer imageID : usedImageIDs)
-		{
-			final BackupIcon_v7 icon = new BackupIcon_v7(newIcons.size(), imageID, null);
-			newIcons.add(icon);
-		}
+		final List<BackupInfo> newIcons = new ArrayList<>();
 
 		upgradedDatabase.setCategories(upgradeItems(categories, newIcons));
 		upgradedDatabase.setAccounts(upgradeItems(accounts, newIcons));
@@ -156,7 +128,11 @@ public class BackupDatabase_v6 implements BackupDatabase
 		upgradedDatabase.setTemplates(upgradeItems(templates, newIcons));
 		upgradedDatabase.setCharts(charts);
 		upgradedDatabase.setImages(images);
-		upgradedDatabase.setIcons(newIcons);
+
+		List<BackupIcon_v7> castedIcons = newIcons.stream()
+				.map(BackupIcon_v7.class::cast)
+				.collect(Collectors.toList());
+		upgradedDatabase.setIcons(castedIcons);
 
 		return upgradedDatabase;
 	}

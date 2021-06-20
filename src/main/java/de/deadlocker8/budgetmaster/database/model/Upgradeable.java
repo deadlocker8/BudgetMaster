@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface Upgradeable<T>
 {
-	T upgrade(List<? extends BackupInfo> backupInfoItems);
+	T upgrade(List<BackupInfo> backupInfoItems);
 }

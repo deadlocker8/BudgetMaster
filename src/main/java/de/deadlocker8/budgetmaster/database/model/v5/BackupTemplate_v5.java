@@ -172,7 +172,7 @@ public class BackupTemplate_v5 implements Upgradeable<BackupTemplate_v6>
 	}
 
 	@Override
-	public BackupTemplate_v6 upgrade(List<? extends BackupInfo> backupInfoItems)
+	public BackupTemplate_v6 upgrade(List<BackupInfo> backupInfoItems)
 	{
 		Integer accountID = null;
 		if(account != null)

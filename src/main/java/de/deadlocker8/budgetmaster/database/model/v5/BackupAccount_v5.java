@@ -109,7 +109,7 @@ public class BackupAccount_v5 implements Upgradeable<BackupAccount_v6>
 	}
 
 	@Override
-	public BackupAccount_v6 upgrade(List<? extends BackupInfo> backupInfoItems)
+	public BackupAccount_v6 upgrade(List<BackupInfo> backupInfoItems)
 	{
 		Integer iconID = null;
 		if(icon != null)

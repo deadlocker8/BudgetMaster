@@ -95,7 +95,7 @@ public class BackupCategory_v4 implements Upgradeable<BackupCategory_v5>
 	}
 
 	@Override
-	public BackupCategory_v5 upgrade(List<? extends BackupInfo> backupInfoItems)
+	public BackupCategory_v5 upgrade(List<BackupInfo> backupInfoItems)
 	{
 		return new BackupCategory_v5(ID, name, color, type, null);
 	}

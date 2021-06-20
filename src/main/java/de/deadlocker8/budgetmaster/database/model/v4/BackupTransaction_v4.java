@@ -159,7 +159,7 @@ public class BackupTransaction_v4 implements BackupTransactionBase_v4, Upgradeab
 	}
 
 	@Override
-	public BackupTransaction_v5 upgrade(List<? extends BackupInfo> backupInfoItems)
+	public BackupTransaction_v5 upgrade(List<BackupInfo> backupInfoItems)
 	{
 		BackupAccount_v5 upgradedAccount = account.upgrade(backupInfoItems);
 		BackupCategory_v5 upgradedCategory = category.upgrade(backupInfoItems);

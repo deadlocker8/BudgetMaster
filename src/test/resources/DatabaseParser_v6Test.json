@@ -41,6 +41,13 @@
             "accountState": "FULL_ACCESS",
             "type": "CUSTOM",
             "iconID": 1
+        },
+        {
+            "ID": 4,
+            "name": "Third Account",
+            "accountState": "FULL_ACCESS",
+            "type": "CUSTOM",
+            "iconID": 1
         }
     ],
     "transactions": [

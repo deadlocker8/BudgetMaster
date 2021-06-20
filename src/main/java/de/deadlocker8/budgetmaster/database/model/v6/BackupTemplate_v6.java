@@ -173,26 +173,17 @@ public class BackupTemplate_v6 implements Upgradeable<BackupTemplate_v7>
 	}
 
 	@Override
-	public BackupTemplate_v7 upgrade(List<? extends BackupInfo> backupInfoItems)
+	public BackupTemplate_v7 upgrade(List<BackupInfo> backupInfoItems)
 	{
-		final Integer iconReferenceID = determineIconReferenceID(backupInfoItems, iconID);
-		return new BackupTemplate_v7(templateName, amount, isExpenditure, accountID, categoryID, name, description, iconReferenceID, tags, transferAccountID);
-	}
-
-	private Integer determineIconReferenceID(List<? extends BackupInfo> backupInfoItems, Integer iconID)
-	{
-		if(iconID == null)
+		Integer iconReferenceID = null;
+		if(iconID != null)
 		{
-			return null;
+			BackupIcon_v7 iconReference = new BackupIcon_v7(backupInfoItems.size(), iconID, null);
+			backupInfoItems.add(iconReference);
+
+			iconReferenceID = iconReference.getID();
 		}
 
-		final BackupIcon_v7 iconReference = backupInfoItems.stream()
-				.map(BackupIcon_v7.class::cast)
-				.filter(icon -> icon.getImageID() != null)
-				.filter(icon -> icon.getImageID().equals(iconID))
-				.findFirst()
-				.orElseThrow();
-
-		return iconReference.getID();
+		return new BackupTemplate_v7(templateName, amount, isExpenditure, accountID, categoryID, name, description, iconReferenceID, tags, transferAccountID);
 	}
 }

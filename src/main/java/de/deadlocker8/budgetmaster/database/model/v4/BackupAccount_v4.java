@@ -84,7 +84,7 @@ public class BackupAccount_v4 implements Upgradeable<BackupAccount_v5>
 	}
 
 	@Override
-	public BackupAccount_v5 upgrade(List<? extends BackupInfo> backupInfoItems)
+	public BackupAccount_v5 upgrade(List<BackupInfo> backupInfoItems)
 	{
 		return new BackupAccount_v5(ID, name, AccountState.FULL_ACCESS, type, null);
 	}

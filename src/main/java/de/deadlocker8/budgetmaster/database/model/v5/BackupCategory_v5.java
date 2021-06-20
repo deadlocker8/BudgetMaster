@@ -109,17 +109,13 @@ public class BackupCategory_v5 implements Upgradeable<BackupCategory_v7>
 	}
 
 	@Override
-	public BackupCategory_v7 upgrade(List<? extends BackupInfo> backupInfoItems)
+	public BackupCategory_v7 upgrade(List<BackupInfo> backupInfoItems)
 	{
 		Integer iconReferenceID = null;
 		if(icon != null)
 		{
-			final BackupIcon_v7 iconReference = backupInfoItems.stream()
-					.map(BackupIcon_v7.class::cast)
-					.filter(i -> i.getBuiltinIdentifier() != null)
-					.filter(i -> i.getBuiltinIdentifier().equals(icon))
-					.findFirst()
-					.orElseThrow();
+			BackupIcon_v7 iconReference = new BackupIcon_v7(backupInfoItems.size(), null, icon);
+			backupInfoItems.add(iconReference);
 
 			iconReferenceID = iconReference.getID();
 		}

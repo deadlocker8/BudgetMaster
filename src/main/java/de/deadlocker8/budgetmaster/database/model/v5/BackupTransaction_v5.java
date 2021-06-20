@@ -173,7 +173,7 @@ public class BackupTransaction_v5 implements Upgradeable<BackupTransaction_v6>
 	}
 
 	@Override
-	public BackupTransaction_v6 upgrade(List<? extends BackupInfo> backupInfoItems)
+	public BackupTransaction_v6 upgrade(List<BackupInfo> backupInfoItems)
 	{
 		Integer transferAccountID = null;
 		if(transferAccount != null)

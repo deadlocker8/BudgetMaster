@@ -13,7 +13,7 @@ public interface BackupDatabase
 
 	InternalDatabase convertToInternal();
 
-	default <T> List<T> upgradeItems(List<? extends Upgradeable<T>> items, List<? extends BackupInfo> backupInfoItems)
+	default <T> List<T> upgradeItems(List<? extends Upgradeable<T>> items, List<BackupInfo> backupInfoItems)
 	{
 		List<T> upgradedItems = new ArrayList<>();
 		for(Upgradeable<T> item : items)

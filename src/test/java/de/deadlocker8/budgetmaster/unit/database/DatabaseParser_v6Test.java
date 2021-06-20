@@ -15,6 +15,10 @@ import de.deadlocker8.budgetmaster.database.model.v6.BackupAccount_v6;
 import de.deadlocker8.budgetmaster.database.model.v6.BackupDatabase_v6;
 import de.deadlocker8.budgetmaster.database.model.v6.BackupTemplate_v6;
 import de.deadlocker8.budgetmaster.database.model.v6.BackupTransaction_v6;
+import de.deadlocker8.budgetmaster.database.model.v7.BackupAccount_v7;
+import de.deadlocker8.budgetmaster.database.model.v7.BackupCategory_v7;
+import de.deadlocker8.budgetmaster.database.model.v7.BackupDatabase_v7;
+import de.deadlocker8.budgetmaster.database.model.v7.BackupTemplate_v7;
 import de.deadlocker8.budgetmaster.images.ImageFileExtension;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndAfterXTimes;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierDays;
@@ -91,7 +95,7 @@ public class DatabaseParser_v6Test
 
 		final BackupAccount_v6 account = new BackupAccount_v6(3, "Second Account", AccountState.FULL_ACCESS, AccountType.CUSTOM, 1);
 
-		assertThat(database.getAccounts()).hasSize(3)
+		assertThat(database.getAccounts()).hasSize(4)
 				.contains(account);
 		assertThat(database.getAccounts().get(2).getIconID())
 				.isOne();
@@ -196,5 +200,57 @@ public class DatabaseParser_v6Test
 						normalTransaction_2,
 						repeatingTransaction_1,
 						transferTransaction);
+	}
+
+	@Test
+	public void test_Upgrade_Accounts() throws URISyntaxException, IOException
+	{
+		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v6Test.json").toURI())));
+		DatabaseParser_v6 parser = new DatabaseParser_v6(json);
+		BackupDatabase_v6 database = parser.parseDatabaseFromJSON();
+
+		final BackupDatabase_v7 upgradedDatabase = (BackupDatabase_v7)database.upgrade();
+
+		final BackupAccount_v7 upgradedAccount1 = new BackupAccount_v7(1, "Placeholder", AccountState.FULL_ACCESS, AccountType.ALL, null);
+		final BackupAccount_v7 upgradedAccount2 = new BackupAccount_v7(2, "Default", AccountState.FULL_ACCESS, AccountType.CUSTOM, null);
+		final BackupAccount_v7 upgradedAccount3 = new BackupAccount_v7(3, "Second Account", AccountState.FULL_ACCESS, AccountType.CUSTOM, 1);
+		final BackupAccount_v7 upgradedAccount4 = new BackupAccount_v7(4, "Third Account", AccountState.FULL_ACCESS, AccountType.CUSTOM, 2);
+
+		assertThat(upgradedDatabase.getAccounts()).hasSize(4)
+				.containsExactly(upgradedAccount1, upgradedAccount2, upgradedAccount3, upgradedAccount4);
+	}
+
+	@Test
+	public void test_Upgrade_Templates() throws URISyntaxException, IOException
+	{
+		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v6Test.json").toURI())));
+		DatabaseParser_v6 parser = new DatabaseParser_v6(json);
+		BackupDatabase_v6 database = parser.parseDatabaseFromJSON();
+
+		final BackupDatabase_v7 upgradedDatabase = (BackupDatabase_v7)database.upgrade();
+
+		final BackupTemplate_v7 upgradedTemplate = new BackupTemplate_v7("Template with icon", null, true, null, null, null, null, 3, List.of(), null);
+
+		assertThat(upgradedDatabase.getTemplates()).hasSize(4)
+				.contains(upgradedTemplate);
+		assertThat(upgradedDatabase.getIcons().get(2).getImageID())
+				.isOne();
+	}
+
+	@Test
+	public void test_Upgrade_Categories() throws URISyntaxException, IOException
+	{
+		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v6Test.json").toURI())));
+		DatabaseParser_v6 parser = new DatabaseParser_v6(json);
+		BackupDatabase_v6 database = parser.parseDatabaseFromJSON();
+
+		final BackupDatabase_v7 upgradedDatabase = (BackupDatabase_v7)database.upgrade();
+
+		final BackupCategory_v7 upgradedCategory = new BackupCategory_v7(3, "0815", "#ffcc00", CategoryType.CUSTOM, 0);
+
+		assertThat(upgradedDatabase.getCategories()).hasSize(3)
+				.contains(upgradedCategory);
+		assertThat(upgradedDatabase.getIcons().get(0).getBuiltinIdentifier())
+				.isEqualTo("fas fa-icons");
 	}
 }

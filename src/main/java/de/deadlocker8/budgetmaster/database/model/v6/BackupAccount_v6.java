@@ -110,17 +110,13 @@ public class BackupAccount_v6 implements Upgradeable<BackupAccount_v7>
 	}
 
 	@Override
-	public BackupAccount_v7 upgrade(List<? extends BackupInfo> backupInfoItems)
+	public BackupAccount_v7 upgrade(List<BackupInfo> backupInfoItems)
 	{
 		Integer iconReferenceID = null;
 		if(iconID != null)
 		{
-			final BackupIcon_v7 iconReference = backupInfoItems.stream()
-					.map(BackupIcon_v7.class::cast)
-					.filter(icon -> icon.getImageID() != null)
-					.filter(icon -> icon.getImageID().equals(iconID))
-					.findFirst()
-					.orElseThrow();
+			BackupIcon_v7 iconReference = new BackupIcon_v7(backupInfoItems.size(), iconID, null);
+			backupInfoItems.add(iconReference);
 
 			iconReferenceID = iconReference.getID();
 		}
