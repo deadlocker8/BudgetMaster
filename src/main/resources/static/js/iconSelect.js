@@ -2,11 +2,7 @@ $(document).ready(function()
 {
     $('.button-remove-icon-from-item').click(function()
     {
-        document.getElementById("item-icon-preview-icon").classList.toggle('hidden', true);
-        document.getElementById("item-icon-placeholder").classList.toggle('hidden', false);
-        document.getElementById("hidden-input-icon-image-id").value = null;
-        document.getElementById("builtin-icon-preview-icon").classList.toggle('hidden', true);
-        document.getElementById("hidden-input-icon-builtin-identifier").value = null;
+        removeIcon();
     });
 
     $('#button-icon-confirm').click(function()
@@ -96,6 +92,7 @@ function getAvailableImages(callback)
                 if(this.classList.contains(classDeleteConfirm))
                 {
                     deleteImage(this);
+                    removeIcon();
                 }
                 else
                 {
@@ -173,10 +170,10 @@ function deleteImage(item)
         success: function(response)
         {
             let parsedData = JSON.parse(response);
-            let isUploadSuccessful = parsedData['isDeleteSuccessful']
+            let isDeleteSuccessful = parsedData['isDeleteSuccessful']
             M.toast({
                 html: parsedData['localizedMessage'],
-                classes: isUploadSuccessful ? 'green' : 'red'
+                classes: isDeleteSuccessful ? 'green' : 'red'
             });
 
             getAvailableImages(function()
@@ -261,4 +258,13 @@ function searchBuiltinIcons()
     }
 
     document.getElementById('numberOfMatchingIcons').innerText = numberOfMatchingIcons.toString();
+}
+
+function removeIcon()
+{
+    document.getElementById("item-icon-preview-icon").classList.toggle('hidden', true);
+    document.getElementById("item-icon-placeholder").classList.toggle('hidden', false);
+    document.getElementById("hidden-input-icon-image-id").value = null;
+    document.getElementById("builtin-icon-preview-icon").classList.toggle('hidden', true);
+    document.getElementById("hidden-input-icon-builtin-identifier").value = null;
 }
