@@ -1,10 +1,7 @@
 package de.deadlocker8.budgetmaster.categories;
 
 import de.deadlocker8.budgetmaster.controller.BaseController;
-import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.IconService;
-import de.deadlocker8.budgetmaster.icon.Iconizable;
-import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.utils.*;
 import de.deadlocker8.budgetmaster.utils.notification.Notification;
@@ -31,15 +28,13 @@ public class CategoryController extends BaseController
 
 	private final CategoryService categoryService;
 	private final HelpersService helpers;
-	private final ImageService imageService;
 	private final IconService iconService;
 
 	@Autowired
-	public CategoryController(CategoryService categoryService, HelpersService helpers, ImageService imageService, IconService iconService)
+	public CategoryController(CategoryService categoryService, HelpersService helpers, IconService iconService)
 	{
 		this.categoryService = categoryService;
 		this.helpers = helpers;
-		this.imageService = imageService;
 		this.iconService = iconService;
 	}
 
@@ -137,7 +132,7 @@ public class CategoryController extends BaseController
 			category.setType(CategoryType.CUSTOM);
 		}
 
-		category.updateIcon(iconService, iconImageID, builtinIconIdentifier);
+		category.updateIcon(iconService, iconImageID, builtinIconIdentifier, categoryService);
 
 		categoryService.save(category);
 

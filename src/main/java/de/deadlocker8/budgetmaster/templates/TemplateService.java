@@ -16,6 +16,7 @@ import de.deadlocker8.budgetmaster.services.Resettable;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionBase;
+import de.deadlocker8.budgetmaster.utils.AccessEntityByID;
 import de.deadlocker8.budgetmaster.utils.FontAwesomeIcons;
 import org.padler.natorder.NaturalOrderComparator;
 import org.slf4j.Logger;
@@ -27,10 +28,11 @@ import org.springframework.ui.Model;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class TemplateService implements Resettable, AccessAllEntities<Template>
+public class TemplateService implements Resettable, AccessAllEntities<Template>, AccessEntityByID<Template>
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TemplateService.class);
 
@@ -160,4 +162,11 @@ public class TemplateService implements Resettable, AccessAllEntities<Template>
 		templates.sort((t1, t2) -> new NaturalOrderComparator().compare(t1.getName(), t2.getName()));
 		return templates;
 	}
+
+	@Override
+	public Optional<Template> findById(Integer ID)
+	{
+		return templateRepository.findById(ID);
+	}
+
 }

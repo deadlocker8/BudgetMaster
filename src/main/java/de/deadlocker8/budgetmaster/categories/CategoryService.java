@@ -5,6 +5,7 @@ import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.services.AccessAllEntities;
 import de.deadlocker8.budgetmaster.services.Resettable;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
+import de.deadlocker8.budgetmaster.utils.AccessEntityByID;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
 import org.padler.natorder.NaturalOrderComparator;
@@ -19,7 +20,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
-public class CategoryService implements Resettable, AccessAllEntities<Category>
+public class CategoryService implements Resettable, AccessAllEntities<Category>, AccessEntityByID<Category>
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CategoryService.class);
 	private final CategoryRepository categoryRepository;
@@ -34,6 +35,7 @@ public class CategoryService implements Resettable, AccessAllEntities<Category>
 		createDefaults();
 	}
 
+	@Override
 	public Optional<Category> findById(Integer ID)
 	{
 		return categoryRepository.findById(ID);

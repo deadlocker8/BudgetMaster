@@ -9,6 +9,7 @@ import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.services.AccessAllEntities;
 import de.deadlocker8.budgetmaster.services.Resettable;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
+import de.deadlocker8.budgetmaster.utils.AccessEntityByID;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
 import org.padler.natorder.NaturalOrderComparator;
@@ -24,7 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AccountService implements Resettable, AccessAllEntities<Account>
+public class AccountService implements Resettable, AccessAllEntities<Account>, AccessEntityByID<Account>
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AccountService.class);
 
@@ -75,6 +76,12 @@ public class AccountService implements Resettable, AccessAllEntities<Account>
 		accounts.sort((a1, a2) -> new NaturalOrderComparator().compare(a1.getName(), a2.getName()));
 		accounts.addAll(0, accountRepository.findAllByType(AccountType.ALL));
 		return accounts;
+	}
+
+	@Override
+	public Optional<Account> findById(Integer ID)
+	{
+		return accountRepository.findById(ID);
 	}
 
 	public void deleteAccount(int ID)

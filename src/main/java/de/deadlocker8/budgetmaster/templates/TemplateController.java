@@ -4,9 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.controller.BaseController;
-import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.IconService;
-import de.deadlocker8.budgetmaster.icon.Iconizable;
 import de.deadlocker8.budgetmaster.services.DateService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
@@ -218,7 +216,7 @@ public class TemplateController extends BaseController
 			template.setTransferAccount(null);
 		}
 
-		template.updateIcon(iconService, iconImageID, builtinIconIdentifier);
+		template.updateIcon(iconService, iconImageID, builtinIconIdentifier, templateService);
 
 		templateService.getRepository().save(template);
 		return "redirect:/templates";
