@@ -34,12 +34,12 @@
             <div class="row">
                 <div class="col s12">
                     <ul class="tabs" id="iconTabs">
-                        <li class="tab col s6"><a class="text-blue valign-wrapper <#if hasImageIcon>active</#if>" href="#tabImages" data-name="images"><i class="fas fa-image"></i> ${locale.getString(("icons.images"))}</a></li>
                         <li class="tab col s6"><a class="text-blue valign-wrapper <#if hasImageIcon == false>active</#if>" href="#tabBuiltinIcons" data-name="builtinIcons"><i class="fas fa-icons"></i> ${locale.getString(("icons.builtin"))}</a></li>
+                        <li class="tab col s6"><a class="text-blue valign-wrapper <#if hasImageIcon>active</#if>" href="#tabImages" data-name="images"><i class="fas fa-image"></i> ${locale.getString(("icons.images"))}</a></li>
                     </ul>
                 </div>
-                <div id="tabImages" class="col s12"><@tabImages item/></div>
                 <div id="tabBuiltinIcons" class="col s12"><@tabBuiltinIcons item/></div>
+                <div id="tabImages" class="col s12"><@tabImages item/></div>
             </div>
         </div>
         <div class="modal-footer background-color">
