@@ -16,7 +16,7 @@ import de.deadlocker8.budgetmaster.services.Resettable;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionBase;
-import de.deadlocker8.budgetmaster.utils.AccessEntityByID;
+import de.deadlocker8.budgetmaster.services.AccessEntityByID;
 import de.deadlocker8.budgetmaster.utils.FontAwesomeIcons;
 import org.padler.natorder.NaturalOrderComparator;
 import org.slf4j.Logger;

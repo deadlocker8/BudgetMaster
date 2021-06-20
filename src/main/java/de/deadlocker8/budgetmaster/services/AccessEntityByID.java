@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.utils;
+package de.deadlocker8.budgetmaster.services;
 
 import de.deadlocker8.budgetmaster.icon.Iconizable;
 

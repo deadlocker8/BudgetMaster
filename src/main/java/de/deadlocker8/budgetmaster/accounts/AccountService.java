@@ -9,7 +9,7 @@ import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.services.AccessAllEntities;
 import de.deadlocker8.budgetmaster.services.Resettable;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
-import de.deadlocker8.budgetmaster.utils.AccessEntityByID;
+import de.deadlocker8.budgetmaster.services.AccessEntityByID;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
 import org.padler.natorder.NaturalOrderComparator;

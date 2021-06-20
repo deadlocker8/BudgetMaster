@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.icon;
 
-import de.deadlocker8.budgetmaster.utils.AccessEntityByID;
+import de.deadlocker8.budgetmaster.services.AccessEntityByID;
 import de.deadlocker8.budgetmaster.utils.ProvidesID;
 
 import java.util.Optional;
