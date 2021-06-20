@@ -101,7 +101,6 @@ public class Template implements TransactionBase, Iconizable
 		this.category = transaction.getCategory();
 		this.name = transaction.getName();
 		this.description = transaction.getDescription();
-		this.icon = null;
 		this.iconReference = null;
 		if(transaction.getTags() == null)
 		{
@@ -257,7 +256,6 @@ public class Template implements TransactionBase, Iconizable
 				", category=" + category +
 				", name='" + name + '\'' +
 				", description='" + description + '\'' +
-				", icon='" + icon + '\'' +
 				", iconReference='" + iconReference + '\'' +
 				", tags=" + tags;
 

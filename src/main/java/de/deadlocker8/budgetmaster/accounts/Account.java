@@ -125,12 +125,6 @@ public class Account implements ProvidesID, Iconizable
 		return isReadOnly;
 	}
 
-	@Deprecated(since = "v2.6.0", forRemoval = true)
-	public void setReadOnly(Boolean readOnly)
-	{
-		isReadOnly = readOnly;
-	}
-
 	public AccountState getAccountState()
 	{
 		return accountState;
@@ -184,7 +178,6 @@ public class Account implements ProvidesID, Iconizable
 				", isDefault=" + isDefault +
 				", accountState=" + accountState +
 				", type=" + type +
-				", icon=" + icon +
 				", iconReference=" + iconReference +
 				'}';
 	}

@@ -146,7 +146,6 @@ public class Category implements ProvidesID, Iconizable
 				", name='" + name + '\'' +
 				", color='" + color + '\'' +
 				", type=" + type +
-				", icon='" + icon + '\'' +
 				", iconReference='" + iconReference + '\'' +
 				'}';
 	}
