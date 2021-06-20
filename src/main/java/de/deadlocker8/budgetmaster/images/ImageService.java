@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.images;
 
-import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.icon.Icon;
+import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.services.Resettable;
 import de.thecodelabs.utils.util.Localization;
 import org.apache.commons.lang3.ArrayUtils;
@@ -17,11 +18,13 @@ import java.util.Optional;
 public class ImageService implements Resettable
 {
 	private final ImageRepository imageRepository;
+	private final IconService iconService;
 
 	@Autowired
-	public ImageService(ImageRepository imageRepository)
+	public ImageService(ImageRepository imageRepository, IconService iconService)
 	{
 		this.imageRepository = imageRepository;
+		this.iconService = iconService;
 	}
 
 	public ImageRepository getRepository()
@@ -45,10 +48,10 @@ public class ImageService implements Resettable
 	@Transactional
 	public void deleteImage(Image image)
 	{
-		final List<Account> referringAccounts = image.getReferringAccounts();
-		for(Account account : referringAccounts)
+		final List<Icon> referringIcons = image.getReferringIcons();
+		for(Icon icon : referringIcons)
 		{
-			account.setIcon(null);
+			iconService.deleteIcon(icon);
 		}
 
 		getRepository().delete(image);

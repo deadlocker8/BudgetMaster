@@ -1,7 +1,10 @@
 package de.deadlocker8.budgetmaster.icon;
 
 import com.google.gson.annotations.Expose;
+import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.images.Image;
+import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.utils.ProvidesID;
 
 import javax.persistence.*;
@@ -21,6 +24,15 @@ public class Icon implements ProvidesID
 
 	@Expose
 	private String builtinIdentifier;
+
+	@OneToOne(mappedBy = "iconReference", fetch = FetchType.LAZY)
+	private Account referringAccount;
+
+	@OneToOne(mappedBy = "iconReference", fetch = FetchType.LAZY)
+	private Template referringTemplate;
+
+	@OneToOne(mappedBy = "iconReference", fetch = FetchType.LAZY)
+	private Category referringCategory;
 
 	public Icon()
 	{
@@ -69,6 +81,21 @@ public class Icon implements ProvidesID
 	public boolean isBuiltinIcon()
 	{
 		return image == null;
+	}
+
+	public Account getReferringAccount()
+	{
+		return referringAccount;
+	}
+
+	public Template getReferringTemplate()
+	{
+		return referringTemplate;
+	}
+
+	public Category getReferringCategory()
+	{
+		return referringCategory;
 	}
 
 	@Override

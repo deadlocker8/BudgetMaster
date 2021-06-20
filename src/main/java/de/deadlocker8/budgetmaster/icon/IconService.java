@@ -1,8 +1,11 @@
 package de.deadlocker8.budgetmaster.icon;
 
+import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.images.Image;
-import de.deadlocker8.budgetmaster.images.ImageService;
+import de.deadlocker8.budgetmaster.images.ImageRepository;
 import de.deadlocker8.budgetmaster.services.Resettable;
+import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,13 +18,13 @@ import java.util.Optional;
 public class IconService implements Resettable
 {
 	private final IconRepository iconRepository;
-	private final ImageService imageService;
+	private final ImageRepository imageRepository;
 
 	@Autowired
-	public IconService(IconRepository iconRepository, ImageService imageService)
+	public IconService(IconRepository iconRepository, ImageRepository imageRepository)
 	{
 		this.iconRepository = iconRepository;
-		this.imageService = imageService;
+		this.imageRepository = imageRepository;
 	}
 
 	public IconRepository getRepository()
@@ -45,10 +48,30 @@ public class IconService implements Resettable
 	@Transactional
 	public void deleteIcon(Icon icon)
 	{
-		if(icon != null)
+		if(icon == null)
 		{
-			getRepository().delete(icon);
+			return;
 		}
+
+		Account referringAccount = icon.getReferringAccount();
+		if(referringAccount != null)
+		{
+			referringAccount.setIconReference(null);
+		}
+
+		Template referringTemplate = icon.getReferringTemplate();
+		if(referringTemplate != null)
+		{
+			referringTemplate.setIconReference(null);
+		}
+
+		Category referringCategory = icon.getReferringCategory();
+		if(referringCategory != null)
+		{
+			referringCategory.setIconReference(null);
+		}
+
+		getRepository().delete(icon);
 	}
 
 	@Override
@@ -60,7 +83,7 @@ public class IconService implements Resettable
 	{
 		if(iconImageID != null)
 		{
-			final Optional<Image> imageByIdOptional = imageService.getRepository().findById(iconImageID);
+			final Optional<Image> imageByIdOptional = imageRepository.findById(iconImageID);
 			if(imageByIdOptional.isEmpty())
 			{
 				throw new ResourceNotFoundException();
