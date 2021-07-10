@@ -53,7 +53,7 @@
 
 <#macro templateHeader template>
     <#if template.getIconReference()??>
-        <@header.entityIcon entity=template wrapInCircle=false classes="template-icon text-default"/>
+        <@header.entityIcon entity=template classes="template-icon text-default"/>
     <#elseif template.getTransferAccount()??>
         <i class="material-icons">swap_horiz</i>
     <#else>
