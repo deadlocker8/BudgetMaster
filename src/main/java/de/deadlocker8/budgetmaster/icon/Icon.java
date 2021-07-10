@@ -18,7 +18,7 @@ public class Icon implements ProvidesID
 	@Expose
 	private Integer ID;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@Expose
 	private Image image;
 
