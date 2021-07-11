@@ -29,6 +29,9 @@
             <@header.buttonLink url='/setDate?target=' + target icon='done' localizationKey='ok' color='green' id='buttonChooseDate' classes='modal-action modal-close text-white'/>
         </div>
     </div>
+
+    <#assign hint=helpers.getHintByLocalizationKey("hint.globalDatePicker.hotkeys")/>
+    <@header.hint hint=hint actionUrl='/hotkeys'/>
 </#macro>
 
 <#macro datepickerGridYear startYear currentYear>
