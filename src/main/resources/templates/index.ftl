@@ -26,7 +26,7 @@
                     <@header.content>
                         <@indexFunctions.firstUseBanner/>
                         <#assign hint=helpers.getHintByLocalizationKey("hint.first.use.teaser")/>
-                        <@header.hint hint/>
+                        <@header.hint hint=hint icon="fas fa-graduation-cap"/>
 
                         <div class="hide-on-small-only"><br></div>
 

@@ -95,13 +95,13 @@
     </#list>
 </#macro>
 
-<#macro hint hint>
+<#macro hint hint icon="fas fa-info">
     <div class="row" id="hint-${hint.getID()}">
         <div class="col s12 center-align">
             <div class="notification-wrapper">
                 <div class="notification notification-border text-default">
                     <div class="valign-wrapper">
-                        <i class="material-icons notification-item">info_outline</i>
+                        <i class="${icon} notification-item"></i>
                         <span class="notification-item">${locale.getString(hint.getLocalizationKey())}</span>
                     </div>
                     <a class="notification-item hint-clear text-default" data-url="<@s.url "/hints/dismiss/" + hint.getID()/>" data-id="hint-${hint.getID()}">
