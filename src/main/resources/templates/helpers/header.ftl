@@ -95,14 +95,24 @@
     </#list>
 </#macro>
 
-<#macro hint hint icon="fas fa-info">
+<#macro hint hint icon="fas fa-info" actionUrl="">
+    <#if hint.isDismissed()>
+        <#return>
+    </#if>
+
     <div class="row" id="hint-${hint.getID()}">
         <div class="col s12 center-align">
             <div class="notification-wrapper">
                 <div class="notification notification-border text-default">
                     <div class="valign-wrapper">
-                        <i class="${icon} notification-item"></i>
-                        <span class="notification-item">${locale.getString(hint.getLocalizationKey())}</span>
+                        <#if actionUrl?has_content>
+                            <a href="<@s.url actionUrl/>" class="text-default">
+                        </#if>
+                            <i class="${icon} notification-item"></i>
+                            <span class="notification-item">${locale.getString(hint.getLocalizationKey())}</span>
+                        <#if actionUrl?has_content>
+                            </a>
+                        </#if>
                     </div>
                     <a class="notification-item hint-clear text-default" data-url="<@s.url "/hints/dismiss/" + hint.getID()/>" data-id="hint-${hint.getID()}">
                         <i class="material-icons">clear</i>
