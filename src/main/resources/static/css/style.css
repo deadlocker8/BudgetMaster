@@ -236,11 +236,13 @@ main {
     font-size: 2vmin;
 }
 
-.notification-clear i {
+.notification-clear i,
+.hint-clear i {
     font-size: 1.8vmin;
 }
 
-.notification-clear:hover {
+.notification-clear:hover,
+.hint-clear:hover {
     cursor: pointer;
 }
 

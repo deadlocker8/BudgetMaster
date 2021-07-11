@@ -24,6 +24,11 @@ public class HintService implements Resettable
 		createDefaults();
 	}
 
+	public Hint findByLocalizationKey(String localizationKey)
+	{
+		return hintRepository.findByLocalizationKey(localizationKey);
+	}
+
 	@Transactional
 	public void dismiss(Integer ID)
 	{
@@ -40,7 +45,7 @@ public class HintService implements Resettable
 	@Override
 	public void createDefaults()
 	{
-		final List<String> hintKeys = List.of("hint.a", "hint.b", "hint.c");
+		final List<String> hintKeys = List.of("hint.first.use.teaser");
 
 		for(String localizationKey : hintKeys)
 		{

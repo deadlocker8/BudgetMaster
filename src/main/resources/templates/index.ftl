@@ -24,9 +24,9 @@
                     </div>
 
                     <@header.content>
-                        <#if settings.getShowFirstUseBanner()>
-                            <@indexFunctions.firstUseBanner/>
-                        </#if>
+                        <@indexFunctions.firstUseBanner/>
+                        <#assign hint=helpers.getHintByLocalizationKey("hint.first.use.teaser")/>
+                        <@header.hint hint/>
 
                         <div class="hide-on-small-only"><br></div>
 

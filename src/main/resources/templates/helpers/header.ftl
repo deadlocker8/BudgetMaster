@@ -79,7 +79,7 @@
             <div class="col s12 center-align">
                 <div class="notification-wrapper">
                     <div class="notification ${notification.getBackgroundColor()} ${notification.getTextColor()}">
-                        <div>
+                        <div class="valign-wrapper">
                             <#if notification.getIcon()??>
                                 <i class="${notification.getIcon()} notification-item"></i>
                             </#if>
@@ -93,6 +93,24 @@
             </div>
         </div>
     </#list>
+</#macro>
+
+<#macro hint hint>
+    <div class="row" id="hint-${hint.getID()}">
+        <div class="col s12 center-align">
+            <div class="notification-wrapper">
+                <div class="notification notification-border text-default">
+                    <div class="valign-wrapper">
+                        <i class="material-icons notification-item">info_outline</i>
+                        <span class="notification-item">${locale.getString(hint.getLocalizationKey())}</span>
+                    </div>
+                    <a class="notification-item hint-clear text-default" data-url="<@s.url "/hints/dismiss/" + hint.getID()/>" data-id="hint-${hint.getID()}">
+                        <i class="material-icons">clear</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </#macro>
 
 <#macro buttonLink url icon localizationKey id="" color="background-blue" classes="" isDataUrl=false noUrl=false disabled=false>

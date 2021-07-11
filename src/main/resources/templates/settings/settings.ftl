@@ -29,7 +29,6 @@
                             <input type="hidden" name="lastBackupReminderDate" value="${dateService.getLongDateString(settings.getLastBackupReminderDate())}">
                             <input type="hidden" name="installedVersionCode" value="${settings.getInstalledVersionCode()}">
                             <input type="hidden" name="whatsNewShownForCurrentVersion" value="${settings.getWhatsNewShownForCurrentVersion()?c}">
-                            <input type="hidden" name="showFirstUseBanner" value="${settings.getShowFirstUseBanner()?c}">
 
                             <#-- password -->
                             <div class="row">
