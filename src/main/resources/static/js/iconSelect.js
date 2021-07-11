@@ -20,29 +20,28 @@ $(document).ready(function()
 
     $('#item-icon-preview').click(function()
     {
-        getAvailableImages(function()
-        {
-            let modalID = '#modalIconSelect';
-            let modalIconSelect = document.getElementById('modalIconSelect');
-            let idToFocusOnClose = modalIconSelect.dataset.focusOnClose;
+        let modalID = '#modalIconSelect';
+        let modalIconSelect = document.getElementById('modalIconSelect');
+        let idToFocusOnClose = modalIconSelect.dataset.focusOnClose;
 
-            $(modalID).modal({
-                onOpenEnd: function f()
-                {
-                    M.Tabs.init(document.querySelector('#iconTabs'), {
-                        onShow: function()
-                        {
-                            deselectAll();
-                        }
-                    });
-                },
-                onCloseEnd: function f()
-                {
-                    document.getElementById(idToFocusOnClose).focus();
-                }
-            });
-            $(modalID).modal('open');
+        $(modalID).modal({
+            onOpenEnd: function f()
+            {
+                M.Tabs.init(document.querySelector('#iconTabs'), {
+                    onShow: function()
+                    {
+                        deselectAll();
+                    }
+                });
+            },
+            onCloseEnd: function f()
+            {
+                document.getElementById(idToFocusOnClose).focus();
+            }
         });
+        $(modalID).modal('open');
+
+        getAvailableImages();
     });
 
     $('#button-upload-new-image').click(function()
@@ -70,8 +69,14 @@ $(document).ready(function()
     });
 });
 
-function getAvailableImages(callback)
+function getAvailableImages()
 {
+    let progressIndicator = document.getElementById('progressIndicator');
+    progressIndicator.style.setProperty('display', '', 'important')
+
+    let availableImages = document.getElementById('available-images');
+    availableImages.style.setProperty('display', 'none', 'important')
+
     $.ajax({
         type: 'GET',
         url: $('#available-images').attr('data-url'),
@@ -100,7 +105,8 @@ function getAvailableImages(callback)
                 }
             });
 
-            callback();
+            progressIndicator.style.setProperty('display', 'none', 'important')
+            availableImages.style.setProperty('display', '', 'important')
         }
     });
 }
@@ -146,9 +152,7 @@ function uploadImage()
                 classes: isUploadSuccessful ? 'green' : 'red'
             });
 
-            getAvailableImages(function()
-            {
-            });
+            getAvailableImages();
         },
         error: function(response)
         {
@@ -176,9 +180,7 @@ function deleteImage(item)
                 classes: isDeleteSuccessful ? 'green' : 'red'
             });
 
-            getAvailableImages(function()
-            {
-            });
+            getAvailableImages();
         },
         error: function(response)
         {
