@@ -10,7 +10,6 @@ import de.deadlocker8.budgetmaster.database.DatabaseParser;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
-import de.deadlocker8.budgetmaster.database.model.v6.BackupDatabase_v6;
 import de.deadlocker8.budgetmaster.database.model.v7.BackupDatabase_v7;
 import de.deadlocker8.budgetmaster.services.ImportResultItem;
 import de.deadlocker8.budgetmaster.services.ImportService;
@@ -415,13 +414,6 @@ public class SettingsController extends BaseController
 		System.exit(0);
 
 		return "";
-	}
-
-	@RequestMapping("/hideFirstUseBanner")
-	public String hideFirstUseBanner()
-	{
-		settingsService.disableFirstUseBanner();
-		return "redirect:/";
 	}
 
 	@PostMapping("/git/test")
