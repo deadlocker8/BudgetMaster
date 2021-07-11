@@ -41,6 +41,9 @@
                             <input type="hidden" name="isExpenditure" value="true">
                             <input type="hidden" name="previousType" value="<#if previousType??>${previousType.name()}</#if>">
 
+                            <#assign hint=helpers.getHintByLocalizationKey("hint.transaction.save")/>
+                            <@header.hint hint=hint/>
+
                             <#-- name -->
                             <@newTransactionMacros.transactionName transaction suggestionsJSON/>
 

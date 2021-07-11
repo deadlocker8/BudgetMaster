@@ -41,6 +41,9 @@
                             <#-- isPayment switch -->
                             <@newTransactionMacros.isExpenditureSwitch transaction/>
 
+                            <#assign hint=helpers.getHintByLocalizationKey("hint.transaction.save")/>
+                            <@header.hint hint=hint/>
+
                             <#-- name -->
                             <@newTransactionMacros.transactionName transaction suggestionsJSON/>
 
