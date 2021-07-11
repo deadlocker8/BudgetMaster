@@ -28,25 +28,3 @@
         </#if>
     </p>
 </#macro>
-
-<#macro firstUseBanner>
-    <#assign hint=helpers.getHintByLocalizationKey("hint.first.use.teaser")/>
-
-    <#if !hint.isDismissed()>
-        <div class="row" id="firstUseBanner">
-            <div class="col s12 center-align">
-                <div class="notification-wrapper">
-                    <div class="notification notification-border text-default">
-                        <a href="<@s.url "/firstUse"/>" class="text-default">
-                            <i class="fas fa-graduation-cap notification-item"></i>
-                            <span class="notification-item">${locale.getString(hint.getLocalizationKey())}</span>
-                        </a>
-                        <a href="<@s.url "/hints/dismiss/" + hint.getID()/>" class="text-default notification-item notification-clear">
-                            <i class="material-icons">clear</i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </#if>
-</#macro>

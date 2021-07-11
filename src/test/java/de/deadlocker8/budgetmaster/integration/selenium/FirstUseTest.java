@@ -75,27 +75,27 @@ public class FirstUseTest
 	public void test_firstUserBanner()
 	{
 		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("firstUseBanner")));
-		assertThat(driver.findElement(By.id("firstUseBanner")).isDisplayed()).isTrue();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("hint-1")));
+		assertThat(driver.findElement(By.id("hint-1")).isDisplayed()).isTrue();
 	}
 
 	@Test
 	public void test_firstUserBanner_dismiss()
 	{
 		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("firstUseBanner")));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("hint-1")));
 
-		driver.findElements(By.className("notification-clear")).get(0).click();
+		driver.findElements(By.className("hint-clear")).get(0).click();
 
-		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("firstUseBanner")));
-		assertThat(driver.findElements(By.id("firstUseBanner"))).isEmpty();
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("hint-1")));
+		assertThat(driver.findElement(By.id("hint-1")).isDisplayed()).isFalse();
 	}
 
 	@Test
 	public void test_firstUserBanner_click()
 	{
 		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("firstUseBanner")));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("hint-1")));
 
 		driver.findElements(By.className("notification")).get(0).click();
 
