@@ -36,6 +36,15 @@ public class HintService implements Resettable
 		hint.setDismissed(true);
 	}
 
+	@Transactional
+	public void resetAll()
+	{
+		for(Hint hint : hintRepository.findAll())
+		{
+			hint.setDismissed(false);
+		}
+	}
+
 	@Override
 	public void deleteAll()
 	{

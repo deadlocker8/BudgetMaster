@@ -226,6 +226,19 @@
                     </div>
 
                     <hr>
+                    <#-- hints -->
+                    <div class="container">
+                        <div class="section center-align">
+                            <div class="headline">${locale.getString("headline.hints")}</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 center-align">
+                            <@header.buttonLink url='/hints/resetAll' icon='restore' localizationKey='button.hints.reset'/>
+                        </div>
+                    </div>
+
+                    <hr>
                     <#-- database -->
                     <div class="container">
                         <div class="section center-align">
