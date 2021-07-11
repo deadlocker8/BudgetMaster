@@ -33,6 +33,9 @@
                     <br>
                     <@templateFunctions.buttons/>
                     <br>
+                    <#assign hint=helpers.getHintByLocalizationKey("hint.template.arrow.keys")/>
+                    <@header.hint hint=hint/>
+                    <br>
                     <#if templates?size == 0>
                         <div class="container">
                             <div class="headline center-align">${locale.getString("placeholder")}</div>

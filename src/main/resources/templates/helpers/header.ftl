@@ -109,7 +109,7 @@
                             <a href="<@s.url actionUrl/>" class="text-default">
                         </#if>
                             <i class="${icon} notification-item"></i>
-                            <span class="notification-item">${locale.getString(hint.getLocalizationKey())}</span>
+                            <span class="notification-item left-align">${locale.getString(hint.getLocalizationKey())}</span>
                         <#if actionUrl?has_content>
                             </a>
                         </#if>

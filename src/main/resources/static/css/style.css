@@ -563,6 +563,10 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     .template-header-name {
         max-width: 40% !important;
     }
+
+    .notification {
+        font-size: 2.5vmin;
+    }
 }
 
 /* dark theme */
