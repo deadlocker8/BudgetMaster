@@ -32,7 +32,7 @@ public class LocalizationService implements  Localization.LocalizationDelegate
 	@Override
 	public String[] getBaseResources()
 	{
-		return new String[]{"languages/base", "languages/news"};
+		return new String[]{"languages/base", "languages/news", "languages/hints"};
 	}
 
 	@Override

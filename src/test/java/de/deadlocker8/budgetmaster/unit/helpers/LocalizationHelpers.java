@@ -24,7 +24,7 @@ public class LocalizationHelpers extends AbstractTestExecutionListener
 			@Override
 			public String[] getBaseResources()
 			{
-				return new String[]{"languages/base", "languages/news"};
+				return new String[]{"languages/base", "languages/news", "languages/hints"};
 			}
 
 			@Override
