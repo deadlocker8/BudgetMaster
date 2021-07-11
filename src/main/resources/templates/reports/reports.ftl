@@ -69,12 +69,9 @@
                         <div class="row no-margin">
                             <div class="col s12 center-align">
                                 <div class="headline-small text-default">${locale.getString("report.columns")}</div>
-                                <table class="no-border-table table-advice">
-                                    <tr>
-                                        <td><i class="material-icons">info_outline</i></td>
-                                        <td>${locale.getString("report.columns.advice")}</td>
-                                    </tr>
-                                </table>
+                                <br>
+                                <#assign hint=helpers.getHintByLocalizationKey("hint.report.columns")/>
+                                <@header.hint hint=hint/>
                             </div>
                         </div>
                         <div class="row">

@@ -54,7 +54,7 @@ public class HintService implements Resettable
 	@Override
 	public void createDefaults()
 	{
-		final List<String> hintKeys = List.of("hint.first.use.teaser");
+		final List<String> hintKeys = List.of("hint.first.use.teaser", "hint.report.columns");
 
 		for(String localizationKey : hintKeys)
 		{
