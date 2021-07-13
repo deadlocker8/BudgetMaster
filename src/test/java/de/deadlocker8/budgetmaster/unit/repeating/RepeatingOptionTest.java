@@ -13,7 +13,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 public class RepeatingOptionTest
 {
@@ -35,7 +36,8 @@ public class RepeatingOptionTest
 		expected.add(new DateTime(2018, 4, 28, 12, 0));
 		expected.add(new DateTime(2018, 5, 1, 12, 0));
 
-		assertEquals(expected, repeatingOption.getRepeatingDates(dateFetchLimit));
+		assertThat(repeatingOption.getRepeatingDates(dateFetchLimit))
+				.isEqualTo(expected);
 	}
 
 	@Test
@@ -54,7 +56,8 @@ public class RepeatingOptionTest
 		expected.add(new DateTime(2018, 4, 25, 12, 0));
 		expected.add(new DateTime(2018, 4, 28, 12, 0));
 
-		assertEquals(expected, repeatingOption.getRepeatingDates(dateFetchLimit));
+		assertThat(repeatingOption.getRepeatingDates(dateFetchLimit))
+				.isEqualTo(expected);
 	}
 
 	@Test
@@ -73,7 +76,8 @@ public class RepeatingOptionTest
 		expected.add(new DateTime(2018, 4, 28, 12, 0));
 		expected.add(new DateTime(2018, 5, 1, 12, 0));
 
-		assertEquals(expected, repeatingOption.getRepeatingDates(dateFetchLimit));
+		assertThat(repeatingOption.getRepeatingDates(dateFetchLimit))
+				.isEqualTo(expected);
 	}
 
 	// test repeating every X months
@@ -96,7 +100,8 @@ public class RepeatingOptionTest
 		expected.add(new DateTime(2018, 12, 30, 12, 0));
 		expected.add(new DateTime(2019, 2, 28, 12, 0));
 
-		assertEquals(expected, repeatingOption.getRepeatingDates(dateFetchLimit));
+		assertThat(repeatingOption.getRepeatingDates(dateFetchLimit))
+				.isEqualTo(expected);
 	}
 
 	@Test
@@ -115,7 +120,8 @@ public class RepeatingOptionTest
 		expected.add(new DateTime(2018, 6, 30, 12, 0));
 		expected.add(new DateTime(2018, 8, 30, 12, 0));
 
-		assertEquals(expected, repeatingOption.getRepeatingDates(dateFetchLimit));
+		assertThat(repeatingOption.getRepeatingDates(dateFetchLimit))
+				.isEqualTo(expected);
 	}
 
 	@Test
@@ -133,7 +139,8 @@ public class RepeatingOptionTest
 		expected.add(new DateTime(2018, 6, 30, 12, 0));
 		expected.add(new DateTime(2018, 8, 30, 12, 0));
 
-		assertEquals(expected, repeatingOption.getRepeatingDates(dateFetchLimit));
+		assertThat(repeatingOption.getRepeatingDates(dateFetchLimit))
+				.isEqualTo(expected);
 	}
 
 	// test repeating every X years
@@ -153,7 +160,8 @@ public class RepeatingOptionTest
 		expected.add(new DateTime(2019, 4, 30, 12, 0));
 		expected.add(new DateTime(2020, 4, 30, 12, 0));
 
-		assertEquals(expected, repeatingOption.getRepeatingDates(dateFetchLimit));
+		assertThat(repeatingOption.getRepeatingDates(dateFetchLimit))
+				.isEqualTo(expected);
 	}
 
 	@Test
@@ -171,7 +179,8 @@ public class RepeatingOptionTest
 		expected.add(startDate);
 		expected.add(new DateTime(2019, 4, 30, 12, 0));
 
-		assertEquals(expected, repeatingOption.getRepeatingDates(dateFetchLimit));
+		assertThat(repeatingOption.getRepeatingDates(dateFetchLimit))
+				.isEqualTo(expected);
 	}
 
 	@Test
@@ -188,6 +197,7 @@ public class RepeatingOptionTest
 		expected.add(startDate);
 		expected.add(new DateTime(2019, 4, 30, 12, 0));
 
-		assertEquals(expected, repeatingOption.getRepeatingDates(dateFetchLimit));
+		assertThat(repeatingOption.getRepeatingDates(dateFetchLimit))
+				.isEqualTo(expected);
 	}
 }

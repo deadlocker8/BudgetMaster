@@ -29,9 +29,8 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -96,17 +95,17 @@ public class SearchTest
 		// headline
 		WebElement headline = driver.findElement(By.className("headline"));
 		String expected = Localization.getString("menu.search.results", 24);
-		assertEquals(expected, headline.getText());
+		assertThat(headline.getText()).isEqualTo(expected);
 
 		// checkboxes
-		assertTrue(driver.findElement(By.cssSelector(".main-card #searchForm input[name=\"searchName\"]")).isSelected());
-		assertTrue(driver.findElement(By.cssSelector(".main-card #searchForm input[name=\"searchDescription\"]")).isSelected());
-		assertTrue(driver.findElement(By.cssSelector(".main-card #searchForm input[name=\"searchCategory\"]")).isSelected());
-		assertTrue(driver.findElement(By.cssSelector(".main-card #searchForm input[name=\"searchTags\"]")).isSelected());
+		assertThat(driver.findElement(By.cssSelector(".main-card #searchForm input[name=\"searchName\"]")).isSelected()).isTrue();
+		assertThat(driver.findElement(By.cssSelector(".main-card #searchForm input[name=\"searchDescription\"]")).isSelected()).isTrue();
+		assertThat(driver.findElement(By.cssSelector(".main-card #searchForm input[name=\"searchCategory\"]")).isSelected()).isTrue();
+		assertThat(driver.findElement(By.cssSelector(".main-card #searchForm input[name=\"searchTags\"]")).isSelected()).isTrue();
 
 		// results
 		List<WebElement> results = driver.findElements(By.cssSelector(".search-container .card-panel"));
-		assertEquals(10, results.size());
+		assertThat(results.size()).isEqualTo(10);
 	}
 
 	@Test
@@ -114,39 +113,39 @@ public class SearchTest
 	{
 		// === PAGE 1 ===
 		List<WebElement> pages = driver.findElements(By.cssSelector(".pagination li"));
-		assertEquals(5, pages.size());
+		assertThat(pages.size()).isEqualTo(5);
 
-		assertTrue(pages.get(0).getAttribute("class").contains("disabled"));
-		assertEquals("1", pages.get(1).findElement(By.className("page-link")).getText());
-		assertTrue(pages.get(1).getAttribute("class").contains("active"));
-		assertEquals("2", pages.get(2).findElement(By.className("page-link")).getText());
-		assertEquals("3", pages.get(3).findElement(By.className("page-link")).getText());
-		assertFalse(pages.get(4).getAttribute("class").contains("disabled"));
+		assertThat(pages.get(0).getAttribute("class")).contains("disabled");
+		assertThat(pages.get(1).findElement(By.className("page-link")).getText()).isEqualTo("1");
+		assertThat(pages.get(1).getAttribute("class")).contains("active");
+		assertThat(pages.get(2).findElement(By.className("page-link")).getText()).isEqualTo("2");
+		assertThat(pages.get(3).findElement(By.className("page-link")).getText()).isEqualTo("3");
+		assertThat(pages.get(4).getAttribute("class")).doesNotContain("disabled");
 
 		// validate results
 		List<WebElement> results = driver.findElements(By.cssSelector(".search-container .card-panel"));
-		assertEquals(10, results.size());
+		assertThat(results.size()).isEqualTo(10);
 
 		// === PAGE 1 ===
 		pages.get(3).click();
 
 		pages = driver.findElements(By.cssSelector(".pagination li"));
-		assertEquals(5, pages.size());
+		assertThat(pages.size()).isEqualTo(5);
 
 		// previous button should be enabled
-		assertFalse(pages.get(0).getAttribute("class").contains("disabled"));
+		assertThat(pages.get(0).getAttribute("class")).doesNotContain("disabled");
 
-		assertEquals("1", pages.get(1).findElement(By.className("page-link")).getText());
-		assertEquals("2", pages.get(2).findElement(By.className("page-link")).getText());
-		assertEquals("3", pages.get(3).findElement(By.className("page-link")).getText());
-		assertTrue(pages.get(3).getAttribute("class").contains("active"));
+		assertThat(pages.get(1).findElement(By.className("page-link")).getText()).isEqualTo("1");
+		assertThat(pages.get(2).findElement(By.className("page-link")).getText()).isEqualTo("2");
+		assertThat(pages.get(3).findElement(By.className("page-link")).getText()).isEqualTo("3");
+		assertThat(pages.get(3).getAttribute("class")).contains("active");
 
 		// next button should be disabled
-		assertTrue(pages.get(4).getAttribute("class").contains("disabled"));
+		assertThat(pages.get(4).getAttribute("class")).contains("disabled");
 
 		// validate
 		results = driver.findElements(By.cssSelector(".search-container .card-panel"));
-		assertEquals(4, results.size());
+		assertThat(results.size()).isEqualTo(4);
 	}
 
 	@Test
@@ -161,14 +160,14 @@ public class SearchTest
 		driver.findElement(By.cssSelector(".main-card #searchForm button[type=\"submit\"]")).click();
 
 		// validate
-		assertFalse(driver.findElement(By.cssSelector(".main-card #searchForm input[name=\"searchName\"]")).isSelected());
-		assertFalse(driver.findElement(By.cssSelector(".main-card #searchForm input[name=\"searchDescription\"]")).isSelected());
-		assertTrue(driver.findElement(By.cssSelector(".main-card #searchForm input[name=\"searchCategory\"]")).isSelected());
-		assertTrue(driver.findElement(By.cssSelector(".main-card #searchForm input[name=\"searchTags\"]")).isSelected());
+		assertThat(driver.findElement(By.cssSelector(".main-card #searchForm input[name=\"searchName\"]")).isSelected()).isFalse();
+		assertThat(driver.findElement(By.cssSelector(".main-card #searchForm input[name=\"searchDescription\"]")).isSelected()).isFalse();
+		assertThat(driver.findElement(By.cssSelector(".main-card #searchForm input[name=\"searchCategory\"]")).isSelected()).isTrue();
+		assertThat(driver.findElement(By.cssSelector(".main-card #searchForm input[name=\"searchTags\"]")).isSelected()).isTrue();
 
 		// results
 		List<WebElement> results = driver.findElements(By.cssSelector(".search-container .card-panel"));
-		assertEquals(2, results.size());
+		assertThat(results.size()).isEqualTo(2);
 	}
 
 	@Test
@@ -176,14 +175,14 @@ public class SearchTest
 	{
 		driver.findElement(By.cssSelector(".main-card .search-result .hide-on-med-and-down .buttonHighlight")).click();
 
-		assertEquals("May 2019", driver.findElement(By.cssSelector(".headline-date")).getText());
+		assertThat(driver.findElement(By.cssSelector(".headline-date")).getText()).isEqualTo("May 2019");
 
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
-		assertEquals(25, transactionsRows.size());
-		assertTrue(transactionsRows.get(0).getAttribute("class").contains("background-blue-light"));
+		assertThat(transactionsRows.size()).isEqualTo(25);
+		assertThat(transactionsRows.get(0).getAttribute("class")).contains("background-blue-light");
 		for(int i = 1; i < transactionsRows.size(); i++)
 		{
-			assertFalse(transactionsRows.get(i).getAttribute("class").contains("background-blue-light"));
+			assertThat(transactionsRows.get(i).getAttribute("class")).doesNotContain("background-blue-light");
 		}
 	}
 }

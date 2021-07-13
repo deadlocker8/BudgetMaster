@@ -18,7 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class IntegrationTestHelper
 {
@@ -140,7 +140,8 @@ public class IntegrationTestHelper
 
 		// close result page
 		driver.findElement(By.id("button-finish-import")).click();
-		assertEquals(Localization.getString("menu.settings"), IntegrationTestHelper.getTextNode(driver.findElement(By.className("headline"))));
+		assertThat(IntegrationTestHelper.getTextNode(driver.findElement(By.className("headline"))))
+				.isEqualTo(Localization.getString("menu.settings"));
 
 		start();
 	}
@@ -172,10 +173,11 @@ public class IntegrationTestHelper
 	private void matchAccounts(List<String> sourceAccounts, List<Account> destinationAccounts)
 	{
 		WebElement headlineImport = driver.findElement(By.className("headline"));
-		assertEquals(Localization.getString("info.title.database.import.dialog"), IntegrationTestHelper.getTextNode(headlineImport));
+		assertThat(IntegrationTestHelper.getTextNode(headlineImport))
+				.isEqualTo(Localization.getString("info.title.database.import.dialog"));
 
 		List<WebElement> tableRows = driver.findElements(By.cssSelector(".container form table tr"));
-		assertEquals(destinationAccounts.size(), tableRows.size());
+		assertThat(tableRows.size()).isEqualTo(destinationAccounts.size());
 
 		for(int i = 0; i < destinationAccounts.size(); i++)
 		{
@@ -183,7 +185,7 @@ public class IntegrationTestHelper
 
 			WebElement row = tableRows.get(i);
 			WebElement sourceAccount = row.findElement(By.className("account-source"));
-			assertEquals(sourceAccounts.get(i), IntegrationTestHelper.getTextNode(sourceAccount));
+			assertThat(IntegrationTestHelper.getTextNode(sourceAccount)).isEqualTo(sourceAccounts.get(i));
 
 			WebDriverWait wait = new WebDriverWait(driver, 5);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("select-dropdown")));

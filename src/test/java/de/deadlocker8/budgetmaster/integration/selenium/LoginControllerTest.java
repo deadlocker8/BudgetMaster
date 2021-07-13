@@ -23,8 +23,8 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -72,13 +72,13 @@ public class LoginControllerTest
 		helper.start();
 
 		WebElement input = driver.findElement(By.id("login-password"));
-		assertNotNull(input);
+		assertThat(input).isNotNull();
 
 		WebElement label = driver.findElement(By.cssSelector(".input-field label"));
-		assertEquals(Localization.getString("login.password"), label.getText());
+		assertThat(label.getText()).isEqualTo(Localization.getString("login.password"));
 
 		WebElement button = driver.findElement(By.tagName("button"));
-		assertEquals(Localization.getString("login.button"), IntegrationTestHelper.getTextNode(button));
+		assertThat(IntegrationTestHelper.getTextNode(button)).isEqualTo(Localization.getString("login.button"));
 	}
 
 	@Test
@@ -89,7 +89,7 @@ public class LoginControllerTest
 		helper.login("akhjfvbvahsdsa");
 
 		WebElement label = driver.findElement(By.id("loginMessage"));
-		assertEquals(Localization.getString("warning.wrong.password"), label.getText());
+		assertThat(label.getText()).isEqualTo(Localization.getString("warning.wrong.password"));
 	}
 
 	@Test
@@ -103,7 +103,7 @@ public class LoginControllerTest
 
 		WebElement label = driver.findElement(By.id("logo-home"));
 		String expected = helper.getUrl() + "/images/Logo_with_text_medium_res.png";
-		assertEquals(expected, label.getAttribute("src"));
+		assertThat(label.getAttribute("src")).isEqualTo(expected);
 	}
 
 	@Test
@@ -121,6 +121,6 @@ public class LoginControllerTest
 		buttonLogout.click();
 
 		WebElement label = driver.findElement(By.id("loginMessage"));
-		assertEquals(Localization.getString("logout.success"), label.getText());
+		assertThat(label.getText()).isEqualTo(Localization.getString("logout.success"));
 	}
 }

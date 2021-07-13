@@ -28,8 +28,6 @@ import java.nio.file.Path;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class RemoteGitBackupTaskTest
@@ -79,7 +77,8 @@ public class RemoteGitBackupTaskTest
 
 		final RemoteGitBackupTask remoteGitBackupTask = new RemoteGitBackupTask(databaseService, settingsService);
 
-		assertFalse(remoteGitBackupTask.needsCleanup(previousSettings, previousSettings));
+		assertThat(remoteGitBackupTask.needsCleanup(previousSettings, previousSettings))
+				.isFalse();
 	}
 
 	@Test
@@ -101,7 +100,7 @@ public class RemoteGitBackupTaskTest
 
 		final RemoteGitBackupTask remoteGitBackupTask = new RemoteGitBackupTask(databaseService, settingsService);
 
-		assertFalse(remoteGitBackupTask.needsCleanup(previousSettings, newSettings));
+		assertThat(remoteGitBackupTask.needsCleanup(previousSettings, newSettings)).isFalse();
 	}
 
 	@Test
@@ -123,7 +122,8 @@ public class RemoteGitBackupTaskTest
 
 		final RemoteGitBackupTask remoteGitBackupTask = new RemoteGitBackupTask(databaseService, settingsService);
 
-		assertTrue(remoteGitBackupTask.needsCleanup(previousSettings, newSettings));
+		assertThat(remoteGitBackupTask.needsCleanup(previousSettings, newSettings))
+				.isTrue();
 	}
 
 	@Test
@@ -145,7 +145,8 @@ public class RemoteGitBackupTaskTest
 
 		final RemoteGitBackupTask remoteGitBackupTask = new RemoteGitBackupTask(databaseService, settingsService);
 
-		assertTrue(remoteGitBackupTask.needsCleanup(previousSettings, newSettings));
+		assertThat(remoteGitBackupTask.needsCleanup(previousSettings, newSettings))
+				.isTrue();
 	}
 
 	@Test
