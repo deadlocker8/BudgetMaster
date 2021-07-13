@@ -4,28 +4,17 @@ import de.deadlocker8.budgetmaster.Main;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
-import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
-import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
-import de.deadlocker8.budgetmaster.integration.helpers.TransactionTestHelper;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
-import org.junit.runner.RunWith;
+import de.deadlocker8.budgetmaster.integration.helpers.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -35,46 +24,17 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SeleniumTestWatcher.class)
 @SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SeleniumTest
-public class NewTransactionNormalTest
+class NewTransactionNormalTest extends SeleniumTestBase
 {
 	private IntegrationTestHelper helper;
-	private WebDriver driver;
 
-	@LocalServerPort
-	int port;
-
-	@Rule
-	public TestName name = new TestName();
-
-	@Rule
-	public TestWatcher testWatcher = new TestWatcher()
-	{
-		@Override
-		protected void finished(Description description)
-		{
-			driver.quit();
-		}
-
-		@Override
-		protected void failed(Throwable e, Description description)
-		{
-			IntegrationTestHelper.saveScreenshots(driver, name, NewTransactionNormalTest.class);
-		}
-	};
-
-	@Before
+	@BeforeEach
 	public void prepare()
 	{
-		FirefoxOptions options = new FirefoxOptions();
-		options.setHeadless(false);
-		options.addPreference("devtools.console.stdout.content", true);
-		driver = new FirefoxDriver(options);
-
-		// prepare
 		helper = new IntegrationTestHelper(driver, port);
 		helper.start();
 		helper.login(UserService.DEFAULT_PASSWORD);
@@ -100,7 +60,7 @@ public class NewTransactionNormalTest
 	}
 
 	@Test
-	public void test_newTransaction_cancel()
+	void test_newTransaction_cancel()
 	{
 		// click cancel button
 		WebElement cancelButton = driver.findElement(By.id("button-cancel-save-transaction"));
@@ -118,7 +78,7 @@ public class NewTransactionNormalTest
 	}
 
 	@Test
-	public void test_newTransaction_income()
+	void test_newTransaction_income()
 	{
 		String name = "My normal transaction";
 		String amount = "15.00";
@@ -154,7 +114,7 @@ public class NewTransactionNormalTest
 	}
 
 	@Test
-	public void test_newTransaction_expenditure()
+	void test_newTransaction_expenditure()
 	{
 		String name = "My normal transaction";
 		String amount = "15.00";
@@ -190,7 +150,7 @@ public class NewTransactionNormalTest
 	}
 
 	@Test
-	public void test_edit()
+	void test_edit()
 	{
 		driver.get(helper.getUrl() + "/transactions/2/edit");
 

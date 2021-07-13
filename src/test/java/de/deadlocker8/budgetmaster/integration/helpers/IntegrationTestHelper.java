@@ -3,7 +3,6 @@ package de.deadlocker8.budgetmaster.integration.helpers;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountState;
 import de.thecodelabs.utils.util.Localization;
-import org.junit.rules.TestName;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -196,12 +195,10 @@ public class IntegrationTestHelper
 		}
 	}
 
-	public static void saveScreenshots(WebDriver webDriver, TestName testName, Class testClass)
+	public static void saveScreenshots(WebDriver webDriver, String methodName, String className)
 	{
 		File screenshot = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
 
-		String className = testClass.getSimpleName();
-		String methodName = testName.getMethodName();
 		final Path destination = Paths.get("screenshots", className + "_" + methodName + "_" + screenshot.getName());
 
 		try

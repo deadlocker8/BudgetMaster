@@ -6,14 +6,14 @@ import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
+import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
+import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestWatcher;
 import de.thecodelabs.utils.util.Localization;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.TestWatcher;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -23,7 +23,6 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
 import java.util.Arrays;
@@ -32,46 +31,15 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SeleniumTestWatcher.class)
 @SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SeleniumTest
-public class SearchTest
+class SearchTest extends SeleniumTestBase
 {
-	private WebDriver driver;
-
-	@LocalServerPort
-	int port;
-
-	@Rule
-	public TestName name = new TestName();
-
-	@Rule
-	public TestWatcher testWatcher = new TestWatcher()
-	{
-		@Override
-		protected void finished(Description description)
-		{
-			driver.quit();
-		}
-
-		@Override
-		protected void failed(Throwable e, Description description)
-		{
-			IntegrationTestHelper.saveScreenshots(driver, name, SearchTest.class);
-		}
-	};
-
-	@Before
+	@BeforeEach
 	public void prepare()
 	{
-		FirefoxOptions options = new FirefoxOptions();
-		options.setHeadless(false);
-		options.addPreference("devtools.console.stdout.content", true);
-		driver = new FirefoxDriver(options);
-		driver.manage().window().maximize();
-
-		// prepare
 		IntegrationTestHelper helper = new IntegrationTestHelper(driver, port);
 		helper.start();
 		helper.login(UserService.DEFAULT_PASSWORD);
@@ -90,7 +58,7 @@ public class SearchTest
 	}
 
 	@Test
-	public void searchFromNavbar()
+	void searchFromNavbar()
 	{
 		// headline
 		WebElement headline = driver.findElement(By.className("headline"));
@@ -109,7 +77,7 @@ public class SearchTest
 	}
 
 	@Test
-	public void pagination()
+	void pagination()
 	{
 		// === PAGE 1 ===
 		List<WebElement> pages = driver.findElements(By.cssSelector(".pagination li"));
@@ -149,7 +117,7 @@ public class SearchTest
 	}
 
 	@Test
-	public void checkboxes()
+	void checkboxes()
 	{
 		// deselect some checkboxes (use JavascriptExecutor here as the checkbox is covered by a span)
 		JavascriptExecutor executor = (JavascriptExecutor) driver;
@@ -171,7 +139,7 @@ public class SearchTest
 	}
 
 	@Test
-	public void highlight()
+	void highlight()
 	{
 		driver.findElement(By.cssSelector(".main-card .search-result .hide-on-med-and-down .buttonHighlight")).click();
 

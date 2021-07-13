@@ -4,69 +4,27 @@ import de.deadlocker8.budgetmaster.Main;
 import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
+import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
+import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestWatcher;
 import de.thecodelabs.utils.util.Localization;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-@RunWith(SpringRunner.class)
+@ExtendWith(SeleniumTestWatcher.class)
 @SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SeleniumTest
-public class LoginControllerTest
+class LoginControllerTest extends SeleniumTestBase
 {
-	private WebDriver driver;
-
-	@LocalServerPort
-	int port;
-
-	@Rule
-	public TestName name = new TestName();
-
-	@Rule
-	public TestWatcher testWatcher = new TestWatcher()
-	{
-		@Override
-		protected void finished(Description description)
-		{
-			driver.quit();
-		}
-
-		@Override
-		protected void failed(Throwable e, Description description)
-		{
-			IntegrationTestHelper.saveScreenshots(driver, name, LoginControllerTest.class);
-		}
-	};
-
-	@Before
-	public void prepare()
-	{
-		FirefoxOptions options = new FirefoxOptions();
-		options.setHeadless(false);
-		options.addPreference("devtools.console.stdout.content", true);
-		driver = new FirefoxDriver(options);
-	}
-
 	@Test
-	public void getLoginPage()
+	void getLoginPage()
 	{
 		IntegrationTestHelper helper = new IntegrationTestHelper(driver, port);
 		helper.start();
@@ -82,7 +40,7 @@ public class LoginControllerTest
 	}
 
 	@Test
-	public void wrongCredentials()
+	void wrongCredentials()
 	{
 		IntegrationTestHelper helper = new IntegrationTestHelper(driver, port);
 		helper.start();
@@ -93,7 +51,7 @@ public class LoginControllerTest
 	}
 
 	@Test
-	public void successLogin()
+	void successLogin()
 	{
 		IntegrationTestHelper helper = new IntegrationTestHelper(driver, port);
 		helper.start();
@@ -107,7 +65,7 @@ public class LoginControllerTest
 	}
 
 	@Test
-	public void logout()
+	void logout()
 	{
 		IntegrationTestHelper helper = new IntegrationTestHelper(driver, port);
 		helper.start();

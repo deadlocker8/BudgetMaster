@@ -6,14 +6,14 @@ import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
+import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
+import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestWatcher;
 import de.thecodelabs.utils.util.Localization;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.TestWatcher;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -25,7 +25,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
 import java.util.Arrays;
@@ -33,46 +32,17 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SeleniumTestWatcher.class)
 @SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SeleniumTest
-public class NewTransactionFromTemplateTest
+class NewTransactionFromTemplateTest extends SeleniumTestBase
 {
 	private IntegrationTestHelper helper;
-	private WebDriver driver;
 
-	@LocalServerPort
-	int port;
-
-	@Rule
-	public TestName name = new TestName();
-
-	@Rule
-	public TestWatcher testWatcher = new TestWatcher()
-	{
-		@Override
-		protected void finished(Description description)
-		{
-			driver.quit();
-		}
-
-		@Override
-		protected void failed(Throwable e, Description description)
-		{
-			IntegrationTestHelper.saveScreenshots(driver, name, NewTransactionFromTemplateTest.class);
-		}
-	};
-
-	@Before
+	@BeforeEach
 	public void prepare()
 	{
-		FirefoxOptions options = new FirefoxOptions();
-		options.setHeadless(false);
-		options.addPreference("devtools.console.stdout.content", true);
-		driver = new FirefoxDriver(options);
-
-		// prepare
 		helper = new IntegrationTestHelper(driver, port);
 		helper.start();
 		helper.login(UserService.DEFAULT_PASSWORD);
@@ -90,7 +60,7 @@ public class NewTransactionFromTemplateTest
 	}
 
 	@Test
-	public void test_newTransactionFromTemplate_FullTemplate()
+	void test_newTransactionFromTemplate_FullTemplate()
 	{
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		final By locator = By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'From template')]");
@@ -121,7 +91,7 @@ public class NewTransactionFromTemplateTest
 	}
 
 	@Test
-	public void test_newTransactionFromTemplate_OnlyIncome()
+	void test_newTransactionFromTemplate_OnlyIncome()
 	{
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		final By locator = By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'From template')]");
@@ -142,7 +112,7 @@ public class NewTransactionFromTemplateTest
 	}
 
 	@Test
-	public void test_selectTemplateHotkeys_initialSelect()
+	void test_selectTemplateHotkeys_initialSelect()
 	{
 		driver.get(helper.getUrl() + "/templates");
 
@@ -158,7 +128,7 @@ public class NewTransactionFromTemplateTest
 	}
 
 	@Test
-	public void test_selectTemplateHotkeys_keyDown()
+	void test_selectTemplateHotkeys_keyDown()
 	{
 		driver.get(helper.getUrl() + "/templates");
 
@@ -177,7 +147,7 @@ public class NewTransactionFromTemplateTest
 	}
 
 	@Test
-	public void test_selectTemplateHotkeys_keyDown_goBackToTopFromLastItem()
+	void test_selectTemplateHotkeys_keyDown_goBackToTopFromLastItem()
 	{
 		driver.get(helper.getUrl() + "/templates");
 
@@ -197,7 +167,7 @@ public class NewTransactionFromTemplateTest
 	}
 
 	@Test
-	public void test_selectTemplateHotkeys_keyUp_goBackToBottomFromFirstItem()
+	void test_selectTemplateHotkeys_keyUp_goBackToBottomFromFirstItem()
 	{
 		driver.get(helper.getUrl() + "/templates");
 
@@ -216,7 +186,7 @@ public class NewTransactionFromTemplateTest
 	}
 
 	@Test
-	public void test_selectTemplateHotkeys_keyUp()
+	void test_selectTemplateHotkeys_keyUp()
 	{
 		driver.get(helper.getUrl() + "/templates");
 
@@ -236,7 +206,7 @@ public class NewTransactionFromTemplateTest
 	}
 
 	@Test
-	public void test_selectTemplateHotkeys_confirmSelection()
+	void test_selectTemplateHotkeys_confirmSelection()
 	{
 		driver.get(helper.getUrl() + "/templates");
 
@@ -255,7 +225,7 @@ public class NewTransactionFromTemplateTest
 	}
 
 	@Test
-	public void test_selectTemplateHotkeys_searchContainsSelection()
+	void test_selectTemplateHotkeys_searchContainsSelection()
 	{
 		driver.get(helper.getUrl() + "/templates");
 
@@ -278,7 +248,7 @@ public class NewTransactionFromTemplateTest
 	}
 
 	@Test
-	public void test_selectTemplateHotkeys_searchNotContainsSelection()
+	void test_selectTemplateHotkeys_searchNotContainsSelection()
 	{
 		driver.get(helper.getUrl() + "/templates");
 
@@ -300,7 +270,7 @@ public class NewTransactionFromTemplateTest
 	}
 
 	@Test
-	public void test_selectTemplateHotkeys_dontBlockEnterInGlobalSearch()
+	void test_selectTemplateHotkeys_dontBlockEnterInGlobalSearch()
 	{
 		driver.get(helper.getUrl() + "/templates");
 
