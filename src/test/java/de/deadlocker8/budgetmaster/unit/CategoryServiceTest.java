@@ -5,12 +5,12 @@ import de.deadlocker8.budgetmaster.categories.CategoryRepository;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.unit.helpers.LocalizedTest;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +18,9 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @LocalizedTest
-public class CategoryServiceTest
+class CategoryServiceTest
 {
 	private static final Category CATEGORY_NONE = new Category("No Category", "#FFFFFF", CategoryType.NONE);
 	private static final Category CATEGORY_REST = new Category("Rest", "#FFFF00", CategoryType.REST);
@@ -32,7 +32,7 @@ public class CategoryServiceTest
 	private CategoryService categoryService;
 
 	@Test
-	public void test_getAllCategories()
+	void test_getAllCategories()
 	{
 		List<Category> categories = new ArrayList<>();
 		categories.add(CATEGORY_NONE);
@@ -71,7 +71,7 @@ public class CategoryServiceTest
 	}
 
 	@Test
-	public void test_createDefaults()
+	void test_createDefaults()
 	{
 		categoryService.createDefaults();
 
@@ -81,7 +81,7 @@ public class CategoryServiceTest
 	}
 
 	@Test
-	public void test_isDeletable_default()
+	void test_isDeletable_default()
 	{
 		Mockito.when(categoryRepository.findById(1)).thenReturn(Optional.of(CATEGORY_NONE));
 
@@ -89,7 +89,7 @@ public class CategoryServiceTest
 	}
 
 	@Test
-	public void test_isDeletable_custom()
+	void test_isDeletable_custom()
 	{
 		Category customCategory = new Category("aa", "#ff0000", CategoryType.CUSTOM);
 

@@ -21,8 +21,8 @@ import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.Localization.LocalizationDelegate;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -35,9 +35,9 @@ import java.util.Locale;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class DatabaseParser_v7_convertToInternalTest
+class DatabaseParser_v7_convertToInternalTest
 {
-	@Before
+	@BeforeEach
 	public void before()
 	{
 		Localization.setDelegate(new LocalizationDelegate()
@@ -58,7 +58,7 @@ public class DatabaseParser_v7_convertToInternalTest
 	}
 
 	@Test
-	public void test_Charts()
+	void test_Charts()
 	{
 		try
 		{
@@ -79,7 +79,7 @@ public class DatabaseParser_v7_convertToInternalTest
 	}
 
 	@Test
-	public void test_Categories()
+	void test_Categories()
 	{
 		try
 		{
@@ -103,7 +103,7 @@ public class DatabaseParser_v7_convertToInternalTest
 	}
 
 	@Test
-	public void test_Accounts()
+	void test_Accounts()
 	{
 		try
 		{
@@ -135,7 +135,7 @@ public class DatabaseParser_v7_convertToInternalTest
 	}
 
 	@Test
-	public void test_Images()
+	void test_Images()
 	{
 		try
 		{
@@ -159,7 +159,7 @@ public class DatabaseParser_v7_convertToInternalTest
 	}
 
 	@Test
-	public void test_Templates()
+	void test_Templates()
 	{
 		try
 		{
@@ -194,7 +194,7 @@ public class DatabaseParser_v7_convertToInternalTest
 	}
 
 	@Test
-	public void test_Transactions()
+	void test_Transactions()
 	{
 		try
 		{
@@ -297,7 +297,7 @@ public class DatabaseParser_v7_convertToInternalTest
 	}
 
 	@Test
-	public void test_Icons() throws IOException, URISyntaxException
+	void test_Icons() throws IOException, URISyntaxException
 	{
 		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v7Test.json").toURI())));
 		DatabaseParser_v7 importer = new DatabaseParser_v7(json);

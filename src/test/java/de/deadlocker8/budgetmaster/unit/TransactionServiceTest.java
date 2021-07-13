@@ -8,20 +8,20 @@ import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.deadlocker8.budgetmaster.unit.helpers.LocalizedTest;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @LocalizedTest
-public class TransactionServiceTest
+class TransactionServiceTest
 {
 	private static final Category CATEGORY_REST = new Category("Rest", "#FFFF00", CategoryType.REST);
 	private static final Category CATEGORY_CUSTOM = new Category("CustomCategory", "#0F0F0F", CategoryType.CUSTOM);
@@ -35,7 +35,7 @@ public class TransactionServiceTest
 	private TransactionService transactionService;
 
 	@Test
-	public void test_isDeletable_rest()
+	void test_isDeletable_rest()
 	{
 		Transaction transactionRest = new Transaction();
 		transactionRest.setID(1);
@@ -51,7 +51,7 @@ public class TransactionServiceTest
 	}
 
 	@Test
-	public void test_isDeletable_custom()
+	void test_isDeletable_custom()
 	{
 		Transaction transaction = new Transaction();
 		transaction.setID(1);
@@ -67,7 +67,7 @@ public class TransactionServiceTest
 	}
 
 	@Test
-	public void test_handleAmount_null()
+	void test_handleAmount_null()
 	{
 		Transaction transaction = new Transaction();
 		transaction.setAmount(null);
@@ -80,7 +80,7 @@ public class TransactionServiceTest
 	}
 
 	@Test
-	public void test_handleAmount_expenditure()
+	void test_handleAmount_expenditure()
 	{
 		Transaction transaction = new Transaction();
 		transaction.setAmount(500);
@@ -93,7 +93,7 @@ public class TransactionServiceTest
 	}
 
 	@Test
-	public void test_handleAmount_income()
+	void test_handleAmount_income()
 	{
 		Transaction transaction = new Transaction();
 		transaction.setAmount(-500);

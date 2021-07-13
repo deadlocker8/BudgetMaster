@@ -8,7 +8,7 @@ import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierDays;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierMonths;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierYears;
 import org.joda.time.DateTime;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +16,12 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class RepeatingOptionTest
+class RepeatingOptionTest
 {
 	// test repeating every X days
 
 	@Test
-	public void test_GetRepeatingDates_Every3Days_EndAfter3Times()
+	void test_GetRepeatingDates_Every3Days_EndAfter3Times()
 	{
 		DateTime startDate = new DateTime(2018, 4, 22, 12, 0);
 		RepeatingOption repeatingOption = new RepeatingOption(startDate,
@@ -41,7 +41,7 @@ public class RepeatingOptionTest
 	}
 
 	@Test
-	public void test_GetRepeatingDates_Every3Days_EndAfterDate()
+	void test_GetRepeatingDates_Every3Days_EndAfterDate()
 	{
 		DateTime startDate = new DateTime(2018, 4, 22, 12, 0);
 		DateTime endDate = new DateTime(2018, 4, 28, 12, 0);
@@ -61,7 +61,7 @@ public class RepeatingOptionTest
 	}
 
 	@Test
-	public void test_GetRepeatingDates_Every3Days_EndNever()
+	void test_GetRepeatingDates_Every3Days_EndNever()
 	{
 		DateTime startDate = new DateTime(2018, 4, 22, 12, 0);
 		RepeatingOption repeatingOption = new RepeatingOption(startDate,
@@ -83,7 +83,7 @@ public class RepeatingOptionTest
 	// test repeating every X months
 
 	@Test
-	public void test_GetRepeatingDates_Every2Month_EndAfter5Times()
+	void test_GetRepeatingDates_Every2Month_EndAfter5Times()
 	{
 		DateTime startDate = new DateTime(2018, 4, 30, 12, 0);
 		RepeatingOption repeatingOption = new RepeatingOption(startDate,
@@ -105,7 +105,7 @@ public class RepeatingOptionTest
 	}
 
 	@Test
-	public void test_GetRepeatingDates_Every2Month_EndAfterDate()
+	void test_GetRepeatingDates_Every2Month_EndAfterDate()
 	{
 		DateTime startDate = new DateTime(2018, 4, 30, 12, 0);
 		DateTime endDate = new DateTime(2018, 9, 28, 12, 0);
@@ -125,7 +125,7 @@ public class RepeatingOptionTest
 	}
 
 	@Test
-	public void test_GetRepeatingDates_Every2Month_EndNever()
+	void test_GetRepeatingDates_Every2Month_EndNever()
 	{
 		DateTime startDate = new DateTime(2018, 4, 30, 12, 0);
 		RepeatingOption repeatingOption = new RepeatingOption(startDate,
@@ -146,7 +146,7 @@ public class RepeatingOptionTest
 	// test repeating every X years
 
 	@Test
-	public void test_GetRepeatingDates_EveryYear_EndAfter2Times()
+	void test_GetRepeatingDates_EveryYear_EndAfter2Times()
 	{
 		DateTime startDate = new DateTime(2018, 4, 30, 12, 0);
 		RepeatingOption repeatingOption = new RepeatingOption(startDate,
@@ -165,7 +165,7 @@ public class RepeatingOptionTest
 	}
 
 	@Test
-	public void test_GetRepeatingDates_EveryYear_EndAfterDate()
+	void test_GetRepeatingDates_EveryYear_EndAfterDate()
 	{
 		DateTime startDate = new DateTime(2018, 4, 30, 12, 0);
 		DateTime endDate = new DateTime(2019, 9, 28, 12, 0);
@@ -184,7 +184,7 @@ public class RepeatingOptionTest
 	}
 
 	@Test
-	public void test_GetRepeatingDates_EveryYear_EndNever()
+	void test_GetRepeatingDates_EveryYear_EndNever()
 	{
 		DateTime startDate = new DateTime(2018, 4, 30, 12, 0);
 		RepeatingOption repeatingOption = new RepeatingOption(startDate,

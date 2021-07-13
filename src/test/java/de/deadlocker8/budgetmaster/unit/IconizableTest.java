@@ -6,27 +6,23 @@ import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.IconRepository;
 import de.deadlocker8.budgetmaster.icon.IconService;
-import de.deadlocker8.budgetmaster.images.ImageRepository;
 import de.deadlocker8.budgetmaster.unit.helpers.LocalizedTest;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @LocalizedTest
-public class IconizableTest
+class IconizableTest
 {
 	@Mock
 	private IconRepository iconRepository;
-
-	@Mock
-	private ImageRepository imageRepository;
 
 	@Mock
 	private AccountService accountService;
@@ -35,7 +31,7 @@ public class IconizableTest
 	private IconService iconService;
 
 	@Test
-	public void test_updateIcon_noExistingItem_noNewIcon()
+	void test_updateIcon_noExistingItem_noNewIcon()
 	{
 		final Account account = Mockito.spy(new Account("account with icon", AccountType.CUSTOM));
 
@@ -49,7 +45,7 @@ public class IconizableTest
 	}
 
 	@Test
-	public void test_updateIcon_noExistingItem_newBuiltinIcon()
+	void test_updateIcon_noExistingItem_newBuiltinIcon()
 	{
 		final Account account = Mockito.spy(new Account("account with icon", AccountType.CUSTOM));
 
@@ -69,7 +65,7 @@ public class IconizableTest
 	}
 
 	@Test
-	public void test_updateIcon_existingItem_newBuiltinIcon()
+	void test_updateIcon_existingItem_newBuiltinIcon()
 	{
 		final String builtinIdentifier = "fas fa-icons";
 		final Icon icon = new Icon(builtinIdentifier);
@@ -91,7 +87,7 @@ public class IconizableTest
 	}
 
 	@Test
-	public void test_updateIcon_existingItem_noNewIcon()
+	void test_updateIcon_existingItem_noNewIcon()
 	{
 		final Icon icon = new Icon("fas fa-icons");
 		final Account account = new Account("account with icon", AccountType.CUSTOM, icon);

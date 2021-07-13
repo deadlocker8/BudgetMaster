@@ -24,8 +24,8 @@ import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndAfterXTimes;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierDays;
 import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.Localization.LocalizationDelegate;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -38,9 +38,9 @@ import java.util.Locale;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class DatabaseParser_v6Test
+class DatabaseParser_v6Test
 {
-	@Before
+	@BeforeEach
 	public void before()
 	{
 		Localization.setDelegate(new LocalizationDelegate()
@@ -61,7 +61,7 @@ public class DatabaseParser_v6Test
 	}
 
 	@Test
-	public void test_Charts() throws URISyntaxException, IOException
+	void test_Charts() throws URISyntaxException, IOException
 	{
 		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v6Test.json").toURI())));
 		DatabaseParser_v6 parser = new DatabaseParser_v6(json);
@@ -74,7 +74,7 @@ public class DatabaseParser_v6Test
 	}
 
 	@Test
-	public void test_Categories() throws URISyntaxException, IOException
+	void test_Categories() throws URISyntaxException, IOException
 	{
 		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v6Test.json").toURI())));
 		DatabaseParser_v6 parser = new DatabaseParser_v6(json);
@@ -87,7 +87,7 @@ public class DatabaseParser_v6Test
 	}
 
 	@Test
-	public void test_Accounts() throws URISyntaxException, IOException
+	void test_Accounts() throws URISyntaxException, IOException
 	{
 		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v6Test.json").toURI())));
 		DatabaseParser_v6 parser = new DatabaseParser_v6(json);
@@ -102,7 +102,7 @@ public class DatabaseParser_v6Test
 	}
 
 	@Test
-	public void test_Images() throws URISyntaxException, IOException
+	void test_Images() throws URISyntaxException, IOException
 	{
 		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v6Test.json").toURI())));
 		DatabaseParser_v6 parser = new DatabaseParser_v6(json);
@@ -116,7 +116,7 @@ public class DatabaseParser_v6Test
 	}
 
 	@Test
-	public void test_Templates() throws URISyntaxException, IOException
+	void test_Templates() throws URISyntaxException, IOException
 	{
 		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v6Test.json").toURI())));
 		DatabaseParser_v6 parser = new DatabaseParser_v6(json);
@@ -135,7 +135,7 @@ public class DatabaseParser_v6Test
 	}
 
 	@Test
-	public void test_Transactions() throws URISyntaxException, IOException
+	void test_Transactions() throws URISyntaxException, IOException
 	{
 		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v6Test.json").toURI())));
 		DatabaseParser_v6 parser = new DatabaseParser_v6(json);
@@ -203,13 +203,13 @@ public class DatabaseParser_v6Test
 	}
 
 	@Test
-	public void test_Upgrade_Accounts() throws URISyntaxException, IOException
+	void test_Upgrade_Accounts() throws URISyntaxException, IOException
 	{
 		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v6Test.json").toURI())));
 		DatabaseParser_v6 parser = new DatabaseParser_v6(json);
 		BackupDatabase_v6 database = parser.parseDatabaseFromJSON();
 
-		final BackupDatabase_v7 upgradedDatabase = (BackupDatabase_v7)database.upgrade();
+		final BackupDatabase_v7 upgradedDatabase = (BackupDatabase_v7) database.upgrade();
 
 		final BackupAccount_v7 upgradedAccount1 = new BackupAccount_v7(1, "Placeholder", AccountState.FULL_ACCESS, AccountType.ALL, null);
 		final BackupAccount_v7 upgradedAccount2 = new BackupAccount_v7(2, "Default", AccountState.FULL_ACCESS, AccountType.CUSTOM, null);
@@ -221,13 +221,13 @@ public class DatabaseParser_v6Test
 	}
 
 	@Test
-	public void test_Upgrade_Templates() throws URISyntaxException, IOException
+	void test_Upgrade_Templates() throws URISyntaxException, IOException
 	{
 		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v6Test.json").toURI())));
 		DatabaseParser_v6 parser = new DatabaseParser_v6(json);
 		BackupDatabase_v6 database = parser.parseDatabaseFromJSON();
 
-		final BackupDatabase_v7 upgradedDatabase = (BackupDatabase_v7)database.upgrade();
+		final BackupDatabase_v7 upgradedDatabase = (BackupDatabase_v7) database.upgrade();
 
 		final BackupTemplate_v7 upgradedTemplate = new BackupTemplate_v7("Template with icon", null, true, null, null, null, null, 3, List.of(), null);
 
@@ -238,13 +238,13 @@ public class DatabaseParser_v6Test
 	}
 
 	@Test
-	public void test_Upgrade_Categories() throws URISyntaxException, IOException
+	void test_Upgrade_Categories() throws URISyntaxException, IOException
 	{
 		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v6Test.json").toURI())));
 		DatabaseParser_v6 parser = new DatabaseParser_v6(json);
 		BackupDatabase_v6 database = parser.parseDatabaseFromJSON();
 
-		final BackupDatabase_v7 upgradedDatabase = (BackupDatabase_v7)database.upgrade();
+		final BackupDatabase_v7 upgradedDatabase = (BackupDatabase_v7) database.upgrade();
 
 		final BackupCategory_v7 upgradedCategory = new BackupCategory_v7(3, "0815", "#ffcc00", CategoryType.CUSTOM, 0);
 

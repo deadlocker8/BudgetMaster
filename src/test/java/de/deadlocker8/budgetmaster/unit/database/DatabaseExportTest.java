@@ -38,15 +38,14 @@ import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.thecodelabs.utils.util.Localization;
 import org.joda.time.DateTime;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -58,10 +57,10 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-public class DatabaseExportTest
+@ExtendWith(SpringExtension.class)
+class DatabaseExportTest
 {
-	@Before
+	@BeforeEach
 	public void before()
 	{
 		Localization.setDelegate(new Localization.LocalizationDelegate()
@@ -111,11 +110,11 @@ public class DatabaseExportTest
 	@InjectMocks
 	private DatabaseService databaseService;
 
-	@Rule
-	public final TemporaryFolder tempFolder = new TemporaryFolder();
+	@TempDir
+	public Path tempFolder;
 
 	@Test
-	public void test_specialFields() throws IOException
+	void test_specialFields() throws IOException
 	{
 		// categories
 		Mockito.when(categoryService.getAllEntitiesAsc()).thenReturn(List.of());
@@ -152,7 +151,7 @@ public class DatabaseExportTest
 
 
 		// act
-		Path exportPath = tempFolder.newFile("exportTest.json").toPath();
+		Path exportPath = Files.createFile(tempFolder.resolve("exportTest.json"));
 		databaseService.exportDatabase(exportPath);
 
 
@@ -165,7 +164,7 @@ public class DatabaseExportTest
 	}
 
 	@Test
-	public void test_exportDatabase() throws IOException
+	void test_exportDatabase() throws IOException
 	{
 		// categories
 		Category categoryNone = new Category("NONE", "#000000", CategoryType.NONE);
@@ -271,7 +270,7 @@ public class DatabaseExportTest
 
 
 		// act
-		Path exportPath = tempFolder.newFile("exportTest.json").toPath();
+		Path exportPath = Files.createFile(tempFolder.resolve("exportTest.json"));
 		databaseService.exportDatabase(exportPath);
 
 		// assert

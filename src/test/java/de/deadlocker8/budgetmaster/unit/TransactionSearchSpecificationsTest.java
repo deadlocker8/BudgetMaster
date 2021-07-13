@@ -19,22 +19,22 @@ import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import de.deadlocker8.budgetmaster.transactions.TransactionSearchSpecifications;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @DataJpaTest
-public class TransactionSearchSpecificationsTest
+class TransactionSearchSpecificationsTest
 {
 	@Autowired
 	private TransactionRepository transactionRepository;
@@ -64,7 +64,7 @@ public class TransactionSearchSpecificationsTest
 	private RepeatingOptionRepository repeatingOptionRepository;
 	private RepeatingOption repeatingOption;
 
-	@Before
+	@BeforeEach
 	public void init()
 	{
 		account = accountRepository.save(new Account("TestAccount", AccountType.CUSTOM));
@@ -137,7 +137,7 @@ public class TransactionSearchSpecificationsTest
 	}
 
 	@Test
-	public void getMatches_OnlyName()
+	void getMatches_OnlyName()
 	{
 		Search search = new Search("Test", true, false, false, false, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
@@ -148,7 +148,7 @@ public class TransactionSearchSpecificationsTest
 	}
 
 	@Test
-	public void getMatches_PartialName()
+	void getMatches_PartialName()
 	{
 		Search search = new Search("es", true, false, false, false, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
@@ -159,7 +159,7 @@ public class TransactionSearchSpecificationsTest
 	}
 
 	@Test
-	public void getMatches_IgnoreCase()
+	void getMatches_IgnoreCase()
 	{
 		Search search = new Search("tEST", true, true, true, true, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
@@ -170,7 +170,7 @@ public class TransactionSearchSpecificationsTest
 	}
 
 	@Test
-	public void getMatches_OnlyDescription()
+	void getMatches_OnlyDescription()
 	{
 		Search search = new Search("What", true, true, true, true, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
@@ -181,7 +181,7 @@ public class TransactionSearchSpecificationsTest
 	}
 
 	@Test
-	public void getMatches_OnlyCategory()
+	void getMatches_OnlyCategory()
 	{
 		Search search = new Search(category2.getName(), false, false, true, false, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
@@ -193,7 +193,7 @@ public class TransactionSearchSpecificationsTest
 	}
 
 	@Test
-	public void getMatches_Order()
+	void getMatches_Order()
 	{
 		Search search = new Search("", true, true, true, true, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
@@ -207,7 +207,7 @@ public class TransactionSearchSpecificationsTest
 	}
 
 	@Test
-	public void getMatches_Mixed()
+	void getMatches_Mixed()
 	{
 		Search search = new Search("e", true, true, true, true, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
@@ -220,7 +220,7 @@ public class TransactionSearchSpecificationsTest
 	}
 
 	@Test
-	public void getMatches_NoMatches()
+	void getMatches_NoMatches()
 	{
 		Search search = new Search("asuzgdzasuiduzasds", true, true, true, true, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
@@ -230,7 +230,7 @@ public class TransactionSearchSpecificationsTest
 	}
 
 	@Test
-	public void getMatches_SearchNothing()
+	void getMatches_SearchNothing()
 	{
 		Search search = new Search("egal", false, false, false, false, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
@@ -240,7 +240,7 @@ public class TransactionSearchSpecificationsTest
 	}
 
 	@Test
-	public void getMatches_SearchTagsEquals()
+	void getMatches_SearchTagsEquals()
 	{
 		Search search = new Search("MyAwesomeTag", false, false, false, true, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
@@ -251,7 +251,7 @@ public class TransactionSearchSpecificationsTest
 	}
 
 	@Test
-	public void getMatches_SearchTagsLike()
+	void getMatches_SearchTagsLike()
 	{
 		Search search = new Search("Awesome", false, false, false, true, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
@@ -262,7 +262,7 @@ public class TransactionSearchSpecificationsTest
 	}
 
 	@Test
-	public void getMatches_IgnoreTransactionsFromHiddenAccounts()
+	void getMatches_IgnoreTransactionsFromHiddenAccounts()
 	{
 		Search search = new Search("hidden", true, false, false, false, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);

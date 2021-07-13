@@ -33,12 +33,12 @@ import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionBase;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import org.joda.time.DateTime;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +46,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-public class ImportServiceTest
+@ExtendWith(SpringExtension.class)
+class ImportServiceTest
 {
 	@Mock
 	private CategoryRepository categoryRepository;
@@ -80,7 +80,7 @@ public class ImportServiceTest
 	private ImportService importService;
 
 	@Test
-	public void test_updateCategoriesForTransactions()
+	void test_updateCategoriesForTransactions()
 	{
 		Category category1 = new Category("Category1", "#ff0000", CategoryType.CUSTOM);
 		category1.setID(3);
@@ -109,7 +109,7 @@ public class ImportServiceTest
 	}
 
 	@Test
-	public void test_updateCategoriesForTemplates()
+	void test_updateCategoriesForTemplates()
 	{
 		Category category1 = new Category("Category1", "#ff0000", CategoryType.CUSTOM);
 		category1.setID(3);
@@ -141,7 +141,7 @@ public class ImportServiceTest
 	}
 
 	@Test
-	public void test_removeAlreadyUpdatedTransactions()
+	void test_removeAlreadyUpdatedTransactions()
 	{
 		Category category1 = new Category("Category1", "#ff0000", CategoryType.CUSTOM);
 		category1.setID(3);
@@ -177,7 +177,7 @@ public class ImportServiceTest
 	}
 
 	@Test
-	public void test_updateAccountsForTransactions()
+	void test_updateAccountsForTransactions()
 	{
 		Account account1 = new Account("Account_1", AccountType.CUSTOM);
 		account1.setID(2);
@@ -208,7 +208,7 @@ public class ImportServiceTest
 	}
 
 	@Test
-	public void test_updateTransferAccountsForTransactions()
+	void test_updateTransferAccountsForTransactions()
 	{
 		Account account1 = new Account("Account_1", AccountType.CUSTOM);
 		account1.setID(2);
@@ -241,7 +241,7 @@ public class ImportServiceTest
 	}
 
 	@Test
-	public void test_updateAccountsForTemplates()
+	void test_updateAccountsForTemplates()
 	{
 		Account account1 = new Account("Account_1", AccountType.CUSTOM);
 		account1.setID(2);
@@ -275,7 +275,7 @@ public class ImportServiceTest
 	}
 
 	@Test
-	public void test_updateTransferAccountsForTemplates()
+	void test_updateTransferAccountsForTemplates()
 	{
 		Account account1 = new Account("Account_1", AccountType.CUSTOM);
 		account1.setID(2);
@@ -310,7 +310,7 @@ public class ImportServiceTest
 	}
 
 	@Test
-	public void test_updateTagsForItem_ExistingTag()
+	void test_updateTagsForItem_ExistingTag()
 	{
 		Account account1 = new Account("Account_1", AccountType.CUSTOM);
 		account1.setID(2);
@@ -337,7 +337,7 @@ public class ImportServiceTest
 	}
 
 	@Test
-	public void test_updateTagsForItem_NewTag()
+	void test_updateTagsForItem_NewTag()
 	{
 		Account account1 = new Account("Account_1", AccountType.CUSTOM);
 		account1.setID(2);
@@ -367,7 +367,7 @@ public class ImportServiceTest
 	}
 
 	@Test
-	public void test_importFullDatabase()
+	void test_importFullDatabase()
 	{
 		// source accounts
 		Account sourceAccount1 = new Account("Source_Account_1", AccountType.CUSTOM);
@@ -519,7 +519,7 @@ public class ImportServiceTest
 	}
 
 	@Test
-	public void test_chartId()
+	void test_chartId()
 	{
 		Chart chart = new Chart();
 		chart.setID(9);
@@ -546,7 +546,7 @@ public class ImportServiceTest
 	}
 
 	@Test
-	public void test_updateImagesForIcons()
+	void test_updateImagesForIcons()
 	{
 		Image image1 = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
 		image1.setID(3);
@@ -567,7 +567,7 @@ public class ImportServiceTest
 	}
 
 	@Test
-	public void test_importImages_notExisting()
+	void test_importImages_notExisting()
 	{
 		Image image = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
 		image.setID(3);
@@ -587,7 +587,7 @@ public class ImportServiceTest
 	}
 
 	@Test
-	public void test_importImages_alreadyExisting()
+	void test_importImages_alreadyExisting()
 	{
 		Image image = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
 		image.setID(3);
@@ -607,7 +607,7 @@ public class ImportServiceTest
 	}
 
 	@Test
-	public void test_importAccounts_icon()
+	void test_importAccounts_icon()
 	{
 		Image image = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
 		image.setID(3);
@@ -645,7 +645,7 @@ public class ImportServiceTest
 	}
 
 	@Test
-	public void test_skipTemplates()
+	void test_skipTemplates()
 	{
 		Template template = new Template();
 		template.setTemplateName("myTemplate");
@@ -664,7 +664,7 @@ public class ImportServiceTest
 	}
 
 	@Test
-	public void test_skipCarts()
+	void test_skipCarts()
 	{
 		Chart chart = new Chart();
 		chart.setID(9);
@@ -687,7 +687,7 @@ public class ImportServiceTest
 	}
 
 	@Test
-	public void test_errorWhileImportingCategory_shouldBeCollected()
+	void test_errorWhileImportingCategory_shouldBeCollected()
 	{
 		Category category1 = new Category("Category1", "#ff0000", CategoryType.CUSTOM);
 		category1.setID(3);
@@ -709,7 +709,7 @@ public class ImportServiceTest
 	}
 
 	@Test
-	public void test_updateIconsForAccounts()
+	void test_updateIconsForAccounts()
 	{
 		Image image1 = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
 		image1.setID(3);

@@ -12,11 +12,11 @@ import de.deadlocker8.budgetmaster.tags.TagService;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.deadlocker8.budgetmaster.unit.helpers.LoggerTestUtil;
 import org.assertj.core.groups.Tuple;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.net.URISyntaxException;
 import java.nio.file.Path;
@@ -27,8 +27,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
-public class DatabaseServiceTest
+@ExtendWith(SpringExtension.class)
+class DatabaseServiceTest
 {
 	@Mock
 	private AccountService accountService;
@@ -49,7 +49,7 @@ public class DatabaseServiceTest
 	private DatabaseService databaseService;
 
 	@Test
-	public void test_determineFilesToDelete_unlimited() throws URISyntaxException
+	void test_determineFilesToDelete_unlimited() throws URISyntaxException
 	{
 		ListAppender<ILoggingEvent> loggingAppender = LoggerTestUtil.getListAppenderForClass(DatabaseService.class);
 
@@ -68,7 +68,7 @@ public class DatabaseServiceTest
 	}
 
 	@Test
-	public void test_determineFilesToDelete_limitNotReached() throws URISyntaxException
+	void test_determineFilesToDelete_limitNotReached() throws URISyntaxException
 	{
 		ListAppender<ILoggingEvent> loggingAppender = LoggerTestUtil.getListAppenderForClass(DatabaseService.class);
 
@@ -87,7 +87,7 @@ public class DatabaseServiceTest
 	}
 
 	@Test
-	public void test_determineFilesToDelete_limitReachedExactly() throws URISyntaxException
+	void test_determineFilesToDelete_limitReachedExactly() throws URISyntaxException
 	{
 		ListAppender<ILoggingEvent> loggingAppender = LoggerTestUtil.getListAppenderForClass(DatabaseService.class);
 
@@ -109,7 +109,7 @@ public class DatabaseServiceTest
 	}
 
 	@Test
-	public void test_determineFilesToDelete_limitReached() throws URISyntaxException
+	void test_determineFilesToDelete_limitReached() throws URISyntaxException
 	{
 		ListAppender<ILoggingEvent> loggingAppender = LoggerTestUtil.getListAppenderForClass(DatabaseService.class);
 

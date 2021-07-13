@@ -20,8 +20,8 @@ import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndAfterXTimes;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierDays;
 import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.Localization.LocalizationDelegate;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -34,9 +34,9 @@ import java.util.Locale;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class DatabaseParser_v7Test
+class DatabaseParser_v7Test
 {
-	@Before
+	@BeforeEach
 	public void before()
 	{
 		Localization.setDelegate(new LocalizationDelegate()
@@ -57,7 +57,7 @@ public class DatabaseParser_v7Test
 	}
 
 	@Test
-	public void test_Charts() throws URISyntaxException, IOException
+	void test_Charts() throws URISyntaxException, IOException
 	{
 		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v7Test.json").toURI())));
 		DatabaseParser_v7 parser = new DatabaseParser_v7(json);
@@ -70,7 +70,7 @@ public class DatabaseParser_v7Test
 	}
 
 	@Test
-	public void test_Categories() throws URISyntaxException, IOException
+	void test_Categories() throws URISyntaxException, IOException
 	{
 		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v7Test.json").toURI())));
 		DatabaseParser_v7 parser = new DatabaseParser_v7(json);
@@ -83,7 +83,7 @@ public class DatabaseParser_v7Test
 	}
 
 	@Test
-	public void test_Accounts() throws URISyntaxException, IOException
+	void test_Accounts() throws URISyntaxException, IOException
 	{
 		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v7Test.json").toURI())));
 		DatabaseParser_v7 parser = new DatabaseParser_v7(json);
@@ -98,7 +98,7 @@ public class DatabaseParser_v7Test
 	}
 
 	@Test
-	public void test_Images() throws URISyntaxException, IOException
+	void test_Images() throws URISyntaxException, IOException
 	{
 		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v7Test.json").toURI())));
 		DatabaseParser_v7 parser = new DatabaseParser_v7(json);
@@ -112,7 +112,7 @@ public class DatabaseParser_v7Test
 	}
 
 	@Test
-	public void test_Templates() throws URISyntaxException, IOException
+	void test_Templates() throws URISyntaxException, IOException
 	{
 		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v7Test.json").toURI())));
 		DatabaseParser_v7 parser = new DatabaseParser_v7(json);
@@ -131,7 +131,7 @@ public class DatabaseParser_v7Test
 	}
 
 	@Test
-	public void test_Transactions() throws URISyntaxException, IOException
+	void test_Transactions() throws URISyntaxException, IOException
 	{
 		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v7Test.json").toURI())));
 		DatabaseParser_v7 parser = new DatabaseParser_v7(json);
@@ -199,7 +199,7 @@ public class DatabaseParser_v7Test
 	}
 
 	@Test
-	public void test_Icons() throws URISyntaxException, IOException
+	void test_Icons() throws URISyntaxException, IOException
 	{
 		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v7Test.json").toURI())));
 		DatabaseParser_v7 parser = new DatabaseParser_v7(json);

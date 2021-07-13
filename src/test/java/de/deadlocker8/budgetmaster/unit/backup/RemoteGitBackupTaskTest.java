@@ -13,24 +13,24 @@ import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.unit.helpers.Helpers;
 import de.thecodelabs.utils.util.OS;
 import org.joda.time.DateTimeUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-public class RemoteGitBackupTaskTest
+@ExtendWith(SpringExtension.class)
+class RemoteGitBackupTaskTest
 {
 	@Mock
 	private DatabaseService databaseService;
@@ -38,13 +38,13 @@ public class RemoteGitBackupTaskTest
 	@Mock
 	private SettingsService settingsService;
 
-	@Rule
-	public final TemporaryFolder tempFolder = new TemporaryFolder();
+	@TempDir
+	public Path tempFolder;
 
 	private static String gitExecutable;
 
 
-	@BeforeClass
+	@BeforeAll
 	public static void setup()
 	{
 		if(OS.isWindows())
@@ -59,14 +59,14 @@ public class RemoteGitBackupTaskTest
 		DateTimeUtils.setCurrentMillisFixed(1612004400000L);
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void cleanup()
 	{
 		DateTimeUtils.setCurrentMillisSystem();
 	}
 
 	@Test
-	public void test_needsCleanup_false_everythingEquals()
+	void test_needsCleanup_false_everythingEquals()
 	{
 		final Settings previousSettings = Settings.getDefault();
 		previousSettings.setAutoBackupStrategy(AutoBackupStrategy.GIT_REMOTE);
@@ -82,7 +82,7 @@ public class RemoteGitBackupTaskTest
 	}
 
 	@Test
-	public void test_needsCleanup_false_onlyNameChanged()
+	void test_needsCleanup_false_onlyNameChanged()
 	{
 		final Settings previousSettings = Settings.getDefault();
 		previousSettings.setAutoBackupStrategy(AutoBackupStrategy.GIT_REMOTE);
@@ -104,7 +104,7 @@ public class RemoteGitBackupTaskTest
 	}
 
 	@Test
-	public void test_needsCleanup_true_urlChanged()
+	void test_needsCleanup_true_urlChanged()
 	{
 		final Settings previousSettings = Settings.getDefault();
 		previousSettings.setAutoBackupStrategy(AutoBackupStrategy.GIT_REMOTE);
@@ -127,7 +127,7 @@ public class RemoteGitBackupTaskTest
 	}
 
 	@Test
-	public void test_needsCleanup_true_branchNameChanged()
+	void test_needsCleanup_true_branchNameChanged()
 	{
 		final Settings previousSettings = Settings.getDefault();
 		previousSettings.setAutoBackupStrategy(AutoBackupStrategy.GIT_REMOTE);
@@ -150,11 +150,11 @@ public class RemoteGitBackupTaskTest
 	}
 
 	@Test
-	public void test_runBackup_firstCommit() throws IOException
+	void test_runBackup_firstCommit() throws IOException
 	{
 		// create fake server
-		final Path fakeServerFolder = tempFolder.newFolder("server").toPath();
-		final Path repositoryFolder = tempFolder.newFolder().toPath().resolve(".git");
+		final Path fakeServerFolder = Files.createDirectory(tempFolder.resolve("server"));
+		final Path repositoryFolder = Files.createDirectory(tempFolder.resolve("client")).resolve(".git");
 
 		final RemoteGitBackupTask remoteGitBackupTask = createBackupTask(repositoryFolder, fakeServerFolder);
 		remoteGitBackupTask.run();
@@ -185,11 +185,11 @@ public class RemoteGitBackupTaskTest
 	}
 
 	@Test
-	public void test_runBackup_fileNotChanged() throws IOException
+	void test_runBackup_fileNotChanged() throws IOException
 	{
 		// create fake server
-		final Path fakeServerFolder = tempFolder.newFolder("server").toPath();
-		final Path repositoryFolder = tempFolder.newFolder().toPath().resolve(".git");
+		final Path fakeServerFolder = Files.createDirectory(tempFolder.resolve("server"));
+		final Path repositoryFolder = Files.createDirectory(tempFolder.resolve("client")).resolve(".git");
 
 		final RemoteGitBackupTask remoteGitBackupTask = createBackupTask(repositoryFolder, fakeServerFolder);
 		remoteGitBackupTask.run();
@@ -209,11 +209,11 @@ public class RemoteGitBackupTaskTest
 	}
 
 	@Test
-	public void test_runBackup_fileChanged() throws IOException
+	void test_runBackup_fileChanged() throws IOException
 	{
 		// create fake server
-		final Path fakeServerFolder = tempFolder.newFolder("server").toPath();
-		final Path repositoryFolder = tempFolder.newFolder().toPath().resolve(".git");
+		final Path fakeServerFolder = Files.createDirectory(tempFolder.resolve("server"));
+		final Path repositoryFolder = Files.createDirectory(tempFolder.resolve("client")).resolve(".git");
 
 		final RemoteGitBackupTask remoteGitBackupTask = createBackupTask(repositoryFolder, fakeServerFolder);
 		remoteGitBackupTask.run();

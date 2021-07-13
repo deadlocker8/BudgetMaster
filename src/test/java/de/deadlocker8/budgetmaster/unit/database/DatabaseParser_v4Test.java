@@ -6,11 +6,10 @@ import de.deadlocker8.budgetmaster.database.DatabaseParser_v4;
 import de.deadlocker8.budgetmaster.database.model.v4.*;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndAfterXTimes;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierDays;
-import de.deadlocker8.budgetmaster.tags.Tag;
 import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.Localization.LocalizationDelegate;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -20,12 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
-public class DatabaseParser_v4Test
+class DatabaseParser_v4Test
 {
-	@Before
+	@BeforeEach
 	public void before()
 	{
 		Localization.setDelegate(new LocalizationDelegate()
@@ -46,7 +46,7 @@ public class DatabaseParser_v4Test
 	}
 
 	@Test
-	public void test_Categories()
+	void test_Categories()
 	{
 		try
 		{
@@ -68,7 +68,7 @@ public class DatabaseParser_v4Test
 	}
 
 	@Test
-	public void test_Accounts()
+	void test_Accounts()
 	{
 		try
 		{
@@ -88,7 +88,7 @@ public class DatabaseParser_v4Test
 	}
 
 	@Test
-	public void test_Transactions()
+	void test_Transactions()
 	{
 		try
 		{
@@ -170,7 +170,7 @@ public class DatabaseParser_v4Test
 	}
 
 	@Test
-	public void test_Templates()
+	void test_Templates()
 	{
 		try
 		{
@@ -225,7 +225,7 @@ public class DatabaseParser_v4Test
 	}
 
 	@Test
-	public void test_convertToInternalShouldFail() throws URISyntaxException, IOException
+	void test_convertToInternalShouldFail() throws URISyntaxException, IOException
 	{
 		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v4Test.json").toURI())));
 		DatabaseParser_v4 parser = new DatabaseParser_v4(json);

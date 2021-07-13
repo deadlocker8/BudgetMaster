@@ -7,25 +7,25 @@ import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.IconRepository;
 import de.deadlocker8.budgetmaster.icon.IconService;
-import de.deadlocker8.budgetmaster.images.*;
+import de.deadlocker8.budgetmaster.images.Image;
+import de.deadlocker8.budgetmaster.images.ImageFileExtension;
+import de.deadlocker8.budgetmaster.images.ImageRepository;
 import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.unit.helpers.LocalizedTest;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @LocalizedTest
-public class IconServiceTest
+class IconServiceTest
 {
 	@Mock
 	private IconRepository iconRepository;
@@ -37,14 +37,14 @@ public class IconServiceTest
 	private IconService iconService;
 
 	@Test
-	public void test_deleteIcon_null()
+	void test_deleteIcon_null()
 	{
 		iconService.deleteIcon(null);
 		Mockito.verify(iconRepository, Mockito.never()).delete(Mockito.any());
 	}
 
 	@Test
-	public void test_deleteIcon_withReferringAccount()
+	void test_deleteIcon_withReferringAccount()
 	{
 		final Icon icon = Mockito.spy(new Icon("fas fa-icons"));
 		final Account account = Mockito.spy(new Account("account with icon", AccountType.CUSTOM, icon));
@@ -57,7 +57,7 @@ public class IconServiceTest
 	}
 
 	@Test
-	public void test_deleteIcon_withReferringTemplate()
+	void test_deleteIcon_withReferringTemplate()
 	{
 		final Icon icon = Mockito.spy(new Icon("fas fa-icons"));
 
@@ -75,7 +75,7 @@ public class IconServiceTest
 	}
 
 	@Test
-	public void test_deleteIcon_withReferringCategory()
+	void test_deleteIcon_withReferringCategory()
 	{
 		final Icon icon = Mockito.spy(new Icon("fas fa-icons"));
 
@@ -89,14 +89,14 @@ public class IconServiceTest
 	}
 
 	@Test
-	public void test_createIconReference_empty()
+	void test_createIconReference_empty()
 	{
 		assertThat(iconService.createIconReference(null, null))
 				.isEmpty();
 	}
 
 	@Test
-	public void test_createIconReference_builtinIcon()
+	void test_createIconReference_builtinIcon()
 	{
 		final String builtinIdentifier = "fas fa-icons";
 		assertThat(iconService.createIconReference(null, builtinIdentifier))
@@ -106,7 +106,7 @@ public class IconServiceTest
 	}
 
 	@Test
-	public void test_createIconReference_imageIcon()
+	void test_createIconReference_imageIcon()
 	{
 		final Image image = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
 		image.setID(12);
