@@ -71,6 +71,7 @@ public class ChartService implements Resettable, AccessAllEntities<Chart>
 				LOGGER.debug(MessageFormat.format("Update default chart ''{0}'' from version {1} to {2}", chart.getName(), currentChart.getVersion(), chart.getVersion()));
 				currentChart.setVersion(chart.getVersion());
 				currentChart.setScript(chart.getScript());
+				currentChart.setDisplayType(chart.getDisplayType());
 				chartRepository.save(currentChart);
 			}
 		}

@@ -26,12 +26,15 @@ public class Chart
 	@Expose
 	private int version;
 
-	public Chart(String name, String script, ChartType type, int version)
+	private ChartDisplayType displayType;
+
+	public Chart(String name, String script, ChartType type, int version, ChartDisplayType displayType)
 	{
 		this.name = name;
 		this.script = script;
 		this.type = type;
 		this.version = version;
+		this.displayType = displayType;
 	}
 
 	public Chart()
@@ -88,6 +91,16 @@ public class Chart
 		this.version = version;
 	}
 
+	public ChartDisplayType getDisplayType()
+	{
+		return displayType;
+	}
+
+	public void setDisplayType(ChartDisplayType displayType)
+	{
+		this.displayType = displayType;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -97,6 +110,7 @@ public class Chart
 				", script='" + script + '\'' +
 				", type=" + type +
 				", version=" + version +
+				", displayType=" + displayType +
 				'}';
 	}
 
@@ -106,16 +120,12 @@ public class Chart
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
 		Chart chart = (Chart) o;
-		return version == chart.version &&
-				Objects.equals(ID, chart.ID) &&
-				Objects.equals(name, chart.name) &&
-				Objects.equals(script, chart.script) &&
-				type == chart.type;
+		return version == chart.version && Objects.equals(ID, chart.ID) && Objects.equals(name, chart.name) && Objects.equals(script, chart.script) && type == chart.type && displayType == chart.displayType;
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, name, script, type, version);
+		return Objects.hash(ID, name, script, type, version, displayType);
 	}
 }
