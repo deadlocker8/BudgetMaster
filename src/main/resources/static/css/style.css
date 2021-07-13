@@ -20,7 +20,7 @@ main {
     margin-bottom: 24px;
 }
 
-.btn, .btn-flat {
+.btn, .btn-flat, .btn-large {
     text-transform: none;
     font-weight: 600;
 }

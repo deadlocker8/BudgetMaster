@@ -20,31 +20,162 @@
             <div class="card main-card background-color">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="headline">
-                            <i class="material-icons">show_chart</i> ${locale.getString("title.charts")}</div>
+                        <div class="headline"><i class="material-icons">show_chart</i> ${locale.getString("title.charts")}</div>
                     </div>
                 </div>
 
                 <@header.content>
                     <br>
-                    <div class="center-align"><@header.buttonLink url='/charts/manage' icon='edit' localizationKey='home.menu.charts.action.manage'/></div>
-                    <br>
+<#--                    <div class="center-align"><@header.buttonLink url='/charts/manage' icon='edit' localizationKey='home.menu.charts.action.manage'/></div>-->
+<#--                    <br>-->
+
+                    <div class="container">
+                        <div class="row hide-on-small-and-down">
+                            <div class="col s12 center-align ">
+                                <a class="waves-effect waves-light btn-large background-grey text-black"><i class="fas fa-chart-pie left"></i> Pie</a>
+                                <a class="waves-effect waves-light btn-large background-green text-black"><i class="fas fa-chart-bar left"></i> Bar</a>
+                                <a class="waves-effect waves-light btn-large background-grey text-black"><i class="fas fa-chart-line left"></i> Line</a>
+                                <a class="waves-effect waves-light btn-large background-grey text-black"><i class="material-icons left">insights</i> Custom</a>
+                            </div>
+                        </div>
+
+                        <div class="row hide-on-med-and-up">
+                             <div class="col s12 center-align">
+                                <a class="waves-effect waves-light btn background-grey text-black"><i class="fas fa-chart-pie left"></i> Pie</a>
+                                <a class="waves-effect waves-light btn background-green text-black"><i class="fas fa-chart-bar left"></i> Bar</a>
+                            </div>
+                        </div>
+                        <div class="row hide-on-med-and-up">
+                             <div class="col s12 center-align">
+                                <a class="waves-effect waves-light btn background-grey text-black"><i class="fas fa-chart-line left"></i> Line</a>
+                                <a class="waves-effect waves-light btn background-grey text-black"><i class="material-icons left">insights</i> Custom</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col s6 m4 l3 center-align">
+                                <div class="card chart-preview background-grey-dark">
+                                    <div class="card-image">
+                                        <img src="<@s.url '/images/charts/a.png'/>">
+                                    </div>
+                                    <div class="card-action bold">
+                                        Incomes/Expenditures<br>by categories
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col s6 m4 l3 center-align">
+                                <div class="card chart-preview background-grey-dark">
+                                    <div class="card-image">
+                                        <img src="<@s.url '/images/charts/b.png'/>">
+                                    </div>
+                                    <div class="card-action bold">
+                                        Incomes/Expenditures<br>by month
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col s6 m4 l3 center-align">
+                                <div class="card chart-preview background-grey-dark">
+                                    <div class="card-image">
+                                        <img src="<@s.url '/images/charts/c.png'/>">
+                                    </div>
+                                    <div class="card-action bold">
+                                        Incomes/Expenditures<br>by year
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col s6 m4 l3 center-align">
+                                <div class="card chart-preview background-grey-dark">
+                                    <div class="card-image">
+                                        <img src="<@s.url '/images/charts/a.png'/>">
+                                    </div>
+                                    <div class="card-action bold">
+                                        Incomes/Expenditures<br>by month by categories
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col s12">
+                                <div class="card" id="chart-date-card">
+                                    <div class="card-content">
+                                           <div class="row">
+                                                <div class="input-field col s6 m6 l4 offset-l2">
+                                                    <#assign startDate = dateService.getLongDateString(chartSettings.getStartDate())/>
+
+                                                    <input id="chart-datepicker" type="text" class="datepicker" name="startDate" value="${startDate}">
+                                                    <label for="chart-datepicker">${locale.getString("chart.steps.second.label.start")}</label>
+                                                </div>
+
+                                                <div class="input-field col s6 m6 l4 ">
+                                                    <#assign endDate = dateService.getLongDateString(chartSettings.getEndDate())/>
+
+                                                    <input id="chart-datepicker-end" type="text" class="datepicker" name="endDate" value="${endDate}">
+                                                    <label for="chart-datepicker-end">${locale.getString("chart.steps.second.label.end")}</label>
+                                                </div>
+                                            </div>
+                                            <div class="row no-margin-bottom">
+                                                <div class="col s12 m12 l8 offset-l2 no-margin-top">
+                                                    <table class="no-border-table">
+                                                        <tr>
+                                                            <td class="quick-date" data-quick="0">${locale.getString("chart.quick.this.week")}</td>
+                                                            <td class="quick-date" data-quick="1">${locale.getString("chart.quick.this.month")}</td>
+                                                            <td class="quick-date" data-quick="2">${locale.getString("chart.quick.this.year")}</td>
+                                                            <td class="quick-date" data-quick="3">${locale.getString("chart.quick.all")}</td>
+                                                        </tr>
+                                                         <tr>
+                                                            <td class="quick-date" data-quick="4">${locale.getString("chart.quick.last.week")}</td>
+                                                            <td class="quick-date" data-quick="5">${locale.getString("chart.quick.last.month")}</td>
+                                                            <td class="quick-date" data-quick="6">${locale.getString("chart.quick.last.year")}</td>
+                                                            <td class="quick-date" data-quick="7">${locale.getString("chart.quick.until.endOfLastYear")}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="quick-date" data-quick="8">${locale.getString("chart.quick.last.week.days")}</td>
+                                                            <td class="quick-date" data-quick="9">${locale.getString("chart.quick.last.month.days")}</td>
+                                                            <td class="quick-date" data-quick="10">${locale.getString("chart.quick.last.year.days")}</td>
+                                                            <td class="quick-date" data-quick="11">${locale.getString("chart.quick.until.today")}</td>
+                                                        </tr>
+                                                    </table>
+                                                 </div>
+                                            <div class="col s12 m12 l8 offset-l2 no-margin-top quick-date-container">
+                                            </div>
+
+                                            <script>
+                                                startDate = "${startDate}".split(".");
+                                                startDate = new Date(startDate[2], startDate[1] - 1, startDate[0]);
+                                                endDate = "${endDate}".split(".");
+                                                endDate = new Date(endDate[2], endDate[1] - 1, endDate[0]);
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container">
+                        <div class="row">
+                             <div class="col s12 no-margin-top center-align">
+                                 <ul class="collapsible">
+                                    <li>
+                                      <div class="collapsible-header"><i class="fas fa-filter"></i>Filter</div>
+                                      <div class="collapsible-body"><@filterMacros.filterModalContent chartSettings.getFilterConfiguration() "filterConfiguration"/></div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="container">
                         <form name="NewChartSettings" action="<@s.url '/charts'/>" method="post">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-
-                            <div class="row">
-                                <div class="col s12">
-                                    <ul class="collapsible z-depth-2">
-                                        <@stepOne/>
-
-                                        <@stepTwo/>
-
-                                        <@stepThree/>
-                                    </ul>
-                                </div>
-                            </div>
 
                             <@filterMacros.filterModalCharts chartSettings.getFilterConfiguration()/>
 
@@ -186,8 +317,8 @@
                 </script>
     </@stepCollapsible>
 </#macro>
-
 <#macro stepThree>
+
     <@stepCollapsible step=locale.getString("chart.steps.third.step") stepName=locale.getString("chart.steps.third") isActive=false>
         <div class="col s12 m12 l8 offset-l2 no-margin-top center-align">
             <@transactionsMacros.buttonFilter chartSettings.getFilterConfiguration().isActive()/>

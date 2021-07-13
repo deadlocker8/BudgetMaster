@@ -31,3 +31,29 @@
 .CodeMirror-scroll {
     height: auto;
 }
+
+.headline-chart-step {
+    font-size: 1.2rem;
+}
+
+.chart-button i {
+    font-size: 2.2rem;
+}
+
+.chart-button-name {
+    margin-left: 1rem;
+    font-weight: bold;
+}
+
+.chart-preview:hover {
+    cursor: pointer;
+}
+
+.chart-preview .card-action {
+    word-break: break-word;
+    color: #212121;
+}
+
+#chart-date-card {
+    background-color: var(--color-grey-dark-almost-transparent);
+}
