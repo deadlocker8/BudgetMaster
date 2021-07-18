@@ -40,8 +40,8 @@
                                             <div class="col s3 center-align bold transaction-text">
                                                 ${dateService.getDateStringNormal(transaction.date)}
                                             </div>
-                                            <@transactionsMacros.transactionType transaction/>
                                             <@transactionsMacros.transactionAccountIcon transaction/>
+                                            <@transactionsMacros.transactionType transaction/>
                                             <@transactionsMacros.transactionLinks transaction/>
                                         </div>
                                         <div class="row valign-wrapper no-margin-bottom">
@@ -56,8 +56,8 @@
                                                 ${dateService.getDateStringNormal(transaction.date)}
                                             </div>
                                             <@transactionsMacros.transactionCategory transaction "left-align"/>
-                                            <@transactionsMacros.transactionType transaction/>
                                             <@transactionsMacros.transactionAccountIcon transaction/>
+                                            <@transactionsMacros.transactionType transaction/>
                                             <@transactionsMacros.transactionNameAndDescription transaction "l3 xl4"/>
                                             <@transactionsMacros.transactionAmount transaction transaction.getAccount() "l2 xl2"/>
                                             <@transactionsMacros.transactionLinks transaction/>
