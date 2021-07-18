@@ -296,7 +296,7 @@
     <div class="col s6 m4 l3 center-align">
         <div class="card chart-preview background-grey-dark">
             <div class="card-image">
-                <img src="<@s.url '/images/charts/a.png'/>">
+                <img src="<@s.url '/images/charts/' + chart.getPreviewImageFileName()!"placeholder.png"/>">
             </div>
             <div class="card-action bold">
                 ${chartFunctions.getChartName(chart)}

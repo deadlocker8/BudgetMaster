@@ -73,6 +73,7 @@ public class ChartService implements Resettable, AccessAllEntities<Chart>
 				currentChart.setScript(chart.getScript());
 				currentChart.setDisplayType(chart.getDisplayType());
 				currentChart.setGroupType(chart.getGroupType());
+				currentChart.setPreviewImageFileName(chart.getPreviewImageFileName());
 				chartRepository.save(currentChart);
 			}
 		}

@@ -30,8 +30,9 @@ public class Chart
 
 	private ChartDisplayType displayType;
 	private ChartGroupType groupType;
+	private String previewImageFileName;
 
-	public Chart(String name, String script, ChartType type, int version, ChartDisplayType displayType, ChartGroupType groupType)
+	public Chart(String name, String script, ChartType type, int version, ChartDisplayType displayType, ChartGroupType groupType, String previewImageFileName)
 	{
 		this.name = name;
 		this.script = script;
@@ -39,6 +40,7 @@ public class Chart
 		this.version = version;
 		this.displayType = displayType;
 		this.groupType = groupType;
+		this.previewImageFileName = previewImageFileName;
 	}
 
 	public Chart()
@@ -115,6 +117,16 @@ public class Chart
 		this.groupType = chartGroupType;
 	}
 
+	public String getPreviewImageFileName()
+	{
+		return previewImageFileName;
+	}
+
+	public void setPreviewImageFileName(String previewImageFileName)
+	{
+		this.previewImageFileName = previewImageFileName;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -126,6 +138,7 @@ public class Chart
 				", version=" + version +
 				", displayType=" + displayType +
 				", chartGroupType=" + groupType +
+				", previewImageFileName=" + previewImageFileName +
 				'}';
 	}
 
@@ -135,12 +148,12 @@ public class Chart
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
 		Chart chart = (Chart) o;
-		return version == chart.version && Objects.equals(ID, chart.ID) && Objects.equals(name, chart.name) && Objects.equals(script, chart.script) && type == chart.type && displayType == chart.displayType && groupType == chart.groupType;
+		return version == chart.version && Objects.equals(ID, chart.ID) && Objects.equals(name, chart.name) && Objects.equals(script, chart.script) && type == chart.type && displayType == chart.displayType && groupType == chart.groupType && Objects.equals(previewImageFileName, chart.previewImageFileName);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, name, script, type, version, displayType, groupType);
+		return Objects.hash(ID, name, script, type, version, displayType, groupType, previewImageFileName);
 	}
 }
