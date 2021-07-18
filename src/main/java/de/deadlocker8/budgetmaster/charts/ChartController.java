@@ -124,15 +124,9 @@ public class ChartController extends BaseController
 		ChartValidator userValidator = new ChartValidator();
 		userValidator.validate(chart, bindingResult);
 
-		if(chart.getType() == null)
-		{
-			chart.setType(ChartType.CUSTOM);
-		}
-
-		if(chart.getDisplayType() == null)
-		{
-			chart.setDisplayType(ChartDisplayType.CUSTOM);
-		}
+		chart.setType(ChartType.CUSTOM);
+		chart.setDisplayType(ChartDisplayType.CUSTOM);
+		chart.setGroupType(ChartGroupType.NONE);
 
 		if(bindingResult.hasErrors())
 		{

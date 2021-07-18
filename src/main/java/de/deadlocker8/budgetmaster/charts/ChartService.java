@@ -72,6 +72,7 @@ public class ChartService implements Resettable, AccessAllEntities<Chart>
 				currentChart.setVersion(chart.getVersion());
 				currentChart.setScript(chart.getScript());
 				currentChart.setDisplayType(chart.getDisplayType());
+				currentChart.setGroupType(chart.getGroupType());
 				chartRepository.save(currentChart);
 			}
 		}
@@ -90,15 +91,47 @@ public class ChartService implements Resettable, AccessAllEntities<Chart>
 
 	private void updateUserCharts()
 	{
+		updateContainerIdUsage();
+
+		updateMissingAttributes();
+	}
+
+	private void updateContainerIdUsage()
+	{
 		final List<Chart> userCharts = getRepository().findAllByType(ChartType.CUSTOM);
 		for(Chart userChart : userCharts)
 		{
 			String script = userChart.getScript();
 			if(script.contains(PATTERN_OLD_CONTAINER_ID))
 			{
-				LOGGER.debug(MessageFormat.format("Updating user chart ''{0}'' with ID {1}", userChart.getName(), userChart.getID()));
+				LOGGER.debug(MessageFormat.format("Updating container id usage for user chart ''{0}'' with ID {1}", userChart.getName(), userChart.getID()));
 				script = script.replace(PATTERN_OLD_CONTAINER_ID, PATTERN_DYNAMIC_CONTAINER_ID);
 				userChart.setScript(script);
+				getRepository().save(userChart);
+			}
+		}
+	}
+
+	private void updateMissingAttributes()
+	{
+		final List<Chart> userCharts = getRepository().findAllByType(ChartType.CUSTOM);
+		for(Chart userChart : userCharts)
+		{
+			boolean changed = false;
+			if(userChart.getDisplayType() == null)
+			{
+				userChart.setDisplayType(ChartDisplayType.CUSTOM);
+				changed = true;
+			}
+			if(userChart.getGroupType() == null)
+			{
+				userChart.setGroupType(ChartGroupType.NONE);
+				changed = true;
+			}
+
+			if(changed)
+			{
+				LOGGER.debug(MessageFormat.format("Updating missing attributes for user chart ''{0}'' with ID {1}", userChart.getName(), userChart.getID()));
 				getRepository().save(userChart);
 			}
 		}

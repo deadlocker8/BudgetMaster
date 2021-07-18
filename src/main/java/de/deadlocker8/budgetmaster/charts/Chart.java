@@ -2,7 +2,9 @@ package de.deadlocker8.budgetmaster.charts;
 
 import com.google.gson.annotations.Expose;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
@@ -27,14 +29,16 @@ public class Chart
 	private int version;
 
 	private ChartDisplayType displayType;
+	private ChartGroupType groupType;
 
-	public Chart(String name, String script, ChartType type, int version, ChartDisplayType displayType)
+	public Chart(String name, String script, ChartType type, int version, ChartDisplayType displayType, ChartGroupType groupType)
 	{
 		this.name = name;
 		this.script = script;
 		this.type = type;
 		this.version = version;
 		this.displayType = displayType;
+		this.groupType = groupType;
 	}
 
 	public Chart()
@@ -101,6 +105,16 @@ public class Chart
 		this.displayType = displayType;
 	}
 
+	public ChartGroupType getGroupType()
+	{
+		return groupType;
+	}
+
+	public void setGroupType(ChartGroupType chartGroupType)
+	{
+		this.groupType = chartGroupType;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -111,6 +125,7 @@ public class Chart
 				", type=" + type +
 				", version=" + version +
 				", displayType=" + displayType +
+				", chartGroupType=" + groupType +
 				'}';
 	}
 
@@ -120,12 +135,12 @@ public class Chart
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
 		Chart chart = (Chart) o;
-		return version == chart.version && Objects.equals(ID, chart.ID) && Objects.equals(name, chart.name) && Objects.equals(script, chart.script) && type == chart.type && displayType == chart.displayType;
+		return version == chart.version && Objects.equals(ID, chart.ID) && Objects.equals(name, chart.name) && Objects.equals(script, chart.script) && type == chart.type && displayType == chart.displayType && groupType == chart.groupType;
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, name, script, type, version, displayType);
+		return Objects.hash(ID, name, script, type, version, displayType, groupType);
 	}
 }
