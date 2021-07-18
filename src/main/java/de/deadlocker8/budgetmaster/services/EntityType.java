@@ -1,6 +1,8 @@
 package de.deadlocker8.budgetmaster.services;
 
-public enum EntityType
+import de.deadlocker8.budgetmaster.utils.LocalizedEnum;
+
+public enum EntityType implements LocalizedEnum
 {
 	HOME("home", "background-blue", ImportRequired.NONE),
 	ACCOUNT("account_balance", "background-red", ImportRequired.REQUIRED),
@@ -55,6 +57,7 @@ public enum EntityType
 		return color.replace("background", "text");
 	}
 
+	@Override
 	public String getLocalizationKey()
 	{
 		return "entity." + this.name().toLowerCase();

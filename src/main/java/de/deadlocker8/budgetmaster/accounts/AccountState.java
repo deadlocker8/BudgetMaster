@@ -1,6 +1,9 @@
 package de.deadlocker8.budgetmaster.accounts;
 
-public enum AccountState
+
+import de.deadlocker8.budgetmaster.utils.LocalizedEnum;
+
+public enum AccountState implements LocalizedEnum
 {
 	FULL_ACCESS("fas fa-edit", "account.state.full.access"),
 	READ_ONLY("fas fa-lock", "account.state.read.only"),
@@ -20,6 +23,7 @@ public enum AccountState
 		return icon;
 	}
 
+	@Override
 	public String getLocalizationKey()
 	{
 		return localizationKey;
