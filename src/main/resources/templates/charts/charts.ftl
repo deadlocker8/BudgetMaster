@@ -33,7 +33,7 @@
                         <div class="row hide-on-small-and-down">
                             <div class="col s12 center-align">
                                 <#list displayTypes as displayType>
-                                    <@chartTypeButton item=displayType buttonClass="button-display-type"/>
+                                    <@chartTypeButton item=displayType buttonClass="button-display-type" initialItem=initialDisplayType/>
                                 </#list>
                             </div>
                         </div>
@@ -43,7 +43,7 @@
                         <div class="row hide-on-small-and-down">
                             <div class="col s12 center-align">
                                 <#list groupTypes as groupType>
-                                    <@chartTypeButton item=groupType buttonClass="button-group-type"/>
+                                    <@chartTypeButton item=groupType buttonClass="button-group-type" initialItem=initialGroupType/>
                                 </#list>
                             </div>
                         </div>
@@ -263,8 +263,10 @@
     </@stepCollapsible>
 </#macro>
 
-<#macro chartTypeButton item buttonClass>
-    <a class="waves-effect waves-light btn-large background-grey text-black ${buttonClass}" data-value="${item.name()}">
+<#macro chartTypeButton item buttonClass initialItem>
+    <#assign isInitialItem=item.name()==initialItem.name()/>
+
+    <a class="waves-effect waves-light btn-large background-grey text-black ${buttonClass} <#if isInitialItem>active</#if>" data-value="${item.name()}">
         <#if item.hasFontAwesomeIcon()>
             <i class="${item.getIcon()} left"></i> ${locale.getString(item.getLocalizationKey())}
         <#else>

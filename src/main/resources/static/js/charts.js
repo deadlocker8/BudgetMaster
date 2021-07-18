@@ -106,6 +106,8 @@ $(document).ready(function()
 
         this.classList.toggle('active', true);
     });
+
+    filterChartPreviews();
 });
 
 function createDatePickerEnd(minDate, selectedDate)
