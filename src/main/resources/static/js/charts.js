@@ -108,6 +108,7 @@ $(document).ready(function()
 
         this.querySelector('.chart-preview').classList.toggle('active', true);
         document.getElementsByName('chartID')[0].value = this.dataset.id;
+        checkShowChartButton();
     });
 
     filterChartPreviews();
@@ -290,4 +291,15 @@ function unsetActiveChartPreview()
     {
         allChartPreviews[i].classList.toggle('active', false);
     }
+
+    document.getElementsByName('chartID')[0].value = '';
+    checkShowChartButton();
+}
+
+function checkShowChartButton()
+{
+    let buttonShowChart = document.getElementsByName('buttonSave')[0];
+
+    let selectedChartID = document.getElementsByName('chartID')[0].value;
+    buttonShowChart.disabled = selectedChartID === '';
 }
