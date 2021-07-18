@@ -52,6 +52,8 @@
 .chart-preview .card-action {
     word-break: break-word;
     color: #212121;
+    min-height: 5rem;
+    padding: 1rem;
 }
 
 #chart-date-card {

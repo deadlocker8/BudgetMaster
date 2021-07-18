@@ -298,8 +298,10 @@
             <div class="card-image">
                 <img src="<@s.url '/images/charts/' + chart.getPreviewImageFileName()!"placeholder.png"/>">
             </div>
-            <div class="card-action bold">
-                ${chartFunctions.getChartName(chart)}
+            <div class="card-action bold valign-wrapper">
+                <span style="margin: auto">
+                    ${chartFunctions.getChartName(chart)}
+                </span>
             </div>
         </div>
     </div>
