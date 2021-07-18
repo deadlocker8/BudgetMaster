@@ -91,20 +91,23 @@ $(document).ready(function()
     $('.button-display-type').click(function()
     {
         toggleChartTypeButtons('button-display-type', this);
+        document.getElementsByName('displayType')[0].value = this.dataset.value;
         filterChartPreviews();
     });
 
     $('.button-group-type').click(function()
     {
         toggleChartTypeButtons('button-group-type', this);
+        document.getElementsByName('groupType')[0].value = this.dataset.value;
         filterChartPreviews();
     });
 
-    $('.chart-preview').click(function()
+    $('.chart-preview-column').click(function()
     {
         unsetActiveChartPreview();
 
-        this.classList.toggle('active', true);
+        this.querySelector('.chart-preview').classList.toggle('active', true);
+        document.getElementsByName('chartID')[0].value = this.dataset.id;
     });
 
     filterChartPreviews();

@@ -7,6 +7,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class ChartSettings
 {
+	private ChartDisplayType displayType;
+	private ChartGroupType groupType;
+
 	private int chartID;
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private DateTime startDate;
@@ -16,19 +19,41 @@ public class ChartSettings
 
 	public static ChartSettings getDefault(int chartID, FilterConfiguration filterConfiguration)
 	{
-		return new ChartSettings(chartID, DateTime.now().withDayOfMonth(1), DateTime.now().dayOfMonth().withMaximumValue(), filterConfiguration);
+		return new ChartSettings(ChartDisplayType.BAR, ChartGroupType.MONTH, chartID, DateTime.now().withDayOfMonth(1), DateTime.now().dayOfMonth().withMaximumValue(), filterConfiguration);
 	}
 
 	public ChartSettings()
 	{
 	}
 
-	public ChartSettings(int chartID, DateTime startDate, DateTime endDate, FilterConfiguration filterConfiguration)
+	public ChartSettings(ChartDisplayType displayType, ChartGroupType groupType, int chartID, DateTime startDate, DateTime endDate, FilterConfiguration filterConfiguration)
 	{
+		this.displayType = displayType;
+		this.groupType = groupType;
 		this.chartID = chartID;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.filterConfiguration = filterConfiguration;
+	}
+
+	public ChartDisplayType getDisplayType()
+	{
+		return displayType;
+	}
+
+	public void setDisplayType(ChartDisplayType displayType)
+	{
+		this.displayType = displayType;
+	}
+
+	public ChartGroupType getGroupType()
+	{
+		return groupType;
+	}
+
+	public void setGroupType(ChartGroupType groupType)
+	{
+		this.groupType = groupType;
 	}
 
 	public int getChartID()
@@ -75,7 +100,9 @@ public class ChartSettings
 	public String toString()
 	{
 		return "ChartSettings{" +
-				"chartID=" + chartID +
+				"displayType=" + displayType +
+				", groupType=" + groupType +
+				", chartID=" + chartID +
 				", startDate=" + startDate +
 				", endDate=" + endDate +
 				", filterConfiguration=" + filterConfiguration +

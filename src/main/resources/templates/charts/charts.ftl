@@ -29,40 +29,46 @@
 <#--                    <div class="center-align"><@header.buttonLink url='/charts/manage' icon='edit' localizationKey='home.menu.charts.action.manage'/></div>-->
 <#--                    <br>-->
 
-                    <div class="container">
-                        <div class="row hide-on-small-and-down">
-                            <div class="col s12 center-align">
-                                <#list displayTypes as displayType>
-                                    <@chartTypeButton item=displayType buttonClass="button-display-type" initialItem=initialDisplayType/>
+                    <form name="NewChartSettings" action="<@s.url '/charts'/>" method="post">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
+                        <div class="container">
+                            <div class="row hide-on-small-and-down">
+                                <div class="col s12 center-align">
+                                    <#list displayTypes as displayType>
+                                        <@chartTypeButton item=displayType buttonClass="button-display-type" initialItem=initialDisplayType/>
+                                    </#list>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="displayType" value="${initialDisplayType.name()}">
+
+                        <div class="container">
+                            <div class="row hide-on-small-and-down">
+                                <div class="col s12 center-align">
+                                    <#list groupTypes as groupType>
+                                        <@chartTypeButton item=groupType buttonClass="button-group-type" initialItem=initialGroupType/>
+                                    </#list>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="groupType" value="${initialGroupType.name()}">
+
+                        <div class="container">
+                            <div class="row">
+                                <#list charts as chart>
+                                    <@chartPreview chart/>
                                 </#list>
                             </div>
                         </div>
-                    </div>
+                        <input type="hidden" name="chartID" value="">
 
-                    <div class="container">
-                        <div class="row hide-on-small-and-down">
-                            <div class="col s12 center-align">
-                                <#list groupTypes as groupType>
-                                    <@chartTypeButton item=groupType buttonClass="button-group-type" initialItem=initialGroupType/>
-                                </#list>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="container">
-                        <div class="row">
-                            <#list charts as chart>
-                                <@chartPreview chart/>
-                            </#list>
-                        </div>
-                    </div>
-
-                    <div class="container">
-                        <div class="row">
-                            <div class="col s12">
-                                <div class="card" id="chart-date-card">
-                                    <div class="card-content">
-                                           <div class="row">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col s12">
+                                    <div class="card" id="chart-date-card">
+                                        <div class="card-content">
+                                            <div class="row">
                                                 <div class="input-field col s6 m6 l4 offset-l2">
                                                     <#assign startDate = dateService.getLongDateString(chartSettings.getStartDate())/>
 
@@ -86,7 +92,7 @@
                                                             <td class="quick-date" data-quick="2">${locale.getString("chart.quick.this.year")}</td>
                                                             <td class="quick-date" data-quick="3">${locale.getString("chart.quick.all")}</td>
                                                         </tr>
-                                                         <tr>
+                                                        <tr>
                                                             <td class="quick-date" data-quick="4">${locale.getString("chart.quick.last.week")}</td>
                                                             <td class="quick-date" data-quick="5">${locale.getString("chart.quick.last.month")}</td>
                                                             <td class="quick-date" data-quick="6">${locale.getString("chart.quick.last.year")}</td>
@@ -99,53 +105,48 @@
                                                             <td class="quick-date" data-quick="11">${locale.getString("chart.quick.until.today")}</td>
                                                         </tr>
                                                     </table>
-                                                 </div>
-                                            <div class="col s12 m12 l8 offset-l2 no-margin-top quick-date-container">
-                                            </div>
+                                                </div>
+                                                <div class="col s12 m12 l8 offset-l2 no-margin-top quick-date-container">
+                                                </div>
 
-                                            <script>
-                                                startDate = "${startDate}".split(".");
-                                                startDate = new Date(startDate[2], startDate[1] - 1, startDate[0]);
-                                                endDate = "${endDate}".split(".");
-                                                endDate = new Date(endDate[2], endDate[1] - 1, endDate[0]);
-                                            </script>
+                                                <script>
+                                                    startDate = "${startDate}".split(".");
+                                                    startDate = new Date(startDate[2], startDate[1] - 1, startDate[0]);
+                                                    endDate = "${endDate}".split(".");
+                                                    endDate = new Date(endDate[2], endDate[1] - 1, endDate[0]);
+                                                </script>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="container">
-                        <div class="row">
-                             <div class="col s12 no-margin-top center-align">
-                                 <ul class="collapsible">
-                                    <li>
-                                      <div class="collapsible-header"><i class="fas fa-filter"></i>Filter</div>
-                                      <div class="collapsible-body"><@filterMacros.filterModalContent chartSettings.getFilterConfiguration() "filterConfiguration"/></div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="container">
-                        <form name="NewChartSettings" action="<@s.url '/charts'/>" method="post">
-                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-
-                            <@filterMacros.filterModalCharts chartSettings.getFilterConfiguration()/>
-
-                            <#-- buttons -->
-                            <div class="row center-align">
-                                <div class="col s12">
-                                    <button class="btn waves-effect waves-light background-blue" type="submit"
-                                            name="buttonSave">
-                                        <i class="material-icons left">show_chart</i>${locale.getString("chart.show")}
-                                    </button>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col s12 no-margin-top center-align">
+                                    <ul class="collapsible">
+                                        <li>
+                                            <div class="collapsible-header"><i class="fas fa-filter"></i>Filter</div>
+                                            <div class="collapsible-body"><@filterMacros.filterModalContent chartSettings.getFilterConfiguration() "filterConfiguration"/></div>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+
+                        <@filterMacros.filterModalCharts chartSettings.getFilterConfiguration()/>
+
+                        <#-- buttons -->
+                        <div class="row center-align">
+                            <div class="col s12">
+                                <button class="btn waves-effect waves-light background-blue" type="submit"
+                                        name="buttonSave">
+                                    <i class="material-icons left">show_chart</i>${locale.getString("chart.show")}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
 
                     <div class="container-chart">
                         <#if containerID??>
@@ -276,7 +277,7 @@
 </#macro>
 
 <#macro chartPreview chart>
-    <div class="col s6 m4 l3 center-align chart-preview-column" data-display-type="${chart.getDisplayType()}" data-group-type="${chart.getGroupType()}">
+    <div class="col s6 m4 l3 center-align chart-preview-column" data-display-type="${chart.getDisplayType()}" data-group-type="${chart.getGroupType()}" data-id="${chart.getID()?c}">
         <div class="card chart-preview background-grey-dark">
             <div class="card-image">
                 <img src="<@s.url '/images/charts/' + chart.getPreviewImageFileName()!"placeholder.png"/>">
