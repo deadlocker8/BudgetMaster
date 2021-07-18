@@ -1,8 +1,23 @@
 package de.deadlocker8.budgetmaster.charts;
 
-public enum ChartGroupType
+import de.deadlocker8.budgetmaster.utils.LocalizedEnum;
+
+public enum ChartGroupType implements LocalizedEnum
 {
-	NONE,
-	MONTH,
-	YEAR
+	NONE("none"),
+	MONTH("month"),
+	YEAR("year");
+
+	private final String localizationKey;
+
+	ChartGroupType(String localizationKey)
+	{
+		this.localizationKey = localizationKey;
+	}
+
+	@Override
+	public String getLocalizationKey()
+	{
+		return "chart.group.type." + localizationKey;
+	}
 }

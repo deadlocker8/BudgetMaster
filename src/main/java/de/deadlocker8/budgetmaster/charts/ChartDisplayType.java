@@ -1,9 +1,24 @@
 package de.deadlocker8.budgetmaster.charts;
 
-public enum ChartDisplayType
+import de.deadlocker8.budgetmaster.utils.LocalizedEnum;
+
+public enum ChartDisplayType implements LocalizedEnum
 {
-	PIE,
-	BAR,
-	LINE,
-	CUSTOM
+	PIE("pie"),
+	BAR("bar"),
+	LINE("line"),
+	CUSTOM("custom");
+
+	private final String localizationKey;
+
+	ChartDisplayType(String localizationKey)
+	{
+		this.localizationKey = localizationKey;
+	}
+
+	@Override
+	public String getLocalizationKey()
+	{
+		return "chart.display.type." + localizationKey;
+	}
 }
