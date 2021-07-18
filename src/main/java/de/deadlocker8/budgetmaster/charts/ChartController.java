@@ -90,6 +90,8 @@ public class ChartController extends BaseController
 		model.addAttribute("chart", chartOptional.get());
 		model.addAttribute("containerID", UUID.randomUUID());
 		model.addAttribute("transactionData", transactionJson);
+		model.addAttribute("displayTypes", ChartDisplayType.values());
+		model.addAttribute("groupTypes", ChartGroupType.values());
 		return "charts/charts";
 	}
 
