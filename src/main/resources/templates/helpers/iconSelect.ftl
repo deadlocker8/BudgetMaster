@@ -135,6 +135,9 @@
             </div>
         </div>
     </form>
+
+    <#assign hint=helpers.getHintByLocalizationKey("hint.icon.upload.image.size")/>
+    <@header.hint hint=hint/>
 </#macro>
 
 <#macro progressIndicator>
