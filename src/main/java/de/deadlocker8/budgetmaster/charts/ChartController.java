@@ -129,6 +129,11 @@ public class ChartController extends BaseController
 			chart.setType(ChartType.CUSTOM);
 		}
 
+		if(chart.getDisplayType() == null)
+		{
+			chart.setDisplayType(ChartDisplayType.CUSTOM);
+		}
+
 		if(bindingResult.hasErrors())
 		{
 			model.addAttribute("error", bindingResult);
