@@ -33,7 +33,17 @@
                         <div class="row hide-on-small-and-down">
                             <div class="col s12 center-align">
                                 <#list displayTypes as displayType>
-                                    <@chartDisplayTypeButton displayType/>
+                                    <@chartTypeButton displayType/>
+                                </#list>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container">
+                        <div class="row hide-on-small-and-down">
+                            <div class="col s12 center-align">
+                                <#list groupTypes as groupType>
+                                    <@chartTypeButton groupType/>
                                 </#list>
                             </div>
                         </div>
@@ -312,12 +322,12 @@
     </@stepCollapsible>
 </#macro>
 
-<#macro chartDisplayTypeButton displayType>
+<#macro chartTypeButton item>
     <a class="waves-effect waves-light btn-large background-grey text-black">
-        <#if displayType.hasFontAwesomeIcon()>
-            <i class="${displayType.getIcon()} left"></i> ${locale.getString(displayType.getLocalizationKey())}
+        <#if item.hasFontAwesomeIcon()>
+            <i class="${item.getIcon()} left"></i> ${locale.getString(item.getLocalizationKey())}
         <#else>
-            <i class="material-icons left">${displayType.getIcon()}</i> ${locale.getString(displayType.getLocalizationKey())}
+            <i class="material-icons left">${item.getIcon()}</i> ${locale.getString(item.getLocalizationKey())}
         </#if>
     </a>
 </#macro>

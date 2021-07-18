@@ -67,6 +67,7 @@ public class ChartController extends BaseController
 		model.addAttribute("chartSettings", defaultChartSettings);
 		model.addAttribute("charts", charts);
 		model.addAttribute("displayTypes", ChartDisplayType.values());
+		model.addAttribute("groupTypes", ChartGroupType.values());
 		return "charts/charts";
 	}
 
