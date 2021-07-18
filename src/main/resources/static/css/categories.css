@@ -9,6 +9,10 @@
     font-size: 20px;
 }
 
+.category-circle img {
+    object-fit: contain;
+}
+
 .category-circle .fa,
 .category-circle .fab,
 .category-circle .fad,
