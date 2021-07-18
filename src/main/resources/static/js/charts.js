@@ -272,13 +272,13 @@ function filterChartPreviews()
     let allChartPreviews = document.getElementsByClassName('chart-preview-column');
     for(let i = 0; i < allChartPreviews.length; i++)
     {
-        allChartPreviews[i].style.display = 'none';
+        allChartPreviews[i].classList.toggle('hidden', true);
     }
 
     let chartPreviews = document.querySelectorAll('.chart-preview-column[data-display-type="' + displayTypeName + '"][data-group-type="' + groupTypeName + '"]');
     for(let i = 0; i < chartPreviews.length; i++)
     {
-        chartPreviews[i].style.display = '';
+        chartPreviews[i].classList.toggle('hidden', false);
     }
 
     unsetActiveChartPreview();

@@ -36,23 +36,23 @@
                             <div class="row hide-on-small-and-down">
                                 <div class="col s12 center-align">
                                     <#list displayTypes as displayType>
-                                        <@chartTypeButton item=displayType buttonClass="button-display-type" initialItem=initialDisplayType/>
+                                        <@chartTypeButton item=displayType buttonClass="button-display-type" initialItem=chartSettings.getDisplayType()/>
                                     </#list>
                                 </div>
                             </div>
                         </div>
-                        <input type="hidden" name="displayType" value="${initialDisplayType.name()}">
+                        <input type="hidden" name="displayType" value="${chartSettings.getDisplayType().name()}">
 
                         <div class="container">
                             <div class="row hide-on-small-and-down">
                                 <div class="col s12 center-align">
                                     <#list groupTypes as groupType>
-                                        <@chartTypeButton item=groupType buttonClass="button-group-type" initialItem=initialGroupType/>
+                                        <@chartTypeButton item=groupType buttonClass="button-group-type" initialItem=chartSettings.getGroupType()/>
                                     </#list>
                                 </div>
                             </div>
                         </div>
-                        <input type="hidden" name="groupType" value="${initialGroupType.name()}">
+                        <input type="hidden" name="groupType" value="${chartSettings.getGroupType().name()}">
 
                         <div class="container">
                             <div class="row">
@@ -277,7 +277,7 @@
 </#macro>
 
 <#macro chartPreview chart>
-    <div class="col s6 m4 l3 center-align chart-preview-column" data-display-type="${chart.getDisplayType()}" data-group-type="${chart.getGroupType()}" data-id="${chart.getID()?c}">
+    <div class="col s6 m4 l3 center-align chart-preview-column hidden" data-display-type="${chart.getDisplayType()}" data-group-type="${chart.getGroupType()}" data-id="${chart.getID()?c}">
         <div class="card chart-preview background-grey-dark">
             <div class="card-image">
                 <img src="<@s.url '/images/charts/' + chart.getPreviewImageFileName()!"placeholder.png"/>">
