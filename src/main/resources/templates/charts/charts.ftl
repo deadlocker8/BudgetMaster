@@ -51,49 +51,9 @@
 
                     <div class="container">
                         <div class="row">
-                            <div class="col s6 m4 l3 center-align">
-                                <div class="card chart-preview background-grey-dark">
-                                    <div class="card-image">
-                                        <img src="<@s.url '/images/charts/a.png'/>">
-                                    </div>
-                                    <div class="card-action bold">
-                                        Incomes/Expenditures<br>by categories
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col s6 m4 l3 center-align">
-                                <div class="card chart-preview background-grey-dark">
-                                    <div class="card-image">
-                                        <img src="<@s.url '/images/charts/b.png'/>">
-                                    </div>
-                                    <div class="card-action bold">
-                                        Incomes/Expenditures<br>by month
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col s6 m4 l3 center-align">
-                                <div class="card chart-preview background-grey-dark">
-                                    <div class="card-image">
-                                        <img src="<@s.url '/images/charts/c.png'/>">
-                                    </div>
-                                    <div class="card-action bold">
-                                        Incomes/Expenditures<br>by year
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col s6 m4 l3 center-align">
-                                <div class="card chart-preview background-grey-dark">
-                                    <div class="card-image">
-                                        <img src="<@s.url '/images/charts/a.png'/>">
-                                    </div>
-                                    <div class="card-action bold">
-                                        Incomes/Expenditures<br>by month by categories
-                                    </div>
-                                </div>
-                            </div>
+                            <#list charts as chart>
+                                <@chartPreview chart/>
+                            </#list>
                         </div>
                     </div>
 
@@ -330,4 +290,17 @@
             <i class="material-icons left">${item.getIcon()}</i> ${locale.getString(item.getLocalizationKey())}
         </#if>
     </a>
+</#macro>
+
+<#macro chartPreview chart>
+    <div class="col s6 m4 l3 center-align">
+        <div class="card chart-preview background-grey-dark">
+            <div class="card-image">
+                <img src="<@s.url '/images/charts/a.png'/>">
+            </div>
+            <div class="card-action bold">
+                ${chartFunctions.getChartName(chart)}
+            </div>
+        </div>
+    </div>
 </#macro>
