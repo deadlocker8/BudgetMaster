@@ -33,7 +33,7 @@
                         <div class="row hide-on-small-and-down">
                             <div class="col s12 center-align">
                                 <#list displayTypes as displayType>
-                                    <@chartTypeButton displayType/>
+                                    <@chartTypeButton item=displayType buttonClass="button-display-type"/>
                                 </#list>
                             </div>
                         </div>
@@ -43,7 +43,7 @@
                         <div class="row hide-on-small-and-down">
                             <div class="col s12 center-align">
                                 <#list groupTypes as groupType>
-                                    <@chartTypeButton groupType/>
+                                    <@chartTypeButton item=groupType buttonClass="button-group-type"/>
                                 </#list>
                             </div>
                         </div>
@@ -263,8 +263,8 @@
     </@stepCollapsible>
 </#macro>
 
-<#macro chartTypeButton item>
-    <a class="waves-effect waves-light btn-large background-grey text-black">
+<#macro chartTypeButton item buttonClass>
+    <a class="waves-effect waves-light btn-large background-grey text-black ${buttonClass}" data-value="${item.name()}">
         <#if item.hasFontAwesomeIcon()>
             <i class="${item.getIcon()} left"></i> ${locale.getString(item.getLocalizationKey())}
         <#else>
@@ -274,7 +274,7 @@
 </#macro>
 
 <#macro chartPreview chart>
-    <div class="col s6 m4 l3 center-align">
+    <div class="col s6 m4 l3 center-align chart-preview-column" data-display-type="${chart.getDisplayType()}" data-group-type="${chart.getGroupType()}">
         <div class="card chart-preview background-grey-dark">
             <div class="card-image">
                 <img src="<@s.url '/images/charts/' + chart.getPreviewImageFileName()!"placeholder.png"/>">

@@ -87,6 +87,16 @@ $(document).ready(function()
     {
         handleQuickDate(this);
     });
+
+    $('.button-display-type').click(function()
+    {
+        toggleChartTypeButtons('button-display-type', this);
+    });
+
+    $('.button-group-type').click(function()
+    {
+        toggleChartTypeButtons('button-group-type', this);
+    });
 });
 
 function createDatePickerEnd(minDate, selectedDate)
@@ -226,4 +236,15 @@ function setDateRange(startDate, endDate)
 
     chartPickerEndDate.destroy();
     chartPickerEndDate = createDatePickerEnd(chartPickerStartDate.date, endDate.startOf('day').toDate());
+}
+
+function toggleChartTypeButtons(styleClassName, item)
+{
+    let siblings = document.getElementsByClassName(styleClassName);
+    for(let i = 0; i < siblings.length; i++)
+    {
+        siblings[i].classList.toggle('active', false);
+    }
+
+    item.classList.toggle('active', true);
 }

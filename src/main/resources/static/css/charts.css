@@ -36,15 +36,6 @@
     font-size: 1.2rem;
 }
 
-.chart-button i {
-    font-size: 2.2rem;
-}
-
-.chart-button-name {
-    margin-left: 1rem;
-    font-weight: bold;
-}
-
 .chart-preview:hover {
     cursor: pointer;
 }
@@ -54,6 +45,14 @@
     color: #212121;
     min-height: 5rem;
     padding: 1rem;
+}
+
+.button-display-type.active {
+    background-color: var(--color-green) !important;
+}
+
+.button-group-type.active {
+    background-color: var(--color-blue-baby) !important;
 }
 
 #chart-date-card {
