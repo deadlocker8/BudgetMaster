@@ -205,24 +205,6 @@
     </li>
 </#macro>
 
-<#macro stepOne>
-    <@stepCollapsible step=locale.getString("chart.steps.first.step") stepName=locale.getString("chart.steps.first") isActive=!chart??>
-        <div class="input-field col s12 m12 l8 offset-l2 no-margin-top">
-            <select name="chartID">
-                <#list charts as chart>
-                    <#assign chartName=chartFunctions.getChartName(chart)>
-                    <#if chartSettings.getChartID() == chart.getID()>
-                        <option selected value="${chart.getID()?c}">${chartName}</option>
-                        <#continue>
-                    </#if>
-
-                    <option value="${chart.getID()?c}">${chartName}</option>
-                </#list>
-            </select>
-        </div>
-    </@stepCollapsible>
-</#macro>
-
 <#macro stepTwo>
     <@stepCollapsible step=locale.getString("chart.steps.second.step") stepName=locale.getString("chart.steps.second") isActive=false>
                     <div class="input-field col s6 m6 l4 offset-l2">
@@ -274,7 +256,6 @@
     </@stepCollapsible>
 </#macro>
 <#macro stepThree>
-
     <@stepCollapsible step=locale.getString("chart.steps.third.step") stepName=locale.getString("chart.steps.third") isActive=false>
         <div class="col s12 m12 l8 offset-l2 no-margin-top center-align">
             <@transactionsMacros.buttonFilter chartSettings.getFilterConfiguration().isActive()/>
