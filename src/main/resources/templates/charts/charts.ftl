@@ -31,24 +31,10 @@
 
                     <div class="container">
                         <div class="row hide-on-small-and-down">
-                            <div class="col s12 center-align ">
-                                <a class="waves-effect waves-light btn-large background-grey text-black"><i class="fas fa-chart-pie left"></i> Pie</a>
-                                <a class="waves-effect waves-light btn-large background-green text-black"><i class="fas fa-chart-bar left"></i> Bar</a>
-                                <a class="waves-effect waves-light btn-large background-grey text-black"><i class="fas fa-chart-line left"></i> Line</a>
-                                <a class="waves-effect waves-light btn-large background-grey text-black"><i class="material-icons left">insights</i> Custom</a>
-                            </div>
-                        </div>
-
-                        <div class="row hide-on-med-and-up">
-                             <div class="col s12 center-align">
-                                <a class="waves-effect waves-light btn background-grey text-black"><i class="fas fa-chart-pie left"></i> Pie</a>
-                                <a class="waves-effect waves-light btn background-green text-black"><i class="fas fa-chart-bar left"></i> Bar</a>
-                            </div>
-                        </div>
-                        <div class="row hide-on-med-and-up">
-                             <div class="col s12 center-align">
-                                <a class="waves-effect waves-light btn background-grey text-black"><i class="fas fa-chart-line left"></i> Line</a>
-                                <a class="waves-effect waves-light btn background-grey text-black"><i class="material-icons left">insights</i> Custom</a>
+                            <div class="col s12 center-align">
+                                <#list displayTypes as displayType>
+                                    <@chartDisplayTypeButton displayType/>
+                                </#list>
                             </div>
                         </div>
                     </div>
@@ -324,4 +310,14 @@
             <@transactionsMacros.buttonFilter chartSettings.getFilterConfiguration().isActive()/>
         </div>
     </@stepCollapsible>
+</#macro>
+
+<#macro chartDisplayTypeButton displayType>
+    <a class="waves-effect waves-light btn-large background-grey text-black">
+        <#if displayType.hasFontAwesomeIcon()>
+            <i class="${displayType.getIcon()} left"></i> ${locale.getString(displayType.getLocalizationKey())}
+        <#else>
+            <i class="material-icons left">${displayType.getIcon()}</i> ${locale.getString(displayType.getLocalizationKey())}
+        </#if>
+    </a>
 </#macro>
