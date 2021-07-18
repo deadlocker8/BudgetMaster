@@ -99,6 +99,13 @@ $(document).ready(function()
         toggleChartTypeButtons('button-group-type', this);
         filterChartPreviews();
     });
+
+    $('.chart-preview').click(function()
+    {
+        unsetActiveChartPreview();
+
+        this.classList.toggle('active', true);
+    });
 });
 
 function createDatePickerEnd(minDate, selectedDate)
@@ -266,5 +273,16 @@ function filterChartPreviews()
     for(let i = 0; i < chartPreviews.length; i++)
     {
         chartPreviews[i].style.display = '';
+    }
+
+    unsetActiveChartPreview();
+}
+
+function unsetActiveChartPreview()
+{
+    let allChartPreviews = document.getElementsByClassName('chart-preview');
+    for(let i = 0; i < allChartPreviews.length; i++)
+    {
+        allChartPreviews[i].classList.toggle('active', false);
     }
 }

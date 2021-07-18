@@ -55,6 +55,10 @@
     background-color: var(--color-blue-baby) !important;
 }
 
+.chart-preview.active .card-action {
+    background-color: var(--color-red-light) !important;
+}
+
 #chart-date-card {
     background-color: var(--color-grey-dark-almost-transparent);
 }
