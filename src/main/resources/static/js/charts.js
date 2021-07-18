@@ -91,11 +91,13 @@ $(document).ready(function()
     $('.button-display-type').click(function()
     {
         toggleChartTypeButtons('button-display-type', this);
+        filterChartPreviews();
     });
 
     $('.button-group-type').click(function()
     {
         toggleChartTypeButtons('button-group-type', this);
+        filterChartPreviews();
     });
 });
 
@@ -247,4 +249,22 @@ function toggleChartTypeButtons(styleClassName, item)
     }
 
     item.classList.toggle('active', true);
+}
+
+function filterChartPreviews()
+{
+    let displayTypeName = document.querySelector('.button-display-type.active').dataset.value;
+    let groupTypeName = document.querySelector('.button-group-type.active').dataset.value;
+
+    let allChartPreviews = document.getElementsByClassName('chart-preview-column');
+    for(let i = 0; i < allChartPreviews.length; i++)
+    {
+        allChartPreviews[i].style.display = 'none';
+    }
+
+    let chartPreviews = document.querySelectorAll('.chart-preview-column[data-display-type="' + displayTypeName + '"][data-group-type="' + groupTypeName + '"]');
+    for(let i = 0; i < chartPreviews.length; i++)
+    {
+        chartPreviews[i].style.display = '';
+    }
 }
