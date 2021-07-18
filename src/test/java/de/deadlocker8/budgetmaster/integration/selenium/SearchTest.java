@@ -80,7 +80,7 @@ class SearchTest extends SeleniumTestBase
 	void pagination()
 	{
 		// === PAGE 1 ===
-		List<WebElement> pages = driver.findElements(By.cssSelector(".pagination li"));
+		List<WebElement> pages = driver.findElements(By.cssSelector(".pagination-position-top .pagination li"));
 		assertThat(pages.size()).isEqualTo(5);
 
 		assertThat(pages.get(0).getAttribute("class")).contains("disabled");
@@ -97,7 +97,7 @@ class SearchTest extends SeleniumTestBase
 		// === PAGE 1 ===
 		pages.get(3).click();
 
-		pages = driver.findElements(By.cssSelector(".pagination li"));
+		pages = driver.findElements(By.cssSelector(".pagination-position-top .pagination li"));
 		assertThat(pages.size()).isEqualTo(5);
 
 		// previous button should be enabled

@@ -29,7 +29,7 @@
                         <input type="hidden" name="page" id="inputPageNumber" value="${page.getNumber()}"/>
                     </form>
 
-                    <@searchMacros.pagination page/>
+                    <@searchMacros.pagination page "top"/>
 
                     <div class="row search-container">
                         <div class="col s12">
@@ -77,6 +77,8 @@
                             </#if>
                         </div>
                     </div>
+
+                    <@searchMacros.pagination page "bottom"/>
                 </@header.content>
             </div>
         </main>
