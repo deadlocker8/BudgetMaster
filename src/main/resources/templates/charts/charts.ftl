@@ -83,37 +83,15 @@
                                                     <label for="chart-datepicker-end">${locale.getString("chart.steps.second.label.end")}</label>
                                                 </div>
                                             </div>
-                                            <div class="row no-margin-bottom">
-                                                <div class="col s12 m12 l8 offset-l2 no-margin-top">
-                                                    <table class="no-border-table">
-                                                        <tr>
-                                                            <@quickDateOption index="0" localizationKey="chart.quick.this.week"/>
-                                                            <@quickDateOption index="1" localizationKey="chart.quick.this.month"/>
-                                                            <@quickDateOption index="2" localizationKey="chart.quick.this.year"/>
-                                                            <@quickDateOption index="3" localizationKey="chart.quick.all"/>
-                                                        </tr>
-                                                        <tr>
-                                                            <@quickDateOption index="4" localizationKey="chart.quick.last.week"/>
-                                                            <@quickDateOption index="5" localizationKey="chart.quick.last.month"/>
-                                                            <@quickDateOption index="6" localizationKey="chart.quick.last.year"/>
-                                                            <@quickDateOption index="7" localizationKey="chart.quick.until.endOfLastYear"/>
-                                                        </tr>
-                                                        <tr>
-                                                            <@quickDateOption index="8" localizationKey="chart.quick.last.week.days"/>
-                                                            <@quickDateOption index="9" localizationKey="chart.quick.last.month.days"/>
-                                                            <@quickDateOption index="10" localizationKey="chart.quick.last.year.days"/>
-                                                            <@quickDateOption index="11" localizationKey="chart.quick.until.today"/>
-                                                        </tr>
-                                                    </table>
-                                                </div>
 
-                                                <script>
-                                                    startDate = "${startDate}".split(".");
-                                                    startDate = new Date(startDate[2], startDate[1] - 1, startDate[0]);
-                                                    endDate = "${endDate}".split(".");
-                                                    endDate = new Date(endDate[2], endDate[1] - 1, endDate[0]);
-                                                </script>
-                                            </div>
+                                            <@quickDateOptions/>
+
+                                            <script>
+                                                startDate = "${startDate}".split(".");
+                                                startDate = new Date(startDate[2], startDate[1] - 1, startDate[0]);
+                                                endDate = "${endDate}".split(".");
+                                                endDate = new Date(endDate[2], endDate[1] - 1, endDate[0]);
+                                            </script>
                                         </div>
                                     </div>
                                 </div>
@@ -213,6 +191,33 @@
                     ${chartFunctions.getChartName(chart)}
                 </span>
             </div>
+        </div>
+    </div>
+</#macro>
+
+<#macro quickDateOptions>
+    <div class="row no-margin-bottom">
+        <div class="col s12 m12 l8 offset-l2 no-margin-top">
+            <table class="no-border-table">
+                <tr>
+                    <@quickDateOption index="0" localizationKey="chart.quick.this.week"/>
+                    <@quickDateOption index="1" localizationKey="chart.quick.this.month"/>
+                    <@quickDateOption index="2" localizationKey="chart.quick.this.year"/>
+                    <@quickDateOption index="3" localizationKey="chart.quick.all"/>
+                </tr>
+                <tr>
+                    <@quickDateOption index="4" localizationKey="chart.quick.last.week"/>
+                    <@quickDateOption index="5" localizationKey="chart.quick.last.month"/>
+                    <@quickDateOption index="6" localizationKey="chart.quick.last.year"/>
+                    <@quickDateOption index="7" localizationKey="chart.quick.until.endOfLastYear"/>
+                </tr>
+                <tr>
+                    <@quickDateOption index="8" localizationKey="chart.quick.last.week.days"/>
+                    <@quickDateOption index="9" localizationKey="chart.quick.last.month.days"/>
+                    <@quickDateOption index="10" localizationKey="chart.quick.last.year.days"/>
+                    <@quickDateOption index="11" localizationKey="chart.quick.until.today"/>
+                </tr>
+            </table>
         </div>
     </div>
 </#macro>
