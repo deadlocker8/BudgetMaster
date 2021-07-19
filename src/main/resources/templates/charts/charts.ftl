@@ -87,22 +87,22 @@
                                                 <div class="col s12 m12 l8 offset-l2 no-margin-top">
                                                     <table class="no-border-table">
                                                         <tr>
-                                                            <td class="quick-date" data-quick="0">${locale.getString("chart.quick.this.week")}</td>
-                                                            <td class="quick-date" data-quick="1">${locale.getString("chart.quick.this.month")}</td>
-                                                            <td class="quick-date" data-quick="2">${locale.getString("chart.quick.this.year")}</td>
-                                                            <td class="quick-date" data-quick="3">${locale.getString("chart.quick.all")}</td>
+                                                            <@quickDateOption index="0" localizationKey="chart.quick.this.week"/>
+                                                            <@quickDateOption index="1" localizationKey="chart.quick.this.month"/>
+                                                            <@quickDateOption index="2" localizationKey="chart.quick.this.year"/>
+                                                            <@quickDateOption index="3" localizationKey="chart.quick.all"/>
                                                         </tr>
                                                         <tr>
-                                                            <td class="quick-date" data-quick="4">${locale.getString("chart.quick.last.week")}</td>
-                                                            <td class="quick-date" data-quick="5">${locale.getString("chart.quick.last.month")}</td>
-                                                            <td class="quick-date" data-quick="6">${locale.getString("chart.quick.last.year")}</td>
-                                                            <td class="quick-date" data-quick="7">${locale.getString("chart.quick.until.endOfLastYear")}</td>
+                                                            <@quickDateOption index="4" localizationKey="chart.quick.last.week"/>
+                                                            <@quickDateOption index="5" localizationKey="chart.quick.last.month"/>
+                                                            <@quickDateOption index="6" localizationKey="chart.quick.last.year"/>
+                                                            <@quickDateOption index="7" localizationKey="chart.quick.until.endOfLastYear"/>
                                                         </tr>
                                                         <tr>
-                                                            <td class="quick-date" data-quick="8">${locale.getString("chart.quick.last.week.days")}</td>
-                                                            <td class="quick-date" data-quick="9">${locale.getString("chart.quick.last.month.days")}</td>
-                                                            <td class="quick-date" data-quick="10">${locale.getString("chart.quick.last.year.days")}</td>
-                                                            <td class="quick-date" data-quick="11">${locale.getString("chart.quick.until.today")}</td>
+                                                            <@quickDateOption index="8" localizationKey="chart.quick.last.week.days"/>
+                                                            <@quickDateOption index="9" localizationKey="chart.quick.last.month.days"/>
+                                                            <@quickDateOption index="10" localizationKey="chart.quick.last.year.days"/>
+                                                            <@quickDateOption index="11" localizationKey="chart.quick.until.today"/>
                                                         </tr>
                                                     </table>
                                                 </div>
@@ -217,4 +217,8 @@
             </div>
         </div>
     </div>
+</#macro>
+
+<#macro quickDateOption index localizationKey>
+    <td class="quick-date" data-quick="${index}">${locale.getString(localizationKey)}</td>
 </#macro>
