@@ -106,8 +106,6 @@
                                                         </tr>
                                                     </table>
                                                 </div>
-                                                <div class="col s12 m12 l8 offset-l2 no-margin-top quick-date-container">
-                                                </div>
 
                                                 <script>
                                                     startDate = "${startDate}".split(".");
