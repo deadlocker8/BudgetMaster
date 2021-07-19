@@ -222,13 +222,14 @@
             <div class="col s12 no-margin-top center-align">
                 <ul class="collapsible">
                     <li>
-                        <div class="collapsible-header"><i class="fas fa-filter"></i>Filter</div>
-                        <div class="collapsible-body"><@filterMacros.filterModalContent chartSettings.getFilterConfiguration() "filterConfiguration"/></div>
+                        <div class="collapsible-header"><i class="fas fa-filter"></i>${locale.getString("title.filter")} <span class="badge background-red hidden text-white" id="filterActiveBadge">${locale.getString("filter.active.short")}</span></div>
+                        <div class="collapsible-body">
+                            <@filterMacros.filterModalContent chartSettings.getFilterConfiguration() "filterConfiguration"/>
+                            <@filterMacros.buttonResetChart/>
+                        </div>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
-
-    <@filterMacros.filterModalCharts chartSettings.getFilterConfiguration()/>
 </#macro>

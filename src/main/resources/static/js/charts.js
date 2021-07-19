@@ -1,4 +1,3 @@
-let modalFilter;
 let chartPickerStartDate;
 let chartPickerEndDate;
 
@@ -17,11 +16,6 @@ $(document).ready(function()
     if($("#modalConfirmDelete").length)
     {
         $('#modalConfirmDelete').modal('open');
-    }
-
-    if($("#modalFilter").length)
-    {
-        modalFilter = $('#modalFilter').modal();
     }
 
     if($(".datepicker").length)
@@ -72,15 +66,10 @@ $(document).ready(function()
         }
     }
 
-    $(".filter-button-close").click(function()
-    {
-        applyFilter(modalFilter);
-    });
-
     $(".filter-button-reset").click(function()
     {
         resetFilter();
-        applyFilter(modalFilter);
+        applyFilter();
     });
 
     $(".quick-date").click(function()
@@ -109,6 +98,20 @@ $(document).ready(function()
         this.querySelector('.chart-preview').classList.toggle('active', true);
         document.getElementsByName('chartID')[0].value = this.dataset.id;
         checkShowChartButton();
+    });
+
+    let filterCheckBoxes = document.querySelectorAll('#filterSettings input[type=checkbox]');
+    for(let i = 0; i < filterCheckBoxes.length; i++)
+    {
+        filterCheckBoxes[i].addEventListener('change', (event) =>
+        {
+            applyFilter();
+        });
+    }
+
+    $('#filter-name').on('change keydown paste input', function()
+    {
+        applyFilter();
     });
 
     filterChartPreviews();
@@ -151,23 +154,10 @@ function createDatePickerEnd(minDate, selectedDate)
     });
 }
 
-function applyFilter(modal)
+function applyFilter()
 {
-    let filterButton = document.getElementById("modalFilterTrigger");
-
-    if(isDefaultFilter())
-    {
-        filterButton.classList.toggle("background-blue", true);
-        filterButton.classList.toggle("background-red", false);
-        filterButton.childNodes[1].nodeValue = filterNotActive;
-    } else
-    {
-        filterButton.classList.toggle("background-blue", false);
-        filterButton.classList.toggle("background-red", true);
-        filterButton.childNodes[1].nodeValue = filterActive;
-    }
-
-    modal.modal('close');
+    let badge = document.getElementById("filterActiveBadge");
+    badge.classList.toggle("hidden", isDefaultFilter());
 }
 
 function isDefaultFilter()
@@ -208,16 +198,16 @@ function handleQuickDate(element)
             endDate = moment("2100-01-01");
             break;
         case '4':
-            startDate = moment().subtract(1,'weeks').startOf('isoWeek');
-            endDate = moment().subtract(1,'weeks').endOf('isoWeek');
+            startDate = moment().subtract(1, 'weeks').startOf('isoWeek');
+            endDate = moment().subtract(1, 'weeks').endOf('isoWeek');
             break;
         case '5':
-            startDate = moment().subtract(1,'months').startOf('month');
-            endDate = moment().subtract(1,'months').endOf('month');
+            startDate = moment().subtract(1, 'months').startOf('month');
+            endDate = moment().subtract(1, 'months').endOf('month');
             break;
         case '6':
-            startDate = moment().subtract(1,'years').startOf('year');
-            endDate = moment().subtract(1,'years').endOf('year');
+            startDate = moment().subtract(1, 'years').startOf('year');
+            endDate = moment().subtract(1, 'years').endOf('year');
             break;
         case '7':
             startDate = moment("2000-01-01");

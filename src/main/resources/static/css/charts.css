@@ -62,3 +62,8 @@
 #chart-date-card {
     background-color: var(--color-grey-dark-almost-transparent);
 }
+
+#filterActiveBadge {
+    float: none;
+    margin-left: 1rem;
+}

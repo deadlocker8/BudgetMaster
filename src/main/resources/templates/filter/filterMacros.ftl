@@ -25,31 +25,6 @@
     </div>
 </#macro>
 
-<#macro buttonsCharts>
-    <div class="row hide-on-small-only valign-wrapper">
-        <div class="col s6 right-align">
-            <@buttonResetChart/>
-        </div>
-
-        <div class="col s6 left-align">
-            <@buttonClose/>
-        </div>
-    </div>
-
-    <div class="hide-on-med-and-up valign-wrapper">
-        <div class="row center-align">
-            <div class="col s12">
-                <@buttonResetChart/>
-            </div>
-        </div>
-        <div class="row center-align">
-            <div class="col s12">
-                <@buttonClose/>
-            </div>
-        </div>
-    </div>
-</#macro>
-
 <#macro buttonReset>
     <a href="<@s.url '/filter/reset'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">settings_backup_restore</i>${locale.getString("filter.reset")}</a>
 </#macro>
@@ -88,19 +63,6 @@
                 <@filterModalContent filterConfiguration/>
                 <@buttons/>
             </form>
-        </div>
-        <div class="modal-footer background-color">
-            <@header.buttonLink url='' icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white'/>
-        </div>
-    </div>
-</#macro>
-
-<#macro filterModalCharts filterConfiguration>
-    <div id="modalFilter" class="modal background-color">
-        <div class="modal-content">
-            <h4>${locale.getString("title.filter")}</h4>
-            <@filterModalContent filterConfiguration "filterConfiguration"/>
-            <@buttonsCharts/>
         </div>
         <div class="modal-footer background-color">
             <@header.buttonLink url='' icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white'/>
