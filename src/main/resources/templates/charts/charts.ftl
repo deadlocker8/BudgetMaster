@@ -70,7 +70,7 @@
                         <#-- buttons -->
                         <div class="row center-align">
                             <div class="col s12">
-                                <button class="btn waves-effect waves-light background-blue" type="submit" name="buttonSave">
+                                <button class="btn waves-effect waves-light background-blue" type="submit" name="buttonSave" disabled>
                                     <i class="material-icons left">show_chart</i>${locale.getString("chart.show")}
                                 </button>
                             </div>
