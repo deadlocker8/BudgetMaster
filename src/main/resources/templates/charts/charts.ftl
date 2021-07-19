@@ -225,7 +225,9 @@
                         <div class="collapsible-header"><i class="fas fa-filter"></i>${locale.getString("title.filter")} <span class="badge background-red hidden text-white" id="filterActiveBadge">${locale.getString("filter.active.short")}</span></div>
                         <div class="collapsible-body left-align">
                             <@filterMacros.filterModalContent chartSettings.getFilterConfiguration() "filterConfiguration"/>
-                            <@filterMacros.buttonResetChart/>
+                            <div class="center-align">
+                                <@filterMacros.buttonResetChart/>
+                            </div>
                         </div>
                     </li>
                 </ul>
