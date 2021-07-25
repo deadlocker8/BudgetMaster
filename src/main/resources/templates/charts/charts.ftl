@@ -133,7 +133,7 @@
 <#macro chartTypeButton item buttonClass initialItem>
     <#assign isInitialItem=item.name()==initialItem.name()/>
 
-    <a class="waves-effect waves-light btn-large background-grey text-black ${buttonClass} <#if isInitialItem>active</#if>" data-value="${item.name()}">
+    <a class="waves-effect waves-light btn-large text-black ${buttonClass} <#if isInitialItem>active</#if>" data-value="${item.name()}">
         <#if item.hasFontAwesomeIcon()>
             <i class="${item.getIcon()} left"></i> ${locale.getString(item.getLocalizationKey())}
         <#else>
@@ -144,7 +144,7 @@
 
 <#macro chartPreview chart>
     <div class="col s6 m4 l3 center-align chart-preview-column hidden" data-display-type="${chart.getDisplayType()}" data-group-type="${chart.getGroupType()}" data-id="${chart.getID()?c}">
-        <div class="card chart-preview background-grey-dark">
+        <div class="card chart-preview">
             <div class="card-image">
                 <img src="<@s.url '/images/charts/' + chart.getPreviewImageFileName()!"placeholder.png"/>">
             </div>

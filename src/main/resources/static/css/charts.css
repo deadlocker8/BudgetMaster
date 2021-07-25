@@ -3,10 +3,15 @@
 }
 
 .quick-date {
-    color: #BDFF3F;
+    color: var(--color-blue);
     text-align: center;
     padding: 0 0 10px 0;
 }
+
+[data-theme="dark"]  .quick-date {
+    color: #BDFF3F;
+}
+
 
 .quick-date:hover {
     cursor: pointer;
@@ -36,6 +41,14 @@
     font-size: 1.2rem;
 }
 
+.chart-preview {
+    background-color: var(--color-grey-ccc);
+}
+
+[data-theme="dark"] .chart-preview {
+    background-color: var(--color-grey-dark);
+}
+
 .chart-preview:hover {
     cursor: pointer;
 }
@@ -45,6 +58,16 @@
     color: #212121;
     min-height: 5rem;
     padding: 1rem;
+}
+
+[data-theme="dark"] .button-display-type,
+[data-theme="dark"] .button-group-type {
+    background-color: var(--color-grey) !important;
+}
+
+.button-display-type,
+.button-group-type {
+    background-color: var(--color-grey-ccc) !important;
 }
 
 .button-display-type.active {
@@ -60,7 +83,11 @@
 }
 
 #chart-date-card {
-    background-color: var(--color-grey-dark-almost-transparent);
+    background-color: var(--color-white);
+}
+
+[data-theme="dark"] #chart-date-card {
+    background-color: var(--color-background-light);
 }
 
 #filterActiveBadge {
