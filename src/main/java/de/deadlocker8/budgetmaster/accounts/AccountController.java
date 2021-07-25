@@ -76,8 +76,8 @@ public class AccountController extends BaseController
 	public String requestDeleteAccount(Model model, @PathVariable("ID") Integer ID)
 	{
 		model.addAttribute("accounts", accountService.getAllEntitiesAsc());
-		model.addAttribute("currentAccount", accountService.getRepository().getOne(ID));
-		return "accounts/accounts";
+		model.addAttribute("accountToDelete", accountService.getRepository().getOne(ID));
+		return "accounts/deleteAccountModal";
 	}
 
 	@GetMapping("/{ID}/delete")

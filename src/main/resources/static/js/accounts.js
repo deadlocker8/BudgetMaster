@@ -1,10 +1,5 @@
 $(document).ready(function()
 {
-    if($('#modalConfirmDelete').length)
-    {
-        $('#modalConfirmDelete').modal('open');
-    }
-
     if($('#modalAccountNotDeletable').length)
     {
         $('#modalAccountNotDeletable').modal('open');
@@ -14,4 +9,9 @@ $(document).ready(function()
     {
         document.getElementById('account-name').focus();
     }
+
+    $('.button-request-delete-account').click(function()
+    {
+        fetchAndShowModalContent(this.dataset.url, '#deleteModalContainerOnDemand', '#modalConfirmDelete', function(){});
+    });
 });

@@ -44,7 +44,7 @@
                                     <td>${account.getName()}</td>
                                     <td>
                                         <a href="<@s.url '/accounts/${account.getID()?c}/edit'/>" class="btn-flat no-padding text-default"><i class="material-icons left">edit</i></a>
-                                        <a href="<@s.url '/accounts/${account.getID()?c}/requestDelete'/>" class="btn-flat no-padding text-default"><i class="material-icons left no-margin">delete</i></a>
+                                        <@header.buttonFlat url='/accounts/' + account.ID?c + '/requestDelete' icon='delete' localizationKey='' classes="no-padding text-default button-request-delete-account" isDataUrl=true/>
                                     </td>
                                 </tr>
                             </#if>
@@ -56,13 +56,10 @@
                 </div>
                 </@header.content>
             </div>
+
+            <div id="deleteModalContainerOnDemand"></div>
         </main>
 
-        <#if currentAccount??>
-            <@header.modalConfirmDelete title=locale.getString("info.title.account.delete") confirmUrl='/accounts' cancelUrlBase="/accounts" itemId=currentAccount.getID() confirmButtonTextKey="info.button.account.delete">
-                <p>${locale.getString("info.text.account.delete", currentAccount.getName(), currentAccount.getReferringTransactions()?size)}</p>
-            </@header.modalConfirmDelete>
-        </#if>
 
         <#if accountNotDeletable??>
             <!-- warning account not deletable -->
