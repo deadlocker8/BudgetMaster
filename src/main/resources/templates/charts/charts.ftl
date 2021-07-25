@@ -26,8 +26,6 @@
 
                 <@header.content>
                     <br>
-<#--                    <div class="center-align"><@header.buttonLink url='/charts/manage' icon='edit' localizationKey='home.menu.charts.action.manage'/></div>-->
-<#--                    <br>-->
 
                     <form name="NewChartSettings" action="<@s.url '/charts'/>" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -59,6 +57,9 @@
                                 <#list charts as chart>
                                     <@chartPreview chart/>
                                 </#list>
+                                <div class="col s12 center-align hidden" id="buttonCustomCharts">
+                                    <@header.buttonLink url='/charts/manage' icon='edit' localizationKey='home.menu.charts.action.manage'/>
+                                </div>
                             </div>
                         </div>
                         <input type="hidden" name="chartID" value="">

@@ -272,6 +272,8 @@ function filterChartPreviews()
     }
 
     unsetActiveChartPreview();
+
+    toggleCustomChartButton(displayTypeName === 'CUSTOM');
 }
 
 function unsetActiveChartPreview()
@@ -292,4 +294,9 @@ function checkShowChartButton()
 
     let selectedChartID = document.getElementsByName('chartID')[0].value;
     buttonShowChart.disabled = selectedChartID === '';
+}
+
+function toggleCustomChartButton(show)
+{
+    document.getElementById('buttonCustomCharts').classList.toggle('hidden', !show);
 }
