@@ -46,11 +46,7 @@
                 </div>
             </@header.content>
 
-            <#if currentTemplate??>
-                <@header.modalConfirmDelete title=locale.getString("info.title.template.delete") confirmUrl='/templates' cancelUrlBase='/templates' itemId=currentTemplate.getID() confirmButtonTextKey='info.title.template.delete'>
-                    <p>${locale.getString("info.text.template.delete", currentTemplate.getTemplateName())}</p>
-                </@header.modalConfirmDelete>
-            </#if>
+            <div id="deleteModalContainerOnDemand"></div>
         </main>
 
         <#import "../helpers/scripts.ftl" as scripts>

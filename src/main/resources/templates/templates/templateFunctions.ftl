@@ -26,7 +26,7 @@
                                 <@templateHeader template/>
                                 <div class="collapsible-header-button">
                                     <@header.buttonFlat url='/templates/' + template.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default"/>
-                                    <@header.buttonFlat url='/templates/' + template.ID?c + '/requestDelete' icon='delete' localizationKey='' classes="no-padding text-default"/>
+                                    <@header.buttonFlat url='/templates/' + template.ID?c + '/requestDelete' icon='delete' localizationKey='' classes="no-padding text-default button-request-delete-template" isDataUrl=true/>
                                     <@header.buttonLink url='/templates/' + template.ID?c + '/select' icon='note_add' localizationKey='' classes='button-select-template'/>
                                 </div>
                             </div>

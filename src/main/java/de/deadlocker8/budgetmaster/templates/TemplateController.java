@@ -101,8 +101,8 @@ public class TemplateController extends BaseController
 		}
 
 		model.addAttribute("templates", templateService.getAllEntitiesAsc());
-		model.addAttribute("currentTemplate", templateOptional.get());
-		return "templates/templates";
+		model.addAttribute("templateToDelete", templateOptional.get());
+		return "templates/deleteTemplateModal";
 	}
 
 	@GetMapping("/{ID}/delete")
