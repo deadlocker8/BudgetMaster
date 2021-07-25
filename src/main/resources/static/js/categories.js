@@ -35,9 +35,16 @@ $(document).ready(function()
         });
     }
 
-    $('#buttonDeleteCategory').click(function()
+    $('.button-request-delete-category').click(function()
     {
-        document.getElementById("formDestinationCategory").submit();
+        fetchAndShowModalContent(this.dataset.url, '#deleteModalContainerOnDemand', '#modalConfirmDelete', function(){
+            initCustomSelects();
+
+            $('#buttonDeleteCategory').click(function()
+            {
+                document.getElementById("formDestinationCategory").submit();
+            });
+         });
     });
 });
 

@@ -60,8 +60,8 @@ public class CategoryController extends BaseController
 		model.addAttribute("availableCategories", availableCategories);
 		model.addAttribute("preselectedCategory", categoryService.findByType(CategoryType.NONE));
 
-		model.addAttribute("currentCategory", categoryService.findById(ID).orElseThrow());
-		return "categories/categories";
+		model.addAttribute("categoryToDelete", categoryService.findById(ID).orElseThrow());
+		return "categories/deleteCategoryModal";
 	}
 
 	@PostMapping(value = "/{ID}/delete")
