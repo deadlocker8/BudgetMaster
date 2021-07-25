@@ -56,12 +56,12 @@ public class ChartSettings
 		this.groupType = groupType;
 	}
 
-	public int getChartID()
+	public Integer getChartID()
 	{
 		return chartID;
 	}
 
-	public void setChartID(int chartID)
+	public void setChartID(Integer chartID)
 	{
 		this.chartID = chartID;
 	}

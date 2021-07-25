@@ -81,13 +81,13 @@ $(document).ready(function()
     {
         toggleChartTypeButtons('button-display-type', this);
         hideGroupTypeButtonsIfOnlyOneDistinctGroup();
-        filterChartPreviews();
+        filterChartPreviews(-1);
     });
 
     $('.button-group-type').click(function()
     {
         toggleChartTypeButtons('button-group-type', this);
-        filterChartPreviews();
+        filterChartPreviews(-1);
     });
 
     $('.chart-preview-column').click(function()
@@ -115,12 +115,13 @@ $(document).ready(function()
         applyFilter();
     });
 
-    $('#buttonShowChartSettings').click(function(){
+    $('#buttonShowChartSettings').click(function()
+    {
         document.getElementsByName('NewChartSettings')[0].classList.toggle('hidden', false);
         document.getElementById('buttonShowChartSettings').classList.toggle('hidden', true);
     });
 
-    filterChartPreviews();
+    filterChartPreviews(selectChartID);
 
     let showEditSettingsButton = document.getElementsByName('NewChartSettings')[0].classList.contains('hidden');
     document.getElementById('buttonShowChartSettings').classList.toggle('hidden', !showEditSettingsButton);
@@ -266,7 +267,7 @@ function toggleChartTypeButtons(styleClassName, item)
 function hideGroupTypeButtonsIfOnlyOneDistinctGroup()
 {
     let displayTypeName = document.querySelector('.button-display-type.active').dataset.value;
-    let chartsWithCurrentDisplayType = document.querySelectorAll('.chart-preview-column[data-display-type="' + displayTypeName +'"]');
+    let chartsWithCurrentDisplayType = document.querySelectorAll('.chart-preview-column[data-display-type="' + displayTypeName + '"]');
 
     let groupTypes = new Set();
     for(let i = 0; i < chartsWithCurrentDisplayType.length; i++)
@@ -278,7 +279,7 @@ function hideGroupTypeButtonsIfOnlyOneDistinctGroup()
     document.getElementById('chart-group-type-buttons').classList.toggle('hidden', hasOnlyOneDistinctGroupType);
 }
 
-function filterChartPreviews()
+function filterChartPreviews(initiallySelectedChartID)
 {
     let displayTypeName = document.querySelector('.button-display-type.active').dataset.value;
     let groupTypeName = document.querySelector('.button-group-type.active').dataset.value;
@@ -308,16 +309,17 @@ function filterChartPreviews()
         }
     }
 
-    unsetActiveChartPreview();
+    unsetActiveChartPreview(initiallySelectedChartID);
     toggleCustomChartButton(displayTypeName === 'CUSTOM');
 }
 
-function unsetActiveChartPreview()
+function unsetActiveChartPreview(initiallySelectedChartID)
 {
-    let allChartPreviews = document.getElementsByClassName('chart-preview');
-    for(let i = 0; i < allChartPreviews.length; i++)
+    let allChartPreviewColumns = document.getElementsByClassName('chart-preview-column');
+    for(let i = 0; i < allChartPreviewColumns.length; i++)
     {
-        allChartPreviews[i].classList.toggle('active', false);
+        let column = allChartPreviewColumns[i];
+        column.querySelector('.chart-preview').classList.toggle('active', column.dataset.id === initiallySelectedChartID);
     }
 
     document.getElementsByName('chartID')[0].value = '';
