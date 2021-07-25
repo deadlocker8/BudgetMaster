@@ -81,6 +81,7 @@ $(document).ready(function()
     {
         toggleChartTypeButtons('button-display-type', this);
         document.getElementsByName('displayType')[0].value = this.dataset.value;
+        hideGroupTypeButtonsIfOnlyOneDistinctGroup();
         filterChartPreviews();
     });
 
@@ -262,6 +263,21 @@ function toggleChartTypeButtons(styleClassName, item)
     item.classList.toggle('active', true);
 }
 
+function hideGroupTypeButtonsIfOnlyOneDistinctGroup()
+{
+    let displayTypeName = document.querySelector('.button-display-type.active').dataset.value;
+    let chartsWithCurrentDisplayType = document.querySelectorAll('.chart-preview-column[data-display-type="' + displayTypeName +'"]');
+
+    let groupTypes = new Set();
+    for(let i = 0; i < chartsWithCurrentDisplayType.length; i++)
+    {
+        groupTypes.add(chartsWithCurrentDisplayType[i].dataset.groupType);
+    }
+
+    let hasOnlyOneDistinctGroupType = groupTypes.size <= 1;
+    document.getElementById('chart-group-type-buttons').classList.toggle('hidden', hasOnlyOneDistinctGroupType);
+}
+
 function filterChartPreviews()
 {
     let displayTypeName = document.querySelector('.button-display-type.active').dataset.value;
@@ -273,14 +289,26 @@ function filterChartPreviews()
         allChartPreviews[i].classList.toggle('hidden', true);
     }
 
-    let chartPreviews = document.querySelectorAll('.chart-preview-column[data-display-type="' + displayTypeName + '"][data-group-type="' + groupTypeName + '"]');
-    for(let i = 0; i < chartPreviews.length; i++)
+    let isGroupTypeDisabled = document.getElementById('chart-group-type-buttons').classList.contains('hidden');
+
+    if(isGroupTypeDisabled)
     {
-        chartPreviews[i].classList.toggle('hidden', false);
+        let chartPreviews = document.querySelectorAll('.chart-preview-column[data-display-type="' + displayTypeName + '"]');
+        for(let i = 0; i < chartPreviews.length; i++)
+        {
+            chartPreviews[i].classList.toggle('hidden', false);
+        }
+    }
+    else
+    {
+        let chartPreviews = document.querySelectorAll('.chart-preview-column[data-display-type="' + displayTypeName + '"][data-group-type="' + groupTypeName + '"]');
+        for(let i = 0; i < chartPreviews.length; i++)
+        {
+            chartPreviews[i].classList.toggle('hidden', false);
+        }
     }
 
     unsetActiveChartPreview();
-
     toggleCustomChartButton(displayTypeName === 'CUSTOM');
 }
 

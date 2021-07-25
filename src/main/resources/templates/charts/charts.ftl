@@ -25,8 +25,6 @@
                 </div>
 
                 <@header.content>
-                    <br>
-
                     <div class="row">
                         <div class="col s12 center-align">
                             <@header.buttonLink url='' icon='edit' localizationKey='chart.button.settings' noUrl=true id='buttonShowChartSettings' classes='hidden'/>
@@ -47,7 +45,7 @@
                         </div>
                         <input type="hidden" name="displayType" value="${chartSettings.getDisplayType().name()}">
 
-                        <div class="container">
+                        <div class="container" id="chart-group-type-buttons">
                             <div class="row">
                                 <div class="col s12 center-align">
                                     <#list groupTypes as groupType>
