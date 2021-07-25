@@ -86,9 +86,9 @@ public class TransactionController extends BaseController
 
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 		prepareModelTransactions(filterHelpers.getFilterConfiguration(request), model, date);
-		model.addAttribute("currentTransaction", transactionService.getRepository().getOne(ID));
+		model.addAttribute("transactionToDelete", transactionService.getRepository().getOne(ID));
 
-		return "transactions/transactions";
+		return "transactions/deleteTransactionModal";
 	}
 
 	private void prepareModelTransactions(FilterConfiguration filterConfiguration, Model model, DateTime date)
