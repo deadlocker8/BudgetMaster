@@ -114,7 +114,15 @@ $(document).ready(function()
         applyFilter();
     });
 
+    $('#buttonShowChartSettings').click(function(){
+        document.getElementsByName('NewChartSettings')[0].classList.toggle('hidden', false);
+        document.getElementById('buttonShowChartSettings').classList.toggle('hidden', true);
+    });
+
     filterChartPreviews();
+
+    let showEditSettingsButton = document.getElementsByName('NewChartSettings')[0].classList.contains('hidden');
+    document.getElementById('buttonShowChartSettings').classList.toggle('hidden', !showEditSettingsButton);
 });
 
 function createDatePickerEnd(minDate, selectedDate)

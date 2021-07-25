@@ -62,7 +62,7 @@ public class ChartController extends BaseController
 		defaultFilterConfiguration.setFilterCategories(filterHelpersService.getFilterCategories());
 		defaultFilterConfiguration.setFilterTags(filterHelpersService.getFilterTags());
 
-		ChartSettings defaultChartSettings = ChartSettings.getDefault(charts.get(0).getID(), defaultFilterConfiguration);
+		ChartSettings defaultChartSettings = ChartSettings.getDefault(defaultFilterConfiguration);
 
 		model.addAttribute("chartSettings", defaultChartSettings);
 		model.addAttribute("charts", charts);

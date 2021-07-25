@@ -10,23 +10,23 @@ public class ChartSettings
 	private ChartDisplayType displayType;
 	private ChartGroupType groupType;
 
-	private int chartID;
+	private Integer chartID;
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private DateTime startDate;
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private DateTime endDate;
 	private FilterConfiguration filterConfiguration;
 
-	public static ChartSettings getDefault(int chartID, FilterConfiguration filterConfiguration)
+	public static ChartSettings getDefault(FilterConfiguration filterConfiguration)
 	{
-		return new ChartSettings(ChartDisplayType.BAR, ChartGroupType.MONTH, chartID, DateTime.now().withDayOfMonth(1), DateTime.now().dayOfMonth().withMaximumValue(), filterConfiguration);
+		return new ChartSettings(ChartDisplayType.BAR, ChartGroupType.MONTH, null, DateTime.now().withDayOfMonth(1), DateTime.now().dayOfMonth().withMaximumValue(), filterConfiguration);
 	}
 
 	public ChartSettings()
 	{
 	}
 
-	public ChartSettings(ChartDisplayType displayType, ChartGroupType groupType, int chartID, DateTime startDate, DateTime endDate, FilterConfiguration filterConfiguration)
+	public ChartSettings(ChartDisplayType displayType, ChartGroupType groupType, Integer chartID, DateTime startDate, DateTime endDate, FilterConfiguration filterConfiguration)
 	{
 		this.displayType = displayType;
 		this.groupType = groupType;
@@ -94,6 +94,11 @@ public class ChartSettings
 	public void setFilterConfiguration(FilterConfiguration filterConfiguration)
 	{
 		this.filterConfiguration = filterConfiguration;
+	}
+
+	public boolean isChartSelected()
+	{
+		return chartID != null;
 	}
 
 	@Override

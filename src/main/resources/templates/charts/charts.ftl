@@ -27,11 +27,17 @@
                 <@header.content>
                     <br>
 
-                    <form name="NewChartSettings" action="<@s.url '/charts'/>" method="post">
+                    <div class="row">
+                        <div class="col s12 center-align">
+                            <@header.buttonLink url='' icon='edit' localizationKey='chart.button.settings' noUrl=true id='buttonShowChartSettings' classes='hidden'/>
+                        </div>
+                    </div>
+
+                    <form name="NewChartSettings" action="<@s.url '/charts'/>" method="post" class="<#if chartSettings.isChartSelected()>hidden</#if>">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                         <div class="container">
-                            <div class="row hide-on-small-and-down">
+                            <div class="row">
                                 <div class="col s12 center-align">
                                     <#list displayTypes as displayType>
                                         <@chartTypeButton item=displayType buttonClass="button-display-type" initialItem=chartSettings.getDisplayType()/>
@@ -42,7 +48,7 @@
                         <input type="hidden" name="displayType" value="${chartSettings.getDisplayType().name()}">
 
                         <div class="container">
-                            <div class="row hide-on-small-and-down">
+                            <div class="row">
                                 <div class="col s12 center-align">
                                     <#list groupTypes as groupType>
                                         <@chartTypeButton item=groupType buttonClass="button-group-type" initialItem=chartSettings.getGroupType()/>
@@ -58,7 +64,7 @@
                                     <@chartPreview chart/>
                                 </#list>
                                 <div class="col s12 center-align hidden" id="buttonCustomCharts">
-                                    <@header.buttonLink url='/charts/manage' icon='edit' localizationKey='home.menu.charts.action.manage'/>
+                                    <@header.buttonLink url='/charts/manage' icon='edit' localizationKey='chart.button.manage'/>
                                 </div>
                             </div>
                         </div>
@@ -77,6 +83,8 @@
                             </div>
                         </div>
                     </form>
+
+                    <br>
 
                     <div class="container-chart">
                         <#if containerID??>
