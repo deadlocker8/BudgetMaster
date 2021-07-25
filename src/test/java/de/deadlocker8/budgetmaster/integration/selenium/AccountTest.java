@@ -39,7 +39,7 @@ class AccountTest extends SeleniumTestBase
 {
 	private IntegrationTestHelper helper;
 
-	@BeforeEach()
+	@BeforeEach
 	public void prepare()
 	{
 		helper = new IntegrationTestHelper(driver, port);

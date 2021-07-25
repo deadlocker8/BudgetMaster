@@ -8,13 +8,11 @@ import de.deadlocker8.budgetmaster.charts.ChartDisplayType;
 import de.deadlocker8.budgetmaster.charts.ChartGroupType;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
-import org.junit.runner.RunWith;
+import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
+import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestWatcher;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -26,7 +24,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
 import java.util.Arrays;
@@ -34,52 +31,22 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SeleniumTestWatcher.class)
 @SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SeleniumTest
-public class ChartTest
+class ChartTest extends SeleniumTestBase
 {
 	private final String SELECTOR_ACTIVE_DISPLAY_TYPE = ".button-display-type.active";
 	private final String SELECTOR_ACTIVE_GROUP_TYPE = ".button-group-type.active";
 	private final String SELECTOR_VISIBLE_CHART_PREVIEWS = ".chart-preview-column:not(.hidden)";
 	private final String SELECTOR_ACTIVE_CHART_PREVIEWS = ".chart-preview.active";
 
-
 	private IntegrationTestHelper helper;
-	private WebDriver driver;
 
-	@LocalServerPort
-	int port;
-
-	@Rule
-	public TestName name = new TestName();
-
-	@Rule
-	public TestWatcher testWatcher = new TestWatcher()
-	{
-		@Override
-		protected void finished(Description description)
-		{
-			driver.quit();
-		}
-
-		@Override
-		protected void failed(Throwable e, Description description)
-		{
-			IntegrationTestHelper.saveScreenshots(driver, name, ChartTest.class);
-		}
-	};
-
-	@Before
+	@BeforeEach
 	public void prepare()
 	{
-		FirefoxOptions options = new FirefoxOptions();
-		options.setHeadless(false);
-		options.addPreference("devtools.console.stdout.content", true);
-		driver = new FirefoxDriver(options);
-
-		// prepare
 		helper = new IntegrationTestHelper(driver, port);
 		helper.start();
 		helper.login(UserService.DEFAULT_PASSWORD);
@@ -94,7 +61,7 @@ public class ChartTest
 	}
 
 	@Test
-	public void test_defaultSelection()
+	void test_defaultSelection()
 	{
 		driver.get(helper.getUrl() + "/charts");
 
@@ -121,7 +88,7 @@ public class ChartTest
 	}
 
 	@Test
-	public void test_selectDisplayType()
+	void test_selectDisplayType()
 	{
 		driver.get(helper.getUrl() + "/charts");
 
@@ -154,7 +121,7 @@ public class ChartTest
 	}
 
 	@Test
-	public void test_hideGroupTypeIfOnlyOneDistinct()
+	void test_hideGroupTypeIfOnlyOneDistinct()
 	{
 		driver.get(helper.getUrl() + "/charts");
 
@@ -172,7 +139,7 @@ public class ChartTest
 	}
 
 	@Test
-	public void test_displayGroupTypeAfterHiding()
+	void test_displayGroupTypeAfterHiding()
 	{
 		driver.get(helper.getUrl() + "/charts");
 
@@ -202,7 +169,7 @@ public class ChartTest
 	}
 
 	@Test
-	public void test_selectGroupType()
+	void test_selectGroupType()
 	{
 		driver.get(helper.getUrl() + "/charts");
 
@@ -231,7 +198,7 @@ public class ChartTest
 	}
 
 	@Test
-	public void test_selectChartEnabledButton()
+	void test_selectChartEnabledButton()
 	{
 		driver.get(helper.getUrl() + "/charts");
 
@@ -253,7 +220,7 @@ public class ChartTest
 	}
 
 	@Test
-	public void test_selectDisplayTypeAfterSelectingChartDisablesButton()
+	void test_selectDisplayTypeAfterSelectingChartDisablesButton()
 	{
 		driver.get(helper.getUrl() + "/charts");
 
@@ -278,7 +245,7 @@ public class ChartTest
 	}
 
 	@Test
-	public void test_showFilterBadge()
+	void test_showFilterBadge()
 	{
 		driver.get(helper.getUrl() + "/charts");
 
@@ -297,7 +264,7 @@ public class ChartTest
 	}
 
 	@Test
-	public void test_hideFilterBadgeOnReset()
+	void test_hideFilterBadgeOnReset()
 	{
 		driver.get(helper.getUrl() + "/charts");
 
@@ -315,7 +282,7 @@ public class ChartTest
 	}
 
 	@Test
-	public void test_showManageButtonForCustomCharts()
+	void test_showManageButtonForCustomCharts()
 	{
 		driver.get(helper.getUrl() + "/charts");
 
@@ -332,7 +299,7 @@ public class ChartTest
 	}
 
 	@Test
-	public void test_showChart()
+	void test_showChart()
 	{
 		driver.get(helper.getUrl() + "/charts");
 
