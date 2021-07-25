@@ -45,7 +45,7 @@
     </#if>
 </#macro>
 
-<#macro modalConfirmDelete title confirmUrl cancelUrlBase itemId confirmButtonTextKey id="modalConfirmDelete" classes="">
+<#macro modalConfirmDelete title confirmUrl itemId confirmButtonTextKey id="modalConfirmDelete" classes="">
     <div id="${id}" class="modal background-color ${classes}">
         <div class="modal-content">
             <h4>${title}</h4>
@@ -53,7 +53,7 @@
             <#nested>
         </div>
         <div class="modal-footer background-color">
-            <@buttonLink url=cancelUrlBase icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white'/>
+            <@buttonLink url='' icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white' noUrl=true/>
             <@buttonLink url=confirmUrl + '/' + itemId?c + '/delete' icon='delete' localizationKey=confirmButtonTextKey color='green' classes='modal-action modal-close text-white'/>
         </div>
     </div>

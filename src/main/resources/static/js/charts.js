@@ -13,11 +13,6 @@ $(document).ready(function()
         editor.save();
     }
 
-    if($("#modalConfirmDelete").length)
-    {
-        $('#modalConfirmDelete').modal('open');
-    }
-
     if($(".datepicker").length)
     {
         chartPickerStartDate = M.Datepicker.init(document.getElementById('chart-datepicker'), {
@@ -121,10 +116,18 @@ $(document).ready(function()
         document.getElementById('buttonShowChartSettings').classList.toggle('hidden', true);
     });
 
-    filterChartPreviews(selectChartID);
+    if($(".chart-preview-column").length)
+    {
+        filterChartPreviews(selectChartID);
 
-    let showEditSettingsButton = document.getElementsByName('NewChartSettings')[0].classList.contains('hidden');
-    document.getElementById('buttonShowChartSettings').classList.toggle('hidden', !showEditSettingsButton);
+        let showEditSettingsButton = document.getElementsByName('NewChartSettings')[0].classList.contains('hidden');
+        document.getElementById('buttonShowChartSettings').classList.toggle('hidden', !showEditSettingsButton);
+    }
+
+    $('.button-request-delete-chart').click(function()
+    {
+        fetchAndShowModalContent(this.dataset.url, '#deleteModalContainerOnDemand', '#modalConfirmDelete', function(){});
+    });
 });
 
 function createDatePickerEnd(minDate, selectedDate)

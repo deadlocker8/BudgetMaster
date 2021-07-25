@@ -170,8 +170,8 @@ public class ChartController extends BaseController
 		}
 
 		model.addAttribute("charts", chartService.getAllEntitiesAsc());
-		model.addAttribute("currentChart", chartService.getRepository().getOne(ID));
-		return "charts/manage";
+		model.addAttribute("chartToDelete", chartService.getRepository().getOne(ID));
+		return "charts/deleteChartModal";
 	}
 
 	@GetMapping(value = "/{ID}/delete")

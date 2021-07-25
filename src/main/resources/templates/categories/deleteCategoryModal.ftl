@@ -17,7 +17,7 @@
     </div>
 
     <div class="modal-footer background-color">
-        <@header.buttonLink url='/categories' icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white'/>
+        <@header.buttonLink url='' icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white' noUrl=true/>
         <@header.buttonLink url='' icon='delete' localizationKey='delete' color='green' id='buttonDeleteCategory' classes='modal-action modal-close text-white' noUrl=true/>
     </div>
 </div>
