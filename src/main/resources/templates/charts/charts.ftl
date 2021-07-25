@@ -228,7 +228,7 @@
 </#macro>
 
 <#macro filterOptions>
-    <div class="container">
+    <div class="container" id="chart-filter-container">
         <div class="row">
             <div class="col s12 no-margin-top center-align">
                 <ul class="collapsible">
