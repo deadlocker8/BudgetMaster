@@ -80,7 +80,6 @@ $(document).ready(function()
     $('.button-display-type').click(function()
     {
         toggleChartTypeButtons('button-display-type', this);
-        document.getElementsByName('displayType')[0].value = this.dataset.value;
         hideGroupTypeButtonsIfOnlyOneDistinctGroup();
         filterChartPreviews();
     });
@@ -88,7 +87,6 @@ $(document).ready(function()
     $('.button-group-type').click(function()
     {
         toggleChartTypeButtons('button-group-type', this);
-        document.getElementsByName('groupType')[0].value = this.dataset.value;
         filterChartPreviews();
     });
 
@@ -97,6 +95,8 @@ $(document).ready(function()
         unsetActiveChartPreview();
 
         this.querySelector('.chart-preview').classList.toggle('active', true);
+        document.getElementsByName('displayType')[0].value = this.dataset.displayType;
+        document.getElementsByName('groupType')[0].value = this.dataset.groupType;
         document.getElementsByName('chartID')[0].value = this.dataset.id;
         checkShowChartButton();
     });
