@@ -12,10 +12,14 @@
     color: #BDFF3F;
 }
 
-
 .quick-date:hover {
     cursor: pointer;
     text-decoration: underline var(--color-blue);
+}
+
+[data-theme="dark"] .quick-date:hover {
+    cursor: pointer;
+    text-decoration: underline #BDFF3F;
 }
 
 .container-chart {
