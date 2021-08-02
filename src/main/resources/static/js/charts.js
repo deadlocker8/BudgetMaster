@@ -122,6 +122,8 @@ $(document).ready(function()
 
         let showEditSettingsButton = document.getElementsByName('NewChartSettings')[0].classList.contains('hidden');
         document.getElementById('buttonShowChartSettings').classList.toggle('hidden', !showEditSettingsButton);
+
+        hideGroupTypeButtonsIfOnlyOneDistinctGroup();
     }
 
     $('.button-request-delete-chart').click(function()
