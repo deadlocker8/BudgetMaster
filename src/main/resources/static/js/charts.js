@@ -154,6 +154,7 @@ function createDatePickerEnd(minDate, selectedDate)
             weekdaysAbbrev: weekDaysLetters,
 
             // Buttons
+            cancel: buttonCancel,
             done: buttonClose,
 
             // Accessibility labels
