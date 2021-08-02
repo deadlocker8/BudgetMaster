@@ -33,7 +33,7 @@
 </#macro>
 
 <#macro buttonApply>
-    <button class="btn waves-effect waves-light background-green" type="submit" name="buttonSave">
+    <button class="btn waves-effect waves-light background-green" type="submit" id="buttonApplyFilter">
         <i class="fas fa-filter left"></i>${locale.getString("filter.apply")}
     </button>
 </#macro>

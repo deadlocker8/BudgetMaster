@@ -36,6 +36,10 @@ $(document).ready(function()
         updateStatus();
     });
 
+    $('#buttonApplyFilter').click(function(){
+       document.getElementsByName('NewFilterConfiguration')[0].submit();
+    });
+
     updateStatus();
 });
 
