@@ -121,8 +121,7 @@ public class TemplateService implements Resettable, AccessAllEntities<Template>,
 
 		if(prepareAccount && template.getAccount() == null)
 		{
-			final Account selectedAccount = accountService.getRepository().findByIsSelected(true);
-			template.setAccount(selectedAccount);
+			template.setAccount(accountService.getRepository().findByIsDefault(true));
 		}
 
 		final Account account = template.getAccount();
