@@ -47,7 +47,7 @@
                                     </#if>
                                 </#if>
                                 <i class="material-icons prefix">edit</i>
-                                <input id="chart-name" type="text" name="name" <@validation.validation "name"/> value="${chartName}">
+                                <input id="chart-name" type="text" name="name" <@validation.validation "name"/> value="${chartName}" <#if chart.getType().name() == "DEFAULT">disabled</#if>>
                                 <label for="chart-name">${locale.getString("chart.new.label.name")}</label>
                             </div>
                         </div>

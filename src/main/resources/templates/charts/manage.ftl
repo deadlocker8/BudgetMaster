@@ -44,9 +44,11 @@
                                         </#if>
                                     </td>
                                     <td>
-                                        <@header.buttonFlat url='/charts/' + chart.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default"/>
                                         <#if (chart.getType().name() == "CUSTOM")>
+                                            <@header.buttonFlat url='/charts/' + chart.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default"/>
                                             <@header.buttonFlat url='/charts/' + chart.ID?c + '/requestDelete' icon='delete' localizationKey='' classes="no-padding text-default button-request-delete-chart" isDataUrl=true/>
+                                        <#else>
+                                            <@header.buttonFlat url='/charts/' + chart.ID?c + '/edit' icon='visibility' localizationKey='' classes="no-padding text-default"/>
                                         </#if>
                                     </td>
                                 </tr>
