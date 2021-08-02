@@ -79,12 +79,10 @@
             <div class="col s12 center-align">
                 <div class="notification-wrapper">
                     <div class="notification ${notification.getBackgroundColor()} ${notification.getTextColor()}">
-                        <div class="valign-wrapper">
-                            <#if notification.getIcon()??>
-                                <i class="${notification.getIcon()} notification-item"></i>
-                            </#if>
-                            <span class="notification-item">${notification.getMessage()}</span>
-                        </div>
+                        <#if notification.getIcon()??>
+                            <i class="${notification.getIcon()} notification-item"></i>
+                        </#if>
+                        <span class="notification-item">${notification.getMessage()}</span>
                         <a class="notification-item notification-clear ${notification.getTextColor()}" data-id="notification-${notification?index}">
                             <i class="material-icons">clear</i>
                         </a>
@@ -104,16 +102,14 @@
         <div class="col s12 center-align">
             <div class="notification-wrapper">
                 <div class="notification notification-border text-default">
-                    <div class="valign-wrapper">
-                        <#if actionUrl?has_content>
-                            <a href="<@s.url actionUrl/>" class="text-default">
-                        </#if>
-                            <i class="${icon} notification-item"></i>
-                            <span class="notification-item left-align">${locale.getString(hint.getLocalizationKey())}</span>
-                        <#if actionUrl?has_content>
-                            </a>
-                        </#if>
-                    </div>
+                    <i class="${icon} notification-item"></i>
+                    <#if actionUrl?has_content>
+                        <a href="<@s.url actionUrl/>" class="text-default">
+                    </#if>
+                        <span class="notification-item left-align">${locale.getString(hint.getLocalizationKey())}</span>
+                    <#if actionUrl?has_content>
+                        </a>
+                    </#if>
                     <a class="notification-item hint-clear text-default" data-url="<@s.url "/hints/dismiss/" + hint.getID()/>" data-id="hint-${hint.getID()}">
                         <i class="material-icons">clear</i>
                     </a>

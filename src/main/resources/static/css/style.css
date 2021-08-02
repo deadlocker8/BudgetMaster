@@ -565,7 +565,16 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     }
 
     .notification {
-        font-size: 2.5vmin;
+        font-size: 3.5vmin;
+    }
+
+    .notification i {
+        font-size: 4.3vmin;
+    }
+
+    .notification-clear i,
+    .hint-clear i {
+        font-size: 4vmin;
     }
 }
 
