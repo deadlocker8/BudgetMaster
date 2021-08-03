@@ -170,7 +170,7 @@ public class ChartController extends BaseController
 		}
 
 		model.addAttribute("charts", chartService.getAllEntitiesAsc());
-		model.addAttribute("chartToDelete", chartService.getRepository().getOne(ID));
+		model.addAttribute("chartToDelete", chartService.getRepository().getById(ID));
 		return "charts/deleteChartModal";
 	}
 
@@ -179,7 +179,7 @@ public class ChartController extends BaseController
 	{
 		if(chartService.isDeletable(ID))
 		{
-			final Chart chartToDelete = chartService.getRepository().getOne(ID);
+			final Chart chartToDelete = chartService.getRepository().getById(ID);
 			chartService.getRepository().deleteById(ID);
 			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.chart.delete.success", chartToDelete.getName()), NotificationType.SUCCESS));
 		}

@@ -71,8 +71,8 @@ class TransactionServiceDatabaseTest
 		DateTime date1 = DateTime.parse("2020-04-30", DateTimeFormat.forPattern("yyyy-MM-dd"));
 		FilterConfiguration filterConfiguration = new FilterConfiguration(true, true, true, true, true, null, null, "");
 
-		Transaction transaction1 = transactionService.getRepository().getOne(37);  // normal transaction
-		Transaction transaction2 = transactionService.getRepository().getOne(9);  //transfer
+		Transaction transaction1 = transactionService.getRepository().getById(37);  // normal transaction
+		Transaction transaction2 = transactionService.getRepository().getById(9);  // transfer
 
 		List<Transaction> transactions = transactionService.getTransactionsForAccount(accountService.getRepository().findByName("Second Account"), date1, DateTime.now(), filterConfiguration);
 		assertThat(transactions).hasSize(2)
