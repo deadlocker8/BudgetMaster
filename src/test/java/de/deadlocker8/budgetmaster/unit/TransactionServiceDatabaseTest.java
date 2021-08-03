@@ -71,12 +71,11 @@ class TransactionServiceDatabaseTest
 		DateTime date1 = DateTime.parse("2020-04-30", DateTimeFormat.forPattern("yyyy-MM-dd"));
 		FilterConfiguration filterConfiguration = new FilterConfiguration(true, true, true, true, true, null, null, "");
 
-		Transaction transaction1 = transactionService.getRepository().getById(37);  // normal transaction
-		Transaction transaction2 = transactionService.getRepository().getById(9);  // transfer
-
 		List<Transaction> transactions = transactionService.getTransactionsForAccount(accountService.getRepository().findByName("Second Account"), date1, DateTime.now(), filterConfiguration);
-		assertThat(transactions).hasSize(2)
-				.containsExactlyInAnyOrder(transaction1, transaction2);
+		assertThat(transactions).hasSize(2);
+
+		assertThat(transactions.get(0)).hasFieldOrPropertyWithValue("ID", 9);  // transfer
+		assertThat(transactions.get(1)).hasFieldOrPropertyWithValue("ID", 37);  // normal transaction
 	}
 
 	@Test
