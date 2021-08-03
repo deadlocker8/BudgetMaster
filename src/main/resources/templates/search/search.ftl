@@ -29,7 +29,7 @@
                         <input type="hidden" name="page" id="inputPageNumber" value="${page.getNumber()}"/>
                     </form>
 
-                    <@searchMacros.pagination page/>
+                    <@searchMacros.pagination page "top"/>
 
                     <div class="row search-container">
                         <div class="col s12">
@@ -40,8 +40,8 @@
                                             <div class="col s3 center-align bold transaction-text">
                                                 ${dateService.getDateStringNormal(transaction.date)}
                                             </div>
-                                            <@transactionsMacros.transactionType transaction/>
                                             <@transactionsMacros.transactionAccountIcon transaction/>
+                                            <@transactionsMacros.transactionType transaction/>
                                             <@transactionsMacros.transactionLinks transaction/>
                                         </div>
                                         <div class="row valign-wrapper no-margin-bottom">
@@ -56,8 +56,8 @@
                                                 ${dateService.getDateStringNormal(transaction.date)}
                                             </div>
                                             <@transactionsMacros.transactionCategory transaction "left-align"/>
-                                            <@transactionsMacros.transactionType transaction/>
                                             <@transactionsMacros.transactionAccountIcon transaction/>
+                                            <@transactionsMacros.transactionType transaction/>
                                             <@transactionsMacros.transactionNameAndDescription transaction "l3 xl4"/>
                                             <@transactionsMacros.transactionAmount transaction transaction.getAccount() "l2 xl2"/>
                                             <@transactionsMacros.transactionLinks transaction/>
@@ -77,6 +77,8 @@
                             </#if>
                         </div>
                     </div>
+
+                    <@searchMacros.pagination page "bottom"/>
                 </@header.content>
             </div>
         </main>

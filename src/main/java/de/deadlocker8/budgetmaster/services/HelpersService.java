@@ -9,6 +9,8 @@ import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryRepository;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
+import de.deadlocker8.budgetmaster.hints.Hint;
+import de.deadlocker8.budgetmaster.hints.HintService;
 import de.deadlocker8.budgetmaster.images.ImageFileExtension;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierType;
 import de.deadlocker8.budgetmaster.reports.Budget;
@@ -51,6 +53,9 @@ public class HelpersService
 
 	@Autowired
 	private CategoryRepository categoryRepository;
+
+	@Autowired
+	private HintService hintService;
 
 	@Value("${budgetmaster.datepicker.simple:false}")
 	private boolean useSimpleDatepickerForTransactions;
@@ -219,5 +224,10 @@ public class HelpersService
 		return Arrays.stream(ImageFileExtension.values())
 				.map(e -> "image/" + e.getBase64Type())
 				.collect(Collectors.joining(", "));
+	}
+
+	public Hint getHintByLocalizationKey(String localizationKey)
+	{
+		return hintService.findByLocalizationKey(localizationKey);
 	}
 }

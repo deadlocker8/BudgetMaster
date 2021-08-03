@@ -33,6 +33,9 @@
                     <br>
                     <@templateFunctions.buttons/>
                     <br>
+                    <#assign hint=helpers.getHintByLocalizationKey("hint.template.arrow.keys")/>
+                    <@header.hint hint=hint/>
+                    <br>
                     <#if templates?size == 0>
                         <div class="container">
                             <div class="headline center-align">${locale.getString("placeholder")}</div>
@@ -43,11 +46,7 @@
                 </div>
             </@header.content>
 
-            <#if currentTemplate??>
-                <@header.modalConfirmDelete title=locale.getString("info.title.template.delete") confirmUrl='/templates' cancelUrlBase='/templates' itemId=currentTemplate.getID() confirmButtonTextKey='info.title.template.delete'>
-                    <p>${locale.getString("info.text.template.delete", currentTemplate.getTemplateName())}</p>
-                </@header.modalConfirmDelete>
-            </#if>
+            <div id="deleteModalContainerOnDemand"></div>
         </main>
 
         <#import "../helpers/scripts.ftl" as scripts>

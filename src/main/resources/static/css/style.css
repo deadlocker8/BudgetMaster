@@ -20,7 +20,7 @@ main {
     margin-bottom: 24px;
 }
 
-.btn, .btn-flat {
+.btn, .btn-flat, .btn-large {
     text-transform: none;
     font-weight: 600;
 }
@@ -236,11 +236,13 @@ main {
     font-size: 2vmin;
 }
 
-.notification-clear i {
+.notification-clear i,
+.hint-clear i {
     font-size: 1.8vmin;
 }
 
-.notification-clear:hover {
+.notification-clear:hover,
+.hint-clear:hover {
     cursor: pointer;
 }
 
@@ -445,7 +447,7 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     line-height: 2.6rem;
 }
 
-.account-icon  {
+.account-icon {
     height: 2.6rem;
 }
 
@@ -455,6 +457,40 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
 
 .tooltipped:hover {
     cursor: pointer;
+}
+
+.tabs {
+    margin-bottom: 1.5rem;
+}
+
+.tabs .tab {
+    text-transform: none;
+    font-weight: bold;
+}
+
+.tabs .tab i {
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+}
+
+.tabs .tab a {
+    font-size: 1.1rem;
+    background-color: #DDDDDD;
+}
+
+.tabs .tab a:hover {
+    background-color: #EEEEEE;
+}
+
+.tabs .tab a:focus,
+.tabs .tab a:focus.active,
+.tabs .tab a.active {
+    background-color: #EEEEEE;
+}
+
+.tabs .indicator {
+    background-color: var(--color-blue);
+    height: 3px;
 }
 
 .invisible {
@@ -526,6 +562,19 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
 
     .template-header-name {
         max-width: 40% !important;
+    }
+
+    .notification {
+        font-size: 3.5vmin;
+    }
+
+    .notification i {
+        font-size: 4.3vmin;
+    }
+
+    .notification-clear i,
+    .hint-clear i {
+        font-size: 4vmin;
     }
 }
 
@@ -679,7 +728,6 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     border-bottom: 1px solid var(--color-blue) !important;
     box-shadow: 0 1px 0 0 var(--color-blue) !important;
 }
-
 
 .debug {
     border: 1px solid red;

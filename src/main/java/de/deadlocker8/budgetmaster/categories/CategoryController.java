@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.categories;
 
 import de.deadlocker8.budgetmaster.controller.BaseController;
+import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.utils.*;
 import de.deadlocker8.budgetmaster.utils.notification.Notification;
@@ -27,12 +28,14 @@ public class CategoryController extends BaseController
 
 	private final CategoryService categoryService;
 	private final HelpersService helpers;
+	private final IconService iconService;
 
 	@Autowired
-	public CategoryController(CategoryService categoryService, HelpersService helpers)
+	public CategoryController(CategoryService categoryService, HelpersService helpers, IconService iconService)
 	{
 		this.categoryService = categoryService;
 		this.helpers = helpers;
+		this.iconService = iconService;
 	}
 
 	@GetMapping
@@ -57,8 +60,8 @@ public class CategoryController extends BaseController
 		model.addAttribute("availableCategories", availableCategories);
 		model.addAttribute("preselectedCategory", categoryService.findByType(CategoryType.NONE));
 
-		model.addAttribute("currentCategory", categoryService.findById(ID).orElseThrow());
-		return "categories/categories";
+		model.addAttribute("categoryToDelete", categoryService.findById(ID).orElseThrow());
+		return "categories/deleteCategoryModal";
 	}
 
 	@PostMapping(value = "/{ID}/delete")
@@ -109,7 +112,9 @@ public class CategoryController extends BaseController
 	}
 
 	@PostMapping(value = "/newCategory")
-	public String post(Model model, @ModelAttribute("NewCategory") Category category, BindingResult bindingResult)
+	public String post(Model model, @ModelAttribute("NewCategory") Category category, BindingResult bindingResult,
+					   @RequestParam(value = "iconImageID", required = false) Integer iconImageID,
+					   @RequestParam(value = "builtinIconIdentifier", required = false) String builtinIconIdentifier)
 	{
 		CategoryValidator userValidator = new CategoryValidator();
 		userValidator.validate(category, bindingResult);
@@ -126,6 +131,9 @@ public class CategoryController extends BaseController
 		{
 			category.setType(CategoryType.CUSTOM);
 		}
+
+		category.updateIcon(iconService, iconImageID, builtinIconIdentifier, categoryService);
+
 		categoryService.save(category);
 
 		return "redirect:/categories";

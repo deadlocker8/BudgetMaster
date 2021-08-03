@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.database.model.v5;
 
+import de.deadlocker8.budgetmaster.database.model.BackupInfo;
 import de.deadlocker8.budgetmaster.database.model.Upgradeable;
 import de.deadlocker8.budgetmaster.database.model.v4.BackupTag_v4;
 import de.deadlocker8.budgetmaster.database.model.v6.BackupTemplate_v6;
@@ -171,7 +172,7 @@ public class BackupTemplate_v5 implements Upgradeable<BackupTemplate_v6>
 	}
 
 	@Override
-	public BackupTemplate_v6 upgrade()
+	public BackupTemplate_v6 upgrade(List<BackupInfo> backupInfoItems)
 	{
 		Integer accountID = null;
 		if(account != null)

@@ -17,6 +17,7 @@
     padding: 0.5rem 1rem;
     border-bottom: 1px solid rgba(0, 0, 0, 0.25);
     background-color: var(--color-white);
+    cursor: pointer;
 }
 
 .columnName-checkbox-label {
@@ -34,24 +35,6 @@
 
 .columnName-disabled .columnName-label {
     color: #878787;
-}
-
-.table-advice {
-    width: auto;
-    margin: 1vmin;
-    border: 2px solid var(--color-text);
-    border-radius: 5px;
-    padding: 0 1vmin;
-    display: inline-block;
-}
-
-.table-advice td {
-    padding: 10px;
-    font-size: 1.5vmin;
-}
-
-.table-advice i {
-    font-size: 2.5vmin;
 }
 
 .columnName-selected {

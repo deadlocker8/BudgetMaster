@@ -36,17 +36,15 @@ public class AboutController extends BaseController
 	public String whatsNewModal(Model model)
 	{
 		final List<NewsEntry> newsEntries = new ArrayList<>();
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.fix.backup.size.headline", "news.fix.backup.size.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.fix.readonly.accounts.headline", "news.fix.readonly.accounts.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.designOffensive.headline", "news.designOffensive.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.gitBackup.headline", "news.gitBackup.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.backupCharts.headline", "news.backupCharts.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.importProcess.headline", "news.importProcess.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.hideAccounts.headline", "news.hideAccounts.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.statistics.headline", "news.statistics.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.hotkeysMonth.headline", "news.hotkeysMonth.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.importBugfixes.headline", "news.importBugfixes.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.chartRelative.headline", "news.chartRelative.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.chartChooser.headline", "news.chartChooser.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.jumpToSearch.headline", "news.jumpToSearch.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.fontAwesomeIcons.headline", "news.fontAwesomeIcons.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.nonSquareImages.headline", "news.nonSquareImages.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.hints.headline", "news.hints.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.tagOverview.headline", "news.tagOverview.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.accountImport.headline", "news.accountImport.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.performance.headline", "news.performance.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.fix.transfersFromHiddenAccounts.headline", "news.fix.transfersFromHiddenAccounts.description"));
 
 		model.addAttribute("newsEntries", newsEntries);
 		return "whatsNewModal";

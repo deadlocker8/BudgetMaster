@@ -1,7 +1,5 @@
 $(document).ready(function()
 {
-    $('#modalConfirmDelete').modal('open');
-
     // open filter modal if corresponding anchor is in url (originating from hotkeys.js)
     if(window.location.href.endsWith('#modalFilter'))
     {
@@ -260,6 +258,11 @@ $(document).ready(function()
             scrollTop: $(highlightedLarge).offset().top
         }, 500);
     }
+
+    $('.button-request-delete-transaction').click(function()
+    {
+        fetchAndShowModalContent(this.dataset.url, '#deleteModalContainerOnDemand', '#modalConfirmDelete', function(){});
+    });
 });
 
 function isHidden(el)

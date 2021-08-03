@@ -29,7 +29,6 @@
                             <input type="hidden" name="lastBackupReminderDate" value="${dateService.getLongDateString(settings.getLastBackupReminderDate())}">
                             <input type="hidden" name="installedVersionCode" value="${settings.getInstalledVersionCode()}">
                             <input type="hidden" name="whatsNewShownForCurrentVersion" value="${settings.getWhatsNewShownForCurrentVersion()?c}">
-                            <input type="hidden" name="showFirstUseBanner" value="${settings.getShowFirstUseBanner()?c}">
 
                             <#-- password -->
                             <div class="row">
@@ -227,6 +226,19 @@
                     </div>
 
                     <hr>
+                    <#-- hints -->
+                    <div class="container">
+                        <div class="section center-align">
+                            <div class="headline">${locale.getString("headline.hints")}</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 center-align">
+                            <@header.buttonLink url='/hints/resetAll' icon='restore' localizationKey='button.hints.reset'/>
+                        </div>
+                    </div>
+
+                    <hr>
                     <#-- database -->
                     <div class="container">
                         <div class="section center-align">
@@ -254,6 +266,10 @@
         <#if performUpdate??>
             <@settingsMacros.update/>
         </#if>
+
+        <script>
+            copiedToClipboard = '${locale.getString("copied")}';
+        </script>
 
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>

@@ -58,8 +58,8 @@
     </div>
 </#macro>
 
-<#macro pagination page>
-    <div class="row">
+<#macro pagination page position>
+    <div class="row pagination-position-${position}">
         <div class="col s12 center-align">
             <#if page.getTotalPages() gt 0>
                 <ul class="pagination">

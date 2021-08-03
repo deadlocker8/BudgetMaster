@@ -1,7 +1,9 @@
 package de.deadlocker8.budgetmaster.accounts;
 
 import de.deadlocker8.budgetmaster.controller.BaseController;
+import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.images.ImageService;
+import de.deadlocker8.budgetmaster.utils.FontAwesomeIcons;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
@@ -27,12 +29,14 @@ public class AccountController extends BaseController
 {
 	private final AccountService accountService;
 	private final ImageService imageService;
+	private final IconService iconService;
 
 	@Autowired
-	public AccountController(AccountService accountService, ImageService imageService)
+	public AccountController(AccountService accountService, ImageService imageService, IconService iconService)
 	{
 		this.accountService = accountService;
 		this.imageService = imageService;
+		this.iconService = iconService;
 	}
 
 	@GetMapping(value = "/{ID}/select")
@@ -72,15 +76,15 @@ public class AccountController extends BaseController
 	public String requestDeleteAccount(Model model, @PathVariable("ID") Integer ID)
 	{
 		model.addAttribute("accounts", accountService.getAllEntitiesAsc());
-		model.addAttribute("currentAccount", accountService.getRepository().getOne(ID));
-		return "accounts/accounts";
+		model.addAttribute("accountToDelete", accountService.getRepository().getById(ID));
+		return "accounts/deleteAccountModal";
 	}
 
 	@GetMapping("/{ID}/delete")
 	public String deleteAccountAndReferringTransactions(WebRequest request, Model model, @PathVariable("ID") Integer ID)
 	{
 		// at least one account is required (to delete a sole account another one has to be created first)
-		final Account accountToDelete = accountService.getRepository().getOne(ID);
+		final Account accountToDelete = accountService.getRepository().getById(ID);
 		if(accountService.getRepository().findAllByType(AccountType.CUSTOM).size() > 1)
 		{
 			accountService.deleteAccount(ID);
@@ -99,8 +103,8 @@ public class AccountController extends BaseController
 	{
 		Account emptyAccount = new Account();
 		model.addAttribute("account", emptyAccount);
-		model.addAttribute("availableImages", imageService.getRepository().findAll());
 		model.addAttribute("availableAccountStates", AccountState.values());
+		model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
 		return "accounts/newAccount";
 	}
 
@@ -114,14 +118,16 @@ public class AccountController extends BaseController
 		}
 
 		model.addAttribute("account", accountOptional.get());
-		model.addAttribute("availableImages", imageService.getRepository().findAll());
 		model.addAttribute("availableAccountStates", AccountState.values());
+		model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
 		return "accounts/newAccount";
 	}
 
 	@PostMapping(value = "/newAccount")
 	public String post(HttpServletRequest request, WebRequest webRequest, Model model,
 					   @ModelAttribute("NewAccount") Account account,
+					   @RequestParam(value = "iconImageID", required = false) Integer iconImageID,
+					   @RequestParam(value = "builtinIconIdentifier", required = false) String builtinIconIdentifier,
 					   BindingResult bindingResult)
 	{
 		AccountValidator accountValidator = new AccountValidator();
@@ -151,6 +157,8 @@ public class AccountController extends BaseController
 			return "accounts/newAccount";
 		}
 
+		account.updateIcon(iconService, iconImageID, builtinIconIdentifier, accountService);
+
 		if(isNewAccount)
 		{
 			account.setType(AccountType.CUSTOM);
@@ -161,7 +169,7 @@ public class AccountController extends BaseController
 			accountService.updateExistingAccount(account);
 		}
 
-		if(request.getSession().getAttribute("database") != null)
+		if(request.getSession().getAttribute("accountMatchList") != null)
 		{
 			return "redirect:/settings/database/import/step2";
 		}

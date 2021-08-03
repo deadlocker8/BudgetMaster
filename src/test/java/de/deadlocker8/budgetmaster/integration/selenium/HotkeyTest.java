@@ -4,79 +4,39 @@ import de.deadlocker8.budgetmaster.Main;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
-import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
-import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
-import de.deadlocker8.budgetmaster.integration.helpers.TransactionTestHelper;
+import de.deadlocker8.budgetmaster.integration.helpers.*;
 import de.thecodelabs.utils.util.OS;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SeleniumTestWatcher.class)
 @SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SeleniumTest
-public class HotkeyTest
+class HotkeyTest extends SeleniumTestBase
 {
 	private IntegrationTestHelper helper;
-	private WebDriver driver;
 
-	@LocalServerPort
-	int port;
-
-	@Rule
-	public TestName name = new TestName();
-
-	@Rule
-	public TestWatcher testWatcher = new TestWatcher()
-	{
-		@Override
-		protected void finished(Description description)
-		{
-			driver.quit();
-		}
-
-		@Override
-		protected void failed(Throwable e, Description description)
-		{
-			IntegrationTestHelper.saveScreenshots(driver, name, HotkeyTest.class);
-		}
-	};
-
-	@Before
+	@BeforeEach
 	public void prepare()
 	{
-		FirefoxOptions options = new FirefoxOptions();
-		options.setHeadless(false);
-		options.addPreference("devtools.console.stdout.content", true);
-		driver = new FirefoxDriver(options);
-
-		// prepare
 		helper = new IntegrationTestHelper(driver, port);
 		helper.start();
 		helper.login(UserService.DEFAULT_PASSWORD);
@@ -87,10 +47,11 @@ public class HotkeyTest
 		final Account account1 = new Account("DefaultAccount0815", AccountType.CUSTOM);
 		final Account account2 = new Account("Account2", AccountType.CUSTOM);
 
-		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf"), List.of(account1, account2));	}
+		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf"), List.of(account1, account2));
+	}
 
 	@Test
-	public void hotkey_newTransaction_normal()
+	void hotkey_newTransaction_normal()
 	{
 		driver.findElement(By.tagName("body")).sendKeys("n");
 
@@ -101,7 +62,7 @@ public class HotkeyTest
 	}
 
 	@Test
-	public void hotkey_newTransaction_recurring()
+	void hotkey_newTransaction_recurring()
 	{
 		driver.findElement(By.tagName("body")).sendKeys("r");
 
@@ -123,7 +84,7 @@ public class HotkeyTest
 	}
 
 	@Test
-	public void hotkey_newTransaction_transactionFromTemplate()
+	void hotkey_newTransaction_transactionFromTemplate()
 	{
 		driver.findElement(By.tagName("body")).sendKeys("v");
 
@@ -134,7 +95,7 @@ public class HotkeyTest
 	}
 
 	@Test
-	public void hotkey_filter()
+	void hotkey_filter()
 	{
 		driver.findElement(By.tagName("body")).sendKeys("f");
 
@@ -146,7 +107,7 @@ public class HotkeyTest
 	}
 
 	@Test
-	public void hotkey_search()
+	void hotkey_search()
 	{
 		driver.findElement(By.tagName("body")).sendKeys("s");
 
@@ -154,7 +115,7 @@ public class HotkeyTest
 	}
 
 	@Test
-	public void hotkey_saveTransaction()
+	void hotkey_saveTransaction()
 	{
 		assumeTrue(OS.isWindows());
 

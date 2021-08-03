@@ -10,7 +10,7 @@
         </#if>
 
         <@header.header "BudgetMaster - ${title}"/>
-        <@header.style "imageSelect"/>
+        <@header.style "iconSelect"/>
         <#import "/spring.ftl" as s>
     </head>
     <@header.body>
@@ -18,7 +18,7 @@
         <@navbar.navbar "accounts" settings/>
 
         <#import "../helpers/customSelectMacros.ftl" as customSelectMacros>
-        <#import "../helpers/imageSelect.ftl" as imageSelectMacros>
+        <#import "../helpers/iconSelect.ftl" as iconSelectMacros>
 
         <main>
             <div class="card main-card background-color">
@@ -47,7 +47,7 @@
                         </div>
 
                         <#-- icon -->
-                        <@imageSelectMacros.imageSelect id="account-icon" item=account/>
+                        <@iconSelectMacros.iconSelect id="account-icon" item=account/>
 
                         <#-- state -->
                         <#if account.getAccountState()??>
@@ -87,12 +87,12 @@
             </div>
         </main>
 
-        <@imageSelectMacros.modalIconSelect idToFocusOnClose="account-name"/>
+        <@iconSelectMacros.modalIconSelect idToFocusOnClose="account-name" item=account/>
 
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
         <script src="<@s.url '/js/accounts.js'/>"></script>
-        <script src="<@s.url '/js/imageSelect.js'/>"></script>
+        <script src="<@s.url '/js/iconSelect.js'/>"></script>
     </@header.body>
 </html>

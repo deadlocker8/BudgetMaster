@@ -36,6 +36,10 @@ $(document).ready(function()
         updateStatus();
     });
 
+    $('#buttonApplyFilter').click(function(){
+       document.getElementsByName('NewFilterConfiguration')[0].submit();
+    });
+
     updateStatus();
 });
 
@@ -89,5 +93,6 @@ function setAll(identifier, checked)
     for(let i = 0; i < checkboxes.length; i++)
     {
         checkboxes[i].checked = checked;
+        checkboxes[i].dispatchEvent(new Event('change'));
     }
 }

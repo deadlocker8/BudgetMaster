@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.settings;
 
-import de.deadlocker8.budgetmaster.backup.AutoBackupTime;
 import de.deadlocker8.budgetmaster.backup.AutoBackupStrategy;
+import de.deadlocker8.budgetmaster.backup.AutoBackupTime;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -41,7 +41,6 @@ public class Settings
 
 	private Integer installedVersionCode;
 	private Boolean whatsNewShownForCurrentVersion;
-	private Boolean showFirstUseBanner;
 
 	public Settings()
 	{
@@ -69,7 +68,6 @@ public class Settings
 		defaultSettings.setAutoBackupGitToken("");
 		defaultSettings.setInstalledVersionCode(0);
 		defaultSettings.setWhatsNewShownForCurrentVersion(false);
-		defaultSettings.setShowFirstUseBanner(true);
 
 		return defaultSettings;
 	}
@@ -288,16 +286,6 @@ public class Settings
 		return !this.whatsNewShownForCurrentVersion;
 	}
 
-	public Boolean getShowFirstUseBanner()
-	{
-		return showFirstUseBanner;
-	}
-
-	public void setShowFirstUseBanner(Boolean showFirstUseBanner)
-	{
-		this.showFirstUseBanner = showFirstUseBanner;
-	}
-
 	@Override
 	public String toString()
 	{
@@ -322,7 +310,6 @@ public class Settings
 				", autoBackupGitToken='" + autoBackupGitToken + '\'' +
 				", installedVersionCode=" + installedVersionCode +
 				", whatsNewShownForCurrentVersion=" + whatsNewShownForCurrentVersion +
-				", showFirstUseBanner=" + showFirstUseBanner +
 				'}';
 	}
 }

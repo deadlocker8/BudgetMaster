@@ -4,28 +4,28 @@ import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.database.model.Converter;
 import de.deadlocker8.budgetmaster.database.model.v4.BackupTag_v4;
-import de.deadlocker8.budgetmaster.database.model.v6.BackupTemplate_v6;
-import de.deadlocker8.budgetmaster.images.Image;
+import de.deadlocker8.budgetmaster.database.model.v7.BackupTemplate_v7;
+import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.templates.Template;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TemplateConverter implements Converter<Template, BackupTemplate_v6>
+public class TemplateConverter implements Converter<Template, BackupTemplate_v7>
 {
-	private final List<Image> availableIcons;
+	private final List<Icon> availableIcons;
 	private final List<Category> availableCategories;
 	private final List<Account> availableAccounts;
 
-	public TemplateConverter(List<Image> availableIcons, List<Category> availableCategories, List<Account> availableAccounts)
+	public TemplateConverter(List<Icon> availableIcons, List<Category> availableCategories, List<Account> availableAccounts)
 	{
 		this.availableIcons = availableIcons;
 		this.availableCategories = availableCategories;
 		this.availableAccounts = availableAccounts;
 	}
 
-	public Template convertToInternalForm(BackupTemplate_v6 backupTemplate)
+	public Template convertToInternalForm(BackupTemplate_v7 backupTemplate)
 	{
 		if(backupTemplate == null)
 		{
@@ -59,19 +59,19 @@ public class TemplateConverter implements Converter<Template, BackupTemplate_v6>
 		template.setTags(convertedTags);
 
 		template.setTemplateName(backupTemplate.getTemplateName());
-		template.setIcon(getItemById(availableIcons, backupTemplate.getIconID()));
+		template.setIconReference(getItemById(availableIcons, backupTemplate.getIconReferenceID()));
 		return template;
 	}
 
 	@Override
-	public BackupTemplate_v6 convertToExternalForm(Template internalItem)
+	public BackupTemplate_v7 convertToExternalForm(Template internalItem)
 	{
 		if(internalItem == null)
 		{
 			return null;
 		}
 
-		final BackupTemplate_v6 template = new BackupTemplate_v6();
+		final BackupTemplate_v7 template = new BackupTemplate_v7();
 		template.setAmount(internalItem.getAmount());
 		template.setName(internalItem.getName());
 
@@ -103,10 +103,12 @@ public class TemplateConverter implements Converter<Template, BackupTemplate_v6>
 
 		template.setTemplateName(internalItem.getTemplateName());
 
-		if(internalItem.getIcon() != null)
+		final Icon icon = internalItem.getIconReference();
+		if(icon != null)
 		{
-			template.setIconID(internalItem.getIcon().getID());
+			template.setIconReferenceID(icon.getID());
 		}
+
 		return template;
 	}
 }

@@ -4,6 +4,7 @@ import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.charts.Chart;
+import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.services.EntityType;
 import de.deadlocker8.budgetmaster.templates.Template;
@@ -22,12 +23,13 @@ public class InternalDatabase
 	private List<Template> templates;
 	private List<Chart> charts;
 	private List<Image> images;
+	private List<Icon> icons;
 
 	public InternalDatabase()
 	{
 	}
 
-	public InternalDatabase(List<Category> categories, List<Account> accounts, List<Transaction> transactions, List<Template> templates, List<Chart> charts, List<Image> images)
+	public InternalDatabase(List<Category> categories, List<Account> accounts, List<Transaction> transactions, List<Template> templates, List<Chart> charts, List<Image> images, List<Icon> icons)
 	{
 		this.categories = categories;
 		this.accounts = accounts;
@@ -35,6 +37,7 @@ public class InternalDatabase
 		this.templates = templates;
 		this.charts = charts;
 		this.images = images;
+		this.icons = icons;
 	}
 
 	public List<Category> getCategories()
@@ -65,6 +68,11 @@ public class InternalDatabase
 	public List<Image> getImages()
 	{
 		return images;
+	}
+
+	public List<Icon> getIcons()
+	{
+		return icons;
 	}
 
 	public Map<EntityType, Integer> getNumberOfEntitiesByType()

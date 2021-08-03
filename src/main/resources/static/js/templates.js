@@ -1,10 +1,5 @@
 $(document).ready(function()
 {
-    if($('#modalConfirmDelete').length)
-    {
-        $('#modalConfirmDelete').modal('open');
-    }
-
     M.Collapsible.init(document.querySelector('.collapsible.expandable'), {
         accordion: false
     });
@@ -39,6 +34,11 @@ $(document).ready(function()
         document.getElementById('searchTemplate').focus();
         enableTemplateHotKeys();
     }
+
+    $('.button-request-delete-template').click(function()
+    {
+        fetchAndShowModalContent(this.dataset.url, '#deleteModalContainerOnDemand', '#modalConfirmDelete', function(){});
+    });
 });
 
 let selectedTemplateName = null;

@@ -16,39 +16,39 @@ public class DefaultCharts
 
 	public static final Chart CHART_DEFAULT = new Chart(null,
 			getChartFromFile("charts/Default.js"),
-			ChartType.CUSTOM, -1);
+			ChartType.CUSTOM, -1, ChartDisplayType.CUSTOM, ChartGroupType.NONE, null);
 
 	private static final Chart CHART_ACCOUNT_SUM_PER_DAY = new Chart("charts.default.accountSumPerDay",
 			getChartFromFile("charts/AccountSumPerDay.js"),
-			ChartType.DEFAULT, 7);
+			ChartType.DEFAULT, 11, ChartDisplayType.LINE, ChartGroupType.NONE, "accountSumPerDay.png");
 
 	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_BAR = new Chart("charts.default.incomesAndExpendituresPerMonthBar",
 			getChartFromFile("charts/IncomesAndExpendituresPerMonthBar.js"),
-			ChartType.DEFAULT, 7);
+			ChartType.DEFAULT, 11, ChartDisplayType.BAR, ChartGroupType.MONTH, "incomesAndExpendituresPerMonthBar.png");
 
 	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_LINE = new Chart("charts.default.incomesAndExpendituresPerMonthLine",
 			getChartFromFile("charts/IncomesAndExpendituresPerMonthLine.js"),
-			ChartType.DEFAULT, 7);
+			ChartType.DEFAULT, 11, ChartDisplayType.LINE, ChartGroupType.MONTH, "incomesAndExpendituresPerMonthLine.png");
 
 	private static final Chart CHART_INCOMES_AND_EXPENDITURES_BY_CATEGORY_BAR = new Chart("charts.default.incomesAndExpendituresByCategoryBar",
 			getChartFromFile("charts/IncomesAndExpendituresByCategoryBar.js"),
-			ChartType.DEFAULT, 2);
+			ChartType.DEFAULT, 6, ChartDisplayType.BAR, ChartGroupType.NONE, "incomesAndExpendituresByCategoryBar.png");
 
 	private static final Chart CHART_INCOMES_AND_EXPENDITURES_BY_CATEGORY_PIE = new Chart("charts.default.incomesAndExpendituresByCategoryPie",
 			getChartFromFile("charts/IncomesAndExpendituresByCategoryPie.js"),
-			ChartType.DEFAULT, 3);
+			ChartType.DEFAULT, 7, ChartDisplayType.PIE, ChartGroupType.NONE, "incomesAndExpendituresByCategoryPie.png");
 
 	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_BY_CATEGORIES = new Chart("charts.default.incomesAndExpendituresPerMonthByCategories",
 			getChartFromFile("charts/IncomesAndExpendituresPerMonthByCategories.js"),
-			ChartType.DEFAULT, 17);
+			ChartType.DEFAULT, 21, ChartDisplayType.BAR, ChartGroupType.MONTH, "incomesAndExpendituresPerMonthByCategories.png");
 
 	private static final Chart CHART_REST_PER_MONTH = new Chart("charts.default.restPerMonth",
 			getChartFromFile("charts/RestPerMonth.js"),
-			ChartType.DEFAULT, 3);
+			ChartType.DEFAULT, 7, ChartDisplayType.BAR, ChartGroupType.MONTH, "restPerMonth.png");
 
 	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_YEAR_BAR = new Chart("charts.default.incomesAndExpendituresPerYearBar",
 			getChartFromFile("charts/IncomesAndExpendituresPerYearBar.js"),
-			ChartType.DEFAULT, 2);
+			ChartType.DEFAULT, 6, ChartDisplayType.BAR, ChartGroupType.YEAR, "incomesAndExpendituresPerYearBar.png");
 
 	private DefaultCharts()
 	{

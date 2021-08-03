@@ -6,7 +6,7 @@
 
     <groupId>de.deadlocker8</groupId>
     <artifactId>BudgetMaster</artifactId>
-    <version>2.6.1</version>
+    <version>2.7.0</version>
     <name>BudgetMaster</name>
 
     <repositories>
@@ -35,7 +35,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.5</version>
+        <version>2.5.3</version>
         <relativePath/>
     </parent>
 
@@ -58,17 +58,17 @@
 
         <jlibs.version>3.2.0</jlibs.version>
         <versionizer.version>3.0.1</versionizer.version>
-        <webjars-locator.version>0.40</webjars-locator.version>
+        <webjars-locator.version>0.41</webjars-locator.version>
         <jquery.version>3.6.0</jquery.version>
         <materializecss.version>1.0.0</materializecss.version>
-        <fontawesome.version>5.15.2</fontawesome.version>
+        <fontawesome.version>5.15.3</fontawesome.version>
         <sortablejs.version>1.13.0</sortablejs.version>
         <mousetrap.version>1.6.5</mousetrap.version>
-        <codemirror.version>5.50.0</codemirror.version>
+        <codemirror.version>5.62.0</codemirror.version>
         <selenium.version>3.141.59</selenium.version>
-        <assertj-core.version>3.19.0</assertj-core.version>
-        <jgit.version>5.11.0.202103091610-r</jgit.version>
-        <natorder.version>1.0.1</natorder.version>
+        <assertj-core.version>3.20.2</assertj-core.version>
+        <jgit.version>5.12.0.202106070339-r</jgit.version>
+        <natorder.version>1.0.2</natorder.version>
         <h2database.version>1.4.199</h2database.version>
         <itextpdf.version>5.5.13.2</itextpdf.version>
         <usertype-core.version>6.0.1.GA</usertype-core.version>
@@ -76,7 +76,7 @@
 
         <app.versionDate>${maven.build.timestamp}</app.versionDate>
         <maven.build.timestamp.format>dd.MM.yy</maven.build.timestamp.format>
-        <app.versionCode>32</app.versionCode>
+        <app.versionCode>33</app.versionCode>
         <app.author>Robert Goldmann</app.author>
 
         <project.outputDirectory>build/${project.version}</project.outputDirectory>
@@ -247,18 +247,6 @@
             <version>${assertj-core.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.hamcrest</groupId>
-                    <artifactId>hamcrest-core</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
     </dependencies>
 
     <build>
@@ -312,7 +300,7 @@
                             <headerType>gui</headerType>
                             <jar>${project.outputDirectory}/${project.artifactName}.jar</jar>
                             <outfile>${project.exe}</outfile>
-                            <downloadUrl>https://java.com/download</downloadUrl>
+                            <downloadUrl>https://adoptopenjdk.net/</downloadUrl>
                             <classPath>
                                 <mainClass>${project.groupId}${project.artifactId}.Main</mainClass>
                             </classPath>
@@ -321,7 +309,7 @@
                                 <bundledJreAsFallback>false</bundledJreAsFallback>
                                 <minVersion>11</minVersion>
                                 <jdkPreference>preferJre</jdkPreference>
-                                <runtimeBits>64/32</runtimeBits>
+                                <runtimeBits>64</runtimeBits>
                             </jre>
                             <icon>build/icon.ico</icon>
                         </configuration>

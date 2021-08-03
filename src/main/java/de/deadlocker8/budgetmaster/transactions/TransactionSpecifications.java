@@ -91,8 +91,6 @@ public class TransactionSpecifications
 				predicates.add(builder.like(builder.lower(transaction.get(Transaction_.name)), "%" + name.toLowerCase() + "%"));
 			}
 
-			predicates.add(transaction.get(Transaction_.account).get("accountState").in(List.of(AccountState.FULL_ACCESS, AccountState.READ_ONLY)));
-
 			query.orderBy(builder.desc(transaction.get(Transaction_.date)));
 
 			Predicate[] predicatesArray = new Predicate[predicates.size()];

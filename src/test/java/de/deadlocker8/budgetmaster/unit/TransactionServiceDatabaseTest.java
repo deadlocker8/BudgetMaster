@@ -9,8 +9,7 @@ import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -21,7 +20,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.Resource;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
@@ -30,13 +28,12 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = Main.class)
 @Import(TransactionServiceDatabaseTest.TestDatabaseConfiguration.class)
 @ActiveProfiles("test")
 @SeleniumTest
 @Transactional
-public class TransactionServiceDatabaseTest
+class TransactionServiceDatabaseTest
 {
 	@TestConfiguration
 	static class TestDatabaseConfiguration
@@ -61,7 +58,7 @@ public class TransactionServiceDatabaseTest
 	private AccountService accountService;
 
 	@Test
-	public void test_deleteAll()
+	void test_deleteAll()
 	{
 		transactionService.deleteAll();
 
@@ -69,21 +66,20 @@ public class TransactionServiceDatabaseTest
 	}
 
 	@Test
-	public void test_getTransactionsForAccount_specificAccount()
+	void test_getTransactionsForAccount_specificAccount()
 	{
 		DateTime date1 = DateTime.parse("2020-04-30", DateTimeFormat.forPattern("yyyy-MM-dd"));
 		FilterConfiguration filterConfiguration = new FilterConfiguration(true, true, true, true, true, null, null, "");
 
-		Transaction transaction1 = transactionService.getRepository().getOne(37);  // normal transaction
-		Transaction transaction2 = transactionService.getRepository().getOne(9);  //transfer
-
 		List<Transaction> transactions = transactionService.getTransactionsForAccount(accountService.getRepository().findByName("Second Account"), date1, DateTime.now(), filterConfiguration);
-		assertThat(transactions).hasSize(2)
-				.containsExactlyInAnyOrder(transaction1, transaction2);
+		assertThat(transactions).hasSize(2);
+
+		assertThat(transactions.get(0)).hasFieldOrPropertyWithValue("ID", 9);  // transfer
+		assertThat(transactions.get(1)).hasFieldOrPropertyWithValue("ID", 37);  // normal transaction
 	}
 
 	@Test
-	public void test_getTransactionsForAccount_all()
+	void test_getTransactionsForAccount_all()
 	{
 		DateTime date1 = DateTime.parse("2020-04-30", DateTimeFormat.forPattern("yyyy-MM-dd"));
 		FilterConfiguration filterConfiguration = new FilterConfiguration(true, true, true, true, true, null, null, "");
@@ -93,7 +89,7 @@ public class TransactionServiceDatabaseTest
 	}
 
 	@Test
-	public void test_getTransactionsForAccountUntilDate()
+	void test_getTransactionsForAccountUntilDate()
 	{
 		DateTime date1 = DateTime.parse("2020-04-30", DateTimeFormat.forPattern("yyyy-MM-dd"));
 		DateTime date2 = DateTime.parse("2020-05-20", DateTimeFormat.forPattern("yyyy-MM-dd"));
@@ -104,7 +100,7 @@ public class TransactionServiceDatabaseTest
 	}
 
 	@Test
-	public void test_getTransactionsForMonthAndYear()
+	void test_getTransactionsForMonthAndYear()
 	{
 		FilterConfiguration filterConfiguration = new FilterConfiguration(true, true, true, true, true, null, null, "");
 

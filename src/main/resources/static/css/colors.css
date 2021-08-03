@@ -19,6 +19,7 @@
     --color-grey: #696969;
     --color-grey-dark: rgba(0, 0, 0, 0.25);
     --color-grey-dark-almost-transparent: rgba(0, 0, 0, 0.08);
+    --color-grey-ccc: #CCCCCC;
     --color-black: rgba(0, 0, 0, 0.87);
 
     --color-text: #212121;
@@ -34,7 +35,7 @@
     --color-blue-light: rgba(80, 115, 146, 0.8);
     --color-yellow: #E9C46A;
     --color-grey-light: #333333;
-    --color-grey: #CCCCCC;
+    --color-grey: var(--color-grey-ccc);
     --color-grey-dark: rgba(255, 255, 255, 0.5);
     --color-grey-dark-almost-transparent: rgba(255, 255, 255, 0.125);
 

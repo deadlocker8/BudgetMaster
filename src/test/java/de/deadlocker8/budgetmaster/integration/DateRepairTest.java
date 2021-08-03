@@ -5,8 +5,7 @@ import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -22,19 +21,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = Main.class)
 @Import(DateRepairTest.TestDatabaseConfiguration.class)
 @ActiveProfiles("test")
 @SeleniumTest
 @Transactional
-public class DateRepairTest
+class DateRepairTest
 {
 	@TestConfiguration
 	static class TestDatabaseConfiguration
@@ -56,7 +53,7 @@ public class DateRepairTest
 	private TransactionRepository transactionRepository;
 
 	@Test
-	public void test_Repeating_WithTags()
+	void test_Repeating_WithTags()
 	{
 		final List<Transaction> transactions = transactionRepository.findAll();
 		assertThat(transactions).hasSize(8);
@@ -69,7 +66,7 @@ public class DateRepairTest
 	}
 
 	@Test
-	public void test_Repeating()
+	void test_Repeating()
 	{
 		final List<Transaction> transactions = transactionRepository.findAll();
 		assertThat(transactions).hasSize(8);

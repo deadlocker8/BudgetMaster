@@ -1,4 +1,5 @@
 <#import "../helpers/header.ftl" as header>
+<#import "/spring.ftl" as s>
 
 <#function getCategoryName category>
     <#if category?? && category.getName()??>
@@ -14,41 +15,32 @@
     </#if>
 </#function>
 
-<#macro categoryCircle category classes="" datasetValue="">
+<#macro categoryCircle category classes="" datasetValue=false enableSearchWrapper=false>
     <#assign categoryName=getCategoryName(category)>
 
-    <div class="category-circle ${classes} <#if settings.getShowCategoriesAsCircles()?? && settings.getShowCategoriesAsCircles() == false>category-square</#if>" style="background-color: ${category.color}" <#if datasetValue?has_content>data-value="${category.getID()}"</#if>>
+    <#if enableSearchWrapper>
+        <a href="<@s.url '/search?searchCategory=true&searchText=' + category.getName()/>">
+    </#if>
+
+    <div class="category-circle ${classes} <#if settings.getShowCategoriesAsCircles()?? && settings.getShowCategoriesAsCircles() == false>category-square</#if>" style="background-color: ${category.color}" <#if datasetValue>data-value="${category.getID()}"</#if>>
         <span style="color: ${category.getAppropriateTextColor()}">
-            <#if category.getIcon()?has_content>
-                <i class="${category.getIcon()}"></i>
+            <#if category.getIconReference()??>
+                <@header.entityIcon entity=category classes="category-icon"/>
             <#else>
                 ${categoryName?capitalize[0]}
             </#if>
         </span>
     </div>
+
+    <#if enableSearchWrapper>
+        </a>
+    </#if>
 </#macro>
 
 <#macro modalIconSelect>
     <div id="modalIconSelect" class="modal modal-fixed-footer background-color">
         <div class="modal-content">
-            <div class="row no-margin-bottom">
-                <div class="input-field col s12 m12 l8 offset-l2">
-                    <i class="material-icons prefix">search</i>
-                    <input id="searchIcons" type="text" onchange="searchCategoryIcons();" onkeypress="searchCategoryIcons();" onpaste="searchCategoryIcons()" oninput="searchCategoryIcons();">
-                    <label for="searchIcons">${locale.getString("search")}</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s12 center-align" id="numberOfIcons"><span id="numberOfMatchingIcons">${fontawesomeIcons?size?c}</span>/${fontawesomeIcons?size?c} ${locale.getString("category.new.icons")}</div>
-            </div>
 
-            <hr>
-
-            <div class="row">
-                <#list fontawesomeIcons as icon>
-                    <@categoryIconOption icon/>
-                </#list>
-            </div>
 
         </div>
         <div class="modal-footer background-color">
@@ -58,11 +50,3 @@
     </div>
 </#macro>
 
-<#macro categoryIconOption icon>
-    <div class="col s4 m2 l2 category-icon-option-column">
-        <div class="category-icon-option">
-            <i class="category-icon-option-icon ${icon}"></i>
-            <div class="category-icon-option-name truncate">${icon}</div>
-        </div>
-    </div>
-</#macro>

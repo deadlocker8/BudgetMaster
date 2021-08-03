@@ -17,10 +17,10 @@
     <#import "../categories/categoriesFunctions.ftl" as categoriesFunctions>
     <div class="col s2 l1 xl1 ${alignment}">
         <div class="hide-on-med-and-down">
-            <@categoriesFunctions.categoryCircle transaction.category/>
+            <@categoriesFunctions.categoryCircle category=transaction.category enableSearchWrapper=true/>
         </div>
         <div class="hide-on-large-only">
-            <@categoriesFunctions.categoryCircle transaction.category "category-circle-small"/>
+            <@categoriesFunctions.categoryCircle category=transaction.category classes="category-circle-small" enableSearchWrapper=true/>
         </div>
     </div>
 </#macro>
@@ -47,9 +47,9 @@
 
 <#macro transactionButtons transaction>
         <div class="col s8 l2 xl1 right-align transaction-buttons no-wrap">
-            <#if (transaction.category.type.name() != "REST") && transaction.getAccount().getAccountState().name() == "FULL_ACCESS">
+            <#if transaction.isEditable()>
                 <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default"/>
-                <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/requestDelete' icon='delete' localizationKey='' classes="no-padding text-default"/>
+                <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/requestDelete' icon='delete' localizationKey='' classes="no-padding text-default button-request-delete-transaction" isDataUrl=true/>
             </#if>
         </div>
 </#macro>
@@ -57,14 +57,16 @@
 <#macro transactionAccountIcon transaction>
     <#if helpers.getCurrentAccount().getType().name() == "ALL" && transaction.getAccount()??>
         <#import "../helpers/customSelectMacros.ftl" as customSelectMacros>
-        <div class="col s2 l1 xl1 tooltipped no-padding" data-position="bottom" data-tooltip="${transaction.getAccount().getName()}">
-            <div class="hide-on-med-and-down">
-                <@customSelectMacros.accountIcon transaction.getAccount() transaction.getAccount().getName()/>
+        <a href="<@s.url '/accounts/' + transaction.getAccount().getID() + '/select'/>">
+            <div class="col s2 l1 xl1 tooltipped no-padding" data-position="bottom" data-tooltip="${transaction.getAccount().getName()}">
+                <div class="hide-on-med-and-down">
+                    <@customSelectMacros.accountIcon transaction.getAccount() transaction.getAccount().getName()/>
+                </div>
+                <div class="hide-on-large-only">
+                    <@customSelectMacros.accountIcon transaction.getAccount() transaction.getAccount().getName() "category-circle-small"/>
+                </div>
             </div>
-            <div class="hide-on-large-only">
-                <@customSelectMacros.accountIcon transaction.getAccount() transaction.getAccount().getName() "category-circle-small"/>
-            </div>
-        </div>
+        </a>
     </#if>
 
 </#macro>

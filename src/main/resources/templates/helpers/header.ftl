@@ -21,7 +21,7 @@
     <#import "/spring.ftl" as s>
     <title>${title}</title>
     <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="<@s.url '/webjars/font-awesome/5.15.2/css/all.min.css'/>">
+    <link rel="stylesheet" href="<@s.url '/webjars/font-awesome/5.15.3/css/all.min.css'/>">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="<@s.url "/webjars/materializecss/1.0.0/css/materialize.min.css"/>">
     <@style "colors"/>
@@ -45,7 +45,7 @@
     </#if>
 </#macro>
 
-<#macro modalConfirmDelete title confirmUrl cancelUrlBase itemId confirmButtonTextKey id="modalConfirmDelete" classes="">
+<#macro modalConfirmDelete title confirmUrl itemId confirmButtonTextKey id="modalConfirmDelete" classes="">
     <div id="${id}" class="modal background-color ${classes}">
         <div class="modal-content">
             <h4>${title}</h4>
@@ -53,7 +53,7 @@
             <#nested>
         </div>
         <div class="modal-footer background-color">
-            <@buttonLink url=cancelUrlBase icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white'/>
+            <@buttonLink url='' icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white' noUrl=true/>
             <@buttonLink url=confirmUrl + '/' + itemId?c + '/delete' icon='delete' localizationKey=confirmButtonTextKey color='green' classes='modal-action modal-close text-white'/>
         </div>
     </div>
@@ -79,12 +79,10 @@
             <div class="col s12 center-align">
                 <div class="notification-wrapper">
                     <div class="notification ${notification.getBackgroundColor()} ${notification.getTextColor()}">
-                        <div>
-                            <#if notification.getIcon()??>
-                                <i class="${notification.getIcon()} notification-item"></i>
-                            </#if>
-                            <span class="notification-item">${notification.getMessage()}</span>
-                        </div>
+                        <#if notification.getIcon()??>
+                            <i class="${notification.getIcon()} notification-item"></i>
+                        </#if>
+                        <span class="notification-item">${notification.getMessage()}</span>
                         <a class="notification-item notification-clear ${notification.getTextColor()}" data-id="notification-${notification?index}">
                             <i class="material-icons">clear</i>
                         </a>
@@ -93,6 +91,32 @@
             </div>
         </div>
     </#list>
+</#macro>
+
+<#macro hint hint icon="fas fa-info" actionUrl="">
+    <#if hint.isDismissed()>
+        <#return>
+    </#if>
+
+    <div class="row" id="hint-${hint.getID()}">
+        <div class="col s12 center-align">
+            <div class="notification-wrapper">
+                <div class="notification notification-border text-default">
+                    <i class="${icon} notification-item"></i>
+                    <#if actionUrl?has_content>
+                        <a href="<@s.url actionUrl/>" class="text-default">
+                    </#if>
+                        <span class="notification-item left-align">${locale.getString(hint.getLocalizationKey())}</span>
+                    <#if actionUrl?has_content>
+                        </a>
+                    </#if>
+                    <a class="notification-item hint-clear text-default" data-url="<@s.url "/hints/dismiss/" + hint.getID()/>" data-id="hint-${hint.getID()}">
+                        <i class="material-icons">clear</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </#macro>
 
 <#macro buttonLink url icon localizationKey id="" color="background-blue" classes="" isDataUrl=false noUrl=false disabled=false>
@@ -105,8 +129,8 @@
     </a>
 </#macro>
 
-<#macro buttonSubmit name icon localizationKey id="" color="background-blue" classes="" disabled=false>
-    <button id="${id}" class="btn waves-effect waves-light ${color} ${classes}" type="submit" name="${name}" <#if disabled>disabled</#if>>
+<#macro buttonSubmit name icon localizationKey id="" color="background-blue" classes="" disabled=false formaction="">
+    <button id="${id}" class="btn waves-effect waves-light ${color} ${classes}" type="submit" name="${name}" <#if disabled>disabled</#if> <#if formaction?has_content>formaction="<@s.url formaction/>"</#if>>
         <i class="material-icons left <#if !localizationKey?has_content>no-margin</#if>">${icon}</i><#if localizationKey?has_content>${locale.getString(localizationKey)}</#if>
     </button>
 </#macro>
@@ -118,4 +142,14 @@
             <#if isDataUrl>data-url="${url}"</#if>>
         <i class="material-icons left <#if !localizationKey?has_content>no-margin</#if> ${iconClasses}">${icon}</i><#if localizationKey?has_content><span>${locale.getString(localizationKey)}</span></#if>
     </a>
+</#macro>
+
+<#macro entityIcon entity classes="">
+    <#if entity.getIconReference()??>
+        <#if entity.getIconReference().isBuiltinIcon()>
+            <i class="${entity.getIconReference().getBuiltinIdentifier()} ${classes}"></i>
+        <#else>
+            <img src="${entity.getIconReference().getImage().getBase64EncodedImage()}" class="${classes}"/>
+        </#if>
+    </#if>
 </#macro>

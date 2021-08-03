@@ -14,12 +14,14 @@
         <@header.header "BudgetMaster - ${title}"/>
         <link type="text/css" rel="stylesheet" href="<@s.url '${"/css/libs/spectrum.css"}'/>"/>
         <@header.style "spectrum"/>
+        <@header.style "iconSelect"/>
     </head>
     <@header.body>
         <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "categories" settings/>
 
         <#import "categoriesFunctions.ftl" as categoriesFunctions>
+        <#import "../helpers/iconSelect.ftl" as iconSelectMacros>
 
         <main>
             <div class="card main-card background-color">
@@ -77,22 +79,7 @@
                             </div>
 
                             <#-- icon -->
-                            <div class="row">
-                                <div class="input-field col s12 m12 l8 offset-l2">
-                                    <i class="fas fa-icons prefix"></i>
-                                    <label class="input-label" for="category-icon">${locale.getString("category.new.label.icon")}</label>
-                                    <div id="category-icon" class="valign-wrapper">
-                                        <a href="#modalIconSelect" id="category-icon-preview" class="modal-trigger">
-                                            <i id="category-icon-preview-icon" class="<#if category.getIcon()?has_content>${category.getIcon()}<#else>hidden</#if>"></i>
-                                            <div id="category-icon-placeholder" class="<#if category.getIcon()?has_content>hidden</#if>">${locale.getString("category.new.icon.placeholder")}</div>
-                                        </a>
-                                    <@header.buttonFlat url='' icon='delete' id='button-remove-category-icon' localizationKey='' classes="no-padding text-default" noUrl=true/>
-                                    </div>
-                                    <input id="hidden-input-category-icon" type="hidden" name="icon" value="<#if category.getIcon()??>${category.getIcon()}</#if>">
-                                </div>
-                            </div>
-
-                            <@categoriesFunctions.modalIconSelect/>
+                            <@iconSelectMacros.iconSelect id="account-icon" item=category/>
 
                             <br>
 
@@ -120,14 +107,17 @@
                             </div>
                         </form>
                     </div>
-                </@header.content>
+            </@header.content>
             </div>
         </main>
+
+        <@iconSelectMacros.modalIconSelect idToFocusOnClose="category-name" item=category/>
 
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
         <script src="<@s.url '/js/libs/spectrum.js'/>"></script>
         <script src="<@s.url '/js/categories.js'/>"></script>
+        <script src="<@s.url '/js/iconSelect.js'/>"></script>
     </@header.body>
 </html>

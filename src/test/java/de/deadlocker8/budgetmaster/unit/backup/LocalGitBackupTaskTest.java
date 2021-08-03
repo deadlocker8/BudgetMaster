@@ -6,22 +6,21 @@ import de.deadlocker8.budgetmaster.backup.BackupTask;
 import de.deadlocker8.budgetmaster.backup.LocalGitBackupTask;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
-import de.deadlocker8.budgetmaster.database.model.v5.BackupCategory_v5;
-import de.deadlocker8.budgetmaster.database.model.v6.BackupDatabase_v6;
+import de.deadlocker8.budgetmaster.database.model.v7.BackupCategory_v7;
+import de.deadlocker8.budgetmaster.database.model.v7.BackupDatabase_v7;
 import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.unit.helpers.Helpers;
 import de.thecodelabs.utils.util.OS;
 import org.joda.time.DateTimeUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,8 +30,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
-public class LocalGitBackupTaskTest
+@ExtendWith(SpringExtension.class)
+class LocalGitBackupTaskTest
 {
 	@Mock
 	private DatabaseService databaseService;
@@ -40,13 +39,13 @@ public class LocalGitBackupTaskTest
 	@Mock
 	private SettingsService settingsService;
 
-	@Rule
-	public final TemporaryFolder tempFolder = new TemporaryFolder();
+	@TempDir
+	public Path tempFolder;
 
 	private static String gitExecutable;
 
 
-	@BeforeClass
+	@BeforeAll
 	public static void setup()
 	{
 		if(OS.isWindows())
@@ -61,14 +60,14 @@ public class LocalGitBackupTaskTest
 		DateTimeUtils.setCurrentMillisFixed(1612004400000L);
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void cleanup()
 	{
 		DateTimeUtils.setCurrentMillisSystem();
 	}
 
 	@Test
-	public void test_needsCleanup()
+	void test_needsCleanup()
 	{
 		final Settings previousSettings = Settings.getDefault();
 		previousSettings.setAutoBackupStrategy(AutoBackupStrategy.GIT_LOCAL);
@@ -79,12 +78,12 @@ public class LocalGitBackupTaskTest
 	}
 
 	@Test
-	public void test_runBackup_repositoryNotExisting() throws IOException
+	void test_runBackup_repositoryNotExisting()
 	{
 		final Settings previousSettings = Settings.getDefault();
 		previousSettings.setAutoBackupStrategy(AutoBackupStrategy.GIT_LOCAL);
 
-		final Path repositoryFolder = tempFolder.newFolder().toPath().resolve(".git");
+		final Path repositoryFolder = tempFolder.resolve(".git");
 
 		final LocalGitBackupTask localGitBackupTask = new LocalGitBackupTask(databaseService, settingsService);
 		localGitBackupTask.setGitFolder(repositoryFolder);
@@ -96,14 +95,14 @@ public class LocalGitBackupTaskTest
 	}
 
 	@Test
-	public void test_runBackup_firstCommit() throws IOException
+	void test_runBackup_firstCommit()
 	{
 		final Settings previousSettings = Settings.getDefault();
 		previousSettings.setAutoBackupStrategy(AutoBackupStrategy.GIT_LOCAL);
 
-		final Path repositoryFolder = tempFolder.newFolder().toPath().resolve(".git");
+		final Path repositoryFolder = tempFolder.resolve(".git");
 
-		final BackupDatabase_v6 database = new BackupDatabase_v6();
+		final BackupDatabase_v7 database = new BackupDatabase_v7();
 		Mockito.when(databaseService.getDatabaseForJsonSerialization()).thenReturn(database);
 		Mockito.doCallRealMethod().when(databaseService).exportDatabase(Mockito.any());
 
@@ -124,14 +123,14 @@ public class LocalGitBackupTaskTest
 	}
 
 	@Test
-	public void test_runBackup_fileNotChanged() throws IOException
+	void test_runBackup_fileNotChanged()
 	{
 		final Settings previousSettings = Settings.getDefault();
 		previousSettings.setAutoBackupStrategy(AutoBackupStrategy.GIT_LOCAL);
 
-		final Path repositoryFolder = tempFolder.newFolder().toPath().resolve(".git");
+		final Path repositoryFolder = tempFolder.resolve(".git");
 
-		final BackupDatabase_v6 database = new BackupDatabase_v6();
+		final BackupDatabase_v7 database = new BackupDatabase_v7();
 		Mockito.when(databaseService.getDatabaseForJsonSerialization()).thenReturn(database);
 		Mockito.doCallRealMethod().when(databaseService).exportDatabase(Mockito.any());
 
@@ -148,14 +147,14 @@ public class LocalGitBackupTaskTest
 	}
 
 	@Test
-	public void test_runBackup_fileChanged() throws IOException
+	void test_runBackup_fileChanged()
 	{
 		final Settings previousSettings = Settings.getDefault();
 		previousSettings.setAutoBackupStrategy(AutoBackupStrategy.GIT_LOCAL);
 
-		final Path repositoryFolder = tempFolder.newFolder().toPath().resolve(".git");
+		final Path repositoryFolder = tempFolder.resolve(".git");
 
-		final BackupDatabase_v6 database = new BackupDatabase_v6();
+		final BackupDatabase_v7 database = new BackupDatabase_v7();
 		Mockito.when(databaseService.getDatabaseForJsonSerialization()).thenReturn(database);
 		Mockito.doCallRealMethod().when(databaseService).exportDatabase(Mockito.any());
 
@@ -163,7 +162,7 @@ public class LocalGitBackupTaskTest
 		localGitBackupTask.setGitFolder(repositoryFolder);
 		localGitBackupTask.run();
 
-		final BackupDatabase_v6 databaseModified = new BackupDatabase_v6(List.of(new BackupCategory_v5(5, "myCategory", "#FF0000", CategoryType.CUSTOM, null)), List.of(), List.of(), List.of(), List.of(), List.of());
+		final BackupDatabase_v7 databaseModified = new BackupDatabase_v7(List.of(new BackupCategory_v7(5, "myCategory", "#FF0000", CategoryType.CUSTOM, null)), List.of(), List.of(), List.of(), List.of(), List.of(), List.of());
 		Mockito.when(databaseService.getDatabaseForJsonSerialization()).thenReturn(databaseModified);
 		localGitBackupTask.run();
 

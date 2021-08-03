@@ -25,10 +25,16 @@ public class MediaController extends BaseController
 		this.imageService = imageService;
 	}
 
-	@GetMapping("/getAvailableImages")
-	public String getAvailableImages(Model model)
+	@GetMapping(value = {"/getAvailableImages", "/getAvailableImages/{selectedImageID}"})
+	public String getAvailableImages(Model model, @PathVariable(value = "selectedImageID", required = false) Integer selectedImageID)
 	{
+		if(selectedImageID == null)
+		{
+			selectedImageID = -1;
+		}
+
 		model.addAttribute("availableImages", imageService.getRepository().findAll());
+		model.addAttribute("selectedImageID", selectedImageID);
 		return "helpers/availableImages";
 	}
 

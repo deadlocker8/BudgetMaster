@@ -5,16 +5,13 @@ import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountState;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
-import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
-import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
-import de.deadlocker8.budgetmaster.integration.helpers.TransactionTestHelper;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
-import org.junit.runner.RunWith;
+import de.deadlocker8.budgetmaster.integration.helpers.*;
+import de.deadlocker8.budgetmaster.search.Search;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.TestWatcher;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -26,7 +23,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
 import java.util.Arrays;
@@ -35,46 +31,17 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SeleniumTestWatcher.class)
 @SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SeleniumTest
-public class AccountTest
+class AccountTest extends SeleniumTestBase
 {
 	private IntegrationTestHelper helper;
-	private WebDriver driver;
 
-	@LocalServerPort
-	int port;
-
-	@Rule
-	public TestName name = new TestName();
-
-	@Rule
-	public TestWatcher testWatcher = new TestWatcher()
-	{
-		@Override
-		protected void finished(Description description)
-		{
-			driver.quit();
-		}
-
-		@Override
-		protected void failed(Throwable e, Description description)
-		{
-			IntegrationTestHelper.saveScreenshots(driver, name, AccountTest.class);
-		}
-	};
-
-	@Before
+	@BeforeEach
 	public void prepare()
 	{
-		FirefoxOptions options = new FirefoxOptions();
-		options.setHeadless(false);
-		options.addPreference("devtools.console.stdout.content", true);
-		driver = new FirefoxDriver(options);
-
-		// prepare
 		helper = new IntegrationTestHelper(driver, port);
 		helper.start();
 		helper.login(UserService.DEFAULT_PASSWORD);
@@ -96,7 +63,7 @@ public class AccountTest
 	}
 
 	@Test
-	public void test_newAccount_cancel()
+	void test_newAccount_cancel()
 	{
 		driver.get(helper.getUrl() + "/accounts");
 		driver.findElement(By.id("button-new-account")).click();
@@ -117,7 +84,7 @@ public class AccountTest
 	}
 
 	@Test
-	public void test_newAccount()
+	void test_newAccount()
 	{
 		driver.get(helper.getUrl() + "/accounts");
 		driver.findElement(By.id("button-new-account")).click();
@@ -149,7 +116,7 @@ public class AccountTest
 	}
 
 	@Test
-	public void test_edit()
+	void test_edit()
 	{
 		driver.get(helper.getUrl() + "/accounts/2/edit");
 
@@ -158,7 +125,7 @@ public class AccountTest
 	}
 
 	@Test
-	public void test_readOnly_newTransaction_listOnlyReadableAccounts()
+	void test_readOnly_newTransaction_listOnlyReadableAccounts()
 	{
 		driver.get(helper.getUrl() + "/transactions");
 		driver.findElement(By.id("button-new-transaction")).click();
@@ -180,7 +147,7 @@ public class AccountTest
 	}
 
 	@Test
-	public void test_readOnly_preventTransactionDeleteAndEdit()
+	void test_readOnly_preventTransactionDeleteAndEdit()
 	{
 		// select "sfsdf"
 		TransactionTestHelper.selectGlobalAccountByName(driver, "sfsdf");
@@ -226,7 +193,7 @@ public class AccountTest
 	}
 
 	@Test
-	public void test_readOnly_preventNewTransaction()
+	void test_readOnly_preventNewTransaction()
 	{
 		TransactionTestHelper.selectGlobalAccountByName(driver, "read only account");
 

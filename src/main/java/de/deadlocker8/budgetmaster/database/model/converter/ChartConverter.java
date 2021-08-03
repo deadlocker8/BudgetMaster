@@ -1,6 +1,8 @@
 package de.deadlocker8.budgetmaster.database.model.converter;
 
 import de.deadlocker8.budgetmaster.charts.Chart;
+import de.deadlocker8.budgetmaster.charts.ChartDisplayType;
+import de.deadlocker8.budgetmaster.charts.ChartGroupType;
 import de.deadlocker8.budgetmaster.database.model.Converter;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupChart_v5;
 
@@ -19,6 +21,8 @@ public class ChartConverter implements Converter<Chart, BackupChart_v5>
 		chart.setType(backupChart.getType());
 		chart.setVersion(backupChart.getVersion());
 		chart.setScript(backupChart.getScript());
+		chart.setDisplayType(ChartDisplayType.CUSTOM);
+		chart.setGroupType(ChartGroupType.NONE);
 		return chart;
 	}
 

@@ -9,6 +9,10 @@
     font-size: 20px;
 }
 
+.category-circle img {
+    object-fit: contain;
+}
+
 .category-circle .fa,
 .category-circle .fab,
 .category-circle .fad,
@@ -16,6 +20,12 @@
 .category-circle .far,
 .category-circle .fas {
     line-height: 40px;
+}
+
+.category-icon:not(i) {
+    height: 100%;
+    width: 100%;
+    padding: 15%;
 }
 
 .category-circle-small {
@@ -65,56 +75,6 @@
 
 .categoryDeleteModal {
     overflow-y: visible !important;
-}
-
-#category-icon {
-    margin-top: 3rem;
-    justify-content: center;
-}
-
-#category-icon-preview {
-    text-align: center;
-    border: 2px solid var(--color-text);
-    padding: 1rem;
-    color: var(--color-text);
-}
-
-#category-icon-preview i {
-    font-size: 3rem;
-}
-
-#button-remove-category-icon {
-    margin-left: 1rem;
-}
-
-#button-remove-category-icon i {
-    font-size: 1.8rem;
-}
-
-.category-icon-option-column {
-    text-align: center;
-    margin-bottom: 1.5rem;
-}
-
-.category-icon-option {
-    padding: 0.5rem;
-    border: 2px solid transparent;
-}
-
-.category-icon-option:hover {
-    cursor: pointer;
-}
-
-.category-icon-option.selected {
-    border: 2px solid var(--color-text);
-}
-
-.category-icon-option-icon {
-    font-size: 2rem;
-}
-
-#numberOfIcons {
-    font-size: 1.1rem;
 }
 
 /*style spectrum color picker*/

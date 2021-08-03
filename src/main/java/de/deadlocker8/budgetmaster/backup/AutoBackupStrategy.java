@@ -2,12 +2,13 @@ package de.deadlocker8.budgetmaster.backup;
 
 import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
+import de.deadlocker8.budgetmaster.utils.LocalizedEnum;
 import de.thecodelabs.utils.util.Localization;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 
-public enum AutoBackupStrategy
+public enum AutoBackupStrategy implements LocalizedEnum
 {
 	NONE("settings.backup.auto.strategy.none", null),
 	LOCAL("settings.backup.auto.strategy.local", LocalBackupTask.class),
@@ -23,6 +24,7 @@ public enum AutoBackupStrategy
 		this.backupTaskType = backupTaskType;
 	}
 
+	@Override
 	public String getLocalizationKey()
 	{
 		return localizationKey;

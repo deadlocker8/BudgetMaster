@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.database.model.v5;
 
+import de.deadlocker8.budgetmaster.database.model.BackupInfo;
 import de.deadlocker8.budgetmaster.database.model.Upgradeable;
 import de.deadlocker8.budgetmaster.database.model.v4.BackupRepeatingOption_v4;
 import de.deadlocker8.budgetmaster.database.model.v4.BackupTag_v4;
@@ -172,7 +173,7 @@ public class BackupTransaction_v5 implements Upgradeable<BackupTransaction_v6>
 	}
 
 	@Override
-	public BackupTransaction_v6 upgrade()
+	public BackupTransaction_v6 upgrade(List<BackupInfo> backupInfoItems)
 	{
 		Integer transferAccountID = null;
 		if(transferAccount != null)

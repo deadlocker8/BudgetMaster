@@ -9,14 +9,14 @@ import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
-import de.deadlocker8.budgetmaster.charts.Chart;
-import de.deadlocker8.budgetmaster.charts.ChartRepository;
-import de.deadlocker8.budgetmaster.charts.ChartService;
-import de.deadlocker8.budgetmaster.charts.ChartType;
+import de.deadlocker8.budgetmaster.charts.*;
 import de.deadlocker8.budgetmaster.database.DatabaseParser;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.JSONIdentifier;
+import de.deadlocker8.budgetmaster.icon.Icon;
+import de.deadlocker8.budgetmaster.icon.IconRepository;
+import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.images.ImageFileExtension;
 import de.deadlocker8.budgetmaster.images.ImageRepository;
@@ -35,15 +35,14 @@ import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.thecodelabs.utils.util.Localization;
 import org.joda.time.DateTime;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -55,10 +54,10 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-public class DatabaseExportTest
+@ExtendWith(SpringExtension.class)
+class DatabaseExportTest
 {
-	@Before
+	@BeforeEach
 	public void before()
 	{
 		Localization.setDelegate(new Localization.LocalizationDelegate()
@@ -102,14 +101,17 @@ public class DatabaseExportTest
 	@Mock
 	private ImageService imageService;
 
+	@Mock
+	private IconService iconService;
+
 	@InjectMocks
 	private DatabaseService databaseService;
 
-	@Rule
-	public final TemporaryFolder tempFolder = new TemporaryFolder();
+	@TempDir
+	public Path tempFolder;
 
 	@Test
-	public void test_specialFields() throws IOException
+	void test_specialFields() throws IOException
 	{
 		// categories
 		Mockito.when(categoryService.getAllEntitiesAsc()).thenReturn(List.of());
@@ -139,9 +141,14 @@ public class DatabaseExportTest
 		Mockito.when(imageRepositoryMock.findAll()).thenReturn(List.of());
 		Mockito.when(imageService.getRepository()).thenReturn(imageRepositoryMock);
 
+		// icons
+		IconRepository iconRepositoryMock = Mockito.mock(IconRepository.class);
+		Mockito.when(iconRepositoryMock.findAll()).thenReturn(List.of());
+		Mockito.when(iconService.getRepository()).thenReturn(iconRepositoryMock);
+
 
 		// act
-		Path exportPath = tempFolder.newFile("exportTest.json").toPath();
+		Path exportPath = Files.createFile(tempFolder.resolve("exportTest.json"));
 		databaseService.exportDatabase(exportPath);
 
 
@@ -154,7 +161,7 @@ public class DatabaseExportTest
 	}
 
 	@Test
-	public void test_exportDatabase() throws IOException
+	void test_exportDatabase() throws IOException
 	{
 		// categories
 		Category categoryNone = new Category("NONE", "#000000", CategoryType.NONE);
@@ -234,6 +241,8 @@ public class DatabaseExportTest
 		chart.setType(ChartType.CUSTOM);
 		chart.setVersion(7);
 		chart.setScript("/* This list will be dynamically filled with all the transactions between\r\n* the start and and date you select on the \"Show Chart\" page\r\n* and filtered according to your specified filter.\r\n* An example entry for this list and tutorial about how to create custom charts ca be found in the BudgetMaster wiki:\r\n* https://github.com/deadlocker8/BudgetMaster/wiki/How-to-create-custom-charts\r\n*/\r\nvar transactionData \u003d [];\r\n\r\n// Prepare your chart settings here (mandatory)\r\nvar plotlyData \u003d [{\r\n    x: [],\r\n    y: [],\r\n    type: \u0027bar\u0027\r\n}];\r\n\r\n// Add your Plotly layout settings here (optional)\r\nvar plotlyLayout \u003d {};\r\n\r\n// Add your Plotly configuration settings here (optional)\r\nvar plotlyConfig \u003d {\r\n    showSendToCloud: false,\r\n    displaylogo: false,\r\n    showLink: false,\r\n    responsive: true\r\n};\r\n\r\n// Don\u0027t touch this line\r\nPlotly.newPlot(\"containerID\", plotlyData, plotlyLayout, plotlyConfig);\r\n");
+		chart.setDisplayType(ChartDisplayType.CUSTOM);
+		chart.setGroupType(ChartGroupType.NONE);
 
 		ChartRepository chartRepositoryMock = Mockito.mock(ChartRepository.class);
 		Mockito.when(chartRepositoryMock.findAllByType(Mockito.any())).thenReturn(List.of(chart));
@@ -247,9 +256,20 @@ public class DatabaseExportTest
 		Mockito.when(imageRepositoryMock.findAll()).thenReturn(List.of(image));
 		Mockito.when(imageService.getRepository()).thenReturn(imageRepositoryMock);
 
+		// icons
+		final Icon iconImage = new Icon(image);
+		iconImage.setID(38);
+
+		final Icon iconBuiltin = new Icon("fas fa-icons");
+		iconBuiltin.setID(39);
+
+		IconRepository iconRepositoryMock = Mockito.mock(IconRepository.class);
+		Mockito.when(iconRepositoryMock.findAll()).thenReturn(List.of(iconImage, iconBuiltin));
+		Mockito.when(iconService.getRepository()).thenReturn(iconRepositoryMock);
+
 
 		// act
-		Path exportPath = tempFolder.newFile("exportTest.json").toPath();
+		Path exportPath = Files.createFile(tempFolder.resolve("exportTest.json"));
 		databaseService.exportDatabase(exportPath);
 
 		// assert
@@ -263,5 +283,6 @@ public class DatabaseExportTest
 		assertThat(importedDatabase.getTemplates()).containsExactly(template1, template2);
 		assertThat(importedDatabase.getCharts()).containsExactly(chart);
 		assertThat(importedDatabase.getImages()).containsExactly(image);
+		assertThat(importedDatabase.getIcons()).containsExactly(iconImage, iconBuiltin);
 	}
 }

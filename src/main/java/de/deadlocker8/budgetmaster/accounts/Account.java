@@ -1,6 +1,8 @@
 package de.deadlocker8.budgetmaster.accounts;
 
 import com.google.gson.annotations.Expose;
+import de.deadlocker8.budgetmaster.icon.Icon;
+import de.deadlocker8.budgetmaster.icon.Iconizable;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.utils.ProvidesID;
@@ -12,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Account implements ProvidesID
+public class Account implements ProvidesID, Iconizable
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,27 +33,31 @@ public class Account implements ProvidesID
 	private Boolean isSelected = false;
 	private Boolean isDefault = false;
 
-	@Deprecated
+	@Deprecated(since = "v2.6.0", forRemoval = true)
 	private Boolean isReadOnly = false;
 
 	@Expose
 	private AccountState accountState;
 
 	@ManyToOne
-	@Expose
+	@Deprecated(since = "v2.7.0", forRemoval = true)
 	private Image icon;
+
+	@OneToOne(cascade = CascadeType.REMOVE)
+	@Expose
+	private Icon iconReference;
 
 	@Expose
 	private AccountType type;
 
-	public Account(String name, AccountType type, Image icon)
+	public Account(String name, AccountType type, Icon iconReference)
 	{
 		this.name = name;
 		this.type = type;
 		this.isSelected = false;
 		this.isDefault = false;
 		this.accountState = AccountState.FULL_ACCESS;
-		this.icon = icon;
+		this.iconReference = iconReference;
 	}
 
 	public Account(String name, AccountType type)
@@ -113,16 +119,10 @@ public class Account implements ProvidesID
 		isDefault = aDefault;
 	}
 
-	@Deprecated
+	@Deprecated(since = "v2.6.0", forRemoval = true)
 	public Boolean isReadOnly()
 	{
 		return isReadOnly;
-	}
-
-	@Deprecated
-	public void setReadOnly(Boolean readOnly)
-	{
-		isReadOnly = readOnly;
 	}
 
 	public AccountState getAccountState()
@@ -145,14 +145,26 @@ public class Account implements ProvidesID
 		this.type = type;
 	}
 
+	@Deprecated(since = "v2.7.0", forRemoval = true)
 	public Image getIcon()
 	{
 		return icon;
 	}
 
+	@Deprecated(since = "v2.7.0", forRemoval = true)
 	public void setIcon(Image icon)
 	{
 		this.icon = icon;
+	}
+
+	public Icon getIconReference()
+	{
+		return iconReference;
+	}
+
+	public void setIconReference(Icon iconReference)
+	{
+		this.iconReference = iconReference;
 	}
 
 	@Override
@@ -166,7 +178,7 @@ public class Account implements ProvidesID
 				", isDefault=" + isDefault +
 				", accountState=" + accountState +
 				", type=" + type +
-				", icon=" + icon +
+				", iconReference=" + iconReference +
 				'}';
 	}
 
@@ -181,12 +193,14 @@ public class Account implements ProvidesID
 				Objects.equals(isSelected, account.isSelected) &&
 				Objects.equals(isDefault, account.isDefault) &&
 				accountState == account.accountState &&
-				Objects.equals(icon, account.icon) && type == account.type;
+				Objects.equals(icon, account.icon) &&
+				Objects.equals(iconReference, account.iconReference) &&
+				type == account.type;
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, name, isSelected, isDefault, accountState, icon, type);
+		return Objects.hash(ID, name, isSelected, isDefault, accountState, icon, iconReference, type);
 	}
 }

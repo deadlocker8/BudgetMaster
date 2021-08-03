@@ -12,10 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class ErrorCodeController implements ErrorController
 {
-	@Override
 	public String getErrorPath()
 	{
-		return Mappings.ERROR;
+		return null;
 	}
 
 	@RequestMapping(Mappings.ERROR)

@@ -2,7 +2,9 @@ package de.deadlocker8.budgetmaster.transactions;
 
 import com.google.gson.annotations.Expose;
 import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.accounts.AccountState;
 import de.deadlocker8.budgetmaster.categories.Category;
+import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import org.joda.time.DateTime;
@@ -209,6 +211,25 @@ public class Transaction implements TransactionBase
 	public boolean isFuture()
 	{
 		return date.isAfter(DateTime.now());
+	}
+
+	public boolean isEditable()
+	{
+		boolean isRestCategory = category.getType().equals(CategoryType.REST);
+		if(isRestCategory)
+		{
+			return false;
+		}
+
+		boolean isAccountEditable = account.getAccountState().equals(AccountState.FULL_ACCESS);
+
+		if(!isTransfer())
+		{
+			return isAccountEditable;
+		}
+
+		boolean isTransferAccountEditable = transferAccount.getAccountState().equals(AccountState.FULL_ACCESS);
+		return isAccountEditable && isTransferAccountEditable;
 	}
 
 	@Override

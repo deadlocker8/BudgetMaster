@@ -11,7 +11,7 @@
 
         <@header.header "BudgetMaster - ${title}"/>
         <#import "/spring.ftl" as s>
-        <link rel="stylesheet" href="<@s.url "/webjars/codemirror/5.50.0/lib/codemirror.css"/>">
+        <link rel="stylesheet" href="<@s.url "/webjars/codemirror/5.62.0/lib/codemirror.css"/>">
         <@header.style "charts"/>
     </head>
     <@header.body>
@@ -47,7 +47,7 @@
                                     </#if>
                                 </#if>
                                 <i class="material-icons prefix">edit</i>
-                                <input id="chart-name" type="text" name="name" <@validation.validation "name"/> value="${chartName}">
+                                <input id="chart-name" type="text" name="name" <@validation.validation "name"/> value="${chartName}" <#if chart.getType().name() == "DEFAULT">disabled</#if>>
                                 <label for="chart-name">${locale.getString("chart.new.label.name")}</label>
                             </div>
                         </div>
@@ -102,8 +102,8 @@
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
-        <script src="<@s.url '/webjars/codemirror/5.50.0/lib/codemirror.js'/>"></script>
-        <script src="<@s.url '/webjars/codemirror/5.50.0/mode/javascript/javascript.js'/>"></script>
+        <script src="<@s.url '/webjars/codemirror/5.62.0/lib/codemirror.js'/>"></script>
+        <script src="<@s.url '/webjars/codemirror/5.62.0/mode/javascript/javascript.js'/>"></script>
         <script src="<@s.url '/js/charts.js'/>"></script>
     </@header.body>
 </html>

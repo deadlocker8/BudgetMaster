@@ -2,9 +2,14 @@ package de.deadlocker8.budgetmaster.accounts;
 
 import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
+import de.deadlocker8.budgetmaster.icon.Icon;
+import de.deadlocker8.budgetmaster.icon.IconService;
+import de.deadlocker8.budgetmaster.images.Image;
+import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.services.AccessAllEntities;
 import de.deadlocker8.budgetmaster.services.Resettable;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
+import de.deadlocker8.budgetmaster.services.AccessEntityByID;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
 import org.padler.natorder.NaturalOrderComparator;
@@ -20,20 +25,24 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AccountService implements Resettable, AccessAllEntities<Account>
+public class AccountService implements Resettable, AccessAllEntities<Account>, AccessEntityByID<Account>
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AccountService.class);
 
 	private final AccountRepository accountRepository;
 	private final TransactionService transactionService;
 	private final UserRepository userRepository;
+	private final ImageService imageService;
+	private final IconService iconService;
 
 	@Autowired
-	public AccountService(AccountRepository accountRepository, TransactionService transactionService, UserRepository userRepository)
+	public AccountService(AccountRepository accountRepository, TransactionService transactionService, UserRepository userRepository, ImageService imageService, IconService iconService)
 	{
 		this.accountRepository = accountRepository;
 		this.transactionService = transactionService;
 		this.userRepository = userRepository;
+		this.imageService = imageService;
+		this.iconService = iconService;
 
 		createDefaults();
 	}
@@ -67,6 +76,12 @@ public class AccountService implements Resettable, AccessAllEntities<Account>
 		accounts.sort((a1, a2) -> new NaturalOrderComparator().compare(a1.getName(), a2.getName()));
 		accounts.addAll(0, accountRepository.findAllByType(AccountType.ALL));
 		return accounts;
+	}
+
+	@Override
+	public Optional<Account> findById(Integer ID)
+	{
+		return accountRepository.findById(ID);
 	}
 
 	public void deleteAccount(int ID)
@@ -135,22 +150,40 @@ public class AccountService implements Resettable, AccessAllEntities<Account>
 
 	private void updateMissingAttributes()
 	{
-		// handle null values for new field "accountState"
 		for(Account account : accountRepository.findAll())
 		{
-			if(account.getAccountState() == null)
+			handleNullValuesForAccountState(account);
+
+			if(account.getIcon() != null && account.getIconReference() == null)
 			{
-				if(account.isReadOnly() == null || !account.isReadOnly())
-				{
-					account.setAccountState(AccountState.FULL_ACCESS);
-				}
-				else
-				{
-					account.setAccountState(AccountState.READ_ONLY);
-				}
-				LOGGER.debug(MessageFormat.format("Updated account {0}: Set missing attribute \"accountState\" to {1}", account.getName(), account.getAccountState()));
+				Integer imageID = account.getIcon().getID();
+				Image image = imageService.getRepository().findById(imageID).orElseThrow();
+
+				Icon iconReference = new Icon(image);
+				iconService.getRepository().save(iconReference);
+
+				account.setIconReference(iconReference);
+				account.setIcon(null);
+				LOGGER.debug(MessageFormat.format("Updated account {0}: Converted attribute \"icon\" to \"iconReference\" {1}", account.getName(), image.getFileName()));
 			}
+
 			accountRepository.save(account);
+		}
+	}
+
+	private void handleNullValuesForAccountState(Account account)
+	{
+		if(account.getAccountState() == null)
+		{
+			if(account.isReadOnly() == null || !account.isReadOnly())
+			{
+				account.setAccountState(AccountState.FULL_ACCESS);
+			}
+			else
+			{
+				account.setAccountState(AccountState.READ_ONLY);
+			}
+			LOGGER.debug(MessageFormat.format("Updated account {0}: Set missing attribute \"accountState\" to {1}", account.getName(), account.getAccountState()));
 		}
 	}
 
@@ -229,7 +262,7 @@ public class AccountService implements Resettable, AccessAllEntities<Account>
 
 		Account existingAccount = existingAccountOptional.get();
 		existingAccount.setName(newAccount.getName());
-		existingAccount.setIcon(newAccount.getIcon());
+		existingAccount.setIconReference(newAccount.getIconReference());
 		existingAccount.setType(AccountType.CUSTOM);
 		existingAccount.setAccountState(newAccount.getAccountState());
 		accountRepository.save(existingAccount);

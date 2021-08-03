@@ -4,29 +4,18 @@ import de.deadlocker8.budgetmaster.Main;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
-import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
-import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
-import de.deadlocker8.budgetmaster.integration.helpers.TransactionTestHelper;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
-import org.junit.runner.RunWith;
+import de.deadlocker8.budgetmaster.integration.helpers.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
 import java.util.Arrays;
@@ -35,36 +24,13 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SeleniumTestWatcher.class)
 @SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SeleniumTest
-public class ChangeTransactionTypeTest
+class ChangeTransactionTypeTest extends SeleniumTestBase
 {
 	private IntegrationTestHelper helper;
-	private WebDriver driver;
-
-	@LocalServerPort
-	int port;
-
-	@Rule
-	public TestName name = new TestName();
-
-	@Rule
-	public TestWatcher testWatcher = new TestWatcher()
-	{
-		@Override
-		protected void finished(Description description)
-		{
-			driver.quit();
-		}
-
-		@Override
-		protected void failed(Throwable e, Description description)
-		{
-			IntegrationTestHelper.saveScreenshots(driver, name, ChangeTransactionTypeTest.class);
-		}
-	};
 
 	private void openTransferTypeModal(int transactionID)
 	{
@@ -85,15 +51,9 @@ public class ChangeTransactionTypeTest
 		assertThat(driver.findElement(By.id("modalChangeTransactionType")).isDisplayed()).isTrue();
 	}
 
-	@Before
+	@BeforeEach
 	public void prepare()
 	{
-		FirefoxOptions options = new FirefoxOptions();
-		options.setHeadless(false);
-		options.addPreference("devtools.console.stdout.content", true);
-		driver = new FirefoxDriver(options);
-
-		// prepare
 		helper = new IntegrationTestHelper(driver, port);
 		helper.start();
 		helper.login(UserService.DEFAULT_PASSWORD);
@@ -108,7 +68,7 @@ public class ChangeTransactionTypeTest
 	}
 
 	@Test
-	public void test_availableOptions_normal()
+	void test_availableOptions_normal()
 	{
 		openTransferTypeModal(2);
 
@@ -119,7 +79,7 @@ public class ChangeTransactionTypeTest
 	}
 
 	@Test
-	public void test_availableOptions_recurring()
+	void test_availableOptions_recurring()
 	{
 		openTransferTypeModal(6);
 
@@ -130,7 +90,7 @@ public class ChangeTransactionTypeTest
 	}
 
 	@Test
-	public void test_availableOptions_transfer()
+	void test_availableOptions_transfer()
 	{
 		openTransferTypeModal(3);
 
@@ -141,7 +101,7 @@ public class ChangeTransactionTypeTest
 	}
 
 	@Test
-	public void test_normal_to_transfer()
+	void test_normal_to_transfer()
 	{
 		openTransferTypeModal(2);
 		TransactionTestHelper.selectOptionFromDropdown(driver, By.cssSelector("#modalChangeTransactionType .select-wrapper"), "Transfer");
@@ -167,7 +127,7 @@ public class ChangeTransactionTypeTest
 	}
 
 	@Test
-	public void test_recurring_to_normal()
+	void test_recurring_to_normal()
 	{
 		openTransferTypeModal(6);
 		TransactionTestHelper.selectOptionFromDropdown(driver, By.cssSelector("#modalChangeTransactionType .select-wrapper"), "Transaction");
@@ -191,7 +151,7 @@ public class ChangeTransactionTypeTest
 	}
 
 	@Test
-	public void test_transfer_to_recurring()
+	void test_transfer_to_recurring()
 	{
 		openTransferTypeModal(3);
 		TransactionTestHelper.selectOptionFromDropdown(driver, By.cssSelector("#modalChangeTransactionType .select-wrapper"), "Recurring");

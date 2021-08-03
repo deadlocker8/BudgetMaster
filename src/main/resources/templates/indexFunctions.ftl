@@ -28,21 +28,3 @@
         </#if>
     </p>
 </#macro>
-
-<#macro firstUseBanner>
-    <div class="row" id="firstUseBanner">
-        <div class="col s12 center-align">
-            <div class="notification-wrapper">
-                <div class="notification notification-border text-default">
-                    <a href="<@s.url "/firstUse"/>" class="text-default">
-                        <i class="fas fa-graduation-cap notification-item"></i>
-                        <span class="notification-item">${locale.getString("home.first.use.teaser")}</span>
-                    </a>
-                    <a href="<@s.url "/settings/hideFirstUseBanner"/>" class="text-default notification-item notification-clear">
-                        <i class="material-icons">clear</i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</#macro>

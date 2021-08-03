@@ -3,14 +3,23 @@
 }
 
 .quick-date {
-    color: #039be5;
+    color: var(--color-blue);
     text-align: center;
     padding: 0 0 10px 0;
+}
+
+[data-theme="dark"]  .quick-date {
+    color: #BDFF3F;
 }
 
 .quick-date:hover {
     cursor: pointer;
     text-decoration: underline var(--color-blue);
+}
+
+[data-theme="dark"] .quick-date:hover {
+    cursor: pointer;
+    text-decoration: underline #BDFF3F;
 }
 
 .container-chart {
@@ -30,4 +39,62 @@
 
 .CodeMirror-scroll {
     height: auto;
+}
+
+.headline-chart-step {
+    font-size: 1.2rem;
+}
+
+.chart-preview {
+    background-color: var(--color-grey-ccc);
+}
+
+[data-theme="dark"] .chart-preview {
+    background-color: var(--color-grey-dark);
+}
+
+.chart-preview:hover {
+    cursor: pointer;
+}
+
+.chart-preview .card-action {
+    word-break: break-word;
+    color: #212121;
+    min-height: 5rem;
+    padding: 1rem;
+}
+
+[data-theme="dark"] .button-display-type,
+[data-theme="dark"] .button-group-type {
+    background-color: var(--color-grey) !important;
+}
+
+.button-display-type,
+.button-group-type {
+    background-color: var(--color-grey-ccc) !important;
+}
+
+.button-display-type.active {
+    background-color: var(--color-green) !important;
+}
+
+.button-group-type.active {
+    background-color: var(--color-blue-baby) !important;
+}
+
+.chart-preview.active .card-action {
+    background-color: var(--color-red-light) !important;
+}
+
+#chart-date-card {
+    background-color: var(--color-white);
+}
+
+[data-theme="dark"] #chart-date-card {
+    background-color: var(--color-background-light);
+}
+
+#filterActiveBadge {
+    float: none;
+    margin-left: 1rem;
 }

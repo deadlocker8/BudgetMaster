@@ -1,17 +1,20 @@
 <#import "/spring.ftl" as s>
 
 <#macro buttons>
-    <div class="row hide-on-small-only valign-wrapper">
-        <div class="col s6 right-align">
+    <div class="row hide-on-small-only no-margin-bottom">
+        <div class="col s12 right-align">
+            <@buttonCloseModal/>
             <@buttonReset/>
-        </div>
-
-        <div class="col s6 left-align">
             <@buttonApply/>
         </div>
     </div>
 
-    <div class="hide-on-med-and-up valign-wrapper">
+    <div class="hide-on-med-and-up valign-wrapper no-margin-bottom">
+        <div class="row center-align">
+            <div class="col s12">
+                <@buttonCloseModal/>
+            </div>
+        </div>
         <div class="row center-align">
             <div class="col s12">
                 <@buttonReset/>
@@ -25,37 +28,12 @@
     </div>
 </#macro>
 
-<#macro buttonsCharts>
-    <div class="row hide-on-small-only valign-wrapper">
-        <div class="col s6 right-align">
-            <@buttonResetChart/>
-        </div>
-
-        <div class="col s6 left-align">
-            <@buttonClose/>
-        </div>
-    </div>
-
-    <div class="hide-on-med-and-up valign-wrapper">
-        <div class="row center-align">
-            <div class="col s12">
-                <@buttonResetChart/>
-            </div>
-        </div>
-        <div class="row center-align">
-            <div class="col s12">
-                <@buttonClose/>
-            </div>
-        </div>
-    </div>
-</#macro>
-
 <#macro buttonReset>
     <a href="<@s.url '/filter/reset'/>" class="waves-effect waves-light btn background-blue"><i class="material-icons left">settings_backup_restore</i>${locale.getString("filter.reset")}</a>
 </#macro>
 
 <#macro buttonApply>
-    <button class="btn waves-effect waves-light background-blue" type="submit" name="buttonSave">
+    <button class="btn waves-effect waves-light background-green" type="submit" id="buttonApplyFilter">
         <i class="fas fa-filter left"></i>${locale.getString("filter.apply")}
     </button>
 </#macro>
@@ -66,6 +44,10 @@
 
 <#macro buttonClose>
     <a class="filter-button-close waves-effect waves-light background-blue btn white-text"><i class="fas fa-filter left"></i>${locale.getString("filter.apply")}</a>
+</#macro>
+
+<#macro buttonCloseModal>
+    <@header.buttonLink url='' icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white'/>
 </#macro>
 
 <#macro buttonsAllOrNone>
@@ -80,30 +62,16 @@
 </#macro>
 
 <#macro filterModal filterConfiguration>
-    <div id="modalFilter" class="modal background-color">
+    <div id="modalFilter" class="modal modal-fixed-footer background-color">
         <div class="modal-content">
             <h4>${locale.getString("title.filter")}</h4>
             <form name="NewFilterConfiguration" action="<@s.url '/filter/apply'/>" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <@filterModalContent filterConfiguration/>
-                <@buttons/>
             </form>
         </div>
         <div class="modal-footer background-color">
-            <@header.buttonLink url='' icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white'/>
-        </div>
-    </div>
-</#macro>
-
-<#macro filterModalCharts filterConfiguration>
-    <div id="modalFilter" class="modal background-color">
-        <div class="modal-content">
-            <h4>${locale.getString("title.filter")}</h4>
-            <@filterModalContent filterConfiguration "filterConfiguration"/>
-            <@buttonsCharts/>
-        </div>
-        <div class="modal-footer background-color">
-            <@header.buttonLink url='' icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white'/>
+            <@buttons/>
         </div>
     </div>
 </#macro>

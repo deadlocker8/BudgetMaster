@@ -86,9 +86,9 @@ public class TransactionController extends BaseController
 
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 		prepareModelTransactions(filterHelpers.getFilterConfiguration(request), model, date);
-		model.addAttribute("currentTransaction", transactionService.getRepository().getOne(ID));
+		model.addAttribute("transactionToDelete", transactionService.getRepository().getById(ID));
 
-		return "transactions/transactions";
+		return "transactions/deleteTransactionModal";
 	}
 
 	private void prepareModelTransactions(FilterConfiguration filterConfiguration, Model model, DateTime date)
@@ -106,7 +106,7 @@ public class TransactionController extends BaseController
 	@GetMapping("/{ID}/delete")
 	public String deleteTransaction(WebRequest request, @PathVariable("ID") Integer ID)
 	{
-		final Transaction transactionToDelete = transactionService.getRepository().getOne(ID);
+		final Transaction transactionToDelete = transactionService.getRepository().getById(ID);
 		transactionService.deleteTransaction(ID);
 
 		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.transaction.delete.success", transactionToDelete.getName()), NotificationType.SUCCESS));
@@ -285,7 +285,7 @@ public class TransactionController extends BaseController
 	@GetMapping("/{ID}/highlight")
 	public String highlight(Model model, @PathVariable("ID") Integer ID)
 	{
-		Transaction transaction = transactionService.getRepository().getOne(ID);
+		Transaction transaction = transactionService.getRepository().getById(ID);
 
 		Account currentAccount = helpers.getCurrentAccount();
 		if(currentAccount.getType() != AccountType.ALL || transaction.isTransfer())

@@ -1,5 +1,10 @@
 $(document).ready(function()
 {
+    initCustomSelects();
+});
+
+function initCustomSelects()
+{
     let allCustomSelects = [];
 
     let selectorCategorySelect = '.category-select-wrapper';
@@ -75,7 +80,7 @@ $(document).ready(function()
             }
         }
     });
-});
+}
 
 class CustomSelect
 {

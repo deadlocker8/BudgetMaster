@@ -22,7 +22,7 @@
     <@customSelectStart "category-select-wrapper" categories inputClasses labelText "transaction-category" "label">
         <div class="custom-select-trigger" tabindex="0">
             <div class="custom-select-selected-item">
-                <#if selectedCategory??><@customSelectOptionCategoryContent selectedCategory "no-margin-left"/></#if>
+                <#if selectedCategory??><@customSelectOptionCategoryContent category=selectedCategory classes="no-margin-left" datasetValue=true/></#if>
             </div>
             <div class="custom-select-arrow"></div>
         </div>
@@ -140,8 +140,8 @@
     </div>
 </#macro>
 
-<#macro customSelectOptionCategoryContent category classes="" datasetValue="">
-    <@categoriesFunctions.categoryCircle category "category-circle-small ${classes}" datasetValue=""/>
+<#macro customSelectOptionCategoryContent category classes="" datasetValue=false>
+    <@categoriesFunctions.categoryCircle category=category classes="category-circle-small ${classes}" datasetValue=datasetValue/>
     <span class="custom-select-item-name">${categoriesFunctions.getCategoryName(category)}</span>
 </#macro>
 
@@ -163,9 +163,9 @@
 </#macro>
 
 <#macro accountIcon account accountName classes="" datasetValue="">
-    <div class="category-circle ${classes} category-square <#if account.getIcon()?? == false>account-square-border</#if>" <#if datasetValue?has_content>data-value="${account.getID()}"</#if>>
-        <#if account.getIcon()??>
-            <img src="${account.getIcon().getBase64EncodedImage()}" class="account-select-icon"/>
+    <div class="category-circle ${classes} category-square <#if account.getIconReference()?? == false>account-square-border</#if>" <#if datasetValue?has_content>data-value="${account.getID()}"</#if>>
+        <#if account.getIconReference()??>
+            <@header.entityIcon entity=account classes="account-select-icon text-blue"/>
         <#else>
             <span class="text-blue">
                 ${accountName?capitalize[0]}

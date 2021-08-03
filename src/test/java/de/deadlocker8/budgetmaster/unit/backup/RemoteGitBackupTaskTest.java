@@ -6,33 +6,31 @@ import de.deadlocker8.budgetmaster.backup.BackupTask;
 import de.deadlocker8.budgetmaster.backup.RemoteGitBackupTask;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
-import de.deadlocker8.budgetmaster.database.model.v5.BackupCategory_v5;
-import de.deadlocker8.budgetmaster.database.model.v6.BackupDatabase_v6;
+import de.deadlocker8.budgetmaster.database.model.v7.BackupCategory_v7;
+import de.deadlocker8.budgetmaster.database.model.v7.BackupDatabase_v7;
 import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.unit.helpers.Helpers;
 import de.thecodelabs.utils.util.OS;
 import org.joda.time.DateTimeUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-public class RemoteGitBackupTaskTest
+@ExtendWith(SpringExtension.class)
+class RemoteGitBackupTaskTest
 {
 	@Mock
 	private DatabaseService databaseService;
@@ -40,13 +38,13 @@ public class RemoteGitBackupTaskTest
 	@Mock
 	private SettingsService settingsService;
 
-	@Rule
-	public final TemporaryFolder tempFolder = new TemporaryFolder();
+	@TempDir
+	public Path tempFolder;
 
 	private static String gitExecutable;
 
 
-	@BeforeClass
+	@BeforeAll
 	public static void setup()
 	{
 		if(OS.isWindows())
@@ -61,14 +59,14 @@ public class RemoteGitBackupTaskTest
 		DateTimeUtils.setCurrentMillisFixed(1612004400000L);
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void cleanup()
 	{
 		DateTimeUtils.setCurrentMillisSystem();
 	}
 
 	@Test
-	public void test_needsCleanup_false_everythingEquals()
+	void test_needsCleanup_false_everythingEquals()
 	{
 		final Settings previousSettings = Settings.getDefault();
 		previousSettings.setAutoBackupStrategy(AutoBackupStrategy.GIT_REMOTE);
@@ -79,11 +77,12 @@ public class RemoteGitBackupTaskTest
 
 		final RemoteGitBackupTask remoteGitBackupTask = new RemoteGitBackupTask(databaseService, settingsService);
 
-		assertFalse(remoteGitBackupTask.needsCleanup(previousSettings, previousSettings));
+		assertThat(remoteGitBackupTask.needsCleanup(previousSettings, previousSettings))
+				.isFalse();
 	}
 
 	@Test
-	public void test_needsCleanup_false_onlyNameChanged()
+	void test_needsCleanup_false_onlyNameChanged()
 	{
 		final Settings previousSettings = Settings.getDefault();
 		previousSettings.setAutoBackupStrategy(AutoBackupStrategy.GIT_REMOTE);
@@ -101,11 +100,11 @@ public class RemoteGitBackupTaskTest
 
 		final RemoteGitBackupTask remoteGitBackupTask = new RemoteGitBackupTask(databaseService, settingsService);
 
-		assertFalse(remoteGitBackupTask.needsCleanup(previousSettings, newSettings));
+		assertThat(remoteGitBackupTask.needsCleanup(previousSettings, newSettings)).isFalse();
 	}
 
 	@Test
-	public void test_needsCleanup_true_urlChanged()
+	void test_needsCleanup_true_urlChanged()
 	{
 		final Settings previousSettings = Settings.getDefault();
 		previousSettings.setAutoBackupStrategy(AutoBackupStrategy.GIT_REMOTE);
@@ -123,11 +122,12 @@ public class RemoteGitBackupTaskTest
 
 		final RemoteGitBackupTask remoteGitBackupTask = new RemoteGitBackupTask(databaseService, settingsService);
 
-		assertTrue(remoteGitBackupTask.needsCleanup(previousSettings, newSettings));
+		assertThat(remoteGitBackupTask.needsCleanup(previousSettings, newSettings))
+				.isTrue();
 	}
 
 	@Test
-	public void test_needsCleanup_true_branchNameChanged()
+	void test_needsCleanup_true_branchNameChanged()
 	{
 		final Settings previousSettings = Settings.getDefault();
 		previousSettings.setAutoBackupStrategy(AutoBackupStrategy.GIT_REMOTE);
@@ -145,15 +145,16 @@ public class RemoteGitBackupTaskTest
 
 		final RemoteGitBackupTask remoteGitBackupTask = new RemoteGitBackupTask(databaseService, settingsService);
 
-		assertTrue(remoteGitBackupTask.needsCleanup(previousSettings, newSettings));
+		assertThat(remoteGitBackupTask.needsCleanup(previousSettings, newSettings))
+				.isTrue();
 	}
 
 	@Test
-	public void test_runBackup_firstCommit() throws IOException
+	void test_runBackup_firstCommit() throws IOException
 	{
 		// create fake server
-		final Path fakeServerFolder = tempFolder.newFolder("server").toPath();
-		final Path repositoryFolder = tempFolder.newFolder().toPath().resolve(".git");
+		final Path fakeServerFolder = Files.createDirectory(tempFolder.resolve("server"));
+		final Path repositoryFolder = Files.createDirectory(tempFolder.resolve("client")).resolve(".git");
 
 		final RemoteGitBackupTask remoteGitBackupTask = createBackupTask(repositoryFolder, fakeServerFolder);
 		remoteGitBackupTask.run();
@@ -184,11 +185,11 @@ public class RemoteGitBackupTaskTest
 	}
 
 	@Test
-	public void test_runBackup_fileNotChanged() throws IOException
+	void test_runBackup_fileNotChanged() throws IOException
 	{
 		// create fake server
-		final Path fakeServerFolder = tempFolder.newFolder("server").toPath();
-		final Path repositoryFolder = tempFolder.newFolder().toPath().resolve(".git");
+		final Path fakeServerFolder = Files.createDirectory(tempFolder.resolve("server"));
+		final Path repositoryFolder = Files.createDirectory(tempFolder.resolve("client")).resolve(".git");
 
 		final RemoteGitBackupTask remoteGitBackupTask = createBackupTask(repositoryFolder, fakeServerFolder);
 		remoteGitBackupTask.run();
@@ -208,16 +209,16 @@ public class RemoteGitBackupTaskTest
 	}
 
 	@Test
-	public void test_runBackup_fileChanged() throws IOException
+	void test_runBackup_fileChanged() throws IOException
 	{
 		// create fake server
-		final Path fakeServerFolder = tempFolder.newFolder("server").toPath();
-		final Path repositoryFolder = tempFolder.newFolder().toPath().resolve(".git");
+		final Path fakeServerFolder = Files.createDirectory(tempFolder.resolve("server"));
+		final Path repositoryFolder = Files.createDirectory(tempFolder.resolve("client")).resolve(".git");
 
 		final RemoteGitBackupTask remoteGitBackupTask = createBackupTask(repositoryFolder, fakeServerFolder);
 		remoteGitBackupTask.run();
 
-		final BackupDatabase_v6 databaseModified = new BackupDatabase_v6(List.of(new BackupCategory_v5(5, "myCategory", "#FF0000", CategoryType.CUSTOM, null)), List.of(), List.of(), List.of(), List.of(), List.of());
+		final BackupDatabase_v7 databaseModified = new BackupDatabase_v7(List.of(new BackupCategory_v7(5, "myCategory", "#FF0000", CategoryType.CUSTOM, null)), List.of(), List.of(), List.of(), List.of(), List.of(), List.of());
 		Mockito.when(databaseService.getDatabaseForJsonSerialization()).thenReturn(databaseModified);
 		remoteGitBackupTask.run();
 
@@ -257,7 +258,7 @@ public class RemoteGitBackupTaskTest
 		settings.setAutoBackupGitToken("0815");
 		Mockito.when(settingsService.getSettings()).thenReturn(settings);
 
-		final BackupDatabase_v6 database = new BackupDatabase_v6();
+		final BackupDatabase_v7 database = new BackupDatabase_v7();
 		Mockito.when(databaseService.getDatabaseForJsonSerialization()).thenReturn(database);
 		Mockito.doCallRealMethod().when(databaseService).exportDatabase(Mockito.any());
 

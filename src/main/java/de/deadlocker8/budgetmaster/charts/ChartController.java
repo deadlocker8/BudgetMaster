@@ -62,10 +62,13 @@ public class ChartController extends BaseController
 		defaultFilterConfiguration.setFilterCategories(filterHelpersService.getFilterCategories());
 		defaultFilterConfiguration.setFilterTags(filterHelpersService.getFilterTags());
 
-		ChartSettings defaultChartSettings = ChartSettings.getDefault(charts.get(0).getID(), defaultFilterConfiguration);
+		ChartSettings defaultChartSettings = ChartSettings.getDefault(defaultFilterConfiguration);
 
 		model.addAttribute("chartSettings", defaultChartSettings);
 		model.addAttribute("charts", charts);
+		model.addAttribute("displayTypes", ChartDisplayType.values());
+		model.addAttribute("groupTypes", ChartGroupType.values());
+
 		return "charts/charts";
 	}
 
@@ -87,6 +90,8 @@ public class ChartController extends BaseController
 		model.addAttribute("chart", chartOptional.get());
 		model.addAttribute("containerID", UUID.randomUUID());
 		model.addAttribute("transactionData", transactionJson);
+		model.addAttribute("displayTypes", ChartDisplayType.values());
+		model.addAttribute("groupTypes", ChartGroupType.values());
 		return "charts/charts";
 	}
 
@@ -124,10 +129,9 @@ public class ChartController extends BaseController
 		ChartValidator userValidator = new ChartValidator();
 		userValidator.validate(chart, bindingResult);
 
-		if(chart.getType() == null)
-		{
-			chart.setType(ChartType.CUSTOM);
-		}
+		chart.setType(ChartType.CUSTOM);
+		chart.setDisplayType(ChartDisplayType.CUSTOM);
+		chart.setGroupType(ChartGroupType.NONE);
 
 		if(bindingResult.hasErrors())
 		{
@@ -166,8 +170,8 @@ public class ChartController extends BaseController
 		}
 
 		model.addAttribute("charts", chartService.getAllEntitiesAsc());
-		model.addAttribute("currentChart", chartService.getRepository().getOne(ID));
-		return "charts/manage";
+		model.addAttribute("chartToDelete", chartService.getRepository().getById(ID));
+		return "charts/deleteChartModal";
 	}
 
 	@GetMapping(value = "/{ID}/delete")
@@ -175,7 +179,7 @@ public class ChartController extends BaseController
 	{
 		if(chartService.isDeletable(ID))
 		{
-			final Chart chartToDelete = chartService.getRepository().getOne(ID);
+			final Chart chartToDelete = chartService.getRepository().getById(ID);
 			chartService.getRepository().deleteById(ID);
 			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.chart.delete.success", chartToDelete.getName()), NotificationType.SUCCESS));
 		}

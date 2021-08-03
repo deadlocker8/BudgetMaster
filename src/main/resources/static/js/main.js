@@ -50,6 +50,17 @@ $(document).ready(function()
     {
         document.getElementById(this.dataset.id).style.display = "none";
     });
+
+    $('.hint-clear').click(function()
+    {
+        document.getElementById(this.dataset.id).style.display = "none";
+
+        $.ajax({
+            type: 'GET',
+            url: $(this).attr('data-url'),
+            data: {}
+        });
+    });
 });
 
 

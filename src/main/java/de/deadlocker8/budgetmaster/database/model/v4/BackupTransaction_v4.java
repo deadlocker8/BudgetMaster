@@ -1,10 +1,10 @@
 package de.deadlocker8.budgetmaster.database.model.v4;
 
+import de.deadlocker8.budgetmaster.database.model.BackupInfo;
 import de.deadlocker8.budgetmaster.database.model.Upgradeable;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupAccount_v5;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupCategory_v5;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupTransaction_v5;
-import de.deadlocker8.budgetmaster.tags.Tag;
 
 import java.util.List;
 import java.util.Objects;
@@ -158,15 +158,16 @@ public class BackupTransaction_v4 implements BackupTransactionBase_v4, Upgradeab
 				'}';
 	}
 
-	public BackupTransaction_v5 upgrade()
+	@Override
+	public BackupTransaction_v5 upgrade(List<BackupInfo> backupInfoItems)
 	{
-		BackupAccount_v5 upgradedAccount = account.upgrade();
-		BackupCategory_v5 upgradedCategory = category.upgrade();
+		BackupAccount_v5 upgradedAccount = account.upgrade(backupInfoItems);
+		BackupCategory_v5 upgradedCategory = category.upgrade(backupInfoItems);
 
 		BackupAccount_v5 upgradedTransferAccount = null;
 		if(transferAccount != null)
 		{
-			upgradedTransferAccount = transferAccount.upgrade();
+			upgradedTransferAccount = transferAccount.upgrade(backupInfoItems);
 		}
 
 		return new BackupTransaction_v5(amount, isExpenditure, date, upgradedAccount, upgradedCategory, name, description, tags, repeatingOption, upgradedTransferAccount);

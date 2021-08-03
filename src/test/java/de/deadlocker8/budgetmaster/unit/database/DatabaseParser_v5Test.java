@@ -4,17 +4,19 @@ import de.deadlocker8.budgetmaster.accounts.AccountState;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.charts.ChartType;
-import de.deadlocker8.budgetmaster.database.DatabaseParser_v4;
 import de.deadlocker8.budgetmaster.database.DatabaseParser_v5;
-import de.deadlocker8.budgetmaster.database.model.v4.*;
+import de.deadlocker8.budgetmaster.database.model.v4.BackupRepeatingEndOption_v4;
+import de.deadlocker8.budgetmaster.database.model.v4.BackupRepeatingModifier_v4;
+import de.deadlocker8.budgetmaster.database.model.v4.BackupRepeatingOption_v4;
+import de.deadlocker8.budgetmaster.database.model.v4.BackupTag_v4;
 import de.deadlocker8.budgetmaster.database.model.v5.*;
 import de.deadlocker8.budgetmaster.images.ImageFileExtension;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndAfterXTimes;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierDays;
 import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.Localization.LocalizationDelegate;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -28,9 +30,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
-public class DatabaseParser_v5Test
+class DatabaseParser_v5Test
 {
-	@Before
+	@BeforeEach
 	public void before()
 	{
 		Localization.setDelegate(new LocalizationDelegate()
@@ -51,7 +53,7 @@ public class DatabaseParser_v5Test
 	}
 
 	@Test
-	public void test_Charts()
+	void test_Charts()
 	{
 		try
 		{
@@ -71,7 +73,7 @@ public class DatabaseParser_v5Test
 	}
 
 	@Test
-	public void test_Categories()
+	void test_Categories()
 	{
 		try
 		{
@@ -91,7 +93,7 @@ public class DatabaseParser_v5Test
 	}
 
 	@Test
-	public void test_Accounts()
+	void test_Accounts()
 	{
 		try
 		{
@@ -115,7 +117,7 @@ public class DatabaseParser_v5Test
 	}
 
 	@Test
-	public void test_Images()
+	void test_Images()
 	{
 		try
 		{
@@ -136,7 +138,7 @@ public class DatabaseParser_v5Test
 	}
 
 	@Test
-	public void test_Templates()
+	void test_Templates()
 	{
 		try
 		{
@@ -165,7 +167,7 @@ public class DatabaseParser_v5Test
 	}
 
 	@Test
-	public void test_Transactions()
+	void test_Transactions()
 	{
 		try
 		{
@@ -250,7 +252,7 @@ public class DatabaseParser_v5Test
 		}
 	}
 	@Test
-	public void test_convertToInternalShouldFail() throws URISyntaxException, IOException
+	void test_convertToInternalShouldFail() throws URISyntaxException, IOException
 	{
 		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v5Test.json").toURI())));
 		DatabaseParser_v5 parser = new DatabaseParser_v5(json);

@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.images;
 
 import com.google.gson.annotations.Expose;
-import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.utils.ProvidesID;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -33,8 +33,8 @@ public class Image implements ProvidesID
 	@Expose
 	private ImageFileExtension fileExtension;
 
-	@OneToMany(mappedBy = "icon", fetch = FetchType.LAZY)
-	private List<Account> referringAccounts;
+	@OneToMany(mappedBy = "image", fetch = FetchType.LAZY)
+	private List<Icon> referringIcons;
 
 	private static final String BASE_64_IMAGE_FORMAT = "data:image/{0};base64,{1}";
 
@@ -95,9 +95,9 @@ public class Image implements ProvidesID
 		this.fileExtension = fileExtension;
 	}
 
-	public List<Account> getReferringAccounts()
+	public List<Icon> getReferringIcons()
 	{
-		return referringAccounts;
+		return referringIcons;
 	}
 
 	@Override
