@@ -78,7 +78,7 @@ class ChartTest extends SeleniumTestBase
 		assertThat(displayedChartPreviews)
 				.hasSize(3);
 		assertThat(displayedChartPreviews.get(0).findElement(By.cssSelector(".card-action span")).getText())
-				.isEqualTo("Incomes/Expenditures per month");
+				.isEqualTo("Incomes/Expenditures");
 
 		// filter
 		assertThat(driver.findElement(By.id("filterActiveBadge")).isDisplayed()).isFalse();
@@ -111,7 +111,7 @@ class ChartTest extends SeleniumTestBase
 		assertThat(displayedChartPreviews)
 				.hasSize(1);
 		assertThat(displayedChartPreviews.get(0).findElement(By.cssSelector(".card-action span")).getText())
-				.isEqualTo("Incomes/Expenditures per month");
+				.isEqualTo("Incomes/Expenditures");
 
 		// filter
 		assertThat(driver.findElement(By.id("filterActiveBadge")).isDisplayed()).isFalse();
@@ -188,7 +188,7 @@ class ChartTest extends SeleniumTestBase
 		assertThat(displayedChartPreviews)
 				.hasSize(1);
 		assertThat(displayedChartPreviews.get(0).findElement(By.cssSelector(".card-action span")).getText())
-				.isEqualTo("Incomes/Expenditures per year");
+				.isEqualTo("Incomes/Expenditures");
 
 		// filter
 		assertThat(driver.findElement(By.id("filterActiveBadge")).isDisplayed()).isFalse();
@@ -213,7 +213,7 @@ class ChartTest extends SeleniumTestBase
 		assertThat(activeChartPreviews)
 				.hasSize(1);
 		assertThat(activeChartPreviews.get(0).findElement(By.cssSelector(".card-action span")).getText())
-				.isEqualTo("Incomes/Expenditures per month by categories");
+				.isEqualTo("Incomes/Expenditures by categories");
 
 		// button
 		assertThat(driver.findElement(By.name("buttonSave")).isEnabled()).isTrue();
@@ -315,6 +315,30 @@ class ChartTest extends SeleniumTestBase
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("chart-canvas")));
 
 		assertThat(driver.findElements(By.cssSelector(".chart-canvas .plot-container"))).hasSize(1);
+	}
+
+	@Test
+	void test_EnabledButtonAfterShowChart()
+	{
+		driver.get(helper.getUrl() + "/charts");
+
+		final String chartPreviewSelector = ".chart-preview-column[data-id='6']";
+		driver.findElement(By.cssSelector(chartPreviewSelector)).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.attributeContains(By.cssSelector(chartPreviewSelector + " .chart-preview"), "class", "active"));
+
+		driver.findElement(By.name("buttonSave")).click();
+
+		wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("chart-canvas")));
+
+		driver.findElement(By.id("buttonShowChartSettings")).click();
+
+		wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.attributeContains(By.cssSelector(chartPreviewSelector + " .chart-preview"), "class", "active"));
+
+		assertThat(driver.findElement(By.name("buttonSave")).isEnabled()).isTrue();
 	}
 
 	private String getSelectedType(String selector)

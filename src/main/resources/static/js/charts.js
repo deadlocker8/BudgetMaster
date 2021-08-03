@@ -76,18 +76,18 @@ $(document).ready(function()
     {
         toggleChartTypeButtons('button-display-type', this);
         hideGroupTypeButtonsIfOnlyOneDistinctGroup();
-        filterChartPreviews(-1);
+        filterChartPreviews('');
     });
 
     $('.button-group-type').click(function()
     {
         toggleChartTypeButtons('button-group-type', this);
-        filterChartPreviews(-1);
+        filterChartPreviews('');
     });
 
     $('.chart-preview-column').click(function()
     {
-        unsetActiveChartPreview();
+        unsetActiveChartPreview('');
 
         this.querySelector('.chart-preview').classList.toggle('active', true);
         document.getElementsByName('displayType')[0].value = this.dataset.displayType;
@@ -114,11 +114,13 @@ $(document).ready(function()
     {
         document.getElementsByName('NewChartSettings')[0].classList.toggle('hidden', false);
         document.getElementById('buttonShowChartSettings').classList.toggle('hidden', true);
+
+        checkShowChartButton();
     });
 
     if($(".chart-preview-column").length)
     {
-        filterChartPreviews(selectChartID);
+        filterChartPreviews(document.getElementsByName('chartID')[0].value);
 
         let showEditSettingsButton = document.getElementsByName('NewChartSettings')[0].classList.contains('hidden');
         document.getElementById('buttonShowChartSettings').classList.toggle('hidden', !showEditSettingsButton);
@@ -328,7 +330,7 @@ function unsetActiveChartPreview(initiallySelectedChartID)
         column.querySelector('.chart-preview').classList.toggle('active', column.dataset.id === initiallySelectedChartID);
     }
 
-    document.getElementsByName('chartID')[0].value = '';
+    document.getElementsByName('chartID')[0].value = initiallySelectedChartID;
     checkShowChartButton();
 }
 

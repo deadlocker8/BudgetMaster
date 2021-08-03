@@ -66,11 +66,7 @@
                                 </div>
                             </div>
                         </div>
-                        <input type="hidden" name="chartID" value="">
-
-                        <script>
-                            selectChartID="${chartSettings.getChartID()!-1}";
-                        </script>
+                        <input type="hidden" name="chartID" value="${chartSettings.getChartID()!''}">
 
                         <@dateSelect/>
 
