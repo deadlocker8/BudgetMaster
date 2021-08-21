@@ -47,6 +47,8 @@ public class DatabaseService
 	public static final Gson GSON = new GsonBuilder().create();
 	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseService.class);
 
+	private static final String BACKUP_DATE_FORMAT = "yyyy_MM_dd_HH_mm_ss";
+
 	private final AccountService accountService;
 	private final CategoryService categoryService;
 	private final TransactionService transactionService;
@@ -221,7 +223,7 @@ public class DatabaseService
 
 		rotatingBackup(backupFolderPath);
 
-		final String fileName = getExportFileName(true);
+		final String fileName = getExportFileName();
 		final Path backupPath = backupFolderPath.resolve(fileName);
 
 		exportDatabase(backupPath);
@@ -244,15 +246,9 @@ public class DatabaseService
 		}
 	}
 
-	public static String getExportFileName(boolean includeTime)
+	public static String getExportFileName()
 	{
-		String formatString = "yyyy_MM_dd";
-		if(includeTime)
-		{
-			formatString = "yyyy_MM_dd_HH_mm_ss";
-		}
-
-		return "BudgetMasterDatabase_" + DateTime.now().toString(formatString) + ".json";
+		return "BudgetMasterDatabase_" + DateTime.now().toString(BACKUP_DATE_FORMAT) + ".json";
 	}
 
 	public BackupDatabase_v7 getDatabaseForJsonSerialization()
