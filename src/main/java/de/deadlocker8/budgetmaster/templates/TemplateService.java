@@ -158,7 +158,7 @@ public class TemplateService implements Resettable, AccessAllEntities<Template>,
 	public List<Template> getAllEntitiesAsc()
 	{
 		final List<Template> templates = templateRepository.findAllByOrderByTemplateNameAsc();
-		templates.sort((t1, t2) -> new NaturalOrderComparator().compare(t1.getName(), t2.getName()));
+		templates.sort((t1, t2) -> new NaturalOrderComparator().compare(t1.getTemplateName(), t2.getTemplateName()));
 		return templates;
 	}
 
