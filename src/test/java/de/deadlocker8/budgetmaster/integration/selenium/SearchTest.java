@@ -132,6 +132,7 @@ class SearchTest extends SeleniumTestBase
 		assertThat(driver.findElement(By.cssSelector(".main-card #searchForm input[name=\"searchDescription\"]")).isSelected()).isFalse();
 		assertThat(driver.findElement(By.cssSelector(".main-card #searchForm input[name=\"searchCategory\"]")).isSelected()).isTrue();
 		assertThat(driver.findElement(By.cssSelector(".main-card #searchForm input[name=\"searchTags\"]")).isSelected()).isTrue();
+		assertThat(driver.findElement(By.cssSelector(".main-card #searchForm input[name=\"includeHiddenAccounts\"]")).isSelected()).isFalse();
 
 		// results
 		List<WebElement> results = driver.findElements(By.cssSelector(".search-container .card-panel"));
