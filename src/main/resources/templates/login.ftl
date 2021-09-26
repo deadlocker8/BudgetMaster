@@ -15,7 +15,7 @@
                             <div class="card-title">
                                 <div id="logo-container" class="center-align"><@header.logo "logo" ""/></div>
                             </div>
-                            <form action="<@s.url '/login'/>" method="post">
+                            <form action="<@s.url '/login'/>" method="post" onsubmit="return validateLoginForm()">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <input type="hidden" name="username" value="Default">
 
