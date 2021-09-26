@@ -85,16 +85,25 @@ function enableGlobalDatePickerHotKeys()
 {
     Mousetrap.bind('left', function()
     {
-        document.getElementById('global-datepicker-previous-month').click();
+        if(areHotKeysEnabled())
+        {
+            document.getElementById('global-datepicker-previous-month').click();
+        }
     });
 
     Mousetrap.bind('right', function()
     {
-        document.getElementById('global-datepicker-next-month').click();
+        if(areHotKeysEnabled())
+        {
+            document.getElementById('global-datepicker-next-month').click();
+        }
     });
 
     Mousetrap.bind('0', function()
     {
-        document.getElementById('global-datepicker-today').click();
+        if(areHotKeysEnabled())
+        {
+            document.getElementById('global-datepicker-today').click();
+        }
     });
 }
