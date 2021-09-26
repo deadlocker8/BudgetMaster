@@ -43,6 +43,7 @@ class TransactionSearchSpecificationsTest
 	private Transaction repeatingTransaction;
 	private Transaction transferTransaction;
 	private Transaction transactionFromHiddenAccount;
+	private Transaction transactionWithMultipleTags;
 
 	@Autowired
 	private CategoryRepository categoryRepository;
@@ -134,6 +135,15 @@ class TransactionSearchSpecificationsTest
 		transactionFromHiddenAccount.setCategory(category2);
 		transactionFromHiddenAccount.setAccount(accountHidden);
 		transactionFromHiddenAccount = transactionRepository.save(transactionFromHiddenAccount);
+
+		transactionWithMultipleTags = new Transaction();
+		transactionWithMultipleTags.setName("I am the TagMaster");
+		transactionWithMultipleTags.setAmount(-525);
+		transactionWithMultipleTags.setDate(new DateTime(2018, 11, 3, 12, 0, 0, 0));
+		transactionWithMultipleTags.setCategory(category1);
+		transactionWithMultipleTags.setAccount(account);
+		transactionWithMultipleTags.setTags(List.of(tag1, tag2));
+		transactionWithMultipleTags = transactionRepository.save(transactionWithMultipleTags);
 	}
 
 	@Test
@@ -199,11 +209,12 @@ class TransactionSearchSpecificationsTest
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertThat(results).hasSize(4)
+		assertThat(results).hasSize(5)
 				.contains(transaction1)
 				.contains(transaction2)
 				.contains(repeatingTransaction)
-				.contains(transferTransaction);
+				.contains(transferTransaction)
+				.contains(transactionWithMultipleTags);
 	}
 
 	@Test
@@ -213,10 +224,11 @@ class TransactionSearchSpecificationsTest
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertThat(results).hasSize(3)
+		assertThat(results).hasSize(4)
 				.contains(transaction1)
 				.contains(repeatingTransaction)
-				.contains(transferTransaction);
+				.contains(transferTransaction)
+				.contains(transactionWithMultipleTags);
 	}
 
 	@Test
@@ -246,8 +258,8 @@ class TransactionSearchSpecificationsTest
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertThat(results).hasSize(1)
-				.contains(transaction1);
+		assertThat(results).hasSize(2)
+				.contains(transaction1, transactionWithMultipleTags);
 	}
 
 	@Test
@@ -257,8 +269,8 @@ class TransactionSearchSpecificationsTest
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertThat(results).hasSize(1)
-				.contains(transaction1);
+		assertThat(results).hasSize(2)
+				.contains(transaction1, transactionWithMultipleTags);
 	}
 
 	@Test
@@ -279,5 +291,15 @@ class TransactionSearchSpecificationsTest
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).containsExactly(transactionFromHiddenAccount);
+	}
+
+	@Test
+	void getMatches_AvoidDuplicatedEntriesIfSearchTextIsFoundInMultipleCriteria()
+	{
+		Search search = new Search("TagMaster", true, true, true, true, false, 0);
+		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
+
+		List<Transaction> results = transactionRepository.findAll(spec);
+		assertThat(results).containsExactly(transactionWithMultipleTags, repeatingTransaction);
 	}
 }

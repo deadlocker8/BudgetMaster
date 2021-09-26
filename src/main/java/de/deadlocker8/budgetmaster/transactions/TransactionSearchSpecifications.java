@@ -44,7 +44,7 @@ public class TransactionSearchSpecifications
 
 			if(search.isSearchTags())
 			{
-				final Join<Transaction, Tag> tagJoin = transaction.join(Transaction_.tags, JoinType.LEFT);
+				Join<Transaction, Tag> tagJoin = transaction.join(Transaction_.tags, JoinType.LEFT);
 				predicates.add(builder.like(builder.lower(tagJoin.get(Tag_.name).as(String.class)), pattern));
 			}
 
@@ -52,9 +52,9 @@ public class TransactionSearchSpecifications
 			Predicate predicatesCombined = builder.or(predicates.toArray(predicatesArray));
 
 			Predicate accountStatePredicate = transaction.get(Transaction_.account).get("accountState").in(getAllowedAccountStates(search));
-			;
 
 			query.orderBy(builder.desc(transaction.get(Transaction_.date)));
+			query.distinct(true);
 			return builder.and(accountStatePredicate, predicatesCombined);
 		};
 	}
