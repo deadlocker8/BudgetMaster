@@ -154,16 +154,20 @@
 </#macro>
 
 <#macro transactionRepeating transaction currentDate>
-    <div class="row">
-        <div class="col s12 m12 l8 offset-l2">
-            <i class="material-icons icon-repeating">repeat</i>
-            ${locale.getString("transaction.new.label.repeating")}
+    <div class="hidden" id="transaction-repeating-option">
+        <input type="hidden" name="isRepeating" value="<#if transaction.getRepeatingOption()??>1}</#if>">
+
+        <div class="row">
+            <div class="col s12 m12 l8 offset-l2">
+                <i class="material-icons icon-repeating">repeat</i>
+                ${locale.getString("transaction.new.label.repeating")}
+            </div>
         </div>
+
+        <@repeatingModifier transaction/>
+
+        <@repeatingEndOption transaction currentDate/>
     </div>
-
-    <@newTransactionMacros.repeatingModifier transaction/>
-
-    <@newTransactionMacros.repeatingEndOption transaction currentDate/>
 </#macro>
 
 <#macro repeatingModifier transaction>

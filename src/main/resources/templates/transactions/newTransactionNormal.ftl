@@ -72,6 +72,15 @@
                             </#if>
                             <@customSelectMacros.customAccountSelect "account-select-wrapper" "account" accounts selectedAccount "col s12 m12 l8 offset-l2" locale.getString("transaction.new.label.account") "transaction-account"/>
 
+                            <div class="row">
+                                <div class="col s12 center-align">
+                                    <@header.buttonLink url='' icon='repeat' localizationKey='repeating.button' id='button-transaction-add-repeating-option' color='background-blue-baby' noUrl=true classes="text-black"/>
+                                </div>
+                            </div>
+
+                            <#-- repeating options -->
+                            <@newTransactionMacros.transactionRepeating transaction currentDate/>
+
                             <#-- buttons -->
                             <@newTransactionMacros.buttons "/transactions"/>
                             <@newTransactionMacros.buttonTransactionActions isEdit true previousType??/>

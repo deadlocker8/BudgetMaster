@@ -263,6 +263,13 @@ $(document).ready(function()
     {
         fetchAndShowModalContent(this.dataset.url, '#deleteModalContainerOnDemand', '#modalConfirmDelete', function(){});
     });
+
+    $('#button-transaction-add-repeating-option').click(function()
+    {
+        document.getElementById('button-transaction-add-repeating-option').classList.toggle('hidden', true);
+        document.getElementsByName('isRepeating')[0].value = 1;
+        document.getElementById('transaction-repeating-option').classList.toggle('hidden', false);
+    });
 });
 
 function isHidden(el)
@@ -403,7 +410,7 @@ function validateForm(allowEmptyAmount = false)
         }
     }
 
-    if($(transactionRepeatingModifierID).length)
+    if(document.getElementsByName('isRepeating')[0].value === '1')
     {
         if(!validateNumber($(transactionRepeatingModifierID).val(), transactionRepeatingModifierID.substr(1), "hidden-" + transactionRepeatingModifierID.substr(1), numberValidationMessage, REGEX_NUMBER))
         {
