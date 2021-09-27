@@ -72,7 +72,7 @@
 
                             <#-- repeating options -->
                             <@newTransactionMacros.transactionRepeating transaction currentDate/>
-                            <br>
+
                             <#-- buttons -->
                             <@newTransactionMacros.buttons "/transactions"/>
                             <@newTransactionMacros.buttonTransactionActions isEdit false previousType??/>

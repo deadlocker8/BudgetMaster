@@ -288,6 +288,10 @@
 </#macro>
 
 <#macro buttons cancelURL>
+    <br>
+    <hr>
+    <br>
+
     <div class="row hide-on-small-only">
         <div class="col s6 right-align">
             <@buttonCancel cancelURL/>

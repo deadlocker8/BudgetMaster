@@ -78,7 +78,6 @@
                             </#if>
                             <@customSelectMacros.customAccountSelect "transfer-account-select-wrapper" "transferAccount" accounts selectedTransferAccount "col s12 m12 l8 offset-l2" locale.getString("transaction.new.label.transfer.account") "transaction-destination-account"/>
 
-                            <br>
                             <#-- buttons -->
                             <@newTransactionMacros.buttons '/transactions'/>
                             <@newTransactionMacros.buttonTransactionActions isEdit true previousType??/>
