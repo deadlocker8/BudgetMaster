@@ -154,7 +154,13 @@
 </#macro>
 
 <#macro transactionRepeating transaction currentDate>
-    <div class="hidden" id="transaction-repeating-option">
+    <div class="row <#if transaction.isRepeating()>hidden</#if>">
+        <div class="col s12 center-align">
+            <@header.buttonLink url='' icon='repeat' localizationKey='repeating.button' id='button-transaction-add-repeating-option' color='background-blue-baby' noUrl=true classes="text-black"/>
+        </div>
+    </div>
+
+    <div class="<#if !transaction.isRepeating()>hidden</#if>" id="transaction-repeating-option">
         <input type="hidden" name="isRepeating" value="<#if transaction.getRepeatingOption()??>1}</#if>">
 
         <div class="row">
