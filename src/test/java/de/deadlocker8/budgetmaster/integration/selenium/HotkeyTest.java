@@ -69,7 +69,8 @@ class HotkeyTest extends SeleniumTestBase
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("form[name='NewTransaction']")));
 
-		assertThat(driver.getCurrentUrl()).endsWith("/newTransaction/repeating");
+		assertThat(driver.getCurrentUrl()).endsWith("/newTransaction/normal");
+//		TODO: assert that repeating options are shown automatically
 	}
 
 	@Test

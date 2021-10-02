@@ -10,7 +10,7 @@ Mousetrap.bind('r', function()
 {
     if(areHotKeysEnabled())
     {
-        window.location.href = rootURL + '/transactions/newTransaction/repeating';
+        window.location.href = rootURL + '/transactions/newTransaction/normal';
     }
 });
 
