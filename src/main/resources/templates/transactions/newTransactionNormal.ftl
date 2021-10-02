@@ -39,6 +39,7 @@
                             may then override an existing transactions if the ID is also already used in transactions table -->
                             <input type="hidden" name="ID" value="<#if transaction.class.simpleName == "Transaction" && transaction.getID()??>${transaction.getID()?c}</#if>">
                             <input type="hidden" name="previousType" value="<#if previousType??>${previousType.name()}</#if>">
+                            <input type="hidden" name="isRepeating" value="${transaction.isRepeating()?c}">
 
                             <#-- isPayment switch -->
                             <@newTransactionMacros.isExpenditureSwitch transaction/>

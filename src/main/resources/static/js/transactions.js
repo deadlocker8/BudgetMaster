@@ -410,7 +410,7 @@ function validateForm(allowEmptyAmount = false)
         }
     }
 
-    if(document.getElementsByName('isRepeating')[0].value === '1')
+    if(document.getElementsByName('isRepeating')[0].value)
     {
         if(!validateNumber($(transactionRepeatingModifierID).val(), transactionRepeatingModifierID.substr(1), "hidden-" + transactionRepeatingModifierID.substr(1), numberValidationMessage, REGEX_NUMBER))
         {

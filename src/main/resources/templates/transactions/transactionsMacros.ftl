@@ -145,10 +145,6 @@
                 <a href="<@s.url '/transactions/newTransaction/transfer'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new.transfer")}</a>
             </li>
             <li>
-                <a href="<@s.url '/transactions/newTransaction/repeating'/>" class="btn-floating btn background-blue"><i class="material-icons">repeat</i></a>
-                <a href="<@s.url '/transactions/newTransaction/repeating'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new.repeating")}</a>
-            </li>
-            <li>
                 <a href="<@s.url '/transactions/newTransaction/normal'/>" class="btn-floating btn background-orange"><i class="material-icons">payment</i></a>
                 <a href="<@s.url '/transactions/newTransaction/normal'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new.normal")}</a>
             </li>
