@@ -267,7 +267,7 @@ $(document).ready(function()
     $('#button-transaction-add-repeating-option').click(function()
     {
         document.getElementById('button-transaction-add-repeating-option').classList.toggle('hidden', true);
-        document.getElementsByName('isRepeating')[0].value = 1;
+        document.getElementsByName('isRepeating')[0].value = true;
         document.getElementById('transaction-repeating-option').classList.toggle('hidden', false);
     });
 });
@@ -410,7 +410,7 @@ function validateForm(allowEmptyAmount = false)
         }
     }
 
-    if(document.getElementsByName('isRepeating')[0].value)
+    if(document.getElementsByName('isRepeating')[0].value === "true")
     {
         if(!validateNumber($(transactionRepeatingModifierID).val(), transactionRepeatingModifierID.substr(1), "hidden-" + transactionRepeatingModifierID.substr(1), numberValidationMessage, REGEX_NUMBER))
         {
