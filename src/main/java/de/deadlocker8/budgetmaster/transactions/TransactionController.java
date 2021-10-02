@@ -143,7 +143,7 @@ public class TransactionController extends BaseController
 	{
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 
-		handlePreviousType(previousType, transaction);
+		handlePreviousType(transaction, isRepeating);
 
 		TransactionValidator transactionValidator = new TransactionValidator();
 		transactionValidator.validate(transaction, bindingResult);
@@ -164,9 +164,9 @@ public class TransactionController extends BaseController
 		return handleRedirect(model, transaction.getID() != null, transaction, bindingResult, date, "transactions/newTransaction");
 	}
 
-	private void handlePreviousType(TransactionType previousType, Transaction transaction)
+	private void handlePreviousType(Transaction transaction, boolean isRepeating)
 	{
-		if(previousType == TransactionType.REPEATING)
+		if(transaction.getID() != null && isRepeating)
 		{
 			transactionService.deleteTransaction(transaction.getID());
 		}
@@ -205,7 +205,8 @@ public class TransactionController extends BaseController
 	{
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 
-		handlePreviousType(previousType, transaction);
+//		TODO
+//		handlePreviousType(transaction, isRepeating);
 
 		TransactionValidator transactionValidator = new TransactionValidator();
 		transactionValidator.validate(transaction, bindingResult);
@@ -333,18 +334,13 @@ public class TransactionController extends BaseController
 		{
 			case NORMAL:
 				transactionCopy.setTransferAccount(null);
-				transactionCopy.setRepeatingOption(null);
 				redirectUrl = "transactions/newTransactionNormal";
 				break;
-//				TODO
-			case REPEATING:
-				transactionCopy.setTransferAccount(null);
-				redirectUrl = "transactions/newTransactionRepeating";
-				break;
 			case TRANSFER:
-				transactionCopy.setRepeatingOption(null);
 				redirectUrl = "transactions/newTransactionTransfer";
 				break;
+			default:
+				throw new IllegalStateException("Unexpected value: " + newTransactionType);
 		}
 
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);

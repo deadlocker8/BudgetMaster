@@ -73,7 +73,7 @@ class HotkeyTest extends SeleniumTestBase
 	}
 
 	@Test
-	public void hotkey_newTransaction_transfer()
+	void hotkey_newTransaction_transfer()
 	{
 		driver.findElement(By.tagName("body")).sendKeys("t");
 

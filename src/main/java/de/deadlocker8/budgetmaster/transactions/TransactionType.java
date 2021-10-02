@@ -5,8 +5,7 @@ import java.util.Optional;
 public enum TransactionType
 {
 	NORMAL(1),
-	REPEATING(2),
-	TRANSFER(3);
+	TRANSFER(2);
 
 	private final int typeID;
 
@@ -27,8 +26,6 @@ public enum TransactionType
 			case 1:
 				return Optional.of(NORMAL);
 			case 2:
-				return Optional.of(REPEATING);
-			case 3:
 				return Optional.of(TRANSFER);
 			default:
 				return Optional.empty();
@@ -40,10 +37,6 @@ public enum TransactionType
 		if(transaction.isTransfer())
 		{
 			return TRANSFER;
-		}
-		else if(transaction.isRepeating())
-		{
-			return REPEATING;
 		}
 		else
 		{
