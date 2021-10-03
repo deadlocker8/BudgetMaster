@@ -266,11 +266,22 @@ $(document).ready(function()
 
     $('#button-transaction-add-repeating-option').click(function()
     {
-        document.getElementById('button-transaction-add-repeating-option').classList.toggle('hidden', true);
-        document.getElementsByName('isRepeating')[0].value = true;
-        document.getElementById('transaction-repeating-option').classList.toggle('hidden', false);
+        toggleRepeatingOptions(true);
+    });
+
+    $('#button-transaction-remove-repeating-option').click(function()
+    {
+        toggleRepeatingOptions(false);
     });
 });
+
+function toggleRepeatingOptions(show)
+{
+    document.getElementById('button-transaction-add-repeating-option').classList.toggle('hidden', show);
+    document.getElementsByName('isRepeating')[0].value = show;
+    document.getElementById('transaction-repeating-option').classList.toggle('hidden', !show);
+    document.getElementById('button-transaction-remove-repeating-option').classList.toggle('hidden', !show);
+}
 
 function isHidden(el)
 {

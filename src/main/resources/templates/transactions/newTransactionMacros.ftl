@@ -156,7 +156,7 @@
 <#macro transactionRepeating transaction currentDate>
     <div class="row <#if transaction.isRepeating()>hidden</#if>">
         <div class="col s12 center-align">
-            <@header.buttonLink url='' icon='repeat' localizationKey='repeating.button' id='button-transaction-add-repeating-option' color='background-blue-baby' noUrl=true classes="text-black"/>
+            <@header.buttonLink url='' icon='repeat' localizationKey='repeating.button.add' id='button-transaction-add-repeating-option' color='background-blue-baby' noUrl=true classes="text-black"/>
         </div>
     </div>
 
@@ -173,6 +173,12 @@
         <@repeatingModifier transaction/>
 
         <@repeatingEndOption transaction currentDate/>
+    </div>
+
+    <div class="row">
+        <div class="col s12 center-align">
+            <@header.buttonLink url='' icon='delete' localizationKey='repeating.button.remove' id='button-transaction-remove-repeating-option' color='background-blue-baby' noUrl=true classes="text-black hidden"/>
+        </div>
     </div>
 </#macro>
 
