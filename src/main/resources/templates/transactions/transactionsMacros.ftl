@@ -2,12 +2,15 @@
 <#import "../helpers/header.ftl" as header>
 
 <#macro transactionType transaction>
-    <div class="col s1 l1 xl1">
+    <div class="col s3 l1 xl1 left-align">
         <#if transaction.isRepeating()>
-            <i class="material-icons ">repeat</i>
-        <#elseif transaction.isTransfer()>
+            <i class="material-icons">repeat</i>
+        </#if>
+        <#if transaction.isTransfer()>
             <i class="material-icons">swap_horiz</i>
-        <#else>
+        </#if>
+
+        <#if !transaction.isRepeating() && !transaction.isTransfer()>
             <i class="material-icons invisible">repeat</i>
         </#if>
     </div>
@@ -46,7 +49,7 @@
 </#macro>
 
 <#macro transactionButtons transaction>
-        <div class="col s8 l2 xl1 right-align transaction-buttons no-wrap">
+        <div class="col s6 l2 xl1 right-align transaction-buttons no-wrap">
             <#if transaction.isEditable()>
                 <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default"/>
                 <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/requestDelete' icon='delete' localizationKey='' classes="no-padding text-default button-request-delete-transaction" isDataUrl=true/>
