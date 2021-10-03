@@ -24,7 +24,7 @@ public class TransactionTestHelper
 
 		// icon
 		final List<WebElement> icons = columns.get(2).findElements(By.tagName("i"));
-		assertThat(icons).hasSize(1);
+		assertThat(icons).hasSize(determineNumberOfTransactionTypeIcons(repeatIconVisible, transferIconIsVisible));
 		assertThat(icons.get(0).isDisplayed()).isEqualTo(repeatIconVisible || transferIconIsVisible);
 		if(repeatIconVisible)
 		{
@@ -45,6 +45,21 @@ public class TransactionTestHelper
 
 		// amount
 		assertThat(columns.get(4).getText()).contains(amount);
+	}
+
+	private static int determineNumberOfTransactionTypeIcons(boolean repeatIconVisible, boolean transferIconIsVisible)
+	{
+		int numberOfIcons = 0;
+		if(repeatIconVisible)
+		{
+			numberOfIcons++;
+		}
+		if(transferIconIsVisible)
+		{
+			numberOfIcons++;
+		}
+
+		return numberOfIcons;
 	}
 
 	public static void selectOptionFromDropdown(WebDriver driver, By selectLocator, String nameToSelect)
@@ -72,6 +87,15 @@ public class TransactionTestHelper
 		globalAccountSelect.click();
 		driver.findElements(By.cssSelector(".global-account-select-wrapper .custom-select-item-name")).stream()
 				.filter(webElement -> webElement.getText().equals(accountName))
+				.findFirst().orElseThrow().click();
+	}
+
+	public static void selectTransferAccountByName(WebDriver driver, String transferAccountName)
+	{
+		final WebElement categorySelect = driver.findElement(By.cssSelector(".transfer-account-select-wrapper .custom-select"));
+		categorySelect.click();
+		driver.findElements(By.cssSelector(".transfer-account-select-wrapper .custom-select-item-name")).stream()
+				.filter(webElement -> webElement.getText().equals(transferAccountName))
 				.findFirst().orElseThrow().click();
 	}
 }

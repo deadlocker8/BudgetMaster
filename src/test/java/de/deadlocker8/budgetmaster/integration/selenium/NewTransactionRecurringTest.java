@@ -46,17 +46,23 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		final Account account2 = new Account("Account2", AccountType.CUSTOM);
 
 		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf"), List.of(account1, account2));
-		// open transactions page
+
+		openNewTransactionPage("Transaction");
+	}
+
+	private void openNewTransactionPage(String type)
+	{
 		driver.get(helper.getUrl() + "/transactions");
+
 		driver.findElement(By.id("button-new-transaction")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, 5);
-		final By locator = By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]");
+		final By locator = By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'" + type + "')]");
 		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
 		driver.findElement(locator).click();
 
 		wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Transaction"));
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New " + type));
 	}
 
 	@Test
@@ -196,6 +202,82 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 	}
 
 	@Test
+	void test_newTransaction_transfer()
+	{
+		openNewTransactionPage("Transfer");
+
+		String name = "My recurring transfer";
+		String amount = "30.00";
+		String description = "sit amet";
+		String categoryName = "sdfdsf";
+		String repeatingModifier = "1";
+		String repeatingModifierType = "Days";
+		String transferAccountName = "Account2";
+
+		// fill form
+		driver.findElement(By.id("transaction-name")).sendKeys(name);
+		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
+		driver.findElement(By.id("transaction-description")).sendKeys(description);
+		TransactionTestHelper.selectCategoryByName(driver, categoryName);
+		TransactionTestHelper.selectTransferAccountByName(driver, transferAccountName);
+
+		driver.findElement(By.id("button-transaction-add-repeating-option")).click();
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("button-transaction-remove-repeating-option"))));
+
+		// fill repeating options
+		driver.findElement(By.id("transaction-repeating-modifier")).sendKeys(repeatingModifier);
+		TransactionTestHelper.selectOptionFromDropdown(driver, By.cssSelector("#transaction-repeating-modifier-row"), repeatingModifierType);
+
+		// fill date
+		driver.findElement(By.id("transaction-datepicker")).click();
+		List<WebElement> datePickerCells = driver.findElements(By.cssSelector(".datepicker-table td"));
+		for(WebElement cell : datePickerCells)
+		{
+			if(cell.getText().equals("3"))
+			{
+				cell.click();
+				driver.findElement(By.cssSelector(".datepicker-done")).click();
+				break;
+			}
+		}
+
+		wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector(".modal-overlay"))));
+
+		// submit form
+		wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("modal-overlay")));
+
+		WebElement submitButton = driver.findElement(By.id("button-save-transaction"));
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", submitButton);
+
+		submitButton.click();
+
+		wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
+
+		// assert
+		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
+
+		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		assertThat(transactionsRows).hasSizeGreaterThan(2);
+
+		final WebElement row = transactionsRows.get(transactionsRows.size() - 2);
+		final List<WebElement> columns = row.findElements(By.className("col"));
+		assertThat(columns).hasSize(6);
+
+		// check columns
+		final String dateString = new SimpleDateFormat("03.MM.").format(new Date());
+		TransactionTestHelper.assertTransactionColumns(columns, dateString, categoryName, "rgb(46, 124, 43)", true, true, name, description, amount);
+
+		driver.get(helper.getUrl() + "/transactions/26/edit");
+
+		assertThat(driver.findElement(By.cssSelector(".account-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("2");
+		assertThat(driver.findElement(By.cssSelector(".transfer-account-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("4");
+	}
+
+	@Test
 	void test_edit()
 	{
 		driver.get(helper.getUrl() + "/transactions/6/edit");
@@ -218,5 +300,23 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 
 		assertThat(driver.findElement(By.id("repeating-end-after-x-times")).isSelected()).isTrue();
 		assertThat(driver.findElement(By.id("transaction-repeating-end-after-x-times-input")).getAttribute("value")).isEqualTo("20");
+
+		assertThat(driver.findElement(By.id("button-transaction-remove-repeating-option")).isDisplayed()).isFalse();
+	}
+
+	@Test
+	void test_new_removeRepeatingOption()
+	{
+		driver.findElement(By.id("button-transaction-add-repeating-option")).click();
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("button-transaction-remove-repeating-option"))));
+
+		assertThat(driver.findElement(By.id("button-transaction-remove-repeating-option")).isDisplayed()).isTrue();
+
+		driver.findElement(By.id("button-transaction-remove-repeating-option")).click();
+		wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("button-transaction-add-repeating-option"))));
+
+		assertThat(driver.findElement(By.id("button-transaction-remove-repeating-option")).isDisplayed()).isFalse();
 	}
 }
