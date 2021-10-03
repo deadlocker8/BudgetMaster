@@ -33,13 +33,14 @@
                 <@header.content>
                     <div class="container">
                         <#import "../helpers/validation.ftl" as validation>
-                        <form name="NewTransaction" action="<@s.url '/transactions/newTransaction/transfer'/>" method="post" onsubmit="return validateForm()">
+                        <form name="NewTransaction" action="<@s.url '/transactions/newTransaction'/>" method="post" onsubmit="return validateForm()">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             <!-- only set ID for transactions not templates, otherwise the input is filled with the template ID and saving the transaction
                             may then override an existing transactions if the ID is also already used in transactions table -->
                             <input type="hidden" name="ID" value="<#if transaction.class.simpleName == "Transaction" && transaction.getID()??>${transaction.getID()?c}</#if>">
                             <input type="hidden" name="isExpenditure" value="true">
                             <input type="hidden" name="previousType" value="<#if previousType??>${previousType.name()}</#if>">
+                            <input type="hidden" name="isRepeating" value="${transaction.isRepeating()?c}">
 
                             <#assign hint=helpers.getHintByLocalizationKey("hint.transaction.save")/>
                             <@header.hint hint=hint/>
@@ -77,6 +78,9 @@
                                 <#assign selectedTransferAccount = helpers.getCurrentAccountOrDefault()/>
                             </#if>
                             <@customSelectMacros.customAccountSelect "transfer-account-select-wrapper" "transferAccount" accounts selectedTransferAccount "col s12 m12 l8 offset-l2" locale.getString("transaction.new.label.transfer.account") "transaction-destination-account"/>
+
+                            <#-- repeating options -->
+                            <@newTransactionMacros.transactionRepeating transaction currentDate/>
 
                             <#-- buttons -->
                             <@newTransactionMacros.buttons '/transactions'/>

@@ -131,15 +131,15 @@ public class TransactionController extends BaseController
 		return "transactions/newTransaction" + StringUtils.capitalize(type);
 	}
 
-	@PostMapping(value = "/newTransaction/normal")
-	public String postRepeating(Model model, @CookieValue("currentDate") String cookieDate,
-								@ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
-								@RequestParam(value = "isRepeating", required = false) boolean isRepeating,
-								@RequestParam(value = "previousType", required = false) TransactionType previousType,
-								@RequestParam(value = "repeatingModifierNumber", required = false, defaultValue = "0") int repeatingModifierNumber,
-								@RequestParam(value = "repeatingModifierType", required = false) String repeatingModifierType,
-								@RequestParam(value = "repeatingEndType", required = false) String repeatingEndType,
-								@RequestParam(value = "repeatingEndValue", required = false) String repeatingEndValue)
+	@PostMapping(value = "/newTransaction")
+	public String post(Model model, @CookieValue("currentDate") String cookieDate,
+					   @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
+					   @RequestParam(value = "isRepeating", required = false) boolean isRepeating,
+					   @RequestParam(value = "previousType", required = false) TransactionType previousType,
+					   @RequestParam(value = "repeatingModifierNumber", required = false, defaultValue = "0") int repeatingModifierNumber,
+					   @RequestParam(value = "repeatingModifierType", required = false) String repeatingModifierType,
+					   @RequestParam(value = "repeatingEndType", required = false) String repeatingEndType,
+					   @RequestParam(value = "repeatingEndValue", required = false) String repeatingEndValue)
 	{
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 
@@ -161,7 +161,17 @@ public class TransactionController extends BaseController
 			transaction.setRepeatingOption(null);
 		}
 
-		return handleRedirect(model, transaction.getID() != null, transaction, bindingResult, date, "transactions/newTransaction");
+		String redirectUrl;
+		if(transaction.isTransfer())
+		{
+			redirectUrl = "transactions/newTransactionTransfer";
+		}
+		else
+		{
+			redirectUrl = "transactions/newTransactionNormal";
+		}
+
+		return handleRedirect(model, transaction.getID() != null, transaction, bindingResult, date, redirectUrl);
 	}
 
 	private void handlePreviousType(Transaction transaction, boolean isRepeating)
@@ -195,28 +205,6 @@ public class TransactionController extends BaseController
 		}
 
 		return new RepeatingOption(startDate, repeatingModifier, repeatingEnd);
-	}
-
-	@PostMapping(value = "/newTransaction/transfer")
-	public String postTransfer(Model model,
-							   @CookieValue("currentDate") String cookieDate,
-							   @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
-							   @RequestParam(value = "previousType", required = false) TransactionType previousType)
-	{
-		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
-
-//		TODO
-//		handlePreviousType(transaction, isRepeating);
-
-		TransactionValidator transactionValidator = new TransactionValidator();
-		transactionValidator.validate(transaction, bindingResult);
-
-		transactionService.handleAmount(transaction);
-		transactionService.handleTags(transaction);
-
-		transaction.setRepeatingOption(null);
-
-		return handleRedirect(model, transaction.getID() != null, transaction, bindingResult, date, "transactions/newTransactionTransfer");
 	}
 
 	private String handleRedirect(Model model, boolean isEdit, @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult, DateTime date, String url)
