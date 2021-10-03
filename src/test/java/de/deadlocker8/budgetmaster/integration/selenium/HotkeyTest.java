@@ -62,18 +62,6 @@ class HotkeyTest extends SeleniumTestBase
 	}
 
 	@Test
-	void hotkey_newTransaction_recurring()
-	{
-		driver.findElement(By.tagName("body")).sendKeys("r");
-
-		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("form[name='NewTransaction']")));
-
-		assertThat(driver.getCurrentUrl()).endsWith("/newTransaction/normal");
-//		TODO: assert that repeating options are shown automatically
-	}
-
-	@Test
 	void hotkey_newTransaction_transfer()
 	{
 		driver.findElement(By.tagName("body")).sendKeys("t");

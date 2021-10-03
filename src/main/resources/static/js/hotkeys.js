@@ -6,14 +6,6 @@ Mousetrap.bind('n', function()
     }
 });
 
-Mousetrap.bind('r', function()
-{
-    if(areHotKeysEnabled())
-    {
-        window.location.href = rootURL + '/transactions/newTransaction/normal';
-    }
-});
-
 Mousetrap.bind('t', function()
 {
     if(areHotKeysEnabled())
