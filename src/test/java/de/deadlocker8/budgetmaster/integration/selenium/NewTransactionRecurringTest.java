@@ -51,30 +51,12 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		driver.findElement(By.id("button-new-transaction")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, 5);
-		final By locator = By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Recurring')]");
+		final By locator = By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]");
 		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
 		driver.findElement(locator).click();
 
 		wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Recurring Transaction"));
-	}
-
-	@Test
-	void test_newTransaction_cancel()
-	{
-		// click cancel button
-		WebElement cancelButton = driver.findElement(By.id("button-cancel-save-transaction"));
-		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", cancelButton);
-		cancelButton.click();
-
-		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
-
-		// assert
-		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
-
-		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
-		assertThat(transactionsRows).hasSize(1);
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Transaction"));
 	}
 
 	@Test
@@ -94,6 +76,10 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		driver.findElement(By.id("transaction-description")).sendKeys(description);
 		TransactionTestHelper.selectCategoryByName(driver, categoryName);
 
+		driver.findElement(By.id("button-transaction-add-repeating-option")).click();
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("button-transaction-remove-repeating-option"))));
+
 		// fill repeating options
 		driver.findElement(By.id("transaction-repeating-modifier")).sendKeys(repeatingModifier);
 		TransactionTestHelper.selectOptionFromDropdown(driver, By.cssSelector("#transaction-repeating-modifier-row"), repeatingModifierType);
@@ -111,7 +97,7 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 			}
 		}
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector(".modal-overlay"))));
 
 		// submit form
@@ -158,6 +144,10 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		driver.findElement(By.id("transaction-description")).sendKeys(description);
 		TransactionTestHelper.selectCategoryByName(driver, categoryName);
 
+		driver.findElement(By.id("button-transaction-add-repeating-option")).click();
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("button-transaction-remove-repeating-option"))));
+
 		// fill repeating options
 		driver.findElement(By.id("transaction-repeating-modifier")).sendKeys(repeatingModifier);
 		TransactionTestHelper.selectOptionFromDropdown(driver, By.cssSelector("#transaction-repeating-modifier-row"), repeatingModifierType);
@@ -175,7 +165,7 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 			}
 		}
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector(".modal-overlay"))));
 
 		// submit form
