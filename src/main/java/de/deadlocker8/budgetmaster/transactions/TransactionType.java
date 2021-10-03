@@ -32,18 +32,6 @@ public enum TransactionType
 		}
 	}
 
-	public static TransactionType getFromTransaction(Transaction transaction)
-	{
-		if(transaction.isTransfer())
-		{
-			return TRANSFER;
-		}
-		else
-		{
-			return NORMAL;
-		}
-	}
-
 	@Override
 	public String toString()
 	{

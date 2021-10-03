@@ -39,7 +39,6 @@
                             may then override an existing transactions if the ID is also already used in transactions table -->
                             <input type="hidden" name="ID" value="<#if transaction.class.simpleName == "Transaction" && transaction.getID()??>${transaction.getID()?c}</#if>">
                             <input type="hidden" name="isExpenditure" value="true">
-                            <input type="hidden" name="previousType" value="<#if previousType??>${previousType.name()}</#if>">
                             <input type="hidden" name="isRepeating" value="${transaction.isRepeating()?c}">
 
                             <#assign hint=helpers.getHintByLocalizationKey("hint.transaction.save")/>
@@ -84,7 +83,7 @@
 
                             <#-- buttons -->
                             <@newTransactionMacros.buttons '/transactions'/>
-                            <@newTransactionMacros.buttonTransactionActions isEdit true previousType??/>
+                            <@newTransactionMacros.buttonTransactionActions isEdit true changeTypeInProgress/>
                         </form>
 
                         <div id="saveAsTemplateModalContainer"></div>

@@ -127,7 +127,7 @@ public class TransactionController extends BaseController
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 		Transaction emptyTransaction = new Transaction();
 		emptyTransaction.setCategory(categoryService.findByType(CategoryType.NONE));
-		transactionService.prepareModelNewOrEdit(model, false, date, null, emptyTransaction, accountService.getAllActivatedAccountsAsc());
+		transactionService.prepareModelNewOrEdit(model, false, date, false, emptyTransaction, accountService.getAllActivatedAccountsAsc());
 		return "transactions/newTransaction" + StringUtils.capitalize(type);
 	}
 
@@ -135,7 +135,6 @@ public class TransactionController extends BaseController
 	public String post(Model model, @CookieValue("currentDate") String cookieDate,
 					   @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
 					   @RequestParam(value = "isRepeating", required = false) boolean isRepeating,
-					   @RequestParam(value = "previousType", required = false) TransactionType previousType,
 					   @RequestParam(value = "repeatingModifierNumber", required = false, defaultValue = "0") int repeatingModifierNumber,
 					   @RequestParam(value = "repeatingModifierType", required = false) String repeatingModifierType,
 					   @RequestParam(value = "repeatingEndType", required = false) String repeatingEndType,
@@ -212,7 +211,7 @@ public class TransactionController extends BaseController
 		if(bindingResult.hasErrors())
 		{
 			model.addAttribute("error", bindingResult);
-			transactionService.prepareModelNewOrEdit(model, isEdit, date, null, transaction, accountService.getAllActivatedAccountsAsc());
+			transactionService.prepareModelNewOrEdit(model, isEdit, date, false, transaction, accountService.getAllActivatedAccountsAsc());
 			return url;
 		}
 
@@ -243,7 +242,7 @@ public class TransactionController extends BaseController
 		}
 
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
-		transactionService.prepareModelNewOrEdit(model, true, date, null, transaction, accountService.getAllActivatedAccountsAsc());
+		transactionService.prepareModelNewOrEdit(model, true, date, false, transaction, accountService.getAllActivatedAccountsAsc());
 
 		if(transaction.isTransfer())
 		{
@@ -315,8 +314,6 @@ public class TransactionController extends BaseController
 		final TransactionType newTransactionType = transactionTypeOptional.get();
 		LOGGER.debug(MessageFormat.format("Changing transaction type to {0} for transaction with ID {1}", newTransactionType, String.valueOf(transaction.getID())));
 
-		final TransactionType previousType = TransactionType.getFromTransaction(transaction);
-
 		String redirectUrl = "";
 		switch(newTransactionType)
 		{
@@ -332,7 +329,7 @@ public class TransactionController extends BaseController
 		}
 
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
-		transactionService.prepareModelNewOrEdit(model, true, date, previousType, transactionCopy, accountService.getAllActivatedAccountsAsc());
+		transactionService.prepareModelNewOrEdit(model, true, date, true, transactionCopy, accountService.getAllActivatedAccountsAsc());
 
 		return redirectUrl;
 	}

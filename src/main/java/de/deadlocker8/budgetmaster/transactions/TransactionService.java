@@ -288,11 +288,11 @@ public class TransactionService implements Resettable
 		return item;
 	}
 
-	public void prepareModelNewOrEdit(Model model, boolean isEdit, DateTime date, TransactionType previousType, TransactionBase item, List<Account> accounts)
+	public void prepareModelNewOrEdit(Model model, boolean isEdit, DateTime date, boolean changeTypeInProgress, TransactionBase item, List<Account> accounts)
 	{
 		model.addAttribute("isEdit", isEdit);
 		model.addAttribute("currentDate", date);
-		model.addAttribute("previousType", previousType);
+		model.addAttribute("changeTypeInProgress", changeTypeInProgress);
 		model.addAttribute("categories", categoryService.getAllEntitiesAsc());
 		model.addAttribute("accounts", accounts);
 		model.addAttribute("transaction", item);

@@ -340,8 +340,8 @@
     <@header.buttonSubmit name='action' icon='save' localizationKey='save' id='button-save-transaction'/>
 </#macro>
 
-<#macro buttonTransactionActions canChangeType canCreateTemplate changetypeInProgress>
-    <#if (canChangeType || canCreateTemplate) && !changetypeInProgress>
+<#macro buttonTransactionActions canChangeType canCreateTemplate changeTypeInProgress>
+    <#if (canChangeType || canCreateTemplate) && !changeTypeInProgress>
         <div class="fixed-action-btn" id="transaction-actions-button">
             <a class="btn-floating btn-large waves-effect waves-light background-blue">
                 <i class="material-icons left">settings</i>${locale.getString("save")}
