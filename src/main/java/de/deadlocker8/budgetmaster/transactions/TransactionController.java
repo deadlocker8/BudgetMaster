@@ -136,7 +136,7 @@ public class TransactionController extends BaseController
 								@ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
 								@RequestParam(value = "isRepeating", required = false) boolean isRepeating,
 								@RequestParam(value = "previousType", required = false) TransactionType previousType,
-								@RequestParam(value = "repeatingModifierNumber", required = false) int repeatingModifierNumber,
+								@RequestParam(value = "repeatingModifierNumber", required = false, defaultValue = "0") int repeatingModifierNumber,
 								@RequestParam(value = "repeatingModifierType", required = false) String repeatingModifierType,
 								@RequestParam(value = "repeatingEndType", required = false) String repeatingEndType,
 								@RequestParam(value = "repeatingEndValue", required = false) String repeatingEndValue)
