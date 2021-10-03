@@ -24,6 +24,12 @@
                 </label>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col s12">
+                <i class="fas fa-info"></i> ${locale.getString('template.repeating.options.not.included')}
+            </div>
+        </div>
     </div>
     <div class="modal-footer background-color">
         <@header.buttonLink url='' icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white'/>
