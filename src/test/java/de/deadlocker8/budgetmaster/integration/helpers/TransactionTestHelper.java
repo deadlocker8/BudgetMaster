@@ -59,6 +59,12 @@ public class TransactionTestHelper
 			numberOfIcons++;
 		}
 
+		// if neither repeat icon not transfer icon is shown a placeholder icon is displayed
+		if(numberOfIcons == 0)
+		{
+			numberOfIcons = 1;
+		}
+
 		return numberOfIcons;
 	}
 
