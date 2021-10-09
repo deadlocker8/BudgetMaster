@@ -1,29 +1,19 @@
 package de.deadlocker8.budgetmaster.integration.selenium;
 
-import de.deadlocker8.budgetmaster.Main;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.charts.ChartDisplayType;
 import de.deadlocker8.budgetmaster.charts.ChartGroupType;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
-import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
-import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestWatcher;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.test.annotation.DirtiesContext;
 
 import java.io.File;
 import java.util.Arrays;
@@ -31,10 +21,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(SeleniumTestWatcher.class)
-@SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@SeleniumTest
 class ChartTest extends SeleniumTestBase
 {
 	private final String SELECTOR_ACTIVE_DISPLAY_TYPE = ".button-display-type.active";
@@ -44,8 +30,8 @@ class ChartTest extends SeleniumTestBase
 
 	private IntegrationTestHelper helper;
 
-	@BeforeEach
-	public void prepare()
+	@BeforeAll
+	public void beforeAll()
 	{
 		helper = new IntegrationTestHelper(driver, port);
 		helper.start();

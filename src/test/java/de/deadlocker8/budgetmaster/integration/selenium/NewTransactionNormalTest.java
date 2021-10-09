@@ -1,20 +1,19 @@
 package de.deadlocker8.budgetmaster.integration.selenium;
 
-import de.deadlocker8.budgetmaster.Main;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
-import de.deadlocker8.budgetmaster.integration.helpers.*;
+import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
+import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
+import de.deadlocker8.budgetmaster.integration.helpers.TransactionTestHelper;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -24,16 +23,12 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(SeleniumTestWatcher.class)
-@SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@SeleniumTest
 class NewTransactionNormalTest extends SeleniumTestBase
 {
 	private IntegrationTestHelper helper;
 
-	@BeforeEach
-	public void prepare()
+	@BeforeAll
+	public void beforeAll()
 	{
 		helper = new IntegrationTestHelper(driver, port);
 		helper.start();
@@ -46,8 +41,16 @@ class NewTransactionNormalTest extends SeleniumTestBase
 		final Account account2 = new Account("Account2", AccountType.CUSTOM);
 
 		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf"), List.of(account1, account2));
-		// open transactions page
+	}
+
+	@BeforeEach
+	public void beforeEach()
+	{
 		driver.get(helper.getUrl() + "/transactions");
+	}
+
+	private void openNewTransactionPage()
+	{
 		driver.findElement(By.id("button-new-transaction")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, 5);
@@ -62,6 +65,11 @@ class NewTransactionNormalTest extends SeleniumTestBase
 	@Test
 	void test_newTransaction_cancel()
 	{
+		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		final int numberOfTransactionsBefore = transactionsRows.size();
+
+		openNewTransactionPage();
+
 		// click cancel button
 		WebElement cancelButton = driver.findElement(By.id("button-cancel-save-transaction"));
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", cancelButton);
@@ -73,13 +81,18 @@ class NewTransactionNormalTest extends SeleniumTestBase
 		// assert
 		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
 
-		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
-		assertThat(transactionsRows).hasSize(1);
+		transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		assertThat(transactionsRows).hasSize(numberOfTransactionsBefore);
 	}
 
 	@Test
 	void test_newTransaction_income()
 	{
+		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		final int numberOfTransactionsBefore = transactionsRows.size();
+
+		openNewTransactionPage();
+
 		String name = "My normal transaction";
 		String amount = "15.00";
 		String description = "Lorem Ipsum dolor sit amet";
@@ -101,8 +114,8 @@ class NewTransactionNormalTest extends SeleniumTestBase
 		// assert
 		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
 
-		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
-		assertThat(transactionsRows).hasSize(2);
+		transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		assertThat(transactionsRows).hasSize(numberOfTransactionsBefore + 1);
 
 		final WebElement row = transactionsRows.get(0);
 		final List<WebElement> columns = row.findElements(By.className("col"));
@@ -116,6 +129,11 @@ class NewTransactionNormalTest extends SeleniumTestBase
 	@Test
 	void test_newTransaction_expenditure()
 	{
+		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		final int numberOfTransactionsBefore = transactionsRows.size();
+
+		openNewTransactionPage();
+
 		String name = "My normal transaction";
 		String amount = "15.00";
 		String description = "Lorem Ipsum dolor sit amet";
@@ -137,8 +155,8 @@ class NewTransactionNormalTest extends SeleniumTestBase
 		// assert
 		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
 
-		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
-		assertThat(transactionsRows).hasSize(2);
+		transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		assertThat(transactionsRows).hasSize(numberOfTransactionsBefore + 1);
 
 		final WebElement row = transactionsRows.get(0);
 		final List<WebElement> columns = row.findElements(By.className("col"));

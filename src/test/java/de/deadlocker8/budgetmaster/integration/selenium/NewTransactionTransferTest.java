@@ -49,6 +49,10 @@ class NewTransactionTransferTest extends SeleniumTestBase
 	public void beforeEach() {
 		// open transactions page
 		driver.get(helper.getUrl() + "/transactions");
+	}
+
+	private void openNewTransactionPage()
+	{
 		driver.findElement(By.id("button-new-transaction")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, 5);
@@ -63,6 +67,14 @@ class NewTransactionTransferTest extends SeleniumTestBase
 	@Test
 	void test_newTransaction_cancel()
 	{
+		// open transactions page
+		driver.get(helper.getUrl() + "/transactions");
+
+		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		final int numberOfTransactionsBefore = transactionsRows.size();
+
+		openNewTransactionPage();
+
 		// click cancel button
 		WebElement cancelButton = driver.findElement(By.id("button-cancel-save-transaction"));
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", cancelButton);
@@ -74,13 +86,15 @@ class NewTransactionTransferTest extends SeleniumTestBase
 		// assert
 		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
 
-		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
-		assertThat(transactionsRows).hasSize(1);
+		transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		assertThat(transactionsRows).hasSize(numberOfTransactionsBefore);
 	}
 
 	@Test
 	void test_newTransaction_transfer()
 	{
+		openNewTransactionPage();
+
 		String name = "My transfer transaction";
 		String amount = "15.00";
 		String description = "Lorem Ipsum dolor sit amet";
