@@ -9,19 +9,15 @@ import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestWatcher;
 import de.thecodelabs.utils.util.Localization;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.TestWatcher;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.io.File;
@@ -30,14 +26,9 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-@ExtendWith(SeleniumTestWatcher.class)
-@SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@SeleniumTest
 class SearchTest extends SeleniumTestBase
 {
-	@BeforeEach
+	@BeforeAll
 	public void prepare()
 	{
 		IntegrationTestHelper helper = new IntegrationTestHelper(driver, port);
@@ -51,6 +42,10 @@ class SearchTest extends SeleniumTestBase
 		final Account account2 = new Account("Account2", AccountType.CUSTOM);
 
 		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf"), List.of(account1, account2));
+	}
+
+	@BeforeEach
+	public void beforeEach() {
 		// search
 		WebElement inputSearch = driver.findElement(By.id("search"));
 		inputSearch.sendKeys("e");
