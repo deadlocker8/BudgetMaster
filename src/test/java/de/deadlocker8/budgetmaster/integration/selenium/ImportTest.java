@@ -6,10 +6,14 @@ import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ImportTest extends SeleniumTestBase
 {
@@ -27,5 +31,10 @@ class ImportTest extends SeleniumTestBase
 		final Account account1 = new Account("DefaultAccount0815", AccountType.CUSTOM);
 		final Account account2 = new Account("Account2", AccountType.CUSTOM);
 		helper.uploadDatabase(path, sourceAccounts, List.of(account1, account2));
+
+		// assert
+		driver.get(helper.getUrl() + "/accounts");
+		List<WebElement> accountRows = driver.findElements(By.cssSelector(".account-container tr"));
+		assertThat(accountRows).hasSize(3);
 	}
 }
