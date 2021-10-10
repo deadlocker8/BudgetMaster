@@ -30,9 +30,15 @@ class ChangeTransactionTypeTest extends SeleniumTestBase
 	{
 		driver.get(helper.getUrl() + "/transactions/" + transactionID + "/edit");
 
+		// move cursor away
 		Actions builder = new Actions(driver);
-		WebElement element = driver.findElement(By.id("transaction-actions-button"));
-		builder.moveToElement(element).build().perform();
+		WebElement logo = driver.findElement(By.id("nav-logo"));
+		builder.moveToElement(logo).build().perform();
+
+		// move cursor to button
+		builder = new Actions(driver);
+		WebElement button = driver.findElement(By.id("transaction-actions-button"));
+		builder.moveToElement(button).build().perform();
 
 		By changeTypeButtonSelector = By.xpath("//a[contains(@data-action-type, 'changeType')][1]");
 		WebDriverWait wait = new WebDriverWait(driver, 5);
