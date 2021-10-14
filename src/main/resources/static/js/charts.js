@@ -115,6 +115,7 @@ $(document).ready(function()
         document.getElementsByName('NewChartSettings')[0].classList.toggle('hidden', false);
         document.getElementById('buttonShowChartSettings').classList.toggle('hidden', true);
 
+        applyFilter();
         checkShowChartButton();
     });
 

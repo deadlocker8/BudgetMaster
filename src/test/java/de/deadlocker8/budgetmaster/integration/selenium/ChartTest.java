@@ -268,6 +268,36 @@ class ChartTest extends SeleniumTestBase
 	}
 
 	@Test
+	void test_showFilterBadgeOnShowChartSettings()
+	{
+		driver.get(helper.getUrl() + "/charts");
+
+		final String chartPreviewSelector = ".chart-preview-column[data-id='6']";
+		driver.findElement(By.cssSelector(chartPreviewSelector)).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.attributeContains(By.cssSelector(chartPreviewSelector + " .chart-preview"), "class", "active"));
+
+		driver.findElement(By.id("chart-filter-container")).click();
+		driver.findElement(By.id("section-type")).click();
+		final WebElement checkBox = driver.findElement(By.cssSelector("#section-type .text-default"));
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", checkBox);
+		checkBox.click();
+
+		driver.findElement(By.name("buttonSave")).click();
+
+		wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("chart-canvas")));
+
+		driver.findElement(By.id("buttonShowChartSettings")).click();
+
+		wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.attributeContains(By.cssSelector(chartPreviewSelector + " .chart-preview"), "class", "active"));
+
+		assertThat(driver.findElement(By.id("filterActiveBadge")).isDisplayed()).isTrue();
+	}
+
+	@Test
 	void test_showManageButtonForCustomCharts()
 	{
 		driver.get(helper.getUrl() + "/charts");
@@ -304,7 +334,7 @@ class ChartTest extends SeleniumTestBase
 	}
 
 	@Test
-	void test_EnabledButtonAfterShowChart()
+	void test_enabledButtonAfterShowChart()
 	{
 		driver.get(helper.getUrl() + "/charts");
 
