@@ -53,6 +53,7 @@
             <#if transaction.isEditable()>
                 <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default"/>
                 <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/requestDelete' icon='delete' localizationKey='' classes="no-padding text-default button-request-delete-transaction" isDataUrl=true/>
+                <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/newFromExisting' icon='content_copy' localizationKey='' classes="no-padding text-default"/>
             </#if>
         </div>
 </#macro>
