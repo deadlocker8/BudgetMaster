@@ -1,0 +1,104 @@
+{
+    "TYPE": "BUDGETMASTER_DATABASE",
+    "VERSION": 7,
+    "categories": [
+        {
+            "ID": 192,
+            "name": "Custom Category",
+            "color": "#ff9500",
+            "type": "CUSTOM"
+        },
+        {
+            "ID": 190,
+            "name": "No Category",
+            "color": "#FFFFFF",
+            "type": "NONE"
+        },
+        {
+            "ID": 191,
+            "name": "Rest",
+            "color": "#FFFF00",
+            "type": "REST"
+        }
+    ],
+    "accounts": [
+        {
+            "ID": 169,
+            "name": "Placeholder",
+            "accountState": "FULL_ACCESS",
+            "type": "ALL"
+        },
+        {
+            "ID": 170,
+            "name": "Default Account",
+            "accountState": "FULL_ACCESS",
+            "type": "CUSTOM"
+        },
+        {
+            "ID": 171,
+            "name": "Second Account",
+            "accountState": "FULL_ACCESS",
+            "type": "CUSTOM"
+        }
+    ],
+    "transactions": [
+        {
+            "amount": -1200,
+            "isExpenditure": true,
+            "date": "2021-10-17",
+            "accountID": 170,
+            "categoryID": 192,
+            "name": "Full normal",
+            "description": "lorem ipsum",
+            "tags": [
+                {
+                    "name": "123"
+                }
+            ]
+        },
+        {
+            "amount": -1500,
+            "isExpenditure": true,
+            "date": "2021-09-17",
+            "accountID": 170,
+            "categoryID": 192,
+            "name": "Full transfer",
+            "description": "dolor sit amet",
+            "tags": [
+                {
+                    "name": "456"
+                }
+            ],
+            "transferAccountID": 171
+        },
+        {
+            "amount": -200,
+            "isExpenditure": true,
+            "date": "2021-06-17",
+            "accountID": 170,
+            "categoryID": 192,
+            "name": "normal recurring",
+            "description": "apple",
+            "tags": [
+                {
+                    "name": "789"
+                }
+            ],
+            "repeatingOption": {
+                "startDate": "2021-10-17",
+                "modifier": {
+                    "quantity": 1,
+                    "localizationKey": "repeating.modifier.months"
+                },
+                "endOption": {
+                    "localizationKey": "repeating.end.key.afterXTimes",
+                    "times": 1
+                }
+            }
+        }
+    ],
+    "templates": [],
+    "charts": [],
+    "images": [],
+    "icons": []
+}
