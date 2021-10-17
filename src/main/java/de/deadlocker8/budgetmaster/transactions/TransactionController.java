@@ -333,4 +333,39 @@ public class TransactionController extends BaseController
 
 		return redirectUrl;
 	}
+
+	@GetMapping("/{ID}/newFromExisting")
+	public String newFromExisting(Model model, @PathVariable("ID") Integer ID, @CookieValue("currentDate") String cookieDate)
+	{
+		Optional<Transaction> transactionOptional = transactionService.getRepository().findById(ID);
+		if(transactionOptional.isEmpty())
+		{
+			throw new ResourceNotFoundException();
+		}
+
+		Transaction existingTransaction = transactionOptional.get();
+
+		// select first transaction in order to provide correct start date for repeating transactions
+		if(existingTransaction.getRepeatingOption() != null)
+		{
+			existingTransaction = existingTransaction.getRepeatingOption().getReferringTransactions().get(0);
+		}
+
+		final Transaction newTransaction = new Transaction(existingTransaction);
+		newTransaction.setID(null);
+
+		if(newTransaction.getAccount().getAccountState() != AccountState.FULL_ACCESS)
+		{
+			newTransaction.setAccount(helpers.getCurrentAccountOrDefault());
+		}
+
+		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
+		transactionService.prepareModelNewOrEdit(model, false, date, false, newTransaction, accountService.getAllActivatedAccountsAsc());
+
+		if(newTransaction.isTransfer())
+		{
+			return "transactions/newTransactionTransfer";
+		}
+		return "transactions/newTransactionNormal";
+	}
 }
