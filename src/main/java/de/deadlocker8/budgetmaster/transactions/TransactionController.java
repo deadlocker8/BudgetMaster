@@ -356,7 +356,7 @@ public class TransactionController extends BaseController
 
 		if(newTransaction.getAccount().getAccountState() != AccountState.FULL_ACCESS)
 		{
-			newTransaction.setAccount(helpers.getCurrentAccountOrDefault());
+			newTransaction.setAccount(accountService.getRepository().findByIsDefault(true));
 		}
 
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
