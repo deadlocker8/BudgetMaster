@@ -182,7 +182,8 @@ class AccountTest extends SeleniumTestBase
 
 		// check columns
 		final List<WebElement> icons = columns.get(5).findElements(By.tagName("i"));
-		assertThat(icons).isEmpty();
+		assertThat(icons).hasSize(1);
+		assertThat(icons.get(0).getText()).isEqualTo("content_copy");
 	}
 
 	@Test
