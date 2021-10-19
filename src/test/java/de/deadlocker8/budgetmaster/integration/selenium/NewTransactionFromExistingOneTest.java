@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.integration.selenium;
 
 import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.accounts.AccountState;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
@@ -15,7 +16,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,8 +39,10 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 		String path = getClass().getClassLoader().getResource("NewTransactionFromExistingOneTest.json").getFile().replace("/", File.separator);
 		final Account account1 = new Account("DefaultAccount", AccountType.CUSTOM);
 		final Account account2 = new Account("Second Account", AccountType.CUSTOM);
+		final Account account3 = new Account("Readonly Account", AccountType.CUSTOM);
+		account3.setAccountState(AccountState.READ_ONLY);
 
-		helper.uploadDatabase(path, Arrays.asList("Default Account", "Second Account"), List.of(account1, account2));
+		helper.uploadDatabase(path, Arrays.asList("Default Account", "Second Account", "Readonly Account"), List.of(account1, account2, account3));
 	}
 
 	@BeforeEach
@@ -86,6 +91,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 		assertThat(driver.findElement(By.className("buttonExpenditure")).getAttribute("class")).contains("background-red");
 		assertThat(driver.findElement(By.id("transaction-name")).getAttribute("value")).isEqualTo("Full normal");
 		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEqualTo("12.00");
+		assertThat(driver.findElement(By.id("transaction-datepicker")).getAttribute("value")).isEqualTo("01.10.2021");
 		assertThat(driver.findElement(By.id("transaction-description")).getAttribute("value")).isEqualTo("lorem ipsum");
 		assertThat(driver.findElement(By.cssSelector(".category-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("3");
 
@@ -120,6 +126,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 		// assert
 		assertThat(driver.findElement(By.id("transaction-name")).getAttribute("value")).isEqualTo("Full transfer");
 		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEqualTo("15.00");
+		assertThat(driver.findElement(By.id("transaction-datepicker")).getAttribute("value")).isEqualTo("01.09.2021");
 		assertThat(driver.findElement(By.id("transaction-description")).getAttribute("value")).isEqualTo("dolor sit amet");
 		assertThat(driver.findElement(By.cssSelector(".category-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("3");
 
@@ -190,7 +197,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEqualTo("12.00");
 
 		// should fall back to default account as the readonly account will not allow new transactions
-		assertThat(driver.findElement(By.cssSelector(".account-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("3");
+		assertThat(driver.findElement(By.cssSelector(".account-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("2");
 
 		// submit form
 		driver.findElement(By.id("button-save-transaction")).click();

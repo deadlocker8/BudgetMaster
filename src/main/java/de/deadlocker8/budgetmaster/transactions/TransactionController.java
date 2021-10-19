@@ -351,15 +351,17 @@ public class TransactionController extends BaseController
 			existingTransaction = existingTransaction.getRepeatingOption().getReferringTransactions().get(0);
 		}
 
-		final Transaction newTransaction = new Transaction(existingTransaction);
+		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
+
+		Transaction newTransaction = new Transaction(existingTransaction);
 		newTransaction.setID(null);
+		newTransaction.setDate(date);
 
 		if(newTransaction.getAccount().getAccountState() != AccountState.FULL_ACCESS)
 		{
 			newTransaction.setAccount(accountService.getRepository().findByIsDefault(true));
 		}
 
-		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 		transactionService.prepareModelNewOrEdit(model, false, date, false, newTransaction, accountService.getAllActivatedAccountsAsc());
 
 		if(newTransaction.isTransfer())
