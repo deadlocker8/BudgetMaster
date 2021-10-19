@@ -169,4 +169,36 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 		// assert
 		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
 	}
+
+	@Test
+	void test_newTransactionFromExisting_transactionFromReadonlyAccount()
+	{
+		TransactionTestHelper.selectGlobalAccountByName(driver, "Readonly Account");
+
+		gotoSpecificYearAndMonth(2021, "October");
+
+		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		List<WebElement> columns = transactionsRows.get(0).findElements(By.className("col"));
+		columns.get(5).findElement(By.className("button-new-from-existing")).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Transaction"));
+
+		// assert
+		assertThat(driver.findElement(By.className("buttonExpenditure")).getAttribute("class")).contains("background-red");
+		assertThat(driver.findElement(By.id("transaction-name")).getAttribute("value")).isEqualTo("Transaction in readonly account");
+		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEqualTo("12.00");
+
+		// should fall back to default account as the readonly account will not allow new transactions
+		assertThat(driver.findElement(By.cssSelector(".account-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("3");
+
+		// submit form
+		driver.findElement(By.id("button-save-transaction")).click();
+
+		wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
+
+		// assert
+		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
+	}
 }

@@ -3,19 +3,19 @@
     "VERSION": 7,
     "categories": [
         {
-            "ID": 192,
+            "ID": 3,
             "name": "Custom Category",
             "color": "#ff9500",
             "type": "CUSTOM"
         },
         {
-            "ID": 190,
+            "ID": 1,
             "name": "No Category",
             "color": "#FFFFFF",
             "type": "NONE"
         },
         {
-            "ID": 191,
+            "ID": 2,
             "name": "Rest",
             "color": "#FFFF00",
             "type": "REST"
@@ -23,21 +23,27 @@
     ],
     "accounts": [
         {
-            "ID": 169,
+            "ID": 1,
             "name": "Placeholder",
             "accountState": "FULL_ACCESS",
             "type": "ALL"
         },
         {
-            "ID": 170,
+            "ID": 2,
             "name": "Default Account",
             "accountState": "FULL_ACCESS",
             "type": "CUSTOM"
         },
         {
-            "ID": 171,
+            "ID": 3,
             "name": "Second Account",
             "accountState": "FULL_ACCESS",
+            "type": "CUSTOM"
+        },
+        {
+            "ID": 4,
+            "name": "Readonly Account",
+            "accountState": "READ_ONLY",
             "type": "CUSTOM"
         }
     ],
@@ -46,8 +52,8 @@
             "amount": -1200,
             "isExpenditure": true,
             "date": "2021-10-17",
-            "accountID": 170,
-            "categoryID": 192,
+            "accountID": 2,
+            "categoryID": 3,
             "name": "Full normal",
             "description": "lorem ipsum",
             "tags": [
@@ -60,8 +66,8 @@
             "amount": -1500,
             "isExpenditure": true,
             "date": "2021-09-17",
-            "accountID": 170,
-            "categoryID": 192,
+            "accountID": 2,
+            "categoryID": 3,
             "name": "Full transfer",
             "description": "dolor sit amet",
             "tags": [
@@ -69,14 +75,14 @@
                     "name": "456"
                 }
             ],
-            "transferAccountID": 171
+            "transferAccountID": 3
         },
         {
             "amount": -200,
             "isExpenditure": true,
             "date": "2021-06-17",
-            "accountID": 170,
-            "categoryID": 192,
+            "accountID": 2,
+            "categoryID": 3,
             "name": "normal recurring",
             "description": "apple",
             "tags": [
@@ -95,6 +101,16 @@
                     "times": 1
                 }
             }
+        },
+        {
+            "amount": -1200,
+            "isExpenditure": true,
+            "date": "2021-10-19",
+            "accountID": 4,
+            "categoryID": 1,
+            "name": "Transaction in readonly account",
+            "description": "",
+            "tags": []
         }
     ],
     "templates": [],
