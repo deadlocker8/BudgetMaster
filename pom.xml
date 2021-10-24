@@ -58,13 +58,13 @@
 
         <jlibs.version>3.2.0</jlibs.version>
         <versionizer.version>3.0.1</versionizer.version>
-        <webjars-locator.version>0.41</webjars-locator.version>
+        <webjars-locator.version>0.42</webjars-locator.version>
         <jquery.version>3.6.0</jquery.version>
         <materializecss.version>1.0.0</materializecss.version>
         <fontawesome.version>5.15.3</fontawesome.version>
-        <sortablejs.version>1.13.0</sortablejs.version>
+        <sortablejs.version>1.14.0</sortablejs.version>
         <mousetrap.version>1.6.5</mousetrap.version>
-        <codemirror.version>5.62.0</codemirror.version>
+        <codemirror.version>5.62.2</codemirror.version>
         <selenium.version>3.141.59</selenium.version>
         <assertj-core.version>3.20.2</assertj-core.version>
         <jgit.version>5.12.0.202106070339-r</jgit.version>
