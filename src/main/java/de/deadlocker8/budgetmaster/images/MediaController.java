@@ -9,6 +9,9 @@ import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import de.thecodelabs.utils.util.Localization;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -106,8 +109,7 @@ public class MediaController extends BaseController
 	}
 
 	@GetMapping("/getImageByIconID/{ID}")
-	@ResponseBody
-	public byte[] getImageByIconID(@PathVariable("ID") Integer iconID)
+	public ResponseEntity<byte[]> getImageByIconID(@PathVariable("ID") Integer iconID)
 	{
 		Optional<Icon> iconOptional = iconService.getRepository().findById(iconID);
 		if(iconOptional.isEmpty())
@@ -115,6 +117,12 @@ public class MediaController extends BaseController
 			throw new ResourceNotFoundException();
 		}
 
-		return ArrayUtils.toPrimitive(iconOptional.get().getImage().getImage());
+		final Image image = iconOptional.get().getImage();
+
+		final HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(image.getFileExtension().getMediaType());
+
+		final byte[] bytes = ArrayUtils.toPrimitive(image.getImage());
+		return new ResponseEntity<>(bytes, headers, HttpStatus.CREATED);
 	}
 }
