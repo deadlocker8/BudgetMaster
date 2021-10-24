@@ -65,7 +65,7 @@
         <sortablejs.version>1.14.0</sortablejs.version>
         <mousetrap.version>1.6.5</mousetrap.version>
         <codemirror.version>5.62.2</codemirror.version>
-        <selenium.version>3.141.59</selenium.version>
+        <selenium.version>4.0.0</selenium.version>
         <assertj-core.version>3.21.0</assertj-core.version>
         <jgit.version>5.13.0.202109080827-r</jgit.version>
         <natorder.version>1.1.0</natorder.version>
