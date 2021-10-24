@@ -149,7 +149,7 @@
         <#if entity.getIconReference().isBuiltinIcon()>
             <i class="${entity.getIconReference().getBuiltinIdentifier()} ${classes}"></i>
         <#else>
-            <img src="<@s.url "/media/getImage/" + entity.getIconReference().getID()/>" class="${classes}"/>
+            <img src="<@s.url "/media/getImageByIconID/" + entity.getIconReference().getID()/>" class="${classes}"/>
         </#if>
     </#if>
 </#macro>

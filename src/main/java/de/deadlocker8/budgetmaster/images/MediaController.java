@@ -105,9 +105,9 @@ public class MediaController extends BaseController
 		return data.toString();
 	}
 
-	@GetMapping("/getImage/{ID}")
+	@GetMapping("/getImageByIconID/{ID}")
 	@ResponseBody
-	public byte[] getImage(@PathVariable("ID") Integer iconID)
+	public byte[] getImageByIconID(@PathVariable("ID") Integer iconID)
 	{
 		Optional<Icon> iconOptional = iconService.getRepository().findById(iconID);
 		if(iconOptional.isEmpty())
