@@ -2,6 +2,8 @@ package de.deadlocker8.budgetmaster.controller;
 
 import de.thecodelabs.utils.util.Localization;
 
+import java.text.MessageFormat;
+
 public class NewsEntry
 {
 	private final String headline;
@@ -16,6 +18,12 @@ public class NewsEntry
 	public static NewsEntry createWithLocalizationKeys(String headlineKey, String descriptionKey)
 	{
 		return new NewsEntry(Localization.getString(headlineKey), Localization.getString(descriptionKey));
+	}
+
+	public static NewsEntry createWithLocalizationKey(String shortKey)
+	{
+		return new NewsEntry(Localization.getString(MessageFormat.format("news.{0}.headline", shortKey)),
+				Localization.getString(MessageFormat.format("news.{0}.description", shortKey)));
 	}
 
 	public String getHeadline()

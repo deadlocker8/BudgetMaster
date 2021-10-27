@@ -36,15 +36,12 @@ public class AboutController extends BaseController
 	public String whatsNewModal(Model model)
 	{
 		final List<NewsEntry> newsEntries = new ArrayList<>();
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.chartChooser.headline", "news.chartChooser.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.jumpToSearch.headline", "news.jumpToSearch.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.fontAwesomeIcons.headline", "news.fontAwesomeIcons.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.nonSquareImages.headline", "news.nonSquareImages.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.hints.headline", "news.hints.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.tagOverview.headline", "news.tagOverview.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.accountImport.headline", "news.accountImport.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.performance.headline", "news.performance.description"));
-		newsEntries.add(NewsEntry.createWithLocalizationKeys("news.fix.transfersFromHiddenAccounts.headline", "news.fix.transfersFromHiddenAccounts.description"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("recurringTransfers"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("newFromExisting"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("imagePerformance"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("searchOption"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("trimInputs"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("fix.sortTemplates"));
 
 		model.addAttribute("newsEntries", newsEntries);
 		return "whatsNewModal";
