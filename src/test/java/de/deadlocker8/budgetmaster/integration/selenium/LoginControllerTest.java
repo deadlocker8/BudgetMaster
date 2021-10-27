@@ -6,8 +6,15 @@ import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
 import de.thecodelabs.utils.util.Localization;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -52,6 +59,23 @@ class LoginControllerTest extends SeleniumTestBase
 		WebElement label = driver.findElement(By.id("logo-home"));
 		String expected = helper.getUrl() + "/images/Logo_with_text_medium_res.png";
 		assertThat(label.getAttribute("src")).isEqualTo(expected);
+	}
+
+	@Test
+	void successLogin_cookieIsSet()
+	{
+		IntegrationTestHelper helper = new IntegrationTestHelper(driver, port);
+		helper.start();
+		helper.login(UserService.DEFAULT_PASSWORD);
+		helper.hideBackupReminder();
+		helper.hideWhatsNewDialog();
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("logo-home")));
+
+		String dateString = new SimpleDateFormat("dd.MM.yy").format(new Date());
+		Cookie expectedCookie = new Cookie("currentDate", dateString, "localhost", "/", null, false, false, "None");
+		assertThat(driver.manage().getCookies()).contains(expectedCookie);
 	}
 
 	@Test
