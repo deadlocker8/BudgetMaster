@@ -88,20 +88,27 @@ class LoginControllerTest extends SeleniumTestBase
 		// DateTime.now() will return the time in UTC --> shortly before midnight
 		DateTimeUtils.setCurrentMillisFixed(new DateTime(2021, 10, 24, 23, 10, 0).getMillis());
 
-		// system time zone is Berlin --> at least +1 hour --> after midnight
-		TimeZone.setDefault(TimeZone.getTimeZone("Europe/Berlin"));
+		try
+		{
+			// system time zone is Berlin --> at least +1 hour --> after midnight
+			TimeZone.setDefault(TimeZone.getTimeZone("Europe/Berlin"));
 
-		IntegrationTestHelper helper = new IntegrationTestHelper(driver, port);
-		helper.start();
-		helper.login(UserService.DEFAULT_PASSWORD);
-		helper.hideBackupReminder();
-		helper.hideWhatsNewDialog();
+			IntegrationTestHelper helper = new IntegrationTestHelper(driver, port);
+			helper.start();
+			helper.login(UserService.DEFAULT_PASSWORD);
+			helper.hideBackupReminder();
+			helper.hideWhatsNewDialog();
 
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("logo-home")));
+			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("logo-home")));
 
-		Cookie expectedCookie = new Cookie("currentDate", "25.10.21", "localhost", "/", null, false, false, "None");
-		assertThat(driver.manage().getCookies()).contains(expectedCookie);
+			Cookie expectedCookie = new Cookie("currentDate", "25.10.21", "localhost", "/", null, false, false, "None");
+			assertThat(driver.manage().getCookies()).contains(expectedCookie);
+		}
+		finally
+		{
+			DateTimeUtils.setCurrentMillisSystem();
+		}
 	}
 
 	@Test
