@@ -63,6 +63,11 @@ public class DateService
 		}
 	}
 
+	public DateTime getCurrentDate()
+	{
+		return DateHelper.getCurrentDate();
+	}
+
 	public String getDateTimeString(LocalDateTime localDateTime)
 	{
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DateFormatStyle.DATE_TIME.getKey()).withLocale(settingsService.getSettings().getLanguage().getLocale());
