@@ -6,11 +6,9 @@ import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
 import de.thecodelabs.utils.util.Localization;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Cookie;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -24,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class LoginControllerTest extends SeleniumTestBase
 {
 	@Test
-	void getLoginPage()
+	void test_getLoginPage()
 	{
 		IntegrationTestHelper helper = new IntegrationTestHelper(driver, port);
 		helper.start();
@@ -40,7 +38,7 @@ class LoginControllerTest extends SeleniumTestBase
 	}
 
 	@Test
-	void wrongCredentials()
+	void test_wrongCredentials()
 	{
 		IntegrationTestHelper helper = new IntegrationTestHelper(driver, port);
 		helper.start();
@@ -51,7 +49,7 @@ class LoginControllerTest extends SeleniumTestBase
 	}
 
 	@Test
-	void successLogin()
+	void test_successLogin()
 	{
 		IntegrationTestHelper helper = new IntegrationTestHelper(driver, port);
 		helper.start();
@@ -65,7 +63,7 @@ class LoginControllerTest extends SeleniumTestBase
 	}
 
 	@Test
-	void successLogin_cookieIsSet()
+	void test_successLogin_cookieIsSet()
 	{
 		IntegrationTestHelper helper = new IntegrationTestHelper(driver, port);
 		helper.start();
@@ -82,7 +80,7 @@ class LoginControllerTest extends SeleniumTestBase
 	}
 
 	@Test
-	void successLogin_cookieShortlyAfterMidnightInSystemTimezone()
+	void test_successLogin_cookieShortlyAfterMidnightInSystemTimezone()
 	{
 		// override system time to setup midnight scenario
 		// DateTime.now() will return the time in UTC --> shortly before midnight
@@ -112,7 +110,7 @@ class LoginControllerTest extends SeleniumTestBase
 	}
 
 	@Test
-	void logout()
+	void test_logout()
 	{
 		IntegrationTestHelper helper = new IntegrationTestHelper(driver, port);
 		helper.start();
@@ -120,12 +118,39 @@ class LoginControllerTest extends SeleniumTestBase
 		helper.hideBackupReminder();
 		helper.hideWhatsNewDialog();
 
-		WebElement buttonLogout = driver.findElement(By.xpath("//body/ul/li/a[contains(text(), 'Logout')]"));
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView(true);", buttonLogout);
-		buttonLogout.click();
+		logout();
 
 		WebElement label = driver.findElement(By.id("loginMessage"));
 		assertThat(label.getText()).isEqualTo(Localization.getString("logout.success"));
+	}
+
+	@AfterEach
+	public void afterEach()
+	{
+		tryToLogout();
+	}
+
+	private void tryToLogout()
+	{
+		//noinspection CatchMayIgnoreException
+		try
+		{
+			logout();
+
+			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+			wait.until(ExpectedConditions.textToBe(By.id("loginMessage"), Localization.getString("logout.success")));
+		}
+		catch(NoSuchElementException e)
+		{
+		}
+	}
+
+	private void logout()
+	{
+		WebElement buttonLogout = driver.findElement(By.xpath("//body/ul/li/a[contains(text(), 'Logout')]"));
+
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].scrollIntoView(true);", buttonLogout);
+		buttonLogout.click();
 	}
 }
