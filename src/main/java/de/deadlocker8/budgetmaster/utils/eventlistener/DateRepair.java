@@ -6,6 +6,7 @@ import de.deadlocker8.budgetmaster.repeating.RepeatingTransactionUpdater;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
+import de.deadlocker8.budgetmaster.utils.DateHelper;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.slf4j.Logger;
@@ -62,7 +63,7 @@ public class DateRepair
 			repairRepeatingOptionsDates();
 
 			LOGGER.debug("Re-created repeating transactions");
-			repeatingTransactionUpdater.updateRepeatingTransactions(DateTime.now());
+			repeatingTransactionUpdater.updateRepeatingTransactions(DateHelper.getCurrentDate());
 		}
 	}
 

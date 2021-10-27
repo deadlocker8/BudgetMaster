@@ -21,6 +21,7 @@ import de.deadlocker8.budgetmaster.tags.TagService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.deadlocker8.budgetmaster.utils.Colors;
+import de.deadlocker8.budgetmaster.utils.DateHelper;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.thecodelabs.utils.util.ColorUtilsNonJavaFX;
 import org.joda.time.DateTime;
@@ -174,7 +175,7 @@ public class HelpersService
 	public int getAccountBudget()
 	{
 		Account currentAccount = getCurrentAccount();
-		List<Transaction> transactions = transactionService.getTransactionsForAccountUntilDate(currentAccount, DateTime.now(), FilterConfiguration.DEFAULT);
+		List<Transaction> transactions = transactionService.getTransactionsForAccountUntilDate(currentAccount, DateHelper.getCurrentDate(), FilterConfiguration.DEFAULT);
 
 		int sum = 0;
 		for(Transaction transaction : transactions)

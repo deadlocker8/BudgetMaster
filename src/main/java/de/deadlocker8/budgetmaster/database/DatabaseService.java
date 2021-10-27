@@ -21,8 +21,8 @@ import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.templates.TemplateService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
+import de.deadlocker8.budgetmaster.utils.DateHelper;
 import de.thecodelabs.utils.io.PathUtils;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -248,7 +248,7 @@ public class DatabaseService
 
 	public static String getExportFileName()
 	{
-		return "BudgetMasterDatabase_" + DateTime.now().toString(BACKUP_DATE_FORMAT) + ".json";
+		return "BudgetMasterDatabase_" + DateHelper.getCurrentDate().toString(BACKUP_DATE_FORMAT) + ".json";
 	}
 
 	public BackupDatabase_v7 getDatabaseForJsonSerialization()

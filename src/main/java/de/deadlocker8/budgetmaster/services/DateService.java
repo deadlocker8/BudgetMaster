@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.services;
 
 import de.deadlocker8.budgetmaster.settings.SettingsService;
+import de.deadlocker8.budgetmaster.utils.DateHelper;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,17 +55,12 @@ public class DateService
 	{
 		if(cookieDate == null)
 		{
-			return DateTime.now();
+			return DateHelper.getCurrentDate();
 		}
 		else
 		{
 			return DateTime.parse(cookieDate, DateTimeFormat.forPattern(DateFormatStyle.NORMAL.getKey()).withLocale(settingsService.getSettings().getLanguage().getLocale()));
 		}
-	}
-
-	public DateTime getCurrentDate()
-	{
-		return DateTime.now();
 	}
 
 	public String getDateTimeString(LocalDateTime localDateTime)

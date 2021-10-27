@@ -7,6 +7,7 @@ import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.tags.Tag;
+import de.deadlocker8.budgetmaster.utils.DateHelper;
 import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -210,7 +211,7 @@ public class Transaction implements TransactionBase
 
 	public boolean isFuture()
 	{
-		return date.isAfter(DateTime.now());
+		return date.isAfter(DateHelper.getCurrentDate());
 	}
 
 	public boolean isEditable()

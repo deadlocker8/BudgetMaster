@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.settings;
 
 import de.deadlocker8.budgetmaster.backup.AutoBackupStrategy;
 import de.deadlocker8.budgetmaster.backup.AutoBackupTime;
+import de.deadlocker8.budgetmaster.utils.DateHelper;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -56,7 +57,7 @@ public class Settings
 		defaultSettings.setShowCategoriesAsCircles(true);
 		defaultSettings.setAutoUpdateCheckEnabled(true);
 		defaultSettings.setBackupReminderActivated(true);
-		defaultSettings.setLastBackupReminderDate(DateTime.now());
+		defaultSettings.setLastBackupReminderDate(DateHelper.getCurrentDate());
 		defaultSettings.setSearchItemsPerPage(10);
 		defaultSettings.setAutoBackupStrategy(AutoBackupStrategy.NONE);
 		defaultSettings.setAutoBackupDays(1);
@@ -161,7 +162,7 @@ public class Settings
 	{
 		if(backupReminderActivated)
 		{
-			return lastBackupReminderDate.getMonthOfYear() != DateTime.now().getMonthOfYear();
+			return lastBackupReminderDate.getMonthOfYear() != DateHelper.getCurrentDate().getMonthOfYear();
 		}
 		return false;
 	}

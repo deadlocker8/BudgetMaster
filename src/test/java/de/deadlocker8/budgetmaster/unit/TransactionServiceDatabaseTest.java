@@ -7,6 +7,7 @@ import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
+import de.deadlocker8.budgetmaster.utils.DateHelper;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.junit.jupiter.api.Test;
@@ -71,7 +72,7 @@ class TransactionServiceDatabaseTest
 		DateTime date1 = DateTime.parse("2020-04-30", DateTimeFormat.forPattern("yyyy-MM-dd"));
 		FilterConfiguration filterConfiguration = new FilterConfiguration(true, true, true, true, true, null, null, "");
 
-		List<Transaction> transactions = transactionService.getTransactionsForAccount(accountService.getRepository().findByName("Second Account"), date1, DateTime.now(), filterConfiguration);
+		List<Transaction> transactions = transactionService.getTransactionsForAccount(accountService.getRepository().findByName("Second Account"), date1, DateHelper.getCurrentDate(), filterConfiguration);
 		assertThat(transactions).hasSize(2);
 
 		assertThat(transactions.get(0)).hasFieldOrPropertyWithValue("ID", 9);  // transfer
@@ -84,7 +85,7 @@ class TransactionServiceDatabaseTest
 		DateTime date1 = DateTime.parse("2020-04-30", DateTimeFormat.forPattern("yyyy-MM-dd"));
 		FilterConfiguration filterConfiguration = new FilterConfiguration(true, true, true, true, true, null, null, "");
 
-		List<Transaction> transactions = transactionService.getTransactionsForAccount(accountService.getRepository().findAllByType(AccountType.ALL).get(0), date1, DateTime.now(), filterConfiguration);
+		List<Transaction> transactions = transactionService.getTransactionsForAccount(accountService.getRepository().findAllByType(AccountType.ALL).get(0), date1, DateHelper.getCurrentDate(), filterConfiguration);
 		assertThat(transactions).hasSize(7);
 	}
 

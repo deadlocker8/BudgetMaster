@@ -15,6 +15,7 @@ import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.TagRepository;
 import de.deadlocker8.budgetmaster.tags.TagService;
 import de.deadlocker8.budgetmaster.templates.Template;
+import de.deadlocker8.budgetmaster.utils.DateHelper;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
 import org.joda.time.DateTime;
@@ -78,13 +79,13 @@ public class TransactionService implements Resettable
 
 	private List<Transaction> getTransactionsForMonthAndYearWithRest(Account account, int month, int year, FilterConfiguration filterConfiguration)
 	{
-		DateTime startDate = DateTime.now().withYear(year).withMonthOfYear(month).minusMonths(1).dayOfMonth().withMaximumValue();
+		DateTime startDate = DateHelper.getCurrentDate().withYear(year).withMonthOfYear(month).minusMonths(1).dayOfMonth().withMaximumValue();
 		List<Transaction> transactions = getTransactionsForMonthAndYearWithoutRest(account, month, year, filterConfiguration);
 
 		Transaction transactionRest = new Transaction();
 		transactionRest.setCategory(categoryService.findByType(CategoryType.REST));
 		transactionRest.setName(Localization.getString(Strings.CATEGORY_REST));
-		transactionRest.setDate(DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(1));
+		transactionRest.setDate(DateHelper.getCurrentDate().withYear(year).withMonthOfYear(month).withDayOfMonth(1));
 		transactionRest.setAmount(getRest(account, startDate));
 		transactionRest.setTags(new ArrayList<>());
 		transactions.add(transactionRest);
@@ -94,14 +95,14 @@ public class TransactionService implements Resettable
 
 	private List<Transaction> getTransactionsForMonthAndYearWithoutRest(Account account, int month, int year, FilterConfiguration filterConfiguration)
 	{
-		DateTime startDate = DateTime.now().withYear(year).withMonthOfYear(month).minusMonths(1).dayOfMonth().withMaximumValue();
-		DateTime endDate = DateTime.now().withYear(year).withMonthOfYear(month).dayOfMonth().withMaximumValue();
+		DateTime startDate = DateHelper.getCurrentDate().withYear(year).withMonthOfYear(month).minusMonths(1).dayOfMonth().withMaximumValue();
+		DateTime endDate = DateHelper.getCurrentDate().withYear(year).withMonthOfYear(month).dayOfMonth().withMaximumValue();
 		return getTransactionsForAccount(account, startDate, endDate, filterConfiguration);
 	}
 
 	public List<Transaction> getTransactionsForAccountUntilDate(Account account, DateTime date, FilterConfiguration filterConfiguration)
 	{
-		DateTime startDate = DateTime.now().withYear(1900).withMonthOfYear(1).withDayOfMonth(1);
+		DateTime startDate = DateHelper.getCurrentDate().withYear(1900).withMonthOfYear(1).withDayOfMonth(1);
 		return getTransactionsForAccount(account, startDate, date, filterConfiguration);
 	}
 
@@ -124,7 +125,7 @@ public class TransactionService implements Resettable
 
 	private int getRest(Account account, DateTime endDate)
 	{
-		DateTime startDate = DateTime.now().withYear(2000).withMonthOfYear(1).withDayOfMonth(1);
+		DateTime startDate = DateHelper.getCurrentDate().withYear(2000).withMonthOfYear(1).withDayOfMonth(1);
 		Integer restForNormalAndRepeating = transactionRepository.getRestForNormalAndRepeating(account.getID(), ISODateTimeFormat.date().print(startDate), ISODateTimeFormat.date().print(endDate));
 		Integer restForTransferSource = transactionRepository.getRestForTransferSource(account.getID(), ISODateTimeFormat.date().print(startDate), ISODateTimeFormat.date().print(endDate));
 		Integer restForTransferDestination = transactionRepository.getRestForTransferDestination(account.getID(), ISODateTimeFormat.date().print(startDate), ISODateTimeFormat.date().print(endDate));

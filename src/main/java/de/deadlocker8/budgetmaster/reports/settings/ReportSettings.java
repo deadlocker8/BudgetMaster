@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.reports.settings;
 
 import de.deadlocker8.budgetmaster.reports.columns.ReportColumn;
+import de.deadlocker8.budgetmaster.utils.DateHelper;
 import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -31,7 +32,7 @@ public class ReportSettings
 
 	public static ReportSettings getDefault()
 	{
-		return new ReportSettings(DateTime.now(), true, true, true);
+		return new ReportSettings(DateHelper.getCurrentDate(), true, true, true);
 	}
 
 	private ReportSettings(DateTime date, boolean includeBudget, boolean splitTables, boolean includeCategoryBudgets)

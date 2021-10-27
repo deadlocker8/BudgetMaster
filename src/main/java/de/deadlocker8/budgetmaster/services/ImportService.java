@@ -23,7 +23,7 @@ import de.deadlocker8.budgetmaster.templates.TemplateRepository;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionBase;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
-import org.joda.time.DateTime;
+import de.deadlocker8.budgetmaster.utils.DateHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,7 +100,7 @@ public class ImportService
 		}
 
 		LOGGER.debug("Updating repeating transactions...");
-		repeatingTransactionUpdater.updateRepeatingTransactions(DateTime.now());
+		repeatingTransactionUpdater.updateRepeatingTransactions(DateHelper.getCurrentDate());
 
 		LOGGER.debug("Importing database DONE");
 		return importResultItems;
