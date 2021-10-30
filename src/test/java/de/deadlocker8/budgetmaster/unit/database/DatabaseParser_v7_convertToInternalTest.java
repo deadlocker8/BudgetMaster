@@ -285,11 +285,30 @@ class DatabaseParser_v7_convertToInternalTest
 			transferTransaction.setTags(new ArrayList<>());
 			transferTransaction.setIsExpenditure(true);
 
-			assertThat(database.getTransactions()).hasSize(4)
+			Transaction repeatingTransferTransaction = new Transaction();
+			repeatingTransferTransaction.setAmount(-6000);
+			DateTime transferTransactionDate_2 = DateTime.parse("2018-03-15", DateTimeFormat.forPattern("yyyy-MM-dd"));
+			transferTransactionDate_2 = transferTransactionDate_2.withHourOfDay(12).withMinuteOfHour(0).withSecondOfMinute(0);
+			repeatingTransferTransaction.setDate(transferTransactionDate_2);
+			repeatingTransferTransaction.setCategory(categoryNone);
+			repeatingTransferTransaction.setName("repeat my transfer");
+			repeatingTransferTransaction.setDescription("");
+			repeatingTransferTransaction.setAccount(account1);
+			RepeatingOption repeatingOption_2 = new RepeatingOption();
+			repeatingOption_2.setModifier(new RepeatingModifierDays(10));
+			repeatingOption_2.setStartDate(transferTransactionDate_2);
+			repeatingOption_2.setEndOption(new RepeatingEndAfterXTimes(2));
+			repeatingTransferTransaction.setRepeatingOption(repeatingOption_2);
+			repeatingTransferTransaction.setTags(new ArrayList<>());
+			repeatingTransferTransaction.setIsExpenditure(true);
+			repeatingTransferTransaction.setTransferAccount(account1);
+
+			assertThat(database.getTransactions()).hasSize(5)
 					.contains(normalTransaction_1,
 							normalTransaction_2,
 							repeatingTransaction_1,
-							transferTransaction);
+							transferTransaction,
+							repeatingTransferTransaction);
 
 		}
 		catch(IOException | URISyntaxException e)
