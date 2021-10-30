@@ -137,4 +137,16 @@ class HotkeyTest extends SeleniumTestBase
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		assertThat(transactionsRows).hasSize(2);
 	}
+
+	@Test
+	void hotkey_openTransactionOverview()
+	{
+		driver.findElement(By.tagName("body")).sendKeys("o");
+
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
+
+		// assert
+		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
+	}
 }

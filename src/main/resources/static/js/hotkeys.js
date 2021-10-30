@@ -47,6 +47,14 @@ Mousetrap.bind('esc', function()
     }
 });
 
+Mousetrap.bind('o', function()
+{
+    if(areHotKeysEnabled())
+    {
+        window.location.href = rootURL + '/transactions';
+    }
+});
+
 let saveTransactionOrTemplateButton = document.getElementById('button-save-transaction');
 if(saveTransactionOrTemplateButton !== null)
 {
