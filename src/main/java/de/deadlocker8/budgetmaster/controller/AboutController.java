@@ -40,6 +40,7 @@ public class AboutController extends BaseController
 		newsEntries.add(NewsEntry.createWithLocalizationKey("newFromExisting"));
 		newsEntries.add(NewsEntry.createWithLocalizationKey("imagePerformance"));
 		newsEntries.add(NewsEntry.createWithLocalizationKey("searchOption"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("newHotkey"));
 		newsEntries.add(NewsEntry.createWithLocalizationKey("trimInputs"));
 		newsEntries.add(NewsEntry.createWithLocalizationKey("fix.sortTemplates"));
 
