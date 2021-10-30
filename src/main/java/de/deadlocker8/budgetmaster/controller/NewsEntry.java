@@ -15,15 +15,15 @@ public class NewsEntry
 		this.description = description;
 	}
 
+	public static NewsEntry createWithLocalizationKey(String shortKey)
+	{
+		return createWithLocalizationKeys(MessageFormat.format("news.{0}.headline", shortKey),
+				MessageFormat.format("news.{0}.description", shortKey));
+	}
+
 	public static NewsEntry createWithLocalizationKeys(String headlineKey, String descriptionKey)
 	{
 		return new NewsEntry(Localization.getString(headlineKey), Localization.getString(descriptionKey));
-	}
-
-	public static NewsEntry createWithLocalizationKey(String shortKey)
-	{
-		return new NewsEntry(Localization.getString(MessageFormat.format("news.{0}.headline", shortKey)),
-				Localization.getString(MessageFormat.format("news.{0}.description", shortKey)));
 	}
 
 	public String getHeadline()

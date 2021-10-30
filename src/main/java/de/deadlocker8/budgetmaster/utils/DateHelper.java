@@ -7,6 +7,10 @@ import java.util.TimeZone;
 
 public class DateHelper
 {
+	private DateHelper()
+	{
+	}
+
 	public static DateTime getCurrentDate()
 	{
 		return DateTime.now(DateTimeZone.forTimeZone(TimeZone.getDefault()));
