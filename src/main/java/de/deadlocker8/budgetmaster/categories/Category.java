@@ -33,10 +33,6 @@ public class Category implements ProvidesID, Iconizable
 	@Expose
 	private CategoryType type;
 
-	@Expose
-	@Deprecated(since = "v2.7.0", forRemoval = true)
-	private String icon;
-
 	@OneToOne(cascade = CascadeType.REMOVE)
 	@Expose
 	private Icon iconReference;
@@ -101,18 +97,6 @@ public class Category implements ProvidesID, Iconizable
 		this.type = type;
 	}
 
-	@Deprecated(since = "v2.7.0", forRemoval = true)
-	public String getIcon()
-	{
-		return icon;
-	}
-
-	@Deprecated(since = "v2.7.0", forRemoval = true)
-	public void setIcon(String icon)
-	{
-		this.icon = icon;
-	}
-
 	public Icon getIconReference()
 	{
 		return iconReference;
@@ -160,13 +144,12 @@ public class Category implements ProvidesID, Iconizable
 				Objects.equals(name, category.name) &&
 				Objects.equals(color, category.color) &&
 				type == category.type &&
-				Objects.equals(icon, category.icon) &&
 				Objects.equals(iconReference, category.iconReference);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, name, color, type, icon, iconReference);
+		return Objects.hash(ID, name, color, type, iconReference);
 	}
 }

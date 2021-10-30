@@ -3,7 +3,6 @@ package de.deadlocker8.budgetmaster.accounts;
 import com.google.gson.annotations.Expose;
 import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.Iconizable;
-import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.utils.ProvidesID;
 
@@ -33,15 +32,8 @@ public class Account implements ProvidesID, Iconizable
 	private Boolean isSelected = false;
 	private Boolean isDefault = false;
 
-	@Deprecated(since = "v2.6.0", forRemoval = true)
-	private Boolean isReadOnly = false;
-
 	@Expose
 	private AccountState accountState;
-
-	@ManyToOne
-	@Deprecated(since = "v2.7.0", forRemoval = true)
-	private Image icon;
 
 	@OneToOne(cascade = CascadeType.REMOVE)
 	@Expose
@@ -119,12 +111,6 @@ public class Account implements ProvidesID, Iconizable
 		isDefault = aDefault;
 	}
 
-	@Deprecated(since = "v2.6.0", forRemoval = true)
-	public Boolean isReadOnly()
-	{
-		return isReadOnly;
-	}
-
 	public AccountState getAccountState()
 	{
 		return accountState;
@@ -143,18 +129,6 @@ public class Account implements ProvidesID, Iconizable
 	public void setType(AccountType type)
 	{
 		this.type = type;
-	}
-
-	@Deprecated(since = "v2.7.0", forRemoval = true)
-	public Image getIcon()
-	{
-		return icon;
-	}
-
-	@Deprecated(since = "v2.7.0", forRemoval = true)
-	public void setIcon(Image icon)
-	{
-		this.icon = icon;
 	}
 
 	public Icon getIconReference()
@@ -193,7 +167,6 @@ public class Account implements ProvidesID, Iconizable
 				Objects.equals(isSelected, account.isSelected) &&
 				Objects.equals(isDefault, account.isDefault) &&
 				accountState == account.accountState &&
-				Objects.equals(icon, account.icon) &&
 				Objects.equals(iconReference, account.iconReference) &&
 				type == account.type;
 	}
@@ -201,6 +174,6 @@ public class Account implements ProvidesID, Iconizable
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, name, isSelected, isDefault, accountState, icon, iconReference, type);
+		return Objects.hash(ID, name, isSelected, isDefault, accountState, iconReference, type);
 	}
 }
