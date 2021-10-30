@@ -17,6 +17,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -56,12 +57,12 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 
 		driver.findElement(By.id("button-new-transaction")).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		final By locator = By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'" + type + "')]");
 		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
 		driver.findElement(locator).click();
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New " + type));
 	}
 
@@ -83,7 +84,7 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		TransactionTestHelper.selectCategoryByName(driver, categoryName);
 
 		driver.findElement(By.id("button-transaction-add-repeating-option")).click();
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("button-transaction-remove-repeating-option"))));
 
 		// fill repeating options
@@ -103,11 +104,11 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 			}
 		}
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector(".modal-overlay"))));
 
 		// submit form
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("modal-overlay")));
 
 		WebElement submitButton = driver.findElement(By.id("button-save-transaction"));
@@ -115,7 +116,7 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 
 		submitButton.click();
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
 
 		// assert
@@ -151,7 +152,7 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		TransactionTestHelper.selectCategoryByName(driver, categoryName);
 
 		driver.findElement(By.id("button-transaction-add-repeating-option")).click();
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("button-transaction-remove-repeating-option"))));
 
 		// fill repeating options
@@ -171,19 +172,19 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 			}
 		}
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector(".modal-overlay"))));
 
 		// submit form
 		WebElement submitButton = driver.findElement(By.xpath("//button[@type='submit']"));
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", submitButton);
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.elementToBeClickable(submitButton));
 
 		submitButton.click();
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
 
 		// assert
@@ -223,7 +224,7 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		TransactionTestHelper.selectTransferAccountByName(driver, transferAccountName);
 
 		driver.findElement(By.id("button-transaction-add-repeating-option")).click();
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("button-transaction-remove-repeating-option"))));
 
 		// fill repeating options
@@ -243,11 +244,11 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 			}
 		}
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector(".modal-overlay"))));
 
 		// submit form
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("modal-overlay")));
 
 		WebElement submitButton = driver.findElement(By.id("button-save-transaction"));
@@ -255,7 +256,7 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 
 		submitButton.click();
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
 
 		// assert
@@ -311,13 +312,13 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 	void test_new_removeRepeatingOption()
 	{
 		driver.findElement(By.id("button-transaction-add-repeating-option")).click();
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("button-transaction-remove-repeating-option"))));
 
 		assertThat(driver.findElement(By.id("button-transaction-remove-repeating-option")).isDisplayed()).isTrue();
 
 		driver.findElement(By.id("button-transaction-remove-repeating-option")).click();
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("button-transaction-add-repeating-option"))));
 
 		assertThat(driver.findElement(By.id("button-transaction-remove-repeating-option")).isDisplayed()).isFalse();

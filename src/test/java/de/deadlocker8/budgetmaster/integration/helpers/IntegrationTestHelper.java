@@ -15,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -76,7 +77,7 @@ public class IntegrationTestHelper
 	{
 		try
 		{
-			WebDriverWait wait = new WebDriverWait(driver, 2);
+			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("modalWhatsNew")));
 
 			WebElement buttonCloseReminder = driver.findElement(By.cssSelector("#modalWhatsNew #buttonCloseWhatsNew"));
@@ -115,7 +116,7 @@ public class IntegrationTestHelper
 
 		// confirm import step 1
 		driver.findElement(By.id("buttonImport")).click();
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("button-new-account")));
 
 		// create new accounts
@@ -128,13 +129,13 @@ public class IntegrationTestHelper
 		matchAccounts(sourceAccounts, destinationAccounts);
 
 		// confirm import
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("buttonImport")));
 		final WebElement buttonImport = driver.findElement(By.id("buttonImport"));
 		buttonImport.sendKeys("");
 		buttonImport.click();
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("import-entity-name")));
 
 		// close result page
@@ -147,7 +148,7 @@ public class IntegrationTestHelper
 
 	private void createAccountOnImport(String accountName, AccountState accountState)
 	{
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("button-new-account")));
 		driver.findElement(By.className("button-new-account")).click();
 
@@ -186,7 +187,7 @@ public class IntegrationTestHelper
 			WebElement sourceAccount = row.findElement(By.className("account-source"));
 			assertThat(IntegrationTestHelper.getTextNode(sourceAccount)).isEqualTo(sourceAccounts.get(i));
 
-			WebDriverWait wait = new WebDriverWait(driver, 5);
+			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("select-dropdown")));
 
 			row.findElement(By.className("select-dropdown")).click();

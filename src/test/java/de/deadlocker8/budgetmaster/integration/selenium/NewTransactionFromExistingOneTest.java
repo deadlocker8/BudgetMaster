@@ -16,6 +16,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
@@ -55,20 +56,20 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 	{
 		driver.findElement(By.className("headline-date")).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("global-datepicker-select-year")));
 
 		By locator = By.xpath("//td[contains(@class, 'global-datepicker-item') and contains(text(),'" + year + "')]");
 		driver.findElement(locator).click();
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("global-datepicker-select-month")));
 
 		locator = By.xpath("//td[contains(@class, 'global-datepicker-item') and contains(text(),'" + monthName + "')]");
 		driver.findElement(locator).click();
 
 		String yearAndMonthCombined = monthName + " " + year;
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		locator = By.xpath("//a[contains(@class, 'headline-date') and contains(text(),'" + yearAndMonthCombined + "')]");
 		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
 	}
@@ -82,7 +83,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 		List<WebElement> columns = transactionsRows.get(0).findElements(By.className("col"));
 		columns.get(5).findElement(By.className("button-new-from-existing")).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Transaction"));
 
 		// assert
@@ -102,7 +103,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 		// submit form
 		driver.findElement(By.id("button-save-transaction")).click();
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
 
 		// assert
@@ -118,7 +119,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 		List<WebElement> columns = transactionsRows.get(0).findElements(By.className("col"));
 		columns.get(5).findElement(By.className("button-new-from-existing")).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Transfer"));
 
 		// assert
@@ -138,7 +139,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 		// submit form
 		driver.findElement(By.id("button-save-transaction")).click();
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
 
 		// assert
@@ -154,7 +155,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 		List<WebElement> columns = transactionsRows.get(0).findElements(By.className("col"));
 		columns.get(5).findElement(By.className("button-new-from-existing")).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Transaction"));
 
 		// assert
@@ -168,7 +169,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 		// submit form
 		driver.findElement(By.id("button-save-transaction")).click();
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
 
 		// assert
@@ -186,7 +187,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 		List<WebElement> columns = transactionsRows.get(0).findElements(By.className("col"));
 		columns.get(5).findElement(By.className("button-new-from-existing")).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Transaction"));
 
 		// assert
@@ -200,7 +201,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 		// submit form
 		driver.findElement(By.id("button-save-transaction")).click();
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
 
 		// assert

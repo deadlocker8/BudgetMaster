@@ -16,6 +16,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,7 +42,7 @@ class ChangeTransactionTypeTest extends SeleniumTestBase
 		builder.moveToElement(button).build().perform();
 
 		By changeTypeButtonSelector = By.xpath("//a[contains(@data-action-type, 'changeType')][1]");
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(changeTypeButtonSelector));
 
 		WebElement buttonChangeType = driver.findElement(changeTypeButtonSelector);
@@ -94,7 +95,7 @@ class ChangeTransactionTypeTest extends SeleniumTestBase
 		TransactionTestHelper.selectOptionFromDropdown(driver, By.cssSelector("#modalChangeTransactionType .select-wrapper"), "Transfer");
 		driver.findElement(By.id("buttonChangeTransactionType")).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBe(By.cssSelector(".headline"), "Edit Transfer"));
 
 		assertThatThrownBy(() -> driver.findElement(By.className("buttonExpenditure"))).isInstanceOf(NoSuchElementException.class);

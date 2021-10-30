@@ -9,6 +9,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class FirstUseTest extends SeleniumTestBase
@@ -30,7 +32,7 @@ class FirstUseTest extends SeleniumTestBase
 	{
 		helper.start();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("hint-1")));
 		assertThat(driver.findElement(By.id("hint-1")).isDisplayed()).isTrue();
 	}
@@ -40,7 +42,7 @@ class FirstUseTest extends SeleniumTestBase
 	{
 		helper.start();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("hint-1")));
 
 		driver.findElements(By.className("hint-clear")).get(0).click();
@@ -54,7 +56,7 @@ class FirstUseTest extends SeleniumTestBase
 	{
 		helper.start();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("hint-1")));
 
 		driver.findElements(By.className("notification")).get(0).click();

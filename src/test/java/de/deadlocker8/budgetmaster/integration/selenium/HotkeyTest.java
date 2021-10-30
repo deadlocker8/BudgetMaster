@@ -19,6 +19,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
@@ -50,7 +51,7 @@ class HotkeyTest extends SeleniumTestBase
 	{
 		helper.start();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("logo-home")));
 	}
 
@@ -59,7 +60,7 @@ class HotkeyTest extends SeleniumTestBase
 	{
 		driver.findElement(By.tagName("body")).sendKeys("n");
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("form[name='NewTransaction']")));
 
 		assertThat(driver.getCurrentUrl()).endsWith("/newTransaction/normal");
@@ -70,7 +71,7 @@ class HotkeyTest extends SeleniumTestBase
 	{
 		driver.findElement(By.tagName("body")).sendKeys("t");
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("form[name='NewTransaction']")));
 
 		assertThat(driver.getCurrentUrl()).endsWith("/newTransaction/transfer");
@@ -81,7 +82,7 @@ class HotkeyTest extends SeleniumTestBase
 	{
 		driver.findElement(By.tagName("body")).sendKeys("v");
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.id("searchTemplate")));
 
 		assertThat(driver.getCurrentUrl()).endsWith("/templates");
@@ -92,7 +93,7 @@ class HotkeyTest extends SeleniumTestBase
 	{
 		driver.findElement(By.tagName("body")).sendKeys("f");
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
 
 		assertThat(driver.getCurrentUrl()).endsWith("/transactions#modalFilter");
@@ -128,7 +129,7 @@ class HotkeyTest extends SeleniumTestBase
 				.build();
 		seriesOfActions.perform();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
 
 		// assert
@@ -143,7 +144,7 @@ class HotkeyTest extends SeleniumTestBase
 	{
 		driver.findElement(By.tagName("body")).sendKeys("o");
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
 
 		// assert

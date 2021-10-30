@@ -16,6 +16,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
@@ -81,7 +82,7 @@ class ChartTest extends SeleniumTestBase
 		final String buttonSelector = ".button-display-type[data-value='" + ChartDisplayType.LINE.name() + "']";
 		driver.findElement(By.cssSelector(buttonSelector)).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.attributeContains(By.cssSelector(buttonSelector), "class", "active"));
 
 		// check display type
@@ -114,7 +115,7 @@ class ChartTest extends SeleniumTestBase
 		final String buttonSelector = ".button-display-type[data-value='" + ChartDisplayType.PIE.name() + "']";
 		driver.findElement(By.cssSelector(buttonSelector)).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.attributeContains(By.cssSelector(buttonSelector), "class", "active"));
 
 		// check display type
@@ -132,7 +133,7 @@ class ChartTest extends SeleniumTestBase
 		String buttonSelector = ".button-display-type[data-value='" + ChartDisplayType.PIE.name() + "']";
 		driver.findElement(By.cssSelector(buttonSelector)).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.attributeContains(By.cssSelector(buttonSelector), "class", "active"));
 
 		// check display type
@@ -144,7 +145,7 @@ class ChartTest extends SeleniumTestBase
 		buttonSelector = ".button-display-type[data-value='" + ChartDisplayType.BAR.name() + "']";
 		driver.findElement(By.cssSelector(buttonSelector)).click();
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.attributeContains(By.cssSelector(buttonSelector), "class", "active"));
 
 		// check display type
@@ -162,7 +163,7 @@ class ChartTest extends SeleniumTestBase
 		final String buttonSelector = ".button-group-type[data-value='" + ChartGroupType.YEAR.name() + "']";
 		driver.findElement(By.cssSelector(buttonSelector)).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.attributeContains(By.cssSelector(buttonSelector), "class", "active"));
 
 		// check group type
@@ -191,7 +192,7 @@ class ChartTest extends SeleniumTestBase
 		final String chartPreviewSelector = ".chart-preview-column[data-id='6']";
 		driver.findElement(By.cssSelector(chartPreviewSelector)).click();
 
-		final WebDriverWait wait = new WebDriverWait(driver, 5);
+		final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.attributeContains(By.cssSelector(chartPreviewSelector + " .chart-preview"), "class", "active"));
 
 		// check displayed chart previews
@@ -213,13 +214,13 @@ class ChartTest extends SeleniumTestBase
 		final String chartPreviewSelector = ".chart-preview-column[data-id='6']";
 		driver.findElement(By.cssSelector(chartPreviewSelector)).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.attributeContains(By.cssSelector(chartPreviewSelector + " .chart-preview"), "class", "active"));
 
 		final String buttonSelector = ".button-display-type[data-value='" + ChartDisplayType.LINE.name() + "']";
 		driver.findElement(By.cssSelector(buttonSelector)).click();
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.attributeContains(By.cssSelector(buttonSelector), "class", "active"));
 
 		// check displayed chart previews
@@ -243,7 +244,7 @@ class ChartTest extends SeleniumTestBase
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", checkBox);
 		checkBox.click();
 
-		final WebDriverWait wait = new WebDriverWait(driver, 5);
+		final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("filter-button-reset")));
 
 		assertThat(driver.findElement(By.id("filterActiveBadge")).isDisplayed()).isTrue();
@@ -260,7 +261,7 @@ class ChartTest extends SeleniumTestBase
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", checkBox);
 		checkBox.click();
 
-		final WebDriverWait wait = new WebDriverWait(driver, 5);
+		final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("filter-button-reset")));
 
 		driver.findElement(By.className("filter-button-reset")).click();
@@ -275,7 +276,7 @@ class ChartTest extends SeleniumTestBase
 		final String chartPreviewSelector = ".chart-preview-column[data-id='6']";
 		driver.findElement(By.cssSelector(chartPreviewSelector)).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.attributeContains(By.cssSelector(chartPreviewSelector + " .chart-preview"), "class", "active"));
 
 		driver.findElement(By.id("chart-filter-container")).click();
@@ -286,12 +287,12 @@ class ChartTest extends SeleniumTestBase
 
 		driver.findElement(By.name("buttonSave")).click();
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("chart-canvas")));
 
 		driver.findElement(By.id("buttonShowChartSettings")).click();
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.attributeContains(By.cssSelector(chartPreviewSelector + " .chart-preview"), "class", "active"));
 
 		assertThat(driver.findElement(By.id("filterActiveBadge")).isDisplayed()).isTrue();
@@ -305,7 +306,7 @@ class ChartTest extends SeleniumTestBase
 		final String buttonSelector = ".button-display-type[data-value='" + ChartDisplayType.CUSTOM.name() + "']";
 		driver.findElement(By.cssSelector(buttonSelector)).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.attributeContains(By.cssSelector(buttonSelector), "class", "active"));
 
 		// check display type
@@ -322,12 +323,12 @@ class ChartTest extends SeleniumTestBase
 		final String chartPreviewSelector = ".chart-preview-column[data-id='6']";
 		driver.findElement(By.cssSelector(chartPreviewSelector)).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.attributeContains(By.cssSelector(chartPreviewSelector + " .chart-preview"), "class", "active"));
 
 		driver.findElement(By.name("buttonSave")).click();
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("chart-canvas")));
 
 		assertThat(driver.findElements(By.cssSelector(".chart-canvas .plot-container"))).hasSize(1);
@@ -341,17 +342,17 @@ class ChartTest extends SeleniumTestBase
 		final String chartPreviewSelector = ".chart-preview-column[data-id='6']";
 		driver.findElement(By.cssSelector(chartPreviewSelector)).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.attributeContains(By.cssSelector(chartPreviewSelector + " .chart-preview"), "class", "active"));
 
 		driver.findElement(By.name("buttonSave")).click();
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("chart-canvas")));
 
 		driver.findElement(By.id("buttonShowChartSettings")).click();
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.attributeContains(By.cssSelector(chartPreviewSelector + " .chart-preview"), "class", "active"));
 
 		assertThat(driver.findElement(By.name("buttonSave")).isEnabled()).isTrue();

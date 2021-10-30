@@ -15,6 +15,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
@@ -48,12 +49,12 @@ class CategorySelectTest extends SeleniumTestBase
 		driver.get(helper.getUrl() + "/transactions");
 		driver.findElement(By.id("button-new-transaction")).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		final By locator = By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]");
 		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
 		driver.findElement(locator).click();
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Transaction"));
 	}
 
@@ -62,7 +63,7 @@ class CategorySelectTest extends SeleniumTestBase
 	{
 		// navigate to category select with tab traversal
 		driver.findElement(By.tagName("body")).sendKeys(Keys.TAB);
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("label[for=transaction-amount].active")));
 
 		driver.findElement(By.tagName("body")).sendKeys(Keys.TAB);
@@ -70,7 +71,7 @@ class CategorySelectTest extends SeleniumTestBase
 
 		// open category select
 		driver.findElement(By.tagName("body")).sendKeys(Keys.ENTER);
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".category-select-wrapper .custom-select-option.selected")));
 
 		// assert
@@ -84,11 +85,11 @@ class CategorySelectTest extends SeleniumTestBase
 	{
 		// open category select
 		driver.findElement(By.cssSelector(".category-select-wrapper .custom-select-trigger")).click();
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".category-select-wrapper .custom-select-option.selected")));
 
 		driver.findElement(By.tagName("body")).sendKeys(Keys.DOWN);
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".category-select-wrapper .custom-select-option.custom-select-option-hovered[data-value=\"3\"]")));
 
 		// assert
@@ -98,7 +99,7 @@ class CategorySelectTest extends SeleniumTestBase
 				.hasFieldOrPropertyWithValue("text", "sdfdsf");
 
 		driver.findElement(By.tagName("body")).sendKeys(Keys.DOWN);
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".category-select-wrapper .custom-select-option.custom-select-option-hovered[data-value=\"4\"]")));
 
 		// assert
@@ -113,11 +114,11 @@ class CategorySelectTest extends SeleniumTestBase
 	{
 		// open category select
 		driver.findElement(By.cssSelector(".category-select-wrapper .custom-select-trigger")).click();
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".category-select-wrapper .custom-select-option.selected")));
 
 		driver.findElement(By.tagName("body")).sendKeys(Keys.UP);
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".category-select-wrapper .custom-select-option.custom-select-option-hovered[data-value=\"4\"]")));
 
 		// assert
@@ -127,7 +128,7 @@ class CategorySelectTest extends SeleniumTestBase
 				.hasFieldOrPropertyWithValue("text", "12sd");
 
 		driver.findElement(By.tagName("body")).sendKeys(Keys.UP);
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".category-select-wrapper .custom-select-option.custom-select-option-hovered[data-value=\"3\"]")));
 
 		// assert
@@ -144,13 +145,13 @@ class CategorySelectTest extends SeleniumTestBase
 		driver.findElement(By.cssSelector(".category-select-wrapper .custom-select-trigger")).click();
 
 		driver.findElement(By.tagName("body")).sendKeys(Keys.UP);
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".category-select-wrapper .custom-select-option.custom-select-option-hovered[data-value=\"4\"]")));
 
 		driver.findElement(By.tagName("body")).sendKeys(Keys.ENTER);
 
 		// assert
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.not(ExpectedConditions.attributeContains(By.cssSelector(".category-select-wrapper .custom-select"), "class", "open")));
 
 		assertThat(driver.findElement(By.cssSelector(".category-select-wrapper .custom-select-item-name")))
@@ -163,7 +164,7 @@ class CategorySelectTest extends SeleniumTestBase
 		// open category select
 		driver.findElement(By.cssSelector(".category-select-wrapper .custom-select-trigger")).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".category-select-wrapper .custom-select-option.selected")));
 
 		driver.findElement(By.tagName("body")).sendKeys("s");
