@@ -84,7 +84,7 @@ for(var j = 0; j < categoryNames.length; j++)
         orientation: 'h',
         type: 'bar',
         hoverinfo: 'text',
-        text: [textExpenditure, textIncome],
+        hovertext: [textExpenditure, textIncome],
         name: currentName,
         marker: {
             color: colors[j],  // use the category's color

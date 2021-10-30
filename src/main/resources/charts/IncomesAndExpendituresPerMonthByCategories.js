@@ -144,7 +144,7 @@ for(var i = 0; i < dates.length; i++)
             y: [currentIncomeValue / 100.0, currentExpenditureValue / 100.0],
             type: 'bar',
             hoverinfo: 'text',
-            text: [textIncome, textExpenditure],
+            hovertext: [textIncome, textExpenditure],
             name: currentName,
             xaxis: 'x' + (i + 1),  // for grouping incomes and expenditure bar by month
             barmode: 'stack',
