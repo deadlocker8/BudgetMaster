@@ -7,25 +7,10 @@ import org.openqa.selenium.WebDriver;
 public class SeleniumTestWatcher implements TestWatcher
 {
 	@Override
-	public void testSuccessful(ExtensionContext context)
-	{
-		final WebDriver driver = getDriver(context);
-		driver.quit();
-	}
-
-	@Override
-	public void testAborted(ExtensionContext context, Throwable cause)
-	{
-		final WebDriver driver = getDriver(context);
-		driver.quit();
-	}
-
-	@Override
 	public void testFailed(ExtensionContext context, Throwable cause)
 	{
 		final WebDriver driver = getDriver(context);
 		IntegrationTestHelper.saveScreenshots(driver, context.getRequiredTestMethod().getName(), context.getRequiredTestClass().getSimpleName());
-		driver.quit();
 	}
 
 	private WebDriver getDriver(ExtensionContext context)

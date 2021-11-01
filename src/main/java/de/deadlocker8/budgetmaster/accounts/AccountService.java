@@ -2,14 +2,12 @@ package de.deadlocker8.budgetmaster.accounts;
 
 import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
-import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.IconService;
-import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.services.AccessAllEntities;
+import de.deadlocker8.budgetmaster.services.AccessEntityByID;
 import de.deadlocker8.budgetmaster.services.Resettable;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
-import de.deadlocker8.budgetmaster.services.AccessEntityByID;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
 import org.padler.natorder.NaturalOrderComparator;
@@ -153,20 +151,6 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 		for(Account account : accountRepository.findAll())
 		{
 			handleNullValuesForAccountState(account);
-
-			if(account.getIcon() != null && account.getIconReference() == null)
-			{
-				Integer imageID = account.getIcon().getID();
-				Image image = imageService.getRepository().findById(imageID).orElseThrow();
-
-				Icon iconReference = new Icon(image);
-				iconService.getRepository().save(iconReference);
-
-				account.setIconReference(iconReference);
-				account.setIcon(null);
-				LOGGER.debug(MessageFormat.format("Updated account {0}: Converted attribute \"icon\" to \"iconReference\" {1}", account.getName(), image.getFileName()));
-			}
-
 			accountRepository.save(account);
 		}
 	}
@@ -175,14 +159,7 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 	{
 		if(account.getAccountState() == null)
 		{
-			if(account.isReadOnly() == null || !account.isReadOnly())
-			{
-				account.setAccountState(AccountState.FULL_ACCESS);
-			}
-			else
-			{
-				account.setAccountState(AccountState.READ_ONLY);
-			}
+			account.setAccountState(AccountState.FULL_ACCESS);
 			LOGGER.debug(MessageFormat.format("Updated account {0}: Set missing attribute \"accountState\" to {1}", account.getName(), account.getAccountState()));
 		}
 	}

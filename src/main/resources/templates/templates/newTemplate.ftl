@@ -81,7 +81,6 @@
                         <#-- icon -->
                         <@iconSelectMacros.iconSelect id="template-icon" item=template/>
 
-                        <br>
                         <#-- buttons -->
                         <@newTransactionMacros.buttons "/templates"/>
                     </form>

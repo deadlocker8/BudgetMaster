@@ -6,14 +6,6 @@ Mousetrap.bind('n', function()
     }
 });
 
-Mousetrap.bind('r', function()
-{
-    if(areHotKeysEnabled())
-    {
-        window.location.href = rootURL + '/transactions/newTransaction/repeating';
-    }
-});
-
 Mousetrap.bind('t', function()
 {
     if(areHotKeysEnabled())
@@ -52,6 +44,14 @@ Mousetrap.bind('esc', function()
     if(isSearchFocused())
     {
         document.getElementById('nav-logo-container').focus();
+    }
+});
+
+Mousetrap.bind('o', function()
+{
+    if(areHotKeysEnabled())
+    {
+        window.location.href = rootURL + '/transactions';
     }
 });
 

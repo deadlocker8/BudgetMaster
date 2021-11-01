@@ -222,7 +222,7 @@ public class SettingsController extends BaseController
 		String data = DatabaseService.GSON.toJson(databaseForJsonSerialization);
 		byte[] dataBytes = data.getBytes(StandardCharsets.UTF_8);
 
-		String fileName = DatabaseService.getExportFileName(false);
+		String fileName = DatabaseService.getExportFileName();
 		response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
 
 		response.setContentType("application/json; charset=UTF-8");

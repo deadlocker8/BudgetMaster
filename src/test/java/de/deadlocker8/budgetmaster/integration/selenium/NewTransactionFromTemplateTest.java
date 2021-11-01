@@ -1,47 +1,33 @@
 package de.deadlocker8.budgetmaster.integration.selenium;
 
-import de.deadlocker8.budgetmaster.Main;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
-import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
-import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestWatcher;
 import de.thecodelabs.utils.util.Localization;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.TestWatcher;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.test.annotation.DirtiesContext;
 
 import java.io.File;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(SeleniumTestWatcher.class)
-@SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@SeleniumTest
 class NewTransactionFromTemplateTest extends SeleniumTestBase
 {
 	private IntegrationTestHelper helper;
 
-	@BeforeEach
-	public void prepare()
+	@BeforeAll
+	public void beforeAll()
 	{
 		helper = new IntegrationTestHelper(driver, port);
 		helper.start();
@@ -54,7 +40,11 @@ class NewTransactionFromTemplateTest extends SeleniumTestBase
 		final Account account2 = new Account("Account2", AccountType.CUSTOM);
 
 		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf"), List.of(account1, account2));
-		// open transactions page
+	}
+
+	@BeforeEach
+	public void beforeEach()
+	{
 		driver.get(helper.getUrl() + "/transactions");
 		driver.findElement(By.id("button-new-transaction")).click();
 	}
@@ -62,18 +52,18 @@ class NewTransactionFromTemplateTest extends SeleniumTestBase
 	@Test
 	void test_newTransactionFromTemplate_FullTemplate()
 	{
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		final By locator = By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'From template')]");
 		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
 		driver.findElement(locator).click();
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Templates"));
 
 		driver.findElements(By.cssSelector(".template-item .btn-flat no-padding text-default"));
 		driver.findElement(By.xpath("//li[contains(@class, 'template-item')]//a[contains(@href, '/templates/2/select')]")).click();
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Transaction"));
 
 		// assert
@@ -93,18 +83,18 @@ class NewTransactionFromTemplateTest extends SeleniumTestBase
 	@Test
 	void test_newTransactionFromTemplate_OnlyIncome()
 	{
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		final By locator = By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'From template')]");
 		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
 		driver.findElement(locator).click();
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Templates"));
 
 		driver.findElements(By.cssSelector(".template-item .btn-flat no-padding text-default"));
 		driver.findElement(By.xpath("//li[contains(@class, 'template-item')]//a[contains(@href, '/templates/1/select')]")).click();
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Transaction"));
 
 		// assert
@@ -116,7 +106,7 @@ class NewTransactionFromTemplateTest extends SeleniumTestBase
 	{
 		driver.get(helper.getUrl() + "/templates");
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Templates"));
 
 		final List<WebElement> templateItemHeaders = driver.findElements(By.cssSelector(".template-item .collapsible-header"));
@@ -132,7 +122,7 @@ class NewTransactionFromTemplateTest extends SeleniumTestBase
 	{
 		driver.get(helper.getUrl() + "/templates");
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Templates"));
 
 		final List<WebElement> templateItemHeaders = driver.findElements(By.cssSelector(".template-item .collapsible-header"));
@@ -151,7 +141,7 @@ class NewTransactionFromTemplateTest extends SeleniumTestBase
 	{
 		driver.get(helper.getUrl() + "/templates");
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Templates"));
 
 		final List<WebElement> templateItemHeaders = driver.findElements(By.cssSelector(".template-item .collapsible-header"));
@@ -171,7 +161,7 @@ class NewTransactionFromTemplateTest extends SeleniumTestBase
 	{
 		driver.get(helper.getUrl() + "/templates");
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Templates"));
 
 		final List<WebElement> templateItemHeaders = driver.findElements(By.cssSelector(".template-item .collapsible-header"));
@@ -190,7 +180,7 @@ class NewTransactionFromTemplateTest extends SeleniumTestBase
 	{
 		driver.get(helper.getUrl() + "/templates");
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Templates"));
 
 		final List<WebElement> templateItemHeaders = driver.findElements(By.cssSelector(".template-item .collapsible-header"));
@@ -210,7 +200,7 @@ class NewTransactionFromTemplateTest extends SeleniumTestBase
 	{
 		driver.get(helper.getUrl() + "/templates");
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Templates"));
 
 		final List<WebElement> templateItemHeaders = driver.findElements(By.cssSelector(".template-item .collapsible-header"));
@@ -220,7 +210,7 @@ class NewTransactionFromTemplateTest extends SeleniumTestBase
 
 		driver.findElement(By.id("searchTemplate")).sendKeys(Keys.ENTER);
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Transaction"));
 	}
 
@@ -229,7 +219,7 @@ class NewTransactionFromTemplateTest extends SeleniumTestBase
 	{
 		driver.get(helper.getUrl() + "/templates");
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Templates"));
 
 		driver.findElement(By.id("searchTemplate")).sendKeys(Keys.ARROW_DOWN);
@@ -252,7 +242,7 @@ class NewTransactionFromTemplateTest extends SeleniumTestBase
 	{
 		driver.get(helper.getUrl() + "/templates");
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Templates"));
 
 		driver.findElement(By.id("searchTemplate")).sendKeys(Keys.ARROW_DOWN);
@@ -274,14 +264,14 @@ class NewTransactionFromTemplateTest extends SeleniumTestBase
 	{
 		driver.get(helper.getUrl() + "/templates");
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Templates"));
 
 		WebElement inputSearch = driver.findElement(By.id("search"));
 		inputSearch.sendKeys("e");
 		inputSearch.sendKeys(Keys.ENTER);
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		String expected = Localization.getString("menu.search.results", 24);
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), expected));
 	}

@@ -55,6 +55,14 @@
                 </label>
             </div>
         </div>
+        <div class="col s8 offset-s2 m4 offset-m2 l3 offset-l3">
+            <div class="search-checkbox-container">
+                <label>
+                    <input type="checkbox" name="includeHiddenAccounts" <#if search.isIncludeHiddenAccounts()>checked="checked"</#if>>
+                    <span class="text-default">${locale.getString('search.include.hidden.accounts')}</span>
+                </label>
+            </div>
+        </div>
     </div>
 </#macro>
 

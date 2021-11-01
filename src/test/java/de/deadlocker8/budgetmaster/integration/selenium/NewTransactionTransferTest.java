@@ -1,24 +1,24 @@
 package de.deadlocker8.budgetmaster.integration.selenium;
 
-import de.deadlocker8.budgetmaster.Main;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
-import de.deadlocker8.budgetmaster.integration.helpers.*;
+import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
+import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
+import de.deadlocker8.budgetmaster.integration.helpers.TransactionTestHelper;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -26,15 +26,11 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@ExtendWith(SeleniumTestWatcher.class)
-@SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@SeleniumTest
 class NewTransactionTransferTest extends SeleniumTestBase
 {
 	private IntegrationTestHelper helper;
 
-	@BeforeEach
+	@BeforeAll
 	public void prepare()
 	{
 		helper = new IntegrationTestHelper(driver, port);
@@ -48,40 +44,58 @@ class NewTransactionTransferTest extends SeleniumTestBase
 		final Account account2 = new Account("Account2", AccountType.CUSTOM);
 
 		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf"), List.of(account1, account2));
+	}
+
+	@BeforeEach
+	public void beforeEach() {
 		// open transactions page
 		driver.get(helper.getUrl() + "/transactions");
+	}
+
+	private void openNewTransactionPage()
+	{
 		driver.findElement(By.id("button-new-transaction")).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		final By locator = By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transfer')]");
 		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
 		driver.findElement(locator).click();
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Transfer"));
 	}
 
 	@Test
 	void test_newTransaction_cancel()
 	{
+		// open transactions page
+		driver.get(helper.getUrl() + "/transactions");
+
+		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		final int numberOfTransactionsBefore = transactionsRows.size();
+
+		openNewTransactionPage();
+
 		// click cancel button
 		WebElement cancelButton = driver.findElement(By.id("button-cancel-save-transaction"));
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", cancelButton);
 		cancelButton.click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
 
 		// assert
 		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
 
-		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
-		assertThat(transactionsRows).hasSize(1);
+		transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		assertThat(transactionsRows).hasSize(numberOfTransactionsBefore);
 	}
 
 	@Test
 	void test_newTransaction_transfer()
 	{
+		openNewTransactionPage();
+
 		String name = "My transfer transaction";
 		String amount = "15.00";
 		String description = "Lorem Ipsum dolor sit amet";
@@ -96,7 +110,7 @@ class NewTransactionTransferTest extends SeleniumTestBase
 		// submit form
 		driver.findElement(By.id("button-save-transaction")).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
 
 		// assert

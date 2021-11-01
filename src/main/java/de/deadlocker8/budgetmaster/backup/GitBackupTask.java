@@ -2,9 +2,9 @@ package de.deadlocker8.budgetmaster.backup;
 
 import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
+import de.deadlocker8.budgetmaster.utils.DateHelper;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +54,7 @@ public abstract class GitBackupTask extends BackupTask
 		}
 
 		LOGGER.debug("Committing changes...");
-		GitHelper.commitChanges(git, DateTime.now().toString(DATE_PATTERN));
+		GitHelper.commitChanges(git, DateHelper.getCurrentDate().toString(DATE_PATTERN));
 		return true;
 	}
 

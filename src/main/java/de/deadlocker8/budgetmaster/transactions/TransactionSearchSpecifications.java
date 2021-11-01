@@ -44,17 +44,32 @@ public class TransactionSearchSpecifications
 
 			if(search.isSearchTags())
 			{
-				final Join<Transaction, Tag> tagJoin = transaction.join(Transaction_.tags, JoinType.LEFT);
+				Join<Transaction, Tag> tagJoin = transaction.join(Transaction_.tags, JoinType.LEFT);
 				predicates.add(builder.like(builder.lower(tagJoin.get(Tag_.name).as(String.class)), pattern));
 			}
 
 			Predicate[] predicatesArray = new Predicate[predicates.size()];
 			Predicate predicatesCombined = builder.or(predicates.toArray(predicatesArray));
 
-			Predicate accountStatePredicate = transaction.get(Transaction_.account).get("accountState").in(List.of(AccountState.FULL_ACCESS, AccountState.READ_ONLY));
+			Predicate accountStatePredicate = transaction.get(Transaction_.account).get("accountState").in(getAllowedAccountStates(search));
 
 			query.orderBy(builder.desc(transaction.get(Transaction_.date)));
+			query.distinct(true);
 			return builder.and(accountStatePredicate, predicatesCombined);
 		};
+	}
+
+	private static List<AccountState> getAllowedAccountStates(Search search)
+	{
+		List<AccountState> allowedAccountStates = new ArrayList<>();
+		allowedAccountStates.add(AccountState.FULL_ACCESS);
+		allowedAccountStates.add(AccountState.READ_ONLY);
+
+		if(search.isIncludeHiddenAccounts())
+		{
+			allowedAccountStates.add(AccountState.HIDDEN);
+		}
+
+		return allowedAccountStates;
 	}
 }

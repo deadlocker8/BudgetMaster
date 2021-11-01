@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.charts;
 
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
+import de.deadlocker8.budgetmaster.utils.DateHelper;
 import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -19,7 +20,7 @@ public class ChartSettings
 
 	public static ChartSettings getDefault(FilterConfiguration filterConfiguration)
 	{
-		return new ChartSettings(ChartDisplayType.BAR, ChartGroupType.MONTH, null, DateTime.now().withDayOfMonth(1), DateTime.now().dayOfMonth().withMaximumValue(), filterConfiguration);
+		return new ChartSettings(ChartDisplayType.BAR, ChartGroupType.MONTH, null, DateHelper.getCurrentDate().withDayOfMonth(1), DateHelper.getCurrentDate().dayOfMonth().withMaximumValue(), filterConfiguration);
 	}
 
 	public ChartSettings()

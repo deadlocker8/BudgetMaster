@@ -1,11 +1,10 @@
 package de.deadlocker8.budgetmaster.categories;
 
-import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.services.AccessAllEntities;
+import de.deadlocker8.budgetmaster.services.AccessEntityByID;
 import de.deadlocker8.budgetmaster.services.Resettable;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
-import de.deadlocker8.budgetmaster.services.AccessEntityByID;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
 import org.padler.natorder.NaturalOrderComparator;
@@ -14,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -103,27 +101,6 @@ public class CategoryService implements Resettable, AccessAllEntities<Category>,
 		{
 			categoryRepository.save(new Category(Localization.getString(Strings.CATEGORY_REST), "#FFFF00", CategoryType.REST));
 			LOGGER.debug("Created default category REST");
-		}
-
-		updateMissingAttributes();
-	}
-
-	private void updateMissingAttributes()
-	{
-		for(Category category : categoryRepository.findAll())
-		{
-			if(category.getIcon() != null && !category.getIcon().isEmpty() &&category.getIconReference() == null)
-			{
-				final String iconName = category.getIcon();
-				Icon iconReference = new Icon(iconName);
-				iconService.getRepository().save(iconReference);
-
-				category.setIconReference(iconReference);
-				category.setIcon(null);
-
-				categoryRepository.save(category);
-				LOGGER.debug(MessageFormat.format("Updated category {0}: Converted attribute \"icon\" to \"iconReference\" {1}", category.getName(), iconName));
-			}
 		}
 	}
 

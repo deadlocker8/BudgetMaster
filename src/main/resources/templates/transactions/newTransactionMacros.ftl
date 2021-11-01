@@ -154,16 +154,32 @@
 </#macro>
 
 <#macro transactionRepeating transaction currentDate>
-    <div class="row">
-        <div class="col s12 m12 l8 offset-l2">
-            <i class="material-icons icon-repeating">repeat</i>
-            ${locale.getString("transaction.new.label.repeating")}
+    <div class="row <#if transaction.isRepeating()>hidden</#if>">
+        <div class="col s12 center-align">
+            <@header.buttonLink url='' icon='repeat' localizationKey='repeating.button.add' id='button-transaction-add-repeating-option' color='background-blue-baby' noUrl=true classes="text-black"/>
         </div>
     </div>
 
-    <@newTransactionMacros.repeatingModifier transaction/>
+    <div class="<#if !transaction.isRepeating()>hidden</#if>" id="transaction-repeating-option">
+        <input type="hidden" name="isRepeating" value="<#if transaction.getRepeatingOption()??>1}</#if>">
 
-    <@newTransactionMacros.repeatingEndOption transaction currentDate/>
+        <div class="row">
+            <div class="col s12 m12 l8 offset-l2">
+                <i class="material-icons icon-repeating">repeat</i>
+                ${locale.getString("transaction.new.label.repeating")}
+            </div>
+        </div>
+
+        <@repeatingModifier transaction/>
+
+        <@repeatingEndOption transaction currentDate/>
+    </div>
+
+    <div class="row">
+        <div class="col s12 center-align">
+            <@header.buttonLink url='' icon='delete' localizationKey='repeating.button.remove' id='button-transaction-remove-repeating-option' color='background-blue-baby' noUrl=true classes="text-black hidden"/>
+        </div>
+    </div>
 </#macro>
 
 <#macro repeatingModifier transaction>
@@ -288,6 +304,10 @@
 </#macro>
 
 <#macro buttons cancelURL>
+    <br>
+    <hr>
+    <br>
+
     <div class="row hide-on-small-only">
         <div class="col s6 right-align">
             <@buttonCancel cancelURL/>
@@ -320,8 +340,8 @@
     <@header.buttonSubmit name='action' icon='save' localizationKey='save' id='button-save-transaction'/>
 </#macro>
 
-<#macro buttonTransactionActions canChangeType canCreateTemplate changetypeInProgress>
-    <#if (canChangeType || canCreateTemplate) && !changetypeInProgress>
+<#macro buttonTransactionActions canChangeType canCreateTemplate changeTypeInProgress>
+    <#if (canChangeType || canCreateTemplate) && !changeTypeInProgress>
         <div class="fixed-action-btn" id="transaction-actions-button">
             <a class="btn-floating btn-large waves-effect waves-light background-blue">
                 <i class="material-icons left">settings</i>${locale.getString("save")}

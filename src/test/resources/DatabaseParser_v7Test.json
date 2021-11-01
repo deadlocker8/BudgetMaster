@@ -1,6 +1,6 @@
 {
     "TYPE": "BUDGETMASTER_DATABASE",
-    "VERSION": 6,
+    "VERSION": 7,
     "categories": [
         {
             "ID": 1,
@@ -107,6 +107,32 @@
             "description": "",
             "tags": [],
             "transferAccountID": 2
+        },
+        {
+            "ID": 17,
+            "amount": -6000,
+            "isExpenditure": true,
+            "date": "2018-03-15",
+            "accountID": 2,
+            "categoryID": 1,
+            "name": "repeat my transfer",
+            "description": "",
+            "tags": [],
+            "transferAccountID": 2,
+            "repeatingOption": {
+                "ID": 3,
+                "startDate": "2018-03-15",
+                "modifier": {
+                    "ID": 3,
+                    "quantity": 10,
+                    "localizationKey": "repeating.modifier.days"
+                },
+                "endOption": {
+                    "times": 2,
+                    "ID": 3,
+                    "localizationKey": "repeating.end.key.afterXTimes"
+                }
+            }
         }
     ],
     "templates": [

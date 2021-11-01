@@ -2,9 +2,16 @@ package de.deadlocker8.budgetmaster.images;
 
 import com.google.gson.JsonObject;
 import de.deadlocker8.budgetmaster.controller.BaseController;
+import de.deadlocker8.budgetmaster.icon.Icon;
+import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.utils.Mappings;
+import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import de.thecodelabs.utils.util.Localization;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +24,13 @@ import java.util.Optional;
 @RequestMapping(Mappings.MEDIA)
 public class MediaController extends BaseController
 {
+	private final IconService iconService;
 	private final ImageService imageService;
 
 	@Autowired
-	public MediaController(ImageService imageService)
+	public MediaController(IconService iconService, ImageService imageService)
 	{
+		this.iconService = iconService;
 		this.imageService = imageService;
 	}
 
@@ -97,5 +106,23 @@ public class MediaController extends BaseController
 		data.addProperty("localizedMessage", localizedMessage);
 
 		return data.toString();
+	}
+
+	@GetMapping("/getImageByIconID/{ID}")
+	public ResponseEntity<byte[]> getImageByIconID(@PathVariable("ID") Integer iconID)
+	{
+		Optional<Icon> iconOptional = iconService.getRepository().findById(iconID);
+		if(iconOptional.isEmpty())
+		{
+			throw new ResourceNotFoundException();
+		}
+
+		final Image image = iconOptional.get().getImage();
+
+		final HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(image.getFileExtension().getMediaType());
+
+		final byte[] bytes = ArrayUtils.toPrimitive(image.getImage());
+		return new ResponseEntity<>(bytes, headers, HttpStatus.CREATED);
 	}
 }

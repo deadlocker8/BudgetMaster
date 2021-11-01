@@ -119,3 +119,9 @@ function rgb2hex(rgb)
 
     return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
 }
+
+function validateLoginForm()
+{
+    let passwordInput = document.getElementById('login-password');
+    passwordInput.value = passwordInput.value.trim();
+}

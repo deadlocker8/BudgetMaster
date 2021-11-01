@@ -7,6 +7,7 @@ import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.tags.Tag;
+import de.deadlocker8.budgetmaster.utils.DateHelper;
 import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -210,7 +211,7 @@ public class Transaction implements TransactionBase
 
 	public boolean isFuture()
 	{
-		return date.isAfter(DateTime.now());
+		return date.isAfter(DateHelper.getCurrentDate());
 	}
 
 	public boolean isEditable()
@@ -230,6 +231,23 @@ public class Transaction implements TransactionBase
 
 		boolean isTransferAccountEditable = transferAccount.getAccountState().equals(AccountState.FULL_ACCESS);
 		return isAccountEditable && isTransferAccountEditable;
+	}
+
+	/**
+	 * States whether this transaction is allowed to be used to create a new transaction
+	 * and prefill all inputs with the data from this transaction.
+	 */
+	public boolean isAllowedToFillNewTransaction()
+	{
+		boolean isRestCategory = category.getType().equals(CategoryType.REST);
+		if(isRestCategory)
+		{
+			return false;
+		}
+
+		boolean isAccountEditable = account.getAccountState().equals(AccountState.FULL_ACCESS);
+		boolean isAccountReadOnly = account.getAccountState().equals(AccountState.READ_ONLY);
+		return isAccountEditable || isAccountReadOnly;
 	}
 
 	@Override

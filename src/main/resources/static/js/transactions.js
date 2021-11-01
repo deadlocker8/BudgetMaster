@@ -263,7 +263,25 @@ $(document).ready(function()
     {
         fetchAndShowModalContent(this.dataset.url, '#deleteModalContainerOnDemand', '#modalConfirmDelete', function(){});
     });
+
+    $('#button-transaction-add-repeating-option').click(function()
+    {
+        toggleRepeatingOptions(true);
+    });
+
+    $('#button-transaction-remove-repeating-option').click(function()
+    {
+        toggleRepeatingOptions(false);
+    });
 });
+
+function toggleRepeatingOptions(show)
+{
+    document.getElementById('button-transaction-add-repeating-option').classList.toggle('hidden', show);
+    document.getElementsByName('isRepeating')[0].value = show;
+    document.getElementById('transaction-repeating-option').classList.toggle('hidden', !show);
+    document.getElementById('button-transaction-remove-repeating-option').classList.toggle('hidden', !show);
+}
 
 function isHidden(el)
 {
@@ -403,7 +421,7 @@ function validateForm(allowEmptyAmount = false)
         }
     }
 
-    if($(transactionRepeatingModifierID).length)
+    if(document.getElementsByName('isRepeating')[0].value === "true")
     {
         if(!validateNumber($(transactionRepeatingModifierID).val(), transactionRepeatingModifierID.substr(1), "hidden-" + transactionRepeatingModifierID.substr(1), numberValidationMessage, REGEX_NUMBER))
         {

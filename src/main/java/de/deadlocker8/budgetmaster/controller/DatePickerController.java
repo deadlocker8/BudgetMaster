@@ -4,6 +4,7 @@ import de.deadlocker8.budgetmaster.services.DateFormatStyle;
 import de.deadlocker8.budgetmaster.services.DateService;
 import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
+import de.deadlocker8.budgetmaster.utils.DateHelper;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +67,7 @@ public class DatePickerController extends BaseController
 	@RequestMapping(value = "/today")
 	public String today(HttpServletResponse response, @RequestParam("target") String target)
 	{
-		DateTime currentDate = DateTime.now();
+		DateTime currentDate = DateHelper.getCurrentDate();
 		response.addCookie(new Cookie(COOKIE_NAME, dateService.getDateStringNormal(currentDate)));
 		return "redirect:" + target;
 	}

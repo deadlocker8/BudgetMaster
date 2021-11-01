@@ -2,13 +2,14 @@ package de.deadlocker8.budgetmaster.search;
 
 public class Search
 {
-	public static final Search DEFAULT = new Search("", true, true, true, true, 0);
+	public static final Search DEFAULT = new Search("", true, true, true, true, false, 0);
 
 	private String searchText;
 	private boolean searchName;
 	private boolean searchDescription;
 	private boolean searchCategory;
 	private boolean searchTags;
+	private boolean includeHiddenAccounts;
 	private int page;
 
 	public Search()
@@ -17,13 +18,14 @@ public class Search
 		this.page = 0;
 	}
 
-	public Search(String searchText, boolean searchName, boolean searchDescription, boolean searchCategory, boolean searchTags, int page)
+	public Search(String searchText, boolean searchName, boolean searchDescription, boolean searchCategory, boolean searchTags, boolean includeHiddenAccounts, int page)
 	{
 		this.searchText = searchText;
 		this.searchName = searchName;
 		this.searchDescription = searchDescription;
 		this.searchCategory = searchCategory;
 		this.searchTags = searchTags;
+		this.includeHiddenAccounts = includeHiddenAccounts;
 		this.page = page;
 	}
 
@@ -77,6 +79,16 @@ public class Search
 		this.searchTags = searchTags;
 	}
 
+	public boolean isIncludeHiddenAccounts()
+	{
+		return includeHiddenAccounts;
+	}
+
+	public void setIncludeHiddenAccounts(boolean includeHiddenAccounts)
+	{
+		this.includeHiddenAccounts = includeHiddenAccounts;
+	}
+
 	public int getPage()
 	{
 		return page;
@@ -100,6 +112,7 @@ public class Search
 				", searchDescription=" + searchDescription +
 				", searchCategory=" + searchCategory +
 				", searchTags=" + searchTags +
+				", includeHiddenAccounts=" + includeHiddenAccounts +
 				", page=" + page +
 				'}';
 	}

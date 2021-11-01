@@ -1,8 +1,8 @@
 package de.deadlocker8.budgetmaster.authentication;
 
 import de.deadlocker8.budgetmaster.controller.BaseController;
+import de.deadlocker8.budgetmaster.utils.DateHelper;
 import de.deadlocker8.budgetmaster.utils.Mappings;
-import org.joda.time.DateTime;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,7 +37,7 @@ public class LoginController extends BaseController
 			request.getSession().setAttribute("preLoginURL", savedRequest.getRequestURL());
 		}
 
-		model.addAttribute("currentDate", DateTime.now());
+		model.addAttribute("currentDate", DateHelper.getCurrentDate());
 		return "login";
 	}
 }

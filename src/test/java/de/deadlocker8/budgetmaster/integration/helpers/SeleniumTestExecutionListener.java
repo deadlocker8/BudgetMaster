@@ -29,7 +29,7 @@ public class SeleniumTestExecutionListener extends AbstractTestExecutionListener
 	}
 
 	@Override
-	public void afterTestMethod(TestContext testContext) throws Exception
+	public void afterTestClass(TestContext testContext)
 	{
 		final Path path = SystemUtils.getApplicationSupportDirectoryPath(Localization.getString("folder"), "test", "budgetmaster.mv.db");
 		try

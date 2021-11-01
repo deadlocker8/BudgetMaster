@@ -6,9 +6,9 @@ import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
 import de.deadlocker8.budgetmaster.services.DateFormatStyle;
+import de.deadlocker8.budgetmaster.utils.DateHelper;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
-import org.joda.time.DateTime;
 
 
 public class HeaderFooterPageEvent extends PdfPageEventHelper
@@ -25,6 +25,6 @@ public class HeaderFooterPageEvent extends PdfPageEventHelper
 
 		ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase(Localization.getString(Strings.REPORT_FOOTER_LEFT), font), 100, 25, 0);
 		ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase(Localization.getString(Strings.REPORT_FOOTER_CENTER, document.getPageNumber()), font), 300, 25, 0);
-		ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase(DateTime.now().toString(DateFormatStyle.LONG.getKey()), font), 500, 25, 0);
+		ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase(DateHelper.getCurrentDate().toString(DateFormatStyle.LONG.getKey()), font), 500, 25, 0);
 	}
 }

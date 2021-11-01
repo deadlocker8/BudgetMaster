@@ -127,19 +127,22 @@ public class TransactionController extends BaseController
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 		Transaction emptyTransaction = new Transaction();
 		emptyTransaction.setCategory(categoryService.findByType(CategoryType.NONE));
-		transactionService.prepareModelNewOrEdit(model, false, date, null, emptyTransaction, accountService.getAllActivatedAccountsAsc());
+		transactionService.prepareModelNewOrEdit(model, false, date, false, emptyTransaction, accountService.getAllActivatedAccountsAsc());
 		return "transactions/newTransaction" + StringUtils.capitalize(type);
 	}
 
-	@PostMapping(value = "/newTransaction/normal")
-	public String postNormal(Model model,
-							 @CookieValue("currentDate") String cookieDate,
-							 @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
-							 @RequestParam(value = "previousType", required = false) TransactionType previousType)
+	@PostMapping(value = "/newTransaction")
+	public String post(Model model, @CookieValue("currentDate") String cookieDate,
+					   @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
+					   @RequestParam(value = "isRepeating", required = false) boolean isRepeating,
+					   @RequestParam(value = "repeatingModifierNumber", required = false, defaultValue = "0") int repeatingModifierNumber,
+					   @RequestParam(value = "repeatingModifierType", required = false) String repeatingModifierType,
+					   @RequestParam(value = "repeatingEndType", required = false) String repeatingEndType,
+					   @RequestParam(value = "repeatingEndValue", required = false) String repeatingEndValue)
 	{
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 
-		handlePreviousType(previousType, transaction);
+		handlePreviousType(transaction, isRepeating);
 
 		TransactionValidator transactionValidator = new TransactionValidator();
 		transactionValidator.validate(transaction, bindingResult);
@@ -147,45 +150,40 @@ public class TransactionController extends BaseController
 		transactionService.handleAmount(transaction);
 		transactionService.handleTags(transaction);
 
-		transaction.setRepeatingOption(null);
+		if(isRepeating)
+		{
+			final RepeatingOption repeatingOption = createRepeatingOption(transaction.getDate(), repeatingModifierNumber, repeatingModifierType, repeatingEndType, repeatingEndValue);
+			transaction.setRepeatingOption(repeatingOption);
+		}
+		else
+		{
+			transaction.setRepeatingOption(null);
+		}
 
-		return handleRedirect(model, transaction.getID() != null, transaction, bindingResult, date, "transactions/newTransactionNormal");
+		String redirectUrl;
+		if(transaction.isTransfer())
+		{
+			redirectUrl = "transactions/newTransactionTransfer";
+		}
+		else
+		{
+			redirectUrl = "transactions/newTransactionNormal";
+		}
+
+		return handleRedirect(model, transaction.getID() != null, transaction, bindingResult, date, redirectUrl);
 	}
 
-	private void handlePreviousType(TransactionType previousType, Transaction transaction)
+	private void handlePreviousType(Transaction transaction, boolean isRepeating)
 	{
-		if(previousType == TransactionType.REPEATING)
+		if(transaction.getID() != null && isRepeating)
 		{
 			transactionService.deleteTransaction(transaction.getID());
 		}
 	}
 
 	@SuppressWarnings("ConstantConditions")
-	@PostMapping(value = "/newTransaction/repeating")
-	public String postRepeating(Model model, @CookieValue("currentDate") String cookieDate,
-								@ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
-								@RequestParam(value = "isRepeating", required = false) boolean isRepeating,
-								@RequestParam(value = "previousType", required = false) TransactionType previousType,
-								@RequestParam(value = "repeatingModifierNumber", required = false) int repeatingModifierNumber,
-								@RequestParam(value = "repeatingModifierType", required = false) String repeatingModifierType,
-								@RequestParam(value = "repeatingEndType", required = false) String repeatingEndType,
-								@RequestParam(value = "repeatingEndValue", required = false) String repeatingEndValue)
+	private RepeatingOption createRepeatingOption(DateTime startDate, int repeatingModifierNumber, String repeatingModifierType, String repeatingEndType, String repeatingEndValue)
 	{
-		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
-
-		// handle repeating transactions
-		if(transaction.getID() != null && isRepeating)
-		{
-			transactionService.deleteTransaction(transaction.getID());
-		}
-
-		TransactionValidator transactionValidator = new TransactionValidator();
-		transactionValidator.validate(transaction, bindingResult);
-
-		transactionService.handleAmount(transaction);
-		transactionService.handleTags(transaction);
-
-		RepeatingOption repeatingOption;
 		RepeatingModifierType type = RepeatingModifierType.getByLocalization(repeatingModifierType);
 		RepeatingModifier repeatingModifier = RepeatingModifier.fromModifierType(type, repeatingModifierNumber);
 
@@ -205,31 +203,7 @@ public class TransactionController extends BaseController
 				break;
 		}
 
-		repeatingOption = new RepeatingOption(transaction.getDate(), repeatingModifier, repeatingEnd);
-		transaction.setRepeatingOption(repeatingOption);
-
-		return handleRedirect(model, transaction.getID() != null, transaction, bindingResult, date, "transactions/newTransactionRepeating");
-	}
-
-	@PostMapping(value = "/newTransaction/transfer")
-	public String postTransfer(Model model,
-							   @CookieValue("currentDate") String cookieDate,
-							   @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
-							   @RequestParam(value = "previousType", required = false) TransactionType previousType)
-	{
-		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
-
-		handlePreviousType(previousType, transaction);
-
-		TransactionValidator transactionValidator = new TransactionValidator();
-		transactionValidator.validate(transaction, bindingResult);
-
-		transactionService.handleAmount(transaction);
-		transactionService.handleTags(transaction);
-
-		transaction.setRepeatingOption(null);
-
-		return handleRedirect(model, transaction.getID() != null, transaction, bindingResult, date, "transactions/newTransactionTransfer");
+		return new RepeatingOption(startDate, repeatingModifier, repeatingEnd);
 	}
 
 	private String handleRedirect(Model model, boolean isEdit, @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult, DateTime date, String url)
@@ -237,7 +211,7 @@ public class TransactionController extends BaseController
 		if(bindingResult.hasErrors())
 		{
 			model.addAttribute("error", bindingResult);
-			transactionService.prepareModelNewOrEdit(model, isEdit, date, null, transaction, accountService.getAllActivatedAccountsAsc());
+			transactionService.prepareModelNewOrEdit(model, isEdit, date, false, transaction, accountService.getAllActivatedAccountsAsc());
 			return url;
 		}
 
@@ -268,12 +242,7 @@ public class TransactionController extends BaseController
 		}
 
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
-		transactionService.prepareModelNewOrEdit(model, true, date, null, transaction, accountService.getAllActivatedAccountsAsc());
-
-		if(transaction.isRepeating())
-		{
-			return "transactions/newTransactionRepeating";
-		}
+		transactionService.prepareModelNewOrEdit(model, true, date, false, transaction, accountService.getAllActivatedAccountsAsc());
 
 		if(transaction.isTransfer())
 		{
@@ -345,29 +314,60 @@ public class TransactionController extends BaseController
 		final TransactionType newTransactionType = transactionTypeOptional.get();
 		LOGGER.debug(MessageFormat.format("Changing transaction type to {0} for transaction with ID {1}", newTransactionType, String.valueOf(transaction.getID())));
 
-		final TransactionType previousType = TransactionType.getFromTransaction(transaction);
-
 		String redirectUrl = "";
 		switch(newTransactionType)
 		{
 			case NORMAL:
 				transactionCopy.setTransferAccount(null);
-				transactionCopy.setRepeatingOption(null);
 				redirectUrl = "transactions/newTransactionNormal";
 				break;
-			case REPEATING:
-				transactionCopy.setTransferAccount(null);
-				redirectUrl = "transactions/newTransactionRepeating";
-				break;
 			case TRANSFER:
-				transactionCopy.setRepeatingOption(null);
 				redirectUrl = "transactions/newTransactionTransfer";
 				break;
+			default:
+				throw new IllegalStateException("Unexpected value: " + newTransactionType);
 		}
 
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
-		transactionService.prepareModelNewOrEdit(model, true, date, previousType, transactionCopy, accountService.getAllActivatedAccountsAsc());
+		transactionService.prepareModelNewOrEdit(model, true, date, true, transactionCopy, accountService.getAllActivatedAccountsAsc());
 
 		return redirectUrl;
+	}
+
+	@GetMapping("/{ID}/newFromExisting")
+	public String newFromExisting(Model model, @PathVariable("ID") Integer ID, @CookieValue("currentDate") String cookieDate)
+	{
+		Optional<Transaction> transactionOptional = transactionService.getRepository().findById(ID);
+		if(transactionOptional.isEmpty())
+		{
+			throw new ResourceNotFoundException();
+		}
+
+		Transaction existingTransaction = transactionOptional.get();
+
+		// select first transaction in order to provide correct start date for repeating transactions
+		if(existingTransaction.getRepeatingOption() != null)
+		{
+			existingTransaction = existingTransaction.getRepeatingOption().getReferringTransactions().get(0);
+		}
+
+		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
+
+		Transaction newTransaction = new Transaction(existingTransaction);
+		newTransaction.setID(null);
+		newTransaction.setDate(date);
+
+		if(newTransaction.getAccount().getAccountState() != AccountState.FULL_ACCESS)
+		{
+			newTransaction.setAccount(accountService.getRepository().findByIsDefault(true));
+		}
+
+		transactionService.prepareModelNewOrEdit(model, false, date, false, newTransaction, accountService.getAllActivatedAccountsAsc());
+
+		if(newTransaction.isTransfer())
+		{
+			return "transactions/newTransactionTransfer";
+		}
+		return "transactions/newTransactionNormal";
 	}
 }

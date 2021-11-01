@@ -1,33 +1,28 @@
 package de.deadlocker8.budgetmaster.integration.selenium;
 
-import de.deadlocker8.budgetmaster.Main;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
-import de.deadlocker8.budgetmaster.integration.helpers.*;
-import org.junit.jupiter.api.BeforeEach;
+import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
+import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
+import de.deadlocker8.budgetmaster.integration.helpers.TransactionTestHelper;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 
 import java.io.File;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@ExtendWith(SeleniumTestWatcher.class)
-@SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@SeleniumTest
 class ChangeTransactionTypeTest extends SeleniumTestBase
 {
 	private IntegrationTestHelper helper;
@@ -36,12 +31,18 @@ class ChangeTransactionTypeTest extends SeleniumTestBase
 	{
 		driver.get(helper.getUrl() + "/transactions/" + transactionID + "/edit");
 
+		// move cursor away
 		Actions builder = new Actions(driver);
-		WebElement element = driver.findElement(By.id("transaction-actions-button"));
-		builder.moveToElement(element).build().perform();
+		WebElement logo = driver.findElement(By.id("nav-logo"));
+		builder.moveToElement(logo).build().perform();
+
+		// move cursor to button
+		builder = new Actions(driver);
+		WebElement button = driver.findElement(By.id("transaction-actions-button"));
+		builder.moveToElement(button).build().perform();
 
 		By changeTypeButtonSelector = By.xpath("//a[contains(@data-action-type, 'changeType')][1]");
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(changeTypeButtonSelector));
 
 		WebElement buttonChangeType = driver.findElement(changeTypeButtonSelector);
@@ -51,8 +52,8 @@ class ChangeTransactionTypeTest extends SeleniumTestBase
 		assertThat(driver.findElement(By.id("modalChangeTransactionType")).isDisplayed()).isTrue();
 	}
 
-	@BeforeEach
-	public void prepare()
+	@BeforeAll
+	public void beforeAll()
 	{
 		helper = new IntegrationTestHelper(driver, port);
 		helper.start();
@@ -73,20 +74,8 @@ class ChangeTransactionTypeTest extends SeleniumTestBase
 		openTransferTypeModal(2);
 
 		final List<WebElement> typeOptions = driver.findElements(By.cssSelector("#newTypeSelect option"));
-		assertThat(typeOptions).hasSize(2);
-		assertThat(typeOptions.get(0).getAttribute("text")).isEqualTo("Recurring");
-		assertThat(typeOptions.get(1).getAttribute("text")).isEqualTo("Transfer");
-	}
-
-	@Test
-	void test_availableOptions_recurring()
-	{
-		openTransferTypeModal(6);
-
-		final List<WebElement> typeOptions = driver.findElements(By.cssSelector("#newTypeSelect option"));
-		assertThat(typeOptions).hasSize(2);
-		assertThat(typeOptions.get(0).getAttribute("text")).isEqualTo("Transaction");
-		assertThat(typeOptions.get(1).getAttribute("text")).isEqualTo("Transfer");
+		assertThat(typeOptions).hasSize(1);
+		assertThat(typeOptions.get(0).getAttribute("text")).isEqualTo("Transfer");
 	}
 
 	@Test
@@ -95,9 +84,8 @@ class ChangeTransactionTypeTest extends SeleniumTestBase
 		openTransferTypeModal(3);
 
 		final List<WebElement> typeOptions = driver.findElements(By.cssSelector("#newTypeSelect option"));
-		assertThat(typeOptions).hasSize(2);
+		assertThat(typeOptions).hasSize(1);
 		assertThat(typeOptions.get(0).getAttribute("text")).isEqualTo("Transaction");
-		assertThat(typeOptions.get(1).getAttribute("text")).isEqualTo("Recurring");
 	}
 
 	@Test
@@ -107,7 +95,7 @@ class ChangeTransactionTypeTest extends SeleniumTestBase
 		TransactionTestHelper.selectOptionFromDropdown(driver, By.cssSelector("#modalChangeTransactionType .select-wrapper"), "Transfer");
 		driver.findElement(By.id("buttonChangeTransactionType")).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBe(By.cssSelector(".headline"), "Edit Transfer"));
 
 		assertThatThrownBy(() -> driver.findElement(By.className("buttonExpenditure"))).isInstanceOf(NoSuchElementException.class);
@@ -124,58 +112,5 @@ class ChangeTransactionTypeTest extends SeleniumTestBase
 
 		assertThat(driver.findElement(By.cssSelector(".account-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("3");
 		assertThat(driver.findElement(By.cssSelector(".transfer-account-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("2");
-	}
-
-	@Test
-	void test_recurring_to_normal()
-	{
-		openTransferTypeModal(6);
-		TransactionTestHelper.selectOptionFromDropdown(driver, By.cssSelector("#modalChangeTransactionType .select-wrapper"), "Transaction");
-		driver.findElement(By.id("buttonChangeTransactionType")).click();
-
-		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.textToBe(By.cssSelector(".headline"), "Edit Transaction"));
-
-		assertThat(driver.findElement(By.className("buttonExpenditure")).getAttribute("class")).contains("background-red");
-		assertThat(driver.findElement(By.id("transaction-name")).getAttribute("value")).isEqualTo("beste");
-		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEqualTo("15.00");
-		assertThat(driver.findElement(By.id("transaction-datepicker")).getAttribute("value")).isEqualTo("01.05.2019");
-		assertThat(driver.findElement(By.id("transaction-description")).getAttribute("value")).isEqualTo("Lorem Ipsum");
-		assertThat(driver.findElement(By.cssSelector(".category-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("3");
-
-		final List<WebElement> chips = driver.findElements(By.cssSelector("#transaction-chips .chip"));
-		assertThat(chips).hasSize(1);
-		assertThat(chips.get(0)).hasFieldOrPropertyWithValue("text", "123\nclose");
-
-		assertThat(driver.findElement(By.cssSelector(".account-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("3");
-	}
-
-	@Test
-	void test_transfer_to_recurring()
-	{
-		openTransferTypeModal(3);
-		TransactionTestHelper.selectOptionFromDropdown(driver, By.cssSelector("#modalChangeTransactionType .select-wrapper"), "Recurring");
-		driver.findElement(By.id("buttonChangeTransactionType")).click();
-
-		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.textToBe(By.cssSelector(".headline"), "Edit Recurring Transaction"));
-
-		assertThat(driver.findElement(By.className("buttonExpenditure")).getAttribute("class")).contains("background-red");
-		assertThat(driver.findElement(By.id("transaction-name")).getAttribute("value")).isEqualTo("Transfer dings");
-		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEqualTo("3.00");
-		assertThat(driver.findElement(By.id("transaction-datepicker")).getAttribute("value")).isEqualTo("01.05.2019");
-		assertThat(driver.findElement(By.id("transaction-description")).getAttribute("value")).isEmpty();
-		assertThat(driver.findElement(By.cssSelector(".category-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("1");
-
-		final List<WebElement> chips = driver.findElements(By.cssSelector("#transaction-chips .chip"));
-		assertThat(chips).hasSize(1);
-		assertThat(chips.get(0)).hasFieldOrPropertyWithValue("text", "123\nclose");
-
-		assertThat(driver.findElement(By.cssSelector(".account-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("3");
-
-		assertThat(driver.findElement(By.id("transaction-repeating-modifier")).getAttribute("value")).isEmpty();
-		assertThat(driver.findElement(By.id("transaction-repeating-modifier-type")).getAttribute("value")).isEqualTo("Months");
-
-		assertThat(driver.findElement(By.id("repeating-end-never")).isSelected()).isTrue();
 	}
 }

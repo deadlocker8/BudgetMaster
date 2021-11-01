@@ -1,0 +1,120 @@
+{
+    "TYPE": "BUDGETMASTER_DATABASE",
+    "VERSION": 7,
+    "categories": [
+        {
+            "ID": 3,
+            "name": "Custom Category",
+            "color": "#ff9500",
+            "type": "CUSTOM"
+        },
+        {
+            "ID": 1,
+            "name": "No Category",
+            "color": "#FFFFFF",
+            "type": "NONE"
+        },
+        {
+            "ID": 2,
+            "name": "Rest",
+            "color": "#FFFF00",
+            "type": "REST"
+        }
+    ],
+    "accounts": [
+        {
+            "ID": 1,
+            "name": "Placeholder",
+            "accountState": "FULL_ACCESS",
+            "type": "ALL"
+        },
+        {
+            "ID": 2,
+            "name": "Default Account",
+            "accountState": "FULL_ACCESS",
+            "type": "CUSTOM"
+        },
+        {
+            "ID": 3,
+            "name": "Second Account",
+            "accountState": "FULL_ACCESS",
+            "type": "CUSTOM"
+        },
+        {
+            "ID": 4,
+            "name": "Readonly Account",
+            "accountState": "READ_ONLY",
+            "type": "CUSTOM"
+        }
+    ],
+    "transactions": [
+        {
+            "amount": -1200,
+            "isExpenditure": true,
+            "date": "2021-10-17",
+            "accountID": 2,
+            "categoryID": 3,
+            "name": "Full normal",
+            "description": "lorem ipsum",
+            "tags": [
+                {
+                    "name": "123"
+                }
+            ]
+        },
+        {
+            "amount": -1500,
+            "isExpenditure": true,
+            "date": "2021-09-17",
+            "accountID": 2,
+            "categoryID": 3,
+            "name": "Full transfer",
+            "description": "dolor sit amet",
+            "tags": [
+                {
+                    "name": "456"
+                }
+            ],
+            "transferAccountID": 3
+        },
+        {
+            "amount": -200,
+            "isExpenditure": true,
+            "date": "2021-06-17",
+            "accountID": 2,
+            "categoryID": 3,
+            "name": "normal recurring",
+            "description": "apple",
+            "tags": [
+                {
+                    "name": "789"
+                }
+            ],
+            "repeatingOption": {
+                "startDate": "2021-10-17",
+                "modifier": {
+                    "quantity": 1,
+                    "localizationKey": "repeating.modifier.months"
+                },
+                "endOption": {
+                    "localizationKey": "repeating.end.key.afterXTimes",
+                    "times": 1
+                }
+            }
+        },
+        {
+            "amount": -1200,
+            "isExpenditure": true,
+            "date": "2021-10-19",
+            "accountID": 4,
+            "categoryID": 1,
+            "name": "Transaction in readonly account",
+            "description": "",
+            "tags": []
+        }
+    ],
+    "templates": [],
+    "charts": [],
+    "images": [],
+    "icons": []
+}

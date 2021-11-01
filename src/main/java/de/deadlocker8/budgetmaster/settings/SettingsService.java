@@ -2,8 +2,8 @@ package de.deadlocker8.budgetmaster.settings;
 
 import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
+import de.deadlocker8.budgetmaster.utils.DateHelper;
 import de.deadlocker8.budgetmaster.utils.Strings;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,7 +126,7 @@ public class SettingsService
 	public void updateLastBackupReminderDate()
 	{
 		Settings settings = getSettings();
-		settings.setLastBackupReminderDate(DateTime.now());
+		settings.setLastBackupReminderDate(DateHelper.getCurrentDate());
 	}
 
 	@Transactional

@@ -1,46 +1,34 @@
 package de.deadlocker8.budgetmaster.integration.selenium;
 
-import de.deadlocker8.budgetmaster.Main;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountState;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
-import de.deadlocker8.budgetmaster.integration.helpers.*;
-import de.deadlocker8.budgetmaster.search.Search;
-import org.junit.jupiter.api.BeforeEach;
+import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
+import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
+import de.deadlocker8.budgetmaster.integration.helpers.TransactionTestHelper;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.TestWatcher;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.test.annotation.DirtiesContext;
 
 import java.io.File;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(SeleniumTestWatcher.class)
-@SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@SeleniumTest
 class AccountTest extends SeleniumTestBase
 {
 	private IntegrationTestHelper helper;
 
-	@BeforeEach
-	public void prepare()
+	@BeforeAll
+	public void beforeAll()
 	{
 		helper = new IntegrationTestHelper(driver, port);
 		helper.start();
@@ -66,6 +54,10 @@ class AccountTest extends SeleniumTestBase
 	void test_newAccount_cancel()
 	{
 		driver.get(helper.getUrl() + "/accounts");
+
+		List<WebElement> accountRows = driver.findElements(By.cssSelector(".account-container tr"));
+		final int numberOfAccountsBefore = accountRows.size();
+
 		driver.findElement(By.id("button-new-account")).click();
 
 		// click cancel button
@@ -73,14 +65,14 @@ class AccountTest extends SeleniumTestBase
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", cancelButton);
 		cancelButton.click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Accounts"));
 
 		// assert
 		assertThat(driver.getCurrentUrl()).endsWith("/accounts");
 
-		List<WebElement> accountRows = driver.findElements(By.cssSelector(".account-container tr"));
-		assertThat(accountRows).hasSize(5);
+		accountRows = driver.findElements(By.cssSelector(".account-container tr"));
+		assertThat(accountRows).hasSize(numberOfAccountsBefore);
 	}
 
 	@Test
@@ -98,7 +90,7 @@ class AccountTest extends SeleniumTestBase
 		// submit form
 		driver.findElement(By.id("button-save-account")).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Accounts"));
 
 		// assert
@@ -127,15 +119,17 @@ class AccountTest extends SeleniumTestBase
 	@Test
 	void test_readOnly_newTransaction_listOnlyReadableAccounts()
 	{
+		TransactionTestHelper.selectGlobalAccountByName(driver, "sfsdf");
+
 		driver.get(helper.getUrl() + "/transactions");
 		driver.findElement(By.id("button-new-transaction")).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		final By locator = By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]");
 		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
 		driver.findElement(locator).click();
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Transaction"));
 
 		// assert
@@ -156,12 +150,12 @@ class AccountTest extends SeleniumTestBase
 		driver.get(helper.getUrl() + "/transactions");
 		driver.findElement(By.id("button-new-transaction")).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		final By locator = By.xpath("//div[contains(@class, 'new-transaction-button')]//a[contains(text(),'Transaction')]");
 		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
 		driver.findElement(locator).click();
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Transaction"));
 
 		// fill form
@@ -177,7 +171,7 @@ class AccountTest extends SeleniumTestBase
 
 		driver.get(helper.getUrl() + "/transactions");
 
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
 
 		// assert
@@ -189,7 +183,8 @@ class AccountTest extends SeleniumTestBase
 
 		// check columns
 		final List<WebElement> icons = columns.get(5).findElements(By.tagName("i"));
-		assertThat(icons).isEmpty();
+		assertThat(icons).hasSize(1);
+		assertThat(icons.get(0).getText()).isEqualTo("content_copy");
 	}
 
 	@Test
@@ -198,14 +193,14 @@ class AccountTest extends SeleniumTestBase
 		TransactionTestHelper.selectGlobalAccountByName(driver, "read only account");
 
 		driver.get(helper.getUrl() + "/transactions");
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("modalFilterTrigger")));
 
 		assertThat(driver.findElements(By.id("button-new-transaction"))).isEmpty();
 
 		// try to open new transaction page
 		driver.get(helper.getUrl() + "/transactions/newTransaction/normal");
-		wait = new WebDriverWait(driver, 5);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("modalFilterTrigger")));
 
 		assertThat(driver.findElement(By.cssSelector(".notification.background-yellow")).isDisplayed()).isTrue();
@@ -260,7 +255,7 @@ class AccountTest extends SeleniumTestBase
 	{
 		driver.get(helper.getUrl() + "/accounts/" + accountID + "/edit");
 
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("account-name")));
 
 		helper.selectAccountStateByName(accountState);

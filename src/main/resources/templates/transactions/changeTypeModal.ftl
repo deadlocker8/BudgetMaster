@@ -14,14 +14,11 @@
         <div class="row">
             <div class="input-field col s12">
                 <select id="newTypeSelect">
-                    <#if transaction.isRepeating() || transaction.isTransfer()>
+                    <#if transaction.isTransfer()>
                         <option value="1">${locale.getString("title.transaction.new.normal")}</option>
                     </#if>
-                    <#if !transaction.isRepeating()>
-                        <option value="2">${locale.getString("title.transaction.new.repeating")}</option>
-                    </#if>
                     <#if !transaction.isTransfer()>
-                        <option value="3">${locale.getString("title.transaction.new.transfer")}</option>
+                        <option value="2">${locale.getString("title.transaction.new.transfer")}</option>
                     </#if>
                 </select>
                 <label for="newTypeSelect">${locale.getString("transaction.change.type.new")}</label>

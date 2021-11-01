@@ -5,7 +5,6 @@ import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.Iconizable;
-import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionBase;
@@ -45,10 +44,6 @@ public class Template implements TransactionBase, Iconizable
 	@Expose
 	private String description;
 
-	@ManyToOne
-	@Deprecated(since = "v2.7.0", forRemoval = true)
-	private Image icon;
-
 	@OneToOne(cascade = CascadeType.REMOVE)
 	@Expose
 	private Icon iconReference;
@@ -81,7 +76,6 @@ public class Template implements TransactionBase, Iconizable
 		this.category = template.getCategory();
 		this.name = template.getName();
 		this.description = template.getDescription();
-		this.icon = template.getIcon();
 		this.iconReference = template.getIconReference();
 		this.tags = new ArrayList<>(template.getTags());
 		this.transferAccount = template.getTransferAccount();
@@ -198,18 +192,6 @@ public class Template implements TransactionBase, Iconizable
 		this.description = description;
 	}
 
-	@Deprecated(since = "v2.7.0", forRemoval = true)
-	public Image getIcon()
-	{
-		return icon;
-	}
-
-	@Deprecated(since = "v2.7.0", forRemoval = true)
-	public void setIcon(Image icon)
-	{
-		this.icon = icon;
-	}
-
 	public Icon getIconReference()
 	{
 		return iconReference;
@@ -295,7 +277,6 @@ public class Template implements TransactionBase, Iconizable
 				Objects.equals(category, template.category) &&
 				Objects.equals(name, template.name) &&
 				Objects.equals(description, template.description) &&
-				Objects.equals(icon, template.icon) &&
 				Objects.equals(iconReference, template.iconReference) &&
 				Objects.equals(tags, template.tags) &&
 				Objects.equals(transferAccount, template.transferAccount);
@@ -304,6 +285,6 @@ public class Template implements TransactionBase, Iconizable
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, templateName, amount, isExpenditure, account, category, name, description, icon, iconReference, tags, transferAccount);
+		return Objects.hash(ID, templateName, amount, isExpenditure, account, category, name, description, iconReference, tags, transferAccount);
 	}
 }

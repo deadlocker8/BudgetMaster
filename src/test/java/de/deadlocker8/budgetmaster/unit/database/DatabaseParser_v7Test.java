@@ -191,11 +191,32 @@ class DatabaseParser_v7Test
 		transferTransaction.setTags(new ArrayList<>());
 		transferTransaction.setExpenditure(true);
 
-		assertThat(database.getTransactions()).hasSize(4)
+		BackupTransaction_v6 repeatingTransferTransaction = new BackupTransaction_v6();
+		repeatingTransferTransaction.setAmount(-6000);
+		String repeatingTransferTransaction_Date = "2018-03-15";
+		repeatingTransferTransaction.setDate(repeatingTransferTransaction_Date);
+		repeatingTransferTransaction.setCategoryID(1);
+		repeatingTransferTransaction.setName("repeat my transfer");
+		repeatingTransferTransaction.setDescription("");
+		repeatingTransferTransaction.setAccountID(2);
+		BackupRepeatingOption_v4 repeatingOption_2 = new BackupRepeatingOption_v4();
+		repeatingOption_2.setModifier(new BackupRepeatingModifier_v4(10, new RepeatingModifierDays(10).getLocalizationKey()));
+		repeatingOption_2.setStartDate(repeatingTransferTransaction_Date);
+		BackupRepeatingEndOption_v4 endOption_2 = new BackupRepeatingEndOption_v4();
+		endOption_2.setTimes(2);
+		endOption_2.setLocalizationKey(new RepeatingEndAfterXTimes(2).getLocalizationKey());
+		repeatingOption_2.setEndOption(endOption_2);
+		repeatingTransferTransaction.setRepeatingOption(repeatingOption_2);
+		repeatingTransferTransaction.setTags(new ArrayList<>());
+		repeatingTransferTransaction.setExpenditure(true);
+		repeatingTransferTransaction.setTransferAccountID(2);
+
+		assertThat(database.getTransactions()).hasSize(5)
 				.contains(normalTransaction_1,
 						normalTransaction_2,
 						repeatingTransaction_1,
-						transferTransaction);
+						transferTransaction,
+						repeatingTransferTransaction);
 	}
 
 	@Test

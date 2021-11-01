@@ -6,7 +6,7 @@
 
     <groupId>de.deadlocker8</groupId>
     <artifactId>BudgetMaster</artifactId>
-    <version>2.7.0</version>
+    <version>2.8.0</version>
     <name>BudgetMaster</name>
 
     <repositories>
@@ -35,7 +35,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.3</version>
+        <version>2.5.6</version>
         <relativePath/>
     </parent>
 
@@ -58,25 +58,25 @@
 
         <jlibs.version>3.2.0</jlibs.version>
         <versionizer.version>3.0.1</versionizer.version>
-        <webjars-locator.version>0.41</webjars-locator.version>
+        <webjars-locator.version>0.42</webjars-locator.version>
         <jquery.version>3.6.0</jquery.version>
         <materializecss.version>1.0.0</materializecss.version>
         <fontawesome.version>5.15.3</fontawesome.version>
-        <sortablejs.version>1.13.0</sortablejs.version>
+        <sortablejs.version>1.14.0</sortablejs.version>
         <mousetrap.version>1.6.5</mousetrap.version>
-        <codemirror.version>5.62.0</codemirror.version>
-        <selenium.version>3.141.59</selenium.version>
-        <assertj-core.version>3.20.2</assertj-core.version>
-        <jgit.version>5.12.0.202106070339-r</jgit.version>
-        <natorder.version>1.0.2</natorder.version>
+        <codemirror.version>5.62.2</codemirror.version>
+        <selenium.version>4.0.0</selenium.version>
+        <assertj-core.version>3.21.0</assertj-core.version>
+        <jgit.version>5.13.0.202109080827-r</jgit.version>
+        <natorder.version>1.1.0</natorder.version>
         <h2database.version>1.4.199</h2database.version>
         <itextpdf.version>5.5.13.2</itextpdf.version>
         <usertype-core.version>6.0.1.GA</usertype-core.version>
-        <joda-time.version>2.10.10</joda-time.version>
+        <joda-time.version>2.10.12</joda-time.version>
 
         <app.versionDate>${maven.build.timestamp}</app.versionDate>
         <maven.build.timestamp.format>dd.MM.yy</maven.build.timestamp.format>
-        <app.versionCode>33</app.versionCode>
+        <app.versionCode>34</app.versionCode>
         <app.author>Robert Goldmann</app.author>
 
         <project.outputDirectory>build/${project.version}</project.outputDirectory>

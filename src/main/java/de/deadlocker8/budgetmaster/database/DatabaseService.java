@@ -21,8 +21,8 @@ import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.templates.TemplateService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
+import de.deadlocker8.budgetmaster.utils.DateHelper;
 import de.thecodelabs.utils.io.PathUtils;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +46,8 @@ public class DatabaseService
 {
 	public static final Gson GSON = new GsonBuilder().create();
 	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseService.class);
+
+	private static final String BACKUP_DATE_FORMAT = "yyyy_MM_dd_HH_mm_ss";
 
 	private final AccountService accountService;
 	private final CategoryService categoryService;
@@ -221,7 +223,7 @@ public class DatabaseService
 
 		rotatingBackup(backupFolderPath);
 
-		final String fileName = getExportFileName(true);
+		final String fileName = getExportFileName();
 		final Path backupPath = backupFolderPath.resolve(fileName);
 
 		exportDatabase(backupPath);
@@ -244,15 +246,9 @@ public class DatabaseService
 		}
 	}
 
-	public static String getExportFileName(boolean includeTime)
+	public static String getExportFileName()
 	{
-		String formatString = "yyyy_MM_dd";
-		if(includeTime)
-		{
-			formatString = "yyyy_MM_dd_HH_mm_ss";
-		}
-
-		return "BudgetMasterDatabase_" + DateTime.now().toString(formatString) + ".json";
+		return "BudgetMasterDatabase_" + DateHelper.getCurrentDate().toString(BACKUP_DATE_FORMAT) + ".json";
 	}
 
 	public BackupDatabase_v7 getDatabaseForJsonSerialization()

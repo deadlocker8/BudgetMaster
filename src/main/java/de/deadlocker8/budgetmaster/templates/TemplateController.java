@@ -146,7 +146,7 @@ public class TemplateController extends BaseController
 		}
 
 		final DateTime date = dateService.getDateTimeFromCookie(cookieDate);
-		transactionService.prepareModelNewOrEdit(model, false, date, null, newTransaction, accountService.getAllActivatedAccountsAsc());
+		transactionService.prepareModelNewOrEdit(model, false, date, false, newTransaction, accountService.getAllActivatedAccountsAsc());
 
 		if(newTransaction.isTransfer())
 		{

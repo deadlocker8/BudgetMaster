@@ -33,12 +33,12 @@
                 <@header.content>
                     <div class="container">
                         <#import "../helpers/validation.ftl" as validation>
-                        <form name="NewTransaction" action="<@s.url '/transactions/newTransaction/normal'/>" method="post" onsubmit="return validateForm()">
+                        <form name="NewTransaction" action="<@s.url '/transactions/newTransaction'/>" method="post" onsubmit="return validateForm()">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             <!-- only set ID for transactions not templates, otherwise the input is filled with the template ID and saving the transaction
                             may then override an existing transactions if the ID is also already used in transactions table -->
                             <input type="hidden" name="ID" value="<#if transaction.class.simpleName == "Transaction" && transaction.getID()??>${transaction.getID()?c}</#if>">
-                            <input type="hidden" name="previousType" value="<#if previousType??>${previousType.name()}</#if>">
+                            <input type="hidden" name="isRepeating" value="${transaction.isRepeating()?c}">
 
                             <#-- isPayment switch -->
                             <@newTransactionMacros.isExpenditureSwitch transaction/>
@@ -72,10 +72,12 @@
                             </#if>
                             <@customSelectMacros.customAccountSelect "account-select-wrapper" "account" accounts selectedAccount "col s12 m12 l8 offset-l2" locale.getString("transaction.new.label.account") "transaction-account"/>
 
-                            <br>
+                            <#-- repeating options -->
+                            <@newTransactionMacros.transactionRepeating transaction currentDate/>
+
                             <#-- buttons -->
-                            <@newTransactionMacros.buttons "/transactions"/>
-                            <@newTransactionMacros.buttonTransactionActions isEdit true previousType??/>
+                            <@newTransactionMacros.buttons '/transactions'/>
+                            <@newTransactionMacros.buttonTransactionActions isEdit true changeTypeInProgress/>
                         </form>
 
                         <div id="saveAsTemplateModalContainer"></div>

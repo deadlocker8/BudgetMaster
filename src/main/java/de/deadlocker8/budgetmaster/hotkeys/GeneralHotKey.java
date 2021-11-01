@@ -6,8 +6,8 @@ import java.text.MessageFormat;
 
 public enum GeneralHotKey implements HotKey
 {
+	TRANSACTION_OVERVIEW("hotkeys.transactions.overview", false),
 	CREATE_TRANSACTION("hotkeys.transactions.new.normal", false),
-	CREATE_RECURRING_TRANSACTION("hotkeys.transactions.new.repeating", false),
 	CREATE_TRANSFER_TRANSACTION("hotkeys.transactions.new.transfer", false),
 	CREATE_TRANSACTION_FROM_TEMPLATE("hotkeys.transactions.new.template", false),
 	SAVE_TRANSACTION("hotkeys.transactions.save", true),

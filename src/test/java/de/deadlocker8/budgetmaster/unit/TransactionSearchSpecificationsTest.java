@@ -43,6 +43,7 @@ class TransactionSearchSpecificationsTest
 	private Transaction repeatingTransaction;
 	private Transaction transferTransaction;
 	private Transaction transactionFromHiddenAccount;
+	private Transaction transactionWithMultipleTags;
 
 	@Autowired
 	private CategoryRepository categoryRepository;
@@ -134,12 +135,21 @@ class TransactionSearchSpecificationsTest
 		transactionFromHiddenAccount.setCategory(category2);
 		transactionFromHiddenAccount.setAccount(accountHidden);
 		transactionFromHiddenAccount = transactionRepository.save(transactionFromHiddenAccount);
+
+		transactionWithMultipleTags = new Transaction();
+		transactionWithMultipleTags.setName("I am the TagMaster");
+		transactionWithMultipleTags.setAmount(-525);
+		transactionWithMultipleTags.setDate(new DateTime(2018, 11, 3, 12, 0, 0, 0));
+		transactionWithMultipleTags.setCategory(category1);
+		transactionWithMultipleTags.setAccount(account);
+		transactionWithMultipleTags.setTags(List.of(tag1, tag2));
+		transactionWithMultipleTags = transactionRepository.save(transactionWithMultipleTags);
 	}
 
 	@Test
 	void getMatches_OnlyName()
 	{
-		Search search = new Search("Test", true, false, false, false, 0);
+		Search search = new Search("Test", true, false, false, false, false, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
@@ -150,7 +160,7 @@ class TransactionSearchSpecificationsTest
 	@Test
 	void getMatches_PartialName()
 	{
-		Search search = new Search("es", true, false, false, false, 0);
+		Search search = new Search("es", true, false, false, false, false, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
@@ -161,7 +171,7 @@ class TransactionSearchSpecificationsTest
 	@Test
 	void getMatches_IgnoreCase()
 	{
-		Search search = new Search("tEST", true, true, true, true, 0);
+		Search search = new Search("tEST", true, true, true, true, false, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
@@ -172,7 +182,7 @@ class TransactionSearchSpecificationsTest
 	@Test
 	void getMatches_OnlyDescription()
 	{
-		Search search = new Search("What", true, true, true, true, 0);
+		Search search = new Search("What", true, true, true, true, false, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
@@ -183,7 +193,7 @@ class TransactionSearchSpecificationsTest
 	@Test
 	void getMatches_OnlyCategory()
 	{
-		Search search = new Search(category2.getName(), false, false, true, false, 0);
+		Search search = new Search(category2.getName(), false, false, true, false, false, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
@@ -195,34 +205,36 @@ class TransactionSearchSpecificationsTest
 	@Test
 	void getMatches_Order()
 	{
-		Search search = new Search("", true, true, true, true, 0);
+		Search search = new Search("", true, true, true, true, false, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertThat(results).hasSize(4)
+		assertThat(results).hasSize(5)
 				.contains(transaction1)
 				.contains(transaction2)
 				.contains(repeatingTransaction)
-				.contains(transferTransaction);
+				.contains(transferTransaction)
+				.contains(transactionWithMultipleTags);
 	}
 
 	@Test
 	void getMatches_Mixed()
 	{
-		Search search = new Search("e", true, true, true, true, 0);
+		Search search = new Search("e", true, true, true, true, false, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertThat(results).hasSize(3)
+		assertThat(results).hasSize(4)
 				.contains(transaction1)
 				.contains(repeatingTransaction)
-				.contains(transferTransaction);
+				.contains(transferTransaction)
+				.contains(transactionWithMultipleTags);
 	}
 
 	@Test
 	void getMatches_NoMatches()
 	{
-		Search search = new Search("asuzgdzasuiduzasds", true, true, true, true, 0);
+		Search search = new Search("asuzgdzasuiduzasds", true, true, true, true, false, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
@@ -232,7 +244,7 @@ class TransactionSearchSpecificationsTest
 	@Test
 	void getMatches_SearchNothing()
 	{
-		Search search = new Search("egal", false, false, false, false, 0);
+		Search search = new Search("egal", false, false, false, false, false, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
@@ -242,32 +254,52 @@ class TransactionSearchSpecificationsTest
 	@Test
 	void getMatches_SearchTagsEquals()
 	{
-		Search search = new Search("MyAwesomeTag", false, false, false, true, 0);
+		Search search = new Search("MyAwesomeTag", false, false, false, true, false, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertThat(results).hasSize(1)
-				.contains(transaction1);
+		assertThat(results).hasSize(2)
+				.contains(transaction1, transactionWithMultipleTags);
 	}
 
 	@Test
 	void getMatches_SearchTagsLike()
 	{
-		Search search = new Search("Awesome", false, false, false, true, 0);
+		Search search = new Search("Awesome", false, false, false, true, false, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertThat(results).hasSize(1)
-				.contains(transaction1);
+		assertThat(results).hasSize(2)
+				.contains(transaction1, transactionWithMultipleTags);
 	}
 
 	@Test
 	void getMatches_IgnoreTransactionsFromHiddenAccounts()
 	{
-		Search search = new Search("hidden", true, false, false, false, 0);
+		Search search = new Search("hidden", true, false, false, false, false, 0);
 		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).isEmpty();
+	}
+
+	@Test
+	void getMatches_IncludeTransactionsFromHiddenAccounts()
+	{
+		Search search = new Search("hidden", true, false, false, false, true, 0);
+		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
+
+		List<Transaction> results = transactionRepository.findAll(spec);
+		assertThat(results).containsExactly(transactionFromHiddenAccount);
+	}
+
+	@Test
+	void getMatches_AvoidDuplicatedEntriesIfSearchTextIsFoundInMultipleCriteria()
+	{
+		Search search = new Search("TagMaster", true, true, true, true, false, 0);
+		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
+
+		List<Transaction> results = transactionRepository.findAll(spec);
+		assertThat(results).containsExactly(transactionWithMultipleTags, repeatingTransaction);
 	}
 }
