@@ -135,7 +135,7 @@
             var initialTags = [
                 <#if transaction.getTags()??>
                 <#list transaction.getTags() as tag>
-                {tag: '${tag.getName()}'},
+                {tag: '${tag.getName()?replace("'", "\\'")}'},
                 </#list>
                 </#if>
             ];
@@ -147,7 +147,7 @@
         tagsPlaceholder = "${locale.getString("tagfield.placeholder")}";
         tagAutoComplete = {
             <#list helpers.getAllTags() as tag>
-            '${tag.getName()}': null,
+            '${tag.getName()?replace("'", "\\'")}': null,
             </#list>
         }
     </script>

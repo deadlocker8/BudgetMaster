@@ -1,0 +1,52 @@
+{
+    "TYPE": "BUDGETMASTER_DATABASE",
+    "VERSION": 7,
+    "categories": [
+        {
+            "ID": 1,
+            "name": "No Category",
+            "color": "#FFFFFF",
+            "type": "NONE"
+        },
+        {
+            "ID": 2,
+            "name": "Rest",
+            "color": "#FFFF00",
+            "type": "REST"
+        }
+    ],
+    "accounts": [
+        {
+            "ID": 1,
+            "name": "Placeholder",
+            "accountState": "FULL_ACCESS",
+            "type": "ALL"
+        },
+        {
+            "ID": 2,
+            "name": "Default Account",
+            "accountState": "FULL_ACCESS",
+            "type": "CUSTOM"
+        }
+    ],
+    "transactions": [
+        {
+            "amount": -1000,
+            "isExpenditure": true,
+            "date": "2021-11-21",
+            "accountID": 2,
+            "categoryID": 1,
+            "name": "Transaction with tag",
+            "description": "",
+            "tags": [
+                {
+                    "name": "Tag with single ' quote"
+                }
+            ]
+        }
+    ],
+    "templates": [],
+    "charts": [],
+    "images": [],
+    "icons": []
+}
