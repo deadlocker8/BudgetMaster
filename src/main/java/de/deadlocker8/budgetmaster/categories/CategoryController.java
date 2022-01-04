@@ -112,7 +112,8 @@ public class CategoryController extends BaseController
 	}
 
 	@PostMapping(value = "/newCategory")
-	public String post(Model model, @ModelAttribute("NewCategory") Category category, BindingResult bindingResult,
+	public String post(WebRequest request,
+					   Model model, @ModelAttribute("NewCategory") Category category, BindingResult bindingResult,
 					   @RequestParam(value = "iconImageID", required = false) Integer iconImageID,
 					   @RequestParam(value = "builtinIconIdentifier", required = false) String builtinIconIdentifier)
 	{
@@ -135,6 +136,8 @@ public class CategoryController extends BaseController
 		category.updateIcon(iconService, iconImageID, builtinIconIdentifier, categoryService);
 
 		categoryService.save(category);
+
+		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.category.save.success", category.getName()), NotificationType.SUCCESS));
 
 		return "redirect:/categories";
 	}

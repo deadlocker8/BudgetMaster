@@ -165,7 +165,8 @@ public class TemplateController extends BaseController
 	}
 
 	@PostMapping(value = "/newTemplate")
-	public String post(Model model,
+	public String post(WebRequest request,
+					   Model model,
 					   @ModelAttribute("NewTemplate") Template template, BindingResult bindingResult,
 					   @RequestParam(value = "includeAccount", required = false) boolean includeAccount,
 					   @RequestParam(value = "includeTransferAccount", required = false) boolean includeTransferAccount,
@@ -219,6 +220,7 @@ public class TemplateController extends BaseController
 		template.updateIcon(iconService, iconImageID, builtinIconIdentifier, templateService);
 
 		templateService.getRepository().save(template);
+		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.template.save.success", template.getName()), NotificationType.SUCCESS));
 		return "redirect:/templates";
 	}
 

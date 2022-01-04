@@ -132,7 +132,8 @@ public class TransactionController extends BaseController
 	}
 
 	@PostMapping(value = "/newTransaction")
-	public String post(Model model, @CookieValue("currentDate") String cookieDate,
+	public String post(WebRequest request,
+					   Model model, @CookieValue("currentDate") String cookieDate,
 					   @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
 					   @RequestParam(value = "isRepeating", required = false) boolean isRepeating,
 					   @RequestParam(value = "repeatingModifierNumber", required = false, defaultValue = "0") int repeatingModifierNumber,
@@ -170,7 +171,7 @@ public class TransactionController extends BaseController
 			redirectUrl = "transactions/newTransactionNormal";
 		}
 
-		return handleRedirect(model, transaction.getID() != null, transaction, bindingResult, date, redirectUrl);
+		return handleRedirect(request, model, transaction.getID() != null, transaction, bindingResult, date, redirectUrl);
 	}
 
 	private void handlePreviousType(Transaction transaction, boolean isRepeating)
@@ -206,7 +207,7 @@ public class TransactionController extends BaseController
 		return new RepeatingOption(startDate, repeatingModifier, repeatingEnd);
 	}
 
-	private String handleRedirect(Model model, boolean isEdit, @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult, DateTime date, String url)
+	private String handleRedirect(WebRequest request, Model model, boolean isEdit, @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult, DateTime date, String url)
 	{
 		if(bindingResult.hasErrors())
 		{
@@ -216,6 +217,7 @@ public class TransactionController extends BaseController
 		}
 
 		transactionService.getRepository().save(transaction);
+		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.transaction.save.success", transaction.getName()), NotificationType.SUCCESS));
 		return "redirect:/transactions";
 	}
 

@@ -174,6 +174,7 @@ public class AccountController extends BaseController
 			return "redirect:/settings/database/import/step2";
 		}
 
+		WebRequestUtils.putNotification(webRequest, new Notification(Localization.getString("notification.account.save.success", account.getName()), NotificationType.SUCCESS));
 		return "redirect:/accounts";
 	}
 

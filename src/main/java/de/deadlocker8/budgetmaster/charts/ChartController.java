@@ -124,7 +124,7 @@ public class ChartController extends BaseController
 	}
 
 	@PostMapping(value = "/newChart")
-	public String post(Model model, @ModelAttribute("NewChart") Chart chart, BindingResult bindingResult)
+	public String post(WebRequest request, Model model, @ModelAttribute("NewChart") Chart chart, BindingResult bindingResult)
 	{
 		ChartValidator userValidator = new ChartValidator();
 		userValidator.validate(chart, bindingResult);
@@ -157,7 +157,7 @@ public class ChartController extends BaseController
 		}
 
 		chartService.getRepository().save(chart);
-
+		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.chart.save.success", chart.getName()), NotificationType.SUCCESS));
 		return "redirect:/charts/manage";
 	}
 
