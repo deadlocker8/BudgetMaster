@@ -2,8 +2,6 @@ package de.deadlocker8.budgetmaster.accounts;
 
 import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
-import de.deadlocker8.budgetmaster.icon.IconService;
-import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.services.AccessAllEntities;
 import de.deadlocker8.budgetmaster.services.AccessEntityByID;
 import de.deadlocker8.budgetmaster.services.Resettable;
@@ -30,17 +28,13 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 	private final AccountRepository accountRepository;
 	private final TransactionService transactionService;
 	private final UserRepository userRepository;
-	private final ImageService imageService;
-	private final IconService iconService;
 
 	@Autowired
-	public AccountService(AccountRepository accountRepository, TransactionService transactionService, UserRepository userRepository, ImageService imageService, IconService iconService)
+	public AccountService(AccountRepository accountRepository, TransactionService transactionService, UserRepository userRepository)
 	{
 		this.accountRepository = accountRepository;
 		this.transactionService = transactionService;
 		this.userRepository = userRepository;
-		this.imageService = imageService;
-		this.iconService = iconService;
 
 		createDefaults();
 	}
