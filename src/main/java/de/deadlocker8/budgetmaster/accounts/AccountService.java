@@ -259,4 +259,15 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 			selectAccount(accountRepository.findAllByType(AccountType.ALL).get(0).getID());
 		}
 	}
+
+	public Account getSelectedAccountOrDefaultAsFallback()
+	{
+		final Account selectedAccount = accountRepository.findByIsSelected(true);
+		if(selectedAccount != null)
+		{
+			return selectedAccount;
+		}
+
+		return accountRepository.findByIsDefault(true);
+	}
 }

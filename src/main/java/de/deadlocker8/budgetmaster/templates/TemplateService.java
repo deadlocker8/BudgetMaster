@@ -85,19 +85,19 @@ public class TemplateService implements Resettable, AccessAllEntities<Template>,
 
 		if(prepareAccount && template.getAccount() == null)
 		{
-			template.setAccount(accountService.getRepository().findByIsDefault(true));
+			template.setAccount(accountService.getSelectedAccountOrDefaultAsFallback());
 		}
 
 		final Account account = template.getAccount();
 		if(account != null && account.getAccountState() != AccountState.FULL_ACCESS)
 		{
-			template.setAccount(accountService.getRepository().findByIsDefault(true));
+			template.setAccount(accountService.getSelectedAccountOrDefaultAsFallback());
 		}
 
 		final Account transferAccount = template.getTransferAccount();
 		if(transferAccount != null && transferAccount.getAccountState() != AccountState.FULL_ACCESS)
 		{
-			template.setTransferAccount(accountService.getRepository().findByIsDefault(true));
+			template.setTransferAccount(accountService.getSelectedAccountOrDefaultAsFallback());
 		}
 	}
 
