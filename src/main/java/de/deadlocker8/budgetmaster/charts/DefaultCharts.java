@@ -50,6 +50,10 @@ public class DefaultCharts
 			getChartFromFile("charts/IncomesAndExpendituresPerYearBar.js"),
 			ChartType.DEFAULT, 6, ChartDisplayType.BAR, ChartGroupType.YEAR, "incomesAndExpendituresPerYearBar.png");
 
+	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_YEAR_BY_CATEGORIES = new Chart("charts.default.incomesAndExpendituresPerYearByCategories",
+			getChartFromFile("charts/IncomesAndExpendituresPerYearByCategories.js"),
+			ChartType.DEFAULT, 2, ChartDisplayType.BAR, ChartGroupType.YEAR, "incomesAndExpendituresPerYearByCategories.png");
+
 	private DefaultCharts()
 	{
 	}
@@ -65,6 +69,7 @@ public class DefaultCharts
 		charts.add(CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_BY_CATEGORIES);
 		charts.add(CHART_REST_PER_MONTH);
 		charts.add(CHART_INCOMES_AND_EXPENDITURES_PER_YEAR_BAR);
+		charts.add(CHART_INCOMES_AND_EXPENDITURES_PER_YEAR_BY_CATEGORIES);
 		return charts;
 	}
 
@@ -83,7 +88,7 @@ public class DefaultCharts
 		}
 		catch(IOException e)
 		{
-			e.printStackTrace();
+			LOGGER.error("Error getting chart from file", e);
 		}
 
 		return "";
