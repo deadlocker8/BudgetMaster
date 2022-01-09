@@ -25,6 +25,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -83,7 +84,8 @@ public class ChartController extends BaseController
 		}
 
 		List<Transaction> transactions = transactionService.getTransactionsForAccount(helpers.getCurrentAccount(), chartSettings.getStartDate(), chartSettings.getEndDate(), chartSettings.getFilterConfiguration());
-		String transactionJson = GSON.toJson(transactions);
+		List<Transaction> convertedTransactions = convertTransferAmounts(transactions);
+		String transactionJson = GSON.toJson(convertedTransactions);
 
 		model.addAttribute("chartSettings", chartSettings);
 		model.addAttribute("charts", chartService.getAllEntitiesAsc());
@@ -93,6 +95,33 @@ public class ChartController extends BaseController
 		model.addAttribute("displayTypes", ChartDisplayType.values());
 		model.addAttribute("groupTypes", ChartGroupType.values());
 		return "charts/charts";
+	}
+
+	/**
+	 * If a chart is requested for a specific account (the currently selected account) the sign of transfers must be corrected accordingly.
+	 * Example: Two accounts: Account_A and Account_B. One Transfer from Account_A to Account_B with an amount of 100€.
+	 * Therefore Account_A has an expenditure of 100€ and Account_B an income. The transfer amount retrieved from the database is always negative.
+	 * If a chart is to be shown for Account_B the amount has to be inverted, so that it becomes positive. This method will ensure all transfer amounts are converted.
+	 *
+	 * @param transactions: The transactions to check and convert if necessary.
+	 * @return The converted transactions.
+	 */
+	private List<Transaction> convertTransferAmounts(List<Transaction> transactions)
+	{
+		List<Transaction> convertedTransactions = new ArrayList<>();
+		for(Transaction transaction : transactions)
+		{
+			Transaction convertedTransaction = transaction;
+
+			if(transaction.isTransfer() && transaction.getTransferAccount().equals(helpers.getCurrentAccount()))
+			{
+				convertedTransaction = new Transaction(transaction);
+				convertedTransaction.setAmount(-transaction.getAmount());
+			}
+
+			convertedTransactions.add(convertedTransaction);
+		}
+		return convertedTransactions;
 	}
 
 	@GetMapping("/manage")
