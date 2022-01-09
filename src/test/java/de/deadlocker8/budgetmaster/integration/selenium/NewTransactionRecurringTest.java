@@ -70,7 +70,7 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 	void test_newTransaction_income()
 	{
 		String name = "My recurring transaction";
-		String amount = "15.00";
+		String amount = "25.00";
 		String description = "Lorem Ipsum dolor sit amet";
 		String categoryName = "sdfdsf";
 		String repeatingModifier = "1";
@@ -125,7 +125,7 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		assertThat(transactionsRows).hasSizeGreaterThan(2);
 
-		final WebElement row = transactionsRows.get(transactionsRows.size() - 2);
+		final WebElement row = transactionsRows.get(transactionsRows.size() - 3);
 		final List<WebElement> columns = row.findElements(By.className("col"));
 		assertThat(columns).hasSize(6);
 
