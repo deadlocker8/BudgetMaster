@@ -1,12 +1,12 @@
 package de.deadlocker8.budgetmaster.transactions;
 
 import de.deadlocker8.budgetmaster.accounts.Account;
-import de.deadlocker8.budgetmaster.accounts.AccountState;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.Tag_;
 import org.joda.time.DateTime;
 import org.springframework.data.jpa.domain.Specification;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
@@ -28,10 +28,14 @@ public class TransactionSpecifications
 	{
 		return (transaction, query, builder) -> {
 			List<Predicate> predicates = new ArrayList<>();
+			List<Predicate> transferPredicates = new ArrayList<>();
+
 			Predicate dateConstraint = builder.between(transaction.get(Transaction_.date), startDate, endDate);
 
 			Predicate transferBackReference = null;
 
+			// The amount of a transfer is always saved as a negative value.
+			// Therefore, the following predicates are ignored for transfers to avoid excluding transfers in destination accounts
 			if(isIncome && !isExpenditure)
 			{
 				predicates.add(builder.gt(transaction.get(Transaction_.amount), 0));
@@ -46,22 +50,39 @@ public class TransactionSpecifications
 			{
 				if(isRepeating)
 				{
-					predicates.add(builder.isNotNull(transaction.get(Transaction_.repeatingOption)));
+					final Predicate repeatingOptionIsNotNull = builder.isNotNull(transaction.get(Transaction_.repeatingOption));
+					predicates.add(repeatingOptionIsNotNull);
+					transferPredicates.add(repeatingOptionIsNotNull);
 				}
 				else
 				{
-					predicates.add(builder.isNull(transaction.get(Transaction_.repeatingOption)));
+					final Predicate repeatingOptionIsNull = builder.isNull(transaction.get(Transaction_.repeatingOption));
+					predicates.add(repeatingOptionIsNull);
+					transferPredicates.add(repeatingOptionIsNull);
 				}
 			}
 
 			if(isTransfer)
 			{
+				// transactions in accounts that are destinations of transfers should be included in results
+				// transfers in origin accounts are already included by the general predicates
+
+				// allow transactions that have a transfer account set that matches the provided account-variable
 				final Predicate transferAccountNotEqualsAccount = builder.notEqual(transaction.get(Transaction_.transferAccount), transaction.get(Transaction_.account));
 				transferBackReference = builder.and(transferAccountNotEqualsAccount, builder.equal(transaction.get(Transaction_.transferAccount), account));
 
 				if(!isIncome && !isExpenditure)
 				{
+					// if only transfers should be included just check if a transfer account is set in normal predicates!
 					predicates.add(builder.isNotNull(transaction.get(Transaction_.transferAccount)));
+				}
+				else if(!isIncome)
+				{
+					// if incomes should not be included in results all transactions that are in destination accounts
+					// of a transfer must be excluded since they are incomes
+
+					// arbitrary predicate that is always false for transactions in destination accounts of transfers
+					transferPredicates.add(builder.gt(transaction.get(Transaction_.amount), 0));
 				}
 			}
 			else
@@ -71,7 +92,9 @@ public class TransactionSpecifications
 
 			if(!categoryIDs.isEmpty())
 			{
-				predicates.add(transaction.get(Transaction_.category).get("ID").in(categoryIDs));
+				final Predicate categoryIdIncluded = transaction.get(Transaction_.category).get("ID").in(categoryIDs);
+				predicates.add(categoryIdIncluded);
+				transferPredicates.add(categoryIdIncluded);
 			}
 
 			if(!tagIDs.isEmpty())
@@ -84,18 +107,19 @@ public class TransactionSpecifications
 				}
 
 				predicates.add(tagPredicate);
+				transferPredicates.add(tagPredicate);
 			}
 
 			if(name != null && name.length() > 0)
 			{
-				predicates.add(builder.like(builder.lower(transaction.get(Transaction_.name)), "%" + name.toLowerCase() + "%"));
+				final Predicate nameLike = builder.like(builder.lower(transaction.get(Transaction_.name)), "%" + name.toLowerCase() + "%");
+				predicates.add(nameLike);
+				transferPredicates.add(nameLike);
 			}
 
 			query.orderBy(builder.desc(transaction.get(Transaction_.date)));
 
-			Predicate[] predicatesArray = new Predicate[predicates.size()];
-
-			final Predicate predicatesCombined = builder.and(predicates.toArray(predicatesArray));
+			final Predicate predicatesCombined = combinePredicates(predicates, builder);
 			Predicate generalPredicates = builder.and(dateConstraint, predicatesCombined);
 			if(account != null)
 			{
@@ -103,15 +127,23 @@ public class TransactionSpecifications
 				generalPredicates = builder.and(generalPredicates, accountPredicate);
 			}
 
-			if(transferBackReference == null)
+			if(isTransfer)
 			{
-				return generalPredicates;
+				final Predicate transferPredicatesCombined = combinePredicates(transferPredicates, builder);
+				final Predicate allTransferPredicates = builder.and(dateConstraint, transferPredicatesCombined, transferBackReference);
+
+				return builder.or(generalPredicates, allTransferPredicates);
 			}
 			else
 			{
-				final Predicate transferPredicates = builder.and(dateConstraint, predicatesCombined, transferBackReference);
-				return builder.or(generalPredicates, transferPredicates);
+				return generalPredicates;
 			}
 		};
+	}
+
+	private static Predicate combinePredicates(List<Predicate> predicates, CriteriaBuilder builder)
+	{
+		final Predicate[] predicatesArray = new Predicate[predicates.size()];
+		return builder.and(predicates.toArray(predicatesArray));
 	}
 }

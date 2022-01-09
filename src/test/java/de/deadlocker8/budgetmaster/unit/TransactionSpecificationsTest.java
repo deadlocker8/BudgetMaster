@@ -240,6 +240,26 @@ class TransactionSpecificationsTest
 	}
 
 	@Test
+	void getTransferBackReferences_excludeExpenditures()
+	{
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateHelper.getCurrentDate(), account2, true, false, true, null, List.of(), List.of(), null);
+
+		List<Transaction> results = transactionRepository.findAll(spec);
+		assertThat(results).hasSize(1)
+				.contains(transferTransaction);
+	}
+
+	@Test
+	void getTransferBackReferences_excludeIncomes()
+	{
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, DateHelper.getCurrentDate(), account2, false, true, true, null, List.of(), List.of(), null);
+
+		List<Transaction> results = transactionRepository.findAll(spec);
+		assertThat(results).hasSize(1)
+				.contains(transferTransactionWrongAccount);
+	}
+
+	@Test
 	void getTransferBackReferences_WithStartDate()
 	{
 		DateTime startDate2019 = new DateTime(2019, 1, 1, 12, 0, 0, 0);
