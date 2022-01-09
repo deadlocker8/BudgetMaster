@@ -126,9 +126,9 @@ public class TransactionService implements Resettable
 	private int getRest(Account account, DateTime endDate)
 	{
 		DateTime startDate = DateHelper.getCurrentDate().withYear(2000).withMonthOfYear(1).withDayOfMonth(1);
-		Integer restForNormalAndRepeating = transactionRepository.getRestForNormalAndRepeating(account.getID(), ISODateTimeFormat.date().print(startDate), ISODateTimeFormat.date().print(endDate));
-		Integer restForTransferSource = transactionRepository.getRestForTransferSource(account.getID(), ISODateTimeFormat.date().print(startDate), ISODateTimeFormat.date().print(endDate));
-		Integer restForTransferDestination = transactionRepository.getRestForTransferDestination(account.getID(), ISODateTimeFormat.date().print(startDate), ISODateTimeFormat.date().print(endDate));
+		Integer restForNormalAndRepeating = transactionRepository.getRestForNormalAndRepeating(account.getID(), startDate, endDate);
+		Integer restForTransferSource = transactionRepository.getRestForTransferSource(account.getID(), startDate, endDate);
+		Integer restForTransferDestination = transactionRepository.getRestForTransferDestination(account.getID(), startDate, endDate);
 
 		int rest = 0;
 
