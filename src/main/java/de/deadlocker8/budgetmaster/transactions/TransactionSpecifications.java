@@ -117,7 +117,7 @@ public class TransactionSpecifications
 				transferPredicates.add(nameLike);
 			}
 
-			query.orderBy(builder.desc(transaction.get(Transaction_.date)));
+			query.orderBy(builder.desc(transaction.get(Transaction_.date)), builder.asc(transaction.get(Transaction_.name)));
 
 			final Predicate predicatesCombined = combinePredicates(predicates, builder);
 			Predicate generalPredicates = builder.and(dateConstraint, predicatesCombined);
