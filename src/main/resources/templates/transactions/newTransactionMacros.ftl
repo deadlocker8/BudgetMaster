@@ -309,11 +309,9 @@
     <br>
 
     <div class="row hide-on-small-only">
-        <div class="col s6 right-align">
-            <@buttonCancel cancelURL/>
-        </div>
-
-        <div class="col s6 left-align">
+        <div class="col s12 center-align">
+            <@buttonCancel cancelURL/>&nbsp;
+            <@buttonSaveAndContinue/>&nbsp;
             <@buttonSave/>
         </div>
     </div>
@@ -322,6 +320,11 @@
         <div class="row center-align">
             <div class="col s12">
                 <@buttonCancel cancelURL/>
+            </div>
+        </div>
+        <div class="row center-align">
+            <div class="col s12">
+                <@buttonSaveAndContinue/>
             </div>
         </div>
         <div class="row center-align">
@@ -338,6 +341,10 @@
 
 <#macro buttonSave>
     <@header.buttonSubmit name='action' icon='save' localizationKey='save' id='button-save-transaction'/>
+</#macro>
+
+<#macro buttonSaveAndContinue>
+    <@header.buttonSubmit name='action' icon='save' localizationKey='saveAndContinue' id='button-save-transaction-and-continue'/>
 </#macro>
 
 <#macro buttonTransactionActions canChangeType canCreateTemplate changeTypeInProgress>
