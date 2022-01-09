@@ -176,7 +176,7 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector(".modal-overlay"))));
 
 		// submit form
-		WebElement submitButton = driver.findElement(By.xpath("//button[@type='submit']"));
+		WebElement submitButton = driver.findElement(By.id("button-save-transaction"));
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", submitButton);
 
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
