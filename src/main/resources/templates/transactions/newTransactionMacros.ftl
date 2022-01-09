@@ -348,7 +348,7 @@
 </#macro>
 
 <#macro buttonSaveAndContinue>
-    <@header.buttonSubmit name='action' icon='save' localizationKey='saveAndContinue' id='button-save-transaction-and-continue'/>
+    <@header.buttonSubmit name='action' icon='save' localizationKey='saveAndContinue' id='button-save-transaction-and-continue' value='continue'/>
 </#macro>
 
 <#macro buttonTransactionActions canChangeType canCreateTemplate changeTypeInProgress>

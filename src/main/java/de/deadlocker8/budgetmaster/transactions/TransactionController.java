@@ -43,6 +43,7 @@ import java.util.Optional;
 @RequestMapping(Mappings.TRANSACTIONS)
 public class TransactionController extends BaseController
 {
+	private static final String CONTINUE = "continue";
 	private final TransactionService transactionService;
 	private final CategoryService categoryService;
 	private final AccountService accountService;
@@ -139,7 +140,8 @@ public class TransactionController extends BaseController
 					   @RequestParam(value = "repeatingModifierNumber", required = false, defaultValue = "0") int repeatingModifierNumber,
 					   @RequestParam(value = "repeatingModifierType", required = false) String repeatingModifierType,
 					   @RequestParam(value = "repeatingEndType", required = false) String repeatingEndType,
-					   @RequestParam(value = "repeatingEndValue", required = false) String repeatingEndValue)
+					   @RequestParam(value = "repeatingEndValue", required = false) String repeatingEndValue,
+					   @RequestParam(value = "action", required = false) String action)
 	{
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 
@@ -171,7 +173,9 @@ public class TransactionController extends BaseController
 			redirectUrl = "transactions/newTransactionNormal";
 		}
 
-		return handleRedirect(request, model, transaction.getID() != null, transaction, bindingResult, date, redirectUrl);
+
+		final boolean isContinueActivated = action.equals(CONTINUE);
+		return handleRedirect(request, model, transaction.getID() != null, transaction, bindingResult, date, redirectUrl, isContinueActivated);
 	}
 
 	private void handlePreviousType(Transaction transaction, boolean isRepeating)
@@ -207,7 +211,7 @@ public class TransactionController extends BaseController
 		return new RepeatingOption(startDate, repeatingModifier, repeatingEnd);
 	}
 
-	private String handleRedirect(WebRequest request, Model model, boolean isEdit, @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult, DateTime date, String url)
+	private String handleRedirect(WebRequest request, Model model, boolean isEdit, @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult, DateTime date, String url, boolean isContinueActivated)
 	{
 		if(bindingResult.hasErrors())
 		{
@@ -218,6 +222,16 @@ public class TransactionController extends BaseController
 
 		transactionService.getRepository().save(transaction);
 		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.transaction.save.success", transaction.getName()), NotificationType.SUCCESS));
+
+		if(isContinueActivated)
+		{
+			if(transaction.isTransfer())
+			{
+				return "redirect:/transactions/newTransaction/transfer";
+			}
+			return "redirect:/transactions/newTransaction/normal";
+		}
+
 		return "redirect:/transactions";
 	}
 
