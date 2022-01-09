@@ -186,4 +186,31 @@ class NewTransactionNormalTest extends SeleniumTestBase
 
 		assertThat(driver.findElement(By.cssSelector(".account-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("3");
 	}
+
+	@Test
+	void test_saveAndContinue()
+	{
+		openNewTransactionPage();
+
+		String name = "My normal transaction";
+		String amount = "15.00";
+
+		// fill form
+		driver.findElement(By.className("buttonExpenditure")).click();
+		driver.findElement(By.id("transaction-name")).sendKeys(name);
+		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
+
+		// submit form
+		driver.findElement(By.id("button-save-transaction-and-continue")).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Transaction"));
+
+		// assert
+		assertThat(driver.getCurrentUrl()).endsWith("/newTransaction/normal");
+
+		assertThat(driver.findElement(By.className("buttonExpenditure")).getAttribute("class")).contains("background-red");
+		assertThat(driver.findElement(By.id("transaction-name")).getAttribute("value")).isEmpty();
+		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEmpty();
+	}
 }
