@@ -336,11 +336,11 @@
 </#macro>
 
 <#macro buttonCancel cancelURL>
-    <@header.buttonLink url=cancelURL icon='clear' localizationKey='cancel' id='button-cancel-save-transaction'/>
+    <@header.buttonLink url=cancelURL icon='clear' localizationKey='cancel' id='button-cancel-save-transaction' color='red'/>
 </#macro>
 
 <#macro buttonSave>
-    <@header.buttonSubmit name='action' icon='save' localizationKey='save' id='button-save-transaction'/>
+    <@header.buttonSubmit name='action' icon='save' localizationKey='save' id='button-save-transaction' color='green'/>
 </#macro>
 
 <#macro buttonSaveAndContinue>

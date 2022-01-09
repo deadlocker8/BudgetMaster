@@ -54,11 +54,11 @@
 
                         <div class="row">
                             <div class="col m6 l4 offset-l2 right-align">
-                                <@header.buttonLink url='/settings' icon='clear' localizationKey='cancel'/>
+                                <@header.buttonLink url='/settings' icon='clear' localizationKey='cancel' color='red'/>
                             </div>
 
                             <div class="col m6 l4 left-align">
-                                <@header.buttonSubmit name='action' icon='unarchive' localizationKey='settings.database.import' id='buttonImport'/>
+                                <@header.buttonSubmit name='action' icon='unarchive' localizationKey='settings.database.import' id='buttonImport' color='green'/>
                             </div>
                         </div>
                     </form>

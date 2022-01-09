@@ -86,22 +86,22 @@
                             <#-- buttons -->
                             <div class="row hide-on-small-only">
                                 <div class="col s6 right-align">
-                                    <@header.buttonLink url='/categories' icon='clear' localizationKey='cancel'/>
+                                    <@header.buttonLink url='/categories' icon='clear' localizationKey='cancel' color='red'/>
                                 </div>
 
                                 <div class="col s6 left-align">
-                                    <@header.buttonSubmit name='action' icon='save' localizationKey='save'/>
+                                    <@header.buttonSubmit name='action' icon='save' localizationKey='save' color='green'/>
                                 </div>
                             </div>
                             <div class="hide-on-med-and-up">
                                 <div class="row center-align">
                                     <div class="col s12">
-                                        <@header.buttonLink url='/categories' icon='clear' localizationKey='cancel'/>
+                                        <@header.buttonLink url='/categories' icon='clear' localizationKey='cancel' color='red'/>
                                     </div>
                                 </div>
                                 <div class="row center-align">
                                     <div class="col s12">
-                                        <@header.buttonSubmit name='action' icon='save' localizationKey='save'/>
+                                        <@header.buttonSubmit name='action' icon='save' localizationKey='save' color='green'/>
                                     </div>
                                 </div>
                             </div>
