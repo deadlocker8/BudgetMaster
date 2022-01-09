@@ -82,7 +82,7 @@
                         <@iconSelectMacros.iconSelect id="template-icon" item=template/>
 
                         <#-- buttons -->
-                        <@newTransactionMacros.buttons "/templates"/>
+                        <@newTransactionMacros.buttons cancelURL="/templates" includeContinueButton=false/>
                     </form>
                 </div>
                 </@header.content>

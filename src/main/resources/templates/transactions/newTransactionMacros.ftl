@@ -303,7 +303,7 @@
     </div>
 </#macro>
 
-<#macro buttons cancelURL>
+<#macro buttons cancelURL includeContinueButton>
     <br>
     <hr>
     <br>
@@ -311,7 +311,9 @@
     <div class="row hide-on-small-only">
         <div class="col s12 center-align">
             <@buttonCancel cancelURL/>&nbsp;
-            <@buttonSaveAndContinue/>&nbsp;
+            <#if includeContinueButton>
+                <@buttonSaveAndContinue/>&nbsp;
+            </#if>
             <@buttonSave/>
         </div>
     </div>
@@ -322,11 +324,13 @@
                 <@buttonCancel cancelURL/>
             </div>
         </div>
-        <div class="row center-align">
-            <div class="col s12">
-                <@buttonSaveAndContinue/>
+        <#if includeContinueButton>
+            <div class="row center-align">
+                <div class="col s12">
+                    <@buttonSaveAndContinue/>
+                </div>
             </div>
-        </div>
+        </#if>
         <div class="row center-align">
             <div class="col s12">
                 <@buttonSave/>

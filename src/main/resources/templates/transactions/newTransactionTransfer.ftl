@@ -82,7 +82,7 @@
                             <@newTransactionMacros.transactionRepeating transaction currentDate/>
 
                             <#-- buttons -->
-                            <@newTransactionMacros.buttons '/transactions'/>
+                            <@newTransactionMacros.buttons cancelURL='/transactions' includeContinueButton=true/>
                             <@newTransactionMacros.buttonTransactionActions isEdit true changeTypeInProgress/>
                         </form>
 
