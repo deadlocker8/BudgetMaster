@@ -173,7 +173,7 @@ class ChartTest extends SeleniumTestBase
 		// check displayed chart previews
 		final List<WebElement> displayedChartPreviews = driver.findElements(By.cssSelector(SELECTOR_VISIBLE_CHART_PREVIEWS));
 		assertThat(displayedChartPreviews)
-				.hasSize(1);
+				.hasSize(2);
 		assertThat(displayedChartPreviews.get(0).findElement(By.cssSelector(".card-action span")).getText())
 				.isEqualTo("Incomes/Expenditures");
 
