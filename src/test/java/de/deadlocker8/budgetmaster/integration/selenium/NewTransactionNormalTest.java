@@ -192,7 +192,7 @@ class NewTransactionNormalTest extends SeleniumTestBase
 	{
 		openNewTransactionPage();
 
-		String name = "save and continue transaction";
+		String name = "Save and continue transaction";
 		String amount = "15.00";
 
 		// fill form
