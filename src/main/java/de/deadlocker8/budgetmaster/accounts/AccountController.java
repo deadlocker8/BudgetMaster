@@ -152,8 +152,8 @@ public class AccountController extends BaseController
 		{
 			model.addAttribute("error", bindingResult);
 			model.addAttribute("account", account);
-			model.addAttribute("availableImages", imageService.getRepository().findAll());
 			model.addAttribute("availableAccountStates", AccountState.values());
+			model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
 			return "accounts/newAccount";
 		}
 
