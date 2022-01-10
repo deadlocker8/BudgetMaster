@@ -1,13 +1,13 @@
 package de.deadlocker8.budgetmaster.database.model.converter;
 
 import de.deadlocker8.budgetmaster.database.model.Converter;
-import de.deadlocker8.budgetmaster.database.model.v7.BackupIcon_v7;
+import de.deadlocker8.budgetmaster.database.model.v8.BackupIcon_v8;
 import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.images.Image;
 
 import java.util.List;
 
-public class IconConverter implements Converter<Icon, BackupIcon_v7>
+public class IconConverter implements Converter<Icon, BackupIcon_v8>
 {
 	private final List<Image> availableImages;
 
@@ -17,7 +17,7 @@ public class IconConverter implements Converter<Icon, BackupIcon_v7>
 	}
 
 
-	public Icon convertToInternalForm(BackupIcon_v7 backupIcon)
+	public Icon convertToInternalForm(BackupIcon_v8 backupIcon)
 	{
 		if(backupIcon == null)
 		{
@@ -28,6 +28,7 @@ public class IconConverter implements Converter<Icon, BackupIcon_v7>
 		icon.setID(backupIcon.getID());
 		icon.setImage(getImageById(backupIcon.getImageID()));
 		icon.setBuiltinIdentifier(backupIcon.getBuiltinIdentifier());
+		icon.setFontColor(backupIcon.getFontColor());
 
 		return icon;
 	}
@@ -40,14 +41,14 @@ public class IconConverter implements Converter<Icon, BackupIcon_v7>
 	}
 
 	@Override
-	public BackupIcon_v7 convertToExternalForm(Icon internalItem)
+	public BackupIcon_v8 convertToExternalForm(Icon internalItem)
 	{
 		if(internalItem == null)
 		{
 			return null;
 		}
 
-		final BackupIcon_v7 icon = new BackupIcon_v7();
+		final BackupIcon_v8 icon = new BackupIcon_v8();
 		icon.setID(internalItem.getID());
 
 		if(internalItem.getImage() != null)
@@ -56,6 +57,7 @@ public class IconConverter implements Converter<Icon, BackupIcon_v7>
 		}
 
 		icon.setBuiltinIdentifier(internalItem.getBuiltinIdentifier());
+		icon.setFontColor(internalItem.getFontColor());
 
 		return icon;
 	}

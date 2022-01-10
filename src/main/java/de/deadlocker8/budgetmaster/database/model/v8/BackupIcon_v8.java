@@ -1,28 +1,27 @@
-package de.deadlocker8.budgetmaster.database.model.v7;
+package de.deadlocker8.budgetmaster.database.model.v8;
 
 import de.deadlocker8.budgetmaster.database.model.BackupInfo;
-import de.deadlocker8.budgetmaster.database.model.Upgradeable;
-import de.deadlocker8.budgetmaster.database.model.v8.BackupIcon_v8;
 
-import java.util.List;
 import java.util.Objects;
 
-public class BackupIcon_v7 implements BackupInfo, Upgradeable<BackupIcon_v8>
+public class BackupIcon_v8 implements BackupInfo
 {
 	private Integer ID;
 	private Integer imageID;
 	private String builtinIdentifier;
+	private String fontColor;
 
-	public BackupIcon_v7()
+	public BackupIcon_v8()
 	{
 		// for GSON
 	}
 
-	public BackupIcon_v7(Integer ID, Integer imageID, String builtinIdentifier)
+	public BackupIcon_v8(Integer ID, Integer imageID, String builtinIdentifier, String fontColor)
 	{
 		this.ID = ID;
 		this.imageID = imageID;
 		this.builtinIdentifier = builtinIdentifier;
+		this.fontColor = fontColor;
 	}
 
 	public Integer getID()
@@ -55,34 +54,39 @@ public class BackupIcon_v7 implements BackupInfo, Upgradeable<BackupIcon_v8>
 		this.builtinIdentifier = builtinIdentifier;
 	}
 
+	public String getFontColor()
+	{
+		return fontColor;
+	}
+
+	public void setFontColor(String fontColor)
+	{
+		this.fontColor = fontColor;
+	}
+
 	@Override
 	public boolean equals(Object o)
 	{
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
-		BackupIcon_v7 that = (BackupIcon_v7) o;
-		return Objects.equals(ID, that.ID) && Objects.equals(imageID, that.imageID) && Objects.equals(builtinIdentifier, that.builtinIdentifier);
+		BackupIcon_v8 that = (BackupIcon_v8) o;
+		return Objects.equals(ID, that.ID) && Objects.equals(imageID, that.imageID) && Objects.equals(builtinIdentifier, that.builtinIdentifier) && Objects.equals(fontColor, that.fontColor);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, imageID, builtinIdentifier);
+		return Objects.hash(ID, imageID, builtinIdentifier, fontColor);
 	}
 
 	@Override
 	public String toString()
 	{
-		return "BackupIcon_v7{" +
+		return "BackupIcon_v8{" +
 				"ID=" + ID +
 				", imageID=" + imageID +
 				", builtinIdentifier='" + builtinIdentifier + '\'' +
+				", fontColor='" + fontColor + '\'' +
 				'}';
-	}
-
-	@Override
-	public BackupIcon_v8 upgrade(List<BackupInfo> backupInfoItems)
-	{
-		return new BackupIcon_v8(this.ID, this.imageID, this.builtinIdentifier, null);
 	}
 }

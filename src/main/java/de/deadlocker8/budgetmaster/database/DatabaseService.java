@@ -9,7 +9,8 @@ import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.charts.Chart;
 import de.deadlocker8.budgetmaster.charts.ChartService;
 import de.deadlocker8.budgetmaster.charts.ChartType;
-import de.deadlocker8.budgetmaster.database.model.v7.BackupDatabase_v7;
+import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
+import de.deadlocker8.budgetmaster.database.model.v8.BackupDatabase_v8;
 import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.images.Image;
@@ -232,7 +233,7 @@ public class DatabaseService
 	@Transactional
 	public void exportDatabase(Path backupPath)
 	{
-		final BackupDatabase_v7 database = getDatabaseForJsonSerialization();
+		final BackupDatabase database = getDatabaseForJsonSerialization();
 
 		try(Writer writer = new FileWriter(backupPath.toString()))
 		{
@@ -251,7 +252,7 @@ public class DatabaseService
 		return "BudgetMasterDatabase_" + DateHelper.getCurrentDate().toString(BACKUP_DATE_FORMAT) + ".json";
 	}
 
-	public BackupDatabase_v7 getDatabaseForJsonSerialization()
+	public BackupDatabase getDatabaseForJsonSerialization()
 	{
 		List<Category> categories = categoryService.getAllEntitiesAsc();
 		List<Account> accounts = accountService.getRepository().findAll();
@@ -266,7 +267,7 @@ public class DatabaseService
 		InternalDatabase database = new InternalDatabase(categories, accounts, filteredTransactions, templates, charts, images, icons);
 		LOGGER.debug(MessageFormat.format("Created database for JSON with {0} transactions, {1} categories, {2} accounts, {3} templates, {4} charts {5} images and {6} icons", database.getTransactions().size(), database.getCategories().size(), database.getAccounts().size(), database.getTemplates().size(), database.getCharts().size(), database.getImages().size(), database.getIcons().size()));
 
-		BackupDatabase_v7 databaseInExternalForm = BackupDatabase_v7.createFromInternalEntities(database);
+		BackupDatabase_v8 databaseInExternalForm = BackupDatabase_v8.createFromInternalEntities(database);
 		LOGGER.debug("Converted database to external form");
 		return databaseInExternalForm;
 	}
