@@ -147,7 +147,7 @@
 <#macro entityIcon entity classes="">
     <#if entity.getIconReference()??>
         <#if entity.getIconReference().isBuiltinIcon()>
-            <i class="${entity.getIconReference().getBuiltinIdentifier()} ${classes}"></i>
+            <i class="${entity.getIconReference().getBuiltinIdentifier()} ${classes}" <#if entity.getIconReference().getFontColor()??>style="color: ${entity.getIconReference().getFontColor()}"</#if>></i>
         <#else>
             <img src="<@s.url "/media/getImageByIconID/" + entity.getIconReference().getID()/>" class="${classes}"/>
         </#if>
