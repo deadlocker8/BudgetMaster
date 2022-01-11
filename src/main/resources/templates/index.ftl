@@ -30,7 +30,7 @@
                         <div class="hide-on-small-only"><br></div>
 
                         <div class="row home-menu-flex">
-                            <@indexFunctions.homeEntry url="/accounts" icon=entityType.HOME.getIcon() iconColor="" headlineText="menu.accounts" bodyText="home.menu.accounts">
+                            <@indexFunctions.homeEntry url="/accounts" icon=entityType.ACCOUNT.getIcon() iconColor="" headlineText="menu.accounts" bodyText="home.menu.accounts">
                                 <@indexFunctions.action url="/accounts" name="home.menu.accounts.action.manage"/>
                                 <@indexFunctions.action url="/accounts/newAccount" name="home.menu.accounts.action.new"/>
                             </@indexFunctions.homeEntry>
