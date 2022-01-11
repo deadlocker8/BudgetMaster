@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster;
 
+import de.deadlocker8.budgetmaster.utils.DatabaseConfigurationProperties;
 import de.thecodelabs.utils.io.PathUtils;
 import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.SystemUtils;
@@ -11,6 +12,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
@@ -25,6 +27,7 @@ import java.util.*;
 
 @EnableScheduling
 @SpringBootApplication
+@EnableConfigurationProperties(DatabaseConfigurationProperties.class)
 public class Main extends SpringBootServletInitializer implements ApplicationRunner
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);

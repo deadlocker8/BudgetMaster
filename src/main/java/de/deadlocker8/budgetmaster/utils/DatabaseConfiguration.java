@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.utils;
 
-import de.deadlocker8.budgetmaster.Main;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,18 +8,31 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 
 import javax.sql.DataSource;
-import java.nio.file.Path;
+import java.text.MessageFormat;
 
 @Configuration
 @Profile("!test")
 public class DatabaseConfiguration
 {
+	DatabaseConfigurationProperties databaseConfig;
+
+	@Autowired
+	public DatabaseConfiguration(DatabaseConfigurationProperties databaseConfig)
+	{
+		this.databaseConfig = databaseConfig;
+	}
+
 	@Bean
 	@Primary
 	public DataSource dataSource()
 	{
-		Path applicationSupportFolder = Main.getApplicationSupportFolder();
-		String jdbcString = "jdbc:h2:/" + applicationSupportFolder.toString() + "/" + "budgetmaster;DB_CLOSE_ON_EXIT=TRUE";
-		return DataSourceBuilder.create().username("sa").password("").url(jdbcString).driverClassName("org.h2.Driver").build();
+		final String jdbcString = MessageFormat.format("jdbc:postgresql://{0}:{1}/{2}", databaseConfig.getHostname(), Long.toString(databaseConfig.getPort()), databaseConfig.getDatabaseName());
+
+		return DataSourceBuilder.create()
+				.username(databaseConfig.getUsername())
+				.password(databaseConfig.getPassword())
+				.url(jdbcString)
+				.driverClassName("org.postgresql.Driver")
+				.build();
 	}
 }
