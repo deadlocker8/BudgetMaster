@@ -26,7 +26,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Repairs duplicated database entries for recurring transactions
+ *
+ * Run for databases with version 23 (v2.4.0) or older
+ */
+
 @Component
+@Deprecated(since="v2.9.0", forRemoval = true)
 public class DateRepair
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DateRepair.class);

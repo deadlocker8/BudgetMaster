@@ -15,7 +15,16 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.MessageFormat;
 import java.util.List;
 
+/**
+ * Version 27 introduces a new member "isExpenditure" for transactions.
+ * This class fill this field for all existing transactions.
+ *
+ * Run for databases with version 27 (v2.4.4) or older
+ */
+
+
 @Component
+@Deprecated(since="v2.9.0", forRemoval = true)
 public class IntroduceIsExpenditureMember
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(IntroduceIsExpenditureMember.class);
