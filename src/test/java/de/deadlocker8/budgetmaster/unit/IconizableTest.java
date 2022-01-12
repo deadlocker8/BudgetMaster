@@ -35,11 +35,14 @@ class IconizableTest
 	{
 		final Account account = Mockito.spy(new Account("account with icon", AccountType.CUSTOM));
 
+		final Icon icon = new Icon(null, null);
+
 		Mockito.when(accountService.findById(Mockito.any())).thenReturn(Optional.empty());
+		Mockito.when(iconService.getRepository()).thenReturn(iconRepository);
+		Mockito.when(iconService.createIconReference(null, null, null)).thenReturn(icon);
 
 		account.updateIcon(iconService, null, null, null, accountService);
 
-		final Icon icon = new Icon(null, null);
 		assertThat(account.getIconReference())
 				.isEqualTo(icon);
 		Mockito.verify(iconService, Mockito.never()).deleteIcon(Mockito.any());
@@ -56,7 +59,7 @@ class IconizableTest
 
 		Mockito.when(accountService.findById(Mockito.any())).thenReturn(Optional.empty());
 		Mockito.when(iconService.getRepository()).thenReturn(iconRepository);
-		Mockito.when(iconService.createIconReference(null, builtinIdentifier, null)).thenReturn(Optional.of(icon));
+		Mockito.when(iconService.createIconReference(null, builtinIdentifier, null)).thenReturn(icon);
 
 		account.updateIcon(iconService, null, builtinIdentifier, null, accountService);
 
@@ -78,7 +81,7 @@ class IconizableTest
 
 		Mockito.when(accountService.findById(Mockito.any())).thenReturn(Optional.of(accountSpy));
 		Mockito.when(iconService.getRepository()).thenReturn(iconRepository);
-		Mockito.when(iconService.createIconReference(null, builtinIdentifier, null)).thenReturn(Optional.of(icon));
+		Mockito.when(iconService.createIconReference(null, builtinIdentifier, null)).thenReturn(icon);
 
 		accountSpy.updateIcon(iconService, null, builtinIdentifier, null, accountService);
 
@@ -96,17 +99,18 @@ class IconizableTest
 		account.setID(18);
 		final Account accountSpy = Mockito.spy(account);
 
+		final Icon expectedIcon = new Icon(null, null);
+
 		Mockito.when(accountService.findById(Mockito.any())).thenReturn(Optional.of(accountSpy));
 		Mockito.when(iconService.getRepository()).thenReturn(iconRepository);
-		Mockito.when(iconService.createIconReference(null, null, null)).thenReturn(Optional.empty());
+		Mockito.when(iconService.createIconReference(null, null, null)).thenReturn(expectedIcon);
 
 		accountSpy.updateIcon(iconService, null, null, null, accountService);
 
-		final Icon expectedIcon = new Icon(null, null);
 
 		assertThat(accountSpy.getIconReference())
 				.isEqualTo(expectedIcon);
 		Mockito.verify(iconService, Mockito.times(1)).deleteIcon(icon);
-		Mockito.verify(iconRepository, Mockito.times(1)).save(icon);
+		Mockito.verify(iconRepository, Mockito.times(1)).save(expectedIcon);
 	}
 }

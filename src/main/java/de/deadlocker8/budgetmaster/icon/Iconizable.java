@@ -26,14 +26,7 @@ public interface Iconizable extends ProvidesID
 			}
 		}
 
-		final Optional<Icon> iconOptional = iconService.createIconReference(iconImageID, builtinIconIdentifier, fontColor);
-		if(iconOptional.isEmpty())
-		{
-			this.setIconReference(null);
-			return;
-		}
-
-		final Icon icon = iconOptional.get();
+		final Icon icon = iconService.createIconReference(iconImageID, builtinIconIdentifier, fontColor);
 		iconService.getRepository().save(icon);
 		this.setIconReference(icon);
 	}
