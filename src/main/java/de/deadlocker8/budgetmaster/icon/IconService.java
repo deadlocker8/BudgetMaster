@@ -97,6 +97,6 @@ public class IconService implements Resettable
 			return new Icon(builtinIconIdentifier, fontColor);
 		}
 
-		return new Icon(null, null);
+		return new Icon(null, fontColor);
 	}
 }

@@ -144,12 +144,12 @@
     </a>
 </#macro>
 
-<#macro entityIcon entity classes="">
-    <#if entity.getIconReference()??>
-        <#if entity.getIconReference().isBuiltinIcon()>
-            <i class="${entity.getIconReference().getBuiltinIdentifier()} ${classes}"></i>
-        <#else>
-            <img src="<@s.url "/media/getImageByIconID/" + entity.getIconReference().getID()/>" class="${classes}"/>
-        </#if>
+<#macro entityIcon entity classes="" fallbackName="">
+    <#if entity.getIconReference().isImageIcon()>
+        <img src="<@s.url "/media/getImageByIconID/" + entity.getIconReference().getID()/>" class="${classes}"/>
+    <#elseif entity.getIconReference().isBuiltinIcon()>
+        <i class="${entity.getIconReference().getBuiltinIdentifier()} ${classes}"></i>
+    <#else>
+        ${fallbackName?capitalize[0]}
     </#if>
 </#macro>

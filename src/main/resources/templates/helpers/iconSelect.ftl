@@ -7,8 +7,8 @@
             <i class="fas fa-icons prefix"></i>
             <label class="input-label" for="${id}">${locale.getString("account.new.label.icon")}</label>
 
-            <#assign hasImageIcon=item.getIconReference()?? && item.getIconReference().getImage()??/>
-            <#assign hasBuiltinIcon=item.getIconReference()?? && item.getIconReference().getBuiltinIdentifier()??/>
+            <#assign hasImageIcon= item.getIconReference().isImageIcon()/>
+            <#assign hasBuiltinIcon= item.getIconReference().isBuiltinIcon()/>
 
             <div id="${id}" class="valign-wrapper item-icon">
                 <a id="item-icon-preview">
@@ -27,7 +27,7 @@
 
 
 <#macro modalIconSelect idToFocusOnClose item>
-    <#assign hasImageIcon=item.getIconReference()?? && item.getIconReference().getImage()??/>
+    <#assign hasImageIcon=item.getIconReference().isImageIcon()/>
 
     <div id="modalIconSelect" class="modal modal-fixed-footer background-color" data-focus-on-close="${idToFocusOnClose}">
         <div class="modal-content center-align">
@@ -68,7 +68,7 @@
         </div>
     </div>
 
-    <#assign hasImageIcon=item.getIconReference()?? && item.getIconReference().getImage()??/>
+    <#assign hasImageIcon=item.getIconReference().isImageIcon()/>
     <#if hasImageIcon>
         <#assign selectedImageID=item.getIconReference().getImage().getID()?c/>
     <#else>
@@ -103,7 +103,7 @@
 </#macro>
 
 <#macro builtinIconOption icon item>
-    <#assign hasBuiltinIcon=item.getIconReference()?? && item.getIconReference().getBuiltinIdentifier()??/>
+    <#assign hasBuiltinIcon=item.getIconReference().isBuiltinIcon()/>
     <#if hasBuiltinIcon>
         <#assign selectedIconName=item.getIconReference().getBuiltinIdentifier()/>
     <#else>

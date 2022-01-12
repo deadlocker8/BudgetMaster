@@ -97,9 +97,19 @@ public class Icon implements ProvidesID
 		this.fontColor = fontColor;
 	}
 
+	public boolean isImageIcon()
+	{
+		return image != null;
+	}
+
 	public boolean isBuiltinIcon()
 	{
-		return image == null;
+		return !isImageIcon() && builtinIdentifier != null;
+	}
+
+	public boolean isFallbackIcon()
+	{
+		return !isImageIcon() && !isBuiltinIcon();
 	}
 
 	public Account getReferringAccount()
