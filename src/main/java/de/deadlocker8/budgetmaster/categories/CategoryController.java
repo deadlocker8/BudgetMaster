@@ -133,7 +133,8 @@ public class CategoryController extends BaseController
 			category.setType(CategoryType.CUSTOM);
 		}
 
-		category.updateIcon(iconService, iconImageID, builtinIconIdentifier, categoryService);
+		// TODO: pass actual font color
+		category.updateIcon(iconService, iconImageID, builtinIconIdentifier, null, categoryService);
 
 		categoryService.save(category);
 

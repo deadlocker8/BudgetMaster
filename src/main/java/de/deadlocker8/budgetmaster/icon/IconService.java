@@ -79,7 +79,7 @@ public class IconService implements Resettable
 	{
 	}
 
-	public Optional<Icon> createIconReference(Integer iconImageID, String builtinIconIdentifier)
+	public Optional<Icon> createIconReference(Integer iconImageID, String builtinIconIdentifier, String fontColor)
 	{
 		if(iconImageID != null)
 		{
@@ -94,9 +94,9 @@ public class IconService implements Resettable
 
 		if(builtinIconIdentifier != null && !builtinIconIdentifier.isEmpty())
 		{
-			return Optional.of(new Icon(builtinIconIdentifier));
+			return Optional.of(new Icon(builtinIconIdentifier, fontColor));
 		}
 
-		return Optional.empty();
+		return Optional.of(new Icon(null, null));
 	}
 }

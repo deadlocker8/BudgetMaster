@@ -157,7 +157,8 @@ public class AccountController extends BaseController
 			return "accounts/newAccount";
 		}
 
-		account.updateIcon(iconService, iconImageID, builtinIconIdentifier, accountService);
+		// TODO: pass actual font color
+		account.updateIcon(iconService, iconImageID, builtinIconIdentifier, null, accountService);
 
 		if(isNewAccount)
 		{

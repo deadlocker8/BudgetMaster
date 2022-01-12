@@ -217,7 +217,8 @@ public class TemplateController extends BaseController
 			template.setTransferAccount(null);
 		}
 
-		template.updateIcon(iconService, iconImageID, builtinIconIdentifier, templateService);
+		// TODO: pass actual font color
+		template.updateIcon(iconService, iconImageID, builtinIconIdentifier, null, templateService);
 
 		templateService.getRepository().save(template);
 		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.template.save.success", template.getName()), NotificationType.SUCCESS));

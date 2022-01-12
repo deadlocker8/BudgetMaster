@@ -89,20 +89,33 @@ class IconServiceTest
 	}
 
 	@Test
-	void test_createIconReference_empty()
+	void test_createIconReference_nothingSet()
 	{
-		assertThat(iconService.createIconReference(null, null))
-				.isEmpty();
+		assertThat(iconService.createIconReference(null, null, null))
+				.isPresent()
+				.get()
+				.isEqualTo(new Icon(null, null));
 	}
 
 	@Test
 	void test_createIconReference_builtinIcon()
 	{
 		final String builtinIdentifier = "fas fa-icons";
-		assertThat(iconService.createIconReference(null, builtinIdentifier))
+		assertThat(iconService.createIconReference(null, builtinIdentifier, null))
 				.isPresent()
 				.get()
-				.isEqualTo(new Icon(builtinIdentifier));
+				.isEqualTo(new Icon(builtinIdentifier, null));
+	}
+
+	@Test
+	void test_createIconReference_builtinIcon_withFontColor()
+	{
+		final String builtinIdentifier = "fas fa-icons";
+		final String fontColor = "#FF0000";
+		assertThat(iconService.createIconReference(null, builtinIdentifier, fontColor))
+				.isPresent()
+				.get()
+				.isEqualTo(new Icon(builtinIdentifier, fontColor));
 	}
 
 	@Test
@@ -113,7 +126,7 @@ class IconServiceTest
 
 		Mockito.when(imageRepository.findById(Mockito.any())).thenReturn(Optional.of(image));
 
-		assertThat(iconService.createIconReference(12, null))
+		assertThat(iconService.createIconReference(12, null, null))
 				.isPresent()
 				.get()
 				.isEqualTo(new Icon(image));

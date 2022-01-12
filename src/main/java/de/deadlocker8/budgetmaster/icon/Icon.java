@@ -51,6 +51,12 @@ public class Icon implements ProvidesID
 		this.builtinIdentifier = builtinIdentifier;
 	}
 
+	public Icon(String builtinIdentifier, String fontColor)
+	{
+		this.builtinIdentifier = builtinIdentifier;
+		this.fontColor = fontColor;
+	}
+
 	public Integer getID()
 	{
 		return ID;
