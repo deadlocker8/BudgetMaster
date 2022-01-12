@@ -52,13 +52,15 @@
 </#macro>
 
 <#macro templateHeader template>
-    <#if template.getIconReference()??>
-        <@header.entityIcon entity=template classes="template-icon text-default"/>
-    <#elseif template.getTransferAccount()??>
-        <i class="material-icons">swap_horiz</i>
-    <#else>
-        <i class="material-icons">payment</i>
-    </#if>
+    <span style="color: ${template.getFontColor()}">
+        <#if template.getIconReference()??>
+            <@header.entityIcon entity=template classes="template-icon text-default"/>
+        <#elseif template.getTransferAccount()??>
+            <i class="material-icons">swap_horiz</i>
+        <#else>
+            <i class="material-icons">payment</i>
+        </#if>
+    </span>
     <div class="truncate template-header-name">${template.getTemplateName()}</div>
 </#macro>
 

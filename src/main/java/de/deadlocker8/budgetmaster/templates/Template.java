@@ -192,14 +192,34 @@ public class Template implements TransactionBase, Iconizable
 		this.description = description;
 	}
 
+	@Override
 	public Icon getIconReference()
 	{
 		return iconReference;
 	}
 
+	@Override
 	public void setIconReference(Icon iconReference)
 	{
 		this.iconReference = iconReference;
+	}
+
+	@Override
+	public String getFontColor()
+	{
+		final Icon icon = getIconReference();
+		if(icon == null)
+		{
+			return "var(--color-text);";
+		}
+
+		final String fontColor = icon.getFontColor();
+		if(fontColor == null)
+		{
+			return "var(--color-text);";
+		}
+
+		return fontColor;
 	}
 
 	public List<Tag> getTags()

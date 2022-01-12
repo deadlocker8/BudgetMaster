@@ -97,14 +97,39 @@ public class Category implements ProvidesID, Iconizable
 		this.type = type;
 	}
 
+	@Override
 	public Icon getIconReference()
 	{
 		return iconReference;
 	}
 
+	@Override
 	public void setIconReference(Icon iconReference)
 	{
 		this.iconReference = iconReference;
+	}
+
+	@Override
+	public String getFontColor()
+	{
+		final Icon icon = getIconReference();
+		if(icon == null)
+		{
+			return getAppropriateTextColor();
+		}
+
+		final String fontColor = icon.getFontColor();
+		if(fontColor == null)
+		{
+			return getAppropriateTextColor();
+		}
+
+		return fontColor;
+	}
+
+	public String getAppropriateTextColor()
+	{
+		return ColorUtilsNonJavaFX.getAppropriateTextColor(new Color(color)).toRGBHexWithoutOpacity();
 	}
 
 	public List<Transaction> getReferringTransactions()
@@ -115,11 +140,6 @@ public class Category implements ProvidesID, Iconizable
 	public void setReferringTransactions(List<Transaction> referringTransactions)
 	{
 		this.referringTransactions = referringTransactions;
-	}
-
-	public String getAppropriateTextColor()
-	{
-		return ColorUtilsNonJavaFX.getAppropriateTextColor(new Color(color)).toRGBHexWithoutOpacity();
 	}
 
 	@Override

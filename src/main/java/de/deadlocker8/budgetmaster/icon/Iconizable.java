@@ -37,4 +37,6 @@ public interface Iconizable extends ProvidesID
 		iconService.getRepository().save(icon);
 		this.setIconReference(icon);
 	}
+
+	String getFontColor();
 }
