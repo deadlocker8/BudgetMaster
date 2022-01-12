@@ -15,6 +15,8 @@ public class BackupDatabase_v5 implements BackupDatabase
 	@SuppressWarnings("FieldCanBeLocal")
 	private final int VERSION = 5;
 
+	private final String INTRODUCED_IN_VERSION = "v2.6.0";
+
 	private List<BackupCategory_v5> categories;
 	private List<BackupAccount_v5> accounts;
 	private List<BackupTransaction_v5> transactions;

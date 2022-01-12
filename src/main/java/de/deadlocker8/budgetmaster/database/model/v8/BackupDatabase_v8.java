@@ -28,6 +28,8 @@ public class BackupDatabase_v8 implements BackupDatabase
 	@SuppressWarnings("FieldCanBeLocal")
 	private final int VERSION = 8;
 
+	private final String INTRODUCED_IN_VERSION = "v2.9.0";
+
 	private List<BackupCategory_v7> categories;
 	private List<BackupAccount_v7> accounts;
 	private List<BackupTransaction_v6> transactions;
