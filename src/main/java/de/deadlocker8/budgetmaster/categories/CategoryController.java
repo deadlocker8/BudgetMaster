@@ -115,7 +115,8 @@ public class CategoryController extends BaseController
 	public String post(WebRequest request,
 					   Model model, @ModelAttribute("NewCategory") Category category, BindingResult bindingResult,
 					   @RequestParam(value = "iconImageID", required = false) Integer iconImageID,
-					   @RequestParam(value = "builtinIconIdentifier", required = false) String builtinIconIdentifier)
+					   @RequestParam(value = "builtinIconIdentifier", required = false) String builtinIconIdentifier,
+					   @RequestParam(value = "fontColor", required = false) String fontColor)
 	{
 		CategoryValidator userValidator = new CategoryValidator();
 		userValidator.validate(category, bindingResult);
@@ -133,8 +134,7 @@ public class CategoryController extends BaseController
 			category.setType(CategoryType.CUSTOM);
 		}
 
-		// TODO: pass actual font color
-		category.updateIcon(iconService, iconImageID, builtinIconIdentifier, null, categoryService);
+		category.updateIcon(iconService, iconImageID, builtinIconIdentifier, fontColor, categoryService);
 
 		categoryService.save(category);
 

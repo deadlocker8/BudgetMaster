@@ -498,6 +498,12 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     line-height: 25px;
 }
 
+
+#fontColorPickerContainer {
+    margin-top: 3rem;
+    justify-content: center;
+}
+
 .invisible {
     opacity: 0;
 }

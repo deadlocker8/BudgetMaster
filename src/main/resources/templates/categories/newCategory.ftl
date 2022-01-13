@@ -68,7 +68,7 @@
                                     </div>
                                 </#if>
                             </#list>
-                                <#-- add custom color picker-->
+                                <#-- add custom color picker -->
                                 <div class="col s2 m1 no-padding">
                                     <div id="customColorPickerContainer" class="category-color <#if customColor == category.getColor()>category-color-active</#if>" style="background-color: ${customColor}">
                                         <span>+</span>
@@ -78,6 +78,20 @@
 
                             <#-- icon -->
                             <@iconSelectMacros.iconSelect id="account-icon" item=category/>
+
+                            <#-- font color -->
+                            <input type="hidden" name="fontColor" id="fontColor" value="${category.getFontColor()}">
+
+                            <div class="row">
+                                <div class="input-field col s12 m12 l8 offset-l2">
+                                    <i class="material-icons prefix">palette</i>
+                                    <label class="input-label" for="fontColorPickerContainer">${locale.getString("account.new.label.icon.fontcolor")}</label>
+
+                                    <div id="fontColorPickerContainer" class="valign-wrapper">
+                                        <div id="fontColorPicker" style="background-color: ${category.getFontColor()}"></div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <br>
 
@@ -117,5 +131,6 @@
         <script src="<@s.url '/js/libs/vanilla-picker.min.js'/>"></script>
         <script src="<@s.url '/js/categories.js'/>"></script>
         <script src="<@s.url '/js/iconSelect.js'/>"></script>
+        <script src="<@s.url '/js/fontColorPicker.js'/>"></script>
     </@header.body>
 </html>
