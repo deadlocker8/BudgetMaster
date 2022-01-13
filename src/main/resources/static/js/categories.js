@@ -25,13 +25,10 @@ $(document).ready(function()
             cancelButton: false,
             color: colorPickerParent.style.backgroundColor,
             onChange: function(color) {
-                colorPickerParent.style.backgroundColor = color.hex;
+                updateCustomColor(colorPickerParent, color);
             },
             onClose: function(color) {
-                removeActive();
-                addClass(colorPickerParent, "category-color-active");
-                colorPickerParent.style.backgroundColor = color.hex;
-                document.getElementById("categoryColor").value = color.hex;
+                updateCustomColor(colorPickerParent, color);
             }
         });
     }
@@ -56,4 +53,12 @@ function removeActive()
     {
         removeClass(colors[i], "category-color-active");
     }
+}
+
+function updateCustomColor(parent, color)
+{
+    removeActive();
+    addClass(parent, "category-color-active");
+    parent.style.backgroundColor = color.hex;
+    document.getElementById("categoryColor").value = color.hex;
 }
