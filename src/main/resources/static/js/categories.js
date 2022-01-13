@@ -12,23 +12,26 @@ $(document).ready(function()
         document.getElementById("categoryColor").value = rgb2hex($(this)[0].style.backgroundColor);
     });
 
-    if($("#customColorPicker").length)
+    if($("#customColorPickerContainer").length)
     {
-        $("#customColorPicker").spectrum({
-            showInitial: true,
-            showInput: true,
-            showButtons: false,
-            preferredFormat: "hex",
-            hide: function(color)
-            {
-                removeActive();
-                addClass(document.getElementById("customColorPickerContainer"), "category-color-active");
-                document.getElementById("customColorPickerContainer").style.backgroundColor = color.toHexString();
-                document.getElementById("categoryColor").value = color.toHexString();
+        let colorPickerParent = document.getElementById('customColorPickerContainer');
+
+        let colorPicker = new Picker({
+            parent: colorPickerParent,
+            popup: 'bottom',
+            alpha: false,
+            editor: true,
+            editorFormat: 'hex',
+            cancelButton: false,
+            color: colorPickerParent.style.backgroundColor,
+            onChange: function(color) {
+                colorPickerParent.style.backgroundColor = color.hex;
             },
-            move: function(color)
-            {
-                document.getElementById("customColorPickerContainer").style.backgroundColor = color.toHexString();
+            onClose: function(color) {
+                removeActive();
+                addClass(colorPickerParent, "category-color-active");
+                colorPickerParent.style.backgroundColor = color.hex;
+                document.getElementById("categoryColor").value = color.hex;
             }
         });
     }

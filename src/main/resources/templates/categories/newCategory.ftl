@@ -12,8 +12,6 @@
         </#if>
 
         <@header.header "BudgetMaster - ${title}"/>
-        <link type="text/css" rel="stylesheet" href="<@s.url '${"/css/libs/spectrum.css"}'/>"/>
-        <@header.style "spectrum"/>
         <@header.style "iconSelect"/>
     </head>
     <@header.body>
@@ -70,10 +68,10 @@
                                     </div>
                                 </#if>
                             </#list>
-                                <#--add custom color picker-->
+                                <#-- add custom color picker-->
                                 <div class="col s2 m1 no-padding">
                                     <div id="customColorPickerContainer" class="category-color <#if customColor == category.getColor()>category-color-active</#if>" style="background-color: ${customColor}">
-                                        <input type="text" id="customColorPicker" value="${customColor}" placeholder="+"/>
+                                        <span>+</span>
                                     </div>
                                 </div>
                             </div>
@@ -116,7 +114,7 @@
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
-        <script src="<@s.url '/js/libs/spectrum.js'/>"></script>
+        <script src="<@s.url '/js/libs/vanilla-picker.min.js'/>"></script>
         <script src="<@s.url '/js/categories.js'/>"></script>
         <script src="<@s.url '/js/iconSelect.js'/>"></script>
     </@header.body>

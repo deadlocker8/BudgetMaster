@@ -493,6 +493,11 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     height: 3px;
 }
 
+#customColorPickerContainer > span{
+    color: black;
+    line-height: 25px;
+}
+
 .invisible {
     opacity: 0;
 }
