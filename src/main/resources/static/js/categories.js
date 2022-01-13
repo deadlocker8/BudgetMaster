@@ -19,7 +19,7 @@ $(document).ready(function()
         let colorPicker = new Picker({
             parent: colorPickerParent,
             popup: 'bottom',
-            alpha: false,
+            alpha: true,
             editor: true,
             editorFormat: 'hex',
             cancelButton: false,

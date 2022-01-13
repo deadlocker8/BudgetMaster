@@ -7,7 +7,7 @@ $(document).ready(function()
         let fontColorPicker = new Picker({
             parent: fontColorPickerParent,
             popup: false,
-            alpha: false,
+            alpha: true,
             editor: true,
             editorFormat: 'hex',
             cancelButton: false,
