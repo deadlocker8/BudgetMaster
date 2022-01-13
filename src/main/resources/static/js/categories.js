@@ -23,7 +23,6 @@ $(document).ready(function()
             editor: true,
             editorFormat: 'hex',
             cancelButton: false,
-            color: colorPickerParent.style.backgroundColor,
             onChange: function(color) {
                 updateCustomColor(colorPickerParent, color);
             },
@@ -31,6 +30,8 @@ $(document).ready(function()
                 updateCustomColor(colorPickerParent, color);
             }
         });
+
+        colorPicker.setColor(colorPickerParent.style.backgroundColor, true);
     }
 
     $('.button-request-delete-category').click(function()
