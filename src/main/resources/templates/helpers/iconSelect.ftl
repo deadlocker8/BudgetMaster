@@ -13,7 +13,7 @@
             <div id="${id}" class="valign-wrapper item-icon">
                 <div class="item-icon-preview-container">
                     <a id="item-icon-preview" style="color: <#if item.getFontColor()??>${item.getFontColor()}</#if>">
-                        <div id="item-icon-preview-background" class="category-circle category-circle-preview" style="background-color: <#if showBackground>${item.getColor()}</#if>">
+                        <div id="item-icon-preview-background" class="category-circle category-circle-preview <#if settings.getShowCategoriesAsCircles()?? && settings.getShowCategoriesAsCircles() == false>category-square</#if>" style="background-color: <#if showBackground>${item.getColor()}</#if>">
                             <i id="builtin-icon-preview-icon" class="<#if hasBuiltinIcon>${item.getIconReference().getBuiltinIdentifier()}<#else>hidden</#if>"></i>
                             <img id="item-icon-preview-icon" src="<#if hasImageIcon><@s.url "/media/getImageByIconID/" + item.getIconReference().getID()/></#if>" class=" item-icon-preview category-icon <#if hasImageIcon == false>hidden</#if>"/>
                             <span id="item-icon-fallback-name" class="<#if hasBuiltinIcon || hasImageIcon>hidden</#if>"><#if item.getName()?? && item.getName()?length gt 0>${item.getName()?capitalize[0]}</#if></span>
