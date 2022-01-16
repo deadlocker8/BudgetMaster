@@ -5,6 +5,12 @@ $(document).ready(function()
         document.getElementById('category-name').focus();
     }
 
+    $('#category-name').on('change keydown paste input', function()
+    {
+        let categoryName = $(this).val();
+        document.getElementById('item-icon-fallback-name').innerText = categoryName.charAt(0).toUpperCase();
+    });
+
     $('.category-color').click(function()
     {
         removeActive();
