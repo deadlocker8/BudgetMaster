@@ -19,6 +19,7 @@
 
         <#import "../helpers/customSelectMacros.ftl" as customSelectMacros>
         <#import "../helpers/iconSelect.ftl" as iconSelectMacros>
+        <#import "../helpers/fontColorPicker.ftl" as fontColorPickerMacros>
 
         <main>
             <div class="card main-card background-color">
@@ -47,7 +48,10 @@
                         </div>
 
                         <#-- icon -->
-                        <@iconSelectMacros.iconSelect id="account-icon" item=account/>
+                        <@iconSelectMacros.iconSelect id="account-icon" item=account showBackground=false/>
+
+                        <#-- font color -->
+                        <@fontColorPickerMacros.fontColorPicker account/>
 
                         <#-- state -->
                         <#if account.getAccountState()??>
@@ -92,7 +96,9 @@
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
+        <script src="<@s.url '/js/libs/vanilla-picker.min.js'/>"></script>
         <script src="<@s.url '/js/accounts.js'/>"></script>
         <script src="<@s.url '/js/iconSelect.js'/>"></script>
+        <script src="<@s.url '/js/fontColorPicker.js'/>"></script>
     </@header.body>
 </html>
