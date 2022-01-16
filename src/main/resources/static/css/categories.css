@@ -40,6 +40,19 @@
     margin: 14px 16px;
 }
 
+.category-circle-preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 5rem;
+    height: 5rem;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 50%;
+    line-height: 5rem !important;
+    font-size: 2.5rem !important;
+}
+
 .category-circle-small .fa,
 .category-circle-small .fab,
 .category-circle-small .fad,

@@ -10,6 +10,7 @@ $(document).ready(function()
         removeActive();
         addClass($(this)[0], "category-color-active");
         document.getElementById("categoryColor").value = rgb2hex($(this)[0].style.backgroundColor);
+        document.getElementById("item-icon-preview-background").style.backgroundColor = $(this)[0].style.backgroundColor;
     });
 
     if($("#customColorPickerContainer").length)

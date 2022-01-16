@@ -77,7 +77,7 @@
                             </div>
 
                             <#-- icon -->
-                            <@iconSelectMacros.iconSelect id="account-icon" item=category/>
+                            <@iconSelectMacros.iconSelect id="category-icon" item=category/>
 
                             <#-- font color -->
                             <input type="hidden" name="fontColor" id="fontColor" value="${category.getFontColor()}">

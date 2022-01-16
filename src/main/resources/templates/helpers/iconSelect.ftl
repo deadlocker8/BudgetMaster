@@ -13,8 +13,11 @@
             <div id="${id}" class="valign-wrapper item-icon">
                 <div class="item-icon-preview-container">
                     <a id="item-icon-preview">
-                        <i id="builtin-icon-preview-icon" class="<#if hasBuiltinIcon>${item.getIconReference().getBuiltinIdentifier()}<#else>hidden</#if>"></i>
-                        <img id="item-icon-preview-icon" src="<#if hasImageIcon><@s.url "/media/getImageByIconID/" + item.getIconReference().getID()/></#if>" class="item-icon-preview <#if hasImageIcon == false>hidden</#if>"/>
+                        <div id="item-icon-preview-background" class="category-circle category-circle-preview" style="background-color: ${item.getColor()}">
+                            <i id="builtin-icon-preview-icon" class="<#if hasBuiltinIcon>${item.getIconReference().getBuiltinIdentifier()}<#else>hidden</#if>"></i>
+                            <img id="item-icon-preview-icon" src="<#if hasImageIcon><@s.url "/media/getImageByIconID/" + item.getIconReference().getID()/></#if>" class=" item-icon-preview category-icon <#if hasImageIcon == false>hidden</#if>"/>
+                            <span id="item-icon-fallback-name" class="<#if hasBuiltinIcon || hasImageIcon>hidden</#if>"><#if item.getName()??>${item.getName()?capitalize[0]}</#if></span>
+                        </div>
                     </a>
                     <@header.buttonFlat url='' icon='delete' id='' localizationKey='' classes="no-padding text-default button-remove-icon-from-item" noUrl=true/>
                 </div>

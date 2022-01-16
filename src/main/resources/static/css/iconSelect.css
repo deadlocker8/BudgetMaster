@@ -23,12 +23,7 @@
     width: 7rem;
     text-align: center;
     border: 2px solid var(--color-text);
-    padding: 1rem;
     color: var(--color-text);
-}
-
-#item-icon-preview i {
-    font-size: 4rem;
 }
 
 .button-remove-icon-from-item {
