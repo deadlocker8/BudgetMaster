@@ -23,6 +23,7 @@
         <#import "templateFunctions.ftl" as templateFunctions>
         <#import "../helpers/customSelectMacros.ftl" as customSelectMacros>
         <#import "../helpers/iconSelect.ftl" as iconSelectMacros>
+        <#import "../helpers/fontColorPicker.ftl" as fontColorPickerMacros>
 
         <main>
             <div class="card main-card background-color">
@@ -79,7 +80,10 @@
                         </#if>
 
                         <#-- icon -->
-                        <@iconSelectMacros.iconSelect id="template-icon" item=template/>
+                        <@iconSelectMacros.iconSelect id="template-icon" item=template showBackground=false/>
+
+                        <#-- font color -->
+                        <@fontColorPickerMacros.fontColorPicker template/>
 
                         <#-- buttons -->
                         <@newTransactionMacros.buttons cancelURL="/templates" includeContinueButton=false/>
@@ -98,9 +102,11 @@
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
+        <script src="<@s.url '/js/libs/vanilla-picker.min.js'/>"></script>
         <script src="<@s.url '/js/helpers.js'/>"></script>
         <script src="<@s.url '/js/transactions.js'/>"></script>
         <script src="<@s.url '/js/templates.js'/>"></script>
         <script src="<@s.url '/js/iconSelect.js'/>"></script>
+        <script src="<@s.url '/js/fontColorPicker.js'/>"></script>
     </@header.body>
 </html>

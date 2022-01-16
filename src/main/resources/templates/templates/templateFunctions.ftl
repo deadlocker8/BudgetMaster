@@ -54,7 +54,7 @@
 <#macro templateHeader template>
     <span style="color: ${template.getFontColor()}">
         <#if template.getIconReference()?? && (template.getIconReference().isImageIcon() || template.getIconReference().isBuiltinIcon())>
-            <@header.entityIcon entity=template classes="template-icon text-default"/>
+            <@header.entityIcon entity=template classes="template-icon"/>
         <#elseif template.getTransferAccount()??>
             <i class="material-icons">swap_horiz</i>
         <#else>
