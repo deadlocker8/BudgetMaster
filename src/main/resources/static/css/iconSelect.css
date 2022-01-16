@@ -1,9 +1,23 @@
 .item-icon {
     margin-top: 3rem;
+    flex-direction: column;
     justify-content: center;
 }
 
+.item-icon-preview-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#item-icon-placeholder {
+    margin-top: 1rem;
+}
+
 #item-icon-preview {
+    height: 7rem;
+    width: 7rem;
     text-align: center;
     border: 2px solid var(--color-text);
     padding: 1rem;

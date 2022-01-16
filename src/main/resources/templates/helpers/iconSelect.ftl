@@ -11,12 +11,15 @@
             <#assign hasBuiltinIcon=item.getIconReference()?? && item.getIconReference().isBuiltinIcon()/>
 
             <div id="${id}" class="valign-wrapper item-icon">
-                <a id="item-icon-preview">
-                    <i id="builtin-icon-preview-icon" class="<#if hasBuiltinIcon>${item.getIconReference().getBuiltinIdentifier()}<#else>hidden</#if>"></i>
-                    <img id="item-icon-preview-icon" src="<#if hasImageIcon><@s.url "/media/getImageByIconID/" + item.getIconReference().getID()/></#if>" class="item-icon-preview <#if hasImageIcon == false>hidden</#if>"/>
-                    <div id="item-icon-placeholder" class="<#if hasImageIcon || hasBuiltinIcon>hidden</#if>">${locale.getString("account.new.icon.placeholder")}</div>
-                </a>
-                <@header.buttonFlat url='' icon='delete' id='' localizationKey='' classes="no-padding text-default button-remove-icon-from-item" noUrl=true/>
+                <div class="item-icon-preview-container">
+                    <a id="item-icon-preview">
+                        <i id="builtin-icon-preview-icon" class="<#if hasBuiltinIcon>${item.getIconReference().getBuiltinIdentifier()}<#else>hidden</#if>"></i>
+                        <img id="item-icon-preview-icon" src="<#if hasImageIcon><@s.url "/media/getImageByIconID/" + item.getIconReference().getID()/></#if>" class="item-icon-preview <#if hasImageIcon == false>hidden</#if>"/>
+                    </a>
+                    <@header.buttonFlat url='' icon='delete' id='' localizationKey='' classes="no-padding text-default button-remove-icon-from-item" noUrl=true/>
+                </div>
+
+                <div id="item-icon-placeholder">${locale.getString("account.new.icon.placeholder")}</div>
 
                 <input id="hidden-input-icon-image-id" type="hidden" name="iconImageID" value="<#if hasImageIcon>${item.getIconReference().getImage().getID()?c}</#if>">
                 <input id="hidden-input-icon-builtin-identifier" type="hidden" name="builtinIconIdentifier" value="<#if hasBuiltinIcon>${item.getIconReference().getBuiltinIdentifier()}</#if>">
