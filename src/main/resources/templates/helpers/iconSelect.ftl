@@ -12,7 +12,7 @@
 
             <div id="${id}" class="valign-wrapper item-icon">
                 <div class="item-icon-preview-container">
-                    <a id="item-icon-preview">
+                    <a id="item-icon-preview" style="color: <#if item.getFontColor()??>${item.getFontColor()}</#if>">
                         <div id="item-icon-preview-background" class="category-circle category-circle-preview" style="background-color: ${item.getColor()}">
                             <i id="builtin-icon-preview-icon" class="<#if hasBuiltinIcon>${item.getIconReference().getBuiltinIdentifier()}<#else>hidden</#if>"></i>
                             <img id="item-icon-preview-icon" src="<#if hasImageIcon><@s.url "/media/getImageByIconID/" + item.getIconReference().getID()/></#if>" class=" item-icon-preview category-icon <#if hasImageIcon == false>hidden</#if>"/>

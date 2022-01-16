@@ -28,4 +28,5 @@ function updateFontColor(parent, color)
 {
     parent.style.backgroundColor = color.hex;
     document.getElementById("fontColor").value = color.hex;
+    document.getElementById("item-icon-preview").style.color = color.hex;
 }
