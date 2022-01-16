@@ -16,6 +16,9 @@
 }
 
 #item-icon-preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 7rem;
     width: 7rem;
     text-align: center;
@@ -25,7 +28,7 @@
 }
 
 #item-icon-preview i {
-    font-size: 3rem;
+    font-size: 4rem;
 }
 
 .button-remove-icon-from-item {
