@@ -12,10 +12,12 @@ $(document).ready(function()
             editorFormat: 'hex',
             cancelButton: false,
             color: fontColorPickerParent.style.backgroundColor,
-            onChange: function(color) {
+            onChange: function(color)
+            {
                 updateFontColor(fontColorPickerParent, color);
             },
-            onClose: function(color) {
+            onClose: function(color)
+            {
                 updateFontColor(fontColorPickerParent, color);
             }
         });
@@ -27,8 +29,18 @@ $(document).ready(function()
             document.getElementById("fontColor").value = null;
 
             let backgroundColor = document.getElementById('item-icon-preview-background').style.backgroundColor;
-            let rgb = extractRGB(backgroundColor);
-            let appropriateColor = getAppropriateTextColor(rgb);
+
+            let appropriateColor;
+            try
+            {
+                let rgb = extractRGB(backgroundColor);
+                appropriateColor = getAppropriateTextColor(rgb);
+            }
+            catch(e)
+            {
+                appropriateColor = '#2E79B9';
+            }
+
             document.getElementById("item-icon-preview").style.color = appropriateColor;
 
             fontColorPicker.setColor(appropriateColor, true);
