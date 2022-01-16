@@ -493,7 +493,7 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     height: 3px;
 }
 
-#customColorPickerContainer > span{
+#customColorPickerContainer > span {
     color: black;
     line-height: 25px;
 }
@@ -502,6 +502,10 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
 #fontColorPickerContainer {
     margin-top: 3rem;
     justify-content: center;
+}
+
+#buttonFontColorAuto {
+    margin-top: 3rem;
 }
 
 .invisible {

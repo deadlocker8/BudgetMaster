@@ -92,6 +92,11 @@ public class IconService implements Resettable
 			return new Icon(imageByIdOptional.get());
 		}
 
+		if(fontColor != null && fontColor.isEmpty())
+		{
+			fontColor = null;
+		}
+
 		if(builtinIconIdentifier != null && !builtinIconIdentifier.isEmpty())
 		{
 			return new Icon(builtinIconIdentifier, fontColor);

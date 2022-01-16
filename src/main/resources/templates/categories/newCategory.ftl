@@ -87,8 +87,12 @@
                                     <i class="material-icons prefix">palette</i>
                                     <label class="input-label" for="fontColorPickerContainer">${locale.getString("account.new.label.icon.fontcolor")}</label>
 
-                                    <div id="fontColorPickerContainer" class="valign-wrapper">
-                                        <div id="fontColorPicker" style="background-color: ${category.getFontColor()}"></div>
+                                    <div class="center-align">
+                                        <@header.buttonLink url='' icon='auto_fix_high' id='buttonFontColorAuto' localizationKey='account.new.icon.fontcolor.clear' noUrl=true/>
+
+                                        <div id="fontColorPickerContainer" class="valign-wrapper">
+                                            <div id="fontColorPicker" style="background-color: ${category.getFontColor()}"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

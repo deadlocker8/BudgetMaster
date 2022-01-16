@@ -66,7 +66,9 @@ function removeActive()
 function updateCustomColor(parent, color)
 {
     removeActive();
+
     addClass(parent, "category-color-active");
     parent.style.backgroundColor = color.hex;
     document.getElementById("categoryColor").value = color.hex;
+    document.getElementById("item-icon-preview-background").style.backgroundColor = color.rgbaString;
 }
