@@ -128,6 +128,7 @@ public class AccountController extends BaseController
 					   @ModelAttribute("NewAccount") Account account,
 					   @RequestParam(value = "iconImageID", required = false) Integer iconImageID,
 					   @RequestParam(value = "builtinIconIdentifier", required = false) String builtinIconIdentifier,
+					   @RequestParam(value = "fontColor", required = false) String fontColor,
 					   BindingResult bindingResult)
 	{
 		AccountValidator accountValidator = new AccountValidator();
@@ -148,6 +149,8 @@ public class AccountController extends BaseController
 			bindingResult.addError(new FieldError("NewAccount", "state", account.getAccountState(), false, new String[]{"warning.account.edit.state"}, null, null));
 		}
 
+		account.updateIcon(iconService, iconImageID, builtinIconIdentifier, fontColor, accountService);
+
 		if(bindingResult.hasErrors())
 		{
 			model.addAttribute("error", bindingResult);
@@ -156,9 +159,6 @@ public class AccountController extends BaseController
 			model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
 			return "accounts/newAccount";
 		}
-
-		// TODO: pass actual font color
-		account.updateIcon(iconService, iconImageID, builtinIconIdentifier, null, accountService);
 
 		if(isNewAccount)
 		{

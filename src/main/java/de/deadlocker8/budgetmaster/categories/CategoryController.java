@@ -121,6 +121,8 @@ public class CategoryController extends BaseController
 		CategoryValidator userValidator = new CategoryValidator();
 		userValidator.validate(category, bindingResult);
 
+		category.updateIcon(iconService, iconImageID, builtinIconIdentifier, fontColor, categoryService);
+
 		if(bindingResult.hasErrors())
 		{
 			model.addAttribute("error", bindingResult);
@@ -133,8 +135,6 @@ public class CategoryController extends BaseController
 		{
 			category.setType(CategoryType.CUSTOM);
 		}
-
-		category.updateIcon(iconService, iconImageID, builtinIconIdentifier, fontColor, categoryService);
 
 		categoryService.save(category);
 

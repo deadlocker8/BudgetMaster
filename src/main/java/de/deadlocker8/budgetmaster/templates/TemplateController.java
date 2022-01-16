@@ -171,7 +171,8 @@ public class TemplateController extends BaseController
 					   @RequestParam(value = "includeAccount", required = false) boolean includeAccount,
 					   @RequestParam(value = "includeTransferAccount", required = false) boolean includeTransferAccount,
 					   @RequestParam(value = "iconImageID", required = false) Integer iconImageID,
-					   @RequestParam(value = "builtinIconIdentifier", required = false) String builtinIconIdentifier)
+					   @RequestParam(value = "builtinIconIdentifier", required = false) String builtinIconIdentifier,
+					   @RequestParam(value = "fontColor", required = false) String fontColor)
 	{
 		template.setTemplateName(template.getTemplateName().trim());
 
@@ -200,6 +201,8 @@ public class TemplateController extends BaseController
 		}
 		transactionService.handleTags(template);
 
+		template.updateIcon(iconService, iconImageID, builtinIconIdentifier, fontColor, templateService);
+
 		if(bindingResult.hasErrors())
 		{
 			model.addAttribute("error", bindingResult);
@@ -216,9 +219,6 @@ public class TemplateController extends BaseController
 		{
 			template.setTransferAccount(null);
 		}
-
-		// TODO: pass actual font color
-		template.updateIcon(iconService, iconImageID, builtinIconIdentifier, null, templateService);
 
 		templateService.getRepository().save(template);
 		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.template.save.success", template.getName()), NotificationType.SUCCESS));
