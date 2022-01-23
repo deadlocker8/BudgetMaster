@@ -7,6 +7,7 @@ import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
 import de.deadlocker8.budgetmaster.integration.helpers.TransactionTestHelper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -50,6 +51,35 @@ class AccountTest extends SeleniumTestBase
 		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf", "read only account", "hidden account"), destinationAccounts);
 	}
 
+	@AfterEach
+	public void afterEach()
+	{
+		// delete account "zzzz" if existing
+
+		driver.get(helper.getUrl() + "/accounts");
+
+		List<WebElement> accountRows = driver.findElements(By.cssSelector(".account-container tr"));
+		for(WebElement row : accountRows)
+		{
+			final List<WebElement> columns = row.findElements(By.tagName("td"));
+			final String name = columns.get(2).getText();
+			if(name.equals("zzzz"))
+			{
+				columns.get(3).findElements(By.tagName("a")).get(1).click();
+
+				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+				wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".modal-content h4"), "Delete Account"));
+
+				driver.findElements(By.cssSelector("#deleteModalContainerOnDemand .modal-footer a")).get(1).click();
+
+				wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("notification-item")));
+
+				return;
+			}
+		}
+	}
+
+
 	@Test
 	void test_newAccount_cancel()
 	{
@@ -81,7 +111,7 @@ class AccountTest extends SeleniumTestBase
 		driver.get(helper.getUrl() + "/accounts");
 		driver.findElement(By.id("button-new-account")).click();
 
-		String name = "My new account";
+		String name = "zzzz";
 
 		// fill form
 		driver.findElement(By.id("account-name")).sendKeys(name);
@@ -102,9 +132,141 @@ class AccountTest extends SeleniumTestBase
 		assertAccountColumns(accountRows.get(0).findElements(By.tagName("td")), true, true, AccountState.FULL_ACCESS, "Default Account");
 		assertAccountColumns(accountRows.get(1).findElements(By.tagName("td")), true, false, AccountState.FULL_ACCESS, "DefaultAccount0815");
 		assertAccountColumns(accountRows.get(2).findElements(By.tagName("td")), false, false, AccountState.HIDDEN, "hidden account");
-		assertAccountColumns(accountRows.get(3).findElements(By.tagName("td")), false, false, AccountState.READ_ONLY, name);
-		assertAccountColumns(accountRows.get(4).findElements(By.tagName("td")), false, false, AccountState.READ_ONLY, "read only account");
-		assertAccountColumns(accountRows.get(5).findElements(By.tagName("td")), true, false, AccountState.FULL_ACCESS, "sfsdf");
+		assertAccountColumns(accountRows.get(3).findElements(By.tagName("td")), false, false, AccountState.READ_ONLY, "read only account");
+		assertAccountColumns(accountRows.get(4).findElements(By.tagName("td")), true, false, AccountState.FULL_ACCESS, "sfsdf");
+		assertAccountColumns(accountRows.get(5).findElements(By.tagName("td")), false, false, AccountState.READ_ONLY, name);
+	}
+
+	@Test
+	void test_newAccount_fallbackIconWithCustomFontColor()
+	{
+		driver.get(helper.getUrl() + "/accounts");
+		driver.findElement(By.id("button-new-account")).click();
+
+		final String name = "zzzz";
+		final String color = "#FF0000";
+
+		// fill form
+		driver.findElement(By.id("account-name")).sendKeys(name);
+		selectCustomFontColor(color);
+
+		// submit form
+		driver.findElement(By.id("button-save-account")).click();
+
+		final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Accounts"));
+
+		// assert
+		assertThat(driver.getCurrentUrl()).endsWith("/accounts");
+
+		List<WebElement> accountRows = driver.findElements(By.cssSelector(".account-container tr"));
+		assertThat(accountRows).hasSize(6);
+
+		final WebElement icon = accountRows.get(5).findElements(By.tagName("td")).get(1);
+		assertThat(icon).hasFieldOrPropertyWithValue("text", name.substring(0, 1).toUpperCase());
+		assertThat(icon.findElement(By.tagName("span")).getCssValue("color")).isEqualTo("rgb(255, 0, 0)");
+	}
+
+	@Test
+	void test_newAccount_builtinIconWithCustomFontColor()
+	{
+		driver.get(helper.getUrl() + "/accounts");
+		driver.findElement(By.id("button-new-account")).click();
+
+		final String name = "zzzz";
+		final String color = "#FF0000";
+
+		// fill form
+		driver.findElement(By.id("account-name")).sendKeys(name);
+
+		selectBuiltinIcon(".fas.fa-address-book");
+		selectCustomFontColor(color);
+
+		// submit form
+		driver.findElement(By.id("button-save-account")).click();
+
+		final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Accounts"));
+
+		// assert
+		assertThat(driver.getCurrentUrl()).endsWith("/accounts");
+
+		List<WebElement> accountRows = driver.findElements(By.cssSelector(".account-container tr"));
+		assertThat(accountRows).hasSize(6);
+
+		final WebElement icon = accountRows.get(5).findElements(By.tagName("td")).get(1);
+		assertThat(icon.findElement(By.cssSelector("span i")).getAttribute("class")).isEqualTo("fas fa-address-book account-select-icon");
+		assertThat(icon.findElement(By.tagName("span")).getCssValue("color")).isEqualTo("rgb(255, 0, 0)");
+	}
+
+	@Test
+	void test_newAccount_imageIcon()
+	{
+		driver.get(helper.getUrl() + "/accounts");
+		driver.findElement(By.id("button-new-account")).click();
+
+		final String name = "zzzz";
+		final String color = "#FF0000";
+
+		// fill form
+		driver.findElement(By.id("account-name")).sendKeys(name);
+
+		selectImageIcon();
+		selectCustomFontColor(color);
+
+		// submit form
+		driver.findElement(By.id("button-save-account")).click();
+
+		final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Accounts"));
+
+		// assert
+		assertThat(driver.getCurrentUrl()).endsWith("/accounts");
+
+		List<WebElement> accountRows = driver.findElements(By.cssSelector(".account-container tr"));
+		assertThat(accountRows).hasSize(6);
+
+		final WebElement icon = accountRows.get(5).findElements(By.tagName("td")).get(1);
+		assertThat(icon.findElement(By.cssSelector("span img")).getAttribute("src")).startsWith(helper.getUrl() + "/media/getImageByIconID/");
+	}
+
+	private void selectCustomFontColor(String color)
+	{
+		final WebElement fontColorPicker = driver.findElement(By.cssSelector(".picker_editor input"));
+		fontColorPicker.click();
+		fontColorPicker.sendKeys(color);
+	}
+
+	private void selectBuiltinIcon(String iconClasses)
+	{
+		driver.findElement(By.id("item-icon-preview")).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("iconTabs")));
+
+		driver.findElement(By.cssSelector(".builtin-icon-option-icon" + iconClasses)).click();
+
+		driver.findElement(By.id("button-icon-confirm")).click();
+
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("iconTabs")));
+	}
+
+	private void selectImageIcon()
+	{
+		driver.findElement(By.id("item-icon-preview")).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("iconTabs")));
+
+		driver.findElements(By.cssSelector("#iconTabs li")).get(1).click();
+
+		driver.findElement(By.className("item-icon-option")).click();
+
+		driver.findElement(By.id("button-icon-confirm")).click();
+
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("iconTabs")));
 	}
 
 	@Test
