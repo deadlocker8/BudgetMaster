@@ -48,13 +48,14 @@
                         </div>
 
                         <#-- icon -->
-                        <#if account.getIconReference()?? && account.getIconReference().isFallbackIcon()>
-                            <#assign backgroundClasses='category-square account-square-border'/>
+                        <#if account.getIconReference()?? && (account.getIconReference().isImageIcon() || account.getIconReference().isBuiltinIcon())>
+                            <#assign initialBackgroundClasses='category-square'/>
                         <#else>
-                            <#assign backgroundClasses='category-square'/>
+                            <#assign initialBackgroundClasses='category-square account-square-border'/>
                         </#if>
+                        <#assign backgroundClasses='category-square account-square-border'/>
 
-                        <@iconSelectMacros.iconSelect id="account-icon" item=account showBackground=false backgroundClasses=backgroundClasses/>
+                        <@iconSelectMacros.iconSelect id="account-icon" item=account showBackground=false initialBackgroundClasses=initialBackgroundClasses backgroundClasses=backgroundClasses/>
 
                         <#-- font color -->
                         <@fontColorPickerMacros.fontColorPicker account/>

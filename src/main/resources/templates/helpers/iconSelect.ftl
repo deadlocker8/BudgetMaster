@@ -1,7 +1,7 @@
 <#import "/spring.ftl" as s>
 <#import "../helpers/header.ftl" as header>
 
-<#macro iconSelect id item showBackground=true backgroundClasses=''>
+<#macro iconSelect id item showBackground=true initialBackgroundClasses='' backgroundClasses=''>
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
             <i class="fas fa-icons prefix"></i>
@@ -14,7 +14,7 @@
                 <div class="item-icon-preview-container">
                     <a id="item-icon-preview" style="color: <#if item.getFontColor()??>${item.getFontColor()}</#if>">
                         <script>iconSelectAdditionalBackgroundClasses = "${backgroundClasses}";</script>
-                        <div id="item-icon-preview-background" class="category-circle category-circle-preview <#if settings.getShowCategoriesAsCircles()?? && settings.getShowCategoriesAsCircles() == false>category-square</#if> ${backgroundClasses}" style="background-color: <#if showBackground>${item.getColor()}</#if>">
+                        <div id="item-icon-preview-background" class="category-circle category-circle-preview <#if settings.getShowCategoriesAsCircles()?? && settings.getShowCategoriesAsCircles() == false>category-square</#if> ${initialBackgroundClasses}" style="background-color: <#if showBackground>${item.getColor()}</#if>">
                             <i id="builtin-icon-preview-icon" class="<#if hasBuiltinIcon>${item.getIconReference().getBuiltinIdentifier()}<#else>hidden</#if>"></i>
                             <img id="item-icon-preview-icon" src="<#if hasImageIcon><@s.url "/media/getImageByIconID/" + item.getIconReference().getID()/></#if>" class=" item-icon-preview category-icon <#if hasImageIcon == false>hidden</#if>"/>
                             <span id="item-icon-fallback-name" class="<#if hasBuiltinIcon || hasImageIcon>hidden</#if>"><#if item.getName()?? && item.getName()?length gt 0>${item.getName()?capitalize[0]}</#if></span>
