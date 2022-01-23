@@ -233,6 +233,7 @@ class AccountTest extends SeleniumTestBase
 	private void selectCustomFontColor(String color)
 	{
 		final WebElement fontColorPicker = driver.findElement(By.cssSelector(".picker_editor input"));
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", fontColorPicker);
 		fontColorPicker.click();
 		fontColorPicker.sendKeys(color);
 	}
