@@ -210,13 +210,13 @@ public class Template implements TransactionBase, Iconizable
 		final Icon icon = getIconReference();
 		if(icon == null)
 		{
-			return "var(--color-text);";
+			return "#FFFFFF";
 		}
 
 		final String fontColor = icon.getFontColor();
 		if(fontColor == null)
 		{
-			return "var(--color-text);";
+			return "#FFFFFF";
 		}
 
 		return fontColor;
