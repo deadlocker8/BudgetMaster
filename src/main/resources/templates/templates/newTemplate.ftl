@@ -80,7 +80,7 @@
                         </#if>
 
                         <#-- icon -->
-                        <@iconSelectMacros.iconSelect id="template-icon" item=template showBackground=false/>
+                        <@iconSelectMacros.iconSelect id="template-icon" item=template showBackground=false preventFallbackIcon=true/>
 
                         <#-- font color -->
                         <@fontColorPickerMacros.fontColorPicker template/>
