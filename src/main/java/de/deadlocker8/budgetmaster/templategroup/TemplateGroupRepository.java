@@ -9,4 +9,6 @@ import java.util.List;
 public interface TemplateGroupRepository extends JpaRepository<TemplateGroup, Integer>, JpaSpecificationExecutor<TemplateGroup>
 {
 	List<TemplateGroup> findAllByOrderByNameAsc();
+
+	TemplateGroup findFirstByType(TemplateGroupType type);
 }

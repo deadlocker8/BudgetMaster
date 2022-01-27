@@ -19,6 +19,9 @@ public class TemplateGroup implements ProvidesID
 	@Expose
 	private String name;
 
+	@Expose
+	private TemplateGroupType type;
+
 	@OneToMany(mappedBy = "templateGroup", fetch = FetchType.LAZY)
 	private List<Template> referringTemplates;
 
@@ -26,10 +29,11 @@ public class TemplateGroup implements ProvidesID
 	{
 	}
 
-	public TemplateGroup(Integer ID, String name)
+	public TemplateGroup(Integer ID, String name, TemplateGroupType type)
 	{
 		this.ID = ID;
 		this.name = name;
+		this.type = type;
 	}
 
 	public Integer getID()
@@ -52,6 +56,16 @@ public class TemplateGroup implements ProvidesID
 		this.name = name;
 	}
 
+	public TemplateGroupType getType()
+	{
+		return type;
+	}
+
+	public void setType(TemplateGroupType type)
+	{
+		this.type = type;
+	}
+
 	public List<Template> getReferringTemplates()
 	{
 		return referringTemplates;
@@ -68,6 +82,7 @@ public class TemplateGroup implements ProvidesID
 		return "TemplateGroup{" +
 				"ID=" + ID +
 				", name='" + name + '\'' +
+				", type='" + type + '\'' +
 				'}';
 	}
 
@@ -77,12 +92,12 @@ public class TemplateGroup implements ProvidesID
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
 		TemplateGroup that = (TemplateGroup) o;
-		return Objects.equals(ID, that.ID) && Objects.equals(name, that.name);
+		return Objects.equals(ID, that.ID) && Objects.equals(name, that.name) && type == that.type;
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, name);
+		return Objects.hash(ID, name, type);
 	}
 }
