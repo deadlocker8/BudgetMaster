@@ -86,6 +86,8 @@ public class TemplateGroupController extends BaseController
 			return "templateGroups/newTemplateGroup";
 		}
 
+		templateGroup.setType(TemplateGroupType.CUSTOM);
+
 		templateGroupService.getRepository().save(templateGroup);
 
 		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.template.save.success", templateGroup.getName()), NotificationType.SUCCESS));
