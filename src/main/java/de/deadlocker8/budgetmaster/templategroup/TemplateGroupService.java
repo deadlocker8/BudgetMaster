@@ -54,7 +54,7 @@ public class TemplateGroupService implements Resettable, AccessAllEntities<Templ
 	@Override
 	public List<TemplateGroup> getAllEntitiesAsc()
 	{
-		final List<TemplateGroup> templateGroups = templateGroupRepository.findAllByOrderByNameAsc();
+		final List<TemplateGroup> templateGroups = templateGroupRepository.findAllByType(TemplateGroupType.CUSTOM);
 		templateGroups.sort((t1, t2) -> new NaturalOrderComparator().compare(t1.getName(), t2.getName()));
 		return templateGroups;
 	}

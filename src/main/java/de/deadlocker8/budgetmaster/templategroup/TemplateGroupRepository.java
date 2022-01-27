@@ -11,4 +11,6 @@ public interface TemplateGroupRepository extends JpaRepository<TemplateGroup, In
 	List<TemplateGroup> findAllByOrderByNameAsc();
 
 	TemplateGroup findFirstByType(TemplateGroupType type);
+
+	List<TemplateGroup> findAllByType(TemplateGroupType type);
 }
