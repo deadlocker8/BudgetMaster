@@ -94,7 +94,7 @@ public class TemplateController extends BaseController
 	@GetMapping("/{ID}/requestDelete")
 	public String requestDeleteTemplate(Model model, @PathVariable("ID") Integer ID)
 	{
-		final Optional<Template> templateOptional = templateService.getRepository().findById(ID);
+		final Optional<Template> templateOptional = templateService.findById(ID);
 		if(templateOptional.isEmpty())
 		{
 			throw new ResourceNotFoundException();
