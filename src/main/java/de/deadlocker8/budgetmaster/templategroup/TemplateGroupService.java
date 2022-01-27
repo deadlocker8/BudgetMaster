@@ -4,6 +4,8 @@ import de.deadlocker8.budgetmaster.services.AccessAllEntities;
 import de.deadlocker8.budgetmaster.services.AccessEntityByID;
 import de.deadlocker8.budgetmaster.services.Resettable;
 import org.padler.natorder.NaturalOrderComparator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,7 @@ import java.util.Optional;
 @Service
 public class TemplateGroupService implements Resettable, AccessAllEntities<TemplateGroup>, AccessEntityByID<TemplateGroup>
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger(TemplateGroupService.class);
 	private final TemplateGroupRepository templateGroupRepository;
 
 	@Autowired
@@ -37,7 +40,14 @@ public class TemplateGroupService implements Resettable, AccessAllEntities<Templ
 	@Override
 	public void createDefaults()
 	{
-		// no defaults needed
+		if(templateGroupRepository.findAll().isEmpty())
+		{
+			TemplateGroup defaultGroup = new TemplateGroup();
+			defaultGroup.setName("Default");
+
+			templateGroupRepository.save(defaultGroup);
+			LOGGER.debug("Created default template group");
+		}
 	}
 
 	@Override
