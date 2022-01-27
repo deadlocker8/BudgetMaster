@@ -7,10 +7,30 @@
     <@header.buttonLink url='/templates/newTemplate' icon='add' localizationKey='title.template.new'/>
 </#macro>
 
+<#macro buttonEditTemplateGroups>
+    <@header.buttonLink url='/templateGroups' icon='edit' localizationKey='title.template.group.edit.short'/>
+</#macro>
+
 <#macro buttons>
-    <div class="row valign-wrapper">
-        <div class="col s12 center-align">
+    <div class="row valign-wrapper hide-on-small-only">
+        <div class="col s6 right-align">
             <@buttonNew/>
+        </div>
+
+        <div class="col s6 left-align">
+            <@buttonEditTemplateGroups/>
+        </div>
+    </div>
+    <div class="hide-on-med-and-up">
+        <div class="row valign-wrapper center-align">
+            <div class="col s12">
+                <@buttonNew/>
+            </div>
+        </div>
+        <div class="row valign-wrapper center-align">
+            <div class="col s12">
+                <@buttonEditTemplateGroups/>
+            </div>
         </div>
     </div>
 </#macro>
