@@ -6,6 +6,7 @@ import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.Iconizable;
 import de.deadlocker8.budgetmaster.tags.Tag;
+import de.deadlocker8.budgetmaster.templategroup.TemplateGroup;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionBase;
 
@@ -62,6 +63,10 @@ public class Template implements TransactionBase, Iconizable
 	@Expose
 	private Account transferAccount;
 
+	@ManyToOne(optional = true)
+	private TemplateGroup templateGroup;
+
+
 	public Template()
 	{
 	}
@@ -79,6 +84,7 @@ public class Template implements TransactionBase, Iconizable
 		this.iconReference = template.getIconReference();
 		this.tags = new ArrayList<>(template.getTags());
 		this.transferAccount = template.getTransferAccount();
+		this.templateGroup = template.getTemplateGroup();
 	}
 
 	public Template(String templateName, Transaction transaction)
@@ -105,6 +111,7 @@ public class Template implements TransactionBase, Iconizable
 			this.tags = new ArrayList<>(transaction.getTags());
 		}
 		this.transferAccount = transaction.getTransferAccount();
+		this.templateGroup = null;
 	}
 
 	public Integer getID()
@@ -247,6 +254,16 @@ public class Template implements TransactionBase, Iconizable
 		return transferAccount != null;
 	}
 
+	public TemplateGroup getTemplateGroup()
+	{
+		return templateGroup;
+	}
+
+	public void setTemplateGroup(TemplateGroup templateGroup)
+	{
+		this.templateGroup = templateGroup;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -279,6 +296,8 @@ public class Template implements TransactionBase, Iconizable
 			value += ", transferAccount=Account[ID=" + transferAccount.getID() + ", name=" + transferAccount.getName() + "]";
 		}
 
+		value += ", transferAccount=" + templateGroup;
+
 		value += '}';
 		return value;
 	}
@@ -299,12 +318,13 @@ public class Template implements TransactionBase, Iconizable
 				Objects.equals(description, template.description) &&
 				Objects.equals(iconReference, template.iconReference) &&
 				Objects.equals(tags, template.tags) &&
-				Objects.equals(transferAccount, template.transferAccount);
+				Objects.equals(transferAccount, template.transferAccount) &&
+				Objects.equals(templateGroup, template.templateGroup);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, templateName, amount, isExpenditure, account, category, name, description, iconReference, tags, transferAccount);
+		return Objects.hash(ID, templateName, amount, isExpenditure, account, category, name, description, iconReference, tags, transferAccount, templateGroup);
 	}
 }
