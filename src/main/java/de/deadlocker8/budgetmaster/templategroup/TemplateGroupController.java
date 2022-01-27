@@ -39,14 +39,13 @@ public class TemplateGroupController extends BaseController
 	@GetMapping("/{ID}/requestDelete")
 	public String requestDeleteTemplateGroup(Model model, @PathVariable("ID") Integer ID)
 	{
-		final Optional<TemplateGroup> templateGroupOptional = templateGroupService.getRepository().findById(ID);
-		if(templateGroupOptional.isEmpty())
+		if(!templateGroupService.isDeletable(ID))
 		{
-			throw new ResourceNotFoundException();
+			return "redirect:/templateGroups";
 		}
 
 		model.addAttribute("templateGroups", templateGroupService.getAllEntitiesAsc());
-		model.addAttribute("templateGroupToDelete", templateGroupOptional.get());
+		model.addAttribute("templateGroupToDelete", templateGroupService.findById(ID).orElseThrow());
 		return "templateGroups/deleteTemplateGroupModal";
 	}
 

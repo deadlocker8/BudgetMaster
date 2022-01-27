@@ -31,6 +31,18 @@ public class TemplateGroupService implements Resettable, AccessAllEntities<Templ
 		return templateGroupRepository;
 	}
 
+	@SuppressWarnings("OptionalIsPresent")
+	public boolean isDeletable(Integer ID)
+	{
+		Optional<TemplateGroup> templateGroupOptional = findById(ID);
+		if(templateGroupOptional.isPresent())
+		{
+			return templateGroupOptional.get().getType() == TemplateGroupType.CUSTOM;
+		}
+
+		return false;
+	}
+
 	@Override
 	public void deleteAll()
 	{
