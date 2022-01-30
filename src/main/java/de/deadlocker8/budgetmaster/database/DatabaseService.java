@@ -18,6 +18,8 @@ import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.tags.TagService;
+import de.deadlocker8.budgetmaster.templategroup.TemplateGroup;
+import de.deadlocker8.budgetmaster.templategroup.TemplateGroupService;
 import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.templates.TemplateService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
@@ -55,19 +57,21 @@ public class DatabaseService
 	private final TransactionService transactionService;
 	private final TagService tagService;
 	private final TemplateService templateService;
+	private final TemplateGroupService templateGroupService;
 	private final ChartService chartService;
 	private final SettingsService settingsService;
 	private final ImageService imageService;
 	private final IconService iconService;
 
 	@Autowired
-	public DatabaseService(AccountService accountService, CategoryService categoryService, TransactionService transactionService, TagService tagService, TemplateService templateService, ChartService chartService, SettingsService settingsService, ImageService imageService, IconService iconService)
+	public DatabaseService(AccountService accountService, CategoryService categoryService, TransactionService transactionService, TagService tagService, TemplateService templateService, TemplateGroupService templateGroupService, ChartService chartService, SettingsService settingsService, ImageService imageService, IconService iconService)
 	{
 		this.accountService = accountService;
 		this.categoryService = categoryService;
 		this.transactionService = transactionService;
 		this.tagService = tagService;
 		this.templateService = templateService;
+		this.templateGroupService = templateGroupService;
 		this.chartService = chartService;
 		this.settingsService = settingsService;
 		this.imageService = imageService;
@@ -258,14 +262,15 @@ public class DatabaseService
 		List<Account> accounts = accountService.getRepository().findAll();
 		List<Transaction> transactions = transactionService.getRepository().findAll();
 		List<Transaction> filteredTransactions = filterRepeatingTransactions(transactions);
+		List<TemplateGroup> templateGroups = templateGroupService.getAllEntitiesAsc();
 		List<Template> templates = templateService.getRepository().findAll();
 		List<Chart> charts = chartService.getRepository().findAllByType(ChartType.CUSTOM);
 		List<Image> images = imageService.getRepository().findAll();
 		List<Icon> icons = iconService.getRepository().findAll();
 		LOGGER.debug(MessageFormat.format("Reduced {0} transactions to {1}", transactions.size(), filteredTransactions.size()));
 
-		InternalDatabase database = new InternalDatabase(categories, accounts, filteredTransactions, templates, charts, images, icons);
-		LOGGER.debug(MessageFormat.format("Created database for JSON with {0} transactions, {1} categories, {2} accounts, {3} templates, {4} charts {5} images and {6} icons", database.getTransactions().size(), database.getCategories().size(), database.getAccounts().size(), database.getTemplates().size(), database.getCharts().size(), database.getImages().size(), database.getIcons().size()));
+		InternalDatabase database = new InternalDatabase(categories, accounts, filteredTransactions, templateGroups, templates, charts, images, icons);
+		LOGGER.debug(MessageFormat.format("Created database for JSON with {0} transactions, {1} categories, {2} accounts, {3} templates groups, {4} templates, {5} charts {6} images and {7} icons", database.getTransactions().size(), database.getCategories().size(), database.getAccounts().size(), database.getTemplateGroups().size(), database.getTemplates().size(), database.getCharts().size(), database.getImages().size(), database.getIcons().size()));
 
 		BackupDatabase_v8 databaseInExternalForm = BackupDatabase_v8.createFromInternalEntities(database);
 		LOGGER.debug("Converted database to external form");

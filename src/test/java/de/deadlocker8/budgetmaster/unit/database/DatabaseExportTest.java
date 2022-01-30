@@ -27,6 +27,10 @@ import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierDays;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.TagService;
+import de.deadlocker8.budgetmaster.templategroup.TemplateGroup;
+import de.deadlocker8.budgetmaster.templategroup.TemplateGroupRepository;
+import de.deadlocker8.budgetmaster.templategroup.TemplateGroupService;
+import de.deadlocker8.budgetmaster.templategroup.TemplateGroupType;
 import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.templates.TemplateRepository;
 import de.deadlocker8.budgetmaster.templates.TemplateService;
@@ -90,6 +94,9 @@ class DatabaseExportTest
 	private TagService tagService;
 
 	@Mock
+	private TemplateGroupService templateGroupService;
+
+	@Mock
 	private TemplateService templateService;
 
 	@Mock
@@ -125,6 +132,11 @@ class DatabaseExportTest
 		TransactionRepository transactionRepositoryMock = Mockito.mock(TransactionRepository.class);
 		Mockito.when(transactionRepositoryMock.findAll()).thenReturn(List.of());
 		Mockito.when(transactionService.getRepository()).thenReturn(transactionRepositoryMock);
+
+		// template groups
+		TemplateGroupRepository templateGroupRepositoryMock = Mockito.mock(TemplateGroupRepository.class);
+		Mockito.when(templateGroupRepositoryMock.findAll()).thenReturn(List.of());
+		Mockito.when(templateGroupService.getRepository()).thenReturn(templateGroupRepositoryMock);
 
 		// templates
 		TemplateRepository templateRepositoryMock = Mockito.mock(TemplateRepository.class);
@@ -213,6 +225,10 @@ class DatabaseExportTest
 		Mockito.when(transactionRepositoryMock.findAll()).thenReturn(List.of(transaction1, transaction2));
 		Mockito.when(transactionService.getRepository()).thenReturn(transactionRepositoryMock);
 
+		// template groups
+		TemplateGroup templateGroup = new TemplateGroup(1, "My Template Group", TemplateGroupType.CUSTOM);
+		Mockito.when(templateGroupService.getAllEntitiesAsc()).thenReturn(List.of(templateGroup));
+
 		// templates
 		Template template1 = new Template();
 		template1.setTemplateName("MyTemplate");
@@ -280,6 +296,7 @@ class DatabaseExportTest
 		assertThat(importedDatabase.getCategories()).containsExactly(categoryNone, categoryCustom);
 		assertThat(importedDatabase.getAccounts()).containsExactly(account1, account2);
 		assertThat(importedDatabase.getTransactions()).containsExactly(transaction1, transaction2);
+		assertThat(importedDatabase.getTemplateGroups()).containsExactly(templateGroup);
 		assertThat(importedDatabase.getTemplates()).containsExactly(template1, template2);
 		assertThat(importedDatabase.getCharts()).containsExactly(chart);
 		assertThat(importedDatabase.getImages()).containsExactly(image);
