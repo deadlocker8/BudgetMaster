@@ -679,6 +679,7 @@ class ImportServiceTest
 
 		// assert
 		Mockito.verify(templateRepository, Mockito.never()).save(Mockito.any());
+		Mockito.verify(templateGroupRepository, Mockito.never()).save(Mockito.any());
 	}
 
 	@Test
@@ -776,5 +777,33 @@ class ImportServiceTest
 		List<Template> updatedTemplates = importService.updateTemplateGroupsForTemplates(List.of(template1, template2), 2, 5);
 		assertThat(updatedTemplates).hasSize(1);
 		assertThat(updatedTemplates.get(0).getTemplateGroup()).hasFieldOrPropertyWithValue("ID", 5);
+	}
+
+	@Test
+	void test_importTemplateGroups_alreadyExisting()
+	{
+		TemplateGroup templateGroup = new TemplateGroup(2, "Template Group 1", TemplateGroupType.CUSTOM);
+
+		TemplateGroup newTemplateGroup = new TemplateGroup(5, "Template Group 1", TemplateGroupType.CUSTOM);
+		Mockito.when(templateGroupRepository.save(Mockito.any())).thenReturn(newTemplateGroup);
+
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(templateGroup), List.of(), List.of(), List.of(), List.of());
+		importService.importDatabase(database, new AccountMatchList(List.of()), true, true);
+
+		TemplateGroup expectedTemplateGroup = new TemplateGroup(templateGroup.getName(), templateGroup.getType());
+		Mockito.verify(templateGroupRepository, Mockito.atLeast(1)).save(expectedTemplateGroup);
+	}
+
+	@Test
+	void test_importTemplateGroups_skipDefault()
+	{
+		TemplateGroup templateGroup = new TemplateGroup(1, "Default", TemplateGroupType.DEFAULT);
+
+		Mockito.when(templateGroupRepository.findFirstByType(TemplateGroupType.DEFAULT)).thenReturn(templateGroup);
+
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(templateGroup), List.of(), List.of(), List.of(), List.of());
+		importService.importDatabase(database, new AccountMatchList(List.of()), true, true);
+
+		Mockito.verify(templateGroupRepository, Mockito.never()).save(Mockito.any());
 	}
 }
