@@ -16,7 +16,8 @@ public class BackupDatabase_v4 implements BackupDatabase
 	@SuppressWarnings("FieldCanBeLocal")
 	private final int VERSION = 4;
 
-	private final String INTRODUCED_IN_VERSION = "v2.5.0";
+	@SuppressWarnings("unused")
+	private final transient String INTRODUCED_IN_VERSION = "v2.5.0";
 
 	private List<BackupCategory_v4> categories;
 	private List<BackupAccount_v4> accounts;
