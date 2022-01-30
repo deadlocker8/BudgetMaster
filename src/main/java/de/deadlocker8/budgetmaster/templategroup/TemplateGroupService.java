@@ -10,10 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class TemplateGroupService implements Resettable, AccessAllEntities<TemplateGroup>, AccessEntityByID<TemplateGroup>
@@ -50,7 +47,31 @@ public class TemplateGroupService implements Resettable, AccessAllEntities<Templ
 	@Override
 	public void deleteAll()
 	{
-		templateGroupRepository.deleteAll();
+		for(TemplateGroup templateGroup : getAllEntitiesAsc())
+		{
+			deleteTemplateGroup(templateGroup.getID());
+		}
+	}
+
+	public void deleteTemplateGroup(int ID)
+	{
+		Optional<TemplateGroup> templateGroupOptional = templateGroupRepository.findById(ID);
+		if(templateGroupOptional.isEmpty())
+		{
+			throw new NoSuchElementException("Can't delete non-existing template group with ID: " + ID);
+		}
+
+		TemplateGroup templateGroupToDelete = templateGroupOptional.get();
+		List<Template> referringTemplates = templateGroupToDelete.getReferringTemplates();
+		if(referringTemplates != null)
+		{
+			for(Template template : referringTemplates)
+			{
+				template.setTemplateGroup(getDefaultGroup());
+			}
+		}
+
+		templateGroupRepository.deleteById(ID);
 	}
 
 	@Override
