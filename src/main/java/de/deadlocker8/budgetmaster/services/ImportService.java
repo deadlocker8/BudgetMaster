@@ -494,7 +494,7 @@ public class ImportService
 				updateTagsForItem(template);
 				template.setID(null);
 
-				if(!importTemplateGroups)
+				if(!importTemplateGroups || template.getTemplateGroup() == null)
 				{
 					template.setTemplateGroup(templateGroupRepository.findFirstByType(TemplateGroupType.DEFAULT));
 				}

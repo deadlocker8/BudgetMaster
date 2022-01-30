@@ -174,6 +174,8 @@ public class BackupTemplate_v7 implements Upgradeable<BackupTemplate_v8>
 	@Override
 	public BackupTemplate_v8 upgrade(List<BackupInfo> backupInfoItems)
 	{
+		// need to set template group id to default template group here, but access to this informationen is not available at this point
+		// Instead ImportService will handle null values for template group id and fill in the correct default template group
 		return new BackupTemplate_v8(templateName, amount, isExpenditure, accountID, categoryID, name, description, iconReferenceID, tags, transferAccountID, null);
 	}
 }
