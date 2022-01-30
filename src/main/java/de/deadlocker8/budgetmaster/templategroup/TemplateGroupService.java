@@ -4,6 +4,8 @@ import de.deadlocker8.budgetmaster.services.AccessAllEntities;
 import de.deadlocker8.budgetmaster.services.AccessEntityByID;
 import de.deadlocker8.budgetmaster.services.Resettable;
 import de.deadlocker8.budgetmaster.templates.Template;
+import de.deadlocker8.budgetmaster.utils.Strings;
+import de.thecodelabs.utils.util.Localization;
 import org.padler.natorder.NaturalOrderComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,7 +82,7 @@ public class TemplateGroupService implements Resettable, AccessAllEntities<Templ
 		if(templateGroupRepository.findAll().isEmpty() || templateGroupRepository.findFirstByType(TemplateGroupType.DEFAULT) == null)
 		{
 			TemplateGroup defaultGroup = new TemplateGroup();
-			defaultGroup.setName("Default");
+			defaultGroup.setName(Localization.getString(Strings.TEMPLATE_GROUP_DEFAULT));
 			defaultGroup.setType(TemplateGroupType.DEFAULT);
 
 			templateGroupRepository.save(defaultGroup);

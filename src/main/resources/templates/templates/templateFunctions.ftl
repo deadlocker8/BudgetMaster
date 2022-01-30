@@ -42,7 +42,7 @@
                 <ul class="collapsible expandable" id="templateCollapsible">
                     <#list templatesByGroup as templateGroup, templates>
                         <#if templatesByGroup?size != 1 && templates?size != 0>
-                            <div class="template-group-headline">${templateGroup.getName()}</div>
+                            <div class="template-group-headline">${getTemplateGroupName(templateGroup)}</div>
                         </#if>
 
                         <#list templates as template>
@@ -80,6 +80,15 @@
         </div>
     </li>
 </#macro>
+
+<#function getTemplateGroupName templateGroup>
+    <#if templateGroup.getType().name() == "DEFAULT">
+        <#return locale.getString("template.group.default")>
+    <#else>
+        <#return templateGroup.getName()>
+    </#if>
+</#function>
+
 
 <#macro templateHeader template>
     <span style="color: ${template.getFontColor()}">

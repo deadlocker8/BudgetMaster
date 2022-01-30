@@ -12,6 +12,7 @@ public class Strings
 	public static final String TITLE_INCOMES = "title.incomes";
 	public static final String TITLE_EXPENDITURES = "title.expenditures";
 	public static final String TITLE_CATEGORY_BUDGETS = "title.category.budgets";
+	public static final String TEMPLATE_GROUP_DEFAULT = "template.group.default";
 
 	//ACCOUNT
 	public static final String ACCOUNT_DEFAULT_NAME = "account.default.name";
