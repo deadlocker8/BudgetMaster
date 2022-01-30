@@ -41,7 +41,9 @@
             <div class="col s12">
                 <ul class="collapsible expandable" id="templateCollapsible">
                     <#list templatesByGroup as templateGroup, templates>
-                        <div class="template-group-headline">${templateGroup.getName()}</div>
+                        <#if templatesByGroup?size != 1>
+                            <div class="template-group-headline">${templateGroup.getName()}</div>
+                        </#if>
 
                         <#list templates as template>
                             <@templateItem template/>
