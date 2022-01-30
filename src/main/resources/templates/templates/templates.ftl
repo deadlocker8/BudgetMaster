@@ -36,12 +36,12 @@
                     <#assign hint=helpers.getHintByLocalizationKey("hint.template.arrow.keys")/>
                     <@header.hint hint=hint/>
                     <br>
-                    <#if templates?size == 0>
+                    <#if templatesByGroup?size == 0>
                         <div class="container">
                             <div class="headline center-align">${locale.getString("placeholder")}</div>
                         </div>
                     <#else>
-                        <@templateFunctions.listTemplates templates/>
+                        <@templateFunctions.listTemplates templatesByGroup/>
                     </#if>
                 </div>
             </@header.content>

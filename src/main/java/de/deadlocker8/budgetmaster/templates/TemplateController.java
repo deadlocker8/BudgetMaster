@@ -7,6 +7,7 @@ import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.services.DateService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
+import de.deadlocker8.budgetmaster.templategroup.TemplateGroupService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.deadlocker8.budgetmaster.utils.Mappings;
@@ -37,15 +38,17 @@ public class TemplateController extends BaseController
 			.create();
 
 	private final TemplateService templateService;
+	private final TemplateGroupService templateGroupService;
 	private final TransactionService transactionService;
 	private final DateService dateService;
 	private final AccountService accountService;
 	private final IconService iconService;
 
 	@Autowired
-	public TemplateController(TemplateService templateService, SettingsService settingsService, TransactionService transactionService, DateService dateService, AccountService accountService, IconService iconService)
+	public TemplateController(TemplateService templateService, SettingsService settingsService, TemplateGroupService templateGroupService, TransactionService transactionService, DateService dateService, AccountService accountService, IconService iconService)
 	{
 		this.templateService = templateService;
+		this.templateGroupService = templateGroupService;
 		this.transactionService = transactionService;
 		this.dateService = dateService;
 		this.accountService = accountService;
@@ -55,7 +58,7 @@ public class TemplateController extends BaseController
 	@GetMapping
 	public String showTemplates(Model model)
 	{
-		model.addAttribute("templates", templateService.getAllEntitiesAsc());
+		model.addAttribute("templatesByGroup", templateGroupService.getTemplatesByGroupedByTemplateGroup());
 		return "templates/templates";
 	}
 
@@ -100,7 +103,7 @@ public class TemplateController extends BaseController
 			throw new ResourceNotFoundException();
 		}
 
-		model.addAttribute("templates", templateService.getAllEntitiesAsc());
+		model.addAttribute("templatesByGroup", templateGroupService.getTemplatesByGroupedByTemplateGroup());
 		model.addAttribute("templateToDelete", templateOptional.get());
 		return "templates/deleteTemplateModal";
 	}

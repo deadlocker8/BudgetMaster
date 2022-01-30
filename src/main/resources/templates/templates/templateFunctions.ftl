@@ -35,13 +35,17 @@
     </div>
 </#macro>
 
-<#macro listTemplates templates>
+<#macro listTemplates templatesByGroup>
     <div class="container">
         <div class="row">
             <div class="col s12">
-                <ul class="collapsible expandable z-depth-2" id="templateCollapsible">
-                    <#list templates as template>
-                        <@templateItem template/>
+                <ul class="collapsible expandable" id="templateCollapsible">
+                    <#list templatesByGroup as templateGroup, templates>
+                        <div class="template-group-headline">${templateGroup.getName()}</div>
+
+                        <#list templates as template>
+                            <@templateItem template/>
+                        </#list>
                     </#list>
                 </ul>
             </div>
@@ -50,7 +54,7 @@
 </#macro>
 
 <#macro templateItem template>
-    <li class="template-item">
+    <li class="template-item z-depth-2">
         <div class="collapsible-header bold">
             <@templateHeader template/>
             <div class="collapsible-header-button">
