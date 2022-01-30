@@ -689,6 +689,9 @@ class ImportServiceTest
 		templateWithGroup.setTags(new ArrayList<>());
 		templateWithGroup.setTemplateGroup(templateGroup);
 
+		TemplateGroup templateGroupDefault = new TemplateGroup(1, "Default", TemplateGroupType.DEFAULT);
+		Mockito.when(templateGroupRepository.findFirstByType(TemplateGroupType.DEFAULT)).thenReturn(templateGroupDefault);
+
 		// database
 		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(templateGroup), List.of(templateWithGroup), List.of(), List.of(), List.of());
 
@@ -701,7 +704,7 @@ class ImportServiceTest
 		Template expectedTemplate = new Template();
 		expectedTemplate.setTemplateName("myTemplate");
 		expectedTemplate.setTags(new ArrayList<>());
-		expectedTemplate.setTemplateGroup(null);
+		expectedTemplate.setTemplateGroup(templateGroupDefault);
 
 		Mockito.verify(templateRepository, Mockito.atLeast(1)).save(expectedTemplate);
 	}

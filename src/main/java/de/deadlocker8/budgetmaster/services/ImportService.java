@@ -433,7 +433,7 @@ public class ImportService
 		TemplateGroup existingTemplateGroup;
 		if(templateGroup.getType().equals(TemplateGroupType.DEFAULT))
 		{
-			return templateGroupRepository.findFirstByType(templateGroup.getType()).getID();
+			existingTemplateGroup = templateGroupRepository.findFirstByType(TemplateGroupType.DEFAULT);
 		}
 		else
 		{
@@ -496,7 +496,7 @@ public class ImportService
 
 				if(!importTemplateGroups)
 				{
-					template.setTemplateGroup(null);
+					template.setTemplateGroup(templateGroupRepository.findFirstByType(TemplateGroupType.DEFAULT));
 				}
 
 				templateRepository.save(template);

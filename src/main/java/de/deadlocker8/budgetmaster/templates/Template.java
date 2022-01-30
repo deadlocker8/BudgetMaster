@@ -64,6 +64,7 @@ public class Template implements TransactionBase, Iconizable
 	private Account transferAccount;
 
 	@ManyToOne
+	@Expose
 	private TemplateGroup templateGroup;
 
 

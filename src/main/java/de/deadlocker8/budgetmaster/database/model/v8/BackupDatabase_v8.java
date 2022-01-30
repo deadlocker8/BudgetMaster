@@ -145,7 +145,7 @@ public class BackupDatabase_v8 implements BackupDatabase
 		final List<Account> convertedAccounts = convertItemsToInternal(accounts, new AccountConverter(convertedIcons));
 		final List<Transaction> convertedTransactions = convertItemsToInternal(this.transactions, new TransactionConverter(convertedCategories, convertedAccounts));
 		final List<TemplateGroup> convertedTemplateGroups = convertItemsToInternal(this.templateGroups, new TemplateGroupConverter());
-		final List<Template> convertedTemplates = convertItemsToInternal(this.templates, new TemplateConverter(convertedIcons, convertedCategories, convertedAccounts));
+		final List<Template> convertedTemplates = convertItemsToInternal(this.templates, new TemplateConverter(convertedIcons, convertedCategories, convertedAccounts, convertedTemplateGroups));
 		final List<Chart> convertedCharts = convertItemsToInternal(this.charts, new ChartConverter());
 
 		return new InternalDatabase(convertedCategories, convertedAccounts, convertedTransactions, convertedTemplateGroups, convertedTemplates, convertedCharts, convertedImages, convertedIcons);
@@ -172,7 +172,7 @@ public class BackupDatabase_v8 implements BackupDatabase
 		externalDatabase.setAccounts(externalDatabase.convertItemsToExternal(database.getAccounts(), new AccountConverter(null)));
 		externalDatabase.setTransactions(externalDatabase.convertItemsToExternal(database.getTransactions(), new TransactionConverter(null, null)));
 		externalDatabase.setTemplateGroups(externalDatabase.convertItemsToExternal(database.getTemplateGroups(), new TemplateGroupConverter()));
-		externalDatabase.setTemplates(externalDatabase.convertItemsToExternal(database.getTemplates(), new TemplateConverter(null, null, null)));
+		externalDatabase.setTemplates(externalDatabase.convertItemsToExternal(database.getTemplates(), new TemplateConverter(null, null, null, null)));
 		externalDatabase.setCharts(externalDatabase.convertItemsToExternal(database.getCharts(), new ChartConverter()));
 		externalDatabase.setImages(externalDatabase.convertItemsToExternal(database.getImages(), new ImageConverter()));
 

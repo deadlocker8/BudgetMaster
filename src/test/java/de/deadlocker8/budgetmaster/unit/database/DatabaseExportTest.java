@@ -226,8 +226,12 @@ class DatabaseExportTest
 		Mockito.when(transactionService.getRepository()).thenReturn(transactionRepositoryMock);
 
 		// template groups
-		TemplateGroup templateGroup = new TemplateGroup(1, "My Template Group", TemplateGroupType.CUSTOM);
-		Mockito.when(templateGroupService.getAllEntitiesAsc()).thenReturn(List.of(templateGroup));
+		TemplateGroup templateGroupDefault = new TemplateGroup(1, "Default", TemplateGroupType.DEFAULT);
+		TemplateGroup templateGroup = new TemplateGroup(2, "My Template Group", TemplateGroupType.CUSTOM);
+
+		TemplateGroupRepository templateGroupRepositoryMock = Mockito.mock(TemplateGroupRepository.class);
+		Mockito.when(templateGroupRepositoryMock.findAll()).thenReturn(List.of(templateGroupDefault, templateGroup));
+		Mockito.when(templateGroupService.getRepository()).thenReturn(templateGroupRepositoryMock);
 
 		// templates
 		Template template1 = new Template();
@@ -239,12 +243,14 @@ class DatabaseExportTest
 		List<Tag> tags2 = new ArrayList<>();
 		tags2.add(tag1);
 		template1.setTags(tags2);
+		template1.setTemplateGroup(templateGroup);
 
 		Template template2 = new Template();
 		template2.setTemplateName("MyTemplate2");
 		template2.setTransferAccount(account2);
 		template2.setIsExpenditure(true);
 		template2.setTags(new ArrayList<>());
+		template2.setTemplateGroup(templateGroupDefault);
 
 		TemplateRepository templateRepositoryMock = Mockito.mock(TemplateRepository.class);
 		Mockito.when(templateRepositoryMock.findAll()).thenReturn(List.of(template1, template2));
@@ -296,7 +302,7 @@ class DatabaseExportTest
 		assertThat(importedDatabase.getCategories()).containsExactly(categoryNone, categoryCustom);
 		assertThat(importedDatabase.getAccounts()).containsExactly(account1, account2);
 		assertThat(importedDatabase.getTransactions()).containsExactly(transaction1, transaction2);
-		assertThat(importedDatabase.getTemplateGroups()).containsExactly(templateGroup);
+		assertThat(importedDatabase.getTemplateGroups()).containsExactly(templateGroupDefault, templateGroup);
 		assertThat(importedDatabase.getTemplates()).containsExactly(template1, template2);
 		assertThat(importedDatabase.getCharts()).containsExactly(chart);
 		assertThat(importedDatabase.getImages()).containsExactly(image);

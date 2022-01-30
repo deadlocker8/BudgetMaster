@@ -262,7 +262,7 @@ public class DatabaseService
 		List<Account> accounts = accountService.getRepository().findAll();
 		List<Transaction> transactions = transactionService.getRepository().findAll();
 		List<Transaction> filteredTransactions = filterRepeatingTransactions(transactions);
-		List<TemplateGroup> templateGroups = templateGroupService.getAllEntitiesAsc();
+		List<TemplateGroup> templateGroups = templateGroupService.getRepository().findAll();
 		List<Template> templates = templateService.getRepository().findAll();
 		List<Chart> charts = chartService.getRepository().findAllByType(ChartType.CUSTOM);
 		List<Image> images = imageService.getRepository().findAll();
