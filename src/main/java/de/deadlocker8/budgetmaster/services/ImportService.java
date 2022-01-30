@@ -18,6 +18,9 @@ import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.repeating.RepeatingTransactionUpdater;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.TagRepository;
+import de.deadlocker8.budgetmaster.templategroup.TemplateGroup;
+import de.deadlocker8.budgetmaster.templategroup.TemplateGroupRepository;
+import de.deadlocker8.budgetmaster.templategroup.TemplateGroupType;
 import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.templates.TemplateRepository;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
@@ -40,6 +43,7 @@ public class ImportService
 
 	private final CategoryRepository categoryRepository;
 	private final TransactionRepository transactionRepository;
+	private final TemplateGroupRepository templateGroupRepository;
 	private final TemplateRepository templateRepository;
 	private final TagRepository tagRepository;
 	private final ChartService chartService;
@@ -53,11 +57,12 @@ public class ImportService
 	private List<String> collectedErrorMessages;
 
 	@Autowired
-	public ImportService(CategoryRepository categoryRepository, TransactionRepository transactionRepository, TemplateRepository templateRepository,
+	public ImportService(CategoryRepository categoryRepository, TransactionRepository transactionRepository, TemplateGroupRepository templateGroupRepository, TemplateRepository templateRepository,
 						 TagRepository tagRepository, ChartService chartService, ImageService imageService, RepeatingTransactionUpdater repeatingTransactionUpdater, AccountRepository accountRepository, IconService iconService)
 	{
 		this.categoryRepository = categoryRepository;
 		this.transactionRepository = transactionRepository;
+		this.templateGroupRepository = templateGroupRepository;
 		this.templateRepository = templateRepository;
 		this.tagRepository = tagRepository;
 		this.chartService = chartService;
@@ -83,10 +88,12 @@ public class ImportService
 
 		if(importTemplates)
 		{
+			importResultItems.add(importTemplateGroups());
 			importResultItems.add(importTemplates());
 		}
 		else
 		{
+			importResultItems.add(new ImportResultItem(EntityType.TEMPLATE_GROUP, 0, 0));
 			importResultItems.add(new ImportResultItem(EntityType.TEMPLATE, 0, 0));
 		}
 
@@ -372,6 +379,96 @@ public class ImportService
 				tags.set(i, existingTag);
 			}
 		}
+	}
+
+	private ImportResultItem importTemplateGroups()
+	{
+		List<TemplateGroup> templateGroups = database.getTemplateGroups();
+		LOGGER.debug(MessageFormat.format("Importing {0} template groups...", templateGroups.size()));
+		List<Template> alreadyUpdatedTemplates = new ArrayList<>();
+		int numberOfImportedTemplateGroups = 0;
+
+		for(TemplateGroup templateGroup : templateGroups)
+		{
+			LOGGER.debug(MessageFormat.format("Importing template group {0}", templateGroup.getName()));
+
+			try
+			{
+				int oldGroupID = templateGroup.getID();
+				int newGroupID = importTemplateGroup(templateGroup);
+
+				if(oldGroupID == newGroupID)
+				{
+					numberOfImportedTemplateGroups++;
+					continue;
+				}
+
+				List<Template> templates = new ArrayList<>(database.getTemplates());
+				templates.removeAll(alreadyUpdatedTemplates);
+				alreadyUpdatedTemplates.addAll(updateTemplateGroupsForTemplates(templates, oldGroupID, newGroupID));
+
+				numberOfImportedTemplateGroups++;
+			}
+			catch(Exception e)
+			{
+				final String errorMessage = MessageFormat.format("Error while importing template group with name \"{0}\"", templateGroup.getName());
+				LOGGER.error(errorMessage, e);
+				collectedErrorMessages.add(formatErrorMessage(errorMessage, e));
+			}
+		}
+
+		LOGGER.debug(MessageFormat.format("Importing template groups DONE ({0}/{1})", numberOfImportedTemplateGroups, templateGroups.size()));
+		return new ImportResultItem(EntityType.TEMPLATE_GROUP, numberOfImportedTemplateGroups, templateGroups.size());
+	}
+
+	private int importTemplateGroup(TemplateGroup templateGroup)
+	{
+		TemplateGroup existingTemplateGroup;
+		if(templateGroup.getType().equals(TemplateGroupType.DEFAULT))
+		{
+			return templateGroupRepository.findFirstByType(templateGroup.getType()).getID();
+		}
+		else
+		{
+			existingTemplateGroup = templateGroupRepository.findByNameAndType(templateGroup.getName(), templateGroup.getType());
+		}
+
+		int newGroupID;
+		if(existingTemplateGroup == null)
+		{
+			// template group does not exist --> create it
+			TemplateGroup templateGroupToCreate = new TemplateGroup(templateGroup.getName(), templateGroup.getType());
+			TemplateGroup savedTemplateGroup = templateGroupRepository.save(templateGroupToCreate);
+
+			newGroupID = savedTemplateGroup.getID();
+		}
+		else
+		{
+			// template group already exists
+			newGroupID = existingTemplateGroup.getID();
+		}
+		return newGroupID;
+	}
+
+	public List<Template> updateTemplateGroupsForTemplates(List<Template> items, int oldGroupID, int newGroupID)
+	{
+		List<Template> updatedItems = new ArrayList<>();
+		for(Template item : items)
+		{
+			final TemplateGroup templateGroup = item.getTemplateGroup();
+			if(templateGroup == null)
+			{
+				continue;
+			}
+
+			if(templateGroup.getID() == oldGroupID)
+			{
+				templateGroup.setID(newGroupID);
+				updatedItems.add(item);
+			}
+		}
+
+		return updatedItems;
 	}
 
 	private ImportResultItem importTemplates()

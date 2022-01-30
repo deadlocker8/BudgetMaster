@@ -83,7 +83,7 @@ public class TemplateService implements Resettable, AccessAllEntities<Template>,
 	{
 		if(template.getTemplateGroup() == null)
 		{
-			template.setTemplateGroup(templateGroupService.getRepository().findFirstByType(TemplateGroupType.ALL));
+			template.setTemplateGroup(templateGroupService.getRepository().findFirstByType(TemplateGroupType.DEFAULT));
 			LOGGER.debug(MessageFormat.format("Updated template {0}: Set missing attribute \"templateGroup\" to {1}", template.getName(), template.getTemplateGroup().getName()));
 		}
 	}

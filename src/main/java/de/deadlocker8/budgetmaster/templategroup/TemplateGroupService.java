@@ -52,11 +52,11 @@ public class TemplateGroupService implements Resettable, AccessAllEntities<Templ
 	@Override
 	public void createDefaults()
 	{
-		if(templateGroupRepository.findAll().isEmpty() || templateGroupRepository.findFirstByType(TemplateGroupType.ALL) == null)
+		if(templateGroupRepository.findAll().isEmpty() || templateGroupRepository.findFirstByType(TemplateGroupType.DEFAULT) == null)
 		{
 			TemplateGroup defaultGroup = new TemplateGroup();
 			defaultGroup.setName("Default");
-			defaultGroup.setType(TemplateGroupType.ALL);
+			defaultGroup.setType(TemplateGroupType.DEFAULT);
 
 			templateGroupRepository.save(defaultGroup);
 			LOGGER.debug("Created default template group");

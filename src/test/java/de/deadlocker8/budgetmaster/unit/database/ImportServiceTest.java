@@ -28,6 +28,7 @@ import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.TagRepository;
 import de.deadlocker8.budgetmaster.templategroup.TemplateGroup;
+import de.deadlocker8.budgetmaster.templategroup.TemplateGroupRepository;
 import de.deadlocker8.budgetmaster.templategroup.TemplateGroupType;
 import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.templates.TemplateRepository;
@@ -59,6 +60,9 @@ class ImportServiceTest
 
 	@Mock
 	private TagRepository tagRepository;
+
+	@Mock
+	private TemplateGroupRepository templateGroupRepository;
 
 	@Mock
 	private TemplateRepository templateRepository;
@@ -493,6 +497,8 @@ class ImportServiceTest
 		expectedTemplate2.setTransferAccount(destAccount2);
 		expectedTemplate2.setTags(new ArrayList<>());
 
+		TemplateGroup expectedTemplateGroup = new TemplateGroup(5, "My Template Group", TemplateGroupType.CUSTOM);
+
 		// act
 		Mockito.when(tagRepository.save(Mockito.any(Tag.class))).thenReturn(tag1);
 
@@ -506,6 +512,8 @@ class ImportServiceTest
 		IconRepository iconRepositoryMock = Mockito.mock(IconRepository.class);
 		Mockito.when(iconService.getRepository()).thenReturn(iconRepositoryMock);
 		Mockito.when(iconRepositoryMock.save(Mockito.any())).thenReturn(expectedIcon);
+
+		Mockito.when(templateGroupRepository.save(Mockito.any())).thenReturn(expectedTemplateGroup);
 
 		importService.importDatabase(database, accountMatchList, true, true);
 		InternalDatabase databaseResult = importService.getDatabase();
@@ -712,7 +720,7 @@ class ImportServiceTest
 		InternalDatabase database = new InternalDatabase(List.of(category1, category2), List.of(), List.of(), List.of(), List.of(), List.of(), List.of(), List.of());
 		final List<ImportResultItem> importResultItems = importService.importDatabase(database, new AccountMatchList(List.of()), false, false);
 
-		assertThat(importResultItems).hasSize(6)
+		assertThat(importResultItems).hasSize(7)
 				.contains(new ImportResultItem(EntityType.CATEGORY, 1, 2));
 		assertThat(importService.getCollectedErrorMessages()).hasSize(1)
 				.contains("Error while importing category with name \"Category1\": java.lang.NullPointerException (null)");
@@ -747,5 +755,26 @@ class ImportServiceTest
 				.hasFieldOrPropertyWithValue("ID", 6)
 				.hasFieldOrPropertyWithValue("image", null)
 				.hasFieldOrPropertyWithValue("builtinIdentifier", "fas fa-icons");
+	}
+
+	@Test
+	void test_updateTemplateGroupsForTemplates()
+	{
+		TemplateGroup templateGroup1 = new TemplateGroup(2, "Template Group 1", TemplateGroupType.CUSTOM);
+		TemplateGroup templateGroup2 = new TemplateGroup(3, "Template Group 2", TemplateGroupType.CUSTOM);
+
+		Template template1 = new Template();
+		template1.setTemplateName("MyTemplate");
+		template1.setTemplateGroup(templateGroup1);
+		template1.setTags(new ArrayList<>());
+
+		Template template2 = new Template();
+		template2.setTemplateName("MyTemplate_2");
+		template2.setTemplateGroup(templateGroup2);
+		template2.setTags(new ArrayList<>());
+
+		List<Template> updatedTemplates = importService.updateTemplateGroupsForTemplates(List.of(template1, template2), 2, 5);
+		assertThat(updatedTemplates).hasSize(1);
+		assertThat(updatedTemplates.get(0).getTemplateGroup()).hasFieldOrPropertyWithValue("ID", 5);
 	}
 }

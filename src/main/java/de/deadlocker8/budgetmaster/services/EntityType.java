@@ -16,7 +16,8 @@ public enum EntityType implements LocalizedEnum
 	SETTINGS("settings", "background-red", ImportRequired.NONE),
 	IMAGE("image", "background-grey", ImportRequired.REQUIRED),
 	HOTKEYS("keyboard", "background-grey", ImportRequired.NONE),
-	ABOUT("info", "background-grey", ImportRequired.NONE);
+	ABOUT("info", "background-grey", ImportRequired.NONE),
+	TEMPLATE_GROUP("folder", "background-orange-dark", ImportRequired.REQUIRED);
 
 
 	public enum ImportRequired

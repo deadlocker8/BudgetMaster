@@ -36,6 +36,12 @@ public class TemplateGroup implements ProvidesID
 		this.type = type;
 	}
 
+	public TemplateGroup(String name, TemplateGroupType type)
+	{
+		this.name = name;
+		this.type = type;
+	}
+
 	public Integer getID()
 	{
 		return ID;
