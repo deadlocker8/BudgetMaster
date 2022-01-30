@@ -1,14 +1,11 @@
-package de.deadlocker8.budgetmaster.database.model.v7;
+package de.deadlocker8.budgetmaster.database.model.v8;
 
-import de.deadlocker8.budgetmaster.database.model.BackupInfo;
-import de.deadlocker8.budgetmaster.database.model.Upgradeable;
 import de.deadlocker8.budgetmaster.database.model.v4.BackupTag_v4;
-import de.deadlocker8.budgetmaster.database.model.v8.BackupTemplate_v8;
 
 import java.util.List;
 import java.util.Objects;
 
-public class BackupTemplate_v7 implements Upgradeable<BackupTemplate_v8>
+public class BackupTemplate_v8
 {
 	private String templateName;
 	private Integer amount;
@@ -20,13 +17,14 @@ public class BackupTemplate_v7 implements Upgradeable<BackupTemplate_v8>
 	private Integer iconReferenceID;
 	private List<BackupTag_v4> tags;
 	private Integer transferAccountID;
+	private Integer templateGroupID;
 
-	public BackupTemplate_v7()
+	public BackupTemplate_v8()
 	{
 		// for GSON
 	}
 
-	public BackupTemplate_v7(String templateName, Integer amount, Boolean isExpenditure, Integer accountID, Integer categoryID, String name, String description, Integer iconReferenceID, List<BackupTag_v4> tags, Integer transferAccountID)
+	public BackupTemplate_v8(String templateName, Integer amount, Boolean isExpenditure, Integer accountID, Integer categoryID, String name, String description, Integer iconReferenceID, List<BackupTag_v4> tags, Integer transferAccountID, Integer templateGroupID)
 	{
 		this.templateName = templateName;
 		this.amount = amount;
@@ -38,6 +36,7 @@ public class BackupTemplate_v7 implements Upgradeable<BackupTemplate_v8>
 		this.iconReferenceID = iconReferenceID;
 		this.tags = tags;
 		this.transferAccountID = transferAccountID;
+		this.templateGroupID = templateGroupID;
 	}
 
 	public String getTemplateName()
@@ -140,25 +139,36 @@ public class BackupTemplate_v7 implements Upgradeable<BackupTemplate_v8>
 		this.transferAccountID = transferAccountID;
 	}
 
+	public Integer getTemplateGroupID()
+	{
+		return templateGroupID;
+	}
+
+	public void setTemplateGroupID(Integer templateGroupID)
+	{
+		this.templateGroupID = templateGroupID;
+	}
+
 	@Override
 	public boolean equals(Object o)
 	{
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
-		BackupTemplate_v7 that = (BackupTemplate_v7) o;
-		return Objects.equals(templateName, that.templateName) && Objects.equals(amount, that.amount) && Objects.equals(isExpenditure, that.isExpenditure) && Objects.equals(accountID, that.accountID) && Objects.equals(categoryID, that.categoryID) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(iconReferenceID, that.iconReferenceID) && Objects.equals(tags, that.tags) && Objects.equals(transferAccountID, that.transferAccountID);
+		BackupTemplate_v8 that = (BackupTemplate_v8) o;
+		return Objects.equals(templateName, that.templateName) && Objects.equals(amount, that.amount) && Objects.equals(isExpenditure, that.isExpenditure) && Objects.equals(accountID, that.accountID) && Objects.equals(categoryID, that.categoryID) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(iconReferenceID, that.iconReferenceID) && Objects.equals(tags, that.tags) && Objects.equals(transferAccountID, that.transferAccountID) && Objects.equals(templateGroupID, that.templateGroupID);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(templateName, amount, isExpenditure, accountID, categoryID, name, description, iconReferenceID, tags, transferAccountID);
+		return Objects.hash(templateName, amount, isExpenditure, accountID, categoryID, name, description, iconReferenceID, tags, transferAccountID, templateGroupID);
 	}
 
 	@Override
 	public String toString()
 	{
-		return "BackupTemplate_v7{templateName='" + templateName + '\'' +
+		return "BackupTemplate_v8{" +
+				"templateName='" + templateName + '\'' +
 				", amount=" + amount +
 				", isExpenditure=" + isExpenditure +
 				", accountID=" + accountID +
@@ -168,12 +178,7 @@ public class BackupTemplate_v7 implements Upgradeable<BackupTemplate_v8>
 				", iconReferenceID=" + iconReferenceID +
 				", tags=" + tags +
 				", transferAccountID=" + transferAccountID +
+				", templateGroupID=" + templateGroupID +
 				'}';
-	}
-
-	@Override
-	public BackupTemplate_v8 upgrade(List<BackupInfo> backupInfoItems)
-	{
-		return new BackupTemplate_v8(templateName, amount, isExpenditure, accountID, categoryID, name, description, iconReferenceID, tags, transferAccountID, null);
 	}
 }

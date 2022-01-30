@@ -134,7 +134,7 @@ public class BackupDatabase_v7 implements BackupDatabase
 		upgradedDatabase.setAccounts(accounts);
 		upgradedDatabase.setTransactions(transactions);
 		upgradedDatabase.setTemplateGroups(List.of());
-		upgradedDatabase.setTemplates(templates);
+		upgradedDatabase.setTemplates(upgradeItems(templates, List.of()));
 		upgradedDatabase.setCharts(charts);
 		upgradedDatabase.setImages(images);
 		upgradedDatabase.setIcons(upgradeItems(icons, List.of()));

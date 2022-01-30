@@ -12,7 +12,6 @@ import de.deadlocker8.budgetmaster.database.model.v5.BackupImage_v5;
 import de.deadlocker8.budgetmaster.database.model.v6.BackupTransaction_v6;
 import de.deadlocker8.budgetmaster.database.model.v7.BackupAccount_v7;
 import de.deadlocker8.budgetmaster.database.model.v7.BackupCategory_v7;
-import de.deadlocker8.budgetmaster.database.model.v7.BackupTemplate_v7;
 import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.templategroup.TemplateGroup;
@@ -35,7 +34,7 @@ public class BackupDatabase_v8 implements BackupDatabase
 	private List<BackupAccount_v7> accounts;
 	private List<BackupTransaction_v6> transactions;
 	private List<BackupTemplateGroup_v8> templateGroups;
-	private List<BackupTemplate_v7> templates;
+	private List<BackupTemplate_v8> templates;
 	private List<BackupChart_v5> charts;
 	private List<BackupImage_v5> images;
 	private List<BackupIcon_v8> icons;
@@ -45,7 +44,7 @@ public class BackupDatabase_v8 implements BackupDatabase
 		// for GSON
 	}
 
-	public BackupDatabase_v8(List<BackupCategory_v7> categories, List<BackupAccount_v7> accounts, List<BackupTransaction_v6> transactions, List<BackupTemplateGroup_v8> templateGroups, List<BackupTemplate_v7> templates, List<BackupChart_v5> charts, List<BackupImage_v5> images, List<BackupIcon_v8> icons)
+	public BackupDatabase_v8(List<BackupCategory_v7> categories, List<BackupAccount_v7> accounts, List<BackupTransaction_v6> transactions, List<BackupTemplateGroup_v8> templateGroups, List<BackupTemplate_v8> templates, List<BackupChart_v5> charts, List<BackupImage_v5> images, List<BackupIcon_v8> icons)
 	{
 		this.categories = categories;
 		this.accounts = accounts;
@@ -87,12 +86,12 @@ public class BackupDatabase_v8 implements BackupDatabase
 		this.transactions = transactions;
 	}
 
-	public List<BackupTemplate_v7> getTemplates()
+	public List<BackupTemplate_v8> getTemplates()
 	{
 		return templates;
 	}
 
-	public void setTemplates(List<BackupTemplate_v7> templates)
+	public void setTemplates(List<BackupTemplate_v8> templates)
 	{
 		this.templates = templates;
 	}

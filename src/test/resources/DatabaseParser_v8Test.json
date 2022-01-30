@@ -135,7 +135,13 @@
             }
         }
     ],
-    "templateGroups": [],
+    "templateGroups": [
+        {
+            "ID": 1,
+            "name": "My Template Group Deluxe",
+            "type": "CUSTOM"
+        }
+    ],
     "templates": [
         {
             "ID": 5,

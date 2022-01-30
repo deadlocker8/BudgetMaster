@@ -4,7 +4,7 @@ import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.database.model.Converter;
 import de.deadlocker8.budgetmaster.database.model.v4.BackupTag_v4;
-import de.deadlocker8.budgetmaster.database.model.v7.BackupTemplate_v7;
+import de.deadlocker8.budgetmaster.database.model.v8.BackupTemplate_v8;
 import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.templates.Template;
@@ -12,7 +12,7 @@ import de.deadlocker8.budgetmaster.templates.Template;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TemplateConverter implements Converter<Template, BackupTemplate_v7>
+public class TemplateConverter implements Converter<Template, BackupTemplate_v8>
 {
 	private final List<Icon> availableIcons;
 	private final List<Category> availableCategories;
@@ -25,7 +25,7 @@ public class TemplateConverter implements Converter<Template, BackupTemplate_v7>
 		this.availableAccounts = availableAccounts;
 	}
 
-	public Template convertToInternalForm(BackupTemplate_v7 backupTemplate)
+	public Template convertToInternalForm(BackupTemplate_v8 backupTemplate)
 	{
 		if(backupTemplate == null)
 		{
@@ -64,14 +64,14 @@ public class TemplateConverter implements Converter<Template, BackupTemplate_v7>
 	}
 
 	@Override
-	public BackupTemplate_v7 convertToExternalForm(Template internalItem)
+	public BackupTemplate_v8 convertToExternalForm(Template internalItem)
 	{
 		if(internalItem == null)
 		{
 			return null;
 		}
 
-		final BackupTemplate_v7 template = new BackupTemplate_v7();
+		final BackupTemplate_v8 template = new BackupTemplate_v8();
 		template.setAmount(internalItem.getAmount());
 		template.setName(internalItem.getName());
 

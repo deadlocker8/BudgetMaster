@@ -13,12 +13,14 @@ import de.deadlocker8.budgetmaster.database.model.v5.BackupChart_v5;
 import de.deadlocker8.budgetmaster.database.model.v6.BackupTransaction_v6;
 import de.deadlocker8.budgetmaster.database.model.v7.BackupAccount_v7;
 import de.deadlocker8.budgetmaster.database.model.v7.BackupCategory_v7;
-import de.deadlocker8.budgetmaster.database.model.v7.BackupTemplate_v7;
+import de.deadlocker8.budgetmaster.database.model.v8.BackupTemplate_v8;
 import de.deadlocker8.budgetmaster.database.model.v8.BackupDatabase_v8;
 import de.deadlocker8.budgetmaster.database.model.v8.BackupIcon_v8;
+import de.deadlocker8.budgetmaster.database.model.v8.BackupTemplateGroup_v8;
 import de.deadlocker8.budgetmaster.images.ImageFileExtension;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndAfterXTimes;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierDays;
+import de.deadlocker8.budgetmaster.templategroup.TemplateGroupType;
 import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.Localization.LocalizationDelegate;
 import org.junit.jupiter.api.BeforeEach;
@@ -113,13 +115,29 @@ class DatabaseParser_v8Test
 	}
 
 	@Test
+	void test_TemplateGroups() throws URISyntaxException, IOException
+	{
+		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v8Test.json").toURI())));
+		DatabaseParser_v8 parser = new DatabaseParser_v8(json);
+		BackupDatabase_v8 database = parser.parseDatabaseFromJSON();
+
+		BackupTemplateGroup_v8 templateGroup = new BackupTemplateGroup_v8();
+		templateGroup.setID(1);
+		templateGroup.setName("My Template Group Deluxe");
+		templateGroup.setType(TemplateGroupType.CUSTOM);
+
+		assertThat(database.getTemplateGroups()).hasSize(1)
+				.contains(templateGroup);
+	}
+
+	@Test
 	void test_Templates() throws URISyntaxException, IOException
 	{
 		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v8Test.json").toURI())));
 		DatabaseParser_v8 parser = new DatabaseParser_v8(json);
 		BackupDatabase_v8 database = parser.parseDatabaseFromJSON();
 
-		BackupTemplate_v7 template = new BackupTemplate_v7();
+		BackupTemplate_v8 template = new BackupTemplate_v8();
 		template.setTemplateName("Template with icon");
 		template.setExpenditure(true);
 		template.setIconReferenceID(1);
