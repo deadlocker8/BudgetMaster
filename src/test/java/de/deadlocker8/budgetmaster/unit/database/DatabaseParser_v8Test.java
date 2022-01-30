@@ -143,8 +143,13 @@ class DatabaseParser_v8Test
 		template.setIconReferenceID(1);
 		template.setTags(List.of());
 
-		assertThat(database.getTemplates()).hasSize(4)
-				.contains(template);
+		BackupTemplate_v8 templateWithGroup = new BackupTemplate_v8();
+		templateWithGroup.setTemplateName("Template with associated group");
+		templateWithGroup.setTags(List.of());
+		templateWithGroup.setTemplateGroupID(1);
+
+		assertThat(database.getTemplates()).hasSize(5)
+				.contains(template, templateWithGroup);
 		assertThat(database.getTemplates().get(3).getIconReferenceID())
 				.isOne();
 	}

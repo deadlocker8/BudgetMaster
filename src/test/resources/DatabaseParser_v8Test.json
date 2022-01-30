@@ -183,6 +183,12 @@
             "isExpenditure": true,
             "tags": [],
             "iconReferenceID": 1
+        },
+        {
+            "ID": 9,
+            "templateName": "Template with associated group",
+            "tags": [],
+            "templateGroupID": 1
         }
     ],
     "charts": [
