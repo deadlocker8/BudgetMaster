@@ -515,7 +515,7 @@ class ImportServiceTest
 
 		Mockito.when(templateGroupRepository.save(Mockito.any())).thenReturn(expectedTemplateGroup);
 
-		importService.importDatabase(database, accountMatchList, true, true);
+		importService.importDatabase(database, accountMatchList, true, true, true);
 		InternalDatabase databaseResult = importService.getDatabase();
 
 		// assert
@@ -553,7 +553,7 @@ class ImportServiceTest
 		final ChartRepository chartRepositoryMock = Mockito.mock(ChartRepository.class);
 		Mockito.when(chartService.getRepository()).thenReturn(chartRepositoryMock);
 
-		importService.importDatabase(database, new AccountMatchList(List.of()), true, true);
+		importService.importDatabase(database, new AccountMatchList(List.of()), true, true, true);
 		InternalDatabase databaseResult = importService.getDatabase();
 
 		// assert
@@ -596,7 +596,7 @@ class ImportServiceTest
 		Mockito.when(imageRepositoryMock.save(Mockito.any())).thenReturn(newImage);
 
 		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(), List.of(image), List.of());
-		importService.importDatabase(database, new AccountMatchList(List.of()), true, true);
+		importService.importDatabase(database, new AccountMatchList(List.of()), true, true, true);
 
 		Image expectedImage = new Image(image.getImage(), image.getFileName(), image.getFileExtension());
 		Mockito.verify(imageRepositoryMock, Mockito.atLeast(1)).save(expectedImage);
@@ -616,7 +616,7 @@ class ImportServiceTest
 		Mockito.when(imageRepositoryMock.save(Mockito.any())).thenReturn(newImage);
 
 		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(), List.of(image), List.of());
-		importService.importDatabase(database, new AccountMatchList(List.of()), true, true);
+		importService.importDatabase(database, new AccountMatchList(List.of()), true, true, true);
 
 		Image expectedImage = new Image(image.getImage(), image.getFileName(), image.getFileExtension());
 		Mockito.verify(imageRepositoryMock, Mockito.atLeast(1)).save(expectedImage);
@@ -655,7 +655,7 @@ class ImportServiceTest
 		Mockito.when(iconService.getRepository()).thenReturn(iconRepositoryMock);
 		Mockito.when(iconRepositoryMock.save(Mockito.any())).thenReturn(expectedIcon);
 
-		importService.importDatabase(database, new AccountMatchList(List.of(accountMatch)), true, true);
+		importService.importDatabase(database, new AccountMatchList(List.of(accountMatch)), true,true, true);
 
 		Mockito.verify(accountRepository, Mockito.atLeast(1)).save(expectedAccount);
 	}
@@ -663,8 +663,6 @@ class ImportServiceTest
 	@Test
 	void test_skipTemplates()
 	{
-		TemplateGroup templateGroup = new TemplateGroup(1, "My Template Group", TemplateGroupType.CUSTOM);
-
 		Template template = new Template();
 		template.setTemplateName("myTemplate");
 		template.setAmount(200);
@@ -672,14 +670,40 @@ class ImportServiceTest
 		template.setTags(new ArrayList<>());
 
 		// database
-		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(templateGroup), List.of(template), List.of(), List.of(), List.of());
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(template), List.of(), List.of(), List.of());
 
 		// act
-		importService.importDatabase(database, new AccountMatchList(List.of()), false, true);
+		importService.importDatabase(database, new AccountMatchList(List.of()), true, false, true);
 
 		// assert
 		Mockito.verify(templateRepository, Mockito.never()).save(Mockito.any());
+	}
+
+	@Test
+	void test_skipTemplateGroups()
+	{
+		TemplateGroup templateGroup = new TemplateGroup(1, "My Template Group", TemplateGroupType.CUSTOM);
+
+		Template templateWithGroup = new Template();
+		templateWithGroup.setTemplateName("myTemplate");
+		templateWithGroup.setTags(new ArrayList<>());
+		templateWithGroup.setTemplateGroup(templateGroup);
+
+		// database
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(templateGroup), List.of(templateWithGroup), List.of(), List.of(), List.of());
+
+		// act
+		importService.importDatabase(database, new AccountMatchList(List.of()), false, true, true);
+
+		// assert
 		Mockito.verify(templateGroupRepository, Mockito.never()).save(Mockito.any());
+
+		Template expectedTemplate = new Template();
+		expectedTemplate.setTemplateName("myTemplate");
+		expectedTemplate.setTags(new ArrayList<>());
+		expectedTemplate.setTemplateGroup(null);
+
+		Mockito.verify(templateRepository, Mockito.atLeast(1)).save(expectedTemplate);
 	}
 
 	@Test
@@ -699,7 +723,7 @@ class ImportServiceTest
 		Mockito.when(chartService.getRepository()).thenReturn(chartRepositoryMock);
 
 		// act
-		importService.importDatabase(database, new AccountMatchList(List.of()), true, false);
+		importService.importDatabase(database, new AccountMatchList(List.of()), true, true, false);
 
 		// assert
 		Mockito.verify(chartRepositoryMock, Mockito.never()).save(Mockito.any());
@@ -719,7 +743,7 @@ class ImportServiceTest
 		Mockito.when(categoryRepository.findByNameAndColorAndType(Mockito.eq("Category2"), Mockito.any(), Mockito.any())).thenReturn(category2);
 
 		InternalDatabase database = new InternalDatabase(List.of(category1, category2), List.of(), List.of(), List.of(), List.of(), List.of(), List.of(), List.of());
-		final List<ImportResultItem> importResultItems = importService.importDatabase(database, new AccountMatchList(List.of()), false, false);
+		final List<ImportResultItem> importResultItems = importService.importDatabase(database, new AccountMatchList(List.of()), false, false, false);
 
 		assertThat(importResultItems).hasSize(7)
 				.contains(new ImportResultItem(EntityType.CATEGORY, 1, 2));
@@ -788,7 +812,7 @@ class ImportServiceTest
 		Mockito.when(templateGroupRepository.save(Mockito.any())).thenReturn(newTemplateGroup);
 
 		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(templateGroup), List.of(), List.of(), List.of(), List.of());
-		importService.importDatabase(database, new AccountMatchList(List.of()), true, true);
+		importService.importDatabase(database, new AccountMatchList(List.of()), true, true, true);
 
 		TemplateGroup expectedTemplateGroup = new TemplateGroup(templateGroup.getName(), templateGroup.getType());
 		Mockito.verify(templateGroupRepository, Mockito.atLeast(1)).save(expectedTemplateGroup);
@@ -802,7 +826,7 @@ class ImportServiceTest
 		Mockito.when(templateGroupRepository.findFirstByType(TemplateGroupType.DEFAULT)).thenReturn(templateGroup);
 
 		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(templateGroup), List.of(), List.of(), List.of(), List.of());
-		importService.importDatabase(database, new AccountMatchList(List.of()), true, true);
+		importService.importDatabase(database, new AccountMatchList(List.of()), true, true, true);
 
 		Mockito.verify(templateGroupRepository, Mockito.never()).save(Mockito.any());
 	}

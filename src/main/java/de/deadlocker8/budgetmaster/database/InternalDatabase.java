@@ -96,6 +96,7 @@ public class InternalDatabase
 
 		numberOfEntitiesByType.put(EntityType.TRANSACTION, transactions.size());
 		numberOfEntitiesByType.put(EntityType.TEMPLATE, templates.size());
+		numberOfEntitiesByType.put(EntityType.TEMPLATE_GROUP, templateGroups.size());
 		numberOfEntitiesByType.put(EntityType.IMAGE, images.size());
 		numberOfEntitiesByType.put(EntityType.CHART, charts.size());
 		return numberOfEntitiesByType;

@@ -72,7 +72,7 @@ public class ImportService
 		this.iconService = iconService;
 	}
 
-	public List<ImportResultItem> importDatabase(InternalDatabase database, AccountMatchList accountMatchList, Boolean importTemplates, Boolean importCharts)
+	public List<ImportResultItem> importDatabase(InternalDatabase database, AccountMatchList accountMatchList, Boolean importTemplateGroups, Boolean importTemplates, Boolean importCharts)
 	{
 		this.database = database;
 		this.collectedErrorMessages = new ArrayList<>();
@@ -86,14 +86,21 @@ public class ImportService
 		importResultItems.add(importAccounts(accountMatchList));
 		importResultItems.add(importTransactions());
 
-		if(importTemplates)
+		if(importTemplateGroups)
 		{
 			importResultItems.add(importTemplateGroups());
-			importResultItems.add(importTemplates());
 		}
 		else
 		{
 			importResultItems.add(new ImportResultItem(EntityType.TEMPLATE_GROUP, 0, 0));
+		}
+
+		if(importTemplates)
+		{
+			importResultItems.add(importTemplates(importTemplateGroups));
+		}
+		else
+		{
 			importResultItems.add(new ImportResultItem(EntityType.TEMPLATE, 0, 0));
 		}
 
@@ -471,7 +478,7 @@ public class ImportService
 		return updatedItems;
 	}
 
-	private ImportResultItem importTemplates()
+	private ImportResultItem importTemplates(Boolean importTemplateGroups)
 	{
 		List<Template> templates = database.getTemplates();
 		LOGGER.debug(MessageFormat.format("Importing {0} templates...", templates.size()));
@@ -486,6 +493,12 @@ public class ImportService
 				LOGGER.debug(MessageFormat.format("Importing template {0}/{1} (templateName: {2})", i + 1, templates.size(), template.getTemplateName()));
 				updateTagsForItem(template);
 				template.setID(null);
+
+				if(!importTemplateGroups)
+				{
+					template.setTemplateGroup(null);
+				}
+
 				templateRepository.save(template);
 
 				numberOfImportedTemplates++;

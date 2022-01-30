@@ -182,7 +182,7 @@ class DatabaseParser_v8_convertToInternalTest
 			template.setIconReference(icon);
 			template.setTags(List.of());
 
-			assertThat(database.getTemplates()).hasSize(4)
+			assertThat(database.getTemplates()).hasSize(5)
 					.contains(template);
 			assertThat(database.getTemplates().get(3).getIconReference())
 					.isEqualTo(icon);

@@ -80,6 +80,7 @@ public class SettingsController extends BaseController
 	{
 		prepareBasicModel(model, settingsService.getSettings());
 		request.removeAttribute("database", RequestAttributes.SCOPE_SESSION);
+		request.removeAttribute("importTemplatesGroups", RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute("importTemplates", RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute("importCharts", RequestAttributes.SCOPE_SESSION);
 
@@ -316,9 +317,11 @@ public class SettingsController extends BaseController
 	@PostMapping("/database/import/step2")
 	public String importStepTwoPost(WebRequest request, Model model,
 									@RequestParam(value = "TEMPLATE", required = false) boolean importTemplates,
+									@RequestParam(value = "TEMPLATE_GROUP", required = false) boolean importTemplatesGroups,
 									@RequestParam(value = "CHART", required = false) boolean importCharts)
 	{
 		request.setAttribute("importTemplates", importTemplates, RequestAttributes.SCOPE_SESSION);
+		request.setAttribute("importTemplateGroups", importTemplatesGroups, RequestAttributes.SCOPE_SESSION);
 		request.setAttribute("importCharts", importCharts, RequestAttributes.SCOPE_SESSION);
 
 		model.addAttribute("database", request.getAttribute("database", RequestAttributes.SCOPE_SESSION));
@@ -358,12 +361,15 @@ public class SettingsController extends BaseController
 		final Boolean importTemplates = (Boolean) request.getAttribute("importTemplates", RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute("importTemplates", RequestAttributes.SCOPE_SESSION);
 
+		final Boolean importTemplateGroups = (Boolean) request.getAttribute("importTemplateGroups", RequestAttributes.SCOPE_SESSION);
+		request.removeAttribute("importTemplateGroups", RequestAttributes.SCOPE_SESSION);
+
 		final Boolean importCharts = (Boolean) request.getAttribute("importCharts", RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute("importCharts", RequestAttributes.SCOPE_SESSION);
 
 		prepareBasicModel(model, settingsService.getSettings());
 
-		final List<ImportResultItem> importResultItems = importService.importDatabase(database, accountMatchList, importTemplates, importCharts);
+		final List<ImportResultItem> importResultItems = importService.importDatabase(database, accountMatchList, importTemplateGroups, importTemplates, importCharts);
 		model.addAttribute("importResultItems", importResultItems);
 		model.addAttribute("errorMessages", importService.getCollectedErrorMessages());
 
