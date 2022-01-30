@@ -8,7 +8,7 @@
 </#macro>
 
 <#macro buttonEditTemplateGroups>
-    <@header.buttonLink url='/templateGroups' icon='edit' localizationKey='title.template.group.edit.short'/>
+    <@header.buttonLink url='/templateGroups' icon='folder' localizationKey='title.template.group.edit.short'/>
 </#macro>
 
 <#macro buttons>
@@ -41,34 +41,38 @@
             <div class="col s12">
                 <ul class="collapsible expandable z-depth-2" id="templateCollapsible">
                     <#list templates as template>
-                        <li class="template-item">
-                            <div class="collapsible-header bold">
-                                <@templateHeader template/>
-                                <div class="collapsible-header-button">
-                                    <@header.buttonFlat url='/templates/' + template.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default"/>
-                                    <@header.buttonFlat url='/templates/' + template.ID?c + '/requestDelete' icon='delete' localizationKey='' classes="no-padding text-default button-request-delete-template" isDataUrl=true/>
-                                    <@header.buttonLink url='/templates/' + template.ID?c + '/select' icon='note_add' localizationKey='' classes='button-select-template'/>
-                                </div>
-                            </div>
-                            <div class="collapsible-body">
-                                <div class="row no-margin-bottom">
-                                    <table class="table-template-content text-default">
-                                        <@templateName template/>
-                                        <@templateAmount template/>
-                                        <@templateCategory template/>
-                                        <@templateDescription template/>
-                                        <@templateTags template/>
-                                        <@templateAccount template/>
-                                        <@templateTransferAccount template/>
-                                    </table>
-                                </div>
-                            </div>
-                        </li>
+                        <@templateItem template/>
                     </#list>
                 </ul>
             </div>
         </div>
     </div>
+</#macro>
+
+<#macro templateItem template>
+    <li class="template-item">
+        <div class="collapsible-header bold">
+            <@templateHeader template/>
+            <div class="collapsible-header-button">
+                <@header.buttonFlat url='/templates/' + template.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default"/>
+                <@header.buttonFlat url='/templates/' + template.ID?c + '/requestDelete' icon='delete' localizationKey='' classes="no-padding text-default button-request-delete-template" isDataUrl=true/>
+                <@header.buttonLink url='/templates/' + template.ID?c + '/select' icon='note_add' localizationKey='' classes='button-select-template'/>
+            </div>
+        </div>
+        <div class="collapsible-body">
+            <div class="row no-margin-bottom">
+                <table class="table-template-content text-default">
+                    <@templateName template/>
+                    <@templateAmount template/>
+                    <@templateCategory template/>
+                    <@templateDescription template/>
+                    <@templateTags template/>
+                    <@templateAccount template/>
+                    <@templateTransferAccount template/>
+                </table>
+            </div>
+        </div>
+    </li>
 </#macro>
 
 <#macro templateHeader template>
