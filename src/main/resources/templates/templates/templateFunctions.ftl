@@ -41,7 +41,7 @@
             <div class="col s12">
                 <#list templatesByGroup as templateGroup, templates>
                     <ul class="collapsible expandable templateCollapsible" data-group-id="${templateGroup.ID?c}">
-                        <#if templatesByGroup?size != 1 && templates?size != 0>
+                        <#if templatesByGroup?size != 1>
                             <div class="template-group-headline">${getTemplateGroupName(templateGroup)}</div>
                         </#if>
 
