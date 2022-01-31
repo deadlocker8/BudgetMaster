@@ -39,8 +39,8 @@
     <div class="container">
         <div class="row">
             <div class="col s12">
-                <ul class="collapsible expandable" id="templateCollapsible">
-                    <#list templatesByGroup as templateGroup, templates>
+                <#list templatesByGroup as templateGroup, templates>
+                    <ul class="collapsible expandable templateCollapsible" data-group-name="${getTemplateGroupName(templateGroup)}">
                         <#if templatesByGroup?size != 1 && templates?size != 0>
                             <div class="template-group-headline">${getTemplateGroupName(templateGroup)}</div>
                         </#if>
@@ -48,8 +48,8 @@
                         <#list templates as template>
                             <@templateItem template/>
                         </#list>
-                    </#list>
-                </ul>
+                    </ul>
+                </#list>
             </div>
         </div>
     </div>

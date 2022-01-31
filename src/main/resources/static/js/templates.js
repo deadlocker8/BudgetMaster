@@ -4,6 +4,21 @@ $(document).ready(function()
         accordion: false
     });
 
+    let templateGroups = document.getElementsByClassName('templateCollapsible');
+    for(let i = 0; i < templateGroups.length; i++)
+    {
+        Sortable.create(templateGroups[i], {
+            animation: 150,
+            group: 'templates',
+            onEnd: function (event) {
+                let draggedItem = event.item;
+                console.log(draggedItem);
+                console.log(event.to);
+                console.log(event.to.dataset.groupName);
+            },
+        });
+    }
+
     let inputSearchTemplate = document.getElementById('searchTemplate');
     if(inputSearchTemplate !== undefined)
     {
@@ -64,7 +79,7 @@ function searchTemplates(searchText)
     {
         templateItems.forEach((item) =>
         {
-            collapsible.classList.remove('hidden');
+            item.parentElement.classList.remove('hidden');
             item.classList.remove('hidden');
         });
         return;
@@ -86,11 +101,8 @@ function searchTemplates(searchText)
         }
     }
 
-    // hide whole collapsible to prevent shadows from remaining visible
     if(numberOfVisibleItems === 0)
     {
-        collapsible.classList.add('hidden');
-
         // hide all item selections
         let templateItems = document.getElementsByClassName('template-item');
         for(let i = 0; i < templateItems.length; i++)
@@ -98,10 +110,6 @@ function searchTemplates(searchText)
             toggleItemSelection(templateItems[i], false);
         }
         selectedTemplateName = null;
-    }
-    else
-    {
-        collapsible.classList.remove('hidden');
     }
 
     handleKeyUpOrDown(null);
