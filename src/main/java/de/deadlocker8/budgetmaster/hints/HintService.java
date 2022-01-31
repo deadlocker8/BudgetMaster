@@ -59,7 +59,8 @@ public class HintService implements Resettable
 				"hint.template.arrow.keys",
 				"hint.transaction.save",
 				"hint.globalDatePicker.hotkeys",
-				"hint.icon.upload.image.size");
+				"hint.icon.upload.image.size",
+				"hint.template.sort.groups");
 
 		for(String localizationKey : hintKeys)
 		{

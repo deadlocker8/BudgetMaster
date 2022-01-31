@@ -35,6 +35,8 @@
                     <br>
                     <#assign hint=helpers.getHintByLocalizationKey("hint.template.arrow.keys")/>
                     <@header.hint hint=hint/>
+                    <#assign hint2=helpers.getHintByLocalizationKey("hint.template.sort.groups")/>
+                    <@header.hint hint=hint2/>
                     <br>
                     <#if templatesByGroup?size == 0>
                         <div class="container">
