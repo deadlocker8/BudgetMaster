@@ -90,12 +90,15 @@ class AccountTest extends SeleniumTestBase
 
 		driver.findElement(By.id("button-new-account")).click();
 
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Account"));
+
 		// click cancel button
 		WebElement cancelButton = driver.findElement(By.id("button-cancel-save-account"));
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", cancelButton);
 		cancelButton.click();
 
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Accounts"));
 
 		// assert
@@ -111,6 +114,9 @@ class AccountTest extends SeleniumTestBase
 		driver.get(helper.getUrl() + "/accounts");
 		driver.findElement(By.id("button-new-account")).click();
 
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Account"));
+
 		String name = "zzzz";
 
 		// fill form
@@ -120,7 +126,7 @@ class AccountTest extends SeleniumTestBase
 		// submit form
 		driver.findElement(By.id("button-save-account")).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Accounts"));
 
 		// assert
@@ -143,6 +149,9 @@ class AccountTest extends SeleniumTestBase
 		driver.get(helper.getUrl() + "/accounts");
 		driver.findElement(By.id("button-new-account")).click();
 
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Account"));
+
 		final String name = "zzzz";
 		final String color = "#FF0000";
 
@@ -153,7 +162,7 @@ class AccountTest extends SeleniumTestBase
 		// submit form
 		driver.findElement(By.id("button-save-account")).click();
 
-		final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Accounts"));
 
 		// assert
@@ -173,6 +182,9 @@ class AccountTest extends SeleniumTestBase
 		driver.get(helper.getUrl() + "/accounts");
 		driver.findElement(By.id("button-new-account")).click();
 
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Account"));
+
 		final String name = "zzzz";
 		final String color = "#FF0000";
 
@@ -185,7 +197,7 @@ class AccountTest extends SeleniumTestBase
 		// submit form
 		driver.findElement(By.id("button-save-account")).click();
 
-		final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Accounts"));
 
 		// assert
@@ -205,6 +217,9 @@ class AccountTest extends SeleniumTestBase
 		driver.get(helper.getUrl() + "/accounts");
 		driver.findElement(By.id("button-new-account")).click();
 
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Account"));
+
 		final String name = "zzzz";
 		final String color = "#FF0000";
 
@@ -217,7 +232,7 @@ class AccountTest extends SeleniumTestBase
 		// submit form
 		driver.findElement(By.id("button-save-account")).click();
 
-		final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Accounts"));
 
 		// assert
