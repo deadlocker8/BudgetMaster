@@ -40,7 +40,7 @@
         <div class="row">
             <div class="col s12">
                 <#list templatesByGroup as templateGroup, templates>
-                    <ul class="collapsible expandable templateCollapsible" data-group-name="${getTemplateGroupName(templateGroup)}">
+                    <ul class="collapsible expandable templateCollapsible" data-group-id="${templateGroup.ID?c}">
                         <#if templatesByGroup?size != 1 && templates?size != 0>
                             <div class="template-group-headline">${getTemplateGroupName(templateGroup)}</div>
                         </#if>
@@ -53,10 +53,16 @@
             </div>
         </div>
     </div>
+
+     <form id="form-move-template-to-group" method="post" action="<@s.url '/templateGroups/moveTemplateToGroup'/>">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <input type="hidden" name="templateID" value=""/>
+        <input type="hidden" name="groupID" value=""/>
+     </form>
 </#macro>
 
 <#macro templateItem template>
-    <li class="template-item z-depth-2">
+    <li class="template-item z-depth-2" data-template-id="${template.ID?c}">
         <div class="collapsible-header bold">
             <@templateHeader template/>
             <div class="collapsible-header-button">

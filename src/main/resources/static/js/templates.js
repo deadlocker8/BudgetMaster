@@ -12,9 +12,48 @@ $(document).ready(function()
             group: 'templates',
             onEnd: function (event) {
                 let draggedItem = event.item;
-                console.log(draggedItem);
-                console.log(event.to);
-                console.log(event.to.dataset.groupName);
+                let templateID = draggedItem.dataset.templateId;
+                let groupID = event.to.dataset.groupId;
+
+                let formID = 'form-move-template-to-group';
+                let form = document.getElementById(formID);
+                let inputTemplateID = form.querySelector('input[name="templateID"]');
+                let inputGroupID = form.querySelector('input[name="groupID"]');
+
+                inputTemplateID.value = templateID;
+                inputGroupID.value = groupID;
+
+                $.ajax({
+                    url: form.action,
+                    type: 'POST',
+                    processData: false,
+                    contentType: false,
+                    data: new FormData(form),
+                    success: function(response)
+                    {
+                        inputTemplateID.value = '';
+                        inputGroupID.value = '';
+
+                        let parsedData = JSON.parse(response);
+                        let isSuccess = parsedData['success']
+                        M.toast({
+                            html: parsedData['localizedMessage'],
+                            classes: isSuccess ? 'green' : 'red'
+                        });
+                    },
+                    error: function(response)
+                    {
+                        inputTemplateID.value = '';
+                        inputGroupID.value = '';
+
+                        let parsedData = JSON.parse(response);
+                        console.log(parsedData)
+                        M.toast({
+                            html: parsedData['localizedMessage'],
+                            classes: 'red'
+                        });
+                    }
+                });
             },
         });
     }
