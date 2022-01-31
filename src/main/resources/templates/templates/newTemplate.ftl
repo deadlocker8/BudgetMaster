@@ -102,7 +102,7 @@
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
-        <script src="<@s.url '/js/libs/vanilla-picker.min.js'/>"></script>
+        <script src="<@s.url '/webjars/vanilla-picker/2.12.1/dist/vanilla-picker.min.js'/>"></script>
         <script src="<@s.url '/js/helpers.js'/>"></script>
         <script src="<@s.url '/js/transactions.js'/>"></script>
         <script src="<@s.url '/js/templates.js'/>"></script>

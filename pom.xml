@@ -73,6 +73,7 @@
         <itextpdf.version>5.5.13.2</itextpdf.version>
         <usertype-core.version>6.0.1.GA</usertype-core.version>
         <joda-time.version>2.10.12</joda-time.version>
+        <vanilla-picker.version>2.12.1</vanilla-picker.version>
 
         <app.versionDate>${maven.build.timestamp}</app.versionDate>
         <maven.build.timestamp.format>dd.MM.yy</maven.build.timestamp.format>
@@ -220,6 +221,12 @@
             <artifactId>codemirror</artifactId>
             <version>${codemirror.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>vanilla-picker</artifactId>
+            <version>${vanilla-picker.version}</version>
+        </dependency>
+
 
         <!-- selenium -->
         <dependency>
