@@ -10,7 +10,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
@@ -32,7 +32,7 @@ public class DatePickerController extends BaseController
 		this.dateService = dateService;
 	}
 
-	@RequestMapping(value = "/previousMonth")
+	@GetMapping(value = "/previousMonth")
 	public String previousMonth(HttpServletResponse response, @CookieValue(COOKIE_NAME) String date, @RequestParam("target") String target)
 	{
 		Settings settings = settingsService.getSettings();
@@ -43,7 +43,7 @@ public class DatePickerController extends BaseController
 		return "redirect:" + target;
 	}
 
-	@RequestMapping(value = "/nextMonth")
+	@GetMapping(value = "/nextMonth")
 	public String nextMonth(HttpServletResponse response, @CookieValue(COOKIE_NAME) String date, @RequestParam("target") String target)
 	{
 		Settings settings = settingsService.getSettings();
@@ -54,7 +54,7 @@ public class DatePickerController extends BaseController
 		return "redirect:" + target;
 	}
 
-	@RequestMapping(value = "/setDate")
+	@GetMapping(value = "/setDate")
 	public String setDate(HttpServletResponse response, @CookieValue(COOKIE_NAME) String date, @RequestParam("target") String target)
 	{
 		Settings settings = settingsService.getSettings();
@@ -64,7 +64,7 @@ public class DatePickerController extends BaseController
 		return "redirect:" + target;
 	}
 
-	@RequestMapping(value = "/today")
+	@GetMapping(value = "/today")
 	public String today(HttpServletResponse response, @RequestParam("target") String target)
 	{
 		DateTime currentDate = DateHelper.getCurrentDate();
