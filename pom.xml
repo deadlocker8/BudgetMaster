@@ -74,6 +74,7 @@
         <usertype-core.version>6.0.1.GA</usertype-core.version>
         <joda-time.version>2.10.12</joda-time.version>
         <vanilla-picker.version>2.12.1</vanilla-picker.version>
+        <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
 
         <app.versionDate>${maven.build.timestamp}</app.versionDate>
         <maven.build.timestamp.format>dd.MM.yy</maven.build.timestamp.format>
@@ -330,12 +331,29 @@
                 <version>2.22.2</version>
                 <configuration>
                     <junitArtifactName>junit:junit</junitArtifactName>
-                    <argLine>-Dfile.encoding=UTF-8</argLine>
+                    <argLine>${surefireArgLine} -Dfile.encoding=UTF-8</argLine>
 
                     <systemPropertyVariables>
                         <testProfile>true</testProfile>
                     </systemPropertyVariables>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <propertyName>surefireArgLine</propertyName>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <!--Deploy Plugin-->
