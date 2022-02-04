@@ -345,6 +345,16 @@
                 <version>${jacoco-maven-plugin.version}</version>
                 <executions>
                     <execution>
+                        <id>aggregate-reports-all</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <title>BudgetMaster Code Coverage</title>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
