@@ -20,7 +20,7 @@ public class ChartSettings
 
 	public static ChartSettings getDefault(FilterConfiguration filterConfiguration)
 	{
-		return new ChartSettings(ChartDisplayType.BAR, ChartGroupType.MONTH, null, DateHelper.getCurrentDate().withDayOfMonth(1), DateHelper.getCurrentDate().dayOfMonth().withMaximumValue(), filterConfiguration);
+		return new ChartSettings(ChartDisplayType.BAR, ChartGroupType.MONTH, null, DateHelper.getCurrentDateWithUTC().withDayOfMonth(1), DateHelper.getCurrentDateWithUTC().dayOfMonth().withMaximumValue(), filterConfiguration);
 	}
 
 	public ChartSettings()

@@ -9,6 +9,7 @@ import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.deadlocker8.budgetmaster.utils.DateHelper;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeUtils;
 import org.joda.time.format.DateTimeFormat;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,7 +87,7 @@ class TransactionServiceDatabaseTest
 		FilterConfiguration filterConfiguration = new FilterConfiguration(true, true, true, true, true, null, null, "");
 
 		List<Transaction> transactions = transactionService.getTransactionsForAccount(accountService.getRepository().findAllByType(AccountType.ALL).get(0), date1, DateHelper.getCurrentDate(), filterConfiguration);
-		assertThat(transactions).hasSize(7);
+		assertThat(transactions).hasSize(8);
 	}
 
 	@Test
@@ -105,7 +106,31 @@ class TransactionServiceDatabaseTest
 	{
 		FilterConfiguration filterConfiguration = new FilterConfiguration(true, true, true, true, true, null, null, "");
 
-		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(accountService.getRepository().findByName("Default Account"), 6, 2020, false, filterConfiguration);
+		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(accountService.getRepository().findByName("Default Account"), 6, 2021, false, filterConfiguration);
 		assertThat(transactions).hasSize(1);
+		assertThat(transactions.get(0).getDate())
+				.isEqualTo(new DateTime(2021, 6, 30, 0, 0, 0, 0));
+	}
+
+	@Test
+	void test_getTransactionsForMonthAndYear_CloseToMidnight()
+	{
+		// override system time to setup midnight scenario
+		// DateTime.now() will return the time in UTC --> shortly before midnight
+		DateTimeUtils.setCurrentMillisFixed(new DateTime(2021, 2, 5, 21, 45, 0).getMillis());
+
+		try
+		{
+			FilterConfiguration filterConfiguration = new FilterConfiguration(true, true, true, true, true, null, null, "");
+
+			List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(accountService.getRepository().findByName("Default Account"), 6, 2021, false, filterConfiguration);
+			assertThat(transactions).hasSize(1);
+			assertThat(transactions.get(0).getDate())
+					.isEqualTo(new DateTime(2021, 6, 30, 0, 0, 0, 0));
+		}
+		finally
+		{
+			DateTimeUtils.setCurrentMillisSystem();
+		}
 	}
 }

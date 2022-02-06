@@ -15,4 +15,9 @@ public class DateHelper
 	{
 		return DateTime.now(DateTimeZone.forTimeZone(TimeZone.getDefault()));
 	}
+
+	public static DateTime getCurrentDateWithUTC()
+	{
+		return getCurrentDate().toDateTime(DateTimeZone.forTimeZone(TimeZone.getTimeZone("UTC")));
+	}
 }
