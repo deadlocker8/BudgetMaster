@@ -11,6 +11,8 @@
         <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "templates" settings/>
 
+        <#import "templateGroupFunctions.ftl" as tmplateGroupFunctions>
+
         <main>
             <div class="card main-card background-color">
                 <div class="container">
@@ -21,7 +23,7 @@
 
                 <@header.content>
                     <br>
-                    <div class="center-align"><@header.buttonLink url='/templateGroups/newTemplateGroup' icon='add' localizationKey='title.template.group.new'/></div>
+                    <@tmplateGroupFunctions.buttons/>
                     <br>
 
                     <div class="container">

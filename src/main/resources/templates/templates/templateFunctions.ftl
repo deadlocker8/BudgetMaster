@@ -35,6 +35,7 @@
     </div>
 </#macro>
 
+
 <#macro listTemplates templatesByGroup>
     <div class="container">
         <div class="row">
