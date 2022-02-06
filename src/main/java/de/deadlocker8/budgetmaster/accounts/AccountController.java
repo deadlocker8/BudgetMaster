@@ -2,7 +2,6 @@ package de.deadlocker8.budgetmaster.accounts;
 
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.icon.IconService;
-import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.utils.FontAwesomeIcons;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
@@ -28,14 +27,12 @@ import java.util.Optional;
 public class AccountController extends BaseController
 {
 	private final AccountService accountService;
-	private final ImageService imageService;
 	private final IconService iconService;
 
 	@Autowired
-	public AccountController(AccountService accountService, ImageService imageService, IconService iconService)
+	public AccountController(AccountService accountService, IconService iconService)
 	{
 		this.accountService = accountService;
-		this.imageService = imageService;
 		this.iconService = iconService;
 	}
 
