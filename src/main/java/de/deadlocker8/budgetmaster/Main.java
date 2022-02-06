@@ -84,7 +84,7 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 			}
 			catch(IOException e)
 			{
-				e.printStackTrace();
+				LOGGER.error("Could not create BudgetMaster default settings file", e);
 			}
 		}
 

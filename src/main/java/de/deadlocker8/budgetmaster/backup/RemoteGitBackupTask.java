@@ -55,7 +55,7 @@ public class RemoteGitBackupTask extends GitBackupTask
 		}
 		catch(IOException | GitAPIException | URISyntaxException e)
 		{
-			e.printStackTrace();
+			LOGGER.error("Error performing remote git backup task", e);
 			setBackupStatus(BackupStatus.ERROR);
 		}
 	}
@@ -112,7 +112,6 @@ public class RemoteGitBackupTask extends GitBackupTask
 		catch(IOException e)
 		{
 			LOGGER.error(MessageFormat.format("Error deleting folder: \"{0}\"", folderToDelete), e);
-			e.printStackTrace();
 		}
 	}
 

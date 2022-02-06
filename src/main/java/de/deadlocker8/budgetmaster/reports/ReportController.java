@@ -123,12 +123,12 @@ public class ReportController extends BaseController
 			}
 			catch(IOException e)
 			{
-				e.printStackTrace();
+				LOGGER.error("Could not generate report PDF", e);
 			}
 		}
 		catch(DocumentException e)
 		{
-			e.printStackTrace();
+			LOGGER.error("Could not generate report PDF", e);
 		}
 	}
 }

@@ -166,7 +166,7 @@ public class DatabaseService
 			}
 			catch(IOException e)
 			{
-				e.printStackTrace();
+				LOGGER.error("Can not rotate backup", e);
 			}
 		}
 	}
@@ -214,7 +214,7 @@ public class DatabaseService
 		}
 		catch(IOException e)
 		{
-			e.printStackTrace();
+			LOGGER.error("Could not determine existing backups", e);
 		}
 
 		return new ArrayList<>();

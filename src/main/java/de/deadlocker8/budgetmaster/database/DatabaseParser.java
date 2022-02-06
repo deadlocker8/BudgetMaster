@@ -99,7 +99,7 @@ public class DatabaseParser
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			LOGGER.error("Invalid database version", e);
 			throw new IllegalArgumentException(Localization.getString("error.database.import.invalid.json"), e);
 		}
 	}

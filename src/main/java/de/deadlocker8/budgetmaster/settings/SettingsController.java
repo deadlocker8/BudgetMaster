@@ -238,7 +238,7 @@ public class SettingsController extends BaseController
 		}
 		catch(IOException e)
 		{
-			e.printStackTrace();
+			LOGGER.error("Could not export database", e);
 		}
 	}
 
@@ -299,7 +299,7 @@ public class SettingsController extends BaseController
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			LOGGER.error("Database upload failed", e);
 
 			model.addAttribute("errorImportDatabase", e.getMessage());
 			prepareBasicModel(model, settingsService.getSettings());
@@ -413,7 +413,7 @@ public class SettingsController extends BaseController
 		}
 		catch(IOException e)
 		{
-			e.printStackTrace();
+			LOGGER.error("Could not update BudgetMaster version", e);
 		}
 
 		LOGGER.info(MessageFormat.format("Stopping BudgetMaster for update to version {0}", budgetMasterUpdateService.getAvailableVersionString()));

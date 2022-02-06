@@ -67,13 +67,13 @@ public class MediaController extends BaseController
 			}
 			catch(IOException e)
 			{
-				e.printStackTrace();
+				LOGGER.error("Image upload failed", e);
 				success = false;
 				localizedMessage = Localization.getString("upload.image.error", e.getMessage());
 			}
 			catch(InvalidFileExtensionException e)
 			{
-				e.printStackTrace();
+				LOGGER.error("Image upload failed", e);
 				success = false;
 				localizedMessage = e.getMessage();
 			}
