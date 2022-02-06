@@ -5,7 +5,7 @@ import org.springframework.context.ApplicationEvent;
 
 public class UpdateAvailableEvent extends ApplicationEvent
 {
-	private final UpdateService updateService;
+	private final transient UpdateService updateService;
 
 	UpdateAvailableEvent(Object source, UpdateService updateService)
 	{
