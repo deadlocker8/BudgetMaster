@@ -43,6 +43,32 @@ import java.util.Optional;
 @RequestMapping(Mappings.TRANSACTIONS)
 public class TransactionController extends BaseController
 {
+	private static class ModelAttributes
+	{
+		public static final String ERROR = "error";
+		public static final String ALL_ENTITIES = "transactions";
+		public static final String ONE_ENTITY = "templateGroup";
+		public static final String ENTITY_TO_DELETE = "transactionToDelete";
+		public static final String ACCOUNT = "account";
+		public static final String BUDGET = "budget";
+		public static final String CURRENT_DATE = "currentDate";
+		public static final String FILTER_CONFIGURATION = "filterConfiguration";
+		public static final String HIGHLIGHT_ID = "highlightID";
+	}
+
+	private static class ReturnValues
+	{
+		public static final String ALL_ENTITIES = "transactions/transactions";
+		public static final String REDIRECT_ALL_ENTITIES = "redirect:/transactions";
+		public static final String NEW_ENTITY = "transactions/newTransaction";
+		public static final String DELETE_ENTITY = "transactions/deleteTransactionModal";
+		public static final String REDIRECT_NEW_TRANSFER = "redirect:/transactions/newTransaction/transfer";
+		public static final String NEW_TRANSFER = "transactions/newTransactionTransfer";
+		public static final String REDIRECT_NEW_TRANSACTION = "redirect:/transactions/newTransaction/normal";
+		public static final String NEW_TRANSACTION = "transactions/newTransactionNormal";
+		public static final String CHANGE_TYPE = "transactions/changeTypeModal";
+	}
+
 	private static final String CONTINUE = "continue";
 	private final TransactionService transactionService;
 	private final CategoryService categoryService;
@@ -74,7 +100,7 @@ public class TransactionController extends BaseController
 
 		prepareModelTransactions(filterHelpers.getFilterConfiguration(request), model, date);
 
-		return "transactions/transactions";
+		return ReturnValues.ALL_ENTITIES;
 	}
 
 	@GetMapping("/{ID}/requestDelete")
@@ -82,14 +108,14 @@ public class TransactionController extends BaseController
 	{
 		if(!transactionService.isDeletable(ID))
 		{
-			return "redirect:/transactions";
+			return ReturnValues.REDIRECT_ALL_ENTITIES;
 		}
 
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 		prepareModelTransactions(filterHelpers.getFilterConfiguration(request), model, date);
-		model.addAttribute("transactionToDelete", transactionService.getRepository().getById(ID));
+		model.addAttribute(ModelAttributes.ENTITY_TO_DELETE, transactionService.getRepository().getById(ID));
 
-		return "transactions/deleteTransactionModal";
+		return ReturnValues.DELETE_ENTITY;
 	}
 
 	private void prepareModelTransactions(FilterConfiguration filterConfiguration, Model model, DateTime date)
@@ -97,11 +123,11 @@ public class TransactionController extends BaseController
 		Account currentAccount = helpers.getCurrentAccount();
 		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(currentAccount, date.getMonthOfYear(), date.getYear(), settingsService.getSettings().isRestActivated(), filterConfiguration);
 
-		model.addAttribute("transactions", transactions);
-		model.addAttribute("account", currentAccount);
-		model.addAttribute("budget", helpers.getBudget(transactions, currentAccount));
-		model.addAttribute("currentDate", date);
-		model.addAttribute("filterConfiguration", filterConfiguration);
+		model.addAttribute(ModelAttributes.ALL_ENTITIES, transactions);
+		model.addAttribute(ModelAttributes.ACCOUNT, currentAccount);
+		model.addAttribute(ModelAttributes.BUDGET, helpers.getBudget(transactions, currentAccount));
+		model.addAttribute(ModelAttributes.CURRENT_DATE, date);
+		model.addAttribute(ModelAttributes.FILTER_CONFIGURATION, filterConfiguration);
 	}
 
 	@GetMapping("/{ID}/delete")
@@ -112,7 +138,7 @@ public class TransactionController extends BaseController
 
 		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.transaction.delete.success", transactionToDelete.getName()), NotificationType.SUCCESS));
 
-		return "redirect:/transactions";
+		return ReturnValues.REDIRECT_ALL_ENTITIES;
 	}
 
 	@GetMapping("/newTransaction/{type}")
@@ -122,14 +148,14 @@ public class TransactionController extends BaseController
 		if(accountState != AccountState.FULL_ACCESS)
 		{
 			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.transaction.add.warning", Localization.getString(accountState.getLocalizationKey())), NotificationType.WARNING));
-			return "redirect:/transactions";
+			return ReturnValues.REDIRECT_ALL_ENTITIES;
 		}
 
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 		Transaction emptyTransaction = new Transaction();
 		emptyTransaction.setCategory(categoryService.findByType(CategoryType.NONE));
 		transactionService.prepareModelNewOrEdit(model, false, date, false, emptyTransaction, accountService.getAllActivatedAccountsAsc());
-		return "transactions/newTransaction" + StringUtils.capitalize(type);
+		return ReturnValues.NEW_ENTITY + StringUtils.capitalize(type);
 	}
 
 	@PostMapping(value = "/newTransaction")
@@ -166,11 +192,11 @@ public class TransactionController extends BaseController
 		String redirectUrl;
 		if(transaction.isTransfer())
 		{
-			redirectUrl = "transactions/newTransactionTransfer";
+			redirectUrl = ReturnValues.NEW_TRANSFER;
 		}
 		else
 		{
-			redirectUrl = "transactions/newTransactionNormal";
+			redirectUrl = ReturnValues.NEW_TRANSACTION;
 		}
 
 
@@ -215,7 +241,7 @@ public class TransactionController extends BaseController
 	{
 		if(bindingResult.hasErrors())
 		{
-			model.addAttribute("error", bindingResult);
+			model.addAttribute(ModelAttributes.ERROR, bindingResult);
 			transactionService.prepareModelNewOrEdit(model, isEdit, date, false, transaction, accountService.getAllActivatedAccountsAsc());
 			return url;
 		}
@@ -227,12 +253,12 @@ public class TransactionController extends BaseController
 		{
 			if(transaction.isTransfer())
 			{
-				return "redirect:/transactions/newTransaction/transfer";
+				return ReturnValues.REDIRECT_NEW_TRANSFER;
 			}
-			return "redirect:/transactions/newTransaction/normal";
+			return ReturnValues.REDIRECT_NEW_TRANSACTION;
 		}
 
-		return "redirect:/transactions";
+		return ReturnValues.REDIRECT_ALL_ENTITIES;
 	}
 
 	@GetMapping("/{ID}/edit")
@@ -248,7 +274,7 @@ public class TransactionController extends BaseController
 
 		if(transaction.getAccount().getAccountState() != AccountState.FULL_ACCESS)
 		{
-			return "redirect:/transactions";
+			return ReturnValues.REDIRECT_ALL_ENTITIES;
 		}
 
 		// select first transaction in order to provide correct start date for repeating transactions
@@ -262,9 +288,9 @@ public class TransactionController extends BaseController
 
 		if(transaction.isTransfer())
 		{
-			return "transactions/newTransactionTransfer";
+			return ReturnValues.NEW_TRANSFER;
 		}
-		return "transactions/newTransactionNormal";
+		return ReturnValues.NEW_TRANSACTION;
 	}
 
 	@GetMapping("/{ID}/highlight")
@@ -285,8 +311,8 @@ public class TransactionController extends BaseController
 		filterConfiguration.setFilterTags(filterHelpers.getFilterTags());
 
 		prepareModelTransactions(filterConfiguration, model, transaction.getDate());
-		model.addAttribute("highlightID", ID);
-		return "transactions/transactions";
+		model.addAttribute(ModelAttributes.HIGHLIGHT_ID, ID);
+		return ReturnValues.ALL_ENTITIES;
 	}
 
 	@GetMapping("/{ID}/changeTypeModal")
@@ -298,8 +324,8 @@ public class TransactionController extends BaseController
 			throw new ResourceNotFoundException();
 		}
 
-		model.addAttribute("transaction", transactionOptional.get());
-		return "transactions/changeTypeModal";
+		model.addAttribute(ModelAttributes.ONE_ENTITY, transactionOptional.get());
+		return ReturnValues.CHANGE_TYPE;
 	}
 
 	@GetMapping("/{ID}/changeType")
@@ -335,10 +361,10 @@ public class TransactionController extends BaseController
 		{
 			case NORMAL:
 				transactionCopy.setTransferAccount(null);
-				redirectUrl = "transactions/newTransactionNormal";
+				redirectUrl = ReturnValues.NEW_TRANSACTION;
 				break;
 			case TRANSFER:
-				redirectUrl = "transactions/newTransactionTransfer";
+				redirectUrl = ReturnValues.NEW_TRANSFER;
 				break;
 			default:
 				throw new IllegalStateException("Unexpected value: " + newTransactionType);
@@ -382,8 +408,8 @@ public class TransactionController extends BaseController
 
 		if(newTransaction.isTransfer())
 		{
-			return "transactions/newTransactionTransfer";
+			return ReturnValues.NEW_TRANSFER;
 		}
-		return "transactions/newTransactionNormal";
+		return ReturnValues.NEW_TRANSACTION;
 	}
 }

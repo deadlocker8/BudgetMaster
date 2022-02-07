@@ -24,6 +24,22 @@ import java.util.Optional;
 @RequestMapping(Mappings.TEMPLATE_GROUPS)
 public class TemplateGroupController extends BaseController
 {
+	private static class ModelAttributes
+	{
+		public static final String ERROR = "error";
+		public static final String ALL_ENTITIES = "templateGroups";
+		public static final String ONE_ENTITY = "templateGroup";
+		public static final String ENTITY_TO_DELETE = "templateGroupToDelete";
+	}
+
+	private static class ReturnValues
+	{
+		public static final String ALL_ENTITIES = "templateGroups/templateGroups";
+		public static final String REDIRECT_ALL_ENTITIES = "redirect:/templateGroups";
+		public static final String NEW_ENTITY = "templateGroups/newTemplateGroup";
+		public static final String DELETE_ENTITY = "templateGroups/deleteTemplateGroupModal";
+	}
+
 	private final TemplateGroupService templateGroupService;
 	private final TemplateService templateService;
 
@@ -37,8 +53,8 @@ public class TemplateGroupController extends BaseController
 	@GetMapping
 	public String showTemplateGroups(Model model)
 	{
-		model.addAttribute("templateGroups", templateGroupService.getAllEntitiesAsc());
-		return "templateGroups/templateGroups";
+		model.addAttribute(ModelAttributes.ALL_ENTITIES, templateGroupService.getAllEntitiesAsc());
+		return ReturnValues.ALL_ENTITIES;
 	}
 
 	@GetMapping("/{ID}/requestDelete")
@@ -46,12 +62,12 @@ public class TemplateGroupController extends BaseController
 	{
 		if(!templateGroupService.isDeletable(ID))
 		{
-			return "redirect:/templateGroups";
+			return ReturnValues.REDIRECT_ALL_ENTITIES;
 		}
 
-		model.addAttribute("templateGroups", templateGroupService.getAllEntitiesAsc());
-		model.addAttribute("templateGroupToDelete", templateGroupService.findById(ID).orElseThrow());
-		return "templateGroups/deleteTemplateGroupModal";
+		model.addAttribute(ModelAttributes.ALL_ENTITIES, templateGroupService.getAllEntitiesAsc());
+		model.addAttribute(ModelAttributes.ENTITY_TO_DELETE, templateGroupService.findById(ID).orElseThrow());
+		return ReturnValues.DELETE_ENTITY;
 	}
 
 	@GetMapping("/{ID}/delete")
@@ -62,15 +78,15 @@ public class TemplateGroupController extends BaseController
 
 		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.template.group.delete.success", templateGroupToDelete.getName()), NotificationType.SUCCESS));
 
-		return "redirect:/templateGroups";
+		return ReturnValues.REDIRECT_ALL_ENTITIES;
 	}
 
 	@GetMapping("/newTemplateGroup")
 	public String newTemplate(Model model)
 	{
 		final TemplateGroup emptyTemplateGroup = new TemplateGroup();
-		model.addAttribute("templateGroup", emptyTemplateGroup);
-		return "templateGroups/newTemplateGroup";
+		model.addAttribute(ModelAttributes.ALL_ENTITIES, emptyTemplateGroup);
+		return ReturnValues.NEW_ENTITY;
 	}
 
 	@PostMapping(value = "/newTemplateGroup")
@@ -85,9 +101,9 @@ public class TemplateGroupController extends BaseController
 
 		if(bindingResult.hasErrors())
 		{
-			model.addAttribute("error", bindingResult);
-			model.addAttribute("templateGroup", templateGroup);
-			return "templateGroups/newTemplateGroup";
+			model.addAttribute(ModelAttributes.ERROR, bindingResult);
+			model.addAttribute(ModelAttributes.ONE_ENTITY, templateGroup);
+			return ReturnValues.NEW_ENTITY;
 		}
 
 		templateGroup.setType(TemplateGroupType.CUSTOM);
@@ -95,7 +111,7 @@ public class TemplateGroupController extends BaseController
 		templateGroupService.getRepository().save(templateGroup);
 
 		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.template.save.success", templateGroup.getName()), NotificationType.SUCCESS));
-		return "redirect:/templateGroups";
+		return ReturnValues.REDIRECT_ALL_ENTITIES;
 	}
 
 	@GetMapping("/{ID}/edit")
@@ -108,8 +124,8 @@ public class TemplateGroupController extends BaseController
 		}
 
 		TemplateGroup templateGroup = templateGroupOptional.get();
-		model.addAttribute("templateGroup", templateGroup);
-		return "templateGroups/newTemplateGroup";
+		model.addAttribute(ModelAttributes.ONE_ENTITY, templateGroup);
+		return ReturnValues.NEW_ENTITY;
 	}
 
 	@PostMapping(value = "/moveTemplateToGroup")

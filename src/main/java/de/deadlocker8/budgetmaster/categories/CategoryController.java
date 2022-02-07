@@ -17,13 +17,32 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Controller
 @RequestMapping(Mappings.CATEGORIES)
 public class CategoryController extends BaseController
 {
+	private static class ModelAttributes
+	{
+		public static final String ALL_ENTITIES = "categories";
+		public static final String ONE_ENTITY = "category";
+		public static final String ENTITY_TO_DELETE = "categoryToDelete";
+		public static final String CUSTOM_COLOR = "customColor";
+		public static final String FONTAWESOME_ICONS = "fontawesomeIcons";
+		public static final String AVAILABLE_CATEGORIES = "fontawesomeIcons";
+		public static final String PRESELECTED_CATEGORY = "availableCategories";
+		public static final String ERROR = "error";
+	}
+
+	private static class ReturnValues
+	{
+		public static final String SHOW_ALL = "categories/categories";
+		public static final String REDIRECT_SHOW_ALL = "redirect:/categories";
+		public static final String NEW_ENTITY = "categories/newCategory";
+		public static final String DELETE_ENTITY = "categories/deleteCategoryModal";
+	}
+
 	private static final String WHITE = "#FFFFFF";
 
 	private final CategoryService categoryService;
@@ -41,8 +60,8 @@ public class CategoryController extends BaseController
 	@GetMapping
 	public String categories(Model model)
 	{
-		model.addAttribute("categories", categoryService.getAllEntitiesAsc());
-		return "categories/categories";
+		model.addAttribute(ModelAttributes.ALL_ENTITIES, categoryService.getAllEntitiesAsc());
+		return ReturnValues.SHOW_ALL;
 	}
 
 	@GetMapping("/{ID}/requestDelete")
@@ -50,18 +69,18 @@ public class CategoryController extends BaseController
 	{
 		if(!categoryService.isDeletable(ID))
 		{
-			return "redirect:/categories";
+			return ReturnValues.REDIRECT_SHOW_ALL;
 		}
 
 		List<Category> allCategories = categoryService.getAllEntitiesAsc();
-		List<Category> availableCategories = allCategories.stream().filter(category -> !category.getID().equals(ID)).collect(Collectors.toList());
+		List<Category> availableCategories = allCategories.stream().filter(category -> !category.getID().equals(ID)).toList();
 
-		model.addAttribute("categories", allCategories);
-		model.addAttribute("availableCategories", availableCategories);
-		model.addAttribute("preselectedCategory", categoryService.findByType(CategoryType.NONE));
+		model.addAttribute(ModelAttributes.ALL_ENTITIES, allCategories);
+		model.addAttribute(ModelAttributes.AVAILABLE_CATEGORIES, availableCategories);
+		model.addAttribute(ModelAttributes.PRESELECTED_CATEGORY, categoryService.findByType(CategoryType.NONE));
 
-		model.addAttribute("categoryToDelete", categoryService.findById(ID).orElseThrow());
-		return "categories/deleteCategoryModal";
+		model.addAttribute(ModelAttributes.ENTITY_TO_DELETE, categoryService.findById(ID).orElseThrow());
+		return ReturnValues.DELETE_ENTITY;
 	}
 
 	@PostMapping(value = "/{ID}/delete")
@@ -82,19 +101,19 @@ public class CategoryController extends BaseController
 			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.category.delete.not.deletable", String.valueOf(ID)), NotificationType.ERROR));
 		}
 
-		return "redirect:/categories";
+		return ReturnValues.REDIRECT_SHOW_ALL;
 	}
 
 	@GetMapping("/newCategory")
 	public String newCategory(Model model)
 	{
 		//add custom color (defaults to white here because we are adding a new category instead of editing an existing)
-		model.addAttribute("customColor", WHITE);
+		model.addAttribute(ModelAttributes.CUSTOM_COLOR, WHITE);
 		Category emptyCategory = new Category(null, ColorUtilsNonJavaFX.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase(), CategoryType.CUSTOM);
-		model.addAttribute("category", emptyCategory);
-		model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
+		model.addAttribute(ModelAttributes.ONE_ENTITY, emptyCategory);
+		model.addAttribute(ModelAttributes.FONTAWESOME_ICONS, FontAwesomeIcons.ICONS);
 
-		return "categories/newCategory";
+		return ReturnValues.NEW_ENTITY;
 	}
 
 	@GetMapping("/{ID}/edit")
@@ -108,7 +127,7 @@ public class CategoryController extends BaseController
 
 		Category category = categoryOptional.get();
 		prepareModel(model, category);
-		return "categories/newCategory";
+		return ReturnValues.NEW_ENTITY;
 	}
 
 	@PostMapping(value = "/newCategory")
@@ -125,10 +144,10 @@ public class CategoryController extends BaseController
 
 		if(bindingResult.hasErrors())
 		{
-			model.addAttribute("error", bindingResult);
+			model.addAttribute(ModelAttributes.ERROR, bindingResult);
 
 			prepareModel(model, category);
-			return "categories/newCategory";
+			return ReturnValues.NEW_ENTITY;
 		}
 
 		if(category.getType() == null)
@@ -140,18 +159,18 @@ public class CategoryController extends BaseController
 
 		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.category.save.success", category.getName()), NotificationType.SUCCESS));
 
-		return "redirect:/categories";
+		return ReturnValues.REDIRECT_SHOW_ALL;
 	}
 
 	private void prepareModel(Model model, Category category)
 	{
 		if(helpers.getCategoryColorList().contains(category.getColor()))
 		{
-			model.addAttribute("customColor", WHITE);
+			model.addAttribute(ModelAttributes.CUSTOM_COLOR, WHITE);
 		}
 		else
 		{
-			model.addAttribute("customColor", category.getColor());
+			model.addAttribute(ModelAttributes.CUSTOM_COLOR, category.getColor());
 		}
 
 		if(category.getColor() == null)
@@ -159,7 +178,7 @@ public class CategoryController extends BaseController
 			category.setColor(ColorUtilsNonJavaFX.toRGBHexWithoutOpacity(Colors.CATEGORIES_LIGHT_GREY).toLowerCase());
 		}
 
-		model.addAttribute("category", category);
-		model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
+		model.addAttribute(ModelAttributes.ONE_ENTITY, category);
+		model.addAttribute(ModelAttributes.FONTAWESOME_ICONS, FontAwesomeIcons.ICONS);
 	}
 }

@@ -24,6 +24,17 @@ import java.util.Optional;
 @RequestMapping(Mappings.MEDIA)
 public class MediaController extends BaseController
 {
+	private static class ModelAttributes
+	{
+		public static final String ALL_ENTITIES = "availableImages";
+		public static final String SELECTED_IMAGE_ID = "selectedImageID";
+	}
+
+	private static class ReturnValues
+	{
+		public static final String ALL_ENTITIES = "helpers/availableImages";
+	}
+
 	private final IconService iconService;
 	private final ImageService imageService;
 
@@ -42,9 +53,9 @@ public class MediaController extends BaseController
 			selectedImageID = -1;
 		}
 
-		model.addAttribute("availableImages", imageService.getRepository().findAll());
-		model.addAttribute("selectedImageID", selectedImageID);
-		return "helpers/availableImages";
+		model.addAttribute(ModelAttributes.ALL_ENTITIES, imageService.getRepository().findAll());
+		model.addAttribute(ModelAttributes.SELECTED_IMAGE_ID, selectedImageID);
+		return ReturnValues.ALL_ENTITIES;
 	}
 
 	@PostMapping("uploadImage")

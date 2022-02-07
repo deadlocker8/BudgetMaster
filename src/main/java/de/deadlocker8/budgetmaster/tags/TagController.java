@@ -13,6 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(Mappings.TAGS)
 public class TagController extends BaseController
 {
+	private static class ModelAttributes
+	{
+		public static final String TAG_USAGES = "tagUsages";
+	}
+
+	private static class ReturnValues
+	{
+		public static final String ALL_ENTITIES = "tags/tags";
+	}
+
 	private final TagService tagService;
 
 	@Autowired
@@ -24,7 +34,7 @@ public class TagController extends BaseController
 	@GetMapping
 	public String tags(Model model)
 	{
-		model.addAttribute("tagUsages", tagService.getUsageCounts());
-		return "tags/tags";
+		model.addAttribute(ModelAttributes.TAG_USAGES, tagService.getUsageCounts());
+		return ReturnValues.ALL_ENTITIES;
 	}
 }

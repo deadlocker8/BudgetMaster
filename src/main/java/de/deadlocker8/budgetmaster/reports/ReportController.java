@@ -38,6 +38,18 @@ import java.util.List;
 @RequestMapping(Mappings.REPORTS)
 public class ReportController extends BaseController
 {
+	private static class ModelAttributes
+	{
+		public static final String REPORT_SETTINGS = "reportSettings";
+		public static final String CURRENT_DATE = "currentDate";
+		public static final String FILTER_CONFIGURATION = "filterConfiguration";
+	}
+
+	private static class ReturnValues
+	{
+		public static final String ALL_ENTITIES = "reports/reports";
+	}
+
 	private final SettingsService settingsService;
 	private final ReportSettingsService reportSettingsService;
 	private final ReportGeneratorService reportGeneratorService;
@@ -65,10 +77,10 @@ public class ReportController extends BaseController
 	{
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 
-		model.addAttribute("reportSettings", reportSettingsService.getReportSettings());
-		model.addAttribute("currentDate", date);
-		model.addAttribute("filterConfiguration", filterHelpers.getFilterConfiguration(request));
-		return "reports/reports";
+		model.addAttribute(ModelAttributes.REPORT_SETTINGS, reportSettingsService.getReportSettings());
+		model.addAttribute(ModelAttributes.CURRENT_DATE, date);
+		model.addAttribute(ModelAttributes.FILTER_CONFIGURATION, filterHelpers.getFilterConfiguration(request));
+		return ReturnValues.ALL_ENTITIES;
 	}
 
 	@PostMapping(value = "/generate")

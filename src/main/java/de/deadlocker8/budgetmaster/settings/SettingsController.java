@@ -50,6 +50,49 @@ import java.util.Optional;
 @RequestMapping(Mappings.SETTINGS)
 public class SettingsController extends BaseController
 {
+	private static class ModelAttributes
+	{
+		public static final String ERROR = "error";
+		public static final String DATABASE = "database";
+		public static final String DELETE_DATABASE = "deleteDatabase";
+		public static final String VERIFICATION_CODE = "verificationCode";
+		public static final String IMPORT_DATABASE = "importDatabase";
+		public static final String ERROR_IMPORT_DATABASE = "errorImportDatabase";
+		public static final String AVAILABLE_ACCOUNTS = "availableAccounts";
+		public static final String ACCOUNT_MATCH_LIST = "accountMatchList";
+		public static final String IMPORT_RESULT_ITEMS = "importResultItems";
+		public static final String ERROR_MESSAGES = "errorMessage";
+		public static final String PERFORM_UPDATE = "performUpdate";
+		public static final String UPDATE_STRING = "updateString";
+		public static final String SETTINGS = "settings";
+		public static final String SEARCH_RESULTS_PER_PAGE = "searchResultsPerPageOptions";
+		public static final String AUTO_BACKUP_TIME = "autoBackupTimes";
+		public static final String AUTO_BACKUP_STATUS = "autoBackupStatus";
+	}
+
+	private static class ReturnValues
+	{
+		public static final String ALL_ENTITIES = "settings/settings";
+		public static final String REDIRECT_ALL_ENTITIES = "redirect:/settings";
+		public static final String REDIRECT_DELETE_DATABASE = "redirect:/settings/database/requestDelete";
+		public static final String REDIRECT_REQUEST_IMPORT = "redirect:/settings/database/requestImport";
+		public static final String REDIRECT_IMPORT_DATABASE_STEP_1 = "redirect:/settings/database/import/step1";
+		public static final String IMPORT_DATABASE_STEP_1 = "settings/importStepOne";
+		public static final String REDIRECT_IMPORT_DATABASE_STEP_2 = "redirect:/settings/database/import/step2";
+		public static final String IMPORT_DATABASE_STEP_2 = "settings/importStepTwo";
+		public static final String IMPORT_DATABASE_RESULT = "settings/importResult";
+		public static final String REDIRECT_NEW_ACCOUNT = "redirect:/accounts/newAccount";
+	}
+
+	private static class RequestAttributeNames
+	{
+		public static final String DATABASE = "database";
+		public static final String IMPORT_TEMPLATE_GROUPS = "importTemplatesGroups";
+		public static final String IMPORT_TEMPLATES = "importTemplates";
+		public static final String IMPORT_CHARTS = "importCharts";
+		public static final String ACCOUNT_MATCH_LIST = "accountMatchList";
+	}
+
 	private static final String PASSWORD_PLACEHOLDER = "•••••";
 	private final SettingsService settingsService;
 	private final DatabaseService databaseService;
@@ -79,12 +122,12 @@ public class SettingsController extends BaseController
 	public String settings(WebRequest request, Model model)
 	{
 		prepareBasicModel(model, settingsService.getSettings());
-		request.removeAttribute("database", RequestAttributes.SCOPE_SESSION);
-		request.removeAttribute("importTemplatesGroups", RequestAttributes.SCOPE_SESSION);
-		request.removeAttribute("importTemplates", RequestAttributes.SCOPE_SESSION);
-		request.removeAttribute("importCharts", RequestAttributes.SCOPE_SESSION);
+		request.removeAttribute(RequestAttributeNames.DATABASE, RequestAttributes.SCOPE_SESSION);
+		request.removeAttribute(RequestAttributeNames.IMPORT_TEMPLATE_GROUPS, RequestAttributes.SCOPE_SESSION);
+		request.removeAttribute(RequestAttributeNames.IMPORT_TEMPLATES, RequestAttributes.SCOPE_SESSION);
+		request.removeAttribute(RequestAttributeNames.IMPORT_CHARTS, RequestAttributes.SCOPE_SESSION);
 
-		return "settings/settings";
+		return ReturnValues.ALL_ENTITIES;
 	}
 
 	@PostMapping(value = "/save")
@@ -107,10 +150,7 @@ public class SettingsController extends BaseController
 		}
 
 		Optional<FieldError> passwordErrorOptional = settingsService.validatePassword(password, passwordConfirmation);
-		if(passwordErrorOptional.isPresent())
-		{
-			bindingResult.addError(passwordErrorOptional.get());
-		}
+		passwordErrorOptional.ifPresent(bindingResult::addError);
 
 		SettingsValidator settingsValidator = new SettingsValidator();
 		settingsValidator.validate(settings, bindingResult);
@@ -119,9 +159,9 @@ public class SettingsController extends BaseController
 
 		if(bindingResult.hasErrors())
 		{
-			model.addAttribute("error", bindingResult);
+			model.addAttribute(ModelAttributes.ERROR, bindingResult);
 			prepareBasicModel(model, settings);
-			return "settings/settings";
+			return ReturnValues.ALL_ENTITIES;
 		}
 
 		if(!password.equals(PASSWORD_PLACEHOLDER))
@@ -134,7 +174,7 @@ public class SettingsController extends BaseController
 		runBackup(request, runBackup);
 
 		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.settings.saved"), NotificationType.SUCCESS));
-		return "redirect:/settings";
+		return ReturnValues.REDIRECT_ALL_ENTITIES;
 	}
 
 	private void runBackup(WebRequest request, Boolean runBackup)
@@ -246,10 +286,10 @@ public class SettingsController extends BaseController
 	public String requestDeleteDatabase(Model model)
 	{
 		String verificationCode = RandomUtils.generateRandomString(RandomUtils.RandomType.BASE_58, 4, RandomUtils.RandomStringPolicy.UPPER, RandomUtils.RandomStringPolicy.DIGIT);
-		model.addAttribute("deleteDatabase", true);
-		model.addAttribute("verificationCode", verificationCode);
+		model.addAttribute(ModelAttributes.DELETE_DATABASE, true);
+		model.addAttribute(ModelAttributes.VERIFICATION_CODE, verificationCode);
 		prepareBasicModel(model, settingsService.getSettings());
-		return "settings/settings";
+		return ReturnValues.ALL_ENTITIES;
 	}
 
 	@PostMapping(value = "/database/delete")
@@ -264,20 +304,20 @@ public class SettingsController extends BaseController
 
 			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.settings.database.delete.success"), NotificationType.SUCCESS));
 
-			return "redirect:/settings";
+			return ReturnValues.REDIRECT_ALL_ENTITIES;
 		}
 		else
 		{
-			return "redirect:/settings/database/requestDelete";
+			return ReturnValues.REDIRECT_DELETE_DATABASE;
 		}
 	}
 
 	@GetMapping("/database/requestImport")
 	public String requestImportDatabase(Model model)
 	{
-		model.addAttribute("importDatabase", true);
+		model.addAttribute(ModelAttributes.IMPORT_DATABASE, true);
 		prepareBasicModel(model, settingsService.getSettings());
-		return "settings/settings";
+		return ReturnValues.ALL_ENTITIES;
 	}
 
 	@RequestMapping("/database/upload")
@@ -285,7 +325,7 @@ public class SettingsController extends BaseController
 	{
 		if(file.isEmpty())
 		{
-			return "redirect:/settings/database/requestImport";
+			return ReturnValues.REDIRECT_REQUEST_IMPORT;
 		}
 
 		try
@@ -294,24 +334,24 @@ public class SettingsController extends BaseController
 			DatabaseParser importer = new DatabaseParser(jsonString);
 			InternalDatabase database = importer.parseDatabaseFromJSON();
 
-			request.setAttribute("database", database, RequestAttributes.SCOPE_SESSION);
-			return "redirect:/settings/database/import/step1";
+			request.setAttribute(RequestAttributeNames.DATABASE, database, RequestAttributes.SCOPE_SESSION);
+			return ReturnValues.REDIRECT_IMPORT_DATABASE_STEP_1;
 		}
 		catch(Exception e)
 		{
 			LOGGER.error("Database upload failed", e);
 
-			model.addAttribute("errorImportDatabase", e.getMessage());
+			model.addAttribute(ModelAttributes.ERROR_IMPORT_DATABASE, e.getMessage());
 			prepareBasicModel(model, settingsService.getSettings());
-			return "settings/settings";
+			return ReturnValues.ALL_ENTITIES;
 		}
 	}
 
 	@GetMapping("/database/import/step1")
 	public String importStepOne(WebRequest request, Model model)
 	{
-		model.addAttribute("database", request.getAttribute("database", RequestAttributes.SCOPE_SESSION));
-		return "settings/importStepOne";
+		model.addAttribute(ModelAttributes.DATABASE, request.getAttribute(RequestAttributeNames.DATABASE, RequestAttributes.SCOPE_SESSION));
+		return ReturnValues.IMPORT_DATABASE_STEP_1;
 	}
 
 	@PostMapping("/database/import/step2")
@@ -320,60 +360,60 @@ public class SettingsController extends BaseController
 									@RequestParam(value = "TEMPLATE_GROUP", required = false) boolean importTemplatesGroups,
 									@RequestParam(value = "CHART", required = false) boolean importCharts)
 	{
-		request.setAttribute("importTemplates", importTemplates, RequestAttributes.SCOPE_SESSION);
-		request.setAttribute("importTemplateGroups", importTemplatesGroups, RequestAttributes.SCOPE_SESSION);
-		request.setAttribute("importCharts", importCharts, RequestAttributes.SCOPE_SESSION);
+		request.setAttribute(RequestAttributeNames.IMPORT_TEMPLATES, importTemplates, RequestAttributes.SCOPE_SESSION);
+		request.setAttribute(RequestAttributeNames.IMPORT_TEMPLATE_GROUPS, importTemplatesGroups, RequestAttributes.SCOPE_SESSION);
+		request.setAttribute(RequestAttributeNames.IMPORT_CHARTS, importCharts, RequestAttributes.SCOPE_SESSION);
 
-		model.addAttribute("database", request.getAttribute("database", RequestAttributes.SCOPE_SESSION));
-		model.addAttribute("availableAccounts", accountService.getAllEntitiesAsc());
-		return "redirect:/settings/database/import/step2";
+		model.addAttribute(ModelAttributes.DATABASE, request.getAttribute("database", RequestAttributes.SCOPE_SESSION));
+		model.addAttribute(ModelAttributes.AVAILABLE_ACCOUNTS, accountService.getAllEntitiesAsc());
+		return ReturnValues.REDIRECT_IMPORT_DATABASE_STEP_2;
 	}
 
 	@GetMapping("/database/import/step2")
 	public String importStepTwo(WebRequest request, Model model)
 	{
-		Object accountMatches = request.getAttribute("accountMatchList", RequestAttributes.SCOPE_SESSION);
+		Object accountMatches = request.getAttribute(RequestAttributeNames.ACCOUNT_MATCH_LIST, RequestAttributes.SCOPE_SESSION);
 		if(accountMatches != null)
 		{
 			final AccountMatchList accountMatchList = (AccountMatchList) accountMatches;
-			model.addAttribute("accountMatchList", accountMatchList);
-			request.removeAttribute("accountMatchList", RequestAttributes.SCOPE_SESSION);
+			model.addAttribute(ModelAttributes.ACCOUNT_MATCH_LIST, accountMatchList);
+			request.removeAttribute(RequestAttributeNames.ACCOUNT_MATCH_LIST, RequestAttributes.SCOPE_SESSION);
 		}
 
-		model.addAttribute("database", request.getAttribute("database", RequestAttributes.SCOPE_SESSION));
-		model.addAttribute("availableAccounts", accountService.getAllEntitiesAsc());
-		return "settings/importStepTwo";
+		model.addAttribute(ModelAttributes.DATABASE, request.getAttribute(RequestAttributeNames.DATABASE, RequestAttributes.SCOPE_SESSION));
+		model.addAttribute(ModelAttributes.AVAILABLE_ACCOUNTS, accountService.getAllEntitiesAsc());
+		return ReturnValues.IMPORT_DATABASE_STEP_2;
 	}
 
 	@PostMapping("/database/import/step2/createAccount")
-	public String importCreateAccount(WebRequest request, @ModelAttribute("Import") AccountMatchList accountMatchList, Model model)
+	public String importCreateAccount(WebRequest request, @ModelAttribute("Import") AccountMatchList accountMatchList)
 	{
-		request.setAttribute("accountMatchList", accountMatchList, RequestAttributes.SCOPE_SESSION);
-		return "redirect:/accounts/newAccount";
+		request.setAttribute(RequestAttributeNames.ACCOUNT_MATCH_LIST, accountMatchList, RequestAttributes.SCOPE_SESSION);
+		return ReturnValues.REDIRECT_NEW_ACCOUNT;
 	}
 
 	@PostMapping("/database/import/step3")
 	public String importDatabase(WebRequest request, @ModelAttribute("Import") AccountMatchList accountMatchList, Model model)
 	{
-		final InternalDatabase database = (InternalDatabase) request.getAttribute("database", RequestAttributes.SCOPE_SESSION);
-		request.removeAttribute("database", RequestAttributes.SCOPE_SESSION);
+		final InternalDatabase database = (InternalDatabase) request.getAttribute(RequestAttributeNames.DATABASE, RequestAttributes.SCOPE_SESSION);
+		request.removeAttribute(RequestAttributeNames.DATABASE, RequestAttributes.SCOPE_SESSION);
 
-		final Boolean importTemplates = (Boolean) request.getAttribute("importTemplates", RequestAttributes.SCOPE_SESSION);
-		request.removeAttribute("importTemplates", RequestAttributes.SCOPE_SESSION);
+		final Boolean importTemplates = (Boolean) request.getAttribute(RequestAttributeNames.IMPORT_TEMPLATES, RequestAttributes.SCOPE_SESSION);
+		request.removeAttribute(RequestAttributeNames.IMPORT_TEMPLATES, RequestAttributes.SCOPE_SESSION);
 
-		final Boolean importTemplateGroups = (Boolean) request.getAttribute("importTemplateGroups", RequestAttributes.SCOPE_SESSION);
-		request.removeAttribute("importTemplateGroups", RequestAttributes.SCOPE_SESSION);
+		final Boolean importTemplateGroups = (Boolean) request.getAttribute(RequestAttributeNames.IMPORT_TEMPLATE_GROUPS, RequestAttributes.SCOPE_SESSION);
+		request.removeAttribute(RequestAttributeNames.IMPORT_TEMPLATE_GROUPS, RequestAttributes.SCOPE_SESSION);
 
-		final Boolean importCharts = (Boolean) request.getAttribute("importCharts", RequestAttributes.SCOPE_SESSION);
-		request.removeAttribute("importCharts", RequestAttributes.SCOPE_SESSION);
+		final Boolean importCharts = (Boolean) request.getAttribute(RequestAttributeNames.IMPORT_CHARTS, RequestAttributes.SCOPE_SESSION);
+		request.removeAttribute(RequestAttributeNames.IMPORT_CHARTS, RequestAttributes.SCOPE_SESSION);
 
 		prepareBasicModel(model, settingsService.getSettings());
 
 		final List<ImportResultItem> importResultItems = importService.importDatabase(database, accountMatchList, importTemplateGroups, importTemplates, importCharts);
-		model.addAttribute("importResultItems", importResultItems);
-		model.addAttribute("errorMessages", importService.getCollectedErrorMessages());
+		model.addAttribute(ModelAttributes.IMPORT_RESULT_ITEMS, importResultItems);
+		model.addAttribute(ModelAttributes.ERROR_MESSAGES, importService.getCollectedErrorMessages());
 
-		return "settings/importResult";
+		return ReturnValues.IMPORT_DATABASE_RESULT;
 	}
 
 	@GetMapping("/updateSearch")
@@ -385,16 +425,16 @@ public class SettingsController extends BaseController
 		{
 			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.settings.update.available", updateCheckService.getAvailableVersionString()), NotificationType.INFO));
 		}
-		return "redirect:/settings";
+		return ReturnValues.REDIRECT_ALL_ENTITIES;
 	}
 
 	@GetMapping("/update")
 	public String update(Model model)
 	{
-		model.addAttribute("performUpdate", true);
-		model.addAttribute("updateString", Localization.getString("info.text.update", Build.getInstance().getVersionName(), budgetMasterUpdateService.getAvailableVersionString()));
+		model.addAttribute(ModelAttributes.PERFORM_UPDATE, true);
+		model.addAttribute(ModelAttributes.UPDATE_STRING, Localization.getString("info.text.update", Build.getInstance().getVersionName(), budgetMasterUpdateService.getAvailableVersionString()));
 		prepareBasicModel(model, settingsService.getSettings());
-		return "settings/settings";
+		return ReturnValues.ALL_ENTITIES;
 	}
 
 	@GetMapping("/performUpdate")
@@ -403,7 +443,7 @@ public class SettingsController extends BaseController
 		if(budgetMasterUpdateService.isRunningFromSource())
 		{
 			LOGGER.debug("Running from source code: Skipping update check");
-			return "redirect:/settings";
+			return ReturnValues.REDIRECT_ALL_ENTITIES;
 		}
 
 		UpdateItem.Entry entry = new UpdateItem.Entry(budgetMasterUpdateService.getAvailableVersion());
@@ -458,12 +498,12 @@ public class SettingsController extends BaseController
 
 	private void prepareBasicModel(Model model, Settings settings)
 	{
-		model.addAttribute("settings", settings);
-		model.addAttribute("searchResultsPerPageOptions", SEARCH_RESULTS_PER_PAGE_OPTIONS);
-		model.addAttribute("autoBackupTimes", AutoBackupTime.values());
+		model.addAttribute(ModelAttributes.SETTINGS, settings);
+		model.addAttribute(ModelAttributes.SEARCH_RESULTS_PER_PAGE, SEARCH_RESULTS_PER_PAGE_OPTIONS);
+		model.addAttribute(ModelAttributes.AUTO_BACKUP_TIME, AutoBackupTime.values());
 
 		final Optional<LocalDateTime> nextBackupTimeOptional = backupService.getNextRun();
 		nextBackupTimeOptional.ifPresent(date -> model.addAttribute("nextBackupTime", date));
-		model.addAttribute("autoBackupStatus", backupService.getBackupStatus());
+		model.addAttribute(ModelAttributes.AUTO_BACKUP_STATUS, backupService.getBackupStatus());
 	}
 }
