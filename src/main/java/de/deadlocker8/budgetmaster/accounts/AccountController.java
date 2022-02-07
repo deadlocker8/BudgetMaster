@@ -121,7 +121,7 @@ public class AccountController extends BaseController
 	public String newAccount(Model model)
 	{
 		Account emptyAccount = new Account();
-		model.addAttribute(ModelAttributes.ALL_ENTITIES, emptyAccount);
+		model.addAttribute(ModelAttributes.ONE_ENTITY, emptyAccount);
 		model.addAttribute(ModelAttributes.AVAILABLE_ACCOUNT_STATES, AccountState.values());
 		model.addAttribute(ModelAttributes.FONTAWESOME_ICONS, FontAwesomeIcons.ICONS);
 		return ReturnValues.NEW_ENTITY;
