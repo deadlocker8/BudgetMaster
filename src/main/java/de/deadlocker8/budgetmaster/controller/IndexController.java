@@ -18,8 +18,8 @@ public class IndexController extends BaseController
 	private static class ReturnValues
 	{
 		public static final String INDEX = "index";
-		public static final String FIRST_USE = "statistics";
-		public static final String STATISTICS = "firstUse";
+		public static final String FIRST_USE = "firstUse";
+		public static final String STATISTICS = "statistics";
 	}
 
 	private final StatisticsService statisticsService;
