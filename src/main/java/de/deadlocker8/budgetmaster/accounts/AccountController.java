@@ -26,6 +26,28 @@ import java.util.Optional;
 @RequestMapping(Mappings.ACCOUNTS)
 public class AccountController extends BaseController
 {
+	private static class ModelAttributes
+	{
+		public static final String ALL_ENTITIES = "accounts";
+		public static final String ONE_ENTITY = "account";
+		public static final String ENTITY_TO_DELETE = "accountToDelete";
+		public static final String CURRENT_ACCOUNT = "currentAccount";
+		public static final String ACCOUNT_NOT_DELETABLE = "accountNotDeletable";
+		public static final String AVAILABLE_ACCOUNT_STATES = "availableAccountStates";
+		public static final String FONTAWESOME_ICONS = "fontawesomeIcons";
+		public static final String ERROR = "error";
+	}
+
+	private static class ReturnValues
+	{
+		public static final String SHOW_ALL = "accounts/accounts";
+		public static final String REDIRECT_SHOW_ALL = "redirect:/accounts";
+		public static final String NEW_ENTITY = "accounts/newAccount";
+		public static final String DELETE_ENTITY = "accounts/deleteAccountModal";
+		public static final String IMPORT_STEP_2 = "redirect:/settings/database/import/step2";
+		public static final String SETTINGS = "redirect:/settings";
+	}
+
 	private final AccountService accountService;
 	private final IconService iconService;
 
@@ -44,7 +66,7 @@ public class AccountController extends BaseController
 		String referer = request.getHeader("Referer");
 		if(referer.contains("database/import"))
 		{
-			return "redirect:/settings";
+			return ReturnValues.SETTINGS;
 		}
 		return "redirect:" + referer;
 	}
@@ -57,7 +79,7 @@ public class AccountController extends BaseController
 		String referer = request.getHeader("Referer");
 		if(referer.contains("database/import"))
 		{
-			return "redirect:/settings";
+			return ReturnValues.SETTINGS;
 		}
 		return "redirect:" + referer;
 	}
@@ -65,16 +87,16 @@ public class AccountController extends BaseController
 	@GetMapping
 	public String accounts(Model model)
 	{
-		model.addAttribute("accounts", accountService.getAllEntitiesAsc());
-		return "accounts/accounts";
+		model.addAttribute(ModelAttributes.ALL_ENTITIES, accountService.getAllEntitiesAsc());
+		return ReturnValues.SHOW_ALL;
 	}
 
 	@GetMapping("/{ID}/requestDelete")
 	public String requestDeleteAccount(Model model, @PathVariable("ID") Integer ID)
 	{
-		model.addAttribute("accounts", accountService.getAllEntitiesAsc());
-		model.addAttribute("accountToDelete", accountService.getRepository().getById(ID));
-		return "accounts/deleteAccountModal";
+		model.addAttribute(ModelAttributes.ALL_ENTITIES, accountService.getAllEntitiesAsc());
+		model.addAttribute(ModelAttributes.ENTITY_TO_DELETE, accountService.getRepository().getById(ID));
+		return ReturnValues.DELETE_ENTITY;
 	}
 
 	@GetMapping("/{ID}/delete")
@@ -86,23 +108,23 @@ public class AccountController extends BaseController
 		{
 			accountService.deleteAccount(ID);
 			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.account.delete.success", accountToDelete.getName()), NotificationType.SUCCESS));
-			return "redirect:/accounts";
+			return ReturnValues.REDIRECT_SHOW_ALL;
 		}
 
-		model.addAttribute("accounts", accountService.getAllEntitiesAsc());
-		model.addAttribute("currentAccount", accountToDelete);
-		model.addAttribute("accountNotDeletable", true);
-		return "accounts/accounts";
+		model.addAttribute(ModelAttributes.ALL_ENTITIES, accountService.getAllEntitiesAsc());
+		model.addAttribute(ModelAttributes.CURRENT_ACCOUNT, accountToDelete);
+		model.addAttribute(ModelAttributes.ACCOUNT_NOT_DELETABLE, true);
+		return ReturnValues.SHOW_ALL;
 	}
 
 	@GetMapping("/newAccount")
 	public String newAccount(Model model)
 	{
 		Account emptyAccount = new Account();
-		model.addAttribute("account", emptyAccount);
-		model.addAttribute("availableAccountStates", AccountState.values());
-		model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
-		return "accounts/newAccount";
+		model.addAttribute(ModelAttributes.ALL_ENTITIES, emptyAccount);
+		model.addAttribute(ModelAttributes.AVAILABLE_ACCOUNT_STATES, AccountState.values());
+		model.addAttribute(ModelAttributes.FONTAWESOME_ICONS, FontAwesomeIcons.ICONS);
+		return ReturnValues.NEW_ENTITY;
 	}
 
 	@GetMapping("/{ID}/edit")
@@ -114,10 +136,10 @@ public class AccountController extends BaseController
 			throw new ResourceNotFoundException();
 		}
 
-		model.addAttribute("account", accountOptional.get());
-		model.addAttribute("availableAccountStates", AccountState.values());
-		model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
-		return "accounts/newAccount";
+		model.addAttribute(ModelAttributes.ONE_ENTITY, accountOptional.get());
+		model.addAttribute(ModelAttributes.AVAILABLE_ACCOUNT_STATES, AccountState.values());
+		model.addAttribute(ModelAttributes.FONTAWESOME_ICONS, FontAwesomeIcons.ICONS);
+		return ReturnValues.NEW_ENTITY;
 	}
 
 	@PostMapping(value = "/newAccount")
@@ -150,11 +172,11 @@ public class AccountController extends BaseController
 
 		if(bindingResult.hasErrors())
 		{
-			model.addAttribute("error", bindingResult);
-			model.addAttribute("account", account);
-			model.addAttribute("availableAccountStates", AccountState.values());
-			model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
-			return "accounts/newAccount";
+			model.addAttribute(ModelAttributes.ERROR, bindingResult);
+			model.addAttribute(ModelAttributes.ONE_ENTITY, account);
+			model.addAttribute(ModelAttributes.AVAILABLE_ACCOUNT_STATES, AccountState.values());
+			model.addAttribute(ModelAttributes.FONTAWESOME_ICONS, FontAwesomeIcons.ICONS);
+			return ReturnValues.NEW_ENTITY;
 		}
 
 		if(isNewAccount)
@@ -169,11 +191,11 @@ public class AccountController extends BaseController
 
 		if(request.getSession().getAttribute("accountMatchList") != null)
 		{
-			return "redirect:/settings/database/import/step2";
+			return ReturnValues.IMPORT_STEP_2;
 		}
 
 		WebRequestUtils.putNotification(webRequest, new Notification(Localization.getString("notification.account.save.success", account.getName()), NotificationType.SUCCESS));
-		return "redirect:/accounts";
+		return ReturnValues.REDIRECT_SHOW_ALL;
 	}
 
 	private boolean isAccountStateAllowed(Account account)

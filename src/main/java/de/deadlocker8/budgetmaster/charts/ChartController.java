@@ -34,6 +34,29 @@ import java.util.UUID;
 @RequestMapping(Mappings.CHARTS)
 public class ChartController extends BaseController
 {
+	private static class ModelAttributes
+	{
+		public static final String ALL_ENTITIES = "charts";
+		public static final String ONE_ENTITY = "chart";
+		public static final String ENTITY_TO_DELETE = "chartToDelete";
+		public static final String ERROR = "error";
+		public static final String CHART_SETTINGS = "chartSettings";
+		public static final String CONTAINER_ID = "containerID";
+		public static final String TRANSACTION_DATA = "transactionData";
+		public static final String DISPLAY_TYPES = "displayTypes";
+		public static final String GROUP_TYPES = "groupTypes";
+	}
+
+	private static class ReturnValues
+	{
+		public static final String SHOW_ALL = "charts/charts";
+		public static final String MANAGE = "charts/manage";
+		public static final String REDIRECT_MANAGE = "redirect:/charts/manage";
+		public static final String NEW_ENTITY = "charts/newChart";
+		public static final String DELETE_ENTITY = "charts/deleteChartModal";
+		public static final String ERROR_400 = "error/400";
+	}
+
 	private static final Gson GSON = new GsonBuilder()
 			.excludeFieldsWithoutExposeAnnotation()
 			.setPrettyPrinting()
@@ -65,12 +88,12 @@ public class ChartController extends BaseController
 
 		ChartSettings defaultChartSettings = ChartSettings.getDefault(defaultFilterConfiguration);
 
-		model.addAttribute("chartSettings", defaultChartSettings);
-		model.addAttribute("charts", charts);
-		model.addAttribute("displayTypes", ChartDisplayType.values());
-		model.addAttribute("groupTypes", ChartGroupType.values());
+		model.addAttribute(ModelAttributes.CHART_SETTINGS, defaultChartSettings);
+		model.addAttribute(ModelAttributes.ALL_ENTITIES, charts);
+		model.addAttribute(ModelAttributes.DISPLAY_TYPES, ChartDisplayType.values());
+		model.addAttribute(ModelAttributes.GROUP_TYPES, ChartGroupType.values());
 
-		return "charts/charts";
+		return ReturnValues.SHOW_ALL;
 	}
 
 	@PostMapping
@@ -87,14 +110,14 @@ public class ChartController extends BaseController
 		List<Transaction> convertedTransactions = convertTransferAmounts(transactions);
 		String transactionJson = GSON.toJson(convertedTransactions);
 
-		model.addAttribute("chartSettings", chartSettings);
-		model.addAttribute("charts", chartService.getAllEntitiesAsc());
-		model.addAttribute("chart", chartOptional.get());
-		model.addAttribute("containerID", UUID.randomUUID());
-		model.addAttribute("transactionData", transactionJson);
-		model.addAttribute("displayTypes", ChartDisplayType.values());
-		model.addAttribute("groupTypes", ChartGroupType.values());
-		return "charts/charts";
+		model.addAttribute(ModelAttributes.CHART_SETTINGS, chartSettings);
+		model.addAttribute(ModelAttributes.ALL_ENTITIES, chartService.getAllEntitiesAsc());
+		model.addAttribute(ModelAttributes.ONE_ENTITY, chartOptional.get());
+		model.addAttribute(ModelAttributes.CONTAINER_ID, UUID.randomUUID());
+		model.addAttribute(ModelAttributes.TRANSACTION_DATA, transactionJson);
+		model.addAttribute(ModelAttributes.DISPLAY_TYPES, ChartDisplayType.values());
+		model.addAttribute(ModelAttributes.GROUP_TYPES, ChartGroupType.values());
+		return ReturnValues.SHOW_ALL;
 	}
 
 	/**
@@ -127,16 +150,16 @@ public class ChartController extends BaseController
 	@GetMapping("/manage")
 	public String manage(Model model)
 	{
-		model.addAttribute("charts", chartService.getAllEntitiesAsc());
-		return "charts/manage";
+		model.addAttribute(ModelAttributes.ALL_ENTITIES, chartService.getAllEntitiesAsc());
+		return ReturnValues.MANAGE;
 	}
 
 	@GetMapping("/newChart")
 	public String newChart(Model model)
 	{
 		Chart emptyChart = DefaultCharts.CHART_DEFAULT;
-		model.addAttribute("chart", emptyChart);
-		return "charts/newChart";
+		model.addAttribute(ModelAttributes.ONE_ENTITY, emptyChart);
+		return ReturnValues.REDIRECT_MANAGE;
 	}
 
 	@GetMapping("/{ID}/edit")
@@ -148,8 +171,8 @@ public class ChartController extends BaseController
 			throw new ResourceNotFoundException();
 		}
 
-		model.addAttribute("chart", chartOptional.get());
-		return "charts/newChart";
+		model.addAttribute(ModelAttributes.ONE_ENTITY, chartOptional.get());
+		return ReturnValues.NEW_ENTITY;
 	}
 
 	@PostMapping(value = "/newChart")
@@ -164,9 +187,9 @@ public class ChartController extends BaseController
 
 		if(bindingResult.hasErrors())
 		{
-			model.addAttribute("error", bindingResult);
-			model.addAttribute("chart", chart);
-			return "charts/newChart";
+			model.addAttribute(ModelAttributes.ERROR, bindingResult);
+			model.addAttribute(ModelAttributes.ONE_ENTITY, chart);
+			return ReturnValues.NEW_ENTITY;
 		}
 
 		boolean isNewChart = chart.getID() == null;
@@ -181,13 +204,13 @@ public class ChartController extends BaseController
 			Optional<Chart> existingChartOptional = chartService.getRepository().findById(chart.getID());
 			if(existingChartOptional.isPresent() && existingChartOptional.get().getType() != ChartType.CUSTOM)
 			{
-				return "error/400";
+				return ReturnValues.ERROR_400;
 			}
 		}
 
 		chartService.getRepository().save(chart);
 		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.chart.save.success", chart.getName()), NotificationType.SUCCESS));
-		return "redirect:/charts/manage";
+		return ReturnValues.REDIRECT_MANAGE;
 	}
 
 	@GetMapping("/{ID}/requestDelete")
@@ -195,12 +218,12 @@ public class ChartController extends BaseController
 	{
 		if(!chartService.isDeletable(ID))
 		{
-			return "redirect:/charts/manage";
+			return ReturnValues.REDIRECT_MANAGE;
 		}
 
-		model.addAttribute("charts", chartService.getAllEntitiesAsc());
-		model.addAttribute("chartToDelete", chartService.getRepository().getById(ID));
-		return "charts/deleteChartModal";
+		model.addAttribute(ModelAttributes.ALL_ENTITIES, chartService.getAllEntitiesAsc());
+		model.addAttribute(ModelAttributes.ENTITY_TO_DELETE, chartService.getRepository().getById(ID));
+		return ReturnValues.DELETE_ENTITY;
 	}
 
 	@GetMapping(value = "/{ID}/delete")
@@ -217,6 +240,6 @@ public class ChartController extends BaseController
 			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.chart.delete.not.deletable", String.valueOf(ID)), NotificationType.ERROR));
 		}
 
-		return "redirect:/charts/manage";
+		return ReturnValues.REDIRECT_MANAGE;
 	}
 }

@@ -10,6 +10,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class IndexController extends BaseController
 {
+	private static class ModelAttributes
+	{
+		public static final String STATISTIC_ITEMS = "statisticItems";
+	}
+
+	private static class ReturnValues
+	{
+		public static final String INDEX = "index";
+		public static final String FIRST_USE = "statistics";
+		public static final String STATISTICS = "firstUse";
+	}
+
 	private final StatisticsService statisticsService;
 
 	@Autowired
@@ -21,19 +33,19 @@ public class IndexController extends BaseController
 	@GetMapping
 	public String index()
 	{
-		return "index";
+		return ReturnValues.INDEX;
 	}
 
 	@GetMapping("/firstUse")
 	public String firstUse()
 	{
-		return "firstUse";
+		return ReturnValues.FIRST_USE;
 	}
 
 	@GetMapping("/statistics")
 	public String statistics(Model model)
 	{
-		model.addAttribute("statisticItems", statisticsService.getStatisticItems());
-		return "statistics";
+		model.addAttribute(ModelAttributes.STATISTIC_ITEMS, statisticsService.getStatisticItems());
+		return ReturnValues.STATISTICS;
 	}
 }

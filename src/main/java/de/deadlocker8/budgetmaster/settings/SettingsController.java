@@ -68,6 +68,7 @@ public class SettingsController extends BaseController
 		public static final String SEARCH_RESULTS_PER_PAGE = "searchResultsPerPageOptions";
 		public static final String AUTO_BACKUP_TIME = "autoBackupTimes";
 		public static final String AUTO_BACKUP_STATUS = "autoBackupStatus";
+		public static final String NEXT_BACKUP_TIME = "nextBackupTime";
 	}
 
 	private static class ReturnValues
@@ -364,7 +365,7 @@ public class SettingsController extends BaseController
 		request.setAttribute(RequestAttributeNames.IMPORT_TEMPLATE_GROUPS, importTemplatesGroups, RequestAttributes.SCOPE_SESSION);
 		request.setAttribute(RequestAttributeNames.IMPORT_CHARTS, importCharts, RequestAttributes.SCOPE_SESSION);
 
-		model.addAttribute(ModelAttributes.DATABASE, request.getAttribute("database", RequestAttributes.SCOPE_SESSION));
+		model.addAttribute(ModelAttributes.DATABASE, request.getAttribute(RequestAttributeNames.DATABASE, RequestAttributes.SCOPE_SESSION));
 		model.addAttribute(ModelAttributes.AVAILABLE_ACCOUNTS, accountService.getAllEntitiesAsc());
 		return ReturnValues.REDIRECT_IMPORT_DATABASE_STEP_2;
 	}
@@ -503,7 +504,7 @@ public class SettingsController extends BaseController
 		model.addAttribute(ModelAttributes.AUTO_BACKUP_TIME, AutoBackupTime.values());
 
 		final Optional<LocalDateTime> nextBackupTimeOptional = backupService.getNextRun();
-		nextBackupTimeOptional.ifPresent(date -> model.addAttribute("nextBackupTime", date));
+		nextBackupTimeOptional.ifPresent(date -> model.addAttribute(ModelAttributes.NEXT_BACKUP_TIME, date));
 		model.addAttribute(ModelAttributes.AUTO_BACKUP_STATUS, backupService.getBackupStatus());
 	}
 }

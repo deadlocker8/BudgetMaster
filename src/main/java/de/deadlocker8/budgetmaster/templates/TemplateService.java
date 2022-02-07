@@ -26,7 +26,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class TemplateService implements Resettable, AccessAllEntities<Template>, AccessEntityByID<Template>
@@ -131,19 +130,19 @@ public class TemplateService implements Resettable, AccessAllEntities<Template>,
 
 	public void prepareModelNewOrEdit(Model model, boolean isEdit, TransactionBase item, List<Account> accounts)
 	{
-		model.addAttribute("isEdit", isEdit);
-		model.addAttribute("categories", categoryService.getAllEntitiesAsc());
-		model.addAttribute("accounts", accounts);
-		model.addAttribute("template", item);
-		model.addAttribute("suggestionsJSON", GSON.toJson(new ArrayList<String>()));
-		model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
+		model.addAttribute(TemplateModelAttributes.IS_EDIT, isEdit);
+		model.addAttribute(TemplateModelAttributes.CATEGORIES, categoryService.getAllEntitiesAsc());
+		model.addAttribute(TemplateModelAttributes.ACCOUNTS, accounts);
+		model.addAttribute(TemplateModelAttributes.TEMPLATE, item);
+		model.addAttribute(TemplateModelAttributes.SUGGESTIONS_JSON, GSON.toJson(new ArrayList<String>()));
+		model.addAttribute(TemplateModelAttributes.FONTAWESOME_ICONS, FontAwesomeIcons.ICONS);
 	}
 
 	public List<String> getExistingTemplateNames()
 	{
 		return getRepository().findAll().stream()
 				.map(Template::getTemplateName)
-				.collect(Collectors.toList());
+				.toList();
 	}
 
 	@Override
@@ -159,5 +158,4 @@ public class TemplateService implements Resettable, AccessAllEntities<Template>,
 	{
 		return templateRepository.findById(ID);
 	}
-
 }

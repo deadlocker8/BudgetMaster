@@ -299,12 +299,12 @@ public class TransactionService implements Resettable
 
 	public void prepareModelNewOrEdit(Model model, boolean isEdit, DateTime date, boolean changeTypeInProgress, TransactionBase item, List<Account> accounts)
 	{
-		model.addAttribute("isEdit", isEdit);
-		model.addAttribute("currentDate", date);
-		model.addAttribute("changeTypeInProgress", changeTypeInProgress);
-		model.addAttribute("categories", categoryService.getAllEntitiesAsc());
-		model.addAttribute("accounts", accounts);
-		model.addAttribute("transaction", item);
+		model.addAttribute(TransactionModelAttributes.IS_EDIT, isEdit);
+		model.addAttribute(TransactionModelAttributes.CURRENT_DATE, date);
+		model.addAttribute(TransactionModelAttributes.CHANGE_TYPE_IN_PROGRESS, changeTypeInProgress);
+		model.addAttribute(TransactionModelAttributes.CATEGORIES, categoryService.getAllEntitiesAsc());
+		model.addAttribute(TransactionModelAttributes.ACCOUNTS, accounts);
+		model.addAttribute(TransactionModelAttributes.TRANSACTION, item);
 
 		final List<Transaction> allByOrderByDateDesc = getRepository().findAllByOrderByDateDesc();
 		final List<String> nameSuggestions = allByOrderByDateDesc.stream()
@@ -312,6 +312,6 @@ public class TransactionService implements Resettable
 				.distinct()
 				.limit(MAX_SUGGESTIONS)
 				.collect(Collectors.toList());
-		model.addAttribute("suggestionsJSON", GSON.toJson(nameSuggestions));
+		model.addAttribute(TransactionModelAttributes.SUGGESTIONS_JSON, GSON.toJson(nameSuggestions));
 	}
 }

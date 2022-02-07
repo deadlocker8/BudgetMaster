@@ -32,14 +32,6 @@ import java.util.Optional;
 @RequestMapping(Mappings.TEMPLATES)
 public class TemplateController extends BaseController
 {
-	private static class ModelAttributes
-	{
-		public static final String ERROR = "error";
-		public static final String TEMPLATES_BY_GROUP = "templatesByGroup";
-		public static final String EXISTING_TEMPLATE_NAMES = "existingTemplateNames";
-		public static final String ENTITY_TO_DELETE = "templateToDelete";
-	}
-
 	private static class ReturnValues
 	{
 		public static final String ALL_ENTITIES = "templates/templates";
@@ -76,14 +68,14 @@ public class TemplateController extends BaseController
 	@GetMapping
 	public String showTemplates(Model model)
 	{
-		model.addAttribute(ModelAttributes.TEMPLATES_BY_GROUP, templateGroupService.getTemplatesByGroupedByTemplateGroup());
+		model.addAttribute(TemplateModelAttributes.TEMPLATES_BY_GROUP, templateGroupService.getTemplatesByGroupedByTemplateGroup());
 		return ReturnValues.ALL_ENTITIES;
 	}
 
 	@GetMapping("/fromTransactionModal")
 	public String fromTransactionModal(Model model)
 	{
-		model.addAttribute(ModelAttributes.EXISTING_TEMPLATE_NAMES, GSON.toJson(templateService.getExistingTemplateNames()));
+		model.addAttribute(TemplateModelAttributes.EXISTING_TEMPLATE_NAMES, GSON.toJson(templateService.getExistingTemplateNames()));
 		return ReturnValues.CREATE_FROM_TRANSACTION;
 	}
 
@@ -121,8 +113,8 @@ public class TemplateController extends BaseController
 			throw new ResourceNotFoundException();
 		}
 
-		model.addAttribute(ModelAttributes.TEMPLATES_BY_GROUP, templateGroupService.getTemplatesByGroupedByTemplateGroup());
-		model.addAttribute(ModelAttributes.ENTITY_TO_DELETE, templateOptional.get());
+		model.addAttribute(TemplateModelAttributes.TEMPLATES_BY_GROUP, templateGroupService.getTemplatesByGroupedByTemplateGroup());
+		model.addAttribute(TemplateModelAttributes.ENTITY_TO_DELETE, templateOptional.get());
 		return ReturnValues.DELETE_ENTITY;
 	}
 
@@ -226,7 +218,7 @@ public class TemplateController extends BaseController
 
 		if(bindingResult.hasErrors())
 		{
-			model.addAttribute(ModelAttributes.ERROR, bindingResult);
+			model.addAttribute(TemplateModelAttributes.ERROR, bindingResult);
 			templateService.prepareModelNewOrEdit(model, template.getID() != null, template, accountService.getAllActivatedAccountsAsc());
 			return ReturnValues.NEW_ENTITY;
 		}

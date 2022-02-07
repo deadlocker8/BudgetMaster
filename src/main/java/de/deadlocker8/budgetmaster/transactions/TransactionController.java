@@ -43,19 +43,6 @@ import java.util.Optional;
 @RequestMapping(Mappings.TRANSACTIONS)
 public class TransactionController extends BaseController
 {
-	private static class ModelAttributes
-	{
-		public static final String ERROR = "error";
-		public static final String ALL_ENTITIES = "transactions";
-		public static final String ONE_ENTITY = "transaction";
-		public static final String ENTITY_TO_DELETE = "transactionToDelete";
-		public static final String ACCOUNT = "account";
-		public static final String BUDGET = "budget";
-		public static final String CURRENT_DATE = "currentDate";
-		public static final String FILTER_CONFIGURATION = "filterConfiguration";
-		public static final String HIGHLIGHT_ID = "highlightID";
-	}
-
 	private static class ReturnValues
 	{
 		public static final String ALL_ENTITIES = "transactions/transactions";
@@ -113,7 +100,7 @@ public class TransactionController extends BaseController
 
 		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
 		prepareModelTransactions(filterHelpers.getFilterConfiguration(request), model, date);
-		model.addAttribute(ModelAttributes.ENTITY_TO_DELETE, transactionService.getRepository().getById(ID));
+		model.addAttribute(TransactionModelAttributes.ENTITY_TO_DELETE, transactionService.getRepository().getById(ID));
 
 		return ReturnValues.DELETE_ENTITY;
 	}
@@ -123,11 +110,11 @@ public class TransactionController extends BaseController
 		Account currentAccount = helpers.getCurrentAccount();
 		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(currentAccount, date.getMonthOfYear(), date.getYear(), settingsService.getSettings().isRestActivated(), filterConfiguration);
 
-		model.addAttribute(ModelAttributes.ALL_ENTITIES, transactions);
-		model.addAttribute(ModelAttributes.ACCOUNT, currentAccount);
-		model.addAttribute(ModelAttributes.BUDGET, helpers.getBudget(transactions, currentAccount));
-		model.addAttribute(ModelAttributes.CURRENT_DATE, date);
-		model.addAttribute(ModelAttributes.FILTER_CONFIGURATION, filterConfiguration);
+		model.addAttribute(TransactionModelAttributes.ALL_ENTITIES, transactions);
+		model.addAttribute(TransactionModelAttributes.ACCOUNT, currentAccount);
+		model.addAttribute(TransactionModelAttributes.BUDGET, helpers.getBudget(transactions, currentAccount));
+		model.addAttribute(TransactionModelAttributes.CURRENT_DATE, date);
+		model.addAttribute(TransactionModelAttributes.FILTER_CONFIGURATION, filterConfiguration);
 	}
 
 	@GetMapping("/{ID}/delete")
@@ -241,7 +228,7 @@ public class TransactionController extends BaseController
 	{
 		if(bindingResult.hasErrors())
 		{
-			model.addAttribute(ModelAttributes.ERROR, bindingResult);
+			model.addAttribute(TransactionModelAttributes.ERROR, bindingResult);
 			transactionService.prepareModelNewOrEdit(model, isEdit, date, false, transaction, accountService.getAllActivatedAccountsAsc());
 			return url;
 		}
@@ -311,7 +298,7 @@ public class TransactionController extends BaseController
 		filterConfiguration.setFilterTags(filterHelpers.getFilterTags());
 
 		prepareModelTransactions(filterConfiguration, model, transaction.getDate());
-		model.addAttribute(ModelAttributes.HIGHLIGHT_ID, ID);
+		model.addAttribute(TransactionModelAttributes.HIGHLIGHT_ID, ID);
 		return ReturnValues.ALL_ENTITIES;
 	}
 
@@ -324,7 +311,7 @@ public class TransactionController extends BaseController
 			throw new ResourceNotFoundException();
 		}
 
-		model.addAttribute(ModelAttributes.ONE_ENTITY, transactionOptional.get());
+		model.addAttribute(TransactionModelAttributes.ONE_ENTITY, transactionOptional.get());
 		return ReturnValues.CHANGE_TYPE;
 	}
 
