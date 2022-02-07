@@ -47,7 +47,7 @@ public class TransactionController extends BaseController
 	{
 		public static final String ERROR = "error";
 		public static final String ALL_ENTITIES = "transactions";
-		public static final String ONE_ENTITY = "templateGroup";
+		public static final String ONE_ENTITY = "transaction";
 		public static final String ENTITY_TO_DELETE = "transactionToDelete";
 		public static final String ACCOUNT = "account";
 		public static final String BUDGET = "budget";
