@@ -1,4 +1,4 @@
-FROM tomcat:9-jdk11
+FROM tomcat:9-jdk17
 
 RUN rm -rf /usr/local/tomcat/webapps/*
 COPY build/2.8.0/BudgetMaster-v2.8.0.war $CATALINA_HOME/webapps/ROOT.war
