@@ -20,12 +20,12 @@ public abstract class RepeatingEnd
 	@Expose
 	private String localizationKey;
 
-	public RepeatingEnd(String localizationKey)
+	protected RepeatingEnd(String localizationKey)
 	{
 		this.localizationKey = localizationKey;
 	}
 
-	public RepeatingEnd() {}
+	protected RepeatingEnd() {}
 
 	public Integer getID()
 	{

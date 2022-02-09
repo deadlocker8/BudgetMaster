@@ -22,13 +22,13 @@ public abstract class RepeatingModifier
 	@Expose
 	private String localizationKey;
 
-	public RepeatingModifier(int quantity, String localizationKey)
+	protected RepeatingModifier(int quantity, String localizationKey)
 	{
 		this.quantity = quantity;
 		this.localizationKey = localizationKey;
 	}
 
-	public RepeatingModifier() {}
+	protected RepeatingModifier() {}
 
 	public Integer getID()
 	{
