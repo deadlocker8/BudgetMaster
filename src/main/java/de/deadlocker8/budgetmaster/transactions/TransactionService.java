@@ -232,6 +232,7 @@ public class TransactionService implements Resettable
 	@Override
 	public void createDefaults()
 	{
+		// no defaults needed
 	}
 
 	public void handleAmount(TransactionBase item)

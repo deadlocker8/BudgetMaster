@@ -77,6 +77,7 @@ public class IconService implements Resettable
 	@Override
 	public void createDefaults()
 	{
+		// no defaults needed
 	}
 
 	public Icon createIconReference(Integer iconImageID, String builtinIconIdentifier, String fontColor)

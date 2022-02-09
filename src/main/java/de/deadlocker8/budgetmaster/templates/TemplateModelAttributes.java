@@ -2,6 +2,10 @@ package de.deadlocker8.budgetmaster.templates;
 
 public class TemplateModelAttributes
 {
+	private TemplateModelAttributes()
+	{
+	}
+
 	public static final String ERROR = "error";
 	public static final String TEMPLATES_BY_GROUP = "templatesByGroup";
 	public static final String EXISTING_TEMPLATE_NAMES = "existingTemplateNames";

@@ -16,6 +16,7 @@ public class HeaderFooterPageEvent extends PdfPageEventHelper
 	@Override
 	public void onStartPage(PdfWriter writer, Document document)
 	{
+		// empty
 	}
 
 	@Override

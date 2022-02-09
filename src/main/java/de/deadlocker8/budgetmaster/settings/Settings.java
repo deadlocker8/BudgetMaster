@@ -45,6 +45,7 @@ public class Settings
 
 	public Settings()
 	{
+		// empty
 	}
 
 	public static Settings getDefault()

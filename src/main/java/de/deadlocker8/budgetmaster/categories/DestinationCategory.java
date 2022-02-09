@@ -6,6 +6,7 @@ public class DestinationCategory
 
 	public DestinationCategory()
 	{
+		// empty
 	}
 
 	public Category getCategory()

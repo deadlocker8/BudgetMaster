@@ -75,68 +75,82 @@ public class ReportGeneratorService
 			Font font = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 8, Font.NORMAL, BLACK);
 			Font fontBold = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 8, Font.BOLD, BLACK);
 
-			// add table header
-			for(ReportColumn column : columns)
-			{
-				ColumnType columnType = ColumnType.getByName(column.getKey());
+			createTableHeader(columns, table, font);
 
-				PdfPCell cell = new PdfPCell(new Phrase(columnType.getName(), font));
-				cell.setBackgroundColor(LIGHT_GRAY);
-				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-				table.addCell(cell);
-			}
+			createTableContent(reportConfiguration, amountType, columns, table, font);
 
-			int index = 0;
-			for(Transaction currentItem : reportConfiguration.getTransactions())
-			{
-				if(amountType.equals(AmountType.INCOME) && currentItem.getAmount() <= 0)
-				{
-					continue;
-				}
-
-				if(amountType.equals(AmountType.EXPENDITURE) && currentItem.getAmount() > 0)
-				{
-					continue;
-				}
-
-				index++;
-
-				for(ReportColumn column : columns)
-				{
-					ColumnType columnType = ColumnType.getByName(column.getKey());
-					PdfPCell cell = getTransactionTableCell(currentItem, columnType, index, font);
-					table.addCell(cell);
-				}
-			}
-
-			PdfPCell cellTotal;
-			String total = "";
-			String totalIncomeString = currencyService.getCurrencyString(reportConfiguration.getBudget().getIncomeSum());
-			String totalExpenditureString = currencyService.getCurrencyString(reportConfiguration.getBudget().getExpenditureSum());
-			switch(amountType)
-			{
-				case BOTH:
-					total = Localization.getString(Strings.REPORT_SUM_TOTAL, totalIncomeString, totalExpenditureString);
-					break;
-				case INCOME:
-					total = Localization.getString(Strings.REPORT_SUM, totalIncomeString);
-					break;
-				case EXPENDITURE:
-					total = Localization.getString(Strings.REPORT_SUM, totalExpenditureString);
-					break;
-			}
-
-			cellTotal = new PdfPCell(new Phrase(total, fontBold));
-			cellTotal.setBackgroundColor(getBaseColor(Color.WHITE));
-			cellTotal.setColspan(numberOfColumns);
-			cellTotal.setHorizontalAlignment(Element.ALIGN_RIGHT);
-			cellTotal.setVerticalAlignment(Element.ALIGN_MIDDLE);
-			table.addCell(cellTotal);
+			createTotal(reportConfiguration, amountType, numberOfColumns, table, fontBold);
 
 			return table;
 		}
 		return null;
+	}
+
+	private void createTotal(ReportConfiguration reportConfiguration, AmountType amountType, int numberOfColumns, PdfPTable table, Font fontBold)
+	{
+		PdfPCell cellTotal;
+		String total = "";
+		String totalIncomeString = currencyService.getCurrencyString(reportConfiguration.getBudget().getIncomeSum());
+		String totalExpenditureString = currencyService.getCurrencyString(reportConfiguration.getBudget().getExpenditureSum());
+		switch(amountType)
+		{
+			case BOTH:
+				total = Localization.getString(Strings.REPORT_SUM_TOTAL, totalIncomeString, totalExpenditureString);
+				break;
+			case INCOME:
+				total = Localization.getString(Strings.REPORT_SUM, totalIncomeString);
+				break;
+			case EXPENDITURE:
+				total = Localization.getString(Strings.REPORT_SUM, totalExpenditureString);
+				break;
+		}
+
+		cellTotal = new PdfPCell(new Phrase(total, fontBold));
+		cellTotal.setBackgroundColor(getBaseColor(Color.WHITE));
+		cellTotal.setColspan(numberOfColumns);
+		cellTotal.setHorizontalAlignment(Element.ALIGN_RIGHT);
+		cellTotal.setVerticalAlignment(Element.ALIGN_MIDDLE);
+		table.addCell(cellTotal);
+	}
+
+	private void createTableContent(ReportConfiguration reportConfiguration, AmountType amountType, List<ReportColumn> columns, PdfPTable table, Font font)
+	{
+		int index = 0;
+		for(Transaction currentItem : reportConfiguration.getTransactions())
+		{
+			if(amountType.equals(AmountType.INCOME) && currentItem.getAmount() <= 0)
+			{
+				continue;
+			}
+
+			if(amountType.equals(AmountType.EXPENDITURE) && currentItem.getAmount() > 0)
+			{
+				continue;
+			}
+
+			index++;
+
+			for(ReportColumn column : columns)
+			{
+				ColumnType columnType = ColumnType.getByName(column.getKey());
+				PdfPCell cell = getTransactionTableCell(currentItem, columnType, index, font);
+				table.addCell(cell);
+			}
+		}
+	}
+
+	private void createTableHeader(List<ReportColumn> columns, PdfPTable table, Font font)
+	{
+		for(ReportColumn column : columns)
+		{
+			ColumnType columnType = ColumnType.getByName(column.getKey());
+
+			PdfPCell cell = new PdfPCell(new Phrase(columnType.getName(), font));
+			cell.setBackgroundColor(LIGHT_GRAY);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			table.addCell(cell);
+		}
 	}
 
 	private PdfPCell getTransactionTableCell(Transaction transaction, ColumnType columnType, int position, Font font)

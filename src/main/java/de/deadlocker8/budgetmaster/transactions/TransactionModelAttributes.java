@@ -2,6 +2,10 @@ package de.deadlocker8.budgetmaster.transactions;
 
 public class TransactionModelAttributes
 {
+	private TransactionModelAttributes()
+	{
+	}
+
 	public static final String ERROR = "error";
 	public static final String ALL_ENTITIES = "transactions";
 	public static final String ONE_ENTITY = "transaction";
