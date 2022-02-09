@@ -86,7 +86,7 @@ class SearchTest extends SeleniumTestBase
 		pages.get(3).click();
 
 		pages = driver.findElements(By.cssSelector(".pagination-position-top .pagination li"));
-		assertThat(results).hasSize(5);
+		assertThat(pages).hasSize(5);
 
 		// previous button should be enabled
 		assertThat(pages.get(0).getAttribute("class")).doesNotContain("disabled");
