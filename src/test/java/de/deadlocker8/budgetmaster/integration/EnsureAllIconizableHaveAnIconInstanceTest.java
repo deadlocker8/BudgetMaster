@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("test")
 @SeleniumTest
 @Transactional
-public class EnsureAllIconizableHaveAnIconInstanceTest
+class EnsureAllIconizableHaveAnIconInstanceTest
 {
 	@TestConfiguration
 	static class TestDatabaseConfiguration

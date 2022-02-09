@@ -134,7 +134,7 @@ public class BackupDatabase_v6 implements BackupDatabase
 
 		List<BackupIcon_v7> castedIcons = newIcons.stream()
 				.map(BackupIcon_v7.class::cast)
-				.collect(Collectors.toList());
+				.toList();
 		upgradedDatabase.setIcons(castedIcons);
 
 		return upgradedDatabase;

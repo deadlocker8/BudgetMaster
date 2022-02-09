@@ -312,7 +312,7 @@ public class TransactionService implements Resettable
 				.map(Transaction::getName)
 				.distinct()
 				.limit(MAX_SUGGESTIONS)
-				.collect(Collectors.toList());
+				.toList();
 		model.addAttribute(TransactionModelAttributes.SUGGESTIONS_JSON, GSON.toJson(nameSuggestions));
 	}
 }

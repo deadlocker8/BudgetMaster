@@ -3,7 +3,6 @@ package de.deadlocker8.budgetmaster.utils.types;
 import de.thecodelabs.utils.util.Localization;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public enum MonthNames
@@ -37,6 +36,6 @@ public enum MonthNames
 	{
 		return Stream.of(MonthNames.values())
 				.map(monthName -> Localization.getString(monthName.getKey()))
-				.collect(Collectors.toList());
+				.toList();
 	}
 }

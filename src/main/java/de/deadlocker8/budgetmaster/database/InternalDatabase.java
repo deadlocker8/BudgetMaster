@@ -91,7 +91,7 @@ public class InternalDatabase
 
 		final List<Account> customAccounts = accounts.stream()
 				.filter(account -> account.getType() == AccountType.CUSTOM)
-				.collect(Collectors.toList());
+				.toList();
 		numberOfEntitiesByType.put(EntityType.ACCOUNT, customAccounts.size());
 
 		numberOfEntitiesByType.put(EntityType.TRANSACTION, transactions.size());

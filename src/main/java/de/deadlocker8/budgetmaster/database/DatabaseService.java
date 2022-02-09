@@ -210,7 +210,7 @@ public class DatabaseService
 					.map(Path::toString)
 					.filter(path -> path.endsWith(".json"))
 					.sorted()
-					.collect(Collectors.toList());
+					.toList();
 		}
 		catch(IOException e)
 		{
