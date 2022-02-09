@@ -69,7 +69,7 @@ class SearchTest extends SeleniumTestBase
 	{
 		// === PAGE 1 ===
 		List<WebElement> pages = driver.findElements(By.cssSelector(".pagination-position-top .pagination li"));
-		assertThat(pages.size()).isEqualTo(5);
+		assertThat(pages).hasSize(5);
 
 		assertThat(pages.get(0).getAttribute("class")).contains("disabled");
 		assertThat(pages.get(1).findElement(By.className("page-link")).getText()).isEqualTo("1");
