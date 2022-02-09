@@ -48,16 +48,14 @@ public class RepeatingEndOptionConverter implements Converter<RepeatingEnd, Back
 		final BackupRepeatingEndOption_v4 repeatingEndOption = new BackupRepeatingEndOption_v4();
 		repeatingEndOption.setLocalizationKey(internalItem.getLocalizationKey());
 
-		if(internalItem instanceof RepeatingEndDate)
+		if(internalItem instanceof RepeatingEndDate repeatingEndDate)
 		{
-			RepeatingEndDate repeatingEndDate = (RepeatingEndDate) internalItem;
 			final DateTime endDate = (DateTime) repeatingEndDate.getValue();
 			repeatingEndOption.setEndDate(endDate.toString(DateTimeFormat.forPattern("yyyy-MM-dd")));
 		}
 
-		if(internalItem instanceof RepeatingEndAfterXTimes)
+		if(internalItem instanceof RepeatingEndAfterXTimes repeatingEndAfterXTimes)
 		{
-			RepeatingEndAfterXTimes repeatingEndAfterXTimes = (RepeatingEndAfterXTimes) internalItem;
 			repeatingEndOption.setTimes((int) repeatingEndAfterXTimes.getValue());
 		}
 
