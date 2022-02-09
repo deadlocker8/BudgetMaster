@@ -76,6 +76,7 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 		return accountRepository.findById(ID);
 	}
 
+	@Transactional
 	public void deleteAccount(int ID)
 	{
 		Optional<Account> accountToDeleteOptional = accountRepository.findById(ID);
@@ -223,6 +224,7 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 		}
 	}
 
+	@Transactional
 	public void updateExistingAccount(Account newAccount)
 	{
 		Optional<Account> existingAccountOptional = accountRepository.findById(newAccount.getID());
