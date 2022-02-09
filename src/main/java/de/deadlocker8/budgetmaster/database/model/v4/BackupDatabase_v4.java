@@ -13,10 +13,12 @@ public class BackupDatabase_v4 implements BackupDatabase
 	@SuppressWarnings("unused")
 	private final String TYPE = JSONIdentifier.BUDGETMASTER_DATABASE.toString();
 
-	@SuppressWarnings("FieldCanBeLocal")
+	@SuppressWarnings({"FieldCanBeLocal", "squid:S1170"})
+	// field can not be static, since static field won't be exported to JSON by GSON
 	private final int VERSION = 4;
 
-	@SuppressWarnings("unused")
+	@SuppressWarnings({"unused", "squid:S2065", "squid:S1170"})
+	// field can not be static, since static field won't be exported to JSON by GSON
 	private final transient String INTRODUCED_IN_VERSION = "v2.5.0";
 
 	private List<BackupCategory_v4> categories;
