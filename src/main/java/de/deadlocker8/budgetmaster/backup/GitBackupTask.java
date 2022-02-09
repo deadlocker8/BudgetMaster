@@ -31,7 +31,7 @@ public abstract class GitBackupTask extends BackupTask
 
 	protected abstract AutoBackupStrategy getBackupStrategy();
 
-	protected boolean addAndCommitChanges(Git git) throws GitAPIException
+	protected boolean addAndCommitChanges(Git git) throws GitAPIException, GitBackupException
 	{
 		if(!GitHelper.isFileUntracked(git, DATABASE_FILE_NAME))
 		{
@@ -50,7 +50,7 @@ public abstract class GitBackupTask extends BackupTask
 		if(!GitHelper.isFileAddedOrChanged(git, DATABASE_FILE_NAME))
 		{
 			setBackupStatus(BackupStatus.ERROR);
-			throw new RuntimeException(MessageFormat.format("Error adding \"{0}\" to git", DATABASE_FILE_NAME));
+			throw new GitBackupException(MessageFormat.format("Error adding \"{0}\" to git", DATABASE_FILE_NAME));
 		}
 
 		LOGGER.debug("Committing changes...");

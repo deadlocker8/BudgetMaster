@@ -52,7 +52,7 @@ public class LocalGitBackupTask extends GitBackupTask
 				LOGGER.debug("Backup DONE");
 			}
 		}
-		catch(IOException | GitAPIException e)
+		catch(IOException | GitAPIException | GitBackupException e)
 		{
 			LOGGER.error("Error performing local git backup task", e);
 			setBackupStatus(BackupStatus.ERROR);
