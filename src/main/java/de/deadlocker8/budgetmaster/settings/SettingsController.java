@@ -321,7 +321,7 @@ public class SettingsController extends BaseController
 		return ReturnValues.ALL_ENTITIES;
 	}
 
-	@RequestMapping("/database/upload")
+	@PostMapping("/database/upload")
 	public String upload(WebRequest request, Model model, @RequestParam("file") MultipartFile file)
 	{
 		if(file.isEmpty())

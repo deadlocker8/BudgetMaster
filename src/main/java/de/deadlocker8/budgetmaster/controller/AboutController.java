@@ -59,7 +59,7 @@ public class AboutController extends BaseController
 		return ReturnValues.WHATS_NEW;
 	}
 
-	@RequestMapping("/whatsNewModal/close")
+	@GetMapping("/whatsNewModal/close")
 	@Transactional
 	public String whatsNewModalClose(HttpServletRequest request)
 	{
