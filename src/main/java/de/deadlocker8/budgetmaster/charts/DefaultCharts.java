@@ -54,6 +54,10 @@ public class DefaultCharts
 			getChartFromFile("charts/IncomesAndExpendituresPerYearByCategories.js"),
 			ChartType.DEFAULT, 2, ChartDisplayType.BAR, ChartGroupType.YEAR, "incomesAndExpendituresPerYearByCategories.png");
 
+	private static final Chart CHART_AVERAGE_TRANSACTION_AMOUNT_PER_CATEGORY = new Chart("charts.default.averageTransactionAmountPerCategory",
+			getChartFromFile("charts/AverageTransactionAmountPerCategoryBar.js"),
+			ChartType.DEFAULT, 2, ChartDisplayType.BAR, ChartGroupType.NONE, "averageTransactionAmountPerCategory.png");
+
 	private DefaultCharts()
 	{
 	}
@@ -70,6 +74,7 @@ public class DefaultCharts
 		charts.add(CHART_REST_PER_MONTH);
 		charts.add(CHART_INCOMES_AND_EXPENDITURES_PER_YEAR_BAR);
 		charts.add(CHART_INCOMES_AND_EXPENDITURES_PER_YEAR_BY_CATEGORIES);
+		charts.add(CHART_AVERAGE_TRANSACTION_AMOUNT_PER_CATEGORY);
 		return charts;
 	}
 
