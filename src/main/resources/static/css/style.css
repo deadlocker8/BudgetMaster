@@ -336,8 +336,23 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     font-size: 1.1rem;
 }
 
+.global-account-select-name {
+    max-width: 200px;
+}
+
 .global-account-select-budget {
     font-size: 1.8rem;
+}
+
+.global-account-select-option {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.global-account-select-option-name {
+    font-size: 1.4rem;
+    margin-left: 2rem;
 }
 
 .login-button {

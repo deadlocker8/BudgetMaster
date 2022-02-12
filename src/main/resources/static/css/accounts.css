@@ -6,11 +6,13 @@
 .account-icon-big {
     height: 4rem !important;
     width: 4rem !important;
+    min-width: 4rem;
 }
 
 .account-icon-big .account-select-icon {
     height: 4rem !important;
     width: 4rem !important;
+    min-width: 4rem;
 }
 
 .account-square-border {
