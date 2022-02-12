@@ -21,13 +21,9 @@ import java.util.Optional;
 public class SettingsService
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SettingsService.class);
+
 	private final SettingsRepository settingsRepository;
-
-	@Autowired
-	private SettingsService settingsService;
-
-	@Autowired
-	private UserRepository userRepository;
+	private final UserRepository userRepository;
 
 	@Autowired
 	public SettingsService(SettingsRepository settingsRepository, UserRepository userRepository)
@@ -37,9 +33,10 @@ public class SettingsService
 	}
 
 	@PostConstruct
+	@Transactional
 	public void postInit()
 	{
-		this.settingsService.createDefaultSettingsIfNotExists();
+		this.createDefaultSettingsIfNotExists();
 	}
 
 	@Transactional

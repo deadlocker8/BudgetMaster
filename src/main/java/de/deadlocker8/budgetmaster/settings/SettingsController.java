@@ -13,7 +13,6 @@ import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
 import de.deadlocker8.budgetmaster.services.ImportResultItem;
 import de.deadlocker8.budgetmaster.services.ImportService;
-import de.deadlocker8.budgetmaster.services.UpdateCheckService;
 import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.deadlocker8.budgetmaster.utils.Mappings;
@@ -101,13 +100,12 @@ public class SettingsController extends BaseController
 	private final CategoryService categoryService;
 	private final ImportService importService;
 	private final BudgetMasterUpdateService budgetMasterUpdateService;
-	private final UpdateCheckService updateCheckService;
 	private final BackupService backupService;
 
 	private final List<Integer> SEARCH_RESULTS_PER_PAGE_OPTIONS = Arrays.asList(10, 20, 25, 30, 50, 100);
 
 	@Autowired
-	public SettingsController(SettingsService settingsService, DatabaseService databaseService, AccountService accountService, CategoryService categoryService, ImportService importService, BudgetMasterUpdateService budgetMasterUpdateService, UpdateCheckService updateCheckService, BackupService backupService)
+	public SettingsController(SettingsService settingsService, DatabaseService databaseService, AccountService accountService, CategoryService categoryService, ImportService importService, BudgetMasterUpdateService budgetMasterUpdateService, BackupService backupService)
 	{
 		this.settingsService = settingsService;
 		this.databaseService = databaseService;
@@ -115,7 +113,6 @@ public class SettingsController extends BaseController
 		this.categoryService = categoryService;
 		this.importService = importService;
 		this.budgetMasterUpdateService = budgetMasterUpdateService;
-		this.updateCheckService = updateCheckService;
 		this.backupService = backupService;
 	}
 
@@ -422,9 +419,9 @@ public class SettingsController extends BaseController
 	{
 		budgetMasterUpdateService.getUpdateService().fetchCurrentVersion();
 
-		if(updateCheckService.isUpdateAvailable())
+		if(budgetMasterUpdateService.isUpdateAvailable())
 		{
-			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.settings.update.available", updateCheckService.getAvailableVersionString()), NotificationType.INFO));
+			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.settings.update.available", budgetMasterUpdateService.getAvailableVersionString()), NotificationType.INFO));
 		}
 		return ReturnValues.REDIRECT_ALL_ENTITIES;
 	}
