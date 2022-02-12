@@ -47,13 +47,12 @@ public class AboutController extends BaseController
 	public String whatsNewModal(Model model)
 	{
 		final List<NewsEntry> newsEntries = new ArrayList<>();
-		newsEntries.add(NewsEntry.createWithLocalizationKey("recurringTransfers"));
-		newsEntries.add(NewsEntry.createWithLocalizationKey("newFromExisting"));
-		newsEntries.add(NewsEntry.createWithLocalizationKey("imagePerformance"));
-		newsEntries.add(NewsEntry.createWithLocalizationKey("searchOption"));
-		newsEntries.add(NewsEntry.createWithLocalizationKey("newHotkey"));
-		newsEntries.add(NewsEntry.createWithLocalizationKey("trimInputs"));
-		newsEntries.add(NewsEntry.createWithLocalizationKey("fix.sortTemplates"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("groupTemplates"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("iconFontColor"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("globalAccountSelect"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("saveAndContinue"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("newCharts"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("fix.transferDirectionInCharts"));
 
 		model.addAttribute(ModelAttributes.NEWS_ENTRIES, newsEntries);
 		return ReturnValues.WHATS_NEW;
