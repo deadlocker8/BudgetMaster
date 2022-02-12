@@ -28,6 +28,8 @@
                             <thead>
                                 <tr>
                                     <th>${locale.getString("chart.new.label.name")}</th>
+                                    <th>${locale.getString("chart.display.type")}</th>
+                                    <th>${locale.getString("chart.group.type")}</th>
                                     <th>${locale.getString("chart.type")}</th>
                                     <th>${locale.getString("chart.actions")}</th>
                                 </tr>
@@ -36,6 +38,8 @@
                                 <#assign chartName=chartFunctions.getChartName(chart)>
                                 <tr>
                                     <td>${chartName}</td>
+                                    <td><@chartFunctions.iconForItem item=chart.getDisplayType()/></td>
+                                    <td><@chartFunctions.iconForItem item=chart.getGroupType()/></td>
                                     <td>
                                         <#if chart.getType().name() == "DEFAULT">
                                             <a class="no-padding text-default"><i class="material-icons left">lock</i></a>

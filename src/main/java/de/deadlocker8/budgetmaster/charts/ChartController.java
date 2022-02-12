@@ -159,7 +159,7 @@ public class ChartController extends BaseController
 	{
 		Chart emptyChart = DefaultCharts.CHART_DEFAULT;
 		model.addAttribute(ModelAttributes.ONE_ENTITY, emptyChart);
-		return ReturnValues.REDIRECT_MANAGE;
+		return ReturnValues.NEW_ENTITY;
 	}
 
 	@GetMapping("/{ID}/edit")

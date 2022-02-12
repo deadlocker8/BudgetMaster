@@ -57,3 +57,11 @@
         </div>
     </div>
 </#macro>
+
+<#macro iconForItem item>
+    <#if item.hasFontAwesomeIcon()>
+        <i class="${item.getIcon()} left"></i> ${locale.getString(item.getLocalizationKey())}
+    <#else>
+        <i class="material-icons left">${item.getIcon()}</i> ${locale.getString(item.getLocalizationKey())}
+    </#if>
+</#macro>
