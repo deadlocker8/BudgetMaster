@@ -31,7 +31,7 @@ for(var i = 0; i < transactionData.length; i++)
 
     // add to income or expenditure sum
     var amount = transaction.amount;
-    values[index].push(Math.abs(amount));
+    values[index].push(amount);
 }
 
 
