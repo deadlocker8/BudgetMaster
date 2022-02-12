@@ -328,11 +328,6 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     cursor: pointer;
 }
 
-#globalAccountSelect .account-select-icon {
-    height: 3.5rem;
-    width: 3.5rem;
-}
-
 .global-account-select-right {
     display: flex;
     flex-direction: column;

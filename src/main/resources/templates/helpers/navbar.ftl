@@ -98,7 +98,7 @@
             <#assign accountName=selectedAccount.getName()/>
         </#if>
 
-        <@customSelectMacros.accountIcon selectedAccount accountName "category-circle-preview"/>
+        <@customSelectMacros.accountIcon selectedAccount accountName "category-circle-preview account-icon-big"/>
         <div class="global-account-select-right">
             <div>${accountName}</div>
 
