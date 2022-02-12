@@ -348,6 +348,12 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     display: flex;
     flex-direction: row;
     align-items: center;
+    background-color: var(--color-background);
+    border: 3px solid transparent;
+}
+
+.global-account-select-option:hover {
+    border: 3px solid var(--color-grey);
 }
 
 .global-account-select-option-name {
@@ -642,7 +648,11 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
 }
 
 [data-theme="dark"] .background-color {
-    background-color: #444444 !important;
+    background-color: var(--color-background) !important;
+}
+
+[data-theme="dark"] .background-color-light {
+    background-color: var(--color-background-light) !important;
 }
 
 [data-theme="dark"] .modal-footer .btn-flat {
