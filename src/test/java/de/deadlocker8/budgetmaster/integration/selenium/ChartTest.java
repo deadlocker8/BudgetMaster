@@ -175,7 +175,7 @@ class ChartTest extends SeleniumTestBase
 		assertThat(displayedChartPreviews)
 				.hasSize(3);
 		assertThat(displayedChartPreviews.get(0).findElement(By.cssSelector(".card-action span")).getText())
-				.isEqualTo("Incomes/Expenditures");
+				.isEqualTo("Average incomes/expenditures");
 
 		// filter
 		assertThat(driver.findElement(By.id("filterActiveBadge")).isDisplayed()).isFalse();
