@@ -211,7 +211,7 @@ public class Transaction implements TransactionBase
 
 	public boolean isFuture()
 	{
-		return date.isAfter(DateHelper.getCurrentDate());
+		return date.isAfter(DateHelper.getCurrentDateWithUTC());
 	}
 
 	public boolean isEditable()
