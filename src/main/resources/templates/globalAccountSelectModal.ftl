@@ -11,6 +11,12 @@
         </div>
 
         <div class="row">
+            <div class="col s12 center-align">
+                <@header.buttonLink url='/accounts' icon='edit' localizationKey='account.button.manage'/>
+            </div>
+        </div>
+
+        <div class="row">
             <div class="col s12">
                 <#list accounts as account>
                     ${account.getName()}<br>
