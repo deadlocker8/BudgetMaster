@@ -5,6 +5,11 @@ $(document).ready(function()
         document.getElementById('logout-form').submit();
     });
 
+    $('#globalAccountSelect').click(function()
+    {
+        fetchAndShowModal(this, 'globalAccountSelectModalOnDemand', '#modalGlobalAccountSelect');
+    });
+
     $('.sidenav').sidenav();
 
     $('.modal').modal();
@@ -16,20 +21,12 @@ $(document).ready(function()
 
     if($("#whatsNewModelContainer").length)
     {
-        fetchAndShowWhatsNewModal(document.getElementById('whatsNewModelContainer'), 'whatsNewModelContainer');
+        fetchAndShowModal(document.getElementById('whatsNewModelContainer'), 'whatsNewModelContainer', '#modalWhatsNew');
     }
 
     $('.tooltipped').tooltip();
 
     $('select').formSelect();
-
-    $("#selectWrapper ul.dropdown-content.select-dropdown li span").each(function()
-    {
-        if($(this).text() === accountPlaceholderName)
-        {
-            $(this).addClass("all-account-placeholder");
-        }
-    });
 
     if($("#login-password").length)
     {
@@ -63,10 +60,8 @@ $(document).ready(function()
     });
 });
 
-
-function fetchAndShowWhatsNewModal(item, containerID)
+function fetchAndShowModal(item, containerID, modalID)
 {
-    let modalID = '#modalWhatsNew';
     let modal = $(modalID).modal();
     if(modal.isOpen)
     {

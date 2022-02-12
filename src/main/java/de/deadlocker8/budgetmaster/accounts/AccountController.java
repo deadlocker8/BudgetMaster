@@ -46,6 +46,7 @@ public class AccountController extends BaseController
 		public static final String DELETE_ENTITY = "accounts/deleteAccountModal";
 		public static final String IMPORT_STEP_2 = "redirect:/settings/database/import/step2";
 		public static final String SETTINGS = "redirect:/settings";
+		public static final String GLOBAL_ACCOUNT_SELECT_MODAL = "globalAccountSelectModal";
 	}
 
 	private final AccountService accountService;
@@ -216,5 +217,13 @@ public class AccountController extends BaseController
 		{
 			return true;
 		}
+	}
+
+	@GetMapping("/globalAccountSelectModal")
+	public String globalAccountSelectModal(Model model)
+	{
+		model.addAttribute(ModelAttributes.ALL_ENTITIES, accountService.getAllReadableAccounts());
+
+		return ReturnValues.GLOBAL_ACCOUNT_SELECT_MODAL;
 	}
 }

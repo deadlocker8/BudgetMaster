@@ -2,6 +2,6 @@ $(document).ready(function()
 {
     $('.whatsNewLink').click(function()
     {
-        fetchAndShowWhatsNewModal(this, 'whatsNewModelContainerOnDemand');
+        fetchAndShowModal(this, 'whatsNewModelContainerOnDemand', '#modalWhatsNew');
     });
 });
