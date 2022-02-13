@@ -45,6 +45,8 @@ public class ChartController extends BaseController
 		public static final String TRANSACTION_DATA = "transactionData";
 		public static final String DISPLAY_TYPES = "displayTypes";
 		public static final String GROUP_TYPES = "groupTypes";
+		public static final String CUSTOM_CHARTS = "customCharts";
+		public static final String DEFAULT_CHARTS = "defaultCharts";
 	}
 
 	private static class ReturnValues
@@ -150,7 +152,8 @@ public class ChartController extends BaseController
 	@GetMapping("/manage")
 	public String manage(Model model)
 	{
-		model.addAttribute(ModelAttributes.ALL_ENTITIES, chartService.getAllEntitiesAsc());
+		model.addAttribute(ModelAttributes.DEFAULT_CHARTS, chartService.getRepository().findAllByType(ChartType.DEFAULT));
+		model.addAttribute(ModelAttributes.CUSTOM_CHARTS, chartService.getRepository().findAllByType(ChartType.CUSTOM));
 		return ReturnValues.MANAGE;
 	}
 
