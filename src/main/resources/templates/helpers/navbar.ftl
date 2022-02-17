@@ -100,7 +100,7 @@
 
         <@customSelectMacros.accountIcon selectedAccount accountName "category-circle-preview account-icon-big"/>
         <div class="global-account-select-right">
-            <div class="truncate global-account-select-name">${accountName}</div>
+            <div class="truncate global-account-select-name text-default">${accountName}</div>
 
             <div>
                 <#assign accountBudget = helpers.getAccountBudget()/>
