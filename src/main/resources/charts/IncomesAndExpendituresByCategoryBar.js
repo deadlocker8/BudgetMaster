@@ -73,7 +73,7 @@ for(var j = 0; j < categoryNames.length; j++)
 
     // add border if category color is white
     var borderWidth = 0;
-    if(colors[j] === '#FFFFFF')
+    if(colors[j].toUpperCase().startsWith('#FFFFFF'))
     {
         borderWidth = 1;
     }

@@ -32,15 +32,15 @@ public class DefaultCharts
 
 	private static final Chart CHART_INCOMES_AND_EXPENDITURES_BY_CATEGORY_BAR = new Chart("charts.default.incomesAndExpendituresByCategoryBar",
 			getChartFromFile("charts/IncomesAndExpendituresByCategoryBar.js"),
-			ChartType.DEFAULT, 7, ChartDisplayType.BAR, ChartGroupType.NONE, "incomesAndExpendituresByCategoryBar.png");
+			ChartType.DEFAULT, 8, ChartDisplayType.BAR, ChartGroupType.NONE, "incomesAndExpendituresByCategoryBar.png");
 
 	private static final Chart CHART_INCOMES_AND_EXPENDITURES_BY_CATEGORY_PIE = new Chart("charts.default.incomesAndExpendituresByCategoryPie",
 			getChartFromFile("charts/IncomesAndExpendituresByCategoryPie.js"),
-			ChartType.DEFAULT, 7, ChartDisplayType.PIE, ChartGroupType.NONE, "incomesAndExpendituresByCategoryPie.png");
+			ChartType.DEFAULT, 8, ChartDisplayType.PIE, ChartGroupType.NONE, "incomesAndExpendituresByCategoryPie.png");
 
 	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_BY_CATEGORIES = new Chart("charts.default.incomesAndExpendituresPerMonthByCategories",
 			getChartFromFile("charts/IncomesAndExpendituresPerMonthByCategories.js"),
-			ChartType.DEFAULT, 22, ChartDisplayType.BAR, ChartGroupType.MONTH, "incomesAndExpendituresPerMonthByCategories.png");
+			ChartType.DEFAULT, 23, ChartDisplayType.BAR, ChartGroupType.MONTH, "incomesAndExpendituresPerMonthByCategories.png");
 
 	private static final Chart CHART_REST_PER_MONTH = new Chart("charts.default.restPerMonth",
 			getChartFromFile("charts/RestPerMonth.js"),
@@ -52,7 +52,7 @@ public class DefaultCharts
 
 	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_YEAR_BY_CATEGORIES = new Chart("charts.default.incomesAndExpendituresPerYearByCategories",
 			getChartFromFile("charts/IncomesAndExpendituresPerYearByCategories.js"),
-			ChartType.DEFAULT, 2, ChartDisplayType.BAR, ChartGroupType.YEAR, "incomesAndExpendituresPerYearByCategories.png");
+			ChartType.DEFAULT, 3, ChartDisplayType.BAR, ChartGroupType.YEAR, "incomesAndExpendituresPerYearByCategories.png");
 
 	private static final Chart CHART_AVERAGE_TRANSACTION_AMOUNT_PER_CATEGORY = new Chart("charts.default.averageTransactionAmountPerCategory",
 			getChartFromFile("charts/AverageTransactionAmountPerCategoryBar.js"),
