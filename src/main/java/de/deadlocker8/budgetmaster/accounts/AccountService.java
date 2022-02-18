@@ -127,7 +127,9 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 		if(accountRepository.findAll().isEmpty())
 		{
 			Account placeholder = new Account("Placeholder", AccountType.ALL);
-			placeholder.updateIcon(iconService, null, PLACEHOLDER_ICON, null, this);
+			final Icon newIcon = iconService.createIconReference(null, PLACEHOLDER_ICON, null);
+			iconService.getRepository().save(newIcon);
+			placeholder.setIconReference(newIcon);
 			accountRepository.save(placeholder);
 			LOGGER.debug("Created placeholder account");
 
@@ -158,7 +160,14 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 
 		final Account placeholderAccount = accountRepository.findAllByType(AccountType.ALL).get(0);
 		final Icon icon = placeholderAccount.getIconReference();
-		if(icon.getBuiltinIdentifier() == null)
+		if(icon == null)
+		{
+			final Icon newIcon = iconService.createIconReference(null, PLACEHOLDER_ICON, null);
+			iconService.getRepository().save(newIcon);
+			placeholderAccount.setIconReference(newIcon);
+			LOGGER.debug(MessageFormat.format("Updated placeholder account: Created missing icon instance and set icon to \"{0}\"", PLACEHOLDER_ICON));
+		}
+		else if(icon.getBuiltinIdentifier() == null)
 		{
 			placeholderAccount.updateIcon(iconService, null, PLACEHOLDER_ICON, null, this);
 			LOGGER.debug(MessageFormat.format("Updated placeholder account: Set missing icon to \"{0}\"", PLACEHOLDER_ICON));
