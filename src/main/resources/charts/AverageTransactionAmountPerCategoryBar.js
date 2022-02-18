@@ -10,7 +10,8 @@ var transactionData = [];
 
 var categoryNames = [];
 var colors = [];
-var values = [];
+var incomesPerCategory = [];
+var expendituresPerCategory = [];
 
 for(var i = 0; i < transactionData.length; i++)
 {
@@ -22,7 +23,8 @@ for(var i = 0; i < transactionData.length; i++)
     {
         categoryNames.push(categoryName);
         colors.push(transaction.category.color);
-        values.push([]);
+        incomesPerCategory.push([]);
+        expendituresPerCategory.push([]);
     }
 
     // determine index of categoryName in list because the transactions are not ordered by category and some categories
@@ -31,7 +33,16 @@ for(var i = 0; i < transactionData.length; i++)
 
     // add to income or expenditure sum
     var amount = transaction.amount;
-    values[index].push(amount);
+    if(amount > 0)
+    {
+        incomesPerCategory[index].push(amount);
+        expendituresPerCategory[index].push(0);
+    }
+    else
+    {
+        incomesPerCategory[index].push(0);
+        expendituresPerCategory[index].push(amount);
+    }
 }
 
 
@@ -42,39 +53,92 @@ for(var j = 0; j < categoryNames.length; j++)
 {
     var currentName = categoryNames[j];
 
-    var sumOfValues = 0;
-    values[j].forEach(function(value)
+    var incomeAverage = calculateAverage(incomesPerCategory[j]);
+    var expenditureAverage = calculateAverage(expendituresPerCategory[j]);
+
+    addDPlotlyData(plotlyData, incomeAverage, currentName, colors[j]);
+    addDPlotlyData(plotlyData, expenditureAverage, currentName, colors[j], false);
+}
+
+
+// Add your Plotly layout settings here (optional)
+var plotlyLayout = {
+    title: {
+        text: localizedTitle
+    },
+    xaxis: {
+    },
+    yaxis: {
+        title: localizedData['label1'] + ' ' + localizedCurrency,
+        rangemode: 'tozero',
+        tickformat: '.2f',
+        showline: true
+    },
+    barmode: 'relative',
+    hovermode: 'closest' // show hover popup only for hovered item
+};
+
+// Add your Plotly configuration settings here (optional)
+var plotlyConfig = {
+    showSendToCloud: false,
+    displaylogo: false,
+    showLink: false,
+    responsive: true,
+    displayModeBar: true,
+    toImageButtonOptions: {
+        format: 'png',
+        filename: 'BudgetMaster_chart_export',
+        height: 1080,
+        width: 1920,
+    }
+};
+
+// Don't touch this line
+Plotly.newPlot("containerID", plotlyData, plotlyLayout, plotlyConfig);
+
+
+function calculateAverage(values)
+{
+    var sum = 0;
+    values.forEach(function(value)
     {
-        sumOfValues += value;
+        sum += value;
     });
+    return (sum / values.length) / 100;
+}
 
-    var averageValue = (sumOfValues / values[j].length) / 100;
-
-    var hoverText = prepareHoverText(currentName, averageValue);
-
+function addDPlotlyData(plotlyData, averageValue, categoryName, color, showLegend)
+{
     // add border if category color is white
     var borderWidth = 0;
-    if(colors[j] === '#FFFFFF')
+    if(color.toUpperCase().startsWith('#FFFFFF'))
     {
         borderWidth = 1;
     }
 
     plotlyData.push({
         y: [averageValue],
-        x: [currentName],
+        x: [categoryName],
         orientation: 'v',
         type: 'bar',
         hoverinfo: 'text',
-        hovertext: [hoverText],
-        name: currentName,
+        hovertext: [prepareHoverText(categoryName, averageValue)],
+        name: categoryName,
+        legendgroup: categoryName,
+        showlegend: showLegend,
         marker: {
-            color: colors[j],  // use the category's color
+            color: color,  // use the category's color
             line: {
                 color: '#212121',
                 width: borderWidth
             }
         }
     });
+}
+
+function prepareHoverText(categoryName, value)
+{
+    return categoryName + ' ' + value.toFixed(1) + ' ' + localizedCurrency;
 }
 
 

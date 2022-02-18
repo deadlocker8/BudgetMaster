@@ -56,7 +56,7 @@ public class DefaultCharts
 
 	private static final Chart CHART_AVERAGE_TRANSACTION_AMOUNT_PER_CATEGORY = new Chart("charts.default.averageTransactionAmountPerCategory",
 			getChartFromFile("charts/AverageTransactionAmountPerCategoryBar.js"),
-			ChartType.DEFAULT, 3, ChartDisplayType.BAR, ChartGroupType.NONE, "averageTransactionAmountPerCategory.png");
+			ChartType.DEFAULT, 9, ChartDisplayType.BAR, ChartGroupType.NONE, "averageTransactionAmountPerCategory.png");
 
 	private static final Chart CHART_AVERAGE_MONTHLY_INCOMES_AND_EXPENDITURES_PER_YEAR_BAR = new Chart("charts.default.averageMonthlyIncomesAndExpendituresPerYearBar",
 			getChartFromFile("charts/AverageMonthlyIncomesAndExpendituresPerYearBar.js"),
