@@ -85,7 +85,7 @@ public class TemplateGroupController extends BaseController
 	public String newTemplate(Model model)
 	{
 		final TemplateGroup emptyTemplateGroup = new TemplateGroup();
-		model.addAttribute(ModelAttributes.ALL_ENTITIES, emptyTemplateGroup);
+		model.addAttribute(ModelAttributes.ONE_ENTITY, emptyTemplateGroup);
 		return ReturnValues.NEW_ENTITY;
 	}
 
