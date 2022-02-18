@@ -2,6 +2,8 @@ package de.deadlocker8.budgetmaster.accounts;
 
 import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
+import de.deadlocker8.budgetmaster.icon.Icon;
+import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.services.AccessAllEntities;
 import de.deadlocker8.budgetmaster.services.AccessEntityByID;
 import de.deadlocker8.budgetmaster.services.Resettable;
@@ -25,16 +27,20 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AccountService.class);
 
+	private static final String PLACEHOLDER_ICON = "fas fa-landmark";
+
 	private final AccountRepository accountRepository;
 	private final TransactionService transactionService;
 	private final UserRepository userRepository;
+	private final IconService iconService;
 
 	@Autowired
-	public AccountService(AccountRepository accountRepository, TransactionService transactionService, UserRepository userRepository)
+	public AccountService(AccountRepository accountRepository, TransactionService transactionService, UserRepository userRepository, IconService iconService)
 	{
 		this.accountRepository = accountRepository;
 		this.transactionService = transactionService;
 		this.userRepository = userRepository;
+		this.iconService = iconService;
 
 		createDefaults();
 	}
@@ -121,6 +127,7 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 		if(accountRepository.findAll().isEmpty())
 		{
 			Account placeholder = new Account("Placeholder", AccountType.ALL);
+			placeholder.updateIcon(iconService, null, PLACEHOLDER_ICON, null, this);
 			accountRepository.save(placeholder);
 			LOGGER.debug("Created placeholder account");
 
@@ -147,6 +154,14 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 		{
 			handleNullValuesForAccountState(account);
 			accountRepository.save(account);
+		}
+
+		final Account placeholderAccount = accountRepository.findAllByType(AccountType.ALL).get(0);
+		final Icon icon = placeholderAccount.getIconReference();
+		if(icon.getBuiltinIdentifier() == null)
+		{
+			placeholderAccount.updateIcon(iconService, null, PLACEHOLDER_ICON, null, this);
+			LOGGER.debug(MessageFormat.format("Updated placeholder account: Set missing icon to \"{0}\"", PLACEHOLDER_ICON));
 		}
 	}
 

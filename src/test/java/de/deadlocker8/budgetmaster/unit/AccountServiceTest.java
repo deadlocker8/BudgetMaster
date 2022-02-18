@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmaster.unit;
 import de.deadlocker8.budgetmaster.accounts.*;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
 import de.deadlocker8.budgetmaster.icon.Icon;
+import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.deadlocker8.budgetmaster.unit.helpers.LocalizedTest;
 import de.deadlocker8.budgetmaster.utils.Strings;
@@ -32,6 +33,9 @@ class AccountServiceTest
 
 	@Mock
 	private UserRepository userRepository;
+
+	@Mock
+	private IconService iconService;
 
 	private AccountService accountService;
 
@@ -67,7 +71,7 @@ class AccountServiceTest
 		Mockito.when(accountRepository.findById(1)).thenReturn(Optional.of(ACCOUNT_PLACEHOLDER));
 		Mockito.when(accountRepository.findById(3)).thenReturn(Optional.of(ACCOUNT_NORMAL));
 
-		accountService = new AccountService(accountRepository, transactionService, userRepository);
+		accountService = new AccountService(accountRepository, transactionService, userRepository, iconService);
 	}
 
 	@Test
