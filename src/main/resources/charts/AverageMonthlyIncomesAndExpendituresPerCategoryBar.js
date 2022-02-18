@@ -7,7 +7,9 @@
 var transactionData = [];
 
 // Note: All variables starting with "localized" are only available inside default charts.
+moment.locale(localizedLocale);
 
+var months = [];
 var categoryNames = [];
 var colors = [];
 var incomesPerCategory = [];
@@ -16,6 +18,12 @@ var expendituresPerCategory = [];
 for(var i = 0; i < transactionData.length; i++)
 {
     var transaction = transactionData[i];
+
+    var month = moment(transaction.date).startOf('month').format('MMM YY');
+    if(!months.includes(month))
+    {
+        months.push(month);
+    }
 
     var categoryName = transaction.category.name;
     // create new category if not already in dict
@@ -53,8 +61,8 @@ for(var j = 0; j < categoryNames.length; j++)
 {
     var currentName = categoryNames[j];
 
-    var incomeAverage = calculateAverage(incomesPerCategory[j]);
-    var expenditureAverage = calculateAverage(expendituresPerCategory[j]);
+    var incomeAverage = calculateAverage(incomesPerCategory[j], months.length);
+    var expenditureAverage = calculateAverage(expendituresPerCategory[j], months.length);
 
     addDPlotlyData(plotlyData, incomeAverage, currentName, colors[j]);
     addDPlotlyData(plotlyData, expenditureAverage, currentName, colors[j], false);
@@ -97,16 +105,6 @@ var plotlyConfig = {
 Plotly.newPlot("containerID", plotlyData, plotlyLayout, plotlyConfig);
 
 
-function calculateAverage(values)
-{
-    var sum = 0;
-    values.forEach(function(value)
-    {
-        sum += value;
-    });
-    return (sum / values.length) / 100;
-}
-
 function addDPlotlyData(plotlyData, averageValue, categoryName, color, showLegend)
 {
     // add border if category color is white
@@ -134,6 +132,16 @@ function addDPlotlyData(plotlyData, averageValue, categoryName, color, showLegen
             }
         }
     });
+}
+
+function calculateAverage(values, numberOfMonths)
+{
+    var sum = 0;
+    values.forEach(function(value)
+    {
+        sum += value;
+    });
+    return (sum / numberOfMonths) / 100;
 }
 
 function prepareHoverText(categoryName, value)

@@ -62,6 +62,10 @@ public class DefaultCharts
 			getChartFromFile("charts/AverageMonthlyIncomesAndExpendituresPerYearBar.js"),
 			ChartType.DEFAULT, 9, ChartDisplayType.BAR, ChartGroupType.YEAR, "averageMonthlyIncomesAndExpendituresPerYearBar.png");
 
+	private static final Chart CHART_AVERAGE_MONTHLY_INCOMES_AND_EXPENDITURES_PER_CATEGORY_BAR = new Chart("charts.default.averageMonthlyIncomesAndExpendituresPerCategoryBar",
+			getChartFromFile("charts/AverageMonthlyIncomesAndExpendituresPerCategoryBar.js"),
+			ChartType.DEFAULT, 1, ChartDisplayType.BAR, ChartGroupType.NONE, "averageMonthlyIncomesAndExpendituresPerCategoryBar.png");
+
 	private DefaultCharts()
 	{
 	}
@@ -80,6 +84,7 @@ public class DefaultCharts
 		charts.add(CHART_INCOMES_AND_EXPENDITURES_PER_YEAR_BY_CATEGORIES);
 		charts.add(CHART_AVERAGE_TRANSACTION_AMOUNT_PER_CATEGORY);
 		charts.add(CHART_AVERAGE_MONTHLY_INCOMES_AND_EXPENDITURES_PER_YEAR_BAR);
+		charts.add(CHART_AVERAGE_MONTHLY_INCOMES_AND_EXPENDITURES_PER_CATEGORY_BAR);
 		return charts;
 	}
 
