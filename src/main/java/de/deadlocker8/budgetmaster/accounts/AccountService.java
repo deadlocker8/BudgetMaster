@@ -138,6 +138,24 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 			setAsDefaultAccount(account.getID());
 			LOGGER.debug("Created default account");
 		}
+		else
+		{
+			final Account placeholderAccount = accountRepository.findAllByType(AccountType.ALL).get(0);
+			final Icon icon = placeholderAccount.getIconReference();
+			if(icon == null)
+			{
+				final Icon newIcon = iconService.createIconReference(null, PLACEHOLDER_ICON, null);
+				iconService.getRepository().save(newIcon);
+				placeholderAccount.setIconReference(newIcon);
+				LOGGER.debug(MessageFormat.format("Updated placeholder account: Created missing icon instance and set icon to \"{0}\"", PLACEHOLDER_ICON));
+			}
+			else if(icon.getBuiltinIdentifier() == null)
+			{
+				icon.setBuiltinIdentifier(PLACEHOLDER_ICON);
+				iconService.getRepository().save(icon);
+				LOGGER.debug(MessageFormat.format("Updated placeholder account: Set missing icon to \"{0}\"", PLACEHOLDER_ICON));
+			}
+		}
 
 		updateMissingAttributes();
 
@@ -156,21 +174,6 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 		{
 			handleNullValuesForAccountState(account);
 			accountRepository.save(account);
-		}
-
-		final Account placeholderAccount = accountRepository.findAllByType(AccountType.ALL).get(0);
-		final Icon icon = placeholderAccount.getIconReference();
-		if(icon == null)
-		{
-			final Icon newIcon = iconService.createIconReference(null, PLACEHOLDER_ICON, null);
-			iconService.getRepository().save(newIcon);
-			placeholderAccount.setIconReference(newIcon);
-			LOGGER.debug(MessageFormat.format("Updated placeholder account: Created missing icon instance and set icon to \"{0}\"", PLACEHOLDER_ICON));
-		}
-		else if(icon.getBuiltinIdentifier() == null)
-		{
-			placeholderAccount.updateIcon(iconService, null, PLACEHOLDER_ICON, null, this);
-			LOGGER.debug(MessageFormat.format("Updated placeholder account: Set missing icon to \"{0}\"", PLACEHOLDER_ICON));
 		}
 	}
 

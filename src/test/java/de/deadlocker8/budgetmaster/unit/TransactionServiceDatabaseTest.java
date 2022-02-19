@@ -1,9 +1,11 @@
 package de.deadlocker8.budgetmaster.unit;
 
 import de.deadlocker8.budgetmaster.Main;
+import de.deadlocker8.budgetmaster.accounts.AccountRepository;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
+import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
@@ -57,7 +59,7 @@ class TransactionServiceDatabaseTest
 	private TransactionService transactionService;
 
 	@Autowired
-	private AccountService accountService;
+	private AccountRepository accountRepository;
 
 	@Test
 	void test_deleteAll()
@@ -73,7 +75,7 @@ class TransactionServiceDatabaseTest
 		DateTime date1 = DateTime.parse("2020-04-30", DateTimeFormat.forPattern("yyyy-MM-dd"));
 		FilterConfiguration filterConfiguration = new FilterConfiguration(true, true, true, true, true, null, null, "");
 
-		List<Transaction> transactions = transactionService.getTransactionsForAccount(accountService.getRepository().findByName("Second Account"), date1, DateHelper.getCurrentDate(), filterConfiguration);
+		List<Transaction> transactions = transactionService.getTransactionsForAccount(accountRepository.findByName("Second Account"), date1, DateHelper.getCurrentDate(), filterConfiguration);
 		assertThat(transactions).hasSize(2);
 
 		assertThat(transactions.get(0)).hasFieldOrPropertyWithValue("ID", 9);  // transfer
@@ -86,7 +88,7 @@ class TransactionServiceDatabaseTest
 		DateTime date1 = DateTime.parse("2020-04-30", DateTimeFormat.forPattern("yyyy-MM-dd"));
 		FilterConfiguration filterConfiguration = new FilterConfiguration(true, true, true, true, true, null, null, "");
 
-		List<Transaction> transactions = transactionService.getTransactionsForAccount(accountService.getRepository().findAllByType(AccountType.ALL).get(0), date1, DateHelper.getCurrentDate(), filterConfiguration);
+		List<Transaction> transactions = transactionService.getTransactionsForAccount(accountRepository.findAllByType(AccountType.ALL).get(0), date1, DateHelper.getCurrentDate(), filterConfiguration);
 		assertThat(transactions).hasSize(8);
 	}
 
@@ -97,7 +99,7 @@ class TransactionServiceDatabaseTest
 		DateTime date2 = DateTime.parse("2020-05-20", DateTimeFormat.forPattern("yyyy-MM-dd"));
 		FilterConfiguration filterConfiguration = new FilterConfiguration(true, true, true, true, true, null, null, "");
 
-		List<Transaction> transactions = transactionService.getTransactionsForAccount(accountService.getRepository().findByName("Default Account"), date1, date2, filterConfiguration);
+		List<Transaction> transactions = transactionService.getTransactionsForAccount(accountRepository.findByName("Default Account"), date1, date2, filterConfiguration);
 		assertThat(transactions).hasSize(2);
 	}
 
@@ -106,7 +108,7 @@ class TransactionServiceDatabaseTest
 	{
 		FilterConfiguration filterConfiguration = new FilterConfiguration(true, true, true, true, true, null, null, "");
 
-		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(accountService.getRepository().findByName("Default Account"), 6, 2021, false, filterConfiguration);
+		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(accountRepository.findByName("Default Account"), 6, 2021, false, filterConfiguration);
 		assertThat(transactions).hasSize(1);
 		assertThat(transactions.get(0).getDate())
 				.isEqualTo(new DateTime(2021, 6, 30, 0, 0, 0, 0));
@@ -123,7 +125,7 @@ class TransactionServiceDatabaseTest
 		{
 			FilterConfiguration filterConfiguration = new FilterConfiguration(true, true, true, true, true, null, null, "");
 
-			List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(accountService.getRepository().findByName("Default Account"), 6, 2021, false, filterConfiguration);
+			List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(accountRepository.findByName("Default Account"), 6, 2021, false, filterConfiguration);
 			assertThat(transactions).hasSize(1);
 			assertThat(transactions.get(0).getDate())
 					.isEqualTo(new DateTime(2021, 6, 30, 0, 0, 0, 0));
