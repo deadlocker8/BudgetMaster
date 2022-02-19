@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmaster.unit;
 import de.deadlocker8.budgetmaster.accounts.*;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
 import de.deadlocker8.budgetmaster.icon.Icon;
+import de.deadlocker8.budgetmaster.icon.IconRepository;
 import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.deadlocker8.budgetmaster.unit.helpers.LocalizedTest;
@@ -37,6 +38,9 @@ class AccountServiceTest
 	@Mock
 	private IconService iconService;
 
+	@Mock
+	private IconRepository iconRepository;
+
 	private AccountService accountService;
 
 	private Account ACCOUNT_DEFAULT;
@@ -44,6 +48,8 @@ class AccountServiceTest
 	private Account ACCOUNT_NORMAL;
 	private Account ACCOUNT_READONLY;
 	private Account ACCOUNT_HIDDEN;
+
+	private Icon ICON_PLACEHOLDER;
 
 	@BeforeEach
 	void beforeEach()
@@ -65,11 +71,16 @@ class AccountServiceTest
 		ACCOUNT_DEFAULT.setID(15);
 		ACCOUNT_DEFAULT.setDefault(true);
 
+		ICON_PLACEHOLDER = new Icon("fas fa-landmark", null);
+
 		Mockito.when(accountRepository.save(new Account(Localization.getString(Strings.ACCOUNT_DEFAULT_NAME), AccountType.CUSTOM))).thenReturn(ACCOUNT_DEFAULT);
 		Mockito.when(accountRepository.findByIsDefault(true)).thenReturn(ACCOUNT_DEFAULT);
 		Mockito.when(accountRepository.findAllByType(AccountType.ALL)).thenReturn(List.of(ACCOUNT_PLACEHOLDER));
 		Mockito.when(accountRepository.findById(1)).thenReturn(Optional.of(ACCOUNT_PLACEHOLDER));
 		Mockito.when(accountRepository.findById(3)).thenReturn(Optional.of(ACCOUNT_NORMAL));
+
+		Mockito.when(iconService.getRepository()).thenReturn(iconRepository);
+		Mockito.when(iconRepository.save(new Icon("fas fa-landmark", null))).thenReturn(ICON_PLACEHOLDER);
 
 		accountService = new AccountService(accountRepository, transactionService, userRepository, iconService);
 	}
