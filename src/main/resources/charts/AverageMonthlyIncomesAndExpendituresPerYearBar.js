@@ -99,7 +99,7 @@ var plotlyLayout = {
         text: localizedTitle
     },
     yaxis: {
-        title: localizedData['axisY'] + localizedCurrency,
+        title: localizedData['axisY'] + ' ' + localizedCurrency,
         rangemode: 'tozero',
         tickformat: '.2f',
         showline: true
