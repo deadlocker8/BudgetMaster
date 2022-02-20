@@ -200,7 +200,7 @@ class ChartTest extends SeleniumTestBase
 		assertThat(activeChartPreviews)
 				.hasSize(1);
 		assertThat(activeChartPreviews.get(0).findElement(By.cssSelector(".card-action span")).getText())
-				.isEqualTo("Incomes/Expenditures by categories");
+				.isEqualTo("Incomes/Expenditures per category");
 
 		// button
 		assertThat(driver.findElement(By.name("buttonSave")).isEnabled()).isTrue();
