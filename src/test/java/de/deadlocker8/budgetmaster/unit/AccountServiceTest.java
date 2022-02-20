@@ -312,4 +312,13 @@ class AccountServiceTest
 
 		assertThat(accountService.getSelectedAccountOrDefaultAsFallback()).isEqualTo(ACCOUNT_DEFAULT);
 	}
+
+	@Test
+	void test_getSelectedAccountOrDefaultAsFallback_fallbackIfPlaceholderAccountIsSelected()
+	{
+		Mockito.when(accountRepository.findByIsSelected(true)).thenReturn(ACCOUNT_PLACEHOLDER);
+		Mockito.when(accountRepository.findByIsDefault(true)).thenReturn(ACCOUNT_DEFAULT);
+
+		assertThat(accountService.getSelectedAccountOrDefaultAsFallback()).isEqualTo(ACCOUNT_DEFAULT);
+	}
 }
