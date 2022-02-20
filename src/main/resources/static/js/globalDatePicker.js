@@ -19,12 +19,14 @@ $(document).ready(function()
 
     $("#global-datepicker-select-year .global-datepicker-item").click(function()
     {
-        selectYear(this.innerText);
+        selectYear(this.innerText.substr(2, 2));
     });
 
     $("#global-datepicker-select-month .global-datepicker-item").click(function()
     {
-        selectMonth($("#global-datepicker-select-month .global-datepicker-item").index(this) + 1);
+        let month = $("#global-datepicker-select-month .global-datepicker-item").index(this) + 1
+        month = String(month).padStart(2, 0);
+        selectMonth(month);
     });
 
     enableGlobalDatePickerHotKeys();
