@@ -1,6 +1,6 @@
 $(document).ready(function()
 {
-    M.Collapsible.init(document.querySelector('.collapsible.expandable'), {
+    M.Collapsible.init(document.querySelectorAll('.collapsible.expandable'), {
         accordion: false
     });
 
@@ -112,7 +112,6 @@ function searchTemplates(searchText)
     searchText = searchText.toLowerCase()
 
     let templateItems = document.querySelectorAll('.template-item');
-    let collapsible = document.getElementById('templateCollapsible');
 
     if(!searchText)
     {
