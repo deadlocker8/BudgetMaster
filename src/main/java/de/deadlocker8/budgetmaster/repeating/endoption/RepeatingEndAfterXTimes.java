@@ -1,9 +1,10 @@
 package de.deadlocker8.budgetmaster.repeating.endoption;
 
 import com.google.gson.annotations.Expose;
-import org.joda.time.DateTime;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,11 +20,13 @@ public class RepeatingEndAfterXTimes extends RepeatingEnd
 		this.times = times;
 	}
 
-	public RepeatingEndAfterXTimes() {}
+	public RepeatingEndAfterXTimes()
+	{
+	}
 
 	@Override
 	@Transient
-	public boolean isEndReached(List<DateTime> dates)
+	public boolean isEndReached(List<LocalDate> dates)
 	{
 		return dates.size() - 1 > times;
 	}

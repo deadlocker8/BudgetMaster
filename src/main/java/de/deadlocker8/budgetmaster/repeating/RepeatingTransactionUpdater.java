@@ -2,10 +2,10 @@ package de.deadlocker8.budgetmaster.repeating;
 
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -21,14 +21,14 @@ public class RepeatingTransactionUpdater
 		this.repeatingOptionRepository = repeatingOptionRepository;
 	}
 
-	public void updateRepeatingTransactions(DateTime now)
+	public void updateRepeatingTransactions(LocalDate now)
 	{
 		List<RepeatingOption> repeatingOptions = repeatingOptionRepository.findAllByOrderByStartDateAsc();
 		for(RepeatingOption option : repeatingOptions)
 		{
 			List<Transaction> transactions = transactionService.getRepository().findAllByRepeatingOption(option);
-			List<DateTime> correctDates = option.getRepeatingDates(now);
-			for(DateTime currentDate : correctDates)
+			List<LocalDate> correctDates = option.getRepeatingDates(now);
+			for(LocalDate currentDate : correctDates)
 			{
 				if(!containsDate(transactions, currentDate))
 				{
@@ -41,7 +41,7 @@ public class RepeatingTransactionUpdater
 		}
 	}
 
-	private boolean containsDate(List<Transaction> transactions, DateTime date)
+	private boolean containsDate(List<Transaction> transactions, LocalDate date)
 	{
 		for(Transaction currentTransaction : transactions)
 		{

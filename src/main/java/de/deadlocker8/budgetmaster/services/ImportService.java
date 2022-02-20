@@ -33,6 +33,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -359,7 +361,7 @@ public class ImportService
 			}
 			catch(Exception e)
 			{
-				final String errorMessage = MessageFormat.format("Error while importing transaction with name \"{0}\" from {1}", transaction.getName(), transaction.getDate().toString(DateFormatStyle.NORMAL.getKey()));
+				final String errorMessage = MessageFormat.format("Error while importing transaction with name \"{0}\" from {1}", transaction.getName(), transaction.getDate().format(DateTimeFormatter.ofPattern(DateFormatStyle.NORMAL.getKey())));
 				LOGGER.error(errorMessage, e);
 				collectedErrorMessages.add(formatErrorMessage(errorMessage, e));
 			}

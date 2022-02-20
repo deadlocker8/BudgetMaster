@@ -7,9 +7,9 @@ import de.deadlocker8.budgetmaster.database.model.v4.BackupTag_v4;
 import de.deadlocker8.budgetmaster.database.model.v6.BackupTransaction_v6;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,8 +40,7 @@ public class TransactionConverter implements Converter<Transaction, BackupTransa
 		transaction.setAccount(getItemById(availableAccounts, backupTransaction.getAccountID()));
 		transaction.setTransferAccount(getItemById(availableAccounts, backupTransaction.getTransferAccountID()));
 
-		DateTime date = DateTime.parse(backupTransaction.getDate(), DateTimeFormat.forPattern("yyyy-MM-dd"));
-		date = date.withHourOfDay(12).withMinuteOfHour(0).withSecondOfMinute(0);
+		LocalDate date = LocalDate.parse(backupTransaction.getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		transaction.setDate(date);
 
 		List<Tag> convertedTags = new ArrayList<>();
@@ -77,7 +76,7 @@ public class TransactionConverter implements Converter<Transaction, BackupTransa
 			transaction.setTransferAccountID(internalItem.getTransferAccount().getID());
 		}
 
-		transaction.setDate(internalItem.getDate().toString(DateTimeFormat.forPattern("yyyy-MM-dd")));
+		transaction.setDate(internalItem.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
 		List<BackupTag_v4> convertedTags = new ArrayList<>();
 		TagConverter tagConverter = new TagConverter();

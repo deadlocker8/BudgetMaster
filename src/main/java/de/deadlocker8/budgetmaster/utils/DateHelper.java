@@ -1,9 +1,7 @@
 package de.deadlocker8.budgetmaster.utils;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-
-import java.util.TimeZone;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class DateHelper
 {
@@ -11,13 +9,13 @@ public class DateHelper
 	{
 	}
 
-	public static DateTime getCurrentDate()
+	public static LocalDate getCurrentDate()
 	{
-		return DateTime.now(DateTimeZone.forTimeZone(TimeZone.getDefault()));
+		return LocalDate.now();
 	}
 
-	public static DateTime getCurrentDateWithUTC()
+	public static LocalDateTime getCurrentDateTime()
 	{
-		return getCurrentDate().toDateTime(DateTimeZone.forTimeZone(TimeZone.getTimeZone("UTC")));
+		return LocalDateTime.now();
 	}
 }

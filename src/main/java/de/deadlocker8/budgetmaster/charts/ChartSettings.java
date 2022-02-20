@@ -1,9 +1,12 @@
 package de.deadlocker8.budgetmaster.charts;
 
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
-import de.deadlocker8.budgetmaster.utils.DateHelper;
-import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
+
+import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 
 
 public class ChartSettings
@@ -13,21 +16,21 @@ public class ChartSettings
 
 	private Integer chartID;
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
-	private DateTime startDate;
+	private LocalDate startDate;
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
-	private DateTime endDate;
+	private LocalDate endDate;
 	private FilterConfiguration filterConfiguration;
 
 	public static ChartSettings getDefault(FilterConfiguration filterConfiguration)
 	{
-		return new ChartSettings(ChartDisplayType.BAR, ChartGroupType.MONTH, null, DateHelper.getCurrentDateWithUTC().withDayOfMonth(1), DateHelper.getCurrentDateWithUTC().dayOfMonth().withMaximumValue(), filterConfiguration);
+		return new ChartSettings(ChartDisplayType.BAR, ChartGroupType.MONTH, null, LocalDate.now().with(firstDayOfMonth()), LocalDate.now().with(lastDayOfMonth()), filterConfiguration);
 	}
 
 	public ChartSettings()
 	{
 	}
 
-	public ChartSettings(ChartDisplayType displayType, ChartGroupType groupType, Integer chartID, DateTime startDate, DateTime endDate, FilterConfiguration filterConfiguration)
+	public ChartSettings(ChartDisplayType displayType, ChartGroupType groupType, Integer chartID, LocalDate startDate, LocalDate endDate, FilterConfiguration filterConfiguration)
 	{
 		this.displayType = displayType;
 		this.groupType = groupType;
@@ -67,22 +70,22 @@ public class ChartSettings
 		this.chartID = chartID;
 	}
 
-	public DateTime getStartDate()
+	public LocalDate getStartDate()
 	{
 		return startDate;
 	}
 
-	public void setStartDate(DateTime startDate)
+	public void setStartDate(LocalDate startDate)
 	{
 		this.startDate = startDate;
 	}
 
-	public DateTime getEndDate()
+	public LocalDate getEndDate()
 	{
 		return endDate;
 	}
 
-	public void setEndDate(DateTime endDate)
+	public void setEndDate(LocalDate endDate)
 	{
 		this.endDate = endDate;
 	}

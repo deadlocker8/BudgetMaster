@@ -35,7 +35,6 @@ import de.deadlocker8.budgetmaster.templates.TemplateRepository;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionBase;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
-import org.joda.time.DateTime;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -43,6 +42,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -98,14 +98,14 @@ class ImportServiceTest
 		Transaction transaction1 = new Transaction();
 		transaction1.setName("Test");
 		transaction1.setAmount(200);
-		transaction1.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		transaction1.setDate(LocalDate.of(2018, 10, 3));
 		transaction1.setCategory(category1);
 		transactionList.add(transaction1);
 
 		Transaction transaction2 = new Transaction();
 		transaction2.setName("Test_2");
 		transaction2.setAmount(-525);
-		transaction2.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		transaction2.setDate(LocalDate.of(2018, 10, 3));
 		transaction2.setCategory(category2);
 		transactionList.add(transaction2);
 
@@ -159,7 +159,7 @@ class ImportServiceTest
 		Transaction transaction1 = new Transaction();
 		transaction1.setName("Test");
 		transaction1.setAmount(200);
-		transaction1.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		transaction1.setDate(LocalDate.of(2018, 10, 3));
 		transaction1.setCategory(category1);
 		transaction1.setAccount(new Account("Account", AccountType.CUSTOM));
 		transactionList.add(transaction1);
@@ -167,7 +167,7 @@ class ImportServiceTest
 		Transaction transaction2 = new Transaction();
 		transaction2.setName("Test_2");
 		transaction2.setAmount(-525);
-		transaction2.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		transaction2.setDate(LocalDate.of(2018, 10, 3));
 		transaction2.setCategory(category2);
 		transaction2.setAccount(new Account("Account", AccountType.CUSTOM));
 		transactionList.add(transaction2);
@@ -198,14 +198,14 @@ class ImportServiceTest
 		transaction1.setAccount(account1);
 		transaction1.setName("ShouldGoInAccount_1");
 		transaction1.setAmount(200);
-		transaction1.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		transaction1.setDate(LocalDate.of(2018, 10, 3));
 		transactionList.add(transaction1);
 
 		Transaction transaction2 = new Transaction();
 		transaction2.setAccount(account2);
 		transaction2.setName("ImPartOfAccount_2");
 		transaction2.setAmount(-525);
-		transaction2.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		transaction2.setDate(LocalDate.of(2018, 10, 3));
 		transactionList.add(transaction2);
 
 		List<TransactionBase> updatedTransactions = importService.updateAccountsForItems(transactionList, account1.getID(), destinationAccount);
@@ -230,7 +230,7 @@ class ImportServiceTest
 		transaction.setTransferAccount(transferAccount);
 		transaction.setName("Whatever");
 		transaction.setAmount(-525);
-		transaction.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		transaction.setDate(LocalDate.of(2018, 10, 3));
 		transactionList.add(transaction);
 
 		// expected
@@ -239,7 +239,7 @@ class ImportServiceTest
 		expectedTransaction.setTransferAccount(destinationAccount);
 		expectedTransaction.setName("Whatever");
 		expectedTransaction.setAmount(-525);
-		expectedTransaction.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		expectedTransaction.setDate(LocalDate.of(2018, 10, 3));
 
 		assertThat(importService.updateTransferAccountsForItems(transactionList, transferAccount.getID(), destinationAccount))
 				.hasSize(1)
@@ -328,7 +328,7 @@ class ImportServiceTest
 		transaction1.setAccount(account1);
 		transaction1.setName("ShouldGoInAccount_1");
 		transaction1.setAmount(200);
-		transaction1.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		transaction1.setDate(LocalDate.of(2018, 10, 3));
 		List<Tag> tags = new ArrayList<>();
 		tags.add(existingTag);
 		transaction1.setTags(tags);
@@ -355,7 +355,7 @@ class ImportServiceTest
 		transaction1.setAccount(account1);
 		transaction1.setName("ShouldGoInAccount_1");
 		transaction1.setAmount(200);
-		transaction1.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		transaction1.setDate(LocalDate.of(2018, 10, 3));
 		List<Tag> tags = new ArrayList<>();
 		tags.add(newTag);
 		transaction1.setTags(tags);
@@ -402,7 +402,7 @@ class ImportServiceTest
 		transaction1.setAccount(sourceAccount1);
 		transaction1.setName("ShouldGoInAccount_1");
 		transaction1.setAmount(200);
-		transaction1.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		transaction1.setDate(LocalDate.of(2018, 10, 3));
 		transaction1.setTags(tags);
 		transactions.add(transaction1);
 
@@ -410,7 +410,7 @@ class ImportServiceTest
 		transaction2.setAccount(sourceAccount2);
 		transaction2.setName("ImPartOfAccount_2");
 		transaction2.setAmount(-525);
-		transaction2.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		transaction2.setDate(LocalDate.of(2018, 10, 3));
 		transaction2.setTags(new ArrayList<>());
 		transactions.add(transaction2);
 
@@ -469,14 +469,14 @@ class ImportServiceTest
 		expectedTransaction1.setAccount(destAccount1);
 		expectedTransaction1.setName("ShouldGoInAccount_1");
 		expectedTransaction1.setAmount(200);
-		expectedTransaction1.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		expectedTransaction1.setDate(LocalDate.of(2018, 10, 3));
 		expectedTransaction1.setTags(tags);
 
 		Transaction expectedTransaction2 = new Transaction();
 		expectedTransaction2.setAccount(destAccount2);
 		expectedTransaction2.setName("ImPartOfAccount_2");
 		expectedTransaction2.setAmount(-525);
-		expectedTransaction2.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		expectedTransaction2.setDate(LocalDate.of(2018, 10, 3));
 		expectedTransaction2.setTags(new ArrayList<>());
 
 		Template expectedTemplate1 = new Template();
@@ -655,7 +655,7 @@ class ImportServiceTest
 		Mockito.when(iconService.getRepository()).thenReturn(iconRepositoryMock);
 		Mockito.when(iconRepositoryMock.save(Mockito.any())).thenReturn(expectedIcon);
 
-		importService.importDatabase(database, new AccountMatchList(List.of(accountMatch)), true,true, true);
+		importService.importDatabase(database, new AccountMatchList(List.of(accountMatch)), true, true, true);
 
 		Mockito.verify(accountRepository, Mockito.atLeast(1)).save(expectedAccount);
 	}

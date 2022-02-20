@@ -39,6 +39,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -252,7 +253,7 @@ public class DatabaseService
 
 	public static String getExportFileName()
 	{
-		return "BudgetMasterDatabase_" + DateHelper.getCurrentDate().toString(BACKUP_DATE_FORMAT) + ".json";
+		return "BudgetMasterDatabase_" + DateHelper.getCurrentDateTime().format(DateTimeFormatter.ofPattern(BACKUP_DATE_FORMAT)) + ".json";
 	}
 
 	public BackupDatabase getDatabaseForJsonSerialization()

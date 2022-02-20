@@ -20,7 +20,7 @@
             <div id="global-datepicker-select-month">
                 <h4>${locale.getString("title.datepicker.month")}</h4>
                 <#assign montList = localizedMonthNames/>
-                <#assign currentMonth = montList[currentDate.getMonthOfYear() - 1]/>
+                <#assign currentMonth = montList[currentDate.getMonthValue() - 1]/>
                 <@datepickerGrid montList currentMonth/>
             </div>
         </div>

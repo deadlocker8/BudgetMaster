@@ -4,8 +4,9 @@ import de.deadlocker8.budgetmaster.database.model.Converter;
 import de.deadlocker8.budgetmaster.database.model.v4.BackupRepeatingEndOption_v4;
 import de.deadlocker8.budgetmaster.repeating.endoption.*;
 import de.thecodelabs.utils.util.Localization;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class RepeatingEndOptionConverter implements Converter<RepeatingEnd, BackupRepeatingEndOption_v4>
 {
@@ -28,8 +29,7 @@ public class RepeatingEndOptionConverter implements Converter<RepeatingEnd, Back
 				endOption = new RepeatingEndAfterXTimes(backupItem.getTimes());
 				break;
 			case DATE:
-				DateTime endDate = DateTime.parse(backupItem.getEndDate(), DateTimeFormat.forPattern("yyyy-MM-dd"));
-				endDate = endDate.withHourOfDay(12).withMinuteOfHour(0).withSecondOfMinute(0);
+				LocalDate endDate = LocalDate.parse(backupItem.getEndDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 				endOption = new RepeatingEndDate(endDate);
 				break;
 		}
@@ -50,8 +50,8 @@ public class RepeatingEndOptionConverter implements Converter<RepeatingEnd, Back
 
 		if(internalItem instanceof RepeatingEndDate repeatingEndDate)
 		{
-			final DateTime endDate = (DateTime) repeatingEndDate.getValue();
-			repeatingEndOption.setEndDate(endDate.toString(DateTimeFormat.forPattern("yyyy-MM-dd")));
+			final LocalDate endDate = (LocalDate) repeatingEndDate.getValue();
+			repeatingEndOption.setEndDate(endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 		}
 
 		if(internalItem instanceof RepeatingEndAfterXTimes repeatingEndAfterXTimes)

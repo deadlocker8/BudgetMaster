@@ -15,10 +15,8 @@ import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.TagRepository;
 import de.deadlocker8.budgetmaster.tags.TagService;
 import de.deadlocker8.budgetmaster.templates.Template;
-import de.deadlocker8.budgetmaster.utils.DateHelper;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +25,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.text.MessageFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 
 @Service
 public class TransactionService implements Resettable
@@ -77,14 +78,15 @@ public class TransactionService implements Resettable
 
 	private List<Transaction> getTransactionsForMonthAndYearWithRest(Account account, int month, int year, FilterConfiguration filterConfiguration)
 	{
-		DateTime startDate = DateHelper.getCurrentDateWithUTC().withYear(year).withMonthOfYear(month).minusMonths(1).dayOfMonth().withMaximumValue();
 		List<Transaction> transactions = getTransactionsForMonthAndYearWithoutRest(account, month, year, filterConfiguration);
+
+		LocalDate endDate = LocalDate.of(year, month, 1).minusMonths(1).with(lastDayOfMonth());
 
 		Transaction transactionRest = new Transaction();
 		transactionRest.setCategory(categoryService.findByType(CategoryType.REST));
 		transactionRest.setName(Localization.getString(Strings.CATEGORY_REST));
-		transactionRest.setDate(DateHelper.getCurrentDateWithUTC().withYear(year).withMonthOfYear(month).withDayOfMonth(1));
-		transactionRest.setAmount(getRest(account, startDate));
+		transactionRest.setDate(LocalDate.of(year, month, 1));
+		transactionRest.setAmount(getRest(account, endDate));
 		transactionRest.setTags(new ArrayList<>());
 		transactions.add(transactionRest);
 
@@ -93,27 +95,19 @@ public class TransactionService implements Resettable
 
 	private List<Transaction> getTransactionsForMonthAndYearWithoutRest(Account account, int month, int year, FilterConfiguration filterConfiguration)
 	{
-		// dayOfMonth = 10 --> arbitrary day not too close to the edges (0 or max day of month)
-		final DateTime referenceTime = new DateTime(year, month, 10, 0, 0, 0, 0);
-
-		final DateTime startDate = referenceTime
-				.dayOfMonth()
-				.withMinimumValue();
-
-		final DateTime endDate = referenceTime
-				.dayOfMonth()
-				.withMaximumValue();
+		final LocalDate startDate = LocalDate.of(year, month, 1);
+		final LocalDate endDate = LocalDate.of(year, month, 1).with(lastDayOfMonth());
 
 		return getTransactionsForAccount(account, startDate, endDate, filterConfiguration);
 	}
 
-	public List<Transaction> getTransactionsForAccountUntilDate(Account account, DateTime date, FilterConfiguration filterConfiguration)
+	public List<Transaction> getTransactionsForAccountUntilDate(Account account, LocalDate date, FilterConfiguration filterConfiguration)
 	{
-		DateTime startDate = DateHelper.getCurrentDateWithUTC().withYear(1900).withMonthOfYear(1).withDayOfMonth(1);
+		LocalDate startDate = LocalDate.of(1900, 1, 1);
 		return getTransactionsForAccount(account, startDate, date, filterConfiguration);
 	}
 
-	public List<Transaction> getTransactionsForAccount(Account account, DateTime startDate, DateTime endDate, FilterConfiguration filterConfiguration)
+	public List<Transaction> getTransactionsForAccount(Account account, LocalDate startDate, LocalDate endDate, FilterConfiguration filterConfiguration)
 	{
 		if(filterConfiguration == null)
 		{
@@ -130,9 +124,9 @@ public class TransactionService implements Resettable
 		return transactionRepository.findAll(spec);
 	}
 
-	private int getRest(Account account, DateTime endDate)
+	private int getRest(Account account, LocalDate endDate)
 	{
-		DateTime startDate = DateHelper.getCurrentDateWithUTC().withYear(2000).withMonthOfYear(1).withDayOfMonth(1);
+		LocalDate startDate = LocalDate.of(2000, 1, 1);
 		Integer restForNormalAndRepeating = transactionRepository.getRestForNormalAndRepeating(account.getID(), startDate, endDate);
 		Integer restForTransferSource = transactionRepository.getRestForTransferSource(account.getID(), startDate, endDate);
 		Integer restForTransferDestination = transactionRepository.getRestForTransferDestination(account.getID(), startDate, endDate);
@@ -297,7 +291,7 @@ public class TransactionService implements Resettable
 		return item;
 	}
 
-	public void prepareModelNewOrEdit(Model model, boolean isEdit, DateTime date, boolean changeTypeInProgress, TransactionBase item, List<Account> accounts)
+	public void prepareModelNewOrEdit(Model model, boolean isEdit, LocalDate date, boolean changeTypeInProgress, TransactionBase item, List<Account> accounts)
 	{
 		model.addAttribute(TransactionModelAttributes.IS_EDIT, isEdit);
 		model.addAttribute(TransactionModelAttributes.CURRENT_DATE, date);

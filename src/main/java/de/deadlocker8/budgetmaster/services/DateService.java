@@ -1,12 +1,10 @@
 package de.deadlocker8.budgetmaster.services;
 
 import de.deadlocker8.budgetmaster.settings.SettingsService;
-import de.deadlocker8.budgetmaster.utils.DateHelper;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -21,51 +19,51 @@ public class DateService
 		this.settingsService = settingsService;
 	}
 
-	public String getDateStringNormal(DateTime date)
+	public String getDateStringNormal(LocalDate date)
 	{
 		return getDateString(date, DateFormatStyle.NORMAL);
 	}
 
-	public String getDateStringWithoutYear(DateTime date)
+	public String getDateStringWithoutYear(LocalDate date)
 	{
 		return getDateString(date, DateFormatStyle.NO_YEAR);
 	}
 
-	public String getLongDateString(DateTime date)
+	public String getLongDateString(LocalDate date)
 	{
 		return getDateString(date, DateFormatStyle.LONG);
 	}
 
-	public String getDateStringWithMonthAndYear(DateTime date)
+	public String getDateStringWithMonthAndYear(LocalDate date)
 	{
 		return getDateString(date, DateFormatStyle.LONG_MONTH_AND_YEAR);
 	}
 
-	public String getDateTimeString(DateTime date)
+	public String getDateTimeString(LocalDate date)
 	{
 		return getDateString(date, DateFormatStyle.DATE_TIME);
 	}
 
-	private String getDateString(DateTime date, DateFormatStyle formatStyle)
+	private String getDateString(LocalDate date, DateFormatStyle formatStyle)
 	{
-		return date.toString(DateTimeFormat.forPattern(formatStyle.getKey()).withLocale(settingsService.getSettings().getLanguage().getLocale()));
+		return date.format(DateTimeFormatter.ofPattern(formatStyle.getKey()).withLocale(settingsService.getSettings().getLanguage().getLocale()));
 	}
 
-	public DateTime getDateTimeFromCookie(String cookieDate)
+	public LocalDate getDateTimeFromCookie(String cookieDate)
 	{
 		if(cookieDate == null)
 		{
-			return DateHelper.getCurrentDate();
+			return LocalDate.now();
 		}
 		else
 		{
-			return DateTime.parse(cookieDate, DateTimeFormat.forPattern(DateFormatStyle.NORMAL.getKey()).withLocale(settingsService.getSettings().getLanguage().getLocale()));
+			return LocalDate.parse(cookieDate, DateTimeFormatter.ofPattern(DateFormatStyle.NORMAL.getKey()).withLocale(settingsService.getSettings().getLanguage().getLocale()));
 		}
 	}
 
-	public DateTime getCurrentDate()
+	public LocalDate getCurrentDate()
 	{
-		return DateHelper.getCurrentDate();
+		return LocalDate.now();
 	}
 
 	public String getDateTimeString(LocalDateTime localDateTime)

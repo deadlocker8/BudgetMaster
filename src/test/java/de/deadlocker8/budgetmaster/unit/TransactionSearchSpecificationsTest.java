@@ -17,8 +17,6 @@ import de.deadlocker8.budgetmaster.tags.TagRepository;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import de.deadlocker8.budgetmaster.transactions.TransactionSearchSpecifications;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,6 +25,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,7 +82,7 @@ class TransactionSearchSpecificationsTest
 		transaction1.setName("Test");
 		transaction1.setAmount(200);
 		transaction1.setDescription("Random Whatever");
-		transaction1.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		transaction1.setDate(LocalDate.of(2018, 10, 3));
 		transaction1.setCategory(category1);
 		transaction1.setAccount(account);
 		ArrayList<Tag> tags = new ArrayList<>();
@@ -94,12 +93,12 @@ class TransactionSearchSpecificationsTest
 		transaction2 = new Transaction();
 		transaction2.setName("lalala");
 		transaction2.setAmount(-525);
-		transaction2.setDate(new DateTime(2018, 11, 3, 12, 0, 0, 0));
+		transaction2.setDate(LocalDate.of(2018, 11, 3));
 		transaction2.setCategory(category2);
 		transaction2.setAccount(account);
 		transaction2 = transactionRepository.save(transaction2);
 
-		DateTime repeatingTransactionDate = DateTime.parse("2018-03-13", DateTimeFormat.forPattern("yyyy-MM-dd"));
+		LocalDate repeatingTransactionDate = LocalDate.of(2018, 3, 13);
 		repeatingOption = new RepeatingOption();
 		repeatingOption.setModifier(new RepeatingModifierDays(10));
 		repeatingOption.setStartDate(repeatingTransactionDate);
@@ -122,7 +121,7 @@ class TransactionSearchSpecificationsTest
 		transferTransaction = new Transaction();
 		transferTransaction.setName("TransferTransaction");
 		transferTransaction.setAmount(-500);
-		transferTransaction.setDate(new DateTime(2018, 8, 3, 12, 0, 0, 0));
+		transferTransaction.setDate(LocalDate.of(2018, 8, 3));
 		transferTransaction.setCategory(category2);
 		transferTransaction.setAccount(account);
 		transferTransaction.setTransferAccount(account2);
@@ -131,7 +130,7 @@ class TransactionSearchSpecificationsTest
 		transactionFromHiddenAccount = new Transaction();
 		transactionFromHiddenAccount.setName("inside hidden account");
 		transactionFromHiddenAccount.setAmount(-525);
-		transactionFromHiddenAccount.setDate(new DateTime(2018, 11, 3, 12, 0, 0, 0));
+		transactionFromHiddenAccount.setDate(LocalDate.of(2018, 11, 3));
 		transactionFromHiddenAccount.setCategory(category2);
 		transactionFromHiddenAccount.setAccount(accountHidden);
 		transactionFromHiddenAccount = transactionRepository.save(transactionFromHiddenAccount);
@@ -139,7 +138,7 @@ class TransactionSearchSpecificationsTest
 		transactionWithMultipleTags = new Transaction();
 		transactionWithMultipleTags.setName("I am the TagMaster");
 		transactionWithMultipleTags.setAmount(-525);
-		transactionWithMultipleTags.setDate(new DateTime(2018, 11, 3, 12, 0, 0, 0));
+		transactionWithMultipleTags.setDate(LocalDate.of(2018, 11, 3));
 		transactionWithMultipleTags.setCategory(category1);
 		transactionWithMultipleTags.setAccount(account);
 		transactionWithMultipleTags.setTags(List.of(tag1, tag2));

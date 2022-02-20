@@ -1,7 +1,10 @@
 package de.deadlocker8.budgetmaster.reports;
 
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.*;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.reports.categoryBudget.CategoryBudget;
 import de.deadlocker8.budgetmaster.reports.columns.ReportColumn;
@@ -17,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -44,7 +48,7 @@ public class ReportGeneratorService
 	{
 		Font font = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 16, Font.BOLDITALIC, BLACK);
 		Locale locale = settingsService.getSettings().getLanguage().getLocale();
-		Chunk chunk = new Chunk(Localization.getString(Strings.REPORT_HEADLINE, reportConfiguration.getReportSettings().getDate().toString("MMMM yyyy", locale)), font);
+		Chunk chunk = new Chunk(Localization.getString(Strings.REPORT_HEADLINE, reportConfiguration.getReportSettings().getDate().format(DateTimeFormatter.ofPattern("MMMM yyyy", locale))), font);
 		Chapter chapter = new Chapter(new Paragraph(chunk), 1);
 		chapter.setNumberDepth(0);
 
@@ -299,7 +303,7 @@ public class ReportGeneratorService
 			case CATEGORY:
 				return transaction.getCategory().getName();
 			case DATE:
-				return transaction.getDate().toString(DateFormatStyle.NO_YEAR.getKey());
+				return transaction.getDate().format(DateTimeFormatter.ofPattern(DateFormatStyle.NO_YEAR.getKey()));
 			case DESCRIPTION:
 				return transaction.getDescription();
 			case TAGS:

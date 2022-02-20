@@ -24,8 +24,6 @@ import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
 import de.deadlocker8.budgetmaster.utils.notification.Notification;
 import de.deadlocker8.budgetmaster.utils.notification.NotificationType;
 import de.thecodelabs.utils.util.Localization;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,8 +34,12 @@ import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 
 @Controller
 @RequestMapping(Mappings.TRANSACTIONS)
@@ -82,8 +84,8 @@ public class TransactionController extends BaseController
 	@GetMapping
 	public String transactions(HttpServletRequest request, Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
 	{
-		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
-		repeatingTransactionUpdater.updateRepeatingTransactions(date.dayOfMonth().withMaximumValue());
+		LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
+		repeatingTransactionUpdater.updateRepeatingTransactions(date.with(lastDayOfMonth()));
 
 		prepareModelTransactions(filterHelpers.getFilterConfiguration(request), model, date);
 
@@ -98,17 +100,17 @@ public class TransactionController extends BaseController
 			return ReturnValues.REDIRECT_ALL_ENTITIES;
 		}
 
-		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
+		LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
 		prepareModelTransactions(filterHelpers.getFilterConfiguration(request), model, date);
 		model.addAttribute(TransactionModelAttributes.ENTITY_TO_DELETE, transactionService.getRepository().getById(ID));
 
 		return ReturnValues.DELETE_ENTITY;
 	}
 
-	private void prepareModelTransactions(FilterConfiguration filterConfiguration, Model model, DateTime date)
+	private void prepareModelTransactions(FilterConfiguration filterConfiguration, Model model, LocalDate date)
 	{
 		Account currentAccount = helpers.getCurrentAccount();
-		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(currentAccount, date.getMonthOfYear(), date.getYear(), settingsService.getSettings().isRestActivated(), filterConfiguration);
+		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(currentAccount, date.getMonthValue(), date.getYear(), settingsService.getSettings().isRestActivated(), filterConfiguration);
 
 		model.addAttribute(TransactionModelAttributes.ALL_ENTITIES, transactions);
 		model.addAttribute(TransactionModelAttributes.ACCOUNT, currentAccount);
@@ -138,7 +140,7 @@ public class TransactionController extends BaseController
 			return ReturnValues.REDIRECT_ALL_ENTITIES;
 		}
 
-		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
+		LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
 		Transaction emptyTransaction = new Transaction();
 		emptyTransaction.setCategory(categoryService.findByType(CategoryType.NONE));
 		transactionService.prepareModelNewOrEdit(model, false, date, false, emptyTransaction, accountService.getAllActivatedAccountsAsc());
@@ -156,7 +158,7 @@ public class TransactionController extends BaseController
 					   @RequestParam(value = "repeatingEndValue", required = false) String repeatingEndValue,
 					   @RequestParam(value = "action", required = false) String action)
 	{
-		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
+		LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
 
 		handlePreviousType(transaction, isRepeating);
 
@@ -200,7 +202,7 @@ public class TransactionController extends BaseController
 	}
 
 	@SuppressWarnings("ConstantConditions")
-	private RepeatingOption createRepeatingOption(DateTime startDate, int repeatingModifierNumber, String repeatingModifierType, String repeatingEndType, String repeatingEndValue)
+	private RepeatingOption createRepeatingOption(LocalDate startDate, int repeatingModifierNumber, String repeatingModifierType, String repeatingEndType, String repeatingEndValue)
 	{
 		RepeatingModifierType type = RepeatingModifierType.getByLocalization(repeatingModifierType);
 		RepeatingModifier repeatingModifier = RepeatingModifier.fromModifierType(type, repeatingModifierNumber);
@@ -216,7 +218,7 @@ public class TransactionController extends BaseController
 				repeatingEnd = new RepeatingEndAfterXTimes(Integer.parseInt(repeatingEndValue));
 				break;
 			case DATE:
-				DateTime endDate = DateTime.parse(repeatingEndValue, DateTimeFormat.forPattern(DateFormatStyle.NORMAL.getKey()).withLocale(settingsService.getSettings().getLanguage().getLocale()));
+				LocalDate endDate = LocalDate.parse(repeatingEndValue, DateTimeFormatter.ofPattern(DateFormatStyle.NORMAL.getKey()).withLocale(settingsService.getSettings().getLanguage().getLocale()));
 				repeatingEnd = new RepeatingEndDate(endDate);
 				break;
 		}
@@ -224,7 +226,7 @@ public class TransactionController extends BaseController
 		return new RepeatingOption(startDate, repeatingModifier, repeatingEnd);
 	}
 
-	private String handleRedirect(WebRequest request, Model model, boolean isEdit, @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult, DateTime date, String url, boolean isContinueActivated)
+	private String handleRedirect(WebRequest request, Model model, boolean isEdit, @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult, LocalDate date, String url, boolean isContinueActivated)
 	{
 		if(bindingResult.hasErrors())
 		{
@@ -270,7 +272,7 @@ public class TransactionController extends BaseController
 			transaction = transaction.getRepeatingOption().getReferringTransactions().get(0);
 		}
 
-		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
+		LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
 		transactionService.prepareModelNewOrEdit(model, true, date, false, transaction, accountService.getAllActivatedAccountsAsc());
 
 		if(transaction.isTransfer())
@@ -291,7 +293,7 @@ public class TransactionController extends BaseController
 			accountService.selectAccount(transaction.getAccount().getID());
 		}
 
-		repeatingTransactionUpdater.updateRepeatingTransactions(transaction.getDate().dayOfMonth().withMaximumValue());
+		repeatingTransactionUpdater.updateRepeatingTransactions(transaction.getDate().with(lastDayOfMonth()));
 
 		FilterConfiguration filterConfiguration = FilterConfiguration.DEFAULT;
 		filterConfiguration.setFilterCategories(filterHelpers.getFilterCategories());
@@ -357,7 +359,7 @@ public class TransactionController extends BaseController
 				throw new IllegalStateException("Unexpected value: " + newTransactionType);
 		}
 
-		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
+		LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
 		transactionService.prepareModelNewOrEdit(model, true, date, true, transactionCopy, accountService.getAllActivatedAccountsAsc());
 
 		return redirectUrl;
@@ -380,7 +382,7 @@ public class TransactionController extends BaseController
 			existingTransaction = existingTransaction.getRepeatingOption().getReferringTransactions().get(0);
 		}
 
-		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
+		LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
 
 		Transaction newTransaction = new Transaction(existingTransaction);
 		newTransaction.setID(null);

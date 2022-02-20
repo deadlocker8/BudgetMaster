@@ -38,7 +38,6 @@ import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.thecodelabs.utils.util.Localization;
-import org.joda.time.DateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -52,6 +51,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -204,7 +204,7 @@ class DatabaseExportTest
 		transaction1.setName("ShouldGoInAccount_1");
 		transaction1.setAmount(200);
 		transaction1.setIsExpenditure(false);
-		transaction1.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		transaction1.setDate(LocalDate.of(2018, 10, 3));
 		transaction1.setTags(tags);
 
 		Transaction transaction2 = new Transaction();
@@ -213,7 +213,7 @@ class DatabaseExportTest
 		transaction2.setName("ImPartOfAccount_2");
 		transaction2.setAmount(-525);
 		transaction2.setIsExpenditure(true);
-		DateTime transaction2Date = new DateTime(2018, 10, 3, 12, 0, 0, 0);
+		LocalDate transaction2Date = LocalDate.of(2018, 10, 3);
 		transaction2.setDate(transaction2Date);
 		transaction2.setTags(new ArrayList<>());
 		RepeatingOption repeatingOption = new RepeatingOption(transaction2Date,

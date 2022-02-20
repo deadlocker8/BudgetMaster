@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
 import java.text.MessageFormat;
+import java.time.format.DateTimeFormatter;
 
 public abstract class GitBackupTask extends BackupTask
 {
@@ -54,7 +55,7 @@ public abstract class GitBackupTask extends BackupTask
 		}
 
 		LOGGER.debug("Committing changes...");
-		GitHelper.commitChanges(git, DateHelper.getCurrentDate().toString(DATE_PATTERN));
+		GitHelper.commitChanges(git, DateHelper.getCurrentDateTime().format(DateTimeFormatter.ofPattern(DATE_PATTERN)));
 		return true;
 	}
 

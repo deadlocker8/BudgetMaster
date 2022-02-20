@@ -17,7 +17,6 @@ import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.thecodelabs.utils.util.Localization;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +27,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
@@ -72,7 +73,7 @@ public class ReportController extends BaseController
 	@GetMapping
 	public String reports(HttpServletRequest request, Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
 	{
-		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
+		LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
 
 		model.addAttribute(ModelAttributes.REPORT_SETTINGS, reportSettingsService.getReportSettings());
 		model.addAttribute(ModelAttributes.CURRENT_DATE, date);
@@ -97,7 +98,7 @@ public class ReportController extends BaseController
 		}
 
 		FilterConfiguration filterConfiguration = filterHelpers.getFilterConfiguration(request);
-		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(account, reportSettings.getDate().getMonthOfYear(), reportSettings.getDate().getYear(), settingsService.getSettings().isRestActivated(), filterConfiguration);
+		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(account, reportSettings.getDate().getMonthValue(), reportSettings.getDate().getYear(), settingsService.getSettings().isRestActivated(), filterConfiguration);
 		Budget budget = helpers.getBudget(transactions, account);
 
 		ReportConfiguration reportConfiguration = new ReportConfigurationBuilder()
@@ -108,8 +109,8 @@ public class ReportController extends BaseController
 				.setCategoryBudgets(CategoryBudgetHandler.getCategoryBudgets(transactions, categoryService.getAllEntitiesAsc()))
 				.createReportConfiguration();
 
-		String month = reportSettings.getDate().toString("MM");
-		String year = reportSettings.getDate().toString("YYYY");
+		String month = reportSettings.getDate().format(DateTimeFormatter.ofPattern("MM"));
+		String year = reportSettings.getDate().format(DateTimeFormatter.ofPattern("yyyy"));
 
 		LOGGER.debug(MessageFormat.format("Exporting month report (month: {0}_{1}, account: {2})...", year, month, accountName));
 

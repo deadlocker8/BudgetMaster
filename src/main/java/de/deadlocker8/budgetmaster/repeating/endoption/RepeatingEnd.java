@@ -1,9 +1,9 @@
 package de.deadlocker8.budgetmaster.repeating.endoption;
 
 import com.google.gson.annotations.Expose;
-import org.joda.time.DateTime;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,7 +25,9 @@ public abstract class RepeatingEnd
 		this.localizationKey = localizationKey;
 	}
 
-	protected RepeatingEnd() {}
+	protected RepeatingEnd()
+	{
+	}
 
 	public Integer getID()
 	{
@@ -47,9 +49,9 @@ public abstract class RepeatingEnd
 		this.localizationKey = localizationKey;
 	}
 
-	public abstract boolean isEndReached(List<DateTime> dates);
+	public abstract boolean isEndReached(List<LocalDate> dates);
 
-	public abstract  Object getValue();
+	public abstract Object getValue();
 
 	@Override
 	public String toString()

@@ -21,8 +21,6 @@ import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.Localization.LocalizationDelegate;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,6 +28,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -231,8 +230,7 @@ class DatabaseParser_v8_convertToInternalTest
 
 			Transaction normalTransaction_1 = new Transaction();
 			normalTransaction_1.setAmount(35000);
-			DateTime normalTransactionDate = DateTime.parse("2018-03-13", DateTimeFormat.forPattern("yyyy-MM-dd"));
-			normalTransactionDate = normalTransactionDate.withHourOfDay(12).withMinuteOfHour(0).withSecondOfMinute(0);
+			LocalDate normalTransactionDate = LocalDate.of(2018, 3, 13);
 			normalTransaction_1.setDate(normalTransactionDate);
 			normalTransaction_1.setCategory(categoryNone);
 			normalTransaction_1.setName("Income");
@@ -243,8 +241,7 @@ class DatabaseParser_v8_convertToInternalTest
 
 			Transaction normalTransaction_2 = new Transaction();
 			normalTransaction_2.setAmount(-2000);
-			DateTime normalTransaction_2Date = DateTime.parse("2018-06-15", DateTimeFormat.forPattern("yyyy-MM-dd"));
-			normalTransaction_2Date = normalTransaction_2Date.withHourOfDay(12).withMinuteOfHour(0).withSecondOfMinute(0);
+			LocalDate normalTransaction_2Date = LocalDate.of(2018, 6, 15);
 			normalTransaction_2.setDate(normalTransaction_2Date);
 			normalTransaction_2.setName("Simple");
 			normalTransaction_2.setDescription("");
@@ -259,8 +256,7 @@ class DatabaseParser_v8_convertToInternalTest
 
 			Transaction repeatingTransaction_1 = new Transaction();
 			repeatingTransaction_1.setAmount(-12300);
-			DateTime repeatingTransaction_1Date = DateTime.parse("2018-03-13", DateTimeFormat.forPattern("yyyy-MM-dd"));
-			repeatingTransaction_1Date = repeatingTransaction_1Date.withHourOfDay(12).withMinuteOfHour(0).withSecondOfMinute(0);
+			LocalDate repeatingTransaction_1Date = LocalDate.of(2018, 3, 13);
 			repeatingTransaction_1.setDate(repeatingTransaction_1Date);
 			repeatingTransaction_1.setCategory(categoryNone);
 			repeatingTransaction_1.setName("Test");
@@ -276,8 +272,7 @@ class DatabaseParser_v8_convertToInternalTest
 
 			Transaction transferTransaction = new Transaction();
 			transferTransaction.setAmount(-250);
-			DateTime transferTransactionDate = DateTime.parse("2018-06-15", DateTimeFormat.forPattern("yyyy-MM-dd"));
-			transferTransactionDate = transferTransactionDate.withHourOfDay(12).withMinuteOfHour(0).withSecondOfMinute(0);
+			LocalDate transferTransactionDate = LocalDate.of(2018, 6, 15);
 			transferTransaction.setDate(transferTransactionDate);
 			transferTransaction.setName("Transfer");
 			transferTransaction.setDescription("");
@@ -289,8 +284,7 @@ class DatabaseParser_v8_convertToInternalTest
 
 			Transaction repeatingTransferTransaction = new Transaction();
 			repeatingTransferTransaction.setAmount(-6000);
-			DateTime transferTransactionDate_2 = DateTime.parse("2018-03-15", DateTimeFormat.forPattern("yyyy-MM-dd"));
-			transferTransactionDate_2 = transferTransactionDate_2.withHourOfDay(12).withMinuteOfHour(0).withSecondOfMinute(0);
+			LocalDate transferTransactionDate_2 = LocalDate.of(2018, 3, 15);
 			repeatingTransferTransaction.setDate(transferTransactionDate_2);
 			repeatingTransferTransaction.setCategory(categoryNone);
 			repeatingTransferTransaction.setName("repeat my transfer");
