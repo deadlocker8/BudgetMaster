@@ -74,7 +74,7 @@ class TemplateGroupServiceTest
 
 		final Map<TemplateGroup, List<Template>> templatesGrouped = templateGroupService.getTemplatesByGroupedByTemplateGroup();
 		assertThat(templatesGrouped).hasSize(3)
-				.containsExactly(entry(templateGroup1, List.of(template1, template4)),
+				.containsExactly(entry(templateGroup1, List.of(template4, template1)),
 						entry(templateGroup2, List.of(template3)),
 						entry(templateGroupDefault, List.of(template2)));
 	}

@@ -118,11 +118,18 @@ public class TemplateGroupService implements Resettable, AccessAllEntities<Templ
 
 		for(TemplateGroup templateGroup : templateGroups)
 		{
-			templatesGrouped.put(templateGroup, templateGroup.getReferringTemplates());
+			templatesGrouped.put(templateGroup, getReferringTemplatesSorted(templateGroup));
 		}
 
-		templatesGrouped.put(defaultGroup, defaultGroup.getReferringTemplates());
+		templatesGrouped.put(defaultGroup, getReferringTemplatesSorted(defaultGroup));
 
 		return templatesGrouped;
+	}
+
+	private List<Template> getReferringTemplatesSorted(TemplateGroup templateGroup)
+	{
+		final List<Template> referringTemplates = new ArrayList<>(templateGroup.getReferringTemplates());
+		referringTemplates.sort((t1, t2) -> new NaturalOrderComparator().compare(t1.getTemplateName(), t2.getTemplateName()));
+		return referringTemplates;
 	}
 }
