@@ -31,5 +31,5 @@ public interface Iconizable extends ProvidesID
 		this.setIconReference(icon);
 	}
 
-	String getFontColor();
+	String getFontColor(boolean isDarkTheme);
 }

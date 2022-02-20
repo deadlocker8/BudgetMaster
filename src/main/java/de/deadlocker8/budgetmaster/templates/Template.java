@@ -18,6 +18,9 @@ import java.util.Objects;
 @Entity
 public class Template implements TransactionBase, Iconizable
 {
+	private static final String FONT_COLOR_LIGHT_THEME = "#212121";
+	private static final String FONT_COLOR_DARK_THEME = "#FFFFFF";
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Expose
@@ -213,22 +216,33 @@ public class Template implements TransactionBase, Iconizable
 	}
 
 	@Override
-	public String getFontColor()
+	public String getFontColor(boolean isDarkTheme)
 	{
 		final Icon icon = getIconReference();
 		if(icon == null)
 		{
-			return "#FFFFFF";
+			return getAppropriateTextColor(isDarkTheme);
 		}
 
 		final String fontColor = icon.getFontColor();
 		if(fontColor == null)
 		{
-			return "#FFFFFF";
+			return getAppropriateTextColor(isDarkTheme);
 		}
 
 		return fontColor;
 	}
+
+	private String getAppropriateTextColor(boolean isDarkTheme)
+	{
+		if(isDarkTheme)
+		{
+			return FONT_COLOR_DARK_THEME;
+		}
+
+		return FONT_COLOR_LIGHT_THEME;
+	}
+
 
 	public List<Tag> getTags()
 	{

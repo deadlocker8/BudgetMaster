@@ -146,7 +146,7 @@ public class Account implements ProvidesID, Iconizable
 	}
 
 	@Override
-	public String getFontColor()
+	public String getFontColor(boolean isDarkTheme)
 	{
 		final Icon icon = getIconReference();
 		if(icon == null)

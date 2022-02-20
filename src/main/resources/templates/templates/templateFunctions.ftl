@@ -98,7 +98,7 @@
 
 
 <#macro templateHeader template>
-    <span style="color: ${template.getFontColor()}">
+    <span style="color: ${template.getFontColor(settings.isUseDarkTheme())}">
         <#if template.getIconReference()?? && (template.getIconReference().isImageIcon() || template.getIconReference().isBuiltinIcon())>
             <@header.entityIcon entity=template classes="template-icon"/>
         <#elseif template.getTransferAccount()??>

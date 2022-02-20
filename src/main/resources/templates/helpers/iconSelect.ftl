@@ -12,7 +12,7 @@
 
             <div id="${id}" class="valign-wrapper item-icon">
                 <div class="item-icon-preview-container">
-                    <a id="item-icon-preview" style="color: <#if item.getFontColor()??>${item.getFontColor()}</#if>">
+                    <a id="item-icon-preview" style="color: <#if item.getFontColor(settings.isUseDarkTheme())??>${item.getFontColor(settings.isUseDarkTheme())}</#if>">
                         <script>iconSelectAdditionalBackgroundClasses = "${backgroundClasses}";</script>
                         <div id="item-icon-preview-background" class="category-circle category-circle-preview <#if settings.getShowCategoriesAsCircles()?? && settings.getShowCategoriesAsCircles() == false>category-square</#if> ${initialBackgroundClasses}" style="background-color: <#if showBackground>${item.getColor()}</#if>">
                             <i id="builtin-icon-preview-icon" class="<#if hasBuiltinIcon>${item.getIconReference().getBuiltinIdentifier()}<#else>hidden</#if>"></i>
