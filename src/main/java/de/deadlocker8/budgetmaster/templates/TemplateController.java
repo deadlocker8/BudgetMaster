@@ -214,6 +214,11 @@ public class TemplateController extends BaseController
 		}
 		transactionService.handleTags(template);
 
+		if(template.getTemplateGroup() == null)
+		{
+			template.setTemplateGroup(templateGroupService.getDefaultGroup());
+		}
+
 		template.updateIcon(iconService, iconImageID, builtinIconIdentifier, fontColor, templateService);
 
 		if(bindingResult.hasErrors())

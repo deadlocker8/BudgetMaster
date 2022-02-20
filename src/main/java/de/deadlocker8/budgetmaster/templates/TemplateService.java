@@ -100,6 +100,8 @@ public class TemplateService implements Resettable, AccessAllEntities<Template>,
 			template.setAccount(null);
 		}
 
+		template.setTemplateGroup(templateGroupService.getDefaultGroup());
+
 		getRepository().save(template);
 	}
 

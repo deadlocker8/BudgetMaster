@@ -39,6 +39,7 @@
                     <form name="NewTemplate" action="<@s.url '/templates/newTemplate'/>" method="post" onsubmit="return validateForm(true)">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="ID" value="<#if template.getID()??>${template.getID()?c}</#if>">
+                        <input type="hidden" name="templateGroup" value="<#if template.getTemplateGroup()??>${template.getTemplateGroup().getID()?c}</#if>">
 
                         <#-- isPayment switch -->
                         <@newTransactionMacros.isExpenditureSwitch template/>
