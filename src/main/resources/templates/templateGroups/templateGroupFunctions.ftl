@@ -3,7 +3,7 @@
 
 
 <#macro buttonNew>
-    <@header.buttonLink url='/templateGroups/newTemplateGroup' icon='add' localizationKey='title.template.group.new'/>
+    <@header.buttonLink url='/templateGroups/newTemplateGroup' icon='add' localizationKey='title.template.group.button.new'/>
 </#macro>
 
 <#macro buttonEditTemplateGroups>
