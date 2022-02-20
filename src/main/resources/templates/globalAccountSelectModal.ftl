@@ -38,7 +38,7 @@
         </div>
     </div>
     <div class="modal-footer background-color-light">
-        <@header.buttonLink url='' icon='cancel' localizationKey='cancel' color='red' id='buttonCloseGlobalAccountSelect' classes='modal-action modal-close text-white' isDataUrl=false noUrl=true/>
+        <@header.buttonLink url='' icon='clear' localizationKey='cancel' color='red' id='buttonCloseGlobalAccountSelect' classes='modal-action modal-close text-white' isDataUrl=false noUrl=true/>
     </div>
 </div>
 
