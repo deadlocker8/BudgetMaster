@@ -25,6 +25,7 @@
 .templateCollapsible {
     -webkit-box-shadow: none !important;
     box-shadow: none !important;
+    border: none;
 }
 
 .template-group-headline {
