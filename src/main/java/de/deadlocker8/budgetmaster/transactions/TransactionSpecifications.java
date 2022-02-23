@@ -7,6 +7,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -99,12 +100,15 @@ public class TransactionSpecifications
 
 			if(!tagIDs.isEmpty())
 			{
-				Join<Transaction, Tag> join = transaction.join(Transaction_.tags);
+				Join<Transaction, Tag> join = transaction.join(Transaction_.tags, JoinType.LEFT);
 				Predicate tagPredicate = builder.disjunction();
 				for(Integer tagID : tagIDs)
 				{
 					tagPredicate.getExpressions().add(builder.equal(join.get(Tag_.ID), tagID));
 				}
+
+				// transactions without any tags should be included in results
+				tagPredicate.getExpressions().add(builder.isEmpty(transaction.get(Transaction_.tags)));
 
 				predicates.add(tagPredicate);
 				transferPredicates.add(tagPredicate);

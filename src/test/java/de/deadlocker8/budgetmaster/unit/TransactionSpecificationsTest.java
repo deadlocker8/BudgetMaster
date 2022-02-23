@@ -38,6 +38,7 @@ class TransactionSpecificationsTest
 	private TransactionRepository transactionRepository;
 	private Transaction transaction1;
 	private Transaction transaction2;
+	private Transaction transaction3;
 	private Transaction repeatingTransaction;
 	private Transaction transferTransaction;
 	private Transaction transferTransactionWrongAccount;
@@ -102,6 +103,14 @@ class TransactionSpecificationsTest
 		transaction2.setAccount(account);
 		transaction2 = transactionRepository.save(transaction2);
 
+		transaction3 = new Transaction();
+		transaction3.setName("Income without tags");
+		transaction3.setAmount(100);
+		transaction3.setDate(LocalDate.of(2018, 12, 3));
+		transaction3.setCategory(category2);
+		transaction3.setAccount(account);
+		transaction3 = transactionRepository.save(transaction3);
+
 		LocalDate repeatingTransactionDate = LocalDate.of(2018, 3, 13);
 		repeatingOption = new RepeatingOption();
 		repeatingOption.setModifier(new RepeatingModifierDays(10));
@@ -154,9 +163,10 @@ class TransactionSpecificationsTest
 		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, LocalDate.now(), account, true, true, true, null, List.of(), List.of(), null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertThat(results).hasSize(4)
+		assertThat(results).hasSize(5)
 				.contains(transaction1)
 				.contains(transaction2)
+				.contains(transaction3)
 				.contains(repeatingTransaction)
 				.contains(transferTransaction);
 	}
@@ -167,9 +177,10 @@ class TransactionSpecificationsTest
 		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, LocalDate.now(), account, true, true, false, null, List.of(), List.of(), null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertThat(results).hasSize(3)
+		assertThat(results).hasSize(4)
 				.contains(transaction1)
 				.contains(transaction2)
+				.contains(transaction3)
 				.contains(repeatingTransaction);
 	}
 
@@ -179,8 +190,9 @@ class TransactionSpecificationsTest
 		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, LocalDate.now(), account, true, false, false, null, List.of(), List.of(), null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertThat(results).hasSize(1)
-				.contains(transaction1);
+		assertThat(results).hasSize(2)
+				.contains(transaction1)
+				.contains(transaction3);
 	}
 
 	@Test
@@ -210,9 +222,10 @@ class TransactionSpecificationsTest
 		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, LocalDate.now(), account, false, false, false, null, List.of(), List.of(), null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertThat(results).hasSize(3)
+		assertThat(results).hasSize(4)
 				.contains(transaction1)
 				.contains(transaction2)
+				.contains(transaction3)
 				.contains(repeatingTransaction);
 	}
 
@@ -222,8 +235,9 @@ class TransactionSpecificationsTest
 		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, LocalDate.now(), account, true, false, true, null, List.of(), List.of(), null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertThat(results).hasSize(1)
-				.contains(transaction1);
+		assertThat(results).hasSize(2)
+				.contains(transaction1)
+				.contains(transaction3);
 	}
 
 	@Test
@@ -283,9 +297,10 @@ class TransactionSpecificationsTest
 		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, LocalDate.now(), account, true, true, true, false, List.of(), List.of(), null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertThat(results).hasSize(3)
+		assertThat(results).hasSize(4)
 				.contains(transaction1)
 				.contains(transaction2)
+				.contains(transaction3)
 				.contains(transferTransaction);
 	}
 
@@ -352,8 +367,11 @@ class TransactionSpecificationsTest
 		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, LocalDate.now(), account, true, true, true, null, List.of(), tagIDs, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertThat(results).hasSize(1)
-				.contains(transaction1);
+		assertThat(results).hasSize(4)
+				.contains(transaction1)
+				.contains(transaction2)
+				.contains(transaction3)
+				.contains(transferTransaction);
 	}
 
 	@Test
@@ -366,9 +384,12 @@ class TransactionSpecificationsTest
 		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, LocalDate.now(), account, true, true, true, null, List.of(), tagIDs, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertThat(results).hasSize(2)
+		assertThat(results).hasSize(5)
 				.contains(transaction1)
-				.contains(repeatingTransaction);
+				.contains(transaction2)
+				.contains(transaction3)
+				.contains(repeatingTransaction)
+				.contains(transferTransaction);
 	}
 
 
@@ -381,7 +402,10 @@ class TransactionSpecificationsTest
 		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, LocalDate.now(), account, true, true, true, null, List.of(), tagIDs, null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertThat(results).isEmpty();
+		assertThat(results).hasSize(3)
+			.contains(transaction2)
+			.contains(transaction3)
+			.contains(transferTransaction);
 	}
 
 	@Test
