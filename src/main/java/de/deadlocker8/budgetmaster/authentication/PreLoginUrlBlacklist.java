@@ -11,7 +11,6 @@ public class PreLoginUrlBlacklist
 	{
 		blacklist = new ArrayList<>();
 		blacklist.add("login");
-		blacklist.add("performUpdate");
 		blacklist.add("import");
 	}
 

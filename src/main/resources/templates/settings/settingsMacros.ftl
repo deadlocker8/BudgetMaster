@@ -149,10 +149,13 @@
         <div class="modal-content">
             <h4>${locale.getString("info.title.update")}</h4>
             <p>${updateString}</p>
+
+            <p>
+                ${locale.getString("news.detailed")} <a target="_blank" href="https://github.com/deadlocker8/BudgetMaster/releases/tag/v${availableVersion}">GitHub</a>
+            </p>
         </div>
         <div class="modal-footer background-color">
-            <@header.buttonLink url='/settings' icon='clear' localizationKey='cancel' color='red' classes='modal-action modal-close text-white'/>
-            <@header.buttonLink url='/settings/performUpdate' icon='system_update' localizationKey='settings.update.start' color='green' id='button-confirm-database-import' classes='"modal-action modal-close text-white'/>
+            <@header.buttonLink url='/settings' icon='done' localizationKey='ok' color='green' classes='modal-action modal-close text-white'/>
         </div>
     </div>
 </#macro>

@@ -63,6 +63,7 @@ public class SettingsController extends BaseController
 		public static final String ERROR_MESSAGES = "errorMessages";
 		public static final String PERFORM_UPDATE = "performUpdate";
 		public static final String UPDATE_STRING = "updateString";
+		public static final String AVAILABLE_VERSION = "availableVersion";
 		public static final String SETTINGS = "settings";
 		public static final String SEARCH_RESULTS_PER_PAGE = "searchResultsPerPageOptions";
 		public static final String AUTO_BACKUP_TIME = "autoBackupTimes";
@@ -431,33 +432,9 @@ public class SettingsController extends BaseController
 	{
 		model.addAttribute(ModelAttributes.PERFORM_UPDATE, true);
 		model.addAttribute(ModelAttributes.UPDATE_STRING, Localization.getString("info.text.update", Build.getInstance().getVersionName(), budgetMasterUpdateService.getAvailableVersionString()));
+		model.addAttribute(ModelAttributes.AVAILABLE_VERSION, budgetMasterUpdateService.getAvailableVersionString());
 		prepareBasicModel(model, settingsService.getSettings());
 		return ReturnValues.ALL_ENTITIES;
-	}
-
-	@GetMapping("/performUpdate")
-	public String performUpdate()
-	{
-		if(budgetMasterUpdateService.isRunningFromSource())
-		{
-			LOGGER.debug("Running from source code: Skipping update check");
-			return ReturnValues.REDIRECT_ALL_ENTITIES;
-		}
-
-		UpdateItem.Entry entry = new UpdateItem.Entry(budgetMasterUpdateService.getAvailableVersion());
-		try
-		{
-			budgetMasterUpdateService.getUpdateService().runVersionizerInstance(entry);
-		}
-		catch(IOException e)
-		{
-			LOGGER.error("Could not update BudgetMaster version", e);
-		}
-
-		LOGGER.info(MessageFormat.format("Stopping BudgetMaster for update to version {0}", budgetMasterUpdateService.getAvailableVersionString()));
-		System.exit(0);
-
-		return "";
 	}
 
 	@PostMapping("/git/test")
