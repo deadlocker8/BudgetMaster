@@ -1,10 +1,13 @@
 package de.deadlocker8.budgetmaster.database.model.v7;
 
 import de.deadlocker8.budgetmaster.database.model.BackupInfo;
+import de.deadlocker8.budgetmaster.database.model.Upgradeable;
+import de.deadlocker8.budgetmaster.database.model.v8.BackupIcon_v8;
 
+import java.util.List;
 import java.util.Objects;
 
-public class BackupIcon_v7 implements BackupInfo
+public class BackupIcon_v7 implements BackupInfo, Upgradeable<BackupIcon_v8>
 {
 	private Integer ID;
 	private Integer imageID;
@@ -75,5 +78,11 @@ public class BackupIcon_v7 implements BackupInfo
 				", imageID=" + imageID +
 				", builtinIdentifier='" + builtinIdentifier + '\'' +
 				'}';
+	}
+
+	@Override
+	public BackupIcon_v8 upgrade(List<BackupInfo> backupInfoItems)
+	{
+		return new BackupIcon_v8(this.ID, this.imageID, this.builtinIdentifier, null);
 	}
 }

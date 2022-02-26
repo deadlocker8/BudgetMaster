@@ -17,6 +17,9 @@ import java.util.Objects;
 @Entity
 public class Category implements ProvidesID, Iconizable
 {
+	private static final String FONT_COLOR_LIGHT_THEME = "#212121";
+	private static final String FONT_COLOR_DARK_THEME = "#FFFFFF";
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Expose
@@ -97,14 +100,50 @@ public class Category implements ProvidesID, Iconizable
 		this.type = type;
 	}
 
+	@Override
 	public Icon getIconReference()
 	{
 		return iconReference;
 	}
 
+	@Override
 	public void setIconReference(Icon iconReference)
 	{
 		this.iconReference = iconReference;
+	}
+
+	@Override
+	public String getFontColor(boolean isDarkTheme)
+	{
+		final Icon icon = getIconReference();
+		if(icon == null)
+		{
+			return getAppropriateTextColor();
+		}
+
+		final String fontColor = icon.getFontColor();
+		if(fontColor == null)
+		{
+			return getAppropriateTextColor();
+		}
+
+		return fontColor;
+	}
+
+	@Override
+	public String getDefaultFontColor(boolean isDarkTheme)
+	{
+		if(isDarkTheme)
+		{
+			return FONT_COLOR_DARK_THEME;
+		}
+
+		return FONT_COLOR_LIGHT_THEME;
+	}
+
+	public String getAppropriateTextColor()
+	{
+		return ColorUtilsNonJavaFX.getAppropriateTextColor(new Color(color)).toRGBHexWithoutOpacity();
 	}
 
 	public List<Transaction> getReferringTransactions()
@@ -115,11 +154,6 @@ public class Category implements ProvidesID, Iconizable
 	public void setReferringTransactions(List<Transaction> referringTransactions)
 	{
 		this.referringTransactions = referringTransactions;
-	}
-
-	public String getAppropriateTextColor()
-	{
-		return ColorUtilsNonJavaFX.getAppropriateTextColor(new Color(color)).toRGBHexWithoutOpacity();
 	}
 
 	@Override

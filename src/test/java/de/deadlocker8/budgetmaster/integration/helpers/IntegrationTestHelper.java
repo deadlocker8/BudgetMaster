@@ -177,7 +177,7 @@ public class IntegrationTestHelper
 				.isEqualTo(Localization.getString("info.title.database.import.dialog"));
 
 		List<WebElement> tableRows = driver.findElements(By.cssSelector(".container form table tr"));
-		assertThat(tableRows.size()).isEqualTo(destinationAccounts.size());
+		assertThat(tableRows).hasSize(destinationAccounts.size());
 
 		for(int i = 0; i < destinationAccounts.size(); i++)
 		{

@@ -1,13 +1,13 @@
 package de.deadlocker8.budgetmaster.repeating;
 
 import com.google.gson.annotations.Expose;
-import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEnd;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifier;
-import org.joda.time.DateTime;
+import de.deadlocker8.budgetmaster.transactions.Transaction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -22,7 +22,7 @@ public class RepeatingOption
 
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	@Expose
-	private DateTime startDate;
+	private LocalDate startDate;
 
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	@Expose
@@ -35,14 +35,16 @@ public class RepeatingOption
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "repeatingOption", fetch = FetchType.LAZY)
 	private List<Transaction> referringTransactions;
 
-	public RepeatingOption(DateTime startDate, RepeatingModifier modifier, RepeatingEnd endOption)
+	public RepeatingOption(LocalDate startDate, RepeatingModifier modifier, RepeatingEnd endOption)
 	{
 		this.startDate = startDate;
 		this.modifier = modifier;
 		this.endOption = endOption;
 	}
 
-	public RepeatingOption() {}
+	public RepeatingOption()
+	{
+	}
 
 	public Integer getID()
 	{
@@ -54,12 +56,12 @@ public class RepeatingOption
 		this.ID = ID;
 	}
 
-	public DateTime getStartDate()
+	public LocalDate getStartDate()
 	{
 		return startDate;
 	}
 
-	public void setStartDate(DateTime startDate)
+	public void setStartDate(LocalDate startDate)
 	{
 		this.startDate = startDate;
 	}
@@ -94,20 +96,20 @@ public class RepeatingOption
 		this.referringTransactions = referringTransactions;
 	}
 
-	public List<DateTime> getRepeatingDates(DateTime dateFetchLimit)
+	public List<LocalDate> getRepeatingDates(LocalDate dateFetchLimit)
 	{
-		List<DateTime> dates = new ArrayList<>();
+		List<LocalDate> dates = new ArrayList<>();
 		dates.add(startDate);
 		while(!endOption.isEndReached(dates))
 		{
-			DateTime lastDate = dates.get(dates.size() - 1);
-			DateTime nextDate = modifier.getNextDate(lastDate);
+			LocalDate lastDate = dates.get(dates.size() - 1);
+			LocalDate nextDate = modifier.getNextDate(lastDate);
 			if(nextDate.isAfter(dateFetchLimit))
 			{
 				return dates;
 			}
 
-			List<DateTime> temporaryList = new ArrayList<>(dates);
+			List<LocalDate> temporaryList = new ArrayList<>(dates);
 			temporaryList.add(nextDate);
 			if(endOption.isEndReached(temporaryList))
 			{

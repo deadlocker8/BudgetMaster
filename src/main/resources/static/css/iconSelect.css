@@ -1,17 +1,29 @@
 .item-icon {
     margin-top: 3rem;
+    flex-direction: column;
     justify-content: center;
 }
 
-#item-icon-preview {
-    text-align: center;
-    border: 2px solid var(--color-text);
-    padding: 1rem;
-    color: var(--color-text);
+.item-icon-preview-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
-#item-icon-preview i {
-    font-size: 3rem;
+#item-icon-placeholder {
+    margin-top: 1rem;
+}
+
+#item-icon-preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 7rem;
+    width: 7rem;
+    text-align: center;
+    border: 2px solid var(--color-text);
+    color: var(--color-text);
 }
 
 .button-remove-icon-from-item {

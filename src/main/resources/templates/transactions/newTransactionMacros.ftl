@@ -135,7 +135,7 @@
             var initialTags = [
                 <#if transaction.getTags()??>
                 <#list transaction.getTags() as tag>
-                {tag: '${tag.getName()}'},
+                {tag: '${tag.getName()?replace("'", "\\'")}'},
                 </#list>
                 </#if>
             ];
@@ -147,7 +147,7 @@
         tagsPlaceholder = "${locale.getString("tagfield.placeholder")}";
         tagAutoComplete = {
             <#list helpers.getAllTags() as tag>
-            '${tag.getName()}': null,
+            '${tag.getName()?replace("'", "\\'")}': null,
             </#list>
         }
     </script>
@@ -303,17 +303,17 @@
     </div>
 </#macro>
 
-<#macro buttons cancelURL>
+<#macro buttons cancelURL includeContinueButton>
     <br>
     <hr>
     <br>
 
     <div class="row hide-on-small-only">
-        <div class="col s6 right-align">
-            <@buttonCancel cancelURL/>
-        </div>
-
-        <div class="col s6 left-align">
+        <div class="col s12 center-align">
+            <@buttonCancel cancelURL/>&nbsp;
+            <#if includeContinueButton>
+                <@buttonSaveAndContinue/>&nbsp;
+            </#if>
             <@buttonSave/>
         </div>
     </div>
@@ -324,6 +324,13 @@
                 <@buttonCancel cancelURL/>
             </div>
         </div>
+        <#if includeContinueButton>
+            <div class="row center-align">
+                <div class="col s12">
+                    <@buttonSaveAndContinue/>
+                </div>
+            </div>
+        </#if>
         <div class="row center-align">
             <div class="col s12">
                 <@buttonSave/>
@@ -333,11 +340,15 @@
 </#macro>
 
 <#macro buttonCancel cancelURL>
-    <@header.buttonLink url=cancelURL icon='clear' localizationKey='cancel' id='button-cancel-save-transaction'/>
+    <@header.buttonLink url=cancelURL icon='clear' localizationKey='cancel' id='button-cancel-save-transaction' color='red'/>
 </#macro>
 
 <#macro buttonSave>
-    <@header.buttonSubmit name='action' icon='save' localizationKey='save' id='button-save-transaction'/>
+    <@header.buttonSubmit name='action' icon='save' localizationKey='save' id='button-save-transaction' color='green'/>
+</#macro>
+
+<#macro buttonSaveAndContinue>
+    <@header.buttonSubmit name='action' icon='save' localizationKey='saveAndContinue' id='button-save-transaction-and-continue' value='continue'/>
 </#macro>
 
 <#macro buttonTransactionActions canChangeType canCreateTemplate changeTypeInProgress>

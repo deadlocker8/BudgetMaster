@@ -48,7 +48,7 @@ ul.sidenav.sidenav-fixed > li:last-child {
 [data-theme="dark"] .sidenav,
 [data-theme="dark"] .sidenav-sub,
 [data-theme="dark"] .searchWrapper {
-    background-color: #444444;
+    background-color: var(--color-background);
     box-shadow: none;
 }
 

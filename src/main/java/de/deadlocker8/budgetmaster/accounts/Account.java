@@ -15,6 +15,8 @@ import java.util.Objects;
 @Entity
 public class Account implements ProvidesID, Iconizable
 {
+	private static final String ACCOUNT_FONT_COLOR = "#2E79B9";
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Expose
@@ -131,14 +133,40 @@ public class Account implements ProvidesID, Iconizable
 		this.type = type;
 	}
 
+	@Override
 	public Icon getIconReference()
 	{
 		return iconReference;
 	}
 
+	@Override
 	public void setIconReference(Icon iconReference)
 	{
 		this.iconReference = iconReference;
+	}
+
+	@Override
+	public String getFontColor(boolean isDarkTheme)
+	{
+		final Icon icon = getIconReference();
+		if(icon == null)
+		{
+			return ACCOUNT_FONT_COLOR;
+		}
+
+		final String fontColor = icon.getFontColor();
+		if(fontColor == null)
+		{
+			return ACCOUNT_FONT_COLOR;
+		}
+
+		return fontColor;
+	}
+
+	@Override
+	public String getDefaultFontColor(boolean isDarkTheme)
+	{
+		return ACCOUNT_FONT_COLOR;
 	}
 
 	@Override

@@ -198,14 +198,14 @@
                                         </div>
                                     </div>
                                     <div class="left-align">
-                                        <#if updateCheckService.getAvailableVersionString() == "-">
+                                        <#if updateService.getAvailableVersionString() == "-">
                                             <#if settings.isUseDarkTheme()>
                                                 <#assign bannerClasses="background-grey text-black">
                                             <#else>
                                                 <#assign bannerClasses="background-grey text-white">
                                             </#if>
                                         <#else>
-                                            <#if updateCheckService.isUpdateAvailable()>
+                                            <#if updateService.isUpdateAvailable()>
                                                 <#assign bannerClasses="background-orange text-black">
                                             <#else>
                                                 <#assign bannerClasses="background-green text-white">
@@ -213,7 +213,7 @@
                                         </#if>
 
                                         <div class="banner ${bannerClasses}">
-                                            ${updateCheckService.getAvailableVersionString()}
+                                            ${updateService.getAvailableVersionString()}
                                         </div>
                                   </div>
                                 </div>
@@ -274,7 +274,6 @@
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
-        <script src="<@s.url '/js/libs/spectrum.js'/>"></script>
         <script src="<@s.url '/js/helpers.js'/>"></script>
         <script src="<@s.url '/js/settings.js'/>"></script>
     </@header.body>

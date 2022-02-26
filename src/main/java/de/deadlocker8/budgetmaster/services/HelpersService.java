@@ -24,15 +24,16 @@ import de.deadlocker8.budgetmaster.utils.Colors;
 import de.deadlocker8.budgetmaster.utils.DateHelper;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.thecodelabs.utils.util.ColorUtilsNonJavaFX;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 @Service
 public class HelpersService
@@ -175,7 +176,8 @@ public class HelpersService
 	public int getAccountBudget()
 	{
 		Account currentAccount = getCurrentAccount();
-		List<Transaction> transactions = transactionService.getTransactionsForAccountUntilDate(currentAccount, DateHelper.getCurrentDate(), FilterConfiguration.DEFAULT);
+		final LocalDate endDate = DateHelper.getCurrentDate();
+		List<Transaction> transactions = transactionService.getTransactionsForAccountUntilDate(currentAccount, endDate, FilterConfiguration.DEFAULT);
 
 		int sum = 0;
 		for(Transaction transaction : transactions)

@@ -9,16 +9,21 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.URIish;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.MessageFormat;
 import java.util.Optional;
 import java.util.Set;
 
 public class GitHelper
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger(GitHelper.class);
+
 	private static final String REMOTE_NAME = "origin";
 
 	static class PullException extends Exception
@@ -99,7 +104,7 @@ public class GitHelper
 		}
 		catch(GitAPIException | IOException e)
 		{
-			e.printStackTrace();
+			LOGGER.error(MessageFormat.format("Could not check git connection to repo: \"{0}\"", uri), e);
 			return Optional.of(e.getMessage());
 		}
 

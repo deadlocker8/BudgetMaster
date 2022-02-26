@@ -12,12 +12,9 @@ public class LocalBackupTask extends BackupTask
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(LocalBackupTask.class);
 
-	private final DatabaseService databaseService;
-
 	public LocalBackupTask(DatabaseService databaseService, SettingsService settingsService)
 	{
 		super(databaseService, settingsService);
-		this.databaseService = databaseService;
 	}
 
 	@Override

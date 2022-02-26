@@ -18,6 +18,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class SearchController extends BaseController
 {
+	private static class ModelAttributes
+	{
+		public static final String PAGE = "page";
+		public static final String SEARCH = "search";
+	}
+
+	private static class ReturnValues
+	{
+		public static final String ALL_ENTITIES = "search/search";
+	}
+
 	private final TransactionService transactionService;
 	private final SettingsService settingsService;
 
@@ -38,8 +49,8 @@ public class SearchController extends BaseController
 
 		Specification<Transaction> specification = TransactionSearchSpecifications.withDynamicQuery(search);
 		Page<Transaction> resultPage = transactionService.getRepository().findAll(specification, PageRequest.of(search.getPage(), settingsService.getSettings().getSearchItemsPerPage()));
-		model.addAttribute("page", resultPage);
-		model.addAttribute("search", search);
-		return "search/search";
+		model.addAttribute(ModelAttributes.PAGE, resultPage);
+		model.addAttribute(ModelAttributes.SEARCH, search);
+		return ReturnValues.ALL_ENTITIES;
 	}
 }

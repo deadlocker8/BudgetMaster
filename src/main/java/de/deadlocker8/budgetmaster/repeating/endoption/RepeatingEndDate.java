@@ -1,10 +1,11 @@
 package de.deadlocker8.budgetmaster.repeating.endoption;
 
 import com.google.gson.annotations.Expose;
-import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,21 +14,23 @@ public class RepeatingEndDate extends RepeatingEnd
 {
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	@Expose
-	private DateTime endDate;
+	private LocalDate endDate;
 
-	public RepeatingEndDate(DateTime endDate)
+	public RepeatingEndDate(LocalDate endDate)
 	{
 		super("repeating.end.key.date");
 		this.endDate = endDate;
 	}
 
-	public RepeatingEndDate() {}
+	public RepeatingEndDate()
+	{
+	}
 
 	@Override
 	@Transient
-	public boolean isEndReached(List<DateTime> dates)
+	public boolean isEndReached(List<LocalDate> dates)
 	{
-		DateTime lastDate = dates.get(dates.size() - 1);
+		LocalDate lastDate = dates.get(dates.size() - 1);
 		return lastDate.isAfter(endDate);
 	}
 

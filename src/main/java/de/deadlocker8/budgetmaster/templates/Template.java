@@ -6,6 +6,7 @@ import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.Iconizable;
 import de.deadlocker8.budgetmaster.tags.Tag;
+import de.deadlocker8.budgetmaster.templategroup.TemplateGroup;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionBase;
 
@@ -17,6 +18,9 @@ import java.util.Objects;
 @Entity
 public class Template implements TransactionBase, Iconizable
 {
+	private static final String FONT_COLOR_LIGHT_THEME = "#212121";
+	private static final String FONT_COLOR_DARK_THEME = "#FFFFFF";
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Expose
@@ -62,6 +66,11 @@ public class Template implements TransactionBase, Iconizable
 	@Expose
 	private Account transferAccount;
 
+	@ManyToOne
+	@Expose
+	private TemplateGroup templateGroup;
+
+
 	public Template()
 	{
 	}
@@ -79,6 +88,7 @@ public class Template implements TransactionBase, Iconizable
 		this.iconReference = template.getIconReference();
 		this.tags = new ArrayList<>(template.getTags());
 		this.transferAccount = template.getTransferAccount();
+		this.templateGroup = template.getTemplateGroup();
 	}
 
 	public Template(String templateName, Transaction transaction)
@@ -105,6 +115,7 @@ public class Template implements TransactionBase, Iconizable
 			this.tags = new ArrayList<>(transaction.getTags());
 		}
 		this.transferAccount = transaction.getTransferAccount();
+		this.templateGroup = null;
 	}
 
 	public Integer getID()
@@ -192,14 +203,45 @@ public class Template implements TransactionBase, Iconizable
 		this.description = description;
 	}
 
+	@Override
 	public Icon getIconReference()
 	{
 		return iconReference;
 	}
 
+	@Override
 	public void setIconReference(Icon iconReference)
 	{
 		this.iconReference = iconReference;
+	}
+
+	@Override
+	public String getFontColor(boolean isDarkTheme)
+	{
+		final Icon icon = getIconReference();
+		if(icon == null)
+		{
+			return getDefaultFontColor(isDarkTheme);
+		}
+
+		final String fontColor = icon.getFontColor();
+		if(fontColor == null)
+		{
+			return getDefaultFontColor(isDarkTheme);
+		}
+
+		return fontColor;
+	}
+
+	@Override
+	public String getDefaultFontColor(boolean isDarkTheme)
+	{
+		if(isDarkTheme)
+		{
+			return FONT_COLOR_DARK_THEME;
+		}
+
+		return FONT_COLOR_LIGHT_THEME;
 	}
 
 	public List<Tag> getTags()
@@ -225,6 +267,16 @@ public class Template implements TransactionBase, Iconizable
 	public boolean isTransfer()
 	{
 		return transferAccount != null;
+	}
+
+	public TemplateGroup getTemplateGroup()
+	{
+		return templateGroup;
+	}
+
+	public void setTemplateGroup(TemplateGroup templateGroup)
+	{
+		this.templateGroup = templateGroup;
 	}
 
 	@Override
@@ -259,6 +311,8 @@ public class Template implements TransactionBase, Iconizable
 			value += ", transferAccount=Account[ID=" + transferAccount.getID() + ", name=" + transferAccount.getName() + "]";
 		}
 
+		value += ", transferAccount=" + templateGroup;
+
 		value += '}';
 		return value;
 	}
@@ -279,12 +333,13 @@ public class Template implements TransactionBase, Iconizable
 				Objects.equals(description, template.description) &&
 				Objects.equals(iconReference, template.iconReference) &&
 				Objects.equals(tags, template.tags) &&
-				Objects.equals(transferAccount, template.transferAccount);
+				Objects.equals(transferAccount, template.transferAccount) &&
+				Objects.equals(templateGroup, template.templateGroup);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, templateName, amount, isExpenditure, account, category, name, description, iconReference, tags, transferAccount);
+		return Objects.hash(ID, templateName, amount, isExpenditure, account, category, name, description, iconReference, tags, transferAccount, templateGroup);
 	}
 }

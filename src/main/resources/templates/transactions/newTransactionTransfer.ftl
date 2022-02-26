@@ -82,7 +82,7 @@
                             <@newTransactionMacros.transactionRepeating transaction currentDate/>
 
                             <#-- buttons -->
-                            <@newTransactionMacros.buttons '/transactions'/>
+                            <@newTransactionMacros.buttons cancelURL='/transactions' includeContinueButton=true/>
                             <@newTransactionMacros.buttonTransactionActions isEdit true changeTypeInProgress/>
                         </form>
 
@@ -107,7 +107,6 @@
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
-        <script src="<@s.url '/js/libs/spectrum.js'/>"></script>
         <script src="<@s.url '/js/helpers.js'/>"></script>
         <script src="<@s.url '/js/transactions.js'/>"></script>
         <script src="<@s.url '/js/transactionActions.js'/>"></script>

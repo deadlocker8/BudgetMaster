@@ -12,8 +12,6 @@
         </#if>
 
         <@header.header "BudgetMaster - ${title}"/>
-        <link type="text/css" rel="stylesheet" href="<@s.url '${"/css/libs/spectrum.css"}'/>"/>
-        <@header.style "spectrum"/>
         <@header.style "iconSelect"/>
     </head>
     <@header.body>
@@ -22,6 +20,7 @@
 
         <#import "categoriesFunctions.ftl" as categoriesFunctions>
         <#import "../helpers/iconSelect.ftl" as iconSelectMacros>
+        <#import "../helpers/fontColorPicker.ftl" as fontColorPickerMacros>
 
         <main>
             <div class="card main-card background-color">
@@ -70,38 +69,41 @@
                                     </div>
                                 </#if>
                             </#list>
-                                <#--add custom color picker-->
+                                <#-- add custom color picker -->
                                 <div class="col s2 m1 no-padding">
                                     <div id="customColorPickerContainer" class="category-color <#if customColor == category.getColor()>category-color-active</#if>" style="background-color: ${customColor}">
-                                        <input type="text" id="customColorPicker" value="${customColor}" placeholder="+"/>
+                                        <span>+</span>
                                     </div>
                                 </div>
                             </div>
 
                             <#-- icon -->
-                            <@iconSelectMacros.iconSelect id="account-icon" item=category/>
+                            <@iconSelectMacros.iconSelect id="category-icon" item=category/>
+
+                            <#-- font color -->
+                            <@fontColorPickerMacros.fontColorPicker category/>
 
                             <br>
 
                             <#-- buttons -->
                             <div class="row hide-on-small-only">
                                 <div class="col s6 right-align">
-                                    <@header.buttonLink url='/categories' icon='clear' localizationKey='cancel'/>
+                                    <@header.buttonLink url='/categories' icon='clear' localizationKey='cancel' color='red'/>
                                 </div>
 
                                 <div class="col s6 left-align">
-                                    <@header.buttonSubmit name='action' icon='save' localizationKey='save'/>
+                                    <@header.buttonSubmit name='action' icon='save' localizationKey='save' color='green'/>
                                 </div>
                             </div>
                             <div class="hide-on-med-and-up">
                                 <div class="row center-align">
                                     <div class="col s12">
-                                        <@header.buttonLink url='/categories' icon='clear' localizationKey='cancel'/>
+                                        <@header.buttonLink url='/categories' icon='clear' localizationKey='cancel' color='red'/>
                                     </div>
                                 </div>
                                 <div class="row center-align">
                                     <div class="col s12">
-                                        <@header.buttonSubmit name='action' icon='save' localizationKey='save'/>
+                                        <@header.buttonSubmit name='action' icon='save' localizationKey='save' color='green'/>
                                     </div>
                                 </div>
                             </div>
@@ -116,8 +118,9 @@
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
-        <script src="<@s.url '/js/libs/spectrum.js'/>"></script>
+        <script src="<@s.url '/webjars/vanilla-picker/2.12.1/dist/vanilla-picker.min.js'/>"></script>
         <script src="<@s.url '/js/categories.js'/>"></script>
         <script src="<@s.url '/js/iconSelect.js'/>"></script>
+        <script src="<@s.url '/js/fontColorPicker.js'/>"></script>
     </@header.body>
 </html>

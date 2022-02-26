@@ -2,7 +2,6 @@ package de.deadlocker8.budgetmaster.accounts;
 
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.icon.IconService;
-import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.utils.FontAwesomeIcons;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
@@ -27,15 +26,36 @@ import java.util.Optional;
 @RequestMapping(Mappings.ACCOUNTS)
 public class AccountController extends BaseController
 {
+	private static class ModelAttributes
+	{
+		public static final String ALL_ENTITIES = "accounts";
+		public static final String ONE_ENTITY = "account";
+		public static final String ENTITY_TO_DELETE = "accountToDelete";
+		public static final String CURRENT_ACCOUNT = "currentAccount";
+		public static final String ACCOUNT_NOT_DELETABLE = "accountNotDeletable";
+		public static final String AVAILABLE_ACCOUNT_STATES = "availableAccountStates";
+		public static final String FONTAWESOME_ICONS = "fontawesomeIcons";
+		public static final String ERROR = "error";
+	}
+
+	private static class ReturnValues
+	{
+		public static final String SHOW_ALL = "accounts/accounts";
+		public static final String REDIRECT_SHOW_ALL = "redirect:/accounts";
+		public static final String NEW_ENTITY = "accounts/newAccount";
+		public static final String DELETE_ENTITY = "accounts/deleteAccountModal";
+		public static final String IMPORT_STEP_2 = "redirect:/settings/database/import/step2";
+		public static final String SETTINGS = "redirect:/settings";
+		public static final String GLOBAL_ACCOUNT_SELECT_MODAL = "globalAccountSelectModal";
+	}
+
 	private final AccountService accountService;
-	private final ImageService imageService;
 	private final IconService iconService;
 
 	@Autowired
-	public AccountController(AccountService accountService, ImageService imageService, IconService iconService)
+	public AccountController(AccountService accountService, IconService iconService)
 	{
 		this.accountService = accountService;
-		this.imageService = imageService;
 		this.iconService = iconService;
 	}
 
@@ -47,7 +67,7 @@ public class AccountController extends BaseController
 		String referer = request.getHeader("Referer");
 		if(referer.contains("database/import"))
 		{
-			return "redirect:/settings";
+			return ReturnValues.SETTINGS;
 		}
 		return "redirect:" + referer;
 	}
@@ -60,7 +80,7 @@ public class AccountController extends BaseController
 		String referer = request.getHeader("Referer");
 		if(referer.contains("database/import"))
 		{
-			return "redirect:/settings";
+			return ReturnValues.SETTINGS;
 		}
 		return "redirect:" + referer;
 	}
@@ -68,16 +88,16 @@ public class AccountController extends BaseController
 	@GetMapping
 	public String accounts(Model model)
 	{
-		model.addAttribute("accounts", accountService.getAllEntitiesAsc());
-		return "accounts/accounts";
+		model.addAttribute(ModelAttributes.ALL_ENTITIES, accountService.getAllEntitiesAsc());
+		return ReturnValues.SHOW_ALL;
 	}
 
 	@GetMapping("/{ID}/requestDelete")
 	public String requestDeleteAccount(Model model, @PathVariable("ID") Integer ID)
 	{
-		model.addAttribute("accounts", accountService.getAllEntitiesAsc());
-		model.addAttribute("accountToDelete", accountService.getRepository().getById(ID));
-		return "accounts/deleteAccountModal";
+		model.addAttribute(ModelAttributes.ALL_ENTITIES, accountService.getAllEntitiesAsc());
+		model.addAttribute(ModelAttributes.ENTITY_TO_DELETE, accountService.getRepository().getById(ID));
+		return ReturnValues.DELETE_ENTITY;
 	}
 
 	@GetMapping("/{ID}/delete")
@@ -89,23 +109,23 @@ public class AccountController extends BaseController
 		{
 			accountService.deleteAccount(ID);
 			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.account.delete.success", accountToDelete.getName()), NotificationType.SUCCESS));
-			return "redirect:/accounts";
+			return ReturnValues.REDIRECT_SHOW_ALL;
 		}
 
-		model.addAttribute("accounts", accountService.getAllEntitiesAsc());
-		model.addAttribute("currentAccount", accountToDelete);
-		model.addAttribute("accountNotDeletable", true);
-		return "accounts/accounts";
+		model.addAttribute(ModelAttributes.ALL_ENTITIES, accountService.getAllEntitiesAsc());
+		model.addAttribute(ModelAttributes.CURRENT_ACCOUNT, accountToDelete);
+		model.addAttribute(ModelAttributes.ACCOUNT_NOT_DELETABLE, true);
+		return ReturnValues.SHOW_ALL;
 	}
 
 	@GetMapping("/newAccount")
 	public String newAccount(Model model)
 	{
 		Account emptyAccount = new Account();
-		model.addAttribute("account", emptyAccount);
-		model.addAttribute("availableAccountStates", AccountState.values());
-		model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
-		return "accounts/newAccount";
+		model.addAttribute(ModelAttributes.ONE_ENTITY, emptyAccount);
+		model.addAttribute(ModelAttributes.AVAILABLE_ACCOUNT_STATES, AccountState.values());
+		model.addAttribute(ModelAttributes.FONTAWESOME_ICONS, FontAwesomeIcons.ICONS);
+		return ReturnValues.NEW_ENTITY;
 	}
 
 	@GetMapping("/{ID}/edit")
@@ -117,10 +137,10 @@ public class AccountController extends BaseController
 			throw new ResourceNotFoundException();
 		}
 
-		model.addAttribute("account", accountOptional.get());
-		model.addAttribute("availableAccountStates", AccountState.values());
-		model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
-		return "accounts/newAccount";
+		model.addAttribute(ModelAttributes.ONE_ENTITY, accountOptional.get());
+		model.addAttribute(ModelAttributes.AVAILABLE_ACCOUNT_STATES, AccountState.values());
+		model.addAttribute(ModelAttributes.FONTAWESOME_ICONS, FontAwesomeIcons.ICONS);
+		return ReturnValues.NEW_ENTITY;
 	}
 
 	@PostMapping(value = "/newAccount")
@@ -128,6 +148,7 @@ public class AccountController extends BaseController
 					   @ModelAttribute("NewAccount") Account account,
 					   @RequestParam(value = "iconImageID", required = false) Integer iconImageID,
 					   @RequestParam(value = "builtinIconIdentifier", required = false) String builtinIconIdentifier,
+					   @RequestParam(value = "fontColor", required = false) String fontColor,
 					   BindingResult bindingResult)
 	{
 		AccountValidator accountValidator = new AccountValidator();
@@ -148,16 +169,16 @@ public class AccountController extends BaseController
 			bindingResult.addError(new FieldError("NewAccount", "state", account.getAccountState(), false, new String[]{"warning.account.edit.state"}, null, null));
 		}
 
+		account.updateIcon(iconService, iconImageID, builtinIconIdentifier, fontColor, accountService);
+
 		if(bindingResult.hasErrors())
 		{
-			model.addAttribute("error", bindingResult);
-			model.addAttribute("account", account);
-			model.addAttribute("availableImages", imageService.getRepository().findAll());
-			model.addAttribute("availableAccountStates", AccountState.values());
-			return "accounts/newAccount";
+			model.addAttribute(ModelAttributes.ERROR, bindingResult);
+			model.addAttribute(ModelAttributes.ONE_ENTITY, account);
+			model.addAttribute(ModelAttributes.AVAILABLE_ACCOUNT_STATES, AccountState.values());
+			model.addAttribute(ModelAttributes.FONTAWESOME_ICONS, FontAwesomeIcons.ICONS);
+			return ReturnValues.NEW_ENTITY;
 		}
-
-		account.updateIcon(iconService, iconImageID, builtinIconIdentifier, accountService);
 
 		if(isNewAccount)
 		{
@@ -171,10 +192,11 @@ public class AccountController extends BaseController
 
 		if(request.getSession().getAttribute("accountMatchList") != null)
 		{
-			return "redirect:/settings/database/import/step2";
+			return ReturnValues.IMPORT_STEP_2;
 		}
 
-		return "redirect:/accounts";
+		WebRequestUtils.putNotification(webRequest, new Notification(Localization.getString("notification.account.save.success", account.getName()), NotificationType.SUCCESS));
+		return ReturnValues.REDIRECT_SHOW_ALL;
 	}
 
 	private boolean isAccountStateAllowed(Account account)
@@ -195,5 +217,13 @@ public class AccountController extends BaseController
 		{
 			return true;
 		}
+	}
+
+	@GetMapping("/globalAccountSelectModal")
+	public String globalAccountSelectModal(Model model)
+	{
+		model.addAttribute(ModelAttributes.ALL_ENTITIES, accountService.getAllReadableAccounts());
+
+		return ReturnValues.GLOBAL_ACCOUNT_SELECT_MODAL;
 	}
 }

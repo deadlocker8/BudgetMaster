@@ -6,7 +6,7 @@
 
     <groupId>de.deadlocker8</groupId>
     <artifactId>BudgetMaster</artifactId>
-    <version>2.8.0</version>
+    <version>2.9.0</version>
     <name>BudgetMaster</name>
 
     <repositories>
@@ -35,7 +35,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.6</version>
+        <version>2.6.3</version>
         <relativePath/>
     </parent>
 
@@ -54,29 +54,30 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
 
         <jlibs.version>3.2.0</jlibs.version>
         <versionizer.version>3.0.1</versionizer.version>
         <webjars-locator.version>0.42</webjars-locator.version>
         <jquery.version>3.6.0</jquery.version>
         <materializecss.version>1.0.0</materializecss.version>
-        <fontawesome.version>5.15.3</fontawesome.version>
+        <fontawesome.version>6.0.0</fontawesome.version>
         <sortablejs.version>1.14.0</sortablejs.version>
         <mousetrap.version>1.6.5</mousetrap.version>
         <codemirror.version>5.62.2</codemirror.version>
-        <selenium.version>4.0.0</selenium.version>
-        <assertj-core.version>3.21.0</assertj-core.version>
-        <jgit.version>5.13.0.202109080827-r</jgit.version>
-        <natorder.version>1.1.0</natorder.version>
+        <selenium.version>4.1.2</selenium.version>
+        <assertj-core.version>3.22.0</assertj-core.version>
+        <jgit.version>6.0.0.202111291000-r</jgit.version>
+        <natorder.version>1.1.2</natorder.version>
         <h2database.version>1.4.199</h2database.version>
         <itextpdf.version>5.5.13.2</itextpdf.version>
-        <usertype-core.version>6.0.1.GA</usertype-core.version>
-        <joda-time.version>2.10.12</joda-time.version>
+        <vanilla-picker.version>2.12.1</vanilla-picker.version>
+        <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
+        <dependency-check-maven.version>6.5.3</dependency-check-maven.version>
 
         <app.versionDate>${maven.build.timestamp}</app.versionDate>
         <maven.build.timestamp.format>dd.MM.yy</maven.build.timestamp.format>
-        <app.versionCode>34</app.versionCode>
+        <app.versionCode>35</app.versionCode>
         <app.author>Robert Goldmann</app.author>
 
         <project.outputDirectory>build/${project.version}</project.outputDirectory>
@@ -119,18 +120,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>${joda-time.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jadira.usertype</groupId>
-            <artifactId>usertype.core</artifactId>
-            <version>${usertype-core.version}</version>
         </dependency>
 
         <dependency>
@@ -220,6 +209,12 @@
             <artifactId>codemirror</artifactId>
             <version>${codemirror.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>vanilla-picker</artifactId>
+            <version>${vanilla-picker.version}</version>
+        </dependency>
+
 
         <!-- selenium -->
         <dependency>
@@ -247,6 +242,12 @@
             <version>${assertj-core.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -269,7 +270,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.3.1</version>
+                <version>3.3.2</version>
                 <configuration>
                     <webappDirectory>${basedir}/src/main</webappDirectory>
                     <outputDirectory>${project.outputDirectory}</outputDirectory>
@@ -288,7 +289,7 @@
             <plugin>
                 <groupId>com.akathist.maven.plugins.launch4j</groupId>
                 <artifactId>launch4j-maven-plugin</artifactId>
-                <version>1.7.25</version>
+                <version>2.1.2</version>
                 <executions>
                     <execution>
                         <id>l4j-clui</id>
@@ -323,7 +324,7 @@
                 <version>2.22.2</version>
                 <configuration>
                     <junitArtifactName>junit:junit</junitArtifactName>
-                    <argLine>-Dfile.encoding=UTF-8</argLine>
+                    <argLine>${surefireArgLine} -Dfile.encoding=UTF-8</argLine>
 
                     <systemPropertyVariables>
                         <testProfile>true</testProfile>
@@ -331,11 +332,38 @@
                 </configuration>
             </plugin>
 
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>aggregate-reports-all</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <title>BudgetMaster Code Coverage</title>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <propertyName>surefireArgLine</propertyName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!--Deploy Plugin-->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.3.0</version>
                 <executions>
                     <execution>
                         <id>attach-artifacts</id>
@@ -354,6 +382,31 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>${dependency-check-maven.version}</version>
+                <inherited>false</inherited>
+                <configuration>
+                    <skip>false</skip>
+                    <cveValidForHours>48</cveValidForHours>
+                    <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
+                    <failOnError>false</failOnError>
+                    <formats>
+                        <format>HTML</format>
+                        <format>XML</format>
+                    </formats>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>aggregate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 

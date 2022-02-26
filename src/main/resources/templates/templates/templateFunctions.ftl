@@ -7,58 +7,106 @@
     <@header.buttonLink url='/templates/newTemplate' icon='add' localizationKey='title.template.new'/>
 </#macro>
 
-<#macro buttons>
-    <div class="row valign-wrapper">
-        <div class="col s12 center-align">
-            <@buttonNew/>
-        </div>
-    </div>
+<#macro buttonEditTemplateGroups>
+    <@header.buttonLink url='/templateGroups' icon='folder' localizationKey='title.template.group.edit.short'/>
 </#macro>
 
-<#macro listTemplates templates>
-    <div class="container">
-        <div class="row">
+<#macro buttons>
+    <div class="row valign-wrapper hide-on-small-only">
+        <div class="col s6 right-align">
+            <@buttonNew/>
+        </div>
+
+        <div class="col s6 left-align">
+            <@buttonEditTemplateGroups/>
+        </div>
+    </div>
+    <div class="hide-on-med-and-up">
+        <div class="row valign-wrapper center-align">
             <div class="col s12">
-                <ul class="collapsible expandable z-depth-2" id="templateCollapsible">
-                    <#list templates as template>
-                        <li class="template-item">
-                            <div class="collapsible-header bold">
-                                <@templateHeader template/>
-                                <div class="collapsible-header-button">
-                                    <@header.buttonFlat url='/templates/' + template.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default"/>
-                                    <@header.buttonFlat url='/templates/' + template.ID?c + '/requestDelete' icon='delete' localizationKey='' classes="no-padding text-default button-request-delete-template" isDataUrl=true/>
-                                    <@header.buttonLink url='/templates/' + template.ID?c + '/select' icon='note_add' localizationKey='' classes='button-select-template'/>
-                                </div>
-                            </div>
-                            <div class="collapsible-body">
-                                <div class="row no-margin-bottom">
-                                    <table class="table-template-content text-default">
-                                        <@templateName template/>
-                                        <@templateAmount template/>
-                                        <@templateCategory template/>
-                                        <@templateDescription template/>
-                                        <@templateTags template/>
-                                        <@templateAccount template/>
-                                        <@templateTransferAccount template/>
-                                    </table>
-                                </div>
-                            </div>
-                        </li>
-                    </#list>
-                </ul>
+                <@buttonNew/>
+            </div>
+        </div>
+        <div class="row valign-wrapper center-align">
+            <div class="col s12">
+                <@buttonEditTemplateGroups/>
             </div>
         </div>
     </div>
 </#macro>
 
-<#macro templateHeader template>
-    <#if template.getIconReference()??>
-        <@header.entityIcon entity=template classes="template-icon text-default"/>
-    <#elseif template.getTransferAccount()??>
-        <i class="material-icons">swap_horiz</i>
+
+<#macro listTemplates templatesByGroup>
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <#list templatesByGroup as templateGroup, templates>
+                    <ul class="collapsible expandable templateCollapsible" data-group-id="${templateGroup.ID?c}">
+                        <#if templatesByGroup?size != 1>
+                            <div class="template-group-headline">${getTemplateGroupName(templateGroup)}</div>
+                        </#if>
+
+                        <#list templates as template>
+                            <@templateItem template/>
+                        </#list>
+                    </ul>
+                </#list>
+            </div>
+        </div>
+    </div>
+
+     <form id="form-move-template-to-group" method="post" action="<@s.url '/templateGroups/moveTemplateToGroup'/>">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <input type="hidden" name="templateID" value=""/>
+        <input type="hidden" name="groupID" value=""/>
+     </form>
+</#macro>
+
+<#macro templateItem template>
+    <li class="template-item z-depth-2" data-template-id="${template.ID?c}">
+        <div class="collapsible-header bold">
+            <@templateHeader template/>
+            <div class="collapsible-header-button">
+                <@header.buttonFlat url='/templates/' + template.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default"/>
+                <@header.buttonFlat url='/templates/' + template.ID?c + '/requestDelete' icon='delete' localizationKey='' classes="no-padding text-default button-request-delete-template" isDataUrl=true/>
+                <@header.buttonLink url='/templates/' + template.ID?c + '/select' icon='note_add' localizationKey='' classes='button-select-template'/>
+            </div>
+        </div>
+        <div class="collapsible-body">
+            <div class="row no-margin-bottom">
+                <table class="table-template-content text-default">
+                    <@templateName template/>
+                    <@templateAmount template/>
+                    <@templateCategory template/>
+                    <@templateDescription template/>
+                    <@templateTags template/>
+                    <@templateAccount template/>
+                    <@templateTransferAccount template/>
+                </table>
+            </div>
+        </div>
+    </li>
+</#macro>
+
+<#function getTemplateGroupName templateGroup>
+    <#if templateGroup.getType().name() == "DEFAULT">
+        <#return locale.getString("template.group.default")>
     <#else>
-        <i class="material-icons">payment</i>
+        <#return templateGroup.getName()>
     </#if>
+</#function>
+
+
+<#macro templateHeader template>
+    <span style="color: ${template.getFontColor(settings.isUseDarkTheme())}">
+        <#if template.getIconReference()?? && (template.getIconReference().isImageIcon() || template.getIconReference().isBuiltinIcon())>
+            <@header.entityIcon entity=template classes="template-icon"/>
+        <#elseif template.getTransferAccount()??>
+            <i class="material-icons">swap_horiz</i>
+        <#else>
+            <i class="material-icons">payment</i>
+        </#if>
+    </span>
     <div class="truncate template-header-name">${template.getTemplateName()}</div>
 </#macro>
 

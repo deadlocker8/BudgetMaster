@@ -17,20 +17,18 @@ import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.thecodelabs.utils.util.Localization;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
@@ -38,6 +36,18 @@ import java.util.List;
 @RequestMapping(Mappings.REPORTS)
 public class ReportController extends BaseController
 {
+	private static class ModelAttributes
+	{
+		public static final String REPORT_SETTINGS = "reportSettings";
+		public static final String CURRENT_DATE = "currentDate";
+		public static final String FILTER_CONFIGURATION = "filterConfiguration";
+	}
+
+	private static class ReturnValues
+	{
+		public static final String ALL_ENTITIES = "reports/reports";
+	}
+
 	private final SettingsService settingsService;
 	private final ReportSettingsService reportSettingsService;
 	private final ReportGeneratorService reportGeneratorService;
@@ -60,15 +70,15 @@ public class ReportController extends BaseController
 		this.filterHelpers = filterHelpers;
 	}
 
-	@RequestMapping
+	@GetMapping
 	public String reports(HttpServletRequest request, Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
 	{
-		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
+		LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
 
-		model.addAttribute("reportSettings", reportSettingsService.getReportSettings());
-		model.addAttribute("currentDate", date);
-		model.addAttribute("filterConfiguration", filterHelpers.getFilterConfiguration(request));
-		return "reports/reports";
+		model.addAttribute(ModelAttributes.REPORT_SETTINGS, reportSettingsService.getReportSettings());
+		model.addAttribute(ModelAttributes.CURRENT_DATE, date);
+		model.addAttribute(ModelAttributes.FILTER_CONFIGURATION, filterHelpers.getFilterConfiguration(request));
+		return ReturnValues.ALL_ENTITIES;
 	}
 
 	@PostMapping(value = "/generate")
@@ -88,7 +98,7 @@ public class ReportController extends BaseController
 		}
 
 		FilterConfiguration filterConfiguration = filterHelpers.getFilterConfiguration(request);
-		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(account, reportSettings.getDate().getMonthOfYear(), reportSettings.getDate().getYear(), settingsService.getSettings().isRestActivated(), filterConfiguration);
+		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(account, reportSettings.getDate().getMonthValue(), reportSettings.getDate().getYear(), settingsService.getSettings().isRestActivated(), filterConfiguration);
 		Budget budget = helpers.getBudget(transactions, account);
 
 		ReportConfiguration reportConfiguration = new ReportConfigurationBuilder()
@@ -99,8 +109,8 @@ public class ReportController extends BaseController
 				.setCategoryBudgets(CategoryBudgetHandler.getCategoryBudgets(transactions, categoryService.getAllEntitiesAsc()))
 				.createReportConfiguration();
 
-		String month = reportSettings.getDate().toString("MM");
-		String year = reportSettings.getDate().toString("YYYY");
+		String month = reportSettings.getDate().format(DateTimeFormatter.ofPattern("MM"));
+		String year = reportSettings.getDate().format(DateTimeFormatter.ofPattern("yyyy"));
 
 		LOGGER.debug(MessageFormat.format("Exporting month report (month: {0}_{1}, account: {2})...", year, month, accountName));
 
@@ -123,12 +133,12 @@ public class ReportController extends BaseController
 			}
 			catch(IOException e)
 			{
-				e.printStackTrace();
+				LOGGER.error("Could not generate report PDF", e);
 			}
 		}
 		catch(DocumentException e)
 		{
-			e.printStackTrace();
+			LOGGER.error("Could not generate report PDF", e);
 		}
 	}
 }

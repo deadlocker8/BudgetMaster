@@ -134,7 +134,7 @@ for(var i = 0; i < dates.length; i++)
 
         // add border if category color is white
         var borderWidth = 0;
-        if(currentValues[COLOR][j] === '#FFFFFF')
+        if(currentValues[COLOR][j].toUpperCase().startsWith('#FFFFFF'))
         {
             borderWidth = 1;
         }

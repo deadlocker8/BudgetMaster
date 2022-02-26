@@ -4,11 +4,11 @@ import de.deadlocker8.budgetmaster.backup.AutoBackupStrategy;
 import de.deadlocker8.budgetmaster.backup.AutoBackupTime;
 import de.deadlocker8.budgetmaster.utils.DateHelper;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
-import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.time.LocalDate;
 
 @Entity
 public class Settings
@@ -26,7 +26,7 @@ public class Settings
 
 	private Boolean backupReminderActivated;
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
-	private DateTime lastBackupReminderDate;
+	private LocalDate lastBackupReminderDate;
 
 	private Integer searchItemsPerPage;
 
@@ -45,6 +45,7 @@ public class Settings
 
 	public Settings()
 	{
+		// empty
 	}
 
 	public static Settings getDefault()
@@ -57,7 +58,7 @@ public class Settings
 		defaultSettings.setShowCategoriesAsCircles(true);
 		defaultSettings.setAutoUpdateCheckEnabled(true);
 		defaultSettings.setBackupReminderActivated(true);
-		defaultSettings.setLastBackupReminderDate(DateHelper.getCurrentDate());
+		defaultSettings.setLastBackupReminderDate(LocalDate.now());
 		defaultSettings.setSearchItemsPerPage(10);
 		defaultSettings.setAutoBackupStrategy(AutoBackupStrategy.NONE);
 		defaultSettings.setAutoBackupDays(1);
@@ -148,12 +149,12 @@ public class Settings
 		this.backupReminderActivated = backupReminderActivated;
 	}
 
-	public DateTime getLastBackupReminderDate()
+	public LocalDate getLastBackupReminderDate()
 	{
 		return lastBackupReminderDate;
 	}
 
-	public void setLastBackupReminderDate(DateTime lastBackupReminderDate)
+	public void setLastBackupReminderDate(LocalDate lastBackupReminderDate)
 	{
 		this.lastBackupReminderDate = lastBackupReminderDate;
 	}
@@ -162,7 +163,7 @@ public class Settings
 	{
 		if(backupReminderActivated)
 		{
-			return lastBackupReminderDate.getMonthOfYear() != DateHelper.getCurrentDate().getMonthOfYear();
+			return lastBackupReminderDate.getMonthValue() != DateHelper.getCurrentDate().getMonthValue();
 		}
 		return false;
 	}

@@ -7,6 +7,7 @@ import de.deadlocker8.budgetmaster.database.model.v4.BackupDatabase_v4;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupDatabase_v5;
 import de.deadlocker8.budgetmaster.database.model.v6.BackupDatabase_v6;
 import de.deadlocker8.budgetmaster.database.model.v7.BackupDatabase_v7;
+import de.deadlocker8.budgetmaster.database.model.v8.BackupDatabase_v8;
 import de.thecodelabs.utils.util.Localization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,7 @@ public class DatabaseParser
 	final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
 	private static final int MINIMUM_VERSION = 4;
-	public static final int LATEST_VERSION = 7;
+	public static final int LATEST_VERSION = 8;
 
 	private final String jsonString;
 
@@ -66,6 +67,13 @@ public class DatabaseParser
 			importedDatabase = parsedDatabase;
 		}
 
+		if(version == 8)
+		{
+			BackupDatabase_v8 parsedDatabase = new DatabaseParser_v8(jsonString).parseDatabaseFromJSON();
+			LOGGER.debug(MessageFormat.format("Parsed database with {0} transactions, {1} categories, {2} accounts, {3} templates {4} charts {5} images and {6} icons", parsedDatabase.getTransactions().size(), parsedDatabase.getCategories().size(), parsedDatabase.getAccounts().size(), parsedDatabase.getTemplates().size(), parsedDatabase.getCharts().size(), parsedDatabase.getImages().size(), parsedDatabase.getIcons().size()));
+			importedDatabase = parsedDatabase;
+		}
+
 		if(importedDatabase == null)
 		{
 			throw new IllegalArgumentException(Localization.getString("error.database.import.unknown.version"));
@@ -91,7 +99,7 @@ public class DatabaseParser
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			LOGGER.error("Invalid database version", e);
 			throw new IllegalArgumentException(Localization.getString("error.database.import.invalid.json"), e);
 		}
 	}

@@ -60,6 +60,7 @@ public class ImageService implements Resettable
 	@Override
 	public void createDefaults()
 	{
+		// no defaults needed
 	}
 
 	@Transactional

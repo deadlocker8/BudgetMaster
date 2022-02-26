@@ -61,7 +61,7 @@ class SearchTest extends SeleniumTestBase
 
 		// results
 		List<WebElement> results = driver.findElements(By.cssSelector(".search-container .card-panel"));
-		assertThat(results.size()).isEqualTo(10);
+		assertThat(results).hasSize(10);
 	}
 
 	@Test
@@ -69,7 +69,7 @@ class SearchTest extends SeleniumTestBase
 	{
 		// === PAGE 1 ===
 		List<WebElement> pages = driver.findElements(By.cssSelector(".pagination-position-top .pagination li"));
-		assertThat(pages.size()).isEqualTo(5);
+		assertThat(pages).hasSize(5);
 
 		assertThat(pages.get(0).getAttribute("class")).contains("disabled");
 		assertThat(pages.get(1).findElement(By.className("page-link")).getText()).isEqualTo("1");
@@ -80,13 +80,13 @@ class SearchTest extends SeleniumTestBase
 
 		// validate results
 		List<WebElement> results = driver.findElements(By.cssSelector(".search-container .card-panel"));
-		assertThat(results.size()).isEqualTo(10);
+		assertThat(results).hasSize(10);
 
 		// === PAGE 1 ===
 		pages.get(3).click();
 
 		pages = driver.findElements(By.cssSelector(".pagination-position-top .pagination li"));
-		assertThat(pages.size()).isEqualTo(5);
+		assertThat(pages).hasSize(5);
 
 		// previous button should be enabled
 		assertThat(pages.get(0).getAttribute("class")).doesNotContain("disabled");
@@ -101,7 +101,7 @@ class SearchTest extends SeleniumTestBase
 
 		// validate
 		results = driver.findElements(By.cssSelector(".search-container .card-panel"));
-		assertThat(results.size()).isEqualTo(4);
+		assertThat(results).hasSize(4);
 	}
 
 	@Test
@@ -124,7 +124,7 @@ class SearchTest extends SeleniumTestBase
 
 		// results
 		List<WebElement> results = driver.findElements(By.cssSelector(".search-container .card-panel"));
-		assertThat(results.size()).isEqualTo(2);
+		assertThat(results).hasSize(2);
 	}
 
 	@Test
@@ -135,7 +135,7 @@ class SearchTest extends SeleniumTestBase
 		assertThat(driver.findElement(By.cssSelector(".headline-date")).getText()).isEqualTo("May 2019");
 
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
-		assertThat(transactionsRows.size()).isEqualTo(25);
+		assertThat(transactionsRows).hasSize(25);
 		assertThat(transactionsRows.get(0).getAttribute("class")).contains("background-blue-light");
 		for(int i = 1; i < transactionsRows.size(); i++)
 		{

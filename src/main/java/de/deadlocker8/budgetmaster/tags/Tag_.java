@@ -12,4 +12,5 @@ public class Tag_
 	public static volatile SingularAttribute<Tag, Integer> ID;
 	public static volatile SingularAttribute<Tag, String> name;
 	public static volatile ListAttribute<Tag, Transaction> referringTransactions;
+	public static volatile ListAttribute<Tag, Transaction> referringTemplates;
 }

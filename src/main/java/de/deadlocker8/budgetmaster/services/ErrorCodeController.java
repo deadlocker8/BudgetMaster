@@ -4,7 +4,7 @@ import de.deadlocker8.budgetmaster.utils.Mappings;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +17,7 @@ public class ErrorCodeController implements ErrorController
 		return null;
 	}
 
-	@RequestMapping(Mappings.ERROR)
+	@GetMapping(Mappings.ERROR)
 	public String handleError(HttpServletRequest request)
 	{
 		final Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);

@@ -18,6 +18,17 @@ import java.util.List;
 @RequestMapping(Mappings.ABOUT)
 public class AboutController extends BaseController
 {
+	private static class ModelAttributes
+	{
+		public static final String NEWS_ENTRIES = "newsEntries";
+	}
+
+	private static class ReturnValues
+	{
+		public static final String ABOUT = "about";
+		public static final String WHATS_NEW = "whatsNewModal";
+	}
+
 	private final SettingsService settingsService;
 
 	@Autowired
@@ -29,26 +40,25 @@ public class AboutController extends BaseController
 	@GetMapping
 	public String index(Model model)
 	{
-		return "about";
+		return ReturnValues.ABOUT;
 	}
 
 	@GetMapping("/whatsNewModal")
 	public String whatsNewModal(Model model)
 	{
 		final List<NewsEntry> newsEntries = new ArrayList<>();
-		newsEntries.add(NewsEntry.createWithLocalizationKey("recurringTransfers"));
-		newsEntries.add(NewsEntry.createWithLocalizationKey("newFromExisting"));
-		newsEntries.add(NewsEntry.createWithLocalizationKey("imagePerformance"));
-		newsEntries.add(NewsEntry.createWithLocalizationKey("searchOption"));
-		newsEntries.add(NewsEntry.createWithLocalizationKey("newHotkey"));
-		newsEntries.add(NewsEntry.createWithLocalizationKey("trimInputs"));
-		newsEntries.add(NewsEntry.createWithLocalizationKey("fix.sortTemplates"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("groupTemplates"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("iconFontColor"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("globalAccountSelect"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("saveAndContinue"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("newCharts"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("fix.transferDirectionInCharts"));
 
-		model.addAttribute("newsEntries", newsEntries);
-		return "whatsNewModal";
+		model.addAttribute(ModelAttributes.NEWS_ENTRIES, newsEntries);
+		return ReturnValues.WHATS_NEW;
 	}
 
-	@RequestMapping("/whatsNewModal/close")
+	@GetMapping("/whatsNewModal/close")
 	@Transactional
 	public String whatsNewModalClose(HttpServletRequest request)
 	{

@@ -1,22 +1,31 @@
 <#import "/spring.ftl" as s>
 <#import "../helpers/header.ftl" as header>
 
-<#macro iconSelect id item>
+<#macro iconSelect id item showBackground=true initialBackgroundClasses='' backgroundClasses='' preventFallbackIcon=false>
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">
             <i class="fas fa-icons prefix"></i>
             <label class="input-label" for="${id}">${locale.getString("account.new.label.icon")}</label>
 
-            <#assign hasImageIcon=item.getIconReference()?? && item.getIconReference().getImage()??/>
-            <#assign hasBuiltinIcon=item.getIconReference()?? && item.getIconReference().getBuiltinIdentifier()??/>
+            <#assign hasImageIcon=item.getIconReference()?? && item.getIconReference().isImageIcon()/>
+            <#assign hasBuiltinIcon=item.getIconReference()?? && item.getIconReference().isBuiltinIcon()/>
 
             <div id="${id}" class="valign-wrapper item-icon">
-                <a id="item-icon-preview">
-                    <i id="builtin-icon-preview-icon" class="<#if hasBuiltinIcon>${item.getIconReference().getBuiltinIdentifier()}<#else>hidden</#if>"></i>
-                    <img id="item-icon-preview-icon" src="<#if hasImageIcon><@s.url "/media/getImageByIconID/" + item.getIconReference().getID()/></#if>" class="item-icon-preview <#if hasImageIcon == false>hidden</#if>"/>
-                    <div id="item-icon-placeholder" class="<#if hasImageIcon || hasBuiltinIcon>hidden</#if>">${locale.getString("account.new.icon.placeholder")}</div>
-                </a>
-                <@header.buttonFlat url='' icon='delete' id='' localizationKey='' classes="no-padding text-default button-remove-icon-from-item" noUrl=true/>
+                <div class="item-icon-preview-container">
+                    <a id="item-icon-preview" style="color: <#if item.getFontColor(settings.isUseDarkTheme())??>${item.getFontColor(settings.isUseDarkTheme())}</#if>">
+                        <script>iconSelectAdditionalBackgroundClasses = "${backgroundClasses}";</script>
+                        <div id="item-icon-preview-background" class="category-circle category-circle-preview <#if settings.getShowCategoriesAsCircles()?? && settings.getShowCategoriesAsCircles() == false>category-square</#if> ${initialBackgroundClasses}" style="background-color: <#if showBackground>${item.getColor()}</#if>">
+                            <i id="builtin-icon-preview-icon" class="<#if hasBuiltinIcon>${item.getIconReference().getBuiltinIdentifier()}<#else>hidden</#if>"></i>
+                            <img id="item-icon-preview-icon" src="<#if hasImageIcon><@s.url "/media/getImageByIconID/" + item.getIconReference().getID()/></#if>" class=" item-icon-preview category-icon <#if hasImageIcon == false>hidden</#if>"/>
+                            <#if !preventFallbackIcon>
+                                <span id="item-icon-fallback-name" class="<#if hasBuiltinIcon || hasImageIcon>hidden</#if>"><#if item.getName()?? && item.getName()?length gt 0>${item.getName()?capitalize[0]}</#if></span>
+                            </#if>
+                        </div>
+                    </a>
+                    <@header.buttonFlat url='' icon='delete' id='' localizationKey='' classes="no-padding text-default button-remove-icon-from-item" noUrl=true/>
+                </div>
+
+                <div id="item-icon-placeholder">${locale.getString("account.new.icon.placeholder")}</div>
 
                 <input id="hidden-input-icon-image-id" type="hidden" name="iconImageID" value="<#if hasImageIcon>${item.getIconReference().getImage().getID()?c}</#if>">
                 <input id="hidden-input-icon-builtin-identifier" type="hidden" name="builtinIconIdentifier" value="<#if hasBuiltinIcon>${item.getIconReference().getBuiltinIdentifier()}</#if>">
@@ -27,7 +36,7 @@
 
 
 <#macro modalIconSelect idToFocusOnClose item>
-    <#assign hasImageIcon=item.getIconReference()?? && item.getIconReference().getImage()??/>
+    <#assign hasImageIcon=item.getIconReference()?? && item.getIconReference().isImageIcon()/>
 
     <div id="modalIconSelect" class="modal modal-fixed-footer background-color" data-focus-on-close="${idToFocusOnClose}">
         <div class="modal-content center-align">
@@ -68,7 +77,7 @@
         </div>
     </div>
 
-    <#assign hasImageIcon=item.getIconReference()?? && item.getIconReference().getImage()??/>
+    <#assign hasImageIcon=item.getIconReference()?? && item.getIconReference().isImageIcon()/>
     <#if hasImageIcon>
         <#assign selectedImageID=item.getIconReference().getImage().getID()?c/>
     <#else>
@@ -103,7 +112,7 @@
 </#macro>
 
 <#macro builtinIconOption icon item>
-    <#assign hasBuiltinIcon=item.getIconReference()?? && item.getIconReference().getBuiltinIdentifier()??/>
+    <#assign hasBuiltinIcon=item.getIconReference()?? && item.getIconReference().isBuiltinIcon()/>
     <#if hasBuiltinIcon>
         <#assign selectedIconName=item.getIconReference().getBuiltinIdentifier()/>
     <#else>

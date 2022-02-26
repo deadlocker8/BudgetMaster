@@ -21,7 +21,7 @@
     <#import "/spring.ftl" as s>
     <title>${title}</title>
     <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="<@s.url '/webjars/font-awesome/5.15.3/css/all.min.css'/>">
+    <link rel="stylesheet" href="<@s.url '/webjars/font-awesome/6.0.0/css/all.min.css'/>">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="<@s.url "/webjars/materializecss/1.0.0/css/materialize.min.css"/>">
     <@style "colors"/>
@@ -129,8 +129,8 @@
     </a>
 </#macro>
 
-<#macro buttonSubmit name icon localizationKey id="" color="background-blue" classes="" disabled=false formaction="">
-    <button id="${id}" class="btn waves-effect waves-light ${color} ${classes}" type="submit" name="${name}" <#if disabled>disabled</#if> <#if formaction?has_content>formaction="<@s.url formaction/>"</#if>>
+<#macro buttonSubmit name icon localizationKey id="" color="background-blue" classes="" disabled=false formaction="" value="">
+    <button id="${id}" class="btn waves-effect waves-light ${color} ${classes}" type="submit" name="${name}" <#if disabled>disabled</#if> <#if formaction?has_content>formaction="<@s.url formaction/>"</#if> <#if value?has_content>value="${value}"</#if>>
         <i class="material-icons left <#if !localizationKey?has_content>no-margin</#if>">${icon}</i><#if localizationKey?has_content>${locale.getString(localizationKey)}</#if>
     </button>
 </#macro>
@@ -144,12 +144,16 @@
     </a>
 </#macro>
 
-<#macro entityIcon entity classes="">
+<#macro entityIcon entity classes="" fallbackName="">
     <#if entity.getIconReference()??>
-        <#if entity.getIconReference().isBuiltinIcon()>
+        <#if entity.getIconReference().isImageIcon()>
+            <img src="<@s.url "/media/getImageByIconID/" + entity.getIconReference().getID()/>" class="${classes}"/>
+        <#elseif entity.getIconReference().isBuiltinIcon()>
             <i class="${entity.getIconReference().getBuiltinIdentifier()} ${classes}"></i>
         <#else>
-            <img src="<@s.url "/media/getImageByIconID/" + entity.getIconReference().getID()/>" class="${classes}"/>
+            ${fallbackName?capitalize[0]}
         </#if>
+    <#else>
+        ${fallbackName?capitalize[0]}
     </#if>
 </#macro>

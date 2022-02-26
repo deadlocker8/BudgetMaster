@@ -3,6 +3,11 @@ let chartPickerEndDate;
 
 $(document).ready(function()
 {
+    if($('#chart-name').length)
+    {
+        document.getElementById('chart-name').focus();
+    }
+
     if($("#chart-script").length)
     {
         let editor = CodeMirror.fromTextArea(document.getElementById('chart-script'), {

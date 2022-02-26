@@ -8,10 +8,10 @@ import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.utils.DateHelper;
-import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,7 +32,7 @@ public class Transaction implements TransactionBase
 
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	@Expose
-	private DateTime date;
+	private LocalDate date;
 
 	@ManyToOne
 	@Expose
@@ -119,12 +119,12 @@ public class Transaction implements TransactionBase
 		isExpenditure = expenditure;
 	}
 
-	public DateTime getDate()
+	public LocalDate getDate()
 	{
 		return date;
 	}
 
-	public void setDate(DateTime date)
+	public void setDate(LocalDate date)
 	{
 		this.date = date;
 	}

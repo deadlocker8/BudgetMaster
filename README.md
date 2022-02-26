@@ -2,13 +2,14 @@
 Manage your monthly budget easily with BudgetMaster
 
 - __start:__ 17.12.16
-- __current release:__ v2.8.0 (34) from 01.11.21
+- __current release:__ v2.9.0 (35) from 26.02.22
 
 ## Key Features
 - Keep your data private - Host your own BudgetMaster server or use it in standalone mode. All data remains on your machines.
 - Track transactions - Track your incomes and expenditures in transactions with name, description, tags, etc.
 - Schedule transactions - Repeat recurring transactions automatically.
 - Transaction Templates - Prepare templates for transactions that always look the same but are not repeated.
+- Group Templates - Group your templates for a better overview.
 - Multi Bank - Organize your transactions into multiple accounts.
 - Categories - Group your transactions into categories.
 - Data Backup - Backup your complete database or generate month reports as PDF.

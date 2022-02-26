@@ -24,8 +24,6 @@ import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
 import de.deadlocker8.budgetmaster.utils.notification.Notification;
 import de.deadlocker8.budgetmaster.utils.notification.NotificationType;
 import de.thecodelabs.utils.util.Localization;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,13 +34,31 @@ import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 
 @Controller
 @RequestMapping(Mappings.TRANSACTIONS)
 public class TransactionController extends BaseController
 {
+	private static class ReturnValues
+	{
+		public static final String ALL_ENTITIES = "transactions/transactions";
+		public static final String REDIRECT_ALL_ENTITIES = "redirect:/transactions";
+		public static final String NEW_ENTITY = "transactions/newTransaction";
+		public static final String DELETE_ENTITY = "transactions/deleteTransactionModal";
+		public static final String REDIRECT_NEW_TRANSFER = "redirect:/transactions/newTransaction/transfer";
+		public static final String NEW_TRANSFER = "transactions/newTransactionTransfer";
+		public static final String REDIRECT_NEW_TRANSACTION = "redirect:/transactions/newTransaction/normal";
+		public static final String NEW_TRANSACTION = "transactions/newTransactionNormal";
+		public static final String CHANGE_TYPE = "transactions/changeTypeModal";
+	}
+
+	private static final String CONTINUE = "continue";
 	private final TransactionService transactionService;
 	private final CategoryService categoryService;
 	private final AccountService accountService;
@@ -68,12 +84,12 @@ public class TransactionController extends BaseController
 	@GetMapping
 	public String transactions(HttpServletRequest request, Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
 	{
-		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
-		repeatingTransactionUpdater.updateRepeatingTransactions(date.dayOfMonth().withMaximumValue());
+		LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
+		repeatingTransactionUpdater.updateRepeatingTransactions(date.with(lastDayOfMonth()));
 
 		prepareModelTransactions(filterHelpers.getFilterConfiguration(request), model, date);
 
-		return "transactions/transactions";
+		return ReturnValues.ALL_ENTITIES;
 	}
 
 	@GetMapping("/{ID}/requestDelete")
@@ -81,26 +97,26 @@ public class TransactionController extends BaseController
 	{
 		if(!transactionService.isDeletable(ID))
 		{
-			return "redirect:/transactions";
+			return ReturnValues.REDIRECT_ALL_ENTITIES;
 		}
 
-		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
+		LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
 		prepareModelTransactions(filterHelpers.getFilterConfiguration(request), model, date);
-		model.addAttribute("transactionToDelete", transactionService.getRepository().getById(ID));
+		model.addAttribute(TransactionModelAttributes.ENTITY_TO_DELETE, transactionService.getRepository().getById(ID));
 
-		return "transactions/deleteTransactionModal";
+		return ReturnValues.DELETE_ENTITY;
 	}
 
-	private void prepareModelTransactions(FilterConfiguration filterConfiguration, Model model, DateTime date)
+	private void prepareModelTransactions(FilterConfiguration filterConfiguration, Model model, LocalDate date)
 	{
 		Account currentAccount = helpers.getCurrentAccount();
-		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(currentAccount, date.getMonthOfYear(), date.getYear(), settingsService.getSettings().isRestActivated(), filterConfiguration);
+		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(currentAccount, date.getMonthValue(), date.getYear(), settingsService.getSettings().isRestActivated(), filterConfiguration);
 
-		model.addAttribute("transactions", transactions);
-		model.addAttribute("account", currentAccount);
-		model.addAttribute("budget", helpers.getBudget(transactions, currentAccount));
-		model.addAttribute("currentDate", date);
-		model.addAttribute("filterConfiguration", filterConfiguration);
+		model.addAttribute(TransactionModelAttributes.ALL_ENTITIES, transactions);
+		model.addAttribute(TransactionModelAttributes.ACCOUNT, currentAccount);
+		model.addAttribute(TransactionModelAttributes.BUDGET, helpers.getBudget(transactions, currentAccount));
+		model.addAttribute(TransactionModelAttributes.CURRENT_DATE, date);
+		model.addAttribute(TransactionModelAttributes.FILTER_CONFIGURATION, filterConfiguration);
 	}
 
 	@GetMapping("/{ID}/delete")
@@ -111,7 +127,7 @@ public class TransactionController extends BaseController
 
 		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.transaction.delete.success", transactionToDelete.getName()), NotificationType.SUCCESS));
 
-		return "redirect:/transactions";
+		return ReturnValues.REDIRECT_ALL_ENTITIES;
 	}
 
 	@GetMapping("/newTransaction/{type}")
@@ -121,26 +137,28 @@ public class TransactionController extends BaseController
 		if(accountState != AccountState.FULL_ACCESS)
 		{
 			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.transaction.add.warning", Localization.getString(accountState.getLocalizationKey())), NotificationType.WARNING));
-			return "redirect:/transactions";
+			return ReturnValues.REDIRECT_ALL_ENTITIES;
 		}
 
-		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
+		LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
 		Transaction emptyTransaction = new Transaction();
 		emptyTransaction.setCategory(categoryService.findByType(CategoryType.NONE));
 		transactionService.prepareModelNewOrEdit(model, false, date, false, emptyTransaction, accountService.getAllActivatedAccountsAsc());
-		return "transactions/newTransaction" + StringUtils.capitalize(type);
+		return ReturnValues.NEW_ENTITY + StringUtils.capitalize(type);
 	}
 
 	@PostMapping(value = "/newTransaction")
-	public String post(Model model, @CookieValue("currentDate") String cookieDate,
+	public String post(WebRequest request,
+					   Model model, @CookieValue("currentDate") String cookieDate,
 					   @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
 					   @RequestParam(value = "isRepeating", required = false) boolean isRepeating,
 					   @RequestParam(value = "repeatingModifierNumber", required = false, defaultValue = "0") int repeatingModifierNumber,
 					   @RequestParam(value = "repeatingModifierType", required = false) String repeatingModifierType,
 					   @RequestParam(value = "repeatingEndType", required = false) String repeatingEndType,
-					   @RequestParam(value = "repeatingEndValue", required = false) String repeatingEndValue)
+					   @RequestParam(value = "repeatingEndValue", required = false) String repeatingEndValue,
+					   @RequestParam(value = "action", required = false) String action)
 	{
-		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
+		LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
 
 		handlePreviousType(transaction, isRepeating);
 
@@ -163,14 +181,16 @@ public class TransactionController extends BaseController
 		String redirectUrl;
 		if(transaction.isTransfer())
 		{
-			redirectUrl = "transactions/newTransactionTransfer";
+			redirectUrl = ReturnValues.NEW_TRANSFER;
 		}
 		else
 		{
-			redirectUrl = "transactions/newTransactionNormal";
+			redirectUrl = ReturnValues.NEW_TRANSACTION;
 		}
 
-		return handleRedirect(model, transaction.getID() != null, transaction, bindingResult, date, redirectUrl);
+
+		final boolean isContinueActivated = action.equals(CONTINUE);
+		return handleRedirect(request, model, transaction.getID() != null, transaction, bindingResult, date, redirectUrl, isContinueActivated);
 	}
 
 	private void handlePreviousType(Transaction transaction, boolean isRepeating)
@@ -182,7 +202,7 @@ public class TransactionController extends BaseController
 	}
 
 	@SuppressWarnings("ConstantConditions")
-	private RepeatingOption createRepeatingOption(DateTime startDate, int repeatingModifierNumber, String repeatingModifierType, String repeatingEndType, String repeatingEndValue)
+	private RepeatingOption createRepeatingOption(LocalDate startDate, int repeatingModifierNumber, String repeatingModifierType, String repeatingEndType, String repeatingEndValue)
 	{
 		RepeatingModifierType type = RepeatingModifierType.getByLocalization(repeatingModifierType);
 		RepeatingModifier repeatingModifier = RepeatingModifier.fromModifierType(type, repeatingModifierNumber);
@@ -198,7 +218,7 @@ public class TransactionController extends BaseController
 				repeatingEnd = new RepeatingEndAfterXTimes(Integer.parseInt(repeatingEndValue));
 				break;
 			case DATE:
-				DateTime endDate = DateTime.parse(repeatingEndValue, DateTimeFormat.forPattern(DateFormatStyle.NORMAL.getKey()).withLocale(settingsService.getSettings().getLanguage().getLocale()));
+				LocalDate endDate = LocalDate.parse(repeatingEndValue, DateTimeFormatter.ofPattern(DateFormatStyle.NORMAL.getKey()).withLocale(settingsService.getSettings().getLanguage().getLocale()));
 				repeatingEnd = new RepeatingEndDate(endDate);
 				break;
 		}
@@ -206,17 +226,28 @@ public class TransactionController extends BaseController
 		return new RepeatingOption(startDate, repeatingModifier, repeatingEnd);
 	}
 
-	private String handleRedirect(Model model, boolean isEdit, @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult, DateTime date, String url)
+	private String handleRedirect(WebRequest request, Model model, boolean isEdit, @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult, LocalDate date, String url, boolean isContinueActivated)
 	{
 		if(bindingResult.hasErrors())
 		{
-			model.addAttribute("error", bindingResult);
+			model.addAttribute(TransactionModelAttributes.ERROR, bindingResult);
 			transactionService.prepareModelNewOrEdit(model, isEdit, date, false, transaction, accountService.getAllActivatedAccountsAsc());
 			return url;
 		}
 
 		transactionService.getRepository().save(transaction);
-		return "redirect:/transactions";
+		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.transaction.save.success", transaction.getName()), NotificationType.SUCCESS));
+
+		if(isContinueActivated)
+		{
+			if(transaction.isTransfer())
+			{
+				return ReturnValues.REDIRECT_NEW_TRANSFER;
+			}
+			return ReturnValues.REDIRECT_NEW_TRANSACTION;
+		}
+
+		return ReturnValues.REDIRECT_ALL_ENTITIES;
 	}
 
 	@GetMapping("/{ID}/edit")
@@ -232,7 +263,7 @@ public class TransactionController extends BaseController
 
 		if(transaction.getAccount().getAccountState() != AccountState.FULL_ACCESS)
 		{
-			return "redirect:/transactions";
+			return ReturnValues.REDIRECT_ALL_ENTITIES;
 		}
 
 		// select first transaction in order to provide correct start date for repeating transactions
@@ -241,14 +272,14 @@ public class TransactionController extends BaseController
 			transaction = transaction.getRepeatingOption().getReferringTransactions().get(0);
 		}
 
-		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
+		LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
 		transactionService.prepareModelNewOrEdit(model, true, date, false, transaction, accountService.getAllActivatedAccountsAsc());
 
 		if(transaction.isTransfer())
 		{
-			return "transactions/newTransactionTransfer";
+			return ReturnValues.NEW_TRANSFER;
 		}
-		return "transactions/newTransactionNormal";
+		return ReturnValues.NEW_TRANSACTION;
 	}
 
 	@GetMapping("/{ID}/highlight")
@@ -262,15 +293,15 @@ public class TransactionController extends BaseController
 			accountService.selectAccount(transaction.getAccount().getID());
 		}
 
-		repeatingTransactionUpdater.updateRepeatingTransactions(transaction.getDate().dayOfMonth().withMaximumValue());
+		repeatingTransactionUpdater.updateRepeatingTransactions(transaction.getDate().with(lastDayOfMonth()));
 
 		FilterConfiguration filterConfiguration = FilterConfiguration.DEFAULT;
 		filterConfiguration.setFilterCategories(filterHelpers.getFilterCategories());
 		filterConfiguration.setFilterTags(filterHelpers.getFilterTags());
 
 		prepareModelTransactions(filterConfiguration, model, transaction.getDate());
-		model.addAttribute("highlightID", ID);
-		return "transactions/transactions";
+		model.addAttribute(TransactionModelAttributes.HIGHLIGHT_ID, ID);
+		return ReturnValues.ALL_ENTITIES;
 	}
 
 	@GetMapping("/{ID}/changeTypeModal")
@@ -282,8 +313,8 @@ public class TransactionController extends BaseController
 			throw new ResourceNotFoundException();
 		}
 
-		model.addAttribute("transaction", transactionOptional.get());
-		return "transactions/changeTypeModal";
+		model.addAttribute(TransactionModelAttributes.ONE_ENTITY, transactionOptional.get());
+		return ReturnValues.CHANGE_TYPE;
 	}
 
 	@GetMapping("/{ID}/changeType")
@@ -319,16 +350,16 @@ public class TransactionController extends BaseController
 		{
 			case NORMAL:
 				transactionCopy.setTransferAccount(null);
-				redirectUrl = "transactions/newTransactionNormal";
+				redirectUrl = ReturnValues.NEW_TRANSACTION;
 				break;
 			case TRANSFER:
-				redirectUrl = "transactions/newTransactionTransfer";
+				redirectUrl = ReturnValues.NEW_TRANSFER;
 				break;
 			default:
 				throw new IllegalStateException("Unexpected value: " + newTransactionType);
 		}
 
-		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
+		LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
 		transactionService.prepareModelNewOrEdit(model, true, date, true, transactionCopy, accountService.getAllActivatedAccountsAsc());
 
 		return redirectUrl;
@@ -351,7 +382,7 @@ public class TransactionController extends BaseController
 			existingTransaction = existingTransaction.getRepeatingOption().getReferringTransactions().get(0);
 		}
 
-		DateTime date = dateService.getDateTimeFromCookie(cookieDate);
+		LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
 
 		Transaction newTransaction = new Transaction(existingTransaction);
 		newTransaction.setID(null);
@@ -366,8 +397,8 @@ public class TransactionController extends BaseController
 
 		if(newTransaction.isTransfer())
 		{
-			return "transactions/newTransactionTransfer";
+			return ReturnValues.NEW_TRANSFER;
 		}
-		return "transactions/newTransactionNormal";
+		return ReturnValues.NEW_TRANSACTION;
 	}
 }

@@ -1,9 +1,9 @@
 package de.deadlocker8.budgetmaster.repeating.modifier;
 
 import com.google.gson.annotations.Expose;
-import org.joda.time.DateTime;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -22,13 +22,15 @@ public abstract class RepeatingModifier
 	@Expose
 	private String localizationKey;
 
-	public RepeatingModifier(int quantity, String localizationKey)
+	protected RepeatingModifier(int quantity, String localizationKey)
 	{
 		this.quantity = quantity;
 		this.localizationKey = localizationKey;
 	}
 
-	public RepeatingModifier() {}
+	protected RepeatingModifier()
+	{
+	}
 
 	public Integer getID()
 	{
@@ -61,7 +63,7 @@ public abstract class RepeatingModifier
 	}
 
 	@Transient
-	public abstract DateTime getNextDate(DateTime lastDate);
+	public abstract LocalDate getNextDate(LocalDate lastDate);
 
 	@Override
 	public String toString()

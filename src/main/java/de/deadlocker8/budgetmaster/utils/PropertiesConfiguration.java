@@ -9,6 +9,7 @@ import org.springframework.core.io.FileSystemResource;
 import java.nio.file.Path;
 
 @Configuration
+@SuppressWarnings("squid:S1118")
 public class PropertiesConfiguration
 {
 	@Bean

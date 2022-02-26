@@ -27,12 +27,14 @@ import de.deadlocker8.budgetmaster.services.ImportResultItem;
 import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.TagRepository;
+import de.deadlocker8.budgetmaster.templategroup.TemplateGroup;
+import de.deadlocker8.budgetmaster.templategroup.TemplateGroupRepository;
+import de.deadlocker8.budgetmaster.templategroup.TemplateGroupType;
 import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.templates.TemplateRepository;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionBase;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
-import org.joda.time.DateTime;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -40,6 +42,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -57,6 +60,9 @@ class ImportServiceTest
 
 	@Mock
 	private TagRepository tagRepository;
+
+	@Mock
+	private TemplateGroupRepository templateGroupRepository;
 
 	@Mock
 	private TemplateRepository templateRepository;
@@ -92,14 +98,14 @@ class ImportServiceTest
 		Transaction transaction1 = new Transaction();
 		transaction1.setName("Test");
 		transaction1.setAmount(200);
-		transaction1.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		transaction1.setDate(LocalDate.of(2018, 10, 3));
 		transaction1.setCategory(category1);
 		transactionList.add(transaction1);
 
 		Transaction transaction2 = new Transaction();
 		transaction2.setName("Test_2");
 		transaction2.setAmount(-525);
-		transaction2.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		transaction2.setDate(LocalDate.of(2018, 10, 3));
 		transaction2.setCategory(category2);
 		transactionList.add(transaction2);
 
@@ -153,7 +159,7 @@ class ImportServiceTest
 		Transaction transaction1 = new Transaction();
 		transaction1.setName("Test");
 		transaction1.setAmount(200);
-		transaction1.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		transaction1.setDate(LocalDate.of(2018, 10, 3));
 		transaction1.setCategory(category1);
 		transaction1.setAccount(new Account("Account", AccountType.CUSTOM));
 		transactionList.add(transaction1);
@@ -161,7 +167,7 @@ class ImportServiceTest
 		Transaction transaction2 = new Transaction();
 		transaction2.setName("Test_2");
 		transaction2.setAmount(-525);
-		transaction2.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		transaction2.setDate(LocalDate.of(2018, 10, 3));
 		transaction2.setCategory(category2);
 		transaction2.setAccount(new Account("Account", AccountType.CUSTOM));
 		transactionList.add(transaction2);
@@ -192,14 +198,14 @@ class ImportServiceTest
 		transaction1.setAccount(account1);
 		transaction1.setName("ShouldGoInAccount_1");
 		transaction1.setAmount(200);
-		transaction1.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		transaction1.setDate(LocalDate.of(2018, 10, 3));
 		transactionList.add(transaction1);
 
 		Transaction transaction2 = new Transaction();
 		transaction2.setAccount(account2);
 		transaction2.setName("ImPartOfAccount_2");
 		transaction2.setAmount(-525);
-		transaction2.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		transaction2.setDate(LocalDate.of(2018, 10, 3));
 		transactionList.add(transaction2);
 
 		List<TransactionBase> updatedTransactions = importService.updateAccountsForItems(transactionList, account1.getID(), destinationAccount);
@@ -224,7 +230,7 @@ class ImportServiceTest
 		transaction.setTransferAccount(transferAccount);
 		transaction.setName("Whatever");
 		transaction.setAmount(-525);
-		transaction.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		transaction.setDate(LocalDate.of(2018, 10, 3));
 		transactionList.add(transaction);
 
 		// expected
@@ -233,7 +239,7 @@ class ImportServiceTest
 		expectedTransaction.setTransferAccount(destinationAccount);
 		expectedTransaction.setName("Whatever");
 		expectedTransaction.setAmount(-525);
-		expectedTransaction.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		expectedTransaction.setDate(LocalDate.of(2018, 10, 3));
 
 		assertThat(importService.updateTransferAccountsForItems(transactionList, transferAccount.getID(), destinationAccount))
 				.hasSize(1)
@@ -322,7 +328,7 @@ class ImportServiceTest
 		transaction1.setAccount(account1);
 		transaction1.setName("ShouldGoInAccount_1");
 		transaction1.setAmount(200);
-		transaction1.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		transaction1.setDate(LocalDate.of(2018, 10, 3));
 		List<Tag> tags = new ArrayList<>();
 		tags.add(existingTag);
 		transaction1.setTags(tags);
@@ -349,7 +355,7 @@ class ImportServiceTest
 		transaction1.setAccount(account1);
 		transaction1.setName("ShouldGoInAccount_1");
 		transaction1.setAmount(200);
-		transaction1.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		transaction1.setDate(LocalDate.of(2018, 10, 3));
 		List<Tag> tags = new ArrayList<>();
 		tags.add(newTag);
 		transaction1.setTags(tags);
@@ -396,7 +402,7 @@ class ImportServiceTest
 		transaction1.setAccount(sourceAccount1);
 		transaction1.setName("ShouldGoInAccount_1");
 		transaction1.setAmount(200);
-		transaction1.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		transaction1.setDate(LocalDate.of(2018, 10, 3));
 		transaction1.setTags(tags);
 		transactions.add(transaction1);
 
@@ -404,9 +410,12 @@ class ImportServiceTest
 		transaction2.setAccount(sourceAccount2);
 		transaction2.setName("ImPartOfAccount_2");
 		transaction2.setAmount(-525);
-		transaction2.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		transaction2.setDate(LocalDate.of(2018, 10, 3));
 		transaction2.setTags(new ArrayList<>());
 		transactions.add(transaction2);
+
+		// template group
+		TemplateGroup templateGroup = new TemplateGroup(1, "My Template Group", TemplateGroupType.CUSTOM);
 
 		// templates
 		Template template1 = new Template();
@@ -440,7 +449,7 @@ class ImportServiceTest
 		chart.setScript("/* This list will be dynamically filled with all the transactions between\r\n* the start and and date you select on the \"Show Chart\" page\r\n* and filtered according to your specified filter.\r\n* An example entry for this list and tutorial about how to create custom charts ca be found in the BudgetMaster wiki:\r\n* https://github.com/deadlocker8/BudgetMaster/wiki/How-to-create-custom-charts\r\n*/\r\nvar transactionData \u003d [];\r\n\r\n// Prepare your chart settings here (mandatory)\r\nvar plotlyData \u003d [{\r\n    x: [],\r\n    y: [],\r\n    type: \u0027bar\u0027\r\n}];\r\n\r\n// Add your Plotly layout settings here (optional)\r\nvar plotlyLayout \u003d {};\r\n\r\n// Add your Plotly configuration settings here (optional)\r\nvar plotlyConfig \u003d {\r\n    showSendToCloud: false,\r\n    displaylogo: false,\r\n    showLink: false,\r\n    responsive: true\r\n};\r\n\r\n// Don\u0027t touch this line\r\nPlotly.newPlot(\"containerID\", plotlyData, plotlyLayout, plotlyConfig);\r\n");
 
 		// database
-		InternalDatabase database = new InternalDatabase(new ArrayList<>(), accounts, transactions, templates, List.of(chart), List.of(), List.of(icon1));
+		InternalDatabase database = new InternalDatabase(new ArrayList<>(), accounts, transactions, List.of(templateGroup), templates, List.of(chart), List.of(), List.of(icon1));
 
 		// account matches
 		AccountMatch match1 = new AccountMatch(sourceAccount1);
@@ -460,14 +469,14 @@ class ImportServiceTest
 		expectedTransaction1.setAccount(destAccount1);
 		expectedTransaction1.setName("ShouldGoInAccount_1");
 		expectedTransaction1.setAmount(200);
-		expectedTransaction1.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		expectedTransaction1.setDate(LocalDate.of(2018, 10, 3));
 		expectedTransaction1.setTags(tags);
 
 		Transaction expectedTransaction2 = new Transaction();
 		expectedTransaction2.setAccount(destAccount2);
 		expectedTransaction2.setName("ImPartOfAccount_2");
 		expectedTransaction2.setAmount(-525);
-		expectedTransaction2.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		expectedTransaction2.setDate(LocalDate.of(2018, 10, 3));
 		expectedTransaction2.setTags(new ArrayList<>());
 
 		Template expectedTemplate1 = new Template();
@@ -488,6 +497,8 @@ class ImportServiceTest
 		expectedTemplate2.setTransferAccount(destAccount2);
 		expectedTemplate2.setTags(new ArrayList<>());
 
+		TemplateGroup expectedTemplateGroup = new TemplateGroup(5, "My Template Group", TemplateGroupType.CUSTOM);
+
 		// act
 		Mockito.when(tagRepository.save(Mockito.any(Tag.class))).thenReturn(tag1);
 
@@ -502,13 +513,18 @@ class ImportServiceTest
 		Mockito.when(iconService.getRepository()).thenReturn(iconRepositoryMock);
 		Mockito.when(iconRepositoryMock.save(Mockito.any())).thenReturn(expectedIcon);
 
-		importService.importDatabase(database, accountMatchList, true, true);
+		Mockito.when(templateGroupRepository.save(Mockito.any())).thenReturn(expectedTemplateGroup);
+
+		importService.importDatabase(database, accountMatchList, true, true, true);
 		InternalDatabase databaseResult = importService.getDatabase();
 
 		// assert
 		assertThat(databaseResult.getTransactions())
 				.hasSize(2)
 				.contains(expectedTransaction1, expectedTransaction2);
+		assertThat(databaseResult.getTemplateGroups())
+				.hasSize(1)
+				.contains(templateGroup);
 		assertThat(databaseResult.getTemplates())
 				.hasSize(2)
 				.contains(expectedTemplate1, expectedTemplate2);
@@ -529,7 +545,7 @@ class ImportServiceTest
 		chart.setScript("/* This list will be dynamically filled with all the transactions between\r\n* the start and and date you select on the \"Show Chart\" page\r\n* and filtered according to your specified filter.\r\n* An example entry for this list and tutorial about how to create custom charts ca be found in the BudgetMaster wiki:\r\n* https://github.com/deadlocker8/BudgetMaster/wiki/How-to-create-custom-charts\r\n*/\r\nvar transactionData \u003d [];\r\n\r\n// Prepare your chart settings here (mandatory)\r\nvar plotlyData \u003d [{\r\n    x: [],\r\n    y: [],\r\n    type: \u0027bar\u0027\r\n}];\r\n\r\n// Add your Plotly layout settings here (optional)\r\nvar plotlyLayout \u003d {};\r\n\r\n// Add your Plotly configuration settings here (optional)\r\nvar plotlyConfig \u003d {\r\n    showSendToCloud: false,\r\n    displaylogo: false,\r\n    showLink: false,\r\n    responsive: true\r\n};\r\n\r\n// Don\u0027t touch this line\r\nPlotly.newPlot(\"containerID\", plotlyData, plotlyLayout, plotlyConfig);\r\n");
 
 		// database
-		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(chart), List.of(), List.of());
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(chart), List.of(), List.of());
 
 		// act
 		int highestUsedID = 22;
@@ -537,7 +553,7 @@ class ImportServiceTest
 		final ChartRepository chartRepositoryMock = Mockito.mock(ChartRepository.class);
 		Mockito.when(chartService.getRepository()).thenReturn(chartRepositoryMock);
 
-		importService.importDatabase(database, new AccountMatchList(List.of()), true, true);
+		importService.importDatabase(database, new AccountMatchList(List.of()), true, true, true);
 		InternalDatabase databaseResult = importService.getDatabase();
 
 		// assert
@@ -579,8 +595,8 @@ class ImportServiceTest
 		Mockito.when(imageService.getRepository()).thenReturn(imageRepositoryMock);
 		Mockito.when(imageRepositoryMock.save(Mockito.any())).thenReturn(newImage);
 
-		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(image), List.of());
-		importService.importDatabase(database, new AccountMatchList(List.of()), true, true);
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(), List.of(image), List.of());
+		importService.importDatabase(database, new AccountMatchList(List.of()), true, true, true);
 
 		Image expectedImage = new Image(image.getImage(), image.getFileName(), image.getFileExtension());
 		Mockito.verify(imageRepositoryMock, Mockito.atLeast(1)).save(expectedImage);
@@ -599,8 +615,8 @@ class ImportServiceTest
 		Mockito.when(imageService.getRepository()).thenReturn(imageRepositoryMock);
 		Mockito.when(imageRepositoryMock.save(Mockito.any())).thenReturn(newImage);
 
-		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(image), List.of());
-		importService.importDatabase(database, new AccountMatchList(List.of()), true, true);
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(), List.of(image), List.of());
+		importService.importDatabase(database, new AccountMatchList(List.of()), true, true, true);
 
 		Image expectedImage = new Image(image.getImage(), image.getFileName(), image.getFileExtension());
 		Mockito.verify(imageRepositoryMock, Mockito.atLeast(1)).save(expectedImage);
@@ -619,7 +635,7 @@ class ImportServiceTest
 		Account accountDestination = new Account("destination", AccountType.CUSTOM);
 		accountDestination.setID(15);
 
-		InternalDatabase database = new InternalDatabase(List.of(), List.of(accountSource), List.of(), List.of(), List.of(), List.of(image), List.of(icon));
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(accountSource), List.of(), List.of(), List.of(), List.of(), List.of(image), List.of(icon));
 		AccountMatch accountMatch = new AccountMatch(accountSource);
 		accountMatch.setAccountDestination(accountDestination);
 
@@ -639,7 +655,7 @@ class ImportServiceTest
 		Mockito.when(iconService.getRepository()).thenReturn(iconRepositoryMock);
 		Mockito.when(iconRepositoryMock.save(Mockito.any())).thenReturn(expectedIcon);
 
-		importService.importDatabase(database, new AccountMatchList(List.of(accountMatch)), true, true);
+		importService.importDatabase(database, new AccountMatchList(List.of(accountMatch)), true, true, true);
 
 		Mockito.verify(accountRepository, Mockito.atLeast(1)).save(expectedAccount);
 	}
@@ -654,13 +670,43 @@ class ImportServiceTest
 		template.setTags(new ArrayList<>());
 
 		// database
-		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(template), List.of(), List.of(), List.of());
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(template), List.of(), List.of(), List.of());
 
 		// act
-		importService.importDatabase(database, new AccountMatchList(List.of()), false, true);
+		importService.importDatabase(database, new AccountMatchList(List.of()), true, false, true);
 
 		// assert
 		Mockito.verify(templateRepository, Mockito.never()).save(Mockito.any());
+	}
+
+	@Test
+	void test_skipTemplateGroups()
+	{
+		TemplateGroup templateGroup = new TemplateGroup(1, "My Template Group", TemplateGroupType.CUSTOM);
+
+		Template templateWithGroup = new Template();
+		templateWithGroup.setTemplateName("myTemplate");
+		templateWithGroup.setTags(new ArrayList<>());
+		templateWithGroup.setTemplateGroup(templateGroup);
+
+		TemplateGroup templateGroupDefault = new TemplateGroup(1, "Default", TemplateGroupType.DEFAULT);
+		Mockito.when(templateGroupRepository.findFirstByType(TemplateGroupType.DEFAULT)).thenReturn(templateGroupDefault);
+
+		// database
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(templateGroup), List.of(templateWithGroup), List.of(), List.of(), List.of());
+
+		// act
+		importService.importDatabase(database, new AccountMatchList(List.of()), false, true, true);
+
+		// assert
+		Mockito.verify(templateGroupRepository, Mockito.never()).save(Mockito.any());
+
+		Template expectedTemplate = new Template();
+		expectedTemplate.setTemplateName("myTemplate");
+		expectedTemplate.setTags(new ArrayList<>());
+		expectedTemplate.setTemplateGroup(templateGroupDefault);
+
+		Mockito.verify(templateRepository, Mockito.atLeast(1)).save(expectedTemplate);
 	}
 
 	@Test
@@ -673,14 +719,14 @@ class ImportServiceTest
 		chart.setVersion(7);
 
 		// database
-		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(chart), List.of(), List.of());
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(chart), List.of(), List.of());
 
 		Mockito.when(chartService.getHighestUsedID()).thenReturn(8);
 		final ChartRepository chartRepositoryMock = Mockito.mock(ChartRepository.class);
 		Mockito.when(chartService.getRepository()).thenReturn(chartRepositoryMock);
 
 		// act
-		importService.importDatabase(database, new AccountMatchList(List.of()), true, false);
+		importService.importDatabase(database, new AccountMatchList(List.of()), true, true, false);
 
 		// assert
 		Mockito.verify(chartRepositoryMock, Mockito.never()).save(Mockito.any());
@@ -699,10 +745,10 @@ class ImportServiceTest
 		Mockito.when(categoryRepository.findByNameAndColorAndType(Mockito.eq("Category1"), Mockito.any(), Mockito.any())).thenThrow(new NullPointerException());
 		Mockito.when(categoryRepository.findByNameAndColorAndType(Mockito.eq("Category2"), Mockito.any(), Mockito.any())).thenReturn(category2);
 
-		InternalDatabase database = new InternalDatabase(List.of(category1, category2), List.of(), List.of(), List.of(), List.of(), List.of(), List.of());
-		final List<ImportResultItem> importResultItems = importService.importDatabase(database, new AccountMatchList(List.of()), false, false);
+		InternalDatabase database = new InternalDatabase(List.of(category1, category2), List.of(), List.of(), List.of(), List.of(), List.of(), List.of(), List.of());
+		final List<ImportResultItem> importResultItems = importService.importDatabase(database, new AccountMatchList(List.of()), false, false, false);
 
-		assertThat(importResultItems).hasSize(6)
+		assertThat(importResultItems).hasSize(7)
 				.contains(new ImportResultItem(EntityType.CATEGORY, 1, 2));
 		assertThat(importService.getCollectedErrorMessages()).hasSize(1)
 				.contains("Error while importing category with name \"Category1\": java.lang.NullPointerException (null)");
@@ -737,5 +783,54 @@ class ImportServiceTest
 				.hasFieldOrPropertyWithValue("ID", 6)
 				.hasFieldOrPropertyWithValue("image", null)
 				.hasFieldOrPropertyWithValue("builtinIdentifier", "fas fa-icons");
+	}
+
+	@Test
+	void test_updateTemplateGroupsForTemplates()
+	{
+		TemplateGroup templateGroup1 = new TemplateGroup(2, "Template Group 1", TemplateGroupType.CUSTOM);
+		TemplateGroup templateGroup2 = new TemplateGroup(3, "Template Group 2", TemplateGroupType.CUSTOM);
+
+		Template template1 = new Template();
+		template1.setTemplateName("MyTemplate");
+		template1.setTemplateGroup(templateGroup1);
+		template1.setTags(new ArrayList<>());
+
+		Template template2 = new Template();
+		template2.setTemplateName("MyTemplate_2");
+		template2.setTemplateGroup(templateGroup2);
+		template2.setTags(new ArrayList<>());
+
+		List<Template> updatedTemplates = importService.updateTemplateGroupsForTemplates(List.of(template1, template2), 2, 5);
+		assertThat(updatedTemplates).hasSize(1);
+		assertThat(updatedTemplates.get(0).getTemplateGroup()).hasFieldOrPropertyWithValue("ID", 5);
+	}
+
+	@Test
+	void test_importTemplateGroups_alreadyExisting()
+	{
+		TemplateGroup templateGroup = new TemplateGroup(2, "Template Group 1", TemplateGroupType.CUSTOM);
+
+		TemplateGroup newTemplateGroup = new TemplateGroup(5, "Template Group 1", TemplateGroupType.CUSTOM);
+		Mockito.when(templateGroupRepository.save(Mockito.any())).thenReturn(newTemplateGroup);
+
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(templateGroup), List.of(), List.of(), List.of(), List.of());
+		importService.importDatabase(database, new AccountMatchList(List.of()), true, true, true);
+
+		TemplateGroup expectedTemplateGroup = new TemplateGroup(templateGroup.getName(), templateGroup.getType());
+		Mockito.verify(templateGroupRepository, Mockito.atLeast(1)).save(expectedTemplateGroup);
+	}
+
+	@Test
+	void test_importTemplateGroups_skipDefault()
+	{
+		TemplateGroup templateGroup = new TemplateGroup(1, "Default", TemplateGroupType.DEFAULT);
+
+		Mockito.when(templateGroupRepository.findFirstByType(TemplateGroupType.DEFAULT)).thenReturn(templateGroup);
+
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(templateGroup), List.of(), List.of(), List.of(), List.of());
+		importService.importDatabase(database, new AccountMatchList(List.of()), true, true, true);
+
+		Mockito.verify(templateGroupRepository, Mockito.never()).save(Mockito.any());
 	}
 }

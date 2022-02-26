@@ -16,6 +16,18 @@ import java.util.Map;
 @RequestMapping(Mappings.LOGIN)
 public class LoginController extends BaseController
 {
+	private static class ModelAttributes
+	{
+		public static final String IS_ERROR = "isError";
+		public static final String IS_LOGOUT = "isLogout";
+		public static final String CURRENT_DATE = "currentDate";
+	}
+
+	private static class ReturnValues
+	{
+		public static final String LOGIN = "login";
+	}
+
 	@GetMapping
 	public String login(HttpServletRequest request, Model model)
 	{
@@ -23,12 +35,12 @@ public class LoginController extends BaseController
 
 		if(paramMap.containsKey("error"))
 		{
-			model.addAttribute("isError", true);
+			model.addAttribute(ModelAttributes.IS_ERROR, true);
 		}
 
 		if(paramMap.containsKey("logout"))
 		{
-			model.addAttribute("isLogout", true);
+			model.addAttribute(ModelAttributes.IS_LOGOUT, true);
 		}
 
 		DefaultSavedRequest savedRequest = (DefaultSavedRequest) request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST");
@@ -37,7 +49,7 @@ public class LoginController extends BaseController
 			request.getSession().setAttribute("preLoginURL", savedRequest.getRequestURL());
 		}
 
-		model.addAttribute("currentDate", DateHelper.getCurrentDate());
-		return "login";
+		model.addAttribute(ModelAttributes.CURRENT_DATE, DateHelper.getCurrentDate());
+		return ReturnValues.LOGIN;
 	}
 }

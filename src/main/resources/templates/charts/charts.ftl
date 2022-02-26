@@ -132,11 +132,7 @@
     <#assign isInitialItem=item.name()==initialItem.name()/>
 
     <a class="waves-effect waves-light btn-large text-black ${buttonClass} <#if isInitialItem>active</#if>" data-value="${item.name()}">
-        <#if item.hasFontAwesomeIcon()>
-            <i class="${item.getIcon()} left"></i> ${locale.getString(item.getLocalizationKey())}
-        <#else>
-            <i class="material-icons left">${item.getIcon()}</i> ${locale.getString(item.getLocalizationKey())}
-        </#if>
+       <@chartFunctions.iconForItem item/>
     </a>
 </#macro>
 

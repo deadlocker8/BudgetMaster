@@ -12,15 +12,19 @@ import de.deadlocker8.budgetmaster.database.model.v7.BackupIcon_v7;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class BackupDatabase_v6 implements BackupDatabase
 {
 	@SuppressWarnings("unused")
 	private final String TYPE = JSONIdentifier.BUDGETMASTER_DATABASE.toString();
 
-	@SuppressWarnings("FieldCanBeLocal")
+	@SuppressWarnings({"FieldCanBeLocal", "squid:S1170"})
+	// field can not be static, since static field won't be exported to JSON by GSON
 	private final int VERSION = 6;
+
+	@SuppressWarnings({"unused", "squid:S2065", "squid:S1170"})
+	// field can not be static, since static field won't be exported to JSON by GSON
+	private final transient String INTRODUCED_IN_VERSION = "v2.7.0";
 
 	private List<BackupCategory_v5> categories;
 	private List<BackupAccount_v6> accounts;
@@ -131,7 +135,7 @@ public class BackupDatabase_v6 implements BackupDatabase
 
 		List<BackupIcon_v7> castedIcons = newIcons.stream()
 				.map(BackupIcon_v7.class::cast)
-				.collect(Collectors.toList());
+				.toList();
 		upgradedDatabase.setIcons(castedIcons);
 
 		return upgradedDatabase;

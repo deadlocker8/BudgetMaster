@@ -176,7 +176,7 @@ ${(values[index] / total * 100).toFixed(1)}%
 `);
 
     var borders = sums.map(item => {
-        if(item.color === '#FFFFFF')
+        if(item.color.toUpperCase().startsWith('#FFFFFF'))
         {
             return 1;
         }

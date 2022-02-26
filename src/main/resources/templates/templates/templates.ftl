@@ -35,13 +35,15 @@
                     <br>
                     <#assign hint=helpers.getHintByLocalizationKey("hint.template.arrow.keys")/>
                     <@header.hint hint=hint/>
+                    <#assign hint2=helpers.getHintByLocalizationKey("hint.template.sort.groups")/>
+                    <@header.hint hint=hint2/>
                     <br>
-                    <#if templates?size == 0>
+                    <#if templatesByGroup?size == 0>
                         <div class="container">
                             <div class="headline center-align">${locale.getString("placeholder")}</div>
                         </div>
                     <#else>
-                        <@templateFunctions.listTemplates templates/>
+                        <@templateFunctions.listTemplates templatesByGroup/>
                     </#if>
                 </div>
             </@header.content>
@@ -51,6 +53,7 @@
 
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
+        <script src="<@s.url '/webjars/sortablejs/1.14.0/Sortable.min.js'/>"></script>
         <script src="<@s.url '/js/templates.js'/>"></script>
     </@header.body>
 </html>

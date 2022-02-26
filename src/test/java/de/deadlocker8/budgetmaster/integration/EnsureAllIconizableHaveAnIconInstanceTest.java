@@ -1,10 +1,13 @@
 package de.deadlocker8.budgetmaster.integration;
 
 import de.deadlocker8.budgetmaster.Main;
+import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.accounts.AccountRepository;
+import de.deadlocker8.budgetmaster.categories.Category;
+import de.deadlocker8.budgetmaster.categories.CategoryRepository;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
-import de.deadlocker8.budgetmaster.tags.Tag;
-import de.deadlocker8.budgetmaster.transactions.Transaction;
-import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
+import de.deadlocker8.budgetmaster.templates.Template;
+import de.deadlocker8.budgetmaster.templates.TemplateRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,27 +19,25 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.Resource;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = Main.class)
-@Import(DateRepairTest.TestDatabaseConfiguration.class)
+@Import(EnsureAllIconizableHaveAnIconInstanceTest.TestDatabaseConfiguration.class)
 @ActiveProfiles("test")
 @SeleniumTest
 @Transactional
-class DateRepairTest
+class EnsureAllIconizableHaveAnIconInstanceTest
 {
 	@TestConfiguration
 	static class TestDatabaseConfiguration
 	{
-		@Value("classpath:repeating_with_tags.mv.db")
+		@Value("classpath:missing_icon_instances.mv.db")
 		private Resource databaseResource;
 
 		@Bean
@@ -50,30 +51,44 @@ class DateRepairTest
 	}
 
 	@Autowired
-	private TransactionRepository transactionRepository;
+	private AccountRepository accountRepository;
+
+	@Autowired
+	private TemplateRepository templateRepository;
+
+	@Autowired
+	private CategoryRepository categoryRepository;
 
 	@Test
-	void test_Repeating_WithTags()
+	void test_Accounts()
 	{
-		final List<Transaction> transactions = transactionRepository.findAll();
-		assertThat(transactions).hasSize(8);
+		final List<Account> accounts = accountRepository.findAll();
 
-		assertThat(transactions.stream()
-				.map(t -> t.getTags().stream()
-						.map(Tag::getName).toArray(String[]::new))
-				.collect(Collectors.toList()))
-				.containsOnly(new String[]{"0815", "abc"}, new String[0]);
+		assertThat(accounts).hasSize(4);
+		assertThat(accounts.stream()
+				.allMatch(account -> account.getIconReference() != null))
+				.isTrue();
 	}
 
 	@Test
-	void test_Repeating()
+	void test_Templates()
 	{
-		final List<Transaction> transactions = transactionRepository.findAll();
-		assertThat(transactions).hasSize(8);
+		final List<Template> templates = templateRepository.findAll();
 
-		assertThat(transactions.stream()
-				.map(t -> t.getDate().getHourOfDay())
-				.collect(Collectors.toList()))
-				.containsOnly(0);
+		assertThat(templates).hasSize(2);
+		assertThat(templates.stream()
+				.allMatch(template -> template.getIconReference() != null))
+				.isTrue();
+	}
+
+	@Test
+	void test_Categories()
+	{
+		final List<Category> categories = categoryRepository.findAll();
+
+		assertThat(categories).hasSize(7);
+		assertThat(categories.stream()
+				.allMatch(category -> category.getIconReference() != null))
+				.isTrue();
 	}
 }

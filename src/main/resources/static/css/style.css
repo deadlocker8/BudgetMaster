@@ -317,20 +317,48 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     border: 2px solid var(--color-blue);
 }
 
-.account-budget {
-    font-size: 20px !important;
+#globalAccountSelect {
+    padding: 1rem 32px 1rem 32px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
-.account-budget-date {
-    font-size: 12px !important;
+#globalAccountSelect:hover {
+    cursor: pointer;
 }
 
-.account-navbar {
-    padding: 5px 32px 12px 32px;
+.global-account-select-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 2rem;
+    font-size: 1.1rem;
 }
 
-.all-account-placeholder {
-    font-weight: bold;
+.global-account-select-name {
+    max-width: 200px;
+}
+
+.global-account-select-budget {
+    font-size: 1.8rem;
+}
+
+.global-account-select-option {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: var(--color-background);
+    border: 3px solid transparent;
+}
+
+.global-account-select-option:hover {
+    border: 3px solid var(--color-grey);
+}
+
+.global-account-select-option-name {
+    font-size: 1.4rem;
+    margin-left: 2rem;
 }
 
 .login-button {
@@ -493,6 +521,21 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     height: 3px;
 }
 
+#customColorPickerContainer > span {
+    color: black;
+    line-height: 25px;
+}
+
+
+#fontColorPickerContainer {
+    margin-top: 3rem;
+    justify-content: center;
+}
+
+#buttonFontColorAuto {
+    margin-top: 3rem;
+}
+
 .invisible {
     opacity: 0;
 }
@@ -605,7 +648,11 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
 }
 
 [data-theme="dark"] .background-color {
-    background-color: #444444 !important;
+    background-color: var(--color-background) !important;
+}
+
+[data-theme="dark"] .background-color-light {
+    background-color: var(--color-background-light) !important;
 }
 
 [data-theme="dark"] .modal-footer .btn-flat {

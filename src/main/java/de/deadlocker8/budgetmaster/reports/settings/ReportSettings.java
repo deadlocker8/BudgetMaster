@@ -1,18 +1,16 @@
 package de.deadlocker8.budgetmaster.reports.settings;
 
 import de.deadlocker8.budgetmaster.reports.columns.ReportColumn;
-import de.deadlocker8.budgetmaster.utils.DateHelper;
-import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 public class ReportSettings
@@ -21,7 +19,7 @@ public class ReportSettings
 	private Integer ID;
 
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
-	private DateTime date;
+	private LocalDate date;
 
 	private boolean includeBudget;
 	private boolean splitTables;
@@ -32,10 +30,10 @@ public class ReportSettings
 
 	public static ReportSettings getDefault()
 	{
-		return new ReportSettings(DateHelper.getCurrentDate(), true, true, true);
+		return new ReportSettings(LocalDate.now(), true, true, true);
 	}
 
-	private ReportSettings(DateTime date, boolean includeBudget, boolean splitTables, boolean includeCategoryBudgets)
+	private ReportSettings(LocalDate date, boolean includeBudget, boolean splitTables, boolean includeCategoryBudgets)
 	{
 		this.date = date;
 		this.includeBudget = includeBudget;
@@ -58,12 +56,12 @@ public class ReportSettings
 		this.ID = ID;
 	}
 
-	public DateTime getDate()
+	public LocalDate getDate()
 	{
 		return date;
 	}
 
-	public void setDate(DateTime date)
+	public void setDate(LocalDate date)
 	{
 		this.date = date;
 	}
@@ -100,12 +98,12 @@ public class ReportSettings
 
 	public List<ReportColumn> getColumnsSorted()
 	{
-		return columns.stream().sorted(Comparator.comparing(ReportColumn::getPosition)).collect(Collectors.toList());
+		return columns.stream().sorted(Comparator.comparing(ReportColumn::getPosition)).toList();
 	}
 
 	public List<ReportColumn> getColumnsSortedAndFiltered()
 	{
-		return columns.stream().filter(ReportColumn::isActivated).sorted(Comparator.comparing(ReportColumn::getPosition)).collect(Collectors.toList());
+		return columns.stream().filter(ReportColumn::isActivated).sorted(Comparator.comparing(ReportColumn::getPosition)).toList();
 	}
 
 	public List<ReportColumn> getColumns()

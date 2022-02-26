@@ -1,11 +1,14 @@
 package de.deadlocker8.budgetmaster.database.model.v7;
 
+import de.deadlocker8.budgetmaster.database.model.BackupInfo;
+import de.deadlocker8.budgetmaster.database.model.Upgradeable;
 import de.deadlocker8.budgetmaster.database.model.v4.BackupTag_v4;
+import de.deadlocker8.budgetmaster.database.model.v8.BackupTemplate_v8;
 
 import java.util.List;
 import java.util.Objects;
 
-public class BackupTemplate_v7
+public class BackupTemplate_v7 implements Upgradeable<BackupTemplate_v8>
 {
 	private String templateName;
 	private Integer amount;
@@ -166,5 +169,13 @@ public class BackupTemplate_v7
 				", tags=" + tags +
 				", transferAccountID=" + transferAccountID +
 				'}';
+	}
+
+	@Override
+	public BackupTemplate_v8 upgrade(List<BackupInfo> backupInfoItems)
+	{
+		// need to set template group id to default template group here, but access to this informationen is not available at this point
+		// Instead ImportService will handle null values for template group id and fill in the correct default template group
+		return new BackupTemplate_v8(templateName, amount, isExpenditure, accountID, categoryID, name, description, iconReferenceID, tags, transferAccountID, null);
 	}
 }

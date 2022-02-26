@@ -163,14 +163,10 @@
 </#macro>
 
 <#macro accountIcon account accountName classes="" datasetValue="">
-    <div class="category-circle ${classes} category-square <#if account.getIconReference()?? == false>account-square-border</#if>" <#if datasetValue?has_content>data-value="${account.getID()}"</#if>>
-        <#if account.getIconReference()??>
-            <@header.entityIcon entity=account classes="account-select-icon text-blue"/>
-        <#else>
-            <span class="text-blue">
-                ${accountName?capitalize[0]}
-            </span>
-        </#if>
+    <div class="category-circle ${classes} category-square <#if account.getIconReference()?? && account.getIconReference().isFallbackIcon()>account-square-border</#if>" <#if datasetValue?has_content>data-value="${account.getID()}"</#if>>
+        <span style="color: ${account.getFontColor(settings.isUseDarkTheme())}">
+            <@header.entityIcon entity=account classes="account-select-icon" fallbackName=accountName/>
+        </span>
     </div>
 </#macro>
 

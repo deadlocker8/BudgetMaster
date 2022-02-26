@@ -27,7 +27,7 @@
         <@itemDivider/>
         <@itemLogout locale.getString("menu.logout") "lock"/>
 
-        <#if updateCheckService.isUpdateAvailable()>
+        <#if updateService.isUpdateAvailable()>
             <@itemDivider/>
             <@itemUpdate "/settings/update", locale.getString("menu.update"), "system_update"/>
         </#if>
@@ -55,6 +55,8 @@
 
     <@backupReminder settings/>
     <@whatsNewModal settings/>
+
+    <div id="globalAccountSelectModalOnDemand"></div>
 </#macro>
 
 <#macro itemLogo>
@@ -86,22 +88,30 @@
 </#macro>
 
 <#macro itemAccountSelect>
-    <div class="account-navbar">
-        <#import 'customSelectMacros.ftl' as customSelectMacros/>
-        <@customSelectMacros.globalAccountSelect/>
+    <#import "customSelectMacros.ftl" as customSelectMacros>
 
-        <div class="center-align">
-            <a href="<@s.url '/accounts'/>">${locale.getString("home.menu.accounts.action.manage")}</a>
+    <a id="globalAccountSelect" class="center-align" data-url="<@s.url '/accounts/globalAccountSelectModal'/>">
+        <#assign selectedAccount=helpers.getCurrentAccount()/>
+        <#if selectedAccount.getType().name() == "ALL">
+            <#assign accountName=locale.getString("account.all")/>
+        <#else>
+            <#assign accountName=selectedAccount.getName()/>
+        </#if>
 
-            <#assign accountBudget = helpers.getAccountBudget()/>
-            <#if accountBudget <= 0>
-                <div class="account-budget ${redTextColor}">${currencyService.getCurrencyString(accountBudget)}</div>
-            <#else>
-                <div class="account-budget ${greenTextColor}">${currencyService.getCurrencyString(accountBudget)}</div>
-            </#if>
-            <div class="account-budget-date text-default">(${locale.getString("account.budget.asof")}: ${dateService.getDateStringNormal(dateService.getCurrentDate())})</div>
+        <@customSelectMacros.accountIcon selectedAccount accountName "category-circle-preview account-icon-big"/>
+        <div class="global-account-select-right">
+            <div class="truncate global-account-select-name text-default">${accountName}</div>
+
+            <div>
+                <#assign accountBudget = helpers.getAccountBudget()/>
+                <#if accountBudget <= 0>
+                    <div class="global-account-select-budget ${redTextColor}">${currencyService.getCurrencyString(accountBudget)}</div>
+                <#else>
+                    <div class="global-account-select-budget ${greenTextColor}">${currencyService.getCurrencyString(accountBudget)}</div>
+                </#if>
+            </div>
         </div>
-    </div>
+    </a>
 </#macro>
 
 <#macro itemPlain ID link text activeID>

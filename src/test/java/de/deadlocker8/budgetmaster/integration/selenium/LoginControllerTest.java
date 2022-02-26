@@ -4,8 +4,6 @@ import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
 import de.thecodelabs.utils.util.Localization;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.*;
@@ -15,7 +13,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Date;
-import java.util.TimeZone;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -77,36 +74,6 @@ class LoginControllerTest extends SeleniumTestBase
 		String dateString = new SimpleDateFormat("dd.MM.yy").format(new Date());
 		Cookie expectedCookie = new Cookie("currentDate", dateString, "localhost", "/", null, false, false, "None");
 		assertThat(driver.manage().getCookies()).contains(expectedCookie);
-	}
-
-	@Test
-	void test_successLogin_cookieShortlyAfterMidnightInSystemTimezone()
-	{
-		// override system time to setup midnight scenario
-		// DateTime.now() will return the time in UTC --> shortly before midnight
-		DateTimeUtils.setCurrentMillisFixed(new DateTime(2021, 10, 24, 23, 10, 0).getMillis());
-
-		try
-		{
-			// system time zone is Berlin --> at least +1 hour --> after midnight
-			TimeZone.setDefault(TimeZone.getTimeZone("Europe/Berlin"));
-
-			IntegrationTestHelper helper = new IntegrationTestHelper(driver, port);
-			helper.start();
-			helper.login(UserService.DEFAULT_PASSWORD);
-			helper.hideBackupReminder();
-			helper.hideWhatsNewDialog();
-
-			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("logo-home")));
-
-			Cookie expectedCookie = new Cookie("currentDate", "25.10.21", "localhost", "/", null, false, false, "None");
-			assertThat(driver.manage().getCookies()).contains(expectedCookie);
-		}
-		finally
-		{
-			DateTimeUtils.setCurrentMillisSystem();
-		}
 	}
 
 	@Test

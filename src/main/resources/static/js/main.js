@@ -5,6 +5,11 @@ $(document).ready(function()
         document.getElementById('logout-form').submit();
     });
 
+    $('#globalAccountSelect').click(function()
+    {
+        fetchAndShowModal(this, 'globalAccountSelectModalOnDemand', '#modalGlobalAccountSelect');
+    });
+
     $('.sidenav').sidenav();
 
     $('.modal').modal();
@@ -16,20 +21,12 @@ $(document).ready(function()
 
     if($("#whatsNewModelContainer").length)
     {
-        fetchAndShowWhatsNewModal(document.getElementById('whatsNewModelContainer'), 'whatsNewModelContainer');
+        fetchAndShowModal(document.getElementById('whatsNewModelContainer'), 'whatsNewModelContainer', '#modalWhatsNew');
     }
 
     $('.tooltipped').tooltip();
 
     $('select').formSelect();
-
-    $("#selectWrapper ul.dropdown-content.select-dropdown li span").each(function()
-    {
-        if($(this).text() === accountPlaceholderName)
-        {
-            $(this).addClass("all-account-placeholder");
-        }
-    });
 
     if($("#login-password").length)
     {
@@ -63,10 +60,8 @@ $(document).ready(function()
     });
 });
 
-
-function fetchAndShowWhatsNewModal(item, containerID)
+function fetchAndShowModal(item, containerID, modalID)
 {
-    let modalID = '#modalWhatsNew';
     let modal = $(modalID).modal();
     if(modal.isOpen)
     {
@@ -110,14 +105,13 @@ function removeClass(element, className)
 
 function rgb2hex(rgb)
 {
-    rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+    let rgba = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+\.{0,1}\d*))?\)$/).slice(1);
+    let convertedParts = rgba.map((n, i) => (i === 3 ? Math.round(parseFloat(n) * 255) : parseFloat(n))
+            .toString(16)
+            .padStart(2, '0')
+            .replace('NaN', ''));
 
-    function hex(x)
-    {
-        return ("0" + parseInt(x).toString(16)).slice(-2);
-    }
-
-    return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+    return '#' + convertedParts.join('');
 }
 
 function validateLoginForm()

@@ -27,6 +27,10 @@ import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierDays;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.TagService;
+import de.deadlocker8.budgetmaster.templategroup.TemplateGroup;
+import de.deadlocker8.budgetmaster.templategroup.TemplateGroupRepository;
+import de.deadlocker8.budgetmaster.templategroup.TemplateGroupService;
+import de.deadlocker8.budgetmaster.templategroup.TemplateGroupType;
 import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.templates.TemplateRepository;
 import de.deadlocker8.budgetmaster.templates.TemplateService;
@@ -34,7 +38,6 @@ import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.thecodelabs.utils.util.Localization;
-import org.joda.time.DateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,6 +51,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -90,6 +94,9 @@ class DatabaseExportTest
 	private TagService tagService;
 
 	@Mock
+	private TemplateGroupService templateGroupService;
+
+	@Mock
 	private TemplateService templateService;
 
 	@Mock
@@ -125,6 +132,11 @@ class DatabaseExportTest
 		TransactionRepository transactionRepositoryMock = Mockito.mock(TransactionRepository.class);
 		Mockito.when(transactionRepositoryMock.findAll()).thenReturn(List.of());
 		Mockito.when(transactionService.getRepository()).thenReturn(transactionRepositoryMock);
+
+		// template groups
+		TemplateGroupRepository templateGroupRepositoryMock = Mockito.mock(TemplateGroupRepository.class);
+		Mockito.when(templateGroupRepositoryMock.findAll()).thenReturn(List.of());
+		Mockito.when(templateGroupService.getRepository()).thenReturn(templateGroupRepositoryMock);
 
 		// templates
 		TemplateRepository templateRepositoryMock = Mockito.mock(TemplateRepository.class);
@@ -192,7 +204,7 @@ class DatabaseExportTest
 		transaction1.setName("ShouldGoInAccount_1");
 		transaction1.setAmount(200);
 		transaction1.setIsExpenditure(false);
-		transaction1.setDate(new DateTime(2018, 10, 3, 12, 0, 0, 0));
+		transaction1.setDate(LocalDate.of(2018, 10, 3));
 		transaction1.setTags(tags);
 
 		Transaction transaction2 = new Transaction();
@@ -201,7 +213,7 @@ class DatabaseExportTest
 		transaction2.setName("ImPartOfAccount_2");
 		transaction2.setAmount(-525);
 		transaction2.setIsExpenditure(true);
-		DateTime transaction2Date = new DateTime(2018, 10, 3, 12, 0, 0, 0);
+		LocalDate transaction2Date = LocalDate.of(2018, 10, 3);
 		transaction2.setDate(transaction2Date);
 		transaction2.setTags(new ArrayList<>());
 		RepeatingOption repeatingOption = new RepeatingOption(transaction2Date,
@@ -213,6 +225,14 @@ class DatabaseExportTest
 		Mockito.when(transactionRepositoryMock.findAll()).thenReturn(List.of(transaction1, transaction2));
 		Mockito.when(transactionService.getRepository()).thenReturn(transactionRepositoryMock);
 
+		// template groups
+		TemplateGroup templateGroupDefault = new TemplateGroup(1, "Default", TemplateGroupType.DEFAULT);
+		TemplateGroup templateGroup = new TemplateGroup(2, "My Template Group", TemplateGroupType.CUSTOM);
+
+		TemplateGroupRepository templateGroupRepositoryMock = Mockito.mock(TemplateGroupRepository.class);
+		Mockito.when(templateGroupRepositoryMock.findAll()).thenReturn(List.of(templateGroupDefault, templateGroup));
+		Mockito.when(templateGroupService.getRepository()).thenReturn(templateGroupRepositoryMock);
+
 		// templates
 		Template template1 = new Template();
 		template1.setTemplateName("MyTemplate");
@@ -223,12 +243,14 @@ class DatabaseExportTest
 		List<Tag> tags2 = new ArrayList<>();
 		tags2.add(tag1);
 		template1.setTags(tags2);
+		template1.setTemplateGroup(templateGroup);
 
 		Template template2 = new Template();
 		template2.setTemplateName("MyTemplate2");
 		template2.setTransferAccount(account2);
 		template2.setIsExpenditure(true);
 		template2.setTags(new ArrayList<>());
+		template2.setTemplateGroup(templateGroupDefault);
 
 		TemplateRepository templateRepositoryMock = Mockito.mock(TemplateRepository.class);
 		Mockito.when(templateRepositoryMock.findAll()).thenReturn(List.of(template1, template2));
@@ -280,6 +302,7 @@ class DatabaseExportTest
 		assertThat(importedDatabase.getCategories()).containsExactly(categoryNone, categoryCustom);
 		assertThat(importedDatabase.getAccounts()).containsExactly(account1, account2);
 		assertThat(importedDatabase.getTransactions()).containsExactly(transaction1, transaction2);
+		assertThat(importedDatabase.getTemplateGroups()).containsExactly(templateGroupDefault, templateGroup);
 		assertThat(importedDatabase.getTemplates()).containsExactly(template1, template2);
 		assertThat(importedDatabase.getCharts()).containsExactly(chart);
 		assertThat(importedDatabase.getImages()).containsExactly(image);

@@ -1,8 +1,62 @@
 $(document).ready(function()
 {
-    M.Collapsible.init(document.querySelector('.collapsible.expandable'), {
+    M.Collapsible.init(document.querySelectorAll('.collapsible.expandable'), {
         accordion: false
     });
+
+    let templateGroups = document.getElementsByClassName('templateCollapsible');
+    for(let i = 0; i < templateGroups.length; i++)
+    {
+        Sortable.create(templateGroups[i], {
+            animation: 150,
+            group: 'templates',
+            onEnd: function (event) {
+                let draggedItem = event.item;
+                let templateID = draggedItem.dataset.templateId;
+                let groupID = event.to.dataset.groupId;
+
+                let formID = 'form-move-template-to-group';
+                let form = document.getElementById(formID);
+                let inputTemplateID = form.querySelector('input[name="templateID"]');
+                let inputGroupID = form.querySelector('input[name="groupID"]');
+
+                inputTemplateID.value = templateID;
+                inputGroupID.value = groupID;
+
+                $.ajax({
+                    url: form.action,
+                    type: 'POST',
+                    processData: false,
+                    contentType: false,
+                    data: new FormData(form),
+                    success: function(response)
+                    {
+                        inputTemplateID.value = '';
+                        inputGroupID.value = '';
+
+                        let parsedData = JSON.parse(response);
+                        let isSuccess = parsedData['success']
+                        M.toast({
+                            html: parsedData['localizedMessage'],
+                            classes: isSuccess ? 'green' : 'red'
+                        });
+                    },
+                    error: function(response)
+                    {
+                        inputTemplateID.value = '';
+                        inputGroupID.value = '';
+
+                        let parsedData = JSON.parse(response);
+                        console.log(parsedData)
+                        M.toast({
+                            html: parsedData['localizedMessage'],
+                            classes: 'red'
+                        });
+                    }
+                });
+            },
+        });
+    }
 
     let inputSearchTemplate = document.getElementById('searchTemplate');
     if(inputSearchTemplate !== undefined)
@@ -58,13 +112,12 @@ function searchTemplates(searchText)
     searchText = searchText.toLowerCase()
 
     let templateItems = document.querySelectorAll('.template-item');
-    let collapsible = document.getElementById('templateCollapsible');
 
     if(!searchText)
     {
         templateItems.forEach((item) =>
         {
-            collapsible.classList.remove('hidden');
+            item.parentElement.classList.remove('hidden');
             item.classList.remove('hidden');
         });
         return;
@@ -86,11 +139,8 @@ function searchTemplates(searchText)
         }
     }
 
-    // hide whole collapsible to prevent shadows from remaining visible
     if(numberOfVisibleItems === 0)
     {
-        collapsible.classList.add('hidden');
-
         // hide all item selections
         let templateItems = document.getElementsByClassName('template-item');
         for(let i = 0; i < templateItems.length; i++)
@@ -98,10 +148,6 @@ function searchTemplates(searchText)
             toggleItemSelection(templateItems[i], false);
         }
         selectedTemplateName = null;
-    }
-    else
-    {
-        collapsible.classList.remove('hidden');
     }
 
     handleKeyUpOrDown(null);

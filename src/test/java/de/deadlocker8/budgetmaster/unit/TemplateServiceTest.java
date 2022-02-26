@@ -25,7 +25,7 @@ class TemplateServiceTest
 {
 	private static final Category CATEGORY_NONE = new Category("No category", "#FFFFFF", CategoryType.NONE);
 
-	private static final Account ACCOUNT_DEFAULT = new Account("Default Account", AccountType.CUSTOM);
+	private static final Account ACCOUNT_SELECTED = new Account("Selected Account", AccountType.CUSTOM);
 
 	@Mock
 	private TemplateRepository templateRepository;
@@ -91,11 +91,11 @@ class TemplateServiceTest
 		template.setAccount(account);
 
 		Mockito.when(accountService.getRepository()).thenReturn(accountRepository);
-		Mockito.when(accountRepository.findByIsDefault(true)).thenReturn(ACCOUNT_DEFAULT);
+		Mockito.when(accountService.getSelectedAccountOrDefaultAsFallback()).thenReturn(ACCOUNT_SELECTED);
 
 		final Template expectedTemplate = new Template();
 		expectedTemplate.setCategory(CATEGORY_NONE);
-		expectedTemplate.setAccount(ACCOUNT_DEFAULT);
+		expectedTemplate.setAccount(ACCOUNT_SELECTED);
 
 		templateService.prepareTemplateForNewTransaction(template, false);
 		assertThat(template).isEqualTo(expectedTemplate);
@@ -139,12 +139,12 @@ class TemplateServiceTest
 		template.setTransferAccount(transferAccount);
 
 		Mockito.when(accountService.getRepository()).thenReturn(accountRepository);
-		Mockito.when(accountRepository.findByIsDefault(true)).thenReturn(ACCOUNT_DEFAULT);
+		Mockito.when(accountService.getSelectedAccountOrDefaultAsFallback()).thenReturn(ACCOUNT_SELECTED);
 
 		final Template expectedTemplate = new Template();
 		expectedTemplate.setCategory(CATEGORY_NONE);
 		expectedTemplate.setAccount(account);
-		expectedTemplate.setTransferAccount(ACCOUNT_DEFAULT);
+		expectedTemplate.setTransferAccount(ACCOUNT_SELECTED);
 
 		templateService.prepareTemplateForNewTransaction(template, false);
 		assertThat(template).isEqualTo(expectedTemplate);
@@ -157,11 +157,11 @@ class TemplateServiceTest
 		template.setCategory(CATEGORY_NONE);
 
 		Mockito.when(accountService.getRepository()).thenReturn(accountRepository);
-		Mockito.when(accountRepository.findByIsDefault(true)).thenReturn(ACCOUNT_DEFAULT);
+		Mockito.when(accountService.getSelectedAccountOrDefaultAsFallback()).thenReturn(ACCOUNT_SELECTED);
 
 		final Template expectedTemplate = new Template();
 		expectedTemplate.setCategory(CATEGORY_NONE);
-		expectedTemplate.setAccount(ACCOUNT_DEFAULT);
+		expectedTemplate.setAccount(ACCOUNT_SELECTED);
 
 		templateService.prepareTemplateForNewTransaction(template, true);
 		assertThat(template).isEqualTo(expectedTemplate);

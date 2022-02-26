@@ -53,14 +53,14 @@ public class RemoteGitBackupTask extends GitBackupTask
 
 			handleChanges(credentialsProvider, remote, settings.getAutoBackupGitBranchName());
 		}
-		catch(IOException | GitAPIException | URISyntaxException e)
+		catch(IOException | GitAPIException | URISyntaxException | GitBackupException e)
 		{
-			e.printStackTrace();
+			LOGGER.error("Error performing remote git backup task", e);
 			setBackupStatus(BackupStatus.ERROR);
 		}
 	}
 
-	private void handleChanges(UsernamePasswordCredentialsProvider credentialsProvider, String remote, String branchName) throws GitAPIException, IOException, URISyntaxException
+	private void handleChanges(UsernamePasswordCredentialsProvider credentialsProvider, String remote, String branchName) throws GitAPIException, IOException, URISyntaxException, GitBackupException
 	{
 		LOGGER.debug(MessageFormat.format("Using git repository: \"{0}\"", gitFolder));
 		try(Repository repository = GitHelper.openRepository(gitFolder))
@@ -84,8 +84,13 @@ public class RemoteGitBackupTask extends GitBackupTask
 		}
 	}
 
-	private void renameBranch(Git git, String currentBranchName, String newBranchName) throws GitAPIException
+	private void renameBranch(Git git, String currentBranchName, String newBranchName) throws GitAPIException, GitBackupException
 	{
+		if(currentBranchName == null)
+		{
+			throw new GitBackupException("Could not determine current branch name");
+		}
+
 		if(currentBranchName.equals(newBranchName))
 		{
 			return;
@@ -112,7 +117,6 @@ public class RemoteGitBackupTask extends GitBackupTask
 		catch(IOException e)
 		{
 			LOGGER.error(MessageFormat.format("Error deleting folder: \"{0}\"", folderToDelete), e);
-			e.printStackTrace();
 		}
 	}
 

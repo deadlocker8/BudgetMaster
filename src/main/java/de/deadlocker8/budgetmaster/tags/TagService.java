@@ -35,6 +35,7 @@ public class TagService implements Resettable, AccessAllEntities<Tag>
 	@Override
 	public void createDefaults()
 	{
+		// no defaults needed
 	}
 
 	@Override

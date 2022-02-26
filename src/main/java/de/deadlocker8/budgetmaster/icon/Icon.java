@@ -25,6 +25,9 @@ public class Icon implements ProvidesID
 	@Expose
 	private String builtinIdentifier;
 
+	@Expose
+	private String fontColor;
+
 	@OneToOne(mappedBy = "iconReference", fetch = FetchType.LAZY)
 	private Account referringAccount;
 
@@ -46,6 +49,12 @@ public class Icon implements ProvidesID
 	public Icon(String builtinIdentifier)
 	{
 		this.builtinIdentifier = builtinIdentifier;
+	}
+
+	public Icon(String builtinIdentifier, String fontColor)
+	{
+		this.builtinIdentifier = builtinIdentifier;
+		this.fontColor = fontColor;
 	}
 
 	public Integer getID()
@@ -78,9 +87,29 @@ public class Icon implements ProvidesID
 		this.builtinIdentifier = builtinIdentifier;
 	}
 
+	public String getFontColor()
+	{
+		return fontColor;
+	}
+
+	public void setFontColor(String fontColor)
+	{
+		this.fontColor = fontColor;
+	}
+
+	public boolean isImageIcon()
+	{
+		return image != null;
+	}
+
 	public boolean isBuiltinIcon()
 	{
-		return image == null;
+		return !isImageIcon() && builtinIdentifier != null;
+	}
+
+	public boolean isFallbackIcon()
+	{
+		return !isImageIcon() && !isBuiltinIcon();
 	}
 
 	public Account getReferringAccount()
@@ -98,19 +127,20 @@ public class Icon implements ProvidesID
 		return referringCategory;
 	}
 
+
 	@Override
 	public boolean equals(Object o)
 	{
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
 		Icon icon = (Icon) o;
-		return Objects.equals(ID, icon.ID) && Objects.equals(image, icon.image) && Objects.equals(builtinIdentifier, icon.builtinIdentifier);
+		return Objects.equals(ID, icon.ID) && Objects.equals(image, icon.image) && Objects.equals(builtinIdentifier, icon.builtinIdentifier) && Objects.equals(fontColor, icon.fontColor);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, image, builtinIdentifier);
+		return Objects.hash(ID, image, builtinIdentifier, fontColor);
 	}
 
 	@Override
@@ -120,6 +150,7 @@ public class Icon implements ProvidesID
 				"ID=" + ID +
 				", image=" + image +
 				", builtinIdentifier='" + builtinIdentifier + '\'' +
+				", fontColor='" + fontColor + '\'' +
 				'}';
 	}
 }

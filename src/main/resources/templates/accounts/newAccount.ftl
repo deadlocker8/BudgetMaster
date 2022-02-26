@@ -19,6 +19,7 @@
 
         <#import "../helpers/customSelectMacros.ftl" as customSelectMacros>
         <#import "../helpers/iconSelect.ftl" as iconSelectMacros>
+        <#import "../helpers/fontColorPicker.ftl" as fontColorPickerMacros>
 
         <main>
             <div class="card main-card background-color">
@@ -47,7 +48,17 @@
                         </div>
 
                         <#-- icon -->
-                        <@iconSelectMacros.iconSelect id="account-icon" item=account/>
+                        <#if account.getIconReference()?? && (account.getIconReference().isImageIcon() || account.getIconReference().isBuiltinIcon())>
+                            <#assign initialBackgroundClasses='category-square'/>
+                        <#else>
+                            <#assign initialBackgroundClasses='category-square account-square-border'/>
+                        </#if>
+                        <#assign backgroundClasses='category-square account-square-border'/>
+
+                        <@iconSelectMacros.iconSelect id="account-icon" item=account showBackground=false initialBackgroundClasses=initialBackgroundClasses backgroundClasses=backgroundClasses/>
+
+                        <#-- font color -->
+                        <@fontColorPickerMacros.fontColorPicker account/>
 
                         <#-- state -->
                         <#if account.getAccountState()??>
@@ -62,22 +73,22 @@
                         <#-- buttons -->
                         <div class="row hide-on-small-only">
                             <div class="col s6 right-align">
-                                <@header.buttonLink url='/accounts' icon='clear' localizationKey='cancel' id='button-cancel-save-account'/>
+                                <@header.buttonLink url='/accounts' icon='clear' localizationKey='cancel' id='button-cancel-save-account' color='red'/>
                             </div>
 
                             <div class="col s6 left-align">
-                                <@header.buttonSubmit name='action' icon='save' localizationKey='save' id='button-save-account'/>
+                                <@header.buttonSubmit name='action' icon='save' localizationKey='save' id='button-save-account' color='green'/>
                             </div>
                         </div>
                         <div class="hide-on-med-and-up">
                             <div class="row center-align">
                                 <div class="col s12">
-                                    <@header.buttonLink url='/accounts' icon='clear' localizationKey='cancel' id='button-cancel-save-account'/>
+                                    <@header.buttonLink url='/accounts' icon='clear' localizationKey='cancel' id='button-cancel-save-account' color='red'/>
                                 </div>
                             </div>
                             <div class="row center-align">
                                 <div class="col s12">
-                                    <@header.buttonSubmit name='action' icon='save' localizationKey='save' id='button-save-account'/>
+                                    <@header.buttonSubmit name='action' icon='save' localizationKey='save' id='button-save-account' color='green'/>
                                 </div>
                             </div>
                         </div>
@@ -92,7 +103,9 @@
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
+        <script src="<@s.url '/webjars/vanilla-picker/2.12.1/dist/vanilla-picker.min.js'/>"></script>
         <script src="<@s.url '/js/accounts.js'/>"></script>
         <script src="<@s.url '/js/iconSelect.js'/>"></script>
+        <script src="<@s.url '/js/fontColorPicker.js'/>"></script>
     </@header.body>
 </html>

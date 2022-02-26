@@ -10,22 +10,28 @@ import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.services.AccessAllEntities;
 import de.deadlocker8.budgetmaster.services.AccessEntityByID;
 import de.deadlocker8.budgetmaster.services.Resettable;
+import de.deadlocker8.budgetmaster.templategroup.TemplateGroupService;
+import de.deadlocker8.budgetmaster.templategroup.TemplateGroupType;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionBase;
 import de.deadlocker8.budgetmaster.utils.FontAwesomeIcons;
 import org.padler.natorder.NaturalOrderComparator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class TemplateService implements Resettable, AccessAllEntities<Template>, AccessEntityByID<Template>
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger(TemplateService.class);
+
 	private static final Gson GSON = new GsonBuilder()
 			.setPrettyPrinting()
 			.create();
@@ -33,13 +39,15 @@ public class TemplateService implements Resettable, AccessAllEntities<Template>,
 	private final TemplateRepository templateRepository;
 	private final AccountService accountService;
 	private final CategoryService categoryService;
+	private final TemplateGroupService templateGroupService;
 
 	@Autowired
-	public TemplateService(TemplateRepository templateRepository, AccountService accountService, CategoryService categoryService)
+	public TemplateService(TemplateRepository templateRepository, AccountService accountService, CategoryService categoryService, TemplateGroupService templateGroupService)
 	{
 		this.templateRepository = templateRepository;
 		this.accountService = accountService;
 		this.categoryService = categoryService;
+		this.templateGroupService = templateGroupService;
 
 		createDefaults();
 	}
@@ -58,6 +66,25 @@ public class TemplateService implements Resettable, AccessAllEntities<Template>,
 	@Override
 	public void createDefaults()
 	{
+		updateMissingAttributes();
+	}
+
+	private void updateMissingAttributes()
+	{
+		for(Template template : templateRepository.findAll())
+		{
+			handleNullValuesForTemplateGroup(template);
+			templateRepository.save(template);
+		}
+	}
+
+	private void handleNullValuesForTemplateGroup(Template template)
+	{
+		if(template.getTemplateGroup() == null)
+		{
+			template.setTemplateGroup(templateGroupService.getRepository().findFirstByType(TemplateGroupType.DEFAULT));
+			LOGGER.debug(MessageFormat.format("Updated template {0}: Set missing attribute \"templateGroup\" to {1}", template.getName(), template.getTemplateGroup().getName()));
+		}
 	}
 
 	public void createFromTransaction(String templateName, Transaction transaction, boolean includeCategory, boolean includeAccount)
@@ -73,6 +100,8 @@ public class TemplateService implements Resettable, AccessAllEntities<Template>,
 			template.setAccount(null);
 		}
 
+		template.setTemplateGroup(templateGroupService.getDefaultGroup());
+
 		getRepository().save(template);
 	}
 
@@ -85,37 +114,37 @@ public class TemplateService implements Resettable, AccessAllEntities<Template>,
 
 		if(prepareAccount && template.getAccount() == null)
 		{
-			template.setAccount(accountService.getRepository().findByIsDefault(true));
+			template.setAccount(accountService.getSelectedAccountOrDefaultAsFallback());
 		}
 
 		final Account account = template.getAccount();
 		if(account != null && account.getAccountState() != AccountState.FULL_ACCESS)
 		{
-			template.setAccount(accountService.getRepository().findByIsDefault(true));
+			template.setAccount(accountService.getSelectedAccountOrDefaultAsFallback());
 		}
 
 		final Account transferAccount = template.getTransferAccount();
 		if(transferAccount != null && transferAccount.getAccountState() != AccountState.FULL_ACCESS)
 		{
-			template.setTransferAccount(accountService.getRepository().findByIsDefault(true));
+			template.setTransferAccount(accountService.getSelectedAccountOrDefaultAsFallback());
 		}
 	}
 
 	public void prepareModelNewOrEdit(Model model, boolean isEdit, TransactionBase item, List<Account> accounts)
 	{
-		model.addAttribute("isEdit", isEdit);
-		model.addAttribute("categories", categoryService.getAllEntitiesAsc());
-		model.addAttribute("accounts", accounts);
-		model.addAttribute("template", item);
-		model.addAttribute("suggestionsJSON", GSON.toJson(new ArrayList<String>()));
-		model.addAttribute("fontawesomeIcons", FontAwesomeIcons.ICONS);
+		model.addAttribute(TemplateModelAttributes.IS_EDIT, isEdit);
+		model.addAttribute(TemplateModelAttributes.CATEGORIES, categoryService.getAllEntitiesAsc());
+		model.addAttribute(TemplateModelAttributes.ACCOUNTS, accounts);
+		model.addAttribute(TemplateModelAttributes.TEMPLATE, item);
+		model.addAttribute(TemplateModelAttributes.SUGGESTIONS_JSON, GSON.toJson(new ArrayList<String>()));
+		model.addAttribute(TemplateModelAttributes.FONTAWESOME_ICONS, FontAwesomeIcons.ICONS);
 	}
 
 	public List<String> getExistingTemplateNames()
 	{
 		return getRepository().findAll().stream()
 				.map(Template::getTemplateName)
-				.collect(Collectors.toList());
+				.toList();
 	}
 
 	@Override
@@ -131,5 +160,4 @@ public class TemplateService implements Resettable, AccessAllEntities<Template>,
 	{
 		return templateRepository.findById(ID);
 	}
-
 }

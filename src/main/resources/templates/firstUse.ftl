@@ -62,7 +62,6 @@
                                         <ul class="browser-default">
                                             <li>${locale.getString("home.first.use.step.4.sub.1")}</li>
                                             <li>${locale.getString("home.first.use.step.4.sub.2")}</li>
-                                            <li>${locale.getString("home.first.use.step.4.sub.3")}</li>
                                         </ul>
                                     </@indexFunctions.stepContent>
                                 </div>
@@ -85,7 +84,7 @@
                                             ${locale.getString("home.first.use.step.5.sub.2")}
                                         </p>
                                         <p>
-                                            <@indexFunctions.action url="/charts/manage" name="home.menu.charts.action.manage"/>
+                                            <@indexFunctions.action url="/charts" name="home.menu.charts.action.manage"/>
                                         </p>
 
                                         <h5>${locale.getString("menu.reports")}</h5>

@@ -173,9 +173,9 @@ class ChartTest extends SeleniumTestBase
 		// check displayed chart previews
 		final List<WebElement> displayedChartPreviews = driver.findElements(By.cssSelector(SELECTOR_VISIBLE_CHART_PREVIEWS));
 		assertThat(displayedChartPreviews)
-				.hasSize(1);
+				.hasSize(3);
 		assertThat(displayedChartPreviews.get(0).findElement(By.cssSelector(".card-action span")).getText())
-				.isEqualTo("Incomes/Expenditures");
+				.isEqualTo("Average monthly incomes/expenditures");
 
 		// filter
 		assertThat(driver.findElement(By.id("filterActiveBadge")).isDisplayed()).isFalse();
@@ -200,7 +200,7 @@ class ChartTest extends SeleniumTestBase
 		assertThat(activeChartPreviews)
 				.hasSize(1);
 		assertThat(activeChartPreviews.get(0).findElement(By.cssSelector(".card-action span")).getText())
-				.isEqualTo("Incomes/Expenditures by categories");
+				.isEqualTo("Incomes/Expenditures per category");
 
 		// button
 		assertThat(driver.findElement(By.name("buttonSave")).isEnabled()).isTrue();
@@ -259,9 +259,12 @@ class ChartTest extends SeleniumTestBase
 		driver.findElement(By.id("section-type")).click();
 		final WebElement checkBox = driver.findElement(By.cssSelector("#section-type .text-default"));
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", checkBox);
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#section-type .text-default")));
 		checkBox.click();
 
-		final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("filter-button-reset")));
 
 		driver.findElement(By.className("filter-button-reset")).click();

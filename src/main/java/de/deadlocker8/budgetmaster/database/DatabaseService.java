@@ -9,7 +9,8 @@ import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.charts.Chart;
 import de.deadlocker8.budgetmaster.charts.ChartService;
 import de.deadlocker8.budgetmaster.charts.ChartType;
-import de.deadlocker8.budgetmaster.database.model.v7.BackupDatabase_v7;
+import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
+import de.deadlocker8.budgetmaster.database.model.v8.BackupDatabase_v8;
 import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.images.Image;
@@ -17,6 +18,8 @@ import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.tags.TagService;
+import de.deadlocker8.budgetmaster.templategroup.TemplateGroup;
+import de.deadlocker8.budgetmaster.templategroup.TemplateGroupService;
 import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.templates.TemplateService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
@@ -36,9 +39,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -54,19 +57,21 @@ public class DatabaseService
 	private final TransactionService transactionService;
 	private final TagService tagService;
 	private final TemplateService templateService;
+	private final TemplateGroupService templateGroupService;
 	private final ChartService chartService;
 	private final SettingsService settingsService;
 	private final ImageService imageService;
 	private final IconService iconService;
 
 	@Autowired
-	public DatabaseService(AccountService accountService, CategoryService categoryService, TransactionService transactionService, TagService tagService, TemplateService templateService, ChartService chartService, SettingsService settingsService, ImageService imageService, IconService iconService)
+	public DatabaseService(AccountService accountService, CategoryService categoryService, TransactionService transactionService, TagService tagService, TemplateService templateService, TemplateGroupService templateGroupService, ChartService chartService, SettingsService settingsService, ImageService imageService, IconService iconService)
 	{
 		this.accountService = accountService;
 		this.categoryService = categoryService;
 		this.transactionService = transactionService;
 		this.tagService = tagService;
 		this.templateService = templateService;
+		this.templateGroupService = templateGroupService;
 		this.chartService = chartService;
 		this.settingsService = settingsService;
 		this.imageService = imageService;
@@ -161,7 +166,7 @@ public class DatabaseService
 			}
 			catch(IOException e)
 			{
-				e.printStackTrace();
+				LOGGER.error("Can not rotate backup", e);
 			}
 		}
 	}
@@ -205,11 +210,11 @@ public class DatabaseService
 					.map(Path::toString)
 					.filter(path -> path.endsWith(".json"))
 					.sorted()
-					.collect(Collectors.toList());
+					.toList();
 		}
 		catch(IOException e)
 		{
-			e.printStackTrace();
+			LOGGER.error("Could not determine existing backups", e);
 		}
 
 		return new ArrayList<>();
@@ -232,7 +237,7 @@ public class DatabaseService
 	@Transactional
 	public void exportDatabase(Path backupPath)
 	{
-		final BackupDatabase_v7 database = getDatabaseForJsonSerialization();
+		final BackupDatabase database = getDatabaseForJsonSerialization();
 
 		try(Writer writer = new FileWriter(backupPath.toString()))
 		{
@@ -248,25 +253,26 @@ public class DatabaseService
 
 	public static String getExportFileName()
 	{
-		return "BudgetMasterDatabase_" + DateHelper.getCurrentDate().toString(BACKUP_DATE_FORMAT) + ".json";
+		return "BudgetMasterDatabase_" + DateHelper.getCurrentDateTime().format(DateTimeFormatter.ofPattern(BACKUP_DATE_FORMAT)) + ".json";
 	}
 
-	public BackupDatabase_v7 getDatabaseForJsonSerialization()
+	public BackupDatabase getDatabaseForJsonSerialization()
 	{
 		List<Category> categories = categoryService.getAllEntitiesAsc();
 		List<Account> accounts = accountService.getRepository().findAll();
 		List<Transaction> transactions = transactionService.getRepository().findAll();
 		List<Transaction> filteredTransactions = filterRepeatingTransactions(transactions);
+		List<TemplateGroup> templateGroups = templateGroupService.getRepository().findAll();
 		List<Template> templates = templateService.getRepository().findAll();
 		List<Chart> charts = chartService.getRepository().findAllByType(ChartType.CUSTOM);
 		List<Image> images = imageService.getRepository().findAll();
 		List<Icon> icons = iconService.getRepository().findAll();
 		LOGGER.debug(MessageFormat.format("Reduced {0} transactions to {1}", transactions.size(), filteredTransactions.size()));
 
-		InternalDatabase database = new InternalDatabase(categories, accounts, filteredTransactions, templates, charts, images, icons);
-		LOGGER.debug(MessageFormat.format("Created database for JSON with {0} transactions, {1} categories, {2} accounts, {3} templates, {4} charts {5} images and {6} icons", database.getTransactions().size(), database.getCategories().size(), database.getAccounts().size(), database.getTemplates().size(), database.getCharts().size(), database.getImages().size(), database.getIcons().size()));
+		InternalDatabase database = new InternalDatabase(categories, accounts, filteredTransactions, templateGroups, templates, charts, images, icons);
+		LOGGER.debug(MessageFormat.format("Created database for JSON with {0} transactions, {1} categories, {2} accounts, {3} templates groups, {4} templates, {5} charts {6} images and {7} icons", database.getTransactions().size(), database.getCategories().size(), database.getAccounts().size(), database.getTemplateGroups().size(), database.getTemplates().size(), database.getCharts().size(), database.getImages().size(), database.getIcons().size()));
 
-		BackupDatabase_v7 databaseInExternalForm = BackupDatabase_v7.createFromInternalEntities(database);
+		BackupDatabase_v8 databaseInExternalForm = BackupDatabase_v8.createFromInternalEntities(database);
 		LOGGER.debug("Converted database to external form");
 		return databaseInExternalForm;
 	}

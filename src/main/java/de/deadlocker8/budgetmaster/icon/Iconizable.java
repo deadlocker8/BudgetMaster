@@ -11,7 +11,7 @@ public interface Iconizable extends ProvidesID
 
 	Icon getIconReference();
 
-	default <T extends Iconizable> void updateIcon(IconService iconService, Integer iconImageID, String builtinIconIdentifier, AccessEntityByID<T> itemService)
+	default <T extends Iconizable> void updateIcon(IconService iconService, Integer iconImageID, String builtinIconIdentifier, String fontColor, AccessEntityByID<T> itemService)
 	{
 		// the reference to an existing icon may already be null in the item that should be updated
 		// (e.g. user deletes the icon for the item and hit the save button)
@@ -26,15 +26,12 @@ public interface Iconizable extends ProvidesID
 			}
 		}
 
-		final Optional<Icon> iconOptional = iconService.createIconReference(iconImageID, builtinIconIdentifier);
-		if(iconOptional.isEmpty())
-		{
-			this.setIconReference(null);
-			return;
-		}
-
-		final Icon icon = iconOptional.get();
+		final Icon icon = iconService.createIconReference(iconImageID, builtinIconIdentifier, fontColor);
 		iconService.getRepository().save(icon);
 		this.setIconReference(icon);
 	}
+
+	String getFontColor(boolean isDarkTheme);
+
+	String getDefaultFontColor(boolean isDarkTheme);
 }

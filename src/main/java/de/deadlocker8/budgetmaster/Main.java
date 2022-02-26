@@ -5,7 +5,6 @@ import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.SystemUtils;
 import de.thecodelabs.utils.util.localization.LocalizationMessageFormatter;
 import de.thecodelabs.utils.util.localization.formatter.JavaMessageFormatter;
-import org.joda.time.DateTimeZone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
@@ -32,7 +31,6 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 
 	static
 	{
-		DateTimeZone.setDefault(DateTimeZone.UTC);
 		prepare(new String[0]);
 	}
 
@@ -84,7 +82,7 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 			}
 			catch(IOException e)
 			{
-				e.printStackTrace();
+				LOGGER.error("Could not create BudgetMaster default settings file", e);
 			}
 		}
 

@@ -39,18 +39,6 @@ function initCustomSelects()
         allCustomSelects.push(accountStateSelect);
     }
 
-    let selectorGlobalAccountSelect = '.global-account-select-wrapper';
-    if($(selectorGlobalAccountSelect).length)
-    {
-        let globalAccountSelect = new CustomSelect(selectorGlobalAccountSelect, function()
-        {
-            let accountID = document.querySelector(globalAccountSelect.getSelector() + ' .hidden-input-custom-select').value;
-            window.location = rootURL + "/accounts/" + accountID + "/select";
-        });
-        globalAccountSelect.init();
-        allCustomSelects.push(globalAccountSelect);
-    }
-
     Mousetrap.bind('enter', function(event)
     {
         if(isSearchFocused())

@@ -8,7 +8,7 @@ import de.deadlocker8.budgetmaster.charts.Chart;
 import de.deadlocker8.budgetmaster.charts.ChartDisplayType;
 import de.deadlocker8.budgetmaster.charts.ChartGroupType;
 import de.deadlocker8.budgetmaster.charts.ChartType;
-import de.deadlocker8.budgetmaster.database.DatabaseParser_v7;
+import de.deadlocker8.budgetmaster.database.DatabaseParser_v8;
 import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.images.Image;
@@ -21,8 +21,6 @@ import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.Localization.LocalizationDelegate;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,6 +28,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -37,7 +36,7 @@ import java.util.Locale;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class DatabaseParser_v7_convertToInternalTest
+class DatabaseParser_v8_convertToInternalTest
 {
 	@BeforeEach
 	public void before()
@@ -64,8 +63,8 @@ class DatabaseParser_v7_convertToInternalTest
 	{
 		try
 		{
-			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v7Test.json").toURI())));
-			DatabaseParser_v7 importer = new DatabaseParser_v7(json);
+			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v8Test.json").toURI())));
+			DatabaseParser_v8 importer = new DatabaseParser_v8(json);
 			InternalDatabase database = importer.parseDatabaseFromJSON().convertToInternal();
 
 			final Chart chart = new Chart("The best chart", "/* This list will be dynamically filled with all the transactions between\r\n* the start and and date you select on the \"Show Chart\" page\r\n* and filtered according to your specified filter.\r\n* An example entry for this list and tutorial about how to create custom charts ca be found in the BudgetMaster wiki:\r\n* https://github.com/deadlocker8/BudgetMaster/wiki/How-to-create-custom-charts\r\n*/\r\nvar transactionData \u003d [];\r\n\r\n// Prepare your chart settings here (mandatory)\r\nvar plotlyData \u003d [{\r\n    x: [],\r\n    y: [],\r\n    type: \u0027bar\u0027\r\n}];\r\n\r\n// Add your Plotly layout settings here (optional)\r\nvar plotlyLayout \u003d {};\r\n\r\n// Add your Plotly configuration settings here (optional)\r\nvar plotlyConfig \u003d {\r\n    showSendToCloud: false,\r\n    displaylogo: false,\r\n    showLink: false,\r\n    responsive: true\r\n};\r\n\r\n// Don\u0027t touch this line\r\nPlotly.newPlot(\"containerID\", plotlyData, plotlyLayout, plotlyConfig);\r\n", ChartType.CUSTOM, 7, ChartDisplayType.CUSTOM, ChartGroupType.NONE, null);
@@ -85,12 +84,13 @@ class DatabaseParser_v7_convertToInternalTest
 	{
 		try
 		{
-			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v7Test.json").toURI())));
-			DatabaseParser_v7 importer = new DatabaseParser_v7(json);
+			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v8Test.json").toURI())));
+			DatabaseParser_v8 importer = new DatabaseParser_v8(json);
 			InternalDatabase database = importer.parseDatabaseFromJSON().convertToInternal();
 
 			final Icon icon = new Icon("fas fa-icons");
 			icon.setID(2);
+			icon.setFontColor("#FF0000");
 
 			final Category category = new Category("0815", "#ffcc00", CategoryType.CUSTOM, icon);
 			category.setID(3);
@@ -109,8 +109,8 @@ class DatabaseParser_v7_convertToInternalTest
 	{
 		try
 		{
-			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v7Test.json").toURI())));
-			DatabaseParser_v7 importer = new DatabaseParser_v7(json);
+			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v8Test.json").toURI())));
+			DatabaseParser_v8 importer = new DatabaseParser_v8(json);
 			InternalDatabase database = importer.parseDatabaseFromJSON().convertToInternal();
 
 			final Image accountImage = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
@@ -141,8 +141,8 @@ class DatabaseParser_v7_convertToInternalTest
 	{
 		try
 		{
-			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v7Test.json").toURI())));
-			DatabaseParser_v7 importer = new DatabaseParser_v7(json);
+			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v8Test.json").toURI())));
+			DatabaseParser_v8 importer = new DatabaseParser_v8(json);
 			InternalDatabase database = importer.parseDatabaseFromJSON().convertToInternal();
 
 			final Image image = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
@@ -165,8 +165,8 @@ class DatabaseParser_v7_convertToInternalTest
 	{
 		try
 		{
-			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v7Test.json").toURI())));
-			DatabaseParser_v7 importer = new DatabaseParser_v7(json);
+			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v8Test.json").toURI())));
+			DatabaseParser_v8 importer = new DatabaseParser_v8(json);
 			InternalDatabase database = importer.parseDatabaseFromJSON().convertToInternal();
 
 			final Image templateImage = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
@@ -181,7 +181,7 @@ class DatabaseParser_v7_convertToInternalTest
 			template.setIconReference(icon);
 			template.setTags(List.of());
 
-			assertThat(database.getTemplates()).hasSize(4)
+			assertThat(database.getTemplates()).hasSize(5)
 					.contains(template);
 			assertThat(database.getTemplates().get(3).getIconReference())
 					.isEqualTo(icon);
@@ -200,8 +200,8 @@ class DatabaseParser_v7_convertToInternalTest
 	{
 		try
 		{
-			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v7Test.json").toURI())));
-			DatabaseParser_v7 importer = new DatabaseParser_v7(json);
+			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v8Test.json").toURI())));
+			DatabaseParser_v8 importer = new DatabaseParser_v8(json);
 			InternalDatabase database = importer.parseDatabaseFromJSON().convertToInternal();
 
 			Account account1 = new Account("Default", AccountType.CUSTOM);
@@ -222,6 +222,7 @@ class DatabaseParser_v7_convertToInternalTest
 
 			Icon categoryIcon = new Icon("fas fa-icons");
 			categoryIcon.setID(2);
+			categoryIcon.setFontColor("#FF0000");
 
 			Category category3 = new Category("0815", "#ffcc00", CategoryType.CUSTOM);
 			category3.setIconReference(categoryIcon);
@@ -229,8 +230,7 @@ class DatabaseParser_v7_convertToInternalTest
 
 			Transaction normalTransaction_1 = new Transaction();
 			normalTransaction_1.setAmount(35000);
-			DateTime normalTransactionDate = DateTime.parse("2018-03-13", DateTimeFormat.forPattern("yyyy-MM-dd"));
-			normalTransactionDate = normalTransactionDate.withHourOfDay(12).withMinuteOfHour(0).withSecondOfMinute(0);
+			LocalDate normalTransactionDate = LocalDate.of(2018, 3, 13);
 			normalTransaction_1.setDate(normalTransactionDate);
 			normalTransaction_1.setCategory(categoryNone);
 			normalTransaction_1.setName("Income");
@@ -241,8 +241,7 @@ class DatabaseParser_v7_convertToInternalTest
 
 			Transaction normalTransaction_2 = new Transaction();
 			normalTransaction_2.setAmount(-2000);
-			DateTime normalTransaction_2Date = DateTime.parse("2018-06-15", DateTimeFormat.forPattern("yyyy-MM-dd"));
-			normalTransaction_2Date = normalTransaction_2Date.withHourOfDay(12).withMinuteOfHour(0).withSecondOfMinute(0);
+			LocalDate normalTransaction_2Date = LocalDate.of(2018, 6, 15);
 			normalTransaction_2.setDate(normalTransaction_2Date);
 			normalTransaction_2.setName("Simple");
 			normalTransaction_2.setDescription("");
@@ -257,8 +256,7 @@ class DatabaseParser_v7_convertToInternalTest
 
 			Transaction repeatingTransaction_1 = new Transaction();
 			repeatingTransaction_1.setAmount(-12300);
-			DateTime repeatingTransaction_1Date = DateTime.parse("2018-03-13", DateTimeFormat.forPattern("yyyy-MM-dd"));
-			repeatingTransaction_1Date = repeatingTransaction_1Date.withHourOfDay(12).withMinuteOfHour(0).withSecondOfMinute(0);
+			LocalDate repeatingTransaction_1Date = LocalDate.of(2018, 3, 13);
 			repeatingTransaction_1.setDate(repeatingTransaction_1Date);
 			repeatingTransaction_1.setCategory(categoryNone);
 			repeatingTransaction_1.setName("Test");
@@ -274,8 +272,7 @@ class DatabaseParser_v7_convertToInternalTest
 
 			Transaction transferTransaction = new Transaction();
 			transferTransaction.setAmount(-250);
-			DateTime transferTransactionDate = DateTime.parse("2018-06-15", DateTimeFormat.forPattern("yyyy-MM-dd"));
-			transferTransactionDate = transferTransactionDate.withHourOfDay(12).withMinuteOfHour(0).withSecondOfMinute(0);
+			LocalDate transferTransactionDate = LocalDate.of(2018, 6, 15);
 			transferTransaction.setDate(transferTransactionDate);
 			transferTransaction.setName("Transfer");
 			transferTransaction.setDescription("");
@@ -287,8 +284,7 @@ class DatabaseParser_v7_convertToInternalTest
 
 			Transaction repeatingTransferTransaction = new Transaction();
 			repeatingTransferTransaction.setAmount(-6000);
-			DateTime transferTransactionDate_2 = DateTime.parse("2018-03-15", DateTimeFormat.forPattern("yyyy-MM-dd"));
-			transferTransactionDate_2 = transferTransactionDate_2.withHourOfDay(12).withMinuteOfHour(0).withSecondOfMinute(0);
+			LocalDate transferTransactionDate_2 = LocalDate.of(2018, 3, 15);
 			repeatingTransferTransaction.setDate(transferTransactionDate_2);
 			repeatingTransferTransaction.setCategory(categoryNone);
 			repeatingTransferTransaction.setName("repeat my transfer");
@@ -320,8 +316,8 @@ class DatabaseParser_v7_convertToInternalTest
 	@Test
 	void test_Icons() throws IOException, URISyntaxException
 	{
-		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v7Test.json").toURI())));
-		DatabaseParser_v7 importer = new DatabaseParser_v7(json);
+		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v8Test.json").toURI())));
+		DatabaseParser_v8 importer = new DatabaseParser_v8(json);
 		InternalDatabase database = importer.parseDatabaseFromJSON().convertToInternal();
 
 		final Image image = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
@@ -332,9 +328,11 @@ class DatabaseParser_v7_convertToInternalTest
 
 		final Icon icon2 = new Icon("fas fa-icons");
 		icon2.setID(2);
+		icon2.setFontColor("#FF0000");
 
 		assertThat(database.getIcons()).hasSize(2)
 				.containsExactly(icon1, icon2);
+
 		assertThat(database.getImages().get(0).getImage())
 				.isNotNull()
 				.hasSizeGreaterThan(1);

@@ -209,7 +209,8 @@ function confirmImageIcon()
 
     document.getElementById("item-icon-preview-icon").classList.toggle('hidden', false);
     document.getElementById("builtin-icon-preview-icon").classList.toggle('hidden', true);
-    document.getElementById("item-icon-placeholder").classList.toggle('hidden', true);
+    toggleAdditionalBackgroundColors(false);
+    toggleFallbackIcon(false);
     document.getElementById("hidden-input-icon-image-id").value = iconId;
     document.getElementById("hidden-input-icon-builtin-identifier").value = null;
 }
@@ -234,7 +235,8 @@ function confirmBuiltinIcon()
 
     document.getElementById("item-icon-preview-icon").classList.toggle('hidden', true);
     document.getElementById("builtin-icon-preview-icon").classList.toggle('hidden', false);
-    document.getElementById("item-icon-placeholder").classList.toggle('hidden', true);
+    toggleAdditionalBackgroundColors(false);
+    toggleFallbackIcon(false);
     document.getElementById("hidden-input-icon-image-id").value = null;
     document.getElementById("hidden-input-icon-builtin-identifier").value = iconIdentifier;
 }
@@ -265,8 +267,31 @@ function searchBuiltinIcons()
 function removeIcon()
 {
     document.getElementById("item-icon-preview-icon").classList.toggle('hidden', true);
-    document.getElementById("item-icon-placeholder").classList.toggle('hidden', false);
     document.getElementById("hidden-input-icon-image-id").value = null;
+    toggleAdditionalBackgroundColors(true);
     document.getElementById("builtin-icon-preview-icon").classList.toggle('hidden', true);
+    toggleFallbackIcon(true);
     document.getElementById("hidden-input-icon-builtin-identifier").value = null;
+}
+
+function toggleFallbackIcon(show)
+{
+    let fallbackIcon = document.getElementById("item-icon-fallback-name");
+    if(fallbackIcon !== null)
+    {
+        fallbackIcon.classList.toggle('hidden', !show);
+    }
+}
+
+function toggleAdditionalBackgroundColors(show)
+{
+    if(iconSelectAdditionalBackgroundClasses.trim().length === 0)
+    {
+        return;
+    }
+
+    for(let className of iconSelectAdditionalBackgroundClasses.split(' '))
+    {
+        document.getElementById("item-icon-preview-background").classList.toggle(className, show);
+    }
 }

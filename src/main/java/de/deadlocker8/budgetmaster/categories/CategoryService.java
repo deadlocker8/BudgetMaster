@@ -1,6 +1,5 @@
 package de.deadlocker8.budgetmaster.categories;
 
-import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.services.AccessAllEntities;
 import de.deadlocker8.budgetmaster.services.AccessEntityByID;
 import de.deadlocker8.budgetmaster.services.Resettable;
@@ -22,13 +21,11 @@ public class CategoryService implements Resettable, AccessAllEntities<Category>,
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CategoryService.class);
 	private final CategoryRepository categoryRepository;
-	private final IconService iconService;
 
 	@Autowired
-	public CategoryService(CategoryRepository categoryRepository, IconService iconService)
+	public CategoryService(CategoryRepository categoryRepository)
 	{
 		this.categoryRepository = categoryRepository;
-		this.iconService = iconService;
 
 		createDefaults();
 	}

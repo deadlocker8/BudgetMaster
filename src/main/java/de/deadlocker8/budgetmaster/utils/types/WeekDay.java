@@ -3,7 +3,6 @@ package de.deadlocker8.budgetmaster.utils.types;
 import de.thecodelabs.utils.util.Localization;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public enum WeekDay
@@ -32,6 +31,6 @@ public enum WeekDay
 	{
 		return Stream.of(WeekDay.values())
 				.map(weekDay -> Localization.getString(weekDay.getKey()))
-				.collect(Collectors.toList());
+				.toList();
 	}
 }

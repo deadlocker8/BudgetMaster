@@ -6,7 +6,7 @@ import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.services.DateService;
-import de.deadlocker8.budgetmaster.settings.SettingsService;
+import de.deadlocker8.budgetmaster.templategroup.TemplateGroupService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.deadlocker8.budgetmaster.utils.Mappings;
@@ -15,7 +15,6 @@ import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
 import de.deadlocker8.budgetmaster.utils.notification.Notification;
 import de.deadlocker8.budgetmaster.utils.notification.NotificationType;
 import de.thecodelabs.utils.util.Localization;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -25,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 
@@ -32,20 +32,33 @@ import java.util.Optional;
 @RequestMapping(Mappings.TEMPLATES)
 public class TemplateController extends BaseController
 {
+	private static class ReturnValues
+	{
+		public static final String ALL_ENTITIES = "templates/templates";
+		public static final String REDIRECT_ALL_ENTITIES = "redirect:/templates";
+		public static final String NEW_ENTITY = "templates/newTemplate";
+		public static final String DELETE_ENTITY = "templates/deleteTemplateModal";
+		public static final String CREATE_FROM_TRANSACTION = "templates/createFromTransactionModal";
+		public static final String NEW_TRANSACTION_NORMAL = "transactions/newTransactionNormal";
+		public static final String NEW_TRANSACTION_TRANSFER = "transactions/newTransactionTransfer";
+	}
+
 	private static final Gson GSON = new GsonBuilder()
 			.setPrettyPrinting()
 			.create();
 
 	private final TemplateService templateService;
+	private final TemplateGroupService templateGroupService;
 	private final TransactionService transactionService;
 	private final DateService dateService;
 	private final AccountService accountService;
 	private final IconService iconService;
 
 	@Autowired
-	public TemplateController(TemplateService templateService, SettingsService settingsService, TransactionService transactionService, DateService dateService, AccountService accountService, IconService iconService)
+	public TemplateController(TemplateService templateService, TemplateGroupService templateGroupService, TransactionService transactionService, DateService dateService, AccountService accountService, IconService iconService)
 	{
 		this.templateService = templateService;
+		this.templateGroupService = templateGroupService;
 		this.transactionService = transactionService;
 		this.dateService = dateService;
 		this.accountService = accountService;
@@ -55,15 +68,15 @@ public class TemplateController extends BaseController
 	@GetMapping
 	public String showTemplates(Model model)
 	{
-		model.addAttribute("templates", templateService.getAllEntitiesAsc());
-		return "templates/templates";
+		model.addAttribute(TemplateModelAttributes.TEMPLATES_BY_GROUP, templateGroupService.getTemplatesByGroupedByTemplateGroup());
+		return ReturnValues.ALL_ENTITIES;
 	}
 
 	@GetMapping("/fromTransactionModal")
 	public String fromTransactionModal(Model model)
 	{
-		model.addAttribute("existingTemplateNames", GSON.toJson(templateService.getExistingTemplateNames()));
-		return "templates/createFromTransactionModal";
+		model.addAttribute(TemplateModelAttributes.EXISTING_TEMPLATE_NAMES, GSON.toJson(templateService.getExistingTemplateNames()));
+		return ReturnValues.CREATE_FROM_TRANSACTION;
 	}
 
 	@PostMapping(value = "/fromTransaction")
@@ -88,21 +101,21 @@ public class TemplateController extends BaseController
 
 		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.template.add.success", templateName), NotificationType.SUCCESS));
 
-		return "redirect:/templates";
+		return ReturnValues.REDIRECT_ALL_ENTITIES;
 	}
 
 	@GetMapping("/{ID}/requestDelete")
 	public String requestDeleteTemplate(Model model, @PathVariable("ID") Integer ID)
 	{
-		final Optional<Template> templateOptional = templateService.getRepository().findById(ID);
+		final Optional<Template> templateOptional = templateService.findById(ID);
 		if(templateOptional.isEmpty())
 		{
 			throw new ResourceNotFoundException();
 		}
 
-		model.addAttribute("templates", templateService.getAllEntitiesAsc());
-		model.addAttribute("templateToDelete", templateOptional.get());
-		return "templates/deleteTemplateModal";
+		model.addAttribute(TemplateModelAttributes.TEMPLATES_BY_GROUP, templateGroupService.getTemplatesByGroupedByTemplateGroup());
+		model.addAttribute(TemplateModelAttributes.ENTITY_TO_DELETE, templateOptional.get());
+		return ReturnValues.DELETE_ENTITY;
 	}
 
 	@GetMapping("/{ID}/delete")
@@ -113,7 +126,7 @@ public class TemplateController extends BaseController
 
 		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.template.delete.success", templateToDelete.getTemplateName()), NotificationType.SUCCESS));
 
-		return "redirect:/templates";
+		return ReturnValues.REDIRECT_ALL_ENTITIES;
 	}
 
 	@GetMapping("/{ID}/select")
@@ -145,14 +158,14 @@ public class TemplateController extends BaseController
 			newTransaction.setIsExpenditure(true);
 		}
 
-		final DateTime date = dateService.getDateTimeFromCookie(cookieDate);
+		final LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
 		transactionService.prepareModelNewOrEdit(model, false, date, false, newTransaction, accountService.getAllActivatedAccountsAsc());
 
 		if(newTransaction.isTransfer())
 		{
-			return "transactions/newTransactionTransfer";
+			return ReturnValues.NEW_TRANSACTION_TRANSFER;
 		}
-		return "transactions/newTransactionNormal";
+		return ReturnValues.NEW_TRANSACTION_NORMAL;
 	}
 
 	@GetMapping("/newTemplate")
@@ -161,16 +174,18 @@ public class TemplateController extends BaseController
 		final Template emptyTemplate = new Template();
 		templateService.prepareTemplateForNewTransaction(emptyTemplate, false);
 		templateService.prepareModelNewOrEdit(model, false, emptyTemplate, accountService.getAllActivatedAccountsAsc());
-		return "templates/newTemplate";
+		return ReturnValues.NEW_ENTITY;
 	}
 
 	@PostMapping(value = "/newTemplate")
-	public String post(Model model,
+	public String post(WebRequest request,
+					   Model model,
 					   @ModelAttribute("NewTemplate") Template template, BindingResult bindingResult,
 					   @RequestParam(value = "includeAccount", required = false) boolean includeAccount,
 					   @RequestParam(value = "includeTransferAccount", required = false) boolean includeTransferAccount,
 					   @RequestParam(value = "iconImageID", required = false) Integer iconImageID,
-					   @RequestParam(value = "builtinIconIdentifier", required = false) String builtinIconIdentifier)
+					   @RequestParam(value = "builtinIconIdentifier", required = false) String builtinIconIdentifier,
+					   @RequestParam(value = "fontColor", required = false) String fontColor)
 	{
 		template.setTemplateName(template.getTemplateName().trim());
 
@@ -199,11 +214,18 @@ public class TemplateController extends BaseController
 		}
 		transactionService.handleTags(template);
 
+		if(template.getTemplateGroup() == null)
+		{
+			template.setTemplateGroup(templateGroupService.getDefaultGroup());
+		}
+
+		template.updateIcon(iconService, iconImageID, builtinIconIdentifier, fontColor, templateService);
+
 		if(bindingResult.hasErrors())
 		{
-			model.addAttribute("error", bindingResult);
+			model.addAttribute(TemplateModelAttributes.ERROR, bindingResult);
 			templateService.prepareModelNewOrEdit(model, template.getID() != null, template, accountService.getAllActivatedAccountsAsc());
-			return "templates/newTemplate";
+			return ReturnValues.NEW_ENTITY;
 		}
 
 		if(!includeAccount)
@@ -216,10 +238,9 @@ public class TemplateController extends BaseController
 			template.setTransferAccount(null);
 		}
 
-		template.updateIcon(iconService, iconImageID, builtinIconIdentifier, templateService);
-
 		templateService.getRepository().save(template);
-		return "redirect:/templates";
+		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.template.save.success", template.getName()), NotificationType.SUCCESS));
+		return ReturnValues.REDIRECT_ALL_ENTITIES;
 	}
 
 	@GetMapping("/{ID}/edit")
@@ -235,6 +256,6 @@ public class TemplateController extends BaseController
 		templateService.prepareTemplateForNewTransaction(template, false);
 		templateService.prepareModelNewOrEdit(model, true, template, accountService.getAllActivatedAccountsAsc());
 
-		return "templates/newTemplate";
+		return ReturnValues.NEW_ENTITY;
 	}
 }

@@ -5,32 +5,40 @@ $(document).ready(function()
         document.getElementById('category-name').focus();
     }
 
+    $('#category-name').on('change keydown paste input', function()
+    {
+        let categoryName = $(this).val();
+        document.getElementById('item-icon-fallback-name').innerText = categoryName.charAt(0).toUpperCase();
+    });
+
     $('.category-color').click(function()
     {
         removeActive();
         addClass($(this)[0], "category-color-active");
         document.getElementById("categoryColor").value = rgb2hex($(this)[0].style.backgroundColor);
+        document.getElementById("item-icon-preview-background").style.backgroundColor = $(this)[0].style.backgroundColor;
     });
 
-    if($("#customColorPicker").length)
+    if($("#customColorPickerContainer").length)
     {
-        $("#customColorPicker").spectrum({
-            showInitial: true,
-            showInput: true,
-            showButtons: false,
-            preferredFormat: "hex",
-            hide: function(color)
-            {
-                removeActive();
-                addClass(document.getElementById("customColorPickerContainer"), "category-color-active");
-                document.getElementById("customColorPickerContainer").style.backgroundColor = color.toHexString();
-                document.getElementById("categoryColor").value = color.toHexString();
+        let colorPickerParent = document.getElementById('customColorPickerContainer');
+
+        let colorPicker = new Picker({
+            parent: colorPickerParent,
+            popup: 'bottom',
+            alpha: true,
+            editor: true,
+            editorFormat: 'hex',
+            cancelButton: false,
+            onChange: function(color) {
+                updateCustomColor(colorPickerParent, color);
             },
-            move: function(color)
-            {
-                document.getElementById("customColorPickerContainer").style.backgroundColor = color.toHexString();
+            onClose: function(color) {
+                updateCustomColor(colorPickerParent, color);
             }
         });
+
+        colorPicker.setColor(colorPickerParent.style.backgroundColor, true);
     }
 
     $('.button-request-delete-category').click(function()
@@ -53,4 +61,14 @@ function removeActive()
     {
         removeClass(colors[i], "category-color-active");
     }
+}
+
+function updateCustomColor(parent, color)
+{
+    removeActive();
+
+    addClass(parent, "category-color-active");
+    parent.style.backgroundColor = color.hex;
+    document.getElementById("categoryColor").value = color.hex;
+    document.getElementById("item-icon-preview-background").style.backgroundColor = color.rgbaString;
 }

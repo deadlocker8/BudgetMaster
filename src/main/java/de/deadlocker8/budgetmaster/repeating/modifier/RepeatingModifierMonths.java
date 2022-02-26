@@ -1,8 +1,7 @@
 package de.deadlocker8.budgetmaster.repeating.modifier;
 
-import org.joda.time.DateTime;
-
 import javax.persistence.Entity;
+import java.time.LocalDate;
 
 @Entity
 public class RepeatingModifierMonths extends RepeatingModifier
@@ -12,10 +11,12 @@ public class RepeatingModifierMonths extends RepeatingModifier
 		super(numberOfMonths, "repeating.modifier.months");
 	}
 
-	public RepeatingModifierMonths() {}
+	public RepeatingModifierMonths()
+	{
+	}
 
 	@Override
-	public DateTime getNextDate(DateTime lastDate)
+	public LocalDate getNextDate(LocalDate lastDate)
 	{
 		return lastDate.plusMonths(super.quantity);
 	}

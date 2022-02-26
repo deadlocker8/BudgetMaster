@@ -123,6 +123,4 @@ public class BackupAccount_v6 implements Upgradeable<BackupAccount_v7>
 
 		return new BackupAccount_v7(ID, name, accountState, type, iconReferenceID);
 	}
-
-
 }

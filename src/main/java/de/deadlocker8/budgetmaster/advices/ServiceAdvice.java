@@ -3,7 +3,7 @@ package de.deadlocker8.budgetmaster.advices;
 import de.deadlocker8.budgetmaster.services.CurrencyService;
 import de.deadlocker8.budgetmaster.services.DateService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
-import de.deadlocker8.budgetmaster.services.UpdateCheckService;
+import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,7 +21,7 @@ public class ServiceAdvice
 	CurrencyService currencyService;
 
 	@Autowired
-	UpdateCheckService updateCheckService;
+	BudgetMasterUpdateService updateService;
 
 	@ModelAttribute("helpers")
 	public HelpersService getHelpers()
@@ -41,9 +41,9 @@ public class ServiceAdvice
 		return currencyService;
 	}
 
-	@ModelAttribute("updateCheckService")
-	public UpdateCheckService getUpdateCheckService()
+	@ModelAttribute("updateService")
+	public BudgetMasterUpdateService getUpdateService()
 	{
-		return updateCheckService;
+		return updateService;
 	}
 }

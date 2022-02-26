@@ -10,12 +10,15 @@ import de.deadlocker8.budgetmaster.utils.DateHelper;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
 
+import java.time.format.DateTimeFormatter;
+
 
 public class HeaderFooterPageEvent extends PdfPageEventHelper
 {
 	@Override
 	public void onStartPage(PdfWriter writer, Document document)
 	{
+		// empty
 	}
 
 	@Override
@@ -25,6 +28,6 @@ public class HeaderFooterPageEvent extends PdfPageEventHelper
 
 		ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase(Localization.getString(Strings.REPORT_FOOTER_LEFT), font), 100, 25, 0);
 		ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase(Localization.getString(Strings.REPORT_FOOTER_CENTER, document.getPageNumber()), font), 300, 25, 0);
-		ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase(DateHelper.getCurrentDate().toString(DateFormatStyle.LONG.getKey()), font), 500, 25, 0);
+		ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase(DateHelper.getCurrentDate().format(DateTimeFormatter.ofPattern(DateFormatStyle.LONG.getKey())), font), 500, 25, 0);
 	}
 }

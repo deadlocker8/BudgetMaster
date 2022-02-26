@@ -2,8 +2,8 @@ package de.deadlocker8.budgetmaster.accounts;
 
 import de.deadlocker8.budgetmaster.authentication.User;
 import de.deadlocker8.budgetmaster.authentication.UserRepository;
+import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.IconService;
-import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.services.AccessAllEntities;
 import de.deadlocker8.budgetmaster.services.AccessEntityByID;
 import de.deadlocker8.budgetmaster.services.Resettable;
@@ -27,19 +27,19 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AccountService.class);
 
+	private static final String PLACEHOLDER_ICON = "fas fa-landmark";
+
 	private final AccountRepository accountRepository;
 	private final TransactionService transactionService;
 	private final UserRepository userRepository;
-	private final ImageService imageService;
 	private final IconService iconService;
 
 	@Autowired
-	public AccountService(AccountRepository accountRepository, TransactionService transactionService, UserRepository userRepository, ImageService imageService, IconService iconService)
+	public AccountService(AccountRepository accountRepository, TransactionService transactionService, UserRepository userRepository, IconService iconService)
 	{
 		this.accountRepository = accountRepository;
 		this.transactionService = transactionService;
 		this.userRepository = userRepository;
-		this.imageService = imageService;
 		this.iconService = iconService;
 
 		createDefaults();
@@ -82,6 +82,7 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 		return accountRepository.findById(ID);
 	}
 
+	@Transactional
 	public void deleteAccount(int ID)
 	{
 		Optional<Account> accountToDeleteOptional = accountRepository.findById(ID);
@@ -126,6 +127,9 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 		if(accountRepository.findAll().isEmpty())
 		{
 			Account placeholder = new Account("Placeholder", AccountType.ALL);
+			final Icon newIcon = iconService.createIconReference(null, PLACEHOLDER_ICON, null);
+			iconService.getRepository().save(newIcon);
+			placeholder.setIconReference(newIcon);
 			accountRepository.save(placeholder);
 			LOGGER.debug("Created placeholder account");
 
@@ -133,6 +137,25 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 			selectAccount(account.getID());
 			setAsDefaultAccount(account.getID());
 			LOGGER.debug("Created default account");
+		}
+		else
+		{
+			final Account placeholderAccount = accountRepository.findAllByType(AccountType.ALL).get(0);
+			final Icon icon = placeholderAccount.getIconReference();
+			if(icon == null)
+			{
+				final Icon newIcon = iconService.createIconReference(null, PLACEHOLDER_ICON, null);
+				iconService.getRepository().save(newIcon);
+				placeholderAccount.setIconReference(newIcon);
+				accountRepository.save(placeholderAccount);
+				LOGGER.debug(MessageFormat.format("Updated placeholder account: Created missing icon instance and set icon to \"{0}\"", PLACEHOLDER_ICON));
+			}
+			else if(icon.getBuiltinIdentifier() == null)
+			{
+				icon.setBuiltinIdentifier(PLACEHOLDER_ICON);
+				iconService.getRepository().save(icon);
+				LOGGER.debug(MessageFormat.format("Updated placeholder account: Set missing icon to \"{0}\"", PLACEHOLDER_ICON));
+			}
 		}
 
 		updateMissingAttributes();
@@ -229,6 +252,7 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 		}
 	}
 
+	@Transactional
 	public void updateExistingAccount(Account newAccount)
 	{
 		Optional<Account> existingAccountOptional = accountRepository.findById(newAccount.getID());
@@ -258,5 +282,16 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 			// select "all accounts" as selected account
 			selectAccount(accountRepository.findAllByType(AccountType.ALL).get(0).getID());
 		}
+	}
+
+	public Account getSelectedAccountOrDefaultAsFallback()
+	{
+		final Account selectedAccount = accountRepository.findByIsSelected(true);
+		if(selectedAccount != null && selectedAccount.getType() == AccountType.CUSTOM)
+		{
+			return selectedAccount;
+		}
+
+		return accountRepository.findByIsDefault(true);
 	}
 }

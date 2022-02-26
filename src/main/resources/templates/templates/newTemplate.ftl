@@ -23,6 +23,7 @@
         <#import "templateFunctions.ftl" as templateFunctions>
         <#import "../helpers/customSelectMacros.ftl" as customSelectMacros>
         <#import "../helpers/iconSelect.ftl" as iconSelectMacros>
+        <#import "../helpers/fontColorPicker.ftl" as fontColorPickerMacros>
 
         <main>
             <div class="card main-card background-color">
@@ -38,6 +39,7 @@
                     <form name="NewTemplate" action="<@s.url '/templates/newTemplate'/>" method="post" onsubmit="return validateForm(true)">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="ID" value="<#if template.getID()??>${template.getID()?c}</#if>">
+                        <input type="hidden" name="templateGroup" value="<#if template.getTemplateGroup()??>${template.getTemplateGroup().getID()?c}</#if>">
 
                         <#-- isPayment switch -->
                         <@newTransactionMacros.isExpenditureSwitch template/>
@@ -79,10 +81,13 @@
                         </#if>
 
                         <#-- icon -->
-                        <@iconSelectMacros.iconSelect id="template-icon" item=template/>
+                        <@iconSelectMacros.iconSelect id="template-icon" item=template showBackground=false preventFallbackIcon=true/>
+
+                        <#-- font color -->
+                        <@fontColorPickerMacros.fontColorPicker template/>
 
                         <#-- buttons -->
-                        <@newTransactionMacros.buttons "/templates"/>
+                        <@newTransactionMacros.buttons cancelURL="/templates" includeContinueButton=false/>
                     </form>
                 </div>
                 </@header.content>
@@ -98,10 +103,11 @@
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
-        <script src="<@s.url '/js/libs/spectrum.js'/>"></script>
+        <script src="<@s.url '/webjars/vanilla-picker/2.12.1/dist/vanilla-picker.min.js'/>"></script>
         <script src="<@s.url '/js/helpers.js'/>"></script>
         <script src="<@s.url '/js/transactions.js'/>"></script>
         <script src="<@s.url '/js/templates.js'/>"></script>
         <script src="<@s.url '/js/iconSelect.js'/>"></script>
+        <script src="<@s.url '/js/fontColorPicker.js'/>"></script>
     </@header.body>
 </html>

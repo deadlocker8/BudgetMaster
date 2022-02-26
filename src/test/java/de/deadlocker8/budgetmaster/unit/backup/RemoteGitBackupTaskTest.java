@@ -11,20 +11,21 @@ import de.deadlocker8.budgetmaster.database.model.v7.BackupDatabase_v7;
 import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.unit.helpers.Helpers;
+import de.deadlocker8.budgetmaster.utils.DateHelper;
 import de.thecodelabs.utils.util.OS;
-import org.joda.time.DateTimeUtils;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -55,14 +56,6 @@ class RemoteGitBackupTaskTest
 		{
 			gitExecutable = "/usr/bin/git";
 		}
-
-		DateTimeUtils.setCurrentMillisFixed(1612004400000L);
-	}
-
-	@AfterAll
-	public static void cleanup()
-	{
-		DateTimeUtils.setCurrentMillisSystem();
 	}
 
 	@Test
@@ -152,36 +145,41 @@ class RemoteGitBackupTaskTest
 	@Test
 	void test_runBackup_firstCommit() throws IOException
 	{
-		// create fake server
-		final Path fakeServerFolder = Files.createDirectory(tempFolder.resolve("server"));
-		final Path repositoryFolder = Files.createDirectory(tempFolder.resolve("client")).resolve(".git");
+		try(MockedStatic<DateHelper> dateHelper = Mockito.mockStatic(DateHelper.class))
+		{
+			dateHelper.when(DateHelper::getCurrentDateTime).thenReturn(LocalDateTime.of(2021, 1, 30, 12, 0, 0));
 
-		final RemoteGitBackupTask remoteGitBackupTask = createBackupTask(repositoryFolder, fakeServerFolder);
-		remoteGitBackupTask.run();
+			// create fake server
+			final Path fakeServerFolder = Files.createDirectory(tempFolder.resolve("server"));
+			final Path repositoryFolder = Files.createDirectory(tempFolder.resolve("client")).resolve(".git");
 
-		// check local git
-		assertThat(remoteGitBackupTask.getBackupStatus()).
-				isEqualByComparingTo(BackupStatus.OK);
-		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(),
-				gitExecutable, "rev-list", "--all", "--count"))
-				.isEqualTo("1");
-		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(),
-				gitExecutable, "log", "--pretty=%B", "-1"))
-				.startsWith("2021-01-30");
-		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(),
-				gitExecutable, "show", "--name-only", "--oneline", "HEAD"))
-				.contains(BackupTask.DATABASE_FILE_NAME);
+			final RemoteGitBackupTask remoteGitBackupTask = createBackupTask(repositoryFolder, fakeServerFolder);
+			remoteGitBackupTask.run();
 
-		// check remote git
-		assertThat(Helpers.runCommand(fakeServerFolder.toFile(),
-				gitExecutable, "rev-list", "--all", "--count"))
-				.isEqualTo("1");
-		assertThat(Helpers.runCommand(fakeServerFolder.toFile(),
-				gitExecutable, "log", "--pretty=%B", "-1"))
-				.startsWith("2021-01-30");
-		assertThat(Helpers.runCommand(fakeServerFolder.toFile(),
-				gitExecutable, "show", "--name-only", "--oneline", "HEAD"))
-				.contains(BackupTask.DATABASE_FILE_NAME);
+			// check local git
+			assertThat(remoteGitBackupTask.getBackupStatus()).
+					isEqualByComparingTo(BackupStatus.OK);
+			assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(),
+					gitExecutable, "rev-list", "--all", "--count"))
+					.isEqualTo("1");
+			assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(),
+					gitExecutable, "log", "--pretty=%B", "-1"))
+					.startsWith("2021-01-30");
+			assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(),
+					gitExecutable, "show", "--name-only", "--oneline", "HEAD"))
+					.contains(BackupTask.DATABASE_FILE_NAME);
+
+			// check remote git
+			assertThat(Helpers.runCommand(fakeServerFolder.toFile(),
+					gitExecutable, "rev-list", "--all", "--count"))
+					.isEqualTo("1");
+			assertThat(Helpers.runCommand(fakeServerFolder.toFile(),
+					gitExecutable, "log", "--pretty=%B", "-1"))
+					.startsWith("2021-01-30");
+			assertThat(Helpers.runCommand(fakeServerFolder.toFile(),
+					gitExecutable, "show", "--name-only", "--oneline", "HEAD"))
+					.contains(BackupTask.DATABASE_FILE_NAME);
+		}
 	}
 
 	@Test
@@ -211,39 +209,43 @@ class RemoteGitBackupTaskTest
 	@Test
 	void test_runBackup_fileChanged() throws IOException
 	{
-		// create fake server
-		final Path fakeServerFolder = Files.createDirectory(tempFolder.resolve("server"));
-		final Path repositoryFolder = Files.createDirectory(tempFolder.resolve("client")).resolve(".git");
+		try(MockedStatic<DateHelper> dateHelper = Mockito.mockStatic(DateHelper.class))
+		{
+			dateHelper.when(DateHelper::getCurrentDateTime).thenReturn(LocalDateTime.of(2021, 1, 30, 12, 0, 0));
+			// create fake server
+			final Path fakeServerFolder = Files.createDirectory(tempFolder.resolve("server"));
+			final Path repositoryFolder = Files.createDirectory(tempFolder.resolve("client")).resolve(".git");
 
-		final RemoteGitBackupTask remoteGitBackupTask = createBackupTask(repositoryFolder, fakeServerFolder);
-		remoteGitBackupTask.run();
+			final RemoteGitBackupTask remoteGitBackupTask = createBackupTask(repositoryFolder, fakeServerFolder);
+			remoteGitBackupTask.run();
 
-		final BackupDatabase_v7 databaseModified = new BackupDatabase_v7(List.of(new BackupCategory_v7(5, "myCategory", "#FF0000", CategoryType.CUSTOM, null)), List.of(), List.of(), List.of(), List.of(), List.of(), List.of());
-		Mockito.when(databaseService.getDatabaseForJsonSerialization()).thenReturn(databaseModified);
-		remoteGitBackupTask.run();
+			final BackupDatabase_v7 databaseModified = new BackupDatabase_v7(List.of(new BackupCategory_v7(5, "myCategory", "#FF0000", CategoryType.CUSTOM, null)), List.of(), List.of(), List.of(), List.of(), List.of(), List.of());
+			Mockito.when(databaseService.getDatabaseForJsonSerialization()).thenReturn(databaseModified);
+			remoteGitBackupTask.run();
 
-		// check local git
-		assertThat(remoteGitBackupTask.getBackupStatus()).isEqualByComparingTo(BackupStatus.OK);
-		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(),
-				gitExecutable, "rev-list", "--all", "--count"))
-				.isEqualTo("2");
-		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(),
-				gitExecutable, "log", "--pretty=%B", "-1"))
-				.startsWith("2021-01-30");
-		assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(),
-				gitExecutable, "show", "--name-only", "--oneline", "HEAD"))
-				.contains(BackupTask.DATABASE_FILE_NAME);
+			// check local git
+			assertThat(remoteGitBackupTask.getBackupStatus()).isEqualByComparingTo(BackupStatus.OK);
+			assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(),
+					gitExecutable, "rev-list", "--all", "--count"))
+					.isEqualTo("2");
+			assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(),
+					gitExecutable, "log", "--pretty=%B", "-1"))
+					.startsWith("2021-01-30");
+			assertThat(Helpers.runCommand(repositoryFolder.getParent().toFile(),
+					gitExecutable, "show", "--name-only", "--oneline", "HEAD"))
+					.contains(BackupTask.DATABASE_FILE_NAME);
 
-		// check remote git
-		assertThat(Helpers.runCommand(fakeServerFolder.toFile(),
-				gitExecutable, "rev-list", "--all", "--count"))
-				.isEqualTo("2");
-		assertThat(Helpers.runCommand(fakeServerFolder.toFile(),
-				gitExecutable, "log", "--pretty=%B", "-1"))
-				.startsWith("2021-01-30");
-		assertThat(Helpers.runCommand(fakeServerFolder.toFile(),
-				gitExecutable, "show", "--name-only", "--oneline", "HEAD"))
-				.contains(BackupTask.DATABASE_FILE_NAME);
+			// check remote git
+			assertThat(Helpers.runCommand(fakeServerFolder.toFile(),
+					gitExecutable, "rev-list", "--all", "--count"))
+					.isEqualTo("2");
+			assertThat(Helpers.runCommand(fakeServerFolder.toFile(),
+					gitExecutable, "log", "--pretty=%B", "-1"))
+					.startsWith("2021-01-30");
+			assertThat(Helpers.runCommand(fakeServerFolder.toFile(),
+					gitExecutable, "show", "--name-only", "--oneline", "HEAD"))
+					.contains(BackupTask.DATABASE_FILE_NAME);
+		}
 	}
 
 	private RemoteGitBackupTask createBackupTask(Path repositoryFolder, Path fakeServerFolder)

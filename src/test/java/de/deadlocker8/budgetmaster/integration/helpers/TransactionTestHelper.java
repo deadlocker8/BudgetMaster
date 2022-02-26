@@ -4,7 +4,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -89,9 +92,13 @@ public class TransactionTestHelper
 
 	public static void selectGlobalAccountByName(WebDriver driver, String accountName)
 	{
-		final WebElement globalAccountSelect = driver.findElement(By.cssSelector(".global-account-select-wrapper .custom-select"));
+		final WebElement globalAccountSelect = driver.findElement(By.id("globalAccountSelect"));
 		globalAccountSelect.click();
-		driver.findElements(By.cssSelector(".global-account-select-wrapper .custom-select-item-name")).stream()
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#modalGlobalAccountSelect h4")));
+
+		driver.findElements(By.cssSelector(".global-account-select-option-name")).stream()
 				.filter(webElement -> webElement.getText().equals(accountName))
 				.findFirst().orElseThrow().click();
 	}
