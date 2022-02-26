@@ -19,10 +19,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class TagTest extends SeleniumTestBase
 {
-	private IntegrationTestHelper helper;
+	private static IntegrationTestHelper helper;
 
-	@BeforeAll
-	public void beforeAll()
+	@Override
+	protected void importDatabaseOnce()
 	{
 		helper = new IntegrationTestHelper(driver, port);
 		helper.start();

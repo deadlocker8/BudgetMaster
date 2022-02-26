@@ -28,10 +28,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class NewTransactionTransferTest extends SeleniumTestBase
 {
-	private IntegrationTestHelper helper;
+	private static IntegrationTestHelper helper;
 
-	@BeforeAll
-	public void prepare()
+	@Override
+	protected void importDatabaseOnce()
 	{
 		helper = new IntegrationTestHelper(driver, port);
 		helper.start();

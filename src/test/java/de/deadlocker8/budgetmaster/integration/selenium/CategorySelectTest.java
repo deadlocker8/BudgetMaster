@@ -5,7 +5,6 @@ import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -23,10 +22,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class CategorySelectTest extends SeleniumTestBase
 {
-	private IntegrationTestHelper helper;
+	private static IntegrationTestHelper helper;
 
-	@BeforeAll
-	public void beforeAll()
+	@Override
+	protected void importDatabaseOnce()
 	{
 		helper = new IntegrationTestHelper(driver, port);
 		helper.start();

@@ -21,8 +21,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class SearchTest extends SeleniumTestBase
 {
-	@BeforeAll
-	public void prepare()
+	private static IntegrationTestHelper helper;
+
+	@Override
+	protected void importDatabaseOnce()
 	{
 		IntegrationTestHelper helper = new IntegrationTestHelper(driver, port);
 		helper.start();

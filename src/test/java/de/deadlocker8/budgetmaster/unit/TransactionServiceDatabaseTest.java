@@ -6,8 +6,11 @@ import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTest;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
+import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.deadlocker8.budgetmaster.utils.DateHelper;
+import de.thecodelabs.utils.util.SystemUtils;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -23,8 +26,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -33,7 +38,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = Main.class)
 @Import(TransactionServiceDatabaseTest.TestDatabaseConfiguration.class)
 @ActiveProfiles("test")
-@SeleniumTest
 @Transactional
 class TransactionServiceDatabaseTest
 {
@@ -58,6 +62,9 @@ class TransactionServiceDatabaseTest
 
 	@Autowired
 	private AccountRepository accountRepository;
+
+	@Autowired
+	DataSource dataSource;
 
 	@Test
 	void test_deleteAll()

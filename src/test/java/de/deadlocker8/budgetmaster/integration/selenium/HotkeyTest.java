@@ -28,10 +28,10 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 class HotkeyTest extends SeleniumTestBase
 {
-	private IntegrationTestHelper helper;
+	private static IntegrationTestHelper helper;
 
-	@BeforeAll
-	public void prepare()
+	@Override
+	protected void importDatabaseOnce()
 	{
 		helper = new IntegrationTestHelper(driver, port);
 		helper.start();

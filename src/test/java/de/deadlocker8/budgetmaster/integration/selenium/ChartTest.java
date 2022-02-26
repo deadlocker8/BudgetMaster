@@ -29,10 +29,10 @@ class ChartTest extends SeleniumTestBase
 	private final String SELECTOR_VISIBLE_CHART_PREVIEWS = ".chart-preview-column:not(.hidden)";
 	private final String SELECTOR_ACTIVE_CHART_PREVIEWS = ".chart-preview.active";
 
-	private IntegrationTestHelper helper;
+	private static IntegrationTestHelper helper;
 
-	@BeforeAll
-	public void beforeAll()
+	@Override
+	protected void importDatabaseOnce()
 	{
 		helper = new IntegrationTestHelper(driver, port);
 		helper.start();

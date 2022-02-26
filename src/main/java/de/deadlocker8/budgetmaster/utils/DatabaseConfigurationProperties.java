@@ -17,7 +17,7 @@ public class DatabaseConfigurationProperties
 
 	@Min(1)
 	@Max(65536)
-	private int port;
+	private Integer port;
 
 	@NotBlank
 	private String databaseName;
@@ -48,12 +48,12 @@ public class DatabaseConfigurationProperties
 		this.hostname = hostname;
 	}
 
-	public int getPort()
+	public Integer getPort()
 	{
 		return port;
 	}
 
-	public void setPort(int port)
+	public void setPort(Integer port)
 	{
 		this.port = port;
 	}

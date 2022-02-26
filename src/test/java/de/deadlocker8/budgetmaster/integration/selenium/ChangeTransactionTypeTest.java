@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ChangeTransactionTypeTest extends SeleniumTestBase
 {
-	private IntegrationTestHelper helper;
+	private static IntegrationTestHelper helper;
 
 	private void openTransferTypeModal(int transactionID)
 	{
@@ -52,8 +52,8 @@ class ChangeTransactionTypeTest extends SeleniumTestBase
 		assertThat(driver.findElement(By.id("modalChangeTransactionType")).isDisplayed()).isTrue();
 	}
 
-	@BeforeAll
-	public void beforeAll()
+	@Override
+	protected void importDatabaseOnce()
 	{
 		helper = new IntegrationTestHelper(driver, port);
 		helper.start();

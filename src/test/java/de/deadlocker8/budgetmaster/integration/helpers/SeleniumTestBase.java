@@ -1,45 +1,63 @@
 package de.deadlocker8.budgetmaster.integration.helpers;
 
 import de.deadlocker8.budgetmaster.Main;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
+
+@Testcontainers
 @SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ExtendWith(SeleniumTestWatcher.class)
 @DirtiesContext
 @SeleniumTest
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class SeleniumTestBase
+@ActiveProfiles("test")
+public abstract class SeleniumTestBase
 {
+	@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+	@Autowired
 	protected WebDriver driver;
 
 	@LocalServerPort
 	protected int port;
 
-	@Order(1)
-	@BeforeAll
-	public void init()
+	private static boolean isDatabaseAlreadyImported = false;
+
+	@Container
+	static PostgreSQLContainer<?> postgresDB = new PostgreSQLContainer<>("postgres:14.2")
+			.withDatabaseName("budgetmaster-tests-db")
+			.withUsername("budgetmaster")
+			.withPassword("BudgetMaster");
+
+
+	@DynamicPropertySource
+	static void properties(DynamicPropertyRegistry registry)
 	{
-		FirefoxOptions options = new FirefoxOptions();
-		options.setHeadless(false);
-		options.addPreference("devtools.console.stdout.content", true);
-		driver = new FirefoxDriver(options);
-		driver.manage().window().maximize();
+		registry.add("spring.datasource.url", postgresDB::getJdbcUrl);
+		registry.add("spring.datasource.username", postgresDB::getUsername);
+		registry.add("spring.datasource.password", postgresDB::getPassword);
 	}
 
-	@AfterAll
-	public void afterAll() {
-		driver.quit();
+	@BeforeEach
+	public void beforeEach()
+	{
+		if(isDatabaseAlreadyImported)
+		{
+			return;
+		}
+
+		importDatabaseOnce();
+
+		isDatabaseAlreadyImported = true;
 	}
 
-	public WebDriver getDriver()
-	{
-		return driver;
-	}
+	protected abstract void importDatabaseOnce();
 }

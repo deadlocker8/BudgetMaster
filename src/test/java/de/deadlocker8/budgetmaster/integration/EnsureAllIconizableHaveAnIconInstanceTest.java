@@ -30,7 +30,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = Main.class)
 @Import(EnsureAllIconizableHaveAnIconInstanceTest.TestDatabaseConfiguration.class)
 @ActiveProfiles("test")
-@SeleniumTest
 @Transactional
 class EnsureAllIconizableHaveAnIconInstanceTest
 {

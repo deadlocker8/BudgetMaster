@@ -8,7 +8,6 @@ import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
 import de.deadlocker8.budgetmaster.integration.helpers.TransactionTestHelper;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -24,12 +23,13 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 class AccountTest extends SeleniumTestBase
 {
-	private IntegrationTestHelper helper;
+	private static IntegrationTestHelper helper;
 
-	@BeforeAll
-	public void beforeAll()
+	@Override
+	protected void importDatabaseOnce()
 	{
 		helper = new IntegrationTestHelper(driver, port);
 		helper.start();
@@ -37,7 +37,7 @@ class AccountTest extends SeleniumTestBase
 		helper.hideBackupReminder();
 		helper.hideWhatsNewDialog();
 
-		String path = getClass().getClassLoader().getResource("AccountDatabase.json").getFile().replace("/", File.separator);
+		String path = Account.class.getClassLoader().getResource("AccountDatabase.json").getFile().replace("/", File.separator);
 
 		final Account account1 = new Account("DefaultAccount0815", AccountType.CUSTOM);
 		final Account account2 = new Account("sfsdf", AccountType.CUSTOM);
@@ -78,7 +78,6 @@ class AccountTest extends SeleniumTestBase
 			}
 		}
 	}
-
 
 	@Test
 	void test_newAccount_cancel()

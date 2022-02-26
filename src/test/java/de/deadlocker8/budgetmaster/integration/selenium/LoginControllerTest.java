@@ -18,6 +18,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class LoginControllerTest extends SeleniumTestBase
 {
+	private static IntegrationTestHelper helper;
+
+	@Override
+	protected void importDatabaseOnce()
+	{
+	}
+
 	@Test
 	void test_getLoginPage()
 	{
