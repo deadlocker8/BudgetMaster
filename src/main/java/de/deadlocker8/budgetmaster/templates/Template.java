@@ -221,19 +221,20 @@ public class Template implements TransactionBase, Iconizable
 		final Icon icon = getIconReference();
 		if(icon == null)
 		{
-			return getAppropriateTextColor(isDarkTheme);
+			return getDefaultFontColor(isDarkTheme);
 		}
 
 		final String fontColor = icon.getFontColor();
 		if(fontColor == null)
 		{
-			return getAppropriateTextColor(isDarkTheme);
+			return getDefaultFontColor(isDarkTheme);
 		}
 
 		return fontColor;
 	}
 
-	private String getAppropriateTextColor(boolean isDarkTheme)
+	@Override
+	public String getDefaultFontColor(boolean isDarkTheme)
 	{
 		if(isDarkTheme)
 		{
@@ -242,7 +243,6 @@ public class Template implements TransactionBase, Iconizable
 
 		return FONT_COLOR_LIGHT_THEME;
 	}
-
 
 	public List<Tag> getTags()
 	{

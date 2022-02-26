@@ -17,6 +17,9 @@ import java.util.Objects;
 @Entity
 public class Category implements ProvidesID, Iconizable
 {
+	private static final String FONT_COLOR_LIGHT_THEME = "#212121";
+	private static final String FONT_COLOR_DARK_THEME = "#FFFFFF";
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Expose
@@ -125,6 +128,17 @@ public class Category implements ProvidesID, Iconizable
 		}
 
 		return fontColor;
+	}
+
+	@Override
+	public String getDefaultFontColor(boolean isDarkTheme)
+	{
+		if(isDarkTheme)
+		{
+			return FONT_COLOR_DARK_THEME;
+		}
+
+		return FONT_COLOR_LIGHT_THEME;
 	}
 
 	public String getAppropriateTextColor()

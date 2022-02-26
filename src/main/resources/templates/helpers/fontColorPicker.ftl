@@ -2,6 +2,7 @@
 
 <#macro fontColorPicker item>
     <input type="hidden" name="fontColor" id="fontColor" value="${item.getFontColor(settings.isUseDarkTheme())}">
+    <script>fontColorPickerDefaultColor = "${item.getDefaultFontColor(settings.isUseDarkTheme())}"</script>
 
     <div class="row">
         <div class="input-field col s12 m12 l8 offset-l2">

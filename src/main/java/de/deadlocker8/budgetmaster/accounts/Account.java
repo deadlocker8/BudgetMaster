@@ -164,6 +164,12 @@ public class Account implements ProvidesID, Iconizable
 	}
 
 	@Override
+	public String getDefaultFontColor(boolean isDarkTheme)
+	{
+		return ACCOUNT_FONT_COLOR;
+	}
+
+	@Override
 	public String toString()
 	{
 		return "Account{" +

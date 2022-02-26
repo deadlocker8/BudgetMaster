@@ -32,4 +32,6 @@ public interface Iconizable extends ProvidesID
 	}
 
 	String getFontColor(boolean isDarkTheme);
+
+	String getDefaultFontColor(boolean isDarkTheme);
 }

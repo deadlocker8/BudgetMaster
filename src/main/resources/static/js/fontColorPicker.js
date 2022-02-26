@@ -38,7 +38,7 @@ $(document).ready(function()
             }
             catch(e)
             {
-                appropriateColor = '#2E79B9';
+                appropriateColor = fontColorPickerDefaultColor;
             }
 
             document.getElementById("item-icon-preview").style.color = appropriateColor;
