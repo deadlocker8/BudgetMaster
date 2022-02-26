@@ -10,6 +10,9 @@ import javax.validation.constraints.NotBlank;
 public class DatabaseConfigurationProperties
 {
 	@NotBlank
+	private String type;
+
+	@NotBlank
 	private String hostname;
 
 	@Min(1)
@@ -24,6 +27,16 @@ public class DatabaseConfigurationProperties
 
 	@NotBlank
 	private String password;
+
+	public String getType()
+	{
+		return type;
+	}
+
+	public void setType(String type)
+	{
+		this.type = type;
+	}
 
 	public String getHostname()
 	{
@@ -79,7 +92,8 @@ public class DatabaseConfigurationProperties
 	public String toString()
 	{
 		return "DatabaseConfigurationProperties{" +
-				"hostname='" + hostname + '\'' +
+				"type='" + type + '\'' +
+				", hostname='" + hostname + '\'' +
 				", port=" + port +
 				", databaseName='" + databaseName + '\'' +
 				", username='" + username + '\'' +
