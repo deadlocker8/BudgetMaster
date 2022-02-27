@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.integration.helpers;
 
 import de.deadlocker8.budgetmaster.Main;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,12 @@ public abstract class SeleniumTestBase
 		registry.add("spring.datasource.url", postgresDB::getJdbcUrl);
 		registry.add("spring.datasource.username", postgresDB::getUsername);
 		registry.add("spring.datasource.password", postgresDB::getPassword);
+	}
+
+	@BeforeAll
+	static void beforeAll()
+	{
+		isDatabaseAlreadyImported = false;
 	}
 
 	@BeforeEach
