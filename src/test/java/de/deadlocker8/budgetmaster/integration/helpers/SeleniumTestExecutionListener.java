@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmaster.integration.helpers;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.opentest4j.TestAbortedException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -61,8 +62,11 @@ public class SeleniumTestExecutionListener extends AbstractTestExecutionListener
 	@Override
 	public void afterTestMethod(TestContext testContext)
 	{
+		// skipped by e.g. assumeTrue()
+		final boolean isAbortedByAssumption = testContext.getTestException() instanceof TestAbortedException;
+
 		final boolean isSuccess = testContext.getTestException() == null;
-		if(isSuccess)
+		if(isSuccess || isAbortedByAssumption)
 		{
 			return;
 		}
