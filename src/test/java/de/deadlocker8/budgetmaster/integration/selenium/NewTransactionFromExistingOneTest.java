@@ -44,8 +44,8 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 		helper.uploadDatabase(path, Arrays.asList("Default Account", "Second Account", "Readonly Account"), List.of(account1, account2, account3));
 	}
 
-	@BeforeEach
-	public void beforeEach()
+	@Override
+	protected void runBeforeEachTest()
 	{
 		driver.get(helper.getUrl() + "/transactions");
 

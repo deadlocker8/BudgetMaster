@@ -39,8 +39,9 @@ class SearchTest extends SeleniumTestBase
 		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf"), List.of(account1, account2));
 	}
 
-	@BeforeEach
-	public void beforeEach() {
+	@Override
+	protected void runBeforeEachTest()
+	{
 		// search
 		WebElement inputSearch = driver.findElement(By.id("search"));
 		inputSearch.sendKeys("e");

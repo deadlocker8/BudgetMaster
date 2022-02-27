@@ -36,8 +36,8 @@ class TagTest extends SeleniumTestBase
 		helper.uploadDatabase(path, List.of("Default Account"), List.of(account1));
 	}
 
-	@BeforeEach
-	public void beforeEach()
+	@Override
+	protected void runBeforeEachTest()
 	{
 		driver.get(helper.getUrl() + "/transactions");
 

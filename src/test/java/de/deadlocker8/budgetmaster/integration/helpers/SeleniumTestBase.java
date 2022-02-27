@@ -51,13 +51,20 @@ public abstract class SeleniumTestBase
 	{
 		if(isDatabaseAlreadyImported)
 		{
+			runBeforeEachTest();
 			return;
 		}
 
 		importDatabaseOnce();
 
 		isDatabaseAlreadyImported = true;
+
+		runBeforeEachTest();
 	}
 
 	protected abstract void importDatabaseOnce();
+
+	protected void runBeforeEachTest()
+	{
+	}
 }
