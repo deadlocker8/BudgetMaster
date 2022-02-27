@@ -5,10 +5,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 @ConfigurationProperties(prefix = "budgetmaster.database")
 public class DatabaseConfigurationProperties
 {
+	private static final String PREFIX = "budgetmaster.database";
+
 	@NotBlank
 	private String type;
 
@@ -86,6 +91,47 @@ public class DatabaseConfigurationProperties
 	public void setPassword(String password)
 	{
 		this.password = password;
+	}
+
+	public List<String> getMissingAttributes()
+	{
+		final List<String> missingAttributes = new ArrayList<>();
+		if(type == null)
+		{
+			missingAttributes.add(createMissingAttributeString("type"));
+		}
+
+		if(hostname == null)
+		{
+			missingAttributes.add(createMissingAttributeString("hostname"));
+		}
+
+		if(port == null)
+		{
+			missingAttributes.add(createMissingAttributeString("port"));
+		}
+
+		if(databaseName == null)
+		{
+			missingAttributes.add(createMissingAttributeString("databaseName"));
+		}
+
+		if(username == null)
+		{
+			missingAttributes.add(createMissingAttributeString("username"));
+		}
+
+		if(password == null)
+		{
+			missingAttributes.add(createMissingAttributeString("password"));
+		}
+
+		return missingAttributes;
+	}
+
+	private String createMissingAttributeString(String type)
+	{
+		return MessageFormat.format("{0}.{1}", PREFIX, type);
 	}
 
 	@Override
