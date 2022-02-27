@@ -6,8 +6,7 @@ import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
 import de.deadlocker8.budgetmaster.integration.helpers.TransactionTestHelper;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -27,6 +26,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class NewTransactionRecurringTest extends SeleniumTestBase
 {
+	private static final String TRANSACTION_NAME = "My recurring transaction";
+
 	private static IntegrationTestHelper helper;
 
 	@Override
@@ -66,10 +67,37 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New " + type));
 	}
 
+	@AfterEach
+	public void afterEach()
+	{
+		// delete added transaction
+
+		driver.get(helper.getUrl() + "/transactions");
+
+		final List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		for(WebElement row : transactionsRows)
+		{
+			final List<WebElement> columns = row.findElements(By.className("col"));
+			final String name = columns.get(3).findElement(By.className("transaction-text")).getText();
+			if(name.equals(TRANSACTION_NAME))
+			{
+				columns.get(5).findElements(By.tagName("a")).get(1).click();
+
+				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+				wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector("#modalConfirmDelete .modal-content h4"), "Delete Entry"));
+
+				driver.findElements(By.cssSelector("#deleteModalContainerOnDemand .modal-footer a")).get(1).click();
+
+				wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("notification-item")));
+
+				return;
+			}
+		}
+	}
+
 	@Test
 	void test_newTransaction_income()
 	{
-		String name = "My recurring transaction";
 		String amount = "25.00";
 		String description = "Lorem Ipsum dolor sit amet";
 		String categoryName = "sdfdsf";
@@ -78,7 +106,7 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 
 		// fill form
 		driver.findElement(By.className("buttonIncome")).click();
-		driver.findElement(By.id("transaction-name")).sendKeys(name);
+		driver.findElement(By.id("transaction-name")).sendKeys(TRANSACTION_NAME);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
 		driver.findElement(By.id("transaction-description")).sendKeys(description);
 		TransactionTestHelper.selectCategoryByName(driver, categoryName);
@@ -131,13 +159,12 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 
 		// check columns
 		final String dateString = new SimpleDateFormat("03.MM.").format(new Date());
-		TransactionTestHelper.assertTransactionColumns(columns, dateString, categoryName, "rgb(46, 124, 43)", true, false, name, description, amount);
+		TransactionTestHelper.assertTransactionColumns(columns, dateString, categoryName, "rgb(46, 124, 43)", true, false, TRANSACTION_NAME, description, amount);
 	}
 
 	@Test
 	void test_newTransaction_expenditure()
 	{
-		String name = "My recurring transaction";
 		String amount = "15.00";
 		String description = "Lorem Ipsum dolor sit amet";
 		String categoryName = "sdfdsf";
@@ -146,7 +173,7 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 
 		// fill form
 		driver.findElement(By.className("buttonExpenditure")).click();
-		driver.findElement(By.id("transaction-name")).sendKeys(name);
+		driver.findElement(By.id("transaction-name")).sendKeys(TRANSACTION_NAME);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
 		driver.findElement(By.id("transaction-description")).sendKeys(description);
 		TransactionTestHelper.selectCategoryByName(driver, categoryName);
@@ -199,7 +226,7 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 
 		// check columns
 		final String dateString = new SimpleDateFormat("03.MM.").format(new Date());
-		TransactionTestHelper.assertTransactionColumns(columns, dateString, categoryName, "rgb(46, 124, 43)", true, false, name, description, "-" + amount);
+		TransactionTestHelper.assertTransactionColumns(columns, dateString, categoryName, "rgb(46, 124, 43)", true, false, TRANSACTION_NAME, description, "-" + amount);
 	}
 
 	@Test
@@ -208,7 +235,6 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		final String type = "Transfer";
 		openNewTransactionPage(type);
 
-		String name = "My recurring transfer";
 		String amount = "30.00";
 		String description = "sit amet";
 		String categoryName = "sdfdsf";
@@ -217,7 +243,7 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		String transferAccountName = "Account2";
 
 		// fill form
-		driver.findElement(By.id("transaction-name")).sendKeys(name);
+		driver.findElement(By.id("transaction-name")).sendKeys(TRANSACTION_NAME);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
 		driver.findElement(By.id("transaction-description")).sendKeys(description);
 		TransactionTestHelper.selectCategoryByName(driver, categoryName);
@@ -271,7 +297,7 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 
 		// check columns
 		final String dateString = new SimpleDateFormat("03.MM.").format(new Date());
-		TransactionTestHelper.assertTransactionColumns(columns, dateString, categoryName, "rgb(46, 124, 43)", true, true, name, description, amount);
+		TransactionTestHelper.assertTransactionColumns(columns, dateString, categoryName, "rgb(46, 124, 43)", true, true, TRANSACTION_NAME, description, amount);
 
 		// open transaction in edit view again
 		columns.get(5).findElement(By.cssSelector("a")).click();
