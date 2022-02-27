@@ -125,7 +125,7 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		assertThat(transactionsRows).hasSizeGreaterThan(2);
 
-		final WebElement row = transactionsRows.get(transactionsRows.size() - 3);
+		final WebElement row = transactionsRows.get(transactionsRows.size() - 2);
 		final List<WebElement> columns = row.findElements(By.className("col"));
 		assertThat(columns).hasSize(6);
 
