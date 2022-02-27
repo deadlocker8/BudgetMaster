@@ -136,13 +136,10 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector(".modal-overlay"))));
 
 		// submit form
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("modal-overlay")));
-
 		WebElement submitButton = driver.findElement(By.id("button-save-transaction"));
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", submitButton);
 
-		submitButton.click();
+		((JavascriptExecutor) driver).executeScript("arguments[0].click();", submitButton);
 
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
@@ -209,7 +206,7 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.elementToBeClickable(submitButton));
 
-		submitButton.click();
+		((JavascriptExecutor) driver).executeScript("arguments[0].click();", submitButton);
 
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
@@ -274,13 +271,10 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector(".modal-overlay"))));
 
 		// submit form
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("modal-overlay")));
-
 		WebElement submitButton = driver.findElement(By.id("button-save-transaction"));
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", submitButton);
 
-		submitButton.click();
+		((JavascriptExecutor) driver).executeScript("arguments[0].click();", submitButton);
 
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
