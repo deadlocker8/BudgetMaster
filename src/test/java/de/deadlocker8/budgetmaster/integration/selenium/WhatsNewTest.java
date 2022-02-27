@@ -15,8 +15,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class WhatsNewTest extends SeleniumTestBase
 {
-	private static IntegrationTestHelper helper;
-
 	@Override
 	protected void importDatabaseOnce()
 	{

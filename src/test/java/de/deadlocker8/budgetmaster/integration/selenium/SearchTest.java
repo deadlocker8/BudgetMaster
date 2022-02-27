@@ -26,7 +26,7 @@ class SearchTest extends SeleniumTestBase
 	@Override
 	protected void importDatabaseOnce()
 	{
-		IntegrationTestHelper helper = new IntegrationTestHelper(driver, port);
+		helper = new IntegrationTestHelper(driver, port);
 		helper.start();
 		helper.login(UserService.DEFAULT_PASSWORD);
 		helper.hideBackupReminder();
