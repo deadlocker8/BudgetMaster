@@ -349,7 +349,7 @@ class AccountTest extends SeleniumTestBase
 		driver.get(helper.getUrl() + "/transactions");
 
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".headline-date")));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(text(), 'Rest')]")));
 
 		// assert
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
