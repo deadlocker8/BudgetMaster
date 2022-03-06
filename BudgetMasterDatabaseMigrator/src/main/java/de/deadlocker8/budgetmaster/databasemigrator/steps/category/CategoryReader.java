@@ -1,6 +1,5 @@
 package de.deadlocker8.budgetmaster.databasemigrator.steps.category;
 
-import de.deadlocker8.budgetmaster.databasemigrator.source.category.CategoryType;
 import de.deadlocker8.budgetmaster.databasemigrator.source.category.SourceCategory;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.database.JdbcCursorItemReader;
@@ -43,7 +42,7 @@ public class CategoryReader extends JdbcCursorItemReader<SourceCategory> impleme
 			category.setID(rs.getInt(DatabaseColumns.ID));
 			category.setName(rs.getString(DatabaseColumns.NAME));
 			category.setColor(rs.getString(DatabaseColumns.COLOR));
-			category.setType(CategoryType.values()[rs.getInt(DatabaseColumns.TYPE)]);
+			category.setType(rs.getInt(DatabaseColumns.TYPE));
 			return category;
 		}
 	}

@@ -15,13 +15,13 @@ public class SourceCategory
 
 	private String color;
 
-	private CategoryType type;
+	private Integer type;
 
 	public SourceCategory()
 	{
 	}
 
-	public SourceCategory(Integer ID, String name, String color, CategoryType type)
+	public SourceCategory(Integer ID, String name, String color, Integer type)
 	{
 		this.ID = ID;
 		this.name = name;
@@ -59,12 +59,12 @@ public class SourceCategory
 		this.color = color;
 	}
 
-	public CategoryType getType()
+	public Integer getType()
 	{
 		return type;
 	}
 
-	public void setType(CategoryType type)
+	public void setType(Integer type)
 	{
 		this.type = type;
 	}

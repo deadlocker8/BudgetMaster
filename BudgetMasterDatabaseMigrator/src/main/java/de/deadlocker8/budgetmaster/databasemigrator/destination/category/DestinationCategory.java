@@ -1,9 +1,6 @@
 package de.deadlocker8.budgetmaster.databasemigrator.destination.category;
 
 
-
-import de.deadlocker8.budgetmaster.databasemigrator.source.category.CategoryType;
-
 import javax.persistence.*;
 
 @Entity
@@ -18,13 +15,13 @@ public class DestinationCategory
 
 	private String color;
 
-	private CategoryType type;
+	private Integer type;
 
 	public DestinationCategory()
 	{
 	}
 
-	public DestinationCategory(Integer ID, String name, String color, CategoryType type)
+	public DestinationCategory(Integer ID, String name, String color, Integer type)
 	{
 		this.ID = ID;
 		this.name = name;
@@ -62,12 +59,12 @@ public class DestinationCategory
 		this.color = color;
 	}
 
-	public CategoryType getType()
+	public Integer getType()
 	{
 		return type;
 	}
 
-	public void setType(CategoryType type)
+	public void setType(Integer type)
 	{
 		this.type = type;
 	}
