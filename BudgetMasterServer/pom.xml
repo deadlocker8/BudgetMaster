@@ -37,7 +37,6 @@
         <assertj-core.version>3.22.0</assertj-core.version>
         <jgit.version>6.0.0.202111291000-r</jgit.version>
         <natorder.version>1.1.2</natorder.version>
-        <h2database.version>1.4.199</h2database.version>
         <itextpdf.version>5.5.13.2</itextpdf.version>
         <vanilla-picker.version>2.12.1</vanilla-picker.version>
         <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
@@ -110,12 +109,6 @@
                     <artifactId>libLogger-slf4j</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>${h2database.version}</version>
         </dependency>
 
         <dependency>

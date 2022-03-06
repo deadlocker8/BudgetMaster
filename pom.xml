@@ -12,6 +12,7 @@
 
     <modules>
         <module>BudgetMasterServer</module>
+        <module>BudgetMasterDatabaseMigrator</module>
     </modules>
 
     <repositories>
