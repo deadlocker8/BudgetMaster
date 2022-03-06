@@ -34,7 +34,7 @@ public class SchedulerConfig
 		this.job = job;
 	}
 
-	@Scheduled(fixedDelay = Long.MAX_VALUE, initialDelay = 2000)
+	@Scheduled(fixedDelay = Long.MAX_VALUE, initialDelay = 1000)
 	public void scheduleByFixedRate() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException
 	{
 		LOGGER.info("Starting migration...");

@@ -1,15 +1,22 @@
-package de.deadlocker8.budgetmaster.databasemigrator.steps.category;
+package de.deadlocker8.budgetmaster.databasemigrator.listener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.ChunkListener;
 import org.springframework.batch.core.scope.context.ChunkContext;
 
-public class CategoryChunkListener implements ChunkListener
+public class GenericChunkListener implements ChunkListener
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(CategoryChunkListener.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(GenericChunkListener.class);
+
+	private final String itemName;
 
 	private int numberOfProcessedItems = 0;
+
+	public GenericChunkListener(String itemName)
+	{
+		this.itemName = itemName;
+	}
 
 	@Override
 	public void beforeChunk(ChunkContext context)
@@ -24,7 +31,7 @@ public class CategoryChunkListener implements ChunkListener
 		if(count > numberOfProcessedItems)
 		{
 			numberOfProcessedItems++;
-			LOGGER.info("Migrating category {}", count);
+			LOGGER.info("Migrating {} {}", itemName, count);
 		}
 	}
 
