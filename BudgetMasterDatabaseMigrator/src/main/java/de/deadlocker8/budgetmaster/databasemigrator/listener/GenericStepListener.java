@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.databasemigrator.listener;
 
+import de.deadlocker8.budgetmaster.databasemigrator.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.ExitStatus;
@@ -27,7 +28,7 @@ public class GenericStepListener implements StepExecutionListener
 	@Override
 	public ExitStatus afterStep(StepExecution stepExecution)
 	{
-		final int count = stepExecution.getReadCount();
+		final int count = Utils.getCommitCount(stepExecution);
 		LOGGER.info(">>> Successfully migrated {} {}\n", count, itemName);
 		return null;
 	}

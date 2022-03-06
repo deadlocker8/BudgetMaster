@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.databasemigrator.listener;
 
+import de.deadlocker8.budgetmaster.databasemigrator.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.ChunkListener;
@@ -27,7 +28,7 @@ public class GenericChunkListener implements ChunkListener
 	@Override
 	public void afterChunk(ChunkContext context)
 	{
-		final int count = context.getStepContext().getStepExecution().getReadCount();
+		final int count = Utils.getCommitCount(context.getStepContext().getStepExecution());
 		if(count > numberOfProcessedItems)
 		{
 			numberOfProcessedItems++;
