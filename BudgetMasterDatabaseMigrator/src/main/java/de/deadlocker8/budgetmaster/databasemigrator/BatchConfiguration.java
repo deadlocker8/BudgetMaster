@@ -5,6 +5,7 @@ import de.deadlocker8.budgetmaster.databasemigrator.destination.category.Destina
 import de.deadlocker8.budgetmaster.databasemigrator.destination.image.DestinationImage;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.image.DestinationImageRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.listener.GenericChunkListener;
+import de.deadlocker8.budgetmaster.databasemigrator.listener.GenericJobListener;
 import de.deadlocker8.budgetmaster.databasemigrator.listener.GenericStepListener;
 import de.deadlocker8.budgetmaster.databasemigrator.source.category.SourceCategory;
 import de.deadlocker8.budgetmaster.databasemigrator.source.image.SourceImage;
@@ -58,6 +59,7 @@ public class BatchConfiguration
 				.incrementer(new RunIdIncrementer())
 				.start(createStepForImageMigration())
 				.next(createStepForCategoryMigration())
+				.listener(new GenericJobListener())
 				.build();
 	}
 
