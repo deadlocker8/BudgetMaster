@@ -1,22 +1,17 @@
 package de.deadlocker8.budgetmaster.databasemigrator.steps.image;
 
 import de.deadlocker8.budgetmaster.databasemigrator.source.image.SourceImage;
-import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.database.JdbcCursorItemReader;
-import org.springframework.beans.factory.annotation.Autowired;
+import de.deadlocker8.budgetmaster.databasemigrator.steps.BaseReader;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.MessageFormat;
 
 @Component
-public class ImageReader extends JdbcCursorItemReader<SourceImage> implements ItemReader<SourceImage>
+public class ImageReader extends BaseReader<SourceImage>
 {
-	private static final String TABLE_NAME = "image";
-
 	private static class DatabaseColumns
 	{
 		public static final String ID = "ID";
@@ -25,12 +20,15 @@ public class ImageReader extends JdbcCursorItemReader<SourceImage> implements It
 		public static final String IMAGE = "IMAGE";
 	}
 
-	public ImageReader(@Autowired DataSource primaryDataSource)
+	public ImageReader(DataSource primaryDataSource)
 	{
-		setDataSource(primaryDataSource);
-		setSql(MessageFormat.format("SELECT * FROM {0}", TABLE_NAME));
-		setFetchSize(100);
-		setRowMapper(new ImageRowMapper());
+		super("image", primaryDataSource);
+	}
+
+	@Override
+	protected RowMapper<SourceImage> getRowMapper()
+	{
+		return new ImageRowMapper();
 	}
 
 	public static class ImageRowMapper implements RowMapper<SourceImage>
