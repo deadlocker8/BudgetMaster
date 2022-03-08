@@ -3,13 +3,11 @@ package de.deadlocker8.budgetmaster.databasemigrator.steps.image;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.image.DestinationImage;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.BaseReader;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@Component
 public class ImageReader extends BaseReader<DestinationImage>
 {
 	private static class DatabaseColumns

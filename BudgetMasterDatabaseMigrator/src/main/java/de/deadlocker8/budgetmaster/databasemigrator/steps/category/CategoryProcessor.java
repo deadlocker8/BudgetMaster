@@ -4,9 +4,7 @@ import de.deadlocker8.budgetmaster.databasemigrator.destination.category.Destina
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
-import org.springframework.stereotype.Component;
 
-@Component
 public class CategoryProcessor implements ItemProcessor<DestinationCategory, DestinationCategory>
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CategoryProcessor.class);

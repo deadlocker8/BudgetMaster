@@ -19,6 +19,7 @@ public class DestinationCategory
 
 	public DestinationCategory()
 	{
+		// empty
 	}
 
 	public Integer getID()

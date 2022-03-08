@@ -21,6 +21,8 @@ import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.sql.DataSource;
+
 @Configuration
 @EnableBatchProcessing
 public class BatchConfiguration
@@ -28,26 +30,19 @@ public class BatchConfiguration
 	final JobBuilderFactory jobBuilderFactory;
 	final StepBuilderFactory stepBuilderFactory;
 
-	final ImageReader imageReader;
-	final ImageProcessor imageProcessor;
-	final DestinationImageRepository destinationImageRepository;
+	final DataSource primaryDataSource;
 
-	final CategoryReader categoryReader;
-	final CategoryProcessor categoryProcessor;
+	final DestinationImageRepository destinationImageRepository;
 	final DestinationCategoryRepository destinationCategoryRepository;
 
-	public BatchConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, ImageReader imageReader, ImageProcessor imageProcessor, DestinationImageRepository destinationImageRepository, CategoryReader categoryReader, CategoryProcessor categoryProcessor, DestinationCategoryRepository destinationCategoryRepository)
+	public BatchConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, DataSource primaryDataSource, DestinationImageRepository destinationImageRepository, DestinationCategoryRepository destinationCategoryRepository)
 	{
 		this.jobBuilderFactory = jobBuilderFactory;
 		this.stepBuilderFactory = stepBuilderFactory;
+		this.primaryDataSource = primaryDataSource;
 
-		this.imageReader = imageReader;
-		this.imageProcessor = imageProcessor;
 		this.destinationImageRepository = destinationImageRepository;
-
-		this.categoryReader = categoryReader;
 		this.destinationCategoryRepository = destinationCategoryRepository;
-		this.categoryProcessor = categoryProcessor;
 	}
 
 	@Bean
@@ -66,8 +61,8 @@ public class BatchConfiguration
 	{
 		return stepBuilderFactory.get("Migrate images")
 				.<DestinationImage, DestinationImage>chunk(1)
-				.reader(imageReader)
-				.processor(imageProcessor)
+				.reader(new ImageReader(primaryDataSource))
+				.processor(new ImageProcessor())
 				.writer(new GenericWriter<>(destinationImageRepository))
 				.listener(new GenericChunkListener("image"))
 				.listener(new GenericStepListener("images"))
@@ -79,8 +74,8 @@ public class BatchConfiguration
 	{
 		return stepBuilderFactory.get("Migrate categories")
 				.<DestinationCategory, DestinationCategory>chunk(1)
-				.reader(categoryReader)
-				.processor(categoryProcessor)
+				.reader(new CategoryReader(primaryDataSource))
+				.processor(new CategoryProcessor())
 				.writer(new GenericWriter<>(destinationCategoryRepository))
 				.listener(new GenericChunkListener("category"))
 				.listener(new GenericStepListener("categories"))

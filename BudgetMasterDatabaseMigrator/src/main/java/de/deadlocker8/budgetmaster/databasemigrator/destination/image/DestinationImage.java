@@ -21,6 +21,7 @@ public class DestinationImage
 
 	public DestinationImage()
 	{
+		// empty
 	}
 
 	public Integer getID()

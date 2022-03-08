@@ -3,13 +3,11 @@ package de.deadlocker8.budgetmaster.databasemigrator.steps.category;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.category.DestinationCategory;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.BaseReader;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@Component
 public class CategoryReader extends BaseReader<DestinationCategory>
 {
 	private static class DatabaseColumns
