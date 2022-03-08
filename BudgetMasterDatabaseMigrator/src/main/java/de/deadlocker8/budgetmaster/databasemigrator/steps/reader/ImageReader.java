@@ -35,7 +35,7 @@ public class ImageReader extends BaseReader<DestinationImage>
 		{
 			final DestinationImage image = new DestinationImage();
 			image.setID(rs.getInt(DatabaseColumns.ID));
-			image.setFileExtension(rs.getInt(DatabaseColumns.FILE_EXTENSION));
+			image.setFileExtension(getIntOrNull(rs, DatabaseColumns.FILE_EXTENSION));
 			image.setFileName(rs.getString(DatabaseColumns.FILE_NAME));
 			image.setImage(rs.getBytes(DatabaseColumns.IMAGE));
 			return image;

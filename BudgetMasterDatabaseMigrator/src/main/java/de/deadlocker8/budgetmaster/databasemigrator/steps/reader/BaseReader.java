@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.MessageFormat;
 
 public abstract class BaseReader<T> extends JdbcCursorItemReader<T> implements ItemReader<T>
@@ -21,4 +23,15 @@ public abstract class BaseReader<T> extends JdbcCursorItemReader<T> implements I
 	}
 
 	protected abstract RowMapper<T> getRowMapper();
+
+	protected static Integer getIntOrNull(ResultSet resultSet, String columnName) throws SQLException
+	{
+		final Integer intFromDatabase = resultSet.getInt(columnName);
+		if(resultSet.wasNull())
+		{
+			return null;
+		}
+
+		return intFromDatabase;
+	}
 }
