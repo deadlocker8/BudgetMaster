@@ -7,10 +7,9 @@ import de.deadlocker8.budgetmaster.databasemigrator.destination.image.Destinatio
 import de.deadlocker8.budgetmaster.databasemigrator.listener.GenericChunkListener;
 import de.deadlocker8.budgetmaster.databasemigrator.listener.GenericJobListener;
 import de.deadlocker8.budgetmaster.databasemigrator.listener.GenericStepListener;
+import de.deadlocker8.budgetmaster.databasemigrator.steps.GenericDoNothingProcessor;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.GenericWriter;
-import de.deadlocker8.budgetmaster.databasemigrator.steps.category.CategoryProcessor;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.category.CategoryReader;
-import de.deadlocker8.budgetmaster.databasemigrator.steps.image.ImageProcessor;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.image.ImageReader;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -62,7 +61,7 @@ public class BatchConfiguration
 		return stepBuilderFactory.get("Migrate images")
 				.<DestinationImage, DestinationImage>chunk(1)
 				.reader(new ImageReader(primaryDataSource))
-				.processor(new ImageProcessor())
+				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationImageRepository))
 				.listener(new GenericChunkListener("image"))
 				.listener(new GenericStepListener("images"))
@@ -75,7 +74,7 @@ public class BatchConfiguration
 		return stepBuilderFactory.get("Migrate categories")
 				.<DestinationCategory, DestinationCategory>chunk(1)
 				.reader(new CategoryReader(primaryDataSource))
-				.processor(new CategoryProcessor())
+				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationCategoryRepository))
 				.listener(new GenericChunkListener("category"))
 				.listener(new GenericStepListener("categories"))
