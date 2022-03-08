@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.databasemigrator.steps;
+package de.deadlocker8.budgetmaster.databasemigrator.steps.reader;
 
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.database.JdbcCursorItemReader;
