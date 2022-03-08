@@ -2,6 +2,8 @@ package de.deadlocker8.budgetmaster.databasemigrator;
 
 import de.deadlocker8.budgetmaster.databasemigrator.destination.category.DestinationCategory;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.category.DestinationCategoryRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.icon.DestinationIcon;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.icon.DestinationIconRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.image.DestinationImage;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.image.DestinationImageRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.listener.GenericChunkListener;
@@ -10,6 +12,7 @@ import de.deadlocker8.budgetmaster.databasemigrator.listener.GenericStepListener
 import de.deadlocker8.budgetmaster.databasemigrator.steps.GenericDoNothingProcessor;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.GenericWriter;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.CategoryReader;
+import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.IconReader;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.ImageReader;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -32,15 +35,17 @@ public class BatchConfiguration
 	final DataSource primaryDataSource;
 
 	final DestinationImageRepository destinationImageRepository;
+	final DestinationIconRepository destinationIconRepository;
 	final DestinationCategoryRepository destinationCategoryRepository;
 
-	public BatchConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, DataSource primaryDataSource, DestinationImageRepository destinationImageRepository, DestinationCategoryRepository destinationCategoryRepository)
+	public BatchConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, DataSource primaryDataSource, DestinationImageRepository destinationImageRepository, DestinationIconRepository destinationIconRepository, DestinationCategoryRepository destinationCategoryRepository)
 	{
 		this.jobBuilderFactory = jobBuilderFactory;
 		this.stepBuilderFactory = stepBuilderFactory;
 		this.primaryDataSource = primaryDataSource;
 
 		this.destinationImageRepository = destinationImageRepository;
+		this.destinationIconRepository = destinationIconRepository;
 		this.destinationCategoryRepository = destinationCategoryRepository;
 	}
 
@@ -50,6 +55,7 @@ public class BatchConfiguration
 		return jobBuilderFactory.get("Migrate from h2 to postgresql")
 				.incrementer(new RunIdIncrementer())
 				.start(createStepForImageMigration())
+				.next(createStepForIconMigration())
 				.next(createStepForCategoryMigration())
 				.listener(new GenericJobListener())
 				.build();
@@ -65,6 +71,19 @@ public class BatchConfiguration
 				.writer(new GenericWriter<>(destinationImageRepository))
 				.listener(new GenericChunkListener("image"))
 				.listener(new GenericStepListener("images"))
+				.build();
+	}
+
+	@Bean
+	public Step createStepForIconMigration()
+	{
+		return stepBuilderFactory.get("Migrate icons")
+				.<DestinationIcon, DestinationIcon>chunk(1)
+				.reader(new IconReader(primaryDataSource))
+				.processor(new GenericDoNothingProcessor<>())
+				.writer(new GenericWriter<>(destinationIconRepository))
+				.listener(new GenericChunkListener("icon"))
+				.listener(new GenericStepListener("icons"))
 				.build();
 	}
 
