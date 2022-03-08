@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.databasemigrator.steps.category;
 
-import de.deadlocker8.budgetmaster.databasemigrator.source.category.SourceCategory;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.category.DestinationCategory;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.BaseReader;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Component
-public class CategoryReader extends BaseReader<SourceCategory>
+public class CategoryReader extends BaseReader<DestinationCategory>
 {
 	private static class DatabaseColumns
 	{
@@ -26,17 +26,17 @@ public class CategoryReader extends BaseReader<SourceCategory>
 	}
 
 	@Override
-	protected RowMapper<SourceCategory> getRowMapper()
+	protected RowMapper<DestinationCategory> getRowMapper()
 	{
 		return new CategoryRowMapper();
 	}
 
-	public static class CategoryRowMapper implements RowMapper<SourceCategory>
+	public static class CategoryRowMapper implements RowMapper<DestinationCategory>
 	{
 		@Override
-		public SourceCategory mapRow(ResultSet rs, int rowNum) throws SQLException
+		public DestinationCategory mapRow(ResultSet rs, int rowNum) throws SQLException
 		{
-			final SourceCategory category = new SourceCategory();
+			final DestinationCategory category = new DestinationCategory();
 			category.setID(rs.getInt(DatabaseColumns.ID));
 			category.setName(rs.getString(DatabaseColumns.NAME));
 			category.setColor(rs.getString(DatabaseColumns.COLOR));

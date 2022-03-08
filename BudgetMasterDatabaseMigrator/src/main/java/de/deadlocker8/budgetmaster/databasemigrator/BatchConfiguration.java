@@ -7,8 +7,6 @@ import de.deadlocker8.budgetmaster.databasemigrator.destination.image.Destinatio
 import de.deadlocker8.budgetmaster.databasemigrator.listener.GenericChunkListener;
 import de.deadlocker8.budgetmaster.databasemigrator.listener.GenericJobListener;
 import de.deadlocker8.budgetmaster.databasemigrator.listener.GenericStepListener;
-import de.deadlocker8.budgetmaster.databasemigrator.source.category.SourceCategory;
-import de.deadlocker8.budgetmaster.databasemigrator.source.image.SourceImage;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.GenericWriter;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.category.CategoryProcessor;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.category.CategoryReader;
@@ -67,7 +65,7 @@ public class BatchConfiguration
 	public Step createStepForImageMigration()
 	{
 		return stepBuilderFactory.get("Migrate images")
-				.<SourceImage, DestinationImage>chunk(1)
+				.<DestinationImage, DestinationImage>chunk(1)
 				.reader(imageReader)
 				.processor(imageProcessor)
 				.writer(new GenericWriter<>(destinationImageRepository))
@@ -80,7 +78,7 @@ public class BatchConfiguration
 	public Step createStepForCategoryMigration()
 	{
 		return stepBuilderFactory.get("Migrate categories")
-				.<SourceCategory, DestinationCategory>chunk(1)
+				.<DestinationCategory, DestinationCategory>chunk(1)
 				.reader(categoryReader)
 				.processor(categoryProcessor)
 				.writer(new GenericWriter<>(destinationCategoryRepository))

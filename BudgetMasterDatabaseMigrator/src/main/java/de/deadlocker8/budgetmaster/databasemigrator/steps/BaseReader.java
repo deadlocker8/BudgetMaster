@@ -1,6 +1,5 @@
 package de.deadlocker8.budgetmaster.databasemigrator.steps;
 
-import de.deadlocker8.budgetmaster.databasemigrator.source.image.SourceImage;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.beans.factory.annotation.Autowired;

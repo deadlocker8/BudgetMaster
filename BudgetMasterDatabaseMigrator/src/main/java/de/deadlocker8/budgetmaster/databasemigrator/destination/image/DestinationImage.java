@@ -19,13 +19,6 @@ public class DestinationImage
 	@Column(name = "file_extension")
 	private Integer fileExtension;
 
-	public DestinationImage(byte[] image, String fileName, Integer fileExtension)
-	{
-		this.image = image;
-		this.fileName = fileName;
-		this.fileExtension = fileExtension;
-	}
-
 	public DestinationImage()
 	{
 	}
@@ -73,7 +66,7 @@ public class DestinationImage
 	@Override
 	public String toString()
 	{
-		return "SourceImage{" +
+		return "DestinationImage{" +
 				"ID=" + ID +
 				", image='" + image + '\'' +
 				", fileName='" + fileName + '\'' +

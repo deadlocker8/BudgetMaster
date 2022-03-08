@@ -21,14 +21,6 @@ public class DestinationCategory
 	{
 	}
 
-	public DestinationCategory(Integer ID, String name, String color, Integer type)
-	{
-		this.ID = ID;
-		this.name = name;
-		this.color = color;
-		this.type = type;
-	}
-
 	public Integer getID()
 	{
 		return ID;
@@ -72,7 +64,7 @@ public class DestinationCategory
 	@Override
 	public String toString()
 	{
-		return "SourceCategory{" +
+		return "DestinationCategory{" +
 				"ID=" + ID +
 				", name='" + name + '\'' +
 				", color='" + color + '\'' +

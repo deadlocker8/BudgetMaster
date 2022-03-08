@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.databasemigrator.steps.image;
 
-import de.deadlocker8.budgetmaster.databasemigrator.source.image.SourceImage;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.image.DestinationImage;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.BaseReader;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Component
-public class ImageReader extends BaseReader<SourceImage>
+public class ImageReader extends BaseReader<DestinationImage>
 {
 	private static class DatabaseColumns
 	{
@@ -26,17 +26,17 @@ public class ImageReader extends BaseReader<SourceImage>
 	}
 
 	@Override
-	protected RowMapper<SourceImage> getRowMapper()
+	protected RowMapper<DestinationImage> getRowMapper()
 	{
 		return new ImageRowMapper();
 	}
 
-	public static class ImageRowMapper implements RowMapper<SourceImage>
+	public static class ImageRowMapper implements RowMapper<DestinationImage>
 	{
 		@Override
-		public SourceImage mapRow(ResultSet rs, int rowNum) throws SQLException
+		public DestinationImage mapRow(ResultSet rs, int rowNum) throws SQLException
 		{
-			final SourceImage image = new SourceImage();
+			final DestinationImage image = new DestinationImage();
 			image.setID(rs.getInt(DatabaseColumns.ID));
 			image.setFileExtension(rs.getInt(DatabaseColumns.FILE_EXTENSION));
 			image.setFileName(rs.getString(DatabaseColumns.FILE_NAME));
