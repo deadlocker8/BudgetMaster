@@ -34,14 +34,12 @@
         <mousetrap.version>1.6.5</mousetrap.version>
         <codemirror.version>5.62.2</codemirror.version>
         <selenium.version>4.1.2</selenium.version>
-        <assertj-core.version>3.22.0</assertj-core.version>
         <jgit.version>6.0.0.202111291000-r</jgit.version>
         <natorder.version>1.1.2</natorder.version>
         <itextpdf.version>5.5.13.2</itextpdf.version>
         <vanilla-picker.version>2.12.1</vanilla-picker.version>
         <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
         <dependency-check-maven.version>6.5.3</dependency-check-maven.version>
-        <testcontainer.version>1.16.3</testcontainer.version>
 
         <project.outputDirectory>build/${project.version}</project.outputDirectory>
         <project.artifactName>${project.artifactId}-v${project.version}</project.artifactName>
@@ -61,12 +59,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -198,28 +190,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>${assertj-core.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-inline</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${testcontainer.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>${testcontainer.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

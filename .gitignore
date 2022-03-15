@@ -5,6 +5,7 @@ certs/
 *.p12
 
 *.db
+!BudgetMasterDatabaseMigrator/src/test/resources/*.mv.db
 *.iml
 
 */build/[0-9]*.[0-9]*.[0-9]*
