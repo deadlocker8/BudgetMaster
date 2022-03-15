@@ -1,9 +1,12 @@
 package de.deadlocker8.budgetmaster.databasemigrator;
 
+import de.deadlocker8.budgetmaster.databasemigrator.destination.icon.DestinationIcon;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.icon.DestinationIconRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -20,14 +23,14 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Import(MigrateDefaultDatabaseTest.TestDatabaseConfiguration.class)
+@Import(MigrateIconsTest.TestDatabaseConfiguration.class)
 @EnableAutoConfiguration
-class MigrateDefaultDatabaseTest extends MigratorTestBase
+class MigrateIconsTest extends MigratorTestBase
 {
 	@TestConfiguration
 	static class TestDatabaseConfiguration
 	{
-		@Value("classpath:default_database_after_first_start.mv.db")
+		@Value("classpath:categories.mv.db")
 		private Resource databaseResource;
 
 		@Bean
@@ -40,25 +43,33 @@ class MigrateDefaultDatabaseTest extends MigratorTestBase
 		}
 	}
 
-	@Test
-	void test_jobMigrate() throws Exception
-	{
-		final JobExecution jobExecution = jobLauncherTestUtils.launchJob(DEFAULT_JOB_PARAMETERS);
-
-		assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
-	}
+	@Autowired
+	private DestinationIconRepository iconRepository;
 
 	@Test
-	void test_stepMigrateImages_noImages()
+	void test_stepMigrateImages()
 	{
-		final JobExecution jobExecution = jobLauncherTestUtils.launchStep("Migrate images", DEFAULT_JOB_PARAMETERS);
+		final JobExecution jobExecution = jobLauncherTestUtils.launchStep("Migrate icons", DEFAULT_JOB_PARAMETERS);
 		final List<StepExecution> stepExecutions = new ArrayList<>(jobExecution.getStepExecutions());
 
 		assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
 
 		assertThat(stepExecutions).hasSize(1);
 		final StepExecution stepExecution = stepExecutions.get(0);
-		assertThat(stepExecution.getReadCount()).isZero();
-		assertThat(stepExecution.getCommitCount()).isOne();
+		assertThat(stepExecution.getReadCount()).isEqualTo(7);
+		assertThat(stepExecution.getCommitCount()).isEqualTo(8);
+
+		final DestinationIcon iconAllAccounts = new DestinationIcon(1, null, "fas fa-landmark", null);
+		final DestinationIcon iconEmpty1 = new DestinationIcon(2, null, null, null);
+		final DestinationIcon iconEmpty2 = new DestinationIcon(3, null, null, null);
+		final DestinationIcon iconEmpty3 = new DestinationIcon(4, null, null, null);
+		final DestinationIcon iconWithImage = new DestinationIcon(5, 1, null, null);
+		final DestinationIcon iconBuiltin = new DestinationIcon(6, null, "fas fa-apple-alt", null);
+		final DestinationIcon iconFontColor = new DestinationIcon(7, null, null, "#000000ff");
+
+		final List<DestinationIcon> icons = iconRepository.findAll();
+		assertThat(icons)
+				.hasSize(7)
+				.containsExactly(iconAllAccounts, iconEmpty1, iconEmpty2, iconEmpty3, iconWithImage, iconBuiltin, iconFontColor);
 	}
 }

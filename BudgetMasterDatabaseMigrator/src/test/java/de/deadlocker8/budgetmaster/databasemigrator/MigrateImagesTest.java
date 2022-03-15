@@ -1,9 +1,12 @@
 package de.deadlocker8.budgetmaster.databasemigrator;
 
+import de.deadlocker8.budgetmaster.databasemigrator.destination.image.DestinationImage;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.image.DestinationImageRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -15,19 +18,22 @@ import org.springframework.core.io.Resource;
 
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Import(MigrateDefaultDatabaseTest.TestDatabaseConfiguration.class)
+@Import(MigrateImagesTest.TestDatabaseConfiguration.class)
 @EnableAutoConfiguration
-class MigrateDefaultDatabaseTest extends MigratorTestBase
+class MigrateImagesTest extends MigratorTestBase
 {
 	@TestConfiguration
 	static class TestDatabaseConfiguration
 	{
-		@Value("classpath:default_database_after_first_start.mv.db")
+		@Value("classpath:categories.mv.db")
 		private Resource databaseResource;
 
 		@Bean
@@ -40,16 +46,11 @@ class MigrateDefaultDatabaseTest extends MigratorTestBase
 		}
 	}
 
-	@Test
-	void test_jobMigrate() throws Exception
-	{
-		final JobExecution jobExecution = jobLauncherTestUtils.launchJob(DEFAULT_JOB_PARAMETERS);
-
-		assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
-	}
+	@Autowired
+	private DestinationImageRepository imageRepository;
 
 	@Test
-	void test_stepMigrateImages_noImages()
+	void test_stepMigrateImages() throws IOException, URISyntaxException
 	{
 		final JobExecution jobExecution = jobLauncherTestUtils.launchStep("Migrate images", DEFAULT_JOB_PARAMETERS);
 		final List<StepExecution> stepExecutions = new ArrayList<>(jobExecution.getStepExecutions());
@@ -58,7 +59,15 @@ class MigrateDefaultDatabaseTest extends MigratorTestBase
 
 		assertThat(stepExecutions).hasSize(1);
 		final StepExecution stepExecution = stepExecutions.get(0);
-		assertThat(stepExecution.getReadCount()).isZero();
-		assertThat(stepExecution.getCommitCount()).isOne();
+		assertThat(stepExecution.getReadCount()).isOne();
+		assertThat(stepExecution.getCommitCount()).isEqualTo(2);
+
+		final byte[] imageBytes = Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource("BudgetMaster.svg").toURI()));
+		final DestinationImage expectedImage = new DestinationImage(1, imageBytes, "BudgetMaster.svg", 2);
+
+		final List<DestinationImage> images = imageRepository.findAll();
+		assertThat(images)
+				.hasSize(1)
+				.containsExactly(expectedImage);
 	}
 }

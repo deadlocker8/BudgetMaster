@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.databasemigrator.destination.icon;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "icon")
@@ -22,6 +23,14 @@ public class DestinationIcon
 	public DestinationIcon()
 	{
 		// empty
+	}
+
+	public DestinationIcon(Integer ID, Integer imageID, String builtinIdentifier, String fontColor)
+	{
+		this.ID = ID;
+		this.imageID = imageID;
+		this.builtinIdentifier = builtinIdentifier;
+		this.fontColor = fontColor;
 	}
 
 	public Integer getID()
@@ -62,6 +71,21 @@ public class DestinationIcon
 	public void setFontColor(String fontColor)
 	{
 		this.fontColor = fontColor;
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
+		DestinationIcon that = (DestinationIcon) o;
+		return Objects.equals(ID, that.ID) && Objects.equals(imageID, that.imageID) && Objects.equals(builtinIdentifier, that.builtinIdentifier) && Objects.equals(fontColor, that.fontColor);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(ID, imageID, builtinIdentifier, fontColor);
 	}
 
 	@Override

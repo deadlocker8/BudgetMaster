@@ -37,9 +37,7 @@ import java.io.IOException;
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 @Testcontainers
-@Import(MigratorTestBase.TestDatabaseConfiguration.class)
 @ActiveProfiles("test")
-@EnableAutoConfiguration
 @ContextConfiguration(classes = {BatchConfiguration.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public abstract class MigratorTestBase
@@ -63,22 +61,6 @@ public abstract class MigratorTestBase
 			.withDatabaseName("budgetmaster-tests-db")
 			.withUsername("budgetmaster")
 			.withPassword("BudgetMaster");
-
-	@TestConfiguration
-	static class TestDatabaseConfiguration
-	{
-		@Value("classpath:default_database_after_first_start.mv.db")
-		private Resource databaseResource;
-
-		@Bean
-		@Primary
-		public DataSource dataSource() throws IOException
-		{
-			final String folderName = databaseResource.getFile().getAbsolutePath().replace(".mv.db", "");
-			String jdbcString = "jdbc:h2:/" + folderName + ";DB_CLOSE_ON_EXIT=TRUE";
-			return DataSourceBuilder.create().username("sa").password("").url(jdbcString).driverClassName("org.h2.Driver").build();
-		}
-	}
 
 	@DynamicPropertySource
 	static void properties(DynamicPropertyRegistry registry)

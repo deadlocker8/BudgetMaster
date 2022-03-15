@@ -1,6 +1,8 @@
 package de.deadlocker8.budgetmaster.databasemigrator.destination.image;
 
 import javax.persistence.*;
+import java.util.Arrays;
+import java.util.Objects;
 
 @Entity
 @Table(name = "image")
@@ -22,6 +24,14 @@ public class DestinationImage
 	public DestinationImage()
 	{
 		// empty
+	}
+
+	public DestinationImage(Integer ID, byte[] image, String fileName, Integer fileExtension)
+	{
+		this.ID = ID;
+		this.image = image;
+		this.fileName = fileName;
+		this.fileExtension = fileExtension;
 	}
 
 	public Integer getID()
@@ -62,6 +72,23 @@ public class DestinationImage
 	public void setFileExtension(Integer fileExtension)
 	{
 		this.fileExtension = fileExtension;
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
+		DestinationImage that = (DestinationImage) o;
+		return Objects.equals(ID, that.ID) && Arrays.equals(image, that.image) && Objects.equals(fileName, that.fileName) && Objects.equals(fileExtension, that.fileExtension);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int result = Objects.hash(ID, fileName, fileExtension);
+		result = 31 * result + Arrays.hashCode(image);
+		return result;
 	}
 
 	@Override
