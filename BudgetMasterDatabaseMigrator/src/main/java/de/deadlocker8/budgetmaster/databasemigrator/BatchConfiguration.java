@@ -49,7 +49,7 @@ public class BatchConfiguration
 		this.destinationCategoryRepository = destinationCategoryRepository;
 	}
 
-	@Bean
+	@Bean(name="migrateJob")
 	public Job createJob()
 	{
 		return jobBuilderFactory.get("Migrate from h2 to postgresql")
@@ -71,6 +71,7 @@ public class BatchConfiguration
 				.writer(new GenericWriter<>(destinationImageRepository))
 				.listener(new GenericChunkListener("image"))
 				.listener(new GenericStepListener("images"))
+				.allowStartIfComplete(true)
 				.build();
 	}
 
@@ -84,6 +85,7 @@ public class BatchConfiguration
 				.writer(new GenericWriter<>(destinationIconRepository))
 				.listener(new GenericChunkListener("icon"))
 				.listener(new GenericStepListener("icons"))
+				.allowStartIfComplete(true)
 				.build();
 	}
 
@@ -97,6 +99,7 @@ public class BatchConfiguration
 				.writer(new GenericWriter<>(destinationCategoryRepository))
 				.listener(new GenericChunkListener("category"))
 				.listener(new GenericStepListener("categories"))
+				.allowStartIfComplete(true)
 				.build();
 	}
 }
