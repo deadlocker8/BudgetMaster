@@ -15,6 +15,7 @@ public class CategoryReader extends BaseReader<DestinationCategory>
 		public static final String NAME = "NAME";
 		public static final String COLOR = "COLOR";
 		public static final String TYPE = "TYPE";
+		public static final String ICON_REFERENCE_ID = "ICON_REFERENCE_ID";
 	}
 
 	public CategoryReader(DataSource primaryDataSource)
@@ -38,6 +39,7 @@ public class CategoryReader extends BaseReader<DestinationCategory>
 			category.setName(rs.getString(DatabaseColumns.NAME));
 			category.setColor(rs.getString(DatabaseColumns.COLOR));
 			category.setType(rs.getInt(DatabaseColumns.TYPE));
+			category.setIconReferenceID(getIntOrNull(rs, DatabaseColumns.ICON_REFERENCE_ID));
 			return category;
 		}
 	}
