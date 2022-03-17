@@ -4,6 +4,8 @@ import de.deadlocker8.budgetmaster.databasemigrator.destination.account.Destinat
 import de.deadlocker8.budgetmaster.databasemigrator.destination.account.DestinationAccountRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.category.DestinationCategory;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.category.DestinationCategoryRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.chart.DestinationChart;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.chart.DestinationChartRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.icon.DestinationIcon;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.icon.DestinationIconRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.image.DestinationImage;
@@ -13,10 +15,7 @@ import de.deadlocker8.budgetmaster.databasemigrator.listener.GenericJobListener;
 import de.deadlocker8.budgetmaster.databasemigrator.listener.GenericStepListener;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.GenericDoNothingProcessor;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.GenericWriter;
-import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.AccountReader;
-import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.CategoryReader;
-import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.IconReader;
-import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.ImageReader;
+import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.*;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -41,8 +40,9 @@ public class BatchConfiguration
 	final DestinationIconRepository destinationIconRepository;
 	final DestinationCategoryRepository destinationCategoryRepository;
 	final DestinationAccountRepository destinationAccountRepository;
+	final DestinationChartRepository destinationChartRepository;
 
-	public BatchConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, DataSource primaryDataSource, DestinationImageRepository destinationImageRepository, DestinationIconRepository destinationIconRepository, DestinationCategoryRepository destinationCategoryRepository, DestinationAccountRepository destinationAccountRepository)
+	public BatchConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, DataSource primaryDataSource, DestinationImageRepository destinationImageRepository, DestinationIconRepository destinationIconRepository, DestinationCategoryRepository destinationCategoryRepository, DestinationAccountRepository destinationAccountRepository, DestinationChartRepository destinationChartRepository)
 	{
 		this.jobBuilderFactory = jobBuilderFactory;
 		this.stepBuilderFactory = stepBuilderFactory;
@@ -52,9 +52,10 @@ public class BatchConfiguration
 		this.destinationIconRepository = destinationIconRepository;
 		this.destinationCategoryRepository = destinationCategoryRepository;
 		this.destinationAccountRepository = destinationAccountRepository;
+		this.destinationChartRepository = destinationChartRepository;
 	}
 
-	@Bean(name="migrateJob")
+	@Bean(name = "migrateJob")
 	public Job createJob()
 	{
 		return jobBuilderFactory.get("Migrate from h2 to postgresql")
@@ -62,7 +63,8 @@ public class BatchConfiguration
 				.start(createStepForImageMigration())
 				.next(createStepForIconMigration())
 				.next(createStepForCategoryMigration())
-				.next(createStepFoAccountMigration())
+				.next(createStepForAccountMigration())
+				.next(createStepForChartMigration())
 				.listener(new GenericJobListener())
 				.build();
 	}
@@ -110,7 +112,7 @@ public class BatchConfiguration
 	}
 
 	@Bean
-	public Step createStepFoAccountMigration()
+	public Step createStepForAccountMigration()
 	{
 		return stepBuilderFactory.get("Migrate accounts")
 				.<DestinationAccount, DestinationAccount>chunk(1)
@@ -119,6 +121,20 @@ public class BatchConfiguration
 				.writer(new GenericWriter<>(destinationAccountRepository))
 				.listener(new GenericChunkListener("account"))
 				.listener(new GenericStepListener("accounts"))
+				.allowStartIfComplete(true)
+				.build();
+	}
+
+	@Bean
+	public Step createStepForChartMigration()
+	{
+		return stepBuilderFactory.get("Migrate charts")
+				.<DestinationChart, DestinationChart>chunk(1)
+				.reader(new ChartReader(primaryDataSource))
+				.processor(new GenericDoNothingProcessor<>())
+				.writer(new GenericWriter<>(destinationChartRepository))
+				.listener(new GenericChunkListener("chart"))
+				.listener(new GenericStepListener("charts"))
 				.allowStartIfComplete(true)
 				.build();
 	}
