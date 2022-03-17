@@ -1,5 +1,7 @@
 package de.deadlocker8.budgetmaster.databasemigrator;
 
+import de.deadlocker8.budgetmaster.databasemigrator.destination.account.DestinationAccount;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.account.DestinationAccountRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.category.DestinationCategory;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.category.DestinationCategoryRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.icon.DestinationIcon;
@@ -11,6 +13,7 @@ import de.deadlocker8.budgetmaster.databasemigrator.listener.GenericJobListener;
 import de.deadlocker8.budgetmaster.databasemigrator.listener.GenericStepListener;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.GenericDoNothingProcessor;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.GenericWriter;
+import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.AccountReader;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.CategoryReader;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.IconReader;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.ImageReader;
@@ -37,8 +40,9 @@ public class BatchConfiguration
 	final DestinationImageRepository destinationImageRepository;
 	final DestinationIconRepository destinationIconRepository;
 	final DestinationCategoryRepository destinationCategoryRepository;
+	final DestinationAccountRepository destinationAccountRepository;
 
-	public BatchConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, DataSource primaryDataSource, DestinationImageRepository destinationImageRepository, DestinationIconRepository destinationIconRepository, DestinationCategoryRepository destinationCategoryRepository)
+	public BatchConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, DataSource primaryDataSource, DestinationImageRepository destinationImageRepository, DestinationIconRepository destinationIconRepository, DestinationCategoryRepository destinationCategoryRepository, DestinationAccountRepository destinationAccountRepository)
 	{
 		this.jobBuilderFactory = jobBuilderFactory;
 		this.stepBuilderFactory = stepBuilderFactory;
@@ -47,6 +51,7 @@ public class BatchConfiguration
 		this.destinationImageRepository = destinationImageRepository;
 		this.destinationIconRepository = destinationIconRepository;
 		this.destinationCategoryRepository = destinationCategoryRepository;
+		this.destinationAccountRepository = destinationAccountRepository;
 	}
 
 	@Bean(name="migrateJob")
@@ -57,6 +62,7 @@ public class BatchConfiguration
 				.start(createStepForImageMigration())
 				.next(createStepForIconMigration())
 				.next(createStepForCategoryMigration())
+				.next(createStepFoAccountMigration())
 				.listener(new GenericJobListener())
 				.build();
 	}
@@ -99,6 +105,20 @@ public class BatchConfiguration
 				.writer(new GenericWriter<>(destinationCategoryRepository))
 				.listener(new GenericChunkListener("category"))
 				.listener(new GenericStepListener("categories"))
+				.allowStartIfComplete(true)
+				.build();
+	}
+
+	@Bean
+	public Step createStepFoAccountMigration()
+	{
+		return stepBuilderFactory.get("Migrate accounts")
+				.<DestinationAccount, DestinationAccount>chunk(1)
+				.reader(new AccountReader(primaryDataSource))
+				.processor(new GenericDoNothingProcessor<>())
+				.writer(new GenericWriter<>(destinationAccountRepository))
+				.listener(new GenericChunkListener("account"))
+				.listener(new GenericStepListener("accounts"))
 				.allowStartIfComplete(true)
 				.build();
 	}
