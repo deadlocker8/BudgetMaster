@@ -1,12 +1,13 @@
 package de.deadlocker8.budgetmaster.databasemigrator.destination.category;
 
 
+import de.deadlocker8.budgetmaster.databasemigrator.destination.TableNames;
 import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "category")
+@Table(name = TableNames.CATEGORY)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

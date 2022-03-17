@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.databasemigrator.steps.reader;
 
+import de.deadlocker8.budgetmaster.databasemigrator.destination.TableNames;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.account.DestinationAccount;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -22,7 +23,7 @@ public class AccountReader extends BaseReader<DestinationAccount>
 
 	public AccountReader(DataSource primaryDataSource)
 	{
-		super("account", primaryDataSource);
+		super(TableNames.ACCOUNT, primaryDataSource);
 	}
 
 	@Override

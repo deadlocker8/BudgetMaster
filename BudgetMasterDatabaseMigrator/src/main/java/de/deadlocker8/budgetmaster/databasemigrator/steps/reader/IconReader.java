@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.databasemigrator.steps.reader;
 
+import de.deadlocker8.budgetmaster.databasemigrator.destination.TableNames;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.icon.DestinationIcon;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -19,7 +20,7 @@ public class IconReader extends BaseReader<DestinationIcon>
 
 	public IconReader(DataSource primaryDataSource)
 	{
-		super("icon", primaryDataSource);
+		super(TableNames.ICON, primaryDataSource);
 	}
 
 	@Override

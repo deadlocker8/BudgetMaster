@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.databasemigrator.steps.reader;
 
+import de.deadlocker8.budgetmaster.databasemigrator.destination.TableNames;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.image.DestinationImage;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -19,7 +20,7 @@ public class ImageReader extends BaseReader<DestinationImage>
 
 	public ImageReader(DataSource primaryDataSource)
 	{
-		super("image", primaryDataSource);
+		super(TableNames.IMAGE, primaryDataSource);
 	}
 
 	@Override

@@ -1,12 +1,13 @@
 package de.deadlocker8.budgetmaster.databasemigrator.destination.chart;
 
 
+import de.deadlocker8.budgetmaster.databasemigrator.destination.TableNames;
 import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "chart")
+@Table(name = TableNames.CHART)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

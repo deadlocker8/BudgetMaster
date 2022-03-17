@@ -1,5 +1,7 @@
 package de.deadlocker8.budgetmaster.databasemigrator;
 
+import de.deadlocker8.budgetmaster.databasemigrator.destination.StepNames;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.TableNames;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.account.DestinationAccount;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.account.DestinationAccountRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.category.DestinationCategory;
@@ -72,13 +74,13 @@ public class BatchConfiguration
 	@Bean
 	public Step createStepForImageMigration()
 	{
-		return stepBuilderFactory.get("Migrate images")
+		return stepBuilderFactory.get(StepNames.IMAGES)
 				.<DestinationImage, DestinationImage>chunk(1)
 				.reader(new ImageReader(primaryDataSource))
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationImageRepository))
-				.listener(new GenericChunkListener("image"))
-				.listener(new GenericStepListener("images"))
+				.listener(new GenericChunkListener(TableNames.IMAGE))
+				.listener(new GenericStepListener(TableNames.IMAGE))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -86,13 +88,13 @@ public class BatchConfiguration
 	@Bean
 	public Step createStepForIconMigration()
 	{
-		return stepBuilderFactory.get("Migrate icons")
+		return stepBuilderFactory.get(StepNames.ICONS)
 				.<DestinationIcon, DestinationIcon>chunk(1)
 				.reader(new IconReader(primaryDataSource))
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationIconRepository))
-				.listener(new GenericChunkListener("icon"))
-				.listener(new GenericStepListener("icons"))
+				.listener(new GenericChunkListener(TableNames.ICON))
+				.listener(new GenericStepListener(TableNames.ICON))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -100,13 +102,13 @@ public class BatchConfiguration
 	@Bean
 	public Step createStepForCategoryMigration()
 	{
-		return stepBuilderFactory.get("Migrate categories")
+		return stepBuilderFactory.get(StepNames.CATEGORIES)
 				.<DestinationCategory, DestinationCategory>chunk(1)
 				.reader(new CategoryReader(primaryDataSource))
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationCategoryRepository))
-				.listener(new GenericChunkListener("category"))
-				.listener(new GenericStepListener("categories"))
+				.listener(new GenericChunkListener(TableNames.CATEGORY))
+				.listener(new GenericStepListener(TableNames.CATEGORY))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -114,13 +116,13 @@ public class BatchConfiguration
 	@Bean
 	public Step createStepForAccountMigration()
 	{
-		return stepBuilderFactory.get("Migrate accounts")
+		return stepBuilderFactory.get(StepNames.ACCOUNTS)
 				.<DestinationAccount, DestinationAccount>chunk(1)
 				.reader(new AccountReader(primaryDataSource))
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationAccountRepository))
-				.listener(new GenericChunkListener("account"))
-				.listener(new GenericStepListener("accounts"))
+				.listener(new GenericChunkListener(TableNames.ACCOUNT))
+				.listener(new GenericStepListener(TableNames.ACCOUNT))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -128,13 +130,13 @@ public class BatchConfiguration
 	@Bean
 	public Step createStepForChartMigration()
 	{
-		return stepBuilderFactory.get("Migrate charts")
+		return stepBuilderFactory.get(StepNames.CHARTS)
 				.<DestinationChart, DestinationChart>chunk(1)
 				.reader(new ChartReader(primaryDataSource))
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationChartRepository))
-				.listener(new GenericChunkListener("chart"))
-				.listener(new GenericStepListener("charts"))
+				.listener(new GenericChunkListener(TableNames.CHART))
+				.listener(new GenericStepListener(TableNames.CHART))
 				.allowStartIfComplete(true)
 				.build();
 	}

@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.databasemigrator;
 
+import de.deadlocker8.budgetmaster.databasemigrator.destination.StepNames;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.account.DestinationAccount;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.account.DestinationAccountRepository;
 import org.junit.jupiter.api.Test;
@@ -49,7 +50,7 @@ class MigrateAccountsTest extends MigratorTestBase
 	@Test
 	void test_stepMigraAccounts()
 	{
-		final JobExecution jobExecution = jobLauncherTestUtils.launchStep("Migrate accounts", DEFAULT_JOB_PARAMETERS);
+		final JobExecution jobExecution = jobLauncherTestUtils.launchStep(StepNames.ACCOUNTS, DEFAULT_JOB_PARAMETERS);
 		final List<StepExecution> stepExecutions = new ArrayList<>(jobExecution.getStepExecutions());
 
 		assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);

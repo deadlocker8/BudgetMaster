@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.databasemigrator;
 
+import de.deadlocker8.budgetmaster.databasemigrator.destination.StepNames;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.icon.DestinationIcon;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.icon.DestinationIconRepository;
 import org.junit.jupiter.api.Test;
@@ -49,7 +50,7 @@ class MigrateIconsTest extends MigratorTestBase
 	@Test
 	void test_stepMigrateImages()
 	{
-		final JobExecution jobExecution = jobLauncherTestUtils.launchStep("Migrate icons", DEFAULT_JOB_PARAMETERS);
+		final JobExecution jobExecution = jobLauncherTestUtils.launchStep(StepNames.ICONS, DEFAULT_JOB_PARAMETERS);
 		final List<StepExecution> stepExecutions = new ArrayList<>(jobExecution.getStepExecutions());
 
 		assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);

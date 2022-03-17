@@ -1,12 +1,13 @@
 package de.deadlocker8.budgetmaster.databasemigrator.destination.account;
 
 
+import de.deadlocker8.budgetmaster.databasemigrator.destination.TableNames;
 import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "account")
+@Table(name = TableNames.ACCOUNT)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

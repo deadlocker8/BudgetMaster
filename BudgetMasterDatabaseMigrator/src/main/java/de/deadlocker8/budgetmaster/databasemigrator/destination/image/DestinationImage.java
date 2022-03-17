@@ -1,11 +1,12 @@
 package de.deadlocker8.budgetmaster.databasemigrator.destination.image;
 
+import de.deadlocker8.budgetmaster.databasemigrator.destination.TableNames;
 import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "image")
+@Table(name = TableNames.IMAGE)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

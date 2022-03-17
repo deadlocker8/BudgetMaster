@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.databasemigrator;
 
+import de.deadlocker8.budgetmaster.databasemigrator.destination.StepNames;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.image.DestinationImage;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.image.DestinationImageRepository;
 import org.junit.jupiter.api.Test;
@@ -52,7 +53,7 @@ class MigrateImagesTest extends MigratorTestBase
 	@Test
 	void test_stepMigrateImages() throws IOException, URISyntaxException
 	{
-		final JobExecution jobExecution = jobLauncherTestUtils.launchStep("Migrate images", DEFAULT_JOB_PARAMETERS);
+		final JobExecution jobExecution = jobLauncherTestUtils.launchStep(StepNames.IMAGES, DEFAULT_JOB_PARAMETERS);
 		final List<StepExecution> stepExecutions = new ArrayList<>(jobExecution.getStepExecutions());
 
 		assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);

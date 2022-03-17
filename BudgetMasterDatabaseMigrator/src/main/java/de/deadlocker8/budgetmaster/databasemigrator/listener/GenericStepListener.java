@@ -22,14 +22,14 @@ public class GenericStepListener implements StepExecutionListener
 	public void beforeStep(StepExecution stepExecution)
 	{
 		LOGGER.info("\n");
-		LOGGER.info(">>> Migrate {}...", itemName);
+		LOGGER.info(">>> Migrate {}s...", itemName);
 	}
 
 	@Override
 	public ExitStatus afterStep(StepExecution stepExecution)
 	{
 		final int count = Utils.getCommitCount(stepExecution);
-		LOGGER.info(">>> Successfully migrated {} {}\n", count, itemName);
+		LOGGER.info(">>> Successfully migrated {}s {}\n", count, itemName);
 		return null;
 	}
 }

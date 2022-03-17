@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.databasemigrator;
 
+import de.deadlocker8.budgetmaster.databasemigrator.destination.StepNames;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -51,7 +52,7 @@ class MigrateDefaultDatabaseTest extends MigratorTestBase
 	@Test
 	void test_stepMigrateImages_noImages()
 	{
-		final JobExecution jobExecution = jobLauncherTestUtils.launchStep("Migrate images", DEFAULT_JOB_PARAMETERS);
+		final JobExecution jobExecution = jobLauncherTestUtils.launchStep(StepNames.IMAGES, DEFAULT_JOB_PARAMETERS);
 		final List<StepExecution> stepExecutions = new ArrayList<>(jobExecution.getStepExecutions());
 
 		assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);

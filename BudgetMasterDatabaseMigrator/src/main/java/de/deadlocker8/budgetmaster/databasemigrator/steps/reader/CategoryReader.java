@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.databasemigrator.steps.reader;
 
+import de.deadlocker8.budgetmaster.databasemigrator.destination.TableNames;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.category.DestinationCategory;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -20,7 +21,7 @@ public class CategoryReader extends BaseReader<DestinationCategory>
 
 	public CategoryReader(DataSource primaryDataSource)
 	{
-		super("category", primaryDataSource);
+		super(TableNames.CATEGORY, primaryDataSource);
 	}
 
 	@Override

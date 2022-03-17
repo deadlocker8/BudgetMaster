@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.databasemigrator.steps.reader;
 
+import de.deadlocker8.budgetmaster.databasemigrator.destination.TableNames;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.chart.DestinationChart;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -23,7 +24,7 @@ public class ChartReader extends BaseReader<DestinationChart>
 
 	public ChartReader(DataSource primaryDataSource)
 	{
-		super("chart", primaryDataSource);
+		super(TableNames.CHART, primaryDataSource);
 	}
 
 	@Override
