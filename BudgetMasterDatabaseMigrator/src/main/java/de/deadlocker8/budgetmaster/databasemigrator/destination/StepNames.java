@@ -25,5 +25,7 @@ public class StepNames
 	public static final String REPEATING_MODIFIER_YEARS = "Migrate repeating modifier years";
 
 	public static final String REPEATING_OPTIONS = "Migrate repeating options";
+
+	public static final String REPORT_COLUMNS = "Migrate report columns";
 }
 
