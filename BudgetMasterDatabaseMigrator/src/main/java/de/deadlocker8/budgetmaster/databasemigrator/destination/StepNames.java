@@ -13,4 +13,9 @@ public class StepNames
 	public static final String ACCOUNTS = "Migrate accounts";
 	public static final String CHARTS = "Migrate charts";
 	public static final String HINTS = "Migrate hints";
+	public static final String REPEATING_ENDS = "Migrate repeating end options";
+	public static final String REPEATING_END_AFTER_X_TIMES = "Migrate repeating end after x times";
+	public static final String REPEATING_END_DATE = "Migrate repeating end after date";
+	public static final String REPEATING_END_NEVER = "Migrate repeating end never";
 }
+

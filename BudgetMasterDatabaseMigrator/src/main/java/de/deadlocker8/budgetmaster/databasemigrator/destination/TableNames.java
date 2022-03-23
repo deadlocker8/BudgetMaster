@@ -13,4 +13,8 @@ public class TableNames
 	public static final String ACCOUNT = "account";
 	public static final String CHART = "chart";
 	public static final String HINT = "hint";
+	public static final String REPEATING_END = "repeating_end";
+	public static final String REPEATING_END_AFTER_X_TIMES = "repeating_end_afterxtimes";
+	public static final String REPEATING_END_DATE = "repeating_end_date";
+	public static final String REPEATING_END_NEVER = "repeating_end_never";
 }

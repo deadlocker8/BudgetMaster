@@ -14,12 +14,17 @@ import de.deadlocker8.budgetmaster.databasemigrator.destination.icon.Destination
 import de.deadlocker8.budgetmaster.databasemigrator.destination.icon.DestinationIconRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.image.DestinationImage;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.image.DestinationImageRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.end.*;
 import de.deadlocker8.budgetmaster.databasemigrator.listener.GenericChunkListener;
 import de.deadlocker8.budgetmaster.databasemigrator.listener.GenericJobListener;
 import de.deadlocker8.budgetmaster.databasemigrator.listener.GenericStepListener;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.GenericDoNothingProcessor;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.GenericWriter;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.*;
+import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.repeating.end.RepeatingEndAfterXTimesReader;
+import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.repeating.end.RepeatingEndDateReader;
+import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.repeating.end.RepeatingEndNeverReader;
+import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.repeating.end.RepeatingEndReader;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -46,8 +51,12 @@ public class BatchConfiguration
 	final DestinationAccountRepository destinationAccountRepository;
 	final DestinationChartRepository destinationChartRepository;
 	final DestinationHintRepository destinationHintRepository;
+	final DestinationRepeatingEndRepository destinationRepeatingEndRepository;
+	final DestinationRepeatingEndAfterXTimesRepository destinationRepeatingEndAfterXTimesRepository;
+	final DestinationRepeatingEndDateRepository destinationRepeatingEndDateRepository;
+	final DestinationRepeatingEndNeverRepository destinationRepeatingEndNeverRepository;
 
-	public BatchConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, DataSource primaryDataSource, DestinationImageRepository destinationImageRepository, DestinationIconRepository destinationIconRepository, DestinationCategoryRepository destinationCategoryRepository, DestinationAccountRepository destinationAccountRepository, DestinationChartRepository destinationChartRepository, DestinationHintRepository destinationHintRepository)
+	public BatchConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, DataSource primaryDataSource, DestinationImageRepository destinationImageRepository, DestinationIconRepository destinationIconRepository, DestinationCategoryRepository destinationCategoryRepository, DestinationAccountRepository destinationAccountRepository, DestinationChartRepository destinationChartRepository, DestinationHintRepository destinationHintRepository, DestinationRepeatingEndRepository destinationRepeatingEndRepository, DestinationRepeatingEndAfterXTimesRepository destinationRepeatingEndAfterXTimesRepository, DestinationRepeatingEndDateRepository destinationRepeatingEndDateRepository, DestinationRepeatingEndNeverRepository destinationRepeatingEndNeverRepository)
 	{
 		this.jobBuilderFactory = jobBuilderFactory;
 		this.stepBuilderFactory = stepBuilderFactory;
@@ -59,6 +68,10 @@ public class BatchConfiguration
 		this.destinationAccountRepository = destinationAccountRepository;
 		this.destinationChartRepository = destinationChartRepository;
 		this.destinationHintRepository = destinationHintRepository;
+		this.destinationRepeatingEndRepository = destinationRepeatingEndRepository;
+		this.destinationRepeatingEndAfterXTimesRepository = destinationRepeatingEndAfterXTimesRepository;
+		this.destinationRepeatingEndDateRepository = destinationRepeatingEndDateRepository;
+		this.destinationRepeatingEndNeverRepository = destinationRepeatingEndNeverRepository;
 	}
 
 	@Bean(name = "migrateJob")
@@ -68,10 +81,19 @@ public class BatchConfiguration
 				.incrementer(new RunIdIncrementer())
 				.start(createStepForImageMigration())
 				.next(createStepForIconMigration())
+
 				.next(createStepForCategoryMigration())
 				.next(createStepForAccountMigration())
+
 				.next(createStepForChartMigration())
 				.next(createStepForHintMigration())
+
+				// repeating end options
+				.next(createStepForRepeatingEndMigration())
+				.next(createStepForRepeatingEndAfterXTimesMigration())
+				.next(createStepForRepeatingEndDateMigration())
+				.next(createStepForRepeatingEndNeverMigration())
+
 				.listener(new GenericJobListener())
 				.build();
 	}
@@ -156,6 +178,62 @@ public class BatchConfiguration
 				.writer(new GenericWriter<>(destinationHintRepository))
 				.listener(new GenericChunkListener(TableNames.HINT))
 				.listener(new GenericStepListener(TableNames.HINT))
+				.allowStartIfComplete(true)
+				.build();
+	}
+
+	@Bean
+	public Step createStepForRepeatingEndMigration()
+	{
+		return stepBuilderFactory.get(StepNames.REPEATING_ENDS)
+				.<DestinationRepeatingEnd, DestinationRepeatingEnd>chunk(1)
+				.reader(new RepeatingEndReader(primaryDataSource))
+				.processor(new GenericDoNothingProcessor<>())
+				.writer(new GenericWriter<>(destinationRepeatingEndRepository))
+				.listener(new GenericChunkListener(TableNames.REPEATING_END))
+				.listener(new GenericStepListener(TableNames.REPEATING_END))
+				.allowStartIfComplete(true)
+				.build();
+	}
+
+	@Bean
+	public Step createStepForRepeatingEndAfterXTimesMigration()
+	{
+		return stepBuilderFactory.get(StepNames.REPEATING_END_AFTER_X_TIMES)
+				.<DestinationRepeatingEndAfterXTimes, DestinationRepeatingEndAfterXTimes>chunk(1)
+				.reader(new RepeatingEndAfterXTimesReader(primaryDataSource))
+				.processor(new GenericDoNothingProcessor<>())
+				.writer(new GenericWriter<>(destinationRepeatingEndAfterXTimesRepository))
+				.listener(new GenericChunkListener(TableNames.REPEATING_END_AFTER_X_TIMES))
+				.listener(new GenericStepListener(TableNames.REPEATING_END_AFTER_X_TIMES))
+				.allowStartIfComplete(true)
+				.build();
+	}
+
+	@Bean
+	public Step createStepForRepeatingEndDateMigration()
+	{
+		return stepBuilderFactory.get(StepNames.REPEATING_END_DATE)
+				.<DestinationRepeatingEndDate, DestinationRepeatingEndDate>chunk(1)
+				.reader(new RepeatingEndDateReader(primaryDataSource))
+				.processor(new GenericDoNothingProcessor<>())
+				.writer(new GenericWriter<>(destinationRepeatingEndDateRepository))
+				.listener(new GenericChunkListener(TableNames.REPEATING_END_DATE))
+				.listener(new GenericStepListener(TableNames.REPEATING_END_DATE))
+				.allowStartIfComplete(true)
+				.build();
+	}
+
+	@Bean
+	public Step createStepForRepeatingEndNeverMigration()
+	{
+		return stepBuilderFactory.get(StepNames.REPEATING_END_NEVER)
+				.<DestinationRepeatingEndNever, DestinationRepeatingEndNever>chunk(1)
+				.reader(new RepeatingEndNeverReader(primaryDataSource))
+				.processor(new GenericDoNothingProcessor<>())
+				.writer(new GenericWriter<>(destinationRepeatingEndNeverRepository))
+				.listener(new GenericChunkListener(TableNames.REPEATING_END_NEVER))
+				.listener(new GenericStepListener(TableNames.REPEATING_END_NEVER))
 				.allowStartIfComplete(true)
 				.build();
 	}
