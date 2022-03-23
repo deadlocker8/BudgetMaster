@@ -12,4 +12,5 @@ public class TableNames
 	public static final String CATEGORY = "category";
 	public static final String ACCOUNT = "account";
 	public static final String CHART = "chart";
+	public static final String HINT = "hint";
 }

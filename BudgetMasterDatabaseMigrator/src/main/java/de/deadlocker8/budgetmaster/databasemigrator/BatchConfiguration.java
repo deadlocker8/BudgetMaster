@@ -8,6 +8,8 @@ import de.deadlocker8.budgetmaster.databasemigrator.destination.category.Destina
 import de.deadlocker8.budgetmaster.databasemigrator.destination.category.DestinationCategoryRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.chart.DestinationChart;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.chart.DestinationChartRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.hint.DestinationHint;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.hint.DestinationHintRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.icon.DestinationIcon;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.icon.DestinationIconRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.image.DestinationImage;
@@ -43,8 +45,9 @@ public class BatchConfiguration
 	final DestinationCategoryRepository destinationCategoryRepository;
 	final DestinationAccountRepository destinationAccountRepository;
 	final DestinationChartRepository destinationChartRepository;
+	final DestinationHintRepository destinationHintRepository;
 
-	public BatchConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, DataSource primaryDataSource, DestinationImageRepository destinationImageRepository, DestinationIconRepository destinationIconRepository, DestinationCategoryRepository destinationCategoryRepository, DestinationAccountRepository destinationAccountRepository, DestinationChartRepository destinationChartRepository)
+	public BatchConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, DataSource primaryDataSource, DestinationImageRepository destinationImageRepository, DestinationIconRepository destinationIconRepository, DestinationCategoryRepository destinationCategoryRepository, DestinationAccountRepository destinationAccountRepository, DestinationChartRepository destinationChartRepository, DestinationHintRepository destinationHintRepository)
 	{
 		this.jobBuilderFactory = jobBuilderFactory;
 		this.stepBuilderFactory = stepBuilderFactory;
@@ -55,6 +58,7 @@ public class BatchConfiguration
 		this.destinationCategoryRepository = destinationCategoryRepository;
 		this.destinationAccountRepository = destinationAccountRepository;
 		this.destinationChartRepository = destinationChartRepository;
+		this.destinationHintRepository = destinationHintRepository;
 	}
 
 	@Bean(name = "migrateJob")
@@ -67,6 +71,7 @@ public class BatchConfiguration
 				.next(createStepForCategoryMigration())
 				.next(createStepForAccountMigration())
 				.next(createStepForChartMigration())
+				.next(createStepForHintMigration())
 				.listener(new GenericJobListener())
 				.build();
 	}
@@ -137,6 +142,20 @@ public class BatchConfiguration
 				.writer(new GenericWriter<>(destinationChartRepository))
 				.listener(new GenericChunkListener(TableNames.CHART))
 				.listener(new GenericStepListener(TableNames.CHART))
+				.allowStartIfComplete(true)
+				.build();
+	}
+
+	@Bean
+	public Step createStepForHintMigration()
+	{
+		return stepBuilderFactory.get(StepNames.HINTS)
+				.<DestinationHint, DestinationHint>chunk(1)
+				.reader(new HintReader(primaryDataSource))
+				.processor(new GenericDoNothingProcessor<>())
+				.writer(new GenericWriter<>(destinationHintRepository))
+				.listener(new GenericChunkListener(TableNames.HINT))
+				.listener(new GenericStepListener(TableNames.HINT))
 				.allowStartIfComplete(true)
 				.build();
 	}

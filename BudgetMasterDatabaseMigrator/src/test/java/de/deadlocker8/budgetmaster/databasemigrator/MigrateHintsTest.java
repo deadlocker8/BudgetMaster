@@ -1,8 +1,8 @@
 package de.deadlocker8.budgetmaster.databasemigrator;
 
 import de.deadlocker8.budgetmaster.databasemigrator.destination.StepNames;
-import de.deadlocker8.budgetmaster.databasemigrator.destination.account.DestinationAccount;
-import de.deadlocker8.budgetmaster.databasemigrator.destination.account.DestinationAccountRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.hint.DestinationHint;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.hint.DestinationHintRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -24,14 +24,14 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Import(MigrateAccountsTest.TestDatabaseConfiguration.class)
+@Import(MigrateHintsTest.TestDatabaseConfiguration.class)
 @EnableAutoConfiguration
-class MigrateAccountsTest extends MigratorTestBase
+class MigrateHintsTest extends MigratorTestBase
 {
 	@TestConfiguration
 	static class TestDatabaseConfiguration
 	{
-		@Value("classpath:accounts.mv.db")
+		@Value("classpath:default_database_after_first_start.mv.db")
 		private Resource databaseResource;
 
 		@Bean
@@ -45,12 +45,12 @@ class MigrateAccountsTest extends MigratorTestBase
 	}
 
 	@Autowired
-	private DestinationAccountRepository accountRepository;
+	private DestinationHintRepository hintRepository;
 
 	@Test
-	void test_stepMigrateAccounts()
+	void test_stepMigrateHints()
 	{
-		final JobExecution jobExecution = jobLauncherTestUtils.launchStep(StepNames.ACCOUNTS, DEFAULT_JOB_PARAMETERS);
+		final JobExecution jobExecution = jobLauncherTestUtils.launchStep(StepNames.HINTS, DEFAULT_JOB_PARAMETERS);
 		final List<StepExecution> stepExecutions = new ArrayList<>(jobExecution.getStepExecutions());
 
 		assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
@@ -60,18 +60,11 @@ class MigrateAccountsTest extends MigratorTestBase
 		assertThat(stepExecution.getReadCount()).isEqualTo(7);
 		assertThat(stepExecution.getCommitCount()).isEqualTo(8);
 
-		final DestinationAccount accountPlaceholder = new DestinationAccount(1, "Placeholder", false, false, 0, 1, 0);
-		final DestinationAccount accountDefault = new DestinationAccount(2, "Default Account", true, true, 0, 2, 1);
-		final DestinationAccount accountWithBuiltinIcon = new DestinationAccount(3, "Account with builtin icon", false, false, 0, 5, 1);
-		final DestinationAccount accountWithoutIcon = new DestinationAccount(4, "Account without icon", false, false, 0, 6, 1);
-		final DestinationAccount accountWithImage = new DestinationAccount(5, "Account with image", false, false, 0, 7, 1);
-		final DestinationAccount accountReadOnly = new DestinationAccount(6, "Read-only account", false, false, 1, 8, 1);
-		final DestinationAccount accountHidden = new DestinationAccount(7, "Hidden account", false, false, 2, 9, 1);
+		final DestinationHint hint = new DestinationHint(1, "hint.first.use.teaser", false);
 
-
-		final List<DestinationAccount> accounts = accountRepository.findAll();
-		assertThat(accounts)
+		final List<DestinationHint> hints = hintRepository.findAll();
+		assertThat(hints)
 				.hasSize(7)
-				.containsExactly(accountPlaceholder, accountDefault, accountWithBuiltinIcon, accountWithoutIcon, accountWithImage, accountReadOnly, accountHidden);
+				.contains(hint);
 	}
 }

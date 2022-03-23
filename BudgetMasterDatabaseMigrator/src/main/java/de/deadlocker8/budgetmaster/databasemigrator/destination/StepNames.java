@@ -11,5 +11,6 @@ public class StepNames
 	public static final String ICONS = "Migrate icons";
 	public static final String CATEGORIES = "Migrate categories";
 	public static final String ACCOUNTS = "Migrate accounts";
-	public static final String CHARTS = "Migrate chart";
+	public static final String CHARTS = "Migrate charts";
+	public static final String HINTS = "Migrate hints";
 }
