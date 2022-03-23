@@ -14,6 +14,8 @@ import de.deadlocker8.budgetmaster.databasemigrator.destination.icon.Destination
 import de.deadlocker8.budgetmaster.databasemigrator.destination.icon.DestinationIconRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.image.DestinationImage;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.image.DestinationImageRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.DestinationRepeatingOption;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.DestinationRepeatingOptionRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.end.*;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.modifier.*;
 import de.deadlocker8.budgetmaster.databasemigrator.listener.GenericChunkListener;
@@ -22,6 +24,7 @@ import de.deadlocker8.budgetmaster.databasemigrator.listener.GenericStepListener
 import de.deadlocker8.budgetmaster.databasemigrator.steps.GenericDoNothingProcessor;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.GenericWriter;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.*;
+import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.repeating.RepeatingOptionReader;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.repeating.end.RepeatingEndAfterXTimesReader;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.repeating.end.RepeatingEndDateReader;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.repeating.end.RepeatingEndNeverReader;
@@ -64,8 +67,9 @@ public class BatchConfiguration
 	final DestinationRepeatingModifierDaysRepository destinationRepeatingModifierDaysRepository;
 	final DestinationRepeatingModifierMonthsRepository destinationRepeatingModifierMonthsRepository;
 	final DestinationRepeatingModifierYearsRepository destinationRepeatingModifierYearsRepository;
+	final DestinationRepeatingOptionRepository destinationRepeatingOptionRepository;
 
-	public BatchConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, DataSource primaryDataSource, DestinationImageRepository destinationImageRepository, DestinationIconRepository destinationIconRepository, DestinationCategoryRepository destinationCategoryRepository, DestinationAccountRepository destinationAccountRepository, DestinationChartRepository destinationChartRepository, DestinationHintRepository destinationHintRepository, DestinationRepeatingEndRepository destinationRepeatingEndRepository, DestinationRepeatingEndAfterXTimesRepository destinationRepeatingEndAfterXTimesRepository, DestinationRepeatingEndDateRepository destinationRepeatingEndDateRepository, DestinationRepeatingEndNeverRepository destinationRepeatingEndNeverRepository, DestinationRepeatingModifierRepository destinationRepeatingModifierRepository, DestinationRepeatingModifierDaysRepository destinationRepeatingModifierDaysRepository, DestinationRepeatingModifierMonthsRepository destinationRepeatingModifierMonthsRepository, DestinationRepeatingModifierYearsRepository destinationRepeatingModifierYearsRepository)
+	public BatchConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, DataSource primaryDataSource, DestinationImageRepository destinationImageRepository, DestinationIconRepository destinationIconRepository, DestinationCategoryRepository destinationCategoryRepository, DestinationAccountRepository destinationAccountRepository, DestinationChartRepository destinationChartRepository, DestinationHintRepository destinationHintRepository, DestinationRepeatingEndRepository destinationRepeatingEndRepository, DestinationRepeatingEndAfterXTimesRepository destinationRepeatingEndAfterXTimesRepository, DestinationRepeatingEndDateRepository destinationRepeatingEndDateRepository, DestinationRepeatingEndNeverRepository destinationRepeatingEndNeverRepository, DestinationRepeatingModifierRepository destinationRepeatingModifierRepository, DestinationRepeatingModifierDaysRepository destinationRepeatingModifierDaysRepository, DestinationRepeatingModifierMonthsRepository destinationRepeatingModifierMonthsRepository, DestinationRepeatingModifierYearsRepository destinationRepeatingModifierYearsRepository, DestinationRepeatingOptionRepository destinationRepeatingOptionRepository)
 	{
 		this.jobBuilderFactory = jobBuilderFactory;
 		this.stepBuilderFactory = stepBuilderFactory;
@@ -87,6 +91,8 @@ public class BatchConfiguration
 		this.destinationRepeatingModifierDaysRepository = destinationRepeatingModifierDaysRepository;
 		this.destinationRepeatingModifierMonthsRepository = destinationRepeatingModifierMonthsRepository;
 		this.destinationRepeatingModifierYearsRepository = destinationRepeatingModifierYearsRepository;
+
+		this.destinationRepeatingOptionRepository = destinationRepeatingOptionRepository;
 	}
 
 	@Bean(name = "migrateJob")
@@ -114,6 +120,8 @@ public class BatchConfiguration
 				.next(createStepForRepeatingModifierDaysMigration())
 				.next(createStepForRepeatingModifierMonthsMigration())
 				.next(createStepForRepeatingModifierYearsMigration())
+
+				.next(createStepForRepeatingOptionMigration())
 
 				.listener(new GenericJobListener())
 				.build();
@@ -311,6 +319,20 @@ public class BatchConfiguration
 				.writer(new GenericWriter<>(destinationRepeatingModifierYearsRepository))
 				.listener(new GenericChunkListener(TableNames.REPEATING_MODIFIER_YEARS))
 				.listener(new GenericStepListener(TableNames.REPEATING_MODIFIER_YEARS))
+				.allowStartIfComplete(true)
+				.build();
+	}
+
+	@Bean
+	public Step createStepForRepeatingOptionMigration()
+	{
+		return stepBuilderFactory.get(StepNames.REPEATING_OPTIONS)
+				.<DestinationRepeatingOption, DestinationRepeatingOption>chunk(1)
+				.reader(new RepeatingOptionReader(primaryDataSource))
+				.processor(new GenericDoNothingProcessor<>())
+				.writer(new GenericWriter<>(destinationRepeatingOptionRepository))
+				.listener(new GenericChunkListener(TableNames.REPEATING_OPTION))
+				.listener(new GenericStepListener(TableNames.REPEATING_OPTION))
 				.allowStartIfComplete(true)
 				.build();
 	}

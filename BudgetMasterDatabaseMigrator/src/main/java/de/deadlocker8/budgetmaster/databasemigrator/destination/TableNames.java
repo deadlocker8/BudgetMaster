@@ -23,4 +23,6 @@ public class TableNames
 	public static final String REPEATING_MODIFIER_DAYS = "repeating_modifier_days";
 	public static final String REPEATING_MODIFIER_MONTHS = "repeating_modifier_months";
 	public static final String REPEATING_MODIFIER_YEARS = "repeating_modifier_years";
+
+	public static final String REPEATING_OPTION = "repeating_option";
 }
