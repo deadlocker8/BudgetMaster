@@ -27,4 +27,5 @@ public class TableNames
 	public static final String REPEATING_OPTION = "repeating_option";
 
 	public static final String REPORT_COLUMN = "report_column";
+	public static final String REPORT_SETTINGS = "report_settings";
 }

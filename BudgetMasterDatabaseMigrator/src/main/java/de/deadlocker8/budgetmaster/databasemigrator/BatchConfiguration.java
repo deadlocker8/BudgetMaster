@@ -20,6 +20,8 @@ import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.end.*;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.modifier.*;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.report.DestinationReportColumn;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.report.DestinationReportColumnRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.report.DestinationReportSettings;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.report.DestinationReportSettingsRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.listener.GenericChunkListener;
 import de.deadlocker8.budgetmaster.databasemigrator.listener.GenericJobListener;
 import de.deadlocker8.budgetmaster.databasemigrator.listener.GenericStepListener;
@@ -35,6 +37,8 @@ import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.repeating.modif
 import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.repeating.modifier.RepeatingModifierMonthsReader;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.repeating.modifier.RepeatingModifierReader;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.repeating.modifier.RepeatingModifierYearsReader;
+import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.report.ReportColumnReader;
+import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.report.ReportSettingsReader;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -75,8 +79,9 @@ public class BatchConfiguration
 	final DestinationRepeatingOptionRepository destinationRepeatingOptionRepository;
 
 	final DestinationReportColumnRepository destinationReportColumnRepository;
+	final DestinationReportSettingsRepository destinationReportSettingsRepository;
 
-	public BatchConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, DataSource primaryDataSource, DestinationImageRepository destinationImageRepository, DestinationIconRepository destinationIconRepository, DestinationCategoryRepository destinationCategoryRepository, DestinationAccountRepository destinationAccountRepository, DestinationChartRepository destinationChartRepository, DestinationHintRepository destinationHintRepository, DestinationRepeatingEndRepository destinationRepeatingEndRepository, DestinationRepeatingEndAfterXTimesRepository destinationRepeatingEndAfterXTimesRepository, DestinationRepeatingEndDateRepository destinationRepeatingEndDateRepository, DestinationRepeatingEndNeverRepository destinationRepeatingEndNeverRepository, DestinationRepeatingModifierRepository destinationRepeatingModifierRepository, DestinationRepeatingModifierDaysRepository destinationRepeatingModifierDaysRepository, DestinationRepeatingModifierMonthsRepository destinationRepeatingModifierMonthsRepository, DestinationRepeatingModifierYearsRepository destinationRepeatingModifierYearsRepository, DestinationRepeatingOptionRepository destinationRepeatingOptionRepository, DestinationReportColumnRepository destinationReportColumnRepository)
+	public BatchConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, DataSource primaryDataSource, DestinationImageRepository destinationImageRepository, DestinationIconRepository destinationIconRepository, DestinationCategoryRepository destinationCategoryRepository, DestinationAccountRepository destinationAccountRepository, DestinationChartRepository destinationChartRepository, DestinationHintRepository destinationHintRepository, DestinationRepeatingEndRepository destinationRepeatingEndRepository, DestinationRepeatingEndAfterXTimesRepository destinationRepeatingEndAfterXTimesRepository, DestinationRepeatingEndDateRepository destinationRepeatingEndDateRepository, DestinationRepeatingEndNeverRepository destinationRepeatingEndNeverRepository, DestinationRepeatingModifierRepository destinationRepeatingModifierRepository, DestinationRepeatingModifierDaysRepository destinationRepeatingModifierDaysRepository, DestinationRepeatingModifierMonthsRepository destinationRepeatingModifierMonthsRepository, DestinationRepeatingModifierYearsRepository destinationRepeatingModifierYearsRepository, DestinationRepeatingOptionRepository destinationRepeatingOptionRepository, DestinationReportColumnRepository destinationReportColumnRepository, DestinationReportSettingsRepository destinationReportSettingsRepository)
 	{
 		this.jobBuilderFactory = jobBuilderFactory;
 		this.stepBuilderFactory = stepBuilderFactory;
@@ -102,6 +107,7 @@ public class BatchConfiguration
 		this.destinationRepeatingOptionRepository = destinationRepeatingOptionRepository;
 
 		this.destinationReportColumnRepository = destinationReportColumnRepository;
+		this.destinationReportSettingsRepository = destinationReportSettingsRepository;
 	}
 
 	@Bean(name = "migrateJob")
@@ -133,6 +139,7 @@ public class BatchConfiguration
 				.next(createStepForRepeatingOptionMigration())
 
 				.next(createStepForReportColumnMigration())
+				.next(createStepForReportSettingsMigration())
 
 				.listener(new GenericJobListener())
 				.build();
@@ -358,6 +365,20 @@ public class BatchConfiguration
 				.writer(new GenericWriter<>(destinationReportColumnRepository))
 				.listener(new GenericChunkListener(TableNames.REPORT_COLUMN))
 				.listener(new GenericStepListener(TableNames.REPORT_COLUMN))
+				.allowStartIfComplete(true)
+				.build();
+	}
+
+	@Bean
+	public Step createStepForReportSettingsMigration()
+	{
+		return stepBuilderFactory.get(StepNames.REPORT_SETTINGS)
+				.<DestinationReportSettings, DestinationReportSettings>chunk(1)
+				.reader(new ReportSettingsReader(primaryDataSource))
+				.processor(new GenericDoNothingProcessor<>())
+				.writer(new GenericWriter<>(destinationReportSettingsRepository))
+				.listener(new GenericChunkListener(TableNames.REPORT_SETTINGS))
+				.listener(new GenericStepListener(TableNames.REPORT_SETTINGS))
 				.allowStartIfComplete(true)
 				.build();
 	}

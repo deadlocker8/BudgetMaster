@@ -1,7 +1,8 @@
-package de.deadlocker8.budgetmaster.databasemigrator.steps.reader;
+package de.deadlocker8.budgetmaster.databasemigrator.steps.reader.report;
 
 import de.deadlocker8.budgetmaster.databasemigrator.destination.TableNames;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.report.DestinationReportColumn;
+import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.BaseReader;
 import org.springframework.jdbc.core.RowMapper;
 
 import javax.sql.DataSource;
