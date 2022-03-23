@@ -29,7 +29,7 @@ public class GenericStepListener implements StepExecutionListener
 	public ExitStatus afterStep(StepExecution stepExecution)
 	{
 		final int count = Utils.getCommitCount(stepExecution);
-		LOGGER.info(">>> Successfully migrated {}s {}\n", count, itemName);
+		LOGGER.info(">>> Successfully migrated {} {}s\n", count, itemName);
 		return null;
 	}
 }
