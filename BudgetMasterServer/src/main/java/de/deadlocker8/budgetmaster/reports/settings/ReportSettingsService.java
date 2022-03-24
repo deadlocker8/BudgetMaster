@@ -33,11 +33,10 @@ public class ReportSettingsService
 
 	private void createDefaultReportSettingsIfNotExists()
 	{
-		Optional<ReportSettings> reportSettingsOptional = reportSettingsRepository.findById(0);
+		Optional<ReportSettings> reportSettingsOptional = reportSettingsRepository.findById(1);
 		if(reportSettingsOptional.isEmpty())
 		{
 			ReportSettings reportSettings = ReportSettings.getDefault();
-			reportSettings.setID(0);
 			for(ReportColumn reportColumn : reportColumnService.getRepository().findAllByOrderByPositionAsc())
 			{
 				reportSettings.getColumns().add(reportColumn);
@@ -47,7 +46,7 @@ public class ReportSettingsService
 			LOGGER.debug("Created default report settings");
 		}
 
-		reportSettingsOptional = reportSettingsRepository.findById(0);
+		reportSettingsOptional = reportSettingsRepository.findById(1);
 		if(reportSettingsOptional.isEmpty())
 		{
 			throw new ResourceNotFoundException();
@@ -58,6 +57,6 @@ public class ReportSettingsService
 
 	public ReportSettings getReportSettings()
 	{
-		return reportSettingsRepository.findById(0).orElseThrow();
+		return reportSettingsRepository.findById(1).orElseThrow();
 	}
 }

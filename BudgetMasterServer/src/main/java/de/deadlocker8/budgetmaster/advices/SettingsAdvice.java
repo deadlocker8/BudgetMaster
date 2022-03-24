@@ -17,7 +17,7 @@ public class SettingsAdvice
 	@ModelAttribute("settings")
 	public Settings getSettings()
 	{
-		Optional<Settings> settingsOptional = settingsRepository.findById(0);
+		Optional<Settings> settingsOptional = settingsRepository.findById(1);
 		return settingsOptional.orElseThrow();
 	}
 }

@@ -16,7 +16,7 @@ import java.util.List;
 public class ReportSettings
 {
 	@Id
-	private Integer ID;
+	private Integer ID = 1;
 
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private LocalDate date;

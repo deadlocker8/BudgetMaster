@@ -42,14 +42,14 @@ public class SettingsService
 	@Transactional
 	public void createDefaultSettingsIfNotExists()
 	{
-		if(settingsRepository.findById(0).isEmpty())
+		if(settingsRepository.findById(1).isEmpty())
 		{
 			settingsRepository.save(Settings.getDefault());
 			LOGGER.debug("Created default settings");
 		}
 
 		Settings defaultSettings = Settings.getDefault();
-		Optional<Settings> settingsOptional = settingsRepository.findById(0);
+		Optional<Settings> settingsOptional = settingsRepository.findById(1);
 		if(settingsOptional.isEmpty())
 		{
 			throw new NoSuchElementException("Missing Settings in database");

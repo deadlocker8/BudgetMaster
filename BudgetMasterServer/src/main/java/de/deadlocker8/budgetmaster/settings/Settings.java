@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class Settings
 {
 	@Id
-	private int ID;
+	private int ID = 1;
 	private String currency;
 	private boolean restActivated;
 
