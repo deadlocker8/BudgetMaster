@@ -218,7 +218,7 @@ public class TransactionController extends BaseController
 				repeatingEnd = new RepeatingEndAfterXTimes(Integer.parseInt(repeatingEndValue));
 				break;
 			case DATE:
-				LocalDate endDate = LocalDate.parse(repeatingEndValue, DateTimeFormatter.ofPattern(DateFormatStyle.NORMAL.getKey()).withLocale(settingsService.getSettings().getLanguage().getLocale()));
+				LocalDate endDate = LocalDate.parse(repeatingEndValue, DateTimeFormatter.ofPattern(DateFormatStyle.LONG.getKey()).withLocale(settingsService.getSettings().getLanguage().getLocale()));
 				repeatingEnd = new RepeatingEndDate(endDate);
 				break;
 		}

@@ -53,6 +53,7 @@ public class AboutController extends BaseController
 		newsEntries.add(NewsEntry.createWithLocalizationKey("saveAndContinue"));
 		newsEntries.add(NewsEntry.createWithLocalizationKey("newCharts"));
 		newsEntries.add(NewsEntry.createWithLocalizationKey("fix.transferDirectionInCharts"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("fix.repeatingTransactions"));
 
 		model.addAttribute(ModelAttributes.NEWS_ENTRIES, newsEntries);
 		return ReturnValues.WHATS_NEW;
