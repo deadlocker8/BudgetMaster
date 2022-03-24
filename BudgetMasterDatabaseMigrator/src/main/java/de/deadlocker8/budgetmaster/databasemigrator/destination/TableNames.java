@@ -30,4 +30,7 @@ public class TableNames
 	public static final String REPORT_SETTINGS = "report_settings";
 
 	public static final String SETTINGS = "settings";
+	public static final String TAG = "tag";
+	public static final String TEMPLATE_TAGS = "template_tags";
+	public static final String TRANSACTION_TAGS = "transaction_tags";
 }
