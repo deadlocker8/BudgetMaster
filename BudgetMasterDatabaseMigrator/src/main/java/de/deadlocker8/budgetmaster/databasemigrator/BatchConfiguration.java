@@ -22,6 +22,8 @@ import de.deadlocker8.budgetmaster.databasemigrator.destination.report.Destinati
 import de.deadlocker8.budgetmaster.databasemigrator.destination.report.DestinationReportColumnRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.report.DestinationReportSettings;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.report.DestinationReportSettingsRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.settings.DestinationSettings;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.settings.DestinationSettingsRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.listener.GenericChunkListener;
 import de.deadlocker8.budgetmaster.databasemigrator.listener.GenericJobListener;
 import de.deadlocker8.budgetmaster.databasemigrator.listener.GenericStepListener;
@@ -81,7 +83,9 @@ public class BatchConfiguration
 	final DestinationReportColumnRepository destinationReportColumnRepository;
 	final DestinationReportSettingsRepository destinationReportSettingsRepository;
 
-	public BatchConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, DataSource primaryDataSource, DestinationImageRepository destinationImageRepository, DestinationIconRepository destinationIconRepository, DestinationCategoryRepository destinationCategoryRepository, DestinationAccountRepository destinationAccountRepository, DestinationChartRepository destinationChartRepository, DestinationHintRepository destinationHintRepository, DestinationRepeatingEndRepository destinationRepeatingEndRepository, DestinationRepeatingEndAfterXTimesRepository destinationRepeatingEndAfterXTimesRepository, DestinationRepeatingEndDateRepository destinationRepeatingEndDateRepository, DestinationRepeatingEndNeverRepository destinationRepeatingEndNeverRepository, DestinationRepeatingModifierRepository destinationRepeatingModifierRepository, DestinationRepeatingModifierDaysRepository destinationRepeatingModifierDaysRepository, DestinationRepeatingModifierMonthsRepository destinationRepeatingModifierMonthsRepository, DestinationRepeatingModifierYearsRepository destinationRepeatingModifierYearsRepository, DestinationRepeatingOptionRepository destinationRepeatingOptionRepository, DestinationReportColumnRepository destinationReportColumnRepository, DestinationReportSettingsRepository destinationReportSettingsRepository)
+	final DestinationSettingsRepository destinationSettingsRepository;
+
+	public BatchConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, DataSource primaryDataSource, DestinationImageRepository destinationImageRepository, DestinationIconRepository destinationIconRepository, DestinationCategoryRepository destinationCategoryRepository, DestinationAccountRepository destinationAccountRepository, DestinationChartRepository destinationChartRepository, DestinationHintRepository destinationHintRepository, DestinationRepeatingEndRepository destinationRepeatingEndRepository, DestinationRepeatingEndAfterXTimesRepository destinationRepeatingEndAfterXTimesRepository, DestinationRepeatingEndDateRepository destinationRepeatingEndDateRepository, DestinationRepeatingEndNeverRepository destinationRepeatingEndNeverRepository, DestinationRepeatingModifierRepository destinationRepeatingModifierRepository, DestinationRepeatingModifierDaysRepository destinationRepeatingModifierDaysRepository, DestinationRepeatingModifierMonthsRepository destinationRepeatingModifierMonthsRepository, DestinationRepeatingModifierYearsRepository destinationRepeatingModifierYearsRepository, DestinationRepeatingOptionRepository destinationRepeatingOptionRepository, DestinationReportColumnRepository destinationReportColumnRepository, DestinationReportSettingsRepository destinationReportSettingsRepository, DestinationSettingsRepository destinationSettingsRepository)
 	{
 		this.jobBuilderFactory = jobBuilderFactory;
 		this.stepBuilderFactory = stepBuilderFactory;
@@ -108,6 +112,8 @@ public class BatchConfiguration
 
 		this.destinationReportColumnRepository = destinationReportColumnRepository;
 		this.destinationReportSettingsRepository = destinationReportSettingsRepository;
+
+		this.destinationSettingsRepository = destinationSettingsRepository;
 	}
 
 	@Bean(name = "migrateJob")
@@ -140,6 +146,8 @@ public class BatchConfiguration
 
 				.next(createStepForReportColumnMigration())
 				.next(createStepForReportSettingsMigration())
+
+				.next(createStepForSettingsMigration())
 
 				.listener(new GenericJobListener())
 				.build();
@@ -379,6 +387,20 @@ public class BatchConfiguration
 				.writer(new GenericWriter<>(destinationReportSettingsRepository))
 				.listener(new GenericChunkListener(TableNames.REPORT_SETTINGS))
 				.listener(new GenericStepListener(TableNames.REPORT_SETTINGS))
+				.allowStartIfComplete(true)
+				.build();
+	}
+
+	@Bean
+	public Step createStepForSettingsMigration()
+	{
+		return stepBuilderFactory.get(StepNames.SETTINGS)
+				.<DestinationSettings, DestinationSettings>chunk(1)
+				.reader(new SettingsReader(primaryDataSource))
+				.processor(new GenericDoNothingProcessor<>())
+				.writer(new GenericWriter<>(destinationSettingsRepository))
+				.listener(new GenericChunkListener(TableNames.SETTINGS))
+				.listener(new GenericStepListener(TableNames.SETTINGS))
 				.allowStartIfComplete(true)
 				.build();
 	}

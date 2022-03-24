@@ -116,7 +116,7 @@ public class SettingsService
 
 	public Settings getSettings()
 	{
-		return settingsRepository.findById(0).orElseThrow();
+		return settingsRepository.findById(1).orElseThrow();
 	}
 
 	@Transactional

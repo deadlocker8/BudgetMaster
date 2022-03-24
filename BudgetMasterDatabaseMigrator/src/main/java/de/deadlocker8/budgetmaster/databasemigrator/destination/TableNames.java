@@ -28,4 +28,6 @@ public class TableNames
 
 	public static final String REPORT_COLUMN = "report_column";
 	public static final String REPORT_SETTINGS = "report_settings";
+
+	public static final String SETTINGS = "settings";
 }

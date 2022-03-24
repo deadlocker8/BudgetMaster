@@ -28,5 +28,7 @@ public class StepNames
 
 	public static final String REPORT_COLUMNS = "Migrate report columns";
 	public static final String REPORT_SETTINGS = "Migrate report settings";
+
+	public static final String SETTINGS = "Migrate settings";
 }
 
