@@ -60,17 +60,17 @@ class MigrateReportColumnsTest extends MigratorTestBase
 		assertThat(stepExecution.getReadCount()).isEqualTo(11);
 		assertThat(stepExecution.getCommitCount()).isEqualTo(12);
 
-		final DestinationReportColumn column1 = new DestinationReportColumn(1, true, "report.position", 0, 0);
-		final DestinationReportColumn column2 = new DestinationReportColumn(2, true, "report.date", 1, 0);
-		final DestinationReportColumn column3 = new DestinationReportColumn(3, true, "report.repeating", 2, 0);
-		final DestinationReportColumn column4 = new DestinationReportColumn(4, true, "report.transfer", 3, 0);
-		final DestinationReportColumn column5 = new DestinationReportColumn(5, true, "report.category", 4, 0);
-		final DestinationReportColumn column6 = new DestinationReportColumn(6, true, "report.name", 5, 0);
-		final DestinationReportColumn column7 = new DestinationReportColumn(7, true, "report.description", 6, 0);
-		final DestinationReportColumn column8 = new DestinationReportColumn(8, true, "report.tags", 7, 0);
-		final DestinationReportColumn column9 = new DestinationReportColumn(9, true, "report.account", 8, 0);
-		final DestinationReportColumn column10 = new DestinationReportColumn(10, true, "report.rating", 9, 0);
-		final DestinationReportColumn column11 = new DestinationReportColumn(11, true, "report.amount", 10, 0);
+		final DestinationReportColumn column1 = new DestinationReportColumn(1, true, "report.position", 0, 1);
+		final DestinationReportColumn column2 = new DestinationReportColumn(2, true, "report.date", 1, 1);
+		final DestinationReportColumn column3 = new DestinationReportColumn(3, true, "report.repeating", 2, 1);
+		final DestinationReportColumn column4 = new DestinationReportColumn(4, true, "report.transfer", 3, 1);
+		final DestinationReportColumn column5 = new DestinationReportColumn(5, true, "report.category", 4, 1);
+		final DestinationReportColumn column6 = new DestinationReportColumn(6, true, "report.name", 5, 1);
+		final DestinationReportColumn column7 = new DestinationReportColumn(7, true, "report.description", 6, 1);
+		final DestinationReportColumn column8 = new DestinationReportColumn(8, true, "report.tags", 7, 1);
+		final DestinationReportColumn column9 = new DestinationReportColumn(9, true, "report.account", 8, 1);
+		final DestinationReportColumn column10 = new DestinationReportColumn(10, true, "report.rating", 9, 1);
+		final DestinationReportColumn column11 = new DestinationReportColumn(11, true, "report.amount", 10, 1);
 
 		final List<DestinationReportColumn> reportColumns = columnRepository.findAll();
 		assertThat(reportColumns)

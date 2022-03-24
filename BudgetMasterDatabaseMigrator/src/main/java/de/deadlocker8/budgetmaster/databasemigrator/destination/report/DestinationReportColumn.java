@@ -27,5 +27,5 @@ public class DestinationReportColumn
 	private Integer position;
 
 	@Column(name = "referring_settings_id")
-	private Integer referringSettingsID = 0;
+	private Integer referringSettingsID = 1;
 }

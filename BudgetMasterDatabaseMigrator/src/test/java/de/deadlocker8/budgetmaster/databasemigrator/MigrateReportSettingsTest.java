@@ -60,7 +60,7 @@ class MigrateReportSettingsTest extends MigratorTestBase
 		assertThat(stepExecution.getReadCount()).isEqualTo(1);
 		assertThat(stepExecution.getCommitCount()).isEqualTo(2);
 
-		final DestinationReportSettings settings = new DestinationReportSettings(0, "2022-03-15", true, true, true);
+		final DestinationReportSettings settings = new DestinationReportSettings(1, "2022-03-15", true, true, true);
 
 		final List<DestinationReportSettings> reportSettings = settingsRepository.findAll();
 		assertThat(reportSettings)
