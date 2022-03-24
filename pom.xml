@@ -6,7 +6,7 @@
 
     <groupId>de.deadlocker8</groupId>
     <artifactId>BudgetMaster</artifactId>
-    <version>2.9.0</version>
+    <version>2.9.1</version>
     <name>BudgetMaster</name>
 
     <repositories>
@@ -77,7 +77,7 @@
 
         <app.versionDate>${maven.build.timestamp}</app.versionDate>
         <maven.build.timestamp.format>dd.MM.yy</maven.build.timestamp.format>
-        <app.versionCode>35</app.versionCode>
+        <app.versionCode>36</app.versionCode>
         <app.author>Robert Goldmann</app.author>
 
         <project.outputDirectory>build/${project.version}</project.outputDirectory>
