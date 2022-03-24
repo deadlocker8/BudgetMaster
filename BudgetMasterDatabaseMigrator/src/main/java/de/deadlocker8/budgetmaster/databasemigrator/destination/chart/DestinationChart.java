@@ -27,7 +27,13 @@ public class DestinationChart
 
 	private Integer type;
 	private int version;
+
+	@Column(name = "display_type")
 	private Integer displayType;
+
+	@Column(name = "group_type")
 	private Integer groupType;
+
+	@Column(name = "preview_image_file_name")
 	private String previewImageFileName;
 }
