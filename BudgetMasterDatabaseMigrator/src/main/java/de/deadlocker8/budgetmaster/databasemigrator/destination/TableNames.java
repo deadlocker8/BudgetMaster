@@ -41,4 +41,5 @@ public class TableNames
 	public static final String USER_DESTINATION = "login_user";
 
 	public static final String TRANSACTION = "transaction";
+	public static final String TEMPLATE = "template";
 }

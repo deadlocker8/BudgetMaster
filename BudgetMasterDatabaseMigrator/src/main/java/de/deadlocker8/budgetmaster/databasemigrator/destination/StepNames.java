@@ -38,5 +38,6 @@ public class StepNames
 	public static final String USER = "Migrate user";
 
 	public static final String TRANSACTIONS = "Migrate transactions";
+	public static final String TEMPLATES = "Migrate templates";
 }
 

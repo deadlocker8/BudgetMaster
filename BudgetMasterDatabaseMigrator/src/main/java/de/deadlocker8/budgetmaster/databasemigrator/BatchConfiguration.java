@@ -25,6 +25,8 @@ import de.deadlocker8.budgetmaster.databasemigrator.destination.report.Destinati
 import de.deadlocker8.budgetmaster.databasemigrator.destination.settings.DestinationSettings;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.settings.DestinationSettingsRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.tag.*;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.template.DestinationTemplate;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.template.DestinationTemplateRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.transaction.DestinationTransaction;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.transaction.DestinationTransactionRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.user.DestinationUser;
@@ -100,7 +102,9 @@ public class BatchConfiguration
 	final DestinationUserRepository destinationUserRepository;
 	final DestinationTransactionRepository destinationTransactionRepository;
 
-	public BatchConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, DataSource primaryDataSource, DestinationImageRepository destinationImageRepository, DestinationIconRepository destinationIconRepository, DestinationCategoryRepository destinationCategoryRepository, DestinationAccountRepository destinationAccountRepository, DestinationChartRepository destinationChartRepository, DestinationHintRepository destinationHintRepository, DestinationRepeatingEndRepository destinationRepeatingEndRepository, DestinationRepeatingEndAfterXTimesRepository destinationRepeatingEndAfterXTimesRepository, DestinationRepeatingEndDateRepository destinationRepeatingEndDateRepository, DestinationRepeatingEndNeverRepository destinationRepeatingEndNeverRepository, DestinationRepeatingModifierRepository destinationRepeatingModifierRepository, DestinationRepeatingModifierDaysRepository destinationRepeatingModifierDaysRepository, DestinationRepeatingModifierMonthsRepository destinationRepeatingModifierMonthsRepository, DestinationRepeatingModifierYearsRepository destinationRepeatingModifierYearsRepository, DestinationRepeatingOptionRepository destinationRepeatingOptionRepository, DestinationReportColumnRepository destinationReportColumnRepository, DestinationReportSettingsRepository destinationReportSettingsRepository, DestinationSettingsRepository destinationSettingsRepository, DestinationTagRepository destinationTagRepository, DestinationTemplateTagRepository destinationTemplateTagRepository, DestinationTransactionTagRepository destinationTransactionTagRepository, DestinationUserRepository destinationUserRepository, DestinationTransactionRepository destinationTransactionRepository)
+	final DestinationTemplateRepository destinationTemplateRepository;
+
+	public BatchConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, DataSource primaryDataSource, DestinationImageRepository destinationImageRepository, DestinationIconRepository destinationIconRepository, DestinationCategoryRepository destinationCategoryRepository, DestinationAccountRepository destinationAccountRepository, DestinationChartRepository destinationChartRepository, DestinationHintRepository destinationHintRepository, DestinationRepeatingEndRepository destinationRepeatingEndRepository, DestinationRepeatingEndAfterXTimesRepository destinationRepeatingEndAfterXTimesRepository, DestinationRepeatingEndDateRepository destinationRepeatingEndDateRepository, DestinationRepeatingEndNeverRepository destinationRepeatingEndNeverRepository, DestinationRepeatingModifierRepository destinationRepeatingModifierRepository, DestinationRepeatingModifierDaysRepository destinationRepeatingModifierDaysRepository, DestinationRepeatingModifierMonthsRepository destinationRepeatingModifierMonthsRepository, DestinationRepeatingModifierYearsRepository destinationRepeatingModifierYearsRepository, DestinationRepeatingOptionRepository destinationRepeatingOptionRepository, DestinationReportColumnRepository destinationReportColumnRepository, DestinationReportSettingsRepository destinationReportSettingsRepository, DestinationSettingsRepository destinationSettingsRepository, DestinationTagRepository destinationTagRepository, DestinationTemplateTagRepository destinationTemplateTagRepository, DestinationTransactionTagRepository destinationTransactionTagRepository, DestinationUserRepository destinationUserRepository, DestinationTransactionRepository destinationTransactionRepository, DestinationTemplateRepository destinationTemplateRepository)
 	{
 		this.jobBuilderFactory = jobBuilderFactory;
 		this.stepBuilderFactory = stepBuilderFactory;
@@ -136,6 +140,8 @@ public class BatchConfiguration
 
 		this.destinationUserRepository = destinationUserRepository;
 		this.destinationTransactionRepository = destinationTransactionRepository;
+
+		this.destinationTemplateRepository = destinationTemplateRepository;
 	}
 
 	@Bean(name = "migrateJob")
@@ -178,6 +184,8 @@ public class BatchConfiguration
 				.next(createStepForUserMigration())
 
 				.next(createStepForTransactionMigration())
+
+				.next(createStepForTemplateMigration())
 
 				.listener(new GenericJobListener())
 				.build();
@@ -501,6 +509,20 @@ public class BatchConfiguration
 				.writer(new GenericWriter<>(destinationTransactionRepository))
 				.listener(new GenericChunkListener(TableNames.TRANSACTION))
 				.listener(new GenericStepListener(TableNames.TRANSACTION))
+				.allowStartIfComplete(true)
+				.build();
+	}
+
+	@Bean
+	public Step createStepForTemplateMigration()
+	{
+		return stepBuilderFactory.get(StepNames.TEMPLATES)
+				.<DestinationTemplate, DestinationTemplate>chunk(1)
+				.reader(new TemplateReader(primaryDataSource))
+				.processor(new GenericDoNothingProcessor<>())
+				.writer(new GenericWriter<>(destinationTemplateRepository))
+				.listener(new GenericChunkListener(TableNames.TEMPLATE))
+				.listener(new GenericStepListener(TableNames.TEMPLATE))
 				.allowStartIfComplete(true)
 				.build();
 	}
