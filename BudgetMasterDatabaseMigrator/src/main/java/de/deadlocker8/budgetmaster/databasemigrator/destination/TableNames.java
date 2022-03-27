@@ -1,5 +1,7 @@
 package de.deadlocker8.budgetmaster.databasemigrator.destination;
 
+import javax.persistence.Table;
+
 public class TableNames
 {
 	private TableNames()
@@ -30,7 +32,11 @@ public class TableNames
 	public static final String REPORT_SETTINGS = "report_settings";
 
 	public static final String SETTINGS = "settings";
+
 	public static final String TAG = "tag";
 	public static final String TEMPLATE_TAGS = "template_tags";
 	public static final String TRANSACTION_TAGS = "transaction_tags";
+
+	public static final String USER_SOURCE = "user";
+	public static final String USER_DESTINATION = "login_user";
 }

@@ -34,5 +34,7 @@ public class StepNames
 	public static final String TAGS = "Migrate tags";
 	public static final String TEMPLATE_TAGS = "Migrate template tags";
 	public static final String TRANSACTION_TAGS = "Migrate transaction tags";
+
+	public static final String USER = "Migrate user";
 }
 
