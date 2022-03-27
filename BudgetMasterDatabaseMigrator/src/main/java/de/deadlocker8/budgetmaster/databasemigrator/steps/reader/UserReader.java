@@ -1,7 +1,6 @@
 package de.deadlocker8.budgetmaster.databasemigrator.steps.reader;
 
 import de.deadlocker8.budgetmaster.databasemigrator.destination.TableNames;
-import de.deadlocker8.budgetmaster.databasemigrator.destination.hint.DestinationHint;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.user.DestinationUser;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -27,10 +26,10 @@ public class UserReader extends BaseReader<DestinationUser>
 	@Override
 	protected RowMapper<DestinationUser> getRowMapper()
 	{
-		return new HintRowMapper();
+		return new UserRowMapper();
 	}
 
-	public static class HintRowMapper implements RowMapper<DestinationUser>
+	public static class UserRowMapper implements RowMapper<DestinationUser>
 	{
 		@Override
 		public DestinationUser mapRow(ResultSet rs, int rowNum) throws SQLException

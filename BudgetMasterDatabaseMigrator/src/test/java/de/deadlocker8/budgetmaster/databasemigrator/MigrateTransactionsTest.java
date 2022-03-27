@@ -1,8 +1,10 @@
 package de.deadlocker8.budgetmaster.databasemigrator;
 
 import de.deadlocker8.budgetmaster.databasemigrator.destination.StepNames;
-import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.DestinationRepeatingOption;
-import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.DestinationRepeatingOptionRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.hint.DestinationHint;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.hint.DestinationHintRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.transaction.DestinationTransaction;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.transaction.DestinationTransactionRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -24,9 +26,9 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Import(MigrateRepeatingOptionsTest.TestDatabaseConfiguration.class)
+@Import(MigrateTransactionsTest.TestDatabaseConfiguration.class)
 @EnableAutoConfiguration
-class MigrateRepeatingOptionsTest extends MigratorTestBase
+class MigrateTransactionsTest extends MigratorTestBase
 {
 	@TestConfiguration
 	static class TestDatabaseConfiguration
@@ -45,26 +47,29 @@ class MigrateRepeatingOptionsTest extends MigratorTestBase
 	}
 
 	@Autowired
-	private DestinationRepeatingOptionRepository repeatingOptionRepository;
+	private DestinationTransactionRepository transactionRepository;
 
 	@Test
-	void test_stepMigrateRepeatingOptions()
+	void test_stepMigrateTransactions()
 	{
-		final JobExecution jobExecution = jobLauncherTestUtils.launchStep(StepNames.REPEATING_OPTIONS, DEFAULT_JOB_PARAMETERS);
+		final JobExecution jobExecution = jobLauncherTestUtils.launchStep(StepNames.TRANSACTIONS, DEFAULT_JOB_PARAMETERS);
 		final List<StepExecution> stepExecutions = new ArrayList<>(jobExecution.getStepExecutions());
 
 		assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
 
 		assertThat(stepExecutions).hasSize(1);
 		final StepExecution stepExecution = stepExecutions.get(0);
-		assertThat(stepExecution.getReadCount()).isEqualTo(6);
-		assertThat(stepExecution.getCommitCount()).isEqualTo(7);
+		assertThat(stepExecution.getReadCount()).isEqualTo(12);
+		assertThat(stepExecution.getCommitCount()).isEqualTo(13);
 
-		final DestinationRepeatingOption repeatingOption = new DestinationRepeatingOption(4, "2022-03-23 00:00:00", 4, 4);
+		final DestinationTransaction transactionNormal = new DestinationTransaction(1, -1500, true, "2022-03-23 00:00:00", 2, 3, "Normal transaction", "", null, null);
+		final DestinationTransaction transactionRepeating = new DestinationTransaction(5, -100, true, "2022-03-23 00:00:00", 2, 1, "Repeating month end date", "", 4, null);
+		final DestinationTransaction transactionTransfer = new DestinationTransaction(12, -1000, true, "2022-03-27 00:00:00", 2, 1, "Transfer", "", null, 3);
+		final DestinationTransaction transactionTransferRepeating = new DestinationTransaction(13, -200, true, "2022-03-27 00:00:00", 2, 1, "Repeating Transfer", "", 9, 3);
 
-		final List<DestinationRepeatingOption> destinationRepeatingOptions = repeatingOptionRepository.findAll();
-		assertThat(destinationRepeatingOptions)
-				.hasSize(6)
-				.contains(repeatingOption);
+		final List<DestinationTransaction> transactions = transactionRepository.findAll();
+		assertThat(transactions)
+				.hasSize(12)
+				.contains(transactionNormal, transactionRepeating, transactionTransfer, transactionTransferRepeating);
 	}
 }

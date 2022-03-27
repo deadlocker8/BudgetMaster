@@ -39,4 +39,6 @@ public class TableNames
 
 	public static final String USER_SOURCE = "user";
 	public static final String USER_DESTINATION = "login_user";
+
+	public static final String TRANSACTION = "transaction";
 }

@@ -57,14 +57,14 @@ class MigrateRepeatingEndAfterXTimesTest extends MigratorTestBase
 
 		assertThat(stepExecutions).hasSize(1);
 		final StepExecution stepExecution = stepExecutions.get(0);
-		assertThat(stepExecution.getReadCount()).isEqualTo(3);
-		assertThat(stepExecution.getCommitCount()).isEqualTo(4);
+		assertThat(stepExecution.getReadCount()).isEqualTo(4);
+		assertThat(stepExecution.getCommitCount()).isEqualTo(5);
 
 		final DestinationRepeatingEndAfterXTimes endAfterXTimes = new DestinationRepeatingEndAfterXTimes(6, 2);
 
 		final List<DestinationRepeatingEndAfterXTimes> repeatingEndAfterXTimes = repeatingEndAfterXTimesRepository.findAll();
 		assertThat(repeatingEndAfterXTimes)
-				.hasSize(3)
+				.hasSize(4)
 				.contains(endAfterXTimes);
 	}
 }

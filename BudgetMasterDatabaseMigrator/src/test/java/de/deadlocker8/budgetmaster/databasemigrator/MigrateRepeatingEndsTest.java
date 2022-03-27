@@ -57,8 +57,8 @@ class MigrateRepeatingEndsTest extends MigratorTestBase
 
 		assertThat(stepExecutions).hasSize(1);
 		final StepExecution stepExecution = stepExecutions.get(0);
-		assertThat(stepExecution.getReadCount()).isEqualTo(5);
-		assertThat(stepExecution.getCommitCount()).isEqualTo(6);
+		assertThat(stepExecution.getReadCount()).isEqualTo(6);
+		assertThat(stepExecution.getCommitCount()).isEqualTo(7);
 
 		final DestinationRepeatingEnd repeatingEndDate = new DestinationRepeatingEnd(4, "repeating.end.key.date", "RepeatingEndDate");
 		final DestinationRepeatingEnd repeatingEndNever = new DestinationRepeatingEnd(5, "repeating.end.key.never", "RepeatingEndNever");
@@ -66,7 +66,7 @@ class MigrateRepeatingEndsTest extends MigratorTestBase
 
 		final List<DestinationRepeatingEnd> repeatingEnds = repeatingEndRepository.findAll();
 		assertThat(repeatingEnds)
-				.hasSize(5)
+				.hasSize(6)
 				.contains(repeatingEndDate, repeatingEndNever, repeatingEndAfterXTimes);
 	}
 }

@@ -57,14 +57,14 @@ class MigrateRepeatingModifierDaysTest extends MigratorTestBase
 
 		assertThat(stepExecutions).hasSize(1);
 		final StepExecution stepExecution = stepExecutions.get(0);
-		assertThat(stepExecution.getReadCount()).isEqualTo(1);
-		assertThat(stepExecution.getCommitCount()).isEqualTo(2);
+		assertThat(stepExecution.getReadCount()).isEqualTo(2);
+		assertThat(stepExecution.getCommitCount()).isEqualTo(3);
 
 		final DestinationRepeatingModifierDays modifierDays = new DestinationRepeatingModifierDays(7);
 
 		final List<DestinationRepeatingModifierDays> repeatingModifierDays = modifierDaysRepository.findAll();
 		assertThat(repeatingModifierDays)
-				.hasSize(1)
-				.containsExactly(modifierDays);
+				.hasSize(2)
+				.contains(modifierDays);
 	}
 }

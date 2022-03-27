@@ -57,8 +57,8 @@ class MigrateRepeatingModifiersTest extends MigratorTestBase
 
 		assertThat(stepExecutions).hasSize(1);
 		final StepExecution stepExecution = stepExecutions.get(0);
-		assertThat(stepExecution.getReadCount()).isEqualTo(5);
-		assertThat(stepExecution.getCommitCount()).isEqualTo(6);
+		assertThat(stepExecution.getReadCount()).isEqualTo(6);
+		assertThat(stepExecution.getCommitCount()).isEqualTo(7);
 
 		final DestinationRepeatingModifier modifierDays = new DestinationRepeatingModifier(7, "repeating.modifier.days", "RepeatingModifierDays", 2);
 		final DestinationRepeatingModifier modifierMonths = new DestinationRepeatingModifier(4, "repeating.modifier.months", "RepeatingModifierMonths", 1);
@@ -66,7 +66,7 @@ class MigrateRepeatingModifiersTest extends MigratorTestBase
 
 		final List<DestinationRepeatingModifier> repeatingModifiers = repeatingModifierRepository.findAll();
 		assertThat(repeatingModifiers)
-				.hasSize(5)
+				.hasSize(6)
 				.contains(modifierDays, modifierMonths, modifierYears);
 	}
 }
