@@ -34,7 +34,7 @@ public class EnsureAllIconizableHaveAnIconInstance
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(EnsureAllIconizableHaveAnIconInstance.class);
 
-	private static final int ACTIVATION_VERSION_CODE = 35;
+	public static final int ACTIVATION_VERSION_CODE = 35;
 
 	private final AccountService accountService;
 	private final TemplateService templateService;
