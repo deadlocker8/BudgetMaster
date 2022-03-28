@@ -60,7 +60,9 @@ public class TemplateService implements Resettable, AccessAllEntities<Template>,
 	@Override
 	public void deleteAll()
 	{
+		LOGGER.info("Resetting templates...");
 		templateRepository.deleteAll();
+		LOGGER.info("All templates reset.");
 	}
 
 	@Override

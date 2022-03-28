@@ -16,6 +16,7 @@ import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
+import de.deadlocker8.budgetmaster.services.Resettable;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.tags.TagService;
 import de.deadlocker8.budgetmaster.templategroup.TemplateGroup;
@@ -80,78 +81,18 @@ public class DatabaseService
 
 	public void reset()
 	{
-		resetTransactions();
-		resetTemplates();
-		resetCategories();
-		resetAccounts();
-		resetTags();
-		resetCharts();
-		resetIcons();
-		resetImages();
-	}
+		final List<Resettable> services = List.of(this.transactionService, templateService, categoryService, accountService, tagService, chartService, iconService, imageService);
 
-	private void resetAccounts()
-	{
-		LOGGER.info("Resetting accounts...");
-		accountService.deleteAll();
-		accountService.createDefaults();
-		LOGGER.info("All accounts reset.");
-	}
+		for(Resettable service : services)
+		{
+			service.deleteAll();
+		}
 
-	private void resetCategories()
-	{
-		LOGGER.info("Resetting categories...");
-		categoryService.deleteAll();
-		categoryService.createDefaults();
-		LOGGER.info("All categories reset.");
-	}
-
-	private void resetTransactions()
-	{
-		LOGGER.info("Resetting transactions...");
-		transactionService.deleteAll();
-		transactionService.createDefaults();
-		LOGGER.info("All transactions reset.");
-	}
-
-	private void resetTags()
-	{
-		LOGGER.info("Resetting tags...");
-		tagService.deleteAll();
-		tagService.createDefaults();
-		LOGGER.info("All tags reset.");
-	}
-
-	private void resetTemplates()
-	{
-		LOGGER.info("Resetting templates...");
-		templateService.deleteAll();
-		templateService.createDefaults();
-		LOGGER.info("All templates reset.");
-	}
-
-	private void resetCharts()
-	{
-		LOGGER.info("Resetting charts...");
-		chartService.deleteAll();
-		chartService.createDefaults();
-		LOGGER.info("All charts reset.");
-	}
-
-	private void resetImages()
-	{
-		LOGGER.info("Resetting images...");
-		imageService.deleteAll();
-		imageService.createDefaults();
-		LOGGER.info("All images reset.");
-	}
-
-	private void resetIcons()
-	{
-		LOGGER.info("Resetting icons...");
-		iconService.deleteAll();
-		iconService.createDefaults();
-		LOGGER.info("All icons reset.");
+		// create defaults after deletion to avoid deletion of newly created defaults
+		for(Resettable service : services)
+		{
+			service.createDefaults();
+		}
 	}
 
 	public void rotatingBackup(Path backupFolderPath)

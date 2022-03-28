@@ -82,7 +82,9 @@ public class CategoryService implements Resettable, AccessAllEntities<Category>,
 	@Override
 	public void deleteAll()
 	{
+		LOGGER.info("Resetting categories...");
 		categoryRepository.deleteAll();
+		LOGGER.info("All categories reset.");
 	}
 
 	@Override

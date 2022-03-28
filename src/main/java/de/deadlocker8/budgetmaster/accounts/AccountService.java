@@ -112,12 +112,14 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 	@Override
 	public void deleteAll()
 	{
+		LOGGER.info("Resetting accounts...");
 		deselectAllAccounts();
 		User user = userRepository.findByName("Default");
 		user.setSelectedAccount(null);
 		userRepository.save(user);
 
 		accountRepository.deleteAll();
+		LOGGER.info("All accounts reset.");
 	}
 
 	@Override

@@ -5,6 +5,8 @@ import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.services.Resettable;
 import de.thecodelabs.utils.util.Localization;
 import org.apache.commons.lang3.ArrayUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,9 @@ import java.util.Optional;
 @Service
 public class ImageService implements Resettable
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ImageService.class);
+
+
 	private final ImageRepository imageRepository;
 	private final IconService iconService;
 
@@ -36,6 +41,7 @@ public class ImageService implements Resettable
 	@Transactional
 	public void deleteAll()
 	{
+		LOGGER.info("Resetting images...");
 		final List<Image> images = imageRepository.findAll();
 		for(Image image : images)
 		{
@@ -43,6 +49,7 @@ public class ImageService implements Resettable
 		}
 
 		imageRepository.deleteAll();
+		LOGGER.info("All images reset.");
 	}
 
 	@Transactional

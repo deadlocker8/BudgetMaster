@@ -203,10 +203,12 @@ public class TransactionService implements Resettable
 	@Override
 	public void deleteAll()
 	{
+		LOGGER.info("Resetting transactions...");
 		for(Transaction transaction : transactionRepository.findAll())
 		{
 			deleteTransactionInRepo(transaction.getID());
 		}
+		LOGGER.info("All transactions reset.");
 	}
 
 	public void deleteTransactionsWithAccount(Account account)

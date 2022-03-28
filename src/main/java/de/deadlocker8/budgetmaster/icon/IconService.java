@@ -7,6 +7,8 @@ import de.deadlocker8.budgetmaster.images.ImageRepository;
 import de.deadlocker8.budgetmaster.services.Resettable;
 import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,8 @@ import java.util.Optional;
 @Service
 public class IconService implements Resettable
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger(IconService.class);
+
 	private final IconRepository iconRepository;
 	private final ImageRepository imageRepository;
 
@@ -36,6 +40,8 @@ public class IconService implements Resettable
 	@Transactional
 	public void deleteAll()
 	{
+		LOGGER.info("Resetting icons...");
+
 		final List<Icon> icons = iconRepository.findAll();
 		for(Icon icon : icons)
 		{
@@ -43,6 +49,7 @@ public class IconService implements Resettable
 		}
 
 		iconRepository.deleteAll();
+		LOGGER.info("All icons reset.");
 	}
 
 	@Transactional

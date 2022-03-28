@@ -39,7 +39,9 @@ public class ChartService implements Resettable, AccessAllEntities<Chart>
 	@Override
 	public void deleteAll()
 	{
+		LOGGER.info("Resetting charts...");
 		chartRepository.deleteAll();
+		LOGGER.info("All charts reset.");
 	}
 
 	@SuppressWarnings("OptionalIsPresent")
