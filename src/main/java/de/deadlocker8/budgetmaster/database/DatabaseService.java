@@ -81,7 +81,7 @@ public class DatabaseService
 
 	public void reset()
 	{
-		final List<Resettable> services = List.of(this.transactionService, templateService, categoryService, accountService, tagService, chartService, iconService, imageService);
+		final List<Resettable> services = List.of(this.transactionService, templateService, templateGroupService, categoryService, accountService, tagService, chartService, iconService, imageService);
 
 		for(Resettable service : services)
 		{
