@@ -16,14 +16,11 @@ import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
 import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.IconRepository;
 import de.deadlocker8.budgetmaster.icon.IconService;
-import de.deadlocker8.budgetmaster.icon.Iconizable;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.images.ImageFileExtension;
 import de.deadlocker8.budgetmaster.images.ImageRepository;
 import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.repeating.RepeatingTransactionUpdater;
-import de.deadlocker8.budgetmaster.services.EntityType;
-import de.deadlocker8.budgetmaster.services.ImportResultItem;
 import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.TagRepository;
@@ -33,7 +30,6 @@ import de.deadlocker8.budgetmaster.templategroup.TemplateGroupType;
 import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.templates.TemplateRepository;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
-import de.deadlocker8.budgetmaster.transactions.TransactionBase;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -85,235 +81,6 @@ class ImportServiceTest
 	@InjectMocks
 	private ImportService importService;
 
-	@Test
-	void test_updateCategoriesForTransactions()
-	{
-		Category category1 = new Category("Category1", "#ff0000", CategoryType.CUSTOM);
-		category1.setID(3);
-
-		Category category2 = new Category("Category2", "#ff0000", CategoryType.CUSTOM);
-		category2.setID(4);
-
-		List<TransactionBase> transactionList = new ArrayList<>();
-		Transaction transaction1 = new Transaction();
-		transaction1.setName("Test");
-		transaction1.setAmount(200);
-		transaction1.setDate(LocalDate.of(2018, 10, 3));
-		transaction1.setCategory(category1);
-		transactionList.add(transaction1);
-
-		Transaction transaction2 = new Transaction();
-		transaction2.setName("Test_2");
-		transaction2.setAmount(-525);
-		transaction2.setDate(LocalDate.of(2018, 10, 3));
-		transaction2.setCategory(category2);
-		transactionList.add(transaction2);
-
-		List<TransactionBase> updatedTransactions = importService.updateCategoriesForItems(transactionList, 3, 5);
-		assertThat(updatedTransactions).hasSize(1);
-		assertThat(updatedTransactions.get(0).getCategory()).hasFieldOrPropertyWithValue("ID", 5);
-	}
-
-	@Test
-	void test_updateCategoriesForTemplates()
-	{
-		Category category1 = new Category("Category1", "#ff0000", CategoryType.CUSTOM);
-		category1.setID(3);
-
-		Category category2 = new Category("Category2", "#ff0000", CategoryType.CUSTOM);
-		category2.setID(4);
-
-		Template template1 = new Template();
-		template1.setTemplateName("MyTemplate");
-		template1.setCategory(category1);
-		template1.setAmount(200);
-		template1.setName("Test");
-		template1.setTags(new ArrayList<>());
-
-		Template template2 = new Template();
-		template2.setTemplateName("MyTemplate_2");
-		template2.setCategory(category2);
-		template2.setAmount(-525);
-		template2.setName("Test_2");
-		template2.setTags(new ArrayList<>());
-
-		List<TransactionBase> templateList = new ArrayList<>();
-		templateList.add(template1);
-		templateList.add(template2);
-
-		List<TransactionBase> updatedTemplates = importService.updateCategoriesForItems(templateList, 3, 5);
-		assertThat(updatedTemplates).hasSize(1);
-		assertThat(updatedTemplates.get(0).getCategory()).hasFieldOrPropertyWithValue("ID", 5);
-	}
-
-	@Test
-	void test_removeAlreadyUpdatedTransactions()
-	{
-		Category category1 = new Category("Category1", "#ff0000", CategoryType.CUSTOM);
-		category1.setID(3);
-
-		Category category2 = new Category("Category2", "#ff0000", CategoryType.CUSTOM);
-		category2.setID(4);
-
-		List<Transaction> transactionList = new ArrayList<>();
-		Transaction transaction1 = new Transaction();
-		transaction1.setName("Test");
-		transaction1.setAmount(200);
-		transaction1.setDate(LocalDate.of(2018, 10, 3));
-		transaction1.setCategory(category1);
-		transaction1.setAccount(new Account("Account", AccountType.CUSTOM));
-		transactionList.add(transaction1);
-
-		Transaction transaction2 = new Transaction();
-		transaction2.setName("Test_2");
-		transaction2.setAmount(-525);
-		transaction2.setDate(LocalDate.of(2018, 10, 3));
-		transaction2.setCategory(category2);
-		transaction2.setAccount(new Account("Account", AccountType.CUSTOM));
-		transactionList.add(transaction2);
-
-		List<Transaction> alreadyUpdatedTransactions = new ArrayList<>();
-		transaction1.setCategory(category2);
-		alreadyUpdatedTransactions.add(transaction1);
-
-		transactionList.removeAll(alreadyUpdatedTransactions);
-		assertThat(transactionList)
-				.hasSize(1)
-				.contains(transaction2);
-	}
-
-	@Test
-	void test_updateAccountsForTransactions()
-	{
-		Account account1 = new Account("Account_1", AccountType.CUSTOM);
-		account1.setID(2);
-		Account account2 = new Account("Account_2", AccountType.CUSTOM);
-		account2.setID(3);
-
-		Account destinationAccount = new Account("DestinationAccount_1", AccountType.CUSTOM);
-		destinationAccount.setID(5);
-
-		List<TransactionBase> transactionList = new ArrayList<>();
-		Transaction transaction1 = new Transaction();
-		transaction1.setAccount(account1);
-		transaction1.setName("ShouldGoInAccount_1");
-		transaction1.setAmount(200);
-		transaction1.setDate(LocalDate.of(2018, 10, 3));
-		transactionList.add(transaction1);
-
-		Transaction transaction2 = new Transaction();
-		transaction2.setAccount(account2);
-		transaction2.setName("ImPartOfAccount_2");
-		transaction2.setAmount(-525);
-		transaction2.setDate(LocalDate.of(2018, 10, 3));
-		transactionList.add(transaction2);
-
-		List<TransactionBase> updatedTransactions = importService.updateAccountsForItems(transactionList, account1.getID(), destinationAccount);
-		assertThat(updatedTransactions).hasSize(1);
-		assertThat(updatedTransactions.get(0).getAccount().getID()).isEqualTo(5);
-	}
-
-	@Test
-	void test_updateTransferAccountsForTransactions()
-	{
-		Account account1 = new Account("Account_1", AccountType.CUSTOM);
-		account1.setID(2);
-		Account transferAccount = new Account("TransferAccount", AccountType.CUSTOM);
-		transferAccount.setID(3);
-
-		Account destinationAccount = new Account("DestinationAccount_1", AccountType.CUSTOM);
-		destinationAccount.setID(5);
-
-		List<TransactionBase> transactionList = new ArrayList<>();
-		Transaction transaction = new Transaction();
-		transaction.setAccount(account1);
-		transaction.setTransferAccount(transferAccount);
-		transaction.setName("Whatever");
-		transaction.setAmount(-525);
-		transaction.setDate(LocalDate.of(2018, 10, 3));
-		transactionList.add(transaction);
-
-		// expected
-		Transaction expectedTransaction = new Transaction();
-		expectedTransaction.setAccount(account1);
-		expectedTransaction.setTransferAccount(destinationAccount);
-		expectedTransaction.setName("Whatever");
-		expectedTransaction.setAmount(-525);
-		expectedTransaction.setDate(LocalDate.of(2018, 10, 3));
-
-		assertThat(importService.updateTransferAccountsForItems(transactionList, transferAccount.getID(), destinationAccount))
-				.hasSize(1)
-				.contains(expectedTransaction);
-	}
-
-	@Test
-	void test_updateAccountsForTemplates()
-	{
-		Account account1 = new Account("Account_1", AccountType.CUSTOM);
-		account1.setID(2);
-		Account account2 = new Account("Account_2", AccountType.CUSTOM);
-		account2.setID(3);
-
-		Account destinationAccount = new Account("DestinationAccount_1", AccountType.CUSTOM);
-		destinationAccount.setID(5);
-
-		Template template1 = new Template();
-		template1.setAccount(account1);
-		template1.setTemplateName("ShouldGoInAccount_1");
-		template1.setAmount(200);
-		template1.setName("Test");
-		template1.setTags(new ArrayList<>());
-
-		Template template2 = new Template();
-		template2.setAccount(account2);
-		template2.setTemplateName("ImPartOfAccount_2");
-		template2.setAmount(-525);
-		template2.setName("Test_2");
-		template2.setTags(new ArrayList<>());
-
-		List<TransactionBase> templateList = new ArrayList<>();
-		templateList.add(template1);
-		templateList.add(template2);
-
-		List<TransactionBase> updatedTransactions = importService.updateAccountsForItems(templateList, account1.getID(), destinationAccount);
-		assertThat(updatedTransactions).hasSize(1);
-		assertThat(updatedTransactions.get(0).getAccount().getID()).isEqualTo(5);
-	}
-
-	@Test
-	void test_updateTransferAccountsForTemplates()
-	{
-		Account account1 = new Account("Account_1", AccountType.CUSTOM);
-		account1.setID(2);
-		Account transferAccount = new Account("TransferAccount", AccountType.CUSTOM);
-		transferAccount.setID(3);
-
-		Account destinationAccount = new Account("DestinationAccount_1", AccountType.CUSTOM);
-		destinationAccount.setID(5);
-
-		Template template1 = new Template();
-		template1.setAccount(account1);
-		template1.setTemplateName("ShouldGoInAccount_1");
-		template1.setAmount(200);
-		template1.setName("Test");
-		template1.setTags(new ArrayList<>());
-
-		Template template2 = new Template();
-		template2.setAccount(account1);
-		template2.setTemplateName("ImPartOfAccount_2");
-		template2.setAmount(-525);
-		template2.setName("Test_2");
-		template2.setTransferAccount(transferAccount);
-		template2.setTags(new ArrayList<>());
-
-		List<TransactionBase> templateList = new ArrayList<>();
-		templateList.add(template1);
-		templateList.add(template2);
-
-		List<TransactionBase> updatedTemplates = importService.updateTransferAccountsForItems(templateList, transferAccount.getID(), destinationAccount);
-		assertThat(updatedTemplates).hasSize(1);
-		assertThat(updatedTemplates.get(0).getTransferAccount().getID()).isEqualTo(5);
-	}
 
 	@Test
 	void test_updateTagsForItem_ExistingTag()
@@ -396,6 +163,11 @@ class ImportServiceTest
 		List<Tag> tags = new ArrayList<>();
 		tags.add(tag1);
 
+		// categories
+		Category category1 = new Category("Category1", "#ff0000", CategoryType.CUSTOM);
+		Category category2 = new Category("Category2", "#00ffff", CategoryType.CUSTOM);
+		List<Category> categories = List.of(category1, category2);
+
 		// transactions
 		List<Transaction> transactions = new ArrayList<>();
 		Transaction transaction1 = new Transaction();
@@ -404,15 +176,26 @@ class ImportServiceTest
 		transaction1.setAmount(200);
 		transaction1.setDate(LocalDate.of(2018, 10, 3));
 		transaction1.setTags(tags);
+		transaction1.setCategory(category1);
 		transactions.add(transaction1);
 
 		Transaction transaction2 = new Transaction();
-		transaction2.setAccount(sourceAccount2);
-		transaction2.setName("ImPartOfAccount_2");
-		transaction2.setAmount(-525);
+		transaction2.setAccount(sourceAccount1);
+		transaction2.setName("ShouldGoInAccount_1_Too");
+		transaction2.setAmount(100);
 		transaction2.setDate(LocalDate.of(2018, 10, 3));
-		transaction2.setTags(new ArrayList<>());
+		transaction2.setTags(tags);
+		transaction2.setCategory(category1);
 		transactions.add(transaction2);
+
+		Transaction transaction3 = new Transaction();
+		transaction3.setAccount(sourceAccount2);
+		transaction3.setName("ImPartOfAccount_2");
+		transaction3.setAmount(-525);
+		transaction3.setDate(LocalDate.of(2018, 10, 3));
+		transaction3.setTags(new ArrayList<>());
+		transaction3.setCategory(category2);
+		transactions.add(transaction3);
 
 		// template group
 		TemplateGroup templateGroup = new TemplateGroup(1, "My Template Group", TemplateGroupType.CUSTOM);
@@ -423,6 +206,7 @@ class ImportServiceTest
 		template1.setAmount(1500);
 		template1.setAccount(sourceAccount1);
 		template1.setName("Transaction from Template");
+		template1.setCategory(category1);
 		List<Tag> tags2 = new ArrayList<>();
 		tags2.add(tag1);
 		template1.setTags(tags2);
@@ -434,11 +218,18 @@ class ImportServiceTest
 		Template template2 = new Template();
 		template2.setTemplateName("MyTemplate2");
 		template2.setTransferAccount(sourceAccount2);
+		template2.setCategory(category1);
 		template2.setTags(new ArrayList<>());
+
+		Template template3 = new Template();
+		template3.setTemplateName("MyTemplate3");
+		template3.setTransferAccount(sourceAccount1);
+		template3.setTags(new ArrayList<>());
 
 		List<Template> templates = new ArrayList<>();
 		templates.add(template1);
 		templates.add(template2);
+		templates.add(template3);
 
 		// charts
 		Chart chart = new Chart();
@@ -449,7 +240,7 @@ class ImportServiceTest
 		chart.setScript("/* This list will be dynamically filled with all the transactions between\r\n* the start and and date you select on the \"Show Chart\" page\r\n* and filtered according to your specified filter.\r\n* An example entry for this list and tutorial about how to create custom charts ca be found in the BudgetMaster wiki:\r\n* https://github.com/deadlocker8/BudgetMaster/wiki/How-to-create-custom-charts\r\n*/\r\nvar transactionData \u003d [];\r\n\r\n// Prepare your chart settings here (mandatory)\r\nvar plotlyData \u003d [{\r\n    x: [],\r\n    y: [],\r\n    type: \u0027bar\u0027\r\n}];\r\n\r\n// Add your Plotly layout settings here (optional)\r\nvar plotlyLayout \u003d {};\r\n\r\n// Add your Plotly configuration settings here (optional)\r\nvar plotlyConfig \u003d {\r\n    showSendToCloud: false,\r\n    displaylogo: false,\r\n    showLink: false,\r\n    responsive: true\r\n};\r\n\r\n// Don\u0027t touch this line\r\nPlotly.newPlot(\"containerID\", plotlyData, plotlyLayout, plotlyConfig);\r\n");
 
 		// database
-		InternalDatabase database = new InternalDatabase(new ArrayList<>(), accounts, transactions, List.of(templateGroup), templates, List.of(chart), List.of(), List.of(icon1));
+		InternalDatabase database = new InternalDatabase(categories, accounts, transactions, List.of(templateGroup), templates, List.of(chart), List.of(), List.of(icon1));
 
 		// account matches
 		AccountMatch match1 = new AccountMatch(sourceAccount1);
@@ -465,6 +256,11 @@ class ImportServiceTest
 		AccountMatchList accountMatchList = new AccountMatchList(matches);
 
 		// expected
+		Category expectedCategory1 = new Category("Category1", "#ff0000", CategoryType.CUSTOM);
+		expectedCategory1.setID(1);
+		Category expectedCategory2 = new Category("Category2", "#00ffff", CategoryType.CUSTOM);
+		expectedCategory2.setID(2);
+
 		Transaction expectedTransaction1 = new Transaction();
 		expectedTransaction1.setAccount(destAccount1);
 		expectedTransaction1.setName("ShouldGoInAccount_1");
@@ -473,11 +269,18 @@ class ImportServiceTest
 		expectedTransaction1.setTags(tags);
 
 		Transaction expectedTransaction2 = new Transaction();
-		expectedTransaction2.setAccount(destAccount2);
-		expectedTransaction2.setName("ImPartOfAccount_2");
-		expectedTransaction2.setAmount(-525);
+		expectedTransaction2.setAccount(destAccount1);
+		expectedTransaction2.setName("ShouldGoInAccount_1_Too");
+		expectedTransaction2.setAmount(100);
 		expectedTransaction2.setDate(LocalDate.of(2018, 10, 3));
-		expectedTransaction2.setTags(new ArrayList<>());
+		expectedTransaction2.setTags(tags);
+
+		Transaction expectedTransaction3 = new Transaction();
+		expectedTransaction3.setAccount(destAccount2);
+		expectedTransaction3.setName("ImPartOfAccount_2");
+		expectedTransaction3.setAmount(-525);
+		expectedTransaction3.setDate(LocalDate.of(2018, 10, 3));
+		expectedTransaction3.setTags(new ArrayList<>());
 
 		Template expectedTemplate1 = new Template();
 		expectedTemplate1.setTemplateName("MyTemplate");
@@ -497,9 +300,17 @@ class ImportServiceTest
 		expectedTemplate2.setTransferAccount(destAccount2);
 		expectedTemplate2.setTags(new ArrayList<>());
 
+		Template expectedTemplate3 = new Template();
+		expectedTemplate3.setTemplateName("MyTemplate3");
+		expectedTemplate3.setTransferAccount(destAccount1);
+		expectedTemplate3.setTags(new ArrayList<>());
+
 		TemplateGroup expectedTemplateGroup = new TemplateGroup(5, "My Template Group", TemplateGroupType.CUSTOM);
 
 		// act
+		Mockito.when(categoryRepository.save(category1)).thenReturn(expectedCategory1);
+		Mockito.when(categoryRepository.save(category2)).thenReturn(expectedCategory2);
+
 		Mockito.when(tagRepository.save(Mockito.any(Tag.class))).thenReturn(tag1);
 
 		Mockito.when(chartService.getHighestUsedID()).thenReturn(8);
@@ -519,145 +330,22 @@ class ImportServiceTest
 		InternalDatabase databaseResult = importService.getDatabase();
 
 		// assert
-		assertThat(databaseResult.getTransactions())
+		assertThat(databaseResult.getCategories())
 				.hasSize(2)
-				.contains(expectedTransaction1, expectedTransaction2);
+				.contains(expectedCategory1, expectedCategory2);
+		assertThat(databaseResult.getTransactions())
+				.hasSize(3)
+				.contains(expectedTransaction1, expectedTransaction2, expectedTransaction3);
 		assertThat(databaseResult.getTemplateGroups())
 				.hasSize(1)
 				.contains(templateGroup);
 		assertThat(databaseResult.getTemplates())
-				.hasSize(2)
-				.contains(expectedTemplate1, expectedTemplate2);
+				.hasSize(3)
+				.contains(expectedTemplate1, expectedTemplate2, expectedTemplate3);
 		assertThat(databaseResult.getCharts())
 				.hasSize(1)
 				.contains(chart);
 		assertThat(importService.getCollectedErrorMessages()).isEmpty();
-	}
-
-	@Test
-	void test_chartId()
-	{
-		Chart chart = new Chart();
-		chart.setID(9);
-		chart.setName("The best chart");
-		chart.setType(ChartType.CUSTOM);
-		chart.setVersion(7);
-		chart.setScript("/* This list will be dynamically filled with all the transactions between\r\n* the start and and date you select on the \"Show Chart\" page\r\n* and filtered according to your specified filter.\r\n* An example entry for this list and tutorial about how to create custom charts ca be found in the BudgetMaster wiki:\r\n* https://github.com/deadlocker8/BudgetMaster/wiki/How-to-create-custom-charts\r\n*/\r\nvar transactionData \u003d [];\r\n\r\n// Prepare your chart settings here (mandatory)\r\nvar plotlyData \u003d [{\r\n    x: [],\r\n    y: [],\r\n    type: \u0027bar\u0027\r\n}];\r\n\r\n// Add your Plotly layout settings here (optional)\r\nvar plotlyLayout \u003d {};\r\n\r\n// Add your Plotly configuration settings here (optional)\r\nvar plotlyConfig \u003d {\r\n    showSendToCloud: false,\r\n    displaylogo: false,\r\n    showLink: false,\r\n    responsive: true\r\n};\r\n\r\n// Don\u0027t touch this line\r\nPlotly.newPlot(\"containerID\", plotlyData, plotlyLayout, plotlyConfig);\r\n");
-
-		// database
-		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(chart), List.of(), List.of());
-
-		// act
-		int highestUsedID = 22;
-		Mockito.when(chartService.getHighestUsedID()).thenReturn(highestUsedID);
-		final ChartRepository chartRepositoryMock = Mockito.mock(ChartRepository.class);
-		Mockito.when(chartService.getRepository()).thenReturn(chartRepositoryMock);
-
-		importService.importDatabase(database, new AccountMatchList(List.of()), true, true, true);
-		InternalDatabase databaseResult = importService.getDatabase();
-
-		// assert
-		assertThat(databaseResult.getCharts().get(0))
-				.hasFieldOrPropertyWithValue("ID", highestUsedID + 1);
-	}
-
-	@Test
-	void test_updateImagesForIcons()
-	{
-		Image image1 = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
-		image1.setID(3);
-
-		Image image2 = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.JPG);
-		image2.setID(4);
-
-		Icon icon1 = new Icon(image1);
-		Icon icon2 = new Icon(image2);
-
-		final List<Icon> iconList = List.of(icon1, icon2);
-
-		List<Icon> updatedIcons = importService.updateImagesForIcons(iconList, 3, 5);
-		assertThat(updatedIcons).hasSize(1);
-		final Image icon = updatedIcons.get(0).getImage();
-		assertThat(icon.getBase64EncodedImage()).isEqualTo("data:image/png;base64,");
-		assertThat(icon.getID()).isEqualTo(5);
-	}
-
-	@Test
-	void test_importImages_notExisting()
-	{
-		Image image = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
-		image.setID(3);
-
-		Image newImage = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
-		newImage.setID(5);
-
-		final ImageRepository imageRepositoryMock = Mockito.mock(ImageRepository.class);
-		Mockito.when(imageService.getRepository()).thenReturn(imageRepositoryMock);
-		Mockito.when(imageRepositoryMock.save(Mockito.any())).thenReturn(newImage);
-
-		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(), List.of(image), List.of());
-		importService.importDatabase(database, new AccountMatchList(List.of()), true, true, true);
-
-		Image expectedImage = new Image(image.getImage(), image.getFileName(), image.getFileExtension());
-		Mockito.verify(imageRepositoryMock, Mockito.atLeast(1)).save(expectedImage);
-	}
-
-	@Test
-	void test_importImages_alreadyExisting()
-	{
-		Image image = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
-		image.setID(3);
-
-		Image newImage = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
-		newImage.setID(5);
-
-		final ImageRepository imageRepositoryMock = Mockito.mock(ImageRepository.class);
-		Mockito.when(imageService.getRepository()).thenReturn(imageRepositoryMock);
-		Mockito.when(imageRepositoryMock.save(Mockito.any())).thenReturn(newImage);
-
-		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(), List.of(image), List.of());
-		importService.importDatabase(database, new AccountMatchList(List.of()), true, true, true);
-
-		Image expectedImage = new Image(image.getImage(), image.getFileName(), image.getFileExtension());
-		Mockito.verify(imageRepositoryMock, Mockito.atLeast(1)).save(expectedImage);
-	}
-
-	@Test
-	void test_importAccounts_icon()
-	{
-		Image image = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
-		image.setID(3);
-		Icon icon = new Icon(image);
-		icon.setID(15);
-
-		Account accountSource = new Account("my account with icon", AccountType.CUSTOM, icon);
-		accountSource.setID(1);
-		Account accountDestination = new Account("destination", AccountType.CUSTOM);
-		accountDestination.setID(15);
-
-		InternalDatabase database = new InternalDatabase(List.of(), List.of(accountSource), List.of(), List.of(), List.of(), List.of(), List.of(image), List.of(icon));
-		AccountMatch accountMatch = new AccountMatch(accountSource);
-		accountMatch.setAccountDestination(accountDestination);
-
-		Icon expectedIcon = new Icon(image);
-		expectedIcon.setID(1);
-
-		Account expectedAccount = new Account("destination", AccountType.CUSTOM, expectedIcon);
-		expectedAccount.setID(15);
-		Mockito.when(accountRepository.save(Mockito.any())).thenReturn(expectedAccount);
-		Mockito.when(accountRepository.findById(15)).thenReturn(Optional.of(accountDestination));
-
-		ImageRepository imageRepositoryMock = Mockito.mock(ImageRepository.class);
-		Mockito.when(imageService.getRepository()).thenReturn(imageRepositoryMock);
-		Mockito.when(imageRepositoryMock.save(Mockito.any())).thenReturn(image);
-
-		IconRepository iconRepositoryMock = Mockito.mock(IconRepository.class);
-		Mockito.when(iconService.getRepository()).thenReturn(iconRepositoryMock);
-		Mockito.when(iconRepositoryMock.save(Mockito.any())).thenReturn(expectedIcon);
-
-		importService.importDatabase(database, new AccountMatchList(List.of(accountMatch)), true, true, true);
-
-		Mockito.verify(accountRepository, Mockito.atLeast(1)).save(expectedAccount);
 	}
 
 	@Test
@@ -710,7 +398,7 @@ class ImportServiceTest
 	}
 
 	@Test
-	void test_skipCarts()
+	void test_skipCharts()
 	{
 		Chart chart = new Chart();
 		chart.setID(9);
@@ -730,59 +418,6 @@ class ImportServiceTest
 
 		// assert
 		Mockito.verify(chartRepositoryMock, Mockito.never()).save(Mockito.any());
-	}
-
-	@Test
-	void test_errorWhileImportingCategory_shouldBeCollected()
-	{
-		Category category1 = new Category("Category1", "#ff0000", CategoryType.CUSTOM);
-		category1.setID(3);
-
-		Category category2 = new Category("Category2", "#ff0000", CategoryType.CUSTOM);
-		category2.setID(4);
-
-		// raise exception
-		Mockito.when(categoryRepository.findByNameAndColorAndType(Mockito.eq("Category1"), Mockito.any(), Mockito.any())).thenThrow(new NullPointerException());
-		Mockito.when(categoryRepository.findByNameAndColorAndType(Mockito.eq("Category2"), Mockito.any(), Mockito.any())).thenReturn(category2);
-
-		InternalDatabase database = new InternalDatabase(List.of(category1, category2), List.of(), List.of(), List.of(), List.of(), List.of(), List.of(), List.of());
-		final List<ImportResultItem> importResultItems = importService.importDatabase(database, new AccountMatchList(List.of()), false, false, false);
-
-		assertThat(importResultItems).hasSize(7)
-				.contains(new ImportResultItem(EntityType.CATEGORY, 1, 2));
-		assertThat(importService.getCollectedErrorMessages()).hasSize(1)
-				.contains("Error while importing category with name \"Category1\": java.lang.NullPointerException (null)");
-	}
-
-	@Test
-	void test_updateIconsForAccounts()
-	{
-		Image image1 = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
-		image1.setID(3);
-
-		Icon icon1 = new Icon(image1);
-		icon1.setID(3);
-
-		Icon icon2 = new Icon("fas fa-icons");
-		icon2.setID(4);
-
-		Account account1 = new Account("account with image icon", AccountType.CUSTOM, icon1);
-		Account account2 = new Account("account with built-in icon", AccountType.CUSTOM, icon2);
-		List<Account> accounts = List.of(account1, account2);
-
-		List<Iconizable> updatedAccounts = importService.updateIconsForItems(accounts, 3, 5);
-		assertThat(updatedAccounts).hasSize(1);
-		assertThat(updatedAccounts.get(0).getIconReference())
-				.hasFieldOrPropertyWithValue("ID", 5)
-				.hasFieldOrPropertyWithValue("image", image1)
-				.hasFieldOrPropertyWithValue("builtinIdentifier", null);
-
-		updatedAccounts = importService.updateIconsForItems(accounts, 4, 6);
-		assertThat(updatedAccounts).hasSize(1);
-		assertThat(updatedAccounts.get(0).getIconReference())
-				.hasFieldOrPropertyWithValue("ID", 6)
-				.hasFieldOrPropertyWithValue("image", null)
-				.hasFieldOrPropertyWithValue("builtinIdentifier", "fas fa-icons");
 	}
 
 	@Test

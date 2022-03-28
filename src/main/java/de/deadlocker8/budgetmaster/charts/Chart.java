@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.charts;
 
 import com.google.gson.annotations.Expose;
+import de.deadlocker8.budgetmaster.utils.ProvidesID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +11,7 @@ import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
-public class Chart
+public class Chart implements ProvidesID
 {
 	@Id
 	@Expose

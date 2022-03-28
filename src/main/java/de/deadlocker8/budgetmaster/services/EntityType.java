@@ -4,20 +4,21 @@ import de.deadlocker8.budgetmaster.utils.LocalizedEnum;
 
 public enum EntityType implements LocalizedEnum
 {
-	HOME("home", "background-blue", ImportRequired.NONE),
-	ACCOUNT("account_balance", "background-red", ImportRequired.REQUIRED),
-	TRANSACTION("list", "background-blue-baby", ImportRequired.REQUIRED),
-	TEMPLATE("file_copy", "background-orange-dark", ImportRequired.OPTIONAL),
-	CHART("show_chart", "background-purple", ImportRequired.OPTIONAL),
-	REPORT("description", "background-green", ImportRequired.NONE),
-	CATEGORY("label", "background-orange", ImportRequired.REQUIRED),
-	TAGS("local_offer", "background-grey", ImportRequired.NONE),
-	STATISTICS("insert_chart", "background-grey", ImportRequired.NONE),
-	SETTINGS("settings", "background-red", ImportRequired.NONE),
-	IMAGE("image", "background-grey", ImportRequired.REQUIRED),
-	HOTKEYS("keyboard", "background-grey", ImportRequired.NONE),
-	ABOUT("info", "background-grey", ImportRequired.NONE),
-	TEMPLATE_GROUP("folder", "background-orange-dark", ImportRequired.OPTIONAL);
+	HOME("home", "background-blue", ImportRequired.NONE, "categories", "category"),
+	ACCOUNT("account_balance", "background-red", ImportRequired.REQUIRED, "accounts", "account"),
+	TRANSACTION("list", "background-blue-baby", ImportRequired.REQUIRED, "transactions", "transaction"),
+	TEMPLATE("file_copy", "background-orange-dark", ImportRequired.OPTIONAL, "templates", "template"),
+	CHART("show_chart", "background-purple", ImportRequired.OPTIONAL, "charts", "chart"),
+	REPORT("description", "background-green", ImportRequired.NONE, null, null),
+	CATEGORY("label", "background-orange", ImportRequired.REQUIRED, "categories", "category"),
+	TAGS("local_offer", "background-grey", ImportRequired.NONE, null, null),
+	STATISTICS("insert_chart", "background-grey", ImportRequired.NONE, null, null),
+	SETTINGS("settings", "background-red", ImportRequired.NONE, null, null),
+	IMAGE("image", "background-grey", ImportRequired.REQUIRED, "images", "image"),
+	HOTKEYS("keyboard", "background-grey", ImportRequired.NONE, null, null),
+	ABOUT("info", "background-grey", ImportRequired.NONE, null, null),
+	TEMPLATE_GROUP("folder", "background-orange-dark", ImportRequired.OPTIONAL, "template groups", "template group"),
+	ICON("icon", "background-grey", ImportRequired.NONE, "icons", "icon");
 
 
 	public enum ImportRequired
@@ -30,12 +31,16 @@ public enum EntityType implements LocalizedEnum
 	private final String icon;
 	private final String color;
 	private final ImportRequired importRequired;
+	private final String allItemsName;
+	private final String singleItemName;
 
-	EntityType(String icon, String color, ImportRequired importRequired)
+	EntityType(String icon, String color, ImportRequired importRequired, String allItemsName, String singleItemName)
 	{
 		this.icon = icon;
 		this.color = color;
 		this.importRequired = importRequired;
+		this.allItemsName = allItemsName;
+		this.singleItemName = singleItemName;
 	}
 
 	public String getIcon()
@@ -51,6 +56,16 @@ public enum EntityType implements LocalizedEnum
 	public ImportRequired getImportRequired()
 	{
 		return importRequired;
+	}
+
+	public String getAllItemsName()
+	{
+		return allItemsName;
+	}
+
+	public String getSingleItemName()
+	{
+		return singleItemName;
 	}
 
 	public String getColorAsTextColor()
