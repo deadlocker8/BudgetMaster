@@ -8,7 +8,7 @@ public class ImageImporter extends ItemImporter<Image>
 {
 	public ImageImporter(ImageRepository imageRepository)
 	{
-		super(imageRepository, EntityType.IMAGE, true);
+		super(imageRepository, EntityType.IMAGE);
 	}
 
 	@Override

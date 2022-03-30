@@ -8,7 +8,7 @@ public class TagImporter extends ItemImporter<Tag>
 {
 	public TagImporter(TagRepository tagRepository)
 	{
-		super(tagRepository, EntityType.TAGS, false);
+		super(tagRepository, EntityType.TAGS);
 	}
 
 	@Override

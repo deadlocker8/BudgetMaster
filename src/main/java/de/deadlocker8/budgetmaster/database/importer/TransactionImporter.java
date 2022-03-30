@@ -16,7 +16,7 @@ public class TransactionImporter extends ItemImporter<Transaction>
 
 	public TransactionImporter(TransactionRepository transactionRepository, TagImporter tagImporter)
 	{
-		super(transactionRepository, EntityType.TRANSACTION, true);
+		super(transactionRepository, EntityType.TRANSACTION);
 		this.tagImporter = tagImporter;
 	}
 

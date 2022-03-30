@@ -17,13 +17,11 @@ public abstract class ItemImporter<T extends ProvidesID>
 
 	protected final JpaRepository<T, Integer> repository;
 	protected final EntityType entityType;
-	protected final boolean alwaysCreateNewInstance;
 
-	protected ItemImporter(JpaRepository<T, Integer> repository, EntityType entityType, boolean alwaysCreateNewInstance)
+	protected ItemImporter(JpaRepository<T, Integer> repository, EntityType entityType)
 	{
 		this.repository = repository;
 		this.entityType = entityType;
-		this.alwaysCreateNewInstance = alwaysCreateNewInstance;
 	}
 
 	public ImportResultItem importItems(List<T> items)
@@ -41,12 +39,6 @@ public abstract class ItemImporter<T extends ProvidesID>
 			{
 				int oldID = item.getID();
 				int newID = importSingleItem(item);
-
-				if(oldID == newID && !alwaysCreateNewInstance)
-				{
-					numberOfImportedItems++;
-					continue;
-				}
 
 				item.setID(newID);
 				numberOfImportedItems++;

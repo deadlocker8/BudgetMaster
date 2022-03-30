@@ -8,7 +8,7 @@ public class IconImporter extends ItemImporter<Icon>
 {
 	public IconImporter(IconRepository iconRepository)
 	{
-		super(iconRepository, EntityType.ICON, true);
+		super(iconRepository, EntityType.ICON);
 	}
 
 	@Override

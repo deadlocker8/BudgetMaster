@@ -20,7 +20,7 @@ public class AccountImporter extends ItemImporter<Account>
 
 	public AccountImporter(AccountRepository accountRepository)
 	{
-		super(accountRepository, EntityType.ACCOUNT, false);
+		super(accountRepository, EntityType.ACCOUNT);
 	}
 
 	public ImportResultItem importItems(List<Account> accounts, AccountMatchList accountMatchList)

@@ -11,7 +11,7 @@ public class ChartImporter extends ItemImporter<Chart>
 
 	public ChartImporter(ChartService chartService)
 	{
-		super(chartService.getRepository(), EntityType.CHART, true);
+		super(chartService.getRepository(), EntityType.CHART);
 		this.chartService = chartService;
 	}
 

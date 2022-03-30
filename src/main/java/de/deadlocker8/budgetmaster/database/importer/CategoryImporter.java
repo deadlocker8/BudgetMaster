@@ -15,7 +15,7 @@ public class CategoryImporter extends ItemImporter<Category>
 
 	public CategoryImporter(CategoryRepository categoryRepository)
 	{
-		super(categoryRepository, EntityType.CATEGORY, false);
+		super(categoryRepository, EntityType.CATEGORY);
 	}
 
 	@Override
