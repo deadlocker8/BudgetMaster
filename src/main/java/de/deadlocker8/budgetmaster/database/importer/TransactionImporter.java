@@ -29,10 +29,11 @@ public class TransactionImporter extends ItemImporter<Transaction>
 		}
 
 		LOGGER.debug(MessageFormat.format("Importing transaction with name: {0}, date: {1}", transaction.getName(), transaction.getDate()));
+
 		tagImporter.importItems(transaction.getTags());
 		transaction.setID(null);
-		final Transaction newTransaction = repository.save(transaction);
 
+		final Transaction newTransaction = repository.save(transaction);
 		return newTransaction.getID();
 	}
 

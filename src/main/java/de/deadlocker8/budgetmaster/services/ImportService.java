@@ -101,7 +101,8 @@ public class ImportService
 
 		if(importTemplates)
 		{
-			importResultItems.add(importTemplates(importTemplateGroups));
+			final TemplateGroup defaultTemplateGroup = templateGroupRepository.findFirstByType(TemplateGroupType.DEFAULT);
+			importResultItems.add(new TemplateImporter(templateRepository, tagImporter, defaultTemplateGroup, !importTemplateGroups).importItems(database.getTemplates()));
 		}
 		else
 		{
@@ -227,42 +228,5 @@ public class ImportService
 		}
 
 		return updatedItems;
-	}
-
-	private ImportResultItem importTemplates(Boolean importTemplateGroups)
-	{
-		List<Template> templates = database.getTemplates();
-		LOGGER.debug(MessageFormat.format("Importing {0} templates...", templates.size()));
-
-		int numberOfImportedTemplates = 0;
-
-		for(int i = 0; i < templates.size(); i++)
-		{
-			Template template = templates.get(i);
-			try
-			{
-				LOGGER.debug(MessageFormat.format("Importing template {0}/{1} (templateName: {2})", i + 1, templates.size(), template.getTemplateName()));
-//				updateTagsForItem(template);
-				template.setID(null);
-
-				if(!importTemplateGroups || template.getTemplateGroup() == null)
-				{
-					template.setTemplateGroup(templateGroupRepository.findFirstByType(TemplateGroupType.DEFAULT));
-				}
-
-				templateRepository.save(template);
-
-				numberOfImportedTemplates++;
-			}
-			catch(Exception e)
-			{
-				final String errorMessage = MessageFormat.format("Error while importing template with name \"{0}\"", template.getTemplateName());
-				LOGGER.error(errorMessage, e);
-				collectedErrorMessages.add(formatErrorMessage(errorMessage, e));
-			}
-		}
-
-		LOGGER.debug(MessageFormat.format("Importing templates DONE ({0}/{1})", numberOfImportedTemplates, templates.size()));
-		return new ImportResultItem(EntityType.TEMPLATE, numberOfImportedTemplates, templates.size(), collectedErrorMessages);
 	}
 }
