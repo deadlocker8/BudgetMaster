@@ -185,11 +185,6 @@ class TemplateImporterTest
 		Icon icon = new Icon("fas fa-icons");
 		icon = iconRepository.save(icon);
 
-		final Tag tag1 = new Tag("0815");
-		tag1.setID(1);
-		final Tag tag2 = new Tag("Apple Pie");
-		tag2.setID(2);
-
 		final Template template = new Template();
 		template.setID(15);
 		template.setTemplateName("My awesome template");
@@ -201,7 +196,7 @@ class TemplateImporterTest
 		template.setTags(List.of());
 		template.setDescription("Lorem Ipsum");
 		template.setIconReference(icon);
-		template.setTags(List.of(tag1, tag2));
+		template.setTags(List.of( new Tag("0815"), new Tag("Apple Pie")));
 
 		final Template template2 = new Template();
 		template2.setID(16);
@@ -210,7 +205,7 @@ class TemplateImporterTest
 		template2.setTags(List.of());
 		template2.setDescription("Lorem Ipsum");
 		template2.setIconReference(icon);
-		template2.setTags(List.of(tag1));
+		template2.setTags(List.of( new Tag("0815")));
 
 		TemplateGroup defaultTemplateGroup = new TemplateGroup("Default group", TemplateGroupType.DEFAULT);
 		defaultTemplateGroup = templateGroupRepository.save(defaultTemplateGroup);

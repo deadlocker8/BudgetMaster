@@ -11,7 +11,7 @@ public enum EntityType implements LocalizedEnum
 	CHART("show_chart", "background-purple", ImportRequired.OPTIONAL, "charts", "chart"),
 	REPORT("description", "background-green", ImportRequired.NONE, null, null),
 	CATEGORY("label", "background-orange", ImportRequired.REQUIRED, "categories", "category"),
-	TAGS("local_offer", "background-grey", ImportRequired.NONE, null, null),
+	TAGS("local_offer", "background-grey", ImportRequired.NONE, "tags", "tag"),
 	STATISTICS("insert_chart", "background-grey", ImportRequired.NONE, null, null),
 	SETTINGS("settings", "background-red", ImportRequired.NONE, null, null),
 	IMAGE("image", "background-grey", ImportRequired.REQUIRED, "images", "image"),

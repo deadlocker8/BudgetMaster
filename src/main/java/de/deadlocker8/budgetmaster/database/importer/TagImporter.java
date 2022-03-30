@@ -26,7 +26,7 @@ public class TagImporter extends ItemImporter<Tag>
 			return newTag.getID();
 		}
 
-		return tag.getID();
+		return existingTag.getID();
 	}
 
 	@Override

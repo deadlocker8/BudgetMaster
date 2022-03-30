@@ -213,9 +213,7 @@ class TransactionImporterTest
 		transaction.setDescription("Lorem Ipsum");
 
 		final Tag tag1 = new Tag("0815");
-		tag1.setID(1);
 		final Tag tag2 = new Tag("Apple Pie");
-		tag2.setID(2);
 
 		transaction.setTags(List.of(tag1, tag2));
 
@@ -258,10 +256,6 @@ class TransactionImporterTest
 		Account account = new Account("Awesome Account", AccountType.CUSTOM);
 		account = accountRepository.save(account);
 
-		final Tag tag1 = new Tag("0815");
-		tag1.setID(1);
-		final Tag tag2 = new Tag("Apple Pie");
-		tag2.setID(2);
 
 		final Transaction transaction = new Transaction();
 		transaction.setID(15);
@@ -271,7 +265,7 @@ class TransactionImporterTest
 		transaction.setCategory(category);
 		transaction.setAccount(account);
 		transaction.setDate(LocalDate.of(2022, 3, 30));
-		transaction.setTags(List.of(tag1, tag2));
+		transaction.setTags(List.of(new Tag("0815"), new Tag("Apple Pie")));
 
 		final Transaction transaction2 = new Transaction();
 		transaction2.setID(16);
@@ -281,7 +275,7 @@ class TransactionImporterTest
 		transaction2.setCategory(category);
 		transaction2.setAccount(account);
 		transaction2.setDate(LocalDate.of(2022, 3, 30));
-		transaction2.setTags(List.of(tag1));
+		transaction2.setTags(List.of(new Tag("0815")));
 
 		final TagImporter tagImporter = new TagImporter(tagRepository);
 		final TransactionImporter importer = new TransactionImporter(transactionRepository, tagImporter);
