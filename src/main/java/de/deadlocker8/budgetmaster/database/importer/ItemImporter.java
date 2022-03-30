@@ -37,7 +37,6 @@ public abstract class ItemImporter<T extends ProvidesID>
 
 			try
 			{
-				int oldID = item.getID();
 				int newID = importSingleItem(item);
 
 				item.setID(newID);
