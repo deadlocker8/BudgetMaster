@@ -92,18 +92,4 @@ class CategoryImporterTest
 		assertThat(resultItem).isEqualTo(expected);
 		assertThat(category).hasFieldOrPropertyWithValue("ID", 3);
 	}
-
-	@Test
-	void test_importCategories_errorIsCollected()
-	{
-		final Category category = new Category("Category1", "#ff0000", CategoryType.CUSTOM);
-
-		final CategoryImporter importer = new CategoryImporter(categoryRepository);
-		final ImportResultItem resultItem = importer.importItems(List.of(category));
-
-		assertThat(resultItem.getNumberOfImportedItems())
-				.isZero();
-		assertThat(resultItem.getCollectedErrorMessages())
-				.hasSize(1);
-	}
 }
