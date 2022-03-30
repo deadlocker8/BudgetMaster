@@ -16,9 +16,6 @@ import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
 import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.IconRepository;
 import de.deadlocker8.budgetmaster.icon.IconService;
-import de.deadlocker8.budgetmaster.images.Image;
-import de.deadlocker8.budgetmaster.images.ImageFileExtension;
-import de.deadlocker8.budgetmaster.images.ImageRepository;
 import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.repeating.RepeatingTransactionUpdater;
 import de.deadlocker8.budgetmaster.services.ImportService;
@@ -80,64 +77,6 @@ class ImportServiceTest
 
 	@InjectMocks
 	private ImportService importService;
-
-
-	@Test
-	void test_updateTagsForItem_ExistingTag()
-	{
-		Account account1 = new Account("Account_1", AccountType.CUSTOM);
-		account1.setID(2);
-
-		Tag existingTag = new Tag("ExistingTag");
-		existingTag.setID(2);
-
-		Transaction transaction1 = new Transaction();
-		transaction1.setAccount(account1);
-		transaction1.setName("ShouldGoInAccount_1");
-		transaction1.setAmount(200);
-		transaction1.setDate(LocalDate.of(2018, 10, 3));
-		List<Tag> tags = new ArrayList<>();
-		tags.add(existingTag);
-		transaction1.setTags(tags);
-
-		Mockito.when(tagRepository.findByName(existingTag.getName())).thenReturn(existingTag);
-
-		importService.updateTagsForItem(transaction1);
-		assertThat(transaction1.getTags()).hasSize(1);
-		assertThat(transaction1.getTags().get(0))
-				.hasFieldOrPropertyWithValue("ID", 2)
-				.hasFieldOrPropertyWithValue("name", existingTag.getName());
-	}
-
-	@Test
-	void test_updateTagsForItem_NewTag()
-	{
-		Account account1 = new Account("Account_1", AccountType.CUSTOM);
-		account1.setID(2);
-
-		Tag newTag = new Tag("NewTag");
-		newTag.setID(5);
-
-		Transaction transaction1 = new Transaction();
-		transaction1.setAccount(account1);
-		transaction1.setName("ShouldGoInAccount_1");
-		transaction1.setAmount(200);
-		transaction1.setDate(LocalDate.of(2018, 10, 3));
-		List<Tag> tags = new ArrayList<>();
-		tags.add(newTag);
-		transaction1.setTags(tags);
-
-		Tag savedTag = new Tag("NewTag");
-		savedTag.setID(1);
-		Mockito.when(tagRepository.save(Mockito.any(Tag.class))).thenReturn(savedTag);
-		Mockito.when(tagRepository.findByName(newTag.getName())).thenReturn(null);
-
-		importService.updateTagsForItem(transaction1);
-		assertThat(transaction1.getTags()).hasSize(1);
-		assertThat(transaction1.getTags().get(0))
-				.hasFieldOrPropertyWithValue("ID", 1)
-				.hasFieldOrPropertyWithValue("name", newTag.getName());
-	}
 
 	@Test
 	void test_importFullDatabase()

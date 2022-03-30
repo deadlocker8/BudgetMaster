@@ -86,7 +86,9 @@ public class ImportService
 		new IconImporter(iconRepository).importItems(database.getIcons());
 		importResultItems.add(new CategoryImporter(categoryRepository).importItems(database.getCategories()));
 		importResultItems.add(new AccountImporter(accountRepository).importItems(database.getAccounts(), accountMatchList));
-		importResultItems.add(importTransactions());
+
+		final TagImporter tagImporter = new TagImporter(tagRepository);
+		importResultItems.add(new TransactionImporter(transactionRepository, tagImporter).importItems(database.getTransactions()));
 
 		if(importTemplateGroups)
 		{
@@ -135,56 +137,6 @@ public class ImportService
 	private String formatErrorMessage(String errorMessage, Exception e)
 	{
 		return MessageFormat.format("{0}: {1} ({2})", errorMessage, e.getClass().getName(), e.getMessage());
-	}
-
-	private ImportResultItem importTransactions()
-	{
-		List<Transaction> transactions = database.getTransactions();
-		LOGGER.debug(MessageFormat.format("Importing {0} transactions...", transactions.size()));
-
-		int numberOfImportedTransactions = 0;
-
-		for(int i = 0; i < transactions.size(); i++)
-		{
-			Transaction transaction = transactions.get(i);
-			try
-			{
-				LOGGER.debug(MessageFormat.format("Importing transaction {0}/{1} (name: {2}, date: {3})", i + 1, transactions.size(), transaction.getName(), transaction.getDate()));
-				updateTagsForItem(transaction);
-				transaction.setID(null);
-				transactionRepository.save(transaction);
-
-				numberOfImportedTransactions++;
-			}
-			catch(Exception e)
-			{
-				final String errorMessage = MessageFormat.format("Error while importing transaction with name \"{0}\" from {1}", transaction.getName(), transaction.getDate().format(DateTimeFormatter.ofPattern(DateFormatStyle.NORMAL.getKey())));
-				LOGGER.error(errorMessage, e);
-				collectedErrorMessages.add(formatErrorMessage(errorMessage, e));
-			}
-		}
-
-		LOGGER.debug(MessageFormat.format("Importing transactions DONE ({0}/{1})", numberOfImportedTransactions, transactions.size()));
-		return new ImportResultItem(EntityType.TRANSACTION, numberOfImportedTransactions, transactions.size(), collectedErrorMessages);
-	}
-
-	public void updateTagsForItem(TransactionBase item)
-	{
-		List<Tag> tags = item.getTags();
-		for(int i = 0; i < tags.size(); i++)
-		{
-			Tag currentTag = tags.get(i);
-			Tag existingTag = tagRepository.findByName(currentTag.getName());
-			if(existingTag == null)
-			{
-				final Tag newTag = tagRepository.save(new Tag(currentTag.getName()));
-				tags.set(i, newTag);
-			}
-			else
-			{
-				tags.set(i, existingTag);
-			}
-		}
 	}
 
 	private ImportResultItem importTemplateGroups()
@@ -290,7 +242,7 @@ public class ImportService
 			try
 			{
 				LOGGER.debug(MessageFormat.format("Importing template {0}/{1} (templateName: {2})", i + 1, templates.size(), template.getTemplateName()));
-				updateTagsForItem(template);
+//				updateTagsForItem(template);
 				template.setID(null);
 
 				if(!importTemplateGroups || template.getTemplateGroup() == null)

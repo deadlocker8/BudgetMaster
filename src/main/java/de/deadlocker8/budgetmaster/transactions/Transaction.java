@@ -8,6 +8,7 @@ import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.utils.DateHelper;
+import de.deadlocker8.budgetmaster.utils.ProvidesID;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Transaction implements TransactionBase
+public class Transaction implements TransactionBase, ProvidesID
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
