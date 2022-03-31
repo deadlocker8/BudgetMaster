@@ -235,7 +235,7 @@ class DatabaseExportTest
 
 		// templates
 		Template template1 = new Template();
-		template1.setTemplateName("MyTemplate");
+		template1.setTemplateName("MyTemplate with utf8 üüü");
 		template1.setAmount(1500);
 		template1.setIsExpenditure(false);
 		template1.setAccount(account1);
