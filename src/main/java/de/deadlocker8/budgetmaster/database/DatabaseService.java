@@ -36,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -180,7 +181,7 @@ public class DatabaseService
 	{
 		final BackupDatabase database = getDatabaseForJsonSerialization();
 
-		try(Writer writer = new FileWriter(backupPath.toString()))
+		try(Writer writer = new FileWriter(backupPath.toString(), StandardCharsets.UTF_8))
 		{
 			LOGGER.info("Backup database to: {}", backupPath);
 			DatabaseService.GSON.toJson(database, writer);
