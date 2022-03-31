@@ -432,9 +432,23 @@ class TransactionSpecificationsTest
 		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, endDate, null, true, true, false, null, List.of(), List.of(), null);
 
 		List<Transaction> results = transactionRepository.findAll(spec);
-		assertThat(results).hasSize(3)
+		assertThat(results).hasSize(2)
 				.contains(transaction1)
+				.contains(repeatingTransaction);
+	}
+
+	@Test
+	void getFromAllAccountsExceptHidden()
+	{
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, LocalDate.now(), null, true, true, true, null, List.of(), List.of(), null);
+
+		List<Transaction> results = transactionRepository.findAll(spec);
+		assertThat(results).hasSize(6)
+				.contains(transaction1)
+				.contains(transaction2)
+				.contains(transaction3)
 				.contains(repeatingTransaction)
-				.contains(transactionInHiddenAccount);
+				.contains(transferTransaction)
+				.contains(transferTransactionWrongAccount);
 	}
 }

@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.transactions;
 
 import de.deadlocker8.budgetmaster.accounts.Account;
+import de.deadlocker8.budgetmaster.accounts.AccountState;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.Tag_;
 import org.springframework.data.jpa.domain.Specification;
@@ -125,7 +126,12 @@ public class TransactionSpecifications
 
 			final Predicate predicatesCombined = combinePredicates(predicates, builder);
 			Predicate generalPredicates = builder.and(dateConstraint, predicatesCombined);
-			if(account != null)
+			if(account == null)
+			{
+				Predicate accountPredicate = transaction.get(Transaction_.account).get("accountState").in(List.of(AccountState.FULL_ACCESS, AccountState.READ_ONLY));
+				generalPredicates = builder.and(generalPredicates, accountPredicate);
+			}
+			else
 			{
 				Predicate accountPredicate = builder.equal(transaction.get(Transaction_.account), account);
 				generalPredicates = builder.and(generalPredicates, accountPredicate);
