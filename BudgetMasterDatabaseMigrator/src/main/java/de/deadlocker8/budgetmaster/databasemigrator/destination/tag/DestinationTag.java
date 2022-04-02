@@ -4,7 +4,9 @@ package de.deadlocker8.budgetmaster.databasemigrator.destination.tag;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.TableNames;
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = TableNames.TAG)
@@ -17,7 +19,7 @@ import javax.persistence.*;
 public class DestinationTag
 {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+
 	private int ID;
 
 	private String name;

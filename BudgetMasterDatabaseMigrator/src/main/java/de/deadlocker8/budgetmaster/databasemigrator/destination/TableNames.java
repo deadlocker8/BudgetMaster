@@ -1,7 +1,5 @@
 package de.deadlocker8.budgetmaster.databasemigrator.destination;
 
-import javax.persistence.Table;
-
 public class TableNames
 {
 	private TableNames()

@@ -34,7 +34,7 @@ class MigrateRepeatingModifierMonthsTest extends MigratorTestBase
 		@Value("classpath:transactions.mv.db")
 		private Resource databaseResource;
 
-		@Bean
+		@Bean(name = "primaryDataSource")
 		@Primary
 		public DataSource dataSource() throws IOException
 		{

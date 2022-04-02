@@ -4,7 +4,10 @@ package de.deadlocker8.budgetmaster.databasemigrator.destination.hint;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.TableNames;
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = TableNames.HINT)
@@ -17,7 +20,7 @@ import javax.persistence.*;
 public class DestinationHint
 {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+
 	private int ID;
 
 	@Column(name = "localization_key")

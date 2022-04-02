@@ -3,7 +3,10 @@ package de.deadlocker8.budgetmaster.databasemigrator.destination.icon;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.TableNames;
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = TableNames.ICON)
@@ -16,7 +19,7 @@ import javax.persistence.*;
 public class DestinationIcon
 {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+
 	private Integer ID;
 
 	@Column(name = "image_id")

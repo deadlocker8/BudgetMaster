@@ -34,7 +34,7 @@ class MigrateSettingsTest extends MigratorTestBase
 		@Value("classpath:default_database_after_first_start.mv.db")
 		private Resource databaseResource;
 
-		@Bean
+		@Bean(name = "primaryDataSource")
 		@Primary
 		public DataSource dataSource() throws IOException
 		{
@@ -50,6 +50,8 @@ class MigrateSettingsTest extends MigratorTestBase
 	@Test
 	void test_stepMigrateSettings()
 	{
+		assertThat(settingsRepository.findAll()).isEmpty();
+
 		final JobExecution jobExecution = jobLauncherTestUtils.launchStep(StepNames.SETTINGS, DEFAULT_JOB_PARAMETERS);
 		final List<StepExecution> stepExecutions = new ArrayList<>(jobExecution.getStepExecutions());
 
@@ -60,7 +62,7 @@ class MigrateSettingsTest extends MigratorTestBase
 		assertThat(stepExecution.getReadCount()).isEqualTo(1);
 		assertThat(stepExecution.getCommitCount()).isEqualTo(2);
 
-		final DestinationSettings settings = new DestinationSettings(1, "€", true, 0, false, true, true, true, null, 10, 0, 1, 0, 3, "", "", "", "", 0, false);
+		final DestinationSettings settings = new DestinationSettings(0, "€", false, 1, false, true, true, true, "2022-03-15", 10, 0, 1, 0, 3, "", "", "", "", 35, false);
 
 		final List<DestinationSettings> settingsItems = settingsRepository.findAll();
 		assertThat(settingsItems)

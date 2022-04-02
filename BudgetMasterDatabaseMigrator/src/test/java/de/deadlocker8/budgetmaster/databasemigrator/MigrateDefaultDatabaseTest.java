@@ -31,7 +31,7 @@ class MigrateDefaultDatabaseTest extends MigratorTestBase
 		@Value("classpath:default_database_after_first_start.mv.db")
 		private Resource databaseResource;
 
-		@Bean
+		@Bean(name = "primaryDataSource")
 		@Primary
 		public DataSource dataSource() throws IOException
 		{

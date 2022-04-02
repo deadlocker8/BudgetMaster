@@ -34,7 +34,7 @@ class MigrateCategoriesTest extends MigratorTestBase
 		@Value("classpath:categories.mv.db")
 		private Resource databaseResource;
 
-		@Bean
+		@Bean(name = "primaryDataSource")
 		@Primary
 		public DataSource dataSource() throws IOException
 		{

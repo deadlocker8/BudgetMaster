@@ -4,7 +4,9 @@ package de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.end;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.TableNames;
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = TableNames.REPEATING_END_NEVER)
@@ -17,6 +19,6 @@ import javax.persistence.*;
 public class DestinationRepeatingEndNever
 {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+
 	private Integer ID;
 }

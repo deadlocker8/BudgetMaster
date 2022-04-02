@@ -4,7 +4,10 @@ package de.deadlocker8.budgetmaster.databasemigrator.destination.repeating;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.TableNames;
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = TableNames.REPEATING_OPTION)
@@ -17,7 +20,6 @@ import javax.persistence.*;
 public class DestinationRepeatingOption
 {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer ID;
 
 	@Column(name = "start_date")

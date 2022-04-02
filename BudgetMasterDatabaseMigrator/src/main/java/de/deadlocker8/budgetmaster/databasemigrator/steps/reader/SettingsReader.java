@@ -53,7 +53,7 @@ public class SettingsReader extends BaseReader<DestinationSettings>
 		public DestinationSettings mapRow(ResultSet rs, int rowNum) throws SQLException
 		{
 			final DestinationSettings settings = new DestinationSettings();
-			settings.setID(1);
+			settings.setID(rs.getInt(DatabaseColumns.ID));
 			settings.setCurrency(rs.getString(DatabaseColumns.CURRENCY));
 			settings.setLanguage(rs.getInt(DatabaseColumns.LANGUAGE));
 			settings.setUseDarkTheme(rs.getBoolean(DatabaseColumns.USE_DARK_THEME));

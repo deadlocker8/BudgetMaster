@@ -34,7 +34,7 @@ class MigrateChartsTest extends MigratorTestBase
 		@Value("classpath:charts.mv.db")
 		private Resource databaseResource;
 
-		@Bean
+		@Bean(name = "primaryDataSource")
 		@Primary
 		public DataSource dataSource() throws IOException
 		{

@@ -33,7 +33,7 @@ class MigrateTagsTest extends MigratorTestBase
 		@Value("classpath:tags.mv.db")
 		private Resource databaseResource;
 
-		@Bean
+		@Bean(name = "primaryDataSource")
 		@Primary
 		public DataSource dataSource() throws IOException
 		{
@@ -111,11 +111,11 @@ class MigrateTagsTest extends MigratorTestBase
 
 		final DestinationTransactionTag tag1 = new DestinationTransactionTag(1, 1, 1);
 		final DestinationTransactionTag tag2 = new DestinationTransactionTag(2, 2,1);
-		final DestinationTransactionTag tag3 = new DestinationTransactionTag(2, 2,2);
+		final DestinationTransactionTag tag3 = new DestinationTransactionTag(3, 2,2);
 
 		final List<DestinationTransactionTag> tags = transactionTagRepository.findAll();
 		assertThat(tags)
-				.hasSize(23)
+				.hasSize(3)
 				.containsExactly(tag1, tag2, tag3);
 	}
 }

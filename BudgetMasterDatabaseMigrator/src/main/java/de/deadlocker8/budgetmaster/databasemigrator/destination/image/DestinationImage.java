@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class DestinationImage
 {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+
 	private Integer ID;
 
 	@Lob
