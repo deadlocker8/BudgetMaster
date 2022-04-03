@@ -134,7 +134,6 @@ public class Chart implements ProvidesID
 		return "Chart{" +
 				"ID=" + ID +
 				", name='" + name + '\'' +
-				", script='" + script + '\'' +
 				", type=" + type +
 				", version=" + version +
 				", displayType=" + displayType +
