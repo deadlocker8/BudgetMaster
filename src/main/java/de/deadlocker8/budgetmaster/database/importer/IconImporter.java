@@ -22,6 +22,7 @@ public class IconImporter extends ItemImporter<Icon>
 		final Icon iconToCreate = new Icon();
 		iconToCreate.setImage(icon.getImage());
 		iconToCreate.setBuiltinIdentifier(icon.getBuiltinIdentifier());
+		iconToCreate.setFontColor(icon.getFontColor());
 
 		final Icon savedIcon = repository.save(iconToCreate);
 
