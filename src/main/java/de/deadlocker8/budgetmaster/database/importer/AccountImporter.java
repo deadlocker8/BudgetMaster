@@ -50,7 +50,7 @@ public class AccountImporter extends ItemImporter<Account>
 					repository.save(destinationAccount);
 				}
 
-				sourceAccount.setID(destinationAccount.getID());
+				sourceAccount.updateFromOtherAccount(destinationAccount);
 				numberOfImportedItems++;
 			}
 			catch(Exception e)

@@ -47,14 +47,14 @@
             "iconReferenceID": 7
         },
         {
-            "ID": 3,
+            "ID": 6,
             "name": "Read-only account",
             "accountState": "READ_ONLY",
             "type": "CUSTOM",
             "iconReferenceID": 6
         },
         {
-            "ID": 4,
+            "ID": 8,
             "name": "Second Account",
             "accountState": "FULL_ACCESS",
             "type": "CUSTOM",
@@ -110,7 +110,7 @@
                     "name": "12"
                 }
             ],
-            "transferAccountID": 4
+            "transferAccountID": 8
         },
         {
             "amount": -200,
@@ -132,7 +132,7 @@
                     "times": 2
                 }
             },
-            "transferAccountID": 4
+            "transferAccountID": 8
         },
         {
             "amount": -2036,
@@ -187,7 +187,7 @@
                     "name": "12"
                 }
             ],
-            "transferAccountID": 4,
+            "transferAccountID": 8,
             "templateGroupID": 3
         },
         {
@@ -219,7 +219,8 @@
         },
         {
             "templateName": "Random template",
-            "isExpenditure": true,
+            "amount": 2000,
+            "isExpenditure": false,
             "categoryID": 1,
             "name": "",
             "description": "",
