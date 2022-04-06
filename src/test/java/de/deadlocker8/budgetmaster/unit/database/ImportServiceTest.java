@@ -28,10 +28,14 @@ import de.deadlocker8.budgetmaster.templategroup.TemplateGroupType;
 import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.templates.TemplateRepository;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
+import de.deadlocker8.budgetmaster.utils.Strings;
+import de.thecodelabs.utils.util.Localization;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +53,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = Main.class)
 @ActiveProfiles("test")
 @Transactional
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class ImportServiceTest
 {
 	@Autowired
@@ -61,12 +66,15 @@ class ImportServiceTest
 	private TagRepository tagRepository;
 
 	@Autowired
+	@SpyBean
 	private TemplateGroupRepository templateGroupRepository;
 
 	@Autowired
+	@SpyBean
 	private TemplateRepository templateRepository;
 
 	@Autowired
+	@SpyBean
 	private ChartService chartService;
 
 	@Autowired
@@ -268,11 +276,6 @@ class ImportServiceTest
 		templateRandom.setTags(List.of());
 		templateRandom.setTemplateGroup(templateGroup1);
 
-		assertThat(templateRepository.findAll().get(0)).isEqualTo(templateFull);
-		assertThat(templateRepository.findAll().get(1)).isEqualTo(templateWithTags);
-		assertThat(templateRepository.findAll().get(2)).isEqualTo(templateUngrouped);
-		assertThat(templateRepository.findAll().get(3)).isEqualTo(templateRandom);
-
 		assertThat(templateRepository.findAll())
 				.hasSize(4)
 				.containsExactlyInAnyOrder(templateFull, templateWithTags, templateUngrouped, templateRandom);
@@ -356,9 +359,15 @@ class ImportServiceTest
 		importService.importDatabase(database, new AccountMatchList(List.of()), false, true, true);
 
 		// assert
-		Mockito.verify(templateGroupRepository, Mockito.never()).save(Mockito.any());
+		final TemplateGroup defaultGroup = new TemplateGroup();
+		defaultGroup.setID(1);
+		defaultGroup.setName(Localization.getString(Strings.TEMPLATE_GROUP_DEFAULT));
+		defaultGroup.setType(TemplateGroupType.DEFAULT);
+
+		Mockito.verify(templateGroupRepository, Mockito.times(1)).save(defaultGroup);
 
 		Template expectedTemplate = new Template();
+		expectedTemplate.setID(1);
 		expectedTemplate.setTemplateName("myTemplate");
 		expectedTemplate.setTags(new ArrayList<>());
 		expectedTemplate.setTemplateGroup(templateGroupDefault);
