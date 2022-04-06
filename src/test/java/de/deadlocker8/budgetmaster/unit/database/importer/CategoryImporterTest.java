@@ -4,6 +4,8 @@ import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryRepository;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.database.importer.CategoryImporter;
+import de.deadlocker8.budgetmaster.icon.Icon;
+import de.deadlocker8.budgetmaster.icon.IconRepository;
 import de.deadlocker8.budgetmaster.services.EntityType;
 import de.deadlocker8.budgetmaster.services.ImportResultItem;
 import org.junit.jupiter.api.Test;
@@ -24,6 +26,9 @@ class CategoryImporterTest
 {
 	@Autowired
 	private CategoryRepository categoryRepository;
+
+	@Autowired
+	private IconRepository iconRepository;
 
 	@Test
 	void test_importCategories()
@@ -78,18 +83,48 @@ class CategoryImporterTest
 	@Test
 	void test_importCategories_skipExisting_custom()
 	{
-		final Category category = new Category("Category1", "#ff0000", CategoryType.CUSTOM);
-		category.setID(3);
+		final Category categoryExisting= new Category("Category1", "#ff0000", CategoryType.CUSTOM);
+		categoryExisting.setID(3);
+
+		final Category categoryToImport = new Category("Category1", "#ff0000", CategoryType.CUSTOM);
+		categoryToImport.setID(15);
 
 		categoryRepository.save(new Category("existing category 1", "#ffffff", CategoryType.CUSTOM));
 		categoryRepository.save(new Category("existing category 2", "#ffffff", CategoryType.CUSTOM));
-		categoryRepository.save(category);
+		categoryRepository.save(categoryExisting);
 
 		final CategoryImporter importer = new CategoryImporter(categoryRepository);
-		final ImportResultItem resultItem = importer.importItems(List.of(category));
+		final ImportResultItem resultItem = importer.importItems(List.of(categoryToImport));
 
 		final ImportResultItem expected = new ImportResultItem(EntityType.CATEGORY, 1, 1, List.of());
 		assertThat(resultItem).isEqualTo(expected);
-		assertThat(category).hasFieldOrPropertyWithValue("ID", 3);
+		assertThat(categoryToImport).hasFieldOrPropertyWithValue("ID", 3);
+	}
+
+	@Test
+	void test_importCategories_existingCategory_takeExistingIcon()
+	{
+		final Icon icon = new Icon("fas fa-icons");
+		icon.setID(1);
+		iconRepository.save(icon);
+
+		final Category categoryExisting = new Category("Category1", "#ff0000", CategoryType.CUSTOM);
+		categoryExisting.setIconReference(icon);
+		categoryExisting.setID(3);
+
+		final Category categoryToImport = new Category("Category1", "#ff0000", CategoryType.CUSTOM);
+		categoryToImport.setID(15);
+
+		categoryRepository.save(categoryExisting);
+
+		final CategoryImporter importer = new CategoryImporter(categoryRepository);
+		final ImportResultItem resultItem = importer.importItems(List.of(categoryToImport));
+
+		final ImportResultItem expected = new ImportResultItem(EntityType.CATEGORY, 1, 1, List.of());
+		assertThat(resultItem).isEqualTo(expected);
+		assertThat(categoryToImport)
+				.hasFieldOrPropertyWithValue("ID", 1)
+				.hasFieldOrPropertyWithValue("iconReference", icon);
+
 	}
 }

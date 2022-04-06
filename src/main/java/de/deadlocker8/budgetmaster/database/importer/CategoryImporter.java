@@ -54,6 +54,7 @@ public class CategoryImporter extends ItemImporter<Category>
 		{
 			//category already exists
 			newCategoryID = existingCategory.getID();
+			category.setIconReference(existingCategory.getIconReference());
 			LOGGER.debug(MessageFormat.format("Found matching category with ID: {0} for category \"{1}\".", newCategoryID, category.getName()));
 		}
 		return newCategoryID;
