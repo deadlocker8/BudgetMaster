@@ -292,7 +292,7 @@ public class Transaction implements TransactionBase, ProvidesID
 				Objects.equals(category, transaction.category) &&
 				Objects.equals(name, transaction.name) &&
 				Objects.equals(description, transaction.description) &&
-				Objects.equals(tags, transaction.tags) &&
+				Objects.equals(tags.stream().toList(), transaction.tags) &&
 				Objects.equals(repeatingOption, transaction.repeatingOption) &&
 				Objects.equals(transferAccount, transaction.transferAccount);
 	}
