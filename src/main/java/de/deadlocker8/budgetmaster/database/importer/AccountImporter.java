@@ -33,13 +33,15 @@ public class AccountImporter extends ItemImporter<Account>
 		final List<String> collectedErrorMessages = new ArrayList<>();
 		int numberOfImportedItems = 0;
 
+		final List<Account> accountsToUpdate = new ArrayList<>(accounts);
+
 		for(AccountMatch accountMatch : accountMatchList.getAccountMatches())
 		{
 			LOGGER.debug(MessageFormat.format("Importing account {0} -> {1}", accountMatch.getAccountSource().getName(), accountMatch.getAccountDestination().getName()));
 
 			try
 			{
-				final Account sourceAccount = accounts.stream()
+				final Account sourceAccount = accountsToUpdate.stream()
 						.filter(account -> account.getID().equals(accountMatch.getAccountSource().getID()))
 						.findFirst()
 						.orElseThrow();
@@ -51,17 +53,16 @@ public class AccountImporter extends ItemImporter<Account>
 				{
 					LOGGER.debug("Overwriting destination account icon");
 
-					if(destinationAccount.getIconReference() == null)
-					{
-						System.out.println("eimer");
-					}
 					// explicitly delete old icon to avoid remaining references
-					iconRepository.delete(destinationAccount.getIconReference());
+					final Icon existingIcon = destinationAccount.getIconReference();
+					destinationAccount.setIconReference(null);
+					iconRepository.delete(existingIcon);
 
 					destinationAccount.setIconReference(sourceIcon);
 					repository.save(destinationAccount);
 				}
 
+				accountsToUpdate.remove(sourceAccount);
 				sourceAccount.updateFromOtherAccount(destinationAccount);
 				numberOfImportedItems++;
 			}

@@ -46,7 +46,7 @@ class AccountImporterTest
 		accountRepository.save(destinationAccount);
 
 		final Account destinationAccount2 = new Account("DestinationAccount 2", AccountType.CUSTOM);
-		destinationAccount.setID(2);
+		destinationAccount2.setID(2);
 		accountRepository.save(destinationAccount2);
 
 		final AccountMatch accountMatch = new AccountMatch(sourceAccount);
@@ -97,5 +97,42 @@ class AccountImporterTest
 		assertThat(accountRepository.getById(destinationAccount.getID())).hasFieldOrPropertyWithValue("iconReference", icon);
 
 		assertThat(iconRepository.findAll()).hasSize(1);
+	}
+
+	@Test
+	void test_skipAlreadyImportedAccounts()
+	{
+		final Account sourceAccount = new Account("SourceAccount", AccountType.CUSTOM);
+		sourceAccount.setID(1);
+
+		final Account sourceAccount2 = new Account("SourceAccount 2", AccountType.CUSTOM);
+		sourceAccount2.setID(2);
+
+		final Account destinationAccount = new Account("DestinationAccount", AccountType.CUSTOM);
+		destinationAccount.setID(1);
+		accountRepository.save(destinationAccount);
+
+		final Account destinationAccount2 = new Account("DestinationAccount 2", AccountType.CUSTOM);
+		destinationAccount2.setID(2);
+		accountRepository.save(destinationAccount2);
+
+		final AccountMatch accountMatch = new AccountMatch(sourceAccount);
+		accountMatch.setAccountDestination(destinationAccount2);
+
+		final AccountMatch accountMatch2 = new AccountMatch(sourceAccount2);
+		accountMatch2.setAccountDestination(destinationAccount);
+		final AccountMatchList accountMatchList = new AccountMatchList(List.of(accountMatch, accountMatch2));
+
+		final AccountImporter importer = new AccountImporter(accountRepository, iconRepository);
+		final ImportResultItem resultItem = importer.importItems(List.of(sourceAccount, sourceAccount2), accountMatchList);
+
+		final ImportResultItem expected = new ImportResultItem(EntityType.ACCOUNT, 2, 2, List.of());
+		assertThat(resultItem).isEqualTo(expected);
+		assertThat(sourceAccount)
+				.hasFieldOrPropertyWithValue("ID", destinationAccount2.getID())
+				.hasFieldOrPropertyWithValue("name", destinationAccount2.getName());
+		assertThat(sourceAccount2)
+				.hasFieldOrPropertyWithValue("ID", destinationAccount.getID())
+				.hasFieldOrPropertyWithValue("name", destinationAccount.getName());
 	}
 }
