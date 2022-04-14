@@ -71,7 +71,7 @@ public class ImportService
 		importResultItems.add(new ImageImporter(imageRepository).importItems(database.getImages()));
 		new IconImporter(iconRepository).importItems(database.getIcons());
 		importResultItems.add(new CategoryImporter(categoryRepository).importItems(database.getCategories()));
-		importResultItems.add(new AccountImporter(accountRepository).importItems(database.getAccounts(), accountMatchList));
+		importResultItems.add(new AccountImporter(accountRepository, iconRepository).importItems(database.getAccounts(), accountMatchList));
 
 		final TagImporter tagImporter = new TagImporter(tagRepository);
 		importResultItems.add(new TransactionImporter(transactionRepository, tagImporter).importItems(database.getTransactions()));

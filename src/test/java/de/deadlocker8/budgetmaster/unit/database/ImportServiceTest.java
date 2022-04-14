@@ -108,13 +108,21 @@ class ImportServiceTest
 		final Account sourceAccount3 = new Account("Second Account", AccountType.CUSTOM);
 		sourceAccount3.setID(8);
 
+		Icon iconDestAccount2 = new Icon("fas fa-ambulance");
+		iconDestAccount2 = iconService.getRepository().save(iconDestAccount2);
+
+		Icon iconDestAccount3 = new Icon("fas fa-apple");
+		iconDestAccount3 = iconService.getRepository().save(iconDestAccount3);
+
 		// destination accounts
 		final Account destAccount1 = accountRepository.findByIsDefault(true);
 		Account destAccount2 = new Account("Destination_Account_1", AccountType.CUSTOM);
 		destAccount2.setAccountState(AccountState.FULL_ACCESS);
+		destAccount2.setIconReference(iconDestAccount2);
 		destAccount2 = accountRepository.save(destAccount2);
 		Account destAccount3 = new Account("Destination_Account_2", AccountType.CUSTOM);
 		destAccount3.setAccountState(AccountState.FULL_ACCESS);
+		destAccount3.setIconReference(iconDestAccount3);
 		destAccount3 = accountRepository.save(destAccount3);
 
 		// account matches
@@ -145,25 +153,24 @@ class ImportServiceTest
 		final Icon iconAllAccounts = createIcon(1, "fas fa-landmark", null, null);
 		final Icon iconCategoryNone = createIcon(3, null, null, null);
 		final Icon iconCategoryRest = createIcon(4, null, null, null);
-		final Icon iconAccountReadOnly = createIcon(8, "fas fa-ban", "#2eb952ff", null);
-		final Icon iconAccountDefault = createIcon(9, null, null, image);
-		final Icon iconAccountSecond = createIcon(10, null, "#2e79b9ff", null);
-		final Icon iconCategoryCar = createIcon(11, "fas fa-ambulance", null, null);
-		final Icon iconCategoryRent = createIcon(12, null, null, image);
-		final Icon iconTemplateFull = createIcon(13, "fas fa-battery-three-quarters", "#e34f4fff", null);
-		final Icon iconTemplateUngrouped = createIcon(14, null, "#212121ff", null);
-		final Icon iconTemplateRandom = createIcon(15, "fas fa-award", "#212121ff", null);
-		final Icon iconTemplateWithTags = createIcon(16, null, null, image);
+		final Icon iconAccountReadOnly = createIcon(10, "fas fa-ban", "#2eb952ff", null);
+		final Icon iconAccountDefault = createIcon(11, null, null, image);
+		final Icon iconAccountSecond = createIcon(12, null, "#2e79b9ff", null);
+		final Icon iconCategoryCar = createIcon(13, "fas fa-ambulance", null, null);
+		final Icon iconCategoryRent = createIcon(14, null, null, image);
+		final Icon iconTemplateFull = createIcon(15, "fas fa-battery-three-quarters", "#e34f4fff", null);
+		final Icon iconTemplateUngrouped = createIcon(16, null, "#212121ff", null);
+		final Icon iconTemplateRandom = createIcon(17, "fas fa-award", "#212121ff", null);
+		final Icon iconTemplateWithTags = createIcon(18, null, null, image);
 		assertThat(iconService.getRepository().findAll())
-				.hasSize(16)
+				.hasSize(15)
 				.containsExactlyInAnyOrder(
 						iconAllAccounts,
-						createIcon(2, null, null, null),
 						iconCategoryNone,
 						iconCategoryRest,
-						createIcon(5, "fas fa-landmark", null, null),
-						createIcon(6, null, null, null),
-						createIcon(7, null, null, null),
+						createIcon(7, "fas fa-landmark", null, null),
+						createIcon(8, null, null, null),
+						createIcon(9, null, null, null),
 						iconAccountReadOnly,
 						iconAccountDefault,
 						iconAccountSecond,

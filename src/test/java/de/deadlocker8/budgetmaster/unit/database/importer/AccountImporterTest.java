@@ -6,7 +6,6 @@ import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
 import de.deadlocker8.budgetmaster.database.importer.AccountImporter;
-import de.deadlocker8.budgetmaster.database.importer.IconImporter;
 import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.IconRepository;
 import de.deadlocker8.budgetmaster.services.EntityType;
@@ -57,7 +56,7 @@ class AccountImporterTest
 		accountMatch2.setAccountDestination(destinationAccount2);
 		final AccountMatchList accountMatchList = new AccountMatchList(List.of(accountMatch, accountMatch2));
 
-		final AccountImporter importer = new AccountImporter(accountRepository);
+		final AccountImporter importer = new AccountImporter(accountRepository, iconRepository);
 		final ImportResultItem resultItem = importer.importItems(List.of(sourceAccount, sourceAccount2), accountMatchList);
 
 		final ImportResultItem expected = new ImportResultItem(EntityType.ACCOUNT, 2, 2, List.of());
@@ -76,8 +75,12 @@ class AccountImporterTest
 		sourceAccount.setID(2);
 		sourceAccount.setIconReference(icon);
 
+		Icon existingIcon = new Icon("abc");
+		existingIcon = iconRepository.save(existingIcon);
+
 		Account destinationAccount = new Account("DestinationAccount", AccountType.CUSTOM);
 		destinationAccount.setID(1);
+		destinationAccount.setIconReference(existingIcon);
 		destinationAccount = accountRepository.save(destinationAccount);
 
 		final AccountMatch accountMatch = new AccountMatch(sourceAccount);
@@ -85,12 +88,14 @@ class AccountImporterTest
 
 		final AccountMatchList accountMatchList = new AccountMatchList(List.of(accountMatch));
 
-		final AccountImporter importer = new AccountImporter(accountRepository);
+		final AccountImporter importer = new AccountImporter(accountRepository, iconRepository);
 		final ImportResultItem resultItem = importer.importItems(List.of(sourceAccount), accountMatchList);
 
 		final ImportResultItem expected = new ImportResultItem(EntityType.ACCOUNT, 1, 1, List.of());
 		assertThat(resultItem).isEqualTo(expected);
 		assertThat(sourceAccount).hasFieldOrPropertyWithValue("ID", destinationAccount.getID());
 		assertThat(accountRepository.getById(destinationAccount.getID())).hasFieldOrPropertyWithValue("iconReference", icon);
+
+		assertThat(iconRepository.findAll()).hasSize(1);
 	}
 }
