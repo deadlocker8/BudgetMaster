@@ -332,7 +332,7 @@ public class Template implements TransactionBase, Iconizable
 				Objects.equals(name, template.name) &&
 				Objects.equals(description, template.description) &&
 				Objects.equals(iconReference, template.iconReference) &&
-				Objects.equals(tags.stream().toList(), template.tags) &&
+				Objects.equals(tags == null ? null : tags.stream().toList(), template.tags) &&
 				Objects.equals(transferAccount, template.transferAccount) &&
 				Objects.equals(templateGroup, template.templateGroup);
 	}
