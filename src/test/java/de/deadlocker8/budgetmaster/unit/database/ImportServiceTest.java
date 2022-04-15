@@ -158,31 +158,32 @@ class ImportServiceTest
 		// assert icons
 		// icons created for default accounts, categories, ...
 		final Icon iconAllAccounts = createIcon(1, "fas fa-landmark", null, null);
-		// id 2 = default account --> icon will be overwritten by new icon with id 11
-		final Icon iconCategoryNone = createIcon(3, null, null, null);
-		final Icon iconCategoryRest = createIcon(4, null, null, null);
+		final Icon iconAccountDefault = createIcon(2, null, null, null);
+		final Icon iconCategoryNone = createIcon(4, null, null, null);
+		final Icon iconCategoryRest = createIcon(5, null, null, null);
 
 		// imported icons
-		final Icon iconAccountReadOnly = createIcon(10, "fas fa-ban", "#2eb952ff", null);
-		final Icon iconAccountDefault = createIcon(11, null, null, image);
-		final Icon iconAccountSecond = createIcon(12, null, "#2e79b9ff", null);
-		final Icon iconCategoryCar = createIcon(13, "fas fa-ambulance", null, null);
-		final Icon iconCategoryRent = createIcon(14, null, null, image);
-		final Icon iconTemplateFull = createIcon(15, "fas fa-battery-three-quarters", "#e34f4fff", null);
-		final Icon iconTemplateUngrouped = createIcon(16, null, "#212121ff", null);
-		final Icon iconTemplateRandom = createIcon(17, "fas fa-award", "#212121ff", null);
-		final Icon iconTemplateWithTags = createIcon(18, null, null, image);
+		final Icon iconAccountReadOnly = createIcon(11, "fas fa-ban", "#2eb952ff", null);
+		final Icon iconAccountDefaultNew = createIcon(12, null, null, image);
+		final Icon iconAccountSecond = createIcon(13, null, "#2e79b9ff", null);
+		final Icon iconCategoryCar = createIcon(14, "fas fa-ambulance", null, null);
+		final Icon iconCategoryRent = createIcon(15, null, null, image);
+		final Icon iconTemplateFull = createIcon(16, "fas fa-battery-three-quarters", "#e34f4fff", null);
+		final Icon iconTemplateUngrouped = createIcon(17, null, "#212121ff", null);
+		final Icon iconTemplateRandom = createIcon(18, "fas fa-award", "#212121ff", null);
+		final Icon iconTemplateWithTags = createIcon(19, null, null, image);
 		assertThat(iconService.getRepository().findAll())
-				.hasSize(15)
+				.hasSize(16)
 				.containsExactlyInAnyOrder(
 						iconAllAccounts,
+						iconAccountDefault,
 						iconCategoryNone,
 						iconCategoryRest,
-						createIcon(7, "fas fa-landmark", null, null),
-						createIcon(8, null, null, null),
+						createIcon(8, "fas fa-landmark", null, null),
 						createIcon(9, null, null, null),
+						createIcon(10, null, null, null),
 						iconAccountReadOnly,
-						iconAccountDefault,
+						iconAccountDefaultNew,
 						iconAccountSecond,
 						iconCategoryCar,
 						iconCategoryRent,
@@ -206,7 +207,7 @@ class ImportServiceTest
 
 		// assert accounts
 		final Account accountPlaceholder = createAccount(1, "Placeholder", AccountType.ALL, AccountState.FULL_ACCESS, iconAllAccounts, false, false);
-		final Account accountDefault = createAccount(2, "Default Account", AccountType.CUSTOM, AccountState.FULL_ACCESS, iconAccountDefault, true, true);
+		final Account accountDefault = createAccount(2, "Default Account", AccountType.CUSTOM, AccountState.FULL_ACCESS, iconAccountDefaultNew, true, true);
 		final Account accountReadOnly = createAccount(3, "Destination_Account_1", AccountType.CUSTOM, AccountState.FULL_ACCESS, iconAccountReadOnly, false, false);
 		final Account accountSecond = createAccount(4, "Destination_Account_2", AccountType.CUSTOM, AccountState.FULL_ACCESS, iconAccountSecond, false, false);
 		assertThat(accountRepository.findAll())
