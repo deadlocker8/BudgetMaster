@@ -19,7 +19,7 @@ public class ImageImporter extends ItemImporter<Image>
 			throw new IllegalArgumentException("Invalid repository type");
 		}
 
-		Image imageToCreate = new Image(image.getImage(), image.getFileName(), image.getFileExtension());
+		final Image imageToCreate = new Image(image.getImage(), image.getFileName(), image.getFileExtension());
 
 		final Image savedImage = repository.save(imageToCreate);
 		return savedImage.getID();

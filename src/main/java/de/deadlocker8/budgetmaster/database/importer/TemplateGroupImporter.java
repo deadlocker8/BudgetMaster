@@ -5,6 +5,8 @@ import de.deadlocker8.budgetmaster.templategroup.TemplateGroup;
 import de.deadlocker8.budgetmaster.templategroup.TemplateGroupRepository;
 import de.deadlocker8.budgetmaster.templategroup.TemplateGroupType;
 
+import java.util.Optional;
+
 public class TemplateGroupImporter extends ItemImporter<TemplateGroup>
 {
 	public TemplateGroupImporter(TemplateGroupRepository templateGroupRepository)
@@ -20,17 +22,8 @@ public class TemplateGroupImporter extends ItemImporter<TemplateGroup>
 			throw new IllegalArgumentException("Invalid repository type");
 		}
 
-		TemplateGroup existingTemplateGroup;
-		if(templateGroup.getType().equals(TemplateGroupType.DEFAULT))
-		{
-			existingTemplateGroup = repository.findFirstByType(TemplateGroupType.DEFAULT);
-		}
-		else
-		{
-			existingTemplateGroup = repository.findByNameAndType(templateGroup.getName(), templateGroup.getType());
-		}
-
-		if(existingTemplateGroup == null)
+		final Optional<TemplateGroup> existingTemplateGroupOptional = findExistingTemplateGroup(templateGroup, repository);
+		if(existingTemplateGroupOptional.isEmpty())
 		{
 			// template group does not exist --> create it
 			TemplateGroup templateGroupToCreate = new TemplateGroup(templateGroup.getName(), templateGroup.getType());
@@ -41,7 +34,20 @@ public class TemplateGroupImporter extends ItemImporter<TemplateGroup>
 		else
 		{
 			// template group already exists
+			final TemplateGroup existingTemplateGroup = existingTemplateGroupOptional.get();
 			return existingTemplateGroup.getID();
+		}
+	}
+
+	private Optional<TemplateGroup> findExistingTemplateGroup(TemplateGroup templateGroup, TemplateGroupRepository repository)
+	{
+		if(templateGroup.getType().equals(TemplateGroupType.DEFAULT))
+		{
+			return Optional.of(repository.findFirstByType(TemplateGroupType.DEFAULT));
+		}
+		else
+		{
+			return Optional.ofNullable(repository.findByNameAndType(templateGroup.getName(), templateGroup.getType()));
 		}
 	}
 

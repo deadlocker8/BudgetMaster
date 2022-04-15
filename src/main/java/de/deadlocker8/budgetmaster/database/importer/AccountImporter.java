@@ -41,25 +41,13 @@ public class AccountImporter extends ItemImporter<Account>
 
 			try
 			{
-				final Account sourceAccount = accountsToUpdate.stream()
-						.filter(account -> account.getID().equals(accountMatch.getAccountSource().getID()))
-						.findFirst()
-						.orElseThrow();
-
+				final Account sourceAccount = getSourceAccountForMatch(accountsToUpdate, accountMatch);
 				final Account destinationAccount = repository.findById(accountMatch.getAccountDestination().getID()).orElseThrow();
 
 				final Icon sourceIcon = sourceAccount.getIconReference();
 				if(sourceIcon != null)
 				{
-					LOGGER.debug("Overwriting destination account icon");
-
-					// explicitly delete old icon to avoid remaining references
-					final Icon existingIcon = destinationAccount.getIconReference();
-					destinationAccount.setIconReference(null);
-					iconRepository.delete(existingIcon);
-
-					destinationAccount.setIconReference(sourceIcon);
-					repository.save(destinationAccount);
+					overwriteIcon(destinationAccount, sourceIcon);
 				}
 
 				accountsToUpdate.remove(sourceAccount);
@@ -76,6 +64,27 @@ public class AccountImporter extends ItemImporter<Account>
 
 		LOGGER.debug(MessageFormat.format("Importing accounts DONE ({0}/{1})", numberOfImportedItems, accountMatchList.getAccountMatches().size()));
 		return new ImportResultItem(entityType, numberOfImportedItems, accountMatchList.getAccountMatches().size(), collectedErrorMessages);
+	}
+
+	private void overwriteIcon(Account destinationAccount, Icon sourceIcon)
+	{
+		LOGGER.debug("Overwriting destination account icon");
+
+		// explicitly delete old icon to avoid remaining references
+		final Icon existingIcon = destinationAccount.getIconReference();
+		destinationAccount.setIconReference(null);
+		iconRepository.delete(existingIcon);
+
+		destinationAccount.setIconReference(sourceIcon);
+		repository.save(destinationAccount);
+	}
+
+	private Account getSourceAccountForMatch(List<Account> accountsToUpdate, AccountMatch accountMatch)
+	{
+		return accountsToUpdate.stream()
+				.filter(account -> account.getID().equals(accountMatch.getAccountSource().getID()))
+				.findFirst()
+				.orElseThrow();
 	}
 
 	@Override
