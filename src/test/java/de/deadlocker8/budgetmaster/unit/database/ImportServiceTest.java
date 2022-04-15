@@ -18,7 +18,10 @@ import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.images.ImageFileExtension;
 import de.deadlocker8.budgetmaster.images.ImageService;
+import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.repeating.RepeatingTransactionUpdater;
+import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndAfterXTimes;
+import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierDays;
 import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.TagRepository;
@@ -27,6 +30,7 @@ import de.deadlocker8.budgetmaster.templategroup.TemplateGroupRepository;
 import de.deadlocker8.budgetmaster.templategroup.TemplateGroupType;
 import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.templates.TemplateRepository;
+import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
@@ -45,6 +49,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -150,9 +155,13 @@ class ImportServiceTest
 				.containsExactly(image);
 
 		// assert icons
+		// icons created for default accounts, categories, ...
 		final Icon iconAllAccounts = createIcon(1, "fas fa-landmark", null, null);
+		// id 2 = default account --> icon will be overwritten by new icon with id 11
 		final Icon iconCategoryNone = createIcon(3, null, null, null);
 		final Icon iconCategoryRest = createIcon(4, null, null, null);
+
+		// imported icons
 		final Icon iconAccountReadOnly = createIcon(10, "fas fa-ban", "#2eb952ff", null);
 		final Icon iconAccountDefault = createIcon(11, null, null, image);
 		final Icon iconAccountSecond = createIcon(12, null, "#2e79b9ff", null);
@@ -287,9 +296,93 @@ class ImportServiceTest
 				.hasSize(4)
 				.containsExactlyInAnyOrder(templateFull, templateWithTags, templateUngrouped, templateRandom);
 
-//		assertThat(databaseResult.getTransactions())
-//				.hasSize(3)
-//				.contains(expectedTransaction1, expectedTransaction2, expectedTransaction3);
+		// assert transactions
+		final Transaction transactionNormal = new Transaction();
+		transactionNormal.setID(1);
+		transactionNormal.setAmount(-1100);
+		transactionNormal.setIsExpenditure(true);
+		transactionNormal.setAccount(accountDefault);
+		transactionNormal.setCategory(categoryCar);
+		transactionNormal.setName("normal transaction");
+		transactionNormal.setDescription("Lorem Ipsum dolor");
+		transactionNormal.setTags(List.of(tag0815));
+		transactionNormal.setDate(LocalDate.of(2022, 3, 30));
+		transactionNormal.setRepeatingOption(null);
+		transactionNormal.setTransferAccount(null);
+
+		final Transaction transactionRepeating = new Transaction();
+		transactionRepeating.setID(2);
+		transactionRepeating.setAmount(-100);
+		transactionRepeating.setIsExpenditure(true);
+		transactionRepeating.setAccount(accountDefault);
+		transactionRepeating.setCategory(categoryNone);
+		transactionRepeating.setName("Repeating transaction");
+		transactionRepeating.setDescription("");
+		transactionRepeating.setTags(List.of());
+		final LocalDate transactionRepeatingDate = LocalDate.of(2022, 3, 9);
+		transactionRepeating.setDate(transactionRepeatingDate);
+		final RepeatingModifierDays repeatingTransactionModifier = new RepeatingModifierDays(1);
+		repeatingTransactionModifier.setID(1);
+		final RepeatingEndAfterXTimes repeatingTransactionEndOption = new RepeatingEndAfterXTimes(3);
+		repeatingTransactionEndOption.setID(1);
+		final RepeatingOption transactionRepeatingOption = new RepeatingOption(transactionRepeatingDate, repeatingTransactionModifier, repeatingTransactionEndOption);
+		transactionRepeatingOption.setID(1);
+		transactionRepeating.setRepeatingOption(transactionRepeatingOption);
+		transactionRepeating.setTransferAccount(null);
+
+		final Transaction transactionTransfer = new Transaction();
+		transactionTransfer.setID(3);
+		transactionTransfer.setAmount(-1600);
+		transactionTransfer.setIsExpenditure(true);
+		transactionTransfer.setAccount(accountDefault);
+		transactionTransfer.setCategory(categoryRent);
+		transactionTransfer.setName("Transfer");
+		transactionTransfer.setDescription("");
+		transactionTransfer.setTags(List.of(tag12));
+		transactionTransfer.setDate(LocalDate.of(2022, 3, 30));
+		transactionTransfer.setRepeatingOption(null);
+		transactionTransfer.setTransferAccount(accountSecond);
+
+		final Transaction transactionRepeatingTransfer = new Transaction();
+		transactionRepeatingTransfer.setID(4);
+		transactionRepeatingTransfer.setAmount(-200);
+		transactionRepeatingTransfer.setIsExpenditure(true);
+		transactionRepeatingTransfer.setAccount(accountDefault);
+		transactionRepeatingTransfer.setCategory(categoryCar);
+		transactionRepeatingTransfer.setName("Repeating transfer");
+		transactionRepeatingTransfer.setDescription("");
+		transactionRepeatingTransfer.setTags(List.of());
+		final LocalDate transactionRepeatingTransferDate = LocalDate.of(2022, 3, 11);
+		transactionRepeatingTransfer.setDate(transactionRepeatingTransferDate);
+		final RepeatingModifierDays repeatingTransferModifier = new RepeatingModifierDays(1);
+		repeatingTransferModifier.setID(2);
+		final RepeatingEndAfterXTimes repeatingTransferEndOption = new RepeatingEndAfterXTimes(2);
+		repeatingTransferEndOption.setID(2);
+		final RepeatingOption transactionRepeatingTransferOption = new RepeatingOption(transactionRepeatingTransferDate, repeatingTransferModifier, repeatingTransferEndOption);
+		transactionRepeatingTransferOption.setID(2);
+		transactionRepeatingTransfer.setRepeatingOption(transactionRepeatingTransferOption);
+		transactionRepeatingTransfer.setTransferAccount(accountSecond);
+
+		final Transaction transactionIncomeWithTags = new Transaction();
+		transactionIncomeWithTags.setID(5);
+		transactionIncomeWithTags.setAmount(2036);
+		transactionIncomeWithTags.setIsExpenditure(false);
+		transactionIncomeWithTags.setAccount(accountDefault);
+		transactionIncomeWithTags.setCategory(categoryNone);
+		transactionIncomeWithTags.setName("income with tags");
+		transactionIncomeWithTags.setDescription("");
+		transactionIncomeWithTags.setTags(List.of(tag12, tag13));
+		transactionIncomeWithTags.setDate(LocalDate.of(2022, 3, 29));
+		transactionIncomeWithTags.setRepeatingOption(null);
+		transactionIncomeWithTags.setTransferAccount(null);
+
+		assertThat(databaseResult.getTransactions())
+				.hasSize(5)
+				.contains(transactionNormal,
+						transactionRepeating,
+						transactionTransfer,
+						transactionRepeatingTransfer,
+						transactionIncomeWithTags);
 
 		assertThat(importService.getCollectedErrorMessages()).isEmpty();
 	}

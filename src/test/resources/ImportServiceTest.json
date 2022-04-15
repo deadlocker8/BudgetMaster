@@ -135,12 +135,12 @@
             "transferAccountID": 8
         },
         {
-            "amount": -2036,
-            "isExpenditure": true,
-            "date": "2022-03-30",
+            "amount": 2036,
+            "isExpenditure": false,
+            "date": "2022-03-29",
             "accountID": 2,
             "categoryID": 1,
-            "name": "Transactions with tags",
+            "name": "income with tags",
             "description": "",
             "tags": [
                 {
