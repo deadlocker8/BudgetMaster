@@ -5,7 +5,7 @@ ARG APP_DIR=/BudgetMaster
 RUN mkdir -p $APP_DIR
 RUN mkdir -p /root/.Deadlocker/BudgetMaster
 
-COPY build/2.9.1/BudgetMaster-v2.9.1.jar /BudgetMaster/BudgetMaster.jar
+COPY build/2.9.2/BudgetMaster-v2.9.2.jar /BudgetMaster/BudgetMaster.jar
 COPY src/main/resources/config/templates/settings-docker.properties /root/.Deadlocker/BudgetMaster/settings.properties
 RUN echo "server.port=9000" > ~/.Deadlocker/BudgetMaster/settings.properties
 
