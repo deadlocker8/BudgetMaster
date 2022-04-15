@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmaster.tags;
 import com.google.gson.annotations.Expose;
 import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
+import de.deadlocker8.budgetmaster.utils.ProvidesID;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Tag
+public class Tag implements ProvidesID
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

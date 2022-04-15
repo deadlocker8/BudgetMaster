@@ -112,12 +112,14 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 	@Override
 	public void deleteAll()
 	{
+		LOGGER.info("Resetting accounts...");
 		deselectAllAccounts();
 		User user = userRepository.findByName("Default");
 		user.setSelectedAccount(null);
 		userRepository.save(user);
 
 		accountRepository.deleteAll();
+		LOGGER.info("All accounts reset.");
 	}
 
 	@Override
@@ -134,6 +136,9 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 			LOGGER.debug("Created placeholder account");
 
 			Account account = accountRepository.save(new Account(Localization.getString(Strings.ACCOUNT_DEFAULT_NAME), AccountType.CUSTOM));
+			final Icon iconDefaultAccount = iconService.createIconReference(null, null, null);
+			iconService.getRepository().save(iconDefaultAccount);
+			account.setIconReference(iconDefaultAccount);
 			selectAccount(account.getID());
 			setAsDefaultAccount(account.getID());
 			LOGGER.debug("Created default account");

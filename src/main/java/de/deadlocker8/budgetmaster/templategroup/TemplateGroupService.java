@@ -49,10 +49,12 @@ public class TemplateGroupService implements Resettable, AccessAllEntities<Templ
 	@Override
 	public void deleteAll()
 	{
+		LOGGER.info("Resetting template groups...");
 		for(TemplateGroup templateGroup : getAllEntitiesAsc())
 		{
 			deleteTemplateGroup(templateGroup.getID());
 		}
+		LOGGER.info("All template groups reset.");
 	}
 
 	public void deleteTemplateGroup(int ID)

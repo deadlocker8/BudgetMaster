@@ -63,6 +63,17 @@ public class Account implements ProvidesID, Iconizable
 	{
 	}
 
+	public void updateFromOtherAccount(Account otherAccount)
+	{
+		this.setID(otherAccount.ID);
+		this.setName(otherAccount.name);
+		this.setType(otherAccount.type);
+		this.setSelected(otherAccount.isSelected);
+		this.setDefault(otherAccount.isDefault);
+		this.setAccountState(otherAccount.accountState);
+		this.setIconReference(otherAccount.iconReference);
+	}
+
 	public Integer getID()
 	{
 		return ID;

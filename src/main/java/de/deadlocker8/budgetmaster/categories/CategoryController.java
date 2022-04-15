@@ -30,8 +30,8 @@ public class CategoryController extends BaseController
 		public static final String ENTITY_TO_DELETE = "categoryToDelete";
 		public static final String CUSTOM_COLOR = "customColor";
 		public static final String FONTAWESOME_ICONS = "fontawesomeIcons";
-		public static final String AVAILABLE_CATEGORIES = "fontawesomeIcons";
-		public static final String PRESELECTED_CATEGORY = "availableCategories";
+		public static final String AVAILABLE_CATEGORIES = "availableCategories";
+		public static final String PRESELECTED_CATEGORY = "preselectedCategory";
 		public static final String ERROR = "error";
 	}
 
