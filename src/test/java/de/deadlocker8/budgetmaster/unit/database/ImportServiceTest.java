@@ -22,6 +22,7 @@ import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.repeating.RepeatingTransactionUpdater;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndAfterXTimes;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierDays;
+import de.deadlocker8.budgetmaster.services.ImportResultItem;
 import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.TagRepository;
@@ -144,7 +145,7 @@ class ImportServiceTest
 		final AccountMatchList accountMatchList = new AccountMatchList(matches);
 
 		// act
-		importService.importDatabase(importedDatabase, accountMatchList, true, true, true);
+		final List<ImportResultItem> importResultItems = importService.importDatabase(importedDatabase, accountMatchList, true, true, true);
 		final InternalDatabase databaseResult = importService.getDatabase();
 
 		// assert images
@@ -384,7 +385,7 @@ class ImportServiceTest
 						transactionRepeatingTransfer,
 						transactionIncomeWithTags);
 
-		assertThat(importService.getCollectedErrorMessages()).isEmpty();
+		assertThat(importService.getCollectedErrorMessages(importResultItems)).isEmpty();
 	}
 
 	private Icon createIcon(int ID, String builtinIdentifier, String fontColor, Image image)

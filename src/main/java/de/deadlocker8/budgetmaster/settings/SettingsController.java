@@ -60,7 +60,7 @@ public class SettingsController extends BaseController
 		public static final String AVAILABLE_ACCOUNTS = "availableAccounts";
 		public static final String ACCOUNT_MATCH_LIST = "accountMatchList";
 		public static final String IMPORT_RESULT_ITEMS = "importResultItems";
-		public static final String ERROR_MESSAGES = "errorMessage";
+		public static final String ERROR_MESSAGES = "errorMessages";
 		public static final String PERFORM_UPDATE = "performUpdate";
 		public static final String UPDATE_STRING = "updateString";
 		public static final String SETTINGS = "settings";
@@ -409,7 +409,7 @@ public class SettingsController extends BaseController
 
 		final List<ImportResultItem> importResultItems = importService.importDatabase(database, accountMatchList, importTemplateGroups, importTemplates, importCharts);
 		model.addAttribute(ModelAttributes.IMPORT_RESULT_ITEMS, importResultItems);
-		model.addAttribute(ModelAttributes.ERROR_MESSAGES, importService.getCollectedErrorMessages());
+		model.addAttribute(ModelAttributes.ERROR_MESSAGES, importService.getCollectedErrorMessages(importResultItems));
 
 		return ReturnValues.IMPORT_DATABASE_RESULT;
 	}

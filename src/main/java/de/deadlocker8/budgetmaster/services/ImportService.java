@@ -42,7 +42,6 @@ public class ImportService
 
 
 	private InternalDatabase database;
-	private List<String> collectedErrorMessages;
 
 	@Autowired
 	public ImportService(CategoryRepository categoryRepository, TransactionRepository transactionRepository, TemplateGroupRepository templateGroupRepository, TemplateRepository templateRepository,
@@ -63,7 +62,6 @@ public class ImportService
 	public List<ImportResultItem> importDatabase(InternalDatabase database, AccountMatchList accountMatchList, Boolean importTemplateGroups, Boolean importTemplates, Boolean importCharts)
 	{
 		this.database = database;
-		this.collectedErrorMessages = new ArrayList<>();
 
 		final List<ImportResultItem> importResultItems = new ArrayList<>();
 
@@ -82,7 +80,7 @@ public class ImportService
 		}
 		else
 		{
-			importResultItems.add(new ImportResultItem(EntityType.TEMPLATE_GROUP, 0, 0, collectedErrorMessages));
+			importResultItems.add(new ImportResultItem(EntityType.TEMPLATE_GROUP, 0, 0, List.of()));
 		}
 
 		if(importTemplates)
@@ -92,7 +90,7 @@ public class ImportService
 		}
 		else
 		{
-			importResultItems.add(new ImportResultItem(EntityType.TEMPLATE, 0, 0, collectedErrorMessages));
+			importResultItems.add(new ImportResultItem(EntityType.TEMPLATE, 0, 0, List.of()));
 		}
 
 		if(importCharts)
@@ -101,7 +99,7 @@ public class ImportService
 		}
 		else
 		{
-			importResultItems.add(new ImportResultItem(EntityType.CHART, 0, 0, collectedErrorMessages));
+			importResultItems.add(new ImportResultItem(EntityType.CHART, 0, 0, List.of()));
 		}
 
 		LOGGER.debug("Updating repeating transactions...");
@@ -116,8 +114,10 @@ public class ImportService
 		return database;
 	}
 
-	public List<String> getCollectedErrorMessages()
+	public List<String> getCollectedErrorMessages(List<ImportResultItem> importResultItems)
 	{
-		return collectedErrorMessages;
+		return importResultItems.stream()
+				.flatMap(importResultItem -> importResultItem.getCollectedErrorMessages().stream())
+				.toList();
 	}
 }
