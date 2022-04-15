@@ -33,6 +33,7 @@
                                         <td><i class="material-icons left">${item.getEntityType().getIcon()}</i>
                                             <div class="import-entity-name">${locale.getString(item.getEntityType().getLocalizationKey())}</div>
                                         </td>
+                                        <td><#if item.getNumberOfImportedItems() != item.getNumberOfAvailableItems()><i class="fas fa-exclamation-triangle text-red"></i></#if></td>
                                         <td>${item.getNumberOfImportedItems()}/${item.getNumberOfAvailableItems()}</td>
                                     </tr>
                                 </#list>
