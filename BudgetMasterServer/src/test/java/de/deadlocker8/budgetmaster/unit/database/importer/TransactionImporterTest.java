@@ -6,14 +6,8 @@ import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryRepository;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
-import de.deadlocker8.budgetmaster.database.importer.IconImporter;
 import de.deadlocker8.budgetmaster.database.importer.TagImporter;
 import de.deadlocker8.budgetmaster.database.importer.TransactionImporter;
-import de.deadlocker8.budgetmaster.icon.Icon;
-import de.deadlocker8.budgetmaster.icon.IconRepository;
-import de.deadlocker8.budgetmaster.images.Image;
-import de.deadlocker8.budgetmaster.images.ImageFileExtension;
-import de.deadlocker8.budgetmaster.images.ImageRepository;
 import de.deadlocker8.budgetmaster.repeating.RepeatingOption;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndAfterXTimes;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierDays;
@@ -23,24 +17,23 @@ import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.TagRepository;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(SpringExtension.class)
-@DataJpaTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-class TransactionImporterTest
+class TransactionImporterTest extends ImporterTestBase
 {
+	@Override
+	List<String> getTableNamesToResetSequence()
+	{
+		return List.of("transaction", "account", "category", "tag");
+	}
+
 	@Autowired
 	private AccountRepository accountRepository;
 
@@ -81,7 +74,7 @@ class TransactionImporterTest
 		assertThat(resultItem).isEqualTo(expected);
 
 		final List<Transaction> transactions = transactionRepository.findAll();
-		assertThat(transactions).hasSize(1);
+		Assertions.assertThat(transactions).hasSize(1);
 		final Transaction actualTransaction = transactions.get(0);
 		assertThat(actualTransaction)
 				.hasFieldOrPropertyWithValue("ID", 1)
@@ -91,7 +84,7 @@ class TransactionImporterTest
 				.hasFieldOrPropertyWithValue("category", category)
 				.hasFieldOrPropertyWithValue("account", account)
 				.hasFieldOrPropertyWithValue("date", LocalDate.of(2022, 3, 30))
-				.hasFieldOrPropertyWithValue("description","Lorem Ipsum")
+				.hasFieldOrPropertyWithValue("description", "Lorem Ipsum")
 				.hasFieldOrPropertyWithValue("repeatingOption", null)
 				.hasFieldOrPropertyWithValue("transferAccount", null);
 		assertThat(actualTransaction.getTags()).isEmpty();
@@ -129,7 +122,7 @@ class TransactionImporterTest
 		assertThat(resultItem).isEqualTo(expected);
 
 		final List<Transaction> transactions = transactionRepository.findAll();
-		assertThat(transactions).hasSize(1);
+		Assertions.assertThat(transactions).hasSize(1);
 		final Transaction actualTransaction = transactions.get(0);
 		assertThat(actualTransaction)
 				.hasFieldOrPropertyWithValue("ID", 1)
@@ -139,7 +132,7 @@ class TransactionImporterTest
 				.hasFieldOrPropertyWithValue("category", category)
 				.hasFieldOrPropertyWithValue("account", account)
 				.hasFieldOrPropertyWithValue("date", LocalDate.of(2022, 3, 30))
-				.hasFieldOrPropertyWithValue("description","Lorem Ipsum")
+				.hasFieldOrPropertyWithValue("description", "Lorem Ipsum")
 				.hasFieldOrPropertyWithValue("repeatingOption", null)
 				.hasFieldOrPropertyWithValue("transferAccount", transferAccount);
 		assertThat(actualTransaction.getTags()).isEmpty();
@@ -177,7 +170,7 @@ class TransactionImporterTest
 		assertThat(resultItem).isEqualTo(expected);
 
 		final List<Transaction> transactions = transactionRepository.findAll();
-		assertThat(transactions).hasSize(1);
+		Assertions.assertThat(transactions).hasSize(1);
 		final Transaction actualTransaction = transactions.get(0);
 		assertThat(actualTransaction)
 				.hasFieldOrPropertyWithValue("ID", 1)
@@ -187,7 +180,7 @@ class TransactionImporterTest
 				.hasFieldOrPropertyWithValue("category", category)
 				.hasFieldOrPropertyWithValue("account", account)
 				.hasFieldOrPropertyWithValue("date", date)
-				.hasFieldOrPropertyWithValue("description","Lorem Ipsum")
+				.hasFieldOrPropertyWithValue("description", "Lorem Ipsum")
 				.hasFieldOrPropertyWithValue("repeatingOption", repeatingOption)
 				.hasFieldOrPropertyWithValue("transferAccount", null);
 		assertThat(actualTransaction.getTags()).isEmpty();
@@ -225,7 +218,7 @@ class TransactionImporterTest
 		assertThat(resultItem).isEqualTo(expected);
 
 		final List<Transaction> transactions = transactionRepository.findAll();
-		assertThat(transactions).hasSize(1);
+		Assertions.assertThat(transactions).hasSize(1);
 		final Transaction actualTransaction = transactions.get(0);
 		assertThat(actualTransaction)
 				.hasFieldOrPropertyWithValue("ID", 1)
@@ -235,7 +228,7 @@ class TransactionImporterTest
 				.hasFieldOrPropertyWithValue("category", category)
 				.hasFieldOrPropertyWithValue("account", account)
 				.hasFieldOrPropertyWithValue("date", LocalDate.of(2022, 3, 30))
-				.hasFieldOrPropertyWithValue("description","Lorem Ipsum")
+				.hasFieldOrPropertyWithValue("description", "Lorem Ipsum")
 				.hasFieldOrPropertyWithValue("repeatingOption", null)
 				.hasFieldOrPropertyWithValue("transferAccount", null);
 
@@ -285,7 +278,7 @@ class TransactionImporterTest
 		assertThat(resultItem).isEqualTo(expected);
 
 		final List<Transaction> transactions = transactionRepository.findAll();
-		assertThat(transactions).hasSize(2);
+		Assertions.assertThat(transactions).hasSize(2);
 		final Transaction actualTransaction = transactions.get(0);
 		assertThat(actualTransaction)
 				.hasFieldOrPropertyWithValue("ID", 1)

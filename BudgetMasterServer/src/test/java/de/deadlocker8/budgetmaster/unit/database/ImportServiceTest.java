@@ -35,6 +35,7 @@ import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,14 +43,21 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
+import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,9 +67,38 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = Main.class)
 @ActiveProfiles("test")
 @Transactional
+@Testcontainers
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class ImportServiceTest
 {
+	@Container
+	static PostgreSQLContainer<?> postgresDB = new PostgreSQLContainer<>("postgres:14.2")
+			.withDatabaseName("budgetmaster-tests-db")
+			.withUsername("budgetmaster")
+			.withPassword("BudgetMaster");
+
+	@DynamicPropertySource
+	static void properties(DynamicPropertyRegistry registry)
+	{
+		registry.add("spring.datasource.url", postgresDB::getJdbcUrl);
+		registry.add("spring.datasource.username", postgresDB::getUsername);
+		registry.add("spring.datasource.password", postgresDB::getPassword);
+	}
+
+	@BeforeEach
+	void beforeEach()
+	{
+		final List<String> tableNames = List.of("template");
+		for(String tableName : tableNames)
+		{
+			entityManager.createNativeQuery(MessageFormat.format("ALTER SEQUENCE {0}_id_seq RESTART WITH 1", tableName))
+					.executeUpdate();
+		}
+	}
+
+	@Autowired
+	private EntityManager entityManager;
+
 	@Autowired
 	private CategoryRepository categoryRepository;
 
@@ -465,8 +502,6 @@ class ImportServiceTest
 		defaultGroup.setID(1);
 		defaultGroup.setName(Localization.getString(Strings.TEMPLATE_GROUP_DEFAULT));
 		defaultGroup.setType(TemplateGroupType.DEFAULT);
-
-		Mockito.verify(templateGroupRepository, Mockito.times(1)).save(defaultGroup);
 
 		Template expectedTemplate = new Template();
 		expectedTemplate.setID(1);

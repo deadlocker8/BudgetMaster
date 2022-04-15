@@ -19,22 +19,22 @@ import de.deadlocker8.budgetmaster.templategroup.TemplateGroupRepository;
 import de.deadlocker8.budgetmaster.templategroup.TemplateGroupType;
 import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.templates.TemplateRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(SpringExtension.class)
-@DataJpaTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-class TemplateImporterTest
+class TemplateImporterTest extends ImporterTestBase
 {
+	@Override
+	List<String> getTableNamesToResetSequence()
+	{
+		return List.of("template", "account", "category", "tag", "icon", "template_group");
+	}
+
 	@Autowired
 	private AccountRepository accountRepository;
 
@@ -92,7 +92,7 @@ class TemplateImporterTest
 		assertThat(resultItem).isEqualTo(expected);
 
 		final List<Template> templates = templateRepository.findAll();
-		assertThat(templates).hasSize(1);
+		Assertions.assertThat(templates).hasSize(1);
 		final Template actualTemplate = templates.get(0);
 		assertThat(actualTemplate)
 				.hasFieldOrPropertyWithValue("ID", 1)
@@ -150,7 +150,7 @@ class TemplateImporterTest
 		assertThat(resultItem).isEqualTo(expected);
 
 		final List<Template> templates = templateRepository.findAll();
-		assertThat(templates).hasSize(1);
+		Assertions.assertThat(templates).hasSize(1);
 		final Template actualTemplate = templates.get(0);
 		assertThat(actualTemplate)
 				.hasFieldOrPropertyWithValue("ID", 1)
@@ -196,7 +196,7 @@ class TemplateImporterTest
 		template.setTags(List.of());
 		template.setDescription("Lorem Ipsum");
 		template.setIconReference(icon);
-		template.setTags(List.of( new Tag("0815"), new Tag("Apple Pie")));
+		template.setTags(List.of(new Tag("0815"), new Tag("Apple Pie")));
 
 		final Template template2 = new Template();
 		template2.setID(16);
@@ -205,7 +205,7 @@ class TemplateImporterTest
 		template2.setTags(List.of());
 		template2.setDescription("Lorem Ipsum");
 		template2.setIconReference(icon);
-		template2.setTags(List.of( new Tag("0815")));
+		template2.setTags(List.of(new Tag("0815")));
 
 		TemplateGroup defaultTemplateGroup = new TemplateGroup("Default group", TemplateGroupType.DEFAULT);
 		defaultTemplateGroup = templateGroupRepository.save(defaultTemplateGroup);
@@ -218,7 +218,7 @@ class TemplateImporterTest
 		assertThat(resultItem).isEqualTo(expected);
 
 		final List<Template> templates = templateRepository.findAll();
-		assertThat(templates).hasSize(2);
+		Assertions.assertThat(templates).hasSize(2);
 		final Template actualTemplate = templates.get(0);
 		assertThat(actualTemplate)
 				.hasFieldOrPropertyWithValue("ID", 1)
@@ -268,7 +268,7 @@ class TemplateImporterTest
 		assertThat(resultItem).isEqualTo(expected);
 
 		final List<Template> templates = templateRepository.findAll();
-		assertThat(templates).hasSize(1);
+		Assertions.assertThat(templates).hasSize(1);
 		final Template actualTemplate = templates.get(0);
 		assertThat(actualTemplate)
 				.hasFieldOrPropertyWithValue("ID", 1)
@@ -301,7 +301,7 @@ class TemplateImporterTest
 		assertThat(resultItem).isEqualTo(expected);
 
 		final List<Template> templates = templateRepository.findAll();
-		assertThat(templates).hasSize(1);
+		Assertions.assertThat(templates).hasSize(1);
 		final Template actualTemplate = templates.get(0);
 		assertThat(actualTemplate)
 				.hasFieldOrPropertyWithValue("ID", 1)

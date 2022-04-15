@@ -1,36 +1,50 @@
 package de.deadlocker8.budgetmaster.unit.database.importer;
 
 import de.deadlocker8.budgetmaster.Main;
-import de.deadlocker8.budgetmaster.categories.Category;
-import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.charts.Chart;
 import de.deadlocker8.budgetmaster.charts.ChartService;
 import de.deadlocker8.budgetmaster.charts.ChartType;
-import de.deadlocker8.budgetmaster.database.importer.CategoryImporter;
 import de.deadlocker8.budgetmaster.database.importer.ChartImporter;
-import de.deadlocker8.budgetmaster.database.importer.ImageImporter;
-import de.deadlocker8.budgetmaster.images.Image;
-import de.deadlocker8.budgetmaster.images.ImageFileExtension;
-import de.deadlocker8.budgetmaster.images.ImageRepository;
 import de.deadlocker8.budgetmaster.services.EntityType;
 import de.deadlocker8.budgetmaster.services.ImportResultItem;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = Main.class)
+@ActiveProfiles("test")
+@Transactional
+@Testcontainers
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class ChartImporterTest
 {
+	@Container
+	static PostgreSQLContainer<?> postgresDB = new PostgreSQLContainer<>("postgres:14.2")
+			.withDatabaseName("budgetmaster-tests-db")
+			.withUsername("budgetmaster")
+			.withPassword("BudgetMaster");
+
+	@DynamicPropertySource
+	static void properties(DynamicPropertyRegistry registry)
+	{
+		registry.add("spring.datasource.url", postgresDB::getJdbcUrl);
+		registry.add("spring.datasource.username", postgresDB::getUsername);
+		registry.add("spring.datasource.password", postgresDB::getPassword);
+	}
+
 	@Autowired
 	private ChartService chartService;
 

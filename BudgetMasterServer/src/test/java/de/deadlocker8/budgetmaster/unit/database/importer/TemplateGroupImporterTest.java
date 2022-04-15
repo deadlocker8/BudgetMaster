@@ -6,22 +6,22 @@ import de.deadlocker8.budgetmaster.services.ImportResultItem;
 import de.deadlocker8.budgetmaster.templategroup.TemplateGroup;
 import de.deadlocker8.budgetmaster.templategroup.TemplateGroupRepository;
 import de.deadlocker8.budgetmaster.templategroup.TemplateGroupType;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(SpringExtension.class)
-@DataJpaTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-class TemplateGroupImporterTest
+class TemplateGroupImporterTest extends ImporterTestBase
 {
+	@Override
+	List<String> getTableNamesToResetSequence()
+	{
+		return List.of("template_group");
+	}
+
 	@Autowired
 	private TemplateGroupRepository templateGroupRepository;
 
@@ -38,7 +38,7 @@ class TemplateGroupImporterTest
 		assertThat(resultItem).isEqualTo(expected);
 
 		final List<TemplateGroup> templateGroups = templateGroupRepository.findAll();
-		assertThat(templateGroups)
+		Assertions.assertThat(templateGroups)
 				.hasSize(1)
 				.containsExactly(defaultTemplateGroup);
 	}
@@ -56,7 +56,7 @@ class TemplateGroupImporterTest
 		assertThat(resultItem).isEqualTo(expected);
 
 		final List<TemplateGroup> templateGroups = templateGroupRepository.findAll();
-		assertThat(templateGroups)
+		Assertions.assertThat(templateGroups)
 				.hasSize(1)
 				.containsExactly(templateGroup);
 	}
@@ -75,7 +75,7 @@ class TemplateGroupImporterTest
 		final TemplateGroup expectedTemplateGroup = new TemplateGroup(1, "My group", TemplateGroupType.CUSTOM);
 
 		final List<TemplateGroup> templateGroups = templateGroupRepository.findAll();
-		assertThat(templateGroups)
+		Assertions.assertThat(templateGroups)
 				.hasSize(1)
 				.containsExactly(expectedTemplateGroup);
 	}

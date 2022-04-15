@@ -9,21 +9,20 @@ import de.deadlocker8.budgetmaster.icon.IconRepository;
 import de.deadlocker8.budgetmaster.services.EntityType;
 import de.deadlocker8.budgetmaster.services.ImportResultItem;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(SpringExtension.class)
-@DataJpaTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-class CategoryImporterTest
+class CategoryImporterTest extends ImporterTestBase
 {
+	@Override
+	List<String> getTableNamesToResetSequence()
+	{
+		return List.of("category");
+	}
+
 	@Autowired
 	private CategoryRepository categoryRepository;
 
@@ -83,7 +82,7 @@ class CategoryImporterTest
 	@Test
 	void test_importCategories_skipExisting_custom()
 	{
-		final Category categoryExisting= new Category("Category1", "#ff0000", CategoryType.CUSTOM);
+		final Category categoryExisting = new Category("Category1", "#ff0000", CategoryType.CUSTOM);
 		categoryExisting.setID(3);
 
 		final Category categoryToImport = new Category("Category1", "#ff0000", CategoryType.CUSTOM);

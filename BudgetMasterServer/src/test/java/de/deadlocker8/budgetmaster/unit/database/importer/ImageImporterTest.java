@@ -7,21 +7,20 @@ import de.deadlocker8.budgetmaster.images.ImageRepository;
 import de.deadlocker8.budgetmaster.services.EntityType;
 import de.deadlocker8.budgetmaster.services.ImportResultItem;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(SpringExtension.class)
-@DataJpaTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-class ImageImporterTest
+class ImageImporterTest extends ImporterTestBase
 {
+	@Override
+	List<String> getTableNamesToResetSequence()
+	{
+		return List.of("image");
+	}
+
 	@Autowired
 	private ImageRepository imageRepository;
 
