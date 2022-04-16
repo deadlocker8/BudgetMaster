@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.integration.helpers;
 
 import de.deadlocker8.budgetmaster.Main;
+import de.deadlocker8.budgetmaster.TestConstants;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;
@@ -33,7 +34,7 @@ public abstract class SeleniumTestBase
 	private static boolean isDatabaseAlreadyImported = false;
 
 	@Container
-	static PostgreSQLContainer<?> postgresDB = new PostgreSQLContainer<>("postgres:14.2")
+	static PostgreSQLContainer<?> postgresDB = new PostgreSQLContainer<>(TestConstants.POSTGRES_VERSION)
 			.withDatabaseName("budgetmaster-tests-db")
 			.withUsername("budgetmaster")
 			.withPassword("BudgetMaster");

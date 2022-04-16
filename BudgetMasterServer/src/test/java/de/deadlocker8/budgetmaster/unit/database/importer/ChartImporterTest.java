@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.unit.database.importer;
 
 import de.deadlocker8.budgetmaster.Main;
+import de.deadlocker8.budgetmaster.TestConstants;
 import de.deadlocker8.budgetmaster.charts.Chart;
 import de.deadlocker8.budgetmaster.charts.ChartService;
 import de.deadlocker8.budgetmaster.charts.ChartType;
@@ -32,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ChartImporterTest
 {
 	@Container
-	static PostgreSQLContainer<?> postgresDB = new PostgreSQLContainer<>("postgres:14.2")
+	static PostgreSQLContainer<?> postgresDB = new PostgreSQLContainer<>(TestConstants.POSTGRES_VERSION)
 			.withDatabaseName("budgetmaster-tests-db")
 			.withUsername("budgetmaster")
 			.withPassword("BudgetMaster");

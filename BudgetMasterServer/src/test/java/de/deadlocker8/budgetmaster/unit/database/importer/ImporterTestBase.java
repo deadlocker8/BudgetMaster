@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.unit.database.importer;
 
+import de.deadlocker8.budgetmaster.TestConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ import java.util.List;
 abstract class ImporterTestBase
 {
 	@Container
-	static PostgreSQLContainer<?> postgresDB = new PostgreSQLContainer<>("postgres:14.2")
+	static PostgreSQLContainer<?> postgresDB = new PostgreSQLContainer<>(TestConstants.POSTGRES_VERSION)
 			.withDatabaseName("budgetmaster-tests-db")
 			.withUsername("budgetmaster")
 			.withPassword("BudgetMaster");

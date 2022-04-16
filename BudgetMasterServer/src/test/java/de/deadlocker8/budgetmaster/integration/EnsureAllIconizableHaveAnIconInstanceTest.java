@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.integration;
 
 import de.deadlocker8.budgetmaster.Main;
+import de.deadlocker8.budgetmaster.TestConstants;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountRepository;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
@@ -36,7 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class EnsureAllIconizableHaveAnIconInstanceTest
 {
 	@Container
-	static PostgreSQLContainer<?> postgresDB = new PostgreSQLContainer<>("postgres:14.2")
+	static PostgreSQLContainer<?> postgresDB = new PostgreSQLContainer<>(TestConstants.POSTGRES_VERSION)
 			.withDatabaseName("budgetmaster-tests-db")
 			.withUsername("budgetmaster")
 			.withPassword("BudgetMaster");

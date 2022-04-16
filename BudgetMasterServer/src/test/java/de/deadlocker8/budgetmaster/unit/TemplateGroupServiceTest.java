@@ -1,18 +1,10 @@
 package de.deadlocker8.budgetmaster.unit;
 
-import de.deadlocker8.budgetmaster.accounts.*;
-import de.deadlocker8.budgetmaster.categories.Category;
-import de.deadlocker8.budgetmaster.categories.CategoryService;
-import de.deadlocker8.budgetmaster.categories.CategoryType;
-import de.deadlocker8.budgetmaster.icon.IconService;
-import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.templategroup.TemplateGroup;
 import de.deadlocker8.budgetmaster.templategroup.TemplateGroupRepository;
 import de.deadlocker8.budgetmaster.templategroup.TemplateGroupService;
 import de.deadlocker8.budgetmaster.templategroup.TemplateGroupType;
 import de.deadlocker8.budgetmaster.templates.Template;
-import de.deadlocker8.budgetmaster.templates.TemplateRepository;
-import de.deadlocker8.budgetmaster.templates.TemplateService;
 import de.deadlocker8.budgetmaster.unit.helpers.LocalizedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
