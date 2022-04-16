@@ -43,8 +43,12 @@ public class TransactionTestHelper
 				.isEqualTo(name);
 
 		//description
-		assertThat(columns.get(3).findElement(By.className("italic")).getText())
-				.isEqualTo(description);
+		if(description != null)
+		{
+			assertThat(columns.get(3).findElement(By.className("italic")).getText())
+					.isEqualTo(description);
+		}
+
 
 		// amount
 		assertThat(columns.get(4).getText()).contains(amount);
@@ -111,4 +115,27 @@ public class TransactionTestHelper
 				.filter(webElement -> webElement.getText().equals(transferAccountName))
 				.findFirst().orElseThrow().click();
 	}
+
+	public static void gotoSpecificYearAndMonth(WebDriver driver, int year, String monthName)
+	{
+		driver.findElement(By.className("headline-date")).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("global-datepicker-select-year")));
+
+		By locator = By.xpath("//td[contains(@class, 'global-datepicker-item') and contains(text(),'" + year + "')]");
+		driver.findElement(locator).click();
+
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("global-datepicker-select-month")));
+
+		locator = By.xpath("//td[contains(@class, 'global-datepicker-item') and contains(text(),'" + monthName + "')]");
+		driver.findElement(locator).click();
+
+		String yearAndMonthCombined = monthName + " " + year;
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		locator = By.xpath("//a[contains(@class, 'headline-date') and contains(text(),'" + yearAndMonthCombined + "')]");
+		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+	}
+
 }

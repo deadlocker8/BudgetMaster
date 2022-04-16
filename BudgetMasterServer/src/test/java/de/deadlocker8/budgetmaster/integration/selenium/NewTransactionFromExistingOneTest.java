@@ -52,32 +52,10 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 		TransactionTestHelper.selectGlobalAccountByName(driver, "DefaultAccount");
 	}
 
-	private void gotoSpecificYearAndMonth(int year, String monthName)
-	{
-		driver.findElement(By.className("headline-date")).click();
-
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("global-datepicker-select-year")));
-
-		By locator = By.xpath("//td[contains(@class, 'global-datepicker-item') and contains(text(),'" + year + "')]");
-		driver.findElement(locator).click();
-
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("global-datepicker-select-month")));
-
-		locator = By.xpath("//td[contains(@class, 'global-datepicker-item') and contains(text(),'" + monthName + "')]");
-		driver.findElement(locator).click();
-
-		String yearAndMonthCombined = monthName + " " + year;
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		locator = By.xpath("//a[contains(@class, 'headline-date') and contains(text(),'" + yearAndMonthCombined + "')]");
-		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-	}
-
 	@Test
 	void test_newTransactionFromExisting_normal()
 	{
-		gotoSpecificYearAndMonth(2021, "October");
+		TransactionTestHelper.gotoSpecificYearAndMonth(driver, 2021, "October");
 
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		List<WebElement> columns = transactionsRows.get(0).findElements(By.className("col"));
@@ -113,7 +91,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 	@Test
 	void test_newTransactionFromExisting_transfer()
 	{
-		gotoSpecificYearAndMonth(2021, "September");
+		TransactionTestHelper.gotoSpecificYearAndMonth(driver, 2021, "September");
 
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		List<WebElement> columns = transactionsRows.get(0).findElements(By.className("col"));
@@ -149,7 +127,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 	@Test
 	void test_newTransactionFromExisting_recurring()
 	{
-		gotoSpecificYearAndMonth(2021, "June");
+		TransactionTestHelper.gotoSpecificYearAndMonth(driver, 2021, "June");
 
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		List<WebElement> columns = transactionsRows.get(0).findElements(By.className("col"));
@@ -181,7 +159,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 	{
 		TransactionTestHelper.selectGlobalAccountByName(driver, "Readonly Account");
 
-		gotoSpecificYearAndMonth(2021, "October");
+		TransactionTestHelper.gotoSpecificYearAndMonth(driver, 2021, "October");
 
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		List<WebElement> columns = transactionsRows.get(0).findElements(By.className("col"));

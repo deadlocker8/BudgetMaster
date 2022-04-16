@@ -148,14 +148,6 @@ class TransactionServiceDatabaseTest
 	}
 
 	@Test
-	void test_deleteAll()
-	{
-		transactionService.deleteAll();
-
-		assertThat(transactionService.getRepository().findAll()).isEmpty();
-	}
-
-	@Test
 	void test_getTransactionsForAccount_specificAccount()
 	{
 		LocalDate date1 = LocalDate.of(2020, 4, 30);
