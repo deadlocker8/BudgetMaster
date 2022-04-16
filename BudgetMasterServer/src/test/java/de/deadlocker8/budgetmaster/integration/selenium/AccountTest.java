@@ -36,6 +36,7 @@ class AccountTest extends SeleniumTestBase
 		helper.login(UserService.DEFAULT_PASSWORD);
 		helper.hideBackupReminder();
 		helper.hideWhatsNewDialog();
+		helper.hideMigrationDialog();
 
 		String path = Account.class.getClassLoader().getResource("AccountDatabase.json").getFile().replace("/", File.separator);
 

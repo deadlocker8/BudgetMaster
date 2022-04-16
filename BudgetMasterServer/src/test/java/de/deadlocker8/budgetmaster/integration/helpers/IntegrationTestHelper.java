@@ -89,6 +89,18 @@ public class IntegrationTestHelper
 		}
 	}
 
+	public void hideMigrationDialog()
+	{
+		try
+		{
+			WebElement buttonCloseReminder = driver.findElement(By.cssSelector("#modalMigration #buttonCloseMigration"));
+			buttonCloseReminder.click();
+		}
+		catch(NoSuchElementException ignored)
+		{
+		}
+	}
+
 	public void uploadDatabase(String path, List<String> sourceAccounts, List<Account> destinationAccounts)
 	{
 		if(path.startsWith("\\"))

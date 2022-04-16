@@ -112,6 +112,10 @@ public class SettingsService
 		{
 			settings.setShowCategoriesAsCircles(defaultSettings.getShowCategoriesAsCircles());
 		}
+		if(settings.getMigrationDeclined() == null)
+		{
+			settings.setMigrationDeclined(defaultSettings.getMigrationDeclined());
+		}
 	}
 
 	public Settings getSettings()
@@ -124,6 +128,13 @@ public class SettingsService
 	{
 		Settings settings = getSettings();
 		settings.setLastBackupReminderDate(DateHelper.getCurrentDate());
+	}
+
+	@Transactional
+	public void updateMigrationDeclined(boolean isDeclined)
+	{
+		Settings settings = getSettings();
+		settings.setMigrationDeclined(isDeclined);
 	}
 
 	@Transactional

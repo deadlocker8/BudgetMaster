@@ -33,6 +33,7 @@ class MediaTest extends SeleniumTestBase
 		helper.login(UserService.DEFAULT_PASSWORD);
 		helper.hideBackupReminder();
 		helper.hideWhatsNewDialog();
+		helper.hideMigrationDialog();
 
 		String path = getClass().getClassLoader().getResource("OnlyAccountsWithDifferentImages.json").getFile().replace("/", File.separator);
 

@@ -24,6 +24,11 @@ $(document).ready(function()
         fetchAndShowModal(document.getElementById('whatsNewModelContainer'), 'whatsNewModelContainer', '#modalWhatsNew');
     }
 
+    if($("#modalMigration").length)
+    {
+        $('#modalMigration').modal('open');
+    }
+
     $('.tooltipped').tooltip();
 
     $('select').formSelect();

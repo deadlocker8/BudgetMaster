@@ -58,6 +58,7 @@ class LoginControllerTest extends SeleniumTestBase
 		helper.login(UserService.DEFAULT_PASSWORD);
 		helper.hideBackupReminder();
 		helper.hideWhatsNewDialog();
+		helper.hideMigrationDialog();
 
 		WebElement label = driver.findElement(By.id("logo-home"));
 		String expected = helper.getUrl() + "/images/Logo_with_text_medium_res.png";
@@ -72,6 +73,7 @@ class LoginControllerTest extends SeleniumTestBase
 		helper.login(UserService.DEFAULT_PASSWORD);
 		helper.hideBackupReminder();
 		helper.hideWhatsNewDialog();
+		helper.hideMigrationDialog();
 
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("logo-home")));
@@ -89,6 +91,7 @@ class LoginControllerTest extends SeleniumTestBase
 		helper.login(UserService.DEFAULT_PASSWORD);
 		helper.hideBackupReminder();
 		helper.hideWhatsNewDialog();
+		helper.hideMigrationDialog();
 
 		logout();
 

@@ -36,6 +36,7 @@ class NewTransactionNormalTest extends SeleniumTestBase
 		helper.login(UserService.DEFAULT_PASSWORD);
 		helper.hideBackupReminder();
 		helper.hideWhatsNewDialog();
+		helper.hideMigrationDialog();
 
 		String path = getClass().getClassLoader().getResource("SearchDatabase.json").getFile().replace("/", File.separator);
 		final Account account1 = new Account("DefaultAccount0815", AccountType.CUSTOM);

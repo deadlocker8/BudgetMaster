@@ -43,6 +43,8 @@ public class Settings
 	private Integer installedVersionCode;
 	private Boolean whatsNewShownForCurrentVersion;
 
+	private Boolean isMigrationDeclined;
+
 	public Settings()
 	{
 		// empty
@@ -70,6 +72,7 @@ public class Settings
 		defaultSettings.setAutoBackupGitToken("");
 		defaultSettings.setInstalledVersionCode(0);
 		defaultSettings.setWhatsNewShownForCurrentVersion(false);
+		defaultSettings.setMigrationDeclined(false);
 
 		return defaultSettings;
 	}
@@ -288,6 +291,16 @@ public class Settings
 		return !this.whatsNewShownForCurrentVersion;
 	}
 
+	public Boolean getMigrationDeclined()
+	{
+		return isMigrationDeclined;
+	}
+
+	public void setMigrationDeclined(Boolean migrationDeclined)
+	{
+		isMigrationDeclined = migrationDeclined;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -312,6 +325,7 @@ public class Settings
 				", autoBackupGitToken='" + autoBackupGitToken + '\'' +
 				", installedVersionCode=" + installedVersionCode +
 				", whatsNewShownForCurrentVersion=" + whatsNewShownForCurrentVersion +
+				", isMigrationDeclined=" + isMigrationDeclined +
 				'}';
 	}
 }
