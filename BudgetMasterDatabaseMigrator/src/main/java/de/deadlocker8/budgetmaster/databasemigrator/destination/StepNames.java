@@ -39,5 +39,6 @@ public class StepNames
 
 	public static final String TRANSACTIONS = "Migrate transactions";
 	public static final String TEMPLATES = "Migrate templates";
+	public static final String TEMPLATE_GROUPS = "Migrate template groups";
 }
 

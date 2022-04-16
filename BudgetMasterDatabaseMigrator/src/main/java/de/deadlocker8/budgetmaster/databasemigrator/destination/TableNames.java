@@ -40,4 +40,5 @@ public class TableNames
 
 	public static final String TRANSACTION = "transaction";
 	public static final String TEMPLATE = "template";
+	public static final String TEMPLATE_GROUP = "template_group";
 }

@@ -20,7 +20,6 @@ import javax.persistence.Table;
 public class DestinationTemplate
 {
 	@Id
-
 	private int ID;
 
 	@Column(name = "template_name")
