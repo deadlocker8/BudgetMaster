@@ -62,7 +62,7 @@ class MigrateSettingsTest extends MigratorTestBase
 		assertThat(stepExecution.getReadCount()).isEqualTo(1);
 		assertThat(stepExecution.getCommitCount()).isEqualTo(2);
 
-		final DestinationSettings settings = new DestinationSettings(0, "€", false, 1, false, true, true, true, "2022-03-15", 10, 0, 1, 0, 3, "", "", "", "", 35, false);
+		final DestinationSettings settings = new DestinationSettings(1, "€", false, 1, false, true, true, true, "2022-03-15", 10, 0, 1, 0, 3, "", "", "", "", 35, false);
 
 		final List<DestinationSettings> settingsItems = settingsRepository.findAll();
 		assertThat(settingsItems)
