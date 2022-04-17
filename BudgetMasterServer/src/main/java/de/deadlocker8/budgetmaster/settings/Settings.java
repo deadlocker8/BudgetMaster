@@ -43,7 +43,7 @@ public class Settings
 	private Integer installedVersionCode;
 	private Boolean whatsNewShownForCurrentVersion;
 
-	private Boolean isMigrationDeclined;
+	private Boolean migrationDeclined;
 
 	public Settings()
 	{
@@ -293,12 +293,12 @@ public class Settings
 
 	public Boolean getMigrationDeclined()
 	{
-		return isMigrationDeclined;
+		return migrationDeclined;
 	}
 
 	public void setMigrationDeclined(Boolean migrationDeclined)
 	{
-		isMigrationDeclined = migrationDeclined;
+		this.migrationDeclined = migrationDeclined;
 	}
 
 	@Override
@@ -325,7 +325,7 @@ public class Settings
 				", autoBackupGitToken='" + autoBackupGitToken + '\'' +
 				", installedVersionCode=" + installedVersionCode +
 				", whatsNewShownForCurrentVersion=" + whatsNewShownForCurrentVersion +
-				", isMigrationDeclined=" + isMigrationDeclined +
+				", migrationDeclined=" + migrationDeclined +
 				'}';
 	}
 }
