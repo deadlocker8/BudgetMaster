@@ -34,7 +34,7 @@ public class MigrationController extends BaseController
 
 	private static class ReturnValues
 	{
-		public static final String MIGRATION_SETTINGS = "migration";
+		public static final String MIGRATION_SETTINGS = "migration/migration";
 	}
 
 	private final MigrationService migrationService;

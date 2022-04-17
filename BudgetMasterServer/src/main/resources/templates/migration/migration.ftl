@@ -1,14 +1,14 @@
 <html>
     <head>
-        <#import "helpers/header.ftl" as header>
+        <#import "../helpers/header.ftl" as header>
         <@header.globals/>
         <@header.header "BudgetMaster - ${locale.getString('title.migration')}"/>
         <#import "/spring.ftl" as s>
     </head>
     <@header.body>
-        <#import "helpers/navbar.ftl" as navbar>
+        <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "migration" settings/>
-        <#import "helpers/validation.ftl" as validation>
+        <#import "../helpers/validation.ftl" as validation>
 
         <main>
             <div class="card main-card background-color">
@@ -121,7 +121,7 @@
         </main>
 
         <!-- Scripts-->
-        <#import "helpers/scripts.ftl" as scripts>
+        <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
     </@header.body>
 </html>
