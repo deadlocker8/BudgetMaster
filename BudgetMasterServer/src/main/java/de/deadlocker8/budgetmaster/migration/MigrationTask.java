@@ -10,10 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 public class MigrationTask implements Runnable
 {
@@ -24,6 +21,7 @@ public class MigrationTask implements Runnable
 
 	private MigrationArguments migrationArguments;
 	private MigrationStatus migrationStatus;
+	private List<String> collectedStdout;
 
 	public MigrationTask(Path applicationSupportFolder)
 	{
@@ -34,6 +32,7 @@ public class MigrationTask implements Runnable
 	public void setMigrationArguments(MigrationArguments migrationArguments)
 	{
 		this.migrationArguments = migrationArguments;
+		this.collectedStdout = new ArrayList<>();
 	}
 
 	@Override
@@ -88,7 +87,7 @@ public class MigrationTask implements Runnable
 		}
 	}
 
-	private String runMigrator(Path migratorPath, MigrationArguments migrationArguments) throws MigrationException
+	private void runMigrator(Path migratorPath, MigrationArguments migrationArguments) throws MigrationException
 	{
 		final String javaCommand = determineJavaCommand();
 
@@ -104,7 +103,6 @@ public class MigrationTask implements Runnable
 			final ProcessBuilder processBuilder = new ProcessBuilder(command).redirectErrorStream(true);
 			final Process process = processBuilder.start();
 
-			final StringBuilder collectedStdout = new StringBuilder();
 			try(BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream())))
 			{
 				while(true)
@@ -116,14 +114,11 @@ public class MigrationTask implements Runnable
 					}
 
 					LOGGER.debug("[MIGRATOR] {}", line);
-
-					collectedStdout.append(line);
-					collectedStdout.append("\n");
+					collectedStdout.add(line);
 				}
 			}
 
 			LOGGER.debug("Migration process finished");
-			return collectedStdout.toString();
 		}
 		catch(IOException e)
 		{
@@ -151,5 +146,10 @@ public class MigrationTask implements Runnable
 	public void setMigrationStatus(MigrationStatus migrationStatus)
 	{
 		this.migrationStatus = migrationStatus;
+	}
+
+	public List<String> getCollectedStdout()
+	{
+		return collectedStdout;
 	}
 }

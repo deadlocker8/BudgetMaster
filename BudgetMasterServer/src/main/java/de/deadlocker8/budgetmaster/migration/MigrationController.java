@@ -25,6 +25,7 @@ public class MigrationController extends BaseController
 		public static final String ERROR = "error";
 		public static final String MIGRATION_SETTINGS = "migrationSettings";
 		public static final String STATUS = "status";
+		public static final String SUMMARY = "summary";
 	}
 
 	private static class ReturnValues
@@ -105,6 +106,7 @@ public class MigrationController extends BaseController
 	public String getMigrationStatus(Model model)
 	{
 		model.addAttribute(ModelAttributes.STATUS, migrationService.getMigrationStatus());
+		model.addAttribute(ModelAttributes.SUMMARY, migrationService.getSummary());
 		return ReturnValues.STATUS_FRAGMENT;
 	}
 }

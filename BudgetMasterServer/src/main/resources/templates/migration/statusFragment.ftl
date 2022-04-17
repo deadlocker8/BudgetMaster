@@ -8,8 +8,11 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row left-align">
     <div class="col s12 m12 l8 offset-l2">
+        <#list summary as summaryLine>
+            ${summaryLine}<br>
+        </#list>
     </div>
 </div>
 

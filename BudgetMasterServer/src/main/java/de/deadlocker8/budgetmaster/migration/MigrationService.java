@@ -14,13 +14,19 @@ import org.springframework.stereotype.Service;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class MigrationService
 {
 	public static final String PREVIOUS_DATABASE_FILE_NAME = "budgetmaster.mv.db";
 	public static final String PREVIOUS_DATABASE_FILE_NAME_WITHOUT_EXTENSION = "budgetmaster";
+	private static final Pattern PATTERN_SUMMARY = Pattern.compile(".*(\\[COMPLETED\\] Migrate .*)");
+
 	private final SettingsService settingsService;
 	private final Path applicationSupportFolder;
 	private final AccountRepository accountRepository;
@@ -116,5 +122,26 @@ public class MigrationService
 	public MigrationStatus getMigrationStatus()
 	{
 		return migrationTask.getMigrationStatus();
+	}
+
+	public List<String> getSummary()
+	{
+		final List<String> collectedStdout = migrationTask.getCollectedStdout();
+		if(collectedStdout == null)
+		{
+			return new ArrayList<>();
+		}
+
+		final List<String> summary = new ArrayList<>();
+		for(String line : collectedStdout)
+		{
+			final Matcher matcher = PATTERN_SUMMARY.matcher(line);
+			if(matcher.find())
+			{
+				summary.add(matcher.group(1));
+			}
+		}
+
+		return summary;
 	}
 }
