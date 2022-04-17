@@ -38,7 +38,7 @@
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
                                 <i class="material-icons prefix">dns</i>
-                                <input id="migration-port" type="number" name="port" <@validation.validation "port"/> value="<#if migrationSettings.port()??>${migrationSettings.port()?c}</#if>" placeholder="5432">
+                                <input id="migration-port" type="number" min="1" max="65535" name="port" <@validation.validation "port"/> value="<#if migrationSettings.port()??>${migrationSettings.port()?c}</#if>" placeholder="5432">
                                 <label for="migration-port">${locale.getString("migration.settings.port")}</label>
                             </div>
                         </div>
