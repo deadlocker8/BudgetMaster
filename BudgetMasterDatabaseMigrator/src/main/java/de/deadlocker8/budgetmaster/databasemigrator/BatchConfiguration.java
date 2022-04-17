@@ -53,6 +53,8 @@ import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.report.ReportSe
 import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.tag.TagReader;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.tag.TemplateTagReader;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.tag.TransactionTagReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -68,6 +70,8 @@ import javax.sql.DataSource;
 @EnableBatchProcessing
 public class BatchConfiguration
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger(BatchConfiguration.class);
+
 	final JobBuilderFactory jobBuilderFactory;
 	final StepBuilderFactory stepBuilderFactory;
 
@@ -107,6 +111,7 @@ public class BatchConfiguration
 	final DestinationTemplateRepository destinationTemplateRepository;
 	final DestinationTemplateGroupRepository destinationTemplateGroupRepository;
 
+	@SuppressWarnings("squid:S107")
 	public BatchConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, DataSource primaryDataSource, DestinationImageRepository destinationImageRepository, DestinationIconRepository destinationIconRepository, DestinationCategoryRepository destinationCategoryRepository, DestinationAccountRepository destinationAccountRepository, DestinationChartRepository destinationChartRepository, DestinationHintRepository destinationHintRepository, DestinationRepeatingEndRepository destinationRepeatingEndRepository, DestinationRepeatingEndAfterXTimesRepository destinationRepeatingEndAfterXTimesRepository, DestinationRepeatingEndDateRepository destinationRepeatingEndDateRepository, DestinationRepeatingEndNeverRepository destinationRepeatingEndNeverRepository, DestinationRepeatingModifierRepository destinationRepeatingModifierRepository, DestinationRepeatingModifierDaysRepository destinationRepeatingModifierDaysRepository, DestinationRepeatingModifierMonthsRepository destinationRepeatingModifierMonthsRepository, DestinationRepeatingModifierYearsRepository destinationRepeatingModifierYearsRepository, DestinationRepeatingOptionRepository destinationRepeatingOptionRepository, DestinationReportColumnRepository destinationReportColumnRepository, DestinationReportSettingsRepository destinationReportSettingsRepository, DestinationSettingsRepository destinationSettingsRepository, DestinationTagRepository destinationTagRepository, DestinationTemplateTagRepository destinationTemplateTagRepository, DestinationTransactionTagRepository destinationTransactionTagRepository, DestinationUserRepository destinationUserRepository, DestinationTransactionRepository destinationTransactionRepository, DestinationTemplateRepository destinationTemplateRepository, DestinationTemplateGroupRepository destinationTemplateGroupRepository)
 	{
 		this.jobBuilderFactory = jobBuilderFactory;
@@ -146,6 +151,63 @@ public class BatchConfiguration
 
 		this.destinationTemplateRepository = destinationTemplateRepository;
 		this.destinationTemplateGroupRepository = destinationTemplateGroupRepository;
+	}
+
+	public void cleanDatabase()
+	{
+		LOGGER.debug(">>> Cleanup database...");
+
+		// deletion order is important!
+
+		LOGGER.debug("Cleaning tags...");
+		destinationTemplateTagRepository.deleteAll();
+		destinationTransactionTagRepository.deleteAll();
+		destinationTagRepository.deleteAll();
+
+		LOGGER.debug("Cleaning transactions...");
+		destinationTransactionRepository.deleteAll();
+
+		LOGGER.debug("Cleaning templates...");
+		destinationTemplateRepository.deleteAll();
+		LOGGER.debug("Cleaning template groups.");
+		destinationTemplateGroupRepository.deleteAll();
+
+		LOGGER.debug("Cleaning categories...");
+		destinationCategoryRepository.deleteAll();
+		LOGGER.debug("Cleaning users...");
+		destinationUserRepository.deleteAll();
+		LOGGER.debug("Cleaning accounts...");
+		destinationAccountRepository.deleteAll();
+
+		LOGGER.debug("Cleaning report settings...");
+		destinationReportColumnRepository.deleteAll();
+		destinationReportSettingsRepository.deleteAll();
+
+		LOGGER.debug("Cleaning charts...");
+		destinationChartRepository.deleteAll();
+		LOGGER.debug("Cleaning hints...");
+		destinationHintRepository.deleteAll();
+
+		LOGGER.debug("Cleaning icons...");
+		destinationIconRepository.deleteAll();
+		LOGGER.debug("Cleaning images...");
+		destinationImageRepository.deleteAll();
+
+		LOGGER.debug("Cleaning repeating options...");
+		destinationRepeatingOptionRepository.deleteAll();
+		destinationRepeatingEndAfterXTimesRepository.deleteAll();
+		destinationRepeatingEndDateRepository.deleteAll();
+		destinationRepeatingEndNeverRepository.deleteAll();
+		destinationRepeatingEndRepository.deleteAll();
+		destinationRepeatingModifierDaysRepository.deleteAll();
+		destinationRepeatingModifierMonthsRepository.deleteAll();
+		destinationRepeatingModifierYearsRepository.deleteAll();
+		destinationRepeatingModifierRepository.deleteAll();
+
+		LOGGER.debug("Cleaning settings...");
+		destinationSettingsRepository.deleteAll();
+
+		LOGGER.debug(">>> Cleanup database DONE");
 	}
 
 	@Bean(name = "migrateJob")

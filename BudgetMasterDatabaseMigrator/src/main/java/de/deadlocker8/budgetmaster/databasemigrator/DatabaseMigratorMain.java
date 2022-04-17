@@ -18,12 +18,15 @@ public class DatabaseMigratorMain implements CommandLineRunner
 
 	private final JobLauncher jobLauncher;
 
+	private final BatchConfiguration batchConfiguration;
+
 	@Qualifier("migrateJob")
 	private final Job migrateJob;
 
-	public DatabaseMigratorMain(JobLauncher jobLauncher, Job migrateJob)
+	public DatabaseMigratorMain(JobLauncher jobLauncher, BatchConfiguration batchConfiguration, Job migrateJob)
 	{
 		this.jobLauncher = jobLauncher;
+		this.batchConfiguration = batchConfiguration;
 		this.migrateJob = migrateJob;
 	}
 
@@ -68,6 +71,8 @@ public class DatabaseMigratorMain implements CommandLineRunner
 	@Override
 	public void run(String... args) throws Exception
 	{
+		batchConfiguration.cleanDatabase();
+
 		jobLauncher.run(migrateJob, new JobParametersBuilder().toJobParameters());
 	}
 }
