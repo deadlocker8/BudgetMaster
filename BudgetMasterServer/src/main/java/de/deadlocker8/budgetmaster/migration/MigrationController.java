@@ -30,11 +30,14 @@ public class MigrationController extends BaseController
 	{
 		public static final String ERROR = "error";
 		public static final String MIGRATION_SETTINGS = "migrationSettings";
+		public static final String STATUS_TEXT_KEY = "statusTextKey";
 	}
 
 	private static class ReturnValues
 	{
 		public static final String MIGRATION_SETTINGS = "migration/migration";
+		public static final String STATUS = "migration/status";
+		public static final String STATUS_FRAGMENT = "migration/statusFragment";
 	}
 
 	private final MigrationService migrationService;
@@ -105,5 +108,18 @@ public class MigrationController extends BaseController
 
 		// TODO: redirect to success page
 		return ReturnValues.MIGRATION_SETTINGS;
+	}
+
+	@GetMapping("/status")
+	public String status()
+	{
+		return ReturnValues.STATUS;
+	}
+
+	@GetMapping("/getStatus")
+	public String getMigrationStatus(Model model)
+	{
+		model.addAttribute(ModelAttributes.STATUS_TEXT_KEY, "migration.status.running");
+		return ReturnValues.STATUS_FRAGMENT;
 	}
 }
