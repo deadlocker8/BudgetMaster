@@ -57,7 +57,7 @@
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
                                 <i class="material-icons prefix">inventory</i>
-                                <input id="migration-database-name" type="text" name="port" <@validation.validation "databaseName"/> value="<#if migrationSettings.databaseName()??>${migrationSettings.databaseName()}</#if>">
+                                <input id="migration-database-name" type="text" name="databaseName" <@validation.validation "databaseName"/> value="<#if migrationSettings.databaseName()??>${migrationSettings.databaseName()}</#if>">
                                 <label for="migration-database-name">${locale.getString("migration.settings.databaseName")}</label>
                             </div>
                         </div>
@@ -65,7 +65,7 @@
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
                                 <i class="material-icons prefix">person</i>
-                                <input id="migration-username" type="text" name="port" <@validation.validation "username"/> value="<#if migrationSettings.username()??>${migrationSettings.username()}</#if>">
+                                <input id="migration-username" type="text" name="username" <@validation.validation "username"/> value="<#if migrationSettings.username()??>${migrationSettings.username()}</#if>">
                                 <label for="migration-username">${locale.getString("migration.settings.username")}</label>
                             </div>
                         </div>
@@ -73,7 +73,7 @@
                         <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
                                 <i class="material-icons prefix">vpn_key</i>
-                                <input id="migration-password" type="text" name="port" <@validation.validation "password"/> value="<#if migrationSettings.password()??>${migrationSettings.password()}</#if>">
+                                <input id="migration-password" type="text" name="password" <@validation.validation "password"/> value="<#if migrationSettings.password()??>${migrationSettings.password()}</#if>">
                                 <label for="migration-password">${locale.getString("migration.settings.password")}</label>
                             </div>
                         </div>
