@@ -5,21 +5,15 @@ import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.Strings;
-import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
-import de.deadlocker8.budgetmaster.utils.notification.Notification;
-import de.deadlocker8.budgetmaster.utils.notification.NotificationType;
-import de.thecodelabs.utils.util.Localization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.IOException;
 
 
 @Controller
@@ -36,6 +30,7 @@ public class MigrationController extends BaseController
 	private static class ReturnValues
 	{
 		public static final String MIGRATION_SETTINGS = "migration/migration";
+		public static final String REDIRECT_STATUS = "redirect:migration/status";
 		public static final String STATUS = "migration/status";
 		public static final String STATUS_FRAGMENT = "migration/statusFragment";
 	}
@@ -67,8 +62,7 @@ public class MigrationController extends BaseController
 	}
 
 	@PostMapping
-	public String post(WebRequest request,
-					   Model model,
+	public String post(Model model,
 					   @ModelAttribute("MigrationSettings") @Valid MigrationSettings migrationSettings, BindingResult bindingResult,
 					   @RequestParam(value = "verificationPassword") String verificationPassword)
 	{
@@ -97,7 +91,7 @@ public class MigrationController extends BaseController
 				.build();
 		migrationService.startMigration(migrationArguments);
 
-		return ReturnValues.STATUS;
+		return ReturnValues.REDIRECT_STATUS;
 	}
 
 	@GetMapping("/status")

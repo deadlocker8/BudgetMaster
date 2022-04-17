@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col s12 m12 l8 offset-l2">
-        <div class="headline-small">${locale.getString(status.getLocalizationKey())}</div>
+        <div class="headline-small migration-status"><i class="${status.getIcon()} ${status.getTextColor()} migration-status-icon"></i> ${locale.getString(status.getLocalizationKey())}</div>
     </div>
 </div>
 

@@ -538,6 +538,18 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     margin-top: 3rem;
 }
 
+.migration-status {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.migration-status-icon {
+    padding-right: 1rem;
+    font-size: 2rem;
+}
+
 .invisible {
     opacity: 0;
 }

@@ -5,8 +5,6 @@ $(document).ready(function()
 
 function getMigrationStatus()
 {
-    console.log("ja")
-
     $.ajax({
         type: 'GET',
         url: $('#migration-status').attr('data-url'),
