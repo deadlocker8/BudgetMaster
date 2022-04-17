@@ -95,8 +95,9 @@ public class MigrationController extends BaseController
 	}
 
 	@GetMapping("/status")
-	public String status()
+	public String status(Model model)
 	{
+		model.addAttribute(ModelAttributes.STATUS, migrationService.getMigrationStatus());
 		return ReturnValues.STATUS;
 	}
 

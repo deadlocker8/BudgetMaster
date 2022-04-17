@@ -12,3 +12,7 @@
     <div class="col s12 m12 l8 offset-l2">
     </div>
 </div>
+
+<script>
+    migrationStatus = "${status.name()}";
+</script>
