@@ -17,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
@@ -48,6 +49,9 @@ class MigrationServiceTest
 	@Mock
 	private DatabaseConfigurationProperties databaseConfig;
 
+	@Mock
+	private TaskScheduler scheduler;
+
 	@TempDir
 	public Path tempFolder;
 
@@ -61,7 +65,7 @@ class MigrationServiceTest
 
 		Mockito.when(settingsService.getSettings()).thenReturn(settings);
 
-		final MigrationService migrationService = new MigrationService(settingsService, tempFolder, accountRepository, categoryRepository, transactionRepository, templateRepository, databaseConfig);
+		final MigrationService migrationService = new MigrationService(settingsService, tempFolder, accountRepository, categoryRepository, transactionRepository, templateRepository, databaseConfig, scheduler);
 		assertThat(migrationService.needToShowMigrationDialog("migration")).isFalse();
 	}
 
@@ -76,7 +80,7 @@ class MigrationServiceTest
 
 		Mockito.when(settingsService.getSettings()).thenReturn(settings);
 
-		final MigrationService migrationService = new MigrationService(settingsService, tempFolder, accountRepository, categoryRepository, transactionRepository, templateRepository, databaseConfig);
+		final MigrationService migrationService = new MigrationService(settingsService, tempFolder, accountRepository, categoryRepository, transactionRepository, templateRepository, databaseConfig, scheduler);
 		assertThat(migrationService.needToShowMigrationDialog(Mappings.TRANSACTIONS)).isFalse();
 	}
 
@@ -91,7 +95,7 @@ class MigrationServiceTest
 		Mockito.when(settingsService.getSettings()).thenReturn(settings);
 		Mockito.when(categoryRepository.findAllByTypeOrderByNameAsc(CategoryType.CUSTOM)).thenReturn(List.of(new Category("custom category", "ff0000", CategoryType.CUSTOM)));
 
-		final MigrationService migrationService = new MigrationService(settingsService, tempFolder, accountRepository, categoryRepository, transactionRepository, templateRepository, databaseConfig);
+		final MigrationService migrationService = new MigrationService(settingsService, tempFolder, accountRepository, categoryRepository, transactionRepository, templateRepository, databaseConfig, scheduler);
 		assertThat(migrationService.needToShowMigrationDialog(Mappings.TRANSACTIONS)).isFalse();
 	}
 
@@ -102,7 +106,7 @@ class MigrationServiceTest
 
 		Mockito.when(settingsService.getSettings()).thenReturn(settings);
 
-		final MigrationService migrationService = new MigrationService(settingsService, tempFolder, accountRepository, categoryRepository, transactionRepository, templateRepository, databaseConfig);
+		final MigrationService migrationService = new MigrationService(settingsService, tempFolder, accountRepository, categoryRepository, transactionRepository, templateRepository, databaseConfig, scheduler);
 		assertThat(migrationService.needToShowMigrationDialog(Mappings.TRANSACTIONS)).isFalse();
 	}
 
@@ -116,7 +120,7 @@ class MigrationServiceTest
 
 		Mockito.when(settingsService.getSettings()).thenReturn(settings);
 
-		final MigrationService migrationService = new MigrationService(settingsService, tempFolder, accountRepository, categoryRepository, transactionRepository, templateRepository, databaseConfig);
+		final MigrationService migrationService = new MigrationService(settingsService, tempFolder, accountRepository, categoryRepository, transactionRepository, templateRepository, databaseConfig, scheduler);
 		assertThat(migrationService.needToShowMigrationDialog(Mappings.TRANSACTIONS)).isTrue();
 	}
 }

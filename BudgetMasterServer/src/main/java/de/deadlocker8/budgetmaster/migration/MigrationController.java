@@ -30,7 +30,7 @@ public class MigrationController extends BaseController
 	{
 		public static final String ERROR = "error";
 		public static final String MIGRATION_SETTINGS = "migrationSettings";
-		public static final String STATUS_TEXT_KEY = "statusTextKey";
+		public static final String STATUS = "status";
 	}
 
 	private static class ReturnValues
@@ -90,24 +90,14 @@ public class MigrationController extends BaseController
 			return ReturnValues.MIGRATION_SETTINGS;
 		}
 
-		try
-		{
-			final MigrationArguments migrationArguments = new MigrationArguments.MigrationArgumentBuilder()
-					.withSourceUrl(migrationService.getDatabaseFromPreviousVersionPathWithoutExtension().toString())
-					.withDestinationUrl(migrationSettings.hostname(), migrationSettings.port(), migrationSettings.databaseName())
-					.withDestinationCredentials(migrationSettings.username(), migrationSettings.password())
-					.build();
-			// TODO: run non-blocking and redirect to progress page
-			migrationService.runMigration(migrationArguments);
-		}
-		catch(MigrationException | IOException e)
-		{
-			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.migration.error", e.getMessage()), NotificationType.ERROR));
-			return ReturnValues.MIGRATION_SETTINGS;
-		}
+		final MigrationArguments migrationArguments = new MigrationArguments.MigrationArgumentBuilder()
+				.withSourceUrl(migrationService.getDatabaseFromPreviousVersionPathWithoutExtension().toString())
+				.withDestinationUrl(migrationSettings.hostname(), migrationSettings.port(), migrationSettings.databaseName())
+				.withDestinationCredentials(migrationSettings.username(), migrationSettings.password())
+				.build();
+		migrationService.startMigration(migrationArguments);
 
-		// TODO: redirect to success page
-		return ReturnValues.MIGRATION_SETTINGS;
+		return ReturnValues.STATUS;
 	}
 
 	@GetMapping("/status")
@@ -119,7 +109,7 @@ public class MigrationController extends BaseController
 	@GetMapping("/getStatus")
 	public String getMigrationStatus(Model model)
 	{
-		model.addAttribute(ModelAttributes.STATUS_TEXT_KEY, "migration.status.running");
+		model.addAttribute(ModelAttributes.STATUS, migrationService.getMigrationStatus());
 		return ReturnValues.STATUS_FRAGMENT;
 	}
 }
