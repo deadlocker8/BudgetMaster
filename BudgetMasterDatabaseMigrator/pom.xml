@@ -14,6 +14,8 @@
     <properties>
         <h2database.version>1.4.199</h2database.version>
         <commons-cli.version>1.5.0</commons-cli.version>
+
+        <project.artifactName>${project.artifactId}-v${project.version}</project.artifactName>
     </properties>
 
     <dependencies>
@@ -54,4 +56,23 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <outputDirectory>${project.outputDirectory}</outputDirectory>
+                    <finalName>${project.artifactName}</finalName>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
