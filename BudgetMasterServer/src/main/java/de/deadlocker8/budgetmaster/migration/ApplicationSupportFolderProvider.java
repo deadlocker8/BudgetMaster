@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.migration;
 
-import de.deadlocker8.budgetmaster.Main;
+import de.deadlocker8.budgetmaster.BudgetMasterServerMain;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +12,6 @@ public class ApplicationSupportFolderProvider
 	@Bean("applicationSupportFolder")
 	public Path applicationSupportFolder()
 	{
-		return Main.getApplicationSupportFolder();
+		return BudgetMasterServerMain.getApplicationSupportFolder();
 	}
 }

@@ -28,9 +28,9 @@ import java.util.*;
 @EnableScheduling
 @SpringBootApplication
 @EnableConfigurationProperties(DatabaseConfigurationProperties.class)
-public class Main extends SpringBootServletInitializer implements ApplicationRunner
+public class BudgetMasterServerMain extends SpringBootServletInitializer implements ApplicationRunner
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(BudgetMasterServerMain.class);
 
 	static
 	{
@@ -80,7 +80,7 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 			try
 			{
 				LOGGER.warn("BudgetMaster settings file ({}) is missing. A default file will be created. Please fill in your settings.", settingsPath);
-				Files.copy(Main.class.getClassLoader().getResourceAsStream("config/templates/settings.properties"), settingsPath, StandardCopyOption.REPLACE_EXISTING);
+				Files.copy(BudgetMasterServerMain.class.getClassLoader().getResourceAsStream("config/templates/settings.properties"), settingsPath, StandardCopyOption.REPLACE_EXISTING);
 				System.exit(1);
 			}
 			catch(IOException e)
@@ -158,7 +158,7 @@ public class Main extends SpringBootServletInitializer implements ApplicationRun
 		args = new String[arguments.size()];
 		args = arguments.toArray(args);
 
-		SpringApplication.run(Main.class, args);
+		SpringApplication.run(BudgetMasterServerMain.class, args);
 	}
 
 	@Override

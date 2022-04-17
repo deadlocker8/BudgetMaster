@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.utils;
 
-import de.deadlocker8.budgetmaster.Main;
+import de.deadlocker8.budgetmaster.BudgetMasterServerMain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ public class DatabaseConfiguration
 			final StringBuilder errorMessageBuilder = new StringBuilder("BudgetMaster failed to start due to missing database settings!");
 			errorMessageBuilder.append("\n");
 			errorMessageBuilder.append("Your settings.properties file in \"");
-			errorMessageBuilder.append(Main.getApplicationSupportFolder());
+			errorMessageBuilder.append(BudgetMasterServerMain.getApplicationSupportFolder());
 			errorMessageBuilder.append("\" is missing the following settings:");
 			errorMessageBuilder.append("\n");
 

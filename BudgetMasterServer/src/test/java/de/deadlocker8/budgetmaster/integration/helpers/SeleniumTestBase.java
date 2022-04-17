@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.integration.helpers;
 
-import de.deadlocker8.budgetmaster.Main;
+import de.deadlocker8.budgetmaster.BudgetMasterServerMain;
 import de.deadlocker8.budgetmaster.TestConstants;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +18,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 
 @Testcontainers
-@SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = BudgetMasterServerMain.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext
 @SeleniumTest
 @ActiveProfiles("test")

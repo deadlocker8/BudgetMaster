@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.backup;
 
-import de.deadlocker8.budgetmaster.Main;
+import de.deadlocker8.budgetmaster.BudgetMasterServerMain;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
@@ -21,7 +21,7 @@ public abstract class BackupTask implements Runnable
 		this.databaseService = databaseService;
 		this.settingsService = settingsService;
 
-		final Path applicationSupportFolder = Main.getApplicationSupportFolder();
+		final Path applicationSupportFolder = BudgetMasterServerMain.getApplicationSupportFolder();
 		this.backupFolder = applicationSupportFolder.resolve("backups");
 
 		this.backupStatus = BackupStatus.UNKNOWN;

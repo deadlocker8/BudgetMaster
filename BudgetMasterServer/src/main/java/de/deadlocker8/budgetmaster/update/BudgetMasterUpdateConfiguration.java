@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.update;
 
-import de.deadlocker8.budgetmaster.Main;
+import de.deadlocker8.budgetmaster.BudgetMasterServerMain;
 import de.thecodelabs.storage.settings.Storage;
 import de.thecodelabs.storage.settings.StorageTypes;
 import de.thecodelabs.utils.util.SystemUtils;
@@ -59,7 +59,7 @@ public class BudgetMasterUpdateConfiguration
 	@Bean
 	public UpdateService updateService()
 	{
-		ClassLoader classLoader = Main.class.getClassLoader();
+		ClassLoader classLoader = BudgetMasterServerMain.class.getClassLoader();
 		Repository repository = Storage.load(classLoader.getResourceAsStream("repositories.json"), StorageTypes.JSON, Repository.class);
 
 		VersionizerItem versionizerItem = new VersionizerItem(repository, executablePath);

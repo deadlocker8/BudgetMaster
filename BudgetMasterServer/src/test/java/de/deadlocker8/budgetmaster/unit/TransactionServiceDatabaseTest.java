@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.unit;
 
-import de.deadlocker8.budgetmaster.Main;
+import de.deadlocker8.budgetmaster.BudgetMasterServerMain;
 import de.deadlocker8.budgetmaster.TestConstants;
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountRepository;
@@ -35,7 +35,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = Main.class)
+@SpringBootTest(classes = BudgetMasterServerMain.class)
 @ActiveProfiles("test")
 @Transactional
 @Testcontainers
