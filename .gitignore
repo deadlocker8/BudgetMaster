@@ -15,3 +15,4 @@ certs/
 **/main/WEB-INF
 **/main/META-INF
 BudgetMasterServer/screenshots/
+BudgetMasterServer/src/main/resources/BudgetMasterDatabaseMigrator*.jar

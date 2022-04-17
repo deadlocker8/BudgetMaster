@@ -14,8 +14,6 @@
     <properties>
         <h2database.version>1.4.199</h2database.version>
         <commons-cli.version>1.5.0</commons-cli.version>
-
-        <project.artifactName>${project.artifactId}-v${project.version}</project.artifactName>
     </properties>
 
     <dependencies>
@@ -62,8 +60,8 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <outputDirectory>${project.outputDirectory}</outputDirectory>
-                    <finalName>${project.artifactName}</finalName>
+                    <outputDirectory>${basedir}/../BudgetMasterServer/src/main/resources</outputDirectory>
+                    <finalName>${project.artifactId}</finalName>
                 </configuration>
                 <executions>
                     <execution>
