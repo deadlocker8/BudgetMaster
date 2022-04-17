@@ -77,4 +77,7 @@ public class DestinationSettings
 
 	@Column(name = "whats_new_shown_for_current_version")
 	private Boolean whatsNewShownForCurrentVersion;
+
+	@Column(name = "migration_declined")
+	private Boolean migrationDeclined = false;
 }
