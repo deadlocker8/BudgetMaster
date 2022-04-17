@@ -68,8 +68,14 @@
                         </div>
 
                         <div class="row">
+                            <div class="col s12 m12 l8 offset-l2">
+                                ${locale.getString("migration.settings.verification.password.description")}
+                            </div>
+                        </div>
+
+                        <div class="row">
                             <div class="input-field col s12 m12 l8 offset-l2">
-                                <i class="material-icons prefix">vpn_key</i>
+                                <i class="material-icons prefix">lock_open</i>
                                 <input id="migration-verification-password" type="password" name="verificationPassword" <@validation.validation "verificationPassword"/> value="">
                                 <label for="migration-verification-password">${locale.getString("migration.settings.verification.password")}</label>
                             </div>
@@ -81,7 +87,7 @@
                             </div>
 
                             <div class="col m6 l4 left-align">
-                                <@header.buttonSubmit name='action' icon='merge' localizationKey='info.button.migration' id='buttonMigrate' color='green'/>
+                                <@header.buttonSubmit name='action' icon='merge' localizationKey='info.button.migration.start' id='buttonMigrate' color='green'/>
                             </div>
                         </div>
                     </form>
