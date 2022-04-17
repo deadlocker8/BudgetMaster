@@ -37,6 +37,7 @@ public class MigrationService
 
 	public boolean needToShowMigrationDialog(String loadedPage)
 	{
+		loadedPage = "/" + loadedPage;
 		if(loadedPage.equals(Mappings.MIGRATION))
 		{
 			return false;
