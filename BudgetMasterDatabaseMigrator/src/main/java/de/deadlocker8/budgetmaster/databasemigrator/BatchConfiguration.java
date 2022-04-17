@@ -178,20 +178,18 @@ public class BatchConfiguration
 
 				.next(createStepForReportSettingsMigration())
 				.next(createStepForReportColumnMigration())
-				.next(createStepForReportSettingsMigration())
 
 				.next(createStepForSettingsMigration())
-
-				.next(createStepForTagMigration())
-				.next(createStepForTemplateTagMigration())
-				.next(createStepForTransactionTagMigration())
-
 				.next(createStepForUserMigration())
 
 				.next(createStepForTransactionMigration())
 
-				.next(createStepForTemplateMigration())
 				.next(createStepForTemplateGroupMigration())
+				.next(createStepForTemplateMigration())
+
+				.next(createStepForTagMigration())
+				.next(createStepForTemplateTagMigration())
+				.next(createStepForTransactionTagMigration())
 
 				.listener(new GenericJobListener())
 				.build();
