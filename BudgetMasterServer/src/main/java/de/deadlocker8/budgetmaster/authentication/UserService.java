@@ -14,10 +14,15 @@ public class UserService
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
 	public static final String DEFAULT_PASSWORD = "BudgetMaster";
+	private static final String DEFAULT_USERNAME = "Default";
+
+	private final UserRepository userRepository;
 
 	@Autowired
 	public UserService(UserRepository userRepository, AccountService accountService)
 	{
+		this.userRepository = userRepository;
+
 		if(ProgramArgs.getArgs().contains("--resetPassword"))
 		{
 			LOGGER.info("Password reset");
@@ -26,13 +31,21 @@ public class UserService
 
 		if(userRepository.findAll().isEmpty())
 		{
-			BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-			String encryptedPassword = bCryptPasswordEncoder.encode(DEFAULT_PASSWORD);
-			User user = new User("Default", encryptedPassword);
+			final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+			final String encryptedPassword = bCryptPasswordEncoder.encode(DEFAULT_PASSWORD);
+			final User user = new User(DEFAULT_USERNAME, encryptedPassword);
 			userRepository.save(user);
 			LOGGER.info("Created default user");
 
 			accountService.selectAccount(accountService.getRepository().findByIsSelected(true).getID());
 		}
+	}
+
+	public boolean isPasswordValid(String password)
+	{
+		final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
+		final User user = userRepository.findByName(DEFAULT_USERNAME);
+		return bCryptPasswordEncoder.matches(password, user.getPassword());
 	}
 }

@@ -43,6 +43,8 @@ public class Strings
 	public static final String WARNING_EMPTY_MIGRATION_USERNAME = "warning.empty.migration.username";
 	public static final String WARNING_EMPTY_MIGRATION_PASSWORD = "warning.empty.migration.password";
 
+	public static final String WARNING_WRONG_MIGRATION_VERIFICATION_PASSWORD = "migration.settings.verification.password.wrong";
+
 
 	//REPORT
 	public static final String REPORT_FOOTER_LEFT = "report.footer.left";
