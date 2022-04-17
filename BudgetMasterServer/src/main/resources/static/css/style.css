@@ -48,11 +48,13 @@ main {
 }
 
 /* label focus color */
-.input-field input[type=text]:focus + label {
+.input-field input[type=text]:focus + label,
+.input-field input[type=number]:focus + label {
     color: var(--color-blue) !important;
 }
 
 /* label underline focus color */
+.input-field input[type=text]:focus:not(.invalid),
 .input-field input[type=text]:focus:not(.invalid) {
     border-bottom: 1px solid var(--color-blue) !important;
     box-shadow: 0 1px 0 0 #CCCCCC !important;
@@ -642,11 +644,6 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     box-shadow: 0 1px 0 0 #CCCCCC;
 }
 
-/* input password label color */
-[data-theme="dark"] .input-field input[type=text] + label {
-    color: var(--color-white) !important;
-}
-
 [data-theme="dark"] .background-color {
     background-color: var(--color-background) !important;
 }
@@ -724,23 +721,30 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
 
 /* input text color */
 [data-theme="dark"] .input-field input[type=text] {
-    color: #FFFFFF;
+    color: var(--color-white);
     border-bottom: 1px solid #FFFFFF;
     box-shadow: 0 1px 0 0 #CCCCCC;
 }
 
-/* input password label color */
-[data-theme="dark"] .input-field input[type=text] + label {
-    color: #FFFFFF !important;
+/* input label color */
+[data-theme="dark"] .input-field input[type=text] + label,
+[data-theme="dark"] .input-field input[type=number] + label {
+    color: var(--color-white) !important;
+}
+
+[data-theme="dark"] .input-field input[type=number] {
+    color: var(--color-white) !important;
 }
 
 /* label underline focus color */
-[data-theme="dark"] .input-field input[type=text]:focus:not(.invalid) {
+[data-theme="dark"] .input-field input[type=text]:focus:not(.invalid),
+[data-theme="dark"] .input-field input[type=number]:focus:not(.invalid) {
     border-bottom: 1px solid var(--color-blue) !important;
     box-shadow: 0 1px 0 0 var(--color-blue) !important;
 }
 
-[data-theme="dark"] .input-field input[type=text].invalid {
+[data-theme="dark"] .input-field input[type=text].invalid,
+[data-theme="dark"] .input-field input[type=number].invalid {
     border-bottom: 1px solid #F44336 !important;
     box-shadow: 0 1px 0 0 #F44336 !important;
 }
@@ -761,7 +765,7 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
 
 /* input password label color */
 [data-theme="dark"] .input-field input[type=password] + label {
-    color: #FFFFFF !important;
+    color: var(--color-white) !important;
 }
 
 /* label underline focus color */
