@@ -58,7 +58,7 @@ public class MigrationController extends BaseController
 	@GetMapping
 	public String migrate(Model model)
 	{
-		model.addAttribute(ModelAttributes.MIGRATION_SETTINGS, new MigrationSettings(null, null, null, null, null));
+		model.addAttribute(ModelAttributes.MIGRATION_SETTINGS, migrationService.getPrefilledMigrationSettings());
 		return ReturnValues.MIGRATION_SETTINGS;
 	}
 

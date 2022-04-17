@@ -10,6 +10,7 @@ import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.templates.TemplateRepository;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import de.deadlocker8.budgetmaster.unit.helpers.LocalizedTest;
+import de.deadlocker8.budgetmaster.utils.DatabaseConfigurationProperties;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,6 +45,9 @@ class MigrationServiceTest
 	@Mock
 	private TemplateRepository templateRepository;
 
+	@Mock
+	private DatabaseConfigurationProperties databaseConfig;
+
 	@TempDir
 	public Path tempFolder;
 
@@ -57,7 +61,7 @@ class MigrationServiceTest
 
 		Mockito.when(settingsService.getSettings()).thenReturn(settings);
 
-		final MigrationService migrationService = new MigrationService(settingsService, tempFolder, accountRepository, categoryRepository, transactionRepository, templateRepository);
+		final MigrationService migrationService = new MigrationService(settingsService, tempFolder, accountRepository, categoryRepository, transactionRepository, templateRepository, databaseConfig);
 		assertThat(migrationService.needToShowMigrationDialog("migration")).isFalse();
 	}
 
@@ -72,7 +76,7 @@ class MigrationServiceTest
 
 		Mockito.when(settingsService.getSettings()).thenReturn(settings);
 
-		final MigrationService migrationService = new MigrationService(settingsService, tempFolder, accountRepository, categoryRepository, transactionRepository, templateRepository);
+		final MigrationService migrationService = new MigrationService(settingsService, tempFolder, accountRepository, categoryRepository, transactionRepository, templateRepository, databaseConfig);
 		assertThat(migrationService.needToShowMigrationDialog(Mappings.TRANSACTIONS)).isFalse();
 	}
 
@@ -87,7 +91,7 @@ class MigrationServiceTest
 		Mockito.when(settingsService.getSettings()).thenReturn(settings);
 		Mockito.when(categoryRepository.findAllByTypeOrderByNameAsc(CategoryType.CUSTOM)).thenReturn(List.of(new Category("custom category", "ff0000", CategoryType.CUSTOM)));
 
-		final MigrationService migrationService = new MigrationService(settingsService, tempFolder, accountRepository, categoryRepository, transactionRepository, templateRepository);
+		final MigrationService migrationService = new MigrationService(settingsService, tempFolder, accountRepository, categoryRepository, transactionRepository, templateRepository, databaseConfig);
 		assertThat(migrationService.needToShowMigrationDialog(Mappings.TRANSACTIONS)).isFalse();
 	}
 
@@ -98,7 +102,7 @@ class MigrationServiceTest
 
 		Mockito.when(settingsService.getSettings()).thenReturn(settings);
 
-		final MigrationService migrationService = new MigrationService(settingsService, tempFolder, accountRepository, categoryRepository, transactionRepository, templateRepository);
+		final MigrationService migrationService = new MigrationService(settingsService, tempFolder, accountRepository, categoryRepository, transactionRepository, templateRepository, databaseConfig);
 		assertThat(migrationService.needToShowMigrationDialog(Mappings.TRANSACTIONS)).isFalse();
 	}
 
@@ -112,7 +116,7 @@ class MigrationServiceTest
 
 		Mockito.when(settingsService.getSettings()).thenReturn(settings);
 
-		final MigrationService migrationService = new MigrationService(settingsService, tempFolder, accountRepository, categoryRepository, transactionRepository, templateRepository);
+		final MigrationService migrationService = new MigrationService(settingsService, tempFolder, accountRepository, categoryRepository, transactionRepository, templateRepository, databaseConfig);
 		assertThat(migrationService.needToShowMigrationDialog(Mappings.TRANSACTIONS)).isTrue();
 	}
 }

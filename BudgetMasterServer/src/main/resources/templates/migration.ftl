@@ -40,6 +40,17 @@
                                 </div>
                             </div>
 
+                            <div class="row notification-row">
+                                <div class="col s12 center-align">
+                                    <div class="notification-wrapper">
+                                        <div class="notification background-grey text-black">
+                                            <i class="fas fa-info notification-item"></i>
+                                            <span class="notification-item left-align">${locale.getString("migration.settings.description.info")}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="row">
                                 <div class="input-field col s12 m12 l8 offset-l2">
                                     <i class="material-icons prefix">public</i>

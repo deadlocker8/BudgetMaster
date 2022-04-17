@@ -6,6 +6,7 @@ import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.templates.TemplateRepository;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
+import de.deadlocker8.budgetmaster.utils.DatabaseConfigurationProperties;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,9 +36,10 @@ public class MigrationService
 	private final CategoryRepository categoryRepository;
 	private final TransactionRepository transactionRepository;
 	private final TemplateRepository templateRepository;
+	private final DatabaseConfigurationProperties databaseConfig;
 
 	@Autowired
-	public MigrationService(SettingsService settingsService, Path applicationSupportFolder, AccountRepository accountRepository, CategoryRepository categoryRepository, TransactionRepository transactionRepository, TemplateRepository templateRepository)
+	public MigrationService(SettingsService settingsService, Path applicationSupportFolder, AccountRepository accountRepository, CategoryRepository categoryRepository, TransactionRepository transactionRepository, TemplateRepository templateRepository, DatabaseConfigurationProperties databaseConfig)
 	{
 		this.settingsService = settingsService;
 		this.applicationSupportFolder = applicationSupportFolder;
@@ -45,6 +47,12 @@ public class MigrationService
 		this.categoryRepository = categoryRepository;
 		this.transactionRepository = transactionRepository;
 		this.templateRepository = templateRepository;
+		this.databaseConfig = databaseConfig;
+	}
+
+	public MigrationSettings getPrefilledMigrationSettings()
+	{
+		return new MigrationSettings(databaseConfig.getHostname(), databaseConfig.getPort(), databaseConfig.getDatabaseName(), databaseConfig.getUsername(), databaseConfig.getPassword());
 	}
 
 	public boolean needToShowMigrationDialog(String loadedPage)
