@@ -33,13 +33,11 @@ public class SettingsService
 	}
 
 	@PostConstruct
-	@Transactional
 	public void postInit()
 	{
 		this.createDefaultSettingsIfNotExists();
 	}
 
-	@Transactional
 	public void createDefaultSettingsIfNotExists()
 	{
 		if(settingsRepository.findById(1).isEmpty())
@@ -116,6 +114,8 @@ public class SettingsService
 		{
 			settings.setMigrationDeclined(defaultSettings.getMigrationDeclined());
 		}
+
+		settingsRepository.save(settings);
 	}
 
 	public Settings getSettings()
