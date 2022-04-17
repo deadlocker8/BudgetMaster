@@ -18,9 +18,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -30,6 +32,7 @@ public class MigrationService
 
 	public static final String PREVIOUS_DATABASE_FILE_NAME = "budgetmaster.mv.db";
 	public static final String PREVIOUS_DATABASE_FILE_NAME_WITHOUT_EXTENSION = "budgetmaster";
+	private static final String BUDGET_MASTER_MIGRATOR_JAR = "BudgetMasterDatabaseMigrator.jar";
 	private final SettingsService settingsService;
 	private final Path applicationSupportFolder;
 	private final AccountRepository accountRepository;
@@ -111,21 +114,42 @@ public class MigrationService
 		return Files.exists(getDatabaseFromPreviousVersionPath());
 	}
 
-	public String runMigration(MigrationArguments migrationArguments) throws MigrationException
+	public String runMigration(MigrationArguments migrationArguments) throws MigrationException, IOException
 	{
-		// TODO: extract BudgetMasterMigrator.jar from resources to tmp folder
-
-		return runMigrator(migrationArguments);
+		final Path migratorPath = extractMigrator();
+		try
+		{
+			return runMigrator(migratorPath, migrationArguments);
+		}
+		finally
+		{
+			Files.deleteIfExists(migratorPath);
+		}
 	}
 
-	private String runMigrator(MigrationArguments migrationArguments) throws MigrationException
+	private Path extractMigrator() throws MigrationException
+	{
+		final Path destinationPath = applicationSupportFolder.resolve(BUDGET_MASTER_MIGRATOR_JAR);
+
+		try
+		{
+			Files.copy(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(BUDGET_MASTER_MIGRATOR_JAR)), destinationPath, StandardCopyOption.REPLACE_EXISTING);
+			return destinationPath;
+		}
+		catch(IOException e)
+		{
+			throw new MigrationException(MessageFormat.format("Could not copy migrator to {0}", destinationPath), e);
+		}
+	}
+
+	private String runMigrator(Path migratorPath, MigrationArguments migrationArguments) throws MigrationException
 	{
 		final String javaCommand = determineJavaCommand();
 
 		final List<String> command = new ArrayList<>();
 		command.add(MessageFormat.format("\"{0}\"", javaCommand));
 		command.add("-jar");
-		command.add("C:/Programmierung/BudgetMaster/BudgetMasterDatabaseMigrator/target/BudgetMasterDatabaseMigrator-v2.10.0.jar");
+		command.add(migratorPath.toString());
 		command.addAll(migrationArguments.getArguments());
 		LOGGER.debug("Starting migration with command: {}", command);
 

@@ -19,6 +19,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 
 
 @Controller
@@ -96,7 +97,7 @@ public class MigrationController extends BaseController
 			// TODO: run non-blocking and redirect to progress page
 			migrationService.runMigration(migrationArguments);
 		}
-		catch(MigrationException e)
+		catch(MigrationException | IOException e)
 		{
 			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.migration.error", e.getMessage()), NotificationType.ERROR));
 			return ReturnValues.MIGRATION_SETTINGS;
