@@ -1,5 +1,6 @@
-package de.deadlocker8.budgetmaster.controller;
+package de.deadlocker8.budgetmaster.migration;
 
+import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import org.springframework.beans.factory.annotation.Autowired;
