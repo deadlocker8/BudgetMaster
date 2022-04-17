@@ -58,7 +58,7 @@ class MigrationServiceTest
 		Mockito.when(settingsService.getSettings()).thenReturn(settings);
 
 		final MigrationService migrationService = new MigrationService(settingsService, tempFolder, accountRepository, categoryRepository, transactionRepository, templateRepository);
-		assertThat(migrationService.needToShowMigrationDialog(Mappings.MIGRATION)).isFalse();
+		assertThat(migrationService.needToShowMigrationDialog("migration")).isFalse();
 	}
 
 	@Test
