@@ -19,6 +19,7 @@ import org.springframework.core.io.Resource;
 
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,7 +63,7 @@ class MigrateSettingsTest extends MigratorTestBase
 		assertThat(stepExecution.getReadCount()).isEqualTo(1);
 		assertThat(stepExecution.getCommitCount()).isEqualTo(2);
 
-		final DestinationSettings settings = new DestinationSettings(1, "€", false, 1, false, true, true, true, "2022-03-15", 10, 0, 1, 0, 3, "", "", "", "", 35, false);
+		final DestinationSettings settings = new DestinationSettings(1, "€", false, 1, false, true, true, true, LocalDate.of(2022, 3, 15), 10, 0, 1, 0, 3, "", "", "", "", 35, false);
 
 		final List<DestinationSettings> settingsItems = settingsRepository.findAll();
 		assertThat(settingsItems)

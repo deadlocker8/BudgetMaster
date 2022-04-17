@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = TableNames.SETTINGS)
@@ -42,7 +43,7 @@ public class DestinationSettings
 	private boolean backupReminderActivated;
 
 	@Column(name = "last_backup_reminder_date")
-	private String lastBackupReminderDate;
+	private LocalDate lastBackupReminderDate;
 
 	@Column(name = "search_items_per_page")
 	private Integer searchItemsPerPage;

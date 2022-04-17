@@ -60,7 +60,7 @@ public class SettingsReader extends BaseReader<DestinationSettings>
 			settings.setShowCategoriesAsCircles(rs.getBoolean(DatabaseColumns.SHOW_CATEGORIES_AS_CIRCLES));
 			settings.setAutoUpdateCheckEnabled(rs.getBoolean(DatabaseColumns.AUTO_UPDATE_CHECK_ENABLED));
 			settings.setBackupReminderActivated(rs.getBoolean(DatabaseColumns.BACKUP_REMINDER_ACTIVATED));
-			settings.setLastBackupReminderDate(rs.getString(DatabaseColumns.LAST_BACKUP_REMINDER_DATE));
+			settings.setLastBackupReminderDate(rs.getDate(DatabaseColumns.LAST_BACKUP_REMINDER_DATE).toLocalDate());
 			settings.setSearchItemsPerPage(rs.getInt(DatabaseColumns.SEARCH_ITEMS_PER_PAGE));
 
 			settings.setAutoBackupStrategy(rs.getInt(DatabaseColumns.AUTO_BACKUP_STRATEGY));
