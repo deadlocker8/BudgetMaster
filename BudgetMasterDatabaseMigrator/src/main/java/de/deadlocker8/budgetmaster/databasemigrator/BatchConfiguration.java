@@ -149,7 +149,7 @@ public class BatchConfiguration
 	}
 
 	@Bean(name = "migrateJob")
-	public Job createJob()
+	public Job createMigrateJob()
 	{
 		return jobBuilderFactory.get("Migrate from h2 to postgresql")
 				.incrementer(new RunIdIncrementer())
@@ -176,6 +176,7 @@ public class BatchConfiguration
 
 				.next(createStepForRepeatingOptionMigration())
 
+				.next(createStepForReportSettingsMigration())
 				.next(createStepForReportColumnMigration())
 				.next(createStepForReportSettingsMigration())
 

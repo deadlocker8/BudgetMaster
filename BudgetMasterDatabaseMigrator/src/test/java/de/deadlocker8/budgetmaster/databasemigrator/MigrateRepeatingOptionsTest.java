@@ -19,6 +19,7 @@ import org.springframework.core.io.Resource;
 
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +61,7 @@ class MigrateRepeatingOptionsTest extends MigratorTestBase
 		assertThat(stepExecution.getReadCount()).isEqualTo(6);
 		assertThat(stepExecution.getCommitCount()).isEqualTo(7);
 
-		final DestinationRepeatingOption repeatingOption = new DestinationRepeatingOption(4, "2022-03-23 00:00:00", 4, 4);
+		final DestinationRepeatingOption repeatingOption = new DestinationRepeatingOption(4, LocalDate.of(2022, 3, 23), 4, 4);
 
 		final List<DestinationRepeatingOption> destinationRepeatingOptions = repeatingOptionRepository.findAll();
 		assertThat(destinationRepeatingOptions)

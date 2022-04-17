@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = TableNames.REPORT_SETTINGS)
@@ -20,10 +21,9 @@ import javax.persistence.Table;
 public class DestinationReportSettings
 {
 	@Id
-
 	private int ID;
 
-	private String date;
+	private LocalDate date;
 
 	@Column(name = "include_budget")
 	private boolean includeBudget;

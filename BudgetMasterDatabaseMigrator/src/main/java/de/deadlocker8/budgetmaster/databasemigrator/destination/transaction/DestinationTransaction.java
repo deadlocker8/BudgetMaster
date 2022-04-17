@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = TableNames.TRANSACTION)
@@ -20,7 +21,6 @@ import javax.persistence.Table;
 public class DestinationTransaction
 {
 	@Id
-
 	private int ID;
 
 	private Integer amount;
@@ -28,7 +28,7 @@ public class DestinationTransaction
 	@Column(name = "is_expenditure")
 	private Boolean isExpenditure;
 
-	private String date;
+	private LocalDate date;
 
 	@Column(name = "account_id")
 	private Integer accountID;

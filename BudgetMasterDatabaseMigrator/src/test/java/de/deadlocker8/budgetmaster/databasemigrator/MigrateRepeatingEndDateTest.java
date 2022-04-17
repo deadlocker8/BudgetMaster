@@ -19,6 +19,7 @@ import org.springframework.core.io.Resource;
 
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +61,7 @@ class MigrateRepeatingEndDateTest extends MigratorTestBase
 		assertThat(stepExecution.getReadCount()).isEqualTo(1);
 		assertThat(stepExecution.getCommitCount()).isEqualTo(2);
 
-		final DestinationRepeatingEndDate endDate = new DestinationRepeatingEndDate(4, "2022-03-31 00:00:00");
+		final DestinationRepeatingEndDate endDate = new DestinationRepeatingEndDate(4, LocalDate.of(2022, 3, 31));
 
 		final List<DestinationRepeatingEndDate> repeatingEndDates = repeatingEndDateRepository.findAll();
 		assertThat(repeatingEndDates)

@@ -37,7 +37,7 @@ public class RepeatingOptionReader extends BaseReader<DestinationRepeatingOption
 		{
 			final DestinationRepeatingOption repeatingOption = new DestinationRepeatingOption();
 			repeatingOption.setID(rs.getInt(DatabaseColumns.ID));
-			repeatingOption.setStartDate(rs.getString(DatabaseColumns.START_DATE));
+			repeatingOption.setStartDate(rs.getDate(DatabaseColumns.START_DATE).toLocalDate());
 			repeatingOption.setEndOptionID(rs.getInt(DatabaseColumns.END_OPTION_ID));
 			repeatingOption.setModifierID(rs.getInt(DatabaseColumns.MODIFIER_ID));
 			return repeatingOption;

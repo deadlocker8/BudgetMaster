@@ -44,7 +44,7 @@ public class TransactionReader extends BaseReader<DestinationTransaction>
 			transaction.setID(rs.getInt(DatabaseColumns.ID));
 			transaction.setAmount(rs.getInt(DatabaseColumns.AMOUNT));
 			transaction.setIsExpenditure(rs.getBoolean(DatabaseColumns.IS_EXPENDITURE));
-			transaction.setDate(rs.getString(DatabaseColumns.DATE));
+			transaction.setDate(rs.getDate(DatabaseColumns.DATE).toLocalDate());
 			transaction.setAccountID(rs.getInt(DatabaseColumns.ACCOUNT_ID));
 			transaction.setCategoryID(rs.getInt(DatabaseColumns.CATEGORY_ID));
 			transaction.setName(rs.getString(DatabaseColumns.NAME));

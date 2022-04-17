@@ -21,6 +21,7 @@ import org.springframework.core.io.Resource;
 
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,10 +63,10 @@ class MigrateTransactionsTest extends MigratorTestBase
 		assertThat(stepExecution.getReadCount()).isEqualTo(12);
 		assertThat(stepExecution.getCommitCount()).isEqualTo(13);
 
-		final DestinationTransaction transactionNormal = new DestinationTransaction(1, -1500, true, "2022-03-23 00:00:00", 2, 3, "Normal transaction", "", null, null);
-		final DestinationTransaction transactionRepeating = new DestinationTransaction(5, -100, true, "2022-03-23 00:00:00", 2, 1, "Repeating month end date", "", 4, null);
-		final DestinationTransaction transactionTransfer = new DestinationTransaction(12, -1000, true, "2022-03-27 00:00:00", 2, 1, "Transfer", "", null, 3);
-		final DestinationTransaction transactionTransferRepeating = new DestinationTransaction(13, -200, true, "2022-03-27 00:00:00", 2, 1, "Repeating Transfer", "", 9, 3);
+		final DestinationTransaction transactionNormal = new DestinationTransaction(1, -1500, true, LocalDate.of(2022, 3, 23), 2, 3, "Normal transaction", "", null, null);
+		final DestinationTransaction transactionRepeating = new DestinationTransaction(5, -100, true, LocalDate.of(2022, 3, 23), 2, 1, "Repeating month end date", "", 4, null);
+		final DestinationTransaction transactionTransfer = new DestinationTransaction(12, -1000, true, LocalDate.of(2022, 3, 27), 2, 1, "Transfer", "", null, 3);
+		final DestinationTransaction transactionTransferRepeating = new DestinationTransaction(13, -200, true, LocalDate.of(2022, 3, 27), 2, 1, "Repeating Transfer", "", 9, 3);
 
 		final List<DestinationTransaction> transactions = transactionRepository.findAll();
 		assertThat(transactions)

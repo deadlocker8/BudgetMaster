@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = TableNames.REPEATING_OPTION)
@@ -23,7 +24,7 @@ public class DestinationRepeatingOption
 	private Integer ID;
 
 	@Column(name = "start_date")
-	private String startDate;
+	private LocalDate startDate;
 
 	@Column(name = "end_option_id")
 	private Integer endOptionID;

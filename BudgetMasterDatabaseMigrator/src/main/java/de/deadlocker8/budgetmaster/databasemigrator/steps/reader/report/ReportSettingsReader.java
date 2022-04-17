@@ -38,7 +38,7 @@ public class ReportSettingsReader extends BaseReader<DestinationReportSettings>
 		{
 			final DestinationReportSettings settings = new DestinationReportSettings();
 			settings.setID(rs.getInt(DatabaseColumns.ID));
-			settings.setDate(rs.getString(DatabaseColumns.DATE));
+			settings.setDate(rs.getDate(DatabaseColumns.DATE).toLocalDate());
 			settings.setIncludeBudget(rs.getBoolean(DatabaseColumns.INCLUDE_BUDGET));
 			settings.setIncludeCategoryBudgets(rs.getBoolean(DatabaseColumns.INCLUDE_CATEGORY_BUDGETS));
 			settings.setSplitTables(rs.getBoolean(DatabaseColumns.SPLIT_TABLES));

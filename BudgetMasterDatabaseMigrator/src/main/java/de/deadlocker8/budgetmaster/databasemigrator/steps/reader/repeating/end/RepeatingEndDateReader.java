@@ -35,7 +35,7 @@ public class RepeatingEndDateReader extends BaseReader<DestinationRepeatingEndDa
 		{
 			final DestinationRepeatingEndDate repeatingEndDate = new DestinationRepeatingEndDate();
 			repeatingEndDate.setID(rs.getInt(DatabaseColumns.ID));
-			repeatingEndDate.setEndDate(rs.getString(DatabaseColumns.END_DATE));
+			repeatingEndDate.setEndDate(rs.getDate(DatabaseColumns.END_DATE).toLocalDate());
 			return repeatingEndDate;
 		}
 	}

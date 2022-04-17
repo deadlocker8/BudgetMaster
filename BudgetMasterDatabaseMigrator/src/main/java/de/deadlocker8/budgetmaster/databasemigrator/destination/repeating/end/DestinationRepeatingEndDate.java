@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = TableNames.REPEATING_END_DATE)
@@ -24,5 +25,5 @@ public class DestinationRepeatingEndDate
 	private Integer ID;
 
 	@Column(name = "end_date")
-	private String endDate;
+	private LocalDate endDate;
 }
