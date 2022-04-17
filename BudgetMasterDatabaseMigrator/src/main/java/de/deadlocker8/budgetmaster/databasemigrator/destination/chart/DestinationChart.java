@@ -20,12 +20,12 @@ import javax.persistence.Table;
 public class DestinationChart
 {
 	@Id
-
 	private Integer ID;
 
 	private String name;
 
 	@Column(columnDefinition = "TEXT")
+	@ToString.Exclude
 	private String script;
 
 	private Integer type;

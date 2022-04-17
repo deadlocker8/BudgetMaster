@@ -16,10 +16,10 @@ import javax.persistence.*;
 public class DestinationImage
 {
 	@Id
-
 	private Integer ID;
 
 	@Lob
+	@ToString.Exclude
 	private byte[] image;
 
 	@Column(name = "file_name")
