@@ -20,7 +20,6 @@ import javax.persistence.Table;
 public class DestinationReportColumn
 {
 	@Id
-
 	private int ID;
 
 	private boolean activated;

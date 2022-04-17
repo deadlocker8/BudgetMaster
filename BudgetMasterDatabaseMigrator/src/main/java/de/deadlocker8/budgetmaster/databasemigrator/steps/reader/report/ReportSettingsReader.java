@@ -37,7 +37,7 @@ public class ReportSettingsReader extends BaseReader<DestinationReportSettings>
 		public DestinationReportSettings mapRow(ResultSet rs, int rowNum) throws SQLException
 		{
 			final DestinationReportSettings settings = new DestinationReportSettings();
-			settings.setID(rs.getInt(DatabaseColumns.ID));
+			settings.setID(1);
 			settings.setDate(rs.getDate(DatabaseColumns.DATE).toLocalDate());
 			settings.setIncludeBudget(rs.getBoolean(DatabaseColumns.INCLUDE_BUDGET));
 			settings.setIncludeCategoryBudgets(rs.getBoolean(DatabaseColumns.INCLUDE_CATEGORY_BUDGETS));
