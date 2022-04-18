@@ -44,7 +44,7 @@ public class MigrationService
 		this.transactionRepository = transactionRepository;
 		this.templateRepository = templateRepository;
 		this.databaseConfig = databaseConfig;
-		this.migrationTask = new MigrationTask(applicationSupportFolder);
+		this.migrationTask = new MigrationTask(applicationSupportFolder, settingsService);
 		this.scheduler = scheduler;
 	}
 

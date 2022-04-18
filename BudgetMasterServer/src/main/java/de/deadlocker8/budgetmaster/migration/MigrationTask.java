@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.migration;
 
+import de.deadlocker8.budgetmaster.settings.SettingsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,14 +28,17 @@ public class MigrationTask implements Runnable
 
 	private final Path applicationSupportFolder;
 
+	private final SettingsService settingsService;
+
 	private MigrationArguments migrationArguments;
 	private MigrationStatus migrationStatus;
 	private List<String> collectedStdout;
 	private List<String> summary;
 
-	public MigrationTask(Path applicationSupportFolder)
+	public MigrationTask(Path applicationSupportFolder, SettingsService settingsService)
 	{
 		this.applicationSupportFolder = applicationSupportFolder;
+		this.settingsService = settingsService;
 		this.migrationStatus = MigrationStatus.NOT_RUNNING;
 	}
 
@@ -72,6 +76,11 @@ public class MigrationTask implements Runnable
 			}
 			finally
 			{
+				// if any error happens during migration the settings table might be still empty and lead to errors
+				// and an infinite progress indicator loop during fetch of the migration status due to SettingsAdvice.class
+				// Therefore ensure settings exist at this point
+				settingsService.createDefaultSettingsIfNotExists();
+
 				Files.deleteIfExists(migratorPath);
 			}
 
