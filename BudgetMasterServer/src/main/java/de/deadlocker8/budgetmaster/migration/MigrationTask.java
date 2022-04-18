@@ -112,7 +112,7 @@ public class MigrationTask implements Runnable
 		final String javaCommand = determineJavaCommand();
 
 		final List<String> command = new ArrayList<>();
-		command.add(MessageFormat.format("\"{0}\"", javaCommand));
+		command.add(javaCommand);
 		command.add("-jar");
 		command.add(migratorPath.toString());
 		command.addAll(migrationArguments.getArguments());
