@@ -4,6 +4,7 @@
         <@header.globals/>
         <@header.header "BudgetMaster - ${locale.getString('title.migration')}"/>
         <#import "/spring.ftl" as s>
+        <@header.style "collapsible"/>
     </head>
     <@header.body>
         <#import "../helpers/navbar.ftl" as navbar>
@@ -19,31 +20,7 @@
                 </div>
 
                 <div class="container center-align">
-                    <div class="row">
-                        <div class="col s12 m12 l8 offset-l2">
-                            <div class="preloader-wrapper small active" id="progress-spinner">
-                                <div class="spinner-layer spinner-blue-only">
-                                    <div class="circle-clipper left">
-                                        <div class="circle"></div>
-                                    </div>
-                                    <div class="gap-patch">
-                                        <div class="circle"></div>
-                                    </div>
-                                    <div class="circle-clipper right">
-                                        <div class="circle"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <div id="migration-status" data-url="<@s.url '/migration/getStatus'/>"></div>
-
-                    <div class="row" id="button-migration-home">
-                        <div class="col s12 m12 l8 offset-l2">
-                            <@header.buttonLink url='/' icon='home' localizationKey='menu.home'/>
-                        </div>
-                    </div>
                 </div>
             </div>
         </main>

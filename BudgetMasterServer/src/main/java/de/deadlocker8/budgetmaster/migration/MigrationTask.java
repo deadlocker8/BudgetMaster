@@ -10,18 +10,27 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MigrationTask implements Runnable
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MigrationTask.class);
 	private static final String BUDGET_MASTER_MIGRATOR_JAR = "BudgetMasterDatabaseMigrator.jar";
+	private static final Pattern PATTERN_SUMMARY = Pattern.compile(".*(\\[COMPLETED\\] Migrate .*)");
+
+	private static final int NUMBER_OF_MIGRATION_STEPS = 25;
 
 	private final Path applicationSupportFolder;
 
 	private MigrationArguments migrationArguments;
 	private MigrationStatus migrationStatus;
 	private List<String> collectedStdout;
+	private List<String> summary;
 
 	public MigrationTask(Path applicationSupportFolder)
 	{
@@ -33,6 +42,7 @@ public class MigrationTask implements Runnable
 	{
 		this.migrationArguments = migrationArguments;
 		this.collectedStdout = new ArrayList<>();
+		this.summary = new ArrayList<>();
 	}
 
 	@Override
@@ -40,12 +50,14 @@ public class MigrationTask implements Runnable
 	{
 		if(migrationArguments == null)
 		{
-			throw new RuntimeException("No migration arguments set!");
+			throw new IllegalArgumentException("No migration arguments set!");
 		}
 
 		if(migrationStatus != MigrationStatus.NOT_RUNNING)
 		{
-			throw new RuntimeException("Migration already performed!");
+			this.migrationStatus = MigrationStatus.NOT_RUNNING;
+			this.collectedStdout = new ArrayList<>();
+			this.summary = new ArrayList<>();
 		}
 
 		LOGGER.debug("Start migration...");
@@ -63,7 +75,15 @@ public class MigrationTask implements Runnable
 				Files.deleteIfExists(migratorPath);
 			}
 
-			setMigrationStatus(MigrationStatus.SUCCESS);
+			summary = collectSummary();
+			if(summary.size() == NUMBER_OF_MIGRATION_STEPS)
+			{
+				setMigrationStatus(MigrationStatus.SUCCESS);
+			}
+			else
+			{
+				setMigrationStatus(MigrationStatus.ERROR);
+			}
 		}
 		catch(MigrationException | IOException e)
 		{
@@ -137,7 +157,6 @@ public class MigrationTask implements Runnable
 		return commandResultOptional.get().replace("\\", "/");
 	}
 
-
 	public MigrationStatus getMigrationStatus()
 	{
 		return migrationStatus;
@@ -151,5 +170,33 @@ public class MigrationTask implements Runnable
 	public List<String> getCollectedStdout()
 	{
 		return collectedStdout;
+	}
+
+	public List<String> getSummary()
+	{
+		return summary;
+	}
+
+	private List<String> collectSummary()
+	{
+		if(collectedStdout == null)
+		{
+			return new ArrayList<>();
+		}
+
+		LOGGER.debug("Collecting summary...");
+
+		final List<String> matchingLines = new ArrayList<>();
+		for(String line : collectedStdout)
+		{
+			final Matcher matcher = PATTERN_SUMMARY.matcher(line);
+			if(matcher.find())
+			{
+				matchingLines.add(matcher.group(1));
+			}
+		}
+
+		LOGGER.debug("Summary collected");
+		return matchingLines;
 	}
 }

@@ -105,8 +105,18 @@ public class MigrationController extends BaseController
 	@GetMapping("/getStatus")
 	public String getMigrationStatus(Model model)
 	{
-		model.addAttribute(ModelAttributes.STATUS, migrationService.getMigrationStatus());
-		model.addAttribute(ModelAttributes.SUMMARY, migrationService.getSummary());
+		final MigrationStatus migrationStatus = migrationService.getMigrationStatus();
+		model.addAttribute(ModelAttributes.STATUS, migrationStatus);
+
+		if(migrationStatus == MigrationStatus.SUCCESS)
+		{
+			model.addAttribute(ModelAttributes.SUMMARY, migrationService.getSummary());
+		}
+		if(migrationStatus == MigrationStatus.ERROR)
+		{
+			model.addAttribute(ModelAttributes.SUMMARY, migrationService.getCollectedStdout());
+		}
+
 		return ReturnValues.STATUS_FRAGMENT;
 	}
 }

@@ -5,30 +5,11 @@ $(document).ready(function()
 
 function getMigrationStatus()
 {
-    if(typeof migrationStatus === 'undefined')
+    if(typeof migrationStatus !== 'undefined')
     {
-        document.getElementById('progress-spinner').style.display = 'none';
-    }
-    else
-    {
-        switch(migrationStatus)
+        if(migrationStatus === 'SUCCESS' || migrationStatus === 'ERROR')
         {
-            case 'NOT_RUNNING':
-                document.getElementById('button-migration-home').style.display = 'none';
-                document.getElementById('progress-spinner').style.display = 'none';
-                break;
-            case 'SUCCESS':
-                document.getElementById('button-migration-home').style.display = '';
-                document.getElementById('progress-spinner').style.display = 'none';
-                break;
-            case 'RUNNING':
-                document.getElementById('button-migration-home').style.display = 'none';
-                document.getElementById('progress-spinner').style.display = '';
-                break;
-            default:
-                document.getElementById('button-migration-home').style.display = 'none';
-                document.getElementById('progress-spinner').style.display = 'none';
-                return;
+            return;
         }
     }
 
@@ -39,6 +20,7 @@ function getMigrationStatus()
         success: function(data)
         {
             $('#migration-status').html(data);
+            $('.collapsible').collapsible();
         },
         complete: function()
         {
