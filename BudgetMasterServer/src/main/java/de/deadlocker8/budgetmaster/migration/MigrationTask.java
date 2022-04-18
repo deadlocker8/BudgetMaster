@@ -142,7 +142,9 @@ public class MigrationTask implements Runnable
 		}
 		catch(IOException e)
 		{
-			throw new MigrationException("Error during migration process", e);
+			final MigrationException exception = new MigrationException("Error during migration process", e);
+			collectedStdout.add(MessageFormat.format("{0}: {1}", e.getMessage(), e.getCause()));
+			throw exception;
 		}
 	}
 
