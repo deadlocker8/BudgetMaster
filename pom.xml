@@ -11,8 +11,8 @@
     <name>BudgetMaster</name>
 
     <modules>
-        <module>BudgetMasterServer</module>
         <module>BudgetMasterDatabaseMigrator</module>
+        <module>BudgetMasterServer</module>
     </modules>
 
     <repositories>

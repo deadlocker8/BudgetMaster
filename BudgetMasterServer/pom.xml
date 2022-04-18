@@ -43,7 +43,7 @@
         <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
         <dependency-check-maven.version>6.5.3</dependency-check-maven.version>
 
-        <project.outputDirectory>build/${project.version}</project.outputDirectory>
+        <project.outputDirectory>${project.build.directory}/../build/${project.version}</project.outputDirectory>
         <project.artifactName>${project.artifactId}-v${project.version}</project.artifactName>
     </properties>
 
