@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.utils;
 
+import de.deadlocker8.budgetmaster.migration.DatabaseType;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import javax.validation.constraints.Max;
@@ -36,6 +37,11 @@ public class DatabaseConfigurationProperties
 	public String getType()
 	{
 		return type;
+	}
+
+	public DatabaseType getDatabaseType()
+	{
+		return DatabaseType.fromName(type);
 	}
 
 	public void setType(String type)

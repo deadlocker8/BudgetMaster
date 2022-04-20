@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmaster.migration;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MigrationArguments
 {
@@ -10,6 +11,7 @@ public class MigrationArguments
 	{
 		private String sourceUrl;
 		private String destinationUrl;
+		private String destinationDriverClassName;
 		private String destinationUsername;
 		private String destinationPassword;
 
@@ -20,9 +22,10 @@ public class MigrationArguments
 			return this;
 		}
 
-		public MigrationArgumentBuilder withDestinationUrl(String hostname, Integer port, String databaseName)
+		public MigrationArgumentBuilder withDestinationUrl(DatabaseType databaseType, String hostname, Integer port, String databaseName)
 		{
-			this.destinationUrl = MessageFormat.format("jdbc:postgresql://{0}:{1,number,#}/{2}", hostname, port, databaseName);
+			this.destinationDriverClassName = databaseType.getDriverClassName();
+			this.destinationUrl = MessageFormat.format("jdbc:{0}://{1}:{2,number,#}/{3}", databaseType.getName().toLowerCase(), hostname, port, databaseName);
 			return this;
 		}
 
@@ -35,19 +38,21 @@ public class MigrationArguments
 
 		public MigrationArguments build()
 		{
-			return new MigrationArguments(sourceUrl, destinationUrl, destinationUsername, destinationPassword);
+			return new MigrationArguments(sourceUrl, destinationUrl, destinationDriverClassName, destinationUsername, destinationPassword);
 		}
 	}
 
 	private final String sourceUrl;
 	private final String destinationUrl;
+	private final String destinationDriverClassName;
 	private final String destinationUsername;
 	private final String destinationPassword;
 
-	private MigrationArguments(String sourceUrl, String destinationUrl, String destinationUsername, String destinationPassword)
+	private MigrationArguments(String sourceUrl, String destinationUrl, String driverClassName, String destinationUsername, String destinationPassword)
 	{
 		this.sourceUrl = sourceUrl;
 		this.destinationUrl = destinationUrl;
+		this.destinationDriverClassName = driverClassName;
 		this.destinationUsername = destinationUsername;
 		this.destinationPassword = destinationPassword;
 	}
@@ -57,6 +62,7 @@ public class MigrationArguments
 		final ArrayList<String> arguments = new ArrayList<>();
 		arguments.add(MessageFormat.format("--spring.datasource.jdbc-url={0}", sourceUrl));
 		arguments.add(MessageFormat.format("--spring.seconddatasource.jdbc-url={0}", destinationUrl));
+		arguments.add(MessageFormat.format("--spring.seconddatasource.driver-class-name={0}", destinationDriverClassName));
 		arguments.add(MessageFormat.format("--spring.seconddatasource.username={0}", destinationUsername));
 		arguments.add(MessageFormat.format("--spring.seconddatasource.password={0}", destinationPassword));
 		return arguments;

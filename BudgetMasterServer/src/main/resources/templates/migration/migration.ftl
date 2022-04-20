@@ -53,6 +53,22 @@
 
                             <div class="row">
                                 <div class="input-field col s12 m12 l8 offset-l2">
+                                    <i class="material-icons prefix">widgets</i>
+                                    <select id="migration-database-type" name="databaseTypeName">
+                                        <#list databaseTypes as databaseType>
+                                            <#if migrationSettings.databaseType() == databaseType>
+                                                <option selected value="${databaseType.getName()}">${databaseType.getName()}</option>
+                                            <#else>
+                                                <option value="${databaseType.getName()}">${databaseType.getName()}</option>
+                                            </#if>
+                                        </#list>
+                                    </select>
+                                    <label for="migration-database-type">${locale.getString("migration.settings.databaseType")}</label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="input-field col s12 m12 l8 offset-l2">
                                     <i class="material-icons prefix">public</i>
                                     <input id="migration-hostname" type="text" name="hostname" <@validation.validation "hostname"/> value="<#if migrationSettings.hostname()??>${migrationSettings.hostname()}</#if>" placeholder="localhost">
                                     <label for="migration-hostname">${locale.getString("migration.settings.hostname")}</label>

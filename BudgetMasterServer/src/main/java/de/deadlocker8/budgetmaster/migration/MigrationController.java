@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 
 @Controller
@@ -26,6 +27,7 @@ public class MigrationController extends BaseController
 		public static final String MIGRATION_SETTINGS = "migrationSettings";
 		public static final String STATUS = "status";
 		public static final String SUMMARY = "summary";
+		public static final String DATABASE_TYPES = "databaseTypes";
 	}
 
 	private static class ReturnValues
@@ -59,14 +61,17 @@ public class MigrationController extends BaseController
 	public String migrate(Model model)
 	{
 		model.addAttribute(ModelAttributes.MIGRATION_SETTINGS, migrationService.getPrefilledMigrationSettings());
+		model.addAttribute(ModelAttributes.DATABASE_TYPES, List.of(DatabaseType.values()));
 		return ReturnValues.MIGRATION_SETTINGS;
 	}
 
 	@PostMapping
 	public String post(Model model,
 					   @ModelAttribute("MigrationSettings") @Valid MigrationSettings migrationSettings, BindingResult bindingResult,
+					   @RequestParam(value = "databaseTypeName") String databaseTypeName,
 					   @RequestParam(value = "verificationPassword") String verificationPassword)
 	{
+		migrationSettings.setDatabaseType(DatabaseType.fromName(databaseTypeName));
 		final MigrationSettingsValidator migrationSettingsValidator = new MigrationSettingsValidator();
 		migrationSettingsValidator.validate(migrationSettings, bindingResult);
 
@@ -82,12 +87,13 @@ public class MigrationController extends BaseController
 		if(bindingResult.hasErrors())
 		{
 			model.addAttribute(ModelAttributes.ERROR, bindingResult);
+			model.addAttribute(ModelAttributes.DATABASE_TYPES, List.of(DatabaseType.values()));
 			return ReturnValues.MIGRATION_SETTINGS;
 		}
 
 		final MigrationArguments migrationArguments = new MigrationArguments.MigrationArgumentBuilder()
 				.withSourceUrl(migrationService.getDatabaseFromPreviousVersionPathWithoutExtension().toString())
-				.withDestinationUrl(migrationSettings.hostname(), migrationSettings.port(), migrationSettings.databaseName())
+				.withDestinationUrl(migrationSettings.databaseType(), migrationSettings.hostname(), migrationSettings.port(), migrationSettings.databaseName())
 				.withDestinationCredentials(migrationSettings.username(), migrationSettings.password())
 				.build();
 		migrationService.startMigration(migrationArguments);

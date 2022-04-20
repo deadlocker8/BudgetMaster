@@ -41,7 +41,7 @@ public class DatabaseConfiguration
 					.username(databaseConfig.getUsername())
 					.password(databaseConfig.getPassword())
 					.url(jdbcString)
-					.driverClassName(MessageFormat.format("org.{0}.Driver", databaseConfig.getType()))
+					.driverClassName(databaseConfig.getDatabaseType().getDriverClassName())
 					.build();
 		}
 		else

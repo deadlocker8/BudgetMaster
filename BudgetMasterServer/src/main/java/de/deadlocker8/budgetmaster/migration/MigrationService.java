@@ -50,7 +50,7 @@ public class MigrationService
 
 	public MigrationSettings getPrefilledMigrationSettings()
 	{
-		return new MigrationSettings(databaseConfig.getHostname(), databaseConfig.getPort(), databaseConfig.getDatabaseName(), databaseConfig.getUsername(), databaseConfig.getPassword());
+		return new MigrationSettings(databaseConfig.getHostname(), databaseConfig.getPort(), databaseConfig.getDatabaseName(), databaseConfig.getUsername(), databaseConfig.getPassword(), databaseConfig.getDatabaseType());
 	}
 
 	public boolean needToShowMigrationDialog(String loadedPage)
