@@ -71,7 +71,7 @@ public class ReportGeneratorService
 			for(int i = 0; i < columns.size(); i++)
 			{
 				ReportColumn column = columns.get(i);
-				proportions[i] = ColumnType.getByName(column.getKey()).getProportion();
+				proportions[i] = ColumnType.getByName(column.getLocalizationKey()).getProportion();
 			}
 
 			PdfPTable table = new PdfPTable(proportions);
@@ -136,7 +136,7 @@ public class ReportGeneratorService
 
 			for(ReportColumn column : columns)
 			{
-				ColumnType columnType = ColumnType.getByName(column.getKey());
+				ColumnType columnType = ColumnType.getByName(column.getLocalizationKey());
 				PdfPCell cell = getTransactionTableCell(currentItem, columnType, index, font);
 				table.addCell(cell);
 			}
@@ -147,7 +147,7 @@ public class ReportGeneratorService
 	{
 		for(ReportColumn column : columns)
 		{
-			ColumnType columnType = ColumnType.getByName(column.getKey());
+			ColumnType columnType = ColumnType.getByName(column.getLocalizationKey());
 
 			PdfPCell cell = new PdfPCell(new Phrase(columnType.getName(), font));
 			cell.setBackgroundColor(LIGHT_GRAY);

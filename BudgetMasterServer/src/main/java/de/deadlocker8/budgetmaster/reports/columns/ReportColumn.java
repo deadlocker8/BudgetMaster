@@ -11,18 +11,18 @@ public class ReportColumn
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer ID;
 
-	private String key;
+	private String localizationKey;
 	private boolean activated;
-	private int position;
+	private int columnPosition;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private ReportSettings referringSettings;
 
-	public ReportColumn(String key, int position)
+	public ReportColumn(String localizationKey, int columnPosition)
 	{
-		this.key = key;
+		this.localizationKey = localizationKey;
 		this.activated = true;
-		this.position = position;
+		this.columnPosition = columnPosition;
 	}
 
 	public ReportColumn()
@@ -39,14 +39,14 @@ public class ReportColumn
 		this.ID = ID;
 	}
 
-	public String getKey()
+	public String getLocalizationKey()
 	{
-		return key;
+		return localizationKey;
 	}
 
-	public void setKey(String key)
+	public void setLocalizationKey(String key)
 	{
-		this.key = key;
+		this.localizationKey = key;
 	}
 
 	public boolean isActivated()
@@ -59,14 +59,14 @@ public class ReportColumn
 		this.activated = activated;
 	}
 
-	public int getPosition()
+	public int getColumnPosition()
 	{
-		return position;
+		return columnPosition;
 	}
 
-	public void setPosition(int position)
+	public void setColumnPosition(int position)
 	{
-		this.position = position;
+		this.columnPosition = position;
 	}
 
 	public ReportSettings getReferringSettings()
@@ -84,9 +84,9 @@ public class ReportColumn
 	{
 		return "ReportColumn{" +
 				"ID=" + ID +
-				", key='" + key + '\'' +
+				", localizationKey='" + localizationKey + '\'' +
 				", activated=" + activated +
-				", position=" + position +
+				", columnPosition=" + columnPosition +
 				'}';
 	}
 }

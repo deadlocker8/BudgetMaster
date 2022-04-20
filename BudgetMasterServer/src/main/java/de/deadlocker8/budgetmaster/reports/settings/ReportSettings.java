@@ -98,12 +98,12 @@ public class ReportSettings
 
 	public List<ReportColumn> getColumnsSorted()
 	{
-		return columns.stream().sorted(Comparator.comparing(ReportColumn::getPosition)).toList();
+		return columns.stream().sorted(Comparator.comparing(ReportColumn::getColumnPosition)).toList();
 	}
 
 	public List<ReportColumn> getColumnsSortedAndFiltered()
 	{
-		return columns.stream().filter(ReportColumn::isActivated).sorted(Comparator.comparing(ReportColumn::getPosition)).toList();
+		return columns.stream().filter(ReportColumn::isActivated).sorted(Comparator.comparing(ReportColumn::getColumnPosition)).toList();
 	}
 
 	public List<ReportColumn> getColumns()

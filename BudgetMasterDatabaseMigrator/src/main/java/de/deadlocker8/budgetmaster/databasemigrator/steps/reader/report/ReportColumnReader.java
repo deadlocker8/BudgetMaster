@@ -38,8 +38,8 @@ public class ReportColumnReader extends BaseReader<DestinationReportColumn>
 			final DestinationReportColumn column = new DestinationReportColumn();
 			column.setID(rs.getInt(DatabaseColumns.ID));
 			column.setActivated(rs.getBoolean(DatabaseColumns.ACTIVATED));
-			column.setKey(rs.getString(DatabaseColumns.KEY));
-			column.setPosition(rs.getInt(DatabaseColumns.POSITION));
+			column.setLocalizationKey(rs.getString(DatabaseColumns.KEY));
+			column.setColumnPosition(rs.getInt(DatabaseColumns.POSITION));
 			return column;
 		}
 	}

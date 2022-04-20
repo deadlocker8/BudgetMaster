@@ -37,7 +37,7 @@ public class ReportSettingsService
 		if(reportSettingsOptional.isEmpty())
 		{
 			ReportSettings reportSettings = ReportSettings.getDefault();
-			for(ReportColumn reportColumn : reportColumnService.getRepository().findAllByOrderByPositionAsc())
+			for(ReportColumn reportColumn : reportColumnService.getRepository().findAllByOrderByColumnPositionAsc())
 			{
 				reportSettings.getColumns().add(reportColumn);
 			}

@@ -24,9 +24,11 @@ public class DestinationReportColumn
 
 	private boolean activated;
 
-	private String key;
+	@Column(name = "localization_key")
+	private String localizationKey;
 
-	private Integer position;
+	@Column(name = "column_position")
+	private Integer columnPosition;
 
 	@Column(name = "referring_settings_id")
 	private Integer referringSettingsID = 1;

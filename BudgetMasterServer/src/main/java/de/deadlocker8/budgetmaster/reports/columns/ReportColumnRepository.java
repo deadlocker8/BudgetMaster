@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface ReportColumnRepository extends JpaRepository<ReportColumn, Integer>
 {
-	List<ReportColumn> findAllByOrderByPositionAsc();
+	List<ReportColumn> findAllByOrderByColumnPositionAsc();
 
-	ReportColumn findByKey(String key);
+	ReportColumn findByLocalizationKey(String key);
 
-	ReportColumn findByPosition(int position);
+	ReportColumn findByColumnPosition(int position);
 }

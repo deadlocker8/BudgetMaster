@@ -27,14 +27,14 @@ public class ReportColumnService
 
 	public void createDefaultsWithReportSettings(ReportSettings settings)
 	{
-		if(reportColumnRepository.findAllByOrderByPositionAsc().size() != ColumnType.values().length)
+		if(reportColumnRepository.findAllByOrderByColumnPositionAsc().size() != ColumnType.values().length)
 		{
 			reportColumnRepository.deleteAllInBatch();
 
 			for(int i = 0; i < ColumnType.values().length; i++)
 			{
 				ColumnType currentType = ColumnType.values()[i];
-				if(reportColumnRepository.findByKey(currentType.getKey()) == null)
+				if(reportColumnRepository.findByLocalizationKey(currentType.getKey()) == null)
 				{
 					reportColumnRepository.save(new ReportColumn(currentType.getKey(), i));
 				}

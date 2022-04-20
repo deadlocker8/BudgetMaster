@@ -81,10 +81,10 @@
                                         <div class="columnName">
                                             <label>
                                                 <input type="checkbox" class="columnName-checkbox" data-index="${column?index}" name="columns['${column?index}'].activated" <#if column.isActivated()>checked="checked"</#if>/>
-                                                <span class="columnName-label">${locale.getString(column.getKey())}</span>
+                                                <span class="columnName-label">${locale.getString(column.getLocalizationKey())}</span>
                                             </label>
                                             <input type="hidden" name="columns['${column?index}'].ID" value="${column.getID()}"/>
-                                            <input type="hidden" name="columns['${column?index}'].key" value="${column.getKey()}"/>
+                                            <input type="hidden" name="columns['${column?index}'].key" value="${column.getLocalizationKey()}"/>
                                             <input type="hidden" name="columns['${column?index}'].position" value=""/>
                                         </div>
                                     </#list>
