@@ -56,7 +56,7 @@ public class Settings
 		defaultSettings.setCurrency("€");
 		defaultSettings.setLanguage(LanguageType.ENGLISH);
 		defaultSettings.setRestActivated(true);
-		defaultSettings.setUseDarkTheme(false);
+		defaultSettings.setUseDarkTheme(true);
 		defaultSettings.setShowCategoriesAsCircles(true);
 		defaultSettings.setAutoUpdateCheckEnabled(true);
 		defaultSettings.setBackupReminderActivated(true);
