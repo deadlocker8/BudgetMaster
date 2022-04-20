@@ -61,7 +61,7 @@ class LoginControllerTest extends SeleniumTestBase
 		helper.hideMigrationDialog();
 
 		WebElement label = driver.findElement(By.id("logo-home"));
-		String expected = helper.getUrl() + "/images/Logo_with_text_medium_res.png";
+		String expected = helper.getUrl() + "/images/Logo_with_white_text_medium_res.png";
 		assertThat(label.getAttribute("src")).isEqualTo(expected);
 	}
 
