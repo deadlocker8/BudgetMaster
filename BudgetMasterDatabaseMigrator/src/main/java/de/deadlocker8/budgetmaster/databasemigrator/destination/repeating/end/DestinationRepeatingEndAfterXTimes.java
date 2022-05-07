@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.end;
 
 
+import de.deadlocker8.budgetmaster.databasemigrator.destination.ProvidesID;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.TableNames;
 import lombok.*;
 
@@ -16,7 +17,7 @@ import javax.persistence.Table;
 @Setter
 @EqualsAndHashCode
 @ToString
-public class DestinationRepeatingEndAfterXTimes
+public class DestinationRepeatingEndAfterXTimes implements ProvidesID
 {
 	@Id
 

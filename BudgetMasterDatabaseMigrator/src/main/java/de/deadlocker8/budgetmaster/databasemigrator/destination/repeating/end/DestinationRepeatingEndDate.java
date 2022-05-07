@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.end;
 
 
+import de.deadlocker8.budgetmaster.databasemigrator.destination.ProvidesID;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.TableNames;
 import lombok.*;
 
@@ -18,7 +19,7 @@ import java.time.LocalDate;
 @Setter
 @EqualsAndHashCode
 @ToString
-public class DestinationRepeatingEndDate
+public class DestinationRepeatingEndDate implements ProvidesID
 {
 	@Id
 

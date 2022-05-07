@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.databasemigrator.destination.tag;
 
 
+import de.deadlocker8.budgetmaster.databasemigrator.destination.ProvidesID;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.TableNames;
 import lombok.*;
 
@@ -17,10 +18,10 @@ import javax.persistence.Table;
 @Setter
 @EqualsAndHashCode
 @ToString
-public class DestinationTemplateTag
+public class DestinationTemplateTag implements ProvidesID
 {
 	@Id
-	private int ID;
+	private Integer ID;
 
 	@Column(name = "template_id")
 	private int templateID;

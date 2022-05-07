@@ -61,9 +61,11 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
 @Configuration
@@ -74,6 +76,8 @@ public class BatchConfiguration
 
 	final JobBuilderFactory jobBuilderFactory;
 	final StepBuilderFactory stepBuilderFactory;
+
+	final EntityManager entityManager;
 
 	final DataSource primaryDataSource;
 
@@ -112,10 +116,11 @@ public class BatchConfiguration
 	final DestinationTemplateGroupRepository destinationTemplateGroupRepository;
 
 	@SuppressWarnings("squid:S107")
-	public BatchConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, DataSource primaryDataSource, DestinationImageRepository destinationImageRepository, DestinationIconRepository destinationIconRepository, DestinationCategoryRepository destinationCategoryRepository, DestinationAccountRepository destinationAccountRepository, DestinationChartRepository destinationChartRepository, DestinationHintRepository destinationHintRepository, DestinationRepeatingEndRepository destinationRepeatingEndRepository, DestinationRepeatingEndAfterXTimesRepository destinationRepeatingEndAfterXTimesRepository, DestinationRepeatingEndDateRepository destinationRepeatingEndDateRepository, DestinationRepeatingEndNeverRepository destinationRepeatingEndNeverRepository, DestinationRepeatingModifierRepository destinationRepeatingModifierRepository, DestinationRepeatingModifierDaysRepository destinationRepeatingModifierDaysRepository, DestinationRepeatingModifierMonthsRepository destinationRepeatingModifierMonthsRepository, DestinationRepeatingModifierYearsRepository destinationRepeatingModifierYearsRepository, DestinationRepeatingOptionRepository destinationRepeatingOptionRepository, DestinationReportColumnRepository destinationReportColumnRepository, DestinationReportSettingsRepository destinationReportSettingsRepository, DestinationSettingsRepository destinationSettingsRepository, DestinationTagRepository destinationTagRepository, DestinationTemplateTagRepository destinationTemplateTagRepository, DestinationTransactionTagRepository destinationTransactionTagRepository, DestinationUserRepository destinationUserRepository, DestinationTransactionRepository destinationTransactionRepository, DestinationTemplateRepository destinationTemplateRepository, DestinationTemplateGroupRepository destinationTemplateGroupRepository)
+	public BatchConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, EntityManager entityManager, DataSource primaryDataSource, DestinationImageRepository destinationImageRepository, DestinationIconRepository destinationIconRepository, DestinationCategoryRepository destinationCategoryRepository, DestinationAccountRepository destinationAccountRepository, DestinationChartRepository destinationChartRepository, DestinationHintRepository destinationHintRepository, DestinationRepeatingEndRepository destinationRepeatingEndRepository, DestinationRepeatingEndAfterXTimesRepository destinationRepeatingEndAfterXTimesRepository, DestinationRepeatingEndDateRepository destinationRepeatingEndDateRepository, DestinationRepeatingEndNeverRepository destinationRepeatingEndNeverRepository, DestinationRepeatingModifierRepository destinationRepeatingModifierRepository, DestinationRepeatingModifierDaysRepository destinationRepeatingModifierDaysRepository, DestinationRepeatingModifierMonthsRepository destinationRepeatingModifierMonthsRepository, DestinationRepeatingModifierYearsRepository destinationRepeatingModifierYearsRepository, DestinationRepeatingOptionRepository destinationRepeatingOptionRepository, DestinationReportColumnRepository destinationReportColumnRepository, DestinationReportSettingsRepository destinationReportSettingsRepository, DestinationSettingsRepository destinationSettingsRepository, DestinationTagRepository destinationTagRepository, DestinationTemplateTagRepository destinationTemplateTagRepository, DestinationTransactionTagRepository destinationTransactionTagRepository, DestinationUserRepository destinationUserRepository, DestinationTransactionRepository destinationTransactionRepository, DestinationTemplateRepository destinationTemplateRepository, DestinationTemplateGroupRepository destinationTemplateGroupRepository)
 	{
 		this.jobBuilderFactory = jobBuilderFactory;
 		this.stepBuilderFactory = stepBuilderFactory;
+		this.entityManager = entityManager;
 		this.primaryDataSource = primaryDataSource;
 
 		this.destinationImageRepository = destinationImageRepository;
@@ -266,7 +271,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationImageRepository))
 				.listener(new GenericChunkListener(TableNames.IMAGE))
-				.listener(new GenericStepListener(TableNames.IMAGE))
+				.listener(new GenericStepListener(TableNames.IMAGE, entityManager, destinationImageRepository))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -280,7 +285,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationIconRepository))
 				.listener(new GenericChunkListener(TableNames.ICON))
-				.listener(new GenericStepListener(TableNames.ICON))
+				.listener(new GenericStepListener(TableNames.ICON, entityManager, destinationIconRepository))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -294,7 +299,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationCategoryRepository))
 				.listener(new GenericChunkListener(TableNames.CATEGORY))
-				.listener(new GenericStepListener(TableNames.CATEGORY))
+				.listener(new GenericStepListener(TableNames.CATEGORY, entityManager, destinationCategoryRepository))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -308,7 +313,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationAccountRepository))
 				.listener(new GenericChunkListener(TableNames.ACCOUNT))
-				.listener(new GenericStepListener(TableNames.ACCOUNT))
+				.listener(new GenericStepListener(TableNames.ACCOUNT, entityManager, destinationAccountRepository))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -322,7 +327,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationChartRepository))
 				.listener(new GenericChunkListener(TableNames.CHART))
-				.listener(new GenericStepListener(TableNames.CHART))
+				.listener(new GenericStepListener(TableNames.CHART, entityManager, destinationChartRepository))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -336,7 +341,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationHintRepository))
 				.listener(new GenericChunkListener(TableNames.HINT))
-				.listener(new GenericStepListener(TableNames.HINT))
+				.listener(new GenericStepListener(TableNames.HINT, entityManager, destinationHintRepository))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -350,7 +355,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationRepeatingEndRepository))
 				.listener(new GenericChunkListener(TableNames.REPEATING_END))
-				.listener(new GenericStepListener(TableNames.REPEATING_END))
+				.listener(new GenericStepListener(TableNames.REPEATING_END, entityManager, destinationRepeatingEndRepository))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -364,7 +369,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationRepeatingEndAfterXTimesRepository))
 				.listener(new GenericChunkListener(TableNames.REPEATING_END_AFTER_X_TIMES))
-				.listener(new GenericStepListener(TableNames.REPEATING_END_AFTER_X_TIMES))
+				.listener(new GenericStepListener(TableNames.REPEATING_END_AFTER_X_TIMES, entityManager, destinationRepeatingEndAfterXTimesRepository))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -378,7 +383,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationRepeatingEndDateRepository))
 				.listener(new GenericChunkListener(TableNames.REPEATING_END_DATE))
-				.listener(new GenericStepListener(TableNames.REPEATING_END_DATE))
+				.listener(new GenericStepListener(TableNames.REPEATING_END_DATE, entityManager, destinationRepeatingEndDateRepository))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -392,7 +397,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationRepeatingEndNeverRepository))
 				.listener(new GenericChunkListener(TableNames.REPEATING_END_NEVER))
-				.listener(new GenericStepListener(TableNames.REPEATING_END_NEVER))
+				.listener(new GenericStepListener(TableNames.REPEATING_END_NEVER, entityManager, destinationRepeatingEndNeverRepository))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -406,7 +411,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationRepeatingModifierRepository))
 				.listener(new GenericChunkListener(TableNames.REPEATING_MODIFIER))
-				.listener(new GenericStepListener(TableNames.REPEATING_MODIFIER))
+				.listener(new GenericStepListener(TableNames.REPEATING_MODIFIER, entityManager, destinationRepeatingModifierRepository))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -420,7 +425,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationRepeatingModifierDaysRepository))
 				.listener(new GenericChunkListener(TableNames.REPEATING_MODIFIER_DAYS))
-				.listener(new GenericStepListener(TableNames.REPEATING_MODIFIER_DAYS))
+				.listener(new GenericStepListener(TableNames.REPEATING_MODIFIER_DAYS, entityManager, destinationRepeatingModifierDaysRepository))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -434,7 +439,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationRepeatingModifierMonthsRepository))
 				.listener(new GenericChunkListener(TableNames.REPEATING_MODIFIER_MONTHS))
-				.listener(new GenericStepListener(TableNames.REPEATING_MODIFIER_MONTHS))
+				.listener(new GenericStepListener(TableNames.REPEATING_MODIFIER_MONTHS, entityManager, destinationRepeatingModifierMonthsRepository))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -448,7 +453,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationRepeatingModifierYearsRepository))
 				.listener(new GenericChunkListener(TableNames.REPEATING_MODIFIER_YEARS))
-				.listener(new GenericStepListener(TableNames.REPEATING_MODIFIER_YEARS))
+				.listener(new GenericStepListener(TableNames.REPEATING_MODIFIER_YEARS, entityManager, destinationRepeatingModifierYearsRepository))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -462,7 +467,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationRepeatingOptionRepository))
 				.listener(new GenericChunkListener(TableNames.REPEATING_OPTION))
-				.listener(new GenericStepListener(TableNames.REPEATING_OPTION))
+				.listener(new GenericStepListener(TableNames.REPEATING_OPTION, entityManager, destinationRepeatingOptionRepository))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -476,7 +481,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationReportColumnRepository))
 				.listener(new GenericChunkListener(TableNames.REPORT_COLUMN))
-				.listener(new GenericStepListener(TableNames.REPORT_COLUMN))
+				.listener(new GenericStepListener(TableNames.REPORT_COLUMN, entityManager, destinationReportColumnRepository))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -490,7 +495,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationReportSettingsRepository))
 				.listener(new GenericChunkListener(TableNames.REPORT_SETTINGS))
-				.listener(new GenericStepListener(TableNames.REPORT_SETTINGS))
+				.listener(new GenericStepListener(TableNames.REPORT_SETTINGS, entityManager, destinationReportSettingsRepository))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -504,7 +509,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationSettingsRepository))
 				.listener(new GenericChunkListener(TableNames.SETTINGS))
-				.listener(new GenericStepListener(TableNames.SETTINGS))
+				.listener(new GenericStepListener(TableNames.SETTINGS, entityManager, destinationSettingsRepository))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -518,7 +523,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationTagRepository))
 				.listener(new GenericChunkListener(TableNames.TAG))
-				.listener(new GenericStepListener(TableNames.TAG))
+				.listener(new GenericStepListener(TableNames.TAG, entityManager, destinationTagRepository))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -532,7 +537,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationTemplateTagRepository))
 				.listener(new GenericChunkListener(TableNames.TEMPLATE_TAGS))
-				.listener(new GenericStepListener(TableNames.TEMPLATE_TAGS))
+				.listener(new GenericStepListener(TableNames.TEMPLATE_TAGS, entityManager, destinationTemplateTagRepository))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -546,7 +551,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationTransactionTagRepository))
 				.listener(new GenericChunkListener(TableNames.TRANSACTION_TAGS))
-				.listener(new GenericStepListener(TableNames.TRANSACTION_TAGS))
+				.listener(new GenericStepListener(TableNames.TRANSACTION_TAGS, entityManager, destinationTransactionTagRepository))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -560,7 +565,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationUserRepository))
 				.listener(new GenericChunkListener(TableNames.USER_SOURCE))
-				.listener(new GenericStepListener(TableNames.USER_SOURCE))
+				.listener(new GenericStepListener(TableNames.USER_SOURCE, entityManager, destinationUserRepository))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -574,7 +579,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationTransactionRepository))
 				.listener(new GenericChunkListener(TableNames.TRANSACTION))
-				.listener(new GenericStepListener(TableNames.TRANSACTION))
+				.listener(new GenericStepListener(TableNames.TRANSACTION, entityManager, destinationTransactionRepository))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -588,7 +593,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationTemplateRepository))
 				.listener(new GenericChunkListener(TableNames.TEMPLATE))
-				.listener(new GenericStepListener(TableNames.TEMPLATE))
+				.listener(new GenericStepListener(TableNames.TEMPLATE, entityManager, destinationTemplateRepository))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -602,7 +607,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationTemplateGroupRepository))
 				.listener(new GenericChunkListener(TableNames.TEMPLATE_GROUP))
-				.listener(new GenericStepListener(TableNames.TEMPLATE_GROUP))
+				.listener(new GenericStepListener(TableNames.TEMPLATE_GROUP, entityManager, destinationTemplateGroupRepository))
 				.allowStartIfComplete(true)
 				.build();
 	}

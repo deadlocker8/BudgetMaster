@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.databasemigrator.destination.account;
 
 
+import de.deadlocker8.budgetmaster.databasemigrator.destination.ProvidesID;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.TableNames;
 import lombok.*;
 
@@ -17,10 +18,9 @@ import javax.persistence.Table;
 @Setter
 @EqualsAndHashCode
 @ToString
-public class DestinationAccount
+public class DestinationAccount implements ProvidesID
 {
 	@Id
-
 	private Integer ID;
 
 	@Column(unique = true)

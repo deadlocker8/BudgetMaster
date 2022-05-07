@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.databasemigrator.destination.user;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.DestinationRepository;
 
-public interface DestinationUserRepository extends JpaRepository<DestinationUser, Integer>
+public interface DestinationUserRepository extends DestinationRepository<DestinationUser>
 {
 }

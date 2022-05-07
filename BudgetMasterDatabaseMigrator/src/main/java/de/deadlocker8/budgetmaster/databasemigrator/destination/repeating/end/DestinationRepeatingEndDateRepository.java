@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.end;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.DestinationRepository;
 
-public interface DestinationRepeatingEndDateRepository extends JpaRepository<DestinationRepeatingEndDate, Integer>
+public interface DestinationRepeatingEndDateRepository extends DestinationRepository<DestinationRepeatingEndDate>
 {
 }

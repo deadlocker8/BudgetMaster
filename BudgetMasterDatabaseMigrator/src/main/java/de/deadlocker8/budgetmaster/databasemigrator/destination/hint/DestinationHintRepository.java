@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.databasemigrator.destination.hint;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.DestinationRepository;
 
-public interface DestinationHintRepository extends JpaRepository<DestinationHint, Integer>
+public interface DestinationHintRepository extends DestinationRepository<DestinationHint>
 {
 }

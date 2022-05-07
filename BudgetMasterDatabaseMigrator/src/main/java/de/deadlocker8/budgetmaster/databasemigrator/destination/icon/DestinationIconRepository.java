@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.databasemigrator.destination.icon;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.DestinationRepository;
 
-public interface DestinationIconRepository extends JpaRepository<DestinationIcon, Integer>
+public interface DestinationIconRepository extends DestinationRepository<DestinationIcon>
 {
 }

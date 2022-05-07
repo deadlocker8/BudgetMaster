@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.databasemigrator.destination.templateGroup;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.DestinationRepository;
 
-public interface DestinationTemplateGroupRepository extends JpaRepository<DestinationTemplateGroup, Integer>
+public interface DestinationTemplateGroupRepository extends DestinationRepository<DestinationTemplateGroup>
 {
 }

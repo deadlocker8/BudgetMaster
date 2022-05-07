@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.modifier;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.DestinationRepository;
 
-public interface DestinationRepeatingModifierYearsRepository extends JpaRepository<DestinationRepeatingModifierYears, Integer>
+public interface DestinationRepeatingModifierYearsRepository extends DestinationRepository<DestinationRepeatingModifierYears>
 {
 }

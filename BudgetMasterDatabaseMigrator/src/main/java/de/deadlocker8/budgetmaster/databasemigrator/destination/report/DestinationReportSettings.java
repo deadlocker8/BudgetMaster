@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.databasemigrator.destination.report;
 
 
+import de.deadlocker8.budgetmaster.databasemigrator.destination.ProvidesID;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.TableNames;
 import lombok.*;
 
@@ -18,10 +19,10 @@ import java.time.LocalDate;
 @Setter
 @EqualsAndHashCode
 @ToString
-public class DestinationReportSettings
+public class DestinationReportSettings implements ProvidesID
 {
 	@Id
-	private int ID;
+	private Integer ID;
 
 	private LocalDate date;
 

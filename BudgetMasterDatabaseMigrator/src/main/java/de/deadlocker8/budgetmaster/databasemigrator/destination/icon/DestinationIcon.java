@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.databasemigrator.destination.icon;
 
+import de.deadlocker8.budgetmaster.databasemigrator.destination.ProvidesID;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.TableNames;
 import lombok.*;
 
@@ -16,10 +17,9 @@ import javax.persistence.Table;
 @Setter
 @EqualsAndHashCode
 @ToString
-public class DestinationIcon
+public class DestinationIcon implements ProvidesID
 {
 	@Id
-
 	private Integer ID;
 
 	@Column(name = "image_id")
