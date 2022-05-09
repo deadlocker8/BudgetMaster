@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.databasemigrator.listener;
 
-import de.deadlocker8.budgetmaster.databasemigrator.destination.DestinationRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.Utils;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.DestinationRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.ProvidesID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,5 +67,4 @@ public class GenericStepListener<T extends ProvidesID> implements StepExecutionL
 
 		return itemsOrderedByID.get(0).getID();
 	}
-
 }
