@@ -60,6 +60,11 @@ public class Tag implements ProvidesID
 		this.name = name;
 	}
 
+	public void setReferringTransactions(List<Transaction> referringTransactions)
+	{
+		this.referringTransactions = referringTransactions;
+	}
+
 	public List<Transaction> getReferringTransactions()
 	{
 		return referringTransactions;

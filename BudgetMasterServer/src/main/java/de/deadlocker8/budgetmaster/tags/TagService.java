@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +55,7 @@ public class TagService implements Resettable, AccessAllEntities<Tag>
 
 	public Map<String, Integer> getUsageCounts()
 	{
-		HashMap<String, Integer> usageCounts = new HashMap<>();
+		HashMap<String, Integer> usageCounts = new LinkedHashMap<>();
 
 		final List<Tag> tags = getAllEntitiesAsc();
 		for(Tag tag : tags)
