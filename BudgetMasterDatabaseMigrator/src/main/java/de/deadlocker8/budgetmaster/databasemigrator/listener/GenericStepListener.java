@@ -20,12 +20,14 @@ public class GenericStepListener<T extends ProvidesID> implements StepExecutionL
 	private final String tableName;
 	private final DestinationRepository<T> repository;
 	private final JdbcTemplate jdbcTemplate;
+	private final boolean adjustSequence;
 
-	public GenericStepListener(String tableName, DestinationRepository<T> repository, JdbcTemplate jdbcTemplate)
+	public GenericStepListener(String tableName, DestinationRepository<T> repository, JdbcTemplate jdbcTemplate, boolean adjustSequence)
 	{
 		this.tableName = tableName;
 		this.repository = repository;
 		this.jdbcTemplate = jdbcTemplate;
+		this.adjustSequence = adjustSequence;
 	}
 
 	@Override
@@ -34,8 +36,11 @@ public class GenericStepListener<T extends ProvidesID> implements StepExecutionL
 		LOGGER.info("\n");
 		LOGGER.info(">>> Migrate {}s...", tableName);
 
-		LOGGER.debug("Resetting sequence to 0");
-		jdbcTemplate.update(MessageFormat.format("ALTER SEQUENCE {0}_id_seq RESTART WITH 1", tableName));
+		if(adjustSequence)
+		{
+			LOGGER.debug("Resetting sequence to 0");
+			jdbcTemplate.update(MessageFormat.format("ALTER SEQUENCE {0}_id_seq RESTART WITH 1", tableName));
+		}
 	}
 
 	@Override
@@ -44,10 +49,13 @@ public class GenericStepListener<T extends ProvidesID> implements StepExecutionL
 		final int count = Utils.getCommitCount(stepExecution);
 		LOGGER.info(">>> Successfully migrated {} {}s\n", count, tableName);
 
-		final int highestUsedID = getHighestUsedID();
-		final int newSequence = highestUsedID + 1;
-		LOGGER.debug("Adjusting sequence to {} ({})", newSequence, highestUsedID);
-		jdbcTemplate.update(MessageFormat.format("ALTER SEQUENCE {0}_id_seq RESTART WITH {1}", tableName, newSequence));
+		if(adjustSequence)
+		{
+			final int highestUsedID = getHighestUsedID();
+			final int newSequence = highestUsedID + 1;
+			LOGGER.debug("Adjusting sequence to {} ({})", newSequence, highestUsedID);
+			jdbcTemplate.update(MessageFormat.format("ALTER SEQUENCE {0}_id_seq RESTART WITH {1}", tableName, newSequence));
+		}
 
 		return null;
 	}

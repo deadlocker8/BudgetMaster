@@ -1,14 +1,13 @@
 package de.deadlocker8.budgetmaster.databasemigrator.destination.template;
 
 
+import de.deadlocker8.budgetmaster.databasemigrator.CustomIdGenerator;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.ProvidesID;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.TableNames;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = TableNames.TEMPLATE)
@@ -21,6 +20,8 @@ import javax.persistence.Table;
 public class DestinationTemplate implements ProvidesID
 {
 	@Id
+	@GeneratedValue(generator = "custom_generator")
+	@GenericGenerator(name = "custom_generator", strategy = CustomIdGenerator.GENERATOR)
 	private Integer ID;
 
 	@Column(name = "template_name")
