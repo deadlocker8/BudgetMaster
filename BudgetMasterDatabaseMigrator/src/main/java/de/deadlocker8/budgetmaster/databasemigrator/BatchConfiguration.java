@@ -53,6 +53,7 @@ import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.report.ReportSe
 import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.tag.TagReader;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.tag.TemplateTagReader;
 import de.deadlocker8.budgetmaster.databasemigrator.steps.reader.tag.TransactionTagReader;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
@@ -61,14 +62,19 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
 @Configuration
 @EnableBatchProcessing
+@AllArgsConstructor
 public class BatchConfiguration
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(BatchConfiguration.class);
@@ -113,6 +119,8 @@ public class BatchConfiguration
 
 	final DestinationTemplateRepository destinationTemplateRepository;
 	final DestinationTemplateGroupRepository destinationTemplateGroupRepository;
+
+	final ApplicationContext context;
 
 	public void cleanDatabase()
 	{
@@ -171,6 +179,12 @@ public class BatchConfiguration
 		LOGGER.debug(">>> Cleanup database DONE");
 	}
 
+	@Bean(name = "jdbcTemplate2")
+	public JdbcTemplate createJdbcTemplate2(@Autowired @Qualifier("secondaryDataSource") DataSource dataSource2)
+	{
+		return new JdbcTemplate(dataSource2);
+	}
+
 	@Bean(name = "migrateJob")
 	public Job createMigrateJob()
 	{
@@ -227,7 +241,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationImageRepository))
 				.listener(new GenericChunkListener(TableNames.IMAGE))
-				.listener(new GenericStepListener<>(TableNames.IMAGE, entityManager, destinationImageRepository))
+				.listener(new GenericStepListener<>(TableNames.IMAGE, destinationImageRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class)))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -241,7 +255,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationIconRepository))
 				.listener(new GenericChunkListener(TableNames.ICON))
-				.listener(new GenericStepListener<>(TableNames.ICON, entityManager, destinationIconRepository))
+				.listener(new GenericStepListener<>(TableNames.ICON, destinationIconRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class)))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -255,7 +269,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationCategoryRepository))
 				.listener(new GenericChunkListener(TableNames.CATEGORY))
-				.listener(new GenericStepListener<>(TableNames.CATEGORY, entityManager, destinationCategoryRepository))
+				.listener(new GenericStepListener<>(TableNames.CATEGORY, destinationCategoryRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class)))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -269,7 +283,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationAccountRepository))
 				.listener(new GenericChunkListener(TableNames.ACCOUNT))
-				.listener(new GenericStepListener<>(TableNames.ACCOUNT, entityManager, destinationAccountRepository))
+				.listener(new GenericStepListener<>(TableNames.ACCOUNT, destinationAccountRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class)))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -283,7 +297,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationChartRepository))
 				.listener(new GenericChunkListener(TableNames.CHART))
-				.listener(new GenericStepListener<>(TableNames.CHART, entityManager, destinationChartRepository))
+				.listener(new GenericStepListener<>(TableNames.CHART, destinationChartRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class)))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -297,7 +311,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationHintRepository))
 				.listener(new GenericChunkListener(TableNames.HINT))
-				.listener(new GenericStepListener<>(TableNames.HINT, entityManager, destinationHintRepository))
+				.listener(new GenericStepListener<>(TableNames.HINT, destinationHintRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class)))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -311,7 +325,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationRepeatingEndRepository))
 				.listener(new GenericChunkListener(TableNames.REPEATING_END))
-				.listener(new GenericStepListener<>(TableNames.REPEATING_END, entityManager, destinationRepeatingEndRepository))
+				.listener(new GenericStepListener<>(TableNames.REPEATING_END, destinationRepeatingEndRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class)))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -325,7 +339,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationRepeatingEndAfterXTimesRepository))
 				.listener(new GenericChunkListener(TableNames.REPEATING_END_AFTER_X_TIMES))
-				.listener(new GenericStepListener<>(TableNames.REPEATING_END_AFTER_X_TIMES, entityManager, destinationRepeatingEndAfterXTimesRepository))
+				.listener(new GenericStepListener<>(TableNames.REPEATING_END_AFTER_X_TIMES, destinationRepeatingEndAfterXTimesRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class)))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -339,7 +353,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationRepeatingEndDateRepository))
 				.listener(new GenericChunkListener(TableNames.REPEATING_END_DATE))
-				.listener(new GenericStepListener<>(TableNames.REPEATING_END_DATE, entityManager, destinationRepeatingEndDateRepository))
+				.listener(new GenericStepListener<>(TableNames.REPEATING_END_DATE, destinationRepeatingEndDateRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class)))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -353,7 +367,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationRepeatingEndNeverRepository))
 				.listener(new GenericChunkListener(TableNames.REPEATING_END_NEVER))
-				.listener(new GenericStepListener<>(TableNames.REPEATING_END_NEVER, entityManager, destinationRepeatingEndNeverRepository))
+				.listener(new GenericStepListener<>(TableNames.REPEATING_END_NEVER, destinationRepeatingEndNeverRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class)))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -367,7 +381,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationRepeatingModifierRepository))
 				.listener(new GenericChunkListener(TableNames.REPEATING_MODIFIER))
-				.listener(new GenericStepListener<>(TableNames.REPEATING_MODIFIER, entityManager, destinationRepeatingModifierRepository))
+				.listener(new GenericStepListener<>(TableNames.REPEATING_MODIFIER, destinationRepeatingModifierRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class)))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -381,7 +395,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationRepeatingModifierDaysRepository))
 				.listener(new GenericChunkListener(TableNames.REPEATING_MODIFIER_DAYS))
-				.listener(new GenericStepListener<>(TableNames.REPEATING_MODIFIER_DAYS, entityManager, destinationRepeatingModifierDaysRepository))
+				.listener(new GenericStepListener<>(TableNames.REPEATING_MODIFIER_DAYS, destinationRepeatingModifierDaysRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class)))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -395,7 +409,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationRepeatingModifierMonthsRepository))
 				.listener(new GenericChunkListener(TableNames.REPEATING_MODIFIER_MONTHS))
-				.listener(new GenericStepListener<>(TableNames.REPEATING_MODIFIER_MONTHS, entityManager, destinationRepeatingModifierMonthsRepository))
+				.listener(new GenericStepListener<>(TableNames.REPEATING_MODIFIER_MONTHS, destinationRepeatingModifierMonthsRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class)))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -409,7 +423,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationRepeatingModifierYearsRepository))
 				.listener(new GenericChunkListener(TableNames.REPEATING_MODIFIER_YEARS))
-				.listener(new GenericStepListener<>(TableNames.REPEATING_MODIFIER_YEARS, entityManager, destinationRepeatingModifierYearsRepository))
+				.listener(new GenericStepListener<>(TableNames.REPEATING_MODIFIER_YEARS, destinationRepeatingModifierYearsRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class)))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -423,7 +437,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationRepeatingOptionRepository))
 				.listener(new GenericChunkListener(TableNames.REPEATING_OPTION))
-				.listener(new GenericStepListener<>(TableNames.REPEATING_OPTION, entityManager, destinationRepeatingOptionRepository))
+				.listener(new GenericStepListener<>(TableNames.REPEATING_OPTION, destinationRepeatingOptionRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class)))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -437,7 +451,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationReportColumnRepository))
 				.listener(new GenericChunkListener(TableNames.REPORT_COLUMN))
-				.listener(new GenericStepListener<>(TableNames.REPORT_COLUMN, entityManager, destinationReportColumnRepository))
+				.listener(new GenericStepListener<>(TableNames.REPORT_COLUMN, destinationReportColumnRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class)))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -451,7 +465,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationReportSettingsRepository))
 				.listener(new GenericChunkListener(TableNames.REPORT_SETTINGS))
-				.listener(new GenericStepListener<>(TableNames.REPORT_SETTINGS, entityManager, destinationReportSettingsRepository))
+				.listener(new GenericStepListener<>(TableNames.REPORT_SETTINGS, destinationReportSettingsRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class)))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -465,7 +479,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationSettingsRepository))
 				.listener(new GenericChunkListener(TableNames.SETTINGS))
-				.listener(new GenericStepListener<>(TableNames.SETTINGS, entityManager, destinationSettingsRepository))
+				.listener(new GenericStepListener<>(TableNames.SETTINGS, destinationSettingsRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class)))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -479,7 +493,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationTagRepository))
 				.listener(new GenericChunkListener(TableNames.TAG))
-				.listener(new GenericStepListener<>(TableNames.TAG, entityManager, destinationTagRepository))
+				.listener(new GenericStepListener<>(TableNames.TAG, destinationTagRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class)))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -493,7 +507,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationTemplateTagRepository))
 				.listener(new GenericChunkListener(TableNames.TEMPLATE_TAGS))
-				.listener(new GenericStepListener<>(TableNames.TEMPLATE_TAGS, entityManager, destinationTemplateTagRepository))
+				.listener(new GenericStepListener<>(TableNames.TEMPLATE_TAGS, destinationTemplateTagRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class)))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -507,7 +521,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationTransactionTagRepository))
 				.listener(new GenericChunkListener(TableNames.TRANSACTION_TAGS))
-				.listener(new GenericStepListener<>(TableNames.TRANSACTION_TAGS, entityManager, destinationTransactionTagRepository))
+				.listener(new GenericStepListener<>(TableNames.TRANSACTION_TAGS, destinationTransactionTagRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class)))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -521,7 +535,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationUserRepository))
 				.listener(new GenericChunkListener(TableNames.USER_SOURCE))
-				.listener(new GenericStepListener<>(TableNames.USER_SOURCE, entityManager, destinationUserRepository))
+				.listener(new GenericStepListener<>(TableNames.USER_SOURCE, destinationUserRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class)))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -535,7 +549,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationTransactionRepository))
 				.listener(new GenericChunkListener(TableNames.TRANSACTION))
-				.listener(new GenericStepListener<>(TableNames.TRANSACTION, entityManager, destinationTransactionRepository))
+				.listener(new GenericStepListener<>(TableNames.TRANSACTION, destinationTransactionRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class)))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -549,7 +563,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationTemplateRepository))
 				.listener(new GenericChunkListener(TableNames.TEMPLATE))
-				.listener(new GenericStepListener<>(TableNames.TEMPLATE, entityManager, destinationTemplateRepository))
+				.listener(new GenericStepListener<>(TableNames.TEMPLATE, destinationTemplateRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class)))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -563,7 +577,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationTemplateGroupRepository))
 				.listener(new GenericChunkListener(TableNames.TEMPLATE_GROUP))
-				.listener(new GenericStepListener<>(TableNames.TEMPLATE_GROUP, entityManager, destinationTemplateGroupRepository))
+				.listener(new GenericStepListener<>(TableNames.TEMPLATE_GROUP, destinationTemplateGroupRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class)))
 				.allowStartIfComplete(true)
 				.build();
 	}
