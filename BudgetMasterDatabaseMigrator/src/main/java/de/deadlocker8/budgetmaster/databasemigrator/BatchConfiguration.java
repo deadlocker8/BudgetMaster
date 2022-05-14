@@ -465,7 +465,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationReportSettingsRepository))
 				.listener(new GenericChunkListener(TableNames.REPORT_SETTINGS))
-				.listener(new GenericStepListener<>(TableNames.REPORT_SETTINGS, destinationReportSettingsRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class), true))
+				.listener(new GenericStepListener<>(TableNames.REPORT_SETTINGS, destinationReportSettingsRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class), false))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -479,7 +479,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationSettingsRepository))
 				.listener(new GenericChunkListener(TableNames.SETTINGS))
-				.listener(new GenericStepListener<>(TableNames.SETTINGS, destinationSettingsRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class), true))
+				.listener(new GenericStepListener<>(TableNames.SETTINGS, destinationSettingsRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class), false))
 				.allowStartIfComplete(true)
 				.build();
 	}
