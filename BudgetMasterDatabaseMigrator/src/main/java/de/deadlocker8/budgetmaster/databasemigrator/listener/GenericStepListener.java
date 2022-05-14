@@ -53,8 +53,8 @@ public class GenericStepListener<T extends ProvidesID> implements StepExecutionL
 		{
 			final int highestUsedID = getHighestUsedID();
 			final int newSequence = highestUsedID + 1;
-			LOGGER.debug("Adjusting sequence to {} ({})", newSequence, highestUsedID);
-			jdbcTemplate.update(MessageFormat.format("ALTER SEQUENCE {0}_id_seq RESTART WITH {1}", tableName, newSequence));
+			LOGGER.debug("Adjusting sequence to {} (highest used id: {})", newSequence, highestUsedID);
+			jdbcTemplate.update(MessageFormat.format("ALTER SEQUENCE {0}_id_seq RESTART WITH {1}", tableName, String.valueOf(newSequence)));
 		}
 
 		return null;

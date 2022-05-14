@@ -63,5 +63,8 @@ class UpdateSequencesTest extends MigratorTestBase
 		final List<DestinationCategory> categoriesOrderedById = categoryRepository.findAllByOrderByIDDesc();
 		final DestinationCategory savedCategory = categoryRepository.save(new DestinationCategory(null, "New One", "#ffffff", 0, null));
 		assertThat(savedCategory.getID()).isEqualTo(categoriesOrderedById.get(0).getID() + 1);
+
+		final DestinationCategory savedCategory2 = categoryRepository.save(new DestinationCategory(null, "New Two", "#ffffff", 0, null));
+		assertThat(savedCategory2.getID()).isEqualTo(categoriesOrderedById.get(0).getID() + 2);
 	}
 }
