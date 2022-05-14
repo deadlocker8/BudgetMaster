@@ -507,7 +507,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationTemplateTagRepository))
 				.listener(new GenericChunkListener(TableNames.TEMPLATE_TAGS))
-				.listener(new GenericStepListener<>(TableNames.TEMPLATE_TAGS, destinationTemplateTagRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class), true))
+				.listener(new GenericStepListener<>(TableNames.TEMPLATE_TAGS, destinationTemplateTagRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class), false))
 				.allowStartIfComplete(true)
 				.build();
 	}
@@ -521,7 +521,7 @@ public class BatchConfiguration
 				.processor(new GenericDoNothingProcessor<>())
 				.writer(new GenericWriter<>(destinationTransactionTagRepository))
 				.listener(new GenericChunkListener(TableNames.TRANSACTION_TAGS))
-				.listener(new GenericStepListener<>(TableNames.TRANSACTION_TAGS, destinationTransactionTagRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class), true))
+				.listener(new GenericStepListener<>(TableNames.TRANSACTION_TAGS, destinationTransactionTagRepository, context.getBean("jdbcTemplate2", JdbcTemplate.class), false))
 				.allowStartIfComplete(true)
 				.build();
 	}
