@@ -2,7 +2,7 @@ package de.deadlocker8.budgetmaster.databasemigrator;
 
 import de.deadlocker8.budgetmaster.databasemigrator.destination.StepNames;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.hint.DestinationHint;
-import de.deadlocker8.budgetmaster.databasemigrator.destination.hint.DestinationHintRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.hint.DestinationHintIntegerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -45,7 +45,7 @@ class MigrateHintsTest extends MigratorTestBase
 	}
 
 	@Autowired
-	private DestinationHintRepository hintRepository;
+	private DestinationHintIntegerRepository hintRepository;
 
 	@Test
 	void test_stepMigrateHints()

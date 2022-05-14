@@ -1,10 +1,8 @@
 package de.deadlocker8.budgetmaster.databasemigrator;
 
 import de.deadlocker8.budgetmaster.databasemigrator.destination.StepNames;
-import de.deadlocker8.budgetmaster.databasemigrator.destination.hint.DestinationHint;
-import de.deadlocker8.budgetmaster.databasemigrator.destination.hint.DestinationHintRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.user.DestinationUser;
-import de.deadlocker8.budgetmaster.databasemigrator.destination.user.DestinationUserRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.user.DestinationUserIntegerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -47,7 +45,7 @@ class MigrateUsersTest extends MigratorTestBase
 	}
 
 	@Autowired
-	private DestinationUserRepository userRepository;
+	private DestinationUserIntegerRepository userRepository;
 
 	@Test
 	void test_stepMigrateUsers()

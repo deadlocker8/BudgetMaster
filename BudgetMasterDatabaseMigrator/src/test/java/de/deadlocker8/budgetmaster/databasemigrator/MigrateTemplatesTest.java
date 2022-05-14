@@ -2,7 +2,7 @@ package de.deadlocker8.budgetmaster.databasemigrator;
 
 import de.deadlocker8.budgetmaster.databasemigrator.destination.StepNames;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.template.DestinationTemplate;
-import de.deadlocker8.budgetmaster.databasemigrator.destination.template.DestinationTemplateRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.template.DestinationTemplateIntegerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -45,7 +45,7 @@ class MigrateTemplatesTest extends MigratorTestBase
 	}
 
 	@Autowired
-	private DestinationTemplateRepository templateRepository;
+	private DestinationTemplateIntegerRepository templateRepository;
 
 	@Test
 	void test_stepMigrateTemplates()

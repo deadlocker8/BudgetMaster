@@ -1,0 +1,7 @@
+package de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.modifier;
+
+import de.deadlocker8.budgetmaster.databasemigrator.destination.DestinationIntegerRepository;
+
+public interface DestinationRepeatingModifierYearsIntegerRepository extends DestinationIntegerRepository<DestinationRepeatingModifierYears, Integer>
+{
+}

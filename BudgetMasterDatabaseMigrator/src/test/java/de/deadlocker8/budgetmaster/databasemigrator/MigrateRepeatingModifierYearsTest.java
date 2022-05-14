@@ -1,10 +1,8 @@
 package de.deadlocker8.budgetmaster.databasemigrator;
 
 import de.deadlocker8.budgetmaster.databasemigrator.destination.StepNames;
-import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.modifier.DestinationRepeatingModifierMonths;
-import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.modifier.DestinationRepeatingModifierMonthsRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.modifier.DestinationRepeatingModifierYears;
-import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.modifier.DestinationRepeatingModifierYearsRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.modifier.DestinationRepeatingModifierYearsIntegerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -47,7 +45,7 @@ class MigrateRepeatingModifierYearsTest extends MigratorTestBase
 	}
 
 	@Autowired
-	private DestinationRepeatingModifierYearsRepository modifierYearsRepository;
+	private DestinationRepeatingModifierYearsIntegerRepository modifierYearsRepository;
 
 	@Test
 	void test_stepMigrateRepeatingModifierYears()

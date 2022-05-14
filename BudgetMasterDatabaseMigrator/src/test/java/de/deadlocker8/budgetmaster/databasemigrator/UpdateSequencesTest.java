@@ -2,7 +2,7 @@ package de.deadlocker8.budgetmaster.databasemigrator;
 
 import de.deadlocker8.budgetmaster.databasemigrator.destination.StepNames;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.category.DestinationCategory;
-import de.deadlocker8.budgetmaster.databasemigrator.destination.category.DestinationCategoryRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.category.DestinationCategoryIntegerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -45,7 +45,7 @@ class UpdateSequencesTest extends MigratorTestBase
 	}
 
 	@Autowired
-	private DestinationCategoryRepository categoryRepository;
+	private DestinationCategoryIntegerRepository categoryRepository;
 
 	@Test
 	void test_updateSequences()

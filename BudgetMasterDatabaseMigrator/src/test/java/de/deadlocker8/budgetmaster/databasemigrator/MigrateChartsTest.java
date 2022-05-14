@@ -2,7 +2,7 @@ package de.deadlocker8.budgetmaster.databasemigrator;
 
 import de.deadlocker8.budgetmaster.databasemigrator.destination.StepNames;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.chart.DestinationChart;
-import de.deadlocker8.budgetmaster.databasemigrator.destination.chart.DestinationChartRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.chart.DestinationChartIntegerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -45,7 +45,7 @@ class MigrateChartsTest extends MigratorTestBase
 	}
 
 	@Autowired
-	private DestinationChartRepository chartRepository;
+	private DestinationChartIntegerRepository chartRepository;
 
 	private static final String DEFAULT_CHART_SCRIPT = """
 			/* This list will be dynamically filled with all the transactions between

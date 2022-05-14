@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.databasemigrator.listener;
 
 import de.deadlocker8.budgetmaster.databasemigrator.Utils;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.DestinationIntegerRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.DestinationRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.ProvidesID;
 import org.slf4j.Logger;
@@ -13,16 +14,16 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.text.MessageFormat;
 import java.util.List;
 
-public class GenericStepListener<T extends ProvidesID> implements StepExecutionListener
+public class GenericStepListener<T extends ProvidesID, ID> implements StepExecutionListener
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericStepListener.class);
 
 	private final String tableName;
-	private final DestinationRepository<T> repository;
+	private final DestinationRepository<T, ID> repository;
 	private final JdbcTemplate jdbcTemplate;
 	private final boolean adjustSequence;
 
-	public GenericStepListener(String tableName, DestinationRepository<T> repository, JdbcTemplate jdbcTemplate, boolean adjustSequence)
+	public GenericStepListener(String tableName, DestinationRepository<T, ID> repository, JdbcTemplate jdbcTemplate, boolean adjustSequence)
 	{
 		this.tableName = tableName;
 		this.repository = repository;
@@ -60,14 +61,19 @@ public class GenericStepListener<T extends ProvidesID> implements StepExecutionL
 		return null;
 	}
 
-	public int getHighestUsedID()
+	public Integer getHighestUsedID()
 	{
-		final List<T> itemsOrderedByID = repository.findAllByOrderByIDDesc();
-		if(itemsOrderedByID.isEmpty())
+		if(repository instanceof DestinationIntegerRepository<T,ID> integerRepository)
 		{
-			return 0;
+			final List<T> itemsOrderedByID = integerRepository.findAllByOrderByIDDesc();
+			if(itemsOrderedByID.isEmpty())
+			{
+				return 0;
+			}
+
+			return itemsOrderedByID.get(0).getID();
 		}
 
-		return itemsOrderedByID.get(0).getID();
+		return null;
 	}
 }

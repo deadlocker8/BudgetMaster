@@ -2,7 +2,7 @@ package de.deadlocker8.budgetmaster.databasemigrator;
 
 import de.deadlocker8.budgetmaster.databasemigrator.destination.StepNames;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.modifier.DestinationRepeatingModifierDays;
-import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.modifier.DestinationRepeatingModifierDaysRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.modifier.DestinationRepeatingModifierDaysIntegerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -45,7 +45,7 @@ class MigrateRepeatingModifierDaysTest extends MigratorTestBase
 	}
 
 	@Autowired
-	private DestinationRepeatingModifierDaysRepository modifierDaysRepository;
+	private DestinationRepeatingModifierDaysIntegerRepository modifierDaysRepository;
 
 	@Test
 	void test_stepMigrateRepeatingModifierDays()

@@ -2,7 +2,7 @@ package de.deadlocker8.budgetmaster.databasemigrator;
 
 import de.deadlocker8.budgetmaster.databasemigrator.destination.StepNames;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.DestinationRepeatingOption;
-import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.DestinationRepeatingOptionRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.DestinationRepeatingOptionIntegerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -46,7 +46,7 @@ class MigrateRepeatingOptionsTest extends MigratorTestBase
 	}
 
 	@Autowired
-	private DestinationRepeatingOptionRepository repeatingOptionRepository;
+	private DestinationRepeatingOptionIntegerRepository repeatingOptionRepository;
 
 	@Test
 	void test_stepMigrateRepeatingOptions()

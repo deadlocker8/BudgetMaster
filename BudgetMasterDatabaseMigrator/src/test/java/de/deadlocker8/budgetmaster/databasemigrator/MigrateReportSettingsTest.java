@@ -2,7 +2,7 @@ package de.deadlocker8.budgetmaster.databasemigrator;
 
 import de.deadlocker8.budgetmaster.databasemigrator.destination.StepNames;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.report.DestinationReportSettings;
-import de.deadlocker8.budgetmaster.databasemigrator.destination.report.DestinationReportSettingsRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.report.DestinationReportSettingsIntegerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -46,7 +46,7 @@ class MigrateReportSettingsTest extends MigratorTestBase
 	}
 
 	@Autowired
-	private DestinationReportSettingsRepository settingsRepository;
+	private DestinationReportSettingsIntegerRepository settingsRepository;
 
 	@Test
 	void test_stepMigrateReportSettings()

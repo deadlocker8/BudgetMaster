@@ -2,7 +2,7 @@ package de.deadlocker8.budgetmaster.databasemigrator;
 
 import de.deadlocker8.budgetmaster.databasemigrator.destination.StepNames;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.end.DestinationRepeatingEndAfterXTimes;
-import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.end.DestinationRepeatingEndAfterXTimesRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.end.DestinationRepeatingEndAfterXTimesIntegerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -45,7 +45,7 @@ class MigrateRepeatingEndAfterXTimesTest extends MigratorTestBase
 	}
 
 	@Autowired
-	private DestinationRepeatingEndAfterXTimesRepository repeatingEndAfterXTimesRepository;
+	private DestinationRepeatingEndAfterXTimesIntegerRepository repeatingEndAfterXTimesRepository;
 
 	@Test
 	void test_stepMigrateRepeatingEndAfterXTimes()

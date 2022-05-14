@@ -2,7 +2,7 @@ package de.deadlocker8.budgetmaster.databasemigrator;
 
 import de.deadlocker8.budgetmaster.databasemigrator.destination.StepNames;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.image.DestinationImage;
-import de.deadlocker8.budgetmaster.databasemigrator.destination.image.DestinationImageRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.image.DestinationImageIntegerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -48,7 +48,7 @@ class MigrateImagesTest extends MigratorTestBase
 	}
 
 	@Autowired
-	private DestinationImageRepository imageRepository;
+	private DestinationImageIntegerRepository imageRepository;
 
 	@Test
 	void test_stepMigrateImages() throws IOException, URISyntaxException

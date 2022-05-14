@@ -7,13 +7,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public class GenericWriter<T> implements ItemWriter<T>
+public class GenericWriter<T, ID> implements ItemWriter<T>
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericWriter.class);
 
-	final JpaRepository<T, Integer> repository;
+	final JpaRepository<T, ID> repository;
 
-	public GenericWriter(JpaRepository<T, Integer> repository)
+	public GenericWriter(JpaRepository<T, ID> repository)
 	{
 		this.repository = repository;
 	}

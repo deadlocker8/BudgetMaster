@@ -44,13 +44,13 @@ class MigrateTagsTest extends MigratorTestBase
 	}
 
 	@Autowired
-	private DestinationTagRepository tagRepository;
+	private DestinationTagIntegerRepository tagRepository;
 
 	@Autowired
-	private DestinationTemplateTagRepository templateTagRepository;
+	private DestinationTemplateTagIntegerRepository templateTagRepository;
 
 	@Autowired
-	private DestinationTransactionTagRepository transactionTagRepository;
+	private DestinationTransactionTagIntegerRepository transactionTagRepository;
 
 	@Test
 	void test_stepMigrateTags()
@@ -87,8 +87,8 @@ class MigrateTagsTest extends MigratorTestBase
 		assertThat(stepExecution.getReadCount()).isEqualTo(2);
 		assertThat(stepExecution.getCommitCount()).isEqualTo(3);
 
-		final DestinationTemplateTag tag1 = new DestinationTemplateTag(1, 1, 1);
-		final DestinationTemplateTag tag2 = new DestinationTemplateTag(2, 1,2);
+		final DestinationTemplateTag tag1 = new DestinationTemplateTag(1, 1);
+		final DestinationTemplateTag tag2 = new DestinationTemplateTag(1,2);
 
 		final List<DestinationTemplateTag> tags = templateTagRepository.findAll();
 		assertThat(tags)
@@ -109,9 +109,9 @@ class MigrateTagsTest extends MigratorTestBase
 		assertThat(stepExecution.getReadCount()).isEqualTo(3);
 		assertThat(stepExecution.getCommitCount()).isEqualTo(4);
 
-		final DestinationTransactionTag tag1 = new DestinationTransactionTag(1, 1, 1);
-		final DestinationTransactionTag tag2 = new DestinationTransactionTag(2, 2,1);
-		final DestinationTransactionTag tag3 = new DestinationTransactionTag(3, 2,2);
+		final DestinationTransactionTag tag1 = new DestinationTransactionTag(1, 1);
+		final DestinationTransactionTag tag2 = new DestinationTransactionTag(2,1);
+		final DestinationTransactionTag tag3 = new DestinationTransactionTag(2,2);
 
 		final List<DestinationTransactionTag> tags = transactionTagRepository.findAll();
 		assertThat(tags)

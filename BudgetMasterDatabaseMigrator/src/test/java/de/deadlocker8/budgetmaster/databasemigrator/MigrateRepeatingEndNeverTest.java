@@ -2,7 +2,7 @@ package de.deadlocker8.budgetmaster.databasemigrator;
 
 import de.deadlocker8.budgetmaster.databasemigrator.destination.StepNames;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.end.DestinationRepeatingEndNever;
-import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.end.DestinationRepeatingEndNeverRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.end.DestinationRepeatingEndNeverIntegerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -45,7 +45,7 @@ class MigrateRepeatingEndNeverTest extends MigratorTestBase
 	}
 
 	@Autowired
-	private DestinationRepeatingEndNeverRepository repeatingEndNeverRepository;
+	private DestinationRepeatingEndNeverIntegerRepository repeatingEndNeverRepository;
 
 	@Test
 	void test_stepMigrateRepeatingEndNever()

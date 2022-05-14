@@ -2,7 +2,7 @@ package de.deadlocker8.budgetmaster.databasemigrator;
 
 import de.deadlocker8.budgetmaster.databasemigrator.destination.StepNames;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.end.DestinationRepeatingEndDate;
-import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.end.DestinationRepeatingEndDateRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.repeating.end.DestinationRepeatingEndDateIntegerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -46,7 +46,7 @@ class MigrateRepeatingEndDateTest extends MigratorTestBase
 	}
 
 	@Autowired
-	private DestinationRepeatingEndDateRepository repeatingEndDateRepository;
+	private DestinationRepeatingEndDateIntegerRepository repeatingEndDateRepository;
 
 	@Test
 	void test_stepMigrateRepeatingEndDates()

@@ -1,10 +1,8 @@
 package de.deadlocker8.budgetmaster.databasemigrator;
 
 import de.deadlocker8.budgetmaster.databasemigrator.destination.StepNames;
-import de.deadlocker8.budgetmaster.databasemigrator.destination.hint.DestinationHint;
-import de.deadlocker8.budgetmaster.databasemigrator.destination.hint.DestinationHintRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.transaction.DestinationTransaction;
-import de.deadlocker8.budgetmaster.databasemigrator.destination.transaction.DestinationTransactionRepository;
+import de.deadlocker8.budgetmaster.databasemigrator.destination.transaction.DestinationTransactionIntegerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -48,7 +46,7 @@ class MigrateTransactionsTest extends MigratorTestBase
 	}
 
 	@Autowired
-	private DestinationTransactionRepository transactionRepository;
+	private DestinationTransactionIntegerRepository transactionRepository;
 
 	@Test
 	void test_stepMigrateTransactions()
