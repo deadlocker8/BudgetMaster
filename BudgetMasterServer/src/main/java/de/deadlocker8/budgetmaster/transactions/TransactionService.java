@@ -36,7 +36,6 @@ import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 public class TransactionService implements Resettable
 {
 	private static final Gson GSON = new GsonBuilder()
-			.setPrettyPrinting()
 			.create();
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TransactionService.class);
