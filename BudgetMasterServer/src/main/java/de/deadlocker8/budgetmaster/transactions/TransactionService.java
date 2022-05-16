@@ -35,7 +35,6 @@ import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 @Service
 public class TransactionService implements Resettable
 {
-	private static final int MAX_SUGGESTIONS = 25;
 	private static final Gson GSON = new GsonBuilder()
 			.setPrettyPrinting()
 			.create();
@@ -306,7 +305,6 @@ public class TransactionService implements Resettable
 		final List<String> nameSuggestions = allByOrderByDateDesc.stream()
 				.map(Transaction::getName)
 				.distinct()
-				.limit(MAX_SUGGESTIONS)
 				.toList();
 		model.addAttribute(TransactionModelAttributes.SUGGESTIONS_JSON, GSON.toJson(nameSuggestions));
 	}
