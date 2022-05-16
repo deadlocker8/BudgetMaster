@@ -248,6 +248,10 @@ main {
     cursor: pointer;
 }
 
+.notification-item a {
+    text-decoration: underline;
+}
+
 .break-all {
     word-break: break-all;
 }

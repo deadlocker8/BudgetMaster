@@ -22,6 +22,7 @@ import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
 import de.deadlocker8.budgetmaster.utils.notification.Notification;
+import de.deadlocker8.budgetmaster.utils.notification.NotificationLinkBuilder;
 import de.deadlocker8.budgetmaster.utils.notification.NotificationType;
 import de.thecodelabs.utils.util.Localization;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -148,7 +149,8 @@ public class TransactionController extends BaseController
 	}
 
 	@PostMapping(value = "/newTransaction")
-	public String post(WebRequest request,
+	public String post(HttpServletRequest servletRequest,
+					   WebRequest request,
 					   Model model, @CookieValue("currentDate") String cookieDate,
 					   @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult,
 					   @RequestParam(value = "isRepeating", required = false) boolean isRepeating,
@@ -190,7 +192,7 @@ public class TransactionController extends BaseController
 
 
 		final boolean isContinueActivated = action.equals(CONTINUE);
-		return handleRedirect(request, model, transaction.getID() != null, transaction, bindingResult, date, redirectUrl, isContinueActivated);
+		return handleRedirect(servletRequest, request, model, transaction.getID() != null, transaction, bindingResult, date, redirectUrl, isContinueActivated);
 	}
 
 	private void handlePreviousType(Transaction transaction, boolean isRepeating)
@@ -226,7 +228,7 @@ public class TransactionController extends BaseController
 		return new RepeatingOption(startDate, repeatingModifier, repeatingEnd);
 	}
 
-	private String handleRedirect(WebRequest request, Model model, boolean isEdit, @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult, LocalDate date, String url, boolean isContinueActivated)
+	private String handleRedirect(HttpServletRequest servletRequest, WebRequest request, Model model, boolean isEdit, @ModelAttribute("NewTransaction") Transaction transaction, BindingResult bindingResult, LocalDate date, String url, boolean isContinueActivated)
 	{
 		if(bindingResult.hasErrors())
 		{
@@ -235,8 +237,10 @@ public class TransactionController extends BaseController
 			return url;
 		}
 
-		transactionService.getRepository().save(transaction);
-		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.transaction.save.success", transaction.getName()), NotificationType.SUCCESS));
+		transaction = transactionService.getRepository().save(transaction);
+
+		final String link = NotificationLinkBuilder.buildEditLink(servletRequest, transaction.getName(), Mappings.TRANSACTIONS, transaction.getID());
+		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.transaction.save.success", link), NotificationType.SUCCESS));
 
 		if(isContinueActivated)
 		{

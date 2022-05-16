@@ -5,6 +5,7 @@ import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.utils.*;
 import de.deadlocker8.budgetmaster.utils.notification.Notification;
+import de.deadlocker8.budgetmaster.utils.notification.NotificationLinkBuilder;
 import de.deadlocker8.budgetmaster.utils.notification.NotificationType;
 import de.thecodelabs.utils.util.ColorUtilsNonJavaFX;
 import de.thecodelabs.utils.util.Localization;
@@ -15,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -131,7 +133,8 @@ public class CategoryController extends BaseController
 	}
 
 	@PostMapping(value = "/newCategory")
-	public String post(WebRequest request,
+	public String post(HttpServletRequest servletRequest,
+					   WebRequest request,
 					   Model model, @ModelAttribute("NewCategory") Category category, BindingResult bindingResult,
 					   @RequestParam(value = "iconImageID", required = false) Integer iconImageID,
 					   @RequestParam(value = "builtinIconIdentifier", required = false) String builtinIconIdentifier,
@@ -155,9 +158,10 @@ public class CategoryController extends BaseController
 			category.setType(CategoryType.CUSTOM);
 		}
 
-		categoryService.save(category);
+		category = categoryService.save(category);
 
-		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.category.save.success", category.getName()), NotificationType.SUCCESS));
+		final String link = NotificationLinkBuilder.buildEditLink(servletRequest, category.getName(), Mappings.CATEGORIES, category.getID());
+		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.category.save.success", link), NotificationType.SUCCESS));
 
 		return ReturnValues.REDIRECT_SHOW_ALL;
 	}

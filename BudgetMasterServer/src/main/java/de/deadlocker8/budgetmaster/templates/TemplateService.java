@@ -89,7 +89,7 @@ public class TemplateService implements Resettable, AccessAllEntities<Template>,
 		}
 	}
 
-	public void createFromTransaction(String templateName, Transaction transaction, boolean includeCategory, boolean includeAccount)
+	public Template createFromTransaction(String templateName, Transaction transaction, boolean includeCategory, boolean includeAccount)
 	{
 		final Template template = new Template(templateName, transaction);
 		if(!includeCategory)
@@ -104,7 +104,7 @@ public class TemplateService implements Resettable, AccessAllEntities<Template>,
 
 		template.setTemplateGroup(templateGroupService.getDefaultGroup());
 
-		getRepository().save(template);
+		return getRepository().save(template);
 	}
 
 	public void prepareTemplateForNewTransaction(TransactionBase template, boolean prepareAccount)

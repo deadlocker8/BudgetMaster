@@ -7,6 +7,7 @@ import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
 import de.deadlocker8.budgetmaster.utils.notification.Notification;
+import de.deadlocker8.budgetmaster.utils.notification.NotificationLinkBuilder;
 import de.deadlocker8.budgetmaster.utils.notification.NotificationType;
 import de.thecodelabs.utils.util.Localization;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -183,7 +184,7 @@ public class AccountController extends BaseController
 		if(isNewAccount)
 		{
 			account.setType(AccountType.CUSTOM);
-			accountService.getRepository().save(account);
+			account = accountService.getRepository().save(account);
 		}
 		else
 		{
@@ -195,7 +196,8 @@ public class AccountController extends BaseController
 			return ReturnValues.IMPORT_STEP_2;
 		}
 
-		WebRequestUtils.putNotification(webRequest, new Notification(Localization.getString("notification.account.save.success", account.getName()), NotificationType.SUCCESS));
+		final String link = NotificationLinkBuilder.buildEditLink(request, account.getName(), Mappings.ACCOUNTS, account.getID());
+		WebRequestUtils.putNotification(webRequest, new Notification(Localization.getString("notification.account.save.success", link), NotificationType.SUCCESS));
 		return ReturnValues.REDIRECT_SHOW_ALL;
 	}
 

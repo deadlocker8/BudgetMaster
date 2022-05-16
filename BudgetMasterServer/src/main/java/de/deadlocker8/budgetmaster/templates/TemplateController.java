@@ -13,6 +13,7 @@ import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
 import de.deadlocker8.budgetmaster.utils.notification.Notification;
+import de.deadlocker8.budgetmaster.utils.notification.NotificationLinkBuilder;
 import de.deadlocker8.budgetmaster.utils.notification.NotificationType;
 import de.thecodelabs.utils.util.Localization;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -80,7 +82,8 @@ public class TemplateController extends BaseController
 	}
 
 	@PostMapping(value = "/fromTransaction")
-	public String postFromTransaction(WebRequest request,
+	public String postFromTransaction(HttpServletRequest servletRequest,
+									  WebRequest request,
 									  @RequestParam(value = "templateName") String templateName,
 									  @ModelAttribute("NewTransaction") Transaction transaction,
 									  @RequestParam(value = "includeCategory") Boolean includeCategory,
@@ -97,9 +100,10 @@ public class TemplateController extends BaseController
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "templateName must not be empty");
 		}
 
-		templateService.createFromTransaction(templateName, transaction, includeCategory, includeAccount);
+		final Template newTemplate = templateService.createFromTransaction(templateName, transaction, includeCategory, includeAccount);
 
-		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.template.add.success", templateName), NotificationType.SUCCESS));
+		final String link = NotificationLinkBuilder.buildEditLink(servletRequest, newTemplate.getTemplateName(), Mappings.TEMPLATES, newTemplate.getID());
+		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.template.add.success", link), NotificationType.SUCCESS));
 
 		return ReturnValues.REDIRECT_ALL_ENTITIES;
 	}
@@ -178,7 +182,8 @@ public class TemplateController extends BaseController
 	}
 
 	@PostMapping(value = "/newTemplate")
-	public String post(WebRequest request,
+	public String post(HttpServletRequest servletRequest,
+					   WebRequest request,
 					   Model model,
 					   @ModelAttribute("NewTemplate") Template template, BindingResult bindingResult,
 					   @RequestParam(value = "includeAccount", required = false) boolean includeAccount,
@@ -238,8 +243,10 @@ public class TemplateController extends BaseController
 			template.setTransferAccount(null);
 		}
 
-		templateService.getRepository().save(template);
-		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.template.save.success", template.getName()), NotificationType.SUCCESS));
+		template = templateService.getRepository().save(template);
+
+		final String link = NotificationLinkBuilder.buildEditLink(servletRequest, template.getTemplateName(), Mappings.CHARTS, template.getID());
+		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.template.save.success", link), NotificationType.SUCCESS));
 		return ReturnValues.REDIRECT_ALL_ENTITIES;
 	}
 

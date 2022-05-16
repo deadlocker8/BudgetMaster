@@ -8,6 +8,7 @@ import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
 import de.deadlocker8.budgetmaster.utils.notification.Notification;
+import de.deadlocker8.budgetmaster.utils.notification.NotificationLinkBuilder;
 import de.deadlocker8.budgetmaster.utils.notification.NotificationType;
 import de.thecodelabs.utils.util.Localization;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 
@@ -90,7 +92,8 @@ public class TemplateGroupController extends BaseController
 	}
 
 	@PostMapping(value = "/newTemplateGroup")
-	public String post(WebRequest request,
+	public String post(HttpServletRequest servletRequest,
+					   WebRequest request,
 					   Model model,
 					   @ModelAttribute("NewTemplateGroup") TemplateGroup templateGroup, BindingResult bindingResult)
 	{
@@ -108,9 +111,10 @@ public class TemplateGroupController extends BaseController
 
 		templateGroup.setType(TemplateGroupType.CUSTOM);
 
-		templateGroupService.getRepository().save(templateGroup);
+		templateGroup = templateGroupService.getRepository().save(templateGroup);
 
-		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.template.save.success", templateGroup.getName()), NotificationType.SUCCESS));
+		final String link = NotificationLinkBuilder.buildEditLink(servletRequest, templateGroup.getName(), Mappings.TEMPLATE_GROUPS, templateGroup.getID());
+		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.template.save.success", link), NotificationType.SUCCESS));
 		return ReturnValues.REDIRECT_ALL_ENTITIES;
 	}
 

@@ -14,6 +14,7 @@ import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
 import de.deadlocker8.budgetmaster.utils.notification.Notification;
+import de.deadlocker8.budgetmaster.utils.notification.NotificationLinkBuilder;
 import de.deadlocker8.budgetmaster.utils.notification.NotificationType;
 import de.thecodelabs.utils.util.Localization;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -179,7 +181,11 @@ public class ChartController extends BaseController
 	}
 
 	@PostMapping(value = "/newChart")
-	public String post(WebRequest request, Model model, @ModelAttribute("NewChart") Chart chart, BindingResult bindingResult)
+	public String post(HttpServletRequest servletRequest,
+					   WebRequest request,
+					   Model model,
+					   @ModelAttribute("NewChart") Chart chart,
+					   BindingResult bindingResult)
 	{
 		ChartValidator userValidator = new ChartValidator();
 		userValidator.validate(chart, bindingResult);
@@ -211,8 +217,9 @@ public class ChartController extends BaseController
 			}
 		}
 
-		chartService.getRepository().save(chart);
-		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.chart.save.success", chart.getName()), NotificationType.SUCCESS));
+		chart = chartService.getRepository().save(chart);
+		final String link = NotificationLinkBuilder.buildEditLink(servletRequest, chart.getName(), Mappings.CHARTS, chart.getID());
+		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.chart.save.success", link), NotificationType.SUCCESS));
 		return ReturnValues.REDIRECT_MANAGE;
 	}
 
