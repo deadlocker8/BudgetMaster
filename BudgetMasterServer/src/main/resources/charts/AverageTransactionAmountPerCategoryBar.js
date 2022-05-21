@@ -64,7 +64,7 @@ for(var j = 0; j < categoryNames.length; j++)
 // Add your Plotly layout settings here (optional)
 var plotlyLayout = {
     title: {
-        text: localizedTitle
+        text: formatChartTitle(localizedTitle, localizedDateRange),
     },
     xaxis: {
     },

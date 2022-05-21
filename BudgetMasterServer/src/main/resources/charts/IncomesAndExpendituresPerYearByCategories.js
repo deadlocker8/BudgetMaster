@@ -104,7 +104,7 @@ for(var i = 0; i < dates.length; i++)
 var plotlyData = [];
 var plotlyLayout = {
     title: {
-        text: localizedTitle
+        text: formatChartTitle(localizedTitle, localizedDateRange),
     },
     barmode: "stack",
     hovermode: 'closest', // show hover popup only for hovered item

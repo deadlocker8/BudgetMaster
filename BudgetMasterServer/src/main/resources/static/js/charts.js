@@ -352,3 +352,15 @@ function toggleCustomChartButton(show)
 {
     document.getElementById('buttonCustomCharts').classList.toggle('hidden', !show);
 }
+
+function formatChartTitle(title, subtitle)
+{
+    title = '<span style="font-weight: bold;">' + title + '</span>';
+    if(!subtitle)
+    {
+        return title;
+    }
+
+    subtitle = '<span style="font-size: 0.9rem;">' + subtitle + '</span>';
+    return title + '<br>' + subtitle;
+}

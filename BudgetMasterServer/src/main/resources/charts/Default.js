@@ -14,7 +14,13 @@ var plotlyData = [{
 }];
 
 // Add your Plotly layout settings here (optional)
-var plotlyLayout = {};
+var plotlyLayout = {
+    title: {
+        // localizedTitle and localizedDateRange are the only available variables starting
+        // with "localized" inside custom charts!
+        text: formatChartTitle(localizedTitle, localizedDateRange),
+    },
+};
 
 // Add your Plotly configuration settings here (optional)
 var plotlyConfig = {

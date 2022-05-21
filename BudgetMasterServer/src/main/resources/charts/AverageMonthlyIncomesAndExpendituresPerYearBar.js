@@ -96,7 +96,7 @@ var plotlyData = [
 // Add your Plotly layout settings here (optional)
 var plotlyLayout = {
     title: {
-        text: localizedTitle
+        text: formatChartTitle(localizedTitle, localizedDateRange),
     },
     yaxis: {
         title: localizedData['axisY'] + ' ' + localizedCurrency,

@@ -114,8 +114,12 @@
                 <#if chart.getType().name() == "DEFAULT">
                 localizedLocale = '${locale.getString("locale")}';
                 localizedTitle = '${locale.getString(chart.getName())}';
+                localizedDateRange = '${dateRange}';
                 localizedCurrency = '${settings.getCurrency()}';
                 localizedData = JSON.parse('${locale.getString(chart.getName() + ".localization")}');
+                <#else>
+                localizedTitle = '${chart.getName()}';
+                localizedDateRange = '${dateRange}';
                 </#if>
 
                 <#assign chartScript = chart.getScript()/>

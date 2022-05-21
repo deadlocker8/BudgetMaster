@@ -106,7 +106,7 @@ plotlyData = plotlyData.concat(addSeries(expenditureHandler, 1));
 // Add your Plotly layout settings here (optional)
 var plotlyLayout = {
     title: {
-        text: localizedTitle
+        text: formatChartTitle(localizedTitle, localizedDateRange),
     },
     hovermode: 'closest', // show hover popup only for hovered item
     grid: {rows: 1, columns: 2},

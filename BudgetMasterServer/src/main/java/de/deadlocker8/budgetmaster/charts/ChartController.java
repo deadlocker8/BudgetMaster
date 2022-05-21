@@ -7,6 +7,7 @@ import com.google.gson.JsonSerializer;
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
 import de.deadlocker8.budgetmaster.filter.FilterHelpersService;
+import de.deadlocker8.budgetmaster.services.DateService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -49,6 +51,7 @@ public class ChartController extends BaseController
 		public static final String GROUP_TYPES = "groupTypes";
 		public static final String CUSTOM_CHARTS = "customCharts";
 		public static final String DEFAULT_CHARTS = "defaultCharts";
+		public static final String DATE_RANGE = "dateRange";
 	}
 
 	private static class ReturnValues
@@ -71,14 +74,16 @@ public class ChartController extends BaseController
 	private final HelpersService helpers;
 	private final FilterHelpersService filterHelpersService;
 	private final TransactionService transactionService;
+	private final DateService dateService;
 
 	@Autowired
-	public ChartController(ChartService chartService, HelpersService helpers, FilterHelpersService filterHelpersService, TransactionService transactionService)
+	public ChartController(ChartService chartService, HelpersService helpers, FilterHelpersService filterHelpersService, TransactionService transactionService, DateService dateService)
 	{
 		this.chartService = chartService;
 		this.helpers = helpers;
 		this.filterHelpersService = filterHelpersService;
 		this.transactionService = transactionService;
+		this.dateService = dateService;
 	}
 
 	@GetMapping
@@ -121,7 +126,13 @@ public class ChartController extends BaseController
 		model.addAttribute(ModelAttributes.TRANSACTION_DATA, transactionJson);
 		model.addAttribute(ModelAttributes.DISPLAY_TYPES, ChartDisplayType.values());
 		model.addAttribute(ModelAttributes.GROUP_TYPES, ChartGroupType.values());
+		model.addAttribute(ModelAttributes.DATE_RANGE, getDateRange(chartSettings));
 		return ReturnValues.SHOW_ALL;
+	}
+
+	private String getDateRange(ChartSettings chartSettings)
+	{
+		return MessageFormat.format("{0} - {1}", dateService.getDateStringNormal(chartSettings.getStartDate()), dateService.getDateStringNormal(chartSettings.getEndDate()));
 	}
 
 	/**
