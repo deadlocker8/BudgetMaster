@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.databasemigrator;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.test.JobLauncherTestUtils;
@@ -72,6 +73,12 @@ public abstract class MigratorTestBase
 		registry.add("spring.seconddatasource.url", postgresDB::getJdbcUrl);
 		registry.add("spring.seconddatasource.username", postgresDB::getUsername);
 		registry.add("spring.seconddatasource.password", postgresDB::getPassword);
+	}
+
+	@BeforeAll
+	public static void beforeAll()
+	{
+		DatabaseMigratorMain.databaseType = DatabaseType.POSTGRESQL;
 	}
 
 	@TestConfiguration
