@@ -14,6 +14,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class DatabaseMigratorMain implements CommandLineRunner
 {
+	public static DatabaseType databaseType;
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseMigratorMain.class);
 
 	private final JobLauncher jobLauncher;
@@ -47,6 +49,8 @@ public class DatabaseMigratorMain implements CommandLineRunner
 		{
 			LOGGER.debug("{}={}", option.getName(), cmd.getOptionValue(option.getName()));
 		}
+
+		databaseType = DatabaseType.fromDriverClassName(cmd.getOptionValue(CommandLineOptions.DESTINATION_DRIVER_CLASS_NAME.getName()));
 
 		SpringApplication.run(DatabaseMigratorMain.class, args);
 	}

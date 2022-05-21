@@ -1,5 +1,7 @@
 package de.deadlocker8.budgetmaster.databasemigrator.listener;
 
+import de.deadlocker8.budgetmaster.databasemigrator.DatabaseMigratorMain;
+import de.deadlocker8.budgetmaster.databasemigrator.DatabaseType;
 import de.deadlocker8.budgetmaster.databasemigrator.Utils;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.DestinationIntegerRepository;
 import de.deadlocker8.budgetmaster.databasemigrator.destination.DestinationRepository;
@@ -37,7 +39,7 @@ public class GenericStepListener<T extends ProvidesID, ID> implements StepExecut
 		LOGGER.info("\n");
 		LOGGER.info(">>> Migrate {}s...", tableName);
 
-		if(adjustSequence)
+		if(adjustSequence && DatabaseMigratorMain.databaseType.equals(DatabaseType.POSTGRESQL))
 		{
 			LOGGER.debug("Resetting sequence to 0");
 			jdbcTemplate.update(MessageFormat.format("ALTER SEQUENCE {0}_id_seq RESTART WITH 1", tableName));
@@ -50,7 +52,7 @@ public class GenericStepListener<T extends ProvidesID, ID> implements StepExecut
 		final int count = Utils.getCommitCount(stepExecution);
 		LOGGER.info(">>> Successfully migrated {} {}s\n", count, tableName);
 
-		if(adjustSequence)
+		if(adjustSequence && DatabaseMigratorMain.databaseType.equals(DatabaseType.POSTGRESQL))
 		{
 			final int highestUsedID = getHighestUsedID();
 			final int newSequence = highestUsedID + 1;
