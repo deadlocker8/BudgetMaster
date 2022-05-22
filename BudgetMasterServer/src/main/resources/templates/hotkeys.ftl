@@ -3,7 +3,6 @@
         <#import "helpers/header.ftl" as header>
         <@header.globals/>
         <@header.header "BudgetMaster - ${locale.getString('menu.hotkeys')}"/>
-        <@header.style "hotkeys"/>
     </head>
     <@header.body>
         <#import "helpers/navbar.ftl" as navbar>

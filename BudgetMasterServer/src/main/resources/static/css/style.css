@@ -353,9 +353,10 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
 .global-account-select-option {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     background-color: var(--color-background);
     border: 3px solid transparent;
+    padding: 0;
 }
 
 .global-account-select-option:hover {
@@ -365,6 +366,23 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
 .global-account-select-option-name {
     font-size: 1.4rem;
     margin-left: 2rem;
+}
+
+.global-account-select-option-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 24px;
+    width: 95%;
+}
+
+.global-account-select-option-key,
+.global-account-select-option-key-hidden {
+    margin: 0 !important;
+}
+
+.global-account-select-option-key-hidden {
+    background-color: transparent !important;
 }
 
 .login-button {

@@ -30,6 +30,7 @@
     <@style "categories"/>
     <@style "accounts"/>
     <@style "customSelect"/>
+    <@style "hotkeys"/>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 

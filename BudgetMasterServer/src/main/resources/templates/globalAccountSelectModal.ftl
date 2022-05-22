@@ -29,8 +29,15 @@
                 <div class="col s12 m6 xl6">
                     <a href="<@s.url '/accounts/${account.getID()?c}/select'/>" class="text-default">
                         <div class="card-panel global-account-select-option">
-                            <@customSelectMacros.accountIcon account accountName "category-circle-preview account-icon-big"/>
-                            <div class="global-account-select-option-name truncate">${accountName}</div>
+                            <#if account?index < 10>
+                                <div class="keyboard-key bold global-account-select-option-key">${account?index}</div>
+                            <#else>
+                                <div class="keyboard-key bold global-account-select-option-key-hidden">&nbsp;</div>
+                            </#if>
+                            <div class="global-account-select-option-content">
+                                <@customSelectMacros.accountIcon account accountName "category-circle-preview account-icon-big"/>
+                                <div class="global-account-select-option-name truncate">${accountName}</div>
+                            </div>
                         </div>
                     </a>
                 </div>
