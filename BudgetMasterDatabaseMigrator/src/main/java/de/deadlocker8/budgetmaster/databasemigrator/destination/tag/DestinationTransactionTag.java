@@ -91,5 +91,6 @@ public class DestinationTransactionTag implements ProvidesID
 	@Override
 	public void setID(Integer ID)
 	{
+		// not allowed
 	}
 }
