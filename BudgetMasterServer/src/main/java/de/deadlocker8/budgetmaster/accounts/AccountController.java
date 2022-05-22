@@ -175,7 +175,9 @@ public class AccountController extends BaseController
 			// executed BEFORE this controller method and therefore the notifications list is empty in the
 			// resulting page.
 			// Quickfix: explicitly set the model attribute "notifications"
-			model.addAttribute(ModelAttributes.NOTIFICATIONS, List.of(notification));
+			final List<Notification> notifications = WebRequestUtils.getNotifications(webRequest);
+			notifications.add(notification);
+			model.addAttribute(ModelAttributes.NOTIFICATIONS, notifications);
 
 			bindingResult.addError(new FieldError("NewAccount", "state", account.getAccountState(), false, new String[]{"warning.account.edit.state"}, null, null));
 		}
