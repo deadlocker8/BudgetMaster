@@ -3,7 +3,6 @@ package de.deadlocker8.budgetmaster.templates;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.deadlocker8.budgetmaster.accounts.Account;
-import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.accounts.AccountState;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
@@ -37,15 +36,13 @@ public class TemplateService implements Resettable, AccessAllEntities<Template>,
 			.create();
 
 	private final TemplateRepository templateRepository;
-	private final AccountService accountService;
 	private final CategoryService categoryService;
 	private final TemplateGroupService templateGroupService;
 
 	@Autowired
-	public TemplateService(TemplateRepository templateRepository, AccountService accountService, CategoryService categoryService, TemplateGroupService templateGroupService)
+	public TemplateService(TemplateRepository templateRepository, CategoryService categoryService, TemplateGroupService templateGroupService)
 	{
 		this.templateRepository = templateRepository;
-		this.accountService = accountService;
 		this.categoryService = categoryService;
 		this.templateGroupService = templateGroupService;
 
@@ -107,7 +104,7 @@ public class TemplateService implements Resettable, AccessAllEntities<Template>,
 		return getRepository().save(template);
 	}
 
-	public void prepareTemplateForNewTransaction(TransactionBase template, boolean prepareAccount)
+	public void prepareTemplateForNewTransaction(TransactionBase template, boolean prepareAccount, Account selectedOrFallbackAccount)
 	{
 		if(template.getCategory() == null)
 		{
@@ -116,19 +113,19 @@ public class TemplateService implements Resettable, AccessAllEntities<Template>,
 
 		if(prepareAccount && template.getAccount() == null)
 		{
-			template.setAccount(accountService.getSelectedAccountOrDefaultAsFallback());
+			template.setAccount(selectedOrFallbackAccount);
 		}
 
 		final Account account = template.getAccount();
 		if(account != null && account.getAccountState() != AccountState.FULL_ACCESS)
 		{
-			template.setAccount(accountService.getSelectedAccountOrDefaultAsFallback());
+			template.setAccount(selectedOrFallbackAccount);
 		}
 
 		final Account transferAccount = template.getTransferAccount();
 		if(transferAccount != null && transferAccount.getAccountState() != AccountState.FULL_ACCESS)
 		{
-			template.setTransferAccount(accountService.getSelectedAccountOrDefaultAsFallback());
+			template.setTransferAccount(selectedOrFallbackAccount);
 		}
 	}
 
@@ -161,5 +158,20 @@ public class TemplateService implements Resettable, AccessAllEntities<Template>,
 	public Optional<Template> findById(Integer ID)
 	{
 		return templateRepository.findById(ID);
+	}
+
+	public void unsetTemplatesWithAccount(Account account)
+	{
+		for(Template referringTemplate : templateRepository.findAllByAccount(account))
+		{
+			referringTemplate.setAccount(null);
+			templateRepository.save(referringTemplate);
+		}
+
+		for(Template referringTemplate : templateRepository.findAllByTransferAccount(account))
+		{
+			referringTemplate.setTransferAccount(null);
+			templateRepository.save(referringTemplate);
+		}
 	}
 }

@@ -5,6 +5,7 @@ import de.deadlocker8.budgetmaster.authentication.UserRepository;
 import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.IconRepository;
 import de.deadlocker8.budgetmaster.icon.IconService;
+import de.deadlocker8.budgetmaster.templates.TemplateService;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.deadlocker8.budgetmaster.unit.helpers.LocalizedTest;
 import de.deadlocker8.budgetmaster.utils.Strings;
@@ -31,6 +32,9 @@ class AccountServiceTest
 
 	@Mock
 	private TransactionService transactionService;
+
+	@Mock
+	private TemplateService templateService;
 
 	@Mock
 	private UserRepository userRepository;
@@ -82,7 +86,7 @@ class AccountServiceTest
 		Mockito.when(iconService.getRepository()).thenReturn(iconRepository);
 		Mockito.when(iconRepository.save(new Icon("fas fa-landmark", null))).thenReturn(ICON_PLACEHOLDER);
 
-		accountService = new AccountService(accountRepository, transactionService, userRepository, iconService);
+		accountService = new AccountService(accountRepository, transactionService, templateService, userRepository, iconService);
 	}
 
 	@Test
@@ -152,6 +156,7 @@ class AccountServiceTest
 		accountService.deleteAccount(15);
 
 		Mockito.verify(transactionService, Mockito.atLeast(1)).deleteTransactionsWithAccount(Mockito.any());
+		Mockito.verify(templateService, Mockito.atLeast(1)).unsetTemplatesWithAccount(Mockito.any());
 
 		// placeholder account is set as selected account
 		final Account accountSelected = new Account("Placeholder", AccountType.ALL);

@@ -155,7 +155,7 @@ public class TemplateController extends BaseController
 		newTransaction.setTags(template.getTags());
 		newTransaction.setIsExpenditure(template.isExpenditure());
 
-		templateService.prepareTemplateForNewTransaction(newTransaction, true);
+		templateService.prepareTemplateForNewTransaction(newTransaction, true, accountService.getSelectedAccountOrDefaultAsFallback());
 
 		if(newTransaction.getAmount() == null && newTransaction.isExpenditure() == null)
 		{
@@ -176,7 +176,7 @@ public class TemplateController extends BaseController
 	public String newTemplate(Model model)
 	{
 		final Template emptyTemplate = new Template();
-		templateService.prepareTemplateForNewTransaction(emptyTemplate, false);
+		templateService.prepareTemplateForNewTransaction(emptyTemplate, false, accountService.getSelectedAccountOrDefaultAsFallback());
 		templateService.prepareModelNewOrEdit(model, false, emptyTemplate, accountService.getAllActivatedAccountsAsc());
 		return ReturnValues.NEW_ENTITY;
 	}
@@ -260,7 +260,7 @@ public class TemplateController extends BaseController
 		}
 
 		Template template = templateOptional.get();
-		templateService.prepareTemplateForNewTransaction(template, false);
+		templateService.prepareTemplateForNewTransaction(template, false, accountService.getSelectedAccountOrDefaultAsFallback());
 		templateService.prepareModelNewOrEdit(model, true, template, accountService.getAllActivatedAccountsAsc());
 
 		return ReturnValues.NEW_ENTITY;

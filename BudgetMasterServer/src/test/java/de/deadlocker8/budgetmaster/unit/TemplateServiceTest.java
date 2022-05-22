@@ -58,7 +58,7 @@ class TemplateServiceTest
 		final Template expectedTemplate = new Template();
 		expectedTemplate.setCategory(CATEGORY_NONE);
 
-		templateService.prepareTemplateForNewTransaction(template, false);
+		templateService.prepareTemplateForNewTransaction(template, false, new Account("my account", AccountType.CUSTOM));
 		assertThat(template).isEqualTo(expectedTemplate);
 	}
 
@@ -76,7 +76,7 @@ class TemplateServiceTest
 		expectedTemplate.setCategory(CATEGORY_NONE);
 		expectedTemplate.setAccount(account);
 
-		templateService.prepareTemplateForNewTransaction(template, false);
+		templateService.prepareTemplateForNewTransaction(template, false, account);
 		assertThat(template).isEqualTo(expectedTemplate);
 	}
 
@@ -97,7 +97,7 @@ class TemplateServiceTest
 		expectedTemplate.setCategory(CATEGORY_NONE);
 		expectedTemplate.setAccount(ACCOUNT_SELECTED);
 
-		templateService.prepareTemplateForNewTransaction(template, false);
+		templateService.prepareTemplateForNewTransaction(template, false, ACCOUNT_SELECTED);
 		assertThat(template).isEqualTo(expectedTemplate);
 	}
 
@@ -120,7 +120,7 @@ class TemplateServiceTest
 		expectedTemplate.setAccount(account);
 		expectedTemplate.setTransferAccount(transferAccount);
 
-		templateService.prepareTemplateForNewTransaction(template, false);
+		templateService.prepareTemplateForNewTransaction(template, false, account);
 		assertThat(template).isEqualTo(expectedTemplate);
 	}
 
@@ -146,7 +146,7 @@ class TemplateServiceTest
 		expectedTemplate.setAccount(account);
 		expectedTemplate.setTransferAccount(ACCOUNT_SELECTED);
 
-		templateService.prepareTemplateForNewTransaction(template, false);
+		templateService.prepareTemplateForNewTransaction(template, false, ACCOUNT_SELECTED);
 		assertThat(template).isEqualTo(expectedTemplate);
 	}
 
@@ -163,7 +163,7 @@ class TemplateServiceTest
 		expectedTemplate.setCategory(CATEGORY_NONE);
 		expectedTemplate.setAccount(ACCOUNT_SELECTED);
 
-		templateService.prepareTemplateForNewTransaction(template, true);
+		templateService.prepareTemplateForNewTransaction(template, true, ACCOUNT_SELECTED);
 		assertThat(template).isEqualTo(expectedTemplate);
 	}
 }

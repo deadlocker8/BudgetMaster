@@ -7,6 +7,7 @@ import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.services.AccessAllEntities;
 import de.deadlocker8.budgetmaster.services.AccessEntityByID;
 import de.deadlocker8.budgetmaster.services.Resettable;
+import de.deadlocker8.budgetmaster.templates.TemplateService;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
@@ -31,14 +32,16 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 
 	private final AccountRepository accountRepository;
 	private final TransactionService transactionService;
+	private final TemplateService templateService;
 	private final UserRepository userRepository;
 	private final IconService iconService;
 
 	@Autowired
-	public AccountService(AccountRepository accountRepository, TransactionService transactionService, UserRepository userRepository, IconService iconService)
+	public AccountService(AccountRepository accountRepository, TransactionService transactionService, TemplateService templateService, UserRepository userRepository, IconService iconService)
 	{
 		this.accountRepository = accountRepository;
 		this.transactionService = transactionService;
+		this.templateService = templateService;
 		this.userRepository = userRepository;
 		this.iconService = iconService;
 
@@ -94,6 +97,8 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 		Account accountToDelete = accountToDeleteOptional.get();
 		transactionService.deleteTransactionsWithAccount(accountToDelete);
 		accountToDelete.setReferringTransactions(new ArrayList<>());
+
+		templateService.unsetTemplatesWithAccount(accountToDelete);
 
 		// select "all accounts" as selected account
 		selectAccount(accountRepository.findAllByType(AccountType.ALL).get(0).getID());
