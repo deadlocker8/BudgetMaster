@@ -18,6 +18,9 @@
             </div>
         </div>
 
+        <#assign hint=helpers.getHintByLocalizationKey("hint.globalAccountSelect.hotkeys")/>
+        <@header.hint hint=hint/>
+
         <div class="row">
             <#list accounts as account>
                 <#if account.getType().name() == "ALL">
