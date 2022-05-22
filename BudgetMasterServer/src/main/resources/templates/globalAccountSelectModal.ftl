@@ -28,7 +28,7 @@
 
                 <div class="col s12 m6 xl6">
                     <a href="<@s.url '/accounts/${account.getID()?c}/select'/>" class="text-default">
-                        <div class="card-panel global-account-select-option">
+                        <div class="card-panel global-account-select-option" data-account-index="${account?index}">
                             <#if account?index < 10>
                                 <div class="keyboard-key bold global-account-select-option-key">${account?index}</div>
                             <#else>

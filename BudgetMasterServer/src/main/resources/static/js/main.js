@@ -8,6 +8,7 @@ $(document).ready(function()
     $('#globalAccountSelect').click(function()
     {
         fetchAndShowModal(this, 'globalAccountSelectModalOnDemand', '#modalGlobalAccountSelect');
+        enableAccountSelectHotKeys();
     });
 
     $('.sidenav').sidenav();
@@ -123,4 +124,19 @@ function validateLoginForm()
 {
     let passwordInput = document.getElementById('login-password');
     passwordInput.value = passwordInput.value.trim();
+}
+
+function enableAccountSelectHotKeys()
+{
+    Mousetrap.bind(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'], function(e)
+    {
+        if(areHotKeysEnabled())
+        {
+            let accountItem = document.querySelector('.global-account-select-option[data-account-index="' + e.key + '"]');
+            if(accountItem !== null)
+            {
+                accountItem.click();
+            }
+        }
+    });
 }
