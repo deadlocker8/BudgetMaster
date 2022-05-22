@@ -37,6 +37,7 @@ public class AccountController extends BaseController
 		public static final String AVAILABLE_ACCOUNT_STATES = "availableAccountStates";
 		public static final String FONTAWESOME_ICONS = "fontawesomeIcons";
 		public static final String ERROR = "error";
+		public static final String NOTIFICATIONS = "notifications";
 	}
 
 	private static class ReturnValues
@@ -166,7 +167,16 @@ public class AccountController extends BaseController
 		if(!isNewAccount && !isAccountStateAllowed)
 		{
 			final String warningMessage = Localization.getString("warning.account.edit.state", Localization.getString(AccountState.FULL_ACCESS.getLocalizationKey()));
-			WebRequestUtils.putNotification(webRequest, new Notification(warningMessage, NotificationType.WARNING));
+			final Notification notification = new Notification(warningMessage, NotificationType.WARNING);
+
+			// Adding an error to the bindingResult will result in an FTL template render instead of a redirect.
+			// For redirects normally WebRequestUtils.putNotification() is used.
+			// Using WebRequestUtils.putNotification() will not work in this case because NotificationAdvice is
+			// executed BEFORE this controller method and therefore the notifications list is empty in the
+			// resulting page.
+			// Quickfix: explicitly set the model attribute "notifications"
+			model.addAttribute(ModelAttributes.NOTIFICATIONS, List.of(notification));
+
 			bindingResult.addError(new FieldError("NewAccount", "state", account.getAccountState(), false, new String[]{"warning.account.edit.state"}, null, null));
 		}
 
