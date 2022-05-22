@@ -20,27 +20,11 @@
                 <@header.content>
                     <br>
 
-                    <div class="row">
-                        <div class="col s12 headline center-align">${locale.getString("hotkeys.general")}</div>
-                    </div>
+                    <@listHotKeys locale.getString("hotkeys.general") hotkeysGeneral/>
 
-                    <#list hotkeysGeneral as hotKey>
-                        <div class="row">
-                            <@cellKeyWithModifier hotKey.getModifierLocalized()!'' hotKey.getKeyLocalized()/>
-                            <div class="col s8 m5 l5">${hotKey.getTextLocalized()}</div>
-                        </div>
-                    </#list>
+                    <@listHotKeys locale.getString("hotkeys.global.datepicker") hotkeysGlobalDatePicker/>
 
-                    <div class="row">
-                        <div class="col s12 headline center-align">${locale.getString("hotkeys.global.datepicker")}</div>
-                    </div>
-
-                    <#list hotkeysGlobalDatePicker as hotKey>
-                        <div class="row">
-                            <@cellKeyWithModifier hotKey.getModifierLocalized()!'' hotKey.getKeyLocalized()/>
-                            <div class="col s8 m5 l5">${hotKey.getTextLocalized()}</div>
-                        </div>
-                    </#list>
+                    <@listHotKeys locale.getString("hotkeys.global.account.select") hotkeysAccountSelect/>
                 </@header.content>
             </div>
         </main>
@@ -65,4 +49,17 @@
         </#if>
         <div class="keyboard-key">${key}</div>
     </div>
+</#macro>
+
+<#macro listHotKeys headline hotKeys>
+    <div class="row">
+        <div class="col s12 headline center-align">${headline}</div>
+    </div>
+
+    <#list hotKeys as hotKey>
+        <div class="row">
+            <@cellKeyWithModifier hotKey.getModifierLocalized()!'' hotKey.getKeyLocalized()/>
+            <div class="col s8 m5 l5">${hotKey.getTextLocalized()}</div>
+        </div>
+    </#list>
 </#macro>

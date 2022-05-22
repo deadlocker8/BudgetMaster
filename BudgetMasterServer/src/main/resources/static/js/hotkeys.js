@@ -55,6 +55,14 @@ Mousetrap.bind('o', function()
     }
 });
 
+Mousetrap.bind('a', function()
+{
+    if(areHotKeysEnabled())
+    {
+        document.getElementById('globalAccountSelect').click();
+    }
+});
+
 let saveTransactionOrTemplateButton = document.getElementById('button-save-transaction');
 if(saveTransactionOrTemplateButton !== null)
 {
