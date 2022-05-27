@@ -5,6 +5,10 @@ services:
         restart: never
         networks:
             - netPostgres
+        expose:
+          - "8080"
+        ports:
+          - "8080:8080"
         environment:
             TZ: Europe/Berlin
             LANG: en_US.UTF-8
