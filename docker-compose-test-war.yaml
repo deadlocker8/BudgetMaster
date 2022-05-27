@@ -5,6 +5,7 @@ services:
         restart: "no"
         networks:
             - netPostgres
+            - jenkins_dev
         expose:
           - "8080"
         ports:
@@ -33,3 +34,6 @@ services:
 networks:
     netPostgres:
         driver: bridge
+    jenkins_dev:
+        external:
+            name: jenkins_dev
