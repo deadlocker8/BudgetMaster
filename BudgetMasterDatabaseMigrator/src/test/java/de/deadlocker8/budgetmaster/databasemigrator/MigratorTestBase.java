@@ -62,7 +62,7 @@ public abstract class MigratorTestBase
 	}
 
 	@Container
-	static PostgreSQLContainer<?> postgresDB = new PostgreSQLContainer<>("postgres:14.2")
+	static PostgreSQLContainer<?> postgresDB = new PostgreSQLContainer<>("postgres:14.3")
 			.withDatabaseName("budgetmaster-tests-db")
 			.withUsername("budgetmaster")
 			.withPassword("BudgetMaster");
