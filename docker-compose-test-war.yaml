@@ -1,7 +1,7 @@
 version: '3.3'
 services:
     budgetmaster:
-        image: deadlocker8/budgetmaster:latest
+        image: deadlocker8/budgetmaster-test-war:latest
         restart: never
         networks:
             - netPostgres
