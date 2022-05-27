@@ -2,7 +2,7 @@ version: '3.3'
 services:
     budgetmaster:
         image: deadlocker8/budgetmaster-test-war:latest
-        restart: never
+        restart: "no"
         networks:
             - netPostgres
         expose:
@@ -20,10 +20,10 @@ services:
             budgetmaster.database.username: budgetmaster
             budgetmaster.database.password: budgetmaster
         depends_on:
-            -   postgres
+            - postgres
     postgres:
         image: postgres:latest
-        restart: never
+        restart: "no"
         environment:
             POSTGRES_DB: budgetmaster
             POSTGRES_PASSWORD: budgetmaster
