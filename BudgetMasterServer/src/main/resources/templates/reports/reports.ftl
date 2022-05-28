@@ -84,8 +84,8 @@
                                                 <span class="columnName-label">${locale.getString(column.getLocalizationKey())}</span>
                                             </label>
                                             <input type="hidden" name="columns['${column?index}'].ID" value="${column.getID()}"/>
-                                            <input type="hidden" name="columns['${column?index}'].key" value="${column.getLocalizationKey()}"/>
-                                            <input type="hidden" name="columns['${column?index}'].position" value=""/>
+                                            <input type="hidden" name="columns['${column?index}'].localizationKey" value="${column.getLocalizationKey()}"/>
+                                            <input type="hidden" name="columns['${column?index}'].columnPosition" value=""/>
                                         </div>
                                     </#list>
                                 </div>

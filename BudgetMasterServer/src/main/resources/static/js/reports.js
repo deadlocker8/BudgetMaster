@@ -33,7 +33,7 @@ function validateForm()
 {
     $('.columnName-checkbox').each(function(i, obj)
     {
-        let positionInput = document.getElementsByName("columns['" + obj.dataset.index + "'].position")[0];
+        let positionInput = document.getElementsByName("columns['" + obj.dataset.index + "'].columnPosition")[0];
         positionInput.value = i;
     });
 
