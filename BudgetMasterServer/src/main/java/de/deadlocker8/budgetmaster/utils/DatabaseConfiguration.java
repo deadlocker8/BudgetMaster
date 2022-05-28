@@ -60,7 +60,7 @@ public class DatabaseConfiguration
 			}
 
 			LOGGER.error(errorMessageBuilder.toString());
-			System.exit(-1);
+			System.exit(1);
 			return null;
 		}
 	}
