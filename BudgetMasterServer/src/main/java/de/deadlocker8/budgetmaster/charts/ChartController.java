@@ -243,7 +243,7 @@ public class ChartController extends BaseController
 		}
 
 		model.addAttribute(ModelAttributes.ALL_ENTITIES, chartService.getAllEntitiesAsc());
-		model.addAttribute(ModelAttributes.ENTITY_TO_DELETE, chartService.getRepository().getById(ID));
+		model.addAttribute(ModelAttributes.ENTITY_TO_DELETE, chartService.getRepository().getReferenceById(ID));
 		return ReturnValues.DELETE_ENTITY;
 	}
 
@@ -252,7 +252,7 @@ public class ChartController extends BaseController
 	{
 		if(chartService.isDeletable(ID))
 		{
-			final Chart chartToDelete = chartService.getRepository().getById(ID);
+			final Chart chartToDelete = chartService.getRepository().getReferenceById(ID);
 			chartService.getRepository().deleteById(ID);
 			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.chart.delete.success", chartToDelete.getName()), NotificationType.SUCCESS));
 		}

@@ -75,7 +75,7 @@ public class TemplateGroupController extends BaseController
 	@GetMapping("/{ID}/delete")
 	public String deleteTemplateGroup(WebRequest request, @PathVariable("ID") Integer ID)
 	{
-		final TemplateGroup templateGroupToDelete = templateGroupService.getRepository().getById(ID);
+		final TemplateGroup templateGroupToDelete = templateGroupService.getRepository().getReferenceById(ID);
 		templateGroupService.deleteTemplateGroup(ID);
 
 		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.template.group.delete.success", templateGroupToDelete.getName()), NotificationType.SUCCESS));

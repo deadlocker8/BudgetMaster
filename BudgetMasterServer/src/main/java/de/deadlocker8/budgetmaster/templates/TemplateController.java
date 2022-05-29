@@ -125,7 +125,7 @@ public class TemplateController extends BaseController
 	@GetMapping("/{ID}/delete")
 	public String deleteTemplate(WebRequest request, @PathVariable("ID") Integer ID)
 	{
-		final Template templateToDelete = templateService.getRepository().getById(ID);
+		final Template templateToDelete = templateService.getRepository().getReferenceById(ID);
 		templateService.getRepository().deleteById(ID);
 
 		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.template.delete.success", templateToDelete.getTemplateName()), NotificationType.SUCCESS));

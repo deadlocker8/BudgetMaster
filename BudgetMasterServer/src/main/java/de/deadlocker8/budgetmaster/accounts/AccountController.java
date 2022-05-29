@@ -98,7 +98,7 @@ public class AccountController extends BaseController
 	public String requestDeleteAccount(Model model, @PathVariable("ID") Integer ID)
 	{
 		model.addAttribute(ModelAttributes.ALL_ENTITIES, accountService.getAllEntitiesAsc());
-		model.addAttribute(ModelAttributes.ENTITY_TO_DELETE, accountService.getRepository().getById(ID));
+		model.addAttribute(ModelAttributes.ENTITY_TO_DELETE, accountService.getRepository().getReferenceById(ID));
 		return ReturnValues.DELETE_ENTITY;
 	}
 
@@ -106,7 +106,7 @@ public class AccountController extends BaseController
 	public String deleteAccountAndReferringTransactions(WebRequest request, Model model, @PathVariable("ID") Integer ID)
 	{
 		// at least one account is required (to delete a sole account another one has to be created first)
-		final Account accountToDelete = accountService.getRepository().getById(ID);
+		final Account accountToDelete = accountService.getRepository().getReferenceById(ID);
 		if(accountService.getRepository().findAllByType(AccountType.CUSTOM).size() > 1)
 		{
 			accountService.deleteAccount(ID);
