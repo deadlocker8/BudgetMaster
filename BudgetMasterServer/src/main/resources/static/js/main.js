@@ -64,6 +64,8 @@ $(document).ready(function()
             data: {}
         });
     });
+
+    checkUrlParameters();
 });
 
 function fetchAndShowModal(item, containerID, modalID)
@@ -139,4 +141,14 @@ function enableAccountSelectHotKeys()
             }
         }
     });
+}
+
+function checkUrlParameters()
+{
+    const urlParameters = new URLSearchParams(window.location.search);
+    const isAccountSelect = urlParameters.get('accountSelected');
+    if(isAccountSelect !== null)
+    {
+        document.getElementById('globalAccountSelect').classList.add('active');
+    }
 }

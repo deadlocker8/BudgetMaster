@@ -324,10 +324,22 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
 }
 
 #globalAccountSelect {
-    padding: 1rem 32px 1rem 32px;
+    padding: 0.6rem 18px;
     display: flex;
     flex-direction: row;
     align-items: center;
+    border: 0.4rem solid transparent;
+}
+
+#globalAccountSelect.active {
+    animation: blink 1s;
+    animation-iteration-count: 1;
+}
+
+@keyframes blink {
+    50% {
+        border-color: var(--color-text);
+    }
 }
 
 #globalAccountSelect:hover {

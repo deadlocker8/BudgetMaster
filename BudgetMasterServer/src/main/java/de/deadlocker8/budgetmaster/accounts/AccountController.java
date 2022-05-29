@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,6 +52,8 @@ public class AccountController extends BaseController
 		public static final String GLOBAL_ACCOUNT_SELECT_MODAL = "globalAccountSelectModal";
 	}
 
+	private static final String ACCOUNT_SELECTED_INDICATOR = "accountSelected=1";
+
 	private final AccountService accountService;
 	private final IconService iconService;
 
@@ -71,7 +74,15 @@ public class AccountController extends BaseController
 		{
 			return ReturnValues.SETTINGS;
 		}
-		return "redirect:" + referer;
+
+		if(referer.contains(ACCOUNT_SELECTED_INDICATOR))
+		{
+			return MessageFormat.format("redirect:{0}", referer);
+		}
+		else
+		{
+			return MessageFormat.format("redirect:{0}?{1}", referer, ACCOUNT_SELECTED_INDICATOR);
+		}
 	}
 
 	@GetMapping(value = "/{ID}/setAsDefault")
