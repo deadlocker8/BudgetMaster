@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.migration;
 
 import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.controller.BaseController;
+import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.Strings;
@@ -41,13 +42,15 @@ public class MigrationController extends BaseController
 	private final MigrationService migrationService;
 	private final SettingsService settingsService;
 	private final UserService userService;
+	private final DatabaseService databaseService;
 
 	@Autowired
-	public MigrationController(MigrationService migrationService, SettingsService settingsService, UserService userService)
+	public MigrationController(MigrationService migrationService, SettingsService settingsService, UserService userService, DatabaseService databaseService)
 	{
 		this.migrationService = migrationService;
 		this.settingsService = settingsService;
 		this.userService = userService;
+		this.databaseService = databaseService;
 	}
 
 	@GetMapping("/cancel")
@@ -117,6 +120,7 @@ public class MigrationController extends BaseController
 		if(migrationStatus == MigrationStatus.SUCCESS)
 		{
 			model.addAttribute(ModelAttributes.SUMMARY, migrationService.getSummary());
+			databaseService.createDefaults();
 		}
 		if(migrationStatus == MigrationStatus.ERROR)
 		{

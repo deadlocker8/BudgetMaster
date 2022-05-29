@@ -11,6 +11,7 @@ import de.deadlocker8.budgetmaster.charts.ChartService;
 import de.deadlocker8.budgetmaster.charts.ChartType;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
 import de.deadlocker8.budgetmaster.database.model.v8.BackupDatabase_v8;
+import de.deadlocker8.budgetmaster.hints.HintService;
 import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.images.Image;
@@ -64,9 +65,12 @@ public class DatabaseService
 	private final SettingsService settingsService;
 	private final ImageService imageService;
 	private final IconService iconService;
+	private final HintService hintService;
+
+	private final List<Resettable> services;
 
 	@Autowired
-	public DatabaseService(AccountService accountService, CategoryService categoryService, TransactionService transactionService, TagService tagService, TemplateService templateService, TemplateGroupService templateGroupService, ChartService chartService, SettingsService settingsService, ImageService imageService, IconService iconService)
+	public DatabaseService(AccountService accountService, CategoryService categoryService, TransactionService transactionService, TagService tagService, TemplateService templateService, TemplateGroupService templateGroupService, ChartService chartService, SettingsService settingsService, ImageService imageService, IconService iconService, HintService hintService)
 	{
 		this.accountService = accountService;
 		this.categoryService = categoryService;
@@ -78,18 +82,23 @@ public class DatabaseService
 		this.settingsService = settingsService;
 		this.imageService = imageService;
 		this.iconService = iconService;
+		this.hintService = hintService;
+		this.services = List.of(transactionService, templateService, templateGroupService, categoryService, accountService, tagService, chartService, iconService, imageService, tagService, hintService);
 	}
 
 	public void reset()
 	{
-		final List<Resettable> services = List.of(transactionService, templateService, templateGroupService, categoryService, accountService, tagService, chartService, iconService, imageService);
-
 		for(Resettable service : services)
 		{
 			service.deleteAll();
 		}
 
 		// create defaults after deletion to avoid deletion of newly created defaults
+		createDefaults();
+	}
+
+	public void createDefaults()
+	{
 		for(Resettable service : services)
 		{
 			service.createDefaults();

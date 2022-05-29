@@ -1,15 +1,20 @@
 package de.deadlocker8.budgetmaster.hints;
 
 import de.deadlocker8.budgetmaster.services.Resettable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 @Service
 public class HintService implements Resettable
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger(HintService.class);
+
 	private final HintRepository hintRepository;
 
 	@Autowired
@@ -64,6 +69,7 @@ public class HintService implements Resettable
 			final Hint existingHint = hintRepository.findByLocalizationKey(localizationKey);
 			if(existingHint == null)
 			{
+				LOGGER.debug(MessageFormat.format("Created missing hint ''{0}''", localizationKey));
 				hintRepository.save(new Hint(localizationKey, false));
 			}
 		}
