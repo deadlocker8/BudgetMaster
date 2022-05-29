@@ -1,11 +1,39 @@
 version: '3.3'
 services:
     budgetmaster:
-        image: deadlocker/budgetmaster:latest
-        restart: always
+        image: deadlocker8/budgetmaster:latest
+        restart: unless-stopped
         volumes:
-            - "./data:/root/.Deadlocker/BudgetMaster"
+            - "./data/budgetmaster:/root/.Deadlocker/BudgetMaster"
         expose:
             - "8080"
         ports:
             - "8080:8080"
+        networks:
+            - netPostgres
+        environment:
+            TZ: Europe/Berlin
+            LANG: en_US.UTF-8
+            LANGUAGE: en_US.UTF-8
+            budgetmaster.database.type: postgresql
+            budgetmaster.database.hostname: postgres
+            budgetmaster.database.port: 5432
+            budgetmaster.database.databaseName: budgetmaster
+            budgetmaster.database.username: budgetmaster
+            budgetmaster.database.password: budgetmaster
+        depends_on:
+            -   postgres
+    postgres:
+        image: postgres:latest
+        restart: unless-stopped
+        environment:
+            POSTGRES_DB: budgetmaster
+            POSTGRES_PASSWORD: budgetmaster
+            POSTGRES_USER: budgetmaster
+        networks:
+            - netPostgres
+        volumes:
+            - "./data/postgres:/var/lib/postgresql/data"
+networks:
+    netPostgres:
+        driver: bridge

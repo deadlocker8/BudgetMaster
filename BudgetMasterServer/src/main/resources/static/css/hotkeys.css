@@ -1,0 +1,17 @@
+.keyboard-key {
+    padding: 0.2rem 0.7rem;
+    color: #FFFFFF;
+    background-color: #444444;
+    border-radius: .2rem;
+    font-family: Consolas, "Courier New", monospace;
+    display: inline-block;
+    margin-right: 2rem;
+}
+
+.modifier-key {
+    margin-right: 0;
+}
+
+[data-theme="dark"] .keyboard-key {
+    background-color: #212121;
+}
