@@ -14,6 +14,7 @@ import de.deadlocker8.budgetmaster.database.DatabaseParser;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.JSONIdentifier;
+import de.deadlocker8.budgetmaster.hints.HintService;
 import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.IconRepository;
 import de.deadlocker8.budgetmaster.icon.IconService;
@@ -110,6 +111,9 @@ class DatabaseExportTest
 
 	@Mock
 	private IconService iconService;
+
+	@Mock
+	private HintService hintService;
 
 	@InjectMocks
 	private DatabaseService databaseService;
