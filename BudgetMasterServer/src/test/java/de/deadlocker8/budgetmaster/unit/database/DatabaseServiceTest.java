@@ -5,10 +5,16 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
 import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
+import de.deadlocker8.budgetmaster.charts.ChartService;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
+import de.deadlocker8.budgetmaster.hints.HintService;
+import de.deadlocker8.budgetmaster.icon.IconService;
+import de.deadlocker8.budgetmaster.images.ImageService;
 import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.tags.TagService;
+import de.deadlocker8.budgetmaster.templategroup.TemplateGroupService;
+import de.deadlocker8.budgetmaster.templates.TemplateService;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.deadlocker8.budgetmaster.unit.helpers.LoggerTestUtil;
 import org.assertj.core.groups.Tuple;
@@ -34,9 +40,6 @@ class DatabaseServiceTest
 	private AccountService accountService;
 
 	@Mock
-	private SettingsService settingsService;
-
-	@Mock
 	private CategoryService categoryService;
 
 	@Mock
@@ -44,6 +47,27 @@ class DatabaseServiceTest
 
 	@Mock
 	private TagService tagService;
+
+	@Mock
+	private TemplateGroupService templateGroupService;
+
+	@Mock
+	private TemplateService templateService;
+
+	@Mock
+	private ChartService chartService;
+
+	@Mock
+	private SettingsService settingsService;
+
+	@Mock
+	private ImageService imageService;
+
+	@Mock
+	private IconService iconService;
+
+	@Mock
+	private HintService hintService;
 
 	@InjectMocks
 	private DatabaseService databaseService;
