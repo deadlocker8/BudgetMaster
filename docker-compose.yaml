@@ -22,7 +22,7 @@ services:
             budgetmaster.database.username: budgetmaster
             budgetmaster.database.password: budgetmaster
         depends_on:
-            -   postgres
+            - postgres
     postgres:
         image: postgres:latest
         restart: unless-stopped
