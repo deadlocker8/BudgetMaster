@@ -123,7 +123,7 @@ class AccountTest extends SeleniumTestBase
 		List<WebElement> accountRows = driver.findElements(By.cssSelector(".account-container tr"));
 		assertThat(accountRows).hasSize(6);
 
-		assertAccountColumns(accountRows.get(0).findElements(By.tagName("td")), true, true, AccountState.FULL_ACCESS, "Default Account");
+		assertAccountColumns(accountRows.get(0).findElements(By.tagName("td")), true, true, AccountState.FULL_ACCESS, "Default Account First");
 		assertAccountColumns(accountRows.get(1).findElements(By.tagName("td")), true, false, AccountState.FULL_ACCESS, "DefaultAccount0815");
 		assertAccountColumns(accountRows.get(2).findElements(By.tagName("td")), false, false, AccountState.HIDDEN, "hidden account");
 		assertAccountColumns(accountRows.get(3).findElements(By.tagName("td")), false, false, AccountState.READ_ONLY, "read only account");
@@ -278,7 +278,7 @@ class AccountTest extends SeleniumTestBase
 	{
 		driver.get(helper.getUrl() + "/accounts/2/edit");
 
-		assertThat(driver.findElement(By.id("account-name")).getAttribute("value")).isEqualTo("Default Account");
+		assertThat(driver.findElement(By.id("account-name")).getAttribute("value")).isEqualTo("Default Account First");
 		assertThat(driver.findElement(By.cssSelector(".account-state-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo(AccountState.FULL_ACCESS.name());
 	}
 
@@ -303,7 +303,7 @@ class AccountTest extends SeleniumTestBase
 		List<String> itemNames = items.stream()
 				.map(webElement -> webElement.getAttribute("innerHTML").trim())
 				.collect(Collectors.toList());
-		assertThat(itemNames).containsExactlyInAnyOrder("Default Account", "DefaultAccount0815", "sfsdf");
+		assertThat(itemNames).containsExactlyInAnyOrder("Default Account First", "DefaultAccount0815", "sfsdf");
 	}
 
 	@Test

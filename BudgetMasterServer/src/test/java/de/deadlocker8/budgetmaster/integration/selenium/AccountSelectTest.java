@@ -54,7 +54,7 @@ class AccountSelectTest extends SeleniumTestBase
 		driver.get(helper.getUrl());
 
 		assertThat(driver.findElement(By.cssSelector("#globalAccountSelect .global-account-select-name")).getText())
-				.isEqualTo("Default Account");
+				.isEqualTo("Default Account First");
 
 		final WebElement globalAccountSelect = driver.findElement(By.id("globalAccountSelect"));
 		globalAccountSelect.click();

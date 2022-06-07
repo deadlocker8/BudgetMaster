@@ -39,7 +39,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 	{
 		driver.get(helper.getUrl() + "/transactions");
 
-		TransactionTestHelper.selectGlobalAccountByName(driver, "DefaultAccount");
+		TransactionTestHelper.selectGlobalAccountByName(driver, "Default Account First");
 	}
 
 	@Test
