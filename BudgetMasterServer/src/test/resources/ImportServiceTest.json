@@ -41,7 +41,7 @@
         },
         {
             "ID": 2,
-            "name": "Default Account",
+            "name": "My Default Account",
             "accountState": "FULL_ACCESS",
             "type": "CUSTOM",
             "iconReferenceID": 7

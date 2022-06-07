@@ -1,13 +1,9 @@
 package de.deadlocker8.budgetmaster.integration.selenium;
 
-import de.deadlocker8.budgetmaster.accounts.Account;
-import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
 import de.deadlocker8.budgetmaster.integration.helpers.TransactionTestHelper;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -32,9 +28,7 @@ class TagTest extends SeleniumTestBase
 		helper.hideMigrationDialog();
 
 		String path = getClass().getClassLoader().getResource("TagWithSingleQuoteTest.json").getFile().replace("/", File.separator);
-		final Account account1 = new Account("DefaultAccount", AccountType.CUSTOM);
-
-		helper.uploadDatabase(path, List.of("Default Account"), List.of(account1));
+		helper.uploadDatabase(path);
 	}
 
 	@Override

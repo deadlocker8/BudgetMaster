@@ -47,7 +47,6 @@ public class AccountController extends BaseController
 		public static final String REDIRECT_SHOW_ALL = "redirect:/accounts";
 		public static final String NEW_ENTITY = "accounts/newAccount";
 		public static final String DELETE_ENTITY = "accounts/deleteAccountModal";
-		public static final String IMPORT_STEP_2 = "redirect:/settings/database/import/step2";
 		public static final String SETTINGS = "redirect:/settings";
 		public static final String GLOBAL_ACCOUNT_SELECT_MODAL = "globalAccountSelectModal";
 	}
@@ -216,11 +215,6 @@ public class AccountController extends BaseController
 		else
 		{
 			accountService.updateExistingAccount(account);
-		}
-
-		if(request.getSession().getAttribute("accountMatchList") != null)
-		{
-			return ReturnValues.IMPORT_STEP_2;
 		}
 
 		final String link = NotificationLinkBuilder.buildEditLink(request, account.getName(), Mappings.ACCOUNTS, account.getID());

@@ -9,7 +9,6 @@ import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.database.DatabaseParser;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.database.InternalDatabase;
-import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
 import de.deadlocker8.budgetmaster.services.ImportResultItem;
 import de.deadlocker8.budgetmaster.services.ImportService;
@@ -56,7 +55,6 @@ public class SettingsController extends BaseController
 		public static final String IMPORT_DATABASE = "importDatabase";
 		public static final String ERROR_IMPORT_DATABASE = "errorImportDatabase";
 		public static final String AVAILABLE_ACCOUNTS = "availableAccounts";
-		public static final String ACCOUNT_MATCH_LIST = "accountMatchList";
 		public static final String IMPORT_RESULT_ITEMS = "importResultItems";
 		public static final String ERROR_MESSAGES = "errorMessages";
 		public static final String PERFORM_UPDATE = "performUpdate";
@@ -77,10 +75,7 @@ public class SettingsController extends BaseController
 		public static final String REDIRECT_REQUEST_IMPORT = "redirect:/settings/database/requestImport";
 		public static final String REDIRECT_IMPORT_DATABASE_STEP_1 = "redirect:/settings/database/import/step1";
 		public static final String IMPORT_DATABASE_STEP_1 = "settings/importStepOne";
-		public static final String REDIRECT_IMPORT_DATABASE_STEP_2 = "redirect:/settings/database/import/step2";
-		public static final String IMPORT_DATABASE_STEP_2 = "settings/importStepTwo";
 		public static final String IMPORT_DATABASE_RESULT = "settings/importResult";
-		public static final String REDIRECT_NEW_ACCOUNT = "redirect:/accounts/newAccount";
 	}
 
 	private static class RequestAttributeNames
@@ -351,62 +346,18 @@ public class SettingsController extends BaseController
 		return ReturnValues.IMPORT_DATABASE_STEP_1;
 	}
 
-	@PostMapping("/database/import/step2")
-	public String importStepTwoPost(WebRequest request, Model model,
+	@PostMapping("/database/import/step1")
+	public String importStepOnePost(WebRequest request, Model model,
 									@RequestParam(value = "TEMPLATE", required = false) boolean importTemplates,
-									@RequestParam(value = "TEMPLATE_GROUP", required = false) boolean importTemplatesGroups,
+									@RequestParam(value = "TEMPLATE_GROUP", required = false) boolean importTemplateGroups,
 									@RequestParam(value = "CHART", required = false) boolean importCharts)
-	{
-		request.setAttribute(RequestAttributeNames.IMPORT_TEMPLATES, importTemplates, RequestAttributes.SCOPE_SESSION);
-		request.setAttribute(RequestAttributeNames.IMPORT_TEMPLATE_GROUPS, importTemplatesGroups, RequestAttributes.SCOPE_SESSION);
-		request.setAttribute(RequestAttributeNames.IMPORT_CHARTS, importCharts, RequestAttributes.SCOPE_SESSION);
-
-		model.addAttribute(ModelAttributes.DATABASE, request.getAttribute(RequestAttributeNames.DATABASE, RequestAttributes.SCOPE_SESSION));
-		model.addAttribute(ModelAttributes.AVAILABLE_ACCOUNTS, accountService.getAllEntitiesAsc());
-		return ReturnValues.REDIRECT_IMPORT_DATABASE_STEP_2;
-	}
-
-	@GetMapping("/database/import/step2")
-	public String importStepTwo(WebRequest request, Model model)
-	{
-		Object accountMatches = request.getAttribute(RequestAttributeNames.ACCOUNT_MATCH_LIST, RequestAttributes.SCOPE_SESSION);
-		if(accountMatches != null)
-		{
-			final AccountMatchList accountMatchList = (AccountMatchList) accountMatches;
-			model.addAttribute(ModelAttributes.ACCOUNT_MATCH_LIST, accountMatchList);
-			request.removeAttribute(RequestAttributeNames.ACCOUNT_MATCH_LIST, RequestAttributes.SCOPE_SESSION);
-		}
-
-		model.addAttribute(ModelAttributes.DATABASE, request.getAttribute(RequestAttributeNames.DATABASE, RequestAttributes.SCOPE_SESSION));
-		model.addAttribute(ModelAttributes.AVAILABLE_ACCOUNTS, accountService.getAllEntitiesAsc());
-		return ReturnValues.IMPORT_DATABASE_STEP_2;
-	}
-
-	@PostMapping("/database/import/step2/createAccount")
-	public String importCreateAccount(WebRequest request, @ModelAttribute("Import") AccountMatchList accountMatchList)
-	{
-		request.setAttribute(RequestAttributeNames.ACCOUNT_MATCH_LIST, accountMatchList, RequestAttributes.SCOPE_SESSION);
-		return ReturnValues.REDIRECT_NEW_ACCOUNT;
-	}
-
-	@PostMapping("/database/import/step3")
-	public String importDatabase(WebRequest request, @ModelAttribute("Import") AccountMatchList accountMatchList, Model model)
 	{
 		final InternalDatabase database = (InternalDatabase) request.getAttribute(RequestAttributeNames.DATABASE, RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute(RequestAttributeNames.DATABASE, RequestAttributes.SCOPE_SESSION);
 
-		final Boolean importTemplates = (Boolean) request.getAttribute(RequestAttributeNames.IMPORT_TEMPLATES, RequestAttributes.SCOPE_SESSION);
-		request.removeAttribute(RequestAttributeNames.IMPORT_TEMPLATES, RequestAttributes.SCOPE_SESSION);
-
-		final Boolean importTemplateGroups = (Boolean) request.getAttribute(RequestAttributeNames.IMPORT_TEMPLATE_GROUPS, RequestAttributes.SCOPE_SESSION);
-		request.removeAttribute(RequestAttributeNames.IMPORT_TEMPLATE_GROUPS, RequestAttributes.SCOPE_SESSION);
-
-		final Boolean importCharts = (Boolean) request.getAttribute(RequestAttributeNames.IMPORT_CHARTS, RequestAttributes.SCOPE_SESSION);
-		request.removeAttribute(RequestAttributeNames.IMPORT_CHARTS, RequestAttributes.SCOPE_SESSION);
-
 		prepareBasicModel(model, settingsService.getSettings());
 
-		final List<ImportResultItem> importResultItems = importService.importDatabase(database, accountMatchList, importTemplateGroups, importTemplates, importCharts);
+		final List<ImportResultItem> importResultItems = importService.importDatabase(database, importTemplateGroups, importTemplates, importCharts);
 		model.addAttribute(ModelAttributes.IMPORT_RESULT_ITEMS, importResultItems);
 		model.addAttribute(ModelAttributes.ERROR_MESSAGES, importService.getCollectedErrorMessages(importResultItems));
 

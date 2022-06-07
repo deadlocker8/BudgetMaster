@@ -1,14 +1,9 @@
 package de.deadlocker8.budgetmaster.integration.selenium;
 
-import de.deadlocker8.budgetmaster.accounts.Account;
-import de.deadlocker8.budgetmaster.accounts.AccountState;
-import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
 import de.deadlocker8.budgetmaster.integration.helpers.TransactionTestHelper;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -17,7 +12,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,12 +31,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 		helper.hideMigrationDialog();
 
 		String path = getClass().getClassLoader().getResource("NewTransactionFromExistingOneTest.json").getFile().replace("/", File.separator);
-		final Account account1 = new Account("DefaultAccount", AccountType.CUSTOM);
-		final Account account2 = new Account("Second Account", AccountType.CUSTOM);
-		final Account account3 = new Account("Readonly Account", AccountType.CUSTOM);
-		account3.setAccountState(AccountState.READ_ONLY);
-
-		helper.uploadDatabase(path, Arrays.asList("Default Account", "Second Account", "Readonly Account"), List.of(account1, account2, account3));
+		helper.uploadDatabase(path);
 	}
 
 	@Override

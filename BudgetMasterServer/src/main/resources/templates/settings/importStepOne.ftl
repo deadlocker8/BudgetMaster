@@ -24,7 +24,7 @@
                 </div>
 
                 <div class="container">
-                    <form name="Import" action="<@s.url '/settings/database/import/step2'/>" method="post">
+                    <form name="Import" action="<@s.url '/settings/database/import/step1'/>" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                         <div class="row">

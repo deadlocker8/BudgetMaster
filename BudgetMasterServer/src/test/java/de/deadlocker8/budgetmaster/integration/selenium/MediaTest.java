@@ -1,11 +1,8 @@
 package de.deadlocker8.budgetmaster.integration.selenium;
 
-import de.deadlocker8.budgetmaster.accounts.Account;
-import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -16,7 +13,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.io.File;
 import java.text.MessageFormat;
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,14 +32,7 @@ class MediaTest extends SeleniumTestBase
 		helper.hideMigrationDialog();
 
 		String path = getClass().getClassLoader().getResource("OnlyAccountsWithDifferentImages.json").getFile().replace("/", File.separator);
-
-		final Account account1 = new Account("account with jpg", AccountType.CUSTOM);
-		final Account account2 = new Account("account with svg", AccountType.CUSTOM);
-		final Account account3 = new Account("account with png", AccountType.CUSTOM);
-
-		final List<Account> destinationAccounts = List.of(account1, account2, account3);
-
-		helper.uploadDatabase(path, Arrays.asList("account with jpg", "account with svg", "account with png"), destinationAccounts);
+		helper.uploadDatabase(path);
 	}
 
 	@Test

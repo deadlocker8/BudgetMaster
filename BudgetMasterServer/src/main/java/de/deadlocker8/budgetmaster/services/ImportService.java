@@ -4,7 +4,6 @@ import de.deadlocker8.budgetmaster.accounts.AccountRepository;
 import de.deadlocker8.budgetmaster.categories.CategoryRepository;
 import de.deadlocker8.budgetmaster.charts.ChartService;
 import de.deadlocker8.budgetmaster.database.InternalDatabase;
-import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
 import de.deadlocker8.budgetmaster.database.importer.*;
 import de.deadlocker8.budgetmaster.icon.IconRepository;
 import de.deadlocker8.budgetmaster.images.ImageRepository;
@@ -59,7 +58,7 @@ public class ImportService
 		this.iconRepository = iconRepository;
 	}
 
-	public List<ImportResultItem> importDatabase(InternalDatabase database, AccountMatchList accountMatchList, Boolean importTemplateGroups, Boolean importTemplates, Boolean importCharts)
+	public List<ImportResultItem> importDatabase(InternalDatabase database, Boolean importTemplateGroups, Boolean importTemplates, Boolean importCharts)
 	{
 		this.database = database;
 
@@ -69,7 +68,7 @@ public class ImportService
 		importResultItems.add(new ImageImporter(imageRepository).importItems(database.getImages()));
 		new IconImporter(iconRepository).importItems(database.getIcons());
 		importResultItems.add(new CategoryImporter(categoryRepository).importItems(database.getCategories()));
-		importResultItems.add(new AccountImporter(accountRepository, iconRepository).importItems(database.getAccounts(), accountMatchList));
+		importResultItems.add(new AccountImporter(accountRepository).importItems(database.getAccounts()));
 
 		final TagImporter tagImporter = new TagImporter(tagRepository);
 		importResultItems.add(new TransactionImporter(transactionRepository, tagImporter).importItems(database.getTransactions()));
