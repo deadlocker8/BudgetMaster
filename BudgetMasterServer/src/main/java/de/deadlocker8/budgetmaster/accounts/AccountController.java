@@ -79,6 +79,10 @@ public class AccountController extends BaseController
 		{
 			return MessageFormat.format("redirect:{0}", referer);
 		}
+		else if(referer.contains("?"))
+		{
+			return MessageFormat.format("redirect:{0}&{1}", referer, ACCOUNT_SELECTED_INDICATOR);
+		}
 		else
 		{
 			return MessageFormat.format("redirect:{0}?{1}", referer, ACCOUNT_SELECTED_INDICATOR);
