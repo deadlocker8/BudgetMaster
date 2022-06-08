@@ -63,7 +63,7 @@ class DeleteDatabaseTest extends SeleniumTestBase
 		driver.get(helper.getUrl() + "/transactions");
 
 		// assert only transaction "rest" is showing
-		TransactionTestHelper.selectGlobalAccountByName(driver, "Default Account First");
+		TransactionTestHelper.selectGlobalAccountByName(driver, "Default Account");
 		TransactionTestHelper.gotoSpecificYearAndMonth(driver, 2022, "March");
 		final List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		assertThat(transactionsRows).hasSize(1);
