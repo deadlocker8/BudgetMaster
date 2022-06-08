@@ -26,7 +26,7 @@ public class TemplateImporter extends ItemImporter<Template>
 	}
 
 	@Override
-	protected int importSingleItem(Template template)
+	protected int importSingleItem(Template template) throws ImportException
 	{
 		if(!(repository instanceof TemplateRepository repository))
 		{

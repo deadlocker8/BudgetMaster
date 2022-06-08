@@ -15,7 +15,7 @@ public class TemplateGroupImporter extends ItemImporter<TemplateGroup>
 	}
 
 	@Override
-	protected int importSingleItem(TemplateGroup templateGroup)
+	protected int importSingleItem(TemplateGroup templateGroup) throws ImportException
 	{
 		if(!(repository instanceof TemplateGroupRepository repository))
 		{

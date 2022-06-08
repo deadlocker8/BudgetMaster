@@ -16,7 +16,7 @@ public class ChartImporter extends ItemImporter<Chart>
 	}
 
 	@Override
-	protected int importSingleItem(Chart chart)
+	protected int importSingleItem(Chart chart) throws ImportException
 	{
 		if(!(repository instanceof ChartRepository repository))
 		{

@@ -20,7 +20,7 @@ public class CategoryImporter extends ItemImporter<Category>
 	}
 
 	@Override
-	protected int importSingleItem(Category categoryToImport)
+	protected int importSingleItem(Category categoryToImport) throws ImportException
 	{
 		if(!(repository instanceof CategoryRepository repository))
 		{

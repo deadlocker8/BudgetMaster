@@ -21,7 +21,7 @@ public class TransactionImporter extends ItemImporter<Transaction>
 	}
 
 	@Override
-	protected int importSingleItem(Transaction transaction)
+	protected int importSingleItem(Transaction transaction) throws ImportException
 	{
 		if(!(repository instanceof TransactionRepository repository))
 		{

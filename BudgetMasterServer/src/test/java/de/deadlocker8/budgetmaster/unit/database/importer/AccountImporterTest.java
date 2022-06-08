@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AccountImporterTest extends ImporterTestBase
@@ -65,5 +66,22 @@ class AccountImporterTest extends ImporterTestBase
 		final ImportResultItem expected = new ImportResultItem(EntityType.ACCOUNT, 1, 1, List.of());
 		assertThat(resultItem).isEqualTo(expected);
 		assertThat(placeholderAccount).hasFieldOrPropertyWithValue("ID", existingPlaceholderAccount.getID());
+	}
+
+	@Test
+	void test_importAccounts_nameAlreadyExists()
+	{
+		final Account account = new Account("ABC", AccountType.CUSTOM);
+		account.setID(12);
+
+		final Account existingAccount = new Account("ABC", AccountType.CUSTOM);
+		existingAccount.setID(1);
+		accountRepository.save(existingAccount);
+
+		final AccountImporter importer = new AccountImporter(accountRepository);
+		final ImportResultItem resultItem = importer.importItems(List.of(account));
+
+		assertThat(resultItem).hasFieldOrPropertyWithValue("numberOfImportedItems", 0);
+		assertThat(resultItem.getCollectedErrorMessages()).hasSize(1);
 	}
 }

@@ -19,7 +19,7 @@ public class AccountImporter extends ItemImporter<Account>
 	}
 
 	@Override
-	protected int importSingleItem(Account account)
+	protected int importSingleItem(Account account) throws ImportException
 	{
 		if(!(repository instanceof AccountRepository repository))
 		{
@@ -29,6 +29,11 @@ public class AccountImporter extends ItemImporter<Account>
 		if(account.getType().equals(AccountType.ALL))
 		{
 			return repository.findAllByType(AccountType.ALL).get(0).getID();
+		}
+
+		if(repository.findByName(account.getName()) != null)
+		{
+			throw new ImportException(MessageFormat.format("An account with name: {0} already exist. Account names must be unique. Delete or rename the existing account first.", account.getName()));
 		}
 
 		LOGGER.debug(MessageFormat.format("Importing account with name: {0}", account.getName()));

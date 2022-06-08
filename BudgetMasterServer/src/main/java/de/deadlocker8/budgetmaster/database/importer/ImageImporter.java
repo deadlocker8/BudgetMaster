@@ -12,7 +12,7 @@ public class ImageImporter extends ItemImporter<Image>
 	}
 
 	@Override
-	protected int importSingleItem(Image image)
+	protected int importSingleItem(Image image) throws ImportException
 	{
 		if(!(repository instanceof ImageRepository repository))
 		{
