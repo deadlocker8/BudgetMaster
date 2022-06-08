@@ -112,6 +112,17 @@
         <div class="modal-content">
             <h4>${locale.getString("info.title.database.import.dialog")}</h4>
 
+            <div class="row notification-row">
+                <div class="col s12 center-align">
+                    <div class="notification-wrapper">
+                        <div class="notification background-yellow text-black">
+                            <i class="fas fa-exclamation-triangle notification-item"></i>
+                            <span class="notification-item left-align">${locale.getString("import.warning.delete.database")}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <form id="form-database-import" method="POST" action="<@s.url '/settings/database/upload'/>" enctype="multipart/form-data" accept-charset="UTF-8">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <div class="file-field input-field">
