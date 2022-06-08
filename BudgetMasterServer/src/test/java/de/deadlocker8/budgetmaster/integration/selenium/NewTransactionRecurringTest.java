@@ -232,7 +232,7 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		String categoryName = "sdfdsf";
 		String repeatingModifier = "1";
 		String repeatingModifierType = "Days";
-		String transferAccountName = "Account2";
+		String transferAccountName = "sfsdf";
 
 		// fill form
 		driver.findElement(By.id("transaction-name")).sendKeys(TRANSACTION_NAME);
