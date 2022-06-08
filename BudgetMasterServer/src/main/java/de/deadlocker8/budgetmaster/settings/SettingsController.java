@@ -84,13 +84,11 @@ public class SettingsController extends BaseController
 		public static final String IMPORT_TEMPLATE_GROUPS = "importTemplatesGroups";
 		public static final String IMPORT_TEMPLATES = "importTemplates";
 		public static final String IMPORT_CHARTS = "importCharts";
-		public static final String ACCOUNT_MATCH_LIST = "accountMatchList";
 	}
 
 	private static final String PASSWORD_PLACEHOLDER = "•••••";
 	private final SettingsService settingsService;
 	private final DatabaseService databaseService;
-	private final AccountService accountService;
 	private final CategoryService categoryService;
 	private final ImportService importService;
 	private final BudgetMasterUpdateService budgetMasterUpdateService;
@@ -103,7 +101,6 @@ public class SettingsController extends BaseController
 	{
 		this.settingsService = settingsService;
 		this.databaseService = databaseService;
-		this.accountService = accountService;
 		this.categoryService = categoryService;
 		this.importService = importService;
 		this.budgetMasterUpdateService = budgetMasterUpdateService;
