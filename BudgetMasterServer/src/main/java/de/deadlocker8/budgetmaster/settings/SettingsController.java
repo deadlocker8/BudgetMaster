@@ -130,37 +130,36 @@ public class SettingsController extends BaseController
 		Optional<FieldError> passwordErrorOptional = securitySettingsContainer.validate();
 		passwordErrorOptional.ifPresent(bindingResult::addError);
 
-		String toastMessage;
-		String toastClasses;
-
 		if(bindingResult.hasErrors())
 		{
 			model.addAttribute(ModelAttributes.ERROR, bindingResult);
-			toastMessage = Localization.getString("notification.settings.security.error");
-			toastClasses = getToastClasses(NotificationType.ERROR);
+
+			final JsonObject toastContent = getToastContent("notification.settings.security.error", NotificationType.ERROR);
+			model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
+			return ReturnValues.CONTAINER_SECURITY;
 		}
-		else
+
+		final String password = securitySettingsContainer.getPassword();
+		if(password.equals(PASSWORD_PLACEHOLDER))
 		{
-			final String password = securitySettingsContainer.getPassword();
-			if(password.equals(PASSWORD_PLACEHOLDER))
-			{
-				toastMessage = Localization.getString("notification.settings.security.warning");
-				toastClasses = getToastClasses(NotificationType.WARNING);
-			}
-			else
-			{
-				settingsService.savePassword(password);
-				toastMessage = Localization.getString("notification.settings.security.saved");
-				toastClasses = getToastClasses(NotificationType.SUCCESS);
-			}
+			final JsonObject toastContent = getToastContent("notification.settings.security.warning", NotificationType.WARNING);
+			model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
+			return ReturnValues.CONTAINER_SECURITY;
 		}
 
-		final JsonObject toastContent = new JsonObject();
-		toastContent.addProperty("localizedMessage", toastMessage);
-		toastContent.addProperty("classes", toastClasses);
-		model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
+		settingsService.savePassword(password);
 
+		final JsonObject toastContent = getToastContent("notification.settings.security.saved", NotificationType.SUCCESS);
+		model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
 		return ReturnValues.CONTAINER_SECURITY;
+	}
+
+	private JsonObject getToastContent(String localizationKey, NotificationType notificationType)
+	{
+		final JsonObject toastContent = new JsonObject();
+		toastContent.addProperty("localizedMessage", Localization.getString(localizationKey));
+		toastContent.addProperty("classes", getToastClasses(notificationType));
+		return toastContent;
 	}
 
 	private String getToastClasses(NotificationType notificationType)
