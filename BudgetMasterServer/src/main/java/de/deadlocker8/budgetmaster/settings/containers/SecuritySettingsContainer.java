@@ -5,27 +5,8 @@ import org.springframework.validation.FieldError;
 
 import java.util.Optional;
 
-public class SecuritySettingsContainer
+public record SecuritySettingsContainer(String password, String passwordConfirmation)
 {
-	private final String password;
-	private final String passwordConfirmation;
-
-	public SecuritySettingsContainer(String password, String passwordConfirmation)
-	{
-		this.password = password;
-		this.passwordConfirmation = passwordConfirmation;
-	}
-
-	public String getPassword()
-	{
-		return password;
-	}
-
-	public String getPasswordConfirmation()
-	{
-		return passwordConfirmation;
-	}
-
 	public Optional<FieldError> validate()
 	{
 		if(password == null || password.equals(""))

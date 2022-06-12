@@ -13,7 +13,10 @@ function initSettingsContainer(formName, containerId)
             success: function(response)
             {
                 $('#' + containerId).html(response);
+
+                // re-init materialize components
                 $('.tooltipped').tooltip();
+                $('select').formSelect();
 
                 let toastContent = document.querySelector('#' + containerId + ' .securityContainerToastContent').innerHTML.trim();
                 if(toastContent)

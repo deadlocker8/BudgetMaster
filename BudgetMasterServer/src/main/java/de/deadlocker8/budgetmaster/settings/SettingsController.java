@@ -2,7 +2,6 @@ package de.deadlocker8.budgetmaster.settings;
 
 import com.google.gson.JsonObject;
 import de.deadlocker8.budgetmaster.Build;
-import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.backup.*;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.controller.BaseController;
@@ -12,9 +11,9 @@ import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
 import de.deadlocker8.budgetmaster.services.ImportResultItem;
 import de.deadlocker8.budgetmaster.services.ImportService;
+import de.deadlocker8.budgetmaster.settings.containers.PersonalizationSettingsContainer;
 import de.deadlocker8.budgetmaster.settings.containers.SecuritySettingsContainer;
 import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
-import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
 import de.deadlocker8.budgetmaster.utils.notification.Notification;
@@ -79,6 +78,7 @@ public class SettingsController extends BaseController
 		public static final String IMPORT_DATABASE_STEP_1 = "settings/importStepOne";
 		public static final String IMPORT_DATABASE_RESULT = "settings/importResult";
 		public static final String CONTAINER_SECURITY = "settings/containers/settingsSecurity";
+		public static final String CONTAINER_PERSONALIZATION = "settings/containers/settingsPersonalization";
 	}
 
 	private static class RequestAttributeNames
@@ -139,7 +139,7 @@ public class SettingsController extends BaseController
 			return ReturnValues.CONTAINER_SECURITY;
 		}
 
-		final String password = securitySettingsContainer.getPassword();
+		final String password = securitySettingsContainer.password();
 		if(password.equals(PASSWORD_PLACEHOLDER))
 		{
 			final JsonObject toastContent = getToastContent("notification.settings.security.warning", NotificationType.WARNING);
@@ -152,6 +152,45 @@ public class SettingsController extends BaseController
 		final JsonObject toastContent = getToastContent("notification.settings.security.saved", NotificationType.SUCCESS);
 		model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
 		return ReturnValues.CONTAINER_SECURITY;
+	}
+
+	@PostMapping(value = "/save/personalization")
+	public String saveContainerPersonalization(Model model,
+										@ModelAttribute("PersonalizationSettingsContainer") PersonalizationSettingsContainer personalizationSettingsContainer,
+										BindingResult bindingResult)
+	{
+		personalizationSettingsContainer.fixBooleans();
+
+		final Settings settings = settingsService.getSettings();
+
+		if(bindingResult.hasErrors())
+		{
+			model.addAttribute(ModelAttributes.ERROR, bindingResult);
+
+			final JsonObject toastContent = getToastContent("notification.settings.personalization.error", NotificationType.ERROR);
+			model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
+			model.addAttribute(ModelAttributes.SETTINGS, settings);
+			model.addAttribute(ModelAttributes.SEARCH_RESULTS_PER_PAGE, SEARCH_RESULTS_PER_PAGE_OPTIONS);
+			return ReturnValues.CONTAINER_PERSONALIZATION;
+		}
+
+		// update settings
+		settings.setLanguage(personalizationSettingsContainer.getLanguageType());
+		settings.setCurrency(personalizationSettingsContainer.currency());
+		settings.setUseDarkTheme(personalizationSettingsContainer.useDarkTheme());
+		settings.setShowCategoriesAsCircles(personalizationSettingsContainer.showCategoriesAsCircles());
+		settings.setSearchItemsPerPage(personalizationSettingsContainer.searchItemsPerPage());
+		settingsService.updateSettings(settings);
+
+		// reload localization
+		Localization.load();
+		categoryService.localizeDefaultCategories();
+
+		final JsonObject toastContent = getToastContent("notification.settings.personalization.saved", NotificationType.SUCCESS);
+		model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
+		model.addAttribute(ModelAttributes.SETTINGS, settings);
+		model.addAttribute(ModelAttributes.SEARCH_RESULTS_PER_PAGE, SEARCH_RESULTS_PER_PAGE_OPTIONS);
+		return ReturnValues.CONTAINER_PERSONALIZATION;
 	}
 
 	private JsonObject getToastContent(String localizationKey, NotificationType notificationType)
@@ -170,11 +209,9 @@ public class SettingsController extends BaseController
 	@PostMapping(value = "/save")
 	public String post(WebRequest request, Model model,
 					   @ModelAttribute("Settings") Settings settings, BindingResult bindingResult,
-					   @RequestParam(value = "languageType") String languageType,
 					   @RequestParam(value = "autoBackupStrategyType", required = false) String autoBackupStrategyType,
 					   @RequestParam(value = "runBackup", required = false) Boolean runBackup)
 	{
-		settings.setLanguage(LanguageType.fromName(languageType));
 		if(autoBackupStrategyType == null)
 		{
 			settings.setAutoBackupStrategy(AutoBackupStrategy.NONE);
@@ -253,11 +290,6 @@ public class SettingsController extends BaseController
 			settings.setAutoBackupGitUserName(defaultSettings.getAutoBackupGitUserName());
 			settings.setAutoBackupGitToken(defaultSettings.getAutoBackupGitToken());
 		}
-
-		if(settings.getShowCategoriesAsCircles() == null)
-		{
-			settings.setShowCategoriesAsCircles(false);
-		}
 	}
 
 	public void updateSettings(Settings settings)
@@ -275,9 +307,6 @@ public class SettingsController extends BaseController
 			final String cron = backupService.computeCron(settings.getAutoBackupTime(), settings.getAutoBackupDays());
 			backupTaskOptional.ifPresent(runnable -> backupService.startBackupCron(cron, runnable));
 		}
-
-		Localization.load();
-		categoryService.localizeDefaultCategories();
 	}
 
 
