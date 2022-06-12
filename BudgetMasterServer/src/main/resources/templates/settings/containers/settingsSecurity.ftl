@@ -3,10 +3,10 @@
 <#import "../../helpers/header.ftl" as header>
 <@header.globals/>
 
-<#macro securitySettingsContainer>
-    <form name="SecuritySettingsContainer" method="post">
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id="token"/>
+<#import "settingsContainer.ftl" as settingsContainerMacros>
 
+<#macro securitySettingsContainer>
+    <@settingsContainerMacros.settingsContainer 'SecuritySettingsContainer' 'securitySettingsContainer'>
         <#-- password -->
         <div class="row">
             <div class="input-field col s12 m12 l8 offset-l2">
@@ -30,15 +30,7 @@
                 <@header.buttonSubmit name='action' icon='save' localizationKey='save' color='background-green' formaction='/settings/save/security'/>
             </div>
         </div>
-    </form>
-
-    <div class="hidden securityContainerToastContent">
-        <#if toastContent??>${toastContent}</#if>
-    </div>
-
-    <script src="<@s.url '/webjars/jquery/3.6.0/jquery.min.js'/>"></script>
-    <script src="<@s.url '/webjars/materializecss/1.0.0/js/materialize.min.js'/>"></script>
-    <script src="<@s.url '/js/settingsContainers/settingsSecurity.js'/>"></script>
+    </@settingsContainerMacros.settingsContainer>
 </#macro>
 
 <@securitySettingsContainer/>

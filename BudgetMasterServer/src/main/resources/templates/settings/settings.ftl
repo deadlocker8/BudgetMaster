@@ -286,5 +286,10 @@
         <@scripts.scripts/>
         <script src="<@s.url '/js/helpers.js'/>"></script>
         <script src="<@s.url '/js/settings.js'/>"></script>
+        <script src="<@s.url '/js/settingsContainers.js'/>"></script>
+
+        <script>
+            initSettingsContainer('SecuritySettingsContainer', 'securitySettingsContainer');
+        </script>
     </@header.body>
 </html>
