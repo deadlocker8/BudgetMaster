@@ -5,21 +5,16 @@
         <div class="col s12">
             <div class="table-container">
                 <div class="table-cell">
-                    <div class="switch-cell-margin">${locale.getString("settings.rest")}</div>
                     <div class="switch-cell-margin">${locale.getString("settings.darkTheme")}</div>
                     <div class="switch-cell-margin">${locale.getString("settings.category.circle.style")}</div>
                 </div>
                 <div class="table-cell table-cell-spacer"></div>
                 <div class="table-cell">
-                    <@switch "rest" "restActivated" settings.isRestActivated()/>
                     <@switch "darkTheme" "useDarkTheme" settings.isUseDarkTheme()/>
                     <@switch "category.circle.style" "showCategoriesAsCircles" settings.getShowCategoriesAsCircles()?? && settings.getShowCategoriesAsCircles()/>
                 </div>
                 <div class="table-cell table-cell-spacer"></div>
                 <div class="table-cell">
-                    <div class="switch-cell-margin">
-                        <a class="btn btn-flat tooltipped text-default" data-position="bottom" data-tooltip="${locale.getString("settings.rest.description")}"><i class="material-icons">help_outline</i></a>
-                    </div>
                     <div class="switch-cell-margin">
                         <a class="btn btn-flat tooltipped text-default" data-position="bottom" data-tooltip="${locale.getString("settings.darkTheme.description")}"><i class="material-icons">help_outline</i></a>
                     </div>
@@ -44,7 +39,7 @@
 </#macro>
 
 <#macro databaseNormal>
-    <div class="row hide-on-small-only">
+    <div class="row hide-on-small-only no-margin-bottom">
         <div class="col m4 l4 center-align">
             <@header.buttonLink url='/settings/database/requestImport' icon='cloud_upload' localizationKey='settings.database.import'/>
         </div>
@@ -302,4 +297,15 @@
             <@header.buttonSubmit id='settings-backup-run-now' name='action' icon='cloud_download' localizationKey='settings.backup.auto.run.now'/>
         </div>
     </div>
+</#macro>
+
+<#macro settingsCollapsibleItem id icon title isFontAwesomeIcon=false>
+    <li class="z-depth-2">
+        <div class="collapsible-header bold"><#if isFontAwesomeIcon><i class="${icon}"></i><#else><i class="material-icons">${icon}</i></#if>${title}</div>
+        <div class="collapsible-body">
+            <div class="row no-margin-bottom" id="${id}">
+                <#nested>
+            </div>
+        </div>
+    </li>
 </#macro>

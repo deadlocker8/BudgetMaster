@@ -1,5 +1,7 @@
 $(document).ready(function()
 {
+    $('.collapsible').collapsible();
+
     $('.modal').modal('open');
 
     $('#button-confirm-database-delete').click(function()

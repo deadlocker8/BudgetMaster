@@ -158,30 +158,6 @@ public class SettingsService
 		}
 	}
 
-	public Optional<FieldError> validatePassword(String password, String passwordConfirmation)
-	{
-		if(password == null || password.equals(""))
-		{
-			return Optional.of(new FieldError("Settings", "password", password, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_EMPTY}, null, Strings.WARNING_SETTINGS_PASSWORD_EMPTY));
-		}
-		else if(password.length() < 3)
-		{
-			return Optional.of(new FieldError("Settings", "password", password, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_LENGTH}, null, Strings.WARNING_SETTINGS_PASSWORD_LENGTH));
-		}
-
-		if(passwordConfirmation == null || passwordConfirmation.equals(""))
-		{
-			return Optional.of(new FieldError("Settings", "passwordConfirmation", passwordConfirmation, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_EMPTY}, null, Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_EMPTY));
-		}
-
-		if(!password.equals(passwordConfirmation))
-		{
-			return Optional.of(new FieldError("Settings", "passwordConfirmation", passwordConfirmation, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_WRONG}, null, Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_WRONG));
-		}
-
-		return Optional.empty();
-	}
-
 	public void savePassword(String password)
 	{
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();

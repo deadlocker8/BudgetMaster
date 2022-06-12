@@ -12,6 +12,7 @@ import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
 import de.deadlocker8.budgetmaster.services.ImportResultItem;
 import de.deadlocker8.budgetmaster.services.ImportService;
+import de.deadlocker8.budgetmaster.settings.containers.SecuritySettingsContainer;
 import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.deadlocker8.budgetmaster.utils.Mappings;
@@ -36,6 +37,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -54,7 +56,6 @@ public class SettingsController extends BaseController
 		public static final String VERIFICATION_CODE = "verificationCode";
 		public static final String IMPORT_DATABASE = "importDatabase";
 		public static final String ERROR_IMPORT_DATABASE = "errorImportDatabase";
-		public static final String AVAILABLE_ACCOUNTS = "availableAccounts";
 		public static final String IMPORT_RESULT_ITEMS = "importResultItems";
 		public static final String ERROR_MESSAGES = "errorMessages";
 		public static final String PERFORM_UPDATE = "performUpdate";
@@ -65,6 +66,7 @@ public class SettingsController extends BaseController
 		public static final String AUTO_BACKUP_TIME = "autoBackupTimes";
 		public static final String AUTO_BACKUP_STATUS = "autoBackupStatus";
 		public static final String NEXT_BACKUP_TIME = "nextBackupTime";
+		public static final String TOAST_CONTENT = "toastContent";
 	}
 
 	private static class ReturnValues
@@ -76,6 +78,7 @@ public class SettingsController extends BaseController
 		public static final String REDIRECT_IMPORT_DATABASE_STEP_1 = "redirect:/settings/database/import/step1";
 		public static final String IMPORT_DATABASE_STEP_1 = "settings/importStepOne";
 		public static final String IMPORT_DATABASE_RESULT = "settings/importResult";
+		public static final String CONTAINER_SECURITY = "settings/containers/settingsSecurity";
 	}
 
 	private static class RequestAttributeNames
@@ -97,7 +100,7 @@ public class SettingsController extends BaseController
 	private final List<Integer> SEARCH_RESULTS_PER_PAGE_OPTIONS = Arrays.asList(10, 20, 25, 30, 50, 100);
 
 	@Autowired
-	public SettingsController(SettingsService settingsService, DatabaseService databaseService, AccountService accountService, CategoryService categoryService, ImportService importService, BudgetMasterUpdateService budgetMasterUpdateService, BackupService backupService)
+	public SettingsController(SettingsService settingsService, DatabaseService databaseService, CategoryService categoryService, ImportService importService, BudgetMasterUpdateService budgetMasterUpdateService, BackupService backupService)
 	{
 		this.settingsService = settingsService;
 		this.databaseService = databaseService;
@@ -119,11 +122,55 @@ public class SettingsController extends BaseController
 		return ReturnValues.ALL_ENTITIES;
 	}
 
+	@PostMapping(value = "/save/security")
+	public String saveContainerSecurity(Model model,
+					   @ModelAttribute("SecuritySettingsContainer") SecuritySettingsContainer securitySettingsContainer,
+					   BindingResult bindingResult)
+	{
+		Optional<FieldError> passwordErrorOptional = securitySettingsContainer.validate();
+		passwordErrorOptional.ifPresent(bindingResult::addError);
+
+		String toastMessage;
+		String toastClasses;
+
+		if(bindingResult.hasErrors())
+		{
+			model.addAttribute(ModelAttributes.ERROR, bindingResult);
+			toastMessage = Localization.getString("notification.settings.security.error");
+			toastClasses = getToastClasses(NotificationType.ERROR);
+		}
+		else
+		{
+			final String password = securitySettingsContainer.getPassword();
+			if(password.equals(PASSWORD_PLACEHOLDER))
+			{
+				toastMessage = Localization.getString("notification.settings.security.warning");
+				toastClasses = getToastClasses(NotificationType.WARNING);
+			}
+			else
+			{
+				settingsService.savePassword(password);
+				toastMessage = Localization.getString("notification.settings.security.saved");
+				toastClasses = getToastClasses(NotificationType.SUCCESS);
+			}
+		}
+
+		final JsonObject toastContent = new JsonObject();
+		toastContent.addProperty("localizedMessage", toastMessage);
+		toastContent.addProperty("classes", toastClasses);
+		model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
+
+		return ReturnValues.CONTAINER_SECURITY;
+	}
+
+	private String getToastClasses(NotificationType notificationType)
+	{
+		return MessageFormat.format("{0} {1}", notificationType.getBackgroundColor(), notificationType.getTextColor());
+	}
+
 	@PostMapping(value = "/save")
 	public String post(WebRequest request, Model model,
 					   @ModelAttribute("Settings") Settings settings, BindingResult bindingResult,
-					   @RequestParam(value = "password") String password,
-					   @RequestParam(value = "passwordConfirmation") String passwordConfirmation,
 					   @RequestParam(value = "languageType") String languageType,
 					   @RequestParam(value = "autoBackupStrategyType", required = false) String autoBackupStrategyType,
 					   @RequestParam(value = "runBackup", required = false) Boolean runBackup)
@@ -138,9 +185,6 @@ public class SettingsController extends BaseController
 			settings.setAutoBackupStrategy(AutoBackupStrategy.fromName(autoBackupStrategyType));
 		}
 
-		Optional<FieldError> passwordErrorOptional = settingsService.validatePassword(password, passwordConfirmation);
-		passwordErrorOptional.ifPresent(bindingResult::addError);
-
 		SettingsValidator settingsValidator = new SettingsValidator();
 		settingsValidator.validate(settings, bindingResult);
 
@@ -151,11 +195,6 @@ public class SettingsController extends BaseController
 			model.addAttribute(ModelAttributes.ERROR, bindingResult);
 			prepareBasicModel(model, settings);
 			return ReturnValues.ALL_ENTITIES;
-		}
-
-		if(!password.equals(PASSWORD_PLACEHOLDER))
-		{
-			settingsService.savePassword(password);
 		}
 
 		updateSettings(settings);
