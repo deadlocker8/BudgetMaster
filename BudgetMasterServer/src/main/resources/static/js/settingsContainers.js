@@ -12,6 +12,8 @@ function initSettingsContainer(formName, containerId)
             contentType: false,
             success: function(response)
             {
+                M.Toast.dismissAll();
+
                 $('#' + containerId).html(response);
 
                 // re-init materialize components
