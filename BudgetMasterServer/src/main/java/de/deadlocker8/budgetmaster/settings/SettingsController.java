@@ -491,15 +491,21 @@ public class SettingsController extends BaseController
 	}
 
 	@GetMapping("/updateSearch")
-	public String updateSearch(WebRequest request)
+	@ResponseBody
+	public String updateSearch()
 	{
 		budgetMasterUpdateService.getUpdateService().fetchCurrentVersion();
 
 		if(budgetMasterUpdateService.isUpdateAvailable())
 		{
-			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.settings.update.available", budgetMasterUpdateService.getAvailableVersionString()), NotificationType.INFO));
+			final JsonObject toastContent = new JsonObject();
+			toastContent.addProperty("localizedMessage", Localization.getString("notification.settings.update.available", budgetMasterUpdateService.getAvailableVersionString()));
+			toastContent.addProperty("classes", getToastClasses(NotificationType.INFO));
+			return toastContent.toString();
 		}
-		return ReturnValues.REDIRECT_ALL_ENTITIES;
+
+		final JsonObject toastContent = getToastContent("notification.settings.update.not.available", NotificationType.INFO);
+		return toastContent.toString();
 	}
 
 	@GetMapping("/update")

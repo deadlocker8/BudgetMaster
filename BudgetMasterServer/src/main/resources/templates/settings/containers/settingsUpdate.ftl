@@ -46,7 +46,7 @@
                     </div>
 
                     <div class="table-cell table-cell-valign">
-                        <@header.buttonLink url='/settings/updateSearch' icon='refresh' localizationKey='settings.updates.search'/>
+                        <@header.buttonLink url='/settings/updateSearch' icon='refresh' localizationKey='settings.updates.search' isDataUrl=true id='button-update-search'/>
                     </div>
                 </div>
             </div>
@@ -77,6 +77,35 @@
                 <@header.buttonSubmit name='action' icon='save' localizationKey='save' color='background-green' formaction='/settings/save/update'/>
             </div>
         </div>
+
+        <script>
+            $('#button-update-search').click(function()
+            {
+                $.ajax({
+                    type: 'GET',
+                    url: $(this).attr('data-url'),
+                    data: {},
+                    success: function(response)
+                    {
+                        M.Toast.dismissAll();
+
+                        let parsedData = JSON.parse(response);
+                        M.toast({
+                            html: parsedData['localizedMessage'],
+                            classes: parsedData['classes']
+                        });
+                    },
+                    error: function(response)
+                    {
+                        M.toast({
+                            html: "Error searching for updates",
+                            classes: 'red'
+                        });
+                        console.error(response);
+                    }
+                });
+            });
+        </script>
     </@settingsContainerMacros.settingsContainer>
 </#macro>
 
