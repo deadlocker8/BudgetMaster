@@ -17,7 +17,8 @@
         <#import "containers/settingsSecurity.ftl" as settingsSecurityMacros>
         <#import "containers/settingsPersonalization.ftl" as settingsPersonalizationMacros>
         <#import "containers/settingsTransactions.ftl" as settingsTransactionsMacros>
-        <#import "containers/settingsUpdate.ftl" as settingsUpdatenMacros>
+        <#import "containers/settingsUpdate.ftl" as settingsUpdateMacros>
+        <#import "containers/settingsMisc.ftl" as settingsMiscMacros>
 
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
@@ -86,15 +87,11 @@
                                     </@settingsMacros.settingsCollapsibleItem>
 
                                     <@settingsMacros.settingsCollapsibleItem "updateSettingsContainer" "system_update" locale.getString("settings.updates")>
-                                        <@settingsUpdatenMacros.updateSettingsContainer importScripts=false settings=settings/>
+                                        <@settingsUpdateMacros.updateSettingsContainer importScripts=false settings=settings/>
                                     </@settingsMacros.settingsCollapsibleItem>
 
-                                    <@settingsMacros.settingsCollapsibleItem "" "miscellaneous_services" "Misc">
-                                        <div class="row no-margin-bottom">
-                                            <div class="col s12 center-align">
-                                                <@header.buttonLink url='/hints/resetAll' icon='restore' localizationKey='button.hints.reset'/>
-                                            </div>
-                                        </div>
+                                    <@settingsMacros.settingsCollapsibleItem "miscSettingsContainer" "miscellaneous_services" locale.getString("settings.misc")>
+                                        <@settingsMiscMacros.miscSettingsContainer importScripts=false/>
                                     </@settingsMacros.settingsCollapsibleItem>
 
                                     <@settingsMacros.settingsCollapsibleItem "" "fas fa-database" locale.getString("menu.settings.database") true>
@@ -104,8 +101,6 @@
                                 </ul>
                             </div>
                         </div>
-
-
 
                         <form name="Settings" action="<@s.url '/settings/save'/>" method="post" onsubmit="return validateForm()">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id="token"/>
@@ -150,6 +145,7 @@
             initSettingsContainer('PersonalizationSettingsContainer', 'personalizationSettingsContainer');
             initSettingsContainer('TransactionsSettingsContainer', 'transactionsSettingsContainer');
             initSettingsContainer('UpdateSettingsContainer', 'updateSettingsContainer');
+            initSettingsContainer('MiscSettingsContainer', 'miscSettingsContainer');
         </script>
     </@header.body>
 </html>

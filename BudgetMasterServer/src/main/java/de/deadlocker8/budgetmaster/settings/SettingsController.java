@@ -9,6 +9,7 @@ import de.deadlocker8.budgetmaster.database.DatabaseParser;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
+import de.deadlocker8.budgetmaster.hints.HintService;
 import de.deadlocker8.budgetmaster.services.ImportResultItem;
 import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.settings.containers.PersonalizationSettingsContainer;
@@ -83,6 +84,7 @@ public class SettingsController extends BaseController
 		public static final String CONTAINER_PERSONALIZATION = "settings/containers/settingsPersonalization";
 		public static final String CONTAINER_TRANSACTIONS = "settings/containers/settingsTransactions";
 		public static final String CONTAINER_UPDATE = "settings/containers/settingsUpdate";
+		public static final String CONTAINER_MISC = "settings/containers/settingsMisc";
 	}
 
 	private static class RequestAttributeNames
@@ -100,11 +102,12 @@ public class SettingsController extends BaseController
 	private final ImportService importService;
 	private final BudgetMasterUpdateService budgetMasterUpdateService;
 	private final BackupService backupService;
+	private final HintService hintService;
 
 	private final List<Integer> SEARCH_RESULTS_PER_PAGE_OPTIONS = Arrays.asList(10, 20, 25, 30, 50, 100);
 
 	@Autowired
-	public SettingsController(SettingsService settingsService, DatabaseService databaseService, CategoryService categoryService, ImportService importService, BudgetMasterUpdateService budgetMasterUpdateService, BackupService backupService)
+	public SettingsController(SettingsService settingsService, DatabaseService databaseService, CategoryService categoryService, ImportService importService, BudgetMasterUpdateService budgetMasterUpdateService, BackupService backupService, HintService hintService)
 	{
 		this.settingsService = settingsService;
 		this.databaseService = databaseService;
@@ -112,6 +115,7 @@ public class SettingsController extends BaseController
 		this.importService = importService;
 		this.budgetMasterUpdateService = budgetMasterUpdateService;
 		this.backupService = backupService;
+		this.hintService = hintService;
 	}
 
 	@GetMapping
@@ -253,6 +257,16 @@ public class SettingsController extends BaseController
 		model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
 		model.addAttribute(ModelAttributes.SETTINGS, settings);
 		return ReturnValues.CONTAINER_UPDATE;
+	}
+
+	@PostMapping(value = "/save/misc")
+	public String saveContainerMisc(Model model)
+	{
+		hintService.resetAll();
+
+		final JsonObject toastContent = getToastContent("notification.settings.hints.reset", NotificationType.SUCCESS);
+		model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
+		return ReturnValues.CONTAINER_MISC;
 	}
 
 	private JsonObject getToastContent(String localizationKey, NotificationType notificationType)
