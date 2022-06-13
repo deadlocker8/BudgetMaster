@@ -13,6 +13,7 @@ import de.deadlocker8.budgetmaster.services.ImportResultItem;
 import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.settings.containers.PersonalizationSettingsContainer;
 import de.deadlocker8.budgetmaster.settings.containers.SecuritySettingsContainer;
+import de.deadlocker8.budgetmaster.settings.containers.TransactionsSettingsContainer;
 import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
@@ -79,6 +80,7 @@ public class SettingsController extends BaseController
 		public static final String IMPORT_DATABASE_RESULT = "settings/importResult";
 		public static final String CONTAINER_SECURITY = "settings/containers/settingsSecurity";
 		public static final String CONTAINER_PERSONALIZATION = "settings/containers/settingsPersonalization";
+		public static final String CONTAINER_TRANSACTIONS = "settings/containers/settingsTransactions";
 	}
 
 	private static class RequestAttributeNames
@@ -191,6 +193,35 @@ public class SettingsController extends BaseController
 		model.addAttribute(ModelAttributes.SETTINGS, settings);
 		model.addAttribute(ModelAttributes.SEARCH_RESULTS_PER_PAGE, SEARCH_RESULTS_PER_PAGE_OPTIONS);
 		return ReturnValues.CONTAINER_PERSONALIZATION;
+	}
+
+	@PostMapping(value = "/save/transactions")
+	public String saveContainerTransactions(Model model,
+											   @ModelAttribute("TransactionsSettingsContainer") TransactionsSettingsContainer transactionsSettingsContainer,
+											   BindingResult bindingResult)
+	{
+		transactionsSettingsContainer.fixBooleans();
+
+		final Settings settings = settingsService.getSettings();
+
+		if(bindingResult.hasErrors())
+		{
+			model.addAttribute(ModelAttributes.ERROR, bindingResult);
+
+			final JsonObject toastContent = getToastContent("notification.settings.transactions.error", NotificationType.ERROR);
+			model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
+			model.addAttribute(ModelAttributes.SETTINGS, settings);
+			return ReturnValues.CONTAINER_TRANSACTIONS;
+		}
+
+		// update settings
+		settings.setRestActivated(transactionsSettingsContainer.getRestActivated());
+		settingsService.updateSettings(settings);
+
+		final JsonObject toastContent = getToastContent("notification.settings.transactions.saved", NotificationType.SUCCESS);
+		model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
+		model.addAttribute(ModelAttributes.SETTINGS, settings);
+		return ReturnValues.CONTAINER_TRANSACTIONS;
 	}
 
 	private JsonObject getToastContent(String localizationKey, NotificationType notificationType)

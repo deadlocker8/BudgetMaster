@@ -16,6 +16,7 @@
 
         <#import "containers/settingsSecurity.ftl" as settingsSecurityMacros>
         <#import "containers/settingsPersonalization.ftl" as settingsPersonalizationMacros>
+        <#import "containers/settingsTransactions.ftl" as settingsTransactionMacros>
 
 
         <main>
@@ -40,37 +41,8 @@
                                         <@settingsPersonalizationMacros.personalizationSettingsContainer settings=settings showReloadWarning=false/>
                                     </@settingsMacros.settingsCollapsibleItem>
 
-                                    <@settingsMacros.settingsCollapsibleItem "" "list" "Transactions">
-                                        <div class="row">
-                                            <div class="col s12">
-                                                <div class="table-container">
-                                                    <div class="table-cell">
-                                                        <div class="switch-cell-margin">${locale.getString("settings.rest")}</div>
-                                                        <div class="switch-cell-margin">Warn about expenditure switch</div>
-                                                    </div>
-                                                    <div class="table-cell table-cell-spacer"></div>
-                                                    <div class="table-cell">
-                                                        <@settingsMacros.switch "rest" "restActivated" settings.isRestActivated()/>
-                                                        <@settingsMacros.switch "rest" "restActivated" settings.isRestActivated()/>
-                                                    </div>
-                                                    <div class="table-cell table-cell-spacer"></div>
-                                                    <div class="table-cell">
-                                                        <div class="switch-cell-margin">
-                                                            <a class="btn btn-flat tooltipped text-default" data-position="bottom" data-tooltip="${locale.getString("settings.rest.description")}"><i class="material-icons">help_outline</i></a>
-                                                        </div>
-                                                        <div class="switch-cell-margin">
-                                                            <a class="btn btn-flat tooltipped text-default" data-position="bottom" data-tooltip="${locale.getString("settings.rest.description")}"><i class="material-icons">help_outline</i></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col s12 center-align">
-                                                <@header.buttonSubmit name='action' icon='save' localizationKey='save' color='background-green'/>
-                                            </div>
-                                        </div>
+                                    <@settingsMacros.settingsCollapsibleItem "transactionsSettingsContainer" "list" locale.getString("settings.transactions")>
+                                        <@settingsTransactionMacros.transactionsSettingsContainer settings/>
                                     </@settingsMacros.settingsCollapsibleItem>
 
                                     <@settingsMacros.settingsCollapsibleItem "" "cloud_download" locale.getString("settings.backup")>
@@ -242,6 +214,7 @@
         <script>
             initSettingsContainer('SecuritySettingsContainer', 'securitySettingsContainer');
             initSettingsContainer('PersonalizationSettingsContainer', 'personalizationSettingsContainer');
+            initSettingsContainer('TransactionsSettingsContainer', 'transactionsSettingsContainer');
         </script>
     </@header.body>
 </html>
