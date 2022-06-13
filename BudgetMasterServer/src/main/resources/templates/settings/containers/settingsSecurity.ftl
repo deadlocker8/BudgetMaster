@@ -5,8 +5,8 @@
 
 <#import "settingsContainer.ftl" as settingsContainerMacros>
 
-<#macro securitySettingsContainer>
-    <@settingsContainerMacros.settingsContainer 'SecuritySettingsContainer' 'securitySettingsContainer'>
+<#macro securitySettingsContainer importScripts>
+    <@settingsContainerMacros.settingsContainer 'SecuritySettingsContainer' 'securitySettingsContainer' importScripts>
         <#-- password -->
         <div class="row">
             <div class="input-field col s12 m12 l8 offset-l2">
@@ -33,4 +33,4 @@
     </@settingsContainerMacros.settingsContainer>
 </#macro>
 
-<@securitySettingsContainer/>
+<@securitySettingsContainer importScripts=true/>

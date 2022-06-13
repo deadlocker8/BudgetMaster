@@ -6,8 +6,8 @@
 <#import "settingsContainer.ftl" as settingsContainerMacros>
 <#import "../settingsMacros.ftl" as settingsMacros>
 
-<#macro personalizationSettingsContainer settings showReloadWarning>
-    <@settingsContainerMacros.settingsContainer 'PersonalizationSettingsContainer' 'personalizationSettingsContainer'>
+<#macro personalizationSettingsContainer importScripts settings showReloadWarning>
+    <@settingsContainerMacros.settingsContainer 'PersonalizationSettingsContainer' 'personalizationSettingsContainer' importScripts>
         <#-- language -->
         <div class="row">
             <div class="input-field col s12 m12 l8 offset-l2">
@@ -75,4 +75,4 @@
     </@settingsContainerMacros.settingsContainer>
 </#macro>
 
-<@personalizationSettingsContainer settings=settings showReloadWarning=true/>
+<@personalizationSettingsContainer importScripts=true settings=settings showReloadWarning=true/>

@@ -19,6 +19,9 @@
         <#import "containers/settingsTransactions.ftl" as settingsTransactionsMacros>
         <#import "containers/settingsUpdate.ftl" as settingsUpdatenMacros>
 
+        <!-- Scripts-->
+        <#import "../helpers/scripts.ftl" as scripts>
+        <@scripts.scripts/>
 
         <main>
             <div class="card main-card background-color">
@@ -35,15 +38,15 @@
                             <div class="col s12">
                                 <ul class="collapsible">
                                     <@settingsMacros.settingsCollapsibleItem "securitySettingsContainer" "vpn_key" "Security">
-                                        <@settingsSecurityMacros.securitySettingsContainer/>
+                                        <@settingsSecurityMacros.securitySettingsContainer importScripts=false/>
                                     </@settingsMacros.settingsCollapsibleItem>
 
                                     <@settingsMacros.settingsCollapsibleItem "personalizationSettingsContainer" "format_paint" locale.getString("settings.personalization")>
-                                        <@settingsPersonalizationMacros.personalizationSettingsContainer settings=settings showReloadWarning=false/>
+                                        <@settingsPersonalizationMacros.personalizationSettingsContainer importScripts=false settings=settings showReloadWarning=false/>
                                     </@settingsMacros.settingsCollapsibleItem>
 
                                     <@settingsMacros.settingsCollapsibleItem "transactionsSettingsContainer" "list" locale.getString("settings.transactions")>
-                                        <@settingsTransactionsMacros.transactionsSettingsContainer settings/>
+                                        <@settingsTransactionsMacros.transactionsSettingsContainer importScripts=false settings=settings/>
                                     </@settingsMacros.settingsCollapsibleItem>
 
                                     <@settingsMacros.settingsCollapsibleItem "" "cloud_download" locale.getString("settings.backup")>
@@ -83,7 +86,7 @@
                                     </@settingsMacros.settingsCollapsibleItem>
 
                                     <@settingsMacros.settingsCollapsibleItem "updateSettingsContainer" "system_update" locale.getString("settings.updates")>
-                                        <@settingsUpdatenMacros.updateSettingsContainer settings/>
+                                        <@settingsUpdatenMacros.updateSettingsContainer importScripts=false settings=settings/>
                                     </@settingsMacros.settingsCollapsibleItem>
 
                                     <@settingsMacros.settingsCollapsibleItem "" "miscellaneous_services" "Misc">
@@ -138,8 +141,6 @@
         </script>
 
         <!-- Scripts-->
-        <#import "../helpers/scripts.ftl" as scripts>
-        <@scripts.scripts/>
         <script src="<@s.url '/js/helpers.js'/>"></script>
         <script src="<@s.url '/js/settings.js'/>"></script>
         <script src="<@s.url '/js/settingsContainers.js'/>"></script>

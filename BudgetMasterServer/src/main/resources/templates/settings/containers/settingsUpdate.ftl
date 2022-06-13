@@ -6,8 +6,8 @@
 <#import "settingsContainer.ftl" as settingsContainerMacros>
 <#import "../settingsMacros.ftl" as settingsMacros>
 
-<#macro updateSettingsContainer settings>
-    <@settingsContainerMacros.settingsContainer 'UpdateSettingsContainer' 'updateSettingsContainer'>
+<#macro updateSettingsContainer importScripts settings>
+    <@settingsContainerMacros.settingsContainer 'UpdateSettingsContainer' 'updateSettingsContainer' importScripts>
         <div class="row">
             <div class="col s12 m12 l8 offset-l2 center-align">
                 <div class="table-container">
@@ -109,4 +109,4 @@
     </@settingsContainerMacros.settingsContainer>
 </#macro>
 
-<@updateSettingsContainer settings/>
+<@updateSettingsContainer importScripts=true settings=settings/>

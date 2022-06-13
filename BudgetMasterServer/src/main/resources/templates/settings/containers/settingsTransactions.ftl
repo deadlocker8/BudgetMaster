@@ -6,8 +6,8 @@
 <#import "settingsContainer.ftl" as settingsContainerMacros>
 <#import "../settingsMacros.ftl" as settingsMacros>
 
-<#macro transactionsSettingsContainer settings>
-    <@settingsContainerMacros.settingsContainer 'TransactionsSettingsContainer' 'transactionsSettingsContainer'>
+<#macro transactionsSettingsContainer importScripts settings>
+    <@settingsContainerMacros.settingsContainer 'TransactionsSettingsContainer' 'transactionsSettingsContainer' importScripts>
         <div class="row">
             <div class="col s12">
                 <div class="table-container">
@@ -36,4 +36,4 @@
     </@settingsContainerMacros.settingsContainer>
 </#macro>
 
-<@transactionsSettingsContainer settings/>
+<@transactionsSettingsContainer importScripts=true settings=settings/>
