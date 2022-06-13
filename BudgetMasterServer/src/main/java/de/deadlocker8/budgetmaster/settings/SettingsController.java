@@ -14,6 +14,7 @@ import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.settings.containers.PersonalizationSettingsContainer;
 import de.deadlocker8.budgetmaster.settings.containers.SecuritySettingsContainer;
 import de.deadlocker8.budgetmaster.settings.containers.TransactionsSettingsContainer;
+import de.deadlocker8.budgetmaster.settings.containers.UpdateSettingsContainer;
 import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
@@ -81,6 +82,7 @@ public class SettingsController extends BaseController
 		public static final String CONTAINER_SECURITY = "settings/containers/settingsSecurity";
 		public static final String CONTAINER_PERSONALIZATION = "settings/containers/settingsPersonalization";
 		public static final String CONTAINER_TRANSACTIONS = "settings/containers/settingsTransactions";
+		public static final String CONTAINER_UPDATE = "settings/containers/settingsUpdate";
 	}
 
 	private static class RequestAttributeNames
@@ -126,8 +128,8 @@ public class SettingsController extends BaseController
 
 	@PostMapping(value = "/save/security")
 	public String saveContainerSecurity(Model model,
-					   @ModelAttribute("SecuritySettingsContainer") SecuritySettingsContainer securitySettingsContainer,
-					   BindingResult bindingResult)
+										@ModelAttribute("SecuritySettingsContainer") SecuritySettingsContainer securitySettingsContainer,
+										BindingResult bindingResult)
 	{
 		Optional<FieldError> passwordErrorOptional = securitySettingsContainer.validate();
 		passwordErrorOptional.ifPresent(bindingResult::addError);
@@ -158,8 +160,8 @@ public class SettingsController extends BaseController
 
 	@PostMapping(value = "/save/personalization")
 	public String saveContainerPersonalization(Model model,
-										@ModelAttribute("PersonalizationSettingsContainer") PersonalizationSettingsContainer personalizationSettingsContainer,
-										BindingResult bindingResult)
+											   @ModelAttribute("PersonalizationSettingsContainer") PersonalizationSettingsContainer personalizationSettingsContainer,
+											   BindingResult bindingResult)
 	{
 		personalizationSettingsContainer.fixBooleans();
 
@@ -197,8 +199,8 @@ public class SettingsController extends BaseController
 
 	@PostMapping(value = "/save/transactions")
 	public String saveContainerTransactions(Model model,
-											   @ModelAttribute("TransactionsSettingsContainer") TransactionsSettingsContainer transactionsSettingsContainer,
-											   BindingResult bindingResult)
+											@ModelAttribute("TransactionsSettingsContainer") TransactionsSettingsContainer transactionsSettingsContainer,
+											BindingResult bindingResult)
 	{
 		transactionsSettingsContainer.fixBooleans();
 
@@ -222,6 +224,35 @@ public class SettingsController extends BaseController
 		model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
 		model.addAttribute(ModelAttributes.SETTINGS, settings);
 		return ReturnValues.CONTAINER_TRANSACTIONS;
+	}
+
+	@PostMapping(value = "/save/update")
+	public String saveContainerUpdate(Model model,
+									  @ModelAttribute("UpdateSettingsContainer") UpdateSettingsContainer updateSettingsContainer,
+									  BindingResult bindingResult)
+	{
+		updateSettingsContainer.fixBooleans();
+
+		final Settings settings = settingsService.getSettings();
+
+		if(bindingResult.hasErrors())
+		{
+			model.addAttribute(ModelAttributes.ERROR, bindingResult);
+
+			final JsonObject toastContent = getToastContent("notification.settings.update.error", NotificationType.ERROR);
+			model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
+			model.addAttribute(ModelAttributes.SETTINGS, settings);
+			return ReturnValues.CONTAINER_UPDATE;
+		}
+
+		// update settings
+		settings.setAutoUpdateCheckEnabled(updateSettingsContainer.getAutoUpdateCheckEnabled());
+		settingsService.updateSettings(settings);
+
+		final JsonObject toastContent = getToastContent("notification.settings.update.saved", NotificationType.SUCCESS);
+		model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
+		model.addAttribute(ModelAttributes.SETTINGS, settings);
+		return ReturnValues.CONTAINER_UPDATE;
 	}
 
 	private JsonObject getToastContent(String localizationKey, NotificationType notificationType)
