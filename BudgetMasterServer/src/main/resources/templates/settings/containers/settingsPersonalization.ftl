@@ -6,7 +6,7 @@
 <#import "settingsContainer.ftl" as settingsContainerMacros>
 <#import "../settingsMacros.ftl" as settingsMacros>
 
-<#macro personalizationSettingsContainer settings>
+<#macro personalizationSettingsContainer settings showReloadWarning>
     <@settingsContainerMacros.settingsContainer 'PersonalizationSettingsContainer' 'personalizationSettingsContainer'>
         <#-- language -->
         <div class="row">
@@ -59,7 +59,20 @@
                 <@header.buttonSubmit name='action' icon='save' localizationKey='save' color='background-green' formaction='/settings/save/personalization'/>
             </div>
         </div>
+
+        <#if showReloadWarning>
+            <div class="row notification-row">
+                <div class="col s12 center-align">
+                    <div class="notification-wrapper">
+                        <div class="notification background-yellow text-black">
+                            <i class="fas fa-exclamation-triangle notification-item"></i>
+                            <span class="notification-item left-align">${locale.getString('settings.personalization.reload.page')}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </#if>
     </@settingsContainerMacros.settingsContainer>
 </#macro>
 
-<@personalizationSettingsContainer settings/>
+<@personalizationSettingsContainer settings=settings showReloadWarning=true/>

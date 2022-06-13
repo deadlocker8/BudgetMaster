@@ -36,8 +36,8 @@
                                         <@settingsSecurityMacros.securitySettingsContainer/>
                                     </@settingsMacros.settingsCollapsibleItem>
 
-                                    <@settingsMacros.settingsCollapsibleItem "personalizationSettingsContainer" "format_paint" locale.getString("settings.appearance")>
-                                        <@settingsPersonalizationMacros.personalizationSettingsContainer settings/>
+                                    <@settingsMacros.settingsCollapsibleItem "personalizationSettingsContainer" "format_paint" locale.getString("settings.personalization")>
+                                        <@settingsPersonalizationMacros.personalizationSettingsContainer settings=settings showReloadWarning=false/>
                                     </@settingsMacros.settingsCollapsibleItem>
 
                                     <@settingsMacros.settingsCollapsibleItem "" "list" "Transactions">
