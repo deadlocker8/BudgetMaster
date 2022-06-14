@@ -33,6 +33,13 @@
                 <@header.buttonSubmit name='action' icon='save' localizationKey='save' color='background-green' formaction='/settings/save/transactions'/>
             </div>
         </div>
+
+        <script>
+            $('input[name="restActivated"]').change(function()
+            {
+                toggleSettingsContainerHeader('transactionsSettingsContainerHeader', false);
+            });
+        </script>
     </@settingsContainerMacros.settingsContainer>
 </#macro>
 

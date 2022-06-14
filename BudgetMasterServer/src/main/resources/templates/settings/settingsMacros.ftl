@@ -301,7 +301,10 @@
 
 <#macro settingsCollapsibleItem id icon title isFontAwesomeIcon=false>
     <li class="z-depth-2">
-        <div class="collapsible-header bold"><#if isFontAwesomeIcon><i class="${icon}"></i><#else><i class="material-icons">${icon}</i></#if>${title}</div>
+        <div class="collapsible-header bold" id="${id}Header">
+            <#if isFontAwesomeIcon><i class="${icon}"></i><#else><i class="material-icons">${icon}</i></#if>${title}
+            <div class="collapsible-header-button hidden"><i class="material-icons text-yellow">warning</i>${locale.getString('settings.warning.unsaved')}</div>
+        </div>
         <div class="collapsible-body">
             <div class="row no-margin-bottom" id="${id}">
                 <#nested>

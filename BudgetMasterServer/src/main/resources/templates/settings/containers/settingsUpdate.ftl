@@ -105,6 +105,11 @@
                     }
                 });
             });
+
+            $('input[name="autoUpdateCheckEnabled"]').change(function()
+            {
+                toggleSettingsContainerHeader('updateSettingsContainerHeader', false);
+            });
         </script>
     </@settingsContainerMacros.settingsContainer>
 </#macro>

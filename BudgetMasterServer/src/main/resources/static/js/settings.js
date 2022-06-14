@@ -118,3 +118,8 @@ function onAutoBackupStrategyChange(newSelectedIndex)
     // index 1 --> git local doesn't have any settings
     $('#settings-auto-backup-git-remote').toggle(newSelectedIndex === 2);  // git remote
 }
+
+function toggleSettingsContainerHeader(id, hide)
+{
+    document.querySelector('#' + id + ' .collapsible-header-button').classList.toggle('hidden', hide);
+}

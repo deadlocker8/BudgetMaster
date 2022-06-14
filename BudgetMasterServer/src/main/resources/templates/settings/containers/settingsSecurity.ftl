@@ -30,6 +30,17 @@
                 <@header.buttonSubmit name='action' icon='save' localizationKey='save' color='background-green' formaction='/settings/save/security'/>
             </div>
         </div>
+
+        <script>
+            $('#settings-password').on('change keydown paste input', function()
+            {
+                toggleSettingsContainerHeader('securitySettingsContainerHeader', false);
+            });
+            $('#settings-password-confirmation').on('change keydown paste input', function()
+            {
+                toggleSettingsContainerHeader('securitySettingsContainerHeader', false);
+            });
+        </script>
     </@settingsContainerMacros.settingsContainer>
 </#macro>
 

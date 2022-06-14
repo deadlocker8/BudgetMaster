@@ -72,6 +72,38 @@
                 </div>
             </div>
         </#if>
+
+        <script>
+            $('#settings-language').change(function()
+            {
+                toggleSettingsContainerHeader('personalizationSettingsContainerHeader', false);
+            });
+
+            $('#settings-currency').on('change keydown paste input', function()
+            {
+                toggleSettingsContainerHeader('personalizationSettingsContainerHeader', false);
+            });
+
+            $('input[name="useDarkTheme"]').change(function()
+            {
+                toggleSettingsContainerHeader('personalizationSettingsContainerHeader', false);
+            });
+
+            $('input[name="showCategoriesAsCircles"]').change(function()
+            {
+                toggleSettingsContainerHeader('personalizationSettingsContainerHeader', false);
+            });
+
+            $('#settings-password-confirmation').on('change keydown paste input', function()
+            {
+                toggleSettingsContainerHeader('personalizationSettingsContainerHeader', false);
+            });
+
+            $('#settings-search-items-per-page').change(function()
+            {
+                toggleSettingsContainerHeader('personalizationSettingsContainerHeader', false);
+            });
+        </script>
     </@settingsContainerMacros.settingsContainer>
 </#macro>
 

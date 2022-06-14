@@ -20,6 +20,8 @@ function initSettingsContainer(formName, containerId)
                 $('.tooltipped').tooltip();
                 $('select').formSelect();
 
+                toggleSettingsContainerHeader(containerId + 'Header', true);
+
                 let toastContent = document.querySelector('#' + containerId + ' .securityContainerToastContent').innerHTML.trim();
                 if(toastContent)
                 {

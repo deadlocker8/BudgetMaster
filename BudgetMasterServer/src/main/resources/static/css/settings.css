@@ -31,3 +31,23 @@
 #verificationCode:hover {
     cursor: pointer;
 }
+
+.collapsible-header-button {
+    position: absolute;
+    right: 1rem;
+    top: 1.05rem;
+    display: flex;
+    align-items: center;
+    color: var(--color-yellow);
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.collapsible-header-button i {
+    margin-right: 0.3rem;
+    font-size: 1.3rem;
+}
+
+.collapsible-header-button.hidden {
+    display: none;
+}
