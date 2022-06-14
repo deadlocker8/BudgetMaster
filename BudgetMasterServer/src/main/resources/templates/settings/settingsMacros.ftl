@@ -182,7 +182,7 @@
 
         <div class="input-field col s12 m12 l8 offset-l2">
             <i class="material-icons prefix">schedule</i>
-            <select id="settings-backup-auto-time" name="autoBackupTime" <@validation.validation "autoBackupTime"/>>
+            <select id="settings-backup-auto-time" name="autoBackupTimeType" <@validation.validation "autoBackupTime"/>>
                 <#list autoBackupTimes as time>
                     <#if settings.getAutoBackupTime() == time>
                         <option selected value="${time}">${time.getLocalized()}</option>
@@ -291,12 +291,12 @@
             <a target="_blank" href="${locale.getString("settings.backup.auto.strategy.git.remote.help.url")}" class="waves-effect waves-light btn btn-flat text-default"><i class="material-icons left">help_outline</i>${locale.getString("settings.backup.auto.strategy.git.remote.help")}</a>
         </div>
     </div>
-    <div class="row">
-        <div class="col s12 m12 l8 offset-l2 center-align">
-            <input id="runBackupInput" type="hidden" name="runBackup" value="0">
-            <@header.buttonSubmit id='settings-backup-run-now' name='action' icon='cloud_download' localizationKey='settings.backup.auto.run.now'/>
-        </div>
-    </div>
+<#--    <div class="row">-->
+<#--        <div class="col s12 m12 l8 offset-l2 center-align">-->
+<#--            <input id="runBackupInput" type="hidden" name="runBackup" value="0">-->
+<#--            <@header.buttonSubmit id='settings-backup-run-now' name='action' icon='cloud_download' localizationKey='settings.backup.auto.run.now' formaction='/settings/save/backup'/>-->
+<#--        </div>-->
+<#--    </div>-->
 </#macro>
 
 <#macro settingsCollapsibleItem id icon title isFontAwesomeIcon=false>

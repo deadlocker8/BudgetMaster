@@ -17,6 +17,7 @@
         <#import "containers/settingsSecurity.ftl" as settingsSecurityMacros>
         <#import "containers/settingsPersonalization.ftl" as settingsPersonalizationMacros>
         <#import "containers/settingsTransactions.ftl" as settingsTransactionsMacros>
+        <#import "containers/settingsBackup.ftl" as settingsBackupMacros>
         <#import "containers/settingsUpdate.ftl" as settingsUpdateMacros>
         <#import "containers/settingsMisc.ftl" as settingsMiscMacros>
 
@@ -50,40 +51,8 @@
                                         <@settingsTransactionsMacros.transactionsSettingsContainer importScripts=false settings=settings/>
                                     </@settingsMacros.settingsCollapsibleItem>
 
-                                    <@settingsMacros.settingsCollapsibleItem "" "cloud_download" locale.getString("settings.backup")>
-                                        <div class="row">
-                                            <div class="col s12">
-                                                <div class="table-container">
-                                                    <div class="table-cell">
-                                                        <div class="switch-cell-margin">${locale.getString("settings.backupReminder")}</div>
-                                                        <div class="switch-cell-margin">${locale.getString("settings.backup.auto")}</div>
-                                                    </div>
-                                                    <div class="table-cell table-cell-spacer"></div>
-                                                    <div class="table-cell">
-                                                        <@settingsMacros.switch "backupReminder" "backupReminderActivated" settings.getBackupReminderActivated()/>
-                                                        <@settingsMacros.switch "backup.auto" "autoBackupActivated" settings.isAutoBackupActive()/>
-                                                    </div>
-                                                    <div class="table-cell table-cell-spacer"></div>
-                                                    <div class="table-cell">
-                                                        <div class="switch-cell-margin">
-                                                            <a class="btn btn-flat tooltipped text-default" data-position="bottom" data-tooltip="${locale.getString("settings.backupReminder.description")}"><i class="material-icons">help_outline</i></a>
-                                                        </div>
-                                                        <div class="switch-cell-margin">
-                                                            <a class="btn btn-flat tooltipped text-default" data-position="bottom" data-tooltip="${locale.getString("settings.backup.auto.description")}"><i class="material-icons">help_outline</i></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                         <#-- auto backup -->
-                                        <@settingsMacros.autoBackup/>
-
-                                        <div class="row">
-                                            <div class="col s12 center-align">
-                                                <@header.buttonSubmit name='action' icon='save' localizationKey='save' color='background-green'/>
-                                            </div>
-                                        </div>
+                                    <@settingsMacros.settingsCollapsibleItem "backupSettingsContainer" "cloud_download" locale.getString("settings.backup")>
+                                        <@settingsBackupMacros.backupSettingsContainer importScripts=false settings=settings/>
                                     </@settingsMacros.settingsCollapsibleItem>
 
                                     <@settingsMacros.settingsCollapsibleItem "updateSettingsContainer" "system_update" locale.getString("settings.updates")>
@@ -144,8 +113,9 @@
             initSettingsContainer('SecuritySettingsContainer', 'securitySettingsContainer');
             initSettingsContainer('PersonalizationSettingsContainer', 'personalizationSettingsContainer');
             initSettingsContainer('TransactionsSettingsContainer', 'transactionsSettingsContainer');
-            initSettingsContainer('UpdateSettingsContainer', 'updateSettingsContainer');
+            initSettingsContainer('BackupSettingsContainer', 'backupSettingsContainer');
             initSettingsContainer('MiscSettingsContainer', 'miscSettingsContainer');
+            initSettingsContainer('UpdateSettingsContainer', 'updateSettingsContainer');
         </script>
     </@header.body>
 </html>

@@ -12,10 +12,7 @@ import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
 import de.deadlocker8.budgetmaster.hints.HintService;
 import de.deadlocker8.budgetmaster.services.ImportResultItem;
 import de.deadlocker8.budgetmaster.services.ImportService;
-import de.deadlocker8.budgetmaster.settings.containers.PersonalizationSettingsContainer;
-import de.deadlocker8.budgetmaster.settings.containers.SecuritySettingsContainer;
-import de.deadlocker8.budgetmaster.settings.containers.TransactionsSettingsContainer;
-import de.deadlocker8.budgetmaster.settings.containers.UpdateSettingsContainer;
+import de.deadlocker8.budgetmaster.settings.containers.*;
 import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
@@ -83,6 +80,7 @@ public class SettingsController extends BaseController
 		public static final String CONTAINER_SECURITY = "settings/containers/settingsSecurity";
 		public static final String CONTAINER_PERSONALIZATION = "settings/containers/settingsPersonalization";
 		public static final String CONTAINER_TRANSACTIONS = "settings/containers/settingsTransactions";
+		public static final String CONTAINER_BACKUP = "settings/containers/settingsBackup";
 		public static final String CONTAINER_UPDATE = "settings/containers/settingsUpdate";
 		public static final String CONTAINER_MISC = "settings/containers/settingsMisc";
 	}
@@ -95,7 +93,7 @@ public class SettingsController extends BaseController
 		public static final String IMPORT_CHARTS = "importCharts";
 	}
 
-	private static final String PASSWORD_PLACEHOLDER = "•••••";
+	public static final String PASSWORD_PLACEHOLDER = "•••••";
 	private final SettingsService settingsService;
 	private final DatabaseService databaseService;
 	private final CategoryService categoryService;
@@ -230,6 +228,63 @@ public class SettingsController extends BaseController
 		return ReturnValues.CONTAINER_TRANSACTIONS;
 	}
 
+	@PostMapping(value = "/save/backup")
+	public String saveContainerBackup( Model model,
+									  @ModelAttribute("BackupSettingsContainer") BackupSettingsContainer backupSettingsContainer,
+									  @RequestParam(value = "runBackup", required = false) Boolean runBackup,
+									  BindingResult bindingResult)
+	{
+		BackupSettingsContainerValidator backupSettingsContainerValidator = new BackupSettingsContainerValidator();
+		backupSettingsContainerValidator.validate(backupSettingsContainer, bindingResult);
+
+		final Settings settings = settingsService.getSettings();
+		backupSettingsContainer.fillMissingFieldsWithDefaults(settings);
+
+		final Settings previousSettings = settingsService.getSettings();
+
+		// update settings here to hand them over to ftl to allow validation to show in case of binding errors
+		settings.setBackupReminderActivated(backupSettingsContainer.getBackupReminderActivated());
+		settings.setAutoBackupStrategy(backupSettingsContainer.getAutoBackupStrategy());
+		settings.setAutoBackupDays(backupSettingsContainer.getAutoBackupDays());
+		settings.setAutoBackupTime(backupSettingsContainer.getAutoBackupTime());
+		settings.setAutoBackupFilesToKeep(backupSettingsContainer.getAutoBackupFilesToKeep());
+		settings.setAutoBackupGitUrl(backupSettingsContainer.getAutoBackupGitUrl());
+		settings.setAutoBackupGitBranchName(backupSettingsContainer.getAutoBackupGitBranchName());
+		settings.setAutoBackupGitUserName(backupSettingsContainer.getAutoBackupGitUserName());
+		settings.setAutoBackupGitToken(backupSettingsContainer.getAutoBackupGitToken());
+
+		if(bindingResult.hasErrors())
+		{
+			model.addAttribute(ModelAttributes.ERROR, bindingResult);
+
+			final JsonObject toastContent = getToastContent("notification.settings.backup.error", NotificationType.ERROR);
+			model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
+			prepareModelBackup(model, settings);
+			return ReturnValues.CONTAINER_BACKUP;
+		}
+
+		settingsService.updateSettings(settings);
+
+		updateBackupTask(previousSettings, settings);
+
+		// run backup now if requested
+		JsonObject toastContent = runBackupIfRequested(runBackup);
+
+		model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
+		prepareModelBackup(model, settings);
+		return ReturnValues.CONTAINER_BACKUP;
+	}
+
+	private void prepareModelBackup(Model model, Settings settings)
+	{
+		model.addAttribute(ModelAttributes.SETTINGS, settings);
+		model.addAttribute(ModelAttributes.AUTO_BACKUP_TIME, AutoBackupTime.values());
+
+		final Optional<LocalDateTime> nextBackupTimeOptional = backupService.getNextRun();
+		nextBackupTimeOptional.ifPresent(date -> model.addAttribute(ModelAttributes.NEXT_BACKUP_TIME, date));
+		model.addAttribute(ModelAttributes.AUTO_BACKUP_STATUS, backupService.getBackupStatus());
+	}
+
 	@PostMapping(value = "/save/update")
 	public String saveContainerUpdate(Model model,
 									  @ModelAttribute("UpdateSettingsContainer") UpdateSettingsContainer updateSettingsContainer,
@@ -282,97 +337,28 @@ public class SettingsController extends BaseController
 		return MessageFormat.format("{0} {1}", notificationType.getBackgroundColor(), notificationType.getTextColor());
 	}
 
-	@PostMapping(value = "/save")
-	public String post(WebRequest request, Model model,
-					   @ModelAttribute("Settings") Settings settings, BindingResult bindingResult,
-					   @RequestParam(value = "autoBackupStrategyType", required = false) String autoBackupStrategyType,
-					   @RequestParam(value = "runBackup", required = false) Boolean runBackup)
+	private JsonObject runBackupIfRequested(Boolean runBackup)
 	{
-		if(autoBackupStrategyType == null)
+		if(runBackup == null || !runBackup)
 		{
-			settings.setAutoBackupStrategy(AutoBackupStrategy.NONE);
+			return getToastContent("notification.settings.backup.saved", NotificationType.SUCCESS);
+		}
+
+		backupService.runNow();
+
+		BackupStatus backupStatus = backupService.getBackupStatus();
+		if(backupStatus == BackupStatus.OK)
+		{
+			return getToastContent("notification.settings.backup.run.success", NotificationType.SUCCESS);
 		}
 		else
 		{
-			settings.setAutoBackupStrategy(AutoBackupStrategy.fromName(autoBackupStrategyType));
-		}
-
-		SettingsValidator settingsValidator = new SettingsValidator();
-		settingsValidator.validate(settings, bindingResult);
-
-		fillMissingFieldsWithDefaults(settings);
-
-		if(bindingResult.hasErrors())
-		{
-			model.addAttribute(ModelAttributes.ERROR, bindingResult);
-			prepareBasicModel(model, settings);
-			return ReturnValues.ALL_ENTITIES;
-		}
-
-		updateSettings(settings);
-
-		runBackup(request, runBackup);
-
-		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.settings.saved"), NotificationType.SUCCESS));
-		return ReturnValues.REDIRECT_ALL_ENTITIES;
-	}
-
-	private void runBackup(WebRequest request, Boolean runBackup)
-	{
-		if(runBackup == null)
-		{
-			return;
-		}
-
-		if(runBackup)
-		{
-			backupService.runNow();
-
-			BackupStatus backupStatus = backupService.getBackupStatus();
-			if(backupStatus == BackupStatus.OK)
-			{
-				WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.settings.backup.run.success"), NotificationType.SUCCESS));
-			}
-			else
-			{
-				WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.settings.backup.run.error"), NotificationType.ERROR));
-			}
+			return getToastContent("notification.settings.backup.run.error", NotificationType.ERROR);
 		}
 	}
 
-	private void fillMissingFieldsWithDefaults(Settings settings)
+	public void updateBackupTask(Settings previousSettings, Settings settings)
 	{
-		if(settings.getBackupReminderActivated() == null)
-		{
-			settings.setBackupReminderActivated(false);
-		}
-
-		if(settings.getAutoBackupStrategy() == null)
-		{
-			settings.setAutoBackupStrategy(AutoBackupStrategy.NONE);
-		}
-
-		if(settings.getAutoBackupGitToken().equals(PASSWORD_PLACEHOLDER))
-		{
-			settings.setAutoBackupGitToken(settingsService.getSettings().getAutoBackupGitToken());
-		}
-
-		if(settings.getAutoBackupStrategy() == AutoBackupStrategy.NONE)
-		{
-			final Settings defaultSettings = Settings.getDefault();
-			settings.setAutoBackupDays(defaultSettings.getAutoBackupDays());
-			settings.setAutoBackupTime(defaultSettings.getAutoBackupTime());
-			settings.setAutoBackupFilesToKeep(defaultSettings.getAutoBackupFilesToKeep());
-			settings.setAutoBackupGitUserName(defaultSettings.getAutoBackupGitUserName());
-			settings.setAutoBackupGitToken(defaultSettings.getAutoBackupGitToken());
-		}
-	}
-
-	public void updateSettings(Settings settings)
-	{
-		final Settings previousSettings = settingsService.getSettings();
-		settingsService.updateSettings(settings);
-
 		backupService.stopBackupCron();
 		if(settings.getAutoBackupStrategy() != AutoBackupStrategy.NONE)
 		{
@@ -570,10 +556,6 @@ public class SettingsController extends BaseController
 	{
 		model.addAttribute(ModelAttributes.SETTINGS, settings);
 		model.addAttribute(ModelAttributes.SEARCH_RESULTS_PER_PAGE, SEARCH_RESULTS_PER_PAGE_OPTIONS);
-		model.addAttribute(ModelAttributes.AUTO_BACKUP_TIME, AutoBackupTime.values());
-
-		final Optional<LocalDateTime> nextBackupTimeOptional = backupService.getNextRun();
-		nextBackupTimeOptional.ifPresent(date -> model.addAttribute(ModelAttributes.NEXT_BACKUP_TIME, date));
-		model.addAttribute(ModelAttributes.AUTO_BACKUP_STATUS, backupService.getBackupStatus());
+		prepareModelBackup(model, settings);
 	}
 }
