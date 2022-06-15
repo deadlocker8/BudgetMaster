@@ -304,7 +304,13 @@
     <li class="z-depth-2">
         <div class="collapsible-header bold" id="${id}Header">
             <#if isFontAwesomeIcon><i class="${icon}"></i><#else><i class="material-icons">${icon}</i></#if>${title}
-            <div class="collapsible-header-button hidden"><i class="material-icons text-yellow">warning</i>${locale.getString('settings.warning.unsaved')}</div>
+            <#if helpers.getSettings().isUseDarkTheme()>
+                <#assign unsavedChangesTextColor='text-yellow'/>
+            <#else>
+                <#assign unsavedChangesTextColor='text-red-light'/>
+            </#if>
+
+            <div class="collapsible-header-button hidden ${unsavedChangesTextColor}"><i class="material-icons">warning</i>${locale.getString('settings.warning.unsaved')}</div>
         </div>
         <div class="collapsible-body">
             <div class="row no-margin-bottom" id="${id}">
