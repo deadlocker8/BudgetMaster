@@ -9,7 +9,7 @@ import org.springframework.validation.ValidationUtils;
 
 import static de.deadlocker8.budgetmaster.settings.SettingsController.PASSWORD_PLACEHOLDER;
 
-public final class BackupSettingsContainer
+public final class BackupSettingsContainer implements SettingsContainer
 {
 	private Boolean backupReminderActivated;
 
@@ -88,24 +88,29 @@ public final class BackupSettingsContainer
 		return autoBackupGitToken;
 	}
 
-	public void validate(Object obj, Errors errors)
+	@Override
+	public void validate(Errors errors)
 	{
-		final Settings settings = (Settings) obj;
-
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "autoBackupDays", Strings.WARNING_EMPTY_NUMBER);
 
-		if(settings.getAutoBackupStrategy() == AutoBackupStrategy.LOCAL)
+		if(getAutoBackupStrategy() == AutoBackupStrategy.LOCAL)
 		{
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "autoBackupFilesToKeep", Strings.WARNING_EMPTY_NUMBER_ZERO_ALLOWED);
 		}
 
-		if(settings.getAutoBackupStrategy() == AutoBackupStrategy.GIT_REMOTE)
+		if(getAutoBackupStrategy() == AutoBackupStrategy.GIT_REMOTE)
 		{
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "autoBackupGitUrl", Strings.WARNING_EMPTY_GIT_URL);
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "autoBackupGitBranchName", Strings.WARNING_EMPTY_GIT_BRANCH_NAME);
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "autoBackupGitUserName", Strings.WARNING_EMPTY_GIT_USER_NAME);
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "autoBackupGitToken", Strings.WARNING_EMPTY_GIT_TOKEN);
 		}
+	}
+
+	@Override
+	public void fixBooleans()
+	{
+		// nothing to do
 	}
 
 	public void fillMissingFieldsWithDefaults(Settings settings)

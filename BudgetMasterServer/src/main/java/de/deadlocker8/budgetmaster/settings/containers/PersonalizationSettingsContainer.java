@@ -1,8 +1,9 @@
 package de.deadlocker8.budgetmaster.settings.containers;
 
 import de.deadlocker8.budgetmaster.utils.LanguageType;
+import org.springframework.validation.Errors;
 
-public final class PersonalizationSettingsContainer
+public final class PersonalizationSettingsContainer implements SettingsContainer
 {
 	private final String language;
 	private final String currency;
@@ -25,11 +26,6 @@ public final class PersonalizationSettingsContainer
 		return LanguageType.fromName(language);
 	}
 
-	public String language()
-	{
-		return language;
-	}
-
 	public String currency()
 	{
 		return currency;
@@ -50,6 +46,13 @@ public final class PersonalizationSettingsContainer
 		return searchItemsPerPage;
 	}
 
+	@Override
+	public void validate(Errors errors)
+	{
+		// nothing to do
+	}
+
+	@Override
 	public void fixBooleans()
 	{
 		if(useDarkTheme == null)

@@ -1,6 +1,8 @@
 package de.deadlocker8.budgetmaster.settings.containers;
 
-public final class UpdateSettingsContainer
+import org.springframework.validation.Errors;
+
+public final class UpdateSettingsContainer implements SettingsContainer
 {
 	private Boolean autoUpdateCheckEnabled;
 
@@ -14,6 +16,13 @@ public final class UpdateSettingsContainer
 		return autoUpdateCheckEnabled;
 	}
 
+	@Override
+	public void validate(Errors errors)
+	{
+		// nothing to do
+	}
+
+	@Override
 	public void fixBooleans()
 	{
 		if(autoUpdateCheckEnabled == null)

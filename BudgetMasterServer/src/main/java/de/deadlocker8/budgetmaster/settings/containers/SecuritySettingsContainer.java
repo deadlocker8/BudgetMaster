@@ -1,33 +1,39 @@
 package de.deadlocker8.budgetmaster.settings.containers;
 
 import de.deadlocker8.budgetmaster.utils.Strings;
-import org.springframework.validation.FieldError;
+import org.springframework.validation.Errors;
 
-import java.util.Optional;
-
-public record SecuritySettingsContainer(String password, String passwordConfirmation)
+public record SecuritySettingsContainer(String password, String passwordConfirmation) implements SettingsContainer
 {
-	public Optional<FieldError> validate()
+	@Override
+	public void validate(Errors errors)
 	{
 		if(password == null || password.equals(""))
 		{
-			return Optional.of(new FieldError("Settings", "password", password, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_EMPTY}, null, Strings.WARNING_SETTINGS_PASSWORD_EMPTY));
+			errors.rejectValue("password", Strings.WARNING_SETTINGS_PASSWORD_EMPTY, Strings.WARNING_SETTINGS_PASSWORD_EMPTY);
+			return;
 		}
 		else if(password.length() < 3)
 		{
-			return Optional.of(new FieldError("Settings", "password", password, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_LENGTH}, null, Strings.WARNING_SETTINGS_PASSWORD_LENGTH));
+			errors.rejectValue("password", Strings.WARNING_SETTINGS_PASSWORD_LENGTH, Strings.WARNING_SETTINGS_PASSWORD_LENGTH);
+			return;
 		}
 
 		if(passwordConfirmation == null || passwordConfirmation.equals(""))
 		{
-			return Optional.of(new FieldError("Settings", "passwordConfirmation", passwordConfirmation, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_EMPTY}, null, Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_EMPTY));
+			errors.rejectValue("passwordConfirmation", Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_EMPTY, Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_EMPTY);
+			return;
 		}
 
 		if(!password.equals(passwordConfirmation))
 		{
-			return Optional.of(new FieldError("Settings", "passwordConfirmation", passwordConfirmation, false, new String[]{Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_WRONG}, null, Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_WRONG));
+			errors.rejectValue("passwordConfirmation", Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_WRONG, Strings.WARNING_SETTINGS_PASSWORD_CONFIRMATION_WRONG);
 		}
+	}
 
-		return Optional.empty();
+	@Override
+	public void fixBooleans()
+	{
+		// nothing to do
 	}
 }

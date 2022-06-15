@@ -246,10 +246,10 @@
     <div id="settings-auto-backup-local">
         <div class="input-field col s12 m12 l8 offset-l2">
             <i class="material-icons prefix">auto_delete</i>
-            <input id="settings-backup-auto-files-to-keep" type="text" <@validation.validation "autoBackupFilesToKeep"/> value="<#if settings.isAutoBackupActive()??>${settings.getAutoBackupFilesToKeep()}</#if>">
+            <input id="settings-backup-auto-files-to-keep" type="text" <@validation.validation "autoBackupFilesToKeep"/> value="<#if settings.isAutoBackupActive()?? &&settings.getAutoBackupFilesToKeep()?? >${settings.getAutoBackupFilesToKeep()}</#if>">
             <label for="settings-backup-auto-files-to-keep">${locale.getString("settings.backup.auto.files.to.keep")}</label>
         </div>
-        <input type="hidden" id="hidden-settings-backup-auto-files-to-keep" name="autoBackupFilesToKeep" value="<#if settings.isAutoBackupActive()??>${settings.getAutoBackupFilesToKeep()}</#if>">
+        <input type="hidden" id="hidden-settings-backup-auto-files-to-keep" name="autoBackupFilesToKeep" value="<#if settings.isAutoBackupActive()?? && settings.getAutoBackupFilesToKeep()??>${settings.getAutoBackupFilesToKeep()}</#if>">
     </div>
 </#macro>
 

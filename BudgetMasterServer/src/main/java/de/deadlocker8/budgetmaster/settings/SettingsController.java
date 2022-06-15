@@ -133,8 +133,7 @@ public class SettingsController extends BaseController
 										@ModelAttribute("SecuritySettingsContainer") SecuritySettingsContainer securitySettingsContainer,
 										BindingResult bindingResult)
 	{
-		Optional<FieldError> passwordErrorOptional = securitySettingsContainer.validate();
-		passwordErrorOptional.ifPresent(bindingResult::addError);
+		securitySettingsContainer.validate(bindingResult);
 
 		if(bindingResult.hasErrors())
 		{
@@ -234,8 +233,7 @@ public class SettingsController extends BaseController
 									  @RequestParam(value = "runBackup", required = false) Boolean runBackup,
 									  BindingResult bindingResult)
 	{
-		BackupSettingsContainerValidator backupSettingsContainerValidator = new BackupSettingsContainerValidator();
-		backupSettingsContainerValidator.validate(backupSettingsContainer, bindingResult);
+		backupSettingsContainer.validate(bindingResult);
 
 		final Settings settings = settingsService.getSettings();
 		backupSettingsContainer.fillMissingFieldsWithDefaults(settings);
