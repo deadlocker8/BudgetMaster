@@ -71,7 +71,7 @@ public class BudgetMasterServerMain extends SpringBootServletInitializer impleme
 		ProgramArgs.setArgs(Arrays.asList(args));
 		LOGGER.debug(MessageFormat.format("Starting with ProgramArgs: {0}", ProgramArgs.getArgs()));
 
-		Path applicationSupportFolder = getApplicationSupportFolder();
+		Path applicationSupportFolder = getApplicationSupportFolder(false);
 		PathUtils.createDirectoriesIfNotExists(applicationSupportFolder);
 
 		Path settingsPath = applicationSupportFolder.resolve("settings.properties");
@@ -92,7 +92,7 @@ public class BudgetMasterServerMain extends SpringBootServletInitializer impleme
 		return applicationSupportFolder;
 	}
 
-	public static Path getApplicationSupportFolder()
+	public static Path getApplicationSupportFolder(boolean suppressLog)
 	{
 		if(System.getProperties().containsKey("testProfile"))
 		{
@@ -119,27 +119,50 @@ public class BudgetMasterServerMain extends SpringBootServletInitializer impleme
 			}
 		}
 
-		savePath = determineFolder(savePath);
-		LOGGER.info(MessageFormat.format("Used save path: {0}", savePath));
+		savePath = determineFolder(savePath, suppressLog);
+		if(!suppressLog)
+		{
+			LOGGER.info(MessageFormat.format("Used save path: {0}", savePath));
+		}
 		return savePath;
 	}
 
-	private static Path determineFolder(Path baseFolder)
+	private static Path determineFolder(Path baseFolder, boolean suppressLog)
 	{
 		switch(RunMode.currentRunMode)
 		{
-			case NORMAL:
-				LOGGER.info("Starting in NORMAL Mode");
+			case NORMAL ->
+			{
+				if(!suppressLog)
+				{
+					LOGGER.info("Starting in NORMAL Mode");
+				}
 				return baseFolder;
-			case DEBUG:
-				LOGGER.info("Starting in DEBUG Mode");
+			}
+			case DEBUG ->
+			{
+				if(!suppressLog)
+				{
+					LOGGER.info("Starting in DEBUG Mode");
+				}
 				return baseFolder.resolve("debug");
-			case TEST:
-				LOGGER.info("Starting in TEST Mode");
+			}
+			case TEST ->
+			{
+				if(!suppressLog)
+				{
+					LOGGER.info("Starting in TEST Mode");
+				}
 				return baseFolder.resolve("test");
-			default:
-				LOGGER.warn("Mode not supported! Starting in NORMAL Mode");
+			}
+			default ->
+			{
+				if(!suppressLog)
+				{
+					LOGGER.warn("Mode not supported! Starting in NORMAL Mode");
+				}
 				return baseFolder;
+			}
 		}
 	}
 

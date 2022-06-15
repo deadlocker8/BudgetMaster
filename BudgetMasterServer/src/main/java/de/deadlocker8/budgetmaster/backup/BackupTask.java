@@ -21,7 +21,7 @@ public abstract class BackupTask implements Runnable
 		this.databaseService = databaseService;
 		this.settingsService = settingsService;
 
-		final Path applicationSupportFolder = BudgetMasterServerMain.getApplicationSupportFolder();
+		final Path applicationSupportFolder = BudgetMasterServerMain.getApplicationSupportFolder(true);
 		this.backupFolder = applicationSupportFolder.resolve("backups");
 
 		this.backupStatus = BackupStatus.UNKNOWN;

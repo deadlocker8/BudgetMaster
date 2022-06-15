@@ -16,7 +16,7 @@ public class PropertiesConfiguration
 	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer()
 	{
 		PropertySourcesPlaceholderConfigurer properties = new PropertySourcesPlaceholderConfigurer();
-		Path settingsPath = BudgetMasterServerMain.getApplicationSupportFolder().resolve("settings.properties");
+		Path settingsPath = BudgetMasterServerMain.getApplicationSupportFolder(true).resolve("settings.properties");
 		properties.setLocation(new FileSystemResource(settingsPath.toString()));
 		properties.setIgnoreResourceNotFound(false);
 

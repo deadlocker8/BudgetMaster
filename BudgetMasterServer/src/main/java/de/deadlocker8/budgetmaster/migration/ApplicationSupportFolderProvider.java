@@ -12,6 +12,6 @@ public class ApplicationSupportFolderProvider
 	@Bean("applicationSupportFolder")
 	public Path applicationSupportFolder()
 	{
-		return BudgetMasterServerMain.getApplicationSupportFolder();
+		return BudgetMasterServerMain.getApplicationSupportFolder(true);
 	}
 }
