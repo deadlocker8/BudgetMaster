@@ -95,14 +95,14 @@
                         let isValidConnection = parsedData['isValidConnection']
                         M.toast({
                             html: parsedData['localizedMessage'],
-                            classes: isValidConnection ? 'green': 'red'
+                            classes: isValidConnection ? 'background-green': 'background-red'
                         });
                     },
                     error: function(data)
                     {
                         M.toast({
                             html: 'Error: ' + data,
-                            classes: 'red'
+                            classes: 'background-red'
                         });
                     }
                 });

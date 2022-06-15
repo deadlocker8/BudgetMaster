@@ -291,6 +291,7 @@
             <a target="_blank" href="${locale.getString("settings.backup.auto.strategy.git.remote.help.url")}" class="waves-effect waves-light btn btn-flat text-default"><i class="material-icons left">help_outline</i>${locale.getString("settings.backup.auto.strategy.git.remote.help")}</a>
         </div>
     </div>
+<#--    TODO -->
 <#--    <div class="row">-->
 <#--        <div class="col s12 m12 l8 offset-l2 center-align">-->
 <#--            <input id="runBackupInput" type="hidden" name="runBackup" value="0">-->

@@ -26,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
@@ -77,11 +76,6 @@ public class SettingsController extends BaseController
 		public static final String REDIRECT_IMPORT_DATABASE_STEP_1 = "redirect:/settings/database/import/step1";
 		public static final String IMPORT_DATABASE_STEP_1 = "settings/importStepOne";
 		public static final String IMPORT_DATABASE_RESULT = "settings/importResult";
-		public static final String CONTAINER_SECURITY = "settings/containers/settingsSecurity";
-		public static final String CONTAINER_PERSONALIZATION = "settings/containers/settingsPersonalization";
-		public static final String CONTAINER_TRANSACTIONS = "settings/containers/settingsTransactions";
-		public static final String CONTAINER_BACKUP = "settings/containers/settingsBackup";
-		public static final String CONTAINER_UPDATE = "settings/containers/settingsUpdate";
 		public static final String CONTAINER_MISC = "settings/containers/settingsMisc";
 	}
 
@@ -133,31 +127,7 @@ public class SettingsController extends BaseController
 										@ModelAttribute("SecuritySettingsContainer") SecuritySettingsContainer securitySettingsContainer,
 										BindingResult bindingResult)
 	{
-		securitySettingsContainer.fixBooleans();
-		securitySettingsContainer.validate(bindingResult);
-
-		if(bindingResult.hasErrors())
-		{
-			model.addAttribute(ModelAttributes.ERROR, bindingResult);
-
-			final JsonObject toastContent = getToastContent("notification.settings.security.error", NotificationType.ERROR);
-			model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
-			return ReturnValues.CONTAINER_SECURITY;
-		}
-
-		final String password = securitySettingsContainer.password();
-		if(password.equals(PASSWORD_PLACEHOLDER))
-		{
-			final JsonObject toastContent = getToastContent("notification.settings.security.warning", NotificationType.WARNING);
-			model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
-			return ReturnValues.CONTAINER_SECURITY;
-		}
-
-		settingsService.savePassword(password);
-
-		final JsonObject toastContent = getToastContent("notification.settings.security.saved", NotificationType.SUCCESS);
-		model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
-		return ReturnValues.CONTAINER_SECURITY;
+		return saveContainer(model, securitySettingsContainer, bindingResult).templatePath();
 	}
 
 	@PostMapping(value = "/save/personalization")
@@ -165,39 +135,16 @@ public class SettingsController extends BaseController
 											   @ModelAttribute("PersonalizationSettingsContainer") PersonalizationSettingsContainer personalizationSettingsContainer,
 											   BindingResult bindingResult)
 	{
-		personalizationSettingsContainer.fixBooleans();
-		personalizationSettingsContainer.validate(bindingResult);
+		final SettingsContainerResult result = saveContainer(model, personalizationSettingsContainer, bindingResult);
 
-		final Settings settings = settingsService.getSettings();
-
-		if(bindingResult.hasErrors())
+		if(result.isSuccess())
 		{
-			model.addAttribute(ModelAttributes.ERROR, bindingResult);
-
-			final JsonObject toastContent = getToastContent("notification.settings.personalization.error", NotificationType.ERROR);
-			model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
-			model.addAttribute(ModelAttributes.SETTINGS, settings);
-			model.addAttribute(ModelAttributes.SEARCH_RESULTS_PER_PAGE, SEARCH_RESULTS_PER_PAGE_OPTIONS);
-			return ReturnValues.CONTAINER_PERSONALIZATION;
+			// reload localization
+			Localization.load();
+			categoryService.localizeDefaultCategories();
 		}
 
-		// update settings
-		settings.setLanguage(personalizationSettingsContainer.getLanguageType());
-		settings.setCurrency(personalizationSettingsContainer.currency());
-		settings.setUseDarkTheme(personalizationSettingsContainer.useDarkTheme());
-		settings.setShowCategoriesAsCircles(personalizationSettingsContainer.showCategoriesAsCircles());
-		settings.setSearchItemsPerPage(personalizationSettingsContainer.searchItemsPerPage());
-		settingsService.updateSettings(settings);
-
-		// reload localization
-		Localization.load();
-		categoryService.localizeDefaultCategories();
-
-		final JsonObject toastContent = getToastContent("notification.settings.personalization.saved", NotificationType.SUCCESS);
-		model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
-		model.addAttribute(ModelAttributes.SETTINGS, settings);
-		model.addAttribute(ModelAttributes.SEARCH_RESULTS_PER_PAGE, SEARCH_RESULTS_PER_PAGE_OPTIONS);
-		return ReturnValues.CONTAINER_PERSONALIZATION;
+		return result.templatePath();
 	}
 
 	@PostMapping(value = "/save/transactions")
@@ -205,86 +152,28 @@ public class SettingsController extends BaseController
 											@ModelAttribute("TransactionsSettingsContainer") TransactionsSettingsContainer transactionsSettingsContainer,
 											BindingResult bindingResult)
 	{
-		transactionsSettingsContainer.fixBooleans();
-		transactionsSettingsContainer.validate(bindingResult);
-
-		final Settings settings = settingsService.getSettings();
-
-		if(bindingResult.hasErrors())
-		{
-			model.addAttribute(ModelAttributes.ERROR, bindingResult);
-
-			final JsonObject toastContent = getToastContent("notification.settings.transactions.error", NotificationType.ERROR);
-			model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
-			model.addAttribute(ModelAttributes.SETTINGS, settings);
-			return ReturnValues.CONTAINER_TRANSACTIONS;
-		}
-
-		// update settings
-		settings.setRestActivated(transactionsSettingsContainer.getRestActivated());
-		settingsService.updateSettings(settings);
-
-		final JsonObject toastContent = getToastContent("notification.settings.transactions.saved", NotificationType.SUCCESS);
-		model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
-		model.addAttribute(ModelAttributes.SETTINGS, settings);
-		return ReturnValues.CONTAINER_TRANSACTIONS;
+		return saveContainer(model, transactionsSettingsContainer, bindingResult).templatePath();
 	}
 
 	@PostMapping(value = "/save/backup")
-	public String saveContainerBackup( Model model,
+	public String saveContainerBackup(Model model,
 									  @ModelAttribute("BackupSettingsContainer") BackupSettingsContainer backupSettingsContainer,
 									  @RequestParam(value = "runBackup", required = false) Boolean runBackup,
 									  BindingResult bindingResult)
 	{
-		backupSettingsContainer.fixBooleans();
-		backupSettingsContainer.validate(bindingResult);
+		final SettingsContainerResult result = saveContainer(model, backupSettingsContainer, bindingResult);
 
-		final Settings settings = settingsService.getSettings();
-		backupSettingsContainer.fillMissingFieldsWithDefaults(settings);
-
-		final Settings previousSettings = settingsService.getSettings();
-
-		// update settings here to hand them over to ftl to allow validation to show in case of binding errors
-		settings.setBackupReminderActivated(backupSettingsContainer.getBackupReminderActivated());
-		settings.setAutoBackupStrategy(backupSettingsContainer.getAutoBackupStrategy());
-		settings.setAutoBackupDays(backupSettingsContainer.getAutoBackupDays());
-		settings.setAutoBackupTime(backupSettingsContainer.getAutoBackupTime());
-		settings.setAutoBackupFilesToKeep(backupSettingsContainer.getAutoBackupFilesToKeep());
-		settings.setAutoBackupGitUrl(backupSettingsContainer.getAutoBackupGitUrl());
-		settings.setAutoBackupGitBranchName(backupSettingsContainer.getAutoBackupGitBranchName());
-		settings.setAutoBackupGitUserName(backupSettingsContainer.getAutoBackupGitUserName());
-		settings.setAutoBackupGitToken(backupSettingsContainer.getAutoBackupGitToken());
-
-		if(bindingResult.hasErrors())
+		if(result.isSuccess())
 		{
-			model.addAttribute(ModelAttributes.ERROR, bindingResult);
+			updateBackupTask(result.previousSettings(), settingsService.getSettings());
 
-			final JsonObject toastContent = getToastContent("notification.settings.backup.error", NotificationType.ERROR);
+			// run backup now if requested
+			JsonObject toastContent = runBackupIfRequested(runBackup);
 			model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
-			prepareModelBackup(model, settings);
-			return ReturnValues.CONTAINER_BACKUP;
+			prepareBasicModel(model, settingsService.getSettings());
 		}
 
-		settingsService.updateSettings(settings);
-
-		updateBackupTask(previousSettings, settings);
-
-		// run backup now if requested
-		JsonObject toastContent = runBackupIfRequested(runBackup);
-
-		model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
-		prepareModelBackup(model, settings);
-		return ReturnValues.CONTAINER_BACKUP;
-	}
-
-	private void prepareModelBackup(Model model, Settings settings)
-	{
-		model.addAttribute(ModelAttributes.SETTINGS, settings);
-		model.addAttribute(ModelAttributes.AUTO_BACKUP_TIME, AutoBackupTime.values());
-
-		final Optional<LocalDateTime> nextBackupTimeOptional = backupService.getNextRun();
-		nextBackupTimeOptional.ifPresent(date -> model.addAttribute(ModelAttributes.NEXT_BACKUP_TIME, date));
-		model.addAttribute(ModelAttributes.AUTO_BACKUP_STATUS, backupService.getBackupStatus());
+		return result.templatePath();
 	}
 
 	@PostMapping(value = "/save/update")
@@ -292,29 +181,7 @@ public class SettingsController extends BaseController
 									  @ModelAttribute("UpdateSettingsContainer") UpdateSettingsContainer updateSettingsContainer,
 									  BindingResult bindingResult)
 	{
-		updateSettingsContainer.fixBooleans();
-		updateSettingsContainer.validate(bindingResult);
-
-		final Settings settings = settingsService.getSettings();
-
-		if(bindingResult.hasErrors())
-		{
-			model.addAttribute(ModelAttributes.ERROR, bindingResult);
-
-			final JsonObject toastContent = getToastContent("notification.settings.update.error", NotificationType.ERROR);
-			model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
-			model.addAttribute(ModelAttributes.SETTINGS, settings);
-			return ReturnValues.CONTAINER_UPDATE;
-		}
-
-		// update settings
-		settings.setAutoUpdateCheckEnabled(updateSettingsContainer.getAutoUpdateCheckEnabled());
-		settingsService.updateSettings(settings);
-
-		final JsonObject toastContent = getToastContent("notification.settings.update.saved", NotificationType.SUCCESS);
-		model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
-		model.addAttribute(ModelAttributes.SETTINGS, settings);
-		return ReturnValues.CONTAINER_UPDATE;
+		return saveContainer(model, updateSettingsContainer, bindingResult).templatePath();
 	}
 
 	@PostMapping(value = "/save/misc")
@@ -327,7 +194,38 @@ public class SettingsController extends BaseController
 		return ReturnValues.CONTAINER_MISC;
 	}
 
-	private JsonObject getToastContent(String localizationKey, NotificationType notificationType)
+	private SettingsContainerResult saveContainer(Model model, SettingsContainer settingsContainer, BindingResult bindingResult)
+	{
+		// fix and validate
+		settingsContainer.fixBooleans();
+		settingsContainer.validate(bindingResult);
+
+		// update settings
+		final Settings previousSettings = settingsService.getSettings();
+		Settings updatedSettings = settingsContainer.updateSettings(settingsService);
+
+		// cancel on error
+		if(bindingResult.hasErrors())
+		{
+			model.addAttribute(ModelAttributes.ERROR, bindingResult);
+
+			final JsonObject toastContent = getToastContent(settingsContainer.getErrorLocalizationKey(), NotificationType.ERROR);
+			model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
+			prepareBasicModel(model, settingsService.getSettings());
+			return new SettingsContainerResult(false, settingsContainer.getTemplatePath(), previousSettings);
+		}
+
+		// persist changes
+		settingsContainer.persistChanges(settingsService, previousSettings, updatedSettings);
+
+		// return success message
+		final JsonObject toastContent = getToastContent(settingsContainer.getSuccessLocalizationKey(), NotificationType.SUCCESS);
+		model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
+		prepareBasicModel(model, settingsService.getSettings());
+		return new SettingsContainerResult(true, settingsContainer.getTemplatePath(), previousSettings);
+	}
+
+	public static JsonObject getToastContent(String localizationKey, NotificationType notificationType)
 	{
 		final JsonObject toastContent = new JsonObject();
 		toastContent.addProperty("localizedMessage", Localization.getString(localizationKey));
@@ -335,7 +233,7 @@ public class SettingsController extends BaseController
 		return toastContent;
 	}
 
-	private String getToastClasses(NotificationType notificationType)
+	private static String getToastClasses(NotificationType notificationType)
 	{
 		return MessageFormat.format("{0} {1}", notificationType.getBackgroundColor(), notificationType.getTextColor());
 	}
@@ -559,6 +457,10 @@ public class SettingsController extends BaseController
 	{
 		model.addAttribute(ModelAttributes.SETTINGS, settings);
 		model.addAttribute(ModelAttributes.SEARCH_RESULTS_PER_PAGE, SEARCH_RESULTS_PER_PAGE_OPTIONS);
-		prepareModelBackup(model, settings);
+		model.addAttribute(ModelAttributes.AUTO_BACKUP_TIME, AutoBackupTime.values());
+
+		final Optional<LocalDateTime> nextBackupTimeOptional = backupService.getNextRun();
+		nextBackupTimeOptional.ifPresent(date -> model.addAttribute(ModelAttributes.NEXT_BACKUP_TIME, date));
+		model.addAttribute(ModelAttributes.AUTO_BACKUP_STATUS, backupService.getBackupStatus());
 	}
 }

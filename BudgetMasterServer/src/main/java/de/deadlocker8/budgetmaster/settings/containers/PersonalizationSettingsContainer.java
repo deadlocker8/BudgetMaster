@@ -1,5 +1,7 @@
 package de.deadlocker8.budgetmaster.settings.containers;
 
+import de.deadlocker8.budgetmaster.settings.Settings;
+import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import org.springframework.validation.Errors;
 
@@ -21,29 +23,9 @@ public final class PersonalizationSettingsContainer implements SettingsContainer
 		this.searchItemsPerPage = searchItemsPerPage;
 	}
 
-	public LanguageType getLanguageType()
+	private LanguageType getLanguageType()
 	{
 		return LanguageType.fromName(language);
-	}
-
-	public String currency()
-	{
-		return currency;
-	}
-
-	public Boolean useDarkTheme()
-	{
-		return useDarkTheme;
-	}
-
-	public Boolean showCategoriesAsCircles()
-	{
-		return showCategoriesAsCircles;
-	}
-
-	public Integer searchItemsPerPage()
-	{
-		return searchItemsPerPage;
 	}
 
 	@Override
@@ -64,5 +46,43 @@ public final class PersonalizationSettingsContainer implements SettingsContainer
 		{
 			showCategoriesAsCircles = false;
 		}
+	}
+
+	@Override
+	public String getErrorLocalizationKey()
+	{
+		return "notification.settings.personalization.error";
+	}
+
+	@Override
+	public String getSuccessLocalizationKey()
+	{
+		return "notification.settings.personalization.saved";
+	}
+
+	@Override
+	public String getTemplatePath()
+	{
+		return "settings/containers/settingsPersonalization";
+	}
+
+	@Override
+	public Settings updateSettings(SettingsService settingsService)
+	{
+		final Settings settings = settingsService.getSettings();
+
+		settings.setLanguage(getLanguageType());
+		settings.setCurrency(currency);
+		settings.setUseDarkTheme(useDarkTheme);
+		settings.setShowCategoriesAsCircles(showCategoriesAsCircles);
+		settings.setSearchItemsPerPage(searchItemsPerPage);
+
+		return settings;
+	}
+
+	@Override
+	public void persistChanges(SettingsService settingsService, Settings previousSettings, Settings settings)
+	{
+		settingsService.updateSettings(settings);
 	}
 }

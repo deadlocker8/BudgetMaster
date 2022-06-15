@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmaster.settings.containers;
 import de.deadlocker8.budgetmaster.backup.AutoBackupStrategy;
 import de.deadlocker8.budgetmaster.backup.AutoBackupTime;
 import de.deadlocker8.budgetmaster.settings.Settings;
+import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -41,23 +42,6 @@ public final class BackupSettingsContainer implements SettingsContainer
 		return backupReminderActivated;
 	}
 
-	public AutoBackupStrategy getAutoBackupStrategy()
-	{
-		if(autoBackupStrategyType == null)
-		{
-			return AutoBackupStrategy.NONE;
-		}
-		else
-		{
-			return AutoBackupStrategy.fromName(autoBackupStrategyType);
-		}
-	}
-
-	public AutoBackupTime getAutoBackupTime()
-	{
-		return AutoBackupTime.valueOf(autoBackupTimeType);
-	}
-
 	public Integer getAutoBackupDays()
 	{
 		return autoBackupDays;
@@ -88,6 +72,24 @@ public final class BackupSettingsContainer implements SettingsContainer
 		return autoBackupGitToken;
 	}
 
+	private AutoBackupStrategy getAutoBackupStrategy()
+	{
+		if(autoBackupStrategyType == null)
+		{
+			return AutoBackupStrategy.NONE;
+		}
+		else
+		{
+			return AutoBackupStrategy.fromName(autoBackupStrategyType);
+		}
+	}
+
+	private AutoBackupTime getAutoBackupTime()
+	{
+		return AutoBackupTime.valueOf(autoBackupTimeType);
+	}
+
+
 	@Override
 	public void validate(Errors errors)
 	{
@@ -113,7 +115,25 @@ public final class BackupSettingsContainer implements SettingsContainer
 		// nothing to do
 	}
 
-	public void fillMissingFieldsWithDefaults(Settings settings)
+	@Override
+	public String getErrorLocalizationKey()
+	{
+		return "notification.settings.backup.error";
+	}
+
+	@Override
+	public String getSuccessLocalizationKey()
+	{
+		return "notification.settings.backup.saved";
+	}
+
+	@Override
+	public String getTemplatePath()
+	{
+		return "settings/containers/settingsBackup";
+	}
+
+	private void fillMissingFieldsWithDefaults(Settings settings)
 	{
 		if(backupReminderActivated == null)
 		{
@@ -139,5 +159,31 @@ public final class BackupSettingsContainer implements SettingsContainer
 			autoBackupGitUserName = defaultSettings.getAutoBackupGitUserName();
 			autoBackupGitToken = defaultSettings.getAutoBackupGitToken();
 		}
+	}
+
+	@Override
+	public Settings updateSettings(SettingsService settingsService)
+	{
+		final Settings settings = settingsService.getSettings();
+
+		fillMissingFieldsWithDefaults(settings);
+
+		settings.setBackupReminderActivated(backupReminderActivated);
+		settings.setAutoBackupStrategy(getAutoBackupStrategy());
+		settings.setAutoBackupDays(autoBackupDays);
+		settings.setAutoBackupTime(getAutoBackupTime());
+		settings.setAutoBackupFilesToKeep(autoBackupFilesToKeep);
+		settings.setAutoBackupGitUrl(autoBackupGitUrl);
+		settings.setAutoBackupGitBranchName(autoBackupGitBranchName);
+		settings.setAutoBackupGitUserName(autoBackupGitUserName);
+		settings.setAutoBackupGitToken(autoBackupGitToken);
+
+		return settings;
+	}
+
+	@Override
+	public void persistChanges(SettingsService settingsService, Settings previousSettings, Settings settings)
+	{
+		settingsService.updateSettings(settings);
 	}
 }
