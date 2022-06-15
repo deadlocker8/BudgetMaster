@@ -133,6 +133,7 @@ public class SettingsController extends BaseController
 										@ModelAttribute("SecuritySettingsContainer") SecuritySettingsContainer securitySettingsContainer,
 										BindingResult bindingResult)
 	{
+		securitySettingsContainer.fixBooleans();
 		securitySettingsContainer.validate(bindingResult);
 
 		if(bindingResult.hasErrors())
@@ -165,6 +166,7 @@ public class SettingsController extends BaseController
 											   BindingResult bindingResult)
 	{
 		personalizationSettingsContainer.fixBooleans();
+		personalizationSettingsContainer.validate(bindingResult);
 
 		final Settings settings = settingsService.getSettings();
 
@@ -204,6 +206,7 @@ public class SettingsController extends BaseController
 											BindingResult bindingResult)
 	{
 		transactionsSettingsContainer.fixBooleans();
+		transactionsSettingsContainer.validate(bindingResult);
 
 		final Settings settings = settingsService.getSettings();
 
@@ -233,6 +236,7 @@ public class SettingsController extends BaseController
 									  @RequestParam(value = "runBackup", required = false) Boolean runBackup,
 									  BindingResult bindingResult)
 	{
+		backupSettingsContainer.fixBooleans();
 		backupSettingsContainer.validate(bindingResult);
 
 		final Settings settings = settingsService.getSettings();
@@ -289,6 +293,7 @@ public class SettingsController extends BaseController
 									  BindingResult bindingResult)
 	{
 		updateSettingsContainer.fixBooleans();
+		updateSettingsContainer.validate(bindingResult);
 
 		final Settings settings = settingsService.getSettings();
 
