@@ -6,7 +6,7 @@
 <#import "settingsContainer.ftl" as settingsContainerMacros>
 
 <#macro securitySettingsContainer importScripts>
-    <@settingsContainerMacros.settingsContainer 'SecuritySettingsContainer' 'securitySettingsContainer' importScripts>
+    <@settingsContainerMacros.settingsContainer 'SecuritySettingsContainer' 'securitySettingsContainer' importScripts '/settings/save/security'>
         <#-- password -->
         <div class="row">
             <div class="input-field col s12 m12 l8 offset-l2">
@@ -27,7 +27,7 @@
 
         <div class="row">
             <div class="col s12 center-align">
-                <@header.buttonSubmit name='action' icon='save' localizationKey='save' color='background-green' formaction='/settings/save/security'/>
+                <@header.buttonSubmit name='action' icon='save' localizationKey='save' color='background-green'/>
             </div>
         </div>
 

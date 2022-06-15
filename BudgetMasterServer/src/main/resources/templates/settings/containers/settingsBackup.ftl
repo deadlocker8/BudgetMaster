@@ -7,7 +7,7 @@
 <#import "../settingsMacros.ftl" as settingsMacros>
 
 <#macro backupSettingsContainer importScripts settings>
-    <@settingsContainerMacros.settingsContainer 'BackupSettingsContainer' 'backupSettingsContainer' importScripts true>
+    <@settingsContainerMacros.settingsContainer 'BackupSettingsContainer' 'backupSettingsContainer' importScripts '/settings/save/backup' true>
         <div class="row">
             <div class="col s12">
                 <div class="table-container">
@@ -38,7 +38,7 @@
 
         <div class="row">
             <div class="col s12 center-align">
-                <@header.buttonSubmit name='action' icon='save' localizationKey='save' color='background-green' formaction='/settings/save/backup'/>
+                <@header.buttonSubmit name='action' icon='save' localizationKey='save' color='background-green'/>
             </div>
         </div>
 

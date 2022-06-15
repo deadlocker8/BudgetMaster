@@ -6,7 +6,7 @@ function initSettingsContainer(formName, containerId)
 
         $.ajax({
             type: 'POST',
-            url: form.action.formAction,
+            url: $(this).attr('action'),
             data: new FormData(form),
             processData: false,
             contentType: false,

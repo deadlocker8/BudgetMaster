@@ -7,7 +7,7 @@
 <#import "../settingsMacros.ftl" as settingsMacros>
 
 <#macro transactionsSettingsContainer importScripts settings>
-    <@settingsContainerMacros.settingsContainer 'TransactionsSettingsContainer' 'transactionsSettingsContainer' importScripts>
+    <@settingsContainerMacros.settingsContainer 'TransactionsSettingsContainer' 'transactionsSettingsContainer' importScripts '/settings/save/transactions'>
         <div class="row">
             <div class="col s12">
                 <div class="table-container">
@@ -30,7 +30,7 @@
 
         <div class="row">
             <div class="col s12 center-align">
-                <@header.buttonSubmit name='action' icon='save' localizationKey='save' color='background-green' formaction='/settings/save/transactions'/>
+                <@header.buttonSubmit name='action' icon='save' localizationKey='save' color='background-green'/>
             </div>
         </div>
 

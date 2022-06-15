@@ -1,7 +1,7 @@
 <#import "/spring.ftl" as s>
 
-<#macro settingsContainer formName containerId importScripts validateForm=false>
-    <form name="${formName}" method="post" <#if validateForm>onsubmit="return validateForm()"</#if>>
+<#macro settingsContainer formName containerId importScripts actionUrl validateForm=false>
+    <form name="${formName}" method="post" <#if validateForm>onsubmit="return validateForm()"</#if> action="<@s.url actionUrl/>">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id="token"/>
 
         <#nested>
