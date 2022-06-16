@@ -51,3 +51,21 @@
 .collapsible-header-button.hidden {
     display: none;
 }
+
+.settings-preview-image {
+    width: 80%;
+    margin-top: 1rem;
+    border: 3px solid black;
+    opacity: 0.3;
+    padding: 1rem;
+    background-color: var(--color-grey);
+}
+
+.settings-preview-image-selected {
+    opacity: 1.0 !important;
+}
+
+.settings-preview-image:hover {
+    opacity: 1.0 !important;
+    cursor: pointer;
+}

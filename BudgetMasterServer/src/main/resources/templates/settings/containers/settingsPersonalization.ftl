@@ -34,6 +34,25 @@
             </div>
         </div>
 
+        <!-- theme -->
+        <div class="row center-align">
+            <div class="col col s12 m12 l8 offset-l2">
+                <div class="headline-small">${locale.getString("settings.darkTheme")}</div>
+            </div>
+
+            <div class="col col s6 m6 l4 offset-l2">
+                <div>${locale.getString("settings.darkTheme.deactivated")}</div>
+                <img class="responsive-img settings-preview-image <#if !settings.isUseDarkTheme()>settings-preview-image-selected</#if>" src="<@s.url '/images/settings/themeLight.png'/>" data-use-dark-theme="false"/>
+            </div>
+
+            <div class="col col s6 m6 l4">
+                <div>${locale.getString("settings.darkTheme.activated")}</div>
+                <img class="responsive-img settings-preview-image <#if settings.isUseDarkTheme()>settings-preview-image-selected</#if>" src="<@s.url '/images/settings/themeDark.png'/>" data-use-dark-theme="true"/>
+            </div>
+
+            <input type="hidden" id="useDarkTheme" name="useDarkTheme" value="${settings.isUseDarkTheme()?c}"/>
+        </div>
+
         <#-- dark theme and category style -->
         <@settingsMacros.switches settings/>
 
@@ -74,17 +93,27 @@
         </#if>
 
         <script>
+
+            $('.settings-preview-image').click(function()
+            {
+                for(let item of document.getElementsByClassName('settings-preview-image'))
+                {
+                    item.classList.toggle('settings-preview-image-selected', false);
+                }
+
+                this.classList.toggle('settings-preview-image-selected', true);
+
+                document.getElementById('useDarkTheme').value = this.dataset.useDarkTheme;
+                toggleSettingsContainerHeader('personalizationSettingsContainerHeader', false);
+            });
+
+            // show unsaved changes warning
             $('#settings-language').change(function()
             {
                 toggleSettingsContainerHeader('personalizationSettingsContainerHeader', false);
             });
 
             $('#settings-currency').on('change keydown paste input', function()
-            {
-                toggleSettingsContainerHeader('personalizationSettingsContainerHeader', false);
-            });
-
-            $('input[name="useDarkTheme"]').change(function()
             {
                 toggleSettingsContainerHeader('personalizationSettingsContainerHeader', false);
             });
