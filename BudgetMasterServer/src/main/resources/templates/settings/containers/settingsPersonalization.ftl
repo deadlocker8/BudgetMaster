@@ -36,10 +36,6 @@
 
         <!-- theme -->
         <div class="row center-align">
-            <div class="col col s12 m12 l8 offset-l2">
-                <div class="headline-small">${locale.getString("settings.darkTheme")}</div>
-            </div>
-
             <div class="col col s6 m6 l4 offset-l2">
                 <div>${locale.getString("settings.darkTheme.deactivated")}</div>
                 <img class="responsive-img settings-preview-image <#if !settings.isUseDarkTheme()>settings-preview-image-selected</#if>" src="<@s.url '/images/settings/themeLight.png'/>" data-use-dark-theme="false"/>
