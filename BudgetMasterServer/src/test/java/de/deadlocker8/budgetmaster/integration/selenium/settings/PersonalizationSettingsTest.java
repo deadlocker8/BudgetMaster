@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.integration.selenium;
+package de.deadlocker8.budgetmaster.integration.selenium.settings;
 
 import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
