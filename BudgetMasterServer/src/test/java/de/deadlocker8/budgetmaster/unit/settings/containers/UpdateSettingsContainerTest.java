@@ -2,7 +2,7 @@ package de.deadlocker8.budgetmaster.unit.settings.containers;
 
 import de.deadlocker8.budgetmaster.settings.Settings;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
-import de.deadlocker8.budgetmaster.settings.containers.TransactionsSettingsContainer;
+import de.deadlocker8.budgetmaster.settings.containers.UpdateSettingsContainer;
 import de.deadlocker8.budgetmaster.unit.helpers.LocalizedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @LocalizedTest
-class TransactionSettingsContainerTest
+class UpdateSettingsContainerTest
 {
 	@Mock
 	private SettingsService settingsService;
@@ -25,7 +25,7 @@ class TransactionSettingsContainerTest
 	@Test
 	void test_validate_valid()
 	{
-		final TransactionsSettingsContainer container = new TransactionsSettingsContainer(true);
+		final UpdateSettingsContainer container = new UpdateSettingsContainer(false);
 
 		final Errors errors = new BeanPropertyBindingResult(container, "container");
 		container.validate(errors);
@@ -37,12 +37,12 @@ class TransactionSettingsContainerTest
 	@Test
 	void test_fixBooleans()
 	{
-		final TransactionsSettingsContainer container = new TransactionsSettingsContainer(null);
+		final UpdateSettingsContainer container = new UpdateSettingsContainer(null);
 
 		container.fixBooleans();
 
 		assertThat(container)
-				.hasFieldOrPropertyWithValue("restActivated", false);
+				.hasFieldOrPropertyWithValue("autoUpdateCheckEnabled", false);
 	}
 
 	@Test
@@ -52,10 +52,10 @@ class TransactionSettingsContainerTest
 
 		Mockito.when(settingsService.getSettings()).thenReturn(defaultSettings);
 
-		final TransactionsSettingsContainer container = new TransactionsSettingsContainer(false);
+		final UpdateSettingsContainer container = new UpdateSettingsContainer(false);
 		final Settings updatedSettings = container.updateSettings(settingsService);
 
 		assertThat(updatedSettings)
-				.hasFieldOrPropertyWithValue("restActivated", false);
+				.hasFieldOrPropertyWithValue("autoUpdateCheckEnabled", false);
 	}
 }
