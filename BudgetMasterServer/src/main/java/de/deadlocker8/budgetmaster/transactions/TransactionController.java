@@ -57,6 +57,7 @@ public class TransactionController extends BaseController
 		public static final String REDIRECT_NEW_TRANSACTION = "redirect:/transactions/newTransaction/normal";
 		public static final String NEW_TRANSACTION = "transactions/newTransactionNormal";
 		public static final String CHANGE_TYPE = "transactions/changeTypeModal";
+		public static final String KEYWORD_WARNING = "transactions/transactionNameKeywordWarningModal";
 	}
 
 	private static final String CONTINUE = "continue";
@@ -404,5 +405,11 @@ public class TransactionController extends BaseController
 			return ReturnValues.NEW_TRANSFER;
 		}
 		return ReturnValues.NEW_TRANSACTION;
+	}
+
+	@GetMapping("/keywordWarningModal")
+	public String keywordWarningModal()
+	{
+		return ReturnValues.KEYWORD_WARNING;
 	}
 }
