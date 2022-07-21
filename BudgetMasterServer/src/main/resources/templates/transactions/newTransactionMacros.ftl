@@ -304,6 +304,8 @@
 </#macro>
 
 <#macro buttons cancelURL includeContinueButton>
+    <div id="keywordWarningModalUrl" class="hidden" data-url="<@s.url '/transactions/keywordWarningModal'/>"></div>
+
     <br>
     <hr>
     <br>

@@ -261,7 +261,9 @@ $(document).ready(function()
 
     $('.button-request-delete-transaction').click(function()
     {
-        fetchAndShowModalContent(this.dataset.url, '#deleteModalContainerOnDemand', '#modalConfirmDelete', function(){});
+        fetchAndShowModalContent(this.dataset.url, '#deleteModalContainerOnDemand', '#modalConfirmDelete', function()
+        {
+        });
     });
 
     $('#button-transaction-add-repeating-option').click(function()
@@ -379,8 +381,19 @@ function convertDateWithoutDots(dateString)
     return dateString.substr(0, 2) + '.' + dateString.substr(2, 2) + '.' + dateString.substr(4, yearLength);
 }
 
-function validateForm(allowEmptyAmount = false)
+function validateForm(allowEmptyAmount = false, skipKeywordCheck = false)
 {
+    // name (keyword check)
+    if(!skipKeywordCheck)
+    {
+        let keyword = checkNameForKeywords();
+        if(keyword !== null)
+        {
+            openKeywordWarningModal(keyword);
+            return false;
+        }
+    }
+
     // amount
     let isValidAmount = validateAmount($('#transaction-amount').val(), allowEmptyAmount);
     if(!isValidAmount)
@@ -463,4 +476,56 @@ function validateForm(allowEmptyAmount = false)
     }
 
     return true;
+}
+
+function checkNameForKeywords()
+{
+    // TODO implement real check
+    // TODO only return keyword for transaction name not template
+    return 'income';
+}
+
+function openKeywordWarningModal(keyword)
+{
+    let url = document.getElementById('keywordWarningModalUrl').dataset.url;
+
+    $.ajax({
+        type: 'GET',
+        url: url,
+        data: {},
+        success: function(data)
+        {
+            let modalID = '#modalTransactionNameKeywordWarning';
+
+            $('#transactionNameKeywordWarningModalContainer').html(data);
+            $(modalID).modal();
+            $(modalID).modal('open');
+
+            document.getElementById('keyword').innerHTML = keyword;
+
+            $('#keyword-warning-button-ignore').click(function()
+            {
+                $(modalID).modal('close');
+
+                // rebind onsubmit function to skip keyword check once
+                document.getElementsByName('NewTransaction')[0].onsubmit = function()
+                {
+                    return validateForm(false, true);
+                };
+
+                // TODO differentiate between user clicked button "save" or "save and continue" before
+                document.getElementById('button-save-transaction').click();
+
+                // reset onsubmit function in case user edits transaction name too after fixing validation errors
+                document.getElementsByName('NewTransaction')[0].onsubmit = function()
+                {
+                    return validateForm(false, false);
+                };
+            });
+        },
+        error: function(data)
+        {
+            console.error(data);
+        }
+    });
 }
