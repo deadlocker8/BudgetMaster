@@ -89,6 +89,8 @@
                         <div id="saveAsTemplateModalContainer"></div>
 
                         <div id="changeTransactionTypeModalContainer"></div>
+
+                        <div id="transactionNameKeywordWarningModalContainer"></div>
                     </div>
                 </@header.content>
             </div>
