@@ -58,7 +58,7 @@ public class TransactionNameKeywordService implements Resettable
 
 		return keywords.stream()
 				.map(TransactionNameKeyword::getValue)
-				.filter(value -> textLowerCase.contains(value.toLowerCase(Locale.ROOT)))
+				.filter(value -> textLowerCase.contains(value.toLowerCase()))
 				.toList();
 	}
 }

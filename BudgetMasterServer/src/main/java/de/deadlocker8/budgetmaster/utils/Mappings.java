@@ -25,6 +25,7 @@ public final class Mappings
 	public static final String TRANSACTIONS = "/transactions";
 	public static final String TAGS = "/tags";
 	public static final String HINTS = "/hints";
+	public static final String KEYWORDS = "/keywords";
 
 	public static final String MIGRATION = "/migration";
 }

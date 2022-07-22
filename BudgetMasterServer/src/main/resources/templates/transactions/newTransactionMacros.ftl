@@ -304,7 +304,7 @@
 </#macro>
 
 <#macro buttons cancelURL includeContinueButton>
-    <div id="keywordCheckUrl" class="hidden" data-url="<@s.url '/transactions/keywordCheck'/>"></div>
+    <div id="keywordCheckUrl" class="hidden" data-url="<@s.url '/keywords/keywordCheck'/>"></div>
 
     <br>
     <hr>

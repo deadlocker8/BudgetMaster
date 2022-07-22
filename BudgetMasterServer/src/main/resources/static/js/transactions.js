@@ -480,17 +480,18 @@ function validateForm(allowEmptyAmount = false, skipKeywordCheck = false)
 function checkNameForKeywords()
 {
     let url = document.getElementById('keywordCheckUrl').dataset.url;
+    let transactionName = document.getElementById('transaction-name').value;
 
     let result;
 
     $.ajax({
         async: false,
         type: 'GET',
-        url: url,
+        url: url + '?transactionName=' + transactionName,
         data: {},
-        success: function(data)
+        success: function(data, textStatus, request)
         {
-            if(data)
+            if(request.status === 200)
             {
                 // name contains at least one keyword
                 result = true;

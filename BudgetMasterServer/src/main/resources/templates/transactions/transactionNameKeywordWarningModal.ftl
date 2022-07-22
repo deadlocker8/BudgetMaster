@@ -9,7 +9,7 @@
         <div class="row">
             <div class="sol s12">
                 ${locale.getString("transaction.warning.name.keyword.description.part1")}
-                <span id="keyword">${keyword}</span>
+                <span id="keyword">${transactionNameKeyword}</span>
                 ${locale.getString("transaction.warning.name.keyword.description.part2")}
             </div>
         </div>

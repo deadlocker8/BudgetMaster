@@ -411,13 +411,4 @@ public class TransactionController extends BaseController
 		}
 		return ReturnValues.NEW_TRANSACTION;
 	}
-
-	@GetMapping("/keywordCheck")
-	public String keywordWarningModal(Model model)
-	{
-		// TODO implement real check
-		// TODO only return keyword for transaction name not template
-		model.addAttribute(ModelAttributes.KEYWORD, "income");
-		return ReturnValues.KEYWORD_WARNING;
-	}
 }
