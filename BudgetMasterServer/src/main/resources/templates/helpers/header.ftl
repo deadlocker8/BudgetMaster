@@ -120,8 +120,8 @@
     </div>
 </#macro>
 
-<#macro buttonLink url icon localizationKey id="" color="background-blue" classes="" isDataUrl=false noUrl=false disabled=false>
-    <a <#if !isDataUrl && !noUrl>href="<@s.url url/>"</#if>
+<#macro buttonLink url icon localizationKey id="" color="background-blue" classes="" isDataUrl=false noUrl=false disabled=false target="">
+    <a <#if target??>target="${target}"</#if> <#if !isDataUrl && !noUrl>href="<@s.url url/>"</#if>
        id="${id}"
        class="waves-effect waves-light btn ${color} ${classes}"
         <#if isDataUrl>data-url="${url}"</#if>
