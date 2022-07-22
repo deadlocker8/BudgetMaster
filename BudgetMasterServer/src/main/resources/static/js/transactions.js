@@ -389,7 +389,6 @@ function validateForm(allowEmptyAmount = false, skipKeywordCheck = false)
         let nameContainsKeywords = checkNameForKeywords();
         if(nameContainsKeywords)
         {
-            console.log("nameContainsKeywords");
             return false;
         }
     }
