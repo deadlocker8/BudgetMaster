@@ -386,10 +386,10 @@ function validateForm(allowEmptyAmount = false, skipKeywordCheck = false)
     // name (keyword check)
     if(!skipKeywordCheck)
     {
-        let keyword = checkNameForKeywords();
-        if(keyword !== null)
+        let nameContainsKeywords = checkNameForKeywords();
+        if(nameContainsKeywords)
         {
-            openKeywordWarningModal(keyword);
+            console.log("nameContainsKeywords");
             return false;
         }
     }
@@ -480,52 +480,63 @@ function validateForm(allowEmptyAmount = false, skipKeywordCheck = false)
 
 function checkNameForKeywords()
 {
-    // TODO implement real check
-    // TODO only return keyword for transaction name not template
-    return 'income';
-}
+    let url = document.getElementById('keywordCheckUrl').dataset.url;
 
-function openKeywordWarningModal(keyword)
-{
-    let url = document.getElementById('keywordWarningModalUrl').dataset.url;
+    let result;
 
     $.ajax({
+        async: false,
         type: 'GET',
         url: url,
         data: {},
         success: function(data)
         {
-            let modalID = '#modalTransactionNameKeywordWarning';
-
-            $('#transactionNameKeywordWarningModalContainer').html(data);
-            $(modalID).modal();
-            $(modalID).modal('open');
-
-            document.getElementById('keyword').innerHTML = keyword;
-
-            $('#keyword-warning-button-ignore').click(function()
+            if(data)
             {
-                $(modalID).modal('close');
-
-                // rebind onsubmit function to skip keyword check once
-                document.getElementsByName('NewTransaction')[0].onsubmit = function()
-                {
-                    return validateForm(false, true);
-                };
-
-                // TODO differentiate between user clicked button "save" or "save and continue" before
-                document.getElementById('button-save-transaction').click();
-
-                // reset onsubmit function in case user edits transaction name too after fixing validation errors
-                document.getElementsByName('NewTransaction')[0].onsubmit = function()
-                {
-                    return validateForm(false, false);
-                };
-            });
+                // name contains at least one keyword
+                result = true;
+                openKeywordWarningModal(data);
+            }
+            else
+            {
+                result = false;
+            }
         },
         error: function(data)
         {
             console.error(data);
         }
+    });
+
+    return result;
+}
+
+function openKeywordWarningModal(htmlData)
+{
+    let modalID = '#modalTransactionNameKeywordWarning';
+
+    $('#transactionNameKeywordWarningModalContainer').html(htmlData);
+    $(modalID).modal();
+    $(modalID).modal('open');
+
+    // button ignore
+    $('#keyword-warning-button-ignore').click(function()
+    {
+        $(modalID).modal('close');
+
+        // rebind onsubmit function to skip keyword check once
+        document.getElementsByName('NewTransaction')[0].onsubmit = function()
+        {
+            return validateForm(false, true);
+        };
+
+        // TODO differentiate between user clicked button "save" or "save and continue" before
+        document.getElementById('button-save-transaction').click();
+
+        // reset onsubmit function in case user edits transaction name too after fixing validation errors
+        document.getElementsByName('NewTransaction')[0].onsubmit = function()
+        {
+            return validateForm(false, false);
+        };
     });
 }

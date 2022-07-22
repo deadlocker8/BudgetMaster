@@ -46,6 +46,11 @@ import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 @RequestMapping(Mappings.TRANSACTIONS)
 public class TransactionController extends BaseController
 {
+	private static class ModelAttributes
+	{
+		public static final String KEYWORD = "keyword";
+	}
+
 	private static class ReturnValues
 	{
 		public static final String ALL_ENTITIES = "transactions/transactions";
@@ -407,9 +412,12 @@ public class TransactionController extends BaseController
 		return ReturnValues.NEW_TRANSACTION;
 	}
 
-	@GetMapping("/keywordWarningModal")
-	public String keywordWarningModal()
+	@GetMapping("/keywordCheck")
+	public String keywordWarningModal(Model model)
 	{
+		// TODO implement real check
+		// TODO only return keyword for transaction name not template
+		model.addAttribute(ModelAttributes.KEYWORD, "income");
 		return ReturnValues.KEYWORD_WARNING;
 	}
 }
