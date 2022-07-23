@@ -346,11 +346,11 @@
 </#macro>
 
 <#macro buttonSave>
-    <@header.buttonSubmit name='action' icon='save' localizationKey='save' id='button-save-transaction' color='green'/>
+    <@header.buttonSubmit name='action' icon='save' localizationKey='save' id='button-save-transaction' color='green' onclick='return validateForm(false, false, false)'/>
 </#macro>
 
 <#macro buttonSaveAndContinue>
-    <@header.buttonSubmit name='action' icon='save' localizationKey='saveAndContinue' id='button-save-transaction-and-continue' value='continue'/>
+    <@header.buttonSubmit name='action' icon='save' localizationKey='saveAndContinue' id='button-save-transaction-and-continue' value='continue'  onclick='return validateForm(true, false, false)'/>
 </#macro>
 
 <#macro buttonTransactionActions canChangeType canCreateTemplate changeTypeInProgress>

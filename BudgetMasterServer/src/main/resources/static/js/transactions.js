@@ -381,12 +381,12 @@ function convertDateWithoutDots(dateString)
     return dateString.substr(0, 2) + '.' + dateString.substr(2, 2) + '.' + dateString.substr(4, yearLength);
 }
 
-function validateForm(allowEmptyAmount = false, skipKeywordCheck = false)
+function validateForm(isSaveAndContinue = false, allowEmptyAmount = false, skipKeywordCheck = false)
 {
     // name (keyword check)
     if(!skipKeywordCheck)
     {
-        let nameContainsKeywords = checkNameForKeywords();
+        let nameContainsKeywords = checkNameForKeywords(isSaveAndContinue);
         if(nameContainsKeywords)
         {
             return false;
@@ -477,7 +477,7 @@ function validateForm(allowEmptyAmount = false, skipKeywordCheck = false)
     return true;
 }
 
-function checkNameForKeywords()
+function checkNameForKeywords(isSaveAndContinue)
 {
     let url = document.getElementById('keywordCheckUrl').dataset.url;
     let transactionName = document.getElementById('transaction-name').value;
@@ -495,7 +495,7 @@ function checkNameForKeywords()
             {
                 // name contains at least one keyword
                 result = true;
-                openKeywordWarningModal(data);
+                openKeywordWarningModal(data, isSaveAndContinue);
             }
             else
             {
@@ -511,7 +511,7 @@ function checkNameForKeywords()
     return result;
 }
 
-function openKeywordWarningModal(htmlData)
+function openKeywordWarningModal(htmlData, isSaveAndContinue)
 {
     let modalID = '#modalTransactionNameKeywordWarning';
 
@@ -524,21 +524,30 @@ function openKeywordWarningModal(htmlData)
     {
         $(modalID).modal('close');
 
+        let button;
+        if(isSaveAndContinue)
+        {
+            button = document.getElementById('button-save-transaction-and-continue');
+        }
+        else
+        {
+            button = document.getElementById('button-save-transaction');
+        }
+
         let allowEmptyAmount = document.getElementById('template-name') !== null;
 
-        // rebind onsubmit function to skip keyword check once
-        document.getElementById('mainForm').onsubmit = function()
+        // rebind onclick function of button to skip keyword check once
+        button.onclick = function()
         {
-            return validateForm(allowEmptyAmount, true);
+            return validateForm(isSaveAndContinue, allowEmptyAmount, true);
         };
 
-        // TODO differentiate between user clicked button "save" or "save and continue" before
-        document.getElementById('button-save-transaction').click();
+        button.click();
 
-        // reset onsubmit function in case user edits transaction name too after fixing validation errors
-        document.getElementById('mainForm').onsubmit = function()
+        // reset onsubmit function of button in case user edits transaction name too after fixing validation errors
+        button.onclick = function()
         {
-            return validateForm(allowEmptyAmount, false);
+            return validateForm(isSaveAndContinue, allowEmptyAmount, false);
         };
     });
 }
