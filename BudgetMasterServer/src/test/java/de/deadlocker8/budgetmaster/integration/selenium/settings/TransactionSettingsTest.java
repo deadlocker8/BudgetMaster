@@ -5,10 +5,13 @@ import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -57,6 +60,11 @@ class TransactionSettingsTest extends SeleniumTestBase
 
 		driver.findElement(By.cssSelector("#transactionsSettingsContainer .lever")).click();
 
+		final WebElement keywordInput = driver.findElement(By.cssSelector("#settings-keywords input"));
+		keywordInput.click();
+		keywordInput.sendKeys("abc");
+		keywordInput.sendKeys(Keys.ENTER);
+
 		driver.findElement(By.cssSelector("#transactionsSettingsContainer button")).click();
 
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
@@ -68,5 +76,9 @@ class TransactionSettingsTest extends SeleniumTestBase
 
 		assertThat(driver.findElement(By.cssSelector("#transactionsSettingsContainerHeader .collapsible-header-button")).isDisplayed())
 				.isFalse();
+
+		final List<WebElement> chips = driver.findElements(By.cssSelector("#settings-keywords .chip"));
+		assertThat(chips.get(chips.size() - 1).getText())
+				.contains("abc");
 	}
 }

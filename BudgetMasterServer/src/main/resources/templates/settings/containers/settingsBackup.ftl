@@ -7,7 +7,7 @@
 <#import "../settingsMacros.ftl" as settingsMacros>
 
 <#macro backupSettingsContainer importScripts settings>
-    <@settingsContainerMacros.settingsContainer 'BackupSettingsContainer' 'backupSettingsContainer' importScripts '/settings/save/backup' true>
+    <@settingsContainerMacros.settingsContainer 'BackupSettingsContainer' 'backupSettingsContainer' importScripts '/settings/save/backup' 'validateBackupForm()'>
         <div class="row">
             <div class="col s12">
                 <div class="table-container">
@@ -50,7 +50,7 @@
                 $('#settings-auto-backup-git-remote').toggle(newSelectedIndex === 2);  // git remote
             }
 
-            function validateForm()
+            function validateBackupForm()
             {
                 let autoBackupCheckbox = document.getElementsByName("autoBackupActivated")[0];
                 if(autoBackupCheckbox.checked)

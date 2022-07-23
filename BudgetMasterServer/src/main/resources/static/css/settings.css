@@ -69,3 +69,17 @@
     opacity: 1.0 !important;
     cursor: pointer;
 }
+
+#settings-keywords {
+    margin-top: 0;
+}
+
+#settings-keywords-description {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#settings-keywords-description i {
+    margin-right: 1.3rem;
+}

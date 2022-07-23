@@ -13,6 +13,9 @@ import de.deadlocker8.budgetmaster.hints.HintService;
 import de.deadlocker8.budgetmaster.services.ImportResultItem;
 import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.settings.containers.*;
+import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeyword;
+import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeywordRepository;
+import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeywordService;
 import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
@@ -65,6 +68,7 @@ public class SettingsController extends BaseController
 		public static final String AUTO_BACKUP_STATUS = "autoBackupStatus";
 		public static final String NEXT_BACKUP_TIME = "nextBackupTime";
 		public static final String TOAST_CONTENT = "toastContent";
+		public static final String TRANSACTION_NAME_KEYWORDS = "transactionNameKeywords";
 	}
 
 	private static class ReturnValues
@@ -95,11 +99,12 @@ public class SettingsController extends BaseController
 	private final BudgetMasterUpdateService budgetMasterUpdateService;
 	private final BackupService backupService;
 	private final HintService hintService;
+	private final TransactionNameKeywordService keywordService;
 
 	private final List<Integer> SEARCH_RESULTS_PER_PAGE_OPTIONS = Arrays.asList(10, 20, 25, 30, 50, 100);
 
 	@Autowired
-	public SettingsController(SettingsService settingsService, DatabaseService databaseService, CategoryService categoryService, ImportService importService, BudgetMasterUpdateService budgetMasterUpdateService, BackupService backupService, HintService hintService)
+	public SettingsController(SettingsService settingsService, DatabaseService databaseService, CategoryService categoryService, ImportService importService, BudgetMasterUpdateService budgetMasterUpdateService, BackupService backupService, HintService hintService, TransactionNameKeywordService keywordService)
 	{
 		this.settingsService = settingsService;
 		this.databaseService = databaseService;
@@ -108,6 +113,7 @@ public class SettingsController extends BaseController
 		this.budgetMasterUpdateService = budgetMasterUpdateService;
 		this.backupService = backupService;
 		this.hintService = hintService;
+		this.keywordService = keywordService;
 	}
 
 	@GetMapping
@@ -152,6 +158,19 @@ public class SettingsController extends BaseController
 											@ModelAttribute("TransactionsSettingsContainer") TransactionsSettingsContainer transactionsSettingsContainer,
 											BindingResult bindingResult)
 	{
+		final TransactionNameKeywordRepository keywordRepository = keywordService.getRepository();
+		keywordRepository.deleteAll();
+
+		final List<TransactionNameKeyword> keywords = transactionsSettingsContainer.getKeywords();
+		if(keywords != null)
+		{
+			for(TransactionNameKeyword keyword : keywords)
+			{
+				keyword.setID(null);
+				keywordRepository.save(keyword);
+			}
+		}
+
 		return saveContainer(model, transactionsSettingsContainer, bindingResult).templatePath();
 	}
 
@@ -458,6 +477,7 @@ public class SettingsController extends BaseController
 		model.addAttribute(ModelAttributes.SETTINGS, settings);
 		model.addAttribute(ModelAttributes.SEARCH_RESULTS_PER_PAGE, SEARCH_RESULTS_PER_PAGE_OPTIONS);
 		model.addAttribute(ModelAttributes.AUTO_BACKUP_TIME, AutoBackupTime.values());
+		model.addAttribute(ModelAttributes.TRANSACTION_NAME_KEYWORDS, keywordService.getRepository().findAll());
 
 		final Optional<LocalDateTime> nextBackupTimeOptional = backupService.getNextRun();
 		nextBackupTimeOptional.ifPresent(date -> model.addAttribute(ModelAttributes.NEXT_BACKUP_TIME, date));

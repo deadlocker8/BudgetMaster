@@ -122,9 +122,9 @@
 <#macro transactionTags transaction>
     <div class="row">
         <div class="col s12 m12 l8 offset-l2">
-            <div class="transaction-tags">
+            <div class="tag-input-container">
                 <i class="material-icons prefix">local_offer</i>
-                <div class="transaction-tags-input">
+                <div class="tag-input">
                     <label class="input-label" class="chips-label" for="transaction-chips">${locale.getString("transaction.new.label.tags")}</label>
                     <div id="transaction-chips" class="chips chips-placeholder chips-autocomplete"></div>
                 </div>
