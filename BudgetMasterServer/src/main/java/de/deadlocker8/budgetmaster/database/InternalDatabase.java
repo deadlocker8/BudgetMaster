@@ -10,6 +10,7 @@ import de.deadlocker8.budgetmaster.services.EntityType;
 import de.deadlocker8.budgetmaster.templategroup.TemplateGroup;
 import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
+import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeyword;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -25,12 +26,13 @@ public class InternalDatabase
 	private List<Chart> charts;
 	private List<Image> images;
 	private List<Icon> icons;
+	private List<TransactionNameKeyword> transactionNameKeywords;
 
 	public InternalDatabase()
 	{
 	}
 
-	public InternalDatabase(List<Category> categories, List<Account> accounts, List<Transaction> transactions, List<TemplateGroup> templateGroups, List<Template> templates, List<Chart> charts, List<Image> images, List<Icon> icons)
+	public InternalDatabase(List<Category> categories, List<Account> accounts, List<Transaction> transactions, List<TemplateGroup> templateGroups, List<Template> templates, List<Chart> charts, List<Image> images, List<Icon> icons, List<TransactionNameKeyword> transactionNameKeywords)
 	{
 		this.categories = categories;
 		this.accounts = accounts;
@@ -40,6 +42,7 @@ public class InternalDatabase
 		this.charts = charts;
 		this.images = images;
 		this.icons = icons;
+		this.transactionNameKeywords = transactionNameKeywords;
 	}
 
 	public List<Category> getCategories()
@@ -80,6 +83,11 @@ public class InternalDatabase
 	public List<Icon> getIcons()
 	{
 		return icons;
+	}
+
+	public List<TransactionNameKeyword> getTransactionNameKeywords()
+	{
+		return transactionNameKeywords;
 	}
 
 	public Map<EntityType, Integer> getNumberOfEntitiesByType()

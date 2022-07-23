@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 public interface TransactionNameKeywordRepository extends JpaRepository<TransactionNameKeyword, Integer>, JpaSpecificationExecutor<Transaction>
 {
+	TransactionNameKeyword findByValue(String value);
 }

@@ -32,6 +32,8 @@ import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.templates.TemplateRepository;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
+import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeyword;
+import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeywordService;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
 import org.junit.jupiter.api.BeforeEach;
@@ -130,6 +132,9 @@ class ImportServiceTest
 
 	@Autowired
 	private IconService iconService;
+
+	@Autowired
+	private TransactionNameKeywordService transactionNameKeywordService;
 
 	@Autowired
 	private ImportService importService;
@@ -388,6 +393,19 @@ class ImportServiceTest
 						transactionRepeatingTransfer,
 						transactionIncomeWithTags);
 
+		// assert transaction name keywords
+		// default keywords
+		final TransactionNameKeyword defaultKeyword1 = new TransactionNameKeyword(1, "income");
+		final TransactionNameKeyword defaultKeyword2 = new TransactionNameKeyword(2, "einnahme");
+
+		// keywords from json
+		final TransactionNameKeyword keyword1 = new TransactionNameKeyword(3, "xyz");
+
+		assertThat(transactionNameKeywordService.getRepository().findAll())
+				.hasSize(3)
+				.containsExactly(defaultKeyword1, defaultKeyword2, keyword1);
+
+
 		assertThat(importService.getCollectedErrorMessages(importResultItems)).isEmpty();
 	}
 
@@ -434,7 +452,7 @@ class ImportServiceTest
 		template.setTags(new ArrayList<>());
 
 		// database
-		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(template), List.of(), List.of(), List.of());
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(template), List.of(), List.of(), List.of(), List.of());
 
 		// act
 		importService.importDatabase(database, true, false, true);
@@ -457,7 +475,7 @@ class ImportServiceTest
 		Mockito.when(templateGroupRepository.findFirstByType(TemplateGroupType.DEFAULT)).thenReturn(templateGroupDefault);
 
 		// database
-		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(templateGroup), List.of(templateWithGroup), List.of(), List.of(), List.of());
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(templateGroup), List.of(templateWithGroup), List.of(), List.of(), List.of(), List.of());
 
 		// act
 		importService.importDatabase(database, false, true, true);
@@ -487,7 +505,7 @@ class ImportServiceTest
 		chart.setVersion(7);
 
 		// database
-		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(chart), List.of(), List.of());
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(chart), List.of(), List.of(), List.of());
 
 		Mockito.when(chartService.getHighestUsedID()).thenReturn(8);
 		final ChartRepository chartRepositoryMock = Mockito.mock(ChartRepository.class);

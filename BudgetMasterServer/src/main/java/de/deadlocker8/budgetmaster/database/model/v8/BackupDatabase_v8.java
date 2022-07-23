@@ -1,22 +1,14 @@
 package de.deadlocker8.budgetmaster.database.model.v8;
 
-import de.deadlocker8.budgetmaster.accounts.Account;
-import de.deadlocker8.budgetmaster.categories.Category;
-import de.deadlocker8.budgetmaster.charts.Chart;
 import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.JSONIdentifier;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
-import de.deadlocker8.budgetmaster.database.model.converter.*;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupChart_v5;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupImage_v5;
 import de.deadlocker8.budgetmaster.database.model.v6.BackupTransaction_v6;
 import de.deadlocker8.budgetmaster.database.model.v7.BackupAccount_v7;
 import de.deadlocker8.budgetmaster.database.model.v7.BackupCategory_v7;
-import de.deadlocker8.budgetmaster.icon.Icon;
-import de.deadlocker8.budgetmaster.images.Image;
-import de.deadlocker8.budgetmaster.templategroup.TemplateGroup;
-import de.deadlocker8.budgetmaster.templates.Template;
-import de.deadlocker8.budgetmaster.transactions.Transaction;
+import de.deadlocker8.budgetmaster.database.model.v9.BackupDatabase_v9;
 
 import java.util.List;
 
@@ -141,16 +133,7 @@ public class BackupDatabase_v8 implements BackupDatabase
 
 	public InternalDatabase convertToInternal()
 	{
-		final List<Image> convertedImages = convertItemsToInternal(this.images, new ImageConverter());
-		final List<Icon> convertedIcons = convertItemsToInternal(this.icons, new IconConverter(convertedImages));
-		final List<Category> convertedCategories = convertItemsToInternal(categories, new CategoryConverter(convertedIcons));
-		final List<Account> convertedAccounts = convertItemsToInternal(accounts, new AccountConverter(convertedIcons));
-		final List<Transaction> convertedTransactions = convertItemsToInternal(this.transactions, new TransactionConverter(convertedCategories, convertedAccounts));
-		final List<TemplateGroup> convertedTemplateGroups = convertItemsToInternal(this.templateGroups, new TemplateGroupConverter());
-		final List<Template> convertedTemplates = convertItemsToInternal(this.templates, new TemplateConverter(convertedIcons, convertedCategories, convertedAccounts, convertedTemplateGroups));
-		final List<Chart> convertedCharts = convertItemsToInternal(this.charts, new ChartConverter());
-
-		return new InternalDatabase(convertedCategories, convertedAccounts, convertedTransactions, convertedTemplateGroups, convertedTemplates, convertedCharts, convertedImages, convertedIcons);
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -162,22 +145,18 @@ public class BackupDatabase_v8 implements BackupDatabase
 	@Override
 	public BackupDatabase upgrade()
 	{
-		throw new UnsupportedOperationException();
-	}
+		final BackupDatabase_v9 upgradedDatabase = new BackupDatabase_v9();
 
-	public static BackupDatabase_v8 createFromInternalEntities(InternalDatabase database)
-	{
-		final BackupDatabase_v8 externalDatabase = new BackupDatabase_v8();
+		upgradedDatabase.setCategories(categories);
+		upgradedDatabase.setAccounts(accounts);
+		upgradedDatabase.setTransactions(transactions);
+		upgradedDatabase.setTemplateGroups(templateGroups);
+		upgradedDatabase.setTemplates(templates);
+		upgradedDatabase.setCharts(charts);
+		upgradedDatabase.setImages(images);
+		upgradedDatabase.setIcons(icons);
+		upgradedDatabase.setTransactionNameKeywords(List.of());
 
-		externalDatabase.setIcons(externalDatabase.convertItemsToExternal(database.getIcons(), new IconConverter(null)));
-		externalDatabase.setCategories(externalDatabase.convertItemsToExternal(database.getCategories(), new CategoryConverter(null)));
-		externalDatabase.setAccounts(externalDatabase.convertItemsToExternal(database.getAccounts(), new AccountConverter(null)));
-		externalDatabase.setTransactions(externalDatabase.convertItemsToExternal(database.getTransactions(), new TransactionConverter(null, null)));
-		externalDatabase.setTemplateGroups(externalDatabase.convertItemsToExternal(database.getTemplateGroups(), new TemplateGroupConverter()));
-		externalDatabase.setTemplates(externalDatabase.convertItemsToExternal(database.getTemplates(), new TemplateConverter(null, null, null, null)));
-		externalDatabase.setCharts(externalDatabase.convertItemsToExternal(database.getCharts(), new ChartConverter()));
-		externalDatabase.setImages(externalDatabase.convertItemsToExternal(database.getImages(), new ImageConverter()));
-
-		return externalDatabase;
+		return upgradedDatabase;
 	}
 }

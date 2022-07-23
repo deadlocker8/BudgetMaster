@@ -33,7 +33,7 @@ public class AccountImporter extends ItemImporter<Account>
 
 		if(repository.findByName(account.getName()) != null)
 		{
-			throw new ImportException(MessageFormat.format("An account with name: {0} already exist. Account names must be unique. Delete or rename the existing account first.", account.getName()));
+			throw new ImportException(MessageFormat.format("An account with name: {0} already exists. Account names must be unique. Delete or rename the existing account first.", account.getName()));
 		}
 
 		LOGGER.debug(MessageFormat.format("Importing account with name: {0}", account.getName()));

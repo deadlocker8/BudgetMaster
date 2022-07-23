@@ -16,6 +16,7 @@ import de.deadlocker8.budgetmaster.tags.TagService;
 import de.deadlocker8.budgetmaster.templategroup.TemplateGroupService;
 import de.deadlocker8.budgetmaster.templates.TemplateService;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
+import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeywordService;
 import de.deadlocker8.budgetmaster.unit.helpers.LoggerTestUtil;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.Test;
@@ -68,6 +69,9 @@ class DatabaseServiceTest
 
 	@Mock
 	private HintService hintService;
+
+	@Mock
+	private TransactionNameKeywordService transactionNameKeywordService;
 
 	@InjectMocks
 	private DatabaseService databaseService;

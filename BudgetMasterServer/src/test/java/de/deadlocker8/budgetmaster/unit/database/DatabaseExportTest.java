@@ -38,6 +38,9 @@ import de.deadlocker8.budgetmaster.templates.TemplateService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
+import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeyword;
+import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeywordRepository;
+import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeywordService;
 import de.thecodelabs.utils.util.Localization;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -115,6 +118,9 @@ class DatabaseExportTest
 	@Mock
 	private HintService hintService;
 
+	@Mock
+	private TransactionNameKeywordService transactionNameKeywordService;
+
 	@InjectMocks
 	private DatabaseService databaseService;
 
@@ -162,6 +168,10 @@ class DatabaseExportTest
 		Mockito.when(iconRepositoryMock.findAll()).thenReturn(List.of());
 		Mockito.when(iconService.getRepository()).thenReturn(iconRepositoryMock);
 
+		// transaction name keywords
+		TransactionNameKeywordRepository transactionNameKeywordRepository = Mockito.mock(TransactionNameKeywordRepository.class);
+		Mockito.when(transactionNameKeywordRepository.findAll()).thenReturn(List.of());
+		Mockito.when(transactionNameKeywordService.getRepository()).thenReturn(transactionNameKeywordRepository);
 
 		// act
 		Path exportPath = Files.createFile(tempFolder.resolve("exportTest.json"));
@@ -293,6 +303,13 @@ class DatabaseExportTest
 		Mockito.when(iconRepositoryMock.findAll()).thenReturn(List.of(iconImage, iconBuiltin));
 		Mockito.when(iconService.getRepository()).thenReturn(iconRepositoryMock);
 
+		// transaction name keywords
+		final TransactionNameKeyword keyword1 = new TransactionNameKeyword(1, "income");
+		final TransactionNameKeyword keyword2 = new TransactionNameKeyword(2, "abc");
+
+		TransactionNameKeywordRepository transactionNameKeywordRepository = Mockito.mock(TransactionNameKeywordRepository.class);
+		Mockito.when(transactionNameKeywordRepository.findAll()).thenReturn(List.of(keyword1, keyword2));
+		Mockito.when(transactionNameKeywordService.getRepository()).thenReturn(transactionNameKeywordRepository);
 
 		// act
 		Path exportPath = Files.createFile(tempFolder.resolve("exportTest.json"));
@@ -311,5 +328,6 @@ class DatabaseExportTest
 		assertThat(importedDatabase.getCharts()).containsExactly(chart);
 		assertThat(importedDatabase.getImages()).containsExactly(image);
 		assertThat(importedDatabase.getIcons()).containsExactly(iconImage, iconBuiltin);
+		assertThat(importedDatabase.getTransactionNameKeywords()).containsExactly(new TransactionNameKeyword( "income"), new TransactionNameKeyword( "abc"));
 	}
 }
