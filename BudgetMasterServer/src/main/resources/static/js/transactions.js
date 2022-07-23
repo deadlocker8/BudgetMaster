@@ -385,7 +385,8 @@ function convertDateWithoutDots(dateString)
 function validateForm(isSaveAndContinue = false, allowEmptyAmount = false, skipKeywordCheck = false)
 {
     // name (keyword check)
-    if(!skipKeywordCheck)
+    let isExpenditure = document.getElementById('input-isPayment').value === "1";
+    if(!skipKeywordCheck && isExpenditure)
     {
         let nameContainsKeywords = checkNameForKeywords(isSaveAndContinue);
         if(nameContainsKeywords)

@@ -16,13 +16,13 @@
 
         <div class="row">
             <div class="col s12">
-                <@header.buttonLink url='/settings' icon='rule_folder' localizationKey='transaction.warning.name.keyword.button.edit' color='background-blue' id='buttonChangeTransactionType' classes='text-white' target='_blank'/>
+                <@header.buttonLink url='/settings' icon='rule_folder' localizationKey='transaction.warning.name.keyword.button.edit' color='background-blue' classes='text-white' target='_blank'/>
             </div>
         </div>
     </div>
 
     <div class="modal-footer background-color">
         <@header.buttonLink id='keyword-warning-button-ignore' url='' icon='save' localizationKey='transaction.warning.name.keyword.button.ignore' color='red' classes='text-white' noUrl=true/>
-        <@header.buttonLink url='' icon='edit' localizationKey='transaction.warning.name.keyword.button.cancel' color='green' id='buttonChangeTransactionType' classes='modal-action modal-close text-white' noUrl=true/>
+        <@header.buttonLink id='keyword-warning-button-cancel' url='' icon='edit' localizationKey='transaction.warning.name.keyword.button.cancel' color='green' classes='modal-action modal-close text-white' noUrl=true/>
     </div>
 </div>
