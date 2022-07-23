@@ -7,7 +7,7 @@
 <#import "../settingsMacros.ftl" as settingsMacros>
 
 <#macro transactionsSettingsContainer importScripts settings>
-    <@settingsContainerMacros.settingsContainer 'TransactionsSettingsContainer' 'transactionsSettingsContainer' importScripts '/settings/save/transactions' 'validateTransactionForm()'>
+    <@settingsContainerMacros.settingsContainer 'TransactionsSettingsContainer' 'transactionsSettingsContainer' importScripts '/settings/save/transactions'>
         <div class="row">
             <div class="col s12">
                 <div class="table-container">
@@ -64,7 +64,7 @@
 
         <div class="row">
             <div class="col s12 center-align">
-                <@header.buttonSubmit name='action' icon='save' localizationKey='save' color='background-green'/>
+                <@header.buttonSubmit name='action' icon='save' localizationKey='save' color='background-green' onclick='return validateTransactionForm()'/>
             </div>
         </div>
 
@@ -95,7 +95,7 @@
                     parent.appendChild(input);
                 }
 
-                return false;
+                return true;
             }
 
             $('input[name="restActivated"]').change(function()
