@@ -172,6 +172,7 @@ $(document).ready(function()
                 minLength: 1
             },
             placeholder: tagsPlaceholder,
+            secondaryPlaceholder: tagsPlaceholder,
             data: initialTags
         });
 

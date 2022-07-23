@@ -40,7 +40,7 @@
             </div>
             <div id="hidden-transaction-name-keywords"></div>
             <script>
-                tagsPlaceholder = "${locale.getString("settings.transactions.keywords.placeholder")}";
+                keywordsPlaceholder = "${locale.getString("settings.transactions.keywords.placeholder")}";
                 var initialKeywords = [
                     <#list transactionNameKeywords as keyword>
                     {tag: '${keyword.getValue()?replace("'", "\\'")}'},
@@ -70,7 +70,8 @@
 
         <script>
             M.Chips.init(document.querySelectorAll('.chips'), {
-                placeholder: tagsPlaceholder,
+                placeholder: keywordsPlaceholder,
+                secondaryPlaceholder: keywordsPlaceholder,
                 data: initialKeywords,
                 onChipAdd: onKeywordsChange,
                 onChipDelete: onKeywordsChange
