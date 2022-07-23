@@ -121,7 +121,7 @@
 </#macro>
 
 <#macro buttonLink url icon localizationKey id="" color="background-blue" classes="" isDataUrl=false noUrl=false disabled=false target="">
-    <a <#if target??>target="${target}"</#if> <#if !isDataUrl && !noUrl>href="<@s.url url/>"</#if>
+    <a <#if target?has_content>target="${target}"</#if> <#if !isDataUrl && !noUrl>href="<@s.url url/>"</#if>
        id="${id}"
        class="waves-effect waves-light btn ${color} ${classes}"
         <#if isDataUrl>data-url="${url}"</#if>
@@ -131,7 +131,7 @@
 </#macro>
 
 <#macro buttonSubmit name icon localizationKey id="" color="background-blue" classes="" disabled=false formaction="" value="" onclick="">
-    <button id="${id}" class="btn waves-effect waves-light ${color} ${classes}" type="submit" name="${name}" <#if disabled>disabled</#if> <#if formaction?has_content>formaction="<@s.url formaction/>"</#if> <#if value?has_content>value="${value}"</#if> <#if onclick??>onclick="${onclick}"</#if>>
+    <button id="${id}" class="btn waves-effect waves-light ${color} ${classes}" type="submit" name="${name}" <#if disabled>disabled</#if> <#if formaction?has_content>formaction="<@s.url formaction/>"</#if> <#if value?has_content>value="${value}"</#if> <#if onclick?has_content>onclick="${onclick}"</#if>>
         <i class="material-icons left <#if !localizationKey?has_content>no-margin</#if>">${icon}</i><#if localizationKey?has_content>${locale.getString(localizationKey)}</#if>
     </button>
 </#macro>
