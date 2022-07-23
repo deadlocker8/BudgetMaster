@@ -19,22 +19,6 @@
     margin-top: 0;
 }
 
-.transaction-tags {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-.transaction-tags .prefix {
-    margin-right: 1.3rem;
-}
-
-.transaction-tags-input {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-}
-
 .input-min-width {
     min-width: 100px;
 }

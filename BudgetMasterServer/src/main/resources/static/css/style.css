@@ -584,6 +584,31 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     font-size: 2rem;
 }
 
+
+.tag-input-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.tag-input-container .prefix {
+    margin-right: 1.3rem;
+}
+
+.tag-input {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.chips .input {
+    width: auto !important;
+}
+
+.chip:focus {
+    background-color: var(--color-blue);
+}
+
 .invisible {
     opacity: 0;
 }
