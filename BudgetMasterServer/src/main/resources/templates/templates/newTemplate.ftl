@@ -36,7 +36,7 @@
                 <@header.content>
                     <div class="container">
                     <#import "../helpers/validation.ftl" as validation>
-                    <form name="NewTemplate" action="<@s.url '/templates/newTemplate'/>" method="post" onsubmit="return validateForm(true)">
+                    <form id="mainForm" name="NewTemplate" action="<@s.url '/templates/newTemplate'/>" method="post" onsubmit="return validateForm(true)">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="ID" value="<#if template.getID()??>${template.getID()?c}</#if>">
                         <input type="hidden" name="templateGroup" value="<#if template.getTemplateGroup()??>${template.getTemplateGroup().getID()?c}</#if>">
@@ -89,6 +89,8 @@
                         <#-- buttons -->
                         <@newTransactionMacros.buttons cancelURL="/templates" includeContinueButton=false/>
                     </form>
+
+                    <div id="transactionNameKeywordWarningModalContainer"></div>
                 </div>
                 </@header.content>
             </div>

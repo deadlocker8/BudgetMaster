@@ -524,19 +524,21 @@ function openKeywordWarningModal(htmlData)
     {
         $(modalID).modal('close');
 
+        let allowEmptyAmount = document.getElementById('template-name') !== null;
+
         // rebind onsubmit function to skip keyword check once
-        document.getElementsByName('NewTransaction')[0].onsubmit = function()
+        document.getElementById('mainForm').onsubmit = function()
         {
-            return validateForm(false, true);
+            return validateForm(allowEmptyAmount, true);
         };
 
         // TODO differentiate between user clicked button "save" or "save and continue" before
         document.getElementById('button-save-transaction').click();
 
         // reset onsubmit function in case user edits transaction name too after fixing validation errors
-        document.getElementsByName('NewTransaction')[0].onsubmit = function()
+        document.getElementById('mainForm').onsubmit = function()
         {
-            return validateForm(false, false);
+            return validateForm(allowEmptyAmount, false);
         };
     });
 }
