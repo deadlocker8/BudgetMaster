@@ -7,7 +7,6 @@ import de.deadlocker8.budgetmaster.database.model.v5.BackupImage_v5;
 import de.deadlocker8.budgetmaster.database.model.v6.BackupTransaction_v6;
 import de.deadlocker8.budgetmaster.database.model.v7.BackupAccount_v7;
 import de.deadlocker8.budgetmaster.database.model.v7.BackupCategory_v7;
-import de.deadlocker8.budgetmaster.database.model.v8.BackupDatabase_v8;
 import de.deadlocker8.budgetmaster.database.model.v8.BackupIcon_v8;
 import de.deadlocker8.budgetmaster.database.model.v8.BackupTemplateGroup_v8;
 import de.deadlocker8.budgetmaster.database.model.v8.BackupTemplate_v8;
