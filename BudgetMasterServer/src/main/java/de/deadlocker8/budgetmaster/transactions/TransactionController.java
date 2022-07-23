@@ -46,11 +46,6 @@ import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 @RequestMapping(Mappings.TRANSACTIONS)
 public class TransactionController extends BaseController
 {
-	private static class ModelAttributes
-	{
-		public static final String KEYWORD = "keyword";
-	}
-
 	private static class ReturnValues
 	{
 		public static final String ALL_ENTITIES = "transactions/transactions";
@@ -62,7 +57,6 @@ public class TransactionController extends BaseController
 		public static final String REDIRECT_NEW_TRANSACTION = "redirect:/transactions/newTransaction/normal";
 		public static final String NEW_TRANSACTION = "transactions/newTransactionNormal";
 		public static final String CHANGE_TYPE = "transactions/changeTypeModal";
-		public static final String KEYWORD_WARNING = "transactions/transactionNameKeywordWarningModal";
 	}
 
 	private static final String CONTINUE = "continue";

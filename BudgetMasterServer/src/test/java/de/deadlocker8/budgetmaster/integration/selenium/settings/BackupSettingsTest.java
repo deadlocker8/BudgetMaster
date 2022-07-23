@@ -90,11 +90,7 @@ class BackupSettingsTest extends SeleniumTestBase
 		driver.findElements(By.cssSelector("#backupSettingsContainer button")).get(1).click();
 
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("toast")));
-
-		// assert
-		assertThat(driver.findElement(By.className("toast")).getText())
-				.contains("Error saving settings");
+		wait.until(ExpectedConditions.attributeContains(By.id("settings-backup-auto-days"), "data-tooltip", "greater than 0"));
 
 		assertThat(driver.findElement(By.cssSelector("#backupSettingsContainerHeader .collapsible-header-button")).isDisplayed())
 				.isTrue();
