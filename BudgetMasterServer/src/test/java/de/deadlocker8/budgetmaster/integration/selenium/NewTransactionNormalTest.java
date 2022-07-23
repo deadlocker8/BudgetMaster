@@ -206,4 +206,153 @@ class NewTransactionNormalTest extends SeleniumTestBase
 		assertThat(driver.findElement(By.id("transaction-name")).getAttribute("value")).isEmpty();
 		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEmpty();
 	}
+
+	@Test
+	void test_newTransaction_keywordInName_clickOnButtonToCancelSaving()
+	{
+		openNewTransactionPage();
+
+		final String name = "special income transaction";
+		final String amount = "15.00";
+		String categoryName = "sdfdsf";
+
+		// fill form
+		driver.findElement(By.className("buttonExpenditure")).click();
+		driver.findElement(By.id("transaction-name")).sendKeys(name);
+		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
+		TransactionTestHelper.selectCategoryByName(driver, categoryName);
+
+		// submit form
+		driver.findElement(By.id("button-save-transaction")).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("modalTransactionNameKeywordWarning")));
+
+		// assert
+		assertThat(driver.findElement(By.id("keyword")).getText()).isEqualTo("income");
+
+		driver.findElement(By.id("keyword-warning-button-cancel")).click();
+
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("modalTransactionNameKeywordWarning")));
+
+		assertThat(driver.findElement(By.id("transaction-name")).getAttribute("value")).isEqualTo(name);
+	}
+
+	@Test
+	void test_newTransaction_keywordInName_clickOnButtonToIgnoreWarning()
+	{
+		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		final int numberOfTransactionsBefore = transactionsRows.size();
+
+		openNewTransactionPage();
+
+		final String name = "special income transaction";
+		final String amount = "15.00";
+		String categoryName = "sdfdsf";
+
+		// fill form
+		driver.findElement(By.className("buttonExpenditure")).click();
+		driver.findElement(By.id("transaction-name")).sendKeys(name);
+		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
+		TransactionTestHelper.selectCategoryByName(driver, categoryName);
+
+		// submit form
+		driver.findElement(By.id("button-save-transaction")).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("modalTransactionNameKeywordWarning")));
+
+		driver.findElement(By.id("keyword-warning-button-ignore")).click();
+
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("modalTransactionNameKeywordWarning")));
+
+		// assert
+		transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		assertThat(transactionsRows).hasSize(numberOfTransactionsBefore + 1);
+
+		final WebElement row = transactionsRows.get(0);
+		final List<WebElement> columns = row.findElements(By.className("col"));
+		assertThat(columns).hasSize(6);
+
+		// check columns
+		final String dateString = new SimpleDateFormat("dd.MM.").format(new Date());
+		TransactionTestHelper.assertTransactionColumns(columns, dateString, categoryName, "rgb(46, 124, 43)", false, false, name, null, "-" + amount);
+	}
+
+	@Test
+	void test_newTransaction_keywordInName_clickOnButtonToIgnoreWarning_saveAndContinueClickedBefore()
+	{
+		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		final int numberOfTransactionsBefore = transactionsRows.size();
+
+		openNewTransactionPage();
+
+		final String name = "special income transaction";
+		final String amount = "15.00";
+		String categoryName = "sdfdsf";
+
+		// fill form
+		driver.findElement(By.className("buttonExpenditure")).click();
+		driver.findElement(By.id("transaction-name")).sendKeys(name);
+		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
+		TransactionTestHelper.selectCategoryByName(driver, categoryName);
+
+		// submit form
+		driver.findElement(By.id("button-save-transaction-and-continue")).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("modalTransactionNameKeywordWarning")));
+
+		driver.findElement(By.id("keyword-warning-button-ignore")).click();
+
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("modalTransactionNameKeywordWarning")));
+
+		// assert
+		assertThat(driver.getCurrentUrl()).endsWith("/newTransaction/normal");
+
+		assertThat(driver.findElement(By.className("buttonExpenditure")).getAttribute("class")).contains("background-red");
+		assertThat(driver.findElement(By.id("transaction-name")).getAttribute("value")).isEmpty();
+		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEmpty();
+	}
+
+	@Test
+	void test_newTransaction_keywordInName_alreadyMarkedAsIncome_dontShowWarning()
+	{
+		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		final int numberOfTransactionsBefore = transactionsRows.size();
+
+		openNewTransactionPage();
+
+		final String name = "special income transaction";
+		final String amount = "15.00";
+		String categoryName = "sdfdsf";
+
+		// fill form
+		driver.findElement(By.className("buttonIncome")).click();
+		driver.findElement(By.id("transaction-name")).sendKeys(name);
+		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
+		TransactionTestHelper.selectCategoryByName(driver, categoryName);
+
+		// submit form
+		driver.findElement(By.id("button-save-transaction")).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(text(), 'Rest')]")));
+
+		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
+
+		transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		assertThat(transactionsRows).hasSize(numberOfTransactionsBefore + 1);
+
+		final WebElement row = transactionsRows.get(0);
+		final List<WebElement> columns = row.findElements(By.className("col"));
+		assertThat(columns).hasSize(6);
+
+		// check columns
+		final String dateString = new SimpleDateFormat("dd.MM.").format(new Date());
+		TransactionTestHelper.assertTransactionColumns(columns, dateString, categoryName, "rgb(46, 124, 43)", false, false, name, null, amount);
+	}
 }
