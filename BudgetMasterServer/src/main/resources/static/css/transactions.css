@@ -134,3 +134,7 @@
     border-bottom: 2px solid var(--color-text);
     padding: 0.3rem 0.5rem;
 }
+
+#modalTransactionNameKeywordWarning {
+    width: 40%;
+}

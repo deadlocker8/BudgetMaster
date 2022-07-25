@@ -386,7 +386,7 @@ function validateForm(isSaveAndContinue = false, allowEmptyAmount = false, skipK
 {
     // name (keyword check)
     let isExpenditureSwitch = document.getElementById('input-isPayment');
-    let isExpenditure = isExpenditureSwitch !== null && isExpenditureSwitch.value === "1";
+    let isExpenditure = isExpenditureSwitch !== null && (isExpenditureSwitch.value === "1" || isExpenditureSwitch.value === "true");
     if(!skipKeywordCheck && isExpenditure)
     {
         let nameContainsKeywords = checkNameForKeywords(isSaveAndContinue);
