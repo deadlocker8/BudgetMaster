@@ -395,15 +395,23 @@ class ImportServiceTest
 
 		// assert transaction name keywords
 		// default keywords
-		final TransactionNameKeyword defaultKeyword1 = new TransactionNameKeyword(1, "income");
-		final TransactionNameKeyword defaultKeyword2 = new TransactionNameKeyword(2, "einnahme");
+		final TransactionNameKeyword defaultKeyword1 = new TransactionNameKeyword(1, "einnahme");
+		final TransactionNameKeyword defaultKeyword2 = new TransactionNameKeyword(2, "rückzahlung");
+		final TransactionNameKeyword defaultKeyword3 = new TransactionNameKeyword(3, "erstattung");
+		final TransactionNameKeyword defaultKeyword4 = new TransactionNameKeyword(4, "zinsen");
+		final TransactionNameKeyword defaultKeyword5 = new TransactionNameKeyword(5, "lohn");
+		final TransactionNameKeyword defaultKeyword6 = new TransactionNameKeyword(6, "gehalt");
+		final TransactionNameKeyword defaultKeyword7 = new TransactionNameKeyword(7, "income");
+		final TransactionNameKeyword defaultKeyword8 = new TransactionNameKeyword(8, "refund");
+		final TransactionNameKeyword defaultKeyword9 = new TransactionNameKeyword(9, "interest");
+		final TransactionNameKeyword defaultKeyword10 = new TransactionNameKeyword(10, "salary");
 
 		// keywords from json
-		final TransactionNameKeyword keyword1 = new TransactionNameKeyword(3, "xyz");
+		final TransactionNameKeyword keyword1 = new TransactionNameKeyword(11, "xyz");
 
 		assertThat(transactionNameKeywordService.getRepository().findAll())
-				.hasSize(3)
-				.containsExactly(defaultKeyword1, defaultKeyword2, keyword1);
+				.hasSize(11)
+				.containsExactly(defaultKeyword1, defaultKeyword2, defaultKeyword3, defaultKeyword4, defaultKeyword5, defaultKeyword6, defaultKeyword7, defaultKeyword8, defaultKeyword9, defaultKeyword10, keyword1);
 
 
 		assertThat(importService.getCollectedErrorMessages(importResultItems)).isEmpty();
