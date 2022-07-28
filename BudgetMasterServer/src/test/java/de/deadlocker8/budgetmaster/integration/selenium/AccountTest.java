@@ -327,6 +327,7 @@ class AccountTest extends SeleniumTestBase
 		// fill form
 		driver.findElement(By.id("transaction-name")).sendKeys("My transaction");
 		driver.findElement(By.id("transaction-amount")).sendKeys("15.00");
+		TransactionTestHelper.selectDayInTransactionDatePicker(driver, 20);
 		TransactionTestHelper.selectCategoryByName(driver, "sdfdsf");
 
 		// submit form
