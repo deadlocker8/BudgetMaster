@@ -50,6 +50,7 @@ $(document).ready(function()
             showClearBtn: false,
             setDefaultDate: true,
             defaultDate: startDate,
+            autoClose: true,
 
             i18n: {
                 // Strings and translations
@@ -103,6 +104,7 @@ $(document).ready(function()
             setDefaultDate: true,
             minDate: minDate,
             defaultDate: selectedDate,
+            autoClose: true,
 
             i18n: {
                 // Strings and translations
