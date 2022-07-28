@@ -93,17 +93,19 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 	@Test
 	void test_newTransaction_income()
 	{
-		String amount = "25.00";
-		String description = "Lorem Ipsum dolor sit amet";
-		String categoryName = "sdfdsf";
-		String repeatingModifier = "1";
-		String repeatingModifierType = "Days";
+		final String amount = "25.00";
+		final String description = "Lorem Ipsum dolor sit amet";
+		final String categoryName = "sdfdsf";
+		final int day = 3;
+		final String repeatingModifier = "1";
+		final String repeatingModifierType = "Days";
 
 		// fill form
 		driver.findElement(By.className("buttonIncome")).click();
 		driver.findElement(By.id("transaction-name")).sendKeys(TRANSACTION_NAME);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
 		driver.findElement(By.id("transaction-description")).sendKeys(description);
+		TransactionTestHelper.selectDayInTransactionDatePicker(driver, day);
 		TransactionTestHelper.selectCategoryByName(driver, categoryName);
 
 		driver.findElement(By.id("button-transaction-add-repeating-option")).click();
@@ -113,19 +115,6 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		// fill repeating options
 		driver.findElement(By.id("transaction-repeating-modifier")).sendKeys(repeatingModifier);
 		TransactionTestHelper.selectOptionFromDropdown(driver, By.cssSelector("#transaction-repeating-modifier-row"), repeatingModifierType);
-
-		// fill date
-		driver.findElement(By.id("transaction-datepicker")).click();
-		List<WebElement> datePickerCells = driver.findElements(By.cssSelector(".datepicker-table td"));
-		for(WebElement cell : datePickerCells)
-		{
-			if(cell.getText().equals("3"))
-			{
-				cell.click();
-				driver.findElement(By.cssSelector(".datepicker-done")).click();
-				break;
-			}
-		}
 
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector(".modal-overlay"))));
@@ -150,24 +139,25 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		assertThat(columns).hasSize(6);
 
 		// check columns
-		final String dateString = new SimpleDateFormat("03.MM.").format(new Date());
-		TransactionTestHelper.assertTransactionColumns(columns, dateString, categoryName, "rgb(46, 124, 43)", true, false, TRANSACTION_NAME, description, amount);
+		TransactionTestHelper.assertTransactionColumns(columns, TransactionTestHelper.getDateString(day), categoryName, "rgb(46, 124, 43)", true, false, TRANSACTION_NAME, description, amount);
 	}
 
 	@Test
 	void test_newTransaction_expenditure()
 	{
-		String amount = "15.00";
-		String description = "Lorem Ipsum dolor sit amet";
-		String categoryName = "sdfdsf";
-		String repeatingModifier = "1";
-		String repeatingModifierType = "Days";
+		final String amount = "15.00";
+		final String description = "Lorem Ipsum dolor sit amet";
+		final String categoryName = "sdfdsf";
+		final int day = 3;
+		final String repeatingModifier = "1";
+		final String repeatingModifierType = "Days";
 
 		// fill form
 		driver.findElement(By.className("buttonExpenditure")).click();
 		driver.findElement(By.id("transaction-name")).sendKeys(TRANSACTION_NAME);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
 		driver.findElement(By.id("transaction-description")).sendKeys(description);
+		TransactionTestHelper.selectDayInTransactionDatePicker(driver, day);
 		TransactionTestHelper.selectCategoryByName(driver, categoryName);
 
 		driver.findElement(By.id("button-transaction-add-repeating-option")).click();
@@ -179,18 +169,6 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		TransactionTestHelper.selectOptionFromDropdown(driver, By.cssSelector("#transaction-repeating-modifier-row"), repeatingModifierType);
 
 		// fill date
-		driver.findElement(By.id("transaction-datepicker")).click();
-		List<WebElement> datePickerCells = driver.findElements(By.cssSelector(".datepicker-table td"));
-		for(WebElement cell : datePickerCells)
-		{
-			if(cell.getText().equals("3"))
-			{
-				cell.click();
-				driver.findElement(By.cssSelector(".datepicker-done")).click();
-				break;
-			}
-		}
-
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector(".modal-overlay"))));
 
@@ -217,8 +195,7 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		assertThat(columns).hasSize(6);
 
 		// check columns
-		final String dateString = new SimpleDateFormat("03.MM.").format(new Date());
-		TransactionTestHelper.assertTransactionColumns(columns, dateString, categoryName, "rgb(46, 124, 43)", true, false, TRANSACTION_NAME, description, "-" + amount);
+		TransactionTestHelper.assertTransactionColumns(columns, TransactionTestHelper.getDateString(day), categoryName, "rgb(46, 124, 43)", true, false, TRANSACTION_NAME, description, "-" + amount);
 	}
 
 	@Test
@@ -227,17 +204,19 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		final String type = "Transfer";
 		openNewTransactionPage(type);
 
-		String amount = "30.00";
-		String description = "sit amet";
-		String categoryName = "sdfdsf";
-		String repeatingModifier = "1";
-		String repeatingModifierType = "Days";
-		String transferAccountName = "sfsdf";
+		final String amount = "30.00";
+		final String description = "sit amet";
+		final String categoryName = "sdfdsf";
+		final int day = 3;
+		final String repeatingModifier = "1";
+		final String repeatingModifierType = "Days";
+		final String transferAccountName = "sfsdf";
 
 		// fill form
 		driver.findElement(By.id("transaction-name")).sendKeys(TRANSACTION_NAME);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
 		driver.findElement(By.id("transaction-description")).sendKeys(description);
+		TransactionTestHelper.selectDayInTransactionDatePicker(driver, day);
 		TransactionTestHelper.selectCategoryByName(driver, categoryName);
 		TransactionTestHelper.selectTransferAccountByName(driver, transferAccountName);
 
@@ -248,19 +227,6 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		// fill repeating options
 		driver.findElement(By.id("transaction-repeating-modifier")).sendKeys(repeatingModifier);
 		TransactionTestHelper.selectOptionFromDropdown(driver, By.cssSelector("#transaction-repeating-modifier-row"), repeatingModifierType);
-
-		// fill date
-		driver.findElement(By.id("transaction-datepicker")).click();
-		List<WebElement> datePickerCells = driver.findElements(By.cssSelector(".datepicker-table td"));
-		for(WebElement cell : datePickerCells)
-		{
-			if(cell.getText().equals("3"))
-			{
-				cell.click();
-				driver.findElement(By.cssSelector(".datepicker-done")).click();
-				break;
-			}
-		}
 
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector(".modal-overlay"))));
@@ -285,8 +251,7 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		assertThat(columns).hasSize(6);
 
 		// check columns
-		final String dateString = new SimpleDateFormat("03.MM.").format(new Date());
-		TransactionTestHelper.assertTransactionColumns(columns, dateString, categoryName, "rgb(46, 124, 43)", true, true, TRANSACTION_NAME, description, amount);
+		TransactionTestHelper.assertTransactionColumns(columns, TransactionTestHelper.getDateString(day), categoryName, "rgb(46, 124, 43)", true, true, TRANSACTION_NAME, description, amount);
 
 		// open transaction in edit view again
 		columns.get(5).findElement(By.cssSelector("a")).click();

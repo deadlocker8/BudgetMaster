@@ -84,7 +84,12 @@
     <script>
         amountValidationMessage = "${locale.getString("warning.transaction.amount")}";
         numberValidationMessage = "${locale.getString("warning.empty.number")}";
-        dateValidationMessage = "${locale.getString("warning.transaction.date")}";
+
+        <#if helpers.isUseSimpleDatepickerForTransactions()>
+            dateValidationMessage = "${locale.getString("warning.transaction.date.simple")}";
+        <#else>
+            dateValidationMessage = "${locale.getString("warning.transaction.date")}";
+        </#if>
     </script>
 </#macro>
 
@@ -93,12 +98,14 @@
         <div class="input-field col s12 m12 l8 offset-l2">
             <#if transaction.getDate?? && transaction.getDate()??>
                 <#assign startDate = dateService.getLongDateString(transaction.getDate())/>
+                <#assign transactionDate = dateService.getLongDateString(transaction.getDate())/>
             <#else>
                 <#assign startDate = dateService.getLongDateString(currentDate)/>
+                <#assign transactionDate = ""/>
             </#if>
 
             <i class="material-icons prefix">event</i>
-            <input id="transaction-datepicker" type="text" class="datepicker<#if helpers.isUseSimpleDatepickerForTransactions()>-simple</#if>" name="date" value="${startDate}">
+            <input id="transaction-datepicker" type="text" class="datepicker<#if helpers.isUseSimpleDatepickerForTransactions()>-simple</#if>" name="date" value="${transactionDate}">
             <label class="input-label" for="transaction-datepicker">${locale.getString("transaction.new.label.date")}</label>
         </div>
     </div>

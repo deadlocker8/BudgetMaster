@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Date;
@@ -87,15 +88,17 @@ class NewTransactionNormalTest extends SeleniumTestBase
 
 		openNewTransactionPage();
 
-		String name = "My normal transaction";
-		String amount = "15.00";
-		String description = "Lorem Ipsum dolor sit amet";
-		String categoryName = "sdfdsf";
+		final String name = "My normal transaction";
+		final String amount = "15.00";
+		final String description = "Lorem Ipsum dolor sit amet";
+		final String categoryName = "sdfdsf";
+		final int day = 20;
 
 		// fill form
 		driver.findElement(By.className("buttonIncome")).click();
 		driver.findElement(By.id("transaction-name")).sendKeys(name);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
+		TransactionTestHelper.selectDayInTransactionDatePicker(driver, day);
 		driver.findElement(By.id("transaction-description")).sendKeys(description);
 		TransactionTestHelper.selectCategoryByName(driver, categoryName);
 
@@ -116,8 +119,7 @@ class NewTransactionNormalTest extends SeleniumTestBase
 		assertThat(columns).hasSize(6);
 
 		// check columns
-		final String dateString = new SimpleDateFormat("dd.MM.").format(new Date());
-		TransactionTestHelper.assertTransactionColumns(columns, dateString, categoryName, "rgb(46, 124, 43)", false, false, name, description, amount);
+		TransactionTestHelper.assertTransactionColumns(columns, TransactionTestHelper.getDateString(day), categoryName, "rgb(46, 124, 43)", false, false, name, description, amount);
 	}
 
 	@Test
@@ -128,15 +130,17 @@ class NewTransactionNormalTest extends SeleniumTestBase
 
 		openNewTransactionPage();
 
-		String name = "My normal transaction";
-		String amount = "15.00";
-		String description = "Lorem Ipsum dolor sit amet";
-		String categoryName = "sdfdsf";
+		final String name = "My normal transaction";
+		final String amount = "15.00";
+		final String description = "Lorem Ipsum dolor sit amet";
+		final String categoryName = "sdfdsf";
+		final int day = 20;
 
 		// fill form
 		driver.findElement(By.className("buttonExpenditure")).click();
 		driver.findElement(By.id("transaction-name")).sendKeys(name);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
+		TransactionTestHelper.selectDayInTransactionDatePicker(driver, day);
 		driver.findElement(By.id("transaction-description")).sendKeys(description);
 		TransactionTestHelper.selectCategoryByName(driver, categoryName);
 
@@ -157,8 +161,7 @@ class NewTransactionNormalTest extends SeleniumTestBase
 		assertThat(columns).hasSize(6);
 
 		// check columns
-		final String dateString = new SimpleDateFormat("dd.MM.").format(new Date());
-		TransactionTestHelper.assertTransactionColumns(columns, dateString, categoryName, "rgb(46, 124, 43)", false, false, name, description, "-" + amount);
+		TransactionTestHelper.assertTransactionColumns(columns, TransactionTestHelper.getDateString(day), categoryName, "rgb(46, 124, 43)", false, false, name, description, "-" + amount);
 	}
 
 	@Test
@@ -185,13 +188,15 @@ class NewTransactionNormalTest extends SeleniumTestBase
 	{
 		openNewTransactionPage();
 
-		String name = "Save and continue transaction";
-		String amount = "15.00";
+		final String name = "Save and continue transaction";
+		final String amount = "15.00";
+		final int day = 20;
 
 		// fill form
 		driver.findElement(By.className("buttonExpenditure")).click();
 		driver.findElement(By.id("transaction-name")).sendKeys(name);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
+		TransactionTestHelper.selectDayInTransactionDatePicker(driver, day);
 
 		// submit form
 		driver.findElement(By.id("button-save-transaction-and-continue")).click();
@@ -205,6 +210,7 @@ class NewTransactionNormalTest extends SeleniumTestBase
 		assertThat(driver.findElement(By.className("buttonExpenditure")).getAttribute("class")).contains("background-red");
 		assertThat(driver.findElement(By.id("transaction-name")).getAttribute("value")).isEmpty();
 		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEmpty();
+		assertThat(driver.findElement(By.id("transaction-datepicker")).getAttribute("value")).isEmpty();
 	}
 
 	@Test
@@ -214,12 +220,14 @@ class NewTransactionNormalTest extends SeleniumTestBase
 
 		final String name = "special income transaction";
 		final String amount = "15.00";
-		String categoryName = "sdfdsf";
+		final String categoryName = "sdfdsf";
+		final int day = 20;
 
 		// fill form
 		driver.findElement(By.className("buttonExpenditure")).click();
 		driver.findElement(By.id("transaction-name")).sendKeys(name);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
+		TransactionTestHelper.selectDayInTransactionDatePicker(driver, day);
 		TransactionTestHelper.selectCategoryByName(driver, categoryName);
 
 		// submit form
@@ -249,12 +257,14 @@ class NewTransactionNormalTest extends SeleniumTestBase
 
 		final String name = "special income transaction";
 		final String amount = "15.00";
-		String categoryName = "sdfdsf";
+		final String categoryName = "sdfdsf";
+		final int day = 20;
 
 		// fill form
 		driver.findElement(By.className("buttonExpenditure")).click();
 		driver.findElement(By.id("transaction-name")).sendKeys(name);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
+		TransactionTestHelper.selectDayInTransactionDatePicker(driver, day);
 		TransactionTestHelper.selectCategoryByName(driver, categoryName);
 
 		// submit form
@@ -277,26 +287,24 @@ class NewTransactionNormalTest extends SeleniumTestBase
 		assertThat(columns).hasSize(6);
 
 		// check columns
-		final String dateString = new SimpleDateFormat("dd.MM.").format(new Date());
-		TransactionTestHelper.assertTransactionColumns(columns, dateString, categoryName, "rgb(46, 124, 43)", false, false, name, null, "-" + amount);
+		TransactionTestHelper.assertTransactionColumns(columns, TransactionTestHelper.getDateString(day), categoryName, "rgb(46, 124, 43)", false, false, name, null, "-" + amount);
 	}
 
 	@Test
 	void test_newTransaction_keywordInName_clickOnButtonToIgnoreWarning_saveAndContinueClickedBefore()
 	{
-		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
-		final int numberOfTransactionsBefore = transactionsRows.size();
-
 		openNewTransactionPage();
 
 		final String name = "special income transaction";
 		final String amount = "15.00";
-		String categoryName = "sdfdsf";
+		final String categoryName = "sdfdsf";
+		final int day = 20;
 
 		// fill form
 		driver.findElement(By.className("buttonExpenditure")).click();
 		driver.findElement(By.id("transaction-name")).sendKeys(name);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
+		TransactionTestHelper.selectDayInTransactionDatePicker(driver, day);
 		TransactionTestHelper.selectCategoryByName(driver, categoryName);
 
 		// submit form
@@ -316,6 +324,7 @@ class NewTransactionNormalTest extends SeleniumTestBase
 		assertThat(driver.findElement(By.className("buttonExpenditure")).getAttribute("class")).contains("background-red");
 		assertThat(driver.findElement(By.id("transaction-name")).getAttribute("value")).isEmpty();
 		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEmpty();
+		assertThat(driver.findElement(By.id("transaction-datepicker")).getAttribute("value")).isEmpty();
 	}
 
 	@Test
@@ -328,12 +337,14 @@ class NewTransactionNormalTest extends SeleniumTestBase
 
 		final String name = "special income transaction";
 		final String amount = "15.00";
-		String categoryName = "sdfdsf";
+		final String categoryName = "sdfdsf";
+		final int day = 20;
 
 		// fill form
 		driver.findElement(By.className("buttonIncome")).click();
 		driver.findElement(By.id("transaction-name")).sendKeys(name);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
+		TransactionTestHelper.selectDayInTransactionDatePicker(driver, 20);
 		TransactionTestHelper.selectCategoryByName(driver, categoryName);
 
 		// submit form
@@ -352,7 +363,6 @@ class NewTransactionNormalTest extends SeleniumTestBase
 		assertThat(columns).hasSize(6);
 
 		// check columns
-		final String dateString = new SimpleDateFormat("dd.MM.").format(new Date());
-		TransactionTestHelper.assertTransactionColumns(columns, dateString, categoryName, "rgb(46, 124, 43)", false, false, name, null, amount);
+		TransactionTestHelper.assertTransactionColumns(columns, TransactionTestHelper.getDateString(day), categoryName, "rgb(46, 124, 43)", false, false, name, null, amount);
 	}
 }

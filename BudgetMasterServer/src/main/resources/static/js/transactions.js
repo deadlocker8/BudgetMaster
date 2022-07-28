@@ -1,5 +1,7 @@
 $(document).ready(function()
 {
+    let pickerEndDate;
+
     // open filter modal if corresponding anchor is in url (originating from hotkeys.js)
     if(window.location.href.endsWith('#modalFilter'))
     {
@@ -48,7 +50,6 @@ $(document).ready(function()
             yearRange: 25,
             firstDay: 1,
             showClearBtn: false,
-            setDefaultDate: true,
             defaultDate: startDate,
             autoClose: true,
 
@@ -86,12 +87,14 @@ $(document).ready(function()
         // picker end date
         if(typeof endDate !== "undefined")
         {
-            let pickerEndDate = createDatePickerEnd(pickerStartDate.date, endDate);
+            pickerEndDate = createDatePickerEnd(pickerStartDate.date, endDate);
         }
     }
 
     function createDatePickerEnd(minDate, selectedDate)
     {
+        console.log(minDate, selectedDate);
+
         if(selectedDate < minDate)
         {
             selectedDate = minDate;

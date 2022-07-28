@@ -7,7 +7,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -92,6 +94,20 @@ public class TransactionTestHelper
 		driver.findElements(By.cssSelector(".category-select-wrapper .custom-select-item-name")).stream()
 				.filter(webElement -> webElement.getText().equals(categoryName))
 				.findFirst().orElseThrow().click();
+	}
+
+	public static void selectDayInTransactionDatePicker(WebDriver driver, int day)
+	{
+		driver.findElement(By.cssSelector(".input-label[for='transaction-datepicker']")).click();
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("datepicker-modal")));
+		driver.findElement(By.cssSelector("button[data-day='" + day + "']")).click();
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("datepicker-modal")));
+	}
+
+	public static String getDateString(int day)
+	{
+		return String.format("%02d.%s", day, new SimpleDateFormat("MM.").format(new Date()));
 	}
 
 	public static void selectGlobalAccountByName(WebDriver driver, String accountName)

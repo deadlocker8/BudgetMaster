@@ -390,7 +390,7 @@ public class TransactionController extends BaseController
 
 		Transaction newTransaction = new Transaction(existingTransaction);
 		newTransaction.setID(null);
-		newTransaction.setDate(date);
+		newTransaction.setDate(null);
 
 		if(newTransaction.getAccount().getAccountState() != AccountState.FULL_ACCESS)
 		{

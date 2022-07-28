@@ -90,15 +90,17 @@ class NewTransactionTransferTest extends SeleniumTestBase
 	{
 		openNewTransactionPage();
 
-		String name = "My transfer transaction";
-		String amount = "15.00";
-		String description = "Lorem Ipsum dolor sit amet";
-		String categoryName = "sdfdsf";
+		final String name = "My transfer transaction";
+		final String amount = "15.00";
+		final String description = "Lorem Ipsum dolor sit amet";
+		final String categoryName = "sdfdsf";
+		final int day = 20;
 
 		// fill form
 		driver.findElement(By.id("transaction-name")).sendKeys(name);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
 		driver.findElement(By.id("transaction-description")).sendKeys(description);
+		TransactionTestHelper.selectDayInTransactionDatePicker(driver, day);
 		TransactionTestHelper.selectCategoryByName(driver, categoryName);
 
 		// submit form
@@ -118,8 +120,7 @@ class NewTransactionTransferTest extends SeleniumTestBase
 		assertThat(columns).hasSize(6);
 
 		// check columns
-		final String dateString = new SimpleDateFormat("dd.MM.").format(new Date());
-		TransactionTestHelper.assertTransactionColumns(columns, dateString, categoryName, "rgb(46, 124, 43)", false, true, name, description, amount);
+		TransactionTestHelper.assertTransactionColumns(columns, TransactionTestHelper.getDateString(day), categoryName, "rgb(46, 124, 43)", false, true, name, description, amount);
 	}
 
 	@Test
