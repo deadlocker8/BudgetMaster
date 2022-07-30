@@ -40,7 +40,6 @@
         <itextpdf.version>5.5.13.3</itextpdf.version>
         <vanilla-picker.version>2.12.1</vanilla-picker.version>
         <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
-        <dependency-check-maven.version>7.1.0</dependency-check-maven.version>
 
         <project.outputDirectory>${project.build.directory}/../build/${project.version}</project.outputDirectory>
         <project.artifactName>${project.artifactId}-v${project.version}</project.artifactName>
@@ -284,31 +283,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <plugin>
-                <groupId>org.owasp</groupId>
-                <artifactId>dependency-check-maven</artifactId>
-                <version>${dependency-check-maven.version}</version>
-                <inherited>false</inherited>
-                <configuration>
-                    <skip>false</skip>
-                    <cveValidForHours>48</cveValidForHours>
-                    <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
-                    <failOnError>false</failOnError>
-                    <formats>
-                        <format>HTML</format>
-                        <format>XML</format>
-                    </formats>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>aggregate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
         </plugins>
     </build>
 </project>
