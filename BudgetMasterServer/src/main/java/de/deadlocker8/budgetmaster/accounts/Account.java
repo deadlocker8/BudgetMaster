@@ -15,7 +15,8 @@ import java.util.Objects;
 @Entity
 public class Account implements ProvidesID, Iconizable
 {
-	private static final String ACCOUNT_FONT_COLOR = "#2E79B9";
+	private static final String FONT_COLOR_LIGHT_THEME = "#212121";
+	private static final String FONT_COLOR_DARK_THEME = "#FFFFFF";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -162,13 +163,13 @@ public class Account implements ProvidesID, Iconizable
 		final Icon icon = getIconReference();
 		if(icon == null)
 		{
-			return ACCOUNT_FONT_COLOR;
+			return getDefaultFontColor(isDarkTheme);
 		}
 
 		final String fontColor = icon.getFontColor();
 		if(fontColor == null)
 		{
-			return ACCOUNT_FONT_COLOR;
+			return getDefaultFontColor(isDarkTheme);
 		}
 
 		return fontColor;
@@ -177,7 +178,12 @@ public class Account implements ProvidesID, Iconizable
 	@Override
 	public String getDefaultFontColor(boolean isDarkTheme)
 	{
-		return ACCOUNT_FONT_COLOR;
+		if(isDarkTheme)
+		{
+			return FONT_COLOR_DARK_THEME;
+		}
+
+		return FONT_COLOR_LIGHT_THEME;
 	}
 
 	@Override
