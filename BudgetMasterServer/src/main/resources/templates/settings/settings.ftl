@@ -66,6 +66,14 @@
                                     <@settingsMacros.settingsCollapsibleItem "" "fas fa-database" locale.getString("menu.settings.database") true>
                                         <@settingsMacros.databaseNormal/>
                                         <@settingsMacros.databaseSmall/>
+                                        <div class="row no-margin-bottom">
+                                            <#if programArgs.isDebug()>
+                                                <br>
+                                                <div class="col s12 center-align">
+                                                    <@header.buttonLink url='/settings/database/createDemoData' icon='auto_fix_normal' localizationKey='settings.database.createDemoData' color='background-orange-dark'/>
+                                                </div>
+                                            </#if>
+                                        </div>
                                     </@settingsMacros.settingsCollapsibleItem>
                                 </ul>
                             </div>

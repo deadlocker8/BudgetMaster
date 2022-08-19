@@ -13,6 +13,7 @@ import de.deadlocker8.budgetmaster.hints.HintService;
 import de.deadlocker8.budgetmaster.services.ImportResultItem;
 import de.deadlocker8.budgetmaster.services.ImportService;
 import de.deadlocker8.budgetmaster.settings.containers.*;
+import de.deadlocker8.budgetmaster.settings.demo.DemoDateCreator;
 import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeyword;
 import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeywordRepository;
 import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeywordService;
@@ -100,11 +101,12 @@ public class SettingsController extends BaseController
 	private final BackupService backupService;
 	private final HintService hintService;
 	private final TransactionNameKeywordService keywordService;
+	private final DemoDateCreator demoDateCreator;
 
 	private final List<Integer> SEARCH_RESULTS_PER_PAGE_OPTIONS = Arrays.asList(10, 20, 25, 30, 50, 100);
 
 	@Autowired
-	public SettingsController(SettingsService settingsService, DatabaseService databaseService, CategoryService categoryService, ImportService importService, BudgetMasterUpdateService budgetMasterUpdateService, BackupService backupService, HintService hintService, TransactionNameKeywordService keywordService)
+	public SettingsController(SettingsService settingsService, DatabaseService databaseService, CategoryService categoryService, ImportService importService, BudgetMasterUpdateService budgetMasterUpdateService, BackupService backupService, HintService hintService, TransactionNameKeywordService keywordService, DemoDateCreator demoDateCreator)
 	{
 		this.settingsService = settingsService;
 		this.databaseService = databaseService;
@@ -114,6 +116,7 @@ public class SettingsController extends BaseController
 		this.backupService = backupService;
 		this.hintService = hintService;
 		this.keywordService = keywordService;
+		this.demoDateCreator = demoDateCreator;
 	}
 
 	@GetMapping
@@ -470,6 +473,16 @@ public class SettingsController extends BaseController
 		data.addProperty("localizedMessage", localizedMessage);
 
 		return data.toString();
+	}
+
+
+	@GetMapping("/database/createDemoData")
+	public String createDemoData(Model model)
+	{
+		demoDateCreator.createDemoData();
+
+		prepareBasicModel(model, settingsService.getSettings());
+		return ReturnValues.ALL_ENTITIES;
 	}
 
 	private void prepareBasicModel(Model model, Settings settings)
