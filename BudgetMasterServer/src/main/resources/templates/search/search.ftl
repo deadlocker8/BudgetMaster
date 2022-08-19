@@ -41,7 +41,7 @@
                                                 ${dateService.getDateStringNormal(transaction.date)}
                                             </div>
                                             <@transactionsMacros.transactionAccountIcon transaction/>
-                                            <@transactionsMacros.transactionType transaction/>
+                                            <@transactionsMacros.transactionType transaction "s2"/>
                                             <@transactionsMacros.transactionLinks transaction/>
                                         </div>
                                         <div class="row valign-wrapper no-margin-bottom">
@@ -52,12 +52,12 @@
                                     </div>
                                     <div class="hide-on-med-and-down">
                                         <div class="row valign-wrapper no-margin-bottom">
-                                            <div class="col l2 xl1 bold transaction-text transaction-line-height transaction-date">
+                                            <div class="col l2 xl1 bold transaction-text transaction-row-desktop transaction-date valign-wrapper">
                                                 ${dateService.getDateStringNormal(transaction.date)}
                                             </div>
                                             <@transactionsMacros.transactionCategory transaction "left-align"/>
                                             <@transactionsMacros.transactionAccountIcon transaction/>
-                                            <@transactionsMacros.transactionType transaction/>
+                                            <@transactionsMacros.transactionType transaction "l1 xl1"/>
                                             <@transactionsMacros.transactionNameAndDescription transaction "l3 xl4"/>
                                             <@transactionsMacros.transactionAmount transaction transaction.getAccount() "l2 xl2"/>
                                             <@transactionsMacros.transactionLinks transaction/>

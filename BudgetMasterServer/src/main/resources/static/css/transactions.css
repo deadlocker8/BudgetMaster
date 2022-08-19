@@ -34,10 +34,6 @@
     margin: auto;
 }
 
-.transaction-line-height {
-    line-height: 50px;
-}
-
 .transaction-row-top {
     padding: 14px 0.5rem 0 0.5rem;
 }
@@ -80,6 +76,10 @@
     min-width: 5.5rem;
     margin-top: 1.6rem;
     margin-bottom: 0.5rem;
+}
+
+.search-result .transaction-date {
+    margin: 0;
 }
 
 .new-transaction-button {
