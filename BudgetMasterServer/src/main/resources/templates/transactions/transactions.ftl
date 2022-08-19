@@ -77,7 +77,7 @@
                             </div>
 
                             <div class="hide-on-med-and-down transaction-row-top card transaction-card transaction-row-bottom background-light <#if transaction.isFuture()>transaction-row-transparent</#if> <#if shouldHighlight>background-blue-light transaction-row-transparent-override" id="highlighted-large"<#else>"</#if>>
-                                <div class="row valign-wrapper no-margin-bottom">
+                                <div class="row valign-wrapper no-margin-bottom transaction-row-desktop">
                                     <@transactionsMacros.transactionCategory transaction "left-align"/>
                                     <@transactionsMacros.transactionAccountIcon transaction/>
                                     <@transactionsMacros.transactionType transaction "l1 xl1"/>

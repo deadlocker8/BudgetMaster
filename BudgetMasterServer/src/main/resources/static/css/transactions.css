@@ -40,11 +40,14 @@
 
 .transaction-row-top {
     padding: 14px 0.5rem 0 0.5rem;
-    min-height: 3.4rem;
 }
 
 .transaction-row-bottom {
     padding-bottom: 14px;
+}
+
+.transaction-row-desktop {
+    min-height: 3.4rem;
 }
 
 .transaction-row-transparent {
