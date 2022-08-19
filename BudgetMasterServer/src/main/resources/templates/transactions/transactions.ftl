@@ -50,39 +50,42 @@
                         <@transactionsMacros.buttons filterConfiguration.isActive()/>
 
                         <#-- transactions list -->
-                        <br>
+                        <#assign lastDate=''/>
+
                         <#list transactions as transaction>
                             <#assign shouldHighlight = highlightID?? && transaction.getID()?? && transaction.getID()==highlightID/>
 
-                            <div class="hide-on-large-only transaction-row-top <#if transaction.isFuture()>transaction-row-transparent</#if> <#if shouldHighlight>background-blue-light transaction-row-transparent-override" id="highlighted-small"<#else>"</#if>>
-                                <div class="row valign-wrapper transaction-row-bottom">
-                                    <div class="col s3 center-align bold transaction-text">
-                                        ${dateService.getDateStringWithoutYear(transaction.date)}
-                                    </div>
-                                    <@transactionsMacros.transactionType transaction/>
-                                    <@transactionsMacros.transactionButtons transaction/>
+                            <#assign transactionDate=dateService.getDateStringWithoutYear(transaction.date)/>
+                            <#if transactionDate != lastDate>
+                                <div class="col s12 left-align bold transaction-text transaction-date">
+                                    ${transactionDate}
+                                </div>
+                                <#assign lastDate=transactionDate/>
+                            </#if>
+
+                            <div class="hide-on-large-only transaction-row-top card transaction-card background-light <#if transaction.isFuture()>transaction-row-transparent</#if> <#if shouldHighlight>background-blue-light transaction-row-transparent-override" id="highlighted-small"<#else>"</#if>>
+                                <div class="row valign-wrapper transaction-row-bottom no-margin-bottom">
+                                    <@transactionsMacros.transactionNameAndDescription transaction "s6"/>
+                                    <@transactionsMacros.transactionAmount transaction account "s6"/>
                                 </div>
                                 <div class="row valign-wrapper transaction-row-bottom">
                                     <@transactionsMacros.transactionCategory transaction "left-align no-margin-left"/>
                                     <@transactionsMacros.transactionAccountIcon transaction/>
-                                    <@transactionsMacros.transactionNameAndDescription transaction "s5"/>
-                                    <@transactionsMacros.transactionAmount transaction account "s4"/>
+                                    <@transactionsMacros.transactionType transaction "s2"/>
+                                    <@transactionsMacros.transactionButtons transaction "s6 right-align"/>
                                 </div>
                             </div>
-                            <div class="hide-on-med-and-down transaction-row-top transaction-row-bottom <#if transaction.isFuture()>transaction-row-transparent</#if> <#if shouldHighlight>background-blue-light transaction-row-transparent-override" id="highlighted-large"<#else>"</#if>>
+
+                            <div class="hide-on-med-and-down transaction-row-top card transaction-card transaction-row-bottom background-light <#if transaction.isFuture()>transaction-row-transparent</#if> <#if shouldHighlight>background-blue-light transaction-row-transparent-override" id="highlighted-large"<#else>"</#if>>
                                 <div class="row valign-wrapper no-margin-bottom">
-                                    <div class="col l1 xl1 bold transaction-text transaction-line-height">
-                                        ${dateService.getDateStringWithoutYear(transaction.date)}
-                                    </div>
                                     <@transactionsMacros.transactionCategory transaction "left-align"/>
                                     <@transactionsMacros.transactionAccountIcon transaction/>
-                                    <@transactionsMacros.transactionType transaction/>
+                                    <@transactionsMacros.transactionType transaction "l1 xl1"/>
                                     <@transactionsMacros.transactionNameAndDescription transaction "l4 xl5"/>
-                                    <@transactionsMacros.transactionAmount transaction account "l3 xl3"/>
-                                    <@transactionsMacros.transactionButtons transaction/>
+                                    <@transactionsMacros.transactionAmount transaction account "l3 xl3 center-align"/>
+                                    <@transactionsMacros.transactionButtons transaction "l2 xl1"/>
                                 </div>
                             </div>
-                            <hr>
                         </#list>
 
                         <#-- show placeholde text if no transactions are present in the current month or REST ist the only transaction -->

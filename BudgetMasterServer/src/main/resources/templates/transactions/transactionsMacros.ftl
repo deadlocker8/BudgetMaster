@@ -1,8 +1,8 @@
 <#import "/spring.ftl" as s>
 <#import "../helpers/header.ftl" as header>
 
-<#macro transactionType transaction>
-    <div class="col s3 l1 xl1 left-align">
+<#macro transactionType transaction size>
+    <div class="col ${size} left-align">
         <#if transaction.isRepeating()>
             <i class="material-icons">repeat</i>
         </#if>
@@ -48,8 +48,8 @@
     </#if>
 </#macro>
 
-<#macro transactionButtons transaction>
-        <div class="col s6 l2 xl1 right-align transaction-buttons no-wrap">
+<#macro transactionButtons transaction classes>
+        <div class="col ${classes} transaction-buttons no-wrap">
             <#if transaction.isEditable()>
                 <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default"/>
                 <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/requestDelete' icon='delete' localizationKey='' classes="no-padding text-default button-request-delete-transaction" isDataUrl=true/>
@@ -87,11 +87,9 @@
 
 
 <#macro placeholder transactions>
-    <#assign isOnlyRest = transactions?size == 1 && transactions[0].category.type.name() == "REST"/>
-    <#if isOnlyRest>
-        <br>
-    </#if>
+    <br>
 
+    <#assign isOnlyRest = transactions?size == 1 && transactions[0].category.type.name() == "REST"/>
     <#if transactions?size == 0 || isOnlyRest>
         <div class="row">
             <div class="col s12">

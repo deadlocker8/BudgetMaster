@@ -39,12 +39,12 @@
 }
 
 .transaction-row-top {
-    padding-top: 14px;
+    padding: 14px 0.5rem 0 0.5rem;
+    min-height: 3.4rem;
 }
 
 .transaction-row-bottom {
-    padding-bottom: 5px;
-    margin-bottom: 0;
+    padding-bottom: 14px;
 }
 
 .transaction-row-transparent {
@@ -53,6 +53,10 @@
 
 .transaction-row-transparent-override {
     opacity: 1.0 !important;
+}
+
+.transaction-card {
+    margin: 0.4rem 0 0.8rem 0;
 }
 
 .transaction-text {
@@ -71,6 +75,8 @@
 
 .transaction-date {
     min-width: 5.5rem;
+    margin-top: 1.6rem;
+    margin-bottom: 0.5rem;
 }
 
 .new-transaction-button {
