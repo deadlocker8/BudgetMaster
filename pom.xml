@@ -55,10 +55,10 @@
         <app.versionCode>39</app.versionCode>
         <app.author>Robert Goldmann</app.author>
 
-        <testcontainer.version>1.17.2</testcontainer.version>
-        <assertj-core.version>3.22.0</assertj-core.version>
+        <testcontainer.version>1.17.3</testcontainer.version>
+        <assertj-core.version>3.23.1</assertj-core.version>
 
-        <dependency-check-maven.version>7.1.0</dependency-check-maven.version>
+        <dependency-check-maven.version>7.1.1</dependency-check-maven.version>
     </properties>
 
     <dependencies>
