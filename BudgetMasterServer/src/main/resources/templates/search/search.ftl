@@ -51,8 +51,8 @@
                                         </div>
                                     </div>
                                     <div class="hide-on-med-and-down">
-                                        <div class="row valign-wrapper no-margin-bottom">
-                                            <div class="col l2 xl1 bold transaction-text transaction-row-desktop transaction-date valign-wrapper">
+                                        <div class="row valign-wrapper no-margin-bottom transaction-row-desktop">
+                                            <div class="col l2 xl1 bold transaction-text transaction-date valign-wrapper">
                                                 ${dateService.getDateStringNormal(transaction.date)}
                                             </div>
                                             <@transactionsMacros.transactionCategory transaction "left-align"/>
