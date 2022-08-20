@@ -57,10 +57,14 @@
 
                             <#assign transactionDate=dateService.getDateStringWithoutYear(transaction.date)/>
                             <#if transactionDate != lastDate>
-                                <div class="col s12 left-align bold transaction-text transaction-date">
-                                    ${transactionDate}
-                                </div>
-                                <#assign lastDate=transactionDate/>
+                                <#if !transaction?is_first>
+                                    </div> <#-- close "transaction-date-group" div from previous loop iteration -->
+                                </#if>
+                                <div class="transaction-date-group">
+                                    <div class="col s12 left-align bold transaction-text transaction-date">
+                                        ${transactionDate}
+                                    </div>
+                                    <#assign lastDate=transactionDate/>
                             </#if>
 
                             <div class="hide-on-large-only transaction-row-top card transaction-card background-light <#if transaction.isFuture()>transaction-row-transparent</#if> <#if shouldHighlight>background-blue-light transaction-row-transparent-override" id="highlighted-small"<#else>"</#if>>

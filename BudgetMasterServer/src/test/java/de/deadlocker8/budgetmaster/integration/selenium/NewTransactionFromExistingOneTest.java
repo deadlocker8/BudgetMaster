@@ -49,7 +49,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		List<WebElement> columns = transactionsRows.get(0).findElements(By.className("col"));
-		columns.get(5).findElement(By.className("button-new-from-existing")).click();
+		columns.get(4).findElement(By.className("button-new-from-existing")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Transaction"));
@@ -87,7 +87,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		List<WebElement> columns = transactionsRows.get(0).findElements(By.className("col"));
-		columns.get(5).findElement(By.className("button-new-from-existing")).click();
+		columns.get(4).findElement(By.className("button-new-from-existing")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Transfer"));
@@ -125,7 +125,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		List<WebElement> columns = transactionsRows.get(0).findElements(By.className("col"));
-		columns.get(5).findElement(By.className("button-new-from-existing")).click();
+		columns.get(4).findElement(By.className("button-new-from-existing")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Transaction"));
@@ -159,7 +159,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		List<WebElement> columns = transactionsRows.get(0).findElements(By.className("col"));
-		columns.get(5).findElement(By.className("button-new-from-existing")).click();
+		columns.get(4).findElement(By.className("button-new-from-existing")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Transaction"));

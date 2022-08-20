@@ -114,12 +114,18 @@ class NewTransactionNormalTest extends SeleniumTestBase
 		transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		assertThat(transactionsRows).hasSize(numberOfTransactionsBefore + 1);
 
-		final WebElement row = transactionsRows.get(0);
-		final List<WebElement> columns = row.findElements(By.className("col"));
-		assertThat(columns).hasSize(6);
+		final List<WebElement> transactionDateGroups = driver.findElements(By.className("transaction-date-group"));
+
+		final WebElement dateGroup = transactionDateGroups.get(0);
+		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", TransactionTestHelper.getDateString(day));
+		final List<WebElement> transactionsInGroup = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+
+		final WebElement transactionRow = transactionsInGroup.get(0);
+		final List<WebElement> columns = transactionRow.findElements(By.className("col"));
+		assertThat(columns).hasSize(5);
 
 		// check columns
-		TransactionTestHelper.assertTransactionColumns(columns, TransactionTestHelper.getDateString(day), categoryName, "rgb(46, 124, 43)", false, false, name, description, amount);
+		TransactionTestHelper.assertTransactionColumns(columns, categoryName, "rgb(46, 124, 43)", false, false, name, description, amount);
 	}
 
 	@Test
@@ -156,12 +162,19 @@ class NewTransactionNormalTest extends SeleniumTestBase
 		transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		assertThat(transactionsRows).hasSize(numberOfTransactionsBefore + 1);
 
-		final WebElement row = transactionsRows.get(0);
-		final List<WebElement> columns = row.findElements(By.className("col"));
-		assertThat(columns).hasSize(6);
+
+		final List<WebElement> transactionDateGroups = driver.findElements(By.className("transaction-date-group"));
+
+		final WebElement dateGroup = transactionDateGroups.get(0);
+		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", TransactionTestHelper.getDateString(day));
+		final List<WebElement> transactionsInGroup = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+
+		final WebElement transactionRow = transactionsInGroup.get(0);
+		final List<WebElement> columns = transactionRow.findElements(By.className("col"));
+		assertThat(columns).hasSize(5);
 
 		// check columns
-		TransactionTestHelper.assertTransactionColumns(columns, TransactionTestHelper.getDateString(day), categoryName, "rgb(46, 124, 43)", false, false, name, description, "-" + amount);
+		TransactionTestHelper.assertTransactionColumns(columns, categoryName, "rgb(46, 124, 43)", false, false, name, description, "-" + amount);
 	}
 
 	@Test
@@ -282,12 +295,18 @@ class NewTransactionNormalTest extends SeleniumTestBase
 		transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		assertThat(transactionsRows).hasSize(numberOfTransactionsBefore + 1);
 
-		final WebElement row = transactionsRows.get(0);
-		final List<WebElement> columns = row.findElements(By.className("col"));
-		assertThat(columns).hasSize(6);
+		final List<WebElement> transactionDateGroups = driver.findElements(By.className("transaction-date-group"));
+
+		final WebElement dateGroup = transactionDateGroups.get(0);
+		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", TransactionTestHelper.getDateString(day));
+		final List<WebElement> transactionsInGroup = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+
+		final WebElement transactionRow = transactionsInGroup.get(0);
+		final List<WebElement> columns = transactionRow.findElements(By.className("col"));
+		assertThat(columns).hasSize(5);
 
 		// check columns
-		TransactionTestHelper.assertTransactionColumns(columns, TransactionTestHelper.getDateString(day), categoryName, "rgb(46, 124, 43)", false, false, name, null, "-" + amount);
+		TransactionTestHelper.assertTransactionColumns(columns, categoryName, "rgb(46, 124, 43)", false, false, name, null, "-" + amount);
 	}
 
 	@Test
@@ -358,11 +377,17 @@ class NewTransactionNormalTest extends SeleniumTestBase
 		transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		assertThat(transactionsRows).hasSize(numberOfTransactionsBefore + 1);
 
-		final WebElement row = transactionsRows.get(0);
-		final List<WebElement> columns = row.findElements(By.className("col"));
-		assertThat(columns).hasSize(6);
+		final List<WebElement> transactionDateGroups = driver.findElements(By.className("transaction-date-group"));
+
+		final WebElement dateGroup = transactionDateGroups.get(0);
+		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", TransactionTestHelper.getDateString(day));
+		final List<WebElement> transactionsInGroup = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+
+		final WebElement transactionRow = transactionsInGroup.get(0);
+		final List<WebElement> columns = transactionRow.findElements(By.className("col"));
+		assertThat(columns).hasSize(5);
 
 		// check columns
-		TransactionTestHelper.assertTransactionColumns(columns, TransactionTestHelper.getDateString(day), categoryName, "rgb(46, 124, 43)", false, false, name, null, amount);
+		TransactionTestHelper.assertTransactionColumns(columns, categoryName, "rgb(46, 124, 43)", false, false, name, null, amount);
 	}
 }

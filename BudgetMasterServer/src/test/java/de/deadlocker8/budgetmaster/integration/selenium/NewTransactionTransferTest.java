@@ -13,9 +13,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -112,15 +110,18 @@ class NewTransactionTransferTest extends SeleniumTestBase
 		// assert
 		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
 
-		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
-		assertThat(transactionsRows).hasSize(2);
+		final List<WebElement> transactionDateGroups = driver.findElements(By.className("transaction-date-group"));
 
-		final WebElement row = transactionsRows.get(0);
-		final List<WebElement> columns = row.findElements(By.className("col"));
-		assertThat(columns).hasSize(6);
+		final WebElement dateGroup = transactionDateGroups.get(0);
+		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", TransactionTestHelper.getDateString(day));
+		final List<WebElement> transactionsInGroup = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+
+		final WebElement transactionRow = transactionsInGroup.get(0);
+		final List<WebElement> columns = transactionRow.findElements(By.className("col"));
+		assertThat(columns).hasSize(5);
 
 		// check columns
-		TransactionTestHelper.assertTransactionColumns(columns, TransactionTestHelper.getDateString(day), categoryName, "rgb(46, 124, 43)", false, true, name, description, amount);
+		TransactionTestHelper.assertTransactionColumns(columns, categoryName, "rgb(46, 124, 43)", false, true, name, description, amount);
 	}
 
 	@Test

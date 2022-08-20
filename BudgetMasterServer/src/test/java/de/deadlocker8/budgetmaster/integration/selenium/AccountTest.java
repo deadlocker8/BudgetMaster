@@ -349,7 +349,7 @@ class AccountTest extends SeleniumTestBase
 		final List<WebElement> columns = row.findElements(By.className("col"));
 
 		// check columns
-		final List<WebElement> icons = columns.get(5).findElements(By.tagName("i"));
+		final List<WebElement> icons = columns.get(4).findElements(By.tagName("i"));
 		assertThat(icons).hasSize(1);
 		assertThat(icons.get(0).getText()).isEqualTo("content_copy");
 	}

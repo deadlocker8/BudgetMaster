@@ -16,19 +16,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class TransactionTestHelper
 {
-	public static void assertTransactionColumns(List<WebElement> columns, String shortDate, String categoryName, String categoryColor, boolean repeatIconVisible, boolean transferIconIsVisible, String name, String description, String amount)
+	public static void assertTransactionColumns(List<WebElement> columns, String categoryName, String categoryColor, boolean repeatIconVisible, boolean transferIconIsVisible, String name, String description, String amount)
 	{
-		// date
-		assertThat(columns.get(0)).hasFieldOrPropertyWithValue("text", shortDate);
-
 		// category
-		final WebElement categoryCircle = columns.get(1).findElement(By.className("category-circle"));
+		final WebElement categoryCircle = columns.get(0).findElement(By.className("category-circle"));
 		assertThat(categoryCircle.getCssValue("background-color")).isEqualTo(categoryColor);
 		categoryName = categoryName.substring(0, 1).toUpperCase();
 		assertThat(categoryCircle.findElement(By.tagName("span"))).hasFieldOrPropertyWithValue("text", categoryName);
 
 		// icon
-		final List<WebElement> icons = columns.get(2).findElements(By.tagName("i"));
+		final List<WebElement> icons = columns.get(1).findElements(By.tagName("i"));
 		assertThat(icons).hasSize(determineNumberOfTransactionTypeIcons(repeatIconVisible, transferIconIsVisible));
 		assertThat(icons.get(0).isDisplayed()).isEqualTo(repeatIconVisible || transferIconIsVisible);
 		if(repeatIconVisible)
@@ -41,19 +38,19 @@ public class TransactionTestHelper
 		}
 
 		// name
-		assertThat(columns.get(3).findElement(By.className("transaction-text")).getText())
+		assertThat(columns.get(2).findElement(By.className("transaction-text")).getText())
 				.isEqualTo(name);
 
 		//description
 		if(description != null)
 		{
-			assertThat(columns.get(3).findElement(By.className("italic")).getText())
+			assertThat(columns.get(2).findElement(By.className("italic")).getText())
 					.isEqualTo(description);
 		}
 
 
 		// amount
-		assertThat(columns.get(4).getText()).contains(amount);
+		assertThat(columns.get(3).getText()).contains(amount);
 	}
 
 	private static int determineNumberOfTransactionTypeIcons(boolean repeatIconVisible, boolean transferIconIsVisible)

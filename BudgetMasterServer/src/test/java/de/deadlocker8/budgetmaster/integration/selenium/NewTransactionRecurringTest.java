@@ -73,10 +73,10 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		for(WebElement row : transactionsRows)
 		{
 			final List<WebElement> columns = row.findElements(By.className("col"));
-			final String name = columns.get(3).findElement(By.className("transaction-text")).getText();
+			final String name = columns.get(2).findElement(By.className("transaction-text")).getText();
 			if(name.equals(TRANSACTION_NAME))
 			{
-				columns.get(5).findElements(By.tagName("a")).get(1).click();
+				columns.get(4).findElements(By.tagName("a")).get(1).click();
 
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 				wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector("#modalConfirmDelete .modal-content h4"), "Delete Entry"));
@@ -134,12 +134,18 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		assertThat(transactionsRows).hasSizeGreaterThan(2);
 
-		final WebElement row = transactionsRows.get(transactionsRows.size() - 2);
-		final List<WebElement> columns = row.findElements(By.className("col"));
-		assertThat(columns).hasSize(6);
+		final List<WebElement> transactionDateGroups = driver.findElements(By.className("transaction-date-group"));
+
+		final WebElement dateGroup = transactionDateGroups.get(transactionDateGroups.size() - 2);
+		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", TransactionTestHelper.getDateString(day));
+		final List<WebElement> transactionsInGroup = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+
+		final WebElement transactionRow = transactionsInGroup.get(0);
+		final List<WebElement> columns = transactionRow.findElements(By.className("col"));
+		assertThat(columns).hasSize(5);
 
 		// check columns
-		TransactionTestHelper.assertTransactionColumns(columns, TransactionTestHelper.getDateString(day), categoryName, "rgb(46, 124, 43)", true, false, TRANSACTION_NAME, description, amount);
+		TransactionTestHelper.assertTransactionColumns(columns, categoryName, "rgb(46, 124, 43)", true, false, TRANSACTION_NAME, description, amount);
 	}
 
 	@Test
@@ -190,12 +196,18 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		assertThat(transactionsRows).hasSizeGreaterThan(2);
 
-		final WebElement row = transactionsRows.get(transactionsRows.size() - 2);
-		final List<WebElement> columns = row.findElements(By.className("col"));
-		assertThat(columns).hasSize(6);
+		final List<WebElement> transactionDateGroups = driver.findElements(By.className("transaction-date-group"));
+
+		final WebElement dateGroup = transactionDateGroups.get(transactionDateGroups.size() - 2);
+		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", TransactionTestHelper.getDateString(day));
+		final List<WebElement> transactionsInGroup = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+
+		final WebElement transactionRow = transactionsInGroup.get(0);
+		final List<WebElement> columns = transactionRow.findElements(By.className("col"));
+		assertThat(columns).hasSize(5);
 
 		// check columns
-		TransactionTestHelper.assertTransactionColumns(columns, TransactionTestHelper.getDateString(day), categoryName, "rgb(46, 124, 43)", true, false, TRANSACTION_NAME, description, "-" + amount);
+		TransactionTestHelper.assertTransactionColumns(columns, categoryName, "rgb(46, 124, 43)", true, false, TRANSACTION_NAME, description, "-" + amount);
 	}
 
 	@Test
@@ -246,15 +258,21 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		assertThat(transactionsRows).hasSizeGreaterThan(2);
 
-		final WebElement row = transactionsRows.get(transactionsRows.size() - 2);
-		final List<WebElement> columns = row.findElements(By.className("col"));
-		assertThat(columns).hasSize(6);
+		final List<WebElement> transactionDateGroups = driver.findElements(By.className("transaction-date-group"));
+
+		final WebElement dateGroup = transactionDateGroups.get(transactionDateGroups.size() - 2);
+		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", TransactionTestHelper.getDateString(day));
+		final List<WebElement> transactionsInGroup = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+
+		final WebElement transactionRow = transactionsInGroup.get(0);
+		final List<WebElement> columns = transactionRow.findElements(By.className("col"));
+		assertThat(columns).hasSize(5);
 
 		// check columns
-		TransactionTestHelper.assertTransactionColumns(columns, TransactionTestHelper.getDateString(day), categoryName, "rgb(46, 124, 43)", true, true, TRANSACTION_NAME, description, amount);
+		TransactionTestHelper.assertTransactionColumns(columns, categoryName, "rgb(46, 124, 43)", true, true, TRANSACTION_NAME, description, amount);
 
 		// open transaction in edit view again
-		columns.get(5).findElement(By.cssSelector("a")).click();
+		columns.get(4).findElement(By.cssSelector("a")).click();
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Edit " + type));
 
 		assertThat(driver.findElement(By.cssSelector(".account-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("2");

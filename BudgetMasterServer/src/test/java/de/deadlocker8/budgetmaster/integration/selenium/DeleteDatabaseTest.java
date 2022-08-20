@@ -65,10 +65,17 @@ class DeleteDatabaseTest extends SeleniumTestBase
 		// assert only transaction "rest" is showing
 		TransactionTestHelper.selectGlobalAccountByName(driver, "Default Account");
 		TransactionTestHelper.gotoSpecificYearAndMonth(driver, 2022, "March");
-		final List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
-		assertThat(transactionsRows).hasSize(1);
-		final WebElement row = transactionsRows.get(0);
-		final List<WebElement> columns = row.findElements(By.className("col"));
-		TransactionTestHelper.assertTransactionColumns(columns, "01.03.", "Rest", "rgb(255, 255, 0)", false, false, "Rest", null, "0.00");
+
+		final List<WebElement> transactionDateGroups = driver.findElements(By.className("transaction-date-group"));
+		assertThat(transactionDateGroups).hasSize(1);
+
+		final WebElement dateGroup = transactionDateGroups.get(0);
+		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", "01.03.");
+		final List<WebElement> transactionsInGroup = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		assertThat(transactionsInGroup).hasSize(1);
+
+		final WebElement transactionRow = transactionsInGroup.get(0);
+		final List<WebElement> columns = transactionRow.findElements(By.className("col"));
+		TransactionTestHelper.assertTransactionColumns(columns, "Rest", "rgb(255, 255, 0)", false, false, "Rest", null, "0.00");
 	}
 }
