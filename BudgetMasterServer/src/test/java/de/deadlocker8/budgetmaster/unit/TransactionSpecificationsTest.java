@@ -474,4 +474,18 @@ class TransactionSpecificationsTest
 				.contains(transferTransaction)
 				.contains(transferTransactionWrongAccount);
 	}
+
+	@Test
+	void checkOrder()
+	{
+		Specification spec = TransactionSpecifications.withDynamicQuery(startDate, LocalDate.now(), account, true, true, true, null, List.of(), List.of(), null);
+
+		List<Transaction> results = transactionRepository.findAll(spec);
+		assertThat(results).hasSize(5)
+				.containsExactly(transaction3,
+						transaction2,
+						transferTransaction,
+						transaction1,
+						repeatingTransaction);
+	}
 }
