@@ -31,7 +31,6 @@ class DeleteDatabaseTest extends SeleniumTestBase
 		helper.login(UserService.DEFAULT_PASSWORD);
 		helper.hideBackupReminder();
 		helper.hideWhatsNewDialog();
-		helper.hideMigrationDialog();
 
 		String path = getClass().getClassLoader().getResource("DatabaseDeleteTest.json").getFile().replace("/", File.separator);
 		helper.uploadDatabase(path);

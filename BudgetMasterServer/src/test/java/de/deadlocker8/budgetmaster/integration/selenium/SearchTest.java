@@ -26,7 +26,6 @@ class SearchTest extends SeleniumTestBase
 		helper.login(UserService.DEFAULT_PASSWORD);
 		helper.hideBackupReminder();
 		helper.hideWhatsNewDialog();
-		helper.hideMigrationDialog();
 
 		String path = getClass().getClassLoader().getResource("SearchDatabase.json").getFile().replace("/", File.separator);
 		helper.uploadDatabase(path);

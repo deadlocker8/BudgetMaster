@@ -39,14 +39,6 @@ public class Strings
 	public static final String WARNING_EMPTY_GIT_USER_NAME = "warning.empty.git.user.name";
 	public static final String WARNING_EMPTY_GIT_TOKEN = "warning.empty.git.token";
 
-	public static final String WARNING_EMPTY_MIGRATION_HOSTNAME = "warning.empty.migration.hostname";
-	public static final String WARNING_EMPTY_MIGRATION_PORT = "warning.empty.migration.port";
-	public static final String WARNING_EMPTY_MIGRATION_DATABASE_NAME = "warning.empty.migration.databaseName";
-	public static final String WARNING_EMPTY_MIGRATION_USERNAME = "warning.empty.migration.username";
-	public static final String WARNING_EMPTY_MIGRATION_PASSWORD = "warning.empty.migration.password";
-
-	public static final String WARNING_WRONG_MIGRATION_VERIFICATION_PASSWORD = "migration.settings.verification.password.wrong";
-
 
 	//REPORT
 	public static final String REPORT_FOOTER_LEFT = "report.footer.left";

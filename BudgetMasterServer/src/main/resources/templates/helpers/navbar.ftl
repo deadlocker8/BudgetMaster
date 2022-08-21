@@ -55,7 +55,6 @@
 
     <@backupReminder settings/>
     <@whatsNewModal settings/>
-    <@migrationModal activeID/>
 
     <div id="globalAccountSelectModalOnDemand"></div>
 </#macro>
@@ -165,20 +164,5 @@
 <#macro whatsNewModal settings>
     <#if settings.needToShowWhatsNew()>
         <div id="whatsNewModelContainer" data-url="<@s.url '/about/whatsNewModal'/>"></div>
-    </#if>
-</#macro>
-
-<#macro migrationModal loadedPage>
-    <#if migrationService.needToShowMigrationDialog(loadedPage)>
-        <div id="modalMigration" class="modal background-color">
-            <div class="modal-content">
-                <h4>${locale.getString("info.title.migration")}</h4>
-                <p>${locale.getString("info.text.migration")}</p>
-            </div>
-            <div class="modal-footer background-color">
-                <@header.buttonLink url='/migration/cancel' icon='clear' localizationKey='cancel' color='red' id='buttonCloseMigration' classes='modal-action modal-close text-white'/>
-                <@header.buttonLink url='/migration' icon='merge' localizationKey='info.button.migration' color='green' id='buttonStartMigration' classes='modal-action modal-close text-white'/>
-            </div>
-        </div>
     </#if>
 </#macro>

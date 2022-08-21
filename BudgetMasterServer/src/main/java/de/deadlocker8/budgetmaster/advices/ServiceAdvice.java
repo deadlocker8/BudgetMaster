@@ -1,6 +1,5 @@
 package de.deadlocker8.budgetmaster.advices;
 
-import de.deadlocker8.budgetmaster.migration.MigrationService;
 import de.deadlocker8.budgetmaster.services.CurrencyService;
 import de.deadlocker8.budgetmaster.services.DateService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
@@ -24,9 +23,6 @@ public class ServiceAdvice
 	@Autowired
 	BudgetMasterUpdateService updateService;
 
-	@Autowired
-	MigrationService migrationService;
-
 	@ModelAttribute("helpers")
 	public HelpersService getHelpers()
 	{
@@ -49,11 +45,5 @@ public class ServiceAdvice
 	public BudgetMasterUpdateService getUpdateService()
 	{
 		return updateService;
-	}
-
-	@ModelAttribute("migrationService")
-	public MigrationService getMigrationService()
-	{
-		return migrationService;
 	}
 }
