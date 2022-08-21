@@ -1,7 +1,0 @@
-package de.deadlocker8.budgetmaster.databasemigrator.destination.templateGroup;
-
-import de.deadlocker8.budgetmaster.databasemigrator.destination.DestinationIntegerRepository;
-
-public interface DestinationTemplateGroupIntegerRepository extends DestinationIntegerRepository<DestinationTemplateGroup, Integer>
-{
-}
