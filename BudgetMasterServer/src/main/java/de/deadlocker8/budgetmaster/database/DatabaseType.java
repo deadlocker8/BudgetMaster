@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.migration;
+package de.deadlocker8.budgetmaster.database;
 
 public enum DatabaseType
 {
