@@ -44,6 +44,11 @@ public class DateService
 		return getDateString(date, DateFormatStyle.DATE_TIME);
 	}
 
+	public String getDateStringWithMonthName(LocalDate date)
+	{
+		return getDateString(date, DateFormatStyle.LONG_WITH_MONTH_NAME);
+	}
+
 	private String getDateString(LocalDate date, DateFormatStyle formatStyle)
 	{
 		return date.format(DateTimeFormatter.ofPattern(formatStyle.getKey()).withLocale(settingsService.getSettings().getLanguage().getLocale()));

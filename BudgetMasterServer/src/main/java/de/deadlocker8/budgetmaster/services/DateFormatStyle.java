@@ -6,7 +6,8 @@ public enum DateFormatStyle
 	NO_YEAR("dd.MM."),
 	LONG("dd.MM.yyyy"),
 	LONG_MONTH_AND_YEAR("MMMM yyyy"),
-	DATE_TIME("dd.MM.yyyy HH:mm");
+	DATE_TIME("dd.MM.yyyy HH:mm"),
+	LONG_WITH_MONTH_NAME("dd. MMMM yyyy");
 
 	private final String key;
 

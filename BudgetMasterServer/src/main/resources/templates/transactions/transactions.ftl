@@ -55,13 +55,13 @@
                         <#list transactions as transaction>
                             <#assign shouldHighlight = highlightID?? && transaction.getID()?? && transaction.getID()==highlightID/>
 
-                            <#assign transactionDate=dateService.getDateStringWithoutYear(transaction.date)/>
+                            <#assign transactionDate=dateService.getDateStringWithMonthName(transaction.date)?upper_case/>
                             <#if transactionDate != lastDate>
                                 <#if !transaction?is_first>
                                     </div> <#-- close "transaction-date-group" div from previous loop iteration -->
                                 </#if>
                                 <div class="transaction-date-group">
-                                    <div class="col s12 left-align bold transaction-text transaction-date">
+                                    <div class="col s12 center-align bold transaction-text transaction-date">
                                         ${transactionDate}
                                     </div>
                                     <#assign lastDate=transactionDate/>

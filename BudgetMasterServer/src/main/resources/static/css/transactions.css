@@ -76,10 +76,14 @@
     min-width: 5.5rem;
     margin-top: 1.6rem;
     margin-bottom: 0.5rem;
+    color: #FFFFFFDD;
+    letter-spacing: 0.1rem;
 }
 
 .search-result .transaction-date {
     margin: 0;
+    color: var(--color-text);
+    letter-spacing: normal;
 }
 
 .new-transaction-button {
