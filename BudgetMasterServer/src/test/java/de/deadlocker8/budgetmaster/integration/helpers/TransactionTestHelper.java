@@ -104,7 +104,7 @@ public class TransactionTestHelper
 
 	public static String getDateString(int day)
 	{
-		return String.format("%02d.%s", day, new SimpleDateFormat("MM.").format(new Date()));
+		return String.format("%02d. %s", day, new SimpleDateFormat("MMMM yyyy").format(new Date()).toUpperCase());
 	}
 
 	public static void selectGlobalAccountByName(WebDriver driver, String accountName)
