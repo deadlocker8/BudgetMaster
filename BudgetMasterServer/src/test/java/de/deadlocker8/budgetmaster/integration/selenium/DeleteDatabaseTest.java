@@ -70,7 +70,7 @@ class DeleteDatabaseTest extends SeleniumTestBase
 		assertThat(transactionDateGroups).hasSize(1);
 
 		final WebElement dateGroup = transactionDateGroups.get(0);
-		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", "01.03.");
+		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", "01. MARCH 2022");
 		final List<WebElement> transactionsInGroup = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		assertThat(transactionsInGroup).hasSize(1);
 
