@@ -324,4 +324,15 @@ class TransactionSearchSpecificationsTest
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).containsExactly(transactionWithMultipleTags, repeatingTransaction);
 	}
+
+	@Test
+	void getMatches_IgnoreOrderOfSearchWords()
+	{
+		Search search = new Search("TagMaster I the am", true, false, false, false, false, 0);
+		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
+
+		List<Transaction> results = transactionRepository.findAll(spec);
+		assertThat(results).hasSize(1)
+				.contains(transactionWithMultipleTags);
+	}
 }

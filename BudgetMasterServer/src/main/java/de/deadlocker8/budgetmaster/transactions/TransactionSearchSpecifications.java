@@ -11,6 +11,7 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TransactionSearchSpecifications
@@ -22,30 +23,63 @@ public class TransactionSearchSpecifications
 	public static Specification<Transaction> withDynamicQuery(final Search search)
 	{
 		return (transaction, query, builder) -> {
-			final String pattern = "%" + search.getSearchText().toLowerCase() + "%";
+			final String searchText = search.getSearchText().toLowerCase();
+			final List<String> searchTextParts = Arrays.stream(searchText.split(" "))
+					.map(part -> "%" + part + "%")
+					.toList();
 
 			List<Predicate> predicates = new ArrayList<>();
 
 			if(search.isSearchName())
 			{
-				predicates.add(builder.like(builder.lower(transaction.get(Transaction_.name)), pattern));
+				final List<Predicate> predicatesName = new ArrayList<>();
+				for(String part : searchTextParts)
+				{
+					predicatesName.add(builder.like(builder.lower(transaction.get(Transaction_.name)), part));
+				}
+
+				final Predicate[] predicatesArray = new Predicate[predicatesName.size()];
+				predicates.add(builder.and(predicatesName.toArray(predicatesArray)));
 			}
 
 			if(search.isSearchDescription())
 			{
-				predicates.add(builder.like(builder.lower(transaction.get(Transaction_.description)), pattern));
+				final List<Predicate> predicatesDescription = new ArrayList<>();
+				for(String part : searchTextParts)
+				{
+					predicatesDescription.add(builder.like(builder.lower(transaction.get(Transaction_.description)), part));
+				}
+
+				final Predicate[] predicatesArray = new Predicate[predicatesDescription.size()];
+				predicates.add(builder.and(predicatesDescription.toArray(predicatesArray)));
 			}
 
 			if(search.isSearchCategory())
 			{
+				final List<Predicate> predicatesCategories = new ArrayList<>();
+
 				Join<Transaction, Category> categoryJoin = transaction.join(Transaction_.category, JoinType.INNER);
-				predicates.add(builder.like(builder.lower(categoryJoin.get("name").as(String.class)), pattern));
+				for(String part : searchTextParts)
+				{
+					predicatesCategories.add(builder.like(builder.lower(categoryJoin.get("name").as(String.class)), part));
+				}
+
+				final Predicate[] predicatesArray = new Predicate[predicatesCategories.size()];
+				predicates.add(builder.and(predicatesCategories.toArray(predicatesArray)));
 			}
 
 			if(search.isSearchTags())
 			{
+				final List<Predicate> predicatesTags = new ArrayList<>();
 				Join<Transaction, Tag> tagJoin = transaction.join(Transaction_.tags, JoinType.LEFT);
-				predicates.add(builder.like(builder.lower(tagJoin.get(Tag_.name).as(String.class)), pattern));
+
+				for(String part : searchTextParts)
+				{
+					predicatesTags.add(builder.like(builder.lower(tagJoin.get(Tag_.name).as(String.class)), part));
+				}
+
+				final Predicate[] predicatesArray = new Predicate[predicatesTags.size()];
+				predicates.add(builder.and(predicatesTags.toArray(predicatesArray)));
 			}
 
 			Predicate[] predicatesArray = new Predicate[predicates.size()];
