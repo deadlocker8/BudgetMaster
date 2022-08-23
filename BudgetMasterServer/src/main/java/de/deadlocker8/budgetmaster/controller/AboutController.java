@@ -53,6 +53,7 @@ public class AboutController extends BaseController
 		newsEntries.add(NewsEntry.createWithLocalizationKey("groupTransactionsByDate"));
 		newsEntries.add(NewsEntry.createWithLocalizationKey("dateMandatory"));
 		newsEntries.add(NewsEntry.createWithLocalizationKey("autoCloseDatePicker"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("search"));
 		newsEntries.add(NewsEntry.createWithLocalizationKey("fix.accountSelect"));
 
 		model.addAttribute(ModelAttributes.NEWS_ENTRIES, newsEntries);
