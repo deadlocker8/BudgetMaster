@@ -25,19 +25,19 @@
                         <div class="row">
                             <div class="col s4">
                                 <div class="icon-block">
-                                    <h1 class="center text-green budget-headline-icon"><i class="material-icons icon-budget">file_download</i></h1>
+                                    <h1 class="center text-green budget-headline-icon no-margin-bottom"><i class="material-icons icon-budget">file_download</i></h1>
                                     <h5 class="center budget">${currencyService.getCurrencyString(budget.getIncomeSum())}</h5>
                                 </div>
                             </div>
                             <div class="col s4">
                                 <div class="icon-block">
-                                    <h1 class="center ${redTextColor} budget-headline-icon"><i class="material-icons icon-budget">file_upload</i></h1>
+                                    <h1 class="center ${redTextColor} budget-headline-icon no-margin-bottom"><i class="material-icons icon-budget">file_upload</i></h1>
                                     <h5 class="center budget">${currencyService.getCurrencyString(budget.getExpenditureSum())}</h5>
                                 </div>
                             </div>
                             <div class="col s4">
                                 <div class="icon-block">
-                                    <h1 class="center text-blue budget-headline-icon"><i class="fas fa-piggy-bank icon-budget"></i></h1>
+                                    <h1 class="center text-blue budget-headline-icon no-margin-bottom"><i class="fas fa-piggy-bank icon-budget"></i></h1>
                                     <h5 class="center budget">${currencyService.getCurrencyString(budget.getRest())}</h5>
                                 </div>
                             </div>
