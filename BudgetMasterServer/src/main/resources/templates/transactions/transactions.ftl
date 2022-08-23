@@ -24,20 +24,20 @@
                     <div class="container transaction-container">
                         <div class="row">
                             <div class="col s4">
-                                <div class="icon-block">
-                                    <h1 class="center text-green budget-headline-icon no-margin-bottom"><i class="material-icons icon-budget">file_download</i></h1>
-                                    <h5 class="center budget">${currencyService.getCurrencyString(budget.getIncomeSum())}</h5>
+                                <div class="icon-block center-align">
+                                    <img class="budget-headline-icon" src="<@s.url '/images/piggy_income.svg'/>">
+                                    <h5 class="budget">${currencyService.getCurrencyString(budget.getIncomeSum())}</h5>
                                 </div>
                             </div>
                             <div class="col s4">
-                                <div class="icon-block">
-                                    <h1 class="center ${redTextColor} budget-headline-icon no-margin-bottom"><i class="material-icons icon-budget">file_upload</i></h1>
+                                <div class="icon-block center-align">
+                                    <img class="budget-headline-icon" src="<@s.url '/images/piggy_expenditure.svg'/>">
                                     <h5 class="center budget">${currencyService.getCurrencyString(budget.getExpenditureSum())}</h5>
                                 </div>
                             </div>
                             <div class="col s4">
-                                <div class="icon-block">
-                                    <h1 class="center text-blue budget-headline-icon no-margin-bottom"><i class="fas fa-piggy-bank icon-budget"></i></h1>
+                                <div class="icon-block center-align">
+                                    <img class="budget-headline-icon" src="<@s.url '/images/piggy_rest.svg'/>">
                                     <h5 class="center budget">${currencyService.getCurrencyString(budget.getRest())}</h5>
                                 </div>
                             </div>
