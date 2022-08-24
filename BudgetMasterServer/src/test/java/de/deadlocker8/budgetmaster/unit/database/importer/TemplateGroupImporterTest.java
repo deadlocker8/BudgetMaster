@@ -44,25 +44,7 @@ class TemplateGroupImporterTest extends ImporterTestBase
 	}
 
 	@Test
-	void test_importTemplateGroupAlreadyExisting()
-	{
-		TemplateGroup templateGroup = new TemplateGroup("My group", TemplateGroupType.CUSTOM);
-		templateGroup = templateGroupRepository.save(templateGroup);
-
-		final TemplateGroupImporter importer = new TemplateGroupImporter(templateGroupRepository);
-		final ImportResultItem resultItem = importer.importItems(List.of(templateGroup));
-
-		final ImportResultItem expected = new ImportResultItem(EntityType.TEMPLATE_GROUP, 1, 1, List.of());
-		assertThat(resultItem).isEqualTo(expected);
-
-		final List<TemplateGroup> templateGroups = templateGroupRepository.findAll();
-		Assertions.assertThat(templateGroups)
-				.hasSize(1)
-				.containsExactly(templateGroup);
-	}
-
-	@Test
-	void test_importTemplateGroupNotExisting()
+	void test_importTemplateGroup()
 	{
 		final TemplateGroup defaultTemplateGroup = new TemplateGroup(15, "My group", TemplateGroupType.CUSTOM);
 

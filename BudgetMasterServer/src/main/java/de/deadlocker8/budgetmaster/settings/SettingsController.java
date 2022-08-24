@@ -2,19 +2,22 @@ package de.deadlocker8.budgetmaster.settings;
 
 import com.google.gson.JsonObject;
 import de.deadlocker8.budgetmaster.Build;
-import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.backup.*;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.database.DatabaseParser;
 import de.deadlocker8.budgetmaster.database.DatabaseService;
 import de.deadlocker8.budgetmaster.database.InternalDatabase;
-import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
+import de.deadlocker8.budgetmaster.hints.HintService;
 import de.deadlocker8.budgetmaster.services.ImportResultItem;
 import de.deadlocker8.budgetmaster.services.ImportService;
+import de.deadlocker8.budgetmaster.settings.containers.*;
+import de.deadlocker8.budgetmaster.settings.demo.DemoDateCreator;
+import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeyword;
+import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeywordRepository;
+import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeywordService;
 import de.deadlocker8.budgetmaster.update.BudgetMasterUpdateService;
-import de.deadlocker8.budgetmaster.utils.LanguageType;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
 import de.deadlocker8.budgetmaster.utils.notification.Notification;
@@ -27,7 +30,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
@@ -37,6 +39,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -55,8 +58,6 @@ public class SettingsController extends BaseController
 		public static final String VERIFICATION_CODE = "verificationCode";
 		public static final String IMPORT_DATABASE = "importDatabase";
 		public static final String ERROR_IMPORT_DATABASE = "errorImportDatabase";
-		public static final String AVAILABLE_ACCOUNTS = "availableAccounts";
-		public static final String ACCOUNT_MATCH_LIST = "accountMatchList";
 		public static final String IMPORT_RESULT_ITEMS = "importResultItems";
 		public static final String ERROR_MESSAGES = "errorMessages";
 		public static final String PERFORM_UPDATE = "performUpdate";
@@ -67,6 +68,8 @@ public class SettingsController extends BaseController
 		public static final String AUTO_BACKUP_TIME = "autoBackupTimes";
 		public static final String AUTO_BACKUP_STATUS = "autoBackupStatus";
 		public static final String NEXT_BACKUP_TIME = "nextBackupTime";
+		public static final String TOAST_CONTENT = "toastContent";
+		public static final String TRANSACTION_NAME_KEYWORDS = "transactionNameKeywords";
 	}
 
 	private static class ReturnValues
@@ -77,10 +80,8 @@ public class SettingsController extends BaseController
 		public static final String REDIRECT_REQUEST_IMPORT = "redirect:/settings/database/requestImport";
 		public static final String REDIRECT_IMPORT_DATABASE_STEP_1 = "redirect:/settings/database/import/step1";
 		public static final String IMPORT_DATABASE_STEP_1 = "settings/importStepOne";
-		public static final String REDIRECT_IMPORT_DATABASE_STEP_2 = "redirect:/settings/database/import/step2";
-		public static final String IMPORT_DATABASE_STEP_2 = "settings/importStepTwo";
 		public static final String IMPORT_DATABASE_RESULT = "settings/importResult";
-		public static final String REDIRECT_NEW_ACCOUNT = "redirect:/accounts/newAccount";
+		public static final String CONTAINER_MISC = "settings/containers/settingsMisc";
 	}
 
 	private static class RequestAttributeNames
@@ -89,30 +90,33 @@ public class SettingsController extends BaseController
 		public static final String IMPORT_TEMPLATE_GROUPS = "importTemplatesGroups";
 		public static final String IMPORT_TEMPLATES = "importTemplates";
 		public static final String IMPORT_CHARTS = "importCharts";
-		public static final String ACCOUNT_MATCH_LIST = "accountMatchList";
 	}
 
-	private static final String PASSWORD_PLACEHOLDER = "•••••";
+	public static final String PASSWORD_PLACEHOLDER = "•••••";
 	private final SettingsService settingsService;
 	private final DatabaseService databaseService;
-	private final AccountService accountService;
 	private final CategoryService categoryService;
 	private final ImportService importService;
 	private final BudgetMasterUpdateService budgetMasterUpdateService;
 	private final BackupService backupService;
+	private final HintService hintService;
+	private final TransactionNameKeywordService keywordService;
+	private final DemoDateCreator demoDateCreator;
 
 	private final List<Integer> SEARCH_RESULTS_PER_PAGE_OPTIONS = Arrays.asList(10, 20, 25, 30, 50, 100);
 
 	@Autowired
-	public SettingsController(SettingsService settingsService, DatabaseService databaseService, AccountService accountService, CategoryService categoryService, ImportService importService, BudgetMasterUpdateService budgetMasterUpdateService, BackupService backupService)
+	public SettingsController(SettingsService settingsService, DatabaseService databaseService, CategoryService categoryService, ImportService importService, BudgetMasterUpdateService budgetMasterUpdateService, BackupService backupService, HintService hintService, TransactionNameKeywordService keywordService, DemoDateCreator demoDateCreator)
 	{
 		this.settingsService = settingsService;
 		this.databaseService = databaseService;
-		this.accountService = accountService;
 		this.categoryService = categoryService;
 		this.importService = importService;
 		this.budgetMasterUpdateService = budgetMasterUpdateService;
 		this.backupService = backupService;
+		this.hintService = hintService;
+		this.keywordService = keywordService;
+		this.demoDateCreator = demoDateCreator;
 	}
 
 	@GetMapping
@@ -127,114 +131,157 @@ public class SettingsController extends BaseController
 		return ReturnValues.ALL_ENTITIES;
 	}
 
-	@PostMapping(value = "/save")
-	public String post(WebRequest request, Model model,
-					   @ModelAttribute("Settings") Settings settings, BindingResult bindingResult,
-					   @RequestParam(value = "password") String password,
-					   @RequestParam(value = "passwordConfirmation") String passwordConfirmation,
-					   @RequestParam(value = "languageType") String languageType,
-					   @RequestParam(value = "autoBackupStrategyType", required = false) String autoBackupStrategyType,
-					   @RequestParam(value = "runBackup", required = false) Boolean runBackup)
+	@PostMapping(value = "/save/security")
+	public String saveContainerSecurity(Model model,
+										@ModelAttribute("SecuritySettingsContainer") SecuritySettingsContainer securitySettingsContainer,
+										BindingResult bindingResult)
 	{
-		settings.setLanguage(LanguageType.fromName(languageType));
-		if(autoBackupStrategyType == null)
+		return saveContainer(model, securitySettingsContainer, bindingResult).templatePath();
+	}
+
+	@PostMapping(value = "/save/personalization")
+	public String saveContainerPersonalization(Model model,
+											   @ModelAttribute("PersonalizationSettingsContainer") PersonalizationSettingsContainer personalizationSettingsContainer,
+											   BindingResult bindingResult)
+	{
+		final SettingsContainerResult result = saveContainer(model, personalizationSettingsContainer, bindingResult);
+
+		if(result.isSuccess())
 		{
-			settings.setAutoBackupStrategy(AutoBackupStrategy.NONE);
+			// reload localization
+			Localization.load();
+			categoryService.localizeDefaultCategories();
 		}
-		else
+
+		return result.templatePath();
+	}
+
+	@PostMapping(value = "/save/transactions")
+	public String saveContainerTransactions(Model model,
+											@ModelAttribute("TransactionsSettingsContainer") TransactionsSettingsContainer transactionsSettingsContainer,
+											BindingResult bindingResult)
+	{
+		final TransactionNameKeywordRepository keywordRepository = keywordService.getRepository();
+		keywordRepository.deleteAll();
+
+		final List<TransactionNameKeyword> keywords = transactionsSettingsContainer.getKeywords();
+		if(keywords != null)
 		{
-			settings.setAutoBackupStrategy(AutoBackupStrategy.fromName(autoBackupStrategyType));
+			for(TransactionNameKeyword keyword : keywords)
+			{
+				keyword.setID(null);
+				keywordRepository.save(keyword);
+			}
 		}
 
-		Optional<FieldError> passwordErrorOptional = settingsService.validatePassword(password, passwordConfirmation);
-		passwordErrorOptional.ifPresent(bindingResult::addError);
+		return saveContainer(model, transactionsSettingsContainer, bindingResult).templatePath();
+	}
 
-		SettingsValidator settingsValidator = new SettingsValidator();
-		settingsValidator.validate(settings, bindingResult);
+	@PostMapping(value = "/save/backup")
+	public String saveContainerBackup(Model model,
+									  @ModelAttribute("BackupSettingsContainer") BackupSettingsContainer backupSettingsContainer,
+									  @RequestParam(value = "runBackup", required = false) Boolean runBackup,
+									  BindingResult bindingResult)
+	{
+		final SettingsContainerResult result = saveContainer(model, backupSettingsContainer, bindingResult);
 
-		fillMissingFieldsWithDefaults(settings);
+		if(result.isSuccess())
+		{
+			updateBackupTask(result.previousSettings(), settingsService.getSettings());
 
+			// run backup now if requested
+			JsonObject toastContent = runBackupIfRequested(runBackup);
+			model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
+			prepareBasicModel(model, settingsService.getSettings());
+		}
+
+		return result.templatePath();
+	}
+
+	@PostMapping(value = "/save/update")
+	public String saveContainerUpdate(Model model,
+									  @ModelAttribute("UpdateSettingsContainer") UpdateSettingsContainer updateSettingsContainer,
+									  BindingResult bindingResult)
+	{
+		return saveContainer(model, updateSettingsContainer, bindingResult).templatePath();
+	}
+
+	@PostMapping(value = "/save/misc")
+	public String saveContainerMisc(Model model)
+	{
+		hintService.resetAll();
+
+		final JsonObject toastContent = getToastContent("notification.settings.hints.reset", NotificationType.SUCCESS);
+		model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
+		return ReturnValues.CONTAINER_MISC;
+	}
+
+	private SettingsContainerResult saveContainer(Model model, SettingsContainer settingsContainer, BindingResult bindingResult)
+	{
+		// fix and validate
+		settingsContainer.fixBooleans();
+		settingsContainer.validate(bindingResult);
+
+		// update settings
+		final Settings previousSettings = settingsService.getSettings();
+		Settings updatedSettings = settingsContainer.updateSettings(settingsService);
+
+		// cancel on error
 		if(bindingResult.hasErrors())
 		{
 			model.addAttribute(ModelAttributes.ERROR, bindingResult);
-			prepareBasicModel(model, settings);
-			return ReturnValues.ALL_ENTITIES;
+
+			final JsonObject toastContent = getToastContent(settingsContainer.getErrorLocalizationKey(), NotificationType.ERROR);
+			model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
+			prepareBasicModel(model, settingsService.getSettings());
+			return new SettingsContainerResult(false, settingsContainer.getTemplatePath(), previousSettings);
 		}
 
-		if(!password.equals(PASSWORD_PLACEHOLDER))
-		{
-			settingsService.savePassword(password);
-		}
+		// persist changes
+		settingsContainer.persistChanges(settingsService, previousSettings, updatedSettings);
 
-		updateSettings(settings);
-
-		runBackup(request, runBackup);
-
-		WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.settings.saved"), NotificationType.SUCCESS));
-		return ReturnValues.REDIRECT_ALL_ENTITIES;
+		// return success message
+		final JsonObject toastContent = getToastContent(settingsContainer.getSuccessLocalizationKey(), NotificationType.SUCCESS);
+		model.addAttribute(ModelAttributes.TOAST_CONTENT, toastContent);
+		prepareBasicModel(model, settingsService.getSettings());
+		return new SettingsContainerResult(true, settingsContainer.getTemplatePath(), previousSettings);
 	}
 
-	private void runBackup(WebRequest request, Boolean runBackup)
+	public static JsonObject getToastContent(String localizationKey, NotificationType notificationType)
 	{
-		if(runBackup == null)
-		{
-			return;
-		}
-
-		if(runBackup)
-		{
-			backupService.runNow();
-
-			BackupStatus backupStatus = backupService.getBackupStatus();
-			if(backupStatus == BackupStatus.OK)
-			{
-				WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.settings.backup.run.success"), NotificationType.SUCCESS));
-			}
-			else
-			{
-				WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.settings.backup.run.error"), NotificationType.ERROR));
-			}
-		}
+		final JsonObject toastContent = new JsonObject();
+		toastContent.addProperty("localizedMessage", Localization.getString(localizationKey));
+		toastContent.addProperty("classes", getToastClasses(notificationType));
+		return toastContent;
 	}
 
-	private void fillMissingFieldsWithDefaults(Settings settings)
+	private static String getToastClasses(NotificationType notificationType)
 	{
-		if(settings.getBackupReminderActivated() == null)
+		return MessageFormat.format("{0} {1}", notificationType.getBackgroundColor(), notificationType.getTextColor());
+	}
+
+	private JsonObject runBackupIfRequested(Boolean runBackup)
+	{
+		if(runBackup == null || !runBackup)
 		{
-			settings.setBackupReminderActivated(false);
+			return getToastContent("notification.settings.backup.saved", NotificationType.SUCCESS);
 		}
 
-		if(settings.getAutoBackupStrategy() == null)
-		{
-			settings.setAutoBackupStrategy(AutoBackupStrategy.NONE);
-		}
+		backupService.runNow();
 
-		if(settings.getAutoBackupGitToken().equals(PASSWORD_PLACEHOLDER))
+		BackupStatus backupStatus = backupService.getBackupStatus();
+		if(backupStatus == BackupStatus.OK)
 		{
-			settings.setAutoBackupGitToken(settingsService.getSettings().getAutoBackupGitToken());
+			return getToastContent("notification.settings.backup.run.success", NotificationType.SUCCESS);
 		}
-
-		if(settings.getAutoBackupStrategy() == AutoBackupStrategy.NONE)
+		else
 		{
-			final Settings defaultSettings = Settings.getDefault();
-			settings.setAutoBackupDays(defaultSettings.getAutoBackupDays());
-			settings.setAutoBackupTime(defaultSettings.getAutoBackupTime());
-			settings.setAutoBackupFilesToKeep(defaultSettings.getAutoBackupFilesToKeep());
-			settings.setAutoBackupGitUserName(defaultSettings.getAutoBackupGitUserName());
-			settings.setAutoBackupGitToken(defaultSettings.getAutoBackupGitToken());
-		}
-
-		if(settings.getShowCategoriesAsCircles() == null)
-		{
-			settings.setShowCategoriesAsCircles(false);
+			return getToastContent("notification.settings.backup.run.error", NotificationType.ERROR);
 		}
 	}
 
-	public void updateSettings(Settings settings)
+	public void updateBackupTask(Settings previousSettings, Settings settings)
 	{
-		final Settings previousSettings = settingsService.getSettings();
-		settingsService.updateSettings(settings);
-
 		backupService.stopBackupCron();
 		if(settings.getAutoBackupStrategy() != AutoBackupStrategy.NONE)
 		{
@@ -245,9 +292,6 @@ public class SettingsController extends BaseController
 			final String cron = backupService.computeCron(settings.getAutoBackupTime(), settings.getAutoBackupDays());
 			backupTaskOptional.ifPresent(runnable -> backupService.startBackupCron(cron, runnable));
 		}
-
-		Localization.load();
-		categoryService.localizeDefaultCategories();
 	}
 
 
@@ -351,62 +395,18 @@ public class SettingsController extends BaseController
 		return ReturnValues.IMPORT_DATABASE_STEP_1;
 	}
 
-	@PostMapping("/database/import/step2")
-	public String importStepTwoPost(WebRequest request, Model model,
+	@PostMapping("/database/import/step1")
+	public String importStepOnePost(WebRequest request, Model model,
 									@RequestParam(value = "TEMPLATE", required = false) boolean importTemplates,
-									@RequestParam(value = "TEMPLATE_GROUP", required = false) boolean importTemplatesGroups,
+									@RequestParam(value = "TEMPLATE_GROUP", required = false) boolean importTemplateGroups,
 									@RequestParam(value = "CHART", required = false) boolean importCharts)
-	{
-		request.setAttribute(RequestAttributeNames.IMPORT_TEMPLATES, importTemplates, RequestAttributes.SCOPE_SESSION);
-		request.setAttribute(RequestAttributeNames.IMPORT_TEMPLATE_GROUPS, importTemplatesGroups, RequestAttributes.SCOPE_SESSION);
-		request.setAttribute(RequestAttributeNames.IMPORT_CHARTS, importCharts, RequestAttributes.SCOPE_SESSION);
-
-		model.addAttribute(ModelAttributes.DATABASE, request.getAttribute(RequestAttributeNames.DATABASE, RequestAttributes.SCOPE_SESSION));
-		model.addAttribute(ModelAttributes.AVAILABLE_ACCOUNTS, accountService.getAllEntitiesAsc());
-		return ReturnValues.REDIRECT_IMPORT_DATABASE_STEP_2;
-	}
-
-	@GetMapping("/database/import/step2")
-	public String importStepTwo(WebRequest request, Model model)
-	{
-		Object accountMatches = request.getAttribute(RequestAttributeNames.ACCOUNT_MATCH_LIST, RequestAttributes.SCOPE_SESSION);
-		if(accountMatches != null)
-		{
-			final AccountMatchList accountMatchList = (AccountMatchList) accountMatches;
-			model.addAttribute(ModelAttributes.ACCOUNT_MATCH_LIST, accountMatchList);
-			request.removeAttribute(RequestAttributeNames.ACCOUNT_MATCH_LIST, RequestAttributes.SCOPE_SESSION);
-		}
-
-		model.addAttribute(ModelAttributes.DATABASE, request.getAttribute(RequestAttributeNames.DATABASE, RequestAttributes.SCOPE_SESSION));
-		model.addAttribute(ModelAttributes.AVAILABLE_ACCOUNTS, accountService.getAllEntitiesAsc());
-		return ReturnValues.IMPORT_DATABASE_STEP_2;
-	}
-
-	@PostMapping("/database/import/step2/createAccount")
-	public String importCreateAccount(WebRequest request, @ModelAttribute("Import") AccountMatchList accountMatchList)
-	{
-		request.setAttribute(RequestAttributeNames.ACCOUNT_MATCH_LIST, accountMatchList, RequestAttributes.SCOPE_SESSION);
-		return ReturnValues.REDIRECT_NEW_ACCOUNT;
-	}
-
-	@PostMapping("/database/import/step3")
-	public String importDatabase(WebRequest request, @ModelAttribute("Import") AccountMatchList accountMatchList, Model model)
 	{
 		final InternalDatabase database = (InternalDatabase) request.getAttribute(RequestAttributeNames.DATABASE, RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute(RequestAttributeNames.DATABASE, RequestAttributes.SCOPE_SESSION);
 
-		final Boolean importTemplates = (Boolean) request.getAttribute(RequestAttributeNames.IMPORT_TEMPLATES, RequestAttributes.SCOPE_SESSION);
-		request.removeAttribute(RequestAttributeNames.IMPORT_TEMPLATES, RequestAttributes.SCOPE_SESSION);
-
-		final Boolean importTemplateGroups = (Boolean) request.getAttribute(RequestAttributeNames.IMPORT_TEMPLATE_GROUPS, RequestAttributes.SCOPE_SESSION);
-		request.removeAttribute(RequestAttributeNames.IMPORT_TEMPLATE_GROUPS, RequestAttributes.SCOPE_SESSION);
-
-		final Boolean importCharts = (Boolean) request.getAttribute(RequestAttributeNames.IMPORT_CHARTS, RequestAttributes.SCOPE_SESSION);
-		request.removeAttribute(RequestAttributeNames.IMPORT_CHARTS, RequestAttributes.SCOPE_SESSION);
-
 		prepareBasicModel(model, settingsService.getSettings());
 
-		final List<ImportResultItem> importResultItems = importService.importDatabase(database, accountMatchList, importTemplateGroups, importTemplates, importCharts);
+		final List<ImportResultItem> importResultItems = importService.importDatabase(database, importTemplateGroups, importTemplates, importCharts);
 		model.addAttribute(ModelAttributes.IMPORT_RESULT_ITEMS, importResultItems);
 		model.addAttribute(ModelAttributes.ERROR_MESSAGES, importService.getCollectedErrorMessages(importResultItems));
 
@@ -414,15 +414,21 @@ public class SettingsController extends BaseController
 	}
 
 	@GetMapping("/updateSearch")
-	public String updateSearch(WebRequest request)
+	@ResponseBody
+	public String updateSearch()
 	{
 		budgetMasterUpdateService.getUpdateService().fetchCurrentVersion();
 
 		if(budgetMasterUpdateService.isUpdateAvailable())
 		{
-			WebRequestUtils.putNotification(request, new Notification(Localization.getString("notification.settings.update.available", budgetMasterUpdateService.getAvailableVersionString()), NotificationType.INFO));
+			final JsonObject toastContent = new JsonObject();
+			toastContent.addProperty("localizedMessage", Localization.getString("notification.settings.update.available", budgetMasterUpdateService.getAvailableVersionString()));
+			toastContent.addProperty("classes", getToastClasses(NotificationType.INFO));
+			return toastContent.toString();
 		}
-		return ReturnValues.REDIRECT_ALL_ENTITIES;
+
+		final JsonObject toastContent = getToastContent("notification.settings.update.not.available", NotificationType.INFO);
+		return toastContent.toString();
 	}
 
 	@GetMapping("/update")
@@ -469,11 +475,22 @@ public class SettingsController extends BaseController
 		return data.toString();
 	}
 
+
+	@GetMapping("/database/createDemoData")
+	public String createDemoData(Model model)
+	{
+		demoDateCreator.createDemoData();
+
+		prepareBasicModel(model, settingsService.getSettings());
+		return ReturnValues.ALL_ENTITIES;
+	}
+
 	private void prepareBasicModel(Model model, Settings settings)
 	{
 		model.addAttribute(ModelAttributes.SETTINGS, settings);
 		model.addAttribute(ModelAttributes.SEARCH_RESULTS_PER_PAGE, SEARCH_RESULTS_PER_PAGE_OPTIONS);
 		model.addAttribute(ModelAttributes.AUTO_BACKUP_TIME, AutoBackupTime.values());
+		model.addAttribute(ModelAttributes.TRANSACTION_NAME_KEYWORDS, keywordService.getRepository().findAll());
 
 		final Optional<LocalDateTime> nextBackupTimeOptional = backupService.getNextRun();
 		nextBackupTimeOptional.ifPresent(date -> model.addAttribute(ModelAttributes.NEXT_BACKUP_TIME, date));

@@ -2,12 +2,9 @@ package de.deadlocker8.budgetmaster.unit.database.importer;
 
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountRepository;
+import de.deadlocker8.budgetmaster.accounts.AccountState;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
-import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
-import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
 import de.deadlocker8.budgetmaster.database.importer.AccountImporter;
-import de.deadlocker8.budgetmaster.icon.Icon;
-import de.deadlocker8.budgetmaster.icon.IconRepository;
 import de.deadlocker8.budgetmaster.services.EntityType;
 import de.deadlocker8.budgetmaster.services.ImportResultItem;
 import org.junit.jupiter.api.Test;
@@ -15,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AccountImporterTest extends ImporterTestBase
@@ -24,9 +22,6 @@ class AccountImporterTest extends ImporterTestBase
 	{
 		return List.of("account");
 	}
-
-	@Autowired
-	private IconRepository iconRepository;
 
 	@Autowired
 	private AccountRepository accountRepository;
@@ -42,21 +37,12 @@ class AccountImporterTest extends ImporterTestBase
 
 		final Account destinationAccount = new Account("DestinationAccount", AccountType.CUSTOM);
 		destinationAccount.setID(1);
-		accountRepository.save(destinationAccount);
 
 		final Account destinationAccount2 = new Account("DestinationAccount 2", AccountType.CUSTOM);
 		destinationAccount2.setID(2);
-		accountRepository.save(destinationAccount2);
 
-		final AccountMatch accountMatch = new AccountMatch(sourceAccount);
-		accountMatch.setAccountDestination(destinationAccount);
-
-		final AccountMatch accountMatch2 = new AccountMatch(sourceAccount2);
-		accountMatch2.setAccountDestination(destinationAccount2);
-		final AccountMatchList accountMatchList = new AccountMatchList(List.of(accountMatch, accountMatch2));
-
-		final AccountImporter importer = new AccountImporter(accountRepository, iconRepository);
-		final ImportResultItem resultItem = importer.importItems(List.of(sourceAccount, sourceAccount2), accountMatchList);
+		final AccountImporter importer = new AccountImporter(accountRepository);
+		final ImportResultItem resultItem = importer.importItems(List.of(sourceAccount, sourceAccount2));
 
 		final ImportResultItem expected = new ImportResultItem(EntityType.ACCOUNT, 2, 2, List.of());
 		assertThat(resultItem).isEqualTo(expected);
@@ -65,73 +51,37 @@ class AccountImporterTest extends ImporterTestBase
 	}
 
 	@Test
-	void test_importAccounts_updateIcon()
+	void test_importAccounts_placeholder()
 	{
-		Icon icon = new Icon("fas fa-icons");
-		icon = iconRepository.save(icon);
+		final Account placeholderAccount = new Account("Placeholder", AccountType.ALL);
+		placeholderAccount.setID(12);
 
-		final Account sourceAccount = new Account("SourceAccount", AccountType.CUSTOM);
-		sourceAccount.setID(2);
-		sourceAccount.setIconReference(icon);
+		final Account existingPlaceholderAccount = new Account("Placeholder", AccountType.ALL);
+		existingPlaceholderAccount.setID(1);
+		accountRepository.save(existingPlaceholderAccount);
 
-		Icon existingIcon = new Icon("abc");
-		existingIcon = iconRepository.save(existingIcon);
-
-		Account destinationAccount = new Account("DestinationAccount", AccountType.CUSTOM);
-		destinationAccount.setID(1);
-		destinationAccount.setIconReference(existingIcon);
-		destinationAccount = accountRepository.save(destinationAccount);
-
-		final AccountMatch accountMatch = new AccountMatch(sourceAccount);
-		accountMatch.setAccountDestination(destinationAccount);
-
-		final AccountMatchList accountMatchList = new AccountMatchList(List.of(accountMatch));
-
-		final AccountImporter importer = new AccountImporter(accountRepository, iconRepository);
-		final ImportResultItem resultItem = importer.importItems(List.of(sourceAccount), accountMatchList);
+		final AccountImporter importer = new AccountImporter(accountRepository);
+		final ImportResultItem resultItem = importer.importItems(List.of(placeholderAccount));
 
 		final ImportResultItem expected = new ImportResultItem(EntityType.ACCOUNT, 1, 1, List.of());
 		assertThat(resultItem).isEqualTo(expected);
-		assertThat(sourceAccount).hasFieldOrPropertyWithValue("ID", destinationAccount.getID());
-		assertThat(accountRepository.getById(destinationAccount.getID())).hasFieldOrPropertyWithValue("iconReference", icon);
-
-		assertThat(iconRepository.findAll()).hasSize(1);
+		assertThat(placeholderAccount).hasFieldOrPropertyWithValue("ID", existingPlaceholderAccount.getID());
 	}
 
 	@Test
-	void test_skipAlreadyImportedAccounts()
+	void test_importAccounts_nameAlreadyExists()
 	{
-		final Account sourceAccount = new Account("SourceAccount", AccountType.CUSTOM);
-		sourceAccount.setID(1);
+		final Account account = new Account("ABC", AccountType.CUSTOM);
+		account.setID(12);
 
-		final Account sourceAccount2 = new Account("SourceAccount 2", AccountType.CUSTOM);
-		sourceAccount2.setID(2);
+		final Account existingAccount = new Account("ABC", AccountType.CUSTOM);
+		existingAccount.setID(1);
+		accountRepository.save(existingAccount);
 
-		final Account destinationAccount = new Account("DestinationAccount", AccountType.CUSTOM);
-		destinationAccount.setID(1);
-		accountRepository.save(destinationAccount);
+		final AccountImporter importer = new AccountImporter(accountRepository);
+		final ImportResultItem resultItem = importer.importItems(List.of(account));
 
-		final Account destinationAccount2 = new Account("DestinationAccount 2", AccountType.CUSTOM);
-		destinationAccount2.setID(2);
-		accountRepository.save(destinationAccount2);
-
-		final AccountMatch accountMatch = new AccountMatch(sourceAccount);
-		accountMatch.setAccountDestination(destinationAccount2);
-
-		final AccountMatch accountMatch2 = new AccountMatch(sourceAccount2);
-		accountMatch2.setAccountDestination(destinationAccount);
-		final AccountMatchList accountMatchList = new AccountMatchList(List.of(accountMatch, accountMatch2));
-
-		final AccountImporter importer = new AccountImporter(accountRepository, iconRepository);
-		final ImportResultItem resultItem = importer.importItems(List.of(sourceAccount, sourceAccount2), accountMatchList);
-
-		final ImportResultItem expected = new ImportResultItem(EntityType.ACCOUNT, 2, 2, List.of());
-		assertThat(resultItem).isEqualTo(expected);
-		assertThat(sourceAccount)
-				.hasFieldOrPropertyWithValue("ID", destinationAccount2.getID())
-				.hasFieldOrPropertyWithValue("name", destinationAccount2.getName());
-		assertThat(sourceAccount2)
-				.hasFieldOrPropertyWithValue("ID", destinationAccount.getID())
-				.hasFieldOrPropertyWithValue("name", destinationAccount.getName());
+		assertThat(resultItem).hasFieldOrPropertyWithValue("numberOfImportedItems", 0);
+		assertThat(resultItem.getCollectedErrorMessages()).hasSize(1);
 	}
 }

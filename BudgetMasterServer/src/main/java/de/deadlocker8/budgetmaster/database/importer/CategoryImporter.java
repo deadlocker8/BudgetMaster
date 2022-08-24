@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
-import java.util.Optional;
 
 public class CategoryImporter extends ItemImporter<Category>
 {
@@ -20,7 +19,7 @@ public class CategoryImporter extends ItemImporter<Category>
 	}
 
 	@Override
-	protected int importSingleItem(Category categoryToImport)
+	protected int importSingleItem(Category categoryToImport) throws ImportException
 	{
 		if(!(repository instanceof CategoryRepository repository))
 		{
@@ -29,46 +28,20 @@ public class CategoryImporter extends ItemImporter<Category>
 
 		LOGGER.debug(MessageFormat.format("Importing category {0}", categoryToImport.getName()));
 
-		final Optional<Category> existingCategoryOptional = findExistingCategory(categoryToImport, repository);
 
-		int newCategoryID;
-		if(existingCategoryOptional.isEmpty())
-		{
-			// category does not exist --> create it
-			final Category newCategory = createCategory(categoryToImport, repository);
-			newCategoryID = newCategory.getID();
-		}
-		else
-		{
-			// category already exists
-			final Category existingCategory = existingCategoryOptional.get();
-			newCategoryID = existingCategory.getID();
-			categoryToImport.setIconReference(existingCategory.getIconReference());
-			LOGGER.debug(MessageFormat.format("Found matching category with ID: {0} for category \"{1}\".", newCategoryID, categoryToImport.getName()));
-		}
-		return newCategoryID;
-	}
-
-	private Optional<Category> findExistingCategory(Category categoryToImport, CategoryRepository repository)
-	{
 		if(categoryToImport.getType().equals(CategoryType.NONE) || categoryToImport.getType().equals(CategoryType.REST))
 		{
-			return Optional.of(repository.findByType(categoryToImport.getType()));
+			// is default category
+			final Category existingCategory = repository.findByType(categoryToImport.getType());
+			categoryToImport.setIconReference(existingCategory.getIconReference());
+			LOGGER.debug(MessageFormat.format("Found matching category with ID: {0} for default category \"{1}\".", existingCategory.getID(), categoryToImport.getName()));
+			return existingCategory.getID();
 		}
-		else
-		{
-			return Optional.ofNullable(repository.findByNameAndColorAndType(categoryToImport.getName(), categoryToImport.getColor(), categoryToImport.getType()));
-		}
-	}
-
-	private Category createCategory(Category categoryToImport, CategoryRepository repository)
-	{
-		LOGGER.debug(MessageFormat.format("No matching category found for category \"{0}\". Creating new one...", categoryToImport.getName()));
 
 		final Category categoryToCreate = new Category(categoryToImport.getName(), categoryToImport.getColor(), categoryToImport.getType(), categoryToImport.getIconReference());
 		repository.save(categoryToCreate);
 
-		return repository.findByNameAndColorAndType(categoryToImport.getName(), categoryToImport.getColor(), categoryToImport.getType());
+		return repository.findByNameAndColorAndType(categoryToImport.getName(), categoryToImport.getColor(), categoryToImport.getType()).getID();
 	}
 
 	@Override

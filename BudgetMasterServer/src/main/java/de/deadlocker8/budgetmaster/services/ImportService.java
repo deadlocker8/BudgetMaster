@@ -4,7 +4,6 @@ import de.deadlocker8.budgetmaster.accounts.AccountRepository;
 import de.deadlocker8.budgetmaster.categories.CategoryRepository;
 import de.deadlocker8.budgetmaster.charts.ChartService;
 import de.deadlocker8.budgetmaster.database.InternalDatabase;
-import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
 import de.deadlocker8.budgetmaster.database.importer.*;
 import de.deadlocker8.budgetmaster.icon.IconRepository;
 import de.deadlocker8.budgetmaster.images.ImageRepository;
@@ -15,6 +14,7 @@ import de.deadlocker8.budgetmaster.templategroup.TemplateGroupRepository;
 import de.deadlocker8.budgetmaster.templategroup.TemplateGroupType;
 import de.deadlocker8.budgetmaster.templates.TemplateRepository;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
+import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeywordRepository;
 import de.deadlocker8.budgetmaster.utils.DateHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,13 +39,14 @@ public class ImportService
 	private final RepeatingTransactionUpdater repeatingTransactionUpdater;
 	private final AccountRepository accountRepository;
 	private final IconRepository iconRepository;
+	private final TransactionNameKeywordRepository transactionNameKeywordRepository;
 
 
 	private InternalDatabase database;
 
 	@Autowired
 	public ImportService(CategoryRepository categoryRepository, TransactionRepository transactionRepository, TemplateGroupRepository templateGroupRepository, TemplateRepository templateRepository,
-						 TagRepository tagRepository, ChartService chartService, ImageRepository imageRepository, RepeatingTransactionUpdater repeatingTransactionUpdater, AccountRepository accountRepository, IconRepository iconRepository)
+						 TagRepository tagRepository, ChartService chartService, ImageRepository imageRepository, RepeatingTransactionUpdater repeatingTransactionUpdater, AccountRepository accountRepository, IconRepository iconRepository, TransactionNameKeywordRepository transactionNameKeywordRepository)
 	{
 		this.categoryRepository = categoryRepository;
 		this.transactionRepository = transactionRepository;
@@ -57,9 +58,10 @@ public class ImportService
 		this.repeatingTransactionUpdater = repeatingTransactionUpdater;
 		this.accountRepository = accountRepository;
 		this.iconRepository = iconRepository;
+		this.transactionNameKeywordRepository = transactionNameKeywordRepository;
 	}
 
-	public List<ImportResultItem> importDatabase(InternalDatabase database, AccountMatchList accountMatchList, Boolean importTemplateGroups, Boolean importTemplates, Boolean importCharts)
+	public List<ImportResultItem> importDatabase(InternalDatabase database, Boolean importTemplateGroups, Boolean importTemplates, Boolean importCharts)
 	{
 		this.database = database;
 
@@ -69,7 +71,7 @@ public class ImportService
 		importResultItems.add(new ImageImporter(imageRepository).importItems(database.getImages()));
 		new IconImporter(iconRepository).importItems(database.getIcons());
 		importResultItems.add(new CategoryImporter(categoryRepository).importItems(database.getCategories()));
-		importResultItems.add(new AccountImporter(accountRepository, iconRepository).importItems(database.getAccounts(), accountMatchList));
+		importResultItems.add(new AccountImporter(accountRepository).importItems(database.getAccounts()));
 
 		final TagImporter tagImporter = new TagImporter(tagRepository);
 		importResultItems.add(new TransactionImporter(transactionRepository, tagImporter).importItems(database.getTransactions()));
@@ -101,6 +103,8 @@ public class ImportService
 		{
 			importResultItems.add(new ImportResultItem(EntityType.CHART, 0, 0, List.of()));
 		}
+
+		new TransactionNameKeywordImporter(transactionNameKeywordRepository).importItems(database.getTransactionNameKeywords());
 
 		LOGGER.debug("Updating repeating transactions...");
 		repeatingTransactionUpdater.updateRepeatingTransactions(DateHelper.getCurrentDate());

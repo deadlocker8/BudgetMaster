@@ -1,7 +1,5 @@
 package de.deadlocker8.budgetmaster.integration.selenium;
 
-import de.deadlocker8.budgetmaster.accounts.Account;
-import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
@@ -16,11 +14,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,11 +34,7 @@ class DeleteDatabaseTest extends SeleniumTestBase
 		helper.hideMigrationDialog();
 
 		String path = getClass().getClassLoader().getResource("DatabaseDeleteTest.json").getFile().replace("/", File.separator);
-		final Account account1 = new Account("DefaultAccount0815", AccountType.CUSTOM);
-		final Account account2 = new Account("Second Account", AccountType.CUSTOM);
-
-
-		helper.uploadDatabase(path, Arrays.asList("Default Account", "Second account"), List.of(account1, account2));
+		helper.uploadDatabase(path);
 	}
 
 	@Test
@@ -75,10 +65,17 @@ class DeleteDatabaseTest extends SeleniumTestBase
 		// assert only transaction "rest" is showing
 		TransactionTestHelper.selectGlobalAccountByName(driver, "Default Account");
 		TransactionTestHelper.gotoSpecificYearAndMonth(driver, 2022, "March");
-		final List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
-		assertThat(transactionsRows).hasSize(1);
-		final WebElement row = transactionsRows.get(0);
-		final List<WebElement> columns = row.findElements(By.className("col"));
-		TransactionTestHelper.assertTransactionColumns(columns, "01.03.", "Rest", "rgb(255, 255, 0)", false, false, "Rest", null, "0.00");
+
+		final List<WebElement> transactionDateGroups = driver.findElements(By.className("transaction-date-group"));
+		assertThat(transactionDateGroups).hasSize(1);
+
+		final WebElement dateGroup = transactionDateGroups.get(0);
+		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", "01. MARCH 2022");
+		final List<WebElement> transactionsInGroup = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		assertThat(transactionsInGroup).hasSize(1);
+
+		final WebElement transactionRow = transactionsInGroup.get(0);
+		final List<WebElement> columns = transactionRow.findElements(By.className("col"));
+		TransactionTestHelper.assertTransactionColumns(columns, "Rest", "rgb(255, 255, 0)", false, false, "Rest", null, "0.00");
 	}
 }

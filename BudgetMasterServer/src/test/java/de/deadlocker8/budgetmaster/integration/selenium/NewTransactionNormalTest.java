@@ -1,13 +1,9 @@
 package de.deadlocker8.budgetmaster.integration.selenium;
 
-import de.deadlocker8.budgetmaster.accounts.Account;
-import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
 import de.deadlocker8.budgetmaster.integration.helpers.TransactionTestHelper;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -16,9 +12,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -39,10 +35,7 @@ class NewTransactionNormalTest extends SeleniumTestBase
 		helper.hideMigrationDialog();
 
 		String path = getClass().getClassLoader().getResource("SearchDatabase.json").getFile().replace("/", File.separator);
-		final Account account1 = new Account("DefaultAccount0815", AccountType.CUSTOM);
-		final Account account2 = new Account("Account2", AccountType.CUSTOM);
-
-		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf"), List.of(account1, account2));
+		helper.uploadDatabase(path);
 	}
 
 	@Override
@@ -95,15 +88,17 @@ class NewTransactionNormalTest extends SeleniumTestBase
 
 		openNewTransactionPage();
 
-		String name = "My normal transaction";
-		String amount = "15.00";
-		String description = "Lorem Ipsum dolor sit amet";
-		String categoryName = "sdfdsf";
+		final String name = "My normal transaction";
+		final String amount = "15.00";
+		final String description = "Lorem Ipsum dolor sit amet";
+		final String categoryName = "sdfdsf";
+		final int day = 20;
 
 		// fill form
 		driver.findElement(By.className("buttonIncome")).click();
 		driver.findElement(By.id("transaction-name")).sendKeys(name);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
+		TransactionTestHelper.selectDayInTransactionDatePicker(driver, day);
 		driver.findElement(By.id("transaction-description")).sendKeys(description);
 		TransactionTestHelper.selectCategoryByName(driver, categoryName);
 
@@ -119,13 +114,18 @@ class NewTransactionNormalTest extends SeleniumTestBase
 		transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		assertThat(transactionsRows).hasSize(numberOfTransactionsBefore + 1);
 
-		final WebElement row = transactionsRows.get(0);
-		final List<WebElement> columns = row.findElements(By.className("col"));
-		assertThat(columns).hasSize(6);
+		final List<WebElement> transactionDateGroups = driver.findElements(By.className("transaction-date-group"));
+
+		final WebElement dateGroup = transactionDateGroups.get(0);
+		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", TransactionTestHelper.getDateString(day));
+		final List<WebElement> transactionsInGroup = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+
+		final WebElement transactionRow = transactionsInGroup.get(0);
+		final List<WebElement> columns = transactionRow.findElements(By.className("col"));
+		assertThat(columns).hasSize(5);
 
 		// check columns
-		final String dateString = new SimpleDateFormat("dd.MM.").format(new Date());
-		TransactionTestHelper.assertTransactionColumns(columns, dateString, categoryName, "rgb(46, 124, 43)", false, false, name, description, amount);
+		TransactionTestHelper.assertTransactionColumns(columns, categoryName, "rgb(46, 124, 43)", false, false, name, description, amount);
 	}
 
 	@Test
@@ -136,15 +136,17 @@ class NewTransactionNormalTest extends SeleniumTestBase
 
 		openNewTransactionPage();
 
-		String name = "My normal transaction";
-		String amount = "15.00";
-		String description = "Lorem Ipsum dolor sit amet";
-		String categoryName = "sdfdsf";
+		final String name = "My normal transaction";
+		final String amount = "15.00";
+		final String description = "Lorem Ipsum dolor sit amet";
+		final String categoryName = "sdfdsf";
+		final int day = 20;
 
 		// fill form
 		driver.findElement(By.className("buttonExpenditure")).click();
 		driver.findElement(By.id("transaction-name")).sendKeys(name);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
+		TransactionTestHelper.selectDayInTransactionDatePicker(driver, day);
 		driver.findElement(By.id("transaction-description")).sendKeys(description);
 		TransactionTestHelper.selectCategoryByName(driver, categoryName);
 
@@ -160,13 +162,19 @@ class NewTransactionNormalTest extends SeleniumTestBase
 		transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		assertThat(transactionsRows).hasSize(numberOfTransactionsBefore + 1);
 
-		final WebElement row = transactionsRows.get(0);
-		final List<WebElement> columns = row.findElements(By.className("col"));
-		assertThat(columns).hasSize(6);
+
+		final List<WebElement> transactionDateGroups = driver.findElements(By.className("transaction-date-group"));
+
+		final WebElement dateGroup = transactionDateGroups.get(0);
+		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", TransactionTestHelper.getDateString(day));
+		final List<WebElement> transactionsInGroup = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+
+		final WebElement transactionRow = transactionsInGroup.get(0);
+		final List<WebElement> columns = transactionRow.findElements(By.className("col"));
+		assertThat(columns).hasSize(5);
 
 		// check columns
-		final String dateString = new SimpleDateFormat("dd.MM.").format(new Date());
-		TransactionTestHelper.assertTransactionColumns(columns, dateString, categoryName, "rgb(46, 124, 43)", false, false, name, description, "-" + amount);
+		TransactionTestHelper.assertTransactionColumns(columns, categoryName, "rgb(46, 124, 43)", false, false, name, description, "-" + amount);
 	}
 
 	@Test
@@ -193,13 +201,15 @@ class NewTransactionNormalTest extends SeleniumTestBase
 	{
 		openNewTransactionPage();
 
-		String name = "Save and continue transaction";
-		String amount = "15.00";
+		final String name = "Save and continue transaction";
+		final String amount = "15.00";
+		final int day = 20;
 
 		// fill form
 		driver.findElement(By.className("buttonExpenditure")).click();
 		driver.findElement(By.id("transaction-name")).sendKeys(name);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
+		TransactionTestHelper.selectDayInTransactionDatePicker(driver, day);
 
 		// submit form
 		driver.findElement(By.id("button-save-transaction-and-continue")).click();
@@ -213,5 +223,171 @@ class NewTransactionNormalTest extends SeleniumTestBase
 		assertThat(driver.findElement(By.className("buttonExpenditure")).getAttribute("class")).contains("background-red");
 		assertThat(driver.findElement(By.id("transaction-name")).getAttribute("value")).isEmpty();
 		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEmpty();
+		assertThat(driver.findElement(By.id("transaction-datepicker")).getAttribute("value")).isEmpty();
+	}
+
+	@Test
+	void test_newTransaction_keywordInName_clickOnButtonToCancelSaving()
+	{
+		openNewTransactionPage();
+
+		final String name = "special income transaction";
+		final String amount = "15.00";
+		final String categoryName = "sdfdsf";
+		final int day = 20;
+
+		// fill form
+		driver.findElement(By.className("buttonExpenditure")).click();
+		driver.findElement(By.id("transaction-name")).sendKeys(name);
+		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
+		TransactionTestHelper.selectDayInTransactionDatePicker(driver, day);
+		TransactionTestHelper.selectCategoryByName(driver, categoryName);
+
+		// submit form
+		driver.findElement(By.id("button-save-transaction")).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("modalTransactionNameKeywordWarning")));
+
+		// assert
+		assertThat(driver.findElement(By.id("keyword")).getText()).isEqualTo("income");
+
+		driver.findElement(By.id("keyword-warning-button-cancel")).click();
+
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("modalTransactionNameKeywordWarning")));
+
+		assertThat(driver.findElement(By.id("transaction-name")).getAttribute("value")).isEqualTo(name);
+	}
+
+	@Test
+	void test_newTransaction_keywordInName_clickOnButtonToIgnoreWarning()
+	{
+		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		final int numberOfTransactionsBefore = transactionsRows.size();
+
+		openNewTransactionPage();
+
+		final String name = "special income transaction";
+		final String amount = "15.00";
+		final String categoryName = "sdfdsf";
+		final int day = 20;
+
+		// fill form
+		driver.findElement(By.className("buttonExpenditure")).click();
+		driver.findElement(By.id("transaction-name")).sendKeys(name);
+		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
+		TransactionTestHelper.selectDayInTransactionDatePicker(driver, day);
+		TransactionTestHelper.selectCategoryByName(driver, categoryName);
+
+		// submit form
+		driver.findElement(By.id("button-save-transaction")).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("modalTransactionNameKeywordWarning")));
+
+		driver.findElement(By.id("keyword-warning-button-ignore")).click();
+
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("modalTransactionNameKeywordWarning")));
+
+		// assert
+		transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		assertThat(transactionsRows).hasSize(numberOfTransactionsBefore + 1);
+
+		final List<WebElement> transactionDateGroups = driver.findElements(By.className("transaction-date-group"));
+
+		final WebElement dateGroup = transactionDateGroups.get(0);
+		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", TransactionTestHelper.getDateString(day));
+		final List<WebElement> transactionsInGroup = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+
+		final WebElement transactionRow = transactionsInGroup.get(0);
+		final List<WebElement> columns = transactionRow.findElements(By.className("col"));
+		assertThat(columns).hasSize(5);
+
+		// check columns
+		TransactionTestHelper.assertTransactionColumns(columns, categoryName, "rgb(46, 124, 43)", false, false, name, null, "-" + amount);
+	}
+
+	@Test
+	void test_newTransaction_keywordInName_clickOnButtonToIgnoreWarning_saveAndContinueClickedBefore()
+	{
+		openNewTransactionPage();
+
+		final String name = "special income transaction";
+		final String amount = "15.00";
+		final String categoryName = "sdfdsf";
+		final int day = 20;
+
+		// fill form
+		driver.findElement(By.className("buttonExpenditure")).click();
+		driver.findElement(By.id("transaction-name")).sendKeys(name);
+		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
+		TransactionTestHelper.selectDayInTransactionDatePicker(driver, day);
+		TransactionTestHelper.selectCategoryByName(driver, categoryName);
+
+		// submit form
+		driver.findElement(By.id("button-save-transaction-and-continue")).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("modalTransactionNameKeywordWarning")));
+
+		driver.findElement(By.id("keyword-warning-button-ignore")).click();
+
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("modalTransactionNameKeywordWarning")));
+
+		// assert
+		assertThat(driver.getCurrentUrl()).endsWith("/newTransaction/normal");
+
+		assertThat(driver.findElement(By.className("buttonExpenditure")).getAttribute("class")).contains("background-red");
+		assertThat(driver.findElement(By.id("transaction-name")).getAttribute("value")).isEmpty();
+		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEmpty();
+		assertThat(driver.findElement(By.id("transaction-datepicker")).getAttribute("value")).isEmpty();
+	}
+
+	@Test
+	void test_newTransaction_keywordInName_alreadyMarkedAsIncome_dontShowWarning()
+	{
+		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		final int numberOfTransactionsBefore = transactionsRows.size();
+
+		openNewTransactionPage();
+
+		final String name = "special income transaction";
+		final String amount = "15.00";
+		final String categoryName = "sdfdsf";
+		final int day = 20;
+
+		// fill form
+		driver.findElement(By.className("buttonIncome")).click();
+		driver.findElement(By.id("transaction-name")).sendKeys(name);
+		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
+		TransactionTestHelper.selectDayInTransactionDatePicker(driver, 20);
+		TransactionTestHelper.selectCategoryByName(driver, categoryName);
+
+		// submit form
+		driver.findElement(By.id("button-save-transaction")).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(text(), 'Rest')]")));
+
+		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
+
+		transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		assertThat(transactionsRows).hasSize(numberOfTransactionsBefore + 1);
+
+		final List<WebElement> transactionDateGroups = driver.findElements(By.className("transaction-date-group"));
+
+		final WebElement dateGroup = transactionDateGroups.get(0);
+		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", TransactionTestHelper.getDateString(day));
+		final List<WebElement> transactionsInGroup = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+
+		final WebElement transactionRow = transactionsInGroup.get(0);
+		final List<WebElement> columns = transactionRow.findElements(By.className("col"));
+		assertThat(columns).hasSize(5);
+
+		// check columns
+		TransactionTestHelper.assertTransactionColumns(columns, categoryName, "rgb(46, 124, 43)", false, false, name, null, amount);
 	}
 }

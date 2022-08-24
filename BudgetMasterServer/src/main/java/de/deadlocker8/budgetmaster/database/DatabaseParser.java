@@ -8,6 +8,7 @@ import de.deadlocker8.budgetmaster.database.model.v5.BackupDatabase_v5;
 import de.deadlocker8.budgetmaster.database.model.v6.BackupDatabase_v6;
 import de.deadlocker8.budgetmaster.database.model.v7.BackupDatabase_v7;
 import de.deadlocker8.budgetmaster.database.model.v8.BackupDatabase_v8;
+import de.deadlocker8.budgetmaster.database.model.v9.BackupDatabase_v9;
 import de.thecodelabs.utils.util.Localization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,7 @@ public class DatabaseParser
 	final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
 	private static final int MINIMUM_VERSION = 4;
-	public static final int LATEST_VERSION = 8;
+	public static final int LATEST_VERSION = 9;
 
 	private final String jsonString;
 
@@ -71,6 +72,13 @@ public class DatabaseParser
 		{
 			BackupDatabase_v8 parsedDatabase = new DatabaseParser_v8(jsonString).parseDatabaseFromJSON();
 			LOGGER.debug(MessageFormat.format("Parsed database with {0} transactions, {1} categories, {2} accounts, {3} templates {4} charts {5} images and {6} icons", parsedDatabase.getTransactions().size(), parsedDatabase.getCategories().size(), parsedDatabase.getAccounts().size(), parsedDatabase.getTemplates().size(), parsedDatabase.getCharts().size(), parsedDatabase.getImages().size(), parsedDatabase.getIcons().size()));
+			importedDatabase = parsedDatabase;
+		}
+
+		if(version == 9)
+		{
+			BackupDatabase_v9 parsedDatabase = new DatabaseParser_v9(jsonString).parseDatabaseFromJSON();
+			LOGGER.debug(MessageFormat.format("Parsed database with {0} transactions, {1} categories, {2} accounts, {3} templates {4} charts {5} images {6} icons and {7} transaction name keywords", parsedDatabase.getTransactions().size(), parsedDatabase.getCategories().size(), parsedDatabase.getAccounts().size(), parsedDatabase.getTemplates().size(), parsedDatabase.getCharts().size(), parsedDatabase.getImages().size(), parsedDatabase.getIcons().size(), parsedDatabase.getTransactionNameKeywords().size()));
 			importedDatabase = parsedDatabase;
 		}
 

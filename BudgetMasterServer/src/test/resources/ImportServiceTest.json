@@ -1,6 +1,6 @@
 {
     "TYPE": "BUDGETMASTER_DATABASE",
-    "VERSION": 8,
+    "VERSION": 9,
     "categories": [
         {
             "ID": 3,
@@ -41,7 +41,7 @@
         },
         {
             "ID": 2,
-            "name": "Default Account",
+            "name": "My Default Account",
             "accountState": "FULL_ACCESS",
             "type": "CUSTOM",
             "iconReferenceID": 7
@@ -2236,6 +2236,14 @@
         {
             "ID": 18,
             "imageID": 1
+        }
+    ],
+    "transactionNameKeywords": [
+        {
+            "value": "income"
+        },
+        {
+            "value": "xyz"
         }
     ]
 }

@@ -7,7 +7,6 @@ import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.backup.AutoBackupStrategy;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryRepository;
-import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
 import de.deadlocker8.budgetmaster.hints.Hint;
 import de.deadlocker8.budgetmaster.hints.HintService;
@@ -196,20 +195,6 @@ public class HelpersService
 	public Settings getSettings()
 	{
 		return settingsService.getSettings();
-	}
-
-	public List<AccountMatch> getAccountMatches(List<Account> accounts)
-	{
-		List<AccountMatch> accountMatches = new ArrayList<>();
-		for(Account account : accounts)
-		{
-			if(account.getType().equals(AccountType.CUSTOM))
-			{
-				accountMatches.add(new AccountMatch(account));
-			}
-		}
-
-		return accountMatches;
 	}
 
 	public Long getUsageCountForCategory(Category category)

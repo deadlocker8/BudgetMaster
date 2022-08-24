@@ -10,7 +10,7 @@ import de.deadlocker8.budgetmaster.charts.Chart;
 import de.deadlocker8.budgetmaster.charts.ChartService;
 import de.deadlocker8.budgetmaster.charts.ChartType;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
-import de.deadlocker8.budgetmaster.database.model.v8.BackupDatabase_v8;
+import de.deadlocker8.budgetmaster.database.model.v9.BackupDatabase_v9;
 import de.deadlocker8.budgetmaster.hints.HintService;
 import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.IconService;
@@ -26,6 +26,8 @@ import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.templates.TemplateService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
+import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeyword;
+import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeywordService;
 import de.deadlocker8.budgetmaster.utils.DateHelper;
 import de.thecodelabs.utils.io.PathUtils;
 import org.slf4j.Logger;
@@ -66,11 +68,12 @@ public class DatabaseService
 	private final ImageService imageService;
 	private final IconService iconService;
 	private final HintService hintService;
+	private final TransactionNameKeywordService transactionNameKeywordService;
 
 	private final List<Resettable> services;
 
 	@Autowired
-	public DatabaseService(AccountService accountService, CategoryService categoryService, TransactionService transactionService, TagService tagService, TemplateService templateService, TemplateGroupService templateGroupService, ChartService chartService, SettingsService settingsService, ImageService imageService, IconService iconService, HintService hintService)
+	public DatabaseService(AccountService accountService, CategoryService categoryService, TransactionService transactionService, TagService tagService, TemplateService templateService, TemplateGroupService templateGroupService, ChartService chartService, SettingsService settingsService, ImageService imageService, IconService iconService, HintService hintService, TransactionNameKeywordService transactionNameKeywordService)
 	{
 		this.accountService = accountService;
 		this.categoryService = categoryService;
@@ -83,7 +86,8 @@ public class DatabaseService
 		this.imageService = imageService;
 		this.iconService = iconService;
 		this.hintService = hintService;
-		this.services = List.of(transactionService, templateService, templateGroupService, categoryService, accountService, tagService, chartService, iconService, imageService, tagService, hintService);
+		this.transactionNameKeywordService = transactionNameKeywordService;
+		this.services = List.of(transactionService, templateService, templateGroupService, categoryService, accountService, tagService, chartService, iconService, imageService, tagService, hintService, transactionNameKeywordService);
 	}
 
 	public void reset()
@@ -218,12 +222,13 @@ public class DatabaseService
 		List<Chart> charts = chartService.getRepository().findAllByType(ChartType.CUSTOM);
 		List<Image> images = imageService.getRepository().findAll();
 		List<Icon> icons = iconService.getRepository().findAll();
+		List<TransactionNameKeyword> transactionNameKeywords = transactionNameKeywordService.getRepository().findAll();
 		LOGGER.debug(MessageFormat.format("Reduced {0} transactions to {1}", transactions.size(), filteredTransactions.size()));
 
-		InternalDatabase database = new InternalDatabase(categories, accounts, filteredTransactions, templateGroups, templates, charts, images, icons);
-		LOGGER.debug(MessageFormat.format("Created database for JSON with {0} transactions, {1} categories, {2} accounts, {3} templates groups, {4} templates, {5} charts {6} images and {7} icons", database.getTransactions().size(), database.getCategories().size(), database.getAccounts().size(), database.getTemplateGroups().size(), database.getTemplates().size(), database.getCharts().size(), database.getImages().size(), database.getIcons().size()));
+		InternalDatabase database = new InternalDatabase(categories, accounts, filteredTransactions, templateGroups, templates, charts, images, icons, transactionNameKeywords);
+		LOGGER.debug(MessageFormat.format("Created database for JSON with {0} transactions, {1} categories, {2} accounts, {3} templates groups, {4} templates, {5} charts {6} images {7} icons and {8} transaction name keywords", database.getTransactions().size(), database.getCategories().size(), database.getAccounts().size(), database.getTemplateGroups().size(), database.getTemplates().size(), database.getCharts().size(), database.getImages().size(), database.getIcons().size(), database.getTransactionNameKeywords().size()));
 
-		BackupDatabase_v8 databaseInExternalForm = BackupDatabase_v8.createFromInternalEntities(database);
+		BackupDatabase_v9 databaseInExternalForm = BackupDatabase_v9.createFromInternalEntities(database);
 		LOGGER.debug("Converted database to external form");
 		return databaseInExternalForm;
 	}

@@ -2,7 +2,6 @@ package de.deadlocker8.budgetmaster.integration.selenium;
 
 import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountState;
-import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
@@ -17,7 +16,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,17 +37,7 @@ class AccountTest extends SeleniumTestBase
 		helper.hideMigrationDialog();
 
 		String path = Account.class.getClassLoader().getResource("AccountDatabase.json").getFile().replace("/", File.separator);
-
-		final Account account1 = new Account("DefaultAccount0815", AccountType.CUSTOM);
-		final Account account2 = new Account("sfsdf", AccountType.CUSTOM);
-		final Account account3 = new Account("read only account", AccountType.CUSTOM);
-		account3.setAccountState(AccountState.READ_ONLY);
-		final Account account4 = new Account("hidden account", AccountType.CUSTOM);
-		account4.setAccountState(AccountState.HIDDEN);
-
-		final List<Account> destinationAccounts = List.of(account1, account2, account3, account4);
-
-		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf", "read only account", "hidden account"), destinationAccounts);
+		helper.uploadDatabase(path);
 	}
 
 	@AfterEach
@@ -339,6 +327,7 @@ class AccountTest extends SeleniumTestBase
 		// fill form
 		driver.findElement(By.id("transaction-name")).sendKeys("My transaction");
 		driver.findElement(By.id("transaction-amount")).sendKeys("15.00");
+		TransactionTestHelper.selectDayInTransactionDatePicker(driver, 20);
 		TransactionTestHelper.selectCategoryByName(driver, "sdfdsf");
 
 		// submit form
@@ -360,7 +349,7 @@ class AccountTest extends SeleniumTestBase
 		final List<WebElement> columns = row.findElements(By.className("col"));
 
 		// check columns
-		final List<WebElement> icons = columns.get(5).findElements(By.tagName("i"));
+		final List<WebElement> icons = columns.get(4).findElements(By.tagName("i"));
 		assertThat(icons).hasSize(1);
 		assertThat(icons.get(0).getText()).isEqualTo("content_copy");
 	}

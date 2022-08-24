@@ -114,6 +114,10 @@
     background-color: var(--color-black) !important;
 }
 
+.background-light {
+    background-color: var(--color-background-light) !important;
+}
+
 /* text colors*/
 
 .text-blue {

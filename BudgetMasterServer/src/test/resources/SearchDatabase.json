@@ -31,12 +31,14 @@
         {
             "ID": 1,
             "name": "Placeholder",
-            "type": "ALL"
+            "type": "ALL",
+            "accountState": "FULL_ACCESS"
         },
         {
             "ID": 2,
             "name": "DefaultAccount0815",
-            "type": "CUSTOM"
+            "type": "CUSTOM",
+            "accountState": "FULL_ACCESS"
         },
         {
             "ID": 3,
@@ -3163,7 +3165,8 @@
                 ],
                 "fileName": "awesomeIcon.png",
                 "fileExtension": "PNG"
-            }
+            },
+            "accountState": "FULL_ACCESS"
         }
     ],
     "transactions": [

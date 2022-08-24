@@ -54,7 +54,7 @@ public abstract class ItemImporter<T extends ProvidesID>
 		return new ImportResultItem(entityType, numberOfImportedItems, items.size(), collectedErrorMessages);
 	}
 
-	protected abstract int importSingleItem(T item);
+	protected abstract int importSingleItem(T item) throws ImportException;
 
 	protected abstract String getNameForItem(T item);
 

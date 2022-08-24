@@ -5,8 +5,6 @@ import de.deadlocker8.budgetmaster.templategroup.TemplateGroup;
 import de.deadlocker8.budgetmaster.templategroup.TemplateGroupRepository;
 import de.deadlocker8.budgetmaster.templategroup.TemplateGroupType;
 
-import java.util.Optional;
-
 public class TemplateGroupImporter extends ItemImporter<TemplateGroup>
 {
 	public TemplateGroupImporter(TemplateGroupRepository templateGroupRepository)
@@ -15,40 +13,21 @@ public class TemplateGroupImporter extends ItemImporter<TemplateGroup>
 	}
 
 	@Override
-	protected int importSingleItem(TemplateGroup templateGroup)
+	protected int importSingleItem(TemplateGroup templateGroup) throws ImportException
 	{
 		if(!(repository instanceof TemplateGroupRepository repository))
 		{
 			throw new IllegalArgumentException("Invalid repository type");
 		}
 
-		final Optional<TemplateGroup> existingTemplateGroupOptional = findExistingTemplateGroup(templateGroup, repository);
-		if(existingTemplateGroupOptional.isEmpty())
-		{
-			// template group does not exist --> create it
-			TemplateGroup templateGroupToCreate = new TemplateGroup(templateGroup.getName(), templateGroup.getType());
-			TemplateGroup savedTemplateGroup = repository.save(templateGroupToCreate);
-
-			return savedTemplateGroup.getID();
-		}
-		else
-		{
-			// template group already exists
-			final TemplateGroup existingTemplateGroup = existingTemplateGroupOptional.get();
-			return existingTemplateGroup.getID();
-		}
-	}
-
-	private Optional<TemplateGroup> findExistingTemplateGroup(TemplateGroup templateGroup, TemplateGroupRepository repository)
-	{
 		if(templateGroup.getType().equals(TemplateGroupType.DEFAULT))
 		{
-			return Optional.of(repository.findFirstByType(TemplateGroupType.DEFAULT));
+			return repository.findFirstByType(TemplateGroupType.DEFAULT).getID();
 		}
-		else
-		{
-			return Optional.ofNullable(repository.findByNameAndType(templateGroup.getName(), templateGroup.getType()));
-		}
+
+		TemplateGroup templateGroupToCreate = new TemplateGroup(templateGroup.getName(), templateGroup.getType());
+		TemplateGroup savedTemplateGroup = repository.save(templateGroupToCreate);
+		return savedTemplateGroup.getID();
 	}
 
 	@Override

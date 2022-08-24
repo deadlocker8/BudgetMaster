@@ -5,24 +5,14 @@
         <div class="col s12">
             <div class="table-container">
                 <div class="table-cell">
-                    <div class="switch-cell-margin">${locale.getString("settings.rest")}</div>
-                    <div class="switch-cell-margin">${locale.getString("settings.darkTheme")}</div>
                     <div class="switch-cell-margin">${locale.getString("settings.category.circle.style")}</div>
                 </div>
                 <div class="table-cell table-cell-spacer"></div>
                 <div class="table-cell">
-                    <@switch "rest" "restActivated" settings.isRestActivated()/>
-                    <@switch "darkTheme" "useDarkTheme" settings.isUseDarkTheme()/>
                     <@switch "category.circle.style" "showCategoriesAsCircles" settings.getShowCategoriesAsCircles()?? && settings.getShowCategoriesAsCircles()/>
                 </div>
                 <div class="table-cell table-cell-spacer"></div>
                 <div class="table-cell">
-                    <div class="switch-cell-margin">
-                        <a class="btn btn-flat tooltipped text-default" data-position="bottom" data-tooltip="${locale.getString("settings.rest.description")}"><i class="material-icons">help_outline</i></a>
-                    </div>
-                    <div class="switch-cell-margin">
-                        <a class="btn btn-flat tooltipped text-default" data-position="bottom" data-tooltip="${locale.getString("settings.darkTheme.description")}"><i class="material-icons">help_outline</i></a>
-                    </div>
                     <div class="switch-cell-margin">
                         <a class="btn btn-flat tooltipped text-default" data-position="bottom" data-tooltip="${locale.getString("settings.category.circle.style.description")}"><i class="material-icons">help_outline</i></a>
                     </div>
@@ -44,7 +34,7 @@
 </#macro>
 
 <#macro databaseNormal>
-    <div class="row hide-on-small-only">
+    <div class="row hide-on-small-only no-margin-bottom">
         <div class="col m4 l4 center-align">
             <@header.buttonLink url='/settings/database/requestImport' icon='cloud_upload' localizationKey='settings.database.import'/>
         </div>
@@ -112,6 +102,17 @@
         <div class="modal-content">
             <h4>${locale.getString("info.title.database.import.dialog")}</h4>
 
+            <div class="row notification-row">
+                <div class="col s12 center-align">
+                    <div class="notification-wrapper">
+                        <div class="notification background-yellow text-black">
+                            <i class="fas fa-exclamation-triangle notification-item"></i>
+                            <span class="notification-item left-align">${locale.getString("import.warning.delete.database")}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <form id="form-database-import" method="POST" action="<@s.url '/settings/database/upload'/>" enctype="multipart/form-data" accept-charset="UTF-8">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <div class="file-field input-field">
@@ -176,7 +177,7 @@
 
         <div class="input-field col s12 m12 l8 offset-l2">
             <i class="material-icons prefix">schedule</i>
-            <select id="settings-backup-auto-time" name="autoBackupTime" <@validation.validation "autoBackupTime"/>>
+            <select id="settings-backup-auto-time" name="autoBackupTimeType" <@validation.validation "autoBackupTime"/>>
                 <#list autoBackupTimes as time>
                     <#if settings.getAutoBackupTime() == time>
                         <option selected value="${time}">${time.getLocalized()}</option>
@@ -240,10 +241,10 @@
     <div id="settings-auto-backup-local">
         <div class="input-field col s12 m12 l8 offset-l2">
             <i class="material-icons prefix">auto_delete</i>
-            <input id="settings-backup-auto-files-to-keep" type="text" <@validation.validation "autoBackupFilesToKeep"/> value="<#if settings.isAutoBackupActive()??>${settings.getAutoBackupFilesToKeep()}</#if>">
+            <input id="settings-backup-auto-files-to-keep" type="text" <@validation.validation "autoBackupFilesToKeep"/> value="<#if settings.isAutoBackupActive()?? &&settings.getAutoBackupFilesToKeep()?? >${settings.getAutoBackupFilesToKeep()}</#if>">
             <label for="settings-backup-auto-files-to-keep">${locale.getString("settings.backup.auto.files.to.keep")}</label>
         </div>
-        <input type="hidden" id="hidden-settings-backup-auto-files-to-keep" name="autoBackupFilesToKeep" value="<#if settings.isAutoBackupActive()??>${settings.getAutoBackupFilesToKeep()}</#if>">
+        <input type="hidden" id="hidden-settings-backup-auto-files-to-keep" name="autoBackupFilesToKeep" value="<#if settings.isAutoBackupActive()?? && settings.getAutoBackupFilesToKeep()??>${settings.getAutoBackupFilesToKeep()}</#if>">
     </div>
 </#macro>
 
@@ -291,4 +292,24 @@
             <@header.buttonSubmit id='settings-backup-run-now' name='action' icon='cloud_download' localizationKey='settings.backup.auto.run.now'/>
         </div>
     </div>
+</#macro>
+
+<#macro settingsCollapsibleItem id icon title isFontAwesomeIcon=false>
+    <li class="z-depth-2">
+        <div class="collapsible-header bold" id="${id}Header">
+            <#if isFontAwesomeIcon><i class="${icon}"></i><#else><i class="material-icons">${icon}</i></#if>${title}
+            <#if helpers.getSettings().isUseDarkTheme()>
+                <#assign unsavedChangesTextColor='text-yellow'/>
+            <#else>
+                <#assign unsavedChangesTextColor='text-red-light'/>
+            </#if>
+
+            <div class="collapsible-header-button hidden ${unsavedChangesTextColor}"><i class="material-icons">warning</i>${locale.getString('settings.warning.unsaved')}</div>
+        </div>
+        <div class="collapsible-body">
+            <div class="row no-margin-bottom" id="${id}">
+                <#nested>
+            </div>
+        </div>
+    </li>
 </#macro>

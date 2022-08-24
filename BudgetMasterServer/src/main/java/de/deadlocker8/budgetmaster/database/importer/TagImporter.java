@@ -12,7 +12,7 @@ public class TagImporter extends ItemImporter<Tag>
 	}
 
 	@Override
-	protected int importSingleItem(Tag tag)
+	protected int importSingleItem(Tag tag) throws ImportException
 	{
 		if(!(repository instanceof TagRepository repository))
 		{

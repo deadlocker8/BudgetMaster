@@ -12,7 +12,7 @@ public class IconImporter extends ItemImporter<Icon>
 	}
 
 	@Override
-	protected int importSingleItem(Icon icon)
+	protected int importSingleItem(Icon icon) throws ImportException
 	{
 		if(!(repository instanceof IconRepository repository))
 		{

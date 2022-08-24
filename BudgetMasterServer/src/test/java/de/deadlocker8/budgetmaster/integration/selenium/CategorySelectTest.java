@@ -35,11 +35,7 @@ class CategorySelectTest extends SeleniumTestBase
 		helper.hideMigrationDialog();
 
 		String path = getClass().getClassLoader().getResource("SearchDatabase.json").getFile().replace("/", File.separator);
-
-		final Account account1 = new Account("DefaultAccount0815", AccountType.CUSTOM);
-		final Account account2 = new Account("Account2", AccountType.CUSTOM);
-
-		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf"), List.of(account1, account2));
+		helper.uploadDatabase(path);
 	}
 
 	@Override

@@ -31,3 +31,55 @@
 #verificationCode:hover {
     cursor: pointer;
 }
+
+.collapsible-header-button {
+    position: absolute;
+    right: 1rem;
+    top: 1.05rem;
+    display: flex;
+    align-items: center;
+    color: var(--color-yellow);
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.collapsible-header-button i {
+    margin-right: 0.3rem;
+    font-size: 1.3rem;
+}
+
+.collapsible-header-button.hidden {
+    display: none;
+}
+
+.settings-preview-image {
+    width: 80%;
+    margin-top: 1rem;
+    border: 3px solid black;
+    opacity: 0.3;
+    padding: 1rem;
+    background-color: var(--color-grey);
+}
+
+.settings-preview-image-selected {
+    opacity: 1.0 !important;
+}
+
+.settings-preview-image:hover {
+    opacity: 1.0 !important;
+    cursor: pointer;
+}
+
+#settings-keywords {
+    margin-top: 0;
+}
+
+#settings-keywords-description {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#settings-keywords-description i {
+    margin-right: 1.3rem;
+}

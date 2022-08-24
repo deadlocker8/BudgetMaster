@@ -84,7 +84,12 @@
     <script>
         amountValidationMessage = "${locale.getString("warning.transaction.amount")}";
         numberValidationMessage = "${locale.getString("warning.empty.number")}";
-        dateValidationMessage = "${locale.getString("warning.transaction.date")}";
+
+        <#if helpers.isUseSimpleDatepickerForTransactions()>
+            dateValidationMessage = "${locale.getString("warning.transaction.date.simple")}";
+        <#else>
+            dateValidationMessage = "${locale.getString("warning.transaction.date")}";
+        </#if>
     </script>
 </#macro>
 
@@ -93,12 +98,14 @@
         <div class="input-field col s12 m12 l8 offset-l2">
             <#if transaction.getDate?? && transaction.getDate()??>
                 <#assign startDate = dateService.getLongDateString(transaction.getDate())/>
+                <#assign transactionDate = dateService.getLongDateString(transaction.getDate())/>
             <#else>
                 <#assign startDate = dateService.getLongDateString(currentDate)/>
+                <#assign transactionDate = ""/>
             </#if>
 
             <i class="material-icons prefix">event</i>
-            <input id="transaction-datepicker" type="text" class="datepicker<#if helpers.isUseSimpleDatepickerForTransactions()>-simple</#if>" name="date" value="${startDate}">
+            <input id="transaction-datepicker" type="text" class="datepicker<#if helpers.isUseSimpleDatepickerForTransactions()>-simple</#if>" name="date" value="${transactionDate}">
             <label class="input-label" for="transaction-datepicker">${locale.getString("transaction.new.label.date")}</label>
         </div>
     </div>
@@ -122,9 +129,9 @@
 <#macro transactionTags transaction>
     <div class="row">
         <div class="col s12 m12 l8 offset-l2">
-            <div class="transaction-tags">
+            <div class="tag-input-container">
                 <i class="material-icons prefix">local_offer</i>
-                <div class="transaction-tags-input">
+                <div class="tag-input">
                     <label class="input-label" class="chips-label" for="transaction-chips">${locale.getString("transaction.new.label.tags")}</label>
                     <div id="transaction-chips" class="chips chips-placeholder chips-autocomplete"></div>
                 </div>
@@ -304,6 +311,8 @@
 </#macro>
 
 <#macro buttons cancelURL includeContinueButton>
+    <div id="keywordCheckUrl" class="hidden" data-url="<@s.url '/keywords/keywordCheck'/>"></div>
+
     <br>
     <hr>
     <br>
@@ -344,11 +353,11 @@
 </#macro>
 
 <#macro buttonSave>
-    <@header.buttonSubmit name='action' icon='save' localizationKey='save' id='button-save-transaction' color='green'/>
+    <@header.buttonSubmit name='action' icon='save' localizationKey='save' id='button-save-transaction' color='green' onclick='return validateForm(false, false, false)'/>
 </#macro>
 
 <#macro buttonSaveAndContinue>
-    <@header.buttonSubmit name='action' icon='save' localizationKey='saveAndContinue' id='button-save-transaction-and-continue' value='continue'/>
+    <@header.buttonSubmit name='action' icon='save' localizationKey='saveAndContinue' id='button-save-transaction-and-continue' value='continue'  onclick='return validateForm(true, false, false)'/>
 </#macro>
 
 <#macro buttonTransactionActions canChangeType canCreateTemplate changeTypeInProgress>

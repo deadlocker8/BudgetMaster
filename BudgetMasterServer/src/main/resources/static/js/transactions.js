@@ -1,5 +1,7 @@
 $(document).ready(function()
 {
+    let pickerEndDate;
+
     // open filter modal if corresponding anchor is in url (originating from hotkeys.js)
     if(window.location.href.endsWith('#modalFilter'))
     {
@@ -48,8 +50,8 @@ $(document).ready(function()
             yearRange: 25,
             firstDay: 1,
             showClearBtn: false,
-            setDefaultDate: true,
             defaultDate: startDate,
+            autoClose: true,
 
             i18n: {
                 // Strings and translations
@@ -85,12 +87,14 @@ $(document).ready(function()
         // picker end date
         if(typeof endDate !== "undefined")
         {
-            let pickerEndDate = createDatePickerEnd(pickerStartDate.date, endDate);
+            pickerEndDate = createDatePickerEnd(pickerStartDate.date, endDate);
         }
     }
 
     function createDatePickerEnd(minDate, selectedDate)
     {
+        console.log(minDate, selectedDate);
+
         if(selectedDate < minDate)
         {
             selectedDate = minDate;
@@ -103,6 +107,7 @@ $(document).ready(function()
             setDefaultDate: true,
             minDate: minDate,
             defaultDate: selectedDate,
+            autoClose: true,
 
             i18n: {
                 // Strings and translations
@@ -172,6 +177,7 @@ $(document).ready(function()
                 minLength: 1
             },
             placeholder: tagsPlaceholder,
+            secondaryPlaceholder: tagsPlaceholder,
             data: initialTags
         });
 
@@ -261,7 +267,9 @@ $(document).ready(function()
 
     $('.button-request-delete-transaction').click(function()
     {
-        fetchAndShowModalContent(this.dataset.url, '#deleteModalContainerOnDemand', '#modalConfirmDelete', function(){});
+        fetchAndShowModalContent(this.dataset.url, '#deleteModalContainerOnDemand', '#modalConfirmDelete', function()
+        {
+        });
     });
 
     $('#button-transaction-add-repeating-option').click(function()
@@ -379,8 +387,20 @@ function convertDateWithoutDots(dateString)
     return dateString.substr(0, 2) + '.' + dateString.substr(2, 2) + '.' + dateString.substr(4, yearLength);
 }
 
-function validateForm(allowEmptyAmount = false)
+function validateForm(isSaveAndContinue = false, allowEmptyAmount = false, skipKeywordCheck = false)
 {
+    // name (keyword check)
+    let isExpenditureSwitch = document.getElementById('input-isPayment');
+    let isExpenditure = isExpenditureSwitch !== null && (isExpenditureSwitch.value === "1" || isExpenditureSwitch.value === "true");
+    if(!skipKeywordCheck && isExpenditure)
+    {
+        let nameContainsKeywords = checkNameForKeywords(isSaveAndContinue);
+        if(nameContainsKeywords)
+        {
+            return false;
+        }
+    }
+
     // amount
     let isValidAmount = validateAmount($('#transaction-amount').val(), allowEmptyAmount);
     if(!isValidAmount)
@@ -463,4 +483,79 @@ function validateForm(allowEmptyAmount = false)
     }
 
     return true;
+}
+
+function checkNameForKeywords(isSaveAndContinue)
+{
+    let url = document.getElementById('keywordCheckUrl').dataset.url;
+    let transactionName = document.getElementById('transaction-name').value;
+
+    let result;
+
+    $.ajax({
+        async: false,
+        type: 'GET',
+        url: url + '?transactionName=' + transactionName,
+        data: {},
+        success: function(data, textStatus, request)
+        {
+            if(request.status === 200)
+            {
+                // name contains at least one keyword
+                result = true;
+                openKeywordWarningModal(data, isSaveAndContinue);
+            }
+            else
+            {
+                result = false;
+            }
+        },
+        error: function(data)
+        {
+            console.error(data);
+        }
+    });
+
+    return result;
+}
+
+function openKeywordWarningModal(htmlData, isSaveAndContinue)
+{
+    let modalID = '#modalTransactionNameKeywordWarning';
+
+    $('#transactionNameKeywordWarningModalContainer').html(htmlData);
+    $(modalID).modal();
+    $(modalID).modal('open');
+
+    // button ignore
+    $('#keyword-warning-button-ignore').click(function()
+    {
+        $(modalID).modal('close');
+
+        let button;
+        if(isSaveAndContinue)
+        {
+            button = document.getElementById('button-save-transaction-and-continue');
+        }
+        else
+        {
+            button = document.getElementById('button-save-transaction');
+        }
+
+        let allowEmptyAmount = document.getElementById('template-name') !== null;
+
+        // rebind onclick function of button to skip keyword check once
+        button.onclick = function()
+        {
+            return validateForm(isSaveAndContinue, allowEmptyAmount, true);
+        };
+
+        button.click();
+
+        // reset onsubmit function of button in case user edits transaction name too after fixing validation errors
+        button.onclick = function()
+        {
+            return validateForm(isSaveAndContinue, allowEmptyAmount, false);
+        };
+    });
 }

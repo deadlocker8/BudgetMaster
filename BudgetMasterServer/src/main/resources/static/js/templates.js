@@ -47,7 +47,6 @@ $(document).ready(function()
                         inputGroupID.value = '';
 
                         let parsedData = JSON.parse(response);
-                        console.log(parsedData)
                         M.toast({
                             html: parsedData['localizedMessage'],
                             classes: 'red'

@@ -49,7 +49,7 @@ public class DatabaseConfiguration
 			final StringBuilder errorMessageBuilder = new StringBuilder("BudgetMaster failed to start due to missing database settings!");
 			errorMessageBuilder.append("\n");
 			errorMessageBuilder.append("Your settings.properties file in \"");
-			errorMessageBuilder.append(BudgetMasterServerMain.getApplicationSupportFolder());
+			errorMessageBuilder.append(BudgetMasterServerMain.getApplicationSupportFolder(true));
 			errorMessageBuilder.append("\" is missing the following settings:");
 			errorMessageBuilder.append("\n");
 

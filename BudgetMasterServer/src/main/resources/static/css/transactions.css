@@ -19,22 +19,6 @@
     margin-top: 0;
 }
 
-.transaction-tags {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-.transaction-tags .prefix {
-    margin-right: 1.3rem;
-}
-
-.transaction-tags-input {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-}
-
 .input-min-width {
     min-width: 100px;
 }
@@ -50,17 +34,16 @@
     margin: auto;
 }
 
-.transaction-line-height {
-    line-height: 50px;
-}
-
 .transaction-row-top {
-    padding-top: 14px;
+    padding: 14px 0.5rem 0 0.5rem;
 }
 
 .transaction-row-bottom {
-    padding-bottom: 5px;
-    margin-bottom: 0;
+    padding-bottom: 14px;
+}
+
+.transaction-row-desktop {
+    min-height: 3.4rem;
 }
 
 .transaction-row-transparent {
@@ -69,6 +52,10 @@
 
 .transaction-row-transparent-override {
     opacity: 1.0 !important;
+}
+
+.transaction-card {
+    margin: 0.4rem 0 0.8rem 0;
 }
 
 .transaction-text {
@@ -87,6 +74,16 @@
 
 .transaction-date {
     min-width: 5.5rem;
+    margin-top: 1.6rem;
+    margin-bottom: 0.5rem;
+    color: #FFFFFFDD;
+    letter-spacing: 0.1rem;
+}
+
+.search-result .transaction-date {
+    margin: 0;
+    color: var(--color-text);
+    letter-spacing: normal;
 }
 
 .new-transaction-button {
@@ -143,4 +140,14 @@
 .icon-repeating {
     vertical-align: middle;
     font-size: 2rem;
+}
+
+#keyword {
+    font-weight: bold;
+    border-bottom: 2px solid var(--color-text);
+    padding: 0.3rem 0.5rem;
+}
+
+#modalTransactionNameKeywordWarning {
+    width: 40%;
 }

@@ -1,13 +1,9 @@
 package de.deadlocker8.budgetmaster.integration.selenium;
 
-import de.deadlocker8.budgetmaster.accounts.Account;
-import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.authentication.UserService;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
 import de.deadlocker8.budgetmaster.integration.helpers.TransactionTestHelper;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -17,10 +13,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,10 +34,7 @@ class NewTransactionTransferTest extends SeleniumTestBase
 		helper.hideMigrationDialog();
 
 		String path = getClass().getClassLoader().getResource("SearchDatabase.json").getFile().replace("/", File.separator);
-		final Account account1 = new Account("DefaultAccount0815", AccountType.CUSTOM);
-		final Account account2 = new Account("Account2", AccountType.CUSTOM);
-
-		helper.uploadDatabase(path, Arrays.asList("DefaultAccount0815", "sfsdf"), List.of(account1, account2));
+		helper.uploadDatabase(path);
 	}
 
 	@Override
@@ -98,15 +88,17 @@ class NewTransactionTransferTest extends SeleniumTestBase
 	{
 		openNewTransactionPage();
 
-		String name = "My transfer transaction";
-		String amount = "15.00";
-		String description = "Lorem Ipsum dolor sit amet";
-		String categoryName = "sdfdsf";
+		final String name = "My transfer transaction";
+		final String amount = "15.00";
+		final String description = "Lorem Ipsum dolor sit amet";
+		final String categoryName = "sdfdsf";
+		final int day = 20;
 
 		// fill form
 		driver.findElement(By.id("transaction-name")).sendKeys(name);
 		driver.findElement(By.id("transaction-amount")).sendKeys(amount);
 		driver.findElement(By.id("transaction-description")).sendKeys(description);
+		TransactionTestHelper.selectDayInTransactionDatePicker(driver, day);
 		TransactionTestHelper.selectCategoryByName(driver, categoryName);
 
 		// submit form
@@ -118,16 +110,18 @@ class NewTransactionTransferTest extends SeleniumTestBase
 		// assert
 		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
 
-		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
-		assertThat(transactionsRows).hasSize(2);
+		final List<WebElement> transactionDateGroups = driver.findElements(By.className("transaction-date-group"));
 
-		final WebElement row = transactionsRows.get(0);
-		final List<WebElement> columns = row.findElements(By.className("col"));
-		assertThat(columns).hasSize(6);
+		final WebElement dateGroup = transactionDateGroups.get(0);
+		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", TransactionTestHelper.getDateString(day));
+		final List<WebElement> transactionsInGroup = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+
+		final WebElement transactionRow = transactionsInGroup.get(0);
+		final List<WebElement> columns = transactionRow.findElements(By.className("col"));
+		assertThat(columns).hasSize(5);
 
 		// check columns
-		final String dateString = new SimpleDateFormat("dd.MM.").format(new Date());
-		TransactionTestHelper.assertTransactionColumns(columns, dateString, categoryName, "rgb(46, 124, 43)", false, true, name, description, amount);
+		TransactionTestHelper.assertTransactionColumns(columns, categoryName, "rgb(46, 124, 43)", false, true, name, description, amount);
 	}
 
 	@Test

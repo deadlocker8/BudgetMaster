@@ -18,8 +18,8 @@ public enum EntityType implements LocalizedEnum
 	HOTKEYS("keyboard", "background-grey", ImportRequired.NONE, null, null),
 	ABOUT("info", "background-grey", ImportRequired.NONE, null, null),
 	TEMPLATE_GROUP("folder", "background-orange-dark", ImportRequired.OPTIONAL, "template groups", "template group"),
-	ICON("icon", "background-grey", ImportRequired.NONE, "icons", "icon");
-
+	ICON("icon", "background-grey", ImportRequired.NONE, "icons", "icon"),
+	TRANSACTION_NAME_KEYWORD("transaction_name_keyword", "background-grey", ImportRequired.NONE, "keywords", "keyword");
 
 	public enum ImportRequired
 	{

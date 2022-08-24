@@ -12,8 +12,6 @@ import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.charts.*;
 import de.deadlocker8.budgetmaster.database.DatabaseParser;
 import de.deadlocker8.budgetmaster.database.InternalDatabase;
-import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatch;
-import de.deadlocker8.budgetmaster.database.accountmatches.AccountMatchList;
 import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.images.Image;
@@ -34,6 +32,8 @@ import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.templates.TemplateRepository;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
+import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeyword;
+import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeywordService;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
 import org.junit.jupiter.api.BeforeEach;
@@ -134,6 +134,9 @@ class ImportServiceTest
 	private IconService iconService;
 
 	@Autowired
+	private TransactionNameKeywordService transactionNameKeywordService;
+
+	@Autowired
 	private ImportService importService;
 
 	@Test
@@ -144,46 +147,8 @@ class ImportServiceTest
 		final DatabaseParser parser = new DatabaseParser(fileContent);
 		final InternalDatabase importedDatabase = parser.parseDatabaseFromJSON();
 
-		// source accounts
-		final Account sourceAccount1 = new Account("Default Account", AccountType.CUSTOM);
-		sourceAccount1.setID(2);
-		final Account sourceAccount2 = new Account("Read-only account", AccountType.CUSTOM);
-		sourceAccount2.setID(6);
-		final Account sourceAccount3 = new Account("Second Account", AccountType.CUSTOM);
-		sourceAccount3.setID(8);
-
-		Icon iconDestAccount2 = new Icon("fas fa-ambulance");
-		iconDestAccount2 = iconService.getRepository().save(iconDestAccount2);
-
-		Icon iconDestAccount3 = new Icon("fas fa-apple");
-		iconDestAccount3 = iconService.getRepository().save(iconDestAccount3);
-
-		// destination accounts
-		final Account destAccount1 = accountRepository.findByIsDefault(true);
-		Account destAccount2 = new Account("Destination_Account_1", AccountType.CUSTOM);
-		destAccount2.setAccountState(AccountState.FULL_ACCESS);
-		destAccount2.setIconReference(iconDestAccount2);
-		destAccount2 = accountRepository.save(destAccount2);
-		Account destAccount3 = new Account("Destination_Account_2", AccountType.CUSTOM);
-		destAccount3.setAccountState(AccountState.FULL_ACCESS);
-		destAccount3.setIconReference(iconDestAccount3);
-		destAccount3 = accountRepository.save(destAccount3);
-
-		// account matches
-		final AccountMatch match1 = new AccountMatch(sourceAccount1);
-		match1.setAccountDestination(destAccount1);
-
-		final AccountMatch match2 = new AccountMatch(sourceAccount2);
-		match2.setAccountDestination(destAccount2);
-
-		final AccountMatch match3 = new AccountMatch(sourceAccount3);
-		match3.setAccountDestination(destAccount3);
-
-		final List<AccountMatch> matches = List.of(match1, match2, match3);
-		final AccountMatchList accountMatchList = new AccountMatchList(matches);
-
 		// act
-		final List<ImportResultItem> importResultItems = importService.importDatabase(importedDatabase, accountMatchList, true, true, true);
+		final List<ImportResultItem> importResultItems = importService.importDatabase(importedDatabase, true, true, true);
 		final InternalDatabase databaseResult = importService.getDatabase();
 
 		// assert images
@@ -196,30 +161,31 @@ class ImportServiceTest
 		// assert icons
 		// icons created for default accounts, categories, ...
 		final Icon iconAllAccounts = createIcon(1, "fas fa-landmark", null, null);
-		final Icon iconAccountDefault = createIcon(2, null, null, null);
+		final Icon iconAccountDefault = createIcon(3, null, null, null);
 		final Icon iconCategoryNone = createIcon(4, null, null, null);
 		final Icon iconCategoryRest = createIcon(5, null, null, null);
 
 		// imported icons
-		final Icon iconAccountReadOnly = createIcon(11, "fas fa-ban", "#2eb952ff", null);
-		final Icon iconAccountDefaultNew = createIcon(12, null, null, image);
-		final Icon iconAccountSecond = createIcon(13, null, "#2e79b9ff", null);
-		final Icon iconCategoryCar = createIcon(14, "fas fa-ambulance", null, null);
-		final Icon iconCategoryRent = createIcon(15, null, null, image);
-		final Icon iconTemplateFull = createIcon(16, "fas fa-battery-three-quarters", "#e34f4fff", null);
-		final Icon iconTemplateUngrouped = createIcon(17, null, "#212121ff", null);
-		final Icon iconTemplateRandom = createIcon(18, "fas fa-award", "#212121ff", null);
-		final Icon iconTemplateWithTags = createIcon(19, null, null, image);
+		final Icon iconAccountReadOnly = createIcon(9, "fas fa-ban", "#2eb952ff", null);
+		final Icon iconAccountDefaultNew = createIcon(10, null, null, image);
+		final Icon iconAccountSecond = createIcon(11, null, "#2e79b9ff", null);
+		final Icon iconCategoryCar = createIcon(12, "fas fa-ambulance", null, null);
+		final Icon iconCategoryRent = createIcon(13, null, null, image);
+		final Icon iconTemplateFull = createIcon(14, "fas fa-battery-three-quarters", "#e34f4fff", null);
+		final Icon iconTemplateUngrouped = createIcon(15, null, "#212121ff", null);
+		final Icon iconTemplateRandom = createIcon(16, "fas fa-award", "#212121ff", null);
+		final Icon iconTemplateWithTags = createIcon(17, null, null, image);
 		assertThat(iconService.getRepository().findAll())
-				.hasSize(16)
+				.hasSize(17)
 				.containsExactlyInAnyOrder(
 						iconAllAccounts,
+						createIcon(2, null, null, null),
 						iconAccountDefault,
 						iconCategoryNone,
 						iconCategoryRest,
-						createIcon(8, "fas fa-landmark", null, null),
-						createIcon(9, null, null, null),
-						createIcon(10, null, null, null),
+						createIcon(6, "fas fa-landmark", null, null),
+						createIcon(7, null, null, null),
+						createIcon(8, null, null, null),
 						iconAccountReadOnly,
 						iconAccountDefaultNew,
 						iconAccountSecond,
@@ -245,15 +211,18 @@ class ImportServiceTest
 
 		// assert accounts
 		final Account accountPlaceholder = createAccount(1, "Placeholder", AccountType.ALL, AccountState.FULL_ACCESS, iconAllAccounts, false, false);
-		final Account accountDefault = createAccount(2, "Default Account", AccountType.CUSTOM, AccountState.FULL_ACCESS, iconAccountDefaultNew, true, true);
-		final Account accountReadOnly = createAccount(3, "Destination_Account_1", AccountType.CUSTOM, AccountState.FULL_ACCESS, iconAccountReadOnly, false, false);
-		final Account accountSecond = createAccount(4, "Destination_Account_2", AccountType.CUSTOM, AccountState.FULL_ACCESS, iconAccountSecond, false, false);
+		final Account accountDefault = createAccount(2, "Default Account", AccountType.CUSTOM, AccountState.FULL_ACCESS, iconAccountDefault, true, true);
+		final Account accountDefaultNew = createAccount(3, "My Default Account", AccountType.CUSTOM, AccountState.FULL_ACCESS, iconAccountDefaultNew, false, false);
+		final Account accountReadOnly = createAccount(4, "Read-only account", AccountType.CUSTOM, AccountState.READ_ONLY, iconAccountReadOnly, false, false);
+		final Account accountSecond = createAccount(5, "Second Account", AccountType.CUSTOM, AccountState.FULL_ACCESS, iconAccountSecond, false, false);
 		assertThat(accountRepository.findAll())
-				.hasSize(4)
+				.hasSize(5)
 				.contains(accountPlaceholder,
+						accountDefault,
+						accountDefaultNew,
 						accountReadOnly,
 						accountSecond);
-		assertThat(accountRepository.getById(accountDefault.getID()))
+		assertThat(accountRepository.getReferenceById(accountDefault.getID()))
 				.hasFieldOrPropertyWithValue("name", accountDefault.getName())
 				.hasFieldOrPropertyWithValue("type", accountDefault.getType())
 				.hasFieldOrPropertyWithValue("accountState", accountDefault.getAccountState())
@@ -283,7 +252,7 @@ class ImportServiceTest
 		templateFull.setTemplateName("Full template");
 		templateFull.setAmount(-1200);
 		templateFull.setIsExpenditure(true);
-		templateFull.setAccount(accountDefault);
+		templateFull.setAccount(accountDefaultNew);
 		templateFull.setCategory(categoryCar);
 		templateFull.setName("My awesome transaction");
 		templateFull.setDescription("Lorem Ipsum");
@@ -341,7 +310,7 @@ class ImportServiceTest
 		transactionNormal.setID(1);
 		transactionNormal.setAmount(-1100);
 		transactionNormal.setIsExpenditure(true);
-		transactionNormal.setAccount(accountDefault);
+		transactionNormal.setAccount(accountDefaultNew);
 		transactionNormal.setCategory(categoryCar);
 		transactionNormal.setName("normal transaction");
 		transactionNormal.setDescription("Lorem Ipsum dolor");
@@ -354,7 +323,7 @@ class ImportServiceTest
 		transactionRepeating.setID(2);
 		transactionRepeating.setAmount(-100);
 		transactionRepeating.setIsExpenditure(true);
-		transactionRepeating.setAccount(accountDefault);
+		transactionRepeating.setAccount(accountDefaultNew);
 		transactionRepeating.setCategory(categoryNone);
 		transactionRepeating.setName("Repeating transaction");
 		transactionRepeating.setDescription("");
@@ -374,7 +343,7 @@ class ImportServiceTest
 		transactionTransfer.setID(3);
 		transactionTransfer.setAmount(-1600);
 		transactionTransfer.setIsExpenditure(true);
-		transactionTransfer.setAccount(accountDefault);
+		transactionTransfer.setAccount(accountDefaultNew);
 		transactionTransfer.setCategory(categoryRent);
 		transactionTransfer.setName("Transfer");
 		transactionTransfer.setDescription("");
@@ -387,7 +356,7 @@ class ImportServiceTest
 		transactionRepeatingTransfer.setID(4);
 		transactionRepeatingTransfer.setAmount(-200);
 		transactionRepeatingTransfer.setIsExpenditure(true);
-		transactionRepeatingTransfer.setAccount(accountDefault);
+		transactionRepeatingTransfer.setAccount(accountDefaultNew);
 		transactionRepeatingTransfer.setCategory(categoryCar);
 		transactionRepeatingTransfer.setName("Repeating transfer");
 		transactionRepeatingTransfer.setDescription("");
@@ -407,7 +376,7 @@ class ImportServiceTest
 		transactionIncomeWithTags.setID(5);
 		transactionIncomeWithTags.setAmount(2036);
 		transactionIncomeWithTags.setIsExpenditure(false);
-		transactionIncomeWithTags.setAccount(accountDefault);
+		transactionIncomeWithTags.setAccount(accountDefaultNew);
 		transactionIncomeWithTags.setCategory(categoryNone);
 		transactionIncomeWithTags.setName("income with tags");
 		transactionIncomeWithTags.setDescription("");
@@ -423,6 +392,27 @@ class ImportServiceTest
 						transactionTransfer,
 						transactionRepeatingTransfer,
 						transactionIncomeWithTags);
+
+		// assert transaction name keywords
+		// default keywords
+		final TransactionNameKeyword defaultKeyword1 = new TransactionNameKeyword(1, "einnahme");
+		final TransactionNameKeyword defaultKeyword2 = new TransactionNameKeyword(2, "rückzahlung");
+		final TransactionNameKeyword defaultKeyword3 = new TransactionNameKeyword(3, "erstattung");
+		final TransactionNameKeyword defaultKeyword4 = new TransactionNameKeyword(4, "zinsen");
+		final TransactionNameKeyword defaultKeyword5 = new TransactionNameKeyword(5, "lohn");
+		final TransactionNameKeyword defaultKeyword6 = new TransactionNameKeyword(6, "gehalt");
+		final TransactionNameKeyword defaultKeyword7 = new TransactionNameKeyword(7, "income");
+		final TransactionNameKeyword defaultKeyword8 = new TransactionNameKeyword(8, "refund");
+		final TransactionNameKeyword defaultKeyword9 = new TransactionNameKeyword(9, "interest");
+		final TransactionNameKeyword defaultKeyword10 = new TransactionNameKeyword(10, "salary");
+
+		// keywords from json
+		final TransactionNameKeyword keyword1 = new TransactionNameKeyword(11, "xyz");
+
+		assertThat(transactionNameKeywordService.getRepository().findAll())
+				.hasSize(11)
+				.containsExactly(defaultKeyword1, defaultKeyword2, defaultKeyword3, defaultKeyword4, defaultKeyword5, defaultKeyword6, defaultKeyword7, defaultKeyword8, defaultKeyword9, defaultKeyword10, keyword1);
+
 
 		assertThat(importService.getCollectedErrorMessages(importResultItems)).isEmpty();
 	}
@@ -470,10 +460,10 @@ class ImportServiceTest
 		template.setTags(new ArrayList<>());
 
 		// database
-		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(template), List.of(), List.of(), List.of());
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(template), List.of(), List.of(), List.of(), List.of());
 
 		// act
-		importService.importDatabase(database, new AccountMatchList(List.of()), true, false, true);
+		importService.importDatabase(database, true, false, true);
 
 		// assert
 		Mockito.verify(templateRepository, Mockito.never()).save(Mockito.any());
@@ -493,10 +483,10 @@ class ImportServiceTest
 		Mockito.when(templateGroupRepository.findFirstByType(TemplateGroupType.DEFAULT)).thenReturn(templateGroupDefault);
 
 		// database
-		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(templateGroup), List.of(templateWithGroup), List.of(), List.of(), List.of());
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(templateGroup), List.of(templateWithGroup), List.of(), List.of(), List.of(), List.of());
 
 		// act
-		importService.importDatabase(database, new AccountMatchList(List.of()), false, true, true);
+		importService.importDatabase(database, false, true, true);
 
 		// assert
 		final TemplateGroup defaultGroup = new TemplateGroup();
@@ -523,14 +513,14 @@ class ImportServiceTest
 		chart.setVersion(7);
 
 		// database
-		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(chart), List.of(), List.of());
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(chart), List.of(), List.of(), List.of());
 
 		Mockito.when(chartService.getHighestUsedID()).thenReturn(8);
 		final ChartRepository chartRepositoryMock = Mockito.mock(ChartRepository.class);
 		Mockito.when(chartService.getRepository()).thenReturn(chartRepositoryMock);
 
 		// act
-		importService.importDatabase(database, new AccountMatchList(List.of()), true, true, false);
+		importService.importDatabase(database, true, true, false);
 
 		// assert
 		Mockito.verify(chartRepositoryMock, Mockito.never()).save(Mockito.any());
