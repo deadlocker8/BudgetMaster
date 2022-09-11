@@ -74,6 +74,13 @@ public class AccountController extends BaseController
 			return ReturnValues.SETTINGS;
 		}
 
+		if(referer.contains("highlight"))
+		{
+			final StringBuffer requestURL = request.getRequestURL();
+			final String baseUrl = requestURL.substring(0, requestURL.length() - request.getRequestURI().length());
+			referer = baseUrl + "/transactions/";
+		}
+
 		if(referer.contains(ACCOUNT_SELECTED_INDICATOR))
 		{
 			return MessageFormat.format("redirect:{0}", referer);

@@ -8,8 +8,11 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
+import java.time.Duration;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -131,10 +134,37 @@ class SearchTest extends SeleniumTestBase
 
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		assertThat(transactionsRows).hasSize(25);
-		assertThat(transactionsRows.get(0).getAttribute("class")).contains("background-blue-light");
+		assertThat(transactionsRows.get(0).getAttribute("class")).contains("transaction-row-highlighted");
 		for(int i = 1; i < transactionsRows.size(); i++)
 		{
-			assertThat(transactionsRows.get(i).getAttribute("class")).doesNotContain("background-blue-light");
+			assertThat(transactionsRows.get(i).getAttribute("class")).doesNotContain("transaction-row-highlighted");
 		}
+	}
+
+	@Test
+	void test_selectAccountWhileTransactionIsHighlighted()
+	{
+		driver.findElement(By.cssSelector(".main-card .search-result .hide-on-med-and-down .buttonHighlight")).click();
+
+		assertThat(driver.findElement(By.cssSelector(".headline-date")).getText()).isEqualTo("May 2019");
+
+		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		assertThat(transactionsRows).hasSize(25);
+		assertThat(transactionsRows.get(0).getAttribute("class")).contains("transaction-row-highlighted");
+
+		// open global account select
+		final WebElement globalAccountSelect = driver.findElement(By.id("globalAccountSelect"));
+		globalAccountSelect.click();
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#modalGlobalAccountSelect h4")));
+
+		driver.findElement(By.id("modalGlobalAccountSelect")).sendKeys("3");
+
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("#modalGlobalAccountSelect h4")));
+
+		assertThat(driver.findElement(By.cssSelector("#globalAccountSelect .global-account-select-name")).getText())
+				.isEqualTo("sfsdf");
 	}
 }
