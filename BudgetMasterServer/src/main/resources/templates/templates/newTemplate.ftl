@@ -87,7 +87,7 @@
                         <@fontColorPickerMacros.fontColorPicker template/>
 
                         <#-- buttons -->
-                        <@newTransactionMacros.buttons cancelURL="/templates" includeContinueButton=false/>
+                        <@newTransactionMacros.buttons cancelURL="/templates" includeContinueButton=false allowEmptyAmount=true/>
                     </form>
 
                     <div id="transactionNameKeywordWarningModalContainer"></div>

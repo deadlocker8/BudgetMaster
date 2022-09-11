@@ -310,7 +310,7 @@
     </div>
 </#macro>
 
-<#macro buttons cancelURL includeContinueButton>
+<#macro buttons cancelURL includeContinueButton allowEmptyAmount=false>
     <div id="keywordCheckUrl" class="hidden" data-url="<@s.url '/keywords/keywordCheck'/>"></div>
 
     <br>
@@ -323,7 +323,7 @@
             <#if includeContinueButton>
                 <@buttonSaveAndContinue/>&nbsp;
             </#if>
-            <@buttonSave/>
+            <@buttonSave allowEmptyAmount/>
         </div>
     </div>
 
@@ -342,7 +342,7 @@
         </#if>
         <div class="row center-align">
             <div class="col s12">
-                <@buttonSave/>
+                <@buttonSave allowEmptyAmount/>
             </div>
         </div>
     </div>
@@ -352,8 +352,8 @@
     <@header.buttonLink url=cancelURL icon='clear' localizationKey='cancel' id='button-cancel-save-transaction' color='red'/>
 </#macro>
 
-<#macro buttonSave>
-    <@header.buttonSubmit name='action' icon='save' localizationKey='save' id='button-save-transaction' color='green' onclick='return validateForm(false, false, false)'/>
+<#macro buttonSave allowEmptyAmount>
+    <@header.buttonSubmit name='action' icon='save' localizationKey='save' id='button-save-transaction' color='green' onclick='return validateForm(false, ${allowEmptyAmount?c}, false)'/>
 </#macro>
 
 <#macro buttonSaveAndContinue>
