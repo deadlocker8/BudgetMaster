@@ -64,7 +64,7 @@
                                     <#assign lastDate=transactionDate/>
                             </#if>
 
-                            <div class="hide-on-large-only transaction-row-top card transaction-card background-light <#if transaction.isFuture()>transaction-row-transparent</#if> <#if shouldHighlight>background-blue-light transaction-row-transparent-override" id="highlighted-small"<#else>"</#if>>
+                            <div class="hide-on-large-only transaction-row-top card transaction-card background-light <#if transaction.isFuture()>transaction-row-transparent</#if> <#if shouldHighlight>transaction-row-highlighted" id="highlighted-small"<#else>"</#if>>
                                 <div class="row valign-wrapper transaction-row-bottom no-margin-bottom">
                                     <@transactionsMacros.transactionNameAndDescription transaction "s6"/>
                                     <@transactionsMacros.transactionAmount transaction account "s6"/>
@@ -77,7 +77,7 @@
                                 </div>
                             </div>
 
-                            <div class="hide-on-med-and-down transaction-row-top card transaction-card transaction-row-bottom background-light <#if transaction.isFuture()>transaction-row-transparent</#if> <#if shouldHighlight>background-blue-light transaction-row-transparent-override" id="highlighted-large"<#else>"</#if>>
+                            <div class="hide-on-med-and-down transaction-row-top card transaction-card transaction-row-bottom background-light <#if transaction.isFuture()>transaction-row-transparent</#if> <#if shouldHighlight>transaction-row-highlighted" id="highlighted-large"<#else>"</#if>>
                                 <div class="row valign-wrapper no-margin-bottom transaction-row-desktop">
                                     <@transactionsMacros.transactionCategory transaction "left-align"/>
                                     <@transactionsMacros.transactionAccountIcon transaction/>

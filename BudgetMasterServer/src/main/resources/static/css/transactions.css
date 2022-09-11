@@ -50,7 +50,8 @@
     opacity: 0.5;
 }
 
-.transaction-row-transparent-override {
+.transaction-row-highlighted {
+    background-color: var(--color-blue-light) !important;
     opacity: 1.0 !important;
 }
 
