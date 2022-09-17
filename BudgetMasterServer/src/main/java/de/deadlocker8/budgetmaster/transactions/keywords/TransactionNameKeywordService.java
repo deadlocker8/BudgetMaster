@@ -12,7 +12,7 @@ import java.util.List;
 public class TransactionNameKeywordService implements Resettable
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TransactionNameKeywordService.class);
-	private static final List<String> DEFAULT_KEYWORDS = List.of("einnahme", "rückzahlung", "erstattung", "zinsen", "lohn", "gehalt", "income", "refund", "interest", "salary");
+	private static final List<String> DEFAULT_KEYWORDS = List.of("einnahme", "rückzahlung", "erstattung", "zinsen", "lohn", "gehalt", "gutschrift", "income", "refund", "interest", "salary");
 
 	private final TransactionNameKeywordRepository transactionNameKeywordRepository;
 
