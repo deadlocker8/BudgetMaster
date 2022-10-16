@@ -105,7 +105,7 @@ class TransactionSearchSpecificationsTest
 		transaction1.setName("Test");
 		transaction1.setAmount(200);
 		transaction1.setDescription("Random Whatever");
-		transaction1.setDate(LocalDate.of(2018, 10, 3));
+		transaction1.setDate(LocalDate.of(2017, 10, 3));
 		transaction1.setCategory(category1);
 		transaction1.setAccount(account);
 		ArrayList<Tag> tags = new ArrayList<>();
@@ -161,7 +161,7 @@ class TransactionSearchSpecificationsTest
 		transactionWithMultipleTags = new Transaction();
 		transactionWithMultipleTags.setName("I am the TagMaster");
 		transactionWithMultipleTags.setAmount(-525);
-		transactionWithMultipleTags.setDate(LocalDate.of(2018, 11, 3));
+		transactionWithMultipleTags.setDate(LocalDate.of(2022, 11, 3));
 		transactionWithMultipleTags.setCategory(category1);
 		transactionWithMultipleTags.setAccount(account);
 		transactionWithMultipleTags.setTags(List.of(tag1, tag2));
@@ -334,5 +334,16 @@ class TransactionSearchSpecificationsTest
 		List<Transaction> results = transactionRepository.findAll(spec);
 		assertThat(results).hasSize(1)
 				.contains(transactionWithMultipleTags);
+	}
+
+	@Test
+	void getMatches_OnlyInDateRange()
+	{
+		Search search = new Search("", true, true, true, true, true, 0, LocalDate.of(2018, 1, 1), LocalDate.of(2019, 1, 1));
+		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
+
+		List<Transaction> results = transactionRepository.findAll(spec);
+		assertThat(results).hasSize(4)
+				.contains(transaction2, transferTransaction, repeatingTransaction, transactionFromHiddenAccount);
 	}
 }

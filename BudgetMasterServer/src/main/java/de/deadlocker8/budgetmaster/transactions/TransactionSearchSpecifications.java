@@ -89,7 +89,16 @@ public class TransactionSearchSpecifications
 
 			query.orderBy(builder.desc(transaction.get(Transaction_.date)));
 			query.distinct(true);
-			return builder.and(accountStatePredicate, predicatesCombined);
+
+			final Predicate allPredicates = builder.and(accountStatePredicate, predicatesCombined);
+
+			if(search.getStartDate() != null && search.getEndDate() != null)
+			{
+				final Predicate dateConstraint = builder.between(transaction.get(Transaction_.date), search.getStartDate(), search.getEndDate());
+				return builder.and(dateConstraint, allPredicates);
+			}
+
+			return allPredicates;
 		};
 	}
 
