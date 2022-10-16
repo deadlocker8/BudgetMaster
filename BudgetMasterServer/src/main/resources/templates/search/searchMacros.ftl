@@ -68,7 +68,7 @@
 
 <#macro dateRange search>
     <div class="row">
-        <div class="input-field col s6 m4 offset-m2 l3 offset-l3">
+        <div class="input-field col s6 m4 offset-m2 l3 offset-l3" id="search-datepicker-container">
             <#if search.getStartDate()??>
                 <#assign startDate = dateService.getLongDateString(search.getStartDate())/>
                  <script>
@@ -87,7 +87,7 @@
             <label for="search-datepicker">${locale.getString("chart.steps.second.label.start")}</label>
         </div>
 
-        <div class="input-field col s6 m4 l3">
+        <div class="input-field col s6 m4 l3" id="search-datepicker-end-container">
             <#if search.getEndDate()??>
                 <#assign endDate = dateService.getLongDateString(search.getEndDate())/>
                 <script>

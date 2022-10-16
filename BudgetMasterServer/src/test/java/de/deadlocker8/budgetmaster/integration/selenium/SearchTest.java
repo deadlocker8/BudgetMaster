@@ -167,4 +167,28 @@ class SearchTest extends SeleniumTestBase
 		assertThat(driver.findElement(By.cssSelector("#globalAccountSelect .global-account-select-name")).getText())
 				.isEqualTo("sfsdf");
 	}
+
+	@Test
+	void dateRange()
+	{
+		// select start date
+		driver.findElement(By.cssSelector("label[for='search-datepicker']")).click();
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#search-datepicker-container .datepicker-modal")));
+		driver.findElement(By.cssSelector("#search-datepicker-container button[data-day='" + 2 + "']")).click();
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("#search-datepicker-container .datepicker-modal")));
+
+		// select end date
+		driver.findElement(By.cssSelector("label[for='search-datepicker-end']")).click();
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#search-datepicker-end-container .datepicker-modal")));
+		driver.findElement(By.cssSelector("#search-datepicker-end-container button[data-day='" + 15 + "']")).click();
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("#search-datepicker-end-container .datepicker-modal")));
+
+		driver.findElement(By.id("button-perform-search")).click();
+
+		final WebElement headline = driver.findElement(By.className("headline"));
+		final String expected = Localization.getString("menu.search.results", 0);
+		assertThat(headline.getText()).isEqualTo(expected);
+	}
 }
