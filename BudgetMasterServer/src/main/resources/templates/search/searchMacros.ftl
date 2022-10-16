@@ -3,19 +3,19 @@
 
 <#macro searchTextAndButton search>
     <div class="row no-margin-bottom valign-wrapper">
-        <div class="col s10 m7 offset-m1 l6 offset-l2">
+        <div class="col s10 m6 offset-m2 l5 offset-l3">
             <div class="input-field">
                 <input id="searchText" type="text" name="searchText" value="${search.getSearchText()}">
                 <label for="searchText">${locale.getString("search")}</label>
             </div>
         </div>
 
-        <div class="col s2 m3 l4">
+        <div class="col s2 m4 l4">
             <div class="hide-on-small-only">
-                <@header.buttonSubmit name='action' icon='search' localizationKey='search.submit' id='button-save-account'/>
+                <@header.buttonSubmit name='action' icon='search' localizationKey='search.submit' id='button-perform-search'/>
             </div>
             <div class="hide-on-med-and-up">
-                <@header.buttonSubmit name='action' icon='search' localizationKey='' id='button-save-account'/>
+                <@header.buttonSubmit name='action' icon='search' localizationKey='' id='button-perform-search'/>
             </div>
         </div>
     </div>
@@ -62,6 +62,48 @@
                     <span class="text-default">${locale.getString('search.include.hidden.accounts')}</span>
                 </label>
             </div>
+        </div>
+    </div>
+</#macro>
+
+<#macro dateRange search>
+    <div class="row">
+        <div class="input-field col s6 m4 offset-m2 l3 offset-l3">
+            <#if search.getStartDate()??>
+                <#assign startDate = dateService.getLongDateString(search.getStartDate())/>
+                 <script>
+                    startDate = "${startDate}".split(".");
+                    startDate = new Date(startDate[2], startDate[1] - 1, startDate[0]);
+                 </script>
+            <#else>
+                <#assign startDate = ''/>
+                <script>
+                    startDate = null;
+                </script>
+            </#if>
+
+            <i class="material-icons prefix">today</i>
+            <input id="search-datepicker" type="text" class="datepicker" name="startDate" value="${startDate}">
+            <label for="search-datepicker">${locale.getString("chart.steps.second.label.start")}</label>
+        </div>
+
+        <div class="input-field col s6 m4 l3">
+            <#if search.getEndDate()??>
+                <#assign endDate = dateService.getLongDateString(search.getEndDate())/>
+                <script>
+                    endDate = "${endDate}".split(".");
+                    endDate = new Date(endDate[2], endDate[1] - 1, endDate[0]);
+                </script>
+            <#else>
+                <#assign endDate = ''/>
+                <script>
+                    endDate = null;
+                </script>
+            </#if>
+
+            <i class="material-icons prefix">event</i>
+            <input id="search-datepicker-end" type="text" class="datepicker" name="endDate" value="${endDate}">
+            <label for="search-datepicker-end">${locale.getString("chart.steps.second.label.end")}</label>
         </div>
     </div>
 </#macro>

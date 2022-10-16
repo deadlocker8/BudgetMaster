@@ -21,7 +21,7 @@ $(document).ready(function()
     if($(".datepicker").length)
     {
         chartPickerStartDate = M.Datepicker.init(document.getElementById('chart-datepicker'), {
-            yearRange: 25,
+            yearRange: 50,
             firstDay: 1,
             showClearBtn: false,
             setDefaultDate: true,

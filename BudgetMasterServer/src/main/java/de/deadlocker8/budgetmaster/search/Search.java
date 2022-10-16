@@ -1,5 +1,7 @@
 package de.deadlocker8.budgetmaster.search;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
 
 public class Search
@@ -13,7 +15,9 @@ public class Search
 	private boolean searchTags;
 	private boolean includeHiddenAccounts;
 	private int page;
+	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private LocalDate startDate;
+	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private LocalDate endDate;
 
 	public Search()
@@ -127,7 +131,7 @@ public class Search
 
 	public boolean isEmptySearch()
 	{
-		return !searchName && !searchDescription && !searchCategory && !searchTags && startDate == null && endDate == null;
+		return !searchName && !searchDescription && !searchCategory && !searchTags;
 	}
 
 	@Override

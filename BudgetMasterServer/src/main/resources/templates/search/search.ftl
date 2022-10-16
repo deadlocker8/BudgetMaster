@@ -3,6 +3,7 @@
         <#import "../helpers/header.ftl" as header>
         <@header.globals/>
         <@header.header "BudgetMaster - ${locale.getString('search')}"/>
+        <@header.style "datepicker"/>
         <@header.style "transactions"/>
         <@header.style "search"/>
         <#import "/spring.ftl" as s>
@@ -26,6 +27,7 @@
                     <form id="searchForm" action="<@s.url '/search'/>" method="get">
                         <@searchMacros.searchTextAndButton search/>
                         <@searchMacros.checkboxes search/>
+                        <@searchMacros.dateRange search/>
                         <input type="hidden" name="page" id="inputPageNumber" value="${page.getNumber()}"/>
                     </form>
 
@@ -82,6 +84,10 @@
                 </@header.content>
             </div>
         </main>
+
+        <!-- Pass localization to JS -->
+        <#import "../helpers/globalDatePicker.ftl" as datePicker>
+        <@datePicker.datePickerLocalization/>
 
         <!--  Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
