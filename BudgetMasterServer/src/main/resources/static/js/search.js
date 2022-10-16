@@ -66,18 +66,18 @@ $(document).ready(function()
 
 function createSearchDatePickerEnd(minDate, selectedDate)
 {
+    let shouldSetDefaultDate = endDate !== null;
     if(selectedDate < minDate)
     {
+        shouldSetDefaultDate = selectedDate !== null;
         selectedDate = minDate;
     }
-
-
 
     return M.Datepicker.init(document.getElementById('search-datepicker-end'), {
         yearRange: 50,
         firstDay: 1,
         showClearBtn: false,
-        setDefaultDate: true,
+        setDefaultDate: shouldSetDefaultDate,
         minDate: minDate,
         defaultDate: selectedDate,
         autoClose: true,

@@ -346,4 +346,26 @@ class TransactionSearchSpecificationsTest
 		assertThat(results).hasSize(4)
 				.contains(transaction2, transferTransaction, repeatingTransaction, transactionFromHiddenAccount);
 	}
+
+	@Test
+	void getMatches_OnlyStartDateDefined()
+	{
+		Search search = new Search("", true, true, true, true, true, 0, LocalDate.of(2018, 1, 1), null);
+		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
+
+		List<Transaction> results = transactionRepository.findAll(spec);
+		assertThat(results).hasSize(5)
+				.contains(transaction2, transferTransaction, repeatingTransaction, transactionFromHiddenAccount, transactionWithMultipleTags);
+	}
+
+	@Test
+	void getMatches_OnlyEndDateDefined()
+	{
+		Search search = new Search("", true, true, true, true, true, 0, null, LocalDate.of(2019, 1, 1));
+		Specification spec = TransactionSearchSpecifications.withDynamicQuery(search);
+
+		List<Transaction> results = transactionRepository.findAll(spec);
+		assertThat(results).hasSize(5)
+				.contains(transaction1, transaction2, transferTransaction, repeatingTransaction, transactionFromHiddenAccount);
+	}
 }
