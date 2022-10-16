@@ -401,17 +401,18 @@ class ImportServiceTest
 		final TransactionNameKeyword defaultKeyword4 = new TransactionNameKeyword(4, "zinsen");
 		final TransactionNameKeyword defaultKeyword5 = new TransactionNameKeyword(5, "lohn");
 		final TransactionNameKeyword defaultKeyword6 = new TransactionNameKeyword(6, "gehalt");
-		final TransactionNameKeyword defaultKeyword7 = new TransactionNameKeyword(7, "income");
-		final TransactionNameKeyword defaultKeyword8 = new TransactionNameKeyword(8, "refund");
-		final TransactionNameKeyword defaultKeyword9 = new TransactionNameKeyword(9, "interest");
-		final TransactionNameKeyword defaultKeyword10 = new TransactionNameKeyword(10, "salary");
+		final TransactionNameKeyword defaultKeyword7 = new TransactionNameKeyword(7, "gutschrift");
+		final TransactionNameKeyword defaultKeyword8 = new TransactionNameKeyword(8, "income");
+		final TransactionNameKeyword defaultKeyword9 = new TransactionNameKeyword(9, "refund");
+		final TransactionNameKeyword defaultKeyword10 = new TransactionNameKeyword(10, "interest");
+		final TransactionNameKeyword defaultKeyword11 = new TransactionNameKeyword(11, "salary");
 
 		// keywords from json
-		final TransactionNameKeyword keyword1 = new TransactionNameKeyword(11, "xyz");
+		final TransactionNameKeyword keyword1 = new TransactionNameKeyword(12, "xyz");
 
 		assertThat(transactionNameKeywordService.getRepository().findAll())
-				.hasSize(11)
-				.containsExactly(defaultKeyword1, defaultKeyword2, defaultKeyword3, defaultKeyword4, defaultKeyword5, defaultKeyword6, defaultKeyword7, defaultKeyword8, defaultKeyword9, defaultKeyword10, keyword1);
+				.hasSize(12)
+				.containsExactly(defaultKeyword1, defaultKeyword2, defaultKeyword3, defaultKeyword4, defaultKeyword5, defaultKeyword6, defaultKeyword7, defaultKeyword8, defaultKeyword9, defaultKeyword10, defaultKeyword11, keyword1);
 
 
 		assertThat(importService.getCollectedErrorMessages(importResultItems)).isEmpty();
