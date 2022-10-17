@@ -160,7 +160,7 @@
     </script>
 </#macro>
 
-<#macro transactionRepeating transaction currentDate>
+<#macro transactionRepeating transaction currentDate isEdit>
     <div class="row <#if transaction.isRepeating()>hidden</#if>">
         <div class="col s12 center-align">
             <@header.buttonLink url='' icon='repeat' localizationKey='repeating.button.add' id='button-transaction-add-repeating-option' color='background-blue-baby' noUrl=true classes="text-black"/>
@@ -185,6 +185,20 @@
     <div class="row">
         <div class="col s12 center-align">
             <@header.buttonLink url='' icon='delete' localizationKey='repeating.button.remove' id='button-transaction-remove-repeating-option' color='background-blue-baby' noUrl=true classes="text-black hidden"/>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12 center-align">
+            <#if isEdit && transaction.isRepeating()>
+                <#assign buttonEditFutureClasses='text-black'/>
+            <#else>
+                <#assign buttonEditFutureClasses='text-black hidden'/>
+            </#if>
+
+            <#if isEdit>
+                <@header.buttonLink url='/transactions/' + transaction.ID?c + '/editFutureRepetitions' icon='move_up' localizationKey='repeating.button.edit.future' id='button-transaction-edit-future-occurrences' color='background-blue-baby' classes="${buttonEditFutureClasses}"/>
+            </#if>
         </div>
     </div>
 </#macro>
