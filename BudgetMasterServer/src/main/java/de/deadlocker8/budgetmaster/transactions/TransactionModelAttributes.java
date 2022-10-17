@@ -21,4 +21,5 @@ public class TransactionModelAttributes
 	public static final String ACCOUNTS = "accounts";
 	public static final String TRANSACTION = "transaction";
 	public static final String SUGGESTIONS_JSON = "suggestionsJSON";
+	public static final String ACTUAL_OCCURRENCE_TRANSACTION_ID = "actualOccurrenceTransactionId";
 }

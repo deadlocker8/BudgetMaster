@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -96,6 +97,13 @@ public class RepeatingOption
 		this.referringTransactions = referringTransactions;
 	}
 
+	public Transaction getFirstReferringTransaction()
+	{
+		return this.referringTransactions.stream()
+				.min(Comparator.comparing(Transaction::getDate))
+				.orElseThrow();
+	}
+
 	public List<LocalDate> getRepeatingDates(LocalDate dateFetchLimit)
 	{
 		List<LocalDate> dates = new ArrayList<>();
@@ -149,7 +157,6 @@ public class RepeatingOption
 	@Override
 	public int hashCode()
 	{
-
 		return Objects.hash(ID, startDate, modifier, endOption);
 	}
 }

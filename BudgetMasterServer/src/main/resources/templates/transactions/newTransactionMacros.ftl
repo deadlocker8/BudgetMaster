@@ -197,7 +197,7 @@
             </#if>
 
             <#if isEdit>
-                <@header.buttonLink url='/transactions/' + transaction.ID?c + '/editFutureRepetitions' icon='move_up' localizationKey='repeating.button.edit.future' id='button-transaction-edit-future-occurrences' color='background-blue-baby' classes="${buttonEditFutureClasses}"/>
+                <@header.buttonLink url='/transactions/' + actualOccurrenceTransactionId?c + '/editFutureRepetitions' icon='move_up' localizationKey='repeating.button.edit.future' id='button-transaction-edit-future-occurrences' color='background-blue-baby' classes="${buttonEditFutureClasses}"/>
             </#if>
         </div>
     </div>
