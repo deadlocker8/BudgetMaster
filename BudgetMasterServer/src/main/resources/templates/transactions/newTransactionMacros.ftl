@@ -196,7 +196,7 @@
                 <#assign buttonEditFutureClasses='text-black hidden'/>
             </#if>
 
-            <#if isEdit>
+            <#if isEdit && actualOccurrenceTransactionId??>
                 <@header.buttonLink url='/transactions/' + actualOccurrenceTransactionId?c + '/editFutureRepetitions' icon='move_up' localizationKey='repeating.button.edit.future' id='button-transaction-edit-future-occurrences' color='background-blue-baby' classes="${buttonEditFutureClasses}"/>
             </#if>
         </div>
