@@ -372,23 +372,17 @@ public class TransactionController extends BaseController
 	@GetMapping("/{ID}/newFromExisting")
 	public String newFromExisting(Model model, @PathVariable("ID") Integer ID, @CookieValue("currentDate") String cookieDate)
 	{
-		Optional<Transaction> transactionOptional = transactionService.getRepository().findById(ID);
+		final Optional<Transaction> transactionOptional = transactionService.getRepository().findById(ID);
 		if(transactionOptional.isEmpty())
 		{
 			throw new ResourceNotFoundException();
 		}
 
-		Transaction existingTransaction = transactionOptional.get();
+		final Transaction existingTransaction = transactionOptional.get();
 
-		// select first transaction in order to provide correct start date for repeating transactions
-		if(existingTransaction.getRepeatingOption() != null)
-		{
-			existingTransaction = existingTransaction.getRepeatingOption().getReferringTransactions().get(0);
-		}
+		final LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
 
-		LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
-
-		Transaction newTransaction = new Transaction(existingTransaction);
+		final Transaction newTransaction = new Transaction(existingTransaction);
 		newTransaction.setID(null);
 		newTransaction.setDate(null);
 
