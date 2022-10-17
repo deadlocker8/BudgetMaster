@@ -51,7 +51,7 @@
 <#macro transactionButtons transaction classes>
         <div class="col ${classes} transaction-buttons no-wrap">
             <#if transaction.isEditable()>
-                <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default"/>
+                <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default button-edit"/>
                 <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/requestDelete' icon='delete' localizationKey='' classes="no-padding text-default button-request-delete-transaction" isDataUrl=true/>
             </#if>
             <#if transaction.isAllowedToFillNewTransaction()>
