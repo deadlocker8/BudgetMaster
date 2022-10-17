@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -104,7 +105,7 @@ public class TransactionTestHelper
 
 	public static String getDateString(int day)
 	{
-		return String.format("%02d. %s", day, new SimpleDateFormat("MMMM yyyy").format(new Date()).toUpperCase());
+		return String.format("%02d. %s", day, new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH).format(new Date()).toUpperCase());
 	}
 
 	public static void selectGlobalAccountByName(WebDriver driver, String accountName)
