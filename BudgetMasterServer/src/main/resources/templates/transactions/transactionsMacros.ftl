@@ -51,13 +51,35 @@
 <#macro transactionButtons transaction classes>
         <div class="col ${classes} transaction-buttons no-wrap">
             <#if transaction.isEditable()>
-                <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default button-edit"/>
+                <@transactionEditButton transaction/>
                 <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/requestDelete' icon='delete' localizationKey='' classes="no-padding text-default button-request-delete-transaction" isDataUrl=true/>
             </#if>
             <#if transaction.isAllowedToFillNewTransaction()>
                 <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/newFromExisting' icon='content_copy' localizationKey='' classes="no-padding text-default button-new-from-existing"/>
             </#if>
         </div>
+</#macro>
+
+<#macro transactionEditButton transaction>
+    <#if transaction.isRepeating()>
+        <div class="fixed-action-btn edit-transaction-button">
+            <a class="btn-floating btn-flat waves-effect waves-light no-padding text-default edit-transaction-button-link">
+                <i class="material-icons">edit</i>
+            </a>
+            <ul class="new-transaction-button-list">
+                <li>
+                    <a href="<@s.url '/transactions/' + transaction.ID?c + '/edit'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.edit", locale.getString("title.transaction.new.normal"))}</a>
+                    <a href="<@s.url '/transactions/' + transaction.ID?c + '/edit'/>" class="btn-floating btn background-green-dark"><i class="material-icons">edit</i></a>
+                </li>
+                <li>
+                    <a href="<@s.url '/transactions/' + transaction.ID?c + '/editFutureRepetitions'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("repeating.button.edit.future")}</a>
+                    <a href="<@s.url '/transactions/' + transaction.ID?c + '/editFutureRepetitions'/>" class="btn-floating btn background-orange"><i class="material-icons">move_up</i></a>
+                </li>
+            </ul>
+        </div>
+    <#else>
+        <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default button-edit"/>
+    </#if>
 </#macro>
 
 <#macro transactionAccountIcon transaction>

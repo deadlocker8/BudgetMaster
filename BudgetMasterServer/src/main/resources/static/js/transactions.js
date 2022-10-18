@@ -249,6 +249,11 @@ $(document).ready(function()
         hoverEnabled: false
     });
 
+    M.FloatingActionButton.init(document.querySelectorAll('.edit-transaction-button'), {
+        direction: 'left',
+        hoverEnabled: false
+    });
+
     // scroll to highlighted transaction
     let highlightedSmall = document.getElementById("highlighted-small");
     let highlightedLarge = document.getElementById("highlighted-large");
