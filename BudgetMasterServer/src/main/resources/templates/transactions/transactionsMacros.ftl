@@ -68,7 +68,7 @@
             </a>
             <ul class="new-transaction-button-list">
                 <li>
-                    <a href="<@s.url '/transactions/' + transaction.ID?c + '/edit'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.edit", locale.getString("title.transaction.new.normal"))}</a>
+                    <a href="<@s.url '/transactions/' + transaction.ID?c + '/edit'/>" class="btn-floating btn mobile-fab-tip no-wrap button-edit-all-occurrences">${locale.getString("title.transaction.edit", locale.getString("title.transaction.new.normal"))}</a>
                     <a href="<@s.url '/transactions/' + transaction.ID?c + '/edit'/>" class="btn-floating btn background-green-dark"><i class="material-icons">edit</i></a>
                 </li>
                 <li>
