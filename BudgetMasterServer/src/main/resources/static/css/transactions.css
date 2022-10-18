@@ -50,6 +50,10 @@
     background-color: var(--color-background-light-transparent) !important;
 }
 
+.transaction-row-transparent .transaction-row-transparent-child {
+    opacity: 0.5;
+}
+
 .transaction-row-highlighted {
     background-color: var(--color-blue-light) !important;
     opacity: 1.0 !important;

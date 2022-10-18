@@ -2,7 +2,7 @@
 <#import "../helpers/header.ftl" as header>
 
 <#macro transactionType transaction size>
-    <div class="col ${size} left-align">
+    <div class="col ${size} left-align transaction-row-transparent-child">
         <#if transaction.isRepeating()>
             <i class="material-icons">repeat</i>
         </#if>
@@ -18,7 +18,7 @@
 
 <#macro transactionCategory transaction alignment>
     <#import "../categories/categoriesFunctions.ftl" as categoriesFunctions>
-    <div class="col s2 l1 xl1 ${alignment}">
+    <div class="col s2 l1 xl1 ${alignment} transaction-row-transparent-child">
         <div class="hide-on-med-and-down">
             <@categoriesFunctions.categoryCircle category=transaction.category enableSearchWrapper=true/>
         </div>
@@ -29,7 +29,7 @@
 </#macro>
 
 <#macro transactionNameAndDescription transaction size>
-    <div class="col ${size}">
+    <div class="col ${size} transaction-row-transparent-child">
         <div class="truncate transaction-text">${transaction.name}</div>
         <div class="hide-on-med-and-down">
             <#if transaction.description??>
@@ -42,9 +42,9 @@
 <#macro transactionAmount transaction account size>
     <#assign amount = helpers.getAmount(transaction, account)/>
     <#if amount <= 0>
-        <div class="col ${size} bold ${redTextColor} no-wrap right-align transaction-text">${currencyService.getCurrencyString(amount)}</div>
+        <div class="col ${size} bold ${redTextColor} no-wrap right-align transaction-text transaction-row-transparent-child">${currencyService.getCurrencyString(amount)}</div>
     <#else>
-        <div class="col ${size} bold ${greenTextColor} no-wrap right-align transaction-text">${currencyService.getCurrencyString(amount)}</div>
+        <div class="col ${size} bold ${greenTextColor} no-wrap right-align transaction-text transaction-row-transparent-child">${currencyService.getCurrencyString(amount)}</div>
     </#if>
 </#macro>
 
@@ -86,7 +86,7 @@
     <#if helpers.getCurrentAccount().getType().name() == "ALL" && transaction.getAccount()??>
         <#import "../helpers/customSelectMacros.ftl" as customSelectMacros>
         <a href="<@s.url '/accounts/' + transaction.getAccount().getID() + '/select'/>">
-            <div class="col s2 l1 xl1 tooltipped no-padding" data-position="bottom" data-tooltip="${transaction.getAccount().getName()}">
+            <div class="col s2 l1 xl1 tooltipped no-padding transaction-row-transparent-child" data-position="bottom" data-tooltip="${transaction.getAccount().getName()}">
                 <div class="hide-on-med-and-down">
                     <@customSelectMacros.accountIcon transaction.getAccount() transaction.getAccount().getName()/>
                 </div>
