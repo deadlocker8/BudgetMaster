@@ -274,7 +274,6 @@ public class TransactionController extends BaseController
 		if(transaction.getRepeatingOption() != null)
 		{
 			transaction = transaction.getRepeatingOption().getFirstReferringTransaction();
-			model.addAttribute(TransactionModelAttributes.ACTUAL_OCCURRENCE_TRANSACTION_ID, ID);
 		}
 
 		LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
