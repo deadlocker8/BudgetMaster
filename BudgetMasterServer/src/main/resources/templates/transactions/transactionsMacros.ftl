@@ -72,7 +72,7 @@
                     <a href="<@s.url '/transactions/' + transaction.ID?c + '/edit'/>" class="btn-floating btn background-green-dark"><i class="material-icons">edit</i></a>
                 </li>
                 <li>
-                    <a href="<@s.url '/transactions/' + transaction.ID?c + '/editFutureRepetitions'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("repeating.button.edit.future")}</a>
+                    <a href="<@s.url '/transactions/' + transaction.ID?c + '/editFutureRepetitions'/>" class="btn-floating btn mobile-fab-tip no-wrap button-edit-future-occurrences">${locale.getString("repeating.button.edit.future")}</a>
                     <a href="<@s.url '/transactions/' + transaction.ID?c + '/editFutureRepetitions'/>" class="btn-floating btn background-orange"><i class="material-icons">move_up</i></a>
                 </li>
             </ul>

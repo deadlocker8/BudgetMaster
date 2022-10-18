@@ -6,7 +6,6 @@ import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
 import de.deadlocker8.budgetmaster.integration.helpers.TransactionTestHelper;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -48,17 +47,15 @@ class EditFutureOccurrencesOfRepeatingTransactionTest extends SeleniumTestBase
 		TransactionTestHelper.gotoSpecificYearAndMonth(driver, 2022, "October");
 
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
-		List<WebElement> columns = transactionsRows.get(transactionsRows.size() - 4).findElements(By.className("col"));
-		columns.get(4).findElement(By.className("button-edit")).click();
+		final WebElement row = transactionsRows.get(transactionsRows.size() - 4);
+		List<WebElement> columns = row.findElements(By.className("col"));
+		columns.get(4).findElement(By.className("edit-transaction-button-link")).click();
 
+		final WebElement buttonEditFutureOccurrences = row.findElement(By.className("button-edit-future-occurrences"));
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Edit Transaction"));
-
-		final WebElement buttonEditFutureOccurrences = driver.findElement(By.id("button-transaction-edit-future-occurrences"));
-		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", buttonEditFutureOccurrences);
-		assertThat(buttonEditFutureOccurrences.isDisplayed()).isTrue();
-
+		wait.until(ExpectedConditions.visibilityOf(buttonEditFutureOccurrences));
 		buttonEditFutureOccurrences.click();
+
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "New Transaction"));
 

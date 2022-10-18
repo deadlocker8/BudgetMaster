@@ -73,7 +73,7 @@
                             <@customSelectMacros.customAccountSelect "account-select-wrapper" "account" accounts selectedAccount "col s12 m12 l8 offset-l2" locale.getString("transaction.new.label.account") "transaction-account"/>
 
                             <#-- repeating options -->
-                            <@newTransactionMacros.transactionRepeating transaction currentDate isEdit/>
+                            <@newTransactionMacros.transactionRepeating transaction currentDate/>
 
                             <#-- buttons -->
                             <@newTransactionMacros.buttons cancelURL='/transactions' includeContinueButton=true/>
