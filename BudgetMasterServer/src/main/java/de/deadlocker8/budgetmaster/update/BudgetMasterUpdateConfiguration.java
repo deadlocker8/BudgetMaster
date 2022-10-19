@@ -21,6 +21,9 @@ import java.nio.file.Paths;
 @Component
 public class BudgetMasterUpdateConfiguration
 {
+	@SuppressWarnings("java:S1075")
+	private static final String TOMCAT_PATH = "/usr/local/tomcat";
+
 	private UpdateService.Strategy updateStrategy;
 	private String executablePath;
 	private RemoteFile.FileType fileType;
@@ -36,7 +39,6 @@ public class BudgetMasterUpdateConfiguration
 
 	@PostConstruct
 	private void postInit() {
-		final File source = new ApplicationHome().getSource();
 		executablePath = null;
 		updateStrategy = UpdateService.Strategy.JAR;
 		fileType = RemoteFile.FileType.JAR;
@@ -44,7 +46,18 @@ public class BudgetMasterUpdateConfiguration
 		SystemUtils.setIsJarHook(new IsJarFileHook());
 		SystemUtils.setIsExeHook(new IsExeFileHook());
 
-		if(source != null)
+		final ApplicationHome applicationHome = new ApplicationHome();
+		final File source = applicationHome.getSource();
+		if(source == null)
+		{
+			final String appHomeDirectory = applicationHome.getDir().getAbsolutePath();
+			if(appHomeDirectory.equals(TOMCAT_PATH))
+			{
+				isRunningFromSource = false;
+				executablePath = appHomeDirectory;
+			}
+		}
+		else
 		{
 			isRunningFromSource = false;
 			executablePath = source.getAbsolutePath();
@@ -64,7 +77,7 @@ public class BudgetMasterUpdateConfiguration
 
 		VersionizerItem versionizerItem = new VersionizerItem(repository, executablePath);
 		UpdateService versionizerUpdateService = UpdateService.startVersionizer(versionizerItem, updateStrategy, UpdateService.InteractionType.HEADLESS, UpdateService.RepositoryType.RELEASE);
-		if(executablePath != null)
+		if(!isRunningFromSource)
 		{
 			versionizerUpdateService.addArtifact(artifact, Paths.get(executablePath));
 		}
