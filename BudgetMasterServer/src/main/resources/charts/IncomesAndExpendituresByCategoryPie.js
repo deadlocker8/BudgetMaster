@@ -159,6 +159,19 @@ var plotlyConfig = {
 Plotly.newPlot("containerID", plotlyData, plotlyLayout, plotlyConfig);
 
 
+
+var plotContainer = document.getElementById('containerID');
+plotContainer.on('plotly_click', function(data){
+    if(data.event.shiftKey !== true)
+    {
+        return;
+    }
+
+    let index = data.points.length - 1;
+    getAndShowMatchingTransactions(null, data.points[index].label);
+});
+
+
 function addSeries(sumHandler, column)
 {
     var plotlyData = [];

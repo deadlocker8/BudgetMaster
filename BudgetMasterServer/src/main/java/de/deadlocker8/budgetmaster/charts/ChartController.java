@@ -273,11 +273,20 @@ public class ChartController extends BaseController
 	{
 		String title;
 		final String clickedCategory = chartSettings.getClickedCategory();
-		if(clickedCategory == null)
+		if(chartSettings.getClickedAmountType() == null)
+		{
+			for(FilterObject filterCategory : chartSettings.getFilterConfiguration().getFilterCategories())
+			{
+				filterCategory.setInclude(filterCategory.getName().equals(clickedCategory));
+			}
+
+			title = Localization.getString("chart.matching.transactions.title.category", clickedCategory);
+		}
+		else
 		{
 			if(chartSettings.getClickedAmountType() == ChartAmountType.INCOME)
 			{
-				title = Localization.getString("titles.incomes");
+				title = Localization.getString("title.incomes");
 				chartSettings.getFilterConfiguration().setIncludeIncome(true);
 				chartSettings.getFilterConfiguration().setIncludeExpenditure(false);
 			}
@@ -287,15 +296,6 @@ public class ChartController extends BaseController
 				chartSettings.getFilterConfiguration().setIncludeIncome(false);
 				chartSettings.getFilterConfiguration().setIncludeExpenditure(true);
 			}
-		}
-		else
-		{
-			for(FilterObject filterCategory : chartSettings.getFilterConfiguration().getFilterCategories())
-			{
-				filterCategory.setInclude(filterCategory.getName().equals(clickedCategory));
-			}
-
-			title = Localization.getString("chart.matching.transactions.title.category", clickedCategory);
 		}
 
 		final List<Transaction> transactions = transactionService.getTransactionsForAccount(helpers.getCurrentAccount(), chartSettings.getStartDate(), chartSettings.getEndDate(), chartSettings.getFilterConfiguration());

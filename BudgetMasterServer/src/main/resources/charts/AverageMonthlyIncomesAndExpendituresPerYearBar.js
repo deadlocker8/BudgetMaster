@@ -128,6 +128,25 @@ var plotlyConfig = {
 Plotly.newPlot("containerID", plotlyData, plotlyLayout, plotlyConfig);
 
 
+var plotContainer = document.getElementById('containerID');
+plotContainer.on('plotly_click', function(data){
+    if(data.event.shiftKey !== true)
+    {
+        return;
+    }
+
+    let index = data.points.length - 1;
+    let amountTypeText = data.points[index].data.name;
+
+    let amountType = 'EXPENDITURE';
+    if(amountTypeText === localizedData['traceName1'])
+    {
+        amountType = 'INCOME';
+    }
+
+    getAndShowMatchingTransactions(amountType, null);
+});
+
 function prepareHoverText(value)
 {
     return value.toFixed(1) + ' ' + localizedCurrency;
