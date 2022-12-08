@@ -7,6 +7,7 @@ import com.google.gson.JsonSerializer;
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.filter.FilterConfiguration;
 import de.deadlocker8.budgetmaster.filter.FilterHelpersService;
+import de.deadlocker8.budgetmaster.filter.FilterObject;
 import de.deadlocker8.budgetmaster.services.DateService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
@@ -52,6 +53,8 @@ public class ChartController extends BaseController
 		public static final String CUSTOM_CHARTS = "customCharts";
 		public static final String DEFAULT_CHARTS = "defaultCharts";
 		public static final String DATE_RANGE = "dateRange";
+		public static final String MATCHING_TRANSACTIONS = "matchingTransactions";
+		public static final String MATCHING_TRANSACTIONS_TITLE = "matchingTransactionsTitle";
 	}
 
 	private static class ReturnValues
@@ -62,6 +65,7 @@ public class ChartController extends BaseController
 		public static final String NEW_ENTITY = "charts/newChart";
 		public static final String DELETE_ENTITY = "charts/deleteChartModal";
 		public static final String ERROR_400 = "error/400";
+		public static final String SHOW_MATCHING_TRANSACTIONS = "charts/matchingTransactions";
 	}
 
 	private static final Gson GSON = new GsonBuilder()
@@ -262,5 +266,42 @@ public class ChartController extends BaseController
 		}
 
 		return ReturnValues.REDIRECT_MANAGE;
+	}
+
+	@PostMapping("/getMatchingTransactions")
+	public String getMatchingTransactions(Model model, @ModelAttribute("NewChartSettings") ChartSettings chartSettings)
+	{
+		String title;
+		final String clickedCategory = chartSettings.getClickedCategory();
+		if(clickedCategory == null)
+		{
+			if(chartSettings.getClickedAmountType() == ChartAmountType.INCOME)
+			{
+				title = Localization.getString("titles.incomes");
+				chartSettings.getFilterConfiguration().setIncludeIncome(true);
+				chartSettings.getFilterConfiguration().setIncludeExpenditure(false);
+			}
+			else
+			{
+				title = Localization.getString("title.expenditures");
+				chartSettings.getFilterConfiguration().setIncludeIncome(false);
+				chartSettings.getFilterConfiguration().setIncludeExpenditure(true);
+			}
+		}
+		else
+		{
+			for(FilterObject filterCategory : chartSettings.getFilterConfiguration().getFilterCategories())
+			{
+				filterCategory.setInclude(filterCategory.getName().equals(clickedCategory));
+			}
+
+			title = Localization.getString("chart.matching.transactions.title.category", clickedCategory);
+		}
+
+		final List<Transaction> transactions = transactionService.getTransactionsForAccount(helpers.getCurrentAccount(), chartSettings.getStartDate(), chartSettings.getEndDate(), chartSettings.getFilterConfiguration());
+		final List<Transaction> convertedTransactions = convertTransferAmounts(transactions);
+		model.addAttribute(ModelAttributes.MATCHING_TRANSACTIONS, convertedTransactions);
+		model.addAttribute(ModelAttributes.MATCHING_TRANSACTIONS_TITLE, title);
+		return ReturnValues.SHOW_MATCHING_TRANSACTIONS;
 	}
 }

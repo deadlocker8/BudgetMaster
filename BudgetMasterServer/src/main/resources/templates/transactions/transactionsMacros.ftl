@@ -98,11 +98,11 @@
     </#if>
 
 </#macro>
-<#macro transactionLinks transaction>
+<#macro transactionLinks transaction target=''>
     <div class="col s4 l2 xl1 right-align transaction-buttons no-wrap">
-        <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/highlight' icon='open_in_new' localizationKey='' classes="no-padding text-default buttonHighlight"/>
+        <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/highlight' icon='open_in_new' localizationKey='' classes="no-padding text-default buttonHighlight" target=target/>
         <#if transaction.getAccount().getAccountState().name() == 'FULL_ACCESS'>
-            <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default"/>
+            <@header.buttonFlat url='/transactions/' + transaction.ID?c + '/edit' icon='edit' localizationKey='' classes="no-padding text-default" target=target/>
         </#if>
     </div>
 </#macro>

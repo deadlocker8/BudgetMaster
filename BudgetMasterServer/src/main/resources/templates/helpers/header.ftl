@@ -136,8 +136,8 @@
     </button>
 </#macro>
 
-<#macro buttonFlat url icon localizationKey id="" classes="" isDataUrl=false noUrl=false iconClasses=''>
-    <a <#if !isDataUrl && !noUrl>href="<@s.url url/>"</#if>
+<#macro buttonFlat url icon localizationKey id="" classes="" isDataUrl=false noUrl=false iconClasses='' target=''>
+    <a <#if target?has_content>target="${target}"</#if> <#if !isDataUrl && !noUrl>href="<@s.url url/>"</#if>
        id="${id}"
        class="waves-effect waves-light btn-flat ${classes}"
             <#if isDataUrl>data-url="${url}"</#if>>

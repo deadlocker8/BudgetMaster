@@ -1,5 +1,6 @@
 <#import "/spring.ftl" as s>
 <#import "../helpers/header.ftl" as header>
+<#import "../transactions/transactionsMacros.ftl" as transactionsMacros>
 
 <#macro searchTextAndButton search>
     <div class="row no-margin-bottom valign-wrapper">
@@ -122,4 +123,39 @@
             </#if>
         </div>
     </div>
+</#macro>
+
+<#macro renderTransactions transactions openLinksInNewTab=false>
+    <#list transactions as transaction>
+        <div class="card-panel search-result">
+            <div class="hide-on-large-only">
+                <div class="row valign-wrapper">
+                    <div class="col s3 center-align bold transaction-text">
+                        ${dateService.getDateStringNormal(transaction.date)}
+                    </div>
+                    <@transactionsMacros.transactionAccountIcon transaction/>
+                    <@transactionsMacros.transactionType transaction "s2"/>
+                    <@transactionsMacros.transactionLinks transaction=transaction target='_blank'/>
+                </div>
+                <div class="row valign-wrapper no-margin-bottom">
+                    <@transactionsMacros.transactionCategory transaction "center-align"/>
+                    <@transactionsMacros.transactionNameAndDescription transaction "s5"/>
+                    <@transactionsMacros.transactionAmount transaction transaction.getAccount() "s4"/>
+                </div>
+            </div>
+            <div class="hide-on-med-and-down">
+                <div class="row valign-wrapper no-margin-bottom transaction-row-desktop">
+                    <div class="col l2 xl1 bold transaction-text transaction-date valign-wrapper">
+                        ${dateService.getDateStringNormal(transaction.date)}
+                    </div>
+                    <@transactionsMacros.transactionCategory transaction "left-align"/>
+                    <@transactionsMacros.transactionAccountIcon transaction/>
+                    <@transactionsMacros.transactionType transaction "l1 xl1"/>
+                    <@transactionsMacros.transactionNameAndDescription transaction "l3 xl4"/>
+                    <@transactionsMacros.transactionAmount transaction transaction.getAccount() "l2 xl2"/>
+                    <@transactionsMacros.transactionLinks transaction=transaction target='_blank'/>
+                </div>
+            </div>
+        </div>
+    </#list>
 </#macro>

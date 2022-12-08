@@ -366,3 +366,32 @@ function formatChartTitle(title, subtitle)
     subtitle = '<span style="font-size: 0.9rem;">' + subtitle + '</span>';
     return title + '<br>' + subtitle;
 }
+
+function getAndShowMatchingTransactions(clickedAmountType, clickedCategory)
+{
+    document.getElementsByName('clickedAmountType')[0].value = clickedAmountType;
+    document.getElementsByName('clickedCategory')[0].value = clickedCategory;
+
+    let form = document.getElementsByName('NewChartSettings')[0];
+
+    $.ajax({
+        type: 'POST',
+        url: rootURL + '/charts/getMatchingTransactions',
+        data: new FormData(form),
+        processData: false,
+        contentType: false,
+        success: function(response)
+        {
+            let overviewElement = document.getElementById('matchingTransactionsOverview');
+            overviewElement.innerHTML = response;
+        },
+        error: function(response)
+        {
+            M.toast({
+                html: "Error fetching matching transactions",
+                classes: 'red'
+            });
+            console.error(response);
+        }
+    });
+}

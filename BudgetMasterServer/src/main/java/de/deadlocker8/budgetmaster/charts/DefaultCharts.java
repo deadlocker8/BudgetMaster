@@ -32,7 +32,7 @@ public class DefaultCharts
 
 	private static final Chart CHART_INCOMES_AND_EXPENDITURES_BY_CATEGORY_BAR = new Chart("charts.default.incomesAndExpendituresByCategoryBar",
 			getChartFromFile("charts/IncomesAndExpendituresByCategoryBar.js"),
-			ChartType.DEFAULT, 9, ChartDisplayType.BAR, ChartGroupType.NONE, "incomesAndExpendituresByCategoryBar.png");
+			ChartType.DEFAULT, 30, ChartDisplayType.BAR, ChartGroupType.NONE, "incomesAndExpendituresByCategoryBar.png");
 
 	private static final Chart CHART_INCOMES_AND_EXPENDITURES_BY_CATEGORY_PIE = new Chart("charts.default.incomesAndExpendituresByCategoryPie",
 			getChartFromFile("charts/IncomesAndExpendituresByCategoryPie.js"),
