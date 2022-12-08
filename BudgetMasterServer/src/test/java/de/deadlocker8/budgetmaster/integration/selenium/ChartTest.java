@@ -5,10 +5,13 @@ import de.deadlocker8.budgetmaster.charts.ChartDisplayType;
 import de.deadlocker8.budgetmaster.charts.ChartGroupType;
 import de.deadlocker8.budgetmaster.integration.helpers.IntegrationTestHelper;
 import de.deadlocker8.budgetmaster.integration.helpers.SeleniumTestBase;
+import de.deadlocker8.budgetmaster.integration.helpers.TransactionTestHelper;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -352,6 +355,38 @@ class ChartTest extends SeleniumTestBase
 		wait.until(ExpectedConditions.attributeContains(By.cssSelector(chartPreviewSelector + " .chart-preview"), "class", "active"));
 
 		assertThat(driver.findElement(By.name("buttonSave")).isEnabled()).isTrue();
+	}
+
+	@Test
+	void test_showRelatedTransactionsOnShiftClick()
+	{
+		TransactionTestHelper.selectGlobalAccountByName(driver, "DefaultAccount0815");
+
+		driver.get(helper.getUrl() + "/charts");
+
+		final String chartPreviewSelector = ".chart-preview-column[data-id='6']";
+		driver.findElement(By.cssSelector(chartPreviewSelector)).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.attributeContains(By.cssSelector(chartPreviewSelector + " .chart-preview"), "class", "active"));
+
+		driver.findElement(By.cssSelector("td[data-quick='3']")).click();
+
+		driver.findElement(By.name("buttonSave")).click();
+
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("chart-canvas")));
+
+		assertThat(driver.findElements(By.cssSelector(".chart-canvas .plot-container"))).hasSize(1);
+
+		Actions actions = new Actions(driver);
+		actions.moveToElement(driver.findElement(By.className("plot-container"))).perform();
+		actions.moveByOffset(-450, 25).keyDown(Keys.SHIFT).click().keyUp(Keys.SHIFT).perform();
+
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("matchingTransactionsTitle")));
+
+		assertThat(driver.findElements(By.className("search-result"))).hasSizeGreaterThan(0);
 	}
 
 	private String getSelectedType(String selector)
