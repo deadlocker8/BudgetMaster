@@ -15,6 +15,7 @@ public class HotKeysController extends BaseController
 		public static final String HOTKEYS_GENERAL = "hotkeysGeneral";
 		public static final String HOTKEYS_DATEPICKER = "hotkeysGlobalDatePicker";
 		public static final String HOTKEYS_ACCOUNT_SELECT = "hotkeysAccountSelect";
+		public static final String HOTKEYS_CHARTS = "hotkeysCharts";
 	}
 
 	private static class ReturnValues
@@ -28,6 +29,7 @@ public class HotKeysController extends BaseController
 		model.addAttribute(ModelAttributes.HOTKEYS_GENERAL, GeneralHotKey.values());
 		model.addAttribute(ModelAttributes.HOTKEYS_DATEPICKER, GlobalDatePickerHotKey.values());
 		model.addAttribute(ModelAttributes.HOTKEYS_ACCOUNT_SELECT, GlobalAccountSelectHotKey.values());
+		model.addAttribute(ModelAttributes.HOTKEYS_CHARTS, ChartHotkeys.values());
 		return ReturnValues.HOTKEYS;
 	}
 }

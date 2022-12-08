@@ -24,6 +24,8 @@
                     <@listHotKeys locale.getString("hotkeys.global.datepicker") hotkeysGlobalDatePicker/>
 
                     <@listHotKeys locale.getString("hotkeys.global.account.select") hotkeysAccountSelect/>
+
+                    <@listHotKeys locale.getString("hotkeys.charts") hotkeysCharts/>
                 </@header.content>
             </div>
         </main>
