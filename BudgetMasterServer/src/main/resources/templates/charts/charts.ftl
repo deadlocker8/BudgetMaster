@@ -88,6 +88,11 @@
 
                     <br>
 
+                    <div class="<#if !chartSettings.isChartSelected()>hidden</#if>">
+                        <#assign hint=helpers.getHintByLocalizationKey("hint.charts.click")/>
+                        <@header.hint hint=hint actionUrl='/hotkeys'/>
+                    </div>
+
                     <div class="container-chart">
                         <#if containerID??>
                             <div id="${containerID}" class="chart-canvas"></div>
