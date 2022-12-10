@@ -5,6 +5,7 @@
         <@header.header "BudgetMaster - ${locale.getString('menu.charts')}"/>
         <@header.style "datepicker"/>
         <@header.style "collapsible"/>
+        <@header.style "transactions"/>
         <@header.style "search"/>
         <@header.style "charts"/>
         <#import "/spring.ftl" as s>
