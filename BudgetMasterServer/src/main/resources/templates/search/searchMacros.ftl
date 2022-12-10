@@ -126,6 +126,12 @@
 </#macro>
 
 <#macro renderTransactions transactions openLinksInNewTab=false>
+    <#if openLinksInNewTab>
+        <#assign linkTarget='_blank'/>
+    <#else>
+        <#assign linkTarget=''/>
+    </#if>
+
     <#list transactions as transaction>
         <div class="card-panel search-result">
             <div class="hide-on-large-only">
@@ -135,7 +141,7 @@
                     </div>
                     <@transactionsMacros.transactionAccountIcon transaction/>
                     <@transactionsMacros.transactionType transaction "s2"/>
-                    <@transactionsMacros.transactionLinks transaction=transaction target='_blank'/>
+                    <@transactionsMacros.transactionLinks transaction=transaction target=linkTarget/>
                 </div>
                 <div class="row valign-wrapper no-margin-bottom">
                     <@transactionsMacros.transactionCategory transaction "center-align"/>
@@ -153,7 +159,7 @@
                     <@transactionsMacros.transactionType transaction "l1 xl1"/>
                     <@transactionsMacros.transactionNameAndDescription transaction "l3 xl4"/>
                     <@transactionsMacros.transactionAmount transaction transaction.getAccount() "l2 xl2"/>
-                    <@transactionsMacros.transactionLinks transaction=transaction target='_blank'/>
+                    <@transactionsMacros.transactionLinks transaction=transaction target=linkTarget/>
                 </div>
             </div>
         </div>
