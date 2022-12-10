@@ -79,7 +79,7 @@ class EditFutureOccurrencesOfRepeatingTransactionTest extends SeleniumTestBase
 	private void assertTransaction(List<WebElement> transactionDateGroups, int groupIndex, int expectedNumberOfTransactions, String expectedAmount, int day)
 	{
 		final WebElement dateGroup = transactionDateGroups.get(groupIndex);
-		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", TransactionTestHelper.getDateString(day));
+		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", String.format("%02d. %s", day, "OCTOBER 2022"));
 		final List<WebElement> transactionsInGroup = dateGroup.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		assertThat(transactionsInGroup).hasSize(expectedNumberOfTransactions);
 		final WebElement transactionRow = transactionsInGroup.get(0);
