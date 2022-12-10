@@ -7,5 +7,5 @@ public class TestConstants
 		// empty
 	}
 
-	public static final String POSTGRES_VERSION = "postgres:14.5";
+	public static final String POSTGRES_VERSION = "postgres:15.1";
 }
