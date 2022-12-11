@@ -5,6 +5,8 @@
         <@header.header "BudgetMaster - ${locale.getString('menu.charts')}"/>
         <@header.style "datepicker"/>
         <@header.style "collapsible"/>
+        <@header.style "transactions"/>
+        <@header.style "search"/>
         <@header.style "charts"/>
         <#import "/spring.ftl" as s>
     </head>
@@ -72,6 +74,9 @@
 
                         <@filterOptions/>
 
+                        <input type="hidden" name="clickedAmountType" value="">
+                        <input type="hidden" name="clickedCategory" value="">
+
                         <#-- buttons -->
                         <div class="row center-align">
                             <div class="col s12">
@@ -84,11 +89,18 @@
 
                     <br>
 
+                    <div class="<#if !chartSettings.isChartSelected()>hidden</#if>">
+                        <#assign hint=helpers.getHintByLocalizationKey("hint.charts.click")/>
+                        <@header.hint hint=hint actionUrl='/hotkeys'/>
+                    </div>
+
                     <div class="container-chart">
                         <#if containerID??>
                             <div id="${containerID}" class="chart-canvas"></div>
                         </#if>
                     </div>
+
+                    <div id="matchingTransactionsOverview"></div>
                 </@header.content>
             </div>
         </main>

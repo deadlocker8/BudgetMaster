@@ -47,10 +47,15 @@
 }
 
 .transaction-row-transparent {
+    background-color: var(--color-background-light-transparent) !important;
+}
+
+.transaction-row-transparent .transaction-row-transparent-child {
     opacity: 0.5;
 }
 
-.transaction-row-transparent-override {
+.transaction-row-highlighted {
+    background-color: var(--color-blue-light) !important;
     opacity: 1.0 !important;
 }
 
@@ -108,6 +113,41 @@
     border-radius: 0;
 }
 
+.edit-transaction-button {
+    position: relative;
+    display: inline-block;
+    left: 0;
+    top: 0;
+    padding: 0 !important;
+}
+
+.edit-transaction-button-link {
+    height: 36px;
+    width: auto;
+    border-radius: 0;
+    line-height: 36px;
+    padding: 0 16px;
+    font-size: 1.3rem;
+}
+
+.edit-transaction-button-link i {
+    line-height: 36px;
+    font-size: 1.3rem;
+}
+
+.edit-transaction-button-link:hover {
+    background-color: transparent;
+}
+
+.edit-transaction-button ul {
+    right: 30px !important;
+    top: -16px !important;
+}
+
+.edit-transaction-button li {
+    display: block !important;
+}
+
 .mobile-fab-tip {
     position: absolute;
     padding: 0 0.5rem;
@@ -117,6 +157,10 @@
     border-radius: 2px;
     color: #FFFFFF;
     width: auto;
+}
+
+.edit-transaction-button .mobile-fab-tip {
+    position: relative;
 }
 
 #transaction-actions-button .mobile-fab-tip {

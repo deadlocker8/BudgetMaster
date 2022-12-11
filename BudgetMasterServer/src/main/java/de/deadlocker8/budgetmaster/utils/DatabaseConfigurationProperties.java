@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.utils;
 
-import de.deadlocker8.budgetmaster.migration.DatabaseType;
+import de.deadlocker8.budgetmaster.database.DatabaseType;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import javax.validation.constraints.Max;

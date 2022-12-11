@@ -1,21 +1,22 @@
 <#import "/spring.ftl" as s>
 <#import "../helpers/header.ftl" as header>
+<#import "../transactions/transactionsMacros.ftl" as transactionsMacros>
 
 <#macro searchTextAndButton search>
     <div class="row no-margin-bottom valign-wrapper">
-        <div class="col s10 m7 offset-m1 l6 offset-l2">
+        <div class="col s10 m6 offset-m2 l5 offset-l3">
             <div class="input-field">
                 <input id="searchText" type="text" name="searchText" value="${search.getSearchText()}">
                 <label for="searchText">${locale.getString("search")}</label>
             </div>
         </div>
 
-        <div class="col s2 m3 l4">
+        <div class="col s2 m4 l4">
             <div class="hide-on-small-only">
-                <@header.buttonSubmit name='action' icon='search' localizationKey='search.submit' id='button-save-account'/>
+                <@header.buttonSubmit name='action' icon='search' localizationKey='search.submit' id='button-perform-search'/>
             </div>
             <div class="hide-on-med-and-up">
-                <@header.buttonSubmit name='action' icon='search' localizationKey='' id='button-save-account'/>
+                <@header.buttonSubmit name='action' icon='search' localizationKey='' id='button-perform-search'/>
             </div>
         </div>
     </div>
@@ -66,6 +67,48 @@
     </div>
 </#macro>
 
+<#macro dateRange search>
+    <div class="row">
+        <div class="input-field col s6 m4 offset-m2 l3 offset-l3" id="search-datepicker-container">
+            <#if search.getStartDate()??>
+                <#assign startDate = dateService.getLongDateString(search.getStartDate())/>
+                 <script>
+                    startDate = "${startDate}".split(".");
+                    startDate = new Date(startDate[2], startDate[1] - 1, startDate[0]);
+                 </script>
+            <#else>
+                <#assign startDate = ''/>
+                <script>
+                    startDate = null;
+                </script>
+            </#if>
+
+            <i class="material-icons prefix">today</i>
+            <input id="search-datepicker" type="text" class="datepicker" name="startDate" value="${startDate}">
+            <label for="search-datepicker">${locale.getString("chart.steps.second.label.start")}</label>
+        </div>
+
+        <div class="input-field col s6 m4 l3" id="search-datepicker-end-container">
+            <#if search.getEndDate()??>
+                <#assign endDate = dateService.getLongDateString(search.getEndDate())/>
+                <script>
+                    endDate = "${endDate}".split(".");
+                    endDate = new Date(endDate[2], endDate[1] - 1, endDate[0]);
+                </script>
+            <#else>
+                <#assign endDate = ''/>
+                <script>
+                    endDate = null;
+                </script>
+            </#if>
+
+            <i class="material-icons prefix">event</i>
+            <input id="search-datepicker-end" type="text" class="datepicker" name="endDate" value="${endDate}">
+            <label for="search-datepicker-end">${locale.getString("chart.steps.second.label.end")}</label>
+        </div>
+    </div>
+</#macro>
+
 <#macro pagination page position>
     <div class="row pagination-position-${position}">
         <div class="col s12 center-align">
@@ -80,4 +123,45 @@
             </#if>
         </div>
     </div>
+</#macro>
+
+<#macro renderTransactions transactions openLinksInNewTab=false>
+    <#if openLinksInNewTab>
+        <#assign linkTarget='_blank'/>
+    <#else>
+        <#assign linkTarget=''/>
+    </#if>
+
+    <#list transactions as transaction>
+        <div class="card-panel search-result">
+            <div class="hide-on-large-only">
+                <div class="row valign-wrapper">
+                    <div class="col s3 center-align bold transaction-text">
+                        ${dateService.getDateStringNormal(transaction.date)}
+                    </div>
+                    <@transactionsMacros.transactionAccountIcon transaction/>
+                    <@transactionsMacros.transactionType transaction "s2"/>
+                    <@transactionsMacros.transactionLinks transaction=transaction target=linkTarget/>
+                </div>
+                <div class="row valign-wrapper no-margin-bottom">
+                    <@transactionsMacros.transactionCategory transaction "center-align"/>
+                    <@transactionsMacros.transactionNameAndDescription transaction "s5"/>
+                    <@transactionsMacros.transactionAmount transaction transaction.getAccount() "s4"/>
+                </div>
+            </div>
+            <div class="hide-on-med-and-down">
+                <div class="row valign-wrapper no-margin-bottom transaction-row-desktop">
+                    <div class="col l2 xl1 bold transaction-text transaction-date valign-wrapper">
+                        ${dateService.getDateStringNormal(transaction.date)}
+                    </div>
+                    <@transactionsMacros.transactionCategory transaction "left-align"/>
+                    <@transactionsMacros.transactionAccountIcon transaction/>
+                    <@transactionsMacros.transactionType transaction "l1 xl1"/>
+                    <@transactionsMacros.transactionNameAndDescription transaction "l3 xl4"/>
+                    <@transactionsMacros.transactionAmount transaction transaction.getAccount() "l2 xl2"/>
+                    <@transactionsMacros.transactionLinks transaction=transaction target=linkTarget/>
+                </div>
+            </div>
+        </div>
+    </#list>
 </#macro>

@@ -26,7 +26,6 @@ class PersonalizationSettingsTest extends SeleniumTestBase
 		helper.login(UserService.DEFAULT_PASSWORD);
 		helper.hideBackupReminder();
 		helper.hideWhatsNewDialog();
-		helper.hideMigrationDialog();
 	}
 
 	@Test

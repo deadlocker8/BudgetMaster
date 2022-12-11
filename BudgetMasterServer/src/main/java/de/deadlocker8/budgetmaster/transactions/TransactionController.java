@@ -273,7 +273,7 @@ public class TransactionController extends BaseController
 		// select first transaction in order to provide correct start date for repeating transactions
 		if(transaction.getRepeatingOption() != null)
 		{
-			transaction = transaction.getRepeatingOption().getReferringTransactions().get(0);
+			transaction = transaction.getRepeatingOption().getFirstReferringTransaction();
 		}
 
 		LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
@@ -342,7 +342,7 @@ public class TransactionController extends BaseController
 		// select first transaction in order to provide correct start date for repeating transactions
 		if(transaction.getRepeatingOption() != null)
 		{
-			transaction = transaction.getRepeatingOption().getReferringTransactions().get(0);
+			transaction = transaction.getRepeatingOption().getFirstReferringTransaction();
 		}
 
 		Transaction transactionCopy = new Transaction(transaction);
@@ -372,23 +372,17 @@ public class TransactionController extends BaseController
 	@GetMapping("/{ID}/newFromExisting")
 	public String newFromExisting(Model model, @PathVariable("ID") Integer ID, @CookieValue("currentDate") String cookieDate)
 	{
-		Optional<Transaction> transactionOptional = transactionService.getRepository().findById(ID);
+		final Optional<Transaction> transactionOptional = transactionService.getRepository().findById(ID);
 		if(transactionOptional.isEmpty())
 		{
 			throw new ResourceNotFoundException();
 		}
 
-		Transaction existingTransaction = transactionOptional.get();
+		final Transaction existingTransaction = transactionOptional.get();
 
-		// select first transaction in order to provide correct start date for repeating transactions
-		if(existingTransaction.getRepeatingOption() != null)
-		{
-			existingTransaction = existingTransaction.getRepeatingOption().getReferringTransactions().get(0);
-		}
+		final LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
 
-		LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
-
-		Transaction newTransaction = new Transaction(existingTransaction);
+		final Transaction newTransaction = new Transaction(existingTransaction);
 		newTransaction.setID(null);
 		newTransaction.setDate(null);
 
@@ -397,6 +391,66 @@ public class TransactionController extends BaseController
 			newTransaction.setAccount(accountService.getRepository().findByIsDefault(true));
 		}
 
+		transactionService.prepareModelNewOrEdit(model, false, date, false, newTransaction, accountService.getAllActivatedAccountsAsc());
+
+		if(newTransaction.isTransfer())
+		{
+			return ReturnValues.NEW_TRANSFER;
+		}
+		return ReturnValues.NEW_TRANSACTION;
+	}
+
+	@GetMapping("/{ID}/editFutureRepetitions")
+	public String editFutureRepetitions(Model model, @PathVariable("ID") Integer ID, @CookieValue("currentDate") String cookieDate)
+	{
+		final Optional<Transaction> transactionOptional = transactionService.getRepository().findById(ID);
+		if(transactionOptional.isEmpty())
+		{
+			throw new ResourceNotFoundException();
+		}
+
+		final Transaction existingTransaction = transactionOptional.get();
+		if(!existingTransaction.isRepeating())
+		{
+			throw new IllegalArgumentException("Could not edit future occurrences of non-repeating transaction");
+		}
+		final Transaction firstReferringTransaction = existingTransaction.getRepeatingOption().getFirstReferringTransaction();
+
+		// copy transaction
+		final Transaction newTransaction = new Transaction(existingTransaction);
+		newTransaction.setID(null);
+		newTransaction.setDate(existingTransaction.getDate());
+		if(newTransaction.getAccount().getAccountState() != AccountState.FULL_ACCESS)
+		{
+			newTransaction.setAccount(accountService.getRepository().findByIsDefault(true));
+		}
+
+		// create new repeating option based on the one from the existing transaction but set end option to never
+		final RepeatingModifier existingModifier = existingTransaction.getRepeatingOption().getModifier();
+		final RepeatingOption newRepeatingOption = createRepeatingOption(existingTransaction.getDate(),
+				existingModifier.getQuantity(),
+				Localization.getString(existingModifier.getLocalizationKey()),
+				Localization.getString(new RepeatingEndNever().getLocalizationKey()),
+				null);
+		newTransaction.setRepeatingOption(newRepeatingOption);
+
+		// create new repeating option based on the one from the existing transaction but set end option to date
+		final LocalDate endDate = existingTransaction.getDate().minusDays(1);
+		final String endDateString = endDate.format(DateTimeFormatter.ofPattern(DateFormatStyle.LONG.getKey()).withLocale(settingsService.getSettings().getLanguage().getLocale()));
+		final RepeatingOption newRepeatingOptionForExisting = createRepeatingOption(firstReferringTransaction.getDate(),
+				existingModifier.getQuantity(),
+				Localization.getString(existingModifier.getLocalizationKey()),
+				Localization.getString(new RepeatingEndDate(endDate).getLocalizationKey()),
+				endDateString);
+
+		// delete and re-create existing transaction
+		transactionService.deleteTransaction(existingTransaction.getID());
+		existingTransaction.setID(null);
+		existingTransaction.setDate(firstReferringTransaction.getDate());
+		existingTransaction.setRepeatingOption(newRepeatingOptionForExisting);
+		transactionService.getRepository().save(existingTransaction);
+
+		final LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
 		transactionService.prepareModelNewOrEdit(model, false, date, false, newTransaction, accountService.getAllActivatedAccountsAsc());
 
 		if(newTransaction.isTransfer())

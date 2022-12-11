@@ -1,8 +1,12 @@
 package de.deadlocker8.budgetmaster.search;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
+
 public class Search
 {
-	public static final Search DEFAULT = new Search("", true, true, true, true, false, 0);
+	public static final Search DEFAULT = new Search("", true, true, true, true, false, 0, null, null);
 
 	private String searchText;
 	private boolean searchName;
@@ -11,6 +15,10 @@ public class Search
 	private boolean searchTags;
 	private boolean includeHiddenAccounts;
 	private int page;
+	@DateTimeFormat(pattern = "dd.MM.yyyy")
+	private LocalDate startDate;
+	@DateTimeFormat(pattern = "dd.MM.yyyy")
+	private LocalDate endDate;
 
 	public Search()
 	{
@@ -18,7 +26,7 @@ public class Search
 		this.page = 0;
 	}
 
-	public Search(String searchText, boolean searchName, boolean searchDescription, boolean searchCategory, boolean searchTags, boolean includeHiddenAccounts, int page)
+	public Search(String searchText, boolean searchName, boolean searchDescription, boolean searchCategory, boolean searchTags, boolean includeHiddenAccounts, int page, LocalDate startDate, LocalDate endDate)
 	{
 		this.searchText = searchText;
 		this.searchName = searchName;
@@ -27,6 +35,8 @@ public class Search
 		this.searchTags = searchTags;
 		this.includeHiddenAccounts = includeHiddenAccounts;
 		this.page = page;
+		this.startDate = startDate;
+		this.endDate = endDate;
 	}
 
 	public String getSearchText()
@@ -99,7 +109,28 @@ public class Search
 		this.page = page;
 	}
 
-	public boolean isEmptySearch(){
+	public LocalDate getStartDate()
+	{
+		return startDate;
+	}
+
+	public void setStartDate(LocalDate startDate)
+	{
+		this.startDate = startDate;
+	}
+
+	public LocalDate getEndDate()
+	{
+		return endDate;
+	}
+
+	public void setEndDate(LocalDate endDate)
+	{
+		this.endDate = endDate;
+	}
+
+	public boolean isEmptySearch()
+	{
 		return !searchName && !searchDescription && !searchCategory && !searchTags;
 	}
 
@@ -114,6 +145,8 @@ public class Search
 				", searchTags=" + searchTags +
 				", includeHiddenAccounts=" + includeHiddenAccounts +
 				", page=" + page +
+				", startDate=" + startDate +
+				", endDate=" + endDate +
 				'}';
 	}
 }

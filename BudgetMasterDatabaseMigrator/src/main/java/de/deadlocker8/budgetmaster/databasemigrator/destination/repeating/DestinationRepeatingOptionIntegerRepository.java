@@ -1,7 +1,0 @@
-package de.deadlocker8.budgetmaster.databasemigrator.destination.repeating;
-
-import de.deadlocker8.budgetmaster.databasemigrator.destination.DestinationIntegerRepository;
-
-public interface DestinationRepeatingOptionIntegerRepository extends DestinationIntegerRepository<DestinationRepeatingOption, Integer>
-{
-}

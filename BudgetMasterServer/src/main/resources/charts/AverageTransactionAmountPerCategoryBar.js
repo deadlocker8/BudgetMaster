@@ -97,6 +97,27 @@ var plotlyConfig = {
 Plotly.newPlot("containerID", plotlyData, plotlyLayout, plotlyConfig);
 
 
+REGEX_CATGEORY_NAME = new RegExp("(.*)\\s-?\\d+.\\d\\s€");
+
+var plotContainer = document.getElementById('containerID');
+plotContainer.on('plotly_click', function(data){
+    if(data.event.shiftKey !== true)
+    {
+        return;
+    }
+
+    let index = data.points.length - 1;
+    let hoverText = data.points[index].hovertext;
+    let match = hoverText.match(REGEX_CATGEORY_NAME);
+    if(match === null)
+    {
+        console.error('could not extract category name from: "' + hoverText + '"');
+        return;
+    }
+
+    getAndShowMatchingTransactions(null, match[1]);
+});
+
 function calculateAverage(values)
 {
     var sum = 0;

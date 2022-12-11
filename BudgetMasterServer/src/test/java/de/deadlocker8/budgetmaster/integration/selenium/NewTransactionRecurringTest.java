@@ -35,7 +35,6 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		helper.login(UserService.DEFAULT_PASSWORD);
 		helper.hideBackupReminder();
 		helper.hideWhatsNewDialog();
-		helper.hideMigrationDialog();
 
 		String path = getClass().getClassLoader().getResource("SearchDatabase.json").getFile().replace("/", File.separator);
 		helper.uploadDatabase(path);
@@ -76,7 +75,7 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 			final String name = columns.get(2).findElement(By.className("transaction-text")).getText();
 			if(name.equals(TRANSACTION_NAME))
 			{
-				columns.get(4).findElements(By.tagName("a")).get(1).click();
+				columns.get(4).findElement(By.className("button-request-delete-transaction")).click();
 
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 				wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector("#modalConfirmDelete .modal-content h4"), "Delete Entry"));
@@ -272,7 +271,12 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		TransactionTestHelper.assertTransactionColumns(columns, categoryName, "rgb(46, 124, 43)", true, true, TRANSACTION_NAME, description, amount);
 
 		// open transaction in edit view again
-		columns.get(4).findElement(By.cssSelector("a")).click();
+		columns.get(4).findElement(By.className("edit-transaction-button-link")).click();
+		final WebElement buttonEditFutureOccurrences = transactionRow.findElement(By.className("button-edit-all-occurrences"));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOf(buttonEditFutureOccurrences));
+		buttonEditFutureOccurrences.click();
+
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Edit " + type));
 
 		assertThat(driver.findElement(By.cssSelector(".account-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("2");

@@ -20,17 +20,19 @@ public class ChartSettings
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private LocalDate endDate;
 	private FilterConfiguration filterConfiguration;
+	private ChartAmountType clickedAmountType;
+	private String clickedCategory;
 
 	public static ChartSettings getDefault(FilterConfiguration filterConfiguration)
 	{
-		return new ChartSettings(ChartDisplayType.BAR, ChartGroupType.MONTH, null, LocalDate.now().with(firstDayOfMonth()), LocalDate.now().with(lastDayOfMonth()), filterConfiguration);
+		return new ChartSettings(ChartDisplayType.BAR, ChartGroupType.MONTH, null, LocalDate.now().with(firstDayOfMonth()), LocalDate.now().with(lastDayOfMonth()), filterConfiguration, null, null);
 	}
 
 	public ChartSettings()
 	{
 	}
 
-	public ChartSettings(ChartDisplayType displayType, ChartGroupType groupType, Integer chartID, LocalDate startDate, LocalDate endDate, FilterConfiguration filterConfiguration)
+	public ChartSettings(ChartDisplayType displayType, ChartGroupType groupType, Integer chartID, LocalDate startDate, LocalDate endDate, FilterConfiguration filterConfiguration, ChartAmountType clickedAmountType, String clickedCategory)
 	{
 		this.displayType = displayType;
 		this.groupType = groupType;
@@ -38,6 +40,8 @@ public class ChartSettings
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.filterConfiguration = filterConfiguration;
+		this.clickedAmountType = clickedAmountType;
+		this.clickedCategory = clickedCategory;
 	}
 
 	public ChartDisplayType getDisplayType()
@@ -100,6 +104,26 @@ public class ChartSettings
 		this.filterConfiguration = filterConfiguration;
 	}
 
+	public ChartAmountType getClickedAmountType()
+	{
+		return clickedAmountType;
+	}
+
+	public void setClickedAmountType(ChartAmountType clickedAmountType)
+	{
+		this.clickedAmountType = clickedAmountType;
+	}
+
+	public String getClickedCategory()
+	{
+		return clickedCategory;
+	}
+
+	public void setClickedCategory(String clickedCategory)
+	{
+		this.clickedCategory = clickedCategory;
+	}
+
 	public boolean isChartSelected()
 	{
 		return chartID != null;
@@ -115,6 +139,8 @@ public class ChartSettings
 				", startDate=" + startDate +
 				", endDate=" + endDate +
 				", filterConfiguration=" + filterConfiguration +
+				", clickedAmountType=" + clickedAmountType +
+				", clickedCategory='" + clickedCategory + '\'' +
 				'}';
 	}
 }

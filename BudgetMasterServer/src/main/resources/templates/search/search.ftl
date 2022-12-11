@@ -3,6 +3,7 @@
         <#import "../helpers/header.ftl" as header>
         <@header.globals/>
         <@header.header "BudgetMaster - ${locale.getString('search')}"/>
+        <@header.style "datepicker"/>
         <@header.style "transactions"/>
         <@header.style "search"/>
         <#import "/spring.ftl" as s>
@@ -11,7 +12,6 @@
         <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "home" settings/>
 
-        <#import "../transactions/transactionsMacros.ftl" as transactionsMacros>
         <#import "searchMacros.ftl" as searchMacros>
 
         <main>
@@ -26,6 +26,7 @@
                     <form id="searchForm" action="<@s.url '/search'/>" method="get">
                         <@searchMacros.searchTextAndButton search/>
                         <@searchMacros.checkboxes search/>
+                        <@searchMacros.dateRange search/>
                         <input type="hidden" name="page" id="inputPageNumber" value="${page.getNumber()}"/>
                     </form>
 
@@ -33,38 +34,7 @@
 
                     <div class="row search-container">
                         <div class="col s12">
-                            <#list page.getContent() as transaction>
-                                <div class="card-panel search-result">
-                                    <div class="hide-on-large-only">
-                                        <div class="row valign-wrapper">
-                                            <div class="col s3 center-align bold transaction-text">
-                                                ${dateService.getDateStringNormal(transaction.date)}
-                                            </div>
-                                            <@transactionsMacros.transactionAccountIcon transaction/>
-                                            <@transactionsMacros.transactionType transaction "s2"/>
-                                            <@transactionsMacros.transactionLinks transaction/>
-                                        </div>
-                                        <div class="row valign-wrapper no-margin-bottom">
-                                            <@transactionsMacros.transactionCategory transaction "center-align"/>
-                                            <@transactionsMacros.transactionNameAndDescription transaction "s5"/>
-                                            <@transactionsMacros.transactionAmount transaction transaction.getAccount() "s4"/>
-                                        </div>
-                                    </div>
-                                    <div class="hide-on-med-and-down">
-                                        <div class="row valign-wrapper no-margin-bottom transaction-row-desktop">
-                                            <div class="col l2 xl1 bold transaction-text transaction-date valign-wrapper">
-                                                ${dateService.getDateStringNormal(transaction.date)}
-                                            </div>
-                                            <@transactionsMacros.transactionCategory transaction "left-align"/>
-                                            <@transactionsMacros.transactionAccountIcon transaction/>
-                                            <@transactionsMacros.transactionType transaction "l1 xl1"/>
-                                            <@transactionsMacros.transactionNameAndDescription transaction "l3 xl4"/>
-                                            <@transactionsMacros.transactionAmount transaction transaction.getAccount() "l2 xl2"/>
-                                            <@transactionsMacros.transactionLinks transaction/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </#list>
+                            <@searchMacros.renderTransactions page.getContent()/>
 
                             <#-- placeholder -->
                             <#if page.getContent()?size == 0>
@@ -82,6 +52,10 @@
                 </@header.content>
             </div>
         </main>
+
+        <!-- Pass localization to JS -->
+        <#import "../helpers/globalDatePicker.ftl" as datePicker>
+        <@datePicker.datePickerLocalization/>
 
         <!--  Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>

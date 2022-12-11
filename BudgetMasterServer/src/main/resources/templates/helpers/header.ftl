@@ -21,7 +21,7 @@
     <#import "/spring.ftl" as s>
     <title>${title}</title>
     <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="<@s.url '/webjars/font-awesome/6.1.2/css/all.min.css'/>">
+    <link rel="stylesheet" href="<@s.url '/webjars/font-awesome/6.2.0/css/all.min.css'/>">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="<@s.url "/webjars/materializecss/1.0.0/css/materialize.min.css"/>">
     <@style "colors"/>
@@ -136,8 +136,8 @@
     </button>
 </#macro>
 
-<#macro buttonFlat url icon localizationKey id="" classes="" isDataUrl=false noUrl=false iconClasses=''>
-    <a <#if !isDataUrl && !noUrl>href="<@s.url url/>"</#if>
+<#macro buttonFlat url icon localizationKey id="" classes="" isDataUrl=false noUrl=false iconClasses='' target=''>
+    <a <#if target?has_content>target="${target}"</#if> <#if !isDataUrl && !noUrl>href="<@s.url url/>"</#if>
        id="${id}"
        class="waves-effect waves-light btn-flat ${classes}"
             <#if isDataUrl>data-url="${url}"</#if>>

@@ -7,12 +7,12 @@ import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.Tag_;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class TransactionSearchSpecifications
 {
@@ -89,7 +89,16 @@ public class TransactionSearchSpecifications
 
 			query.orderBy(builder.desc(transaction.get(Transaction_.date)));
 			query.distinct(true);
-			return builder.and(accountStatePredicate, predicatesCombined);
+
+			final Predicate allPredicates = builder.and(accountStatePredicate, predicatesCombined);
+
+			final Optional<Predicate> datePredicateOptional = getDatePredicate(builder, transaction, search);
+			if(datePredicateOptional.isPresent())
+			{
+				return builder.and(datePredicateOptional.get(), allPredicates);
+			}
+
+			return allPredicates;
 		};
 	}
 
@@ -105,5 +114,25 @@ public class TransactionSearchSpecifications
 		}
 
 		return allowedAccountStates;
+	}
+
+	private static Optional<Predicate> getDatePredicate(CriteriaBuilder builder, Root<Transaction> transaction, Search search)
+	{
+		if(search.getStartDate() != null && search.getEndDate() != null)
+		{
+			return Optional.of(builder.between(transaction.get(Transaction_.date), search.getStartDate(), search.getEndDate()));
+		}
+
+		if(search.getStartDate() != null)
+		{
+			return Optional.of(builder.between(transaction.get(Transaction_.date), search.getStartDate(), LocalDate.of(2100, 1, 1)));
+		}
+
+		if(search.getEndDate() != null)
+		{
+			return Optional.of(builder.between(transaction.get(Transaction_.date), LocalDate.of(2000, 1, 1), search.getEndDate()));
+		}
+
+		return Optional.empty();
 	}
 }
