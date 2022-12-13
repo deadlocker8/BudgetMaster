@@ -59,21 +59,6 @@ public class TransactionService implements Resettable
 		return transactionRepository;
 	}
 
-	public List<Transaction> getTransactionsForMonthAndYear(Account account, int month, int year, boolean isRestActivated, FilterConfiguration filterConfiguration)
-	{
-		List<Transaction> transactions;
-		if(isRestActivated)
-		{
-			transactions = getTransactionsForMonthAndYearWithRest(account, month, year, filterConfiguration);
-		}
-		else
-		{
-			transactions = getTransactionsForMonthAndYearWithoutRest(account, month, year, filterConfiguration);
-		}
-
-		return transactions;
-	}
-
 	public Transaction getTransactionForBalanceLastMonth(Account account, int month, int year)
 	{
 		final LocalDate endDateLastMonth = LocalDate.of(year, month, 1).minusMonths(1).with(lastDayOfMonth());
@@ -102,17 +87,7 @@ public class TransactionService implements Resettable
 		return transactionBalanceCurrentMonth;
 	}
 
-	private List<Transaction> getTransactionsForMonthAndYearWithRest(Account account, int month, int year, FilterConfiguration filterConfiguration)
-	{
-		final List<Transaction> transactions = getTransactionsForMonthAndYearWithoutRest(account, month, year, filterConfiguration);
-
-		transactions.add(getTransactionForBalanceLastMonth(account, month, year));
-		transactions.add(0, getTransactionForBalanceCurrentMonth(account, month, year));
-
-		return transactions;
-	}
-
-	private List<Transaction> getTransactionsForMonthAndYearWithoutRest(Account account, int month, int year, FilterConfiguration filterConfiguration)
+	public List<Transaction> getTransactionsForMonthAndYear(Account account, int month, int year, FilterConfiguration filterConfiguration)
 	{
 		final LocalDate startDate = LocalDate.of(year, month, 1);
 		final LocalDate endDate = LocalDate.of(year, month, 1).with(lastDayOfMonth());

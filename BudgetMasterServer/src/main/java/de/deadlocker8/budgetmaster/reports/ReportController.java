@@ -98,7 +98,7 @@ public class ReportController extends BaseController
 		}
 
 		FilterConfiguration filterConfiguration = filterHelpers.getFilterConfiguration(request);
-		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(account, reportSettings.getDate().getMonthValue(), reportSettings.getDate().getYear(), settingsService.getSettings().isRestActivated(), filterConfiguration);
+		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(account, reportSettings.getDate().getMonthValue(), reportSettings.getDate().getYear(), filterConfiguration);
 		Budget budget = helpers.getBudget(transactions, account);
 
 		ReportConfiguration reportConfiguration = new ReportConfigurationBuilder()

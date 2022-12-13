@@ -185,7 +185,7 @@ class TransactionServiceDatabaseTest
 	{
 		FilterConfiguration filterConfiguration = new FilterConfiguration(true, true, true, true, true, null, null, "");
 
-		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(accountRepository.findByName("Default Account"), 6, 2021, false, filterConfiguration);
+		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(accountRepository.findByName("Default Account"), 6, 2021, filterConfiguration);
 		assertThat(transactions)
 				.hasSize(1)
 				.containsExactly(transactionLastDayOfJune);
@@ -202,7 +202,7 @@ class TransactionServiceDatabaseTest
 
 			FilterConfiguration filterConfiguration = new FilterConfiguration(true, true, true, true, true, null, null, "");
 
-			List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(accountRepository.findByName("Default Account"), 6, 2021, false, filterConfiguration);
+			List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(accountRepository.findByName("Default Account"), 6, 2021, filterConfiguration);
 			assertThat(transactions)
 					.hasSize(1)
 					.containsExactly(transactionLastDayOfJune);
@@ -212,28 +212,32 @@ class TransactionServiceDatabaseTest
 	}
 
 	@Test
-	void test_getTransactionsForMonthAndYear_includeAccountBalances()
+	void test_getTransactionForBalanceLastMonth()
 	{
-		FilterConfiguration filterConfiguration = new FilterConfiguration(true, true, true, true, true, null, null, "");
+		final Transaction transaction = transactionService.getTransactionForBalanceLastMonth(accountRepository.findByName("Default Account"), 6, 2021);
 
-		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(accountRepository.findByName("Default Account"), 6, 2021, true, filterConfiguration);
+		final Transaction expected = new Transaction();
+		expected.setName("Last month balance");
+		expected.setAmount(998300);
+		expected.setDate(LocalDate.of(2021, 6, 1));
+		expected.setCategory(categoryService.findByType(CategoryType.REST));
+		expected.setTags(List.of());
 
-		Transaction transactionBalanceLastMonth = new Transaction();
-		transactionBalanceLastMonth.setName("Last month balance");
-		transactionBalanceLastMonth.setAmount(998300);
-		transactionBalanceLastMonth.setDate(LocalDate.of(2021, 6, 1));
-		transactionBalanceLastMonth.setCategory(categoryService.findByType(CategoryType.REST));
-		transactionBalanceLastMonth.setTags(List.of());
+		assertThat(transaction).isEqualTo(expected);
+	}
 
-		Transaction transactionBalanceCurrentMonth = new Transaction();
-		transactionBalanceCurrentMonth.setName("Balance at end of month");
-		transactionBalanceCurrentMonth.setAmount(998200);
-		transactionBalanceCurrentMonth.setDate(LocalDate.of(2021, 6, 30));
-		transactionBalanceCurrentMonth.setCategory(categoryService.findByType(CategoryType.REST));
-		transactionBalanceCurrentMonth.setTags(List.of());
+	@Test
+	void test_getTransactionForBalanceCurrentMonth()
+	{
+		final Transaction transaction = transactionService.getTransactionForBalanceCurrentMonth(accountRepository.findByName("Default Account"), 6, 2021);
 
-		assertThat(transactions)
-				.hasSize(3)
-				.containsExactly(transactionBalanceCurrentMonth, transactionLastDayOfJune, transactionBalanceLastMonth);
+		final Transaction expected = new Transaction();
+		expected.setName("Balance at end of month");
+		expected.setAmount(998200);
+		expected.setDate(LocalDate.of(2021, 6, 30));
+		expected.setCategory(categoryService.findByType(CategoryType.REST));
+		expected.setTags(List.of());
+
+		assertThat(transaction).isEqualTo(expected);
 	}
 }

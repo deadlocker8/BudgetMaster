@@ -110,14 +110,23 @@ public class TransactionController extends BaseController
 
 	private void prepareModelTransactions(FilterConfiguration filterConfiguration, Model model, LocalDate date)
 	{
-		Account currentAccount = helpers.getCurrentAccount();
-		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(currentAccount, date.getMonthValue(), date.getYear(), settingsService.getSettings().isRestActivated(), filterConfiguration);
+		final Account currentAccount = helpers.getCurrentAccount();
+		final List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(currentAccount, date.getMonthValue(), date.getYear(), filterConfiguration);
 
-		model.addAttribute(TransactionModelAttributes.ALL_ENTITIES, transactions);
 		model.addAttribute(TransactionModelAttributes.ACCOUNT, currentAccount);
 		model.addAttribute(TransactionModelAttributes.BUDGET, helpers.getBudget(transactions, currentAccount));
 		model.addAttribute(TransactionModelAttributes.CURRENT_DATE, date);
 		model.addAttribute(TransactionModelAttributes.FILTER_CONFIGURATION, filterConfiguration);
+
+		if(settingsService.getSettings().isRestActivated())
+		{
+			final Transaction transactionBalanceCurrentMonth = transactionService.getTransactionForBalanceCurrentMonth(currentAccount, date.getMonthValue(), date.getYear());
+			transactions.add(0, transactionBalanceCurrentMonth);
+			final Transaction transactionBalanceLastMonth = transactionService.getTransactionForBalanceLastMonth(currentAccount, date.getMonthValue(), date.getYear());
+			transactions.add(transactionBalanceLastMonth);
+		}
+
+		model.addAttribute(TransactionModelAttributes.ALL_ENTITIES, transactions);
 	}
 
 	@GetMapping("/{ID}/delete")
