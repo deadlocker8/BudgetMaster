@@ -26,9 +26,9 @@ import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 
 @Component
-public class DemoDateCreator
+public class DemoDataCreator
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(DemoDateCreator.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DemoDataCreator.class);
 
 	private final CategoryService categoryService;
 	private final IconService iconService;
@@ -40,7 +40,7 @@ public class DemoDateCreator
 	private Category categorySalary;
 
 	@Autowired
-	public DemoDateCreator(CategoryService categoryService, IconService iconService, AccountService accountService, TransactionService transactionService)
+	public DemoDataCreator(CategoryService categoryService, IconService iconService, AccountService accountService, TransactionService transactionService)
 	{
 		this.categoryService = categoryService;
 		this.iconService = iconService;
