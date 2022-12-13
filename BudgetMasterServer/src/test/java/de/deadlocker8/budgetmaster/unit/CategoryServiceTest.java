@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CategoryServiceTest
 {
 	private static final Category CATEGORY_NONE = new Category("No Category", "#FFFFFF", CategoryType.NONE);
-	private static final Category CATEGORY_REST = new Category("Rest", "#FFFF00", CategoryType.REST);
+	private static final Category CATEGORY_REST = new Category("Balance", "#FFFF00", CategoryType.REST);
 
 	@Mock
 	private CategoryRepository categoryRepository;
@@ -64,7 +64,7 @@ class CategoryServiceTest
 		Mockito.when(categoryRepository.findAllByOrderByNameAsc()).thenReturn(categories);
 
 		assertThat(categoryService.getAllEntitiesAsc()).hasSize(9)
-				.containsExactly(category_1, category_2, category_11, category_AA, category_aa, category_AABB, category_BB, CATEGORY_NONE, CATEGORY_REST);
+				.containsExactly(category_1, category_2, category_11, category_AA, category_aa, category_AABB, CATEGORY_REST, category_BB, CATEGORY_NONE);
 	}
 
 	@Test

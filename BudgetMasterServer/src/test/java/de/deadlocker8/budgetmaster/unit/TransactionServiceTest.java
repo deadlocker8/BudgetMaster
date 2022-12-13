@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @LocalizedTest
 class TransactionServiceTest
 {
-	private static final Category CATEGORY_REST = new Category("Rest", "#FFFF00", CategoryType.REST);
+	private static final Category CATEGORY_REST = new Category("Balance", "#FFFF00", CategoryType.REST);
 	private static final Category CATEGORY_CUSTOM = new Category("CustomCategory", "#0F0F0F", CategoryType.CUSTOM);
 
 	private static final Account ACCOUNT = new Account("MyAccount", AccountType.CUSTOM);
@@ -39,7 +39,7 @@ class TransactionServiceTest
 	{
 		Transaction transactionRest = new Transaction();
 		transactionRest.setID(1);
-		transactionRest.setName("Rest");
+		transactionRest.setName("Balance");
 		transactionRest.setAmount(700);
 		transactionRest.setCategory(CATEGORY_REST);
 		transactionRest.setAccount(ACCOUNT);

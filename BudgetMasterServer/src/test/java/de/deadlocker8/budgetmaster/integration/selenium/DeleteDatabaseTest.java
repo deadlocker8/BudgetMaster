@@ -66,15 +66,24 @@ class DeleteDatabaseTest extends SeleniumTestBase
 		TransactionTestHelper.gotoSpecificYearAndMonth(driver, 2022, "March");
 
 		final List<WebElement> transactionDateGroups = driver.findElements(By.className("transaction-date-group"));
-		assertThat(transactionDateGroups).hasSize(1);
+		assertThat(transactionDateGroups).hasSize(2);
 
 		final WebElement dateGroup = transactionDateGroups.get(0);
-		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", "01. MARCH 2022");
-		final List<WebElement> transactionsInGroup = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", "31. MARCH 2022");
+		final List<WebElement> transactionsInGroup = dateGroup.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 		assertThat(transactionsInGroup).hasSize(1);
 
 		final WebElement transactionRow = transactionsInGroup.get(0);
 		final List<WebElement> columns = transactionRow.findElements(By.className("col"));
-		TransactionTestHelper.assertTransactionColumns(columns, "Rest", "rgb(255, 255, 0)", false, false, "Rest", null, "0.00");
+		TransactionTestHelper.assertTransactionColumns(columns, "Balance", "rgb(255, 255, 0)", false, false, "Balance at end of month", null, "0.00");
+
+		final WebElement dateGroup2 = transactionDateGroups.get(1);
+		assertThat(dateGroup2.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", "01. MARCH 2022");
+		final List<WebElement> transactionsInGroup2 = dateGroup2.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		assertThat(transactionsInGroup2).hasSize(1);
+
+		final WebElement transactionRow2 = transactionsInGroup2.get(0);
+		final List<WebElement> columns2 = transactionRow2.findElements(By.className("col"));
+		TransactionTestHelper.assertTransactionColumns(columns2, "Balance", "rgb(255, 255, 0)", false, false, "Last month balance", null, "0.00");
 	}
 }
