@@ -78,15 +78,26 @@ public class TransactionService implements Resettable
 	{
 		final List<Transaction> transactions = getTransactionsForMonthAndYearWithoutRest(account, month, year, filterConfiguration);
 
-		final LocalDate endDate = LocalDate.of(year, month, 1).minusMonths(1).with(lastDayOfMonth());
+		final LocalDate endDateLastMonth = LocalDate.of(year, month, 1).minusMonths(1).with(lastDayOfMonth());
 
 		final Transaction transactionBalanceLastMonth = new Transaction();
 		transactionBalanceLastMonth.setCategory(categoryService.findByType(CategoryType.REST));
 		transactionBalanceLastMonth.setName(Localization.getString(Strings.TRANSACTION_BALANCE_LAST_MONTH));
 		transactionBalanceLastMonth.setDate(LocalDate.of(year, month, 1));
-		transactionBalanceLastMonth.setAmount(getRest(account, endDate));
+		transactionBalanceLastMonth.setAmount(getRest(account, endDateLastMonth));
 		transactionBalanceLastMonth.setTags(new ArrayList<>());
 		transactions.add(transactionBalanceLastMonth);
+
+		final LocalDate endDateCurrentMonth = LocalDate.of(year, month, 1).with(lastDayOfMonth());
+
+		final Transaction transactionBalanceCurrentMonth = new Transaction();
+		transactionBalanceCurrentMonth.setCategory(categoryService.findByType(CategoryType.REST));
+		transactionBalanceCurrentMonth.setName(Localization.getString(Strings.TRANSACTION_BALANCE_CURRENT_MONTH));
+		transactionBalanceCurrentMonth.setDate(endDateCurrentMonth);
+		transactionBalanceCurrentMonth.setAmount(getRest(account, endDateCurrentMonth));
+		transactionBalanceCurrentMonth.setTags(new ArrayList<>());
+		// always add as first transaction
+		transactions.add(0, transactionBalanceCurrentMonth);
 
 		return transactions;
 	}

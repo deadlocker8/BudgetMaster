@@ -210,4 +210,30 @@ class TransactionServiceDatabaseTest
 					.isEqualTo(LocalDate.of(2021, 6, 30));
 		}
 	}
+
+	@Test
+	void test_getTransactionsForMonthAndYear_includeAccountBalances()
+	{
+		FilterConfiguration filterConfiguration = new FilterConfiguration(true, true, true, true, true, null, null, "");
+
+		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(accountRepository.findByName("Default Account"), 6, 2021, true, filterConfiguration);
+
+		Transaction transactionBalanceLastMonth = new Transaction();
+		transactionBalanceLastMonth.setName("Last month balance");
+		transactionBalanceLastMonth.setAmount(998300);
+		transactionBalanceLastMonth.setDate(LocalDate.of(2021, 6, 1));
+		transactionBalanceLastMonth.setCategory(categoryService.findByType(CategoryType.REST));
+		transactionBalanceLastMonth.setTags(List.of());
+
+		Transaction transactionBalanceCurrentMonth = new Transaction();
+		transactionBalanceCurrentMonth.setName("Balance at end of month");
+		transactionBalanceCurrentMonth.setAmount(998200);
+		transactionBalanceCurrentMonth.setDate(LocalDate.of(2021, 6, 30));
+		transactionBalanceCurrentMonth.setCategory(categoryService.findByType(CategoryType.REST));
+		transactionBalanceCurrentMonth.setTags(List.of());
+
+		assertThat(transactions)
+				.hasSize(3)
+				.containsExactly(transactionBalanceCurrentMonth, transactionLastDayOfJune, transactionBalanceLastMonth);
+	}
 }
