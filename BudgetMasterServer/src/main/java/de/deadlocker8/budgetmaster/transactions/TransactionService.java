@@ -76,17 +76,17 @@ public class TransactionService implements Resettable
 
 	private List<Transaction> getTransactionsForMonthAndYearWithRest(Account account, int month, int year, FilterConfiguration filterConfiguration)
 	{
-		List<Transaction> transactions = getTransactionsForMonthAndYearWithoutRest(account, month, year, filterConfiguration);
+		final List<Transaction> transactions = getTransactionsForMonthAndYearWithoutRest(account, month, year, filterConfiguration);
 
-		LocalDate endDate = LocalDate.of(year, month, 1).minusMonths(1).with(lastDayOfMonth());
+		final LocalDate endDate = LocalDate.of(year, month, 1).minusMonths(1).with(lastDayOfMonth());
 
-		Transaction transactionRest = new Transaction();
-		transactionRest.setCategory(categoryService.findByType(CategoryType.REST));
-		transactionRest.setName(Localization.getString(Strings.CATEGORY_REST));
-		transactionRest.setDate(LocalDate.of(year, month, 1));
-		transactionRest.setAmount(getRest(account, endDate));
-		transactionRest.setTags(new ArrayList<>());
-		transactions.add(transactionRest);
+		final Transaction transactionBalanceLastMonth = new Transaction();
+		transactionBalanceLastMonth.setCategory(categoryService.findByType(CategoryType.REST));
+		transactionBalanceLastMonth.setName(Localization.getString(Strings.TRANSACTION_BALANCE_LAST_MONTH));
+		transactionBalanceLastMonth.setDate(LocalDate.of(year, month, 1));
+		transactionBalanceLastMonth.setAmount(getRest(account, endDate));
+		transactionBalanceLastMonth.setTags(new ArrayList<>());
+		transactions.add(transactionBalanceLastMonth);
 
 		return transactions;
 	}
