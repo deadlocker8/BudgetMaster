@@ -74,10 +74,8 @@ public class TransactionService implements Resettable
 		return transactions;
 	}
 
-	private List<Transaction> getTransactionsForMonthAndYearWithRest(Account account, int month, int year, FilterConfiguration filterConfiguration)
+	public Transaction getTransactionForBalanceLastMonth(Account account, int month, int year)
 	{
-		final List<Transaction> transactions = getTransactionsForMonthAndYearWithoutRest(account, month, year, filterConfiguration);
-
 		final LocalDate endDateLastMonth = LocalDate.of(year, month, 1).minusMonths(1).with(lastDayOfMonth());
 
 		final Transaction transactionBalanceLastMonth = new Transaction();
@@ -86,8 +84,12 @@ public class TransactionService implements Resettable
 		transactionBalanceLastMonth.setDate(LocalDate.of(year, month, 1));
 		transactionBalanceLastMonth.setAmount(getRest(account, endDateLastMonth));
 		transactionBalanceLastMonth.setTags(new ArrayList<>());
-		transactions.add(transactionBalanceLastMonth);
 
+		return transactionBalanceLastMonth;
+	}
+
+	public Transaction getTransactionForBalanceCurrentMonth(Account account, int month, int year)
+	{
 		final LocalDate endDateCurrentMonth = LocalDate.of(year, month, 1).with(lastDayOfMonth());
 
 		final Transaction transactionBalanceCurrentMonth = new Transaction();
@@ -96,8 +98,16 @@ public class TransactionService implements Resettable
 		transactionBalanceCurrentMonth.setDate(endDateCurrentMonth);
 		transactionBalanceCurrentMonth.setAmount(getRest(account, endDateCurrentMonth));
 		transactionBalanceCurrentMonth.setTags(new ArrayList<>());
-		// always add as first transaction
-		transactions.add(0, transactionBalanceCurrentMonth);
+
+		return transactionBalanceCurrentMonth;
+	}
+
+	private List<Transaction> getTransactionsForMonthAndYearWithRest(Account account, int month, int year, FilterConfiguration filterConfiguration)
+	{
+		final List<Transaction> transactions = getTransactionsForMonthAndYearWithoutRest(account, month, year, filterConfiguration);
+
+		transactions.add(getTransactionForBalanceLastMonth(account, month, year));
+		transactions.add(0, getTransactionForBalanceCurrentMonth(account, month, year));
 
 		return transactions;
 	}
