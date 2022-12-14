@@ -342,9 +342,9 @@ class AccountTest extends SeleniumTestBase
 
 		// assert
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
-		assertThat(transactionsRows).hasSize(2);
+		assertThat(transactionsRows).hasSize(3);
 
-		final WebElement row = transactionsRows.get(0);
+		final WebElement row = transactionsRows.get(1);
 		final List<WebElement> columns = row.findElements(By.className("col"));
 
 		// check columns
