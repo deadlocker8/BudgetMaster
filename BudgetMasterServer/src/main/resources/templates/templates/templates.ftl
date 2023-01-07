@@ -2,7 +2,7 @@
     <head>
         <#import "../helpers/header.ftl" as header>
         <@header.globals/>
-        <@header.header "BudgetMaster - ${locale.getString('menu.templates')}"/>
+        <@header.header "BudgetMaster - ${locale.getString('menu.transactions.templates')}"/>
         <@header.style "collapsible"/>
         <@header.style "templates"/>
         <#import "/spring.ftl" as s>
@@ -18,7 +18,7 @@
             <div class="card main-card background-color">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="headline"><i class="material-icons">file_copy</i> ${locale.getString("menu.templates")}</div>
+                        <div class="headline"><i class="material-icons">file_copy</i> ${locale.getString("menu.transactions.templates")}</div>
                     </div>
 
                     <@header.content>

@@ -10,8 +10,7 @@
         <@itemDivider/>
 
         <@itemWithIcon "home", "/", locale.getString("menu.home"), entityType.HOME.getIcon(), entityType.HOME.getColor(), activeID/>
-        <@itemWithIcon "transactions", "/transactions", locale.getString("menu.transactions"), entityType.TRANSACTION.getIcon(), entityType.TRANSACTION.getColor(), activeID/>
-        <@itemWithIcon "templates", "/templates", locale.getString("menu.templates"), entityType.TEMPLATE.getIcon(), entityType.TEMPLATE.getColor(), activeID/>
+        <@transactionsMenu "/transactions", locale.getString("menu.transactions"), entityType.TRANSACTION.getIcon(), entityType.TRANSACTION.getColor(), activeID/>
         <@itemWithIcon "charts" "/charts" locale.getString("menu.charts"), entityType.CHART.getIcon(), entityType.CHART.getColor(), activeID/>
         <@itemWithIcon "reports", "/reports", locale.getString("menu.reports"), entityType.REPORT.getIcon(), entityType.REPORT.getColor(), activeID/>
         <@itemWithIcon "categories", "/categories", locale.getString("menu.categories"), entityType.CATEGORY.getIcon(), entityType.CATEGORY.getColor(), activeID/>
@@ -144,6 +143,16 @@
 
 <#macro itemDebug text icon>
     <li><a class="waves-effect background-red budgetmaster-text-update"><i class="material-icons" id="icon-update">${icon}</i>${text}</a></li>
+</#macro>
+
+<#macro transactionsMenu link text icon activeColor activeID>
+    <#if activeID == "transactions" || activeID == "templates" || activeID == "recurring">
+        <li class="sub-menu <#if activeID == "transactions">active</#if>"><a href="<@s.url '${link}'/>" class="waves-effect no-padding"><div class="stripe ${activeColor}"></div><i class="material-icons">${icon}</i>${text}</a></li>
+        <li class="sub-menu sub-menu-entry <#if activeID == "templates">active</#if>"><a href="<@s.url '/templates'/>" class="waves-effect no-padding"><div class="stripe ${activeColor}"></div><i class="material-icons">${entityType.TEMPLATE.getIcon()}</i>${locale.getString("menu.transactions.templates")}</a></li>
+        <li class="sub-menu sub-menu-entry <#if activeID == "recurring">active</#if>"><a href="<@s.url '/templates'/>" class="waves-effect no-padding"><div class="stripe ${activeColor}"></div><i class="material-icons">${entityType.RECURRING_TRANSACTIONS.getIcon()}</i>${locale.getString("menu.transactions.recurring")}</a></li>
+    <#else>
+        <li><a href="<@s.url '${link}'/>" class="waves-effect"><i class="material-icons">${icon}</i>${text}</a></li>
+    </#if>
 </#macro>
 
 <#macro backupReminder settings>
