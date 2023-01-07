@@ -12,7 +12,6 @@ import de.deadlocker8.budgetmaster.reports.settings.ReportSettings;
 import de.deadlocker8.budgetmaster.reports.settings.ReportSettingsService;
 import de.deadlocker8.budgetmaster.services.DateService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
-import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
 import de.deadlocker8.budgetmaster.utils.Mappings;
@@ -48,7 +47,6 @@ public class ReportController extends BaseController
 		public static final String ALL_ENTITIES = "reports/reports";
 	}
 
-	private final SettingsService settingsService;
 	private final ReportSettingsService reportSettingsService;
 	private final ReportGeneratorService reportGeneratorService;
 	private final TransactionService transactionService;
@@ -58,9 +56,8 @@ public class ReportController extends BaseController
 	private final FilterHelpersService filterHelpers;
 
 	@Autowired
-	public ReportController(SettingsService settingsService, ReportSettingsService reportSettingsService, ReportGeneratorService reportGeneratorService, TransactionService transactionService, CategoryService categoryService, HelpersService helpers, DateService dateService, FilterHelpersService filterHelpers)
+	public ReportController(ReportSettingsService reportSettingsService, ReportGeneratorService reportGeneratorService, TransactionService transactionService, CategoryService categoryService, HelpersService helpers, DateService dateService, FilterHelpersService filterHelpers)
 	{
-		this.settingsService = settingsService;
 		this.reportSettingsService = reportSettingsService;
 		this.reportGeneratorService = reportGeneratorService;
 		this.transactionService = transactionService;
