@@ -111,7 +111,7 @@
 <#macro placeholder transactions>
     <br>
 
-    <#assign isOnlyRest = transactions?size == 1 && transactions[0].category.type.name() == "REST"/>
+    <#assign isOnlyRest = transactions?size == 2 && transactions[0].category.type.name() == "REST" && transactions[1].category.type.name() == "REST"/>
     <#if transactions?size == 0 || isOnlyRest>
         <div class="row">
             <div class="col s12">
