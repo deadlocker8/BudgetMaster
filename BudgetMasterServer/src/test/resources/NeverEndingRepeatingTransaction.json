@@ -1,0 +1,110 @@
+{
+    "TYPE": "BUDGETMASTER_DATABASE",
+    "VERSION": 9,
+    "categories": [
+        {
+            "ID": 312,
+            "name": "Keine Kategorie",
+            "color": "#FFFFFF",
+            "type": "NONE"
+        },
+        {
+            "ID": 313,
+            "name": "Übertrag",
+            "color": "#FFFF00",
+            "type": "REST"
+        }
+    ],
+    "accounts": [
+        {
+            "ID": 136,
+            "name": "Placeholder",
+            "accountState": "FULL_ACCESS",
+            "type": "ALL",
+            "iconReferenceID": 406
+        },
+        {
+            "ID": 137,
+            "name": "Default Account First",
+            "accountState": "FULL_ACCESS",
+            "type": "CUSTOM",
+            "iconReferenceID": 407
+        }
+    ],
+    "transactions": [
+        {
+            "amount": -1000,
+            "isExpenditure": true,
+            "date": "2022-10-01",
+            "accountID": 137,
+            "categoryID": 312,
+            "name": "Pizza",
+            "description": "",
+            "tags": [],
+            "repeatingOption": {
+                "startDate": "2023-01-01",
+                "modifier": {
+                    "quantity": 1,
+                    "localizationKey": "repeating.modifier.years"
+                },
+                "endOption": {
+                    "localizationKey": "repeating.end.key.never"
+                }
+            }
+        }
+    ],
+    "templateGroups": [
+        {
+            "ID": 1,
+            "name": "Not grouped",
+            "type": "DEFAULT"
+        }
+    ],
+    "templates": [],
+    "charts": [],
+    "images": [],
+    "icons": [
+        {
+            "ID": 406,
+            "builtinIdentifier": "fas fa-landmark"
+        },
+        {
+            "ID": 407
+        }
+    ],
+    "transactionNameKeywords": [
+        {
+            "value": "einnahme"
+        },
+        {
+            "value": "rückzahlung"
+        },
+        {
+            "value": "erstattung"
+        },
+        {
+            "value": "zinsen"
+        },
+        {
+            "value": "lohn"
+        },
+        {
+            "value": "gehalt"
+        },
+        {
+            "value": "gutschrift"
+        },
+        {
+            "value": "income"
+        },
+        {
+            "value": "refund"
+        },
+        {
+            "value": "interest"
+        },
+        {
+            "value": "salary"
+        }
+    ]
+}
