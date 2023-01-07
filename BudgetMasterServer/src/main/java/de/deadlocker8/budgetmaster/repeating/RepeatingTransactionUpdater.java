@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -52,5 +53,25 @@ public class RepeatingTransactionUpdater
 		}
 
 		return false;
+	}
+
+	/**
+	 * Returns all repeating transactions that have not ended before the given date.
+	 */
+	public List<Transaction> getActiveRepeatingTransactionsAfter(LocalDate date)
+	{
+		final List<RepeatingOption> repeatingOptions = repeatingOptionRepository.findAllByOrderByStartDateAsc();
+		final List<RepeatingOption> activeRepeatingOptions = repeatingOptions.stream()
+				.filter(repeatingOption -> !repeatingOption.hasEndedBefore(date))
+				.toList();
+
+		final List<Transaction> activeTransactions = new ArrayList<>();
+		for(RepeatingOption repeatingOption : activeRepeatingOptions)
+		{
+			final List<Transaction> transactions = transactionService.getRepository().findAllByRepeatingOption(repeatingOption);
+			activeTransactions.add(transactions.get(0));
+		}
+
+		return activeTransactions;
 	}
 }

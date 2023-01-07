@@ -57,6 +57,7 @@ public class TransactionController extends BaseController
 		public static final String REDIRECT_NEW_TRANSACTION = "redirect:/transactions/newTransaction/normal";
 		public static final String NEW_TRANSACTION = "transactions/newTransactionNormal";
 		public static final String CHANGE_TYPE = "transactions/changeTypeModal";
+		public static final String RECURRING_OVERVIEW = "transactions/recurringOverview";
 	}
 
 	private static final String CONTINUE = "continue";
@@ -467,5 +468,13 @@ public class TransactionController extends BaseController
 			return ReturnValues.NEW_TRANSFER;
 		}
 		return ReturnValues.NEW_TRANSACTION;
+	}
+
+	@GetMapping("/recurringOverview")
+	public String recurringOverview(Model model)
+	{
+		final List<Transaction> activeRepeatingTransactions = repeatingTransactionUpdater.getActiveRepeatingTransactionsAfter(LocalDate.now());
+		model.addAttribute(TransactionModelAttributes.ALL_ENTITIES, activeRepeatingTransactions);
+		return ReturnValues.RECURRING_OVERVIEW;
 	}
 }

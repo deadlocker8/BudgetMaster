@@ -2,6 +2,9 @@ package de.deadlocker8.budgetmaster.repeating;
 
 import com.google.gson.annotations.Expose;
 import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEnd;
+import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndAfterXTimes;
+import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndDate;
+import de.deadlocker8.budgetmaster.repeating.endoption.RepeatingEndNever;
 import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifier;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -130,6 +133,35 @@ public class RepeatingOption
 		}
 
 		return dates;
+	}
+
+	/***
+	 * Returns whether this repeating option has ended before the given date.
+	 */
+	public boolean hasEndedBefore(LocalDate date)
+	{
+		if(endOption instanceof RepeatingEndNever)
+		{
+			return false;
+		}
+
+		if(endOption instanceof RepeatingEndDate)
+		{
+			final LocalDate endDate = (LocalDate) endOption.getValue();
+			return endDate.isBefore(date);
+		}
+
+		if(endOption instanceof RepeatingEndAfterXTimes)
+		{
+			// Use a date fetch limit far into future to really calculate all dates. The date calculation will finish
+			// as soon as the number of repetitions is reached and therefore never calculate dates until the year 3000.
+			final List<LocalDate> repeatingDates = getRepeatingDates(LocalDate.of(3000, 1, 1));
+			final LocalDate lastDate = repeatingDates.get(repeatingDates.size() - 1);
+
+			return lastDate.isBefore(date);
+		}
+
+		throw new UnsupportedOperationException("Unknown repeating end option type");
 	}
 
 	@Override

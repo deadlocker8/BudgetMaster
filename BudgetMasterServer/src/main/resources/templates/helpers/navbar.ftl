@@ -149,7 +149,7 @@
     <#if activeID == "transactions" || activeID == "templates" || activeID == "recurring">
         <li class="sub-menu <#if activeID == "transactions">active</#if>"><a href="<@s.url '${link}'/>" class="waves-effect no-padding"><div class="stripe ${activeColor}"></div><i class="material-icons">${icon}</i>${text}</a></li>
         <li class="sub-menu sub-menu-entry <#if activeID == "templates">active</#if>"><a href="<@s.url '/templates'/>" class="waves-effect no-padding"><div class="stripe ${activeColor}"></div><i class="material-icons">${entityType.TEMPLATE.getIcon()}</i>${locale.getString("menu.transactions.templates")}</a></li>
-        <li class="sub-menu sub-menu-entry <#if activeID == "recurring">active</#if>"><a href="<@s.url '/templates'/>" class="waves-effect no-padding"><div class="stripe ${activeColor}"></div><i class="material-icons">${entityType.RECURRING_TRANSACTIONS.getIcon()}</i>${locale.getString("menu.transactions.recurring")}</a></li>
+        <li class="sub-menu sub-menu-entry <#if activeID == "recurring">active</#if>"><a href="<@s.url '/transactions/recurringOverview'/>" class="waves-effect no-padding"><div class="stripe ${activeColor}"></div><i class="material-icons">${entityType.RECURRING_TRANSACTIONS.getIcon()}</i>${locale.getString("menu.transactions.recurring")}</a></li>
     <#else>
         <li><a href="<@s.url '${link}'/>" class="waves-effect"><i class="material-icons">${icon}</i>${text}</a></li>
     </#if>

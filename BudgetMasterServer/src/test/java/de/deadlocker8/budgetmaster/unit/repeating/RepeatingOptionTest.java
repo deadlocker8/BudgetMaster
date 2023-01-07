@@ -200,4 +200,73 @@ class RepeatingOptionTest
 		assertThat(repeatingOption.getRepeatingDates(dateFetchLimit))
 				.isEqualTo(expected);
 	}
+
+	// test hasEndedBefore()
+
+	@Test
+	void test_HasEndedBefore_EndNever()
+	{
+		LocalDate startDate = LocalDate.of(2018, 4, 22);
+		RepeatingOption repeatingOption = new RepeatingOption(startDate,
+				new RepeatingModifierDays(3),
+				new RepeatingEndNever());
+
+		LocalDate date = LocalDate.of(2018, 5, 2);
+
+		assertThat(repeatingOption.hasEndedBefore(date)).isFalse();
+	}
+
+	@Test
+	void test_HasEndedBefore_EndDate_NotEnded()
+	{
+		LocalDate startDate = LocalDate.of(2018, 4, 30);
+		LocalDate endDate = LocalDate.of(2019, 9, 28);
+		RepeatingOption repeatingOption = new RepeatingOption(startDate,
+				new RepeatingModifierYears(1),
+				new RepeatingEndDate(endDate));
+
+		LocalDate date = LocalDate.of(2018, 5, 2);
+
+		assertThat(repeatingOption.hasEndedBefore(date)).isFalse();
+	}
+
+	@Test
+	void test_HasEndedBefore_EndDate_HasEnded()
+	{
+		LocalDate startDate = LocalDate.of(2018, 4, 30);
+		LocalDate endDate = LocalDate.of(2019, 9, 28);
+		RepeatingOption repeatingOption = new RepeatingOption(startDate,
+				new RepeatingModifierYears(1),
+				new RepeatingEndDate(endDate));
+
+		LocalDate date = LocalDate.of(2019, 9, 29);
+
+		assertThat(repeatingOption.hasEndedBefore(date)).isTrue();
+	}
+
+	@Test
+	void test_HasEndedBefore_EndAfterXTimes_NotEnded()
+	{
+		LocalDate startDate = LocalDate.of(2018, 4, 30);
+		RepeatingOption repeatingOption = new RepeatingOption(startDate,
+				new RepeatingModifierYears(1),
+				new RepeatingEndAfterXTimes(2));
+
+		LocalDate date = LocalDate.of(2020, 4, 29);
+
+		assertThat(repeatingOption.hasEndedBefore(date)).isFalse();
+	}
+
+	@Test
+	void test_HasEndedBefore_EndAfterXTimes_HasEnded()
+	{
+		LocalDate startDate = LocalDate.of(2018, 4, 30);
+		RepeatingOption repeatingOption = new RepeatingOption(startDate,
+				new RepeatingModifierYears(1),
+				new RepeatingEndAfterXTimes(2));
+
+		LocalDate date = LocalDate.of(2022, 9, 29);
+
+		assertThat(repeatingOption.hasEndedBefore(date)).isTrue();
+	}
 }
