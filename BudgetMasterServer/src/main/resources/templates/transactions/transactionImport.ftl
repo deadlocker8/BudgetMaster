@@ -4,6 +4,7 @@
         <#import "../helpers/validation.ftl" as validation>
         <@header.globals/>
         <@header.header "BudgetMaster - ${locale.getString('menu.transactions.import')}"/>
+        <@header.style "transactions"/>
         <@header.style "transactionImport"/>
         <#import "/spring.ftl" as s>
     </head>
@@ -11,7 +12,7 @@
         <#import "../helpers/navbar.ftl" as navbar>
         <@navbar.navbar "importCSV" settings/>
 
-        <#import "../search/searchMacros.ftl" as searchMacros>
+        <#import "transactionsMacros.ftl" as transactionMacros>
 
         <main>
             <div class="card main-card background-color">
@@ -58,6 +59,7 @@
         <!--  Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
+        <script src="<@s.url '/js/transactionImport.js'/>"></script>
     </@header.body>
 </html>
 
@@ -202,6 +204,25 @@
                     <td>${csvTransaction.getName()}</td>
                     <td>${csvTransaction.getAmount()}</td>
                     <td>
+                        <div class="fixed-action-btn edit-transaction-button">
+                            <a class="btn-floating btn-flat waves-effect waves-light no-padding text-default edit-transaction-button-link">
+                                <i class="material-icons">edit</i>
+                            </a>
+                            <ul class="new-transaction-button-list">
+                                <li>
+                                    <a href="<@s.url '/transactionImport/' + csvTransaction?index + '/newTransaction/normal'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new", locale.getString("title.transaction.new.normal"))}</a>
+                                    <a href="<@s.url '/transactionImport/' + csvTransaction?index + '/newTransaction/normal'/>" class="btn-floating btn background-orange"><i class="material-icons">payment</i></a>
+                                </li>
+                                <li>
+                                    <a href="<@s.url '/transactionImport/' + csvTransaction?index + '/newTransaction/transfer'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new", locale.getString("title.transaction.new.transfer"))}</a>
+                                    <a href="<@s.url '/transactionImport/' + csvTransaction?index + '/newTransaction/transfer'/>" class="btn-floating btn background-green-dark"><i class="material-icons">swap_horiz</i></a>
+                                </li>
+                                <li>
+                                    <a href="<@s.url '/transactionImport/' + csvTransaction?index + '/newFromTemplate'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new", locale.getString("title.transaction.new.from.template"))}</a>
+                                    <a href="<@s.url '/transactionImport/' + csvTransaction?index + '/newFromTemplate'/>" class="btn-floating btn background-blue-baby"><i class="material-icons">file_copy</i></a>
+                                </li>
+                            </ul>
+                        </div>
                         <@header.buttonFlat url='/transactionImport/' + csvTransaction?index + '/skip' icon='block' localizationKey='' classes="no-padding text-default button-request-transaction-import-skip"/>
                     </td>
                 </tr>

@@ -1,5 +1,8 @@
 package de.deadlocker8.budgetmaster.transactions;
 
+import de.deadlocker8.budgetmaster.accounts.AccountService;
+import de.deadlocker8.budgetmaster.categories.CategoryService;
+import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.transactions.csvImport.*;
@@ -14,8 +17,10 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping(Mappings.TRANSACTION_IMPORT)
@@ -31,10 +36,16 @@ public class TransactionImportController extends BaseController
 		public static final String TRANSACTION_IMPORT = "transactions/transactionImport";
 		public static final String REDIRECT_IMPORT = "redirect:/transactionImport";
 		public static final String REDIRECT_CANCEL = "redirect:/transactionImport/cancel";
+		public static final String NEW_TRANSACTION_NORMAL = "transactions/newTransactionNormal";
+		public static final String NEW_TRANSACTION_TRANSFER = "transactions/newTransactionTransfer";
 	}
 
-	private static class RequestAttributeNames
+	public static class RequestAttributeNames
 	{
+		private RequestAttributeNames()
+		{
+		}
+
 		public static final String CSV_IMPORT = "csvImport";
 		public static final String CSV_ROWS = "csvRows";
 		public static final String CSV_TRANSACTIONS = "csvTransactions";
@@ -44,12 +55,16 @@ public class TransactionImportController extends BaseController
 
 	private final TransactionService transactionService;
 	private final HelpersService helpers;
+	private final CategoryService categoryService;
+	private final AccountService accountService;
 
 	@Autowired
-	public TransactionImportController(TransactionService transactionService, HelpersService helpers)
+	public TransactionImportController(TransactionService transactionService, HelpersService helpers, CategoryService categoryService, AccountService accountService)
 	{
 		this.transactionService = transactionService;
 		this.helpers = helpers;
+		this.categoryService = categoryService;
+		this.accountService = accountService;
 	}
 
 	@GetMapping
@@ -158,15 +173,49 @@ public class TransactionImportController extends BaseController
 	@GetMapping("/{index}/skip")
 	public String skip(WebRequest request, @PathVariable("index") Integer index)
 	{
-		final Object attribute = request.getAttribute(RequestAttributeNames.CSV_TRANSACTIONS, RequestAttributes.SCOPE_SESSION);
-		if(attribute == null)
+		final Optional<CsvTransaction> transactionOptional = getTransactionByIndex(request, index);
+		if(transactionOptional.isEmpty())
 		{
-			return ReturnValues.REDIRECT_CANCEL;
+			return ReturnValues.REDIRECT_IMPORT;
 		}
 
-		final List<CsvTransaction> csvTransactions = (List<CsvTransaction>) attribute;
-		csvTransactions.get(index).setStatus(CsvTransactionStatus.SKIPPED);
+		transactionOptional.get().setStatus(CsvTransactionStatus.SKIPPED);
 		return ReturnValues.REDIRECT_IMPORT;
+	}
+
+	@GetMapping("/{index}/newTransaction/{type}")
+	public String newTransaction(WebRequest request,
+								 @PathVariable("index") Integer index,
+								 @PathVariable("type") String type,
+								 Model model)
+	{
+		final Optional<CsvTransaction> transactionOptional = getTransactionByIndex(request, index);
+		if(transactionOptional.isEmpty())
+		{
+			return ReturnValues.REDIRECT_IMPORT;
+		}
+
+		final CsvTransaction csvTransaction = transactionOptional.get();
+		csvTransaction.setStatus(CsvTransactionStatus.IMPORTED);
+
+		final Transaction newTransaction = new Transaction();
+		// TODO parse first
+//		newTransaction.setDate(csvTransaction.getDate());
+		newTransaction.setName(csvTransaction.getName());
+		// TODO parse first
+//		newTransaction.setAmount(csvTransaction.getAmount());
+		newTransaction.setIsExpenditure(true);
+		newTransaction.setAccount(helpers.getCurrentAccountOrDefault());
+		newTransaction.setCategory(categoryService.findByType(CategoryType.NONE));
+
+		// TODO use csvTransaction.getDate() instead of debug date
+		transactionService.prepareModelNewOrEdit(model, false, LocalDate.now(), false, newTransaction, accountService.getAllActivatedAccountsAsc());
+
+		if(type.equals("transfer"))
+		{
+			return ReturnValues.NEW_TRANSACTION_TRANSFER;
+		}
+		return ReturnValues.NEW_TRANSACTION_NORMAL;
 	}
 
 	private void removeAllAttributes(WebRequest request)
@@ -176,5 +225,17 @@ public class TransactionImportController extends BaseController
 		request.removeAttribute(RequestAttributeNames.CSV_TRANSACTIONS, RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute(RequestAttributeNames.ERROR_UPLOAD, RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute(RequestAttributeNames.ERROR_UPLOAD_FILE, RequestAttributes.SCOPE_SESSION);
+	}
+
+	private Optional<CsvTransaction> getTransactionByIndex(WebRequest request, Integer index)
+	{
+		final Object attribute = request.getAttribute(RequestAttributeNames.CSV_TRANSACTIONS, RequestAttributes.SCOPE_SESSION);
+		if(attribute == null)
+		{
+			return Optional.empty();
+		}
+
+		final List<CsvTransaction> csvTransactions = (List<CsvTransaction>) attribute;
+		return Optional.of(csvTransactions.get(index));
 	}
 }
