@@ -17,7 +17,7 @@
             <div class="card main-card background-color">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="headline">${locale.getString("menu.transactions.import")}</div>
+                        <div class="headline"><i class="fas fa-file-csv"></i> ${locale.getString("menu.transactions.import")}</div>
                     </div>
                 </div>
 

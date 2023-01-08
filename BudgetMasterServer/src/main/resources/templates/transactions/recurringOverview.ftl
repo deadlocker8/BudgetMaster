@@ -17,7 +17,7 @@
             <div class="card main-card background-color">
                 <div class="container">
                     <div class="section center-align">
-                        <div class="headline">${locale.getString("transactions.recurring.headline")}</div>
+                        <div class="headline"><i class="material-icons">repeat</i> ${locale.getString("transactions.recurring.headline")}</div>
                     </div>
                 </div>
 
