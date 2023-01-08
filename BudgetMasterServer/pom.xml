@@ -40,6 +40,7 @@
         <itextpdf.version>5.5.13.3</itextpdf.version>
         <vanilla-picker.version>2.12.1</vanilla-picker.version>
         <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
+        <opencsv.version>5.3</opencsv.version>
 
         <project.outputDirectory>${project.build.directory}/../build/${project.version}</project.outputDirectory>
         <project.artifactName>${project.artifactId}-v${project.version}</project.artifactName>
@@ -135,6 +136,12 @@
             <groupId>org.padler</groupId>
             <artifactId>natorder</artifactId>
             <version>${natorder.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>${opencsv.version}</version>
         </dependency>
 
         <!--Webjars-->

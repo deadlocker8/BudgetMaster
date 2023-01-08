@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.transactions;
 
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.services.HelpersService;
+import de.deadlocker8.budgetmaster.transactions.csvImport.CsvParser;
 import de.deadlocker8.budgetmaster.transactions.csvImport.CsvRow;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,7 @@ public class TransactionImportController extends BaseController
 		try
 		{
 			final String csvString = new String(file.getBytes(), StandardCharsets.UTF_8);
+			final List<CsvRow> csvRows = CsvParser.parseCsv(csvString, ';');
 
 			String fileName = file.getOriginalFilename();
 			if(fileName == null)
@@ -76,7 +78,7 @@ public class TransactionImportController extends BaseController
 			}
 
 			request.setAttribute(RequestAttributeNames.IMPORTED_FILE, fileName, RequestAttributes.SCOPE_SESSION);
-			request.setAttribute(RequestAttributeNames.CSV_ROWS, List.of(new CsvRow("12.12.22", "sdfghjklö", "12.30")), RequestAttributes.SCOPE_SESSION);
+			request.setAttribute(RequestAttributeNames.CSV_ROWS, csvRows, RequestAttributes.SCOPE_SESSION);
 		}
 		catch(Exception e)
 		{
