@@ -69,9 +69,13 @@
         </div>
 
         <div class="row">
-            <div class="input-field col s2 offset-s5">
+            <div class="input-field col s2 offset-s4">
                 <input id="separator" type="text" name="separator" <@validation.validation "separator" "center-align"/> value="<#if csvImport??>${csvImport.separator()}</#if>">
                 <label class="input-label" for="separator">${locale.getString("transactions.import.separator")}</label>
+            </div>
+            <div class="input-field col s2">
+                <input id="encoding" type="text" name="encoding"" <@validation.validation "encoding" "center-align"/> value="<#if csvImport??>${csvImport.encoding()?upper_case}</#if>">
+                <label class="input-label" for="encoding">${locale.getString("transactions.import.encoding")}</label>
             </div>
         </div>
 

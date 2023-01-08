@@ -13,11 +13,17 @@ import java.util.List;
 
 public class CsvParser
 {
+	private CsvParser()
+	{
+	}
+
 	public static List<CsvRow> parseCsv(String csvString, char separator) throws IOException, CsvValidationException
 	{
 		final ArrayList<CsvRow> csvRows = new ArrayList<>();
 
-		final CSVParser csvParser = new CSVParserBuilder().withSeparator(separator).build();
+		final CSVParser csvParser = new CSVParserBuilder()
+				.withSeparator(separator)
+				.build();
 
 		try(CSVReader reader = new CSVReaderBuilder(
 				new StringReader(csvString))

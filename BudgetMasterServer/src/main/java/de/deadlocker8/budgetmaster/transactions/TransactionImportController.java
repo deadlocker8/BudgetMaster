@@ -58,7 +58,7 @@ public class TransactionImportController extends BaseController
 	@GetMapping
 	public String transactionImport(HttpServletRequest request, Model model)
 	{
-		model.addAttribute(RequestAttributeNames.CSV_IMPORT, new CsvImport(null, ";"));
+		model.addAttribute(RequestAttributeNames.CSV_IMPORT, new CsvImport(null, ";", StandardCharsets.UTF_8.name()));
 		return ReturnValues.TRANSACTION_IMPORT;
 	}
 
@@ -78,6 +78,11 @@ public class TransactionImportController extends BaseController
 			bindingResult.addError(new FieldError("CsvImport", "separator", "", false, new String[]{"warning.transaction.import.separator"}, null, null));
 		}
 
+		if(!csvImport.isEncodingSupported())
+		{
+			bindingResult.addError(new FieldError("CsvImport", "encoding", "", false, new String[]{"warning.transaction.import.encoding"}, null, null));
+		}
+
 		if(bindingResult.hasErrors())
 		{
 			model.addAttribute(ModelAttributes.ERROR, bindingResult);
@@ -87,7 +92,7 @@ public class TransactionImportController extends BaseController
 
 		try
 		{
-			final String csvString = new String(csvImport.file().getBytes(), StandardCharsets.UTF_8);
+			final String csvString = new String(csvImport.file().getBytes(), csvImport.encoding());
 			final List<CsvRow> csvRows = CsvParser.parseCsv(csvString, csvImport.separator().charAt(0));
 
 			request.setAttribute(RequestAttributeNames.CSV_IMPORT, csvImport, RequestAttributes.SCOPE_SESSION);
