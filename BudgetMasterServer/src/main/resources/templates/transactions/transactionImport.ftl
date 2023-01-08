@@ -192,6 +192,7 @@
                 <td class="bold">${locale.getString("transaction.new.label.date")}</td>
                 <td class="bold">${locale.getString("transaction.new.label.name")}</td>
                 <td class="bold">${locale.getString("transaction.new.label.amount")}</td>
+                <td class="bold">${locale.getString("transactions.import.actions")}</td>
             </tr>
 
             <#list csvTransactions as csvTransaction>
@@ -200,6 +201,9 @@
                     <td>${csvTransaction.getDate()}</td>
                     <td>${csvTransaction.getName()}</td>
                     <td>${csvTransaction.getAmount()}</td>
+                    <td>
+                        <@header.buttonFlat url='/transactionImport/' + csvTransaction?index + '/skip' icon='block' localizationKey='' classes="no-padding text-default button-request-transaction-import-skip"/>
+                    </td>
                 </tr>
             </#list>
         </table>

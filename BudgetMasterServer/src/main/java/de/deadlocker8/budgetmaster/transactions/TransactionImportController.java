@@ -9,17 +9,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Controller
 @RequestMapping(Mappings.TRANSACTION_IMPORT)
@@ -156,6 +152,20 @@ public class TransactionImportController extends BaseController
 	public String cancel(WebRequest request)
 	{
 		removeAllAttributes(request);
+		return ReturnValues.REDIRECT_IMPORT;
+	}
+
+	@GetMapping("/{index}/skip")
+	public String skip(WebRequest request, @PathVariable("index") Integer index)
+	{
+		final Object attribute = request.getAttribute(RequestAttributeNames.CSV_TRANSACTIONS, RequestAttributes.SCOPE_SESSION);
+		if(attribute == null)
+		{
+			return ReturnValues.REDIRECT_CANCEL;
+		}
+
+		final List<CsvTransaction> csvTransactions = (List<CsvTransaction>) attribute;
+		csvTransactions.get(index).setStatus(CsvTransactionStatus.SKIPPED);
 		return ReturnValues.REDIRECT_IMPORT;
 	}
 
