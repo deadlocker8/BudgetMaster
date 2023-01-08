@@ -23,7 +23,7 @@
 
                 <@header.content>
                     <div class="container">
-                        <#if !error?? && csvImport.getFileName()??>
+                        <#if csvRows??>
                             <div class="row center-align">
                                 <div class="col s12 m12 l8 offset-l2 headline-small text-green truncate">
                                     <i class="fas fa-file-csv"></i> ${csvImport.getFileName()}
@@ -40,7 +40,15 @@
                         </#if>
                     </div>
 
-                    <#if csvRows??>
+                    <#if csvTransactions??>
+                        <@renderCsvTransactions/>
+                    <#elseif csvRows?? >
+                        <div class="container">
+                            <div class="section center-align">
+                                <div class="headline-small">${locale.getString("transactions.import.matchColumns")}</div>
+                            </div>
+                        </div>
+                        <@columnSettings/>
                         <@renderCsvRows/>
                     </#if>
                 </@header.content>
@@ -92,13 +100,68 @@
     </form>
 </#macro>
 
-<#macro renderCsvRows>
+<#macro columnSettings>
     <div class="container">
-        <div class="section center-align">
-            <div class="headline-small">${locale.getString("transactions.import.overview")}</div>
-        </div>
-    </div>
+        <form id="form-csv-column-settings" name="CsvColumnSettings" method="POST" action="<@s.url '/transactionImport/columnSettings'/>">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <div class="row">
+                <div class="col s6 m4 offset-m2 l3 offset-l3 bold">
+                    BudgetMaster
+                </div>
+                <div class="col s6 m4 l3 bold">
+                    CSV
+                </div>
+            </div>
 
+            <div class="row">
+                <div class="col s6 m4 offset-m2 l3 offset-l3">
+                    <div class="transaction-import-text-with-icon">
+                        <i class="material-icons">event</i>
+                        ${locale.getString("transaction.new.label.date")}
+                    </div>
+                </div>
+                <div class="input-field col s6 m4 l3 no-margin-top no-margin-bottom">
+                    <input id="columnDate" type="number" min="1" max="${csvRows?size}" name="columnDate" <@validation.validation "columnDate"/> value="<#if csvColumnSettings??>${csvColumnSettings.columnDate()}</#if>">
+                    <label class="input-label" for="columnDate">${locale.getString("transactions.import.column")}</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s6 m4 offset-m2 l3 offset-l3">
+                    <div class="transaction-import-text-with-icon">
+                        <i class="material-icons">edit</i>
+                        ${locale.getString("transaction.new.label.name")}
+                    </div>
+                </div>
+                <div class="input-field col s6 m4 l3 no-margin-top no-margin-bottom">
+                    <input id="columnName" type="number" min="1" max="${csvRows?size}" name="columnName" <@validation.validation "columnName"/> value="<#if csvColumnSettings??>${csvColumnSettings.columnName()}</#if>">
+                    <label class="input-label" for="columnName">${locale.getString("transactions.import.column")}</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s6 m4 offset-m2 l3 offset-l3">
+                    <div class="transaction-import-text-with-icon">
+                        <i class="material-icons">euro</i>
+                        ${locale.getString("transaction.new.label.amount")}
+                    </div>
+                </div>
+                <div class="input-field col s6 m4 l3 no-margin-top no-margin-bottom">
+                    <input id="columnAmount" type="number" min="1" max="${csvRows?size}" name="columnAmount" <@validation.validation "columnAmount"/> value="<#if csvColumnSettings??>${csvColumnSettings.columnAmount()}</#if>">
+                    <label class="input-label" for="columnAmount">${locale.getString("transactions.import.column")}</label>
+                </div>
+            </div>
+
+            <br>
+
+            <div class="row">
+                <div class="col s12 center-align">
+                    <@header.buttonSubmit name='action' icon='save' localizationKey='save' id='button-confirm-csv-column-settings' classes='text-white'/>
+                </div>
+            </div>
+        </form>
+    </div>
+</#macro>
+
+<#macro renderCsvRows>
     <div class="container" id="transaction-import-overview">
         <table class="bordered centered">
             <tr>
@@ -119,4 +182,45 @@
             </#list>
         </table>
     </div>
+</#macro>
+
+<#macro renderCsvTransactions>
+    <div class="container" id="transaction-import-list">
+        <table class="bordered centered">
+            <tr>
+                <td class="bold">${locale.getString("transactions.import.status")}</td>
+                <td class="bold">${locale.getString("transaction.new.label.date")}</td>
+                <td class="bold">${locale.getString("transaction.new.label.name")}</td>
+                <td class="bold">${locale.getString("transaction.new.label.amount")}</td>
+            </tr>
+
+            <#list csvTransactions as csvTransaction>
+                <tr>
+                    <td><@statusBanner csvTransaction.getStatus()/></td>
+                    <td>${csvTransaction.getDate()}</td>
+                    <td>${csvTransaction.getName()}</td>
+                    <td>${csvTransaction.getAmount()}</td>
+                </tr>
+            </#list>
+        </table>
+    </div>
+</#macro>
+
+<#macro statusBanner status>
+    <#if status.name() == "PENDING">
+        <#assign bannerClasses="background-blue text-white">
+        <#assign bannerText=locale.getString("transactions.import.status.pending")>
+    <#elseif status.name() == "IMPORTED">
+        <#assign bannerClasses="background-green text-white">
+        <#assign bannerText=locale.getString("transactions.import.status.imported")>
+    <#elseif status.name() == "SKIPPED">
+        <#if settings.isUseDarkTheme()>
+            <#assign bannerClasses="background-grey text-black">
+        <#else>
+            <#assign bannerClasses="background-grey text-white">
+        </#if>
+        <#assign bannerText=locale.getString("transactions.import.status.skipped")>
+    </#if>
+
+    <div class="banner ${bannerClasses}">${bannerText}</div>
 </#macro>

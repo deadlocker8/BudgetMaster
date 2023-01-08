@@ -2,9 +2,7 @@ package de.deadlocker8.budgetmaster.transactions;
 
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.services.HelpersService;
-import de.deadlocker8.budgetmaster.transactions.csvImport.CsvImport;
-import de.deadlocker8.budgetmaster.transactions.csvImport.CsvParser;
-import de.deadlocker8.budgetmaster.transactions.csvImport.CsvRow;
+import de.deadlocker8.budgetmaster.transactions.csvImport.*;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +17,9 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Controller
 @RequestMapping(Mappings.TRANSACTION_IMPORT)
@@ -41,6 +41,7 @@ public class TransactionImportController extends BaseController
 	{
 		public static final String CSV_IMPORT = "csvImport";
 		public static final String CSV_ROWS = "csvRows";
+		public static final String CSV_TRANSACTIONS = "csvTransactions";
 		public static final String ERROR_UPLOAD = "errorUpload";
 		public static final String ERROR_UPLOAD_FILE = "errorUploadFile";
 	}
@@ -119,6 +120,38 @@ public class TransactionImportController extends BaseController
 		return ReturnValues.REDIRECT_IMPORT;
 	}
 
+	@PostMapping("/columnSettings")
+	public String columnSettings(WebRequest request,
+								 @ModelAttribute("CsvColumnSettings") CsvColumnSettings csvColumnSettings,
+								 BindingResult bindingResult)
+	{
+		if(bindingResult.hasErrors())
+		{
+			request.setAttribute(RequestAttributeNames.ERROR_UPLOAD, bindingResult, RequestAttributes.SCOPE_SESSION);
+			return ReturnValues.REDIRECT_IMPORT;
+		}
+
+		final Object attribute = request.getAttribute(RequestAttributeNames.CSV_ROWS, RequestAttributes.SCOPE_SESSION);
+		if(attribute == null)
+		{
+			return ReturnValues.REDIRECT_CANCEL;
+		}
+
+		final List<CsvRow> csvRows = (List<CsvRow>) attribute;
+		final List<CsvTransaction> csvTransactions = new ArrayList<>();
+		for(CsvRow csvRow : csvRows)
+		{
+			final String date = csvRow.getColumns().get(csvColumnSettings.columnDate() - 1);
+			final String name = csvRow.getColumns().get(csvColumnSettings.columnName() - 1);
+			final String amount = csvRow.getColumns().get(csvColumnSettings.columnAmount() - 1);
+			csvTransactions.add(new CsvTransaction(date, name, amount, CsvTransactionStatus.PENDING));
+		}
+
+		request.setAttribute(RequestAttributeNames.CSV_TRANSACTIONS, csvTransactions, RequestAttributes.SCOPE_SESSION);
+
+		return ReturnValues.REDIRECT_IMPORT;
+	}
+
 	@GetMapping("/cancel")
 	public String cancel(WebRequest request)
 	{
@@ -130,6 +163,7 @@ public class TransactionImportController extends BaseController
 	{
 		request.removeAttribute(RequestAttributeNames.CSV_IMPORT, RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute(RequestAttributeNames.CSV_ROWS, RequestAttributes.SCOPE_SESSION);
+		request.removeAttribute(RequestAttributeNames.CSV_TRANSACTIONS, RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute(RequestAttributeNames.ERROR_UPLOAD, RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute(RequestAttributeNames.ERROR_UPLOAD_FILE, RequestAttributes.SCOPE_SESSION);
 	}
