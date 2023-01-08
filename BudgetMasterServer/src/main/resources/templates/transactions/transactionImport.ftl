@@ -99,7 +99,7 @@
         </div>
     </div>
 
-    <div class="container">
+    <div class="container" id="transaction-import-overview">
         <table class="bordered centered">
             <tr>
                 <#if csvRows?has_content>
