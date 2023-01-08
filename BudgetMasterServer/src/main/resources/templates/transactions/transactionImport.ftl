@@ -4,6 +4,7 @@
         <#import "../helpers/validation.ftl" as validation>
         <@header.globals/>
         <@header.header "BudgetMaster - ${locale.getString('menu.transactions.import')}"/>
+        <@header.style "transactionImport"/>
         <#import "/spring.ftl" as s>
     </head>
     <@header.body>
@@ -24,7 +25,7 @@
                     <div class="container">
                         <#if !error?? && csvImport.getFileName()??>
                             <div class="row center-align">
-                                <div class="col s12 m12 l8 offset-l2 headline-small text-green">
+                                <div class="col s12 m12 l8 offset-l2 headline-small text-green truncate">
                                     <i class="fas fa-file-csv"></i> ${csvImport.getFileName()}
                                 </div>
                             </div>
@@ -69,16 +70,16 @@
         </div>
 
         <div class="row">
-            <div class="input-field col s2 offset-s3">
+            <div class="input-field col s4 l2 offset-l3">
                 <input id="separator" type="text" name="separator" <@validation.validation "separator" "center-align"/> value="<#if csvImport??>${csvImport.separator()}</#if>">
                 <label class="input-label" for="separator">${locale.getString("transactions.import.separator")}</label>
             </div>
-            <div class="input-field col s2">
+            <div class="input-field col s4 l2">
                 <input id="encoding" type="text" name="encoding" <@validation.validation "encoding" "center-align"/> value="<#if csvImport??>${csvImport.encoding()?upper_case}</#if>">
                 <label class="input-label" for="encoding">${locale.getString("transactions.import.encoding")}</label>
             </div>
-            <div class="input-field col s2">
-                <input id="numberOfLinesToSkip" type="number" name="quantity" min="0" name="numberOfLinesToSkip" <@validation.validation "encoding" "center-align"/> value="<#if csvImport??>${csvImport.numberOfLinesToSkip()?c}</#if>">
+            <div class="input-field col s4 l2">
+                <input id="numberOfLinesToSkip" type="number" name="numberOfLinesToSkip" min="0" name="numberOfLinesToSkip" <@validation.validation "numberOfLinesToSkip" "center-align"/> value="<#if csvImport??>${csvImport.numberOfLinesToSkip()?c}</#if>">
                 <label class="input-label" for="numberOfLinesToSkip">${locale.getString("transactions.import.numberOfLinesToSkip")}</label>
             </div>
         </div>
@@ -101,9 +102,12 @@
     <div class="container">
         <table class="bordered centered">
             <tr>
-                <#list 1..csvRows[0].getColumns()?size as i>
-                    <td class="bold">${locale.getString("transactions.import.column")} ${i?c}</td>
-                </#list>
+                <#if csvRows?has_content>
+                    <#assign numberOfColumns=csvRows[0].getColumns()?size/>
+                    <#list 1..numberOfColumns as i>
+                        <td class="bold">${locale.getString("transactions.import.column")} ${i?c}</td>
+                    </#list>
+                </#if>
             </tr>
 
             <#list csvRows as cswRow>
