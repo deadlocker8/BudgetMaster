@@ -31,6 +31,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,6 +59,7 @@ public class TransactionController extends BaseController
 		public static final String NEW_TRANSACTION = "transactions/newTransactionNormal";
 		public static final String CHANGE_TYPE = "transactions/changeTypeModal";
 		public static final String RECURRING_OVERVIEW = "transactions/recurringOverview";
+		public static final String REDIRECT_IMPORT = "redirect:/transactionImport";
 	}
 
 	private static final String CONTINUE = "continue";
@@ -200,7 +202,6 @@ public class TransactionController extends BaseController
 			redirectUrl = ReturnValues.NEW_TRANSACTION;
 		}
 
-
 		final boolean isContinueActivated = action.equals(CONTINUE);
 		return handleRedirect(servletRequest, request, model, transaction.getID() != null, transaction, bindingResult, date, redirectUrl, isContinueActivated);
 	}
@@ -259,6 +260,12 @@ public class TransactionController extends BaseController
 				return ReturnValues.REDIRECT_NEW_TRANSFER;
 			}
 			return ReturnValues.REDIRECT_NEW_TRANSACTION;
+		}
+
+		// redirect back to csv import if import is active
+		if(request.getAttribute(TransactionImportController.RequestAttributeNames.CSV_TRANSACTIONS, RequestAttributes.SCOPE_SESSION) != null)
+		{
+			return ReturnValues.REDIRECT_IMPORT;
 		}
 
 		return ReturnValues.REDIRECT_ALL_ENTITIES;
