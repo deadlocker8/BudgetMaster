@@ -69,13 +69,17 @@
         </div>
 
         <div class="row">
-            <div class="input-field col s2 offset-s4">
+            <div class="input-field col s2 offset-s3">
                 <input id="separator" type="text" name="separator" <@validation.validation "separator" "center-align"/> value="<#if csvImport??>${csvImport.separator()}</#if>">
                 <label class="input-label" for="separator">${locale.getString("transactions.import.separator")}</label>
             </div>
             <div class="input-field col s2">
-                <input id="encoding" type="text" name="encoding"" <@validation.validation "encoding" "center-align"/> value="<#if csvImport??>${csvImport.encoding()?upper_case}</#if>">
+                <input id="encoding" type="text" name="encoding" <@validation.validation "encoding" "center-align"/> value="<#if csvImport??>${csvImport.encoding()?upper_case}</#if>">
                 <label class="input-label" for="encoding">${locale.getString("transactions.import.encoding")}</label>
+            </div>
+            <div class="input-field col s2">
+                <input id="numberOfLinesToSkip" type="number" name="quantity" min="0" name="numberOfLinesToSkip" <@validation.validation "encoding" "center-align"/> value="<#if csvImport??>${csvImport.numberOfLinesToSkip()?c}</#if>">
+                <label class="input-label" for="numberOfLinesToSkip">${locale.getString("transactions.import.numberOfLinesToSkip")}</label>
             </div>
         </div>
 

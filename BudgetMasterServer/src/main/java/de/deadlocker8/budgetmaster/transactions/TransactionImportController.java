@@ -58,7 +58,7 @@ public class TransactionImportController extends BaseController
 	@GetMapping
 	public String transactionImport(HttpServletRequest request, Model model)
 	{
-		model.addAttribute(RequestAttributeNames.CSV_IMPORT, new CsvImport(null, ";", StandardCharsets.UTF_8.name()));
+		model.addAttribute(RequestAttributeNames.CSV_IMPORT, new CsvImport(null, ";", StandardCharsets.UTF_8.name(), 0));
 		return ReturnValues.TRANSACTION_IMPORT;
 	}
 
@@ -93,7 +93,7 @@ public class TransactionImportController extends BaseController
 		try
 		{
 			final String csvString = new String(csvImport.file().getBytes(), csvImport.encoding());
-			final List<CsvRow> csvRows = CsvParser.parseCsv(csvString, csvImport.separator().charAt(0));
+			final List<CsvRow> csvRows = CsvParser.parseCsv(csvString, csvImport.separator().charAt(0), csvImport.numberOfLinesToSkip());
 
 			request.setAttribute(RequestAttributeNames.CSV_IMPORT, csvImport, RequestAttributes.SCOPE_SESSION);
 			request.setAttribute(RequestAttributeNames.CSV_ROWS, csvRows, RequestAttributes.SCOPE_SESSION);

@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.charset.Charset;
 import java.text.MessageFormat;
 
-public record CsvImport(MultipartFile file, String separator, String encoding)
+public record CsvImport(MultipartFile file, String separator, String encoding, int numberOfLinesToSkip)
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CsvImport.class);
 

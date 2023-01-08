@@ -17,7 +17,7 @@ public class CsvParser
 	{
 	}
 
-	public static List<CsvRow> parseCsv(String csvString, char separator) throws IOException, CsvValidationException
+	public static List<CsvRow> parseCsv(String csvString, char separator, int numberOfLinesToSkip) throws IOException, CsvValidationException
 	{
 		final ArrayList<CsvRow> csvRows = new ArrayList<>();
 
@@ -28,6 +28,7 @@ public class CsvParser
 		try(CSVReader reader = new CSVReaderBuilder(
 				new StringReader(csvString))
 				.withCSVParser(csvParser)
+				.withSkipLines(numberOfLinesToSkip)
 				.build())
 		{
 			String[] columns;
