@@ -1,6 +1,7 @@
 <html>
     <head>
         <#import "../helpers/header.ftl" as header>
+        <#import "../helpers/validation.ftl" as validation>
         <@header.globals/>
         <@header.header "BudgetMaster - ${locale.getString('menu.transactions.import')}"/>
         <#import "/spring.ftl" as s>
@@ -21,10 +22,10 @@
 
                 <@header.content>
                     <div class="container">
-                        <#if importedFile??>
+                        <#if !error?? && csvImport.getFileName()??>
                             <div class="row center-align">
                                 <div class="col s12 m12 l8 offset-l2 headline-small text-green">
-                                    <i class="fas fa-file-csv"></i> ${importedFile}
+                                    <i class="fas fa-file-csv"></i> ${csvImport.getFileName()}
                                 </div>
                             </div>
 
@@ -52,7 +53,7 @@
 </html>
 
 <#macro csvUpload>
-    <form id="form-csv-import" method="POST" action="<@s.url '/transactionImport/upload'/>" enctype="multipart/form-data" accept-charset="UTF-8">
+    <form id="form-csv-import" name="CsvImport" method="POST" action="<@s.url '/transactionImport/upload'/>" enctype="multipart/form-data" accept-charset="UTF-8">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
         <div class="row">
@@ -64,6 +65,13 @@
                 <div class="file-path-wrapper">
                     <input class="file-path validate" type="text">
                 </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s2 offset-s5">
+                <input id="separator" type="text" name="separator" <@validation.validation "separator" "center-align"/> value="<#if csvImport??>${csvImport.separator()}</#if>">
+                <label class="input-label" for="separator">${locale.getString("transactions.import.separator")}</label>
             </div>
         </div>
 
