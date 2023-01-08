@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.transactions.csvImport;
+package de.deadlocker8.budgetmaster.transactions.csvimport;
 
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;

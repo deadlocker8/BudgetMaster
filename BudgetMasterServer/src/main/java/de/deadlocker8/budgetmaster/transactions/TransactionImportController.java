@@ -5,7 +5,7 @@ import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.services.HelpersService;
-import de.deadlocker8.budgetmaster.transactions.csvImport.*;
+import de.deadlocker8.budgetmaster.transactions.csvimport.*;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

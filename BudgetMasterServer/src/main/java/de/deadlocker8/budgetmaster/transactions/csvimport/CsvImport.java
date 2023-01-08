@@ -1,4 +1,4 @@
-package de.deadlocker8.budgetmaster.transactions.csvImport;
+package de.deadlocker8.budgetmaster.transactions.csvimport;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
