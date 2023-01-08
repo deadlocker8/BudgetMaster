@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
-import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -29,7 +28,6 @@ public class TransactionImportController extends BaseController
 	private static class ModelAttributes
 	{
 		public static final String ERROR = "error";
-		public static final String ERROR_UPLOAD = "errorUpload";
 	}
 
 	private static class ReturnValues
@@ -43,6 +41,8 @@ public class TransactionImportController extends BaseController
 	{
 		public static final String CSV_IMPORT = "csvImport";
 		public static final String CSV_ROWS = "csvRows";
+		public static final String ERROR_UPLOAD = "errorUpload";
+		public static final String ERROR_UPLOAD_FILE = "errorUploadFile";
 	}
 
 	private final TransactionService transactionService;
@@ -56,15 +56,24 @@ public class TransactionImportController extends BaseController
 	}
 
 	@GetMapping
-	public String transactionImport(HttpServletRequest request, Model model)
+	public String transactionImport(WebRequest request, Model model)
 	{
-		model.addAttribute(RequestAttributeNames.CSV_IMPORT, new CsvImport(null, ";", StandardCharsets.UTF_8.name(), 0));
+		if(request.getAttribute(RequestAttributeNames.CSV_IMPORT, RequestAttributes.SCOPE_SESSION) == null)
+		{
+			model.addAttribute(RequestAttributeNames.CSV_IMPORT, new CsvImport(null, ";", StandardCharsets.UTF_8.name(), 0));
+		}
+
+		final Object bindingResult = request.getAttribute(RequestAttributeNames.ERROR_UPLOAD, RequestAttributes.SCOPE_SESSION);
+		if(bindingResult != null)
+		{
+			model.addAttribute(ModelAttributes.ERROR, bindingResult);
+		}
+
 		return ReturnValues.TRANSACTION_IMPORT;
 	}
 
 	@PostMapping("/upload")
 	public String upload(WebRequest request,
-						 Model model,
 						 @ModelAttribute("CsvImport") CsvImport csvImport,
 						 BindingResult bindingResult)
 	{
@@ -85,15 +94,17 @@ public class TransactionImportController extends BaseController
 
 		if(bindingResult.hasErrors())
 		{
-			model.addAttribute(ModelAttributes.ERROR, bindingResult);
+			request.setAttribute(RequestAttributeNames.ERROR_UPLOAD, bindingResult, RequestAttributes.SCOPE_SESSION);
 			request.setAttribute(RequestAttributeNames.CSV_IMPORT, csvImport, RequestAttributes.SCOPE_SESSION);
-			return ReturnValues.TRANSACTION_IMPORT;
+			return ReturnValues.REDIRECT_IMPORT;
 		}
 
 		try
 		{
 			final String csvString = new String(csvImport.file().getBytes(), csvImport.encoding());
 			final List<CsvRow> csvRows = CsvParser.parseCsv(csvString, csvImport.separator().charAt(0), csvImport.numberOfLinesToSkip());
+
+			removeAllAttributes(request);
 
 			request.setAttribute(RequestAttributeNames.CSV_IMPORT, csvImport, RequestAttributes.SCOPE_SESSION);
 			request.setAttribute(RequestAttributeNames.CSV_ROWS, csvRows, RequestAttributes.SCOPE_SESSION);
@@ -103,18 +114,23 @@ public class TransactionImportController extends BaseController
 			LOGGER.error("CSV upload failed", e);
 
 			// TODO: show in html
-			model.addAttribute(ModelAttributes.ERROR_UPLOAD, e.getMessage());
+			request.setAttribute(RequestAttributeNames.ERROR_UPLOAD_FILE, e.getMessage(), RequestAttributes.SCOPE_SESSION);
 		}
-
-		return ReturnValues.TRANSACTION_IMPORT;
+		return ReturnValues.REDIRECT_IMPORT;
 	}
 
 	@GetMapping("/cancel")
 	public String cancel(WebRequest request)
 	{
+		removeAllAttributes(request);
+		return ReturnValues.REDIRECT_IMPORT;
+	}
+
+	private void removeAllAttributes(WebRequest request)
+	{
 		request.removeAttribute(RequestAttributeNames.CSV_IMPORT, RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute(RequestAttributeNames.CSV_ROWS, RequestAttributes.SCOPE_SESSION);
-
-		return ReturnValues.REDIRECT_IMPORT;
+		request.removeAttribute(RequestAttributeNames.ERROR_UPLOAD, RequestAttributes.SCOPE_SESSION);
+		request.removeAttribute(RequestAttributeNames.ERROR_UPLOAD_FILE, RequestAttributes.SCOPE_SESSION);
 	}
 }
