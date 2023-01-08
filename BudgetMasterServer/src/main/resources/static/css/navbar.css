@@ -29,6 +29,14 @@ ul.sidenav.sidenav-fixed > li:last-child {
     font-weight: 600;
 }
 
+.sidenav li i {
+    font-size: 24px;
+}
+
+.sidenav li .fontawesome-icon{
+    font-size: 20px;
+}
+
 .searchWrapper {
     background-color: #FFFFFF;
     box-shadow: none;
@@ -44,7 +52,12 @@ ul.sidenav.sidenav-fixed > li:last-child {
 }
 
 .sidenav .sub-menu-entry i {
-    margin-left: 2rem !important;
+    margin-left: 32px !important;
+}
+
+.sidenav .sub-menu-entry .fontawesome-icon-additional-margin-left {
+    margin-left: 36px !important;
+    margin-right: 28px;
 }
 
 .sidenav .sub-menu {
