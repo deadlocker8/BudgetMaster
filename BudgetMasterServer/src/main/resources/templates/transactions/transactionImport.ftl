@@ -6,6 +6,7 @@
         <@header.header "BudgetMaster - ${locale.getString('menu.transactions.import')}"/>
         <@header.style "transactions"/>
         <@header.style "transactionImport"/>
+        <@header.style "collapsible"/>
         <#import "/spring.ftl" as s>
     </head>
     <@header.body>
@@ -43,6 +44,7 @@
 
                     <#if csvTransactions??>
                         <@renderCsvTransactions/>
+                        <@showColumnSettingsErrors/>
                     <#elseif csvRows?? >
                         <div class="container">
                             <div class="section center-align">
@@ -217,7 +219,7 @@
             </td>
             <td>${csvTransaction.getAmount()}</td>
             <td>
-                <@header.buttonSubmit name='action' icon='save' localizationKey='' classes='text-white'/>
+                <@header.buttonSubmit name='action' icon='save' localizationKey='' classes='text-white'/>&nbsp;
                 <div class="fixed-action-btn edit-transaction-button">
                     <a class="btn-floating btn-flat waves-effect waves-light no-padding text-default edit-transaction-button-link">
                         <i class="material-icons">edit</i>
@@ -241,6 +243,35 @@
             </td>
         </form>
     </tr>
+</#macro>
+
+<#macro showColumnSettingsErrors>
+    <#if errorsColumnSettings?has_content>
+        <div class="container">
+            <div class="row">
+                <div class="col s12">
+                    <ul class="collapsible">
+                        <li>
+                            <div class="collapsible-header bold">
+                                <i class="fas fa-exclamation-triangle text-red"></i>
+                                ${locale.getString("info.database.import.result.errors")}
+                            </div>
+                            <div class="collapsible-body">
+                                <table class="bordered">
+                                    <#list errorsColumnSettings as error>
+                                        <tr>
+                                            <td><i class="fas fa-exclamation-triangle text-red"></i></td>
+                                            <td>${error}</td>
+                                        </tr>
+                                    </#list>
+                                </table>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </#if>
 </#macro>
 
 <#macro statusBanner status>

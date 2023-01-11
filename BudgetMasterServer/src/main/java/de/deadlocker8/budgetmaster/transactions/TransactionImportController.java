@@ -7,6 +7,7 @@ import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.transactions.csvimport.*;
 import de.deadlocker8.budgetmaster.utils.Mappings;
+import de.thecodelabs.utils.util.Localization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +34,7 @@ public class TransactionImportController extends BaseController
 
 	private static class ReturnValues
 	{
-		public static final String TRANSACTION_IMPORT = "transactions/transactionImport";
+		public static final String TRANSACTION_IMPORT = "TRANSACTIONS/transactionImport";
 		public static final String REDIRECT_IMPORT = "redirect:/transactionImport";
 		public static final String REDIRECT_CANCEL = "redirect:/transactionImport/cancel";
 		public static final String NEW_TRANSACTION_NORMAL = "transactions/newTransactionNormal";
@@ -51,6 +52,8 @@ public class TransactionImportController extends BaseController
 		public static final String CSV_TRANSACTIONS = "csvTransactions";
 		public static final String ERROR_UPLOAD = "errorUpload";
 		public static final String ERROR_UPLOAD_FILE = "errorUploadFile";
+		public static final String ERRORS_COLUMN_SETTINGS = "errorsColumnSettings";
+
 	}
 
 	private final TransactionService transactionService;
@@ -150,14 +153,25 @@ public class TransactionImportController extends BaseController
 
 		final List<CsvRow> csvRows = (List<CsvRow>) attribute;
 		final List<CsvTransaction> csvTransactions = new ArrayList<>();
-		for(CsvRow csvRow : csvRows)
+		final List<String> errors = new ArrayList<>();
+		for(int i = 0; i < csvRows.size(); i++)
 		{
-			final String date = csvRow.getColumns().get(csvColumnSettings.columnDate() - 1);
-			final String name = csvRow.getColumns().get(csvColumnSettings.columnName() - 1);
-			final String amount = csvRow.getColumns().get(csvColumnSettings.columnAmount() - 1);
-			csvTransactions.add(new CsvTransaction(date, name, amount, CsvTransactionStatus.PENDING));
+			final CsvRow csvRow = csvRows.get(i);
+			try
+			{
+				final String date = csvRow.getColumns().get(csvColumnSettings.columnDate() - 1);
+				final String name = csvRow.getColumns().get(csvColumnSettings.columnName() - 1);
+				final String amount = csvRow.getColumns().get(csvColumnSettings.columnAmount() - 1);
+				csvTransactions.add(new CsvTransaction(date, name, amount, CsvTransactionStatus.PENDING));
+			}
+			catch(IndexOutOfBoundsException e)
+			{
+				LOGGER.error("Invalid access to column", e);
+				errors.add(Localization.getString("transactions.import.error.column", i, csvRow));
+			}
 		}
 
+		request.setAttribute(RequestAttributeNames.ERRORS_COLUMN_SETTINGS, errors, RequestAttributes.SCOPE_SESSION);
 		request.setAttribute(RequestAttributeNames.CSV_TRANSACTIONS, csvTransactions, RequestAttributes.SCOPE_SESSION);
 
 		return ReturnValues.REDIRECT_IMPORT;
@@ -255,6 +269,7 @@ public class TransactionImportController extends BaseController
 		request.removeAttribute(RequestAttributeNames.CSV_TRANSACTIONS, RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute(RequestAttributeNames.ERROR_UPLOAD, RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute(RequestAttributeNames.ERROR_UPLOAD_FILE, RequestAttributes.SCOPE_SESSION);
+		request.removeAttribute(RequestAttributeNames.ERRORS_COLUMN_SETTINGS, RequestAttributes.SCOPE_SESSION);
 	}
 
 	private Optional<CsvTransaction> getTransactionByIndex(WebRequest request, Integer index)

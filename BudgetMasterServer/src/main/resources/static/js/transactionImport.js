@@ -4,4 +4,6 @@ $(document).ready(function()
         direction: 'left',
         hoverEnabled: false
     });
+
+    $('.collapsible').collapsible();
 });
