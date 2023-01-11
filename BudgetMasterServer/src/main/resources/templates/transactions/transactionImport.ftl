@@ -205,7 +205,7 @@
 </#macro>
 
 <#macro renderCsvRow csvTransaction index>
-    <tr>
+    <tr class="<#if csvTransaction.getStatus().name() == 'SKIPPED'>transaction-import-row-skipped</#if>">
         <form name="NewTransactionInPlace" method="POST" action="<@s.url '/transactionImport/' + index + '/newTransactionInPlace'/>">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <td><@statusBanner csvTransaction.getStatus()/></td>
