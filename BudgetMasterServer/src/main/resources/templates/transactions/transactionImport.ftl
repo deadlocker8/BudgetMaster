@@ -188,7 +188,7 @@
 
 <#macro renderCsvTransactions>
     <div class="container" id="transaction-import-list">
-        <table class="bordered centered">
+        <table class="bordered centered" id="table-transaction-rows">
             <tr>
                 <td class="bold">${locale.getString("transactions.import.status")}</td>
                 <td class="bold">${locale.getString("transaction.new.label.date")}</td>
@@ -211,9 +211,8 @@
             <td><@statusBanner csvTransaction.getStatus()/></td>
             <td>${csvTransaction.getDate()}</td>
             <td>
-                <div class="input-field">
-                    <input id="name-${index}" type="text" name="name" required value="${csvTransaction.getName()}">
-                    <label class="input-label" for="name-${index}">${locale.getString("transaction.new.label.name")}</label>
+                <div class="input-field no-margin-top no-margin-bottom">
+                    <input class="no-margin-bottom" type="text" name="name" required value="${csvTransaction.getName()}">
                 </div>
             </td>
             <td>${csvTransaction.getAmount()}</td>

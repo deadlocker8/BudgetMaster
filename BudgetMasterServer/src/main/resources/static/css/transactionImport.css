@@ -16,3 +16,7 @@
 .transaction-import-row-skipped {
     opacity: 0.5;
 }
+
+#table-transaction-rows td {
+    padding: 5px;
+}
