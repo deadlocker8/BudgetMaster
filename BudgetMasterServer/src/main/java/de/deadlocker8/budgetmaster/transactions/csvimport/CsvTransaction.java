@@ -5,7 +5,7 @@ import java.util.Objects;
 public final class CsvTransaction
 {
 	private final String date;
-	private final String name;
+	private String name;
 	private final String amount;
 	private CsvTransactionStatus status;
 
@@ -25,6 +25,11 @@ public final class CsvTransaction
 	public String getName()
 	{
 		return name;
+	}
+
+	public void setName(String name)
+	{
+		this.name = name;
 	}
 
 	public String getAmount()

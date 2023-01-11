@@ -206,32 +206,41 @@
 
 <#macro renderCsvRow csvTransaction index>
     <tr>
-        <td><@statusBanner csvTransaction.getStatus()/></td>
-        <td>${csvTransaction.getDate()}</td>
-        <td>${csvTransaction.getName()}</td>
-        <td>${csvTransaction.getAmount()}</td>
-        <td>
-            <div class="fixed-action-btn edit-transaction-button">
-                <a class="btn-floating btn-flat waves-effect waves-light no-padding text-default edit-transaction-button-link">
-                    <i class="material-icons">edit</i>
-                </a>
-                <ul class="new-transaction-button-list">
-                    <li>
-                        <a href="<@s.url '/transactionImport/' + index + '/newTransaction/normal'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new", locale.getString("title.transaction.new.normal"))}</a>
-                        <a href="<@s.url '/transactionImport/' + index + '/newTransaction/normal'/>" class="btn-floating btn background-orange"><i class="material-icons">payment</i></a>
-                    </li>
-                    <li>
-                        <a href="<@s.url '/transactionImport/' + index + '/newTransaction/transfer'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new", locale.getString("title.transaction.new.transfer"))}</a>
-                        <a href="<@s.url '/transactionImport/' + index + '/newTransaction/transfer'/>" class="btn-floating btn background-green-dark"><i class="material-icons">swap_horiz</i></a>
-                    </li>
-                    <li>
-                        <a href="<@s.url '/transactionImport/' + index + '/newFromTemplate'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new", locale.getString("title.transaction.new.from.template"))}</a>
-                        <a href="<@s.url '/transactionImport/' + index + '/newFromTemplate'/>" class="btn-floating btn background-blue-baby"><i class="material-icons">file_copy</i></a>
-                    </li>
-                </ul>
-            </div>
-            <@header.buttonFlat url='/transactionImport/' + index + '/skip' icon='block' localizationKey='' classes="no-padding text-default button-request-transaction-import-skip"/>
-        </td>
+        <form name="NewTransactionInPlace" method="POST" action="<@s.url '/transactionImport/' + index + '/newTransactionInPlace'/>">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <td><@statusBanner csvTransaction.getStatus()/></td>
+            <td>${csvTransaction.getDate()}</td>
+            <td>
+                <div class="input-field">
+                    <input id="name-${index}" type="text" name="name" required value="${csvTransaction.getName()}">
+                    <label class="input-label" for="name-${index}">${locale.getString("transaction.new.label.name")}</label>
+                </div>
+            </td>
+            <td>${csvTransaction.getAmount()}</td>
+            <td>
+                <@header.buttonSubmit name='action' icon='save' localizationKey='' classes='text-white'/>
+                <div class="fixed-action-btn edit-transaction-button">
+                    <a class="btn-floating btn-flat waves-effect waves-light no-padding text-default edit-transaction-button-link">
+                        <i class="material-icons">edit</i>
+                    </a>
+                    <ul class="new-transaction-button-list">
+                        <li>
+                            <a href="<@s.url '/transactionImport/' + index + '/newTransaction/normal'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new", locale.getString("title.transaction.new.normal"))}</a>
+                            <a href="<@s.url '/transactionImport/' + index + '/newTransaction/normal'/>" class="btn-floating btn background-orange"><i class="material-icons">payment</i></a>
+                        </li>
+                        <li>
+                            <a href="<@s.url '/transactionImport/' + index + '/newTransaction/transfer'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new", locale.getString("title.transaction.new.transfer"))}</a>
+                            <a href="<@s.url '/transactionImport/' + index + '/newTransaction/transfer'/>" class="btn-floating btn background-green-dark"><i class="material-icons">swap_horiz</i></a>
+                        </li>
+                        <li>
+                            <a href="<@s.url '/transactionImport/' + index + '/newFromTemplate'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new", locale.getString("title.transaction.new.from.template"))}</a>
+                            <a href="<@s.url '/transactionImport/' + index + '/newFromTemplate'/>" class="btn-floating btn background-blue-baby"><i class="material-icons">file_copy</i></a>
+                        </li>
+                    </ul>
+                </div>
+                <@header.buttonFlat url='/transactionImport/' + index + '/skip' icon='block' localizationKey='' classes="no-padding text-default button-request-transaction-import-skip"/>
+            </td>
+        </form>
     </tr>
 </#macro>
 

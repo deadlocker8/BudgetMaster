@@ -198,6 +198,43 @@ public class TransactionImportController extends BaseController
 		final CsvTransaction csvTransaction = transactionOptional.get();
 		csvTransaction.setStatus(CsvTransactionStatus.IMPORTED);
 
+		final Transaction newTransaction = createTransactionFromCsvTransaction(csvTransaction);
+
+		// TODO use csvTransaction.getDate() instead of debug date
+		transactionService.prepareModelNewOrEdit(model, false, LocalDate.now(), false, newTransaction, accountService.getAllActivatedAccountsAsc());
+
+		if(type.equals("transfer"))
+		{
+			return ReturnValues.NEW_TRANSACTION_TRANSFER;
+		}
+		return ReturnValues.NEW_TRANSACTION_NORMAL;
+	}
+
+	@PostMapping("/{index}/newTransactionInPlace")
+	public String newTransactionInPlace(WebRequest request,
+										@PathVariable("index") Integer index,
+										@ModelAttribute("NewTransactionInPlace") CsvTransaction newCsvTransaction)
+	{
+		final Optional<CsvTransaction> transactionOptional = getTransactionByIndex(request, index);
+		if(transactionOptional.isEmpty())
+		{
+			return ReturnValues.REDIRECT_IMPORT;
+		}
+
+		final CsvTransaction csvTransaction = transactionOptional.get();
+		csvTransaction.setStatus(CsvTransactionStatus.IMPORTED);
+
+		// update original CsvTransaction attributes with values from user (from newCsvTransaction)
+		csvTransaction.setName(newCsvTransaction.getName());
+
+		final Transaction newTransaction = createTransactionFromCsvTransaction(csvTransaction);
+		transactionService.getRepository().save(newTransaction);
+
+		return ReturnValues.REDIRECT_IMPORT;
+	}
+
+	private Transaction createTransactionFromCsvTransaction(CsvTransaction csvTransaction)
+	{
 		final Transaction newTransaction = new Transaction();
 		// TODO parse first
 //		newTransaction.setDate(csvTransaction.getDate());
@@ -208,14 +245,7 @@ public class TransactionImportController extends BaseController
 		newTransaction.setAccount(helpers.getCurrentAccountOrDefault());
 		newTransaction.setCategory(categoryService.findByType(CategoryType.NONE));
 
-		// TODO use csvTransaction.getDate() instead of debug date
-		transactionService.prepareModelNewOrEdit(model, false, LocalDate.now(), false, newTransaction, accountService.getAllActivatedAccountsAsc());
-
-		if(type.equals("transfer"))
-		{
-			return ReturnValues.NEW_TRANSACTION_TRANSFER;
-		}
-		return ReturnValues.NEW_TRANSACTION_NORMAL;
+		return newTransaction;
 	}
 
 	private void removeAllAttributes(WebRequest request)
