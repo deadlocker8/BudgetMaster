@@ -217,7 +217,7 @@
                     <input class="no-margin-bottom" type="text" name="name" required value="${csvTransaction.getName()}">
                 </div>
             </td>
-            <td>${csvTransaction.getAmount()}</td>
+            <td>${currencyService.getCurrencyString(csvTransaction.getAmount())}</td>
             <td>
                 <@header.buttonSubmit name='action' icon='save' localizationKey='' classes='text-white'/>&nbsp;
                 <div class="fixed-action-btn edit-transaction-button">

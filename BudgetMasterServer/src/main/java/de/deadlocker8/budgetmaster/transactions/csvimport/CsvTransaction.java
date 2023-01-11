@@ -6,10 +6,10 @@ public final class CsvTransaction
 {
 	private final String date;
 	private String name;
-	private final String amount;
+	private final Integer amount;
 	private CsvTransactionStatus status;
 
-	public CsvTransaction(String date, String name, String amount, CsvTransactionStatus status)
+	public CsvTransaction(String date, String name, Integer amount, CsvTransactionStatus status)
 	{
 		this.date = date;
 		this.name = name;
@@ -32,7 +32,7 @@ public final class CsvTransaction
 		this.name = name;
 	}
 
-	public String getAmount()
+	public Integer getAmount()
 	{
 		return amount;
 	}

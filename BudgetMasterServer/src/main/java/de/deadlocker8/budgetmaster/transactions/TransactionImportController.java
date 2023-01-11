@@ -161,8 +161,16 @@ public class TransactionImportController extends BaseController
 			{
 				final String date = csvRow.getColumns().get(csvColumnSettings.columnDate() - 1);
 				final String name = csvRow.getColumns().get(csvColumnSettings.columnName() - 1);
+
 				final String amount = csvRow.getColumns().get(csvColumnSettings.columnAmount() - 1);
-				csvTransactions.add(new CsvTransaction(date, name, amount, CsvTransactionStatus.PENDING));
+				final Optional<Integer> parsedAmountOptional = AmountParser.parse(amount);
+				if(parsedAmountOptional.isEmpty())
+				{
+					errors.add(Localization.getString("transactions.import.error.parse.amount", i, csvRow));
+					continue;
+				}
+
+				csvTransactions.add(new CsvTransaction(date, name, parsedAmountOptional.get(), CsvTransactionStatus.PENDING));
 			}
 			catch(IndexOutOfBoundsException e)
 			{
@@ -253,8 +261,7 @@ public class TransactionImportController extends BaseController
 		// TODO parse first
 //		newTransaction.setDate(csvTransaction.getDate());
 		newTransaction.setName(csvTransaction.getName());
-		// TODO parse first
-//		newTransaction.setAmount(csvTransaction.getAmount());
+		newTransaction.setAmount(csvTransaction.getAmount());
 		newTransaction.setIsExpenditure(true);
 		newTransaction.setAccount(helpers.getCurrentAccountOrDefault());
 		newTransaction.setCategory(categoryService.findByType(CategoryType.NONE));
