@@ -153,6 +153,18 @@
                     <label class="input-label" for="columnAmount">${locale.getString("transactions.import.column")}</label>
                 </div>
             </div>
+            <div class="row">
+                <div class="col s6 m4 offset-m2 l3 offset-l3">
+                    <div class="transaction-import-text-with-icon">
+                        <i class="material-icons">article</i>
+                        ${locale.getString("transaction.new.label.description")}
+                    </div>
+                </div>
+                <div class="input-field col s6 m4 l3 no-margin-top no-margin-bottom">
+                    <input id="columnDescription" type="number" min="1" max="${csvRows?size}" name="columnDescription" <@validation.validation "columnDescription"/> value="<#if csvColumnSettings??>${csvColumnSettings.columnDescription()}</#if>">
+                    <label class="input-label" for="columnDescription">${locale.getString("transactions.import.column")}</label>
+                </div>
+            </div>
 
             <br>
 
@@ -195,6 +207,7 @@
                 <td class="bold">${locale.getString("transactions.import.status")}</td>
                 <td class="bold">${locale.getString("transaction.new.label.date")}</td>
                 <td class="bold">${locale.getString("transaction.new.label.name")}</td>
+                <td class="bold">${locale.getString("transaction.new.label.description")}</td>
                 <td class="bold">${locale.getString("transaction.new.label.amount")}</td>
                 <td class="bold">${locale.getString("transactions.import.actions")}</td>
             </tr>
@@ -215,6 +228,11 @@
             <td>
                 <div class="input-field no-margin-top no-margin-bottom">
                     <input class="no-margin-bottom" type="text" name="name" required value="${csvTransaction.getName()}">
+                </div>
+            </td>
+            <td>
+                <div class="input-field no-margin-top no-margin-bottom">
+                    <input class="no-margin-bottom" type="text" name="description" value="${csvTransaction.getDescription()}">
                 </div>
             </td>
             <td>${currencyService.getCurrencyString(csvTransaction.getAmount())}</td>
