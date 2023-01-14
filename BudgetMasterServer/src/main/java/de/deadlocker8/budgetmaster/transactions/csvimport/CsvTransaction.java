@@ -1,16 +1,17 @@
 package de.deadlocker8.budgetmaster.transactions.csvimport;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 public final class CsvTransaction
 {
-	private final String date;
+	private final LocalDate date;
 	private String name;
 	private final Integer amount;
 	private String description;
 	private CsvTransactionStatus status;
 
-	public CsvTransaction(String date, String name, Integer amount, String description, CsvTransactionStatus status)
+	public CsvTransaction(LocalDate date, String name, Integer amount, String description, CsvTransactionStatus status)
 	{
 		this.date = date;
 		this.name = name;
@@ -19,7 +20,7 @@ public final class CsvTransaction
 		this.status = status;
 	}
 
-	public String getDate()
+	public LocalDate getDate()
 	{
 		return date;
 	}

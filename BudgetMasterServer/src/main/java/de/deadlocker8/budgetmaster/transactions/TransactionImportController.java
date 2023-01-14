@@ -4,7 +4,9 @@ import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.controller.BaseController;
+import de.deadlocker8.budgetmaster.services.DateFormatStyle;
 import de.deadlocker8.budgetmaster.services.HelpersService;
+import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.csvimport.*;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.thecodelabs.utils.util.Localization;
@@ -60,14 +62,16 @@ public class TransactionImportController extends BaseController
 	private final HelpersService helpers;
 	private final CategoryService categoryService;
 	private final AccountService accountService;
+	private final SettingsService settingsService;
 
 	@Autowired
-	public TransactionImportController(TransactionService transactionService, HelpersService helpers, CategoryService categoryService, AccountService accountService)
+	public TransactionImportController(TransactionService transactionService, HelpersService helpers, CategoryService categoryService, AccountService accountService, SettingsService settingsService)
 	{
 		this.transactionService = transactionService;
 		this.helpers = helpers;
 		this.categoryService = categoryService;
 		this.accountService = accountService;
+		this.settingsService = settingsService;
 	}
 
 	@GetMapping
@@ -159,24 +163,16 @@ public class TransactionImportController extends BaseController
 			final CsvRow csvRow = csvRows.get(i);
 			try
 			{
-				final String date = csvRow.getColumns().get(csvColumnSettings.columnDate() - 1);
-				final String name = csvRow.getColumns().get(csvColumnSettings.columnName() - 1);
-				final String description = csvRow.getColumns().get(csvColumnSettings.columnDescription() - 1);
-
-				final String amount = csvRow.getColumns().get(csvColumnSettings.columnAmount() - 1);
-				final Optional<Integer> parsedAmountOptional = AmountParser.parse(amount);
-				if(parsedAmountOptional.isEmpty())
-				{
-					errors.add(Localization.getString("transactions.import.error.parse.amount", i, csvRow));
-					continue;
-				}
-
-				csvTransactions.add(new CsvTransaction(date, name, parsedAmountOptional.get(), description, CsvTransactionStatus.PENDING));
+				csvTransactions.add(createCsvTransactionFromCsvRow(csvRow, csvColumnSettings, i));
 			}
 			catch(IndexOutOfBoundsException e)
 			{
 				LOGGER.error("Invalid access to column", e);
 				errors.add(Localization.getString("transactions.import.error.column", i, csvRow));
+			}
+			catch(CsvTransactionParseException e)
+			{
+				errors.add(e.getMessage());
 			}
 		}
 
@@ -184,6 +180,28 @@ public class TransactionImportController extends BaseController
 		request.setAttribute(RequestAttributeNames.CSV_TRANSACTIONS, csvTransactions, RequestAttributes.SCOPE_SESSION);
 
 		return ReturnValues.REDIRECT_IMPORT;
+	}
+
+	private CsvTransaction createCsvTransactionFromCsvRow(CsvRow csvRow, CsvColumnSettings csvColumnSettings, Integer index) throws CsvTransactionParseException
+	{
+		final String date = csvRow.getColumns().get(csvColumnSettings.columnDate() - 1);
+		final Optional<LocalDate> parsedDateOptional = DateParser.parse(date, DateFormatStyle.LONG.getKey(), settingsService.getSettings().getLanguage().getLocale());
+		if(parsedDateOptional.isEmpty())
+		{
+			throw new CsvTransactionParseException(Localization.getString("transactions.import.error.parse.date", index, csvRow));
+		}
+
+		final String name = csvRow.getColumns().get(csvColumnSettings.columnName() - 1);
+		final String description = csvRow.getColumns().get(csvColumnSettings.columnDescription() - 1);
+
+		final String amount = csvRow.getColumns().get(csvColumnSettings.columnAmount() - 1);
+		final Optional<Integer> parsedAmountOptional = AmountParser.parse(amount);
+		if(parsedAmountOptional.isEmpty())
+		{
+			throw new CsvTransactionParseException(Localization.getString("transactions.import.error.parse.amount", index, csvRow));
+		}
+
+		return new CsvTransaction(parsedDateOptional.get(), name, parsedAmountOptional.get(), description, CsvTransactionStatus.PENDING);
 	}
 
 	@GetMapping("/cancel")
@@ -223,8 +241,7 @@ public class TransactionImportController extends BaseController
 
 		final Transaction newTransaction = createTransactionFromCsvTransaction(csvTransaction);
 
-		// TODO use csvTransaction.getDate() instead of debug date
-		transactionService.prepareModelNewOrEdit(model, false, LocalDate.now(), false, newTransaction, accountService.getAllActivatedAccountsAsc());
+		transactionService.prepareModelNewOrEdit(model, false, csvTransaction.getDate(), false, newTransaction, accountService.getAllActivatedAccountsAsc());
 
 		if(type.equals("transfer"))
 		{
@@ -260,8 +277,7 @@ public class TransactionImportController extends BaseController
 	private Transaction createTransactionFromCsvTransaction(CsvTransaction csvTransaction)
 	{
 		final Transaction newTransaction = new Transaction();
-		// TODO parse first
-//		newTransaction.setDate(csvTransaction.getDate());
+		newTransaction.setDate(csvTransaction.getDate());
 		newTransaction.setName(csvTransaction.getName());
 		newTransaction.setDescription(csvTransaction.getDescription());
 		newTransaction.setAmount(csvTransaction.getAmount());
