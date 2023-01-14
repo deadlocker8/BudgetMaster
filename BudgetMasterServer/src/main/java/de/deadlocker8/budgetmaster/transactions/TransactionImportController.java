@@ -185,10 +185,10 @@ public class TransactionImportController extends BaseController
 	private CsvTransaction createCsvTransactionFromCsvRow(CsvRow csvRow, CsvColumnSettings csvColumnSettings, Integer index) throws CsvTransactionParseException
 	{
 		final String date = csvRow.getColumns().get(csvColumnSettings.columnDate() - 1);
-		final Optional<LocalDate> parsedDateOptional = DateParser.parse(date, DateFormatStyle.LONG.getKey(), settingsService.getSettings().getLanguage().getLocale());
+		final Optional<LocalDate> parsedDateOptional = DateParser.parse(date, csvColumnSettings.getDatePattern(), settingsService.getSettings().getLanguage().getLocale());
 		if(parsedDateOptional.isEmpty())
 		{
-			throw new CsvTransactionParseException(Localization.getString("transactions.import.error.parse.date", index, csvRow));
+			throw new CsvTransactionParseException(Localization.getString("transactions.import.error.parse.date", index + 1, date, csvColumnSettings.getDatePattern()));
 		}
 
 		final String name = csvRow.getColumns().get(csvColumnSettings.columnName() - 1);
@@ -198,7 +198,7 @@ public class TransactionImportController extends BaseController
 		final Optional<Integer> parsedAmountOptional = AmountParser.parse(amount);
 		if(parsedAmountOptional.isEmpty())
 		{
-			throw new CsvTransactionParseException(Localization.getString("transactions.import.error.parse.amount", index, csvRow));
+			throw new CsvTransactionParseException(Localization.getString("transactions.import.error.parse.amount", index + 1));
 		}
 
 		return new CsvTransaction(parsedDateOptional.get(), name, parsedAmountOptional.get(), description, CsvTransactionStatus.PENDING);

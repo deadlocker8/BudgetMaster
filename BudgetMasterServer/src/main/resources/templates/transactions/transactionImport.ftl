@@ -130,6 +130,16 @@
                 </div>
             </div>
             <div class="row">
+                <div class="input-field col s5 offset-s6 m3 offset-m6 l3 offset-l6 no-margin-top no-margin-bottom">
+                    <input id="datePattern" type="text" required name="datePattern" <@validation.validation "datePattern"/> value="<#if csvColumnSettings??>${csvColumnSettings.datePattern()}<#else>dd.MM.yyyy</#if>">
+                    <label class="input-label" for="datePattern">${locale.getString("transactions.import.datePattern")}</label>
+                </div>
+                <div class="col s1 m1 l1">
+                    <@header.buttonFlat url='https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html' icon='help_outline' localizationKey='' target='_blank' classes='text-default'/>
+                </div>
+            </div>
+
+            <div class="row">
                 <div class="col s6 m4 offset-m2 l3 offset-l3">
                     <div class="transaction-import-text-with-icon">
                         <i class="material-icons">edit</i>
