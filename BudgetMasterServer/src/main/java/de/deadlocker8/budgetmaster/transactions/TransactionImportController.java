@@ -4,11 +4,13 @@ import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.controller.BaseController;
-import de.deadlocker8.budgetmaster.services.DateFormatStyle;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.csvimport.*;
 import de.deadlocker8.budgetmaster.utils.Mappings;
+import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
+import de.deadlocker8.budgetmaster.utils.notification.Notification;
+import de.deadlocker8.budgetmaster.utils.notification.NotificationType;
 import de.thecodelabs.utils.util.Localization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -53,7 +55,6 @@ public class TransactionImportController extends BaseController
 		public static final String CSV_ROWS = "csvRows";
 		public static final String CSV_TRANSACTIONS = "csvTransactions";
 		public static final String ERROR_UPLOAD = "errorUpload";
-		public static final String ERROR_UPLOAD_FILE = "errorUploadFile";
 		public static final String ERRORS_COLUMN_SETTINGS = "errorsColumnSettings";
 
 	}
@@ -98,7 +99,9 @@ public class TransactionImportController extends BaseController
 	{
 		if(csvImport.file().isEmpty())
 		{
-			return ReturnValues.REDIRECT_CANCEL;
+			removeAllAttributes(request);
+			WebRequestUtils.putNotification(request, new Notification(Localization.getString("transactions.import.error.upload.empty"), NotificationType.ERROR));
+			return ReturnValues.REDIRECT_IMPORT;
 		}
 
 		if(!csvImport.isValidSeparator())
@@ -132,8 +135,7 @@ public class TransactionImportController extends BaseController
 		{
 			LOGGER.error("CSV upload failed", e);
 
-			// TODO: show in html
-			request.setAttribute(RequestAttributeNames.ERROR_UPLOAD_FILE, e.getMessage(), RequestAttributes.SCOPE_SESSION);
+			WebRequestUtils.putNotification(request, new Notification(Localization.getString("transactions.import.error.upload", e.getMessage()), NotificationType.ERROR));
 		}
 		return ReturnValues.REDIRECT_IMPORT;
 	}
@@ -294,7 +296,6 @@ public class TransactionImportController extends BaseController
 		request.removeAttribute(RequestAttributeNames.CSV_ROWS, RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute(RequestAttributeNames.CSV_TRANSACTIONS, RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute(RequestAttributeNames.ERROR_UPLOAD, RequestAttributes.SCOPE_SESSION);
-		request.removeAttribute(RequestAttributeNames.ERROR_UPLOAD_FILE, RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute(RequestAttributeNames.ERRORS_COLUMN_SETTINGS, RequestAttributes.SCOPE_SESSION);
 	}
 
