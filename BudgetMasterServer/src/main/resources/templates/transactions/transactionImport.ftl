@@ -194,7 +194,7 @@
 </#macro>
 
 <#macro renderCsvRows>
-    <div class="container" id="transaction-import-overview">
+    <div id="transaction-import-overview">
         <table class="bordered centered">
             <tr>
                 <#if csvRows?has_content>

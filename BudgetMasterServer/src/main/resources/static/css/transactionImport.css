@@ -1,5 +1,7 @@
 #transaction-import-overview {
     overflow: auto;
+    width: 90%;
+    margin: auto;
 }
 
 .transaction-import-text-with-icon {
