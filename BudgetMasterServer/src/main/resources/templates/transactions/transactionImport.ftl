@@ -8,6 +8,7 @@
         <@header.style "transactionImport"/>
         <@header.style "collapsible"/>
         <#import "/spring.ftl" as s>
+        <link rel="stylesheet" href="<@s.url '/webjars/datatables/1.13.1/css/jquery.dataTables.min.css'/>"/>
     </head>
     <@header.body>
         <#import "../helpers/navbar.ftl" as navbar>
@@ -58,9 +59,14 @@
             </div>
         </main>
 
+        <script>
+            localizedSearch = '${locale.getString("search")}';
+        </script>
+
         <!--  Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
+        <script src="<@s.url '/webjars/datatables/1.13.1/js/jquery.dataTables.min.js'/>"></script>
         <script src="<@s.url '/js/transactionImport.js'/>"></script>
     </@header.body>
 </html>
@@ -211,20 +217,24 @@
 </#macro>
 
 <#macro renderCsvTransactions>
-    <div class="container" id="transaction-import-list">
+    <div id="transaction-import-list">
         <table class="bordered centered" id="table-transaction-rows">
-            <tr>
-                <td class="bold">${locale.getString("transactions.import.status")}</td>
-                <td class="bold">${locale.getString("transaction.new.label.date")}</td>
-                <td class="bold">${locale.getString("transaction.new.label.name")}</td>
-                <td class="bold">${locale.getString("transaction.new.label.description")}</td>
-                <td class="bold">${locale.getString("transaction.new.label.amount")}</td>
-                <td class="bold">${locale.getString("transactions.import.actions")}</td>
-            </tr>
+            <thead>
+                <tr>
+                    <td class="bold">${locale.getString("transactions.import.status")}</td>
+                    <td class="bold">${locale.getString("transaction.new.label.date")}</td>
+                    <td class="bold">${locale.getString("transaction.new.label.name")}</td>
+                    <td class="bold">${locale.getString("transaction.new.label.description")}</td>
+                    <td class="bold">${locale.getString("transaction.new.label.amount")}</td>
+                    <td class="bold">${locale.getString("transactions.import.actions")}</td>
+                </tr>
+            </thead>
 
-            <#list csvTransactions as csvTransaction>
-                <@renderCsvRow csvTransaction csvTransaction?index/>
-            </#list>
+            <tbody>
+                <#list csvTransactions as csvTransaction>
+                    <@renderCsvRow csvTransaction csvTransaction?index/>
+                </#list>
+            </tbody>
         </table>
     </div>
 </#macro>
@@ -233,24 +243,24 @@
     <tr class="<#if csvTransaction.getStatus().name() == 'SKIPPED'>transaction-import-row-skipped</#if>">
         <form name="NewTransactionInPlace" method="POST" action="<@s.url '/transactionImport/' + index + '/newTransactionInPlace'/>">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <td><@statusBanner csvTransaction.getStatus()/></td>
-            <td>${csvTransaction.getDate()}</td>
-            <td>
+            <td data-order="${locale.getString(csvTransaction.getStatus().getLocalizationKey())}" data-search="${locale.getString(csvTransaction.getStatus().getLocalizationKey())}"><@statusBanner csvTransaction.getStatus()/></td>
+            <td data-order="${csvTransaction.getDate()}" data-search="${csvTransaction.getDate()}">${csvTransaction.getDate()}</td>
+            <td data-order="${csvTransaction.getName()}" data-search="${csvTransaction.getName()}">
                 <div class="input-field no-margin-top no-margin-bottom">
                     <input class="no-margin-bottom" type="text" name="name" required value="${csvTransaction.getName()}">
                 </div>
             </td>
-            <td>
+            <td data-order="${csvTransaction.getDescription()}" data-search="${csvTransaction.getDescription()}">
                 <div class="input-field no-margin-top no-margin-bottom">
                     <input class="no-margin-bottom" type="text" name="description" value="${csvTransaction.getDescription()}">
                 </div>
             </td>
-            <td>${currencyService.getCurrencyString(csvTransaction.getAmount())}</td>
+            <td data-order="${currencyService.getCurrencyString(csvTransaction.getAmount())}" data-search="${currencyService.getCurrencyString(csvTransaction.getAmount())}">${currencyService.getCurrencyString(csvTransaction.getAmount())}</td>
             <td>
                 <@header.buttonSubmit name='action' icon='save' localizationKey='' classes='text-white'/>&nbsp;
                 <div class="fixed-action-btn edit-transaction-button">
                     <a class="btn-floating btn-flat waves-effect waves-light no-padding text-default edit-transaction-button-link">
-                        <i class="material-icons">edit</i>
+                        <i class="material-icons text-default">edit</i>
                     </a>
                     <ul class="new-transaction-button-list">
                         <li>
@@ -303,19 +313,17 @@
 </#macro>
 
 <#macro statusBanner status>
+    <#assign bannerText=locale.getString(status.getLocalizationKey())>
     <#if status.name() == "PENDING">
         <#assign bannerClasses="background-blue text-white">
-        <#assign bannerText=locale.getString("transactions.import.status.pending")>
     <#elseif status.name() == "IMPORTED">
         <#assign bannerClasses="background-green text-white">
-        <#assign bannerText=locale.getString("transactions.import.status.imported")>
     <#elseif status.name() == "SKIPPED">
         <#if settings.isUseDarkTheme()>
             <#assign bannerClasses="background-grey text-black">
         <#else>
             <#assign bannerClasses="background-grey text-white">
         </#if>
-        <#assign bannerText=locale.getString("transactions.import.status.skipped")>
     </#if>
 
     <div class="banner ${bannerClasses}">${bannerText}</div>

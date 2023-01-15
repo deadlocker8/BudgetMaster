@@ -10,7 +10,7 @@
 }
 
 .transaction-import-text-with-icon i {
-   margin-right: 1.3rem;
+    margin-right: 1.3rem;
 }
 
 .transaction-import-row-skipped {
@@ -19,4 +19,48 @@
 
 #table-transaction-rows td {
     padding: 5px;
+}
+
+#transaction-import-list {
+    width: 90%;
+    margin: auto;
+}
+
+#table-transaction-rows {
+    width: 100%;
+}
+
+#table-transaction-rows_filter input {
+    height: 1rem;
+    border: none;
+    border-radius: 0;
+}
+
+/* label focus color */
+#table-transaction-rows_filter input[type=search]:focus + label {
+    color: var(--color-blue) !important;
+}
+
+/* label underline focus color */
+#table-transaction-rows_filter input[type=search]:focus:not(.invalid) {
+    border-bottom: 1px solid var(--color-blue) !important;
+    box-shadow: 0 1px 0 0 #CCCCCC !important;
+}
+
+/* input text color */
+[data-theme="dark"] #table-transaction-rows_filter input[type=search] {
+    color: var(--color-white);
+    border-bottom: 1px solid var(--color-white);
+    box-shadow: 0 1px 0 0 #CCCCCC;
+}
+
+/* input label color */
+[data-theme="dark"] #table-transaction-rows_filter input[type=search] + label {
+    color: var(--color-white) !important;
+}
+
+/* label underline focus color */
+[data-theme="dark"] #table-transaction-rows_filter input[type=search]:focus:not(.invalid) {
+    border-bottom: 1px solid var(--color-blue) !important;
+    box-shadow: 0 1px 0 0 var(--color-blue) !important;
 }
