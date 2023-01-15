@@ -18,6 +18,8 @@ import de.deadlocker8.budgetmaster.services.DateFormatStyle;
 import de.deadlocker8.budgetmaster.services.DateService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
+import de.deadlocker8.budgetmaster.transactions.csvimport.CsvTransaction;
+import de.deadlocker8.budgetmaster.transactions.csvimport.CsvTransactionStatus;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
@@ -263,8 +265,12 @@ public class TransactionController extends BaseController
 		}
 
 		// redirect back to csv import if import is active
-		if(request.getAttribute(TransactionImportController.RequestAttributeNames.CSV_TRANSACTIONS, RequestAttributes.SCOPE_SESSION) != null)
+		final Object currentCsvTransaction = request.getAttribute(TransactionImportController.RequestAttributeNames.CURRENT_CSV_TRANSACTION, RequestAttributes.SCOPE_SESSION);
+		if(currentCsvTransaction != null)
 		{
+			final CsvTransaction csvTransaction = (CsvTransaction) currentCsvTransaction;
+			csvTransaction.setStatus(CsvTransactionStatus.IMPORTED);
+			request.removeAttribute(TransactionImportController.RequestAttributeNames.CURRENT_CSV_TRANSACTION, RequestAttributes.SCOPE_SESSION);
 			return ReturnValues.REDIRECT_IMPORT;
 		}
 

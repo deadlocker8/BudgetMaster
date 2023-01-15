@@ -38,7 +38,7 @@ public class TransactionImportController extends BaseController
 
 	private static class ReturnValues
 	{
-		public static final String TRANSACTION_IMPORT = "TRANSACTIONS/transactionImport";
+		public static final String TRANSACTION_IMPORT = "transactions/transactionImport";
 		public static final String REDIRECT_IMPORT = "redirect:/transactionImport";
 		public static final String REDIRECT_CANCEL = "redirect:/transactionImport/cancel";
 		public static final String NEW_TRANSACTION_NORMAL = "transactions/newTransactionNormal";
@@ -56,7 +56,7 @@ public class TransactionImportController extends BaseController
 		public static final String CSV_TRANSACTIONS = "csvTransactions";
 		public static final String ERROR_UPLOAD = "errorUpload";
 		public static final String ERRORS_COLUMN_SETTINGS = "errorsColumnSettings";
-
+		public static final String CURRENT_CSV_TRANSACTION = "currentCsvTransaction";
 	}
 
 	private final TransactionService transactionService;
@@ -78,6 +78,8 @@ public class TransactionImportController extends BaseController
 	@GetMapping
 	public String transactionImport(WebRequest request, Model model)
 	{
+		request.removeAttribute(RequestAttributeNames.CURRENT_CSV_TRANSACTION, RequestAttributes.SCOPE_SESSION);
+
 		if(request.getAttribute(RequestAttributeNames.CSV_IMPORT, RequestAttributes.SCOPE_SESSION) == null)
 		{
 			model.addAttribute(RequestAttributeNames.CSV_IMPORT, new CsvImport(null, ";", StandardCharsets.UTF_8.name(), 0));
@@ -239,7 +241,7 @@ public class TransactionImportController extends BaseController
 		}
 
 		final CsvTransaction csvTransaction = transactionOptional.get();
-		csvTransaction.setStatus(CsvTransactionStatus.IMPORTED);
+		request.setAttribute(RequestAttributeNames.CURRENT_CSV_TRANSACTION, csvTransaction, RequestAttributes.SCOPE_SESSION);
 
 		final Transaction newTransaction = createTransactionFromCsvTransaction(csvTransaction);
 
@@ -297,6 +299,7 @@ public class TransactionImportController extends BaseController
 		request.removeAttribute(RequestAttributeNames.CSV_TRANSACTIONS, RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute(RequestAttributeNames.ERROR_UPLOAD, RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute(RequestAttributeNames.ERRORS_COLUMN_SETTINGS, RequestAttributes.SCOPE_SESSION);
+		request.removeAttribute(RequestAttributeNames.CURRENT_CSV_TRANSACTION, RequestAttributes.SCOPE_SESSION);
 	}
 
 	private Optional<CsvTransaction> getTransactionByIndex(WebRequest request, Integer index)
