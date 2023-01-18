@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.transactions;
 
 import de.deadlocker8.budgetmaster.accounts.AccountService;
+import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.controller.BaseController;
@@ -34,6 +35,7 @@ public class TransactionImportController extends BaseController
 	private static class ModelAttributes
 	{
 		public static final String ERROR = "error";
+		public static final String CATEGORIES = "categories";
 	}
 
 	private static class ReturnValues
@@ -91,6 +93,8 @@ public class TransactionImportController extends BaseController
 		{
 			model.addAttribute(ModelAttributes.ERROR, bindingResult);
 		}
+
+		model.addAttribute(ModelAttributes.CATEGORIES, categoryService.getAllEntitiesAsc());
 
 		return ReturnValues.TRANSACTION_IMPORT;
 	}
@@ -206,7 +210,8 @@ public class TransactionImportController extends BaseController
 			throw new CsvTransactionParseException(Localization.getString("transactions.import.error.parse.amount", index + 1));
 		}
 
-		return new CsvTransaction(parsedDateOptional.get(), name, parsedAmountOptional.get(), description, CsvTransactionStatus.PENDING);
+		final Category categoryNone = categoryService.findByType(CategoryType.NONE);
+		return new CsvTransaction(parsedDateOptional.get(), name, parsedAmountOptional.get(), description, CsvTransactionStatus.PENDING, categoryNone);
 	}
 
 	@GetMapping("/cancel")
@@ -288,6 +293,7 @@ public class TransactionImportController extends BaseController
 		// update original CsvTransaction attributes with values from user (from newCsvTransaction)
 		csvTransaction.setName(newCsvTransaction.getName());
 		csvTransaction.setDescription(newCsvTransaction.getDescription());
+		csvTransaction.setCategory(newCsvTransaction.getCategory());
 
 		final Transaction newTransaction = createTransactionFromCsvTransaction(csvTransaction);
 		transactionService.getRepository().save(newTransaction);
@@ -304,8 +310,7 @@ public class TransactionImportController extends BaseController
 		newTransaction.setAmount(csvTransaction.getAmount());
 		newTransaction.setIsExpenditure(csvTransaction.getAmount() <= 0);
 		newTransaction.setAccount(helpers.getCurrentAccountOrDefault());
-		// TODO: set category from CsvTransaction
-		newTransaction.setCategory(categoryService.findByType(CategoryType.NONE));
+		newTransaction.setCategory(csvTransaction.getCategory());
 
 		return newTransaction;
 	}

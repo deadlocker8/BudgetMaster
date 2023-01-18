@@ -12,7 +12,7 @@
         <form name="DestinationCategory" id="formDestinationCategory" action="<@s.url '/categories/${categoryToDelete.ID?c}/delete'/>" method="post">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <#import "../helpers/validation.ftl" as validation>
-            <@customSelectMacros.customCategorySelect availableCategories preselectedCategory "col s12 m12 l8 offset-l2" locale.getString("info.title.category.delete.move")/>
+            <@customSelectMacros.customCategorySelect availableCategories preselectedCategory "col s12 m12 l8 offset-l2" locale.getString("info.title.category.delete.move") "transaction-category"/>
         </form>
     </div>
 

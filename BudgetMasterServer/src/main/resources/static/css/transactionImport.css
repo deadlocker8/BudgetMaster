@@ -34,6 +34,23 @@
     border-radius: 0;
 }
 
+/* override custom select styling*/
+.category-select-wrapper {
+    margin: 0;
+}
+
+.category-select-margin-top {
+    margin-top: 1rem;
+}
+
+.custom-select-trigger {
+    width: 50px;
+}
+
+.custom-select-options {
+    width: 50vmin;
+}
+
 /* label focus color */
 #table-transaction-rows_filter input[type=search]:focus + label {
     color: var(--color-blue) !important;

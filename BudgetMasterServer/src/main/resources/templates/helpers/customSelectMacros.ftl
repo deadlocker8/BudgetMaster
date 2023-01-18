@@ -1,10 +1,12 @@
 <#import "../categories/categoriesFunctions.ftl" as categoriesFunctions>
 
-<#macro customSelectStart selector items inputClasses labelText id icon disabled=false>
-    <div class="row">
+<#macro customSelectStart selector items inputClasses labelText id icon disabled=false rowClasses="">
+    <div class="row ${rowClasses}">
         <div class="input-field ${inputClasses}">
             <i class="material-icons prefix">${icon}</i>
-            <label class="input-label" for="${id}">${labelText}</label>
+            <#if labelText?has_content>
+                <label class="input-label" for="${id}">${labelText}</label>
+            </#if>
             <div class="custom-select-wrapper ${selector} <#if disabled>disabled</#if>" id="${id}">
                 <div class="custom-select">
                     <#nested>
@@ -18,11 +20,11 @@
     </div>
 </#macro>
 
-<#macro customCategorySelect categories selectedCategory inputClasses labelText>
-    <@customSelectStart "category-select-wrapper" categories inputClasses labelText "transaction-category" "label">
+<#macro customCategorySelect categories selectedCategory inputClasses labelText id showName=true rowClasses="">
+    <@customSelectStart "category-select-wrapper" categories inputClasses labelText id "label" false rowClasses>
         <div class="custom-select-trigger" tabindex="0">
             <div class="custom-select-selected-item">
-                <#if selectedCategory??><@customSelectOptionCategoryContent category=selectedCategory classes="no-margin-left" datasetValue=true/></#if>
+                <#if selectedCategory??><@customSelectOptionCategoryContent category=selectedCategory classes="no-margin-left" datasetValue=true showName=showName/></#if>
             </div>
             <div class="custom-select-arrow"></div>
         </div>
@@ -140,9 +142,11 @@
     </div>
 </#macro>
 
-<#macro customSelectOptionCategoryContent category classes="" datasetValue=false>
+<#macro customSelectOptionCategoryContent category classes="" datasetValue=false showName=true>
     <@categoriesFunctions.categoryCircle category=category classes="category-circle-small ${classes}" datasetValue=datasetValue/>
-    <span class="custom-select-item-name">${categoriesFunctions.getCategoryName(category)}</span>
+    <#if showName>
+        <span class="custom-select-item-name">${categoriesFunctions.getCategoryName(category)}</span>
+    </#if>
 </#macro>
 
 <#macro customSelectAccountOption account isSelected>

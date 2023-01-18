@@ -15,6 +15,7 @@
         <@navbar.navbar "importCSV" settings/>
 
         <#import "transactionsMacros.ftl" as transactionMacros>
+        <#import "../helpers/customSelectMacros.ftl" as customSelectMacros>
 
         <main>
             <div class="card main-card background-color">
@@ -223,6 +224,7 @@
                 <tr>
                     <td class="bold">${locale.getString("transactions.import.status")}</td>
                     <td class="bold">${locale.getString("transaction.new.label.date")}</td>
+                    <td class="bold">${locale.getString("transaction.new.label.category")}</td>
                     <td class="bold">${locale.getString("transaction.new.label.name")}</td>
                     <td class="bold">${locale.getString("transaction.new.label.description")}</td>
                     <td class="bold">${locale.getString("transaction.new.label.amount")}</td>
@@ -245,6 +247,9 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <td data-order="${locale.getString(csvTransaction.getStatus().getLocalizationKey())}" data-search="${locale.getString(csvTransaction.getStatus().getLocalizationKey())}"><@statusBanner csvTransaction.getStatus()/></td>
             <td data-order="${csvTransaction.getDate()}" data-search="${csvTransaction.getDate()}">${csvTransaction.getDate()}</td>
+            <td data-order="${csvTransaction.getCategory().getName()}" data-search="${csvTransaction.getCategory().getName()}">
+                <@customSelectMacros.customCategorySelect categories csvTransaction.getCategory() "left-align no-margin-top no-margin-bottom" "" "csvTransaction-category-${index}" false "no-margin-bottom"/>
+            </td>
             <td data-order="${csvTransaction.getName()}" data-search="${csvTransaction.getName()}">
                 <div class="input-field no-margin-top no-margin-bottom">
                     <input class="no-margin-bottom" type="text" name="name" required value="${csvTransaction.getName()}">

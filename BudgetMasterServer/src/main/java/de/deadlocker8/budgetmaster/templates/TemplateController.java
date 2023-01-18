@@ -191,7 +191,7 @@ public class TemplateController extends BaseController
 			transaction.setDate(csvTransaction.getDate());
 			transaction.setAmount(csvTransaction.getAmount());
 			transaction.setIsExpenditure(csvTransaction.getAmount() <= 0);
-			// TODO: set category from CsvTransaction
+			transaction.setCategory(csvTransaction.getCategory());
 		}
 	}
 
