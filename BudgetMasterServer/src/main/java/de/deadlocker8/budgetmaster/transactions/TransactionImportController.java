@@ -285,7 +285,7 @@ public class TransactionImportController extends BaseController
 		newTransaction.setName(csvTransaction.getName());
 		newTransaction.setDescription(csvTransaction.getDescription());
 		newTransaction.setAmount(csvTransaction.getAmount());
-		newTransaction.setIsExpenditure(true);
+		newTransaction.setIsExpenditure(csvTransaction.getAmount() <= 0);
 		newTransaction.setAccount(helpers.getCurrentAccountOrDefault());
 		newTransaction.setCategory(categoryService.findByType(CategoryType.NONE));
 
