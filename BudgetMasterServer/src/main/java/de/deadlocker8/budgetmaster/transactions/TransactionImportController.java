@@ -43,6 +43,7 @@ public class TransactionImportController extends BaseController
 		public static final String REDIRECT_CANCEL = "redirect:/transactionImport/cancel";
 		public static final String NEW_TRANSACTION_NORMAL = "transactions/newTransactionNormal";
 		public static final String NEW_TRANSACTION_TRANSFER = "transactions/newTransactionTransfer";
+		public static final String REDIRECT_TEMPLATES = "redirect:/templates";
 	}
 
 	public static class RequestAttributeNames
@@ -254,6 +255,22 @@ public class TransactionImportController extends BaseController
 		return ReturnValues.NEW_TRANSACTION_NORMAL;
 	}
 
+	@GetMapping("/{index}/newFromTemplate")
+	public String newFromTemplate(WebRequest request,
+								  @PathVariable("index") Integer index)
+	{
+		final Optional<CsvTransaction> transactionOptional = getTransactionByIndex(request, index);
+		if(transactionOptional.isEmpty())
+		{
+			return ReturnValues.REDIRECT_IMPORT;
+		}
+
+		final CsvTransaction csvTransaction = transactionOptional.get();
+		request.setAttribute(RequestAttributeNames.CURRENT_CSV_TRANSACTION, csvTransaction, RequestAttributes.SCOPE_SESSION);
+
+		return ReturnValues.REDIRECT_TEMPLATES;
+	}
+
 	@PostMapping("/{index}/newTransactionInPlace")
 	public String newTransactionInPlace(WebRequest request,
 										@PathVariable("index") Integer index,
@@ -287,6 +304,7 @@ public class TransactionImportController extends BaseController
 		newTransaction.setAmount(csvTransaction.getAmount());
 		newTransaction.setIsExpenditure(csvTransaction.getAmount() <= 0);
 		newTransaction.setAccount(helpers.getCurrentAccountOrDefault());
+		// TODO: set category from CsvTransaction
 		newTransaction.setCategory(categoryService.findByType(CategoryType.NONE));
 
 		return newTransaction;
