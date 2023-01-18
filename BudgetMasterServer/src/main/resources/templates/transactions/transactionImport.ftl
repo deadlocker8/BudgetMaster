@@ -218,7 +218,7 @@
 
 <#macro renderCsvTransactions>
     <div id="transaction-import-list">
-        <table class="bordered centered" id="table-transaction-rows">
+        <table class="bordered centered" id="table-transaction-rows" style="width:100%">
             <thead>
                 <tr>
                     <td class="bold">${locale.getString("transactions.import.status")}</td>

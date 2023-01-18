@@ -14,8 +14,6 @@ $(document).ready(function()
         scrollX: true,
         scrollY: true,
         columnDefs: [
-            { width: '30%', targets: 2},
-            { width: '30%', targets: 3},
             { orderable: false, targets:  5}
         ],
         language: { search: '' , searchPlaceholder: localizedSearch},

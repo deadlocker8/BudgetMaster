@@ -24,12 +24,8 @@
 }
 
 #transaction-import-list {
-    width: 90%;
+    width: 95%;
     margin: auto;
-}
-
-#table-transaction-rows {
-    width: 100%;
 }
 
 #table-transaction-rows_filter input {
