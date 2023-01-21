@@ -203,6 +203,19 @@ public class TransactionImportController extends BaseController
 		return ReturnValues.REDIRECT_IMPORT;
 	}
 
+	@GetMapping("/{index}/undoSkip")
+	public String undoSkip(WebRequest request, @PathVariable("index") Integer index)
+	{
+		final Optional<CsvTransaction> transactionOptional = getTransactionByIndex(request, index);
+		if(transactionOptional.isEmpty())
+		{
+			return ReturnValues.REDIRECT_IMPORT;
+		}
+
+		transactionOptional.get().setStatus(CsvTransactionStatus.PENDING);
+		return ReturnValues.REDIRECT_IMPORT;
+	}
+
 	@GetMapping("/{index}/newTransaction/{type}")
 	public String newTransaction(WebRequest request,
 								 @PathVariable("index") Integer index,

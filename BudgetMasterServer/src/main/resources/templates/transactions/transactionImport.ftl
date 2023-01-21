@@ -262,27 +262,31 @@
             </td>
             <td data-order="${currencyService.getCurrencyString(csvTransaction.getAmount())}" data-search="${currencyService.getCurrencyString(csvTransaction.getAmount())}">${currencyService.getCurrencyString(csvTransaction.getAmount())}</td>
             <td>
-                <@header.buttonSubmit name='action' icon='save' localizationKey='' classes='text-white'/>&nbsp;
-                <div class="fixed-action-btn edit-transaction-button">
-                    <a class="btn-floating btn-flat waves-effect waves-light no-padding text-default edit-transaction-button-link">
-                        <i class="material-icons text-default">edit</i>
-                    </a>
-                    <ul class="new-transaction-button-list">
-                        <li>
-                            <a href="<@s.url '/transactionImport/' + index + '/newTransaction/normal'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new", locale.getString("title.transaction.new.normal"))}</a>
-                            <a href="<@s.url '/transactionImport/' + index + '/newTransaction/normal'/>" class="btn-floating btn background-orange"><i class="material-icons">payment</i></a>
-                        </li>
-                        <li>
-                            <a href="<@s.url '/transactionImport/' + index + '/newTransaction/transfer'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new", locale.getString("title.transaction.new.transfer"))}</a>
-                            <a href="<@s.url '/transactionImport/' + index + '/newTransaction/transfer'/>" class="btn-floating btn background-green-dark"><i class="material-icons">swap_horiz</i></a>
-                        </li>
-                        <li>
-                            <a href="<@s.url '/transactionImport/' + index + '/newFromTemplate'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new", locale.getString("title.transaction.new.from.template"))}</a>
-                            <a href="<@s.url '/transactionImport/' + index + '/newFromTemplate'/>" class="btn-floating btn background-blue-baby"><i class="material-icons">file_copy</i></a>
-                        </li>
-                    </ul>
-                </div>
-                <@header.buttonFlat url='/transactionImport/' + index + '/skip' icon='block' localizationKey='' classes="no-padding text-default button-request-transaction-import-skip"/>
+                <#if csvTransaction.getStatus().name() == 'SKIPPED'>
+                    <@header.buttonFlat url='/transactionImport/' + index + '/undoSkip' icon='do_disturb_off' localizationKey='' classes="no-padding text-default button-request-transaction-import-undo-skip"/>
+                <#else>
+                    <@header.buttonSubmit name='action' icon='save' localizationKey='' classes='text-white'/>&nbsp;
+                    <div class="fixed-action-btn edit-transaction-button">
+                        <a class="btn-floating btn-flat waves-effect waves-light no-padding text-default edit-transaction-button-link">
+                            <i class="material-icons text-default">edit</i>
+                        </a>
+                        <ul class="new-transaction-button-list">
+                            <li>
+                                <a href="<@s.url '/transactionImport/' + index + '/newTransaction/normal'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new", locale.getString("title.transaction.new.normal"))}</a>
+                                <a href="<@s.url '/transactionImport/' + index + '/newTransaction/normal'/>" class="btn-floating btn background-orange"><i class="material-icons">payment</i></a>
+                            </li>
+                            <li>
+                                <a href="<@s.url '/transactionImport/' + index + '/newTransaction/transfer'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new", locale.getString("title.transaction.new.transfer"))}</a>
+                                <a href="<@s.url '/transactionImport/' + index + '/newTransaction/transfer'/>" class="btn-floating btn background-green-dark"><i class="material-icons">swap_horiz</i></a>
+                            </li>
+                            <li>
+                                <a href="<@s.url '/transactionImport/' + index + '/newFromTemplate'/>" class="btn-floating btn mobile-fab-tip no-wrap">${locale.getString("title.transaction.new", locale.getString("title.transaction.new.from.template"))}</a>
+                                <a href="<@s.url '/transactionImport/' + index + '/newFromTemplate'/>" class="btn-floating btn background-blue-baby"><i class="material-icons">file_copy</i></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <@header.buttonFlat url='/transactionImport/' + index + '/skip' icon='do_not_disturb_on' localizationKey='' classes="no-padding text-default button-request-transaction-import-skip"/>
+                </#if>
             </td>
         </form>
     </tr>

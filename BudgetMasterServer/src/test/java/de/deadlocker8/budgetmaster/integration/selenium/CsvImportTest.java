@@ -279,6 +279,28 @@ class CsvImportTest extends SeleniumTestBase
 	}
 
 	@Test
+	void test_undoSkipRow()
+	{
+		uploadAndSetColumnSettings();
+		List<WebElement> rows = driver.findElements(By.className("transaction-import-row"));
+
+		// skip
+		rows.get(0).findElement(By.className("button-request-transaction-import-skip")).click();
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("transaction-import-row-skipped")));
+
+		assertThat(driver.findElement(By.className("transaction-import-row-skipped")).isDisplayed()).isTrue();
+
+		// undo skip
+		rows = driver.findElements(By.className("transaction-import-row"));
+		rows.get(0).findElement(By.className("button-request-transaction-import-undo-skip")).click();
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("transaction-import-row-skipped")));
+
+		assertThat(driver.findElements(By.className("transaction-import-row-skipped"))).isEmpty();
+	}
+
+	@Test
 	void test_saveInPlace()
 	{
 		uploadAndSetColumnSettings();
