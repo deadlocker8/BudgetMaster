@@ -1,12 +1,8 @@
 package de.deadlocker8.budgetmaster.transactions;
 
 import de.deadlocker8.budgetmaster.accounts.AccountService;
-import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryService;
-import de.deadlocker8.budgetmaster.categories.CategoryType;
 import de.deadlocker8.budgetmaster.controller.BaseController;
-import de.deadlocker8.budgetmaster.services.HelpersService;
-import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.csvimport.*;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
@@ -23,7 +19,6 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -63,19 +58,17 @@ public class TransactionImportController extends BaseController
 	}
 
 	private final TransactionService transactionService;
-	private final HelpersService helpers;
 	private final CategoryService categoryService;
 	private final AccountService accountService;
-	private final SettingsService settingsService;
+	private final TransactionImportService transactionImportService;
 
 	@Autowired
-	public TransactionImportController(TransactionService transactionService, HelpersService helpers, CategoryService categoryService, AccountService accountService, SettingsService settingsService)
+	public TransactionImportController(TransactionService transactionService, CategoryService categoryService, AccountService accountService, TransactionImportService transactionImportService)
 	{
 		this.transactionService = transactionService;
-		this.helpers = helpers;
 		this.categoryService = categoryService;
 		this.accountService = accountService;
-		this.settingsService = settingsService;
+		this.transactionImportService = transactionImportService;
 	}
 
 	@GetMapping
@@ -141,7 +134,6 @@ public class TransactionImportController extends BaseController
 		catch(Exception e)
 		{
 			LOGGER.error("CSV upload failed", e);
-
 			WebRequestUtils.putNotification(request, new Notification(Localization.getString("transactions.import.error.upload", e.getMessage()), NotificationType.ERROR));
 		}
 		return ReturnValues.REDIRECT_IMPORT;
@@ -172,7 +164,7 @@ public class TransactionImportController extends BaseController
 			final CsvRow csvRow = csvRows.get(i);
 			try
 			{
-				csvTransactions.add(createCsvTransactionFromCsvRow(csvRow, csvColumnSettings, i));
+				csvTransactions.add(transactionImportService.createCsvTransactionFromCsvRow(csvRow, csvColumnSettings, i));
 			}
 			catch(IndexOutOfBoundsException e)
 			{
@@ -189,29 +181,6 @@ public class TransactionImportController extends BaseController
 		request.setAttribute(RequestAttributeNames.CSV_TRANSACTIONS, csvTransactions, RequestAttributes.SCOPE_SESSION);
 
 		return ReturnValues.REDIRECT_IMPORT;
-	}
-
-	private CsvTransaction createCsvTransactionFromCsvRow(CsvRow csvRow, CsvColumnSettings csvColumnSettings, Integer index) throws CsvTransactionParseException
-	{
-		final String date = csvRow.getColumns().get(csvColumnSettings.columnDate() - 1);
-		final Optional<LocalDate> parsedDateOptional = DateParser.parse(date, csvColumnSettings.getDatePattern(), settingsService.getSettings().getLanguage().getLocale());
-		if(parsedDateOptional.isEmpty())
-		{
-			throw new CsvTransactionParseException(Localization.getString("transactions.import.error.parse.date", index + 1, date, csvColumnSettings.getDatePattern()));
-		}
-
-		final String name = csvRow.getColumns().get(csvColumnSettings.columnName() - 1);
-		final String description = csvRow.getColumns().get(csvColumnSettings.columnDescription() - 1);
-
-		final String amount = csvRow.getColumns().get(csvColumnSettings.columnAmount() - 1);
-		final Optional<Integer> parsedAmountOptional = AmountParser.parse(amount);
-		if(parsedAmountOptional.isEmpty())
-		{
-			throw new CsvTransactionParseException(Localization.getString("transactions.import.error.parse.amount", index + 1));
-		}
-
-		final Category categoryNone = categoryService.findByType(CategoryType.NONE);
-		return new CsvTransaction(parsedDateOptional.get(), name, parsedAmountOptional.get(), description, CsvTransactionStatus.PENDING, categoryNone);
 	}
 
 	@GetMapping("/cancel")
@@ -249,7 +218,7 @@ public class TransactionImportController extends BaseController
 		final CsvTransaction csvTransaction = transactionOptional.get();
 		request.setAttribute(RequestAttributeNames.CURRENT_CSV_TRANSACTION, csvTransaction, RequestAttributes.SCOPE_SESSION);
 
-		final Transaction newTransaction = createTransactionFromCsvTransaction(csvTransaction);
+		final Transaction newTransaction = transactionImportService.createTransactionFromCsvTransaction(csvTransaction);
 
 		transactionService.prepareModelNewOrEdit(model, false, csvTransaction.getDate(), false, newTransaction, accountService.getAllActivatedAccountsAsc());
 
@@ -290,29 +259,12 @@ public class TransactionImportController extends BaseController
 		final CsvTransaction csvTransaction = transactionOptional.get();
 		csvTransaction.setStatus(CsvTransactionStatus.IMPORTED);
 
-		// update original CsvTransaction attributes with values from user (from newCsvTransaction)
-		csvTransaction.setName(newCsvTransaction.getName());
-		csvTransaction.setDescription(newCsvTransaction.getDescription());
-		csvTransaction.setCategory(newCsvTransaction.getCategory());
+		transactionImportService.updateCsvTransaction(csvTransaction, newCsvTransaction);
 
-		final Transaction newTransaction = createTransactionFromCsvTransaction(csvTransaction);
+		final Transaction newTransaction = transactionImportService.createTransactionFromCsvTransaction(csvTransaction);
 		transactionService.getRepository().save(newTransaction);
 
 		return ReturnValues.REDIRECT_IMPORT;
-	}
-
-	private Transaction createTransactionFromCsvTransaction(CsvTransaction csvTransaction)
-	{
-		final Transaction newTransaction = new Transaction();
-		newTransaction.setDate(csvTransaction.getDate());
-		newTransaction.setName(csvTransaction.getName());
-		newTransaction.setDescription(csvTransaction.getDescription());
-		newTransaction.setAmount(csvTransaction.getAmount());
-		newTransaction.setIsExpenditure(csvTransaction.getAmount() <= 0);
-		newTransaction.setAccount(helpers.getCurrentAccountOrDefault());
-		newTransaction.setCategory(csvTransaction.getCategory());
-
-		return newTransaction;
 	}
 
 	private void removeAllAttributes(WebRequest request)
