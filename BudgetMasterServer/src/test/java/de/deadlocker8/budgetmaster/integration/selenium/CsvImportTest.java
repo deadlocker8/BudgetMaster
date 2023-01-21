@@ -253,6 +253,32 @@ class CsvImportTest extends SeleniumTestBase
 	}
 
 	@Test
+	void test_upload_valid_parseErrors()
+	{
+		driver.get(helper.getUrl() + "/transactionImport");
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Import from bank CSV"));
+
+		final String csvPath = new File(getClass().getClassLoader().getResource("csv/three_entries.csv").getFile()).getAbsolutePath();
+
+		// skip zero lines, so first line will lead to parse error because it is the row containing the column names
+		uploadCsv(csvPath, ";", "UTF-8", "0");
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("button-cancel-csv-import")));
+
+		assertThat(driver.findElement(By.id("csv-file-name")).getText()).isEqualTo("three_entries.csv");
+
+		fillColumnSettings(1, "dd.MM.yyyy", 2, 3, 2);
+
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("button-confirm-csv-column-settings")));
+
+		assertThat(driver.findElements(By.className("transaction-import-row"))).hasSize(3);
+
+		assertThat(driver.findElements(By.cssSelector("#parseErrors table tr"))).hasSize(1);
+	}
+
+	@Test
 	void test_cancel()
 	{
 		uploadAndSetColumnSettings();

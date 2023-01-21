@@ -46,7 +46,7 @@
 
                     <#if csvTransactions??>
                         <@renderCsvTransactions/>
-                        <@showColumnSettingsErrors/>
+                        <@showColumnSettingsErrors />
                     <#elseif csvRows?? >
                         <div class="container">
                             <div class="section center-align">
@@ -294,7 +294,7 @@
 
 <#macro showColumnSettingsErrors>
     <#if errorsColumnSettings?has_content>
-        <div class="container">
+        <div class="container" id="parseErrors">
             <div class="row">
                 <div class="col s12">
                     <ul class="collapsible">
