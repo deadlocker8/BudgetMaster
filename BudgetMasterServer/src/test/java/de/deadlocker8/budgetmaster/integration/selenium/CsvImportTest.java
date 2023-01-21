@@ -460,6 +460,14 @@ class CsvImportTest extends SeleniumTestBase
 
 		assertThat(driver.findElement(By.id("csv-file-name")).getText()).isEqualTo("three_entries.csv");
 
+		final List<WebElement> overviewRows = driver.findElements(By.cssSelector("#transaction-import-overview tr"));
+		assertThat(overviewRows).hasSize(4);
+		final List<WebElement> columns = overviewRows.get(1).findElements(By.tagName("td"));
+		assertThat(columns).hasSize(3);
+		assertThat(columns.get(0).getText()).isEqualTo("03.01.2023");
+		assertThat(columns.get(1).getText()).isEqualTo("Lorem");
+		assertThat(columns.get(2).getText()).isEqualTo("50.00");
+
 		fillColumnSettings(1, "dd.MM.yyyy", 2, 3, 2);
 
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
