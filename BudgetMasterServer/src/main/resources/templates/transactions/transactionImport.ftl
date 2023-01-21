@@ -248,16 +248,16 @@
             <td data-order="${locale.getString(csvTransaction.getStatus().getLocalizationKey())}" data-search="${locale.getString(csvTransaction.getStatus().getLocalizationKey())}"><@statusBanner csvTransaction.getStatus()/></td>
             <td data-order="${csvTransaction.getDate()}" data-search="${csvTransaction.getDate()}">${csvTransaction.getDate()}</td>
             <td data-order="${csvTransaction.getCategory().getName()}" data-search="${csvTransaction.getCategory().getName()}">
-                <@customSelectMacros.customCategorySelect categories csvTransaction.getCategory() "left-align no-margin-top no-margin-bottom" "" "csvTransaction-category-${index}" false "no-margin-bottom"/>
+                <@customSelectMacros.customCategorySelect categories csvTransaction.getCategory() "left-align no-margin-top no-margin-bottom" "" "csvTransaction-category-${index}" false "no-margin-bottom" csvTransaction.getStatus().name() == 'SKIPPED'/>
             </td>
             <td data-order="${csvTransaction.getName()}" data-search="${csvTransaction.getName()}">
                 <div class="input-field no-margin-top no-margin-bottom">
-                    <input class="no-margin-bottom" type="text" name="name" required value="${csvTransaction.getName()}">
+                    <input class="no-margin-bottom" type="text" name="name" required value="${csvTransaction.getName()}" <#if csvTransaction.getStatus().name() == 'SKIPPED'>disabled</#if>>
                 </div>
             </td>
             <td data-order="${csvTransaction.getDescription()}" data-search="${csvTransaction.getDescription()}">
                 <div class="input-field no-margin-top no-margin-bottom">
-                    <input class="no-margin-bottom" type="text" name="description" value="${csvTransaction.getDescription()}">
+                    <input class="no-margin-bottom" type="text" name="description" value="${csvTransaction.getDescription()}" <#if csvTransaction.getStatus().name() == 'SKIPPED'>disabled</#if>>
                 </div>
             </td>
             <td data-order="${currencyService.getCurrencyString(csvTransaction.getAmount())}" data-search="${currencyService.getCurrencyString(csvTransaction.getAmount())}">${currencyService.getCurrencyString(csvTransaction.getAmount())}</td>

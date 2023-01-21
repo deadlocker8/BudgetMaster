@@ -20,8 +20,8 @@
     </div>
 </#macro>
 
-<#macro customCategorySelect categories selectedCategory inputClasses labelText id showName=true rowClasses="">
-    <@customSelectStart "category-select-wrapper" categories inputClasses labelText id "label" false rowClasses>
+<#macro customCategorySelect categories selectedCategory inputClasses labelText id showName=true rowClasses="" disabled=false>
+    <@customSelectStart "category-select-wrapper" categories inputClasses labelText id "label" disabled rowClasses>
         <div class="custom-select-trigger" tabindex="0">
             <div class="custom-select-selected-item">
                 <#if selectedCategory??><@customSelectOptionCategoryContent category=selectedCategory classes="no-margin-left" datasetValue=true showName=showName/></#if>
