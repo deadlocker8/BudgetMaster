@@ -1,6 +1,7 @@
 package de.deadlocker8.budgetmaster.transactions.csvimport;
 
 import java.util.List;
+import java.util.Objects;
 
 public class CsvRow
 {
@@ -19,6 +20,21 @@ public class CsvRow
 	public List<String> getColumns()
 	{
 		return columns;
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
+		CsvRow csvRow = (CsvRow) o;
+		return Objects.equals(columns, csvRow.columns);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(columns);
 	}
 
 	@Override
