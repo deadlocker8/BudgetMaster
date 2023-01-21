@@ -7,8 +7,6 @@ import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.csvimport.*;
 import de.thecodelabs.utils.util.Localization;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +16,6 @@ import java.util.Optional;
 @Service
 public class TransactionImportService
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(TransactionImportService.class);
-
 	private final HelpersService helpersService;
 	private final SettingsService settingsService;
 	private final CategoryService categoryService;
