@@ -29,14 +29,14 @@
                     <div class="container">
                         <#if csvRows??>
                             <div class="row center-align">
-                                <div class="col s12 m12 l8 offset-l2 headline-small text-green truncate">
+                                <div class="col s12 m12 l8 offset-l2 headline-small text-green truncate" id="csv-file-name">
                                     <i class="fas fa-file-csv"></i> ${csvImport.getFileName()}
                                 </div>
                             </div>
 
                             <div class="row center-align">
                                 <div class="col s12">
-                                    <@header.buttonLink url='/transactionImport/cancel' icon='clear' localizationKey='cancel' color='red' classes='text-white'/>
+                                    <@header.buttonLink url='/transactionImport/cancel' icon='clear' localizationKey='cancel' id='button-cancel-csv-import' color='red' classes='text-white'/>
                                 </div>
                             </div>
                         <#else>
@@ -242,7 +242,7 @@
 </#macro>
 
 <#macro renderCsvRow csvTransaction index>
-    <tr class="<#if csvTransaction.getStatus().name() == 'SKIPPED'>transaction-import-row-skipped</#if>">
+    <tr class="transaction-import-row <#if csvTransaction.getStatus().name() == 'SKIPPED'>transaction-import-row-skipped</#if>">
         <form name="NewTransactionInPlace" method="POST" action="<@s.url '/transactionImport/' + index + '/newTransactionInPlace'/>">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <td data-order="${locale.getString(csvTransaction.getStatus().getLocalizationKey())}" data-search="${locale.getString(csvTransaction.getStatus().getLocalizationKey())}"><@statusBanner csvTransaction.getStatus()/></td>
