@@ -6,7 +6,6 @@ import de.deadlocker8.budgetmaster.accounts.AccountService;
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.services.DateService;
-import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.templategroup.TemplateGroupService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionImportController;
@@ -59,10 +58,9 @@ public class TemplateController extends BaseController
 	private final DateService dateService;
 	private final AccountService accountService;
 	private final IconService iconService;
-	private final HelpersService helpers;
 
 	@Autowired
-	public TemplateController(TemplateService templateService, TemplateGroupService templateGroupService, TransactionService transactionService, DateService dateService, AccountService accountService, IconService iconService, HelpersService helpers)
+	public TemplateController(TemplateService templateService, TemplateGroupService templateGroupService, TransactionService transactionService, DateService dateService, AccountService accountService, IconService iconService)
 	{
 		this.templateService = templateService;
 		this.templateGroupService = templateGroupService;
@@ -70,7 +68,6 @@ public class TemplateController extends BaseController
 		this.dateService = dateService;
 		this.accountService = accountService;
 		this.iconService = iconService;
-		this.helpers = helpers;
 	}
 
 	@GetMapping
