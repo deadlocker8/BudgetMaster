@@ -47,13 +47,9 @@ public class AboutController extends BaseController
 	public String whatsNewModal(Model model)
 	{
 		final List<NewsEntry> newsEntries = new ArrayList<>();
-		newsEntries.add(NewsEntry.createWithLocalizationKey("clickableChartAreas"));
-		newsEntries.add(NewsEntry.createWithLocalizationKey("repeatingTransactionsWorkflow"));
-		newsEntries.add(NewsEntry.createWithLocalizationKey("searchForDateRange"));
-		newsEntries.add(NewsEntry.createWithLocalizationKey("removeDatabaseMigrator"));
-		newsEntries.add(NewsEntry.createWithLocalizationKey("fix.templateAmountInput"));
-		newsEntries.add(NewsEntry.createWithLocalizationKey("fix.searchHighlighting"));
-		newsEntries.add(NewsEntry.createWithLocalizationKey("fix.tomcatUpdateSearch"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("csvImport"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("recurringTransactionsOverview"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("improvedRestCalculation"));
 
 		model.addAttribute(ModelAttributes.NEWS_ENTRIES, newsEntries);
 		return ReturnValues.WHATS_NEW;
