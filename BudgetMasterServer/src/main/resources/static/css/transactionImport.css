@@ -1,0 +1,81 @@
+#transaction-import-overview {
+    overflow: auto;
+    width: 90%;
+    margin: auto;
+}
+
+.transaction-import-text-with-icon {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.transaction-import-text-with-icon i {
+    margin-right: 1.3rem;
+}
+
+.transaction-import-row-skipped {
+    opacity: 0.5;
+}
+
+#table-transaction-rows td {
+    padding: 5px;
+}
+
+#transaction-import-list {
+    width: 95%;
+    margin: auto;
+}
+
+#table-transaction-rows_filter input {
+    height: 1rem;
+    border: none;
+    border-radius: 0;
+}
+
+/* override custom select styling*/
+.category-select-wrapper {
+    margin: 0;
+}
+
+.category-select-margin-top {
+    margin-top: 1rem;
+}
+
+.custom-select-trigger {
+    width: 50px;
+}
+
+.custom-select-options {
+    width: 50vmin;
+}
+
+/* label focus color */
+#table-transaction-rows_filter input[type=search]:focus + label {
+    color: var(--color-blue) !important;
+}
+
+/* label underline focus color */
+#table-transaction-rows_filter input[type=search]:focus:not(.invalid) {
+    border-bottom: 1px solid var(--color-blue) !important;
+    box-shadow: 0 1px 0 0 #CCCCCC !important;
+}
+
+/* input text color */
+[data-theme="dark"] #table-transaction-rows_filter input[type=search] {
+    color: var(--color-white);
+    border-bottom: 1px solid var(--color-white);
+    box-shadow: 0 1px 0 0 #CCCCCC;
+}
+
+/* input label color */
+[data-theme="dark"] #table-transaction-rows_filter input[type=search] + label {
+    color: var(--color-white) !important;
+}
+
+/* label underline focus color */
+[data-theme="dark"] #table-transaction-rows_filter input[type=search]:focus:not(.invalid) {
+    border-bottom: 1px solid var(--color-blue) !important;
+    box-shadow: 0 1px 0 0 var(--color-blue) !important;
+}

@@ -71,7 +71,7 @@
                             <div class="row left-align">
                                 <div class="col s12">
                                     <@indexFunctions.stepContent headline="home.first.use.step.5.headline" contentText="home.first.use.step.5.contentText" actionUrl="" actionName="">
-                                        <h5>${locale.getString("menu.templates")}</h5>
+                                        <h5>${locale.getString("menu.transactions.templates")}</h5>
                                         <p>
                                             ${locale.getString("home.first.use.step.5.sub.1")}
                                         </p>

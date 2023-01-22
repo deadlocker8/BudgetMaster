@@ -59,39 +59,35 @@ public class TransactionService implements Resettable
 		return transactionRepository;
 	}
 
-	public List<Transaction> getTransactionsForMonthAndYear(Account account, int month, int year, boolean isRestActivated, FilterConfiguration filterConfiguration)
+	public Transaction getTransactionForBalanceLastMonth(Account account, int month, int year)
 	{
-		List<Transaction> transactions;
-		if(isRestActivated)
-		{
-			transactions = getTransactionsForMonthAndYearWithRest(account, month, year, filterConfiguration);
-		}
-		else
-		{
-			transactions = getTransactionsForMonthAndYearWithoutRest(account, month, year, filterConfiguration);
-		}
+		final LocalDate endDateLastMonth = LocalDate.of(year, month, 1).minusMonths(1).with(lastDayOfMonth());
 
-		return transactions;
+		final Transaction transactionBalanceLastMonth = new Transaction();
+		transactionBalanceLastMonth.setCategory(categoryService.findByType(CategoryType.REST));
+		transactionBalanceLastMonth.setName(Localization.getString(Strings.TRANSACTION_BALANCE_LAST_MONTH));
+		transactionBalanceLastMonth.setDate(LocalDate.of(year, month, 1));
+		transactionBalanceLastMonth.setAmount(getRest(account, endDateLastMonth));
+		transactionBalanceLastMonth.setTags(new ArrayList<>());
+
+		return transactionBalanceLastMonth;
 	}
 
-	private List<Transaction> getTransactionsForMonthAndYearWithRest(Account account, int month, int year, FilterConfiguration filterConfiguration)
+	public Transaction getTransactionForBalanceCurrentMonth(Account account, int month, int year)
 	{
-		List<Transaction> transactions = getTransactionsForMonthAndYearWithoutRest(account, month, year, filterConfiguration);
+		final LocalDate endDateCurrentMonth = LocalDate.of(year, month, 1).with(lastDayOfMonth());
 
-		LocalDate endDate = LocalDate.of(year, month, 1).minusMonths(1).with(lastDayOfMonth());
+		final Transaction transactionBalanceCurrentMonth = new Transaction();
+		transactionBalanceCurrentMonth.setCategory(categoryService.findByType(CategoryType.REST));
+		transactionBalanceCurrentMonth.setName(Localization.getString(Strings.TRANSACTION_BALANCE_CURRENT_MONTH));
+		transactionBalanceCurrentMonth.setDate(endDateCurrentMonth);
+		transactionBalanceCurrentMonth.setAmount(getRest(account, endDateCurrentMonth));
+		transactionBalanceCurrentMonth.setTags(new ArrayList<>());
 
-		Transaction transactionRest = new Transaction();
-		transactionRest.setCategory(categoryService.findByType(CategoryType.REST));
-		transactionRest.setName(Localization.getString(Strings.CATEGORY_REST));
-		transactionRest.setDate(LocalDate.of(year, month, 1));
-		transactionRest.setAmount(getRest(account, endDate));
-		transactionRest.setTags(new ArrayList<>());
-		transactions.add(transactionRest);
-
-		return transactions;
+		return transactionBalanceCurrentMonth;
 	}
 
-	private List<Transaction> getTransactionsForMonthAndYearWithoutRest(Account account, int month, int year, FilterConfiguration filterConfiguration)
+	public List<Transaction> getTransactionsForMonthAndYear(Account account, int month, int year, FilterConfiguration filterConfiguration)
 	{
 		final LocalDate startDate = LocalDate.of(year, month, 1);
 		final LocalDate endDate = LocalDate.of(year, month, 1).with(lastDayOfMonth());

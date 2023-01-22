@@ -8,7 +8,9 @@ import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.services.DateService;
 import de.deadlocker8.budgetmaster.templategroup.TemplateGroupService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
+import de.deadlocker8.budgetmaster.transactions.TransactionImportController;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
+import de.deadlocker8.budgetmaster.transactions.csvimport.CsvTransaction;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -134,7 +137,8 @@ public class TemplateController extends BaseController
 	}
 
 	@GetMapping("/{ID}/select")
-	public String selectTemplate(Model model,
+	public String selectTemplate(WebRequest request,
+								 Model model,
 								 @CookieValue("currentDate") String cookieDate,
 								 @PathVariable("ID") Integer ID)
 	{
@@ -162,6 +166,8 @@ public class TemplateController extends BaseController
 			newTransaction.setIsExpenditure(true);
 		}
 
+		overrideFieldsFromCsvTransaction(request, newTransaction);
+
 		final LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
 		transactionService.prepareModelNewOrEdit(model, false, date, false, newTransaction, accountService.getAllActivatedAccountsAsc());
 
@@ -170,6 +176,20 @@ public class TemplateController extends BaseController
 			return ReturnValues.NEW_TRANSACTION_TRANSFER;
 		}
 		return ReturnValues.NEW_TRANSACTION_NORMAL;
+	}
+
+	private void overrideFieldsFromCsvTransaction(WebRequest request, Transaction transaction)
+	{
+		final Object currentCsvTransaction = request.getAttribute(TransactionImportController.RequestAttributeNames.CURRENT_CSV_TRANSACTION, RequestAttributes.SCOPE_SESSION);
+		if(currentCsvTransaction != null)
+		{
+			final CsvTransaction csvTransaction = (CsvTransaction) currentCsvTransaction;
+
+			transaction.setDate(csvTransaction.getDate());
+			transaction.setAmount(csvTransaction.getAmount());
+			transaction.setIsExpenditure(csvTransaction.getAmount() <= 0);
+			transaction.setCategory(csvTransaction.getCategory());
+		}
 	}
 
 	@GetMapping("/newTemplate")

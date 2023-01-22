@@ -29,6 +29,14 @@ ul.sidenav.sidenav-fixed > li:last-child {
     font-weight: 600;
 }
 
+.sidenav li i {
+    font-size: 24px;
+}
+
+.sidenav li .fontawesome-icon{
+    font-size: 20px;
+}
+
 .searchWrapper {
     background-color: #FFFFFF;
     box-shadow: none;
@@ -41,6 +49,23 @@ ul.sidenav.sidenav-fixed > li:last-child {
 
 .sidenav #buttonSearch {
     right: 3rem;
+}
+
+.sidenav .sub-menu-entry i {
+    margin-left: 32px !important;
+}
+
+.sidenav .sub-menu-entry .fontawesome-icon-additional-margin-left {
+    margin-left: 36px !important;
+    margin-right: 28px;
+}
+
+.sidenav .sub-menu {
+    background-color: var(--color-grey-dark-almost-transparent);
+}
+
+.sidenav li.sub-menu.active {
+    background-color: rgba(0, 0, 0, 0.25);
 }
 
 /* dark theme */
@@ -79,6 +104,10 @@ ul.sidenav.sidenav-fixed > li:last-child {
 
 [data-theme="dark"] .sidenav li.active {
     background-color: rgba(255, 255, 255, 0.25);
+}
+
+[data-theme="dark"] .sidenav li.sub-menu.active {
+    background-color: rgba(255, 255, 255, 0.35);
 }
 
 /*active nav bar sub list items*/

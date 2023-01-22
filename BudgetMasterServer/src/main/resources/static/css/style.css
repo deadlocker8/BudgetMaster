@@ -55,7 +55,7 @@ main {
 
 /* label underline focus color */
 .input-field input[type=text]:focus:not(.invalid),
-.input-field input[type=text]:focus:not(.invalid) {
+.input-field input[type=number]:focus:not(.invalid) {
     border-bottom: 1px solid var(--color-blue) !important;
     box-shadow: 0 1px 0 0 #CCCCCC !important;
 }
@@ -775,13 +775,6 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
 
 [data-theme="dark"] .input-label {
     color: var(--color-white) !important;
-}
-
-/* input text color */
-[data-theme="dark"] .input-field input[type=text] {
-    color: var(--color-white);
-    border-bottom: 1px solid #FFFFFF;
-    box-shadow: 0 1px 0 0 #CCCCCC;
 }
 
 /* input label color */

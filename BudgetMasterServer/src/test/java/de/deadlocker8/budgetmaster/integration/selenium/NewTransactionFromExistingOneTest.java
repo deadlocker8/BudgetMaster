@@ -47,7 +47,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 		TransactionTestHelper.gotoSpecificYearAndMonth(driver, 2021, "October");
 
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
-		List<WebElement> columns = transactionsRows.get(1).findElements(By.className("col"));
+		List<WebElement> columns = transactionsRows.get(2).findElements(By.className("col"));
 		columns.get(4).findElement(By.className("button-new-from-existing")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
@@ -73,7 +73,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 		driver.findElement(By.id("button-save-transaction")).click();
 
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(text(), 'Rest')]")));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(text(), 'Last month balance')]")));
 
 		// assert
 		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
@@ -85,7 +85,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 		TransactionTestHelper.gotoSpecificYearAndMonth(driver, 2021, "September");
 
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
-		List<WebElement> columns = transactionsRows.get(0).findElements(By.className("col"));
+		List<WebElement> columns = transactionsRows.get(1).findElements(By.className("col"));
 		columns.get(4).findElement(By.className("button-new-from-existing")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
@@ -111,7 +111,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 		driver.findElement(By.id("button-save-transaction")).click();
 
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(text(), 'Rest')]")));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(text(), 'Last month balance')]")));
 
 		// assert
 		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
@@ -123,7 +123,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 		TransactionTestHelper.gotoSpecificYearAndMonth(driver, 2021, "June");
 
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
-		List<WebElement> columns = transactionsRows.get(0).findElements(By.className("col"));
+		List<WebElement> columns = transactionsRows.get(1).findElements(By.className("col"));
 		columns.get(4).findElement(By.className("button-new-from-existing")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
@@ -143,7 +143,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 		driver.findElement(By.id("button-save-transaction")).click();
 
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(text(), 'Rest')]")));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(text(), 'Last month balance')]")));
 
 		// assert
 		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
@@ -157,7 +157,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 		TransactionTestHelper.gotoSpecificYearAndMonth(driver, 2021, "October");
 
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
-		List<WebElement> columns = transactionsRows.get(0).findElements(By.className("col"));
+		List<WebElement> columns = transactionsRows.get(1).findElements(By.className("col"));
 		columns.get(4).findElement(By.className("button-new-from-existing")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
@@ -177,7 +177,7 @@ class NewTransactionFromExistingOneTest extends SeleniumTestBase
 		driver.findElement(By.id("button-save-transaction")).click();
 
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(text(), 'Rest')]")));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(text(), 'Last month balance')]")));
 
 		// assert
 		assertThat(driver.getCurrentUrl()).endsWith("/transactions");

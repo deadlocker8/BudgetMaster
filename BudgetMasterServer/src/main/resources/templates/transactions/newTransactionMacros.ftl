@@ -349,7 +349,12 @@
 </#macro>
 
 <#macro buttonCancel cancelURL>
-    <@header.buttonLink url=cancelURL icon='clear' localizationKey='cancel' id='button-cancel-save-transaction' color='red'/>
+    <#assign url=cancelURL/>
+    <#if currentCsvTransaction??>
+        <#assign url='/transactionImport'/>
+    </#if>
+
+    <@header.buttonLink url=url icon='clear' localizationKey='cancel' id='button-cancel-save-transaction' color='red'/>
 </#macro>
 
 <#macro buttonSave allowEmptyAmount>

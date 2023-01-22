@@ -162,8 +162,8 @@ class ImportServiceTest
 		// icons created for default accounts, categories, ...
 		final Icon iconAllAccounts = createIcon(1, "fas fa-landmark", null, null);
 		final Icon iconAccountDefault = createIcon(3, null, null, null);
-		final Icon iconCategoryNone = createIcon(4, null, null, null);
-		final Icon iconCategoryRest = createIcon(5, null, null, null);
+		final Icon iconCategoryRest = createIcon(4, null, null, null);
+		final Icon iconCategoryNone = createIcon(5, null, null, null);
 
 		// imported icons
 		final Icon iconAccountReadOnly = createIcon(9, "fas fa-ban", "#2eb952ff", null);
@@ -198,7 +198,7 @@ class ImportServiceTest
 
 		// assert categories
 		final Category categoryNone = createCategory(1, "No Category", "#FFFFFF", CategoryType.NONE, iconCategoryNone);
-		final Category categoryRest = createCategory(2, "Rest", "#FFFF00", CategoryType.REST, iconCategoryRest);
+		final Category categoryRest = createCategory(2, "Balance", "#FFFF00", CategoryType.REST, iconCategoryRest);
 		final Category categoryCar = createCategory(3, "Car", "#007afa", CategoryType.CUSTOM, iconCategoryCar);
 		final Category categoryRent = createCategory(4, "Rent", "#eeeeee", CategoryType.CUSTOM, iconCategoryRent);
 		assertThat(categoryRepository.findAll())

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>BudgetMaster</artifactId>
         <groupId>de.deadlocker8</groupId>
-        <version>2.12.0</version>
+        <version>2.13.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -27,19 +27,20 @@
         <jlibs.version>3.2.0</jlibs.version>
         <versionizer.version>3.0.1</versionizer.version>
         <webjars-locator.version>0.46</webjars-locator.version>
-        <jquery.version>3.6.1</jquery.version>
+        <jquery.version>3.6.3</jquery.version>
         <materializecss.version>1.0.0</materializecss.version>
-        <fontawesome.version>6.2.0</fontawesome.version>
+        <fontawesome.version>6.2.1</fontawesome.version>
         <sortablejs.version>1.15.0</sortablejs.version>
         <mousetrap.version>1.6.5</mousetrap.version>
         <codemirror.version>5.62.2</codemirror.version>
-        <selenium.version>4.7.1</selenium.version>
-        <assertj-core.version>3.23.1</assertj-core.version>
+        <selenium.version>4.7.2</selenium.version>
         <jgit.version>6.4.0.202211300538-r</jgit.version>
         <natorder.version>1.1.3</natorder.version>
         <itextpdf.version>5.5.13.3</itextpdf.version>
         <vanilla-picker.version>2.12.1</vanilla-picker.version>
         <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
+        <opencsv.version>5.7.1</opencsv.version>
+        <datatables.version>1.13.1</datatables.version>
 
         <project.outputDirectory>${project.build.directory}/../build/${project.version}</project.outputDirectory>
         <project.artifactName>${project.artifactId}-v${project.version}</project.artifactName>
@@ -137,6 +138,12 @@
             <version>${natorder.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>${opencsv.version}</version>
+        </dependency>
+
         <!--Webjars-->
         <dependency>
             <groupId>org.webjars</groupId>
@@ -177,6 +184,11 @@
             <groupId>org.webjars.npm</groupId>
             <artifactId>vanilla-picker</artifactId>
             <version>${vanilla-picker.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>datatables</artifactId>
+            <version>${datatables.version}</version>
         </dependency>
 
 

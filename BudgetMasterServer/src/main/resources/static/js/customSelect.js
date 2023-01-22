@@ -8,9 +8,12 @@ function initCustomSelects()
     let allCustomSelects = [];
 
     let selectorCategorySelect = '.category-select-wrapper';
-    if($(selectorCategorySelect).length)
+    let transactionCategorySelects = document.querySelectorAll(selectorCategorySelect);
+
+    for(let i = 0; i < transactionCategorySelects.length; i++)
     {
-        let categorySelect = new CustomSelect(selectorCategorySelect);
+        let id = transactionCategorySelects[i].id;
+        let categorySelect = new CustomSelect('#' + id);
         categorySelect.init();
         allCustomSelects.push(categorySelect);
     }
@@ -248,7 +251,12 @@ class CustomSelect
         item.classList.add('selected');
 
         let itemSelector = document.querySelector(this.selector + ' .custom-select-selected-item');
+        let isOnlyIcon = itemSelector.querySelector('.custom-select-item-name') === null;
         itemSelector.innerHTML = item.innerHTML;
+        if(isOnlyIcon)
+        {
+            itemSelector.querySelector('.custom-select-item-name').remove();
+        }
 
         let itemCircle = itemSelector.querySelector('.category-circle');
         itemCircle.classList.add('no-margin-left');
@@ -258,7 +266,7 @@ class CustomSelect
 
         this.removeSelectionStyleClassFromAll();
         this.close(this.selector);
-        this.selectedId = this.resetSelectedItemId();
+        this.resetSelectedItemId();
 
         if(this.confirmSelectionCallback && typeof (this.confirmSelectionCallback) == "function")
         {

@@ -26,13 +26,13 @@
                             <div class="col s4">
                                 <div class="icon-block center-align">
                                     <img class="budget-headline-icon" src="<@s.url '/images/piggy_income.svg'/>">
-                                    <h5 class="budget">${currencyService.getCurrencyString(budget.getIncomeSum())}</h5>
+                                    <h5 class="budget">${currencyService.getCurrencyString(budget.incomeSum())}</h5>
                                 </div>
                             </div>
                             <div class="col s4">
                                 <div class="icon-block center-align">
                                     <img class="budget-headline-icon" src="<@s.url '/images/piggy_expenditure.svg'/>">
-                                    <h5 class="center budget">${currencyService.getCurrencyString(budget.getExpenditureSum())}</h5>
+                                    <h5 class="center budget">${currencyService.getCurrencyString(budget.expenditureSum())}</h5>
                                 </div>
                             </div>
                             <div class="col s4">

@@ -1,26 +1,7 @@
 package de.deadlocker8.budgetmaster.reports;
 
-public class Budget
+public record Budget(int incomeSum, int expenditureSum)
 {
-	private int incomeSum;
-	private int expenditureSum;
-
-	public Budget(int incomeSum, int expenditureSum)
-	{
-		this.incomeSum = incomeSum;
-		this.expenditureSum = expenditureSum;
-	}
-
-	public int getIncomeSum()
-	{
-		return incomeSum;
-	}
-
-	public int getExpenditureSum()
-	{
-		return expenditureSum;
-	}
-
 	public int getRest()
 	{
 		return incomeSum + expenditureSum;

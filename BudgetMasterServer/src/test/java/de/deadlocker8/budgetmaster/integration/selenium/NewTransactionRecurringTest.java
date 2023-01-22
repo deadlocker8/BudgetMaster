@@ -125,7 +125,7 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		((JavascriptExecutor) driver).executeScript("arguments[0].click();", submitButton);
 
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(text(), 'Rest')]")));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(text(), 'Last month balance')]")));
 
 		// assert
 		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
@@ -137,7 +137,7 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 
 		final WebElement dateGroup = transactionDateGroups.get(transactionDateGroups.size() - 2);
 		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", TransactionTestHelper.getDateString(day));
-		final List<WebElement> transactionsInGroup = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		final List<WebElement> transactionsInGroup = dateGroup.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 
 		final WebElement transactionRow = transactionsInGroup.get(0);
 		final List<WebElement> columns = transactionRow.findElements(By.className("col"));
@@ -187,7 +187,7 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		((JavascriptExecutor) driver).executeScript("arguments[0].click();", submitButton);
 
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(text(), 'Rest')]")));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(text(), 'Last month balance')]")));
 
 		// assert
 		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
@@ -199,7 +199,7 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 
 		final WebElement dateGroup = transactionDateGroups.get(transactionDateGroups.size() - 2);
 		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", TransactionTestHelper.getDateString(day));
-		final List<WebElement> transactionsInGroup = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		final List<WebElement> transactionsInGroup = dateGroup.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 
 		final WebElement transactionRow = transactionsInGroup.get(0);
 		final List<WebElement> columns = transactionRow.findElements(By.className("col"));
@@ -249,7 +249,7 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 		((JavascriptExecutor) driver).executeScript("arguments[0].click();", submitButton);
 
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(text(), 'Rest')]")));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(text(), 'Last month balance')]")));
 
 		// assert
 		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
@@ -261,7 +261,7 @@ class NewTransactionRecurringTest extends SeleniumTestBase
 
 		final WebElement dateGroup = transactionDateGroups.get(transactionDateGroups.size() - 2);
 		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", TransactionTestHelper.getDateString(day));
-		final List<WebElement> transactionsInGroup = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		final List<WebElement> transactionsInGroup = dateGroup.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 
 		final WebElement transactionRow = transactionsInGroup.get(0);
 		final List<WebElement> columns = transactionRow.findElements(By.className("col"));

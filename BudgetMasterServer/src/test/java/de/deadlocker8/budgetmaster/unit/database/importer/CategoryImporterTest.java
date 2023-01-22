@@ -66,7 +66,7 @@ class CategoryImporterTest extends ImporterTestBase
 	@Test
 	void test_importCategories_skipExisting_defaultRest()
 	{
-		final Category category = new Category("Rest", "#ff0000", CategoryType.REST);
+		final Category category = new Category("Balance", "#ff0000", CategoryType.REST);
 		category.setID(1);
 
 		categoryRepository.save(category);

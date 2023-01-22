@@ -53,7 +53,7 @@
                             <@newTransactionMacros.transactionAmount transaction/>
 
                             <#-- category -->
-                            <@customSelectMacros.customCategorySelect categories transaction.getCategory() "col s12 m12 l8 offset-l2" locale.getString("transaction.new.label.category")/>
+                            <@customSelectMacros.customCategorySelect categories transaction.getCategory() "col s12 m12 l8 offset-l2" locale.getString("transaction.new.label.category") "transaction-category"/>
 
                             <#-- date -->
                             <@newTransactionMacros.transactionStartDate transaction currentDate/>

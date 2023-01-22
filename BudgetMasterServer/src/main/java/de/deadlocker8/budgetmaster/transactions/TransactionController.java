@@ -18,6 +18,8 @@ import de.deadlocker8.budgetmaster.services.DateFormatStyle;
 import de.deadlocker8.budgetmaster.services.DateService;
 import de.deadlocker8.budgetmaster.services.HelpersService;
 import de.deadlocker8.budgetmaster.settings.SettingsService;
+import de.deadlocker8.budgetmaster.transactions.csvimport.CsvTransaction;
+import de.deadlocker8.budgetmaster.transactions.csvimport.CsvTransactionStatus;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
@@ -31,6 +33,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,6 +60,8 @@ public class TransactionController extends BaseController
 		public static final String REDIRECT_NEW_TRANSACTION = "redirect:/transactions/newTransaction/normal";
 		public static final String NEW_TRANSACTION = "transactions/newTransactionNormal";
 		public static final String CHANGE_TYPE = "transactions/changeTypeModal";
+		public static final String RECURRING_OVERVIEW = "transactions/recurringOverview";
+		public static final String REDIRECT_IMPORT = "redirect:/transactionImport";
 	}
 
 	private static final String CONTINUE = "continue";
@@ -110,14 +115,23 @@ public class TransactionController extends BaseController
 
 	private void prepareModelTransactions(FilterConfiguration filterConfiguration, Model model, LocalDate date)
 	{
-		Account currentAccount = helpers.getCurrentAccount();
-		List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(currentAccount, date.getMonthValue(), date.getYear(), settingsService.getSettings().isRestActivated(), filterConfiguration);
+		final Account currentAccount = helpers.getCurrentAccount();
+		final List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(currentAccount, date.getMonthValue(), date.getYear(), filterConfiguration);
 
-		model.addAttribute(TransactionModelAttributes.ALL_ENTITIES, transactions);
 		model.addAttribute(TransactionModelAttributes.ACCOUNT, currentAccount);
 		model.addAttribute(TransactionModelAttributes.BUDGET, helpers.getBudget(transactions, currentAccount));
 		model.addAttribute(TransactionModelAttributes.CURRENT_DATE, date);
 		model.addAttribute(TransactionModelAttributes.FILTER_CONFIGURATION, filterConfiguration);
+
+		if(settingsService.getSettings().isRestActivated())
+		{
+			final Transaction transactionBalanceCurrentMonth = transactionService.getTransactionForBalanceCurrentMonth(currentAccount, date.getMonthValue(), date.getYear());
+			transactions.add(0, transactionBalanceCurrentMonth);
+			final Transaction transactionBalanceLastMonth = transactionService.getTransactionForBalanceLastMonth(currentAccount, date.getMonthValue(), date.getYear());
+			transactions.add(transactionBalanceLastMonth);
+		}
+
+		model.addAttribute(TransactionModelAttributes.ALL_ENTITIES, transactions);
 	}
 
 	@GetMapping("/{ID}/delete")
@@ -190,7 +204,6 @@ public class TransactionController extends BaseController
 			redirectUrl = ReturnValues.NEW_TRANSACTION;
 		}
 
-
 		final boolean isContinueActivated = action.equals(CONTINUE);
 		return handleRedirect(servletRequest, request, model, transaction.getID() != null, transaction, bindingResult, date, redirectUrl, isContinueActivated);
 	}
@@ -249,6 +262,16 @@ public class TransactionController extends BaseController
 				return ReturnValues.REDIRECT_NEW_TRANSFER;
 			}
 			return ReturnValues.REDIRECT_NEW_TRANSACTION;
+		}
+
+		// redirect back to csv import if import is active
+		final Object currentCsvTransaction = request.getAttribute(TransactionImportController.RequestAttributeNames.CURRENT_CSV_TRANSACTION, RequestAttributes.SCOPE_SESSION);
+		if(currentCsvTransaction != null)
+		{
+			final CsvTransaction csvTransaction = (CsvTransaction) currentCsvTransaction;
+			csvTransaction.setStatus(CsvTransactionStatus.IMPORTED);
+			request.removeAttribute(TransactionImportController.RequestAttributeNames.CURRENT_CSV_TRANSACTION, RequestAttributes.SCOPE_SESSION);
+			return ReturnValues.REDIRECT_IMPORT;
 		}
 
 		return ReturnValues.REDIRECT_ALL_ENTITIES;
@@ -458,5 +481,13 @@ public class TransactionController extends BaseController
 			return ReturnValues.NEW_TRANSFER;
 		}
 		return ReturnValues.NEW_TRANSACTION;
+	}
+
+	@GetMapping("/recurringOverview")
+	public String recurringOverview(Model model)
+	{
+		final List<Transaction> activeRepeatingTransactions = repeatingTransactionUpdater.getActiveRepeatingTransactionsAfter(LocalDate.now());
+		model.addAttribute(TransactionModelAttributes.ALL_ENTITIES, activeRepeatingTransactions);
+		return ReturnValues.RECURRING_OVERVIEW;
 	}
 }

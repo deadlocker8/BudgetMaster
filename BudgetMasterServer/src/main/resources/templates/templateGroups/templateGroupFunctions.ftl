@@ -7,7 +7,7 @@
 </#macro>
 
 <#macro buttonEditTemplateGroups>
-    <@header.buttonLink url='/templates' icon='file_copy' localizationKey='menu.templates'/>
+    <@header.buttonLink url='/templates' icon='file_copy' localizationKey='menu.transactions.templates'/>
 </#macro>
 
 <#macro buttons>

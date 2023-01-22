@@ -133,9 +133,9 @@ class SearchTest extends SeleniumTestBase
 		assertThat(driver.findElement(By.cssSelector(".headline-date")).getText()).isEqualTo("May 2019");
 
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
-		assertThat(transactionsRows).hasSize(25);
-		assertThat(transactionsRows.get(0).getAttribute("class")).contains("transaction-row-highlighted");
-		for(int i = 1; i < transactionsRows.size(); i++)
+		assertThat(transactionsRows).hasSize(26);
+		assertThat(transactionsRows.get(1).getAttribute("class")).contains("transaction-row-highlighted");
+		for(int i = 2; i < transactionsRows.size(); i++)
 		{
 			assertThat(transactionsRows.get(i).getAttribute("class")).doesNotContain("transaction-row-highlighted");
 		}
@@ -149,8 +149,8 @@ class SearchTest extends SeleniumTestBase
 		assertThat(driver.findElement(By.cssSelector(".headline-date")).getText()).isEqualTo("May 2019");
 
 		List<WebElement> transactionsRows = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
-		assertThat(transactionsRows).hasSize(25);
-		assertThat(transactionsRows.get(0).getAttribute("class")).contains("transaction-row-highlighted");
+		assertThat(transactionsRows).hasSize(26);
+		assertThat(transactionsRows.get(1).getAttribute("class")).contains("transaction-row-highlighted");
 
 		// open global account select
 		final WebElement globalAccountSelect = driver.findElement(By.id("globalAccountSelect"));

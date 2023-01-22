@@ -94,8 +94,8 @@ public class ReportGeneratorService
 	{
 		PdfPCell cellTotal;
 		String total = "";
-		String totalIncomeString = currencyService.getCurrencyString(reportConfiguration.getBudget().getIncomeSum());
-		String totalExpenditureString = currencyService.getCurrencyString(reportConfiguration.getBudget().getExpenditureSum());
+		String totalIncomeString = currencyService.getCurrencyString(reportConfiguration.getBudget().incomeSum());
+		String totalExpenditureString = currencyService.getCurrencyString(reportConfiguration.getBudget().expenditureSum());
 		switch(amountType)
 		{
 			case BOTH:
@@ -189,11 +189,11 @@ public class ReportGeneratorService
 			Budget budget = reportConfiguration.getBudget();
 
 			Paragraph paragraph = new Paragraph();
-			paragraph.add(new Chunk(Localization.getString(Strings.REPORT_INCOMES) + currencyService.getCurrencyString(budget.getIncomeSum()), fontGreen));
+			paragraph.add(new Chunk(Localization.getString(Strings.REPORT_INCOMES) + currencyService.getCurrencyString(budget.incomeSum()), fontGreen));
 			paragraph.add(new Chunk("     "));
-			paragraph.add(new Chunk(Localization.getString(Strings.REPORT_PAYMENTS) + currencyService.getCurrencyString(budget.getExpenditureSum()), fontRed));
+			paragraph.add(new Chunk(Localization.getString(Strings.REPORT_PAYMENTS) + currencyService.getCurrencyString(budget.expenditureSum()), fontRed));
 			paragraph.add(new Chunk("     "));
-			paragraph.add(new Chunk(Localization.getString(Strings.REPORT_BUDGET_REST) + currencyService.getCurrencyString(budget.getIncomeSum() + budget.getExpenditureSum()), fontBlack));
+			paragraph.add(new Chunk(Localization.getString(Strings.REPORT_BUDGET_REST) + currencyService.getCurrencyString(budget.incomeSum() + budget.expenditureSum()), fontBlack));
 			paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
 
 			final Paragraph paragraphBudgetHeadline = new Paragraph(Localization.getString(Strings.REPORT_BUDGET), headerFont);

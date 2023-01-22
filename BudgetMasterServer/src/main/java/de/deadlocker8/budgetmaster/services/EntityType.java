@@ -19,7 +19,9 @@ public enum EntityType implements LocalizedEnum
 	ABOUT("info", "background-grey", ImportRequired.NONE, null, null),
 	TEMPLATE_GROUP("folder", "background-orange-dark", ImportRequired.OPTIONAL, "template groups", "template group"),
 	ICON("icon", "background-grey", ImportRequired.NONE, "icons", "icon"),
-	TRANSACTION_NAME_KEYWORD("transaction_name_keyword", "background-grey", ImportRequired.NONE, "keywords", "keyword");
+	TRANSACTION_NAME_KEYWORD("transaction_name_keyword", "background-grey", ImportRequired.NONE, "keywords", "keyword"),
+	RECURRING_TRANSACTIONS("repeat", "background-orange-dark", ImportRequired.NONE, "recurring", "recurring"),
+	TRANSACTION_IMPORT("fas fa-file-csv", "background-orange-dark", ImportRequired.NONE, "transactionImport", "transactionImport");
 
 	public enum ImportRequired
 	{

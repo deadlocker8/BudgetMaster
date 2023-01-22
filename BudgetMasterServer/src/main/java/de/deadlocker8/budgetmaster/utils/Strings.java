@@ -13,6 +13,8 @@ public class Strings
 	public static final String TITLE_EXPENDITURES = "title.expenditures";
 	public static final String TITLE_CATEGORY_BUDGETS = "title.category.budgets";
 	public static final String TEMPLATE_GROUP_DEFAULT = "template.group.default";
+	public static final String TRANSACTION_BALANCE_LAST_MONTH = "transaction.balance.last.month";
+	public static final String TRANSACTION_BALANCE_CURRENT_MONTH = "transaction.balance.current.month";
 
 	//ACCOUNT
 	public static final String ACCOUNT_DEFAULT_NAME = "account.default.name";

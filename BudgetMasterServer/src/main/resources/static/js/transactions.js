@@ -93,8 +93,6 @@ $(document).ready(function()
 
     function createDatePickerEnd(minDate, selectedDate)
     {
-        console.log(minDate, selectedDate);
-
         if(selectedDate < minDate)
         {
             selectedDate = minDate;

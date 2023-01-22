@@ -38,9 +38,10 @@
                             <@indexFunctions.homeEntry url="/transactions" icon=entityType.TRANSACTION.getIcon() iconColor=entityType.TRANSACTION.getColorAsTextColor() headlineText="menu.transactions" bodyText="home.menu.transactions">
                                 <@indexFunctions.action url="/transactions" name="home.menu.transactions.action.manage"/>
                                 <@indexFunctions.action url="/transactions/newTransaction/normal" name="home.menu.transactions.action.new"/>
+                                <@indexFunctions.action url="/transactionImport" name="home.menu.transactions.action.csvImport"/>
                             </@indexFunctions.homeEntry>
 
-                            <@indexFunctions.homeEntry url="/templates" icon=entityType.TEMPLATE.getIcon() iconColor=entityType.TEMPLATE.getColorAsTextColor() headlineText="menu.templates" bodyText="home.menu.templates">
+                            <@indexFunctions.homeEntry url="/templates" icon=entityType.TEMPLATE.getIcon() iconColor=entityType.TEMPLATE.getColorAsTextColor() headlineText="menu.transactions.templates" bodyText="home.menu.templates">
                                 <@indexFunctions.action url="/templates" name="home.menu.templates.action.manage"/>
                             </@indexFunctions.homeEntry>
 

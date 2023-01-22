@@ -70,7 +70,7 @@ class NewTransactionNormalTest extends SeleniumTestBase
 		cancelButton.click();
 
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(text(), 'Rest')]")));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(text(), 'Last month balance')]")));
 
 		// assert
 		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
@@ -105,7 +105,7 @@ class NewTransactionNormalTest extends SeleniumTestBase
 		driver.findElement(By.id("button-save-transaction")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(text(), 'Rest')]")));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(text(), 'Last month balance')]")));
 
 		// assert
 		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
@@ -115,9 +115,9 @@ class NewTransactionNormalTest extends SeleniumTestBase
 
 		final List<WebElement> transactionDateGroups = driver.findElements(By.className("transaction-date-group"));
 
-		final WebElement dateGroup = transactionDateGroups.get(0);
+		final WebElement dateGroup = transactionDateGroups.get(1);
 		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", TransactionTestHelper.getDateString(day));
-		final List<WebElement> transactionsInGroup = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		final List<WebElement> transactionsInGroup = dateGroup.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 
 		final WebElement transactionRow = transactionsInGroup.get(0);
 		final List<WebElement> columns = transactionRow.findElements(By.className("col"));
@@ -153,7 +153,7 @@ class NewTransactionNormalTest extends SeleniumTestBase
 		driver.findElement(By.id("button-save-transaction")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(text(), 'Rest')]")));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(text(), 'Last month balance')]")));
 
 		// assert
 		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
@@ -164,9 +164,9 @@ class NewTransactionNormalTest extends SeleniumTestBase
 
 		final List<WebElement> transactionDateGroups = driver.findElements(By.className("transaction-date-group"));
 
-		final WebElement dateGroup = transactionDateGroups.get(0);
+		final WebElement dateGroup = transactionDateGroups.get(1);
 		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", TransactionTestHelper.getDateString(day));
-		final List<WebElement> transactionsInGroup = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		final List<WebElement> transactionsInGroup = dateGroup.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 
 		final WebElement transactionRow = transactionsInGroup.get(0);
 		final List<WebElement> columns = transactionRow.findElements(By.className("col"));
@@ -296,9 +296,9 @@ class NewTransactionNormalTest extends SeleniumTestBase
 
 		final List<WebElement> transactionDateGroups = driver.findElements(By.className("transaction-date-group"));
 
-		final WebElement dateGroup = transactionDateGroups.get(0);
+		final WebElement dateGroup = transactionDateGroups.get(1);
 		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", TransactionTestHelper.getDateString(day));
-		final List<WebElement> transactionsInGroup = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		final List<WebElement> transactionsInGroup = dateGroup.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 
 		final WebElement transactionRow = transactionsInGroup.get(0);
 		final List<WebElement> columns = transactionRow.findElements(By.className("col"));
@@ -369,7 +369,7 @@ class NewTransactionNormalTest extends SeleniumTestBase
 		driver.findElement(By.id("button-save-transaction")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(text(), 'Rest')]")));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(text(), 'Last month balance')]")));
 
 		assertThat(driver.getCurrentUrl()).endsWith("/transactions");
 
@@ -378,9 +378,9 @@ class NewTransactionNormalTest extends SeleniumTestBase
 
 		final List<WebElement> transactionDateGroups = driver.findElements(By.className("transaction-date-group"));
 
-		final WebElement dateGroup = transactionDateGroups.get(0);
+		final WebElement dateGroup = transactionDateGroups.get(1);
 		assertThat(dateGroup.findElement(By.className("transaction-date"))).hasFieldOrPropertyWithValue("text", TransactionTestHelper.getDateString(day));
-		final List<WebElement> transactionsInGroup = driver.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
+		final List<WebElement> transactionsInGroup = dateGroup.findElements(By.cssSelector(".transaction-container .hide-on-med-and-down.transaction-row-top"));
 
 		final WebElement transactionRow = transactionsInGroup.get(0);
 		final List<WebElement> columns = transactionRow.findElements(By.className("col"));
