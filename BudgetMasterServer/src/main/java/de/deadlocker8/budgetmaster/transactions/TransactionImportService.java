@@ -41,7 +41,7 @@ public class TransactionImportService
 		final String description = csvRow.getColumns().get(csvColumnSettings.columnDescription() - 1);
 
 		final String amount = csvRow.getColumns().get(csvColumnSettings.columnAmount() - 1);
-		final Optional<Integer> parsedAmountOptional = AmountParser.parse(amount, '.', ',');
+		final Optional<Integer> parsedAmountOptional = AmountParser.parse(amount, csvColumnSettings.getDecimalSeparator().charAt(0), csvColumnSettings.getGroupingSeparator().charAt(0));
 		if(parsedAmountOptional.isEmpty())
 		{
 			throw new CsvTransactionParseException(Localization.getString("transactions.import.error.parse.amount", index + 1));
