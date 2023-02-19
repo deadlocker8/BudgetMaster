@@ -247,6 +247,21 @@ class AmountParserTest
 	}
 
 	@Test
+	void test_thousandsDelimiter_specialDelimiter_invalid()
+	{
+		assertThat(AmountParser.parse("-234.03 €", 'e', 't'))
+				.isEmpty();
+	}
+
+	@Test
+	void test_thousandsDelimiter_specialDelimiter_valid()
+	{
+		assertThat(AmountParser.parse("-1t234e03 €", 'e', 't'))
+				.isPresent()
+				.get().isEqualTo(-123403);
+	}
+
+	@Test
 	void test_thousandsDelimiter_bigNumber()
 	{
 		assertThat(AmountParser.parse("-1.234.567,03 €", ',', '.'))
