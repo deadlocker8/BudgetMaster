@@ -172,12 +172,12 @@
             </div>
             <div class="row">
                 <div class="input-field col s3 offset-s6 m3 offset-m6 l2 offset-l6 no-margin-top no-margin-bottom">
-                    <input id="decimalSeparator" type="text" required name="decimalSeparator" <@validation.validation "decimalSeparator"/> value="<#if csvColumnSettings??>${csvColumnSettings.decimalSeparator()}<#else>${helpers.getDecimalSeparator()}</#if>">
+                    <input id="decimalSeparator" type="text" required maxlength="1" name="decimalSeparator" <@validation.validation "decimalSeparator"/> value="<#if csvColumnSettings??>${csvColumnSettings.decimalSeparator()}<#else>${helpers.getDecimalSeparator()}</#if>">
                     <label class="input-label" for="decimalSeparator">${locale.getString("transactions.import.decimalSeparator")}</label>
                 </div>
 
                 <div class="input-field col s3 m3 l2 no-margin-top no-margin-bottom">
-                    <input id="groupingSeparator" type="text" required name="groupingSeparator" <@validation.validation "groupingSeparator"/> value="<#if csvColumnSettings??>${csvColumnSettings.groupingSeparator()}<#else>${helpers.getGroupingSeparator()}</#if>">
+                    <input id="groupingSeparator" type="text" required maxlength="1" name="groupingSeparator" <@validation.validation "groupingSeparator"/> value="<#if csvColumnSettings??>${csvColumnSettings.groupingSeparator()}<#else>${helpers.getGroupingSeparator()}</#if>">
                     <label class="input-label" for="groupingSeparator">${locale.getString("transactions.import.groupingSeparator")}</label>
                 </div>
             </div>
