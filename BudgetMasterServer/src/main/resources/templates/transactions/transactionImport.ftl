@@ -90,15 +90,15 @@
 
         <div class="row">
             <div class="input-field col s4 l2 offset-l3">
-                <input id="separator" type="text" name="separator" <@validation.validation "separator" "center-align"/> value="<#if csvImport??>${csvImport.separator()}</#if>">
+                <input id="separator" type="text" name="separator" <@validation.validation "separator" "center-align"/> value="<#if csvImportSettings.getSeparator()??>${csvImportSettings.getSeparator()}</#if>">
                 <label class="input-label" for="separator">${locale.getString("transactions.import.separator")}</label>
             </div>
             <div class="input-field col s4 l2">
-                <input id="encoding" type="text" name="encoding" <@validation.validation "encoding" "center-align"/> value="<#if csvImport??>${csvImport.encoding()?upper_case}</#if>">
+                <input id="encoding" type="text" name="encoding" <@validation.validation "encoding" "center-align"/> value="<#if csvImportSettings.getEncoding()??>${csvImportSettings.getEncoding()?upper_case}</#if>">
                 <label class="input-label" for="encoding">${locale.getString("transactions.import.encoding")}</label>
             </div>
             <div class="input-field col s4 l2">
-                <input id="numberOfLinesToSkip" type="number" name="numberOfLinesToSkip" min="0" name="numberOfLinesToSkip" <@validation.validation "numberOfLinesToSkip" "center-align"/> value="<#if csvImport??>${csvImport.numberOfLinesToSkip()?c}</#if>">
+                <input id="numberOfLinesToSkip" type="number" name="numberOfLinesToSkip" min="0" name="numberOfLinesToSkip" <@validation.validation "numberOfLinesToSkip" "center-align"/> value="<#if csvImportSettings.getNumberOfLinesToSkip()??>${csvImportSettings.getNumberOfLinesToSkip()?c}</#if>">
                 <label class="input-label" for="numberOfLinesToSkip">${locale.getString("transactions.import.numberOfLinesToSkip")}</label>
             </div>
         </div>
@@ -132,13 +132,13 @@
                     </div>
                 </div>
                 <div class="input-field col s6 m6 l4 no-margin-top no-margin-bottom">
-                    <input id="columnDate" type="number" min="1" max="${csvRows?size}" name="columnDate" <@validation.validation "columnDate"/> value="<#if csvColumnSettings??>${csvColumnSettings.columnDate()}</#if>">
+                    <input id="columnDate" type="number" min="1" max="${csvRows?size}" name="columnDate" <@validation.validation "columnDate"/> value="<#if csvImportSettings.getColumnDate()??>${csvImportSettings.getColumnDate()}</#if>">
                     <label class="input-label" for="columnDate">${locale.getString("transactions.import.column")}</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s5 offset-s6 m5 offset-m6 l4 offset-l6 no-margin-top no-margin-bottom">
-                    <input id="datePattern" type="text" required name="datePattern" <@validation.validation "datePattern"/> value="<#if csvColumnSettings??>${csvColumnSettings.datePattern()}<#else>dd.MM.yyyy</#if>">
+                    <input id="datePattern" type="text" required name="datePattern" <@validation.validation "datePattern"/> value="<#if csvImportSettings.getDatePattern()??>${csvImportSettings.getDatePattern()}<#else>dd.MM.yyyy</#if>">
                     <label class="input-label" for="datePattern">${locale.getString("transactions.import.datePattern")}</label>
                 </div>
                 <div class="col s1 m1 l1">
@@ -154,7 +154,7 @@
                     </div>
                 </div>
                 <div class="input-field col s6 m6 l4 no-margin-top no-margin-bottom">
-                    <input id="columnName" type="number" min="1" max="${csvRows?size}" name="columnName" <@validation.validation "columnName"/> value="<#if csvColumnSettings??>${csvColumnSettings.columnName()}</#if>">
+                    <input id="columnName" type="number" min="1" max="${csvRows?size}" name="columnName" <@validation.validation "columnName"/> value="<#if csvImportSettings.getColumnName()??>${csvImportSettings.getColumnName()}</#if>">
                     <label class="input-label" for="columnName">${locale.getString("transactions.import.column")}</label>
                 </div>
             </div>
@@ -166,18 +166,18 @@
                     </div>
                 </div>
                 <div class="input-field col s6 m6 l4 no-margin-top no-margin-bottom">
-                    <input id="columnAmount" type="number" min="1" max="${csvRows?size}" name="columnAmount" <@validation.validation "columnAmount"/> value="<#if csvColumnSettings??>${csvColumnSettings.columnAmount()}</#if>">
+                    <input id="columnAmount" type="number" min="1" max="${csvRows?size}" name="columnAmount" <@validation.validation "columnAmount"/> value="<#if csvImportSettings.getColumnAmount()??>${csvImportSettings.getColumnAmount()}</#if>">
                     <label class="input-label" for="columnAmount">${locale.getString("transactions.import.column")}</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s3 offset-s6 m3 offset-m6 l2 offset-l6 no-margin-top no-margin-bottom">
-                    <input id="decimalSeparator" type="text" required maxlength="1" name="decimalSeparator" <@validation.validation "decimalSeparator"/> value="<#if csvColumnSettings??>${csvColumnSettings.decimalSeparator()}<#else>${helpers.getDecimalSeparator()}</#if>">
+                    <input id="decimalSeparator" type="text" required maxlength="1" name="decimalSeparator" <@validation.validation "decimalSeparator"/> value="<#if csvImportSettings.getDecimalSeparator()??>${csvImportSettings.getDecimalSeparator()}<#else>${helpers.getDecimalSeparator()}</#if>">
                     <label class="input-label" for="decimalSeparator">${locale.getString("transactions.import.decimalSeparator")}</label>
                 </div>
 
                 <div class="input-field col s3 m3 l2 no-margin-top no-margin-bottom">
-                    <input id="groupingSeparator" type="text" required maxlength="1" name="groupingSeparator" <@validation.validation "groupingSeparator"/> value="<#if csvColumnSettings??>${csvColumnSettings.groupingSeparator()}<#else>${helpers.getGroupingSeparator()}</#if>">
+                    <input id="groupingSeparator" type="text" required maxlength="1" name="groupingSeparator" <@validation.validation "groupingSeparator"/> value="<#if csvImportSettings.getGroupingSeparator()??>${csvImportSettings.getGroupingSeparator()}<#else>${helpers.getGroupingSeparator()}</#if>">
                     <label class="input-label" for="groupingSeparator">${locale.getString("transactions.import.groupingSeparator")}</label>
                 </div>
             </div>
@@ -190,7 +190,7 @@
                     </div>
                 </div>
                 <div class="input-field col s6 m6 l4 no-margin-top no-margin-bottom">
-                    <input id="columnDescription" type="number" min="1" max="${csvRows?size}" name="columnDescription" <@validation.validation "columnDescription"/> value="<#if csvColumnSettings??>${csvColumnSettings.columnDescription()}</#if>">
+                    <input id="columnDescription" type="number" min="1" max="${csvRows?size}" name="columnDescription" <@validation.validation "columnDescription"/> value="<#if csvImportSettings.getColumnDescription()??>${csvImportSettings.getColumnDescription()}</#if>">
                     <label class="input-label" for="columnDescription">${locale.getString("transactions.import.column")}</label>
                 </div>
             </div>
