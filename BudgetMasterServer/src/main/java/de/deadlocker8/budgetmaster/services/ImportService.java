@@ -14,6 +14,7 @@ import de.deadlocker8.budgetmaster.templategroup.TemplateGroupRepository;
 import de.deadlocker8.budgetmaster.templategroup.TemplateGroupType;
 import de.deadlocker8.budgetmaster.templates.TemplateRepository;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
+import de.deadlocker8.budgetmaster.transactions.csvimport.CsvImportSettingsService;
 import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeywordRepository;
 import de.deadlocker8.budgetmaster.utils.DateHelper;
 import org.slf4j.Logger;
@@ -40,13 +41,13 @@ public class ImportService
 	private final AccountRepository accountRepository;
 	private final IconRepository iconRepository;
 	private final TransactionNameKeywordRepository transactionNameKeywordRepository;
-
+	private final CsvImportSettingsService csvImportSettingsService;
 
 	private InternalDatabase database;
 
 	@Autowired
 	public ImportService(CategoryRepository categoryRepository, TransactionRepository transactionRepository, TemplateGroupRepository templateGroupRepository, TemplateRepository templateRepository,
-						 TagRepository tagRepository, ChartService chartService, ImageRepository imageRepository, RepeatingTransactionUpdater repeatingTransactionUpdater, AccountRepository accountRepository, IconRepository iconRepository, TransactionNameKeywordRepository transactionNameKeywordRepository)
+						 TagRepository tagRepository, ChartService chartService, ImageRepository imageRepository, RepeatingTransactionUpdater repeatingTransactionUpdater, AccountRepository accountRepository, IconRepository iconRepository, TransactionNameKeywordRepository transactionNameKeywordRepository, CsvImportSettingsService csvImportSettingsService)
 	{
 		this.categoryRepository = categoryRepository;
 		this.transactionRepository = transactionRepository;
@@ -59,6 +60,7 @@ public class ImportService
 		this.accountRepository = accountRepository;
 		this.iconRepository = iconRepository;
 		this.transactionNameKeywordRepository = transactionNameKeywordRepository;
+		this.csvImportSettingsService = csvImportSettingsService;
 	}
 
 	public List<ImportResultItem> importDatabase(InternalDatabase database, Boolean importTemplateGroups, Boolean importTemplates, Boolean importCharts)
@@ -105,6 +107,8 @@ public class ImportService
 		}
 
 		new TransactionNameKeywordImporter(transactionNameKeywordRepository).importItems(database.getTransactionNameKeywords());
+
+		new CsvImportSettingsImporter(csvImportSettingsService).importItems(database.getCsvImportSettings());
 
 		LOGGER.debug("Updating repeating transactions...");
 		repeatingTransactionUpdater.updateRepeatingTransactions(DateHelper.getCurrentDate());

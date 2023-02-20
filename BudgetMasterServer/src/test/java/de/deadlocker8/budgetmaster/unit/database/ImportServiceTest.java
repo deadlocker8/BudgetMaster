@@ -32,6 +32,8 @@ import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.templates.TemplateRepository;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
+import de.deadlocker8.budgetmaster.transactions.csvimport.CsvImportSettings;
+import de.deadlocker8.budgetmaster.transactions.csvimport.CsvImportSettingsService;
 import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeyword;
 import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeywordService;
 import de.deadlocker8.budgetmaster.utils.Strings;
@@ -138,6 +140,9 @@ class ImportServiceTest
 
 	@Autowired
 	private ImportService importService;
+
+	@Autowired
+	private CsvImportSettingsService csvImportSettingsService;
 
 	@Test
 	void test_importFullDatabase() throws URISyntaxException, IOException
@@ -415,6 +420,21 @@ class ImportServiceTest
 				.containsExactly(defaultKeyword1, defaultKeyword2, defaultKeyword3, defaultKeyword4, defaultKeyword5, defaultKeyword6, defaultKeyword7, defaultKeyword8, defaultKeyword9, defaultKeyword10, defaultKeyword11, keyword1);
 
 
+		// csv import settings
+		final CsvImportSettings expectedSettings = new CsvImportSettings();
+		expectedSettings.setSeparator(",");
+		expectedSettings.setEncoding("cp1252");
+		expectedSettings.setNumberOfLinesToSkip(12);
+		expectedSettings.setColumnDate(3);
+		expectedSettings.setDatePattern("dd.MM.yy");
+		expectedSettings.setColumnName(1);
+		expectedSettings.setColumnAmount(2);
+		expectedSettings.setDecimalSeparator(",");
+		expectedSettings.setGroupingSeparator(".");
+		expectedSettings.setColumnDescription(1);
+
+		assertThat(csvImportSettingsService.getCsvImportSettings()).isEqualTo(expectedSettings);
+
 		assertThat(importService.getCollectedErrorMessages(importResultItems)).isEmpty();
 	}
 
@@ -461,7 +481,7 @@ class ImportServiceTest
 		template.setTags(new ArrayList<>());
 
 		// database
-		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(template), List.of(), List.of(), List.of(), List.of());
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(template), List.of(), List.of(), List.of(), List.of(), List.of());
 
 		// act
 		importService.importDatabase(database, true, false, true);
@@ -484,7 +504,7 @@ class ImportServiceTest
 		Mockito.when(templateGroupRepository.findFirstByType(TemplateGroupType.DEFAULT)).thenReturn(templateGroupDefault);
 
 		// database
-		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(templateGroup), List.of(templateWithGroup), List.of(), List.of(), List.of(), List.of());
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(templateGroup), List.of(templateWithGroup), List.of(), List.of(), List.of(), List.of(), List.of());
 
 		// act
 		importService.importDatabase(database, false, true, true);
@@ -514,7 +534,7 @@ class ImportServiceTest
 		chart.setVersion(7);
 
 		// database
-		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(chart), List.of(), List.of(), List.of());
+		InternalDatabase database = new InternalDatabase(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(chart), List.of(), List.of(), List.of(), List.of());
 
 		Mockito.when(chartService.getHighestUsedID()).thenReturn(8);
 		final ChartRepository chartRepositoryMock = Mockito.mock(ChartRepository.class);

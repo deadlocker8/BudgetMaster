@@ -10,7 +10,7 @@ import de.deadlocker8.budgetmaster.charts.Chart;
 import de.deadlocker8.budgetmaster.charts.ChartService;
 import de.deadlocker8.budgetmaster.charts.ChartType;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
-import de.deadlocker8.budgetmaster.database.model.v9.BackupDatabase_v9;
+import de.deadlocker8.budgetmaster.database.model.v10.BackupDatabase_v10;
 import de.deadlocker8.budgetmaster.hints.HintService;
 import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.IconService;
@@ -26,6 +26,8 @@ import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.templates.TemplateService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
+import de.deadlocker8.budgetmaster.transactions.csvimport.CsvImportSettings;
+import de.deadlocker8.budgetmaster.transactions.csvimport.CsvImportSettingsService;
 import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeyword;
 import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeywordService;
 import de.deadlocker8.budgetmaster.utils.DateHelper;
@@ -69,11 +71,12 @@ public class DatabaseService
 	private final IconService iconService;
 	private final HintService hintService;
 	private final TransactionNameKeywordService transactionNameKeywordService;
+	private final CsvImportSettingsService csvImportSettingsService;
 
 	private final List<Resettable> services;
 
 	@Autowired
-	public DatabaseService(AccountService accountService, CategoryService categoryService, TransactionService transactionService, TagService tagService, TemplateService templateService, TemplateGroupService templateGroupService, ChartService chartService, SettingsService settingsService, ImageService imageService, IconService iconService, HintService hintService, TransactionNameKeywordService transactionNameKeywordService)
+	public DatabaseService(AccountService accountService, CategoryService categoryService, TransactionService transactionService, TagService tagService, TemplateService templateService, TemplateGroupService templateGroupService, ChartService chartService, SettingsService settingsService, ImageService imageService, IconService iconService, HintService hintService, TransactionNameKeywordService transactionNameKeywordService, CsvImportSettingsService csvImportSettingsService)
 	{
 		this.accountService = accountService;
 		this.categoryService = categoryService;
@@ -87,6 +90,7 @@ public class DatabaseService
 		this.iconService = iconService;
 		this.hintService = hintService;
 		this.transactionNameKeywordService = transactionNameKeywordService;
+		this.csvImportSettingsService = csvImportSettingsService;
 		this.services = List.of(transactionService, templateService, templateGroupService, categoryService, accountService, tagService, chartService, iconService, imageService, tagService, hintService, transactionNameKeywordService);
 	}
 
@@ -213,22 +217,24 @@ public class DatabaseService
 
 	public BackupDatabase getDatabaseForJsonSerialization()
 	{
-		List<Category> categories = categoryService.getAllEntitiesAsc();
-		List<Account> accounts = accountService.getRepository().findAll();
-		List<Transaction> transactions = transactionService.getRepository().findAll();
-		List<Transaction> filteredTransactions = filterRepeatingTransactions(transactions);
-		List<TemplateGroup> templateGroups = templateGroupService.getRepository().findAll();
-		List<Template> templates = templateService.getRepository().findAll();
-		List<Chart> charts = chartService.getRepository().findAllByType(ChartType.CUSTOM);
-		List<Image> images = imageService.getRepository().findAll();
-		List<Icon> icons = iconService.getRepository().findAll();
-		List<TransactionNameKeyword> transactionNameKeywords = transactionNameKeywordService.getRepository().findAll();
+		final List<Category> categories = categoryService.getAllEntitiesAsc();
+		final List<Account> accounts = accountService.getRepository().findAll();
+		final List<Transaction> transactions = transactionService.getRepository().findAll();
+		final List<Transaction> filteredTransactions = filterRepeatingTransactions(transactions);
+		final List<TemplateGroup> templateGroups = templateGroupService.getRepository().findAll();
+		final List<Template> templates = templateService.getRepository().findAll();
+		final List<Chart> charts = chartService.getRepository().findAllByType(ChartType.CUSTOM);
+		final List<Image> images = imageService.getRepository().findAll();
+		final List<Icon> icons = iconService.getRepository().findAll();
+		final List<TransactionNameKeyword> transactionNameKeywords = transactionNameKeywordService.getRepository().findAll();
+		final CsvImportSettings csvImportSettings = csvImportSettingsService.getCsvImportSettings();
+
 		LOGGER.debug(MessageFormat.format("Reduced {0} transactions to {1}", transactions.size(), filteredTransactions.size()));
 
-		InternalDatabase database = new InternalDatabase(categories, accounts, filteredTransactions, templateGroups, templates, charts, images, icons, transactionNameKeywords);
+		InternalDatabase database = new InternalDatabase(categories, accounts, filteredTransactions, templateGroups, templates, charts, images, icons, transactionNameKeywords, List.of(csvImportSettings));
 		LOGGER.debug(MessageFormat.format("Created database for JSON with {0} transactions, {1} categories, {2} accounts, {3} templates groups, {4} templates, {5} charts {6} images {7} icons and {8} transaction name keywords", database.getTransactions().size(), database.getCategories().size(), database.getAccounts().size(), database.getTemplateGroups().size(), database.getTemplates().size(), database.getCharts().size(), database.getImages().size(), database.getIcons().size(), database.getTransactionNameKeywords().size()));
 
-		BackupDatabase_v9 databaseInExternalForm = BackupDatabase_v9.createFromInternalEntities(database);
+		BackupDatabase_v10 databaseInExternalForm = BackupDatabase_v10.createFromInternalEntities(database);
 		LOGGER.debug("Converted database to external form");
 		return databaseInExternalForm;
 	}

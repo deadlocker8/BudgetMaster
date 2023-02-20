@@ -8,7 +8,7 @@ import de.deadlocker8.budgetmaster.charts.Chart;
 import de.deadlocker8.budgetmaster.charts.ChartDisplayType;
 import de.deadlocker8.budgetmaster.charts.ChartGroupType;
 import de.deadlocker8.budgetmaster.charts.ChartType;
-import de.deadlocker8.budgetmaster.database.DatabaseParser_v9;
+import de.deadlocker8.budgetmaster.database.DatabaseParser_v10;
 import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.images.Image;
@@ -19,6 +19,7 @@ import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifierDays;
 import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
+import de.deadlocker8.budgetmaster.transactions.csvimport.CsvImportSettings;
 import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeyword;
 import de.thecodelabs.utils.util.Localization;
 import de.thecodelabs.utils.util.Localization.LocalizationDelegate;
@@ -37,7 +38,7 @@ import java.util.Locale;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class DatabaseParser_v9_convertToInternalTest
+class DatabaseParser_v10_convertToInternalTest
 {
 	@BeforeEach
 	public void before()
@@ -64,8 +65,8 @@ class DatabaseParser_v9_convertToInternalTest
 	{
 		try
 		{
-			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v9Test.json").toURI())));
-			DatabaseParser_v9 importer = new DatabaseParser_v9(json);
+			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v10Test.json").toURI())));
+			DatabaseParser_v10 importer = new DatabaseParser_v10(json);
 			InternalDatabase database = importer.parseDatabaseFromJSON().convertToInternal();
 
 			final Chart chart = new Chart("The best chart", "/* This list will be dynamically filled with all the transactions between\r\n* the start and and date you select on the \"Show Chart\" page\r\n* and filtered according to your specified filter.\r\n* An example entry for this list and tutorial about how to create custom charts ca be found in the BudgetMaster wiki:\r\n* https://github.com/deadlocker8/BudgetMaster/wiki/How-to-create-custom-charts\r\n*/\r\nvar transactionData \u003d [];\r\n\r\n// Prepare your chart settings here (mandatory)\r\nvar plotlyData \u003d [{\r\n    x: [],\r\n    y: [],\r\n    type: \u0027bar\u0027\r\n}];\r\n\r\n// Add your Plotly layout settings here (optional)\r\nvar plotlyLayout \u003d {};\r\n\r\n// Add your Plotly configuration settings here (optional)\r\nvar plotlyConfig \u003d {\r\n    showSendToCloud: false,\r\n    displaylogo: false,\r\n    showLink: false,\r\n    responsive: true\r\n};\r\n\r\n// Don\u0027t touch this line\r\nPlotly.newPlot(\"containerID\", plotlyData, plotlyLayout, plotlyConfig);\r\n", ChartType.CUSTOM, 7, ChartDisplayType.CUSTOM, ChartGroupType.NONE, null);
@@ -85,8 +86,8 @@ class DatabaseParser_v9_convertToInternalTest
 	{
 		try
 		{
-			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v9Test.json").toURI())));
-			DatabaseParser_v9 importer = new DatabaseParser_v9(json);
+			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v10Test.json").toURI())));
+			DatabaseParser_v10 importer = new DatabaseParser_v10(json);
 			InternalDatabase database = importer.parseDatabaseFromJSON().convertToInternal();
 
 			final Icon icon = new Icon("fas fa-icons");
@@ -110,8 +111,8 @@ class DatabaseParser_v9_convertToInternalTest
 	{
 		try
 		{
-			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v9Test.json").toURI())));
-			DatabaseParser_v9 importer = new DatabaseParser_v9(json);
+			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v10Test.json").toURI())));
+			DatabaseParser_v10 importer = new DatabaseParser_v10(json);
 			InternalDatabase database = importer.parseDatabaseFromJSON().convertToInternal();
 
 			final Image accountImage = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
@@ -142,8 +143,8 @@ class DatabaseParser_v9_convertToInternalTest
 	{
 		try
 		{
-			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v9Test.json").toURI())));
-			DatabaseParser_v9 importer = new DatabaseParser_v9(json);
+			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v10Test.json").toURI())));
+			DatabaseParser_v10 importer = new DatabaseParser_v10(json);
 			InternalDatabase database = importer.parseDatabaseFromJSON().convertToInternal();
 
 			final Image image = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
@@ -166,8 +167,8 @@ class DatabaseParser_v9_convertToInternalTest
 	{
 		try
 		{
-			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v9Test.json").toURI())));
-			DatabaseParser_v9 importer = new DatabaseParser_v9(json);
+			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v10Test.json").toURI())));
+			DatabaseParser_v10 importer = new DatabaseParser_v10(json);
 			InternalDatabase database = importer.parseDatabaseFromJSON().convertToInternal();
 
 			final Image templateImage = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
@@ -201,8 +202,8 @@ class DatabaseParser_v9_convertToInternalTest
 	{
 		try
 		{
-			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v9Test.json").toURI())));
-			DatabaseParser_v9 importer = new DatabaseParser_v9(json);
+			String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v10Test.json").toURI())));
+			DatabaseParser_v10 importer = new DatabaseParser_v10(json);
 			InternalDatabase database = importer.parseDatabaseFromJSON().convertToInternal();
 
 			Account account1 = new Account("Default", AccountType.CUSTOM);
@@ -317,8 +318,8 @@ class DatabaseParser_v9_convertToInternalTest
 	@Test
 	void test_Icons() throws IOException, URISyntaxException
 	{
-		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v9Test.json").toURI())));
-		DatabaseParser_v9 importer = new DatabaseParser_v9(json);
+		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v10Test.json").toURI())));
+		DatabaseParser_v10 importer = new DatabaseParser_v10(json);
 		InternalDatabase database = importer.parseDatabaseFromJSON().convertToInternal();
 
 		final Image image = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
@@ -342,8 +343,8 @@ class DatabaseParser_v9_convertToInternalTest
 	@Test
 	void test_TransactionNameKeywords() throws IOException, URISyntaxException
 	{
-		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v9Test.json").toURI())));
-		DatabaseParser_v9 importer = new DatabaseParser_v9(json);
+		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v10Test.json").toURI())));
+		DatabaseParser_v10 importer = new DatabaseParser_v10(json);
 		InternalDatabase database = importer.parseDatabaseFromJSON().convertToInternal();
 
 		final TransactionNameKeyword keyword1 = new TransactionNameKeyword("income");
@@ -352,5 +353,30 @@ class DatabaseParser_v9_convertToInternalTest
 		assertThat(database.getTransactionNameKeywords())
 				.hasSize(2)
 				.containsExactly(keyword1, keyword2);
+	}
+
+	@Test
+	void test_CsvImportSettings() throws IOException, URISyntaxException
+	{
+		String json = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("DatabaseParser_v10Test.json").toURI())));
+		DatabaseParser_v10 importer = new DatabaseParser_v10(json);
+		InternalDatabase database = importer.parseDatabaseFromJSON().convertToInternal();
+
+		final CsvImportSettings expectedSettings = new CsvImportSettings();
+		expectedSettings.setSeparator(";");
+		expectedSettings.setEncoding("UTF-8");
+		expectedSettings.setNumberOfLinesToSkip(1);
+
+		expectedSettings.setColumnDate(1);
+		expectedSettings.setDatePattern("dd.MM.yyyy");
+		expectedSettings.setColumnName(2);
+		expectedSettings.setColumnAmount(3);
+		expectedSettings.setDecimalSeparator(".");
+		expectedSettings.setGroupingSeparator(",");
+		expectedSettings.setColumnDescription(2);
+
+		assertThat(database.getCsvImportSettings())
+				.hasSize(1)
+				.containsExactly(expectedSettings);
 	}
 }

@@ -76,7 +76,6 @@ public class CsvImportSettingsService
 		if(hasContent(columnSettings.decimalSeparator()))
 		{
 			settings.setDecimalSeparator(columnSettings.decimalSeparator());
-
 		}
 		if(hasContent(columnSettings.groupingSeparator()))
 		{
@@ -84,6 +83,23 @@ public class CsvImportSettingsService
 		}
 
 		settings.setColumnDescription(columnSettings.columnDescription());
+	}
+
+	@Transactional
+	public void updateSettings(CsvImportSettings newSettings)
+	{
+		final CsvImportSettings settings = getCsvImportSettings();
+
+		settings.setSeparator(newSettings.getSeparator());
+		settings.setEncoding(newSettings.getEncoding());
+		settings.setNumberOfLinesToSkip(newSettings.getNumberOfLinesToSkip());
+		settings.setColumnDate(newSettings.getColumnDate());
+		settings.setDatePattern(newSettings.getDatePattern());
+		settings.setColumnName(newSettings.getColumnName());
+		settings.setColumnAmount(newSettings.getColumnAmount());
+		settings.setDecimalSeparator(newSettings.getDecimalSeparator());
+		settings.setGroupingSeparator(newSettings.getGroupingSeparator());
+		settings.setColumnDescription(newSettings.getColumnDescription());
 	}
 
 	private boolean hasContent(String value)
@@ -99,5 +115,10 @@ public class CsvImportSettingsService
 		}
 
 		return !value.isBlank();
+	}
+
+	public CsvImportSettingsRepository getRepository()
+	{
+		return csvImportSettingsRepository;
 	}
 }

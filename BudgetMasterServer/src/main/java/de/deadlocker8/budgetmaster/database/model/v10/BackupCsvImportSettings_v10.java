@@ -1,17 +1,11 @@
-package de.deadlocker8.budgetmaster.transactions.csvimport;
+package de.deadlocker8.budgetmaster.database.model.v10;
 
+import de.deadlocker8.budgetmaster.database.model.BackupInfo;
 
-import de.deadlocker8.budgetmaster.utils.ProvidesID;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.util.Objects;
 
-@Entity
-public class CsvImportSettings implements ProvidesID
+public class BackupCsvImportSettings_v10 implements BackupInfo
 {
-	@Id
-	private Integer ID = 1;
 	private String separator;
 	private String encoding;
 	private int numberOfLinesToSkip;
@@ -25,39 +19,9 @@ public class CsvImportSettings implements ProvidesID
 	private String groupingSeparator;
 	private Integer columnDescription;
 
-	public CsvImportSettings()
+	public BackupCsvImportSettings_v10()
 	{
-		// empty
-	}
-
-	public static CsvImportSettings getDefault()
-	{
-		CsvImportSettings defaultSettings = new CsvImportSettings();
-		defaultSettings.setSeparator(";");
-		defaultSettings.setEncoding("UTF-8");
-		defaultSettings.setNumberOfLinesToSkip(0);
-
-		defaultSettings.setColumnDate(null);
-		defaultSettings.setDatePattern("dd.MM.yyyy");
-		defaultSettings.setColumnName(null);
-		defaultSettings.setColumnAmount(null);
-		defaultSettings.setDecimalSeparator(".");
-		defaultSettings.setDecimalSeparator(",");
-		defaultSettings.setColumnDescription(null);
-
-		return defaultSettings;
-	}
-
-	@Override
-	public Integer getID()
-	{
-		return null;
-	}
-
-	@Override
-	public void setID(Integer ID)
-	{
-		this.ID = ID;
+		// for GSON
 	}
 
 	public String getSeparator()
@@ -165,22 +129,21 @@ public class CsvImportSettings implements ProvidesID
 	{
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
-		CsvImportSettings settings = (CsvImportSettings) o;
-		return ID == settings.ID && numberOfLinesToSkip == settings.numberOfLinesToSkip && Objects.equals(separator, settings.separator) && Objects.equals(encoding, settings.encoding) && Objects.equals(columnDate, settings.columnDate) && Objects.equals(datePattern, settings.datePattern) && Objects.equals(columnName, settings.columnName) && Objects.equals(columnAmount, settings.columnAmount) && Objects.equals(decimalSeparator, settings.decimalSeparator) && Objects.equals(groupingSeparator, settings.groupingSeparator) && Objects.equals(columnDescription, settings.columnDescription);
+		BackupCsvImportSettings_v10 that = (BackupCsvImportSettings_v10) o;
+		return numberOfLinesToSkip == that.numberOfLinesToSkip && Objects.equals(separator, that.separator) && Objects.equals(encoding, that.encoding) && Objects.equals(columnDate, that.columnDate) && Objects.equals(datePattern, that.datePattern) && Objects.equals(columnName, that.columnName) && Objects.equals(columnAmount, that.columnAmount) && Objects.equals(decimalSeparator, that.decimalSeparator) && Objects.equals(groupingSeparator, that.groupingSeparator) && Objects.equals(columnDescription, that.columnDescription);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, separator, encoding, numberOfLinesToSkip, columnDate, datePattern, columnName, columnAmount, decimalSeparator, groupingSeparator, columnDescription);
+		return Objects.hash(separator, encoding, numberOfLinesToSkip, columnDate, datePattern, columnName, columnAmount, decimalSeparator, groupingSeparator, columnDescription);
 	}
 
 	@Override
 	public String toString()
 	{
-		return "CsvImportSettings{" +
-				"ID=" + ID +
-				", separator='" + separator + '\'' +
+		return "BackupCsvImportSettings_v10{" +
+				"separator='" + separator + '\'' +
 				", encoding='" + encoding + '\'' +
 				", numberOfLinesToSkip=" + numberOfLinesToSkip +
 				", columnDate=" + columnDate +

@@ -3,6 +3,7 @@ package de.deadlocker8.budgetmaster.database;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
+import de.deadlocker8.budgetmaster.database.model.v10.BackupDatabase_v10;
 import de.deadlocker8.budgetmaster.database.model.v4.BackupDatabase_v4;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupDatabase_v5;
 import de.deadlocker8.budgetmaster.database.model.v6.BackupDatabase_v6;
@@ -20,7 +21,7 @@ public class DatabaseParser
 	final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
 	private static final int MINIMUM_VERSION = 4;
-	public static final int LATEST_VERSION = 9;
+	public static final int LATEST_VERSION = 10;
 
 	private final String jsonString;
 
@@ -78,6 +79,13 @@ public class DatabaseParser
 		if(version == 9)
 		{
 			BackupDatabase_v9 parsedDatabase = new DatabaseParser_v9(jsonString).parseDatabaseFromJSON();
+			LOGGER.debug(MessageFormat.format("Parsed database with {0} transactions, {1} categories, {2} accounts, {3} templates {4} charts {5} images {6} icons and {7} transaction name keywords", parsedDatabase.getTransactions().size(), parsedDatabase.getCategories().size(), parsedDatabase.getAccounts().size(), parsedDatabase.getTemplates().size(), parsedDatabase.getCharts().size(), parsedDatabase.getImages().size(), parsedDatabase.getIcons().size(), parsedDatabase.getTransactionNameKeywords().size()));
+			importedDatabase = parsedDatabase;
+		}
+
+		if(version == 10)
+		{
+			BackupDatabase_v10 parsedDatabase = new DatabaseParser_v10(jsonString).parseDatabaseFromJSON();
 			LOGGER.debug(MessageFormat.format("Parsed database with {0} transactions, {1} categories, {2} accounts, {3} templates {4} charts {5} images {6} icons and {7} transaction name keywords", parsedDatabase.getTransactions().size(), parsedDatabase.getCategories().size(), parsedDatabase.getAccounts().size(), parsedDatabase.getTemplates().size(), parsedDatabase.getCharts().size(), parsedDatabase.getImages().size(), parsedDatabase.getIcons().size(), parsedDatabase.getTransactionNameKeywords().size()));
 			importedDatabase = parsedDatabase;
 		}

@@ -10,6 +10,7 @@ import de.deadlocker8.budgetmaster.services.EntityType;
 import de.deadlocker8.budgetmaster.templategroup.TemplateGroup;
 import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
+import de.deadlocker8.budgetmaster.transactions.csvimport.CsvImportSettings;
 import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeyword;
 
 import java.util.LinkedHashMap;
@@ -27,12 +28,13 @@ public class InternalDatabase
 	private List<Image> images;
 	private List<Icon> icons;
 	private List<TransactionNameKeyword> transactionNameKeywords;
+	private List<CsvImportSettings> csvImportSettings;
 
 	public InternalDatabase()
 	{
 	}
 
-	public InternalDatabase(List<Category> categories, List<Account> accounts, List<Transaction> transactions, List<TemplateGroup> templateGroups, List<Template> templates, List<Chart> charts, List<Image> images, List<Icon> icons, List<TransactionNameKeyword> transactionNameKeywords)
+	public InternalDatabase(List<Category> categories, List<Account> accounts, List<Transaction> transactions, List<TemplateGroup> templateGroups, List<Template> templates, List<Chart> charts, List<Image> images, List<Icon> icons, List<TransactionNameKeyword> transactionNameKeywords, List<CsvImportSettings> csvImportSettings)
 	{
 		this.categories = categories;
 		this.accounts = accounts;
@@ -43,6 +45,7 @@ public class InternalDatabase
 		this.images = images;
 		this.icons = icons;
 		this.transactionNameKeywords = transactionNameKeywords;
+		this.csvImportSettings = csvImportSettings;
 	}
 
 	public List<Category> getCategories()
@@ -88,6 +91,11 @@ public class InternalDatabase
 	public List<TransactionNameKeyword> getTransactionNameKeywords()
 	{
 		return transactionNameKeywords;
+	}
+
+	public List<CsvImportSettings> getCsvImportSettings()
+	{
+		return csvImportSettings;
 	}
 
 	public Map<EntityType, Integer> getNumberOfEntitiesByType()
