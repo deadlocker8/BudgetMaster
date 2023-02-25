@@ -363,7 +363,7 @@ class DatabaseParser_v10_convertToInternalTest
 		InternalDatabase database = importer.parseDatabaseFromJSON().convertToInternal();
 
 		final CsvImportSettings expectedSettings = new CsvImportSettings();
-		expectedSettings.setSeparator(";");
+		expectedSettings.setSeparatorChar(";");
 		expectedSettings.setEncoding("UTF-8");
 		expectedSettings.setNumberOfLinesToSkip(1);
 

@@ -422,7 +422,7 @@ class ImportServiceTest
 
 		// csv import settings
 		final CsvImportSettings expectedSettings = new CsvImportSettings();
-		expectedSettings.setSeparator(",");
+		expectedSettings.setSeparatorChar(",");
 		expectedSettings.setEncoding("cp1252");
 		expectedSettings.setNumberOfLinesToSkip(12);
 		expectedSettings.setColumnDate(3);

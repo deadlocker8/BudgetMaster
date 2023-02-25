@@ -32,7 +32,7 @@ public class CsvImportSettingsService
 		if(csvImportSettingsRepository.findById(1).isEmpty())
 		{
 			csvImportSettingsRepository.save(CsvImportSettings.getDefault());
-			LOGGER.debug("Created default settings");
+			LOGGER.debug("Created default csv import settings");
 		}
 	}
 
@@ -47,7 +47,7 @@ public class CsvImportSettingsService
 		final CsvImportSettings settings = getCsvImportSettings();
 		if(hasContent(csvImport.separator()))
 		{
-			settings.setSeparator(csvImport.separator());
+			settings.setSeparatorChar(csvImport.separator());
 		}
 
 		if(hasContent(csvImport.encoding()))
@@ -90,7 +90,7 @@ public class CsvImportSettingsService
 	{
 		final CsvImportSettings settings = getCsvImportSettings();
 
-		settings.setSeparator(newSettings.getSeparator());
+		settings.setSeparatorChar(newSettings.getSeparatorChar());
 		settings.setEncoding(newSettings.getEncoding());
 		settings.setNumberOfLinesToSkip(newSettings.getNumberOfLinesToSkip());
 		settings.setColumnDate(newSettings.getColumnDate());

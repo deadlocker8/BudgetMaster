@@ -90,7 +90,7 @@
 
         <div class="row">
             <div class="input-field col s4 l2 offset-l3">
-                <input id="separator" type="text" name="separator" <@validation.validation "separator" "center-align"/> value="<#if csvImportSettings.getSeparator()??>${csvImportSettings.getSeparator()}</#if>">
+                <input id="separator" type="text" name="separator" <@validation.validation "separator" "center-align"/> value="<#if csvImportSettings.getSeparatorChar()??>${csvImportSettings.getSeparatorChar()}</#if>">
                 <label class="input-label" for="separator">${locale.getString("transactions.import.separator")}</label>
             </div>
             <div class="input-field col s4 l2">

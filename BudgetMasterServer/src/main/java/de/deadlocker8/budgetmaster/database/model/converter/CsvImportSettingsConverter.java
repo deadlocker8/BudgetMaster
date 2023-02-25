@@ -14,7 +14,7 @@ public class CsvImportSettingsConverter implements Converter<CsvImportSettings, 
 		}
 
 		final CsvImportSettings settings = new CsvImportSettings();
-		settings.setSeparator(backupCsvImportSettings.getSeparator());
+		settings.setSeparatorChar(backupCsvImportSettings.getSeparator());
 		settings.setEncoding(backupCsvImportSettings.getEncoding());
 		settings.setNumberOfLinesToSkip(backupCsvImportSettings.getNumberOfLinesToSkip());
 
@@ -37,7 +37,7 @@ public class CsvImportSettingsConverter implements Converter<CsvImportSettings, 
 		}
 
 		final BackupCsvImportSettings_v10 settings = new BackupCsvImportSettings_v10();
-		settings.setSeparator(internalItem.getSeparator());
+		settings.setSeparator(internalItem.getSeparatorChar());
 		settings.setEncoding(internalItem.getEncoding());
 		settings.setNumberOfLinesToSkip(internalItem.getNumberOfLinesToSkip());
 
