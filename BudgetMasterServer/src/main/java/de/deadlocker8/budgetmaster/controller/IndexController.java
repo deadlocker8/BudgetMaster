@@ -30,7 +30,7 @@ public class IndexController extends BaseController
 		this.statisticsService = statisticsService;
 	}
 
-	@GetMapping
+	@GetMapping("/")
 	public String index()
 	{
 		return ReturnValues.INDEX;

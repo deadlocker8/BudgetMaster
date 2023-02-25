@@ -6,8 +6,8 @@ import de.deadlocker8.budgetmaster.utils.ProvidesID;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;

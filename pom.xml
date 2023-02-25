@@ -40,7 +40,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.8</version>
+        <version>3.0.3</version>
         <relativePath/>
     </parent>
 
@@ -57,7 +57,7 @@
         <testcontainer.version>1.17.6</testcontainer.version>
         <assertj-core.version>3.24.2</assertj-core.version>
 
-        <dependency-check-maven.version>8.0.1</dependency-check-maven.version>
+        <dependency-check-maven.version>8.1.0</dependency-check-maven.version>
     </properties>
 
     <dependencies>

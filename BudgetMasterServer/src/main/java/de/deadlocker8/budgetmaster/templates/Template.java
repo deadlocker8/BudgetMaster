@@ -10,7 +10,7 @@ import de.deadlocker8.budgetmaster.templategroup.TemplateGroup;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionBase;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

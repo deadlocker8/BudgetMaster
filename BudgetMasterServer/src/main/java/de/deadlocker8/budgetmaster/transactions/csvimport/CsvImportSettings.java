@@ -3,8 +3,8 @@ package de.deadlocker8.budgetmaster.transactions.csvimport;
 
 import de.deadlocker8.budgetmaster.utils.ProvidesID;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import java.util.Objects;
 
 @Entity

@@ -6,10 +6,10 @@ import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.Tag_;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

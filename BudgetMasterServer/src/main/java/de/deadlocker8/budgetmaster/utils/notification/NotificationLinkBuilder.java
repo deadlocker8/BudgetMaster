@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.utils.notification;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 
 public class NotificationLinkBuilder

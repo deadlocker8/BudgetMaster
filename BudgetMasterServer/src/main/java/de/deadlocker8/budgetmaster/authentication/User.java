@@ -2,9 +2,9 @@ package de.deadlocker8.budgetmaster.authentication;
 
 import de.deadlocker8.budgetmaster.accounts.Account;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "login_user")

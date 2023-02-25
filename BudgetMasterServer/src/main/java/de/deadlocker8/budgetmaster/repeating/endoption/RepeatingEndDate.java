@@ -3,8 +3,8 @@ package de.deadlocker8.budgetmaster.repeating.endoption;
 import com.google.gson.annotations.Expose;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Entity;
-import javax.persistence.Transient;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;

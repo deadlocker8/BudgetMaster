@@ -2,7 +2,7 @@ package de.deadlocker8.budgetmaster.reports.columns;
 
 import de.deadlocker8.budgetmaster.reports.settings.ReportSettings;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 public class ReportColumn

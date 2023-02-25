@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.utils.ProvidesID;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.List;
 import java.util.Objects;
 

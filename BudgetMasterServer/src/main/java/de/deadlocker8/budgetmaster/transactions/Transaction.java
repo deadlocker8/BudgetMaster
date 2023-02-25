@@ -11,7 +11,7 @@ import de.deadlocker8.budgetmaster.utils.DateHelper;
 import de.deadlocker8.budgetmaster.utils.ProvidesID;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

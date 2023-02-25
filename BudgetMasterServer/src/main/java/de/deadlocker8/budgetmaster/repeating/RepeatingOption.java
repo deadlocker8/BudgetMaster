@@ -9,7 +9,7 @@ import de.deadlocker8.budgetmaster.repeating.modifier.RepeatingModifier;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
