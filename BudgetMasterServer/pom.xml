@@ -42,6 +42,7 @@
         <opencsv.version>5.7.1</opencsv.version>
         <datatables.version>1.13.2</datatables.version>
         <jakarta.xml.bind-api.version>4.0.0</jakarta.xml.bind-api.version>
+        <junit-jupiter-engine.version>5.9.2</junit-jupiter-engine.version>
 
         <project.outputDirectory>${project.build.directory}/../build/${project.version}</project.outputDirectory>
         <project.artifactName>${project.artifactId}-v${project.version}</project.artifactName>
@@ -264,11 +265,17 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M6</version>
+                <version>3.0.0-M9</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.junit.jupiter</groupId>
+                        <artifactId>junit-jupiter-engine</artifactId>
+                        <version>${junit-jupiter-engine.version}</version>
+                    </dependency>
+                </dependencies>
                 <configuration>
-                    <junitArtifactName>junit:junit</junitArtifactName>
+                    <!--suppress MavenModelInspection -->
                     <argLine>${surefireArgLine} -Dfile.encoding=UTF-8</argLine>
-
                     <systemPropertyVariables>
                         <testProfile>true</testProfile>
                     </systemPropertyVariables>
