@@ -519,6 +519,32 @@ class CsvImportTest extends SeleniumTestBase
 		assertRow(rowAfterSave, "green", "2023-01-08", "No category", "dolor sit amet", "dolor sit amet", "-12.00 €");
 	}
 
+	@Test
+	void test_showTransactionNameSuggestions()
+	{
+		uploadAndSetColumnSettings();
+
+		final List<WebElement> rows = driver.findElements(By.className("transaction-import-row"));
+		final WebElement row = rows.get(0);
+
+		// change data
+		final WebElement categorySelect = row.findElement(By.cssSelector(".category-select-wrapper .custom-select"));
+		categorySelect.click();
+		row.findElements(By.cssSelector(".category-select-wrapper .custom-select-item-name")).stream()
+				.filter(webElement -> webElement.getText().equals("sdfdsf"))
+				.findFirst().orElseThrow().click();
+
+		final WebElement nameInput = row.findElement(By.name("name"));
+		nameInput.clear();
+		nameInput.click();
+		nameInput.sendKeys("e");
+
+		final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".autocomplete-content li")));
+
+		assertThat(driver.findElements(By.cssSelector(".autocomplete-content li"))).hasSize(3);
+	}
+
 	private void uploadAndSetColumnSettings()
 	{
 		driver.get(helper.getUrl() + "/transactionImport");
