@@ -79,11 +79,11 @@ public class TransactionImportController extends BaseController
 	{
 		request.removeAttribute(RequestAttributeNames.CURRENT_CSV_TRANSACTION, RequestAttributes.SCOPE_SESSION);
 
-		// copy session attributes to model, otherwise they are not available in freemarker
-		fillModelAttributeFromRequestSessionOrDefault(model, RequestAttributeNames.CSV_IMPORT, request, new CsvImport(null, ";", StandardCharsets.UTF_8.name(), 0));
-		fillModelAttributeFromRequestSession(model, RequestAttributeNames.CSV_ROWS, request);
-		fillModelAttributeFromRequestSession(model, RequestAttributeNames.CSV_TRANSACTIONS, request);
-		fillModelAttributeFromRequestSession(model, RequestAttributeNames.ERRORS_COLUMN_SETTINGS, request);
+		final Object attribute = request.getAttribute(RequestAttributeNames.CSV_IMPORT, RequestAttributes.SCOPE_SESSION);
+		if(attribute == null)
+		{
+			model.addAttribute(RequestAttributeNames.CSV_IMPORT, new CsvImport(null, ";", StandardCharsets.UTF_8.name(), 0));
+		}
 
 		final Object bindingResult = request.getAttribute(RequestAttributeNames.ERROR_UPLOAD, RequestAttributes.SCOPE_SESSION);
 		if(bindingResult != null)
@@ -96,28 +96,6 @@ public class TransactionImportController extends BaseController
 		model.addAttribute(ModelAttributes.CSV_IMPORT_SETTINGS, csvImportSettingsService.getCsvImportSettings());
 
 		return ReturnValues.TRANSACTION_IMPORT;
-	}
-
-	private void fillModelAttributeFromRequestSessionOrDefault(Model model, String attributeName, WebRequest request, Object defaultValue)
-	{
-		final Object attribute = request.getAttribute(attributeName, RequestAttributes.SCOPE_SESSION);
-		if(attribute == null)
-		{
-			model.addAttribute(attributeName, defaultValue);
-		}
-		else
-		{
-			model.addAttribute(attributeName, attribute);
-		}
-	}
-
-	private void fillModelAttributeFromRequestSession(Model model, String attributeName, WebRequest request)
-	{
-		final Object attribute = request.getAttribute(attributeName, RequestAttributes.SCOPE_SESSION);
-		if(attribute != null)
-		{
-			model.addAttribute(attributeName, attribute);
-		}
 	}
 
 	@PostMapping("/upload")

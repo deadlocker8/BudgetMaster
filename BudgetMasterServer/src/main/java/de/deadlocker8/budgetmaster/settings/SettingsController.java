@@ -86,7 +86,7 @@ public class SettingsController extends BaseController
 
 	private static class RequestAttributeNames
 	{
-		public static final String DATABASE = "database";
+		public static final String DATABASE_TO_IMPORT = "databaseToImport";
 		public static final String IMPORT_TEMPLATE_GROUPS = "importTemplatesGroups";
 		public static final String IMPORT_TEMPLATES = "importTemplates";
 		public static final String IMPORT_CHARTS = "importCharts";
@@ -123,7 +123,7 @@ public class SettingsController extends BaseController
 	public String settings(WebRequest request, Model model)
 	{
 		prepareBasicModel(model, settingsService.getSettings());
-		request.removeAttribute(RequestAttributeNames.DATABASE, RequestAttributes.SCOPE_SESSION);
+		request.removeAttribute(RequestAttributeNames.DATABASE_TO_IMPORT, RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute(RequestAttributeNames.IMPORT_TEMPLATE_GROUPS, RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute(RequestAttributeNames.IMPORT_TEMPLATES, RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute(RequestAttributeNames.IMPORT_CHARTS, RequestAttributes.SCOPE_SESSION);
@@ -375,7 +375,7 @@ public class SettingsController extends BaseController
 			DatabaseParser importer = new DatabaseParser(jsonString);
 			InternalDatabase database = importer.parseDatabaseFromJSON();
 
-			request.setAttribute(RequestAttributeNames.DATABASE, database, RequestAttributes.SCOPE_SESSION);
+			request.setAttribute(RequestAttributeNames.DATABASE_TO_IMPORT, database, RequestAttributes.SCOPE_SESSION);
 			return ReturnValues.REDIRECT_IMPORT_DATABASE_STEP_1;
 		}
 		catch(Exception e)
@@ -391,7 +391,7 @@ public class SettingsController extends BaseController
 	@GetMapping("/database/import/step1")
 	public String importStepOne(WebRequest request, Model model)
 	{
-		model.addAttribute(ModelAttributes.DATABASE, request.getAttribute(RequestAttributeNames.DATABASE, RequestAttributes.SCOPE_SESSION));
+		model.addAttribute(ModelAttributes.DATABASE, request.getAttribute(RequestAttributeNames.DATABASE_TO_IMPORT, RequestAttributes.SCOPE_SESSION));
 		return ReturnValues.IMPORT_DATABASE_STEP_1;
 	}
 
@@ -401,8 +401,8 @@ public class SettingsController extends BaseController
 									@RequestParam(value = "TEMPLATE_GROUP", required = false) boolean importTemplateGroups,
 									@RequestParam(value = "CHART", required = false) boolean importCharts)
 	{
-		final InternalDatabase database = (InternalDatabase) request.getAttribute(RequestAttributeNames.DATABASE, RequestAttributes.SCOPE_SESSION);
-		request.removeAttribute(RequestAttributeNames.DATABASE, RequestAttributes.SCOPE_SESSION);
+		final InternalDatabase database = (InternalDatabase) request.getAttribute(RequestAttributeNames.DATABASE_TO_IMPORT, RequestAttributes.SCOPE_SESSION);
+		request.removeAttribute(RequestAttributeNames.DATABASE_TO_IMPORT, RequestAttributes.SCOPE_SESSION);
 
 		prepareBasicModel(model, settingsService.getSettings());
 
