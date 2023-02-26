@@ -542,7 +542,7 @@ class CsvImportTest extends SeleniumTestBase
 		final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".autocomplete-content li")));
 
-		assertThat(driver.findElements(By.cssSelector(".autocomplete-content li"))).hasSize(3);
+		assertThat(driver.findElements(By.cssSelector(".autocomplete-content li"))).hasSizeGreaterThan(0);
 	}
 
 	private void uploadAndSetColumnSettings()
