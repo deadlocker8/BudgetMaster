@@ -1,6 +1,6 @@
 package de.deadlocker8.budgetmaster.repeating.modifier;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 import java.time.LocalDate;
 
 @Entity

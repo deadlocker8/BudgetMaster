@@ -31,6 +31,7 @@ public class TransactionImportController extends BaseController
 	{
 		public static final String ERROR = "error";
 		public static final String CATEGORIES = "categories";
+		public static final String CSV_IMPORT_SETTINGS = "csvImportSettings";
 	}
 
 	private static class ReturnValues
@@ -61,14 +62,16 @@ public class TransactionImportController extends BaseController
 	private final CategoryService categoryService;
 	private final AccountService accountService;
 	private final TransactionImportService transactionImportService;
+	private final CsvImportSettingsService csvImportSettingsService;
 
 	@Autowired
-	public TransactionImportController(TransactionService transactionService, CategoryService categoryService, AccountService accountService, TransactionImportService transactionImportService)
+	public TransactionImportController(TransactionService transactionService, CategoryService categoryService, AccountService accountService, TransactionImportService transactionImportService, CsvImportSettingsService csvImportSettingsService)
 	{
 		this.transactionService = transactionService;
 		this.categoryService = categoryService;
 		this.accountService = accountService;
 		this.transactionImportService = transactionImportService;
+		this.csvImportSettingsService = csvImportSettingsService;
 	}
 
 	@GetMapping
@@ -76,7 +79,8 @@ public class TransactionImportController extends BaseController
 	{
 		request.removeAttribute(RequestAttributeNames.CURRENT_CSV_TRANSACTION, RequestAttributes.SCOPE_SESSION);
 
-		if(request.getAttribute(RequestAttributeNames.CSV_IMPORT, RequestAttributes.SCOPE_SESSION) == null)
+		final Object attribute = request.getAttribute(RequestAttributeNames.CSV_IMPORT, RequestAttributes.SCOPE_SESSION);
+		if(attribute == null)
 		{
 			model.addAttribute(RequestAttributeNames.CSV_IMPORT, new CsvImport(null, ";", StandardCharsets.UTF_8.name(), 0));
 		}
@@ -88,6 +92,8 @@ public class TransactionImportController extends BaseController
 		}
 
 		model.addAttribute(ModelAttributes.CATEGORIES, categoryService.getAllEntitiesAsc());
+		model.addAttribute(TransactionModelAttributes.SUGGESTIONS_JSON, transactionService.getNameSuggestionsJson());
+		model.addAttribute(ModelAttributes.CSV_IMPORT_SETTINGS, csvImportSettingsService.getCsvImportSettings());
 
 		return ReturnValues.TRANSACTION_IMPORT;
 	}
@@ -97,6 +103,8 @@ public class TransactionImportController extends BaseController
 						 @ModelAttribute("CsvImport") CsvImport csvImport,
 						 BindingResult bindingResult)
 	{
+		csvImportSettingsService.updateSettings(csvImport);
+
 		if(csvImport.file().isEmpty())
 		{
 			removeAllAttributes(request);
@@ -155,6 +163,8 @@ public class TransactionImportController extends BaseController
 		{
 			return ReturnValues.REDIRECT_CANCEL;
 		}
+
+		csvImportSettingsService.updateSettings(csvColumnSettings);
 
 		final List<CsvRow> csvRows = (List<CsvRow>) attribute;
 		final List<CsvTransaction> csvTransactions = new ArrayList<>();

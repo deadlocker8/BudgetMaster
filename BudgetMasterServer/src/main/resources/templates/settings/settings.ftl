@@ -39,7 +39,7 @@
                         <div class="row">
                             <div class="col s12">
                                 <ul class="collapsible">
-                                    <@settingsMacros.settingsCollapsibleItem "securitySettingsContainer" "vpn_key" "Security">
+                                    <@settingsMacros.settingsCollapsibleItem "securitySettingsContainer" "vpn_key" locale.getString("settings.security")>
                                         <@settingsSecurityMacros.securitySettingsContainer importScripts=false/>
                                     </@settingsMacros.settingsCollapsibleItem>
 

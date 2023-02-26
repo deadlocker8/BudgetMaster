@@ -2,7 +2,7 @@ package de.deadlocker8.budgetmaster.repeating.modifier;
 
 import com.google.gson.annotations.Expose;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 

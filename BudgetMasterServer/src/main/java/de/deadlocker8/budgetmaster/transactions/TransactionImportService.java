@@ -31,17 +31,17 @@ public class TransactionImportService
 	public CsvTransaction createCsvTransactionFromCsvRow(CsvRow csvRow, CsvColumnSettings csvColumnSettings, Integer index) throws CsvTransactionParseException
 	{
 		final String date = csvRow.getColumns().get(csvColumnSettings.columnDate() - 1);
-		final Optional<LocalDate> parsedDateOptional = DateParser.parse(date, csvColumnSettings.getDatePattern(), settingsService.getSettings().getLanguage().getLocale());
+		final Optional<LocalDate> parsedDateOptional = DateParser.parse(date, csvColumnSettings.datePattern(), settingsService.getSettings().getLanguage().getLocale());
 		if(parsedDateOptional.isEmpty())
 		{
-			throw new CsvTransactionParseException(Localization.getString("transactions.import.error.parse.date", index + 1, date, csvColumnSettings.getDatePattern()));
+			throw new CsvTransactionParseException(Localization.getString("transactions.import.error.parse.date", index + 1, date, csvColumnSettings.datePattern()));
 		}
 
 		final String name = csvRow.getColumns().get(csvColumnSettings.columnName() - 1);
 		final String description = csvRow.getColumns().get(csvColumnSettings.columnDescription() - 1);
 
 		final String amount = csvRow.getColumns().get(csvColumnSettings.columnAmount() - 1);
-		final Optional<Integer> parsedAmountOptional = AmountParser.parse(amount);
+		final Optional<Integer> parsedAmountOptional = AmountParser.parse(amount, csvColumnSettings.decimalSeparator().charAt(0), csvColumnSettings.groupingSeparator().charAt(0));
 		if(parsedAmountOptional.isEmpty())
 		{
 			throw new CsvTransactionParseException(Localization.getString("transactions.import.error.parse.amount", index + 1));

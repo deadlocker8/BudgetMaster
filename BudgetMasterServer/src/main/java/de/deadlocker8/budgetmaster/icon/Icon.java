@@ -7,7 +7,7 @@ import de.deadlocker8.budgetmaster.images.Image;
 import de.deadlocker8.budgetmaster.templates.Template;
 import de.deadlocker8.budgetmaster.utils.ProvidesID;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity

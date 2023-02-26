@@ -79,14 +79,14 @@
 
     <#assign hasImageIcon=item.getIconReference()?? && item.getIconReference().isImageIcon()/>
     <#if hasImageIcon>
-        <#assign selectedImageID=item.getIconReference().getImage().getID()?c/>
+        <#assign availableImagesUrl='/media/getAvailableImages/' + item.getIconReference().getImage().getID()?c/>
     <#else>
-        <#assign selectedImageID=""/>
+        <#assign availableImagesUrl='/media/getAvailableImages'/>
     </#if>
 
     <@progressIndicator/>
 
-    <div class="row" id="available-images" data-url="<@s.url '/media/getAvailableImages/' + selectedImageID/>">
+    <div class="row" id="available-images" data-url="<@s.url availableImagesUrl/>">
     </div>
 </#macro>
 

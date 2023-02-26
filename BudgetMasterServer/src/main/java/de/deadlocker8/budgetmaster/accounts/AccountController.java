@@ -18,7 +18,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
@@ -78,7 +78,7 @@ public class AccountController extends BaseController
 		{
 			final StringBuffer requestURL = request.getRequestURL();
 			final String baseUrl = requestURL.substring(0, requestURL.length() - request.getRequestURI().length());
-			referer = baseUrl + "/transactions/";
+			referer = baseUrl + "/transactions";
 		}
 
 		if(referer.contains(ACCOUNT_SELECTED_INDICATOR))

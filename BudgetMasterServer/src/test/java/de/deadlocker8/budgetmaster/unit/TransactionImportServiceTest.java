@@ -110,7 +110,7 @@ class TransactionImportServiceTest
 		final LocalDate date = LocalDate.of(2023, 1, 21);
 
 		final CsvRow csvRow = new CsvRow("21.01.2023", "Groceries", "-12.00", "dolor sit amet");
-		final CsvColumnSettings csvColumnSettings = new CsvColumnSettings(1, "dd.MM.yyyy", 2, 3, 4);
+		final CsvColumnSettings csvColumnSettings = new CsvColumnSettings(1, "dd.MM.yyyy", 2, 3, ".", ",", 4);
 
 		final CsvTransaction expectedCsvTransaction = new CsvTransaction(date, "Groceries", -1200, "dolor sit amet", CsvTransactionStatus.PENDING, CATEGORY_NONE);
 
@@ -129,7 +129,7 @@ class TransactionImportServiceTest
 	void test_createCsvTransactionFromCsvRow_dateParseException()
 	{
 		final CsvRow csvRow = new CsvRow("21.01.2023", "Groceries", "-12.00", "dolor sit amet");
-		final CsvColumnSettings csvColumnSettings = new CsvColumnSettings(1, "dd.MM.", 2, 3, 4);
+		final CsvColumnSettings csvColumnSettings = new CsvColumnSettings(1, "dd.MM.", 2, 3, ".", ",", 4);
 
 		final Settings settings = new Settings();
 		settings.setLanguage(LanguageType.ENGLISH);
@@ -145,7 +145,7 @@ class TransactionImportServiceTest
 	void test_createCsvTransactionFromCsvRow_amountParseException()
 	{
 		final CsvRow csvRow = new CsvRow("21.01.2023", "Groceries", "non_amount", "dolor sit amet");
-		final CsvColumnSettings csvColumnSettings = new CsvColumnSettings(1, "dd.MM.yyyy", 2, 3, 4);
+		final CsvColumnSettings csvColumnSettings = new CsvColumnSettings(1, "dd.MM.yyyy", 2, 3, ".", ",", 4);
 
 		final Settings settings = new Settings();
 		settings.setLanguage(LanguageType.ENGLISH);

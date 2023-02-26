@@ -1,7 +1,7 @@
 package de.deadlocker8.budgetmaster.repeating.endoption;
 
-import javax.persistence.Entity;
-import javax.persistence.Transient;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
 import java.time.LocalDate;
 import java.util.List;
 

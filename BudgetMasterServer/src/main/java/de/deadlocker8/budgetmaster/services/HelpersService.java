@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -217,5 +218,15 @@ public class HelpersService
 	public Hint getHintByLocalizationKey(String localizationKey)
 	{
 		return hintService.findByLocalizationKey(localizationKey);
+	}
+
+	public char getDecimalSeparator()
+	{
+		return new DecimalFormatSymbols(settingsService.getSettings().getLanguage().getLocale()).getDecimalSeparator();
+	}
+
+	public char getGroupingSeparator()
+	{
+		return new DecimalFormatSymbols(settingsService.getSettings().getLanguage().getLocale()).getGroupingSeparator();
 	}
 }

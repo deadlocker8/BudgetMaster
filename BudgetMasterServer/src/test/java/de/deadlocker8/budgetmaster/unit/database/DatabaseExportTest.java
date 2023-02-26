@@ -38,6 +38,8 @@ import de.deadlocker8.budgetmaster.templates.TemplateService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
+import de.deadlocker8.budgetmaster.transactions.csvimport.CsvImportSettings;
+import de.deadlocker8.budgetmaster.transactions.csvimport.CsvImportSettingsService;
 import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeyword;
 import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeywordRepository;
 import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeywordService;
@@ -121,6 +123,9 @@ class DatabaseExportTest
 	@Mock
 	private TransactionNameKeywordService transactionNameKeywordService;
 
+	@Mock
+	private CsvImportSettingsService csvImportSettingsService;
+
 	@InjectMocks
 	private DatabaseService databaseService;
 
@@ -172,6 +177,10 @@ class DatabaseExportTest
 		TransactionNameKeywordRepository transactionNameKeywordRepository = Mockito.mock(TransactionNameKeywordRepository.class);
 		Mockito.when(transactionNameKeywordRepository.findAll()).thenReturn(List.of());
 		Mockito.when(transactionNameKeywordService.getRepository()).thenReturn(transactionNameKeywordRepository);
+
+		// csv import settings
+		final CsvImportSettings csvImportSettings = CsvImportSettings.getDefault();
+		Mockito.when(csvImportSettingsService.getCsvImportSettings()).thenReturn(csvImportSettings);
 
 		// act
 		Path exportPath = Files.createFile(tempFolder.resolve("exportTest.json"));
@@ -311,6 +320,10 @@ class DatabaseExportTest
 		Mockito.when(transactionNameKeywordRepository.findAll()).thenReturn(List.of(keyword1, keyword2));
 		Mockito.when(transactionNameKeywordService.getRepository()).thenReturn(transactionNameKeywordRepository);
 
+		// csv import settings
+		final CsvImportSettings csvImportSettings = CsvImportSettings.getDefault();
+		Mockito.when(csvImportSettingsService.getCsvImportSettings()).thenReturn(csvImportSettings);
+
 		// act
 		Path exportPath = Files.createFile(tempFolder.resolve("exportTest.json"));
 		databaseService.exportDatabase(exportPath);
@@ -328,6 +341,6 @@ class DatabaseExportTest
 		assertThat(importedDatabase.getCharts()).containsExactly(chart);
 		assertThat(importedDatabase.getImages()).containsExactly(image);
 		assertThat(importedDatabase.getIcons()).containsExactly(iconImage, iconBuiltin);
-		assertThat(importedDatabase.getTransactionNameKeywords()).containsExactly(new TransactionNameKeyword( "income"), new TransactionNameKeyword( "abc"));
+		assertThat(importedDatabase.getTransactionNameKeywords()).containsExactly(new TransactionNameKeyword("income"), new TransactionNameKeyword("abc"));
 	}
 }

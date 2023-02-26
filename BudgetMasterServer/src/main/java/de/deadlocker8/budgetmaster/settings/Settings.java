@@ -6,8 +6,8 @@ import de.deadlocker8.budgetmaster.utils.DateHelper;
 import de.deadlocker8.budgetmaster.utils.LanguageType;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import java.time.LocalDate;
 
 @Entity

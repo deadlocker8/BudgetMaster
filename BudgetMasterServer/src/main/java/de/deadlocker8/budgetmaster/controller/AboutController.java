@@ -9,7 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,9 +47,9 @@ public class AboutController extends BaseController
 	public String whatsNewModal(Model model)
 	{
 		final List<NewsEntry> newsEntries = new ArrayList<>();
-		newsEntries.add(NewsEntry.createWithLocalizationKey("csvImport"));
-		newsEntries.add(NewsEntry.createWithLocalizationKey("recurringTransactionsOverview"));
-		newsEntries.add(NewsEntry.createWithLocalizationKey("improvedRestCalculation"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("csvImportSave"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("csvImportSuggestions"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("csvImportAmountSeparators"));
 
 		model.addAttribute(ModelAttributes.NEWS_ENTRIES, newsEntries);
 		return ReturnValues.WHATS_NEW;

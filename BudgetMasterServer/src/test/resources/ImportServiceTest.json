@@ -1,6 +1,6 @@
 {
     "TYPE": "BUDGETMASTER_DATABASE",
-    "VERSION": 9,
+    "VERSION": 10,
     "categories": [
         {
             "ID": 3,
@@ -2244,6 +2244,20 @@
         },
         {
             "value": "xyz"
+        }
+    ],
+    "csvImportSettings": [
+        {
+            "separator": ",",
+            "encoding": "cp1252",
+            "numberOfLinesToSkip": 12,
+            "columnDate": 3,
+            "datePattern": "dd.MM.yy",
+            "columnName": 1,
+            "columnAmount": 2,
+            "decimalSeparator": ",",
+            "groupingSeparator": ".",
+            "columnDescription": 1
         }
     ]
 }

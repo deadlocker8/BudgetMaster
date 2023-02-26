@@ -14,7 +14,7 @@ import org.springframework.boot.system.ApplicationHome;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import java.io.File;
 import java.nio.file.Paths;
 

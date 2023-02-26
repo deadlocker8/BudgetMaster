@@ -178,7 +178,8 @@ class CsvImportTest extends SeleniumTestBase
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("button-cancel-csv-import")));
 
-		driver.findElement(By.id("button-confirm-csv-column-settings")).click();
+		fillColumnSettings("", "dd.MM.YYYY", "", "", ".", ",", "");
+
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#columnDate.invalid")));
 
@@ -203,7 +204,7 @@ class CsvImportTest extends SeleniumTestBase
 
 		assertThat(driver.findElement(By.id("csv-file-name")).getText()).isEqualTo("three_entries.csv");
 
-		fillColumnSettings(1, "", 2, 3, 2);
+		fillColumnSettings(1, "", 2, 3, ".", ",", 2);
 
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#datePattern.invalid")));
@@ -226,7 +227,7 @@ class CsvImportTest extends SeleniumTestBase
 
 		assertThat(driver.findElement(By.id("csv-file-name")).getText()).isEqualTo("three_entries.csv");
 
-		fillColumnSettings(-3, "dd.MM.yyyy", 200, -12, 115);
+		fillColumnSettings(-3, "dd.MM.yyyy", 200, -12, ".", ",", 115);
 
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#columnDate.invalid")));
@@ -235,6 +236,52 @@ class CsvImportTest extends SeleniumTestBase
 		assertThat(driver.findElement(By.cssSelector("#columnName.invalid"))).isNotNull();
 		assertThat(driver.findElement(By.cssSelector("#columnAmount.invalid"))).isNotNull();
 		assertThat(driver.findElement(By.cssSelector("#columnDescription.invalid"))).isNotNull();
+	}
+
+	@Test
+	void test_upload_emptyDecimalSeparator_showValidationError()
+	{
+		driver.get(helper.getUrl() + "/transactionImport");
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Import from bank CSV"));
+
+		final String csvPath = new File(getClass().getClassLoader().getResource("csv/three_entries.csv").getFile()).getAbsolutePath();
+
+		uploadCsv(csvPath, ";", "UTF-8", "1");
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("button-cancel-csv-import")));
+
+		assertThat(driver.findElement(By.id("csv-file-name")).getText()).isEqualTo("three_entries.csv");
+
+		fillColumnSettings(1, "", 2, 3, "", ",",2);
+
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#decimalSeparator.invalid")));
+
+		assertThat(driver.findElement(By.cssSelector("#decimalSeparator.invalid"))).isNotNull();
+	}
+
+	@Test
+	void test_upload_emptyGroupingSeparator_showValidationError()
+	{
+		driver.get(helper.getUrl() + "/transactionImport");
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Import from bank CSV"));
+
+		final String csvPath = new File(getClass().getClassLoader().getResource("csv/three_entries.csv").getFile()).getAbsolutePath();
+
+		uploadCsv(csvPath, ";", "UTF-8", "1");
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("button-cancel-csv-import")));
+
+		assertThat(driver.findElement(By.id("csv-file-name")).getText()).isEqualTo("three_entries.csv");
+
+		fillColumnSettings(1, "", 2, 3, "", ",",2);
+
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#decimalSeparator.invalid")));
+
+		assertThat(driver.findElement(By.cssSelector("#decimalSeparator.invalid"))).isNotNull();
 	}
 
 	@Test
@@ -268,7 +315,7 @@ class CsvImportTest extends SeleniumTestBase
 
 		assertThat(driver.findElement(By.id("csv-file-name")).getText()).isEqualTo("three_entries.csv");
 
-		fillColumnSettings(1, "dd.MM.yyyy", 2, 3, 2);
+		fillColumnSettings(1, "dd.MM.yyyy", 2, 3, ".", ",",2);
 
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("button-confirm-csv-column-settings")));
@@ -472,6 +519,32 @@ class CsvImportTest extends SeleniumTestBase
 		assertRow(rowAfterSave, "green", "2023-01-08", "No category", "dolor sit amet", "dolor sit amet", "-12.00 €");
 	}
 
+	@Test
+	void test_showTransactionNameSuggestions()
+	{
+		uploadAndSetColumnSettings();
+
+		final List<WebElement> rows = driver.findElements(By.className("transaction-import-row"));
+		final WebElement row = rows.get(0);
+
+		// change data
+		final WebElement categorySelect = row.findElement(By.cssSelector(".category-select-wrapper .custom-select"));
+		categorySelect.click();
+		row.findElements(By.cssSelector(".category-select-wrapper .custom-select-item-name")).stream()
+				.filter(webElement -> webElement.getText().equals("sdfdsf"))
+				.findFirst().orElseThrow().click();
+
+		final WebElement nameInput = row.findElement(By.name("name"));
+		nameInput.clear();
+		nameInput.click();
+		nameInput.sendKeys("e");
+
+		final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".autocomplete-content li")));
+
+		assertThat(driver.findElements(By.cssSelector(".autocomplete-content li"))).hasSizeGreaterThan(0);
+	}
+
 	private void uploadAndSetColumnSettings()
 	{
 		driver.get(helper.getUrl() + "/transactionImport");
@@ -494,7 +567,7 @@ class CsvImportTest extends SeleniumTestBase
 		assertThat(columns.get(1).getText()).isEqualTo("Lorem");
 		assertThat(columns.get(2).getText()).isEqualTo("50.00");
 
-		fillColumnSettings(1, "dd.MM.yyyy", 2, 3, 2);
+		fillColumnSettings(1, "dd.MM.yyyy", 2, 3, ".", ",",2);
 
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("button-confirm-csv-column-settings")));
@@ -519,27 +592,40 @@ class CsvImportTest extends SeleniumTestBase
 		driver.findElement(By.id("button-confirm-csv-import")).click();
 	}
 
-	private void fillColumnSettings(int columnDate, String datePattern, int columnName, int columnAmount, int columnDescription)
+	private void fillColumnSettings(int columnDate, String datePattern, int columnName, int columnAmount, String decimalSeparator, String groupingSeparator, int columnDescription)
+	{
+		fillColumnSettings(String.valueOf(columnDate), datePattern, String.valueOf(columnName), String.valueOf(columnAmount), decimalSeparator, groupingSeparator, String.valueOf(columnDescription));
+	}
+
+	private void fillColumnSettings(String columnDate, String datePattern, String columnName, String columnAmount, String decimalSeparator, String groupingSeparator, String columnDescription)
 	{
 		final WebElement columnDateInput = driver.findElement(By.name("columnDate"));
 		columnDateInput.clear();
-		columnDateInput.sendKeys(String.valueOf(columnDate));
+		columnDateInput.sendKeys(columnDate);
 
 		final WebElement datePatternInput = driver.findElement(By.name("datePattern"));
 		datePatternInput.clear();
-		datePatternInput.sendKeys(String.valueOf(datePattern));
+		datePatternInput.sendKeys(datePattern);
 
 		final WebElement columnNameInput = driver.findElement(By.name("columnName"));
 		columnNameInput.clear();
-		columnNameInput.sendKeys(String.valueOf(columnName));
+		columnNameInput.sendKeys(columnName);
 
 		final WebElement columnAmountInput = driver.findElement(By.name("columnAmount"));
 		columnAmountInput.clear();
-		columnAmountInput.sendKeys(String.valueOf(columnAmount));
+		columnAmountInput.sendKeys(columnAmount);
+
+		final WebElement decimalSeparatorInput = driver.findElement(By.name("decimalSeparator"));
+		decimalSeparatorInput.clear();
+		decimalSeparatorInput.sendKeys(decimalSeparator);
+
+		final WebElement groupingSeparatorInput = driver.findElement(By.name("groupingSeparator"));
+		groupingSeparatorInput.clear();
+		groupingSeparatorInput.sendKeys(groupingSeparator);
 
 		final WebElement columnDescriptionInput = driver.findElement(By.name("columnDescription"));
 		columnDescriptionInput.clear();
-		columnDescriptionInput.sendKeys(String.valueOf(columnDescription));
+		columnDescriptionInput.sendKeys(columnDescription);
 
 		driver.findElement(By.id("button-confirm-csv-column-settings")).click();
 	}

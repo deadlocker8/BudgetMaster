@@ -6,10 +6,11 @@ import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.Tag_;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -102,17 +103,21 @@ public class TransactionSpecifications
 			if(!tagIDs.isEmpty())
 			{
 				Join<Transaction, Tag> join = transaction.join(Transaction_.tags, JoinType.LEFT);
-				Predicate tagPredicate = builder.disjunction();
+				final List<Predicate> tagPredicates = new ArrayList<>();
+
 				for(Integer tagID : tagIDs)
 				{
-					tagPredicate.getExpressions().add(builder.equal(join.get(Tag_.ID), tagID));
+					tagPredicates.add(builder.equal(join.get(Tag_.ID), tagID));
 				}
 
 				// transactions without any tags should be included in results
-				tagPredicate.getExpressions().add(builder.isEmpty(transaction.get(Transaction_.tags)));
+				tagPredicates.add(builder.isEmpty(transaction.get(Transaction_.tags)));
 
-				predicates.add(tagPredicate);
-				transferPredicates.add(tagPredicate);
+				final Predicate[] predicatesArray = new Predicate[tagPredicates.size()];
+				final Predicate tagPredicatesCombined = builder.or(tagPredicates.toArray(predicatesArray));
+
+				predicates.add(tagPredicatesCombined);
+				transferPredicates.add(tagPredicatesCombined);
 			}
 
 			if(name != null && name.length() > 0)

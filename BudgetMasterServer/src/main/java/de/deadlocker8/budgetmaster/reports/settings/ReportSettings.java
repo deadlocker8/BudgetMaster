@@ -3,10 +3,10 @@ package de.deadlocker8.budgetmaster.reports.settings;
 import de.deadlocker8.budgetmaster.reports.columns.ReportColumn;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;

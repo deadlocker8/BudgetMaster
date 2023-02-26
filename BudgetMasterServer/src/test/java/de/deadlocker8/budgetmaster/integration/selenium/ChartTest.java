@@ -385,6 +385,7 @@ class ChartTest extends SeleniumTestBase
 
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("matchingTransactionsTitle")));
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.id("matchingTransactionsTitle")));
 
 		assertThat(driver.findElements(By.className("search-result"))).hasSizeGreaterThan(0);
 	}

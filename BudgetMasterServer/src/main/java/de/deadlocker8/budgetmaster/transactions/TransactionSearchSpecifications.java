@@ -7,7 +7,7 @@ import de.deadlocker8.budgetmaster.tags.Tag;
 import de.deadlocker8.budgetmaster.tags.Tag_;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.*;
+import jakarta.persistence.criteria.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
