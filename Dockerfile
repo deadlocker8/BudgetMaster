@@ -1,4 +1,4 @@
-FROM tomcat:9-jdk17
+FROM tomcat:10-jdk17
 
 RUN rm -rf /usr/local/tomcat/webapps/*
 COPY BudgetMasterServer/build/2.14.0/BudgetMasterServer-v2.14.0.war $CATALINA_HOME/webapps/ROOT.war
