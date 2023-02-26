@@ -1,7 +1,5 @@
 package de.deadlocker8.budgetmaster.transactions.csvimport;
 
-import org.springframework.security.core.parameters.P;
-
 import java.text.*;
 import java.util.Optional;
 import java.util.regex.Matcher;

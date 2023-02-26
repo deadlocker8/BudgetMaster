@@ -1,12 +1,8 @@
 package de.deadlocker8.budgetmaster.database.model.v9;
 
-import de.deadlocker8.budgetmaster.accounts.Account;
-import de.deadlocker8.budgetmaster.categories.Category;
-import de.deadlocker8.budgetmaster.charts.Chart;
 import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.JSONIdentifier;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
-import de.deadlocker8.budgetmaster.database.model.converter.*;
 import de.deadlocker8.budgetmaster.database.model.v10.BackupDatabase_v10;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupChart_v5;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupImage_v5;
@@ -16,12 +12,6 @@ import de.deadlocker8.budgetmaster.database.model.v7.BackupCategory_v7;
 import de.deadlocker8.budgetmaster.database.model.v8.BackupIcon_v8;
 import de.deadlocker8.budgetmaster.database.model.v8.BackupTemplateGroup_v8;
 import de.deadlocker8.budgetmaster.database.model.v8.BackupTemplate_v8;
-import de.deadlocker8.budgetmaster.icon.Icon;
-import de.deadlocker8.budgetmaster.images.Image;
-import de.deadlocker8.budgetmaster.templategroup.TemplateGroup;
-import de.deadlocker8.budgetmaster.templates.Template;
-import de.deadlocker8.budgetmaster.transactions.Transaction;
-import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeyword;
 
 import java.util.List;
 
