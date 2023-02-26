@@ -8,7 +8,7 @@
         <@header.style "transactionImport"/>
         <@header.style "collapsible"/>
         <#import "/spring.ftl" as s>
-        <link rel="stylesheet" href="<@s.url '/webjars/datatables/1.13.1/css/jquery.dataTables.min.css'/>"/>
+        <link rel="stylesheet" href="<@s.url '/webjars/datatables/1.13.2/css/jquery.dataTables.min.css'/>"/>
     </head>
     <@header.body>
         <#import "../helpers/navbar.ftl" as navbar>
@@ -68,7 +68,7 @@
         <!--  Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
-        <script src="<@s.url '/webjars/datatables/1.13.1/js/jquery.dataTables.min.js'/>"></script>
+        <script src="<@s.url '/webjars/datatables/1.13.2/js/jquery.dataTables.min.js'/>"></script>
         <script src="<@s.url '/js/transactionImport.js'/>"></script>
     </@header.body>
 </html>
