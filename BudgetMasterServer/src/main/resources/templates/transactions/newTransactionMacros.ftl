@@ -62,6 +62,10 @@
         </div>
     </div>
 
+    <@insertNameSuggestions/>
+</#macro>
+
+<#macro insertNameSuggestions>
     <script>
         transactionNameSuggestions = {};
         var nameSuggestions = ${suggestionsJSON};

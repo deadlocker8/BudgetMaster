@@ -91,6 +91,7 @@ public class TransactionImportController extends BaseController
 		}
 
 		model.addAttribute(ModelAttributes.CATEGORIES, categoryService.getAllEntitiesAsc());
+		model.addAttribute(TransactionModelAttributes.SUGGESTIONS_JSON, transactionService.getNameSuggestionsJson());
 		model.addAttribute(ModelAttributes.CSV_IMPORT_SETTINGS, csvImportSettingsService.getCsvImportSettings());
 
 		return ReturnValues.TRANSACTION_IMPORT;

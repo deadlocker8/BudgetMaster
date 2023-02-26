@@ -15,6 +15,7 @@
         <@navbar.navbar "importCSV" settings/>
 
         <#import "transactionsMacros.ftl" as transactionMacros>
+        <#import "newTransactionMacros.ftl" as newTransactionMacros>
         <#import "../helpers/customSelectMacros.ftl" as customSelectMacros>
 
         <main>
@@ -246,14 +247,14 @@
 
             <tbody>
                 <#list csvTransactions as csvTransaction>
-                    <@renderCsvRow csvTransaction csvTransaction?index/>
+                    <@renderCsvTransaction csvTransaction csvTransaction?index/>
                 </#list>
             </tbody>
         </table>
     </div>
 </#macro>
 
-<#macro renderCsvRow csvTransaction index>
+<#macro renderCsvTransaction csvTransaction index>
     <tr class="transaction-import-row <#if csvTransaction.getStatus().name() == 'SKIPPED'>transaction-import-row-skipped</#if>">
         <form name="NewTransactionInPlace" method="POST" action="<@s.url '/transactionImport/' + index + '/newTransactionInPlace'/>">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -264,7 +265,7 @@
             </td>
             <td data-order="${csvTransaction.getName()}" data-search="${csvTransaction.getName()}">
                 <div class="input-field no-margin-top no-margin-bottom">
-                    <input class="no-margin-bottom" type="text" name="name" required value="${csvTransaction.getName()}" <#if csvTransaction.getStatus().name() == 'SKIPPED'>disabled</#if>>
+                    <input class="no-margin-bottom autocomplete" type="text" name="name" autocomplete="off" required value="${csvTransaction.getName()}" <#if csvTransaction.getStatus().name() == 'SKIPPED'>disabled</#if>>
                 </div>
             </td>
             <td data-order="${csvTransaction.getDescription()}" data-search="${csvTransaction.getDescription()}">
@@ -302,6 +303,8 @@
             </td>
         </form>
     </tr>
+
+    <@newTransactionMacros.insertNameSuggestions/>
 </#macro>
 
 <#macro showColumnSettingsErrors>

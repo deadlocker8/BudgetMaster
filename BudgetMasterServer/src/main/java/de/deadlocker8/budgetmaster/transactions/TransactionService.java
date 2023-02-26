@@ -295,12 +295,16 @@ public class TransactionService implements Resettable
 		model.addAttribute(TransactionModelAttributes.CATEGORIES, categoryService.getAllEntitiesAsc());
 		model.addAttribute(TransactionModelAttributes.ACCOUNTS, accounts);
 		model.addAttribute(TransactionModelAttributes.TRANSACTION, item);
+		model.addAttribute(TransactionModelAttributes.SUGGESTIONS_JSON, getNameSuggestionsJson());
+	}
 
+	public String getNameSuggestionsJson()
+	{
 		final List<Transaction> allByOrderByDateDesc = getRepository().findAllByOrderByDateDesc();
 		final List<String> nameSuggestions = allByOrderByDateDesc.stream()
 				.map(Transaction::getName)
 				.distinct()
 				.toList();
-		model.addAttribute(TransactionModelAttributes.SUGGESTIONS_JSON, GSON.toJson(nameSuggestions));
+		return  GSON.toJson(nameSuggestions);
 	}
 }
