@@ -1,7 +1,16 @@
-FROM tomcat:10-jdk17
+FROM openjdk:17-bullseye
 
-RUN rm -rf /usr/local/tomcat/webapps/*
-COPY BudgetMasterServer/build/2.14.0/BudgetMasterServer-v2.14.0.war $CATALINA_HOME/webapps/ROOT.war
+ARG APP_DIR=/BudgetMaster
+
+RUN mkdir -p $APP_DIR
+RUN mkdir -p /root/.Deadlocker/BudgetMaster
+
+COPY BudgetMasterServer/build/2.14.0/BudgetMasterServer-v2.14.0.jar /BudgetMaster/BudgetMaster.jar
 COPY BudgetMasterServer/src/main/resources/config/templates/settings-docker.properties /root/.Deadlocker/BudgetMaster/settings.properties
+RUN echo "server.port=9000" > ~/.Deadlocker/BudgetMaster/settings.properties
 
-EXPOSE 8080
+EXPOSE 9000
+
+ENV JAR_LOCATION=$APP_DIR/BudgetMaster.jar
+
+CMD ["bash", "-c", "java -jar ${JAR_LOCATION}"]

@@ -9,21 +9,18 @@ import de.thecodelabs.versionizer.config.Artifact;
 import de.thecodelabs.versionizer.config.Repository;
 import de.thecodelabs.versionizer.model.RemoteFile;
 import de.thecodelabs.versionizer.service.UpdateService;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.system.ApplicationHome;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-import jakarta.annotation.PostConstruct;
 import java.io.File;
 import java.nio.file.Paths;
 
 @Component
 public class BudgetMasterUpdateConfiguration
 {
-	@SuppressWarnings("java:S1075")
-	private static final String TOMCAT_PATH = "/usr/local/tomcat";
-
 	private UpdateService.Strategy updateStrategy;
 	private String executablePath;
 	private RemoteFile.FileType fileType;
@@ -38,7 +35,8 @@ public class BudgetMasterUpdateConfiguration
 	}
 
 	@PostConstruct
-	private void postInit() {
+	private void postInit()
+	{
 		executablePath = null;
 		updateStrategy = UpdateService.Strategy.JAR;
 		fileType = RemoteFile.FileType.JAR;
@@ -48,16 +46,7 @@ public class BudgetMasterUpdateConfiguration
 
 		final ApplicationHome applicationHome = new ApplicationHome();
 		final File source = applicationHome.getSource();
-		if(source == null)
-		{
-			final String appHomeDirectory = applicationHome.getDir().getAbsolutePath();
-			if(appHomeDirectory.equals(TOMCAT_PATH))
-			{
-				isRunningFromSource = false;
-				executablePath = appHomeDirectory;
-			}
-		}
-		else
+		if(source != null)
 		{
 			isRunningFromSource = false;
 			executablePath = source.getAbsolutePath();
@@ -85,12 +74,14 @@ public class BudgetMasterUpdateConfiguration
 	}
 
 	@Bean
-	public String executablePath() {
+	public String executablePath()
+	{
 		return executablePath;
 	}
 
 	@Bean
-	public RemoteFile.FileType fileType() {
+	public RemoteFile.FileType fileType()
+	{
 		return fileType;
 	}
 
