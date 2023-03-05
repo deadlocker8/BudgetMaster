@@ -17,18 +17,19 @@ const COLOR = 1;
 const INCOME = 2;
 const EXPENDITURE = 3;
 
-var categoryNames = [];
-var categoryColors = [];
+
+var categories = new Map();
 
 for(var i = 0; i < transactionData.length; i++)
 {
     var currentTransaction = transactionData[i];
-    if(!categoryNames.includes(currentTransaction.category.name))
+    if(!categories.has(currentTransaction.category.name))
     {
-        categoryNames.push(currentTransaction.category.name);
-        categoryColors.push(currentTransaction.category.color);
+        categories.set(currentTransaction.category.name, currentTransaction.category.color);
     }
 }
+
+var sortedCategories = new Map([...categories.entries()].sort());
 
 var dates = [];
 var values = [];
@@ -42,10 +43,10 @@ for(var i = 0; i < transactionData.length; i++)
     {
         dates.push(date);
         values.push([
-            categoryNames, // NAME
-            categoryColors, // COLOR
-            new Array(categoryNames.length).fill(0), // INCOME
-            new Array(categoryNames.length).fill(0)  // EXPENDITURE
+            Array.from(sortedCategories.keys()), // NAME
+            Array.from(sortedCategories.values()), // COLOR
+            new Array(sortedCategories.size).fill(0), // INCOME
+            new Array(sortedCategories.size).fill(0)  // EXPENDITURE
         ]);
     }
 
@@ -201,7 +202,8 @@ Plotly.newPlot("containerID", plotlyData, plotlyLayout, plotlyConfig);
 REGEX_CATGEORY_NAME = new RegExp("(.*)\\s\\d+.\\d%");
 
 var plotContainer = document.getElementById('containerID');
-plotContainer.on('plotly_click', function(data){
+plotContainer.on('plotly_click', function(data)
+{
     if(data.event.shiftKey !== true)
     {
         return;
