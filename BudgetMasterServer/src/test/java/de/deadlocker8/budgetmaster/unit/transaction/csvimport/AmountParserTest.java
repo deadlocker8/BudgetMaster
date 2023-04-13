@@ -268,4 +268,12 @@ class AmountParserTest
 				.isPresent()
 				.get().isEqualTo(-123456703);
 	}
+
+	@Test
+	void test_floatingPoint()
+	{
+		assertThat(AmountParser.parse("-9,7 €", ',', '.'))
+				.isPresent()
+				.get().isEqualTo(-970);
+	}
 }
