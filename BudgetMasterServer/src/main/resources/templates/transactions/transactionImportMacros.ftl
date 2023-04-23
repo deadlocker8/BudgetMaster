@@ -1,4 +1,5 @@
 <#import "../helpers/header.ftl" as header>
+<@header.globals/>
 <#import "../helpers/validation.ftl" as validation>
 <#import "/spring.ftl" as s>
 
@@ -187,7 +188,7 @@
 </#macro>
 
 <#macro renderCsvTransaction csvTransaction index>
-    <tr class="transaction-import-row <#if csvTransaction.getStatus().name() == 'SKIPPED'>transaction-import-row-skipped</#if>">
+    <tr class="transaction-import-row <#if csvTransaction.getStatus().name() == 'SKIPPED'>transaction-import-row-skipped</#if>" id="transaction-import-row-${index}">
         <form name="NewTransactionInPlace" method="POST" action="<@s.url '/transactionImport/' + index + '/newTransactionInPlace'/>">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <td data-order="${locale.getString(csvTransaction.getStatus().getLocalizationKey())}" data-search="${locale.getString(csvTransaction.getStatus().getLocalizationKey())}"><@statusBanner csvTransaction.getStatus()/></td>
@@ -208,7 +209,7 @@
             <td data-order="${currencyService.getCurrencyString(csvTransaction.getAmount())}" data-search="${currencyService.getCurrencyString(csvTransaction.getAmount())}">${currencyService.getCurrencyString(csvTransaction.getAmount())}</td>
             <td>
                 <#if csvTransaction.getStatus().name() == 'SKIPPED'>
-                    <@header.buttonFlat url='/transactionImport/' + index + '/undoSkip' isDataUrl=true icon='do_disturb_off' localizationKey='' classes="no-padding text-default button-request-transaction-import-undo-skip"/>
+                    <@header.buttonFlat url='/transactionImport/' + index + '/undoSkip' isDataUrl=true icon='do_disturb_off' localizationKey='' classes="no-padding text-default button-request-transaction-import-undo-skip" datasetIndex=index/>
                 <#else>
                     <@header.buttonSubmit name='action' icon='save' localizationKey='' classes='text-white'/>&nbsp;
                     <div class="fixed-action-btn edit-transaction-button">
@@ -230,7 +231,7 @@
                             </li>
                         </ul>
                     </div>
-                    <@header.buttonFlat url='/transactionImport/' + index + '/skip' isDataUrl=true icon='do_not_disturb_on' localizationKey='' classes="no-padding text-default button-request-transaction-import-skip"/>
+                    <@header.buttonFlat url='/transactionImport/' + index + '/skip' isDataUrl=true icon='do_not_disturb_on' localizationKey='' classes="no-padding text-default button-request-transaction-import-skip" datasetIndex=index/>
                 </#if>
             </td>
         </form>

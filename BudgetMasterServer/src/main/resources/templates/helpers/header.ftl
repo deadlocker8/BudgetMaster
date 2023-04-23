@@ -136,9 +136,10 @@
     </button>
 </#macro>
 
-<#macro buttonFlat url icon localizationKey id="" classes="" isDataUrl=false noUrl=false iconClasses='' target=''>
+<#macro buttonFlat url icon localizationKey id="" classes="" isDataUrl=false noUrl=false iconClasses='' target='' datasetIndex=''>
     <a <#if target?has_content>target="${target}"</#if> <#if !isDataUrl && !noUrl>href="<@s.url url/>"</#if>
        id="${id}"
+       <#if datasetIndex?has_content>data-index="${datasetIndex}"</#if>
        class="waves-effect waves-light btn-flat ${classes}"
             <#if isDataUrl>data-url="${url}"</#if>>
         <i class="material-icons left <#if !localizationKey?has_content>no-margin</#if> ${iconClasses}">${icon}</i><#if localizationKey?has_content><span>${locale.getString(localizationKey)}</span></#if>
