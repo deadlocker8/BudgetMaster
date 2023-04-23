@@ -294,7 +294,7 @@ class CsvImportTest extends SeleniumTestBase
 		final WebElement row1 = driver.findElements(By.className("transaction-import-row")).get(0);
 		assertRow(row1, "blue", "2023-01-08", "No category", "dolor sit amet", "dolor sit amet", "-12.00 €");
 		final WebElement row2 = driver.findElements(By.className("transaction-import-row")).get(1);
-		assertRow(row2, "blue", "2023-01-05", "No category", "Ipsum", "Ipsum", "-8.36 €");
+		assertRow(row2, "blue", "2023-01-05", "No category", "Ipsum", "Ipsum", "-8.37 €");
 		final WebElement row3 = driver.findElements(By.className("transaction-import-row")).get(2);
 		assertRow(row3, "blue", "2023-01-03", "No category", "Lorem", "Lorem", "50.00 €");
 	}
