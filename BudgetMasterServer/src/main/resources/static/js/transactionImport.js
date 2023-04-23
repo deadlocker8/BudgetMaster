@@ -33,8 +33,51 @@ $(document).ready(function()
         }
     }
 
-    initCsvTransactionButtons();
+    initCsvTransactions();
 });
+
+function initCsvTransactions()
+{
+    initCsvTransactionForms();
+    initCsvTransactionButtons();
+}
+
+function initCsvTransactionForms()
+{
+    const forms = document.querySelectorAll('[name="NewTransactionInPlace"]');
+
+    for(let i = 0; i < forms.length; i++)
+    {
+        let form = forms[i];
+        $(form).submit(function(event)
+        {
+            const csvTransactionId = form.dataset.index;
+
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: new FormData(form),
+                processData: false,
+                contentType: false,
+                success: function(response)
+                {
+                    $('#transaction-import-row-' + csvTransactionId).replaceWith(response);
+                    initCsvTransactions();
+                },
+                error: function(response)
+                {
+                    M.toast({
+                        html: "Error saving transaction",
+                        classes: 'red'
+                    });
+                    console.error(response);
+                }
+            });
+
+            event.preventDefault();
+        });
+    }
+}
 
 function initCsvTransactionButtons()
 {
@@ -71,7 +114,7 @@ function performCsvTransactionGetRequestWithoutReload(button, errorMessage)
         success: function(data)
         {
             $('#transaction-import-row-' + csvTransactionId).replaceWith(data);
-            initCsvTransactionButtons();
+            initCsvTransactions();
         },
         error: function(response)
         {

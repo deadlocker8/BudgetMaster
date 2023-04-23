@@ -285,14 +285,14 @@ public class TransactionImportController extends BaseController
 	}
 
 	@PostMapping("/{index}/newTransactionInPlace")
-	public String newTransactionInPlace(WebRequest request,
+	public String newTransactionInPlace(Model model, WebRequest request,
 										@PathVariable("index") Integer index,
 										@ModelAttribute("NewTransactionInPlace") CsvTransaction newCsvTransaction)
 	{
 		final Optional<CsvTransaction> transactionOptional = getTransactionByIndex(request, index);
 		if(transactionOptional.isEmpty())
 		{
-			return ReturnValues.REDIRECT_IMPORT;
+			throw new ResourceNotFoundException();
 		}
 
 		final CsvTransaction csvTransaction = transactionOptional.get();
@@ -303,7 +303,11 @@ public class TransactionImportController extends BaseController
 		final Transaction newTransaction = transactionImportService.createTransactionFromCsvTransaction(csvTransaction);
 		transactionService.getRepository().save(newTransaction);
 
-		return ReturnValues.REDIRECT_IMPORT;
+		model.addAttribute(ModelAttributes.CATEGORIES, categoryService.getAllEntitiesAsc());
+		model.addAttribute(TransactionModelAttributes.SUGGESTIONS_JSON, transactionService.getNameSuggestionsJson());
+		model.addAttribute(ModelAttributes.CSV_TRANSACTION, csvTransaction);
+		model.addAttribute(ModelAttributes.CSV_TRANSACTION_INDEX, index);
+		return ReturnValues.TRANSACTION_IMPORT_ROW;
 	}
 
 	private void removeAllAttributes(WebRequest request)

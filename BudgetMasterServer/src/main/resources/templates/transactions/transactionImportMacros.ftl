@@ -189,7 +189,7 @@
 
 <#macro renderCsvTransaction csvTransaction index>
     <tr class="transaction-import-row <#if csvTransaction.getStatus().name() == 'SKIPPED'>transaction-import-row-skipped</#if>" id="transaction-import-row-${index}">
-        <form name="NewTransactionInPlace" method="POST" action="<@s.url '/transactionImport/' + index + '/newTransactionInPlace'/>">
+        <form name="NewTransactionInPlace" method="POST" action="<@s.url '/transactionImport/' + index + '/newTransactionInPlace'/>" data-index="${index}">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <td data-order="${locale.getString(csvTransaction.getStatus().getLocalizationKey())}" data-search="${locale.getString(csvTransaction.getStatus().getLocalizationKey())}"><@statusBanner csvTransaction.getStatus()/></td>
             <td data-order="${csvTransaction.getDate()}" data-search="${csvTransaction.getDate()}">${csvTransaction.getDate()}</td>
