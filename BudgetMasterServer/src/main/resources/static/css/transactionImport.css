@@ -2,6 +2,11 @@
     overflow: auto;
     width: 90%;
     margin: auto;
+    transform: rotateX(180deg); /* hack to bring the horizontal scrollbar to the top*/
+}
+
+#transaction-import-overview > table {
+    transform: rotateX(180deg); /* hack to bring the horizontal scrollbar to the top*/
 }
 
 .transaction-import-text-with-icon {
