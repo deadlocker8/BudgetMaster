@@ -381,7 +381,11 @@ class ChartTest extends SeleniumTestBase
 
 		Actions actions = new Actions(driver);
 		actions.moveToElement(driver.findElement(By.className("plot-container"))).perform();
-		actions.moveByOffset(-450, 25).keyDown(Keys.SHIFT).click().keyUp(Keys.SHIFT).perform();
+		actions.moveByOffset(-250, 25)
+				.keyDown(Keys.SHIFT)
+				.click()
+				.keyUp(Keys.SHIFT)
+				.perform();
 
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("matchingTransactionsTitle")));
