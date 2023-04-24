@@ -52,6 +52,7 @@ public class AboutController extends BaseController
 		newsEntries.add(NewsEntry.createWithLocalizationKey("csvImportBugfixFloatingPointPrecision"));
 		newsEntries.add(NewsEntry.createWithLocalizationKey("csvImportBugfixTemplateAndCategory"));
 		newsEntries.add(NewsEntry.createWithLocalizationKey("sortCategoriesInCharts"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("filterBugfix"));
 
 		model.addAttribute(ModelAttributes.NEWS_ENTRIES, newsEntries);
 		return ReturnValues.WHATS_NEW;
