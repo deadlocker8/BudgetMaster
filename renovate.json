@@ -1,3 +1,12 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json"
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "assignees": ["deadlocker8"],
+  "packageRules": [
+    {
+      "matchPaths": [
+        "**/Dockerfile"
+      ],
+      "enabled": false
+    }
+  ]
 }
