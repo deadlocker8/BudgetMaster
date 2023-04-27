@@ -45,7 +45,6 @@ class FilterTest extends SeleniumTestBase
 
 		driver.findElement(By.id("section-type")).click();
 		final WebElement checkBox = driver.findElement(By.cssSelector("#section-type .text-default"));
-		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", checkBox);
 		checkBox.click();
 
 		driver.findElement(By.id("buttonApplyFilter")).click();
