@@ -185,6 +185,9 @@ class TemplateImporterTest extends ImporterTestBase
 		Icon icon = new Icon("fas fa-icons");
 		icon = iconRepository.save(icon);
 
+		Icon icon2= new Icon("fas fa-icons");
+		icon2 = iconRepository.save(icon2);
+
 		final Template template = new Template();
 		template.setID(15);
 		template.setTemplateName("My awesome template");
@@ -204,7 +207,7 @@ class TemplateImporterTest extends ImporterTestBase
 		template2.setIsExpenditure(true);
 		template2.setTags(List.of());
 		template2.setDescription("Lorem Ipsum");
-		template2.setIconReference(icon);
+		template2.setIconReference(icon2);
 		template2.setTags(List.of(new Tag("0815")));
 
 		TemplateGroup defaultTemplateGroup = new TemplateGroup("Default group", TemplateGroupType.DEFAULT);
