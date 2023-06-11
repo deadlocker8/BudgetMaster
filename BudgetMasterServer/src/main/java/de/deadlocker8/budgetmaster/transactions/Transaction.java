@@ -62,7 +62,7 @@ public class Transaction implements TransactionBase, ProvidesID
 	@Expose
 	private RepeatingOption repeatingOption;
 
-	@OneToOne(optional = true)
+	@ManyToOne(optional = true)
 	@Expose
 	private Account transferAccount;
 
