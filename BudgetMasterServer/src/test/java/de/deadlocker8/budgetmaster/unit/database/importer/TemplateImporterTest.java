@@ -174,7 +174,7 @@ class TemplateImporterTest extends ImporterTestBase
 	}
 
 	@Test
-	void test_test_importMultipleTemplatesWithSomeSimilarTags()
+	void test_importMultipleTemplatesWithSomeSimilarTags()
 	{
 		Category category = new Category("Awesome Category", "#ff0000", CategoryType.CUSTOM);
 		category = categoryRepository.save(category);
