@@ -44,6 +44,8 @@ class FilterTest extends SeleniumTestBase
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("modalFilter")));
 
 		driver.findElement(By.id("section-type")).click();
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#section-type .text-default")));
 		final WebElement checkBox = driver.findElement(By.cssSelector("#section-type .text-default"));
 		checkBox.click();
 
