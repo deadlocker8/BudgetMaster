@@ -57,7 +57,7 @@
         <testcontainer.version>1.18.3</testcontainer.version>
         <assertj-core.version>3.24.2</assertj-core.version>
 
-        <dependency-check-maven.version>8.2.1</dependency-check-maven.version>
+        <dependency-check-maven.version>8.3.1</dependency-check-maven.version>
     </properties>
 
     <dependencies>
