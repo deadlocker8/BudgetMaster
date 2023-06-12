@@ -45,8 +45,8 @@ class FilterTest extends SeleniumTestBase
 
 		driver.findElement(By.id("section-type")).click();
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#section-type .text-default")));
-		final WebElement checkBox = driver.findElement(By.cssSelector("#section-type .text-default"));
+		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("#section-type .text-default")));
+		final WebElement checkBox = driver.findElements(By.cssSelector("#section-type .text-default")).get(0);
 		checkBox.click();
 
 		driver.findElement(By.id("buttonApplyFilter")).click();
