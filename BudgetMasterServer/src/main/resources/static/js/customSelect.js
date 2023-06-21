@@ -3,9 +3,17 @@ $(document).ready(function()
     initCustomSelects();
 });
 
+let allCustomSelects = [];
+
 function initCustomSelects()
 {
-    let allCustomSelects = [];
+    for(let i = 0; i < allCustomSelects.length; i++)
+    {
+        let currentCustomSelect = allCustomSelects[i];
+        currentCustomSelect.destroy();
+    }
+
+    allCustomSelects = [];
 
     let selectorCategorySelect = '.category-select-wrapper';
     let transactionCategorySelects = document.querySelectorAll(selectorCategorySelect);
@@ -91,15 +99,18 @@ class CustomSelect
     {
         let self = this;
         let customSelectTrigger = document.querySelector(this.selector);
-        customSelectTrigger.addEventListener('click', function()
+
+        this.listenerClick = function()
         {
             if(!self.isDisabled())
             {
                 self.open();
             }
-        });
+        };
 
-        customSelectTrigger.addEventListener("keydown", function(event)
+        customSelectTrigger.addEventListener('click', this.listenerClick);
+
+        this.listenerKeyDown =  function(event)
         {
             if(event.key === "Escape")
             {
@@ -107,22 +118,44 @@ class CustomSelect
             }
 
             self.jumpToItemByFirstLetter(event.key);
-        });
+        };
+
+        customSelectTrigger.addEventListener("keydown", this.listenerKeyDown);
+
+        this.listenerMouseDown = function(event)
+        {
+            self.confirmItem(this);
+            event.stopPropagation();
+        };
 
         for(const option of document.querySelectorAll(this.selector + ' .custom-select-option'))
         {
-            option.addEventListener('mousedown', function(event)
-            {
-                self.confirmItem(this);
-                event.stopPropagation();
-            })
+            option.addEventListener('mousedown', this.listenerMouseDown);
         }
 
         this.resetSelectedItemId()
 
-        customSelectTrigger.addEventListener('focusout', () => {
-            this.close();
-        });
+        this.listenerFocusOut = function() {
+            self.close();
+        };
+
+        customSelectTrigger.addEventListener('focusout', this.listenerFocusOut);
+    }
+
+    destroy()
+    {
+        let customSelectTrigger = document.querySelector(this.selector);
+
+        customSelectTrigger.removeEventListener('click', this.listenerClick);
+
+        customSelectTrigger.removeEventListener("keydown", this.listenerKeyDown);
+
+        for(const option of document.querySelectorAll(this.selector + ' .custom-select-option'))
+        {
+            option.removeEventListener('mousedown', this.listenerMouseDown);
+        }
+
+        customSelectTrigger.removeEventListener('focusout', this.listenerFocusOut);
     }
 
     isDisabled()

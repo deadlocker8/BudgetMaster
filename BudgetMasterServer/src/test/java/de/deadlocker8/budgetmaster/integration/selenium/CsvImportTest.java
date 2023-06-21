@@ -371,6 +371,14 @@ class CsvImportTest extends SeleniumTestBase
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("transaction-import-row-skipped")));
 
 		assertThat(driver.findElements(By.className("transaction-import-row-skipped"))).isEmpty();
+
+		// check if category select is working
+		rows = driver.findElements(By.className("transaction-import-row"));
+		final WebElement categorySelect = rows.get(0).findElement(By.cssSelector(".category-select-wrapper .custom-select"));
+		categorySelect.click();
+		rows.get(0).findElements(By.cssSelector(".category-select-wrapper .custom-select-item-name")).stream()
+				.filter(webElement -> webElement.getText().equals("sdfdsf"))
+				.findFirst().orElseThrow().click();
 	}
 
 	@Test
