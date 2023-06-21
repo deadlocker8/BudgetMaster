@@ -6,9 +6,9 @@ services:
         volumes:
             - "./data/budgetmaster:/root/.Deadlocker/BudgetMaster"
         expose:
-            - "8080"
+            - "9000"
         ports:
-            - "8080:8080"
+            - "9000:9000"
         networks:
             - netPostgres
         environment:
