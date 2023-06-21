@@ -5,6 +5,7 @@ import de.deadlocker8.budgetmaster.categories.CategoryService;
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.transactions.csvimport.*;
 import de.deadlocker8.budgetmaster.utils.Mappings;
+import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
 import de.deadlocker8.budgetmaster.utils.WebRequestUtils;
 import de.deadlocker8.budgetmaster.utils.notification.Notification;
 import de.deadlocker8.budgetmaster.utils.notification.NotificationType;
@@ -32,6 +33,8 @@ public class TransactionImportController extends BaseController
 		public static final String ERROR = "error";
 		public static final String CATEGORIES = "categories";
 		public static final String CSV_IMPORT_SETTINGS = "csvImportSettings";
+		public static final String CSV_TRANSACTION = "csvTransaction";
+		public static final String CSV_TRANSACTION_INDEX = "csvTransactionIndex";
 	}
 
 	private static class ReturnValues
@@ -41,6 +44,7 @@ public class TransactionImportController extends BaseController
 		public static final String REDIRECT_CANCEL = "redirect:/transactionImport/cancel";
 		public static final String NEW_TRANSACTION_NORMAL = "transactions/newTransactionNormal";
 		public static final String NEW_TRANSACTION_TRANSFER = "transactions/newTransactionTransfer";
+		public static final String TRANSACTION_IMPORT_ROW = "transactions/transactionImportRow";
 		public static final String REDIRECT_TEMPLATES = "redirect:/templates";
 	}
 
@@ -201,29 +205,41 @@ public class TransactionImportController extends BaseController
 	}
 
 	@GetMapping("/{index}/skip")
-	public String skip(WebRequest request, @PathVariable("index") Integer index)
+	public String skip(Model model, WebRequest request, @PathVariable("index") Integer index)
 	{
 		final Optional<CsvTransaction> transactionOptional = getTransactionByIndex(request, index);
 		if(transactionOptional.isEmpty())
 		{
-			return ReturnValues.REDIRECT_IMPORT;
+			throw new ResourceNotFoundException();
 		}
 
-		transactionOptional.get().setStatus(CsvTransactionStatus.SKIPPED);
-		return ReturnValues.REDIRECT_IMPORT;
+		final CsvTransaction csvTransaction = transactionOptional.get();
+		csvTransaction.setStatus(CsvTransactionStatus.SKIPPED);
+
+		model.addAttribute(ModelAttributes.CATEGORIES, categoryService.getAllEntitiesAsc());
+		model.addAttribute(TransactionModelAttributes.SUGGESTIONS_JSON, transactionService.getNameSuggestionsJson());
+		model.addAttribute(ModelAttributes.CSV_TRANSACTION, csvTransaction);
+		model.addAttribute(ModelAttributes.CSV_TRANSACTION_INDEX, index);
+		return ReturnValues.TRANSACTION_IMPORT_ROW;
 	}
 
 	@GetMapping("/{index}/undoSkip")
-	public String undoSkip(WebRequest request, @PathVariable("index") Integer index)
+	public String undoSkip(Model model, WebRequest request, @PathVariable("index") Integer index)
 	{
 		final Optional<CsvTransaction> transactionOptional = getTransactionByIndex(request, index);
 		if(transactionOptional.isEmpty())
 		{
-			return ReturnValues.REDIRECT_IMPORT;
+			throw new ResourceNotFoundException();
 		}
 
-		transactionOptional.get().setStatus(CsvTransactionStatus.PENDING);
-		return ReturnValues.REDIRECT_IMPORT;
+		final CsvTransaction csvTransaction = transactionOptional.get();
+		csvTransaction.setStatus(CsvTransactionStatus.PENDING);
+
+		model.addAttribute(ModelAttributes.CATEGORIES, categoryService.getAllEntitiesAsc());
+		model.addAttribute(TransactionModelAttributes.SUGGESTIONS_JSON, transactionService.getNameSuggestionsJson());
+		model.addAttribute(ModelAttributes.CSV_TRANSACTION, csvTransaction);
+		model.addAttribute(ModelAttributes.CSV_TRANSACTION_INDEX, index);
+		return ReturnValues.TRANSACTION_IMPORT_ROW;
 	}
 
 	@GetMapping("/{index}/newTransaction/{type}")
@@ -269,14 +285,14 @@ public class TransactionImportController extends BaseController
 	}
 
 	@PostMapping("/{index}/newTransactionInPlace")
-	public String newTransactionInPlace(WebRequest request,
+	public String newTransactionInPlace(Model model, WebRequest request,
 										@PathVariable("index") Integer index,
 										@ModelAttribute("NewTransactionInPlace") CsvTransaction newCsvTransaction)
 	{
 		final Optional<CsvTransaction> transactionOptional = getTransactionByIndex(request, index);
 		if(transactionOptional.isEmpty())
 		{
-			return ReturnValues.REDIRECT_IMPORT;
+			throw new ResourceNotFoundException();
 		}
 
 		final CsvTransaction csvTransaction = transactionOptional.get();
@@ -287,7 +303,11 @@ public class TransactionImportController extends BaseController
 		final Transaction newTransaction = transactionImportService.createTransactionFromCsvTransaction(csvTransaction);
 		transactionService.getRepository().save(newTransaction);
 
-		return ReturnValues.REDIRECT_IMPORT;
+		model.addAttribute(ModelAttributes.CATEGORIES, categoryService.getAllEntitiesAsc());
+		model.addAttribute(TransactionModelAttributes.SUGGESTIONS_JSON, transactionService.getNameSuggestionsJson());
+		model.addAttribute(ModelAttributes.CSV_TRANSACTION, csvTransaction);
+		model.addAttribute(ModelAttributes.CSV_TRANSACTION_INDEX, index);
+		return ReturnValues.TRANSACTION_IMPORT_ROW;
 	}
 
 	private void removeAllAttributes(WebRequest request)
@@ -309,6 +329,13 @@ public class TransactionImportController extends BaseController
 		}
 
 		final List<CsvTransaction> csvTransactions = (List<CsvTransaction>) attribute;
-		return Optional.of(csvTransactions.get(index));
+		try
+		{
+			return Optional.of(csvTransactions.get(index));
+		}
+		catch(IndexOutOfBoundsException e)
+		{
+			return Optional.empty();
+		}
 	}
 }

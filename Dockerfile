@@ -1,7 +1,19 @@
-FROM tomcat:10-jdk17
+FROM eclipse-temurin:17-jre-alpine
 
-RUN rm -rf /usr/local/tomcat/webapps/*
-COPY BudgetMasterServer/build/2.14.0/BudgetMasterServer-v2.14.0.war $CATALINA_HOME/webapps/ROOT.war
+RUN apk update && apk upgrade && \
+    rm -rf /var/cache/apk
+
+ARG APP_DIR=/BudgetMaster
+
+RUN mkdir -p $APP_DIR
+RUN mkdir -p /root/.Deadlocker/BudgetMaster
+
+COPY BudgetMasterServer/build/2.15.0/BudgetMasterServer-v2.15.0.jar /BudgetMaster/BudgetMaster.jar
 COPY BudgetMasterServer/src/main/resources/config/templates/settings-docker.properties /root/.Deadlocker/BudgetMaster/settings.properties
+RUN echo "server.port=9000" > ~/.Deadlocker/BudgetMaster/settings.properties
 
-EXPOSE 8080
+EXPOSE 9000
+
+WORKDIR $APP_DIR
+
+CMD ["java", "-jar", "BudgetMaster.jar"]

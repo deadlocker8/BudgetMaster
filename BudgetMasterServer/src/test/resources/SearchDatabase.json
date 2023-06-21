@@ -3331,10 +3331,10 @@
                 "type": "CUSTOM"
             },
             "category": {
-                "ID": 1,
-                "name": "No Category",
-                "color": "#FFFFFF",
-                "type": "NONE"
+                "ID": 97,
+                "name": "sdfdsf",
+                "color": "#2e7c2b",
+                "type": "CUSTOM"
             },
             "name": "NameFromTemplate",
             "description": "DescriptionFromTemplate",

@@ -62,7 +62,7 @@ public class Template implements TransactionBase, Iconizable
 					name = "tags_id", referencedColumnName = "ID"))
 	private List<Tag> tags;
 
-	@OneToOne(optional = true)
+	@ManyToOne(optional = true)
 	@Expose
 	private Account transferAccount;
 

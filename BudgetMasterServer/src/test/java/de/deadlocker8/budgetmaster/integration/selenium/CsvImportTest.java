@@ -294,7 +294,7 @@ class CsvImportTest extends SeleniumTestBase
 		final WebElement row1 = driver.findElements(By.className("transaction-import-row")).get(0);
 		assertRow(row1, "blue", "2023-01-08", "No category", "dolor sit amet", "dolor sit amet", "-12.00 €");
 		final WebElement row2 = driver.findElements(By.className("transaction-import-row")).get(1);
-		assertRow(row2, "blue", "2023-01-05", "No category", "Ipsum", "Ipsum", "-8.36 €");
+		assertRow(row2, "blue", "2023-01-05", "No category", "Ipsum", "Ipsum", "-8.37 €");
 		final WebElement row3 = driver.findElements(By.className("transaction-import-row")).get(2);
 		assertRow(row3, "blue", "2023-01-03", "No category", "Lorem", "Lorem", "50.00 €");
 	}
@@ -371,6 +371,14 @@ class CsvImportTest extends SeleniumTestBase
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("transaction-import-row-skipped")));
 
 		assertThat(driver.findElements(By.className("transaction-import-row-skipped"))).isEmpty();
+
+		// check if category select is working
+		rows = driver.findElements(By.className("transaction-import-row"));
+		final WebElement categorySelect = rows.get(0).findElement(By.cssSelector(".category-select-wrapper .custom-select"));
+		categorySelect.click();
+		rows.get(0).findElements(By.cssSelector(".category-select-wrapper .custom-select-item-name")).stream()
+				.filter(webElement -> webElement.getText().equals("sdfdsf"))
+				.findFirst().orElseThrow().click();
 	}
 
 	@Test
@@ -508,7 +516,7 @@ class CsvImportTest extends SeleniumTestBase
 		assertThat(driver.findElement(By.id("transaction-amount")).getAttribute("value")).isEqualTo("12.00");
 		assertThat(driver.findElement(By.id("transaction-datepicker")).getAttribute("value")).isEqualTo("08.01.2023");
 		assertThat(driver.findElement(By.id("transaction-description")).getAttribute("value")).isEqualTo("DescriptionFromTemplate");
-		assertThat(driver.findElement(By.cssSelector(".category-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("1");
+		assertThat(driver.findElement(By.cssSelector(".category-select-wrapper .custom-select-selected-item .category-circle")).getAttribute("data-value")).isEqualTo("3");
 
 		// save transaction
 		driver.findElement(By.id("button-save-transaction")).click();

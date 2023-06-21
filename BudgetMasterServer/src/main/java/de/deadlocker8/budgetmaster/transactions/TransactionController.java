@@ -88,18 +88,18 @@ public class TransactionController extends BaseController
 	}
 
 	@GetMapping
-	public String transactions(HttpServletRequest request, Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
+	public String transactions(WebRequest webRequest, HttpServletRequest request, Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
 	{
 		LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
 		repeatingTransactionUpdater.updateRepeatingTransactions(date.with(lastDayOfMonth()));
 
-		prepareModelTransactions(filterHelpers.getFilterConfiguration(request), model, date);
+		prepareModelTransactions(webRequest, filterHelpers.getFilterConfiguration(request), model, date);
 
 		return ReturnValues.ALL_ENTITIES;
 	}
 
 	@GetMapping("/{ID}/requestDelete")
-	public String requestDeleteTransaction(HttpServletRequest request, Model model, @PathVariable("ID") Integer ID, @CookieValue("currentDate") String cookieDate)
+	public String requestDeleteTransaction(WebRequest webRequest, HttpServletRequest request, Model model, @PathVariable("ID") Integer ID, @CookieValue("currentDate") String cookieDate)
 	{
 		if(!transactionService.isDeletable(ID))
 		{
@@ -107,13 +107,13 @@ public class TransactionController extends BaseController
 		}
 
 		LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
-		prepareModelTransactions(filterHelpers.getFilterConfiguration(request), model, date);
+		prepareModelTransactions(webRequest, filterHelpers.getFilterConfiguration(request), model, date);
 		model.addAttribute(TransactionModelAttributes.ENTITY_TO_DELETE, transactionService.getRepository().getReferenceById(ID));
 
 		return ReturnValues.DELETE_ENTITY;
 	}
 
-	private void prepareModelTransactions(FilterConfiguration filterConfiguration, Model model, LocalDate date)
+	private void prepareModelTransactions(WebRequest webRequest, FilterConfiguration filterConfiguration, Model model, LocalDate date)
 	{
 		final Account currentAccount = helpers.getCurrentAccount();
 		final List<Transaction> transactions = transactionService.getTransactionsForMonthAndYear(currentAccount, date.getMonthValue(), date.getYear(), filterConfiguration);
@@ -121,7 +121,8 @@ public class TransactionController extends BaseController
 		model.addAttribute(TransactionModelAttributes.ACCOUNT, currentAccount);
 		model.addAttribute(TransactionModelAttributes.BUDGET, helpers.getBudget(transactions, currentAccount));
 		model.addAttribute(TransactionModelAttributes.CURRENT_DATE, date);
-		model.addAttribute(TransactionModelAttributes.FILTER_CONFIGURATION, filterConfiguration);
+
+		webRequest.setAttribute("filterConfiguration", filterConfiguration, RequestAttributes.SCOPE_SESSION);
 
 		if(settingsService.getSettings().isRestActivated())
 		{
@@ -310,7 +311,7 @@ public class TransactionController extends BaseController
 	}
 
 	@GetMapping("/{ID}/highlight")
-	public String highlight(Model model, @PathVariable("ID") Integer ID)
+	public String highlight(WebRequest webRequest, Model model, @PathVariable("ID") Integer ID)
 	{
 		Transaction transaction = transactionService.getRepository().getReferenceById(ID);
 
@@ -326,7 +327,7 @@ public class TransactionController extends BaseController
 		filterConfiguration.setFilterCategories(filterHelpers.getFilterCategories());
 		filterConfiguration.setFilterTags(filterHelpers.getFilterTags());
 
-		prepareModelTransactions(filterConfiguration, model, transaction.getDate());
+		prepareModelTransactions(webRequest, filterConfiguration, model, transaction.getDate());
 		model.addAttribute(TransactionModelAttributes.HIGHLIGHT_ID, ID);
 		return ReturnValues.ALL_ENTITIES;
 	}

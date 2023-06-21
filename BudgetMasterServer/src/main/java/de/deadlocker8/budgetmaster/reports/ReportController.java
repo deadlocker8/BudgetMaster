@@ -24,6 +24,9 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.WebRequest;
+
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.time.LocalDate;
@@ -68,13 +71,14 @@ public class ReportController extends BaseController
 	}
 
 	@GetMapping
-	public String reports(HttpServletRequest request, Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
+	public String reports(WebRequest webRequest, HttpServletRequest request, Model model, @CookieValue(value = "currentDate", required = false) String cookieDate)
 	{
 		LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
 
 		model.addAttribute(ModelAttributes.REPORT_SETTINGS, reportSettingsService.getReportSettings());
 		model.addAttribute(ModelAttributes.CURRENT_DATE, date);
-		model.addAttribute(ModelAttributes.FILTER_CONFIGURATION, filterHelpers.getFilterConfiguration(request));
+
+		webRequest.setAttribute(ModelAttributes.FILTER_CONFIGURATION, filterHelpers.getFilterConfiguration(request), RequestAttributes.SCOPE_SESSION);
 		return ReturnValues.ALL_ENTITIES;
 	}
 

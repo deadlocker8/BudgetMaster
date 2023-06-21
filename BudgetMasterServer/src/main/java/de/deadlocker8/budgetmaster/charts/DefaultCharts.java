@@ -40,7 +40,7 @@ public class DefaultCharts
 
 	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_MONTH_BY_CATEGORIES = new Chart("charts.default.incomesAndExpendituresPerMonthByCategories",
 			getChartFromFile("charts/IncomesAndExpendituresPerMonthByCategories.js"),
-			ChartType.DEFAULT, 25, ChartDisplayType.BAR, ChartGroupType.MONTH, "incomesAndExpendituresPerMonthByCategories.png");
+			ChartType.DEFAULT, 27, ChartDisplayType.BAR, ChartGroupType.MONTH, "incomesAndExpendituresPerMonthByCategories.png");
 
 	private static final Chart CHART_REST_PER_MONTH = new Chart("charts.default.restPerMonth",
 			getChartFromFile("charts/RestPerMonth.js"),
@@ -52,7 +52,7 @@ public class DefaultCharts
 
 	private static final Chart CHART_INCOMES_AND_EXPENDITURES_PER_YEAR_BY_CATEGORIES = new Chart("charts.default.incomesAndExpendituresPerYearByCategories",
 			getChartFromFile("charts/IncomesAndExpendituresPerYearByCategories.js"),
-			ChartType.DEFAULT, 5, ChartDisplayType.BAR, ChartGroupType.YEAR, "incomesAndExpendituresPerYearByCategories.png");
+			ChartType.DEFAULT, 7, ChartDisplayType.BAR, ChartGroupType.YEAR, "incomesAndExpendituresPerYearByCategories.png");
 
 	private static final Chart CHART_AVERAGE_TRANSACTION_AMOUNT_PER_CATEGORY = new Chart("charts.default.averageTransactionAmountPerCategory",
 			getChartFromFile("charts/AverageTransactionAmountPerCategoryBar.js"),

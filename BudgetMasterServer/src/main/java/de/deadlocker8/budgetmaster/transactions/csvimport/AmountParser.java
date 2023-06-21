@@ -49,7 +49,7 @@ public class AmountParser
 					throw new ParseException("String not fully parsed", parsePosition.getIndex());
 				}
 
-				return Optional.of((int) (parseDouble * 100));
+				return Optional.of((int) Math.round(parseDouble * 100));
 			}
 			catch(ParseException e)
 			{
