@@ -375,9 +375,18 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     border: 3px solid var(--color-grey);
 }
 
+.global-account-select-option-column-2 {
+    display: flex;
+    flex-direction: column;
+    margin-left: 2rem;
+}
+
 .global-account-select-option-name {
     font-size: 1.4rem;
-    margin-left: 2rem;
+}
+
+.global-account-select-option-balance {
+    font-size: 1.4rem;
 }
 
 .global-account-select-option-content {
