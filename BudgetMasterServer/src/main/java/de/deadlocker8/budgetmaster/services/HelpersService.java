@@ -28,10 +28,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormatSymbols;
+import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -175,19 +177,35 @@ public class HelpersService
 
 	public int getCurrentAccountBudget()
 	{
-		Account currentAccount = getCurrentAccount();
+		final Account currentAccount = getCurrentAccount();
+		return getBudgetForAccount(currentAccount);
+	}
+
+	public int getAccountBudgetByID(Integer accountID)
+	{
+		final Optional<Account> accountOptional = accountRepository.findById(accountID);
+		if(accountOptional.isEmpty())
+		{
+			throw new IllegalArgumentException(MessageFormat.format("No account with ID \"{0)\" found", accountID));
+		}
+
+		final Account account = accountOptional.get();
+		return getBudgetForAccount(account);
+	}
+
+	private int getBudgetForAccount(Account account)
+	{
 		final LocalDate endDate = DateHelper.getCurrentDate();
-		List<Transaction> transactions = transactionService.getTransactionsForAccountUntilDate(currentAccount, endDate, FilterConfiguration.DEFAULT);
+		List<Transaction> transactions = transactionService.getTransactionsForAccountUntilDate(account, endDate, FilterConfiguration.DEFAULT);
 
 		int sum = 0;
 		for(Transaction transaction : transactions)
 		{
-			sum += getAmount(transaction, currentAccount);
+			sum += getAmount(transaction, account);
 		}
 
 		return sum;
 	}
-
 
 	public List<RepeatingModifierType> getRepeatingModifierTypes()
 	{
