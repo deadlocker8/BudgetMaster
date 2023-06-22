@@ -173,7 +173,7 @@ public class HelpersService
 		return transaction.getAmount();
 	}
 
-	public int getAccountBudget()
+	public int getCurrentAccountBudget()
 	{
 		Account currentAccount = getCurrentAccount();
 		final LocalDate endDate = DateHelper.getCurrentDate();
@@ -187,6 +187,7 @@ public class HelpersService
 
 		return sum;
 	}
+
 
 	public List<RepeatingModifierType> getRepeatingModifierTypes()
 	{
