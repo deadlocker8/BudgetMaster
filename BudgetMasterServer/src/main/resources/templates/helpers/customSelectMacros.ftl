@@ -13,14 +13,14 @@
                 </div>
 </#macro>
 
-<#macro customSelectEnd inputName selectedItem>
-                <input type="hidden" name="${inputName}" class="hidden-input-custom-select" <#if selectedItem??>value="${selectedItem.getID()?c}"</#if>/>
+<#macro customSelectEnd inputName selectedItem form="">
+                <input type="hidden" name="${inputName}" class="hidden-input-custom-select" <#if selectedItem??>value="${selectedItem.getID()?c}"</#if> <#if form?has_content>form="${form}"</#if>/>
             </div>
         </div>
     </div>
 </#macro>
 
-<#macro customCategorySelect categories selectedCategory inputClasses labelText id showName=true rowClasses="" disabled=false>
+<#macro customCategorySelect categories selectedCategory inputClasses labelText id showName=true rowClasses="" disabled=false form="">
     <@customSelectStart "category-select-wrapper" categories inputClasses labelText id "label" disabled rowClasses>
         <div class="custom-select-trigger" tabindex="0">
             <div class="custom-select-selected-item">
@@ -52,7 +52,7 @@
             </#list>
         </div>
     </@customSelectStart>
-    <@customSelectEnd "category" selectedCategory/>
+    <@customSelectEnd "category" selectedCategory form/>
 </#macro>
 
 <#macro customAccountSelect selector inputName accounts selectedAccount inputClasses labelText id disabled=false>

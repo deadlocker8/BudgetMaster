@@ -130,8 +130,8 @@
     </a>
 </#macro>
 
-<#macro buttonSubmit name icon localizationKey id="" color="background-blue" classes="" disabled=false formaction="" value="" onclick="">
-    <button id="${id}" class="btn waves-effect waves-light ${color} ${classes}" type="submit" name="${name}" <#if disabled>disabled</#if> <#if formaction?has_content>formaction="<@s.url formaction/>"</#if> <#if value?has_content>value="${value}"</#if> <#if onclick?has_content>onclick="${onclick}"</#if>>
+<#macro buttonSubmit name icon localizationKey id="" color="background-blue" classes="" disabled=false formaction="" value="" onclick="" form="">
+    <button <#if id?has_content>id="${id}"</#if> class="btn waves-effect waves-light ${color} ${classes}" type="submit" name="${name}" <#if disabled>disabled</#if> <#if formaction?has_content>formaction="<@s.url formaction/>"</#if> <#if value?has_content>value="${value}"</#if> <#if onclick?has_content>onclick="${onclick}" </#if> <#if form?has_content>form="${form}" </#if>>
         <i class="material-icons left <#if !localizationKey?has_content>no-margin</#if>">${icon}</i><#if localizationKey?has_content>${locale.getString(localizationKey)}</#if>
     </button>
 </#macro>
