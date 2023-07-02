@@ -27,6 +27,10 @@
                     </div>
                 </div>
 
+                <script>
+                    transactionNameSuggestions = {};
+                </script>
+
                 <@header.content>
                     <div class="container">
                         <#if csvRows??>

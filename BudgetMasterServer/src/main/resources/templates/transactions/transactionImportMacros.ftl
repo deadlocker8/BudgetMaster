@@ -186,6 +186,8 @@
             </tbody>
         </table>
     </div>
+
+    <@newTransactionMacros.insertNameSuggestions/>
 </#macro>
 
 <#macro renderCsvTransaction csvTransaction index>
@@ -240,8 +242,6 @@
             </td>
         </form>
     </tr>
-
-    <@newTransactionMacros.insertNameSuggestions/>
 </#macro>
 
 <#macro showColumnSettingsErrors>
