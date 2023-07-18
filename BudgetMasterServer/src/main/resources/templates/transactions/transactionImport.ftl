@@ -8,7 +8,7 @@
         <@header.style "transactionImport"/>
         <@header.style "collapsible"/>
         <#import "/spring.ftl" as s>
-        <link rel="stylesheet" href="<@s.url '/webjars/datatables/1.13.4/css/jquery.dataTables.min.css'/>"/>
+        <link rel="stylesheet" href="<@s.url '/webjars/datatables/1.13.5/css/jquery.dataTables.min.css'/>"/>
     </head>
     <@header.body>
         <#import "../helpers/navbar.ftl" as navbar>
@@ -26,6 +26,10 @@
                         <div class="headline"><i class="fas fa-file-csv"></i> ${locale.getString("menu.transactions.import")}</div>
                     </div>
                 </div>
+
+                <script>
+                    transactionNameSuggestions = {};
+                </script>
 
                 <@header.content>
                     <div class="container">
@@ -69,7 +73,7 @@
         <!--  Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
-        <script src="<@s.url '/webjars/datatables/1.13.4/js/jquery.dataTables.min.js'/>"></script>
+        <script src="<@s.url '/webjars/datatables/1.13.5/js/jquery.dataTables.min.js'/>"></script>
         <script src="<@s.url '/js/transactionImport.js'/>"></script>
     </@header.body>
 </html>

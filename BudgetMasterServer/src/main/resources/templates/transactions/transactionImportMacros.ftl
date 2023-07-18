@@ -168,6 +168,7 @@
         <table class="bordered centered" id="table-transaction-rows" style="width:100%">
             <thead>
                 <tr>
+                    <td class="hidden"></td>
                     <td class="bold">${locale.getString("transactions.import.status")}</td>
                     <td class="bold">${locale.getString("transaction.new.label.date")}</td>
                     <td class="bold">${locale.getString("transaction.new.label.category")}</td>
@@ -185,25 +186,30 @@
             </tbody>
         </table>
     </div>
+
+    <@newTransactionMacros.insertNameSuggestions/>
 </#macro>
 
 <#macro renderCsvTransaction csvTransaction index>
     <tr class="transaction-import-row <#if csvTransaction.getStatus().name() == 'SKIPPED'>transaction-import-row-skipped</#if>" id="transaction-import-row-${index}">
-        <form name="NewTransactionInPlace" method="POST" action="<@s.url '/transactionImport/' + index + '/newTransactionInPlace'/>" data-index="${index}">
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <td class="hidden">
+                <form name="NewTransactionInPlace" id="newTransactionInPlace_${index}" method="POST" action="<@s.url '/transactionImport/' + index + '/newTransactionInPlace'/>" data-index="${index}">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                </form>
+            </td>
             <td data-order="${locale.getString(csvTransaction.getStatus().getLocalizationKey())}" data-search="${locale.getString(csvTransaction.getStatus().getLocalizationKey())}"><@statusBanner csvTransaction.getStatus()/></td>
             <td data-order="${csvTransaction.getDate()}" data-search="${csvTransaction.getDate()}">${csvTransaction.getDate()}</td>
             <td data-order="${csvTransaction.getCategory().getName()}" data-search="${csvTransaction.getCategory().getName()}">
-                <@customSelectMacros.customCategorySelect categories csvTransaction.getCategory() "left-align no-margin-top no-margin-bottom" "" "csvTransaction-category-${index}" false "no-margin-bottom" csvTransaction.getStatus().name() == 'SKIPPED'/>
+                <@customSelectMacros.customCategorySelect categories csvTransaction.getCategory() "left-align no-margin-top no-margin-bottom" "" "csvTransaction-category-${index}" false "no-margin-bottom" csvTransaction.getStatus().name() == 'SKIPPED' 'newTransactionInPlace_${index}'/>
             </td>
             <td data-order="${csvTransaction.getName()}" data-search="${csvTransaction.getName()}">
                 <div class="input-field no-margin-top no-margin-bottom">
-                    <input class="no-margin-bottom autocomplete" type="text" name="name" autocomplete="off" required value="${csvTransaction.getName()}" <#if csvTransaction.getStatus().name() == 'SKIPPED'>disabled</#if>>
+                    <input form="newTransactionInPlace_${index}" class="no-margin-bottom autocomplete" type="text" name="name" autocomplete="off" required value="${csvTransaction.getName()}" <#if csvTransaction.getStatus().name() == 'SKIPPED'>disabled</#if>>
                 </div>
             </td>
             <td data-order="${csvTransaction.getDescription()}" data-search="${csvTransaction.getDescription()}">
                 <div class="input-field no-margin-top no-margin-bottom">
-                    <input class="no-margin-bottom" type="text" name="description" value="${csvTransaction.getDescription()}" <#if csvTransaction.getStatus().name() == 'SKIPPED'>disabled</#if>>
+                    <input form="newTransactionInPlace_${index}" class="no-margin-bottom" type="text" name="description" value="${csvTransaction.getDescription()}" <#if csvTransaction.getStatus().name() == 'SKIPPED'>disabled</#if>>
                 </div>
             </td>
             <td data-order="${currencyService.getCurrencyString(csvTransaction.getAmount())}" data-search="${currencyService.getCurrencyString(csvTransaction.getAmount())}">${currencyService.getCurrencyString(csvTransaction.getAmount())}</td>
@@ -211,7 +217,7 @@
                 <#if csvTransaction.getStatus().name() == 'SKIPPED'>
                     <@header.buttonFlat url='/transactionImport/' + index + '/undoSkip' isDataUrl=true icon='do_disturb_off' localizationKey='' classes="no-padding text-default button-request-transaction-import-undo-skip" datasetIndex=index/>
                 <#else>
-                    <@header.buttonSubmit name='action' icon='save' localizationKey='' classes='text-white'/>&nbsp;
+                    <@header.buttonSubmit name='action' icon='save' localizationKey='' classes='text-white' form='newTransactionInPlace_${index}'/>&nbsp;
                     <div class="fixed-action-btn edit-transaction-button">
                         <a class="btn-floating btn-flat waves-effect waves-light no-padding text-default edit-transaction-button-link">
                             <i class="material-icons text-default">edit</i>
@@ -236,8 +242,6 @@
             </td>
         </form>
     </tr>
-
-    <@newTransactionMacros.insertNameSuggestions/>
 </#macro>
 
 <#macro showColumnSettingsErrors>

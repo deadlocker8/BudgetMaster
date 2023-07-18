@@ -9,12 +9,12 @@ $(document).ready(function()
 
     $('#table-transaction-rows').DataTable({
         paging: false,
-        order: [[1, 'desc']],
+        order: [[2, 'desc']],
         info: false,
         scrollX: true,
         scrollY: false,
         columnDefs: [
-            { orderable: false, targets:  5}
+            { orderable: false, targets:  6}
         ],
         language: { search: '' , searchPlaceholder: localizedSearch},
     });
@@ -56,34 +56,42 @@ function initCsvTransactionForms()
     for(let i = 0; i < forms.length; i++)
     {
         let form = forms[i];
-        $(form).submit(function(event)
-        {
-            const csvTransactionId = form.dataset.index;
-
-            $.ajax({
-                type: 'POST',
-                url: $(this).attr('action'),
-                data: new FormData(form),
-                processData: false,
-                contentType: false,
-                success: function(response)
-                {
-                    $('#transaction-import-row-' + csvTransactionId).replaceWith(response);
-                    initCsvTransactions();
-                },
-                error: function(response)
-                {
-                    M.toast({
-                        html: "Error saving transaction",
-                        classes: 'red'
-                    });
-                    console.error(response);
-                }
-            });
-
-            event.preventDefault();
-        });
+        console.log(i)
+        console.log(form)
+        // form.removeEventListener('submit', submitTransactionInPlaceForm);
+        form.addEventListener('submit', submitTransactionInPlaceForm);
     }
+}
+
+function submitTransactionInPlaceForm(event)
+{
+    const form = event.target;
+    console.log('form ' + form)
+    const csvTransactionId = form.dataset.index;
+            console.log('go')
+
+    $.ajax({
+        type: 'POST',
+        url: $(this).attr('action'),
+        data: new FormData(form),
+        processData: false,
+        contentType: false,
+        success: function(response)
+        {
+            $('#transaction-import-row-' + csvTransactionId).replaceWith(response);
+            initCsvTransactions();
+        },
+        error: function(response)
+        {
+            M.toast({
+                html: "Error saving transaction",
+                classes: 'red'
+            });
+            console.error(response);
+        }
+    });
+
+    event.preventDefault();
 }
 
 function initCsvTransactionButtons()
@@ -92,21 +100,27 @@ function initCsvTransactionButtons()
     for(let i = 0; i < buttonsSkip.length; i++)
     {
         const button = buttonsSkip[i];
-        button.addEventListener('click', function()
-        {
-            performCsvTransactionGetRequestWithoutReload(button, 'Error skipping transaction');
-        });
+        button.removeEventListener('click', skipRow);
+        button.addEventListener('click', skipRow);
     }
 
     const buttonsUndoSkip = document.getElementsByClassName('button-request-transaction-import-undo-skip');
     for(let i = 0; i < buttonsUndoSkip.length; i++)
     {
         const button = buttonsUndoSkip[i];
-        button.addEventListener('click', function()
-        {
-            performCsvTransactionGetRequestWithoutReload(button, 'Error undo skip transaction');
-        });
+        button.removeEventListener('click', undoSkipRow);
+        button.addEventListener('click', undoSkipRow);
     }
+}
+
+function skipRow(event)
+{
+    performCsvTransactionGetRequestWithoutReload(event.currentTarget, 'Error skipping transaction');
+}
+
+function undoSkipRow(event)
+{
+    performCsvTransactionGetRequestWithoutReload(event.currentTarget, 'Error undo skip transaction');
 }
 
 function performCsvTransactionGetRequestWithoutReload(button, errorMessage)
