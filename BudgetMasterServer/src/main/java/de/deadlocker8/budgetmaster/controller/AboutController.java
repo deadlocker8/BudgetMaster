@@ -47,6 +47,7 @@ public class AboutController extends BaseController
 	public String whatsNewModal(Model model)
 	{
 		final List<NewsEntry> newsEntries = new ArrayList<>();
+		newsEntries.add(NewsEntry.createWithLocalizationKey("csvImportBugfixMultipleTimes"));
 		newsEntries.add(NewsEntry.createWithLocalizationKey("dockerImageSize"));
 		newsEntries.add(NewsEntry.createWithLocalizationKey("csvImportAvoidPageReload"));
 		newsEntries.add(NewsEntry.createWithLocalizationKey("csvImportBugfixFloatingPointPrecision"));
