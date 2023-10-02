@@ -11,6 +11,7 @@ import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.IconService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
+import java.security.SecureRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class DemoDataCreator
 		this.accountService = accountService;
 		this.transactionService = transactionService;
 
-		this.random = new Random();
+		this.random = new SecureRandom();
 	}
 
 	public void createDemoData()
