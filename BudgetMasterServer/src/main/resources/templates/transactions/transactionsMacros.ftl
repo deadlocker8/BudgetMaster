@@ -7,7 +7,7 @@
             <i class="material-icons">repeat</i>
         </#if>
         <#if transaction.isTransfer()>
-            <i class="material-icons">swap_horiz</i>
+            <i class="material-icons tooltipped" data-position="bottom" data-tooltip="${transaction.getAccount().getName()} ➔ ${transaction.getTransferAccount().getName()}">swap_horiz</i>
         </#if>
 
         <#if !transaction.isRepeating() && !transaction.isTransfer()>
