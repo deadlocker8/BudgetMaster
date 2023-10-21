@@ -39,7 +39,7 @@
         <itextpdf.version>5.5.13.3</itextpdf.version>
         <vanilla-picker.version>2.12.1</vanilla-picker.version>
         <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
-        <opencsv.version>5.7.1</opencsv.version>
+        <opencsv.version>5.8</opencsv.version>
         <datatables.version>1.13.5</datatables.version>
         <jakarta.xml.bind-api.version>4.0.1</jakarta.xml.bind-api.version>
         <junit-jupiter-engine.version>5.9.3</junit-jupiter-engine.version>
