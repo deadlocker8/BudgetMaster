@@ -186,7 +186,7 @@ public class HelpersService
 		final Optional<Account> accountOptional = accountRepository.findById(accountID);
 		if(accountOptional.isEmpty())
 		{
-			throw new IllegalArgumentException(MessageFormat.format("No account with ID \"{0)\" found", accountID));
+			throw new IllegalArgumentException(MessageFormat.format("No account with ID \"{0}\" found", accountID));
 		}
 
 		final Account account = accountOptional.get();
