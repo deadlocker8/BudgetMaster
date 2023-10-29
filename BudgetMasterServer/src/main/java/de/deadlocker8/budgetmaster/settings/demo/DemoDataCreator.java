@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.security.SecureRandom;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class DemoDataCreator
 		this.accountService = accountService;
 		this.transactionService = transactionService;
 
-		this.random = new Random();
+		this.random = new SecureRandom();
 	}
 
 	public void createDemoData()

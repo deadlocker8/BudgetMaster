@@ -102,7 +102,7 @@
             <div class="truncate global-account-select-name text-default">${accountName}</div>
 
             <div>
-                <#assign accountBudget = helpers.getAccountBudget()/>
+                <#assign accountBudget = helpers.getCurrentAccountBudget()/>
                 <#if accountBudget <= 0>
                     <div class="global-account-select-budget ${redTextColor}">${currencyService.getCurrencyString(accountBudget)}</div>
                 <#else>

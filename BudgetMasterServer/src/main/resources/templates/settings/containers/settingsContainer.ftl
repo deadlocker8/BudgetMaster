@@ -12,7 +12,7 @@
     </div>
 
     <#if importScripts>
-        <script src="<@s.url '/webjars/jquery/3.6.4/jquery.min.js'/>"></script>
+        <script src="<@s.url '/webjars/jquery/3.7.1/jquery.min.js'/>"></script>
         <script src="<@s.url '/webjars/materializecss/1.0.0/js/materialize.min.js'/>"></script>
         <script>
             initSettingsContainer('${formName}', '${containerId}');

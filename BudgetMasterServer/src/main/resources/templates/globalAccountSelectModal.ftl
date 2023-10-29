@@ -3,6 +3,7 @@
 <#import "helpers/header.ftl" as header>
 <#import "helpers/customSelectMacros.ftl" as customSelectMacros>
 
+<@header.globals/>
 
 <div id="modalGlobalAccountSelect" class="modal modal-fixed-footer background-color-light">
     <div class="modal-content">
@@ -39,7 +40,15 @@
                             </#if>
                             <div class="global-account-select-option-content">
                                 <@customSelectMacros.accountIcon account accountName "category-circle-preview account-icon-big"/>
-                                <div class="global-account-select-option-name truncate">${accountName}</div>
+                                <div class="global-account-select-option-column-2">
+                                    <div class="global-account-select-option-name truncate">${accountName}</div>
+                                    <#assign accountBudget = helpers.getAccountBudgetByID(account.getID())/>
+                                    <#if accountBudget <= 0>
+                                        <div class="global-account-select-option-balance ${redTextColor}">${currencyService.getCurrencyString(accountBudget)}</div>
+                                    <#else>
+                                        <div class="global-account-select-option-balance ${greenTextColor}">${currencyService.getCurrencyString(accountBudget)}</div>
+                                    </#if>
+                                </div>
                             </div>
                         </div>
                     </a>

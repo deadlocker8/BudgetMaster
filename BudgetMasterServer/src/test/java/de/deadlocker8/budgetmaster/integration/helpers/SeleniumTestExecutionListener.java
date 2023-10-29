@@ -40,7 +40,6 @@ public class SeleniumTestExecutionListener extends AbstractTestExecutionListener
 		if(context instanceof final ConfigurableApplicationContext configurableApplicationContext)
 		{
 			FirefoxOptions options = new FirefoxOptions();
-			options.setHeadless(false);
 			options.addPreference("devtools.console.stdout.content", true);
 			driver = new FirefoxDriver(options);
 			driver.manage().window().maximize();

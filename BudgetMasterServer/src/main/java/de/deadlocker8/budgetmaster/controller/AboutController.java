@@ -47,13 +47,8 @@ public class AboutController extends BaseController
 	public String whatsNewModal(Model model)
 	{
 		final List<NewsEntry> newsEntries = new ArrayList<>();
-		newsEntries.add(NewsEntry.createWithLocalizationKey("csvImportBugfixMultipleTimes"));
-		newsEntries.add(NewsEntry.createWithLocalizationKey("dockerImageSize"));
-		newsEntries.add(NewsEntry.createWithLocalizationKey("csvImportAvoidPageReload"));
-		newsEntries.add(NewsEntry.createWithLocalizationKey("csvImportBugfixFloatingPointPrecision"));
-		newsEntries.add(NewsEntry.createWithLocalizationKey("csvImportBugfixTemplateAndCategory"));
-		newsEntries.add(NewsEntry.createWithLocalizationKey("sortCategoriesInCharts"));
-		newsEntries.add(NewsEntry.createWithLocalizationKey("filterBugfix"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("accountBalances"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("transferTooltip"));
 
 		model.addAttribute(ModelAttributes.NEWS_ENTRIES, newsEntries);
 		return ReturnValues.WHATS_NEW;
