@@ -7,7 +7,7 @@
     <groupId>de.deadlocker8</groupId>
     <artifactId>BudgetMaster</artifactId>
     <packaging>pom</packaging>
-    <version>2.16.0</version>
+    <version>2.16.1</version>
     <name>BudgetMaster</name>
 
     <modules>
@@ -51,7 +51,7 @@
 
         <app.versionDate>${maven.build.timestamp}</app.versionDate>
         <maven.build.timestamp.format>dd.MM.yy</maven.build.timestamp.format>
-        <app.versionCode>45</app.versionCode>
+        <app.versionCode>46</app.versionCode>
         <app.author>Robert Goldmann</app.author>
 
         <testcontainer.version>1.19.1</testcontainer.version>
