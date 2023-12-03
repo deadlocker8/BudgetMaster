@@ -7,7 +7,7 @@
     <groupId>de.deadlocker8</groupId>
     <artifactId>BudgetMaster</artifactId>
     <packaging>pom</packaging>
-    <version>2.16.0</version>
+    <version>2.16.1</version>
     <name>BudgetMaster</name>
 
     <modules>
@@ -40,7 +40,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.5</version>
+        <version>3.2.0</version>
         <relativePath/>
     </parent>
 
@@ -51,13 +51,11 @@
 
         <app.versionDate>${maven.build.timestamp}</app.versionDate>
         <maven.build.timestamp.format>dd.MM.yy</maven.build.timestamp.format>
-        <app.versionCode>45</app.versionCode>
+        <app.versionCode>46</app.versionCode>
         <app.author>Robert Goldmann</app.author>
 
-        <testcontainer.version>1.19.1</testcontainer.version>
+        <testcontainer.version>1.19.3</testcontainer.version>
         <assertj-core.version>3.24.2</assertj-core.version>
-
-        <dependency-check-maven.version>8.4.2</dependency-check-maven.version>
     </properties>
 
     <dependencies>
@@ -88,36 +86,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.owasp</groupId>
-                <artifactId>dependency-check-maven</artifactId>
-                <version>${dependency-check-maven.version}</version>
-                <inherited>false</inherited>
-                <configuration>
-                    <skip>false</skip>
-                    <cveValidForHours>48</cveValidForHours>
-                    <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
-                    <failOnError>false</failOnError>
-                    <formats>
-                        <format>HTML</format>
-                        <format>XML</format>
-                    </formats>
-                    <suppressionFile>dependency-check-maven-suppression.xml</suppressionFile>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>aggregate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-        </plugins>
-    </build>
 
     <distributionManagement>
         <repository>

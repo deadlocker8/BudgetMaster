@@ -53,7 +53,7 @@
 
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
-        <script src="<@s.url '/webjars/sortablejs/1.15.0/Sortable.min.js'/>"></script>
+        <script src="<@s.url '/webjars/sortablejs/1.15.1/Sortable.min.js'/>"></script>
         <script src="<@s.url '/js/templates.js'/>"></script>
     </@header.body>
 </html>

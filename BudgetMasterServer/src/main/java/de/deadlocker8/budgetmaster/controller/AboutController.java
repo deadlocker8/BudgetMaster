@@ -47,8 +47,7 @@ public class AboutController extends BaseController
 	public String whatsNewModal(Model model)
 	{
 		final List<NewsEntry> newsEntries = new ArrayList<>();
-		newsEntries.add(NewsEntry.createWithLocalizationKey("accountBalances"));
-		newsEntries.add(NewsEntry.createWithLocalizationKey("transferTooltip"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("mariaDB"));
 
 		model.addAttribute(ModelAttributes.NEWS_ENTRIES, newsEntries);
 		return ReturnValues.WHATS_NEW;
