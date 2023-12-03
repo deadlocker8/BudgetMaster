@@ -56,8 +56,6 @@
 
         <testcontainer.version>1.19.1</testcontainer.version>
         <assertj-core.version>3.24.2</assertj-core.version>
-
-        <dependency-check-maven.version>8.4.2</dependency-check-maven.version>
     </properties>
 
     <dependencies>
@@ -88,36 +86,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.owasp</groupId>
-                <artifactId>dependency-check-maven</artifactId>
-                <version>${dependency-check-maven.version}</version>
-                <inherited>false</inherited>
-                <configuration>
-                    <skip>false</skip>
-                    <cveValidForHours>48</cveValidForHours>
-                    <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
-                    <failOnError>false</failOnError>
-                    <formats>
-                        <format>HTML</format>
-                        <format>XML</format>
-                    </formats>
-                    <suppressionFile>dependency-check-maven-suppression.xml</suppressionFile>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>aggregate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-        </plugins>
-    </build>
 
     <distributionManagement>
         <repository>
