@@ -22,6 +22,7 @@ public class Image implements ProvidesID
 
 	@NotNull
 	@Expose
+	@Column(length = 16777215)
 	@Lob
 	private Byte[] image;
 
