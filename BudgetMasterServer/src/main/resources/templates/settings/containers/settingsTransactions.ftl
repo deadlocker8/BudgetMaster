@@ -13,15 +13,20 @@
                 <div class="table-container">
                     <div class="table-cell">
                         <div class="switch-cell-margin">${locale.getString("settings.rest")}</div>
+                        <div class="switch-cell-margin">${locale.getString("settings.transactionNameSuggestionOrder")}</div>
                     </div>
                     <div class="table-cell table-cell-spacer"></div>
                     <div class="table-cell">
                         <@settingsMacros.switch "rest" "restActivated" settings.isRestActivated()/>
+                        <@settingsMacros.switch "transactionNameSuggestionOrder" "orderTransactionNameSuggestionsAlphabetically" settings.getOrderTransactionNameSuggestionsAlphabetically()?? && settings.getOrderTransactionNameSuggestionsAlphabetically()/>
                     </div>
                     <div class="table-cell table-cell-spacer"></div>
                     <div class="table-cell">
                         <div class="switch-cell-margin">
                             <a class="btn btn-flat tooltipped text-default" data-position="bottom" data-tooltip="${locale.getString("settings.rest.description")}"><i class="material-icons">help_outline</i></a>
+                        </div>
+                        <div class="switch-cell-margin">
+                            <a class="btn btn-flat tooltipped text-default" data-position="bottom" data-tooltip="${locale.getString("settings.transactionNameSuggestionOrder.description")}"><i class="material-icons">help_outline</i></a>
                         </div>
                     </div>
                 </div>

@@ -11,12 +11,13 @@ import java.util.List;
 public final class TransactionsSettingsContainer implements SettingsContainer
 {
 	private Boolean restActivated;
-
+	private Boolean orderTransactionNameSuggestionsAlphabetically;
 	private List<TransactionNameKeyword> keywords;
 
-	public TransactionsSettingsContainer(Boolean restActivated, List<TransactionNameKeyword> keywords)
+	public TransactionsSettingsContainer(Boolean restActivated, Boolean orderTransactionNameSuggestionsAlphabetically, List<TransactionNameKeyword> keywords)
 	{
 		this.restActivated = restActivated;
+		this.orderTransactionNameSuggestionsAlphabetically = orderTransactionNameSuggestionsAlphabetically;
 		this.keywords = keywords;
 	}
 
@@ -32,6 +33,10 @@ public final class TransactionsSettingsContainer implements SettingsContainer
 		if(restActivated == null)
 		{
 			restActivated = false;
+		}
+		if(orderTransactionNameSuggestionsAlphabetically == null)
+		{
+			orderTransactionNameSuggestionsAlphabetically = false;
 		}
 	}
 
@@ -59,6 +64,7 @@ public final class TransactionsSettingsContainer implements SettingsContainer
 		final Settings settings = settingsService.getSettings();
 
 		settings.setRestActivated(restActivated);
+		settings.setOrderTransactionNameSuggestionsAlphabetically(orderTransactionNameSuggestionsAlphabetically);
 
 		return settings;
 	}
