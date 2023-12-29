@@ -112,6 +112,10 @@ public class SettingsService
 		{
 			settings.setMigrationDeclined(defaultSettings.getMigrationDeclined());
 		}
+		if(settings.getOrderTransactionNameSuggestionsAlphabetically() == null)
+		{
+			settings.setOrderTransactionNameSuggestionsAlphabetically(defaultSettings.getOrderTransactionNameSuggestionsAlphabetically());
+		}
 
 		settingsRepository.save(settings);
 	}

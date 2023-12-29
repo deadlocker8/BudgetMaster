@@ -45,6 +45,8 @@ public class Settings
 
 	private Boolean migrationDeclined;
 
+	private Boolean orderTransactionNameSuggestionsAlphabetically;
+
 	public Settings()
 	{
 		// empty
@@ -73,6 +75,7 @@ public class Settings
 		defaultSettings.setInstalledVersionCode(0);
 		defaultSettings.setWhatsNewShownForCurrentVersion(false);
 		defaultSettings.setMigrationDeclined(false);
+		defaultSettings.setOrderTransactionNameSuggestionsAlphabetically(true);
 
 		return defaultSettings;
 	}
@@ -301,6 +304,16 @@ public class Settings
 		this.migrationDeclined = migrationDeclined;
 	}
 
+	public Boolean getOrderTransactionNameSuggestionsAlphabetically()
+	{
+		return orderTransactionNameSuggestionsAlphabetically;
+	}
+
+	public void setOrderTransactionNameSuggestionsAlphabetically(Boolean orderTransactionNameSuggestionsAlphabetically)
+	{
+		this.orderTransactionNameSuggestionsAlphabetically = orderTransactionNameSuggestionsAlphabetically;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -326,6 +339,7 @@ public class Settings
 				", installedVersionCode=" + installedVersionCode +
 				", whatsNewShownForCurrentVersion=" + whatsNewShownForCurrentVersion +
 				", migrationDeclined=" + migrationDeclined +
+				", orderTransactionNameSuggestionsAlphabetically=" + orderTransactionNameSuggestionsAlphabetically +
 				'}';
 	}
 }
