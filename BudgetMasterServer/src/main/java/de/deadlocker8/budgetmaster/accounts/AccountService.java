@@ -184,6 +184,7 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 		for(Account account : accountRepository.findAll())
 		{
 			handleNullValuesForAccountState(account);
+			handleNullValuesDescription(account);
 			accountRepository.save(account);
 		}
 	}
@@ -193,7 +194,16 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 		if(account.getAccountState() == null)
 		{
 			account.setAccountState(AccountState.FULL_ACCESS);
-			LOGGER.debug(MessageFormat.format("Updated account {0}: Set missing attribute \"accountState\" to {1}", account.getName(), account.getAccountState()));
+			LOGGER.debug(MessageFormat.format("Updated account {0}: Set missing attribute \"accountState\" to \"{1}\"", account.getName(), account.getAccountState()));
+		}
+	}
+
+	private void handleNullValuesDescription(Account account)
+	{
+		if(account.getDescription() == null)
+		{
+			account.setDescription("");
+			LOGGER.debug(MessageFormat.format("Updated account {0}: Set missing attribute \"description\" to {1}", account.getName(), account.getDescription()));
 		}
 	}
 
