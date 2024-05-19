@@ -43,6 +43,11 @@
                                     <td><@customSelectMacros.accountIcon account account.getName() "text-blue"/></td>
                                     <td>${account.getName()}</td>
                                     <td>
+                                        <div class="truncate account-description">
+                                            ${account.getDescription()}
+                                        </div>
+                                    </td>
+                                    <td>
                                         <a href="<@s.url '/accounts/${account.getID()?c}/edit'/>" class="btn-flat no-padding text-default"><i class="material-icons left">edit</i></a>
                                         <@header.buttonFlat url='/accounts/' + account.ID?c + '/requestDelete' icon='delete' localizationKey='' classes="no-padding text-default button-request-delete-account" isDataUrl=true/>
                                     </td>

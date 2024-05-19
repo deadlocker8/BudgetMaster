@@ -605,6 +605,11 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     background-color: var(--color-blue);
 }
 
+/* overridden by media queries*/
+.account-description {
+    max-width: 12ch;
+}
+
 .invisible {
     opacity: 0;
 }
@@ -631,6 +636,10 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     .fixed-action-btn {
         right: 53px;
     }
+
+    .account-description {
+        max-width: 40ch;
+    }
 }
 
 /* medium screens */
@@ -650,6 +659,10 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
 
     .template-header-name {
         max-width: 40% !important;
+    }
+
+    .account-description {
+        max-width: 20ch;
     }
 }
 
@@ -687,6 +700,10 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     .notification-clear i,
     .hint-clear i {
         font-size: 4vmin;
+    }
+
+    .account-description {
+        max-width: 12ch;
     }
 }
 
