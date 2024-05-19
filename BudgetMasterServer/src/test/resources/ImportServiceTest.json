@@ -1,6 +1,6 @@
 {
     "TYPE": "BUDGETMASTER_DATABASE",
-    "VERSION": 10,
+    "VERSION": 11,
     "categories": [
         {
             "ID": 3,
@@ -35,6 +35,7 @@
         {
             "ID": 1,
             "name": "Placeholder",
+            "description": "",
             "accountState": "FULL_ACCESS",
             "type": "ALL",
             "iconReferenceID": 1
@@ -42,6 +43,7 @@
         {
             "ID": 2,
             "name": "My Default Account",
+            "description": "",
             "accountState": "FULL_ACCESS",
             "type": "CUSTOM",
             "iconReferenceID": 7
@@ -49,6 +51,7 @@
         {
             "ID": 6,
             "name": "Read-only account",
+            "description": "",
             "accountState": "READ_ONLY",
             "type": "CUSTOM",
             "iconReferenceID": 6
@@ -56,6 +59,7 @@
         {
             "ID": 8,
             "name": "Second Account",
+            "description": "Lorem Ipsum",
             "accountState": "FULL_ACCESS",
             "type": "CUSTOM",
             "iconReferenceID": 8

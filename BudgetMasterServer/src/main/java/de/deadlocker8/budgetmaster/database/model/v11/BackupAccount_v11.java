@@ -1,31 +1,29 @@
-package de.deadlocker8.budgetmaster.database.model.v7;
+package de.deadlocker8.budgetmaster.database.model.v11;
 
 import de.deadlocker8.budgetmaster.accounts.AccountState;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
-import de.deadlocker8.budgetmaster.database.model.BackupInfo;
-import de.deadlocker8.budgetmaster.database.model.Upgradeable;
-import de.deadlocker8.budgetmaster.database.model.v11.BackupAccount_v11;
 
-import java.util.List;
 import java.util.Objects;
 
-public class BackupAccount_v7 implements Upgradeable<BackupAccount_v11>
+public class BackupAccount_v11
 {
 	private Integer ID;
 	private String name;
+	private String description;
 	private AccountState accountState;
 	private AccountType type;
 	private Integer iconReferenceID;
 
-	public BackupAccount_v7()
+	public BackupAccount_v11()
 	{
 		// for GSON
 	}
 
-	public BackupAccount_v7(Integer ID, String name, AccountState accountState, AccountType type, Integer iconReferenceID)
+	public BackupAccount_v11(Integer ID, String name, String description, AccountState accountState, AccountType type, Integer iconReferenceID)
 	{
 		this.ID = ID;
 		this.name = name;
+		this.description = description;
 		this.accountState = accountState;
 		this.type = type;
 		this.iconReferenceID = iconReferenceID;
@@ -49,6 +47,16 @@ public class BackupAccount_v7 implements Upgradeable<BackupAccount_v11>
 	public void setName(String name)
 	{
 		this.name = name;
+	}
+
+	public String getDescription()
+	{
+		return description;
+	}
+
+	public void setDescription(String description)
+	{
+		this.description = description;
 	}
 
 	public AccountState getAccountState()
@@ -86,14 +94,14 @@ public class BackupAccount_v7 implements Upgradeable<BackupAccount_v11>
 	{
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
-		BackupAccount_v7 that = (BackupAccount_v7) o;
-		return Objects.equals(ID, that.ID) && Objects.equals(name, that.name) && accountState == that.accountState && type == that.type && Objects.equals(iconReferenceID, that.iconReferenceID);
+		BackupAccount_v11 that = (BackupAccount_v11) o;
+		return Objects.equals(ID, that.ID) && Objects.equals(name, that.name) && Objects.equals(description, that.description) &&accountState == that.accountState && type == that.type && Objects.equals(iconReferenceID, that.iconReferenceID);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, name, accountState, type, iconReferenceID);
+		return Objects.hash(ID, name, description, accountState, type, iconReferenceID);
 	}
 
 	@Override
@@ -102,15 +110,10 @@ public class BackupAccount_v7 implements Upgradeable<BackupAccount_v11>
 		return "BackupAccount_v7{" +
 				"ID=" + ID +
 				", name='" + name + '\'' +
+				", description='" + description + '\'' +
 				", accountState=" + accountState +
 				", type=" + type +
 				", iconReferenceID=" + iconReferenceID +
 				'}';
-	}
-
-	@Override
-	public BackupAccount_v11 upgrade(List<BackupInfo> backupInfoItems)
-	{
-		return new BackupAccount_v11(ID, name, "", accountState, type, iconReferenceID);
 	}
 }
