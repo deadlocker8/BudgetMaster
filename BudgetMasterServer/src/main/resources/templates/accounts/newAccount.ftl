@@ -47,6 +47,15 @@
                             </div>
                         </div>
 
+                        <#-- description -->
+                        <div class="row">
+                            <div class="input-field col s12 m12 l8 offset-l2">
+                                <i class="material-icons prefix">article</i>
+                                <textarea id="account-description" class="materialize-textarea" name="description" data-length="250" <@validation.validation "description"/>><#if account.getDescription()??>${account.getDescription()}</#if></textarea>
+                                <label class="input-label" for="account-description">${locale.getString("transaction.new.label.description")}</label>
+                            </div>
+                        </div>
+
                         <#-- icon -->
                         <#if account.getIconReference()?? && (account.getIconReference().isImageIcon() || account.getIconReference().isBuiltinIcon())>
                             <#assign initialBackgroundClasses='category-square'/>
