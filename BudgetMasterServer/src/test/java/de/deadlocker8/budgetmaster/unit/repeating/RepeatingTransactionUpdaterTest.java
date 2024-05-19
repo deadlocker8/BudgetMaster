@@ -63,7 +63,7 @@ class RepeatingTransactionUpdaterTest
 				new RepeatingModifierYears(1),
 				new RepeatingEndAfterXTimes(2));
 
-		final Account account = new Account("Account", AccountType.CUSTOM);
+		final Account account = new Account("Account", "", AccountType.CUSTOM);
 
 		TRANSACTION_1 = new Transaction();
 		TRANSACTION_1.setName("abc");

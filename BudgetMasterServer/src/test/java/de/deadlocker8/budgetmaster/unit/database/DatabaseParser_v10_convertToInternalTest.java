@@ -121,7 +121,7 @@ class DatabaseParser_v10_convertToInternalTest
 			final Icon icon = new Icon(accountImage);
 			icon.setID(1);
 
-			final Account account = new Account("Second Account", AccountType.CUSTOM, icon);
+			final Account account = new Account("Second Account", null, AccountType.CUSTOM, icon);
 			account.setID(3);
 
 			assertThat(database.getAccounts()).hasSize(3)
@@ -206,7 +206,7 @@ class DatabaseParser_v10_convertToInternalTest
 			DatabaseParser_v10 importer = new DatabaseParser_v10(json);
 			InternalDatabase database = importer.parseDatabaseFromJSON().convertToInternal();
 
-			Account account1 = new Account("Default", AccountType.CUSTOM);
+			Account account1 = new Account("Default", null, AccountType.CUSTOM);
 			account1.setID(2);
 
 			Image image = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
@@ -215,7 +215,7 @@ class DatabaseParser_v10_convertToInternalTest
 			Icon accountIcon = new Icon(image);
 			accountIcon.setID(1);
 
-			Account account2 = new Account("Second Account", AccountType.CUSTOM);
+			Account account2 = new Account("Second Account", null, AccountType.CUSTOM);
 			account2.setIconReference(accountIcon);
 			account2.setID(3);
 

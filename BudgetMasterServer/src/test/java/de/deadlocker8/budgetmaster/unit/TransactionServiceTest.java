@@ -29,7 +29,7 @@ class TransactionServiceTest
 	private static final Category CATEGORY_REST = new Category("Balance", "#FFFF00", CategoryType.REST);
 	private static final Category CATEGORY_CUSTOM = new Category("CustomCategory", "#0F0F0F", CategoryType.CUSTOM);
 
-	private static final Account ACCOUNT = new Account("MyAccount", AccountType.CUSTOM);
+	private static final Account ACCOUNT = new Account("MyAccount", "", AccountType.CUSTOM);
 
 	@Mock
 	private TransactionRepository transactionRepository;

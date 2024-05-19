@@ -5,10 +5,10 @@ import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.Iconizable;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.utils.ProvidesID;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -45,9 +45,13 @@ public class Account implements ProvidesID, Iconizable
 	@Expose
 	private AccountType type;
 
-	public Account(String name, AccountType type, Icon iconReference)
+	@Expose
+	private String description;
+
+	public Account(String name, String description, AccountType type, Icon iconReference)
 	{
 		this.name = name;
+		this.description = description;
 		this.type = type;
 		this.isSelected = false;
 		this.isDefault = false;
@@ -55,9 +59,9 @@ public class Account implements ProvidesID, Iconizable
 		this.iconReference = iconReference;
 	}
 
-	public Account(String name, AccountType type)
+	public Account(String name, String description, AccountType type)
 	{
-		this(name, type, null);
+		this(name, description, type, null);
 	}
 
 	public Account()
@@ -145,6 +149,16 @@ public class Account implements ProvidesID, Iconizable
 		this.type = type;
 	}
 
+	public String getDescription()
+	{
+		return description;
+	}
+
+	public void setDescription(String description)
+	{
+		this.description = description;
+	}
+
 	@Override
 	public Icon getIconReference()
 	{
@@ -198,6 +212,7 @@ public class Account implements ProvidesID, Iconizable
 				", accountState=" + accountState +
 				", type=" + type +
 				", iconReference=" + iconReference +
+				", description='" + description + '\'' +
 				'}';
 	}
 
@@ -213,12 +228,13 @@ public class Account implements ProvidesID, Iconizable
 				Objects.equals(isDefault, account.isDefault) &&
 				accountState == account.accountState &&
 				Objects.equals(iconReference, account.iconReference) &&
-				type == account.type;
+				type == account.type &&
+				Objects.equals(description, account.description);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, name, isSelected, isDefault, accountState, iconReference, type);
+		return Objects.hash(ID, name, description, isSelected, isDefault, accountState, iconReference, type);
 	}
 }

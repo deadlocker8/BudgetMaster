@@ -133,14 +133,14 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 	{
 		if(accountRepository.findAll().isEmpty())
 		{
-			Account placeholder = new Account("Placeholder", AccountType.ALL);
+			Account placeholder = new Account("Placeholder", "", AccountType.ALL);
 			final Icon newIcon = iconService.createIconReference(null, PLACEHOLDER_ICON, null);
 			iconService.getRepository().save(newIcon);
 			placeholder.setIconReference(newIcon);
 			accountRepository.save(placeholder);
 			LOGGER.debug("Created placeholder account");
 
-			Account account = accountRepository.save(new Account(Localization.getString(Strings.ACCOUNT_DEFAULT_NAME), AccountType.CUSTOM));
+			Account account = accountRepository.save(new Account(Localization.getString(Strings.ACCOUNT_DEFAULT_NAME), "", AccountType.CUSTOM));
 			final Icon iconDefaultAccount = iconService.createIconReference(null, null, null);
 			iconService.getRepository().save(iconDefaultAccount);
 			account.setIconReference(iconDefaultAccount);
@@ -273,6 +273,7 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 
 		Account existingAccount = existingAccountOptional.get();
 		existingAccount.setName(newAccount.getName());
+		existingAccount.setDescription(newAccount.getDescription());
 		existingAccount.setIconReference(newAccount.getIconReference());
 		existingAccount.setType(AccountType.CUSTOM);
 		existingAccount.setAccountState(newAccount.getAccountState());

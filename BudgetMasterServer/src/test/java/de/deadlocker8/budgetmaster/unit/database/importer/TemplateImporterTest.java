@@ -59,10 +59,10 @@ class TemplateImporterTest extends ImporterTestBase
 		Category category = new Category("Awesome Category", "#ff0000", CategoryType.CUSTOM);
 		category = categoryRepository.save(category);
 
-		Account account = new Account("Awesome Account", AccountType.CUSTOM);
+		Account account = new Account("Awesome Account", "", AccountType.CUSTOM);
 		account = accountRepository.save(account);
 
-		Account transferAccount = new Account("Transfer Account", AccountType.CUSTOM);
+		Account transferAccount = new Account("Transfer Account", "", AccountType.CUSTOM);
 		transferAccount = accountRepository.save(transferAccount);
 
 		Icon icon = new Icon("fas fa-icons");
@@ -115,7 +115,7 @@ class TemplateImporterTest extends ImporterTestBase
 		Category category = new Category("Awesome Category", "#ff0000", CategoryType.CUSTOM);
 		category = categoryRepository.save(category);
 
-		Account account = new Account("Awesome Account", AccountType.CUSTOM);
+		Account account = new Account("Awesome Account", "", AccountType.CUSTOM);
 		account = accountRepository.save(account);
 
 		Icon icon = new Icon("fas fa-icons");
@@ -179,7 +179,7 @@ class TemplateImporterTest extends ImporterTestBase
 		Category category = new Category("Awesome Category", "#ff0000", CategoryType.CUSTOM);
 		category = categoryRepository.save(category);
 
-		Account account = new Account("Awesome Account", AccountType.CUSTOM);
+		Account account = new Account("Awesome Account", "", AccountType.CUSTOM);
 		account = accountRepository.save(account);
 
 		Icon icon = new Icon("fas fa-icons");

@@ -381,7 +381,7 @@ class ChartTest extends SeleniumTestBase
 
 		Actions actions = new Actions(driver);
 		actions.moveToElement(driver.findElement(By.className("plot-container"))).perform();
-		actions.moveByOffset(-250, 25)
+		actions.moveByOffset(-450, 25)
 				.keyDown(Keys.SHIFT)
 				.click()
 				.keyUp(Keys.SHIFT)

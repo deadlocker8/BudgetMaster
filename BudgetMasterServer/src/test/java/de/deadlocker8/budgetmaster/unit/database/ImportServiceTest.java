@@ -38,6 +38,7 @@ import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeyword;
 import de.deadlocker8.budgetmaster.transactions.keywords.TransactionNameKeywordService;
 import de.deadlocker8.budgetmaster.utils.Strings;
 import de.thecodelabs.utils.util.Localization;
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -53,7 +54,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import jakarta.persistence.EntityManager;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
@@ -215,11 +215,11 @@ class ImportServiceTest
 						categoryRent);
 
 		// assert accounts
-		final Account accountPlaceholder = createAccount(1, "Placeholder", AccountType.ALL, AccountState.FULL_ACCESS, iconAllAccounts, false, false);
-		final Account accountDefault = createAccount(2, "Default Account", AccountType.CUSTOM, AccountState.FULL_ACCESS, iconAccountDefault, true, true);
-		final Account accountDefaultNew = createAccount(3, "My Default Account", AccountType.CUSTOM, AccountState.FULL_ACCESS, iconAccountDefaultNew, false, false);
-		final Account accountReadOnly = createAccount(4, "Read-only account", AccountType.CUSTOM, AccountState.READ_ONLY, iconAccountReadOnly, false, false);
-		final Account accountSecond = createAccount(5, "Second Account", AccountType.CUSTOM, AccountState.FULL_ACCESS, iconAccountSecond, false, false);
+		final Account accountPlaceholder = createAccount(1, "Placeholder", "", AccountType.ALL, AccountState.FULL_ACCESS, iconAllAccounts, false, false);
+		final Account accountDefault = createAccount(2, "Default Account", "", AccountType.CUSTOM, AccountState.FULL_ACCESS, iconAccountDefault, true, true);
+		final Account accountDefaultNew = createAccount(3, "My Default Account", null, AccountType.CUSTOM, AccountState.FULL_ACCESS, iconAccountDefaultNew, false, false);
+		final Account accountReadOnly = createAccount(4, "Read-only account", null, AccountType.CUSTOM, AccountState.READ_ONLY, iconAccountReadOnly, false, false);
+		final Account accountSecond = createAccount(5, "Second Account", null, AccountType.CUSTOM, AccountState.FULL_ACCESS, iconAccountSecond, false, false);
 		assertThat(accountRepository.findAll())
 				.hasSize(5)
 				.contains(accountPlaceholder,
@@ -461,9 +461,9 @@ class ImportServiceTest
 		return category;
 	}
 
-	private Account createAccount(int ID, String name, AccountType type, AccountState state, Icon icon, boolean isSelected, boolean isDefault)
+	private Account createAccount(int ID, String name, String description, AccountType type, AccountState state, Icon icon, boolean isSelected, boolean isDefault)
 	{
-		final Account account = new Account(name, type, icon);
+		final Account account = new Account(name, description, type, icon);
 		account.setID(ID);
 		account.setAccountState(state);
 		account.setSelected(isSelected);

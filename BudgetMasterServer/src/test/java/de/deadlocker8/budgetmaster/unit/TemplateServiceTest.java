@@ -25,7 +25,7 @@ class TemplateServiceTest
 {
 	private static final Category CATEGORY_NONE = new Category("No category", "#FFFFFF", CategoryType.NONE);
 
-	private static final Account ACCOUNT_SELECTED = new Account("Selected Account", AccountType.CUSTOM);
+	private static final Account ACCOUNT_SELECTED = new Account("Selected Account", "", AccountType.CUSTOM);
 
 	@Mock
 	private TemplateRepository templateRepository;
@@ -58,14 +58,14 @@ class TemplateServiceTest
 		final Template expectedTemplate = new Template();
 		expectedTemplate.setCategory(CATEGORY_NONE);
 
-		templateService.prepareTemplateForNewTransaction(template, false, new Account("my account", AccountType.CUSTOM));
+		templateService.prepareTemplateForNewTransaction(template, false, new Account("my account", "", AccountType.CUSTOM));
 		assertThat(template).isEqualTo(expectedTemplate);
 	}
 
 	@Test
 	void test_prepareTemplateForNewTransaction_accountIsFullAccess_noPreparation()
 	{
-		final Account account = new Account("Account", AccountType.CUSTOM);
+		final Account account = new Account("Account", "", AccountType.CUSTOM);
 		account.setAccountState(AccountState.FULL_ACCESS);
 
 		final Template template = new Template();
@@ -83,7 +83,7 @@ class TemplateServiceTest
 	@Test
 	void test_prepareTemplateForNewTransaction_accountIsNotFullAccess_noPreparation()
 	{
-		final Account account = new Account("Account", AccountType.CUSTOM);
+		final Account account = new Account("Account", "", AccountType.CUSTOM);
 		account.setAccountState(AccountState.READ_ONLY);
 
 		final Template template = new Template();
@@ -104,10 +104,10 @@ class TemplateServiceTest
 	@Test
 	void test_prepareTemplateForNewTransaction_transferAccountIsFullAccess_noPreparation()
 	{
-		final Account account = new Account("Account", AccountType.CUSTOM);
+		final Account account = new Account("Account", "", AccountType.CUSTOM);
 		account.setAccountState(AccountState.FULL_ACCESS);
 
-		final Account transferAccount = new Account("Transfer Account", AccountType.CUSTOM);
+		final Account transferAccount = new Account("Transfer Account", "", AccountType.CUSTOM);
 		transferAccount.setAccountState(AccountState.FULL_ACCESS);
 
 		final Template template = new Template();
@@ -127,10 +127,10 @@ class TemplateServiceTest
 	@Test
 	void test_prepareTemplateForNewTransaction_transferAccountIsNotFullAccess_noPreparation()
 	{
-		final Account account = new Account("Account", AccountType.CUSTOM);
+		final Account account = new Account("Account", "", AccountType.CUSTOM);
 		account.setAccountState(AccountState.FULL_ACCESS);
 
-		final Account transferAccount = new Account("Transfer Account", AccountType.CUSTOM);
+		final Account transferAccount = new Account("Transfer Account", "", AccountType.CUSTOM);
 		transferAccount.setAccountState(AccountState.READ_ONLY);
 
 		final Template template = new Template();
