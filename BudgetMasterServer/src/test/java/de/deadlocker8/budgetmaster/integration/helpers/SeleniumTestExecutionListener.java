@@ -1,5 +1,6 @@
 package de.deadlocker8.budgetmaster.integration.helpers;
 
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -42,7 +43,7 @@ public class SeleniumTestExecutionListener extends AbstractTestExecutionListener
 			FirefoxOptions options = new FirefoxOptions();
 			options.addPreference("devtools.console.stdout.content", true);
 			driver = new FirefoxDriver(options);
-			driver.manage().window().maximize();
+			driver.manage().window().setSize(new Dimension(1920, 1080));
 
 			ConfigurableListableBeanFactory factory = configurableApplicationContext.getBeanFactory();
 			factory.registerResolvableDependency(WebDriver.class, driver);
