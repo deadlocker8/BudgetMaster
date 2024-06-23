@@ -52,7 +52,7 @@ class TransactionImporterTest extends ImporterTestBase
 		Category category = new Category("Awesome Category", "#ff0000", CategoryType.CUSTOM);
 		category = categoryRepository.save(category);
 
-		Account account = new Account("Awesome Account", "", AccountType.CUSTOM);
+		Account account = new Account("Awesome Account", "", AccountType.CUSTOM, null);
 		account = accountRepository.save(account);
 
 		final Transaction transaction = new Transaction();
@@ -96,10 +96,10 @@ class TransactionImporterTest extends ImporterTestBase
 		Category category = new Category("Awesome Category", "#ff0000", CategoryType.CUSTOM);
 		category = categoryRepository.save(category);
 
-		Account account = new Account("Awesome Account", "", AccountType.CUSTOM);
+		Account account = new Account("Awesome Account", "", AccountType.CUSTOM, null);
 		account = accountRepository.save(account);
 
-		Account transferAccount = new Account("Transfer Account", "", AccountType.CUSTOM);
+		Account transferAccount = new Account("Transfer Account", "", AccountType.CUSTOM, null);
 		transferAccount = accountRepository.save(transferAccount);
 
 		final Transaction transaction = new Transaction();
@@ -144,7 +144,7 @@ class TransactionImporterTest extends ImporterTestBase
 		Category category = new Category("Awesome Category", "#ff0000", CategoryType.CUSTOM);
 		category = categoryRepository.save(category);
 
-		Account account = new Account("Awesome Account", "", AccountType.CUSTOM);
+		Account account = new Account("Awesome Account", "", AccountType.CUSTOM, null);
 		account = accountRepository.save(account);
 
 		final Transaction transaction = new Transaction();
@@ -192,7 +192,7 @@ class TransactionImporterTest extends ImporterTestBase
 		Category category = new Category("Awesome Category", "#ff0000", CategoryType.CUSTOM);
 		category = categoryRepository.save(category);
 
-		Account account = new Account("Awesome Account", "", AccountType.CUSTOM);
+		Account account = new Account("Awesome Account", "", AccountType.CUSTOM, null);
 		account = accountRepository.save(account);
 
 		final Transaction transaction = new Transaction();
@@ -246,7 +246,7 @@ class TransactionImporterTest extends ImporterTestBase
 		Category category = new Category("Awesome Category", "#ff0000", CategoryType.CUSTOM);
 		category = categoryRepository.save(category);
 
-		Account account = new Account("Awesome Account", "", AccountType.CUSTOM);
+		Account account = new Account("Awesome Account", "", AccountType.CUSTOM, null);
 		account = accountRepository.save(account);
 
 

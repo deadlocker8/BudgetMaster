@@ -58,18 +58,18 @@ class AccountServiceTest
 	@BeforeEach
 	void beforeEach()
 	{
-		ACCOUNT_DEFAULT = new Account(Localization.getString(Strings.ACCOUNT_DEFAULT_NAME), "", AccountType.CUSTOM);
+		ACCOUNT_DEFAULT = new Account(Localization.getString(Strings.ACCOUNT_DEFAULT_NAME), "", AccountType.CUSTOM, null);
 
-		ACCOUNT_PLACEHOLDER = new Account("Placeholder", "", AccountType.ALL);
+		ACCOUNT_PLACEHOLDER = new Account("Placeholder", "", AccountType.ALL, null);
 		ACCOUNT_PLACEHOLDER.setID(1);
 
-		ACCOUNT_NORMAL = new Account("Normal account", "awesome description", AccountType.CUSTOM);
+		ACCOUNT_NORMAL = new Account("Normal account", "awesome description", AccountType.CUSTOM, null);
 		ACCOUNT_NORMAL.setID(3);
 
-		ACCOUNT_READONLY = new Account("Readonly account", "", AccountType.CUSTOM);
+		ACCOUNT_READONLY = new Account("Readonly account", "", AccountType.CUSTOM, null);
 		ACCOUNT_READONLY.setAccountState(AccountState.READ_ONLY);
 
-		ACCOUNT_HIDDEN = new Account("Hidden account", "", AccountType.CUSTOM);
+		ACCOUNT_HIDDEN = new Account("Hidden account", "", AccountType.CUSTOM, null);
 		ACCOUNT_HIDDEN.setAccountState(AccountState.HIDDEN);
 
 		ACCOUNT_DEFAULT.setID(15);
@@ -77,7 +77,7 @@ class AccountServiceTest
 
 		ICON_PLACEHOLDER = new Icon("fas fa-landmark", null);
 
-		Mockito.when(accountRepository.save(new Account(Localization.getString(Strings.ACCOUNT_DEFAULT_NAME), "", AccountType.CUSTOM))).thenReturn(ACCOUNT_DEFAULT);
+		Mockito.when(accountRepository.save(new Account(Localization.getString(Strings.ACCOUNT_DEFAULT_NAME), "", AccountType.CUSTOM, null))).thenReturn(ACCOUNT_DEFAULT);
 		Mockito.when(accountRepository.findByIsDefault(true)).thenReturn(ACCOUNT_DEFAULT);
 		Mockito.when(accountRepository.findAllByType(AccountType.ALL)).thenReturn(List.of(ACCOUNT_PLACEHOLDER));
 		Mockito.when(accountRepository.findById(1)).thenReturn(Optional.of(ACCOUNT_PLACEHOLDER));
@@ -97,9 +97,9 @@ class AccountServiceTest
 		accounts.add(ACCOUNT_READONLY);
 		accounts.add(ACCOUNT_HIDDEN);
 
-		final Account accountNormal2 = new Account("normal account", "", AccountType.CUSTOM);
+		final Account accountNormal2 = new Account("normal account", "", AccountType.CUSTOM, null);
 		accounts.add(accountNormal2);
-		final Account accountNormal3 = new Account("123 account", "", AccountType.CUSTOM);
+		final Account accountNormal3 = new Account("123 account", "", AccountType.CUSTOM, null);
 		accounts.add(accountNormal3);
 
 		Mockito.when(accountRepository.findAllByType(AccountType.ALL)).thenReturn(List.of(ACCOUNT_PLACEHOLDER));
@@ -115,9 +115,9 @@ class AccountServiceTest
 		final List<Account> accounts = new ArrayList<>();
 		accounts.add(ACCOUNT_NORMAL);
 
-		final Account accountNormal2 = new Account("normal account", "", AccountType.CUSTOM);
+		final Account accountNormal2 = new Account("normal account", "", AccountType.CUSTOM, null);
 		accounts.add(accountNormal2);
-		final Account accountNormal3 = new Account("123 account", "", AccountType.CUSTOM);
+		final Account accountNormal3 = new Account("123 account", "", AccountType.CUSTOM, null);
 		accounts.add(accountNormal3);
 
 		Mockito.when(accountRepository.findAllByType(AccountType.ALL)).thenReturn(List.of(ACCOUNT_PLACEHOLDER));
@@ -133,9 +133,9 @@ class AccountServiceTest
 		final List<Account> accounts = new ArrayList<>();
 		accounts.add(ACCOUNT_NORMAL);
 
-		final Account accountNormal2 = new Account("normal account", "", AccountType.CUSTOM);
+		final Account accountNormal2 = new Account("normal account", "", AccountType.CUSTOM, null);
 		accounts.add(accountNormal2);
-		final Account accountNormal3 = new Account("123 account", "", AccountType.CUSTOM);
+		final Account accountNormal3 = new Account("123 account", "", AccountType.CUSTOM, null);
 		accounts.add(accountNormal3);
 
 		Mockito.when(accountRepository.findAllByType(AccountType.ALL)).thenReturn(List.of(ACCOUNT_PLACEHOLDER));
@@ -159,13 +159,13 @@ class AccountServiceTest
 		Mockito.verify(templateService, Mockito.atLeast(1)).unsetTemplatesWithAccount(Mockito.any());
 
 		// placeholder account is set as selected account
-		final Account accountSelected = new Account("Placeholder", "", AccountType.ALL);
+		final Account accountSelected = new Account("Placeholder", "", AccountType.ALL, null);
 		accountSelected.setSelected(true);
 		accountSelected.setID(1);
 		Mockito.verify(accountRepository, Mockito.atLeast(1)).save(accountSelected);
 
 		// default account is set another account
-		final Account newDefault = new Account("Normal account", "awesome description", AccountType.CUSTOM);
+		final Account newDefault = new Account("Normal account", "awesome description", AccountType.CUSTOM, null);
 		newDefault.setDefault(true);
 		newDefault.setID(3);
 		Mockito.verify(accountRepository, Mockito.atLeast(1)).save(newDefault);
@@ -177,8 +177,8 @@ class AccountServiceTest
 		accountService.createDefaults();
 
 		// createDefaults() may also be called in constructor so 2 calls are possible
-		Mockito.verify(accountRepository, Mockito.atLeast(1)).save(new Account("Placeholder", "", AccountType.ALL));
-		Mockito.verify(accountRepository, Mockito.atLeast(1)).save(new Account(Localization.getString(Strings.ACCOUNT_DEFAULT_NAME), "", AccountType.CUSTOM));
+		Mockito.verify(accountRepository, Mockito.atLeast(1)).save(new Account("Placeholder", "", AccountType.ALL, null));
+		Mockito.verify(accountRepository, Mockito.atLeast(1)).save(new Account(Localization.getString(Strings.ACCOUNT_DEFAULT_NAME), "", AccountType.CUSTOM, null));
 	}
 
 	@Test
@@ -186,7 +186,7 @@ class AccountServiceTest
 	{
 		accountService.selectAccount(3);
 
-		final Account accountSelected = new Account(ACCOUNT_NORMAL.getName(), "awesome description", AccountType.CUSTOM);
+		final Account accountSelected = new Account(ACCOUNT_NORMAL.getName(), "awesome description", AccountType.CUSTOM, null);
 		accountSelected.setSelected(true);
 		accountSelected.setID(ACCOUNT_NORMAL.getID());
 		Mockito.verify(accountRepository, Mockito.atLeast(1)).save(accountSelected);
@@ -200,13 +200,13 @@ class AccountServiceTest
 		accountService.setAsDefaultAccount(3);
 
 		// old default unset
-		final Account oldDefault = new Account(ACCOUNT_DEFAULT.getName(), "", AccountType.CUSTOM);
+		final Account oldDefault = new Account(ACCOUNT_DEFAULT.getName(), "", AccountType.CUSTOM, null);
 		oldDefault.setDefault(false);
 		oldDefault.setID(ACCOUNT_DEFAULT.getID());
 		Mockito.verify(accountRepository, Mockito.atLeast(1)).save(oldDefault);
 
 		// new default set
-		final Account newDefault = new Account(ACCOUNT_NORMAL.getName(), "awesome description", AccountType.CUSTOM);
+		final Account newDefault = new Account(ACCOUNT_NORMAL.getName(), "awesome description", AccountType.CUSTOM, null);
 		newDefault.setDefault(true);
 		newDefault.setID(ACCOUNT_NORMAL.getID());
 		Mockito.verify(accountRepository, Mockito.atLeast(1)).save(newDefault);
@@ -215,11 +215,11 @@ class AccountServiceTest
 	@Test
 	void test_updateExistingAccount()
 	{
-		final Account account = new Account("my account", "awesome new description", AccountType.CUSTOM);
+		final Account account = new Account("my account", "awesome new description", AccountType.CUSTOM, null);
 		account.setAccountState(AccountState.FULL_ACCESS);
 		account.setID(22);
 
-		final Account existingAccount = new Account("existing account", "awesome description", AccountType.CUSTOM);
+		final Account existingAccount = new Account("existing account", "awesome description", AccountType.CUSTOM, null);
 		existingAccount.setAccountState(AccountState.READ_ONLY);
 		existingAccount.setIconReference(new Icon());
 		existingAccount.setID(22);
@@ -228,7 +228,7 @@ class AccountServiceTest
 
 		accountService.updateExistingAccount(account);
 
-		final Account expected = new Account("my account", "awesome new description", AccountType.CUSTOM);
+		final Account expected = new Account("my account", "awesome new description", AccountType.CUSTOM, null);
 		expected.setAccountState(AccountState.FULL_ACCESS);
 		expected.setID(22);
 
@@ -238,12 +238,12 @@ class AccountServiceTest
 	@Test
 	void test_updateExistingAccount_isDefaultAccount_noFullAccessAnymore()
 	{
-		final Account account = new Account("my account", "", AccountType.CUSTOM);
+		final Account account = new Account("my account", "", AccountType.CUSTOM, null);
 		account.setAccountState(AccountState.READ_ONLY);
 		account.setDefault(true);
 		account.setID(22);
 
-		final Account existingAccount = new Account("existing account", "", AccountType.CUSTOM);
+		final Account existingAccount = new Account("existing account", "", AccountType.CUSTOM, null);
 		existingAccount.setAccountState(AccountState.FULL_ACCESS);
 		existingAccount.setIconReference(new Icon());
 		existingAccount.setDefault(true);
@@ -255,14 +255,14 @@ class AccountServiceTest
 		accountService.updateExistingAccount(account);
 
 		// account updated
-		final Account expected = new Account("my account", "", AccountType.CUSTOM);
+		final Account expected = new Account("my account", "", AccountType.CUSTOM, null);
 		expected.setAccountState(AccountState.READ_ONLY);
 		expected.setDefault(true);
 		expected.setID(22);
 		Mockito.verify(accountRepository, Mockito.atLeast(1)).save(expected);
 
 		// new default set
-		final Account newDefault = new Account(ACCOUNT_NORMAL.getName(), "awesome description", AccountType.CUSTOM);
+		final Account newDefault = new Account(ACCOUNT_NORMAL.getName(), "awesome description", AccountType.CUSTOM, null);
 		newDefault.setDefault(true);
 		newDefault.setID(ACCOUNT_NORMAL.getID());
 		Mockito.verify(accountRepository, Mockito.atLeast(1)).save(newDefault);
@@ -271,12 +271,12 @@ class AccountServiceTest
 	@Test
 	void test_updateExistingAccount_isSelected_nowHidden()
 	{
-		final Account account = new Account("my account", "", AccountType.CUSTOM);
+		final Account account = new Account("my account", "", AccountType.CUSTOM, null);
 		account.setAccountState(AccountState.HIDDEN);
 		account.setSelected(true);
 		account.setID(22);
 
-		final Account existingAccount = new Account("existing account", "", AccountType.CUSTOM);
+		final Account existingAccount = new Account("existing account", "", AccountType.CUSTOM, null);
 		existingAccount.setAccountState(AccountState.FULL_ACCESS);
 		existingAccount.setIconReference(new Icon());
 		existingAccount.setSelected(true);
@@ -287,14 +287,14 @@ class AccountServiceTest
 		accountService.updateExistingAccount(account);
 
 		// account updated
-		final Account expected = new Account("my account", "", AccountType.CUSTOM);
+		final Account expected = new Account("my account", "", AccountType.CUSTOM, null);
 		expected.setAccountState(AccountState.HIDDEN);
 		expected.setSelected(true);
 		expected.setID(22);
 		Mockito.verify(accountRepository, Mockito.atLeast(1)).save(expected);
 
 		// placeholder set as selected account
-		final Account accountSelected = new Account("Placeholder", "", AccountType.ALL);
+		final Account accountSelected = new Account("Placeholder", "", AccountType.ALL, null);
 		accountSelected.setSelected(true);
 		accountSelected.setID(1);
 		Mockito.verify(accountRepository, Mockito.atLeast(1)).save(accountSelected);

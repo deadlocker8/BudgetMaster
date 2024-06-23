@@ -27,16 +27,16 @@ class AccountImporterTest extends ImporterTestBase
 	@Test
 	void test_importAccounts()
 	{
-		final Account sourceAccount = new Account("SourceAccount", "", AccountType.CUSTOM);
+		final Account sourceAccount = new Account("SourceAccount", "", AccountType.CUSTOM, null);
 		sourceAccount.setID(2);
 
-		final Account sourceAccount2 = new Account("SourceAccount 2", "", AccountType.CUSTOM);
+		final Account sourceAccount2 = new Account("SourceAccount 2", "", AccountType.CUSTOM, null);
 		sourceAccount2.setID(7);
 
-		final Account destinationAccount = new Account("DestinationAccount", "", AccountType.CUSTOM);
+		final Account destinationAccount = new Account("DestinationAccount", "", AccountType.CUSTOM, null);
 		destinationAccount.setID(1);
 
-		final Account destinationAccount2 = new Account("DestinationAccount 2", "", AccountType.CUSTOM);
+		final Account destinationAccount2 = new Account("DestinationAccount 2", "", AccountType.CUSTOM, null);
 		destinationAccount2.setID(2);
 
 		final AccountImporter importer = new AccountImporter(accountRepository);
@@ -51,10 +51,10 @@ class AccountImporterTest extends ImporterTestBase
 	@Test
 	void test_importAccounts_placeholder()
 	{
-		final Account placeholderAccount = new Account("Placeholder", "", AccountType.ALL);
+		final Account placeholderAccount = new Account("Placeholder", "", AccountType.ALL, null);
 		placeholderAccount.setID(12);
 
-		final Account existingPlaceholderAccount = new Account("Placeholder", "", AccountType.ALL);
+		final Account existingPlaceholderAccount = new Account("Placeholder", "", AccountType.ALL, null);
 		existingPlaceholderAccount.setID(1);
 		accountRepository.save(existingPlaceholderAccount);
 
@@ -69,10 +69,10 @@ class AccountImporterTest extends ImporterTestBase
 	@Test
 	void test_importAccounts_nameAlreadyExists()
 	{
-		final Account account = new Account("ABC", "", AccountType.CUSTOM);
+		final Account account = new Account("ABC", "", AccountType.CUSTOM, null);
 		account.setID(12);
 
-		final Account existingAccount = new Account("ABC", "", AccountType.CUSTOM);
+		final Account existingAccount = new Account("ABC", "", AccountType.CUSTOM, null);
 		existingAccount.setID(1);
 		accountRepository.save(existingAccount);
 

@@ -206,9 +206,9 @@ class DatabaseExportTest
 		Mockito.when(categoryService.getAllEntitiesAsc()).thenReturn(List.of(categoryNone, categoryCustom));
 
 		// accounts
-		Account account1 = new Account("Source_Account_1", "awesome description", AccountType.CUSTOM);
+		Account account1 = new Account("Source_Account_1", "awesome description", AccountType.CUSTOM, null);
 		account1.setID(2);
-		Account account2 = new Account("Source_Account_2", "", AccountType.CUSTOM);
+		Account account2 = new Account("Source_Account_2", "", AccountType.CUSTOM, null);
 		account2.setID(3);
 
 		AccountRepository accountRepositoryMock = Mockito.mock(AccountRepository.class);

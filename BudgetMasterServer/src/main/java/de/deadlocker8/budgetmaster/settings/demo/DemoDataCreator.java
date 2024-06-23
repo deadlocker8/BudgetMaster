@@ -71,19 +71,19 @@ public class DemoDataCreator
 	{
 		final Icon icon = iconService.createIconReference(null, null, null);
 		iconService.getRepository().save(icon);
-		final Account oldAccount = new Account("Old account", "", AccountType.CUSTOM, icon);
+		final Account oldAccount = new Account("Old account", "", AccountType.CUSTOM, icon, null);
 		oldAccount.setAccountState(AccountState.HIDDEN);
 		accountService.getRepository().save(oldAccount);
 
 		final Icon icon2 = iconService.createIconReference(null, null, null);
 		iconService.getRepository().save(icon2);
-		final Account readOnlyAccount = new Account("Read-only account", "", AccountType.CUSTOM, icon2);
+		final Account readOnlyAccount = new Account("Read-only account", "", AccountType.CUSTOM, icon2, null);
 		readOnlyAccount.setAccountState(AccountState.READ_ONLY);
 		accountService.getRepository().save(readOnlyAccount);
 
 		final Icon icon3 = iconService.createIconReference(null, "fas fa-piggy-bank", null);
 		iconService.getRepository().save(icon3);
-		final Account savingsBankAccount = new Account("Savings Bank", "", AccountType.CUSTOM, icon3);
+		final Account savingsBankAccount = new Account("Savings Bank", "", AccountType.CUSTOM, icon3, null);
 		accountService.getRepository().save(savingsBankAccount);
 	}
 

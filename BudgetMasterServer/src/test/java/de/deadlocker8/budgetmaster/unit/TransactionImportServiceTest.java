@@ -32,7 +32,7 @@ class TransactionImportServiceTest
 {
 	private static final Category CATEGORY_NONE = new Category("No category", "#FFFFFF", CategoryType.NONE);
 	private static final Category CATEGORY_CUSTOM = new Category("CustomCategory", "#0F0F0F", CategoryType.CUSTOM);
-	private static final Account ACCOUNT = new Account("MyAccount", "", AccountType.CUSTOM);
+	private static final Account ACCOUNT = new Account("MyAccount", "", AccountType.CUSTOM, null);
 
 	@Mock
 	private HelpersService helpersService;

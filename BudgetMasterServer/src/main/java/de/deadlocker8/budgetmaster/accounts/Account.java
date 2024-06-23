@@ -8,7 +8,9 @@ import de.deadlocker8.budgetmaster.utils.ProvidesID;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -48,7 +50,11 @@ public class Account implements ProvidesID, Iconizable
 	@Expose
 	private String description;
 
-	public Account(String name, String description, AccountType type, Icon iconReference)
+	@DateTimeFormat(pattern = "dd.MM.yyyy")
+	@Expose
+	private LocalDate endDate;
+
+	public Account(String name, String description, AccountType type, Icon iconReference, LocalDate endDate)
 	{
 		this.name = name;
 		this.description = description;
@@ -57,11 +63,12 @@ public class Account implements ProvidesID, Iconizable
 		this.isDefault = false;
 		this.accountState = AccountState.FULL_ACCESS;
 		this.iconReference = iconReference;
+		this.endDate = endDate;
 	}
 
-	public Account(String name, String description, AccountType type)
+	public Account(String name, String description, AccountType type, LocalDate endDate)
 	{
-		this(name, description, type, null);
+		this(name, description, type, null, endDate);
 	}
 
 	public Account()
@@ -148,6 +155,16 @@ public class Account implements ProvidesID, Iconizable
 		this.description = description;
 	}
 
+	public LocalDate getEndDate()
+	{
+		return endDate;
+	}
+
+	public void setEndDate(LocalDate endDate)
+	{
+		this.endDate = endDate;
+	}
+
 	@Override
 	public Icon getIconReference()
 	{
@@ -202,6 +219,7 @@ public class Account implements ProvidesID, Iconizable
 				", type=" + type +
 				", iconReference=" + iconReference +
 				", description='" + description + '\'' +
+				", endDate=" + endDate +
 				'}';
 	}
 
@@ -218,12 +236,13 @@ public class Account implements ProvidesID, Iconizable
 				accountState == account.accountState &&
 				Objects.equals(iconReference, account.iconReference) &&
 				type == account.type &&
-				Objects.equals(description, account.description);
+				Objects.equals(description, account.description) &&
+				Objects.equals(endDate, account.endDate);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, name, description, isSelected, isDefault, accountState, iconReference, type);
+		return Objects.hash(ID, name, description, isSelected, isDefault, accountState, iconReference, type, endDate);
 	}
 }

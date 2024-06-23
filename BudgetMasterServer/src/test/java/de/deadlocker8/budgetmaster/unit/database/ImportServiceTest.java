@@ -215,11 +215,11 @@ class ImportServiceTest
 						categoryRent);
 
 		// assert accounts
-		final Account accountPlaceholder = createAccount(1, "Placeholder", "", AccountType.ALL, AccountState.FULL_ACCESS, iconAllAccounts, false, false);
-		final Account accountDefault = createAccount(2, "Default Account", "", AccountType.CUSTOM, AccountState.FULL_ACCESS, iconAccountDefault, true, true);
-		final Account accountDefaultNew = createAccount(3, "My Default Account", "", AccountType.CUSTOM, AccountState.FULL_ACCESS, iconAccountDefaultNew, false, false);
-		final Account accountReadOnly = createAccount(4, "Read-only account", "", AccountType.CUSTOM, AccountState.READ_ONLY, iconAccountReadOnly, false, false);
-		final Account accountSecond = createAccount(5, "Second Account", "Lorem Ipsum", AccountType.CUSTOM, AccountState.FULL_ACCESS, iconAccountSecond, false, false);
+		final Account accountPlaceholder = createAccount(1, "Placeholder", "", AccountType.ALL, AccountState.FULL_ACCESS, iconAllAccounts, false, false, null);
+		final Account accountDefault = createAccount(2, "Default Account", "", AccountType.CUSTOM, AccountState.FULL_ACCESS, iconAccountDefault, true, true, null);
+		final Account accountDefaultNew = createAccount(3, "My Default Account", "", AccountType.CUSTOM, AccountState.FULL_ACCESS, iconAccountDefaultNew, false, false, null);
+		final Account accountReadOnly = createAccount(4, "Read-only account", "", AccountType.CUSTOM, AccountState.READ_ONLY, iconAccountReadOnly, false, false, null);
+		final Account accountSecond = createAccount(5, "Second Account", "Lorem Ipsum", AccountType.CUSTOM, AccountState.FULL_ACCESS, iconAccountSecond, false, false, null);
 		assertThat(accountRepository.findAll())
 				.hasSize(5)
 				.contains(accountPlaceholder,
@@ -461,9 +461,9 @@ class ImportServiceTest
 		return category;
 	}
 
-	private Account createAccount(int ID, String name, String description, AccountType type, AccountState state, Icon icon, boolean isSelected, boolean isDefault)
+	private Account createAccount(int ID, String name, String description, AccountType type, AccountState state, Icon icon, boolean isSelected, boolean isDefault, LocalDate endDate)
 	{
-		final Account account = new Account(name, description, type, icon);
+		final Account account = new Account(name, description, type, icon, endDate);
 		account.setID(ID);
 		account.setAccountState(state);
 		account.setSelected(isSelected);
