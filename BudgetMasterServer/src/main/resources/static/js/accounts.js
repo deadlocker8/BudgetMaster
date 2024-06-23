@@ -20,4 +20,35 @@ $(document).ready(function()
     {
         fetchAndShowModalContent(this.dataset.url, '#deleteModalContainerOnDemand', '#modalConfirmDelete', function(){});
     });
+
+    if($(".datepicker").length)
+    {
+        M.Datepicker.init(document.getElementById('account-datepicker'), {
+            firstDay: 1,
+            showClearBtn: true,
+            defaultDate: startDate,
+            autoClose: true,
+
+            i18n: {
+                // Strings and translations
+                months: monthNames,
+                monthsShort: monthNamesShort,
+                weekdays: weekDays,
+                weekdaysShort: weekDaysShort,
+                weekdaysAbbrev: weekDaysLetters,
+
+                // Buttons
+                cancel: buttonCancel,
+                done: buttonClose,
+
+                // Accessibility labels
+                labelMonthNext: '>',
+                labelMonthPrev: '<'
+            },
+
+            // Formats
+            format: 'dd.mm.yyyy',
+            formatSubmit: 'dd.mm.yyyy',
+        });
+    }
 });

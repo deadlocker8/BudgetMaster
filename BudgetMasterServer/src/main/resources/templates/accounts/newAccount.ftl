@@ -11,6 +11,7 @@
 
         <@header.header "BudgetMaster - ${title}"/>
         <@header.style "iconSelect"/>
+        <@header.style "datepicker"/>
         <#import "/spring.ftl" as s>
     </head>
     <@header.body>
@@ -77,6 +78,28 @@
                         </#if>
                         <@customSelectMacros.customAccountStateSelect "account-state-select-wrapper" "accountState" availableAccountStates selectedState "col s12 m12 l8 offset-l2" locale.getString("account.new.label.state") "account-state"/>
 
+                        <#-- end date -->
+                        <div class="row">
+                            <div class="input-field col s12 m12 l8 offset-l2">
+                                <#if account.getEndDate()??>
+                                    <#assign startDate = dateService.getLongDateString(account.getEndDate())/>
+                                    <#assign accountEndDate = dateService.getLongDateString(account.getEndDate())/>
+                                <#else>
+                                    <#assign startDate = dateService.getLongDateString(today)/>
+                                    <#assign accountEndDate = ""/>
+                                </#if>
+
+                                <i class="material-icons prefix">notifications</i>
+                                <input id="account-datepicker" type="text" class="datepicker" name="endDate" value="${accountEndDate}">
+                                <label class="input-label" for="account-datepicker">${locale.getString("account.new.label.endDate")}</label>
+                            </div>
+                        </div>
+
+                        <script>
+                            startDate = "${startDate}".split(".");
+                            startDate = new Date(startDate[2], startDate[1]-1, startDate[0]);
+                        </script>
+
                         <br>
 
                         <#-- buttons -->
@@ -108,6 +131,9 @@
         </main>
 
         <@iconSelectMacros.modalIconSelect idToFocusOnClose="account-name" item=account/>
+
+        <#import "../helpers/globalDatePicker.ftl" as datePicker>
+        <@datePicker.datePickerLocalization/>
 
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
