@@ -5,6 +5,8 @@ import de.deadlocker8.budgetmaster.database.model.Converter;
 import de.deadlocker8.budgetmaster.database.model.v11.BackupAccount_v11;
 import de.deadlocker8.budgetmaster.icon.Icon;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class AccountConverter implements Converter<Account, BackupAccount_v11>
@@ -32,6 +34,18 @@ public class AccountConverter implements Converter<Account, BackupAccount_v11>
 		account.setAccountState(backupAccount.getAccountState());
 		account.setType(backupAccount.getType());
 		account.setIconReference(getItemById(availableIcons, backupAccount.getIconReferenceID()));
+
+		final String endDateString = backupAccount.getEndDate();
+		if(endDateString == null)
+		{
+			account.setEndDate(null);
+		}
+		else
+		{
+			final LocalDate date = LocalDate.parse(endDateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+			account.setEndDate(date);
+		}
+
 		return account;
 	}
 
@@ -49,6 +63,17 @@ public class AccountConverter implements Converter<Account, BackupAccount_v11>
 		account.setDescription(internalAccount.getDescription());
 		account.setAccountState(internalAccount.getAccountState());
 		account.setType(internalAccount.getType());
+
+		final LocalDate endDate = internalAccount.getEndDate();
+		if(endDate == null)
+		{
+			account.setEndDate(null);
+		}
+		else
+		{
+			account.setEndDate(internalAccount.getEndDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+
+		}
 
 		final Icon icon = internalAccount.getIconReference();
 		if(icon != null)

@@ -13,13 +13,14 @@ public class BackupAccount_v11
 	private AccountState accountState;
 	private AccountType type;
 	private Integer iconReferenceID;
+	private String endDate;
 
 	public BackupAccount_v11()
 	{
 		// for GSON
 	}
 
-	public BackupAccount_v11(Integer ID, String name, String description, AccountState accountState, AccountType type, Integer iconReferenceID)
+	public BackupAccount_v11(Integer ID, String name, String description, AccountState accountState, AccountType type, Integer iconReferenceID, String endDate)
 	{
 		this.ID = ID;
 		this.name = name;
@@ -27,6 +28,7 @@ public class BackupAccount_v11
 		this.accountState = accountState;
 		this.type = type;
 		this.iconReferenceID = iconReferenceID;
+		this.endDate = endDate;
 	}
 
 	public Integer getID()
@@ -89,19 +91,35 @@ public class BackupAccount_v11
 		this.iconReferenceID = iconReferenceID;
 	}
 
+	public String getEndDate()
+	{
+		return endDate;
+	}
+
+	public void setEndDate(String endDate)
+	{
+		this.endDate = endDate;
+	}
+
 	@Override
 	public boolean equals(Object o)
 	{
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
 		BackupAccount_v11 that = (BackupAccount_v11) o;
-		return Objects.equals(ID, that.ID) && Objects.equals(name, that.name) && Objects.equals(description, that.description) &&accountState == that.accountState && type == that.type && Objects.equals(iconReferenceID, that.iconReferenceID);
+		return Objects.equals(ID, that.ID) &&
+				Objects.equals(name, that.name) &&
+				Objects.equals(description, that.description) &&
+				accountState == that.accountState &&
+				type == that.type &&
+				Objects.equals(iconReferenceID, that.iconReferenceID) &&
+				Objects.equals(endDate, that.endDate);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(ID, name, description, accountState, type, iconReferenceID);
+		return Objects.hash(ID, name, description, accountState, type, iconReferenceID, endDate);
 	}
 
 	@Override
@@ -114,6 +132,7 @@ public class BackupAccount_v11
 				", accountState=" + accountState +
 				", type=" + type +
 				", iconReferenceID=" + iconReferenceID +
+				", endDate=" + endDate +
 				'}';
 	}
 }

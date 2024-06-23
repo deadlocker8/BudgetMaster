@@ -111,6 +111,6 @@ public class BackupAccount_v7 implements Upgradeable<BackupAccount_v11>
 	@Override
 	public BackupAccount_v11 upgrade(List<BackupInfo> backupInfoItems)
 	{
-		return new BackupAccount_v11(ID, name, "", accountState, type, iconReferenceID);
+		return new BackupAccount_v11(ID, name, "", accountState, type, iconReferenceID, null);
 	}
 }

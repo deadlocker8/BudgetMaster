@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -94,7 +95,7 @@ class DatabaseParser_v11Test
 		DatabaseParser_v11 parser = new DatabaseParser_v11(json);
 		BackupDatabase_v11 database = parser.parseDatabaseFromJSON();
 
-		final BackupAccount_v11 account = new BackupAccount_v11(3, "Second Account", "Lorem Ipsum", AccountState.FULL_ACCESS, AccountType.CUSTOM, 1);
+		final BackupAccount_v11 account = new BackupAccount_v11(3, "Second Account", "Lorem Ipsum", AccountState.FULL_ACCESS, AccountType.CUSTOM, 1, "2024-07-02");
 
 		assertThat(database.getAccounts()).hasSize(3)
 				.contains(account);

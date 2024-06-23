@@ -43,7 +43,8 @@
             "description": "Lorem Ipsum",
             "accountState": "FULL_ACCESS",
             "type": "CUSTOM",
-            "iconReferenceID": 1
+            "iconReferenceID": 1,
+            "endDate": "2024-07-02"
         }
     ],
     "transactions": [

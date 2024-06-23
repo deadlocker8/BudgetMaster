@@ -219,7 +219,7 @@ class ImportServiceTest
 		final Account accountDefault = createAccount(2, "Default Account", "", AccountType.CUSTOM, AccountState.FULL_ACCESS, iconAccountDefault, true, true, null);
 		final Account accountDefaultNew = createAccount(3, "My Default Account", "", AccountType.CUSTOM, AccountState.FULL_ACCESS, iconAccountDefaultNew, false, false, null);
 		final Account accountReadOnly = createAccount(4, "Read-only account", "", AccountType.CUSTOM, AccountState.READ_ONLY, iconAccountReadOnly, false, false, null);
-		final Account accountSecond = createAccount(5, "Second Account", "Lorem Ipsum", AccountType.CUSTOM, AccountState.FULL_ACCESS, iconAccountSecond, false, false, null);
+		final Account accountSecond = createAccount(5, "Second Account", "Lorem Ipsum", AccountType.CUSTOM, AccountState.FULL_ACCESS, iconAccountSecond, false, false, LocalDate.of(2024,7,2));
 		assertThat(accountRepository.findAll())
 				.hasSize(5)
 				.contains(accountPlaceholder,
