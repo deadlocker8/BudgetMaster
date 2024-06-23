@@ -80,6 +80,7 @@ function fetchAndShowModal(item, containerID, modalID)
             $('#' + containerID).html(data);
             $(modalID).modal();
             $(modalID).modal('open');
+            $('.global-account-select-option').find('.tooltipped').tooltip();
         }
     });
 }

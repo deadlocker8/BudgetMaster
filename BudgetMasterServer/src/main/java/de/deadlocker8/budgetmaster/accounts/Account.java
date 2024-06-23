@@ -11,6 +11,7 @@ import jakarta.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 
@@ -204,6 +205,16 @@ public class Account implements ProvidesID, Iconizable
 		}
 
 		return FONT_COLOR_LIGHT_THEME;
+	}
+
+	public Long getRemainingDays()
+	{
+		if(this.endDate == null)
+		{
+			return null;
+		}
+
+		return LocalDate.now().until(this.endDate, ChronoUnit.DAYS);
 	}
 
 	@Override

@@ -33,11 +33,23 @@
                 <div class="col s12 m6 xl6">
                     <a href="<@s.url '/accounts/${account.getID()?c}/select'/>" class="text-default">
                         <div class="card-panel global-account-select-option" data-account-index="${account?index}">
-                            <#if account?index < 10>
-                                <div class="keyboard-key bold global-account-select-option-key">${account?index}</div>
-                            <#else>
-                                <div class="keyboard-key bold global-account-select-option-key-hidden">&nbsp;</div>
-                            </#if>
+                            <div class="global-account-select-option-header">
+                                <#if account?index < 10>
+                                    <div class="keyboard-key bold global-account-select-option-key">${account?index}</div>
+                                <#else>
+                                    <div class="keyboard-key bold global-account-select-option-key-hidden">&nbsp;</div>
+                                </#if>
+
+                                <#if account.getEndDate()??>
+                                    <#assign remainingDays=account.getRemainingDays()/>
+                                    <#if remainingDays <= 0>
+                                        <i class="fas fa-bell text-red tooltipped" data-position="right" data-tooltip="${locale.getString("account.tooltip.endDate.done", remainingDays?abs)}"></i>
+                                    <#elseif remainingDays <= 30>
+                                        <i class="fas fa-bell text-yellow tooltipped" data-position="right" data-tooltip="${locale.getString("account.tooltip.endDate.soon", remainingDays)}"></i>
+                                    </#if>
+                                </#if>
+
+                            </div>
                             <div class="global-account-select-option-content">
                                 <@customSelectMacros.accountIcon account accountName "category-circle-preview account-icon-big"/>
                                 <div class="global-account-select-option-column-2">
