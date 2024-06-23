@@ -493,6 +493,9 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
 .placeholder-icon {
     display: inline-block;
     width: 1.3rem;
+}
+
+.placeholder-icon-right {
     margin-right: 15px;
 }
 
