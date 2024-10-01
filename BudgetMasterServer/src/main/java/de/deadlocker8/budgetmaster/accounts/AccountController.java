@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.accounts;
 
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.icon.IconService;
+import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.utils.FontAwesomeIcons;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
@@ -58,12 +59,14 @@ public class AccountController extends BaseController
 
 	private final AccountService accountService;
 	private final IconService iconService;
+	private final SettingsService settingsService;
 
 	@Autowired
-	public AccountController(AccountService accountService, IconService iconService)
+	public AccountController(AccountService accountService, IconService iconService, SettingsService settingsService)
 	{
 		this.accountService = accountService;
 		this.iconService = iconService;
+		this.settingsService = settingsService;
 	}
 
 	@GetMapping(value = "/{ID}/select")
@@ -261,5 +264,12 @@ public class AccountController extends BaseController
 		model.addAttribute(ModelAttributes.ALL_ENTITIES, accountService.getAllReadableAccounts());
 
 		return ReturnValues.GLOBAL_ACCOUNT_SELECT_MODAL;
+	}
+
+	@GetMapping("/cancelReminder")
+	public String cancelReminder(HttpServletRequest request)
+	{
+		settingsService.updateLastAccountEndDateReminderDate();
+		return "redirect:" + request.getHeader("Referer");
 	}
 }

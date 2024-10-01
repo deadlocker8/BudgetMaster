@@ -20,6 +20,11 @@ $(document).ready(function()
         $('#modalBackupReminder').modal('open');
     }
 
+    if($("#modalAccountEndDateReminder").length)
+    {
+        $('#modalAccountEndDateReminder').modal('open');
+    }
+
     if($("#whatsNewModelContainer").length)
     {
         fetchAndShowModal(document.getElementById('whatsNewModelContainer'), 'whatsNewModelContainer', '#modalWhatsNew');

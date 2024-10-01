@@ -53,6 +53,7 @@
     </form>
 
     <@backupReminder settings/>
+    <@accountEndDateReminder helpers.getAccountEndDateReminderData()/>
     <@whatsNewModal settings/>
 
     <div id="globalAccountSelectModalOnDemand"></div>
@@ -174,5 +175,26 @@
 <#macro whatsNewModal settings>
     <#if settings.needToShowWhatsNew()>
         <div id="whatsNewModelContainer" data-url="<@s.url '/about/whatsNewModal'/>"></div>
+    </#if>
+</#macro>
+
+<#macro accountEndDateReminder acountEndDateReminderData>
+    <#if acountEndDateReminderData.show()>
+        <div id="modalAccountEndDateReminder" class="modal background-color">
+            <div class="modal-content">
+                <h4>${locale.getString("info.title.account.endDate")}</h4>
+
+                <p>${locale.getString("info.text.account.endDate.soon")}</p>
+                <#list acountEndDateReminderData.accountsWithEndDateSoon() as accountWithEndDateSoon>
+                  <div>&nbsp;• ${accountWithEndDateSoon}</div>
+                </#list>
+
+                <p>${locale.getString("info.text.account.endDate.general")}</p>
+            </div>
+            <div class="modal-footer background-color">
+                <@header.buttonLink url='/accounts/cancelReminder' icon='clear' localizationKey='cancel' color='red' id='buttonCloseReminder' classes='modal-action modal-close text-white'/>
+                <@header.buttonLink url='/accounts' icon='account_balance' localizationKey='info.button.account.endDate' color='green' id='buttonCloseReminder' classes='modal-action modal-close text-white'/>
+            </div>
+        </div>
     </#if>
 </#macro>
