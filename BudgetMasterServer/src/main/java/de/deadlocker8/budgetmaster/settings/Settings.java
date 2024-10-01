@@ -47,6 +47,10 @@ public class Settings
 
 	private Boolean orderTransactionNameSuggestionsAlphabetically;
 
+	private Boolean accountEndDateReminderActivated;
+	@DateTimeFormat(pattern = "dd.MM.yyyy")
+	private LocalDate lastAccountEndDateReminderDate;
+
 	public Settings()
 	{
 		// empty
@@ -76,6 +80,8 @@ public class Settings
 		defaultSettings.setWhatsNewShownForCurrentVersion(false);
 		defaultSettings.setMigrationDeclined(false);
 		defaultSettings.setOrderTransactionNameSuggestionsAlphabetically(true);
+		defaultSettings.setAccountEndDateReminderActivated(true);
+		defaultSettings.setLastAccountEndDateReminderDate(LocalDate.now());
 
 		return defaultSettings;
 	}
@@ -314,6 +320,26 @@ public class Settings
 		this.orderTransactionNameSuggestionsAlphabetically = orderTransactionNameSuggestionsAlphabetically;
 	}
 
+	public Boolean getAccountEndDateReminderActivated()
+	{
+		return accountEndDateReminderActivated;
+	}
+
+	public void setAccountEndDateReminderActivated(Boolean accountEndDateReminderActivated)
+	{
+		this.accountEndDateReminderActivated = accountEndDateReminderActivated;
+	}
+
+	public LocalDate getLastAccountEndDateReminderDate()
+	{
+		return lastAccountEndDateReminderDate;
+	}
+
+	public void setLastAccountEndDateReminderDate(LocalDate lastAccountEndDateReminderDate)
+	{
+		this.lastAccountEndDateReminderDate = lastAccountEndDateReminderDate;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -340,6 +366,8 @@ public class Settings
 				", whatsNewShownForCurrentVersion=" + whatsNewShownForCurrentVersion +
 				", migrationDeclined=" + migrationDeclined +
 				", orderTransactionNameSuggestionsAlphabetically=" + orderTransactionNameSuggestionsAlphabetically +
+				", accountEndDateReminderActivated=" + accountEndDateReminderActivated +
+				", lastAccountEndDateReminderDate=" + lastAccountEndDateReminderDate +
 				'}';
 	}
 }
