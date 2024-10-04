@@ -41,7 +41,7 @@
         <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
         <opencsv.version>5.9</opencsv.version>
         <datatables.version>1.13.5</datatables.version>
-        <jakarta.xml.bind-api.version>4.0.1</jakarta.xml.bind-api.version>
+        <jakarta.xml.bind-api.version>4.0.2</jakarta.xml.bind-api.version>
         <junit-jupiter-engine.version>5.11.2</junit-jupiter-engine.version>
 
         <project.outputDirectory>${project.build.directory}/../build/${project.version}</project.outputDirectory>
