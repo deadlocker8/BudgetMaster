@@ -121,7 +121,7 @@ class DatabaseParser_v11_convertToInternalTest
 			final Icon icon = new Icon(accountImage);
 			icon.setID(1);
 
-			final Account account = new Account("Second Account", "Lorem Ipsum", AccountType.CUSTOM, icon, null);
+			final Account account = new Account("Second Account", "Lorem Ipsum", AccountType.CUSTOM, icon, LocalDate.of(2024, 7, 2));
 			account.setID(3);
 
 			assertThat(database.getAccounts()).hasSize(3)
@@ -215,7 +215,7 @@ class DatabaseParser_v11_convertToInternalTest
 			Icon accountIcon = new Icon(image);
 			accountIcon.setID(1);
 
-			Account account2 = new Account("Second Account", "Lorem Ipsum", AccountType.CUSTOM, null);
+			Account account2 = new Account("Second Account", "Lorem Ipsum", AccountType.CUSTOM,  LocalDate.of(2024, 7, 2));
 			account2.setIconReference(accountIcon);
 			account2.setID(3);
 
