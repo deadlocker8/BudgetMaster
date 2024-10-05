@@ -40,7 +40,7 @@
         <vanilla-picker.version>2.12.3</vanilla-picker.version>
         <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
         <opencsv.version>5.9</opencsv.version>
-        <datatables.version>1.13.5</datatables.version>
+        <datatables.version>2.1.0</datatables.version>
         <jakarta.xml.bind-api.version>4.0.2</jakarta.xml.bind-api.version>
         <junit-jupiter-engine.version>5.11.2</junit-jupiter-engine.version>
 
