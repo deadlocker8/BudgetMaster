@@ -365,7 +365,6 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
 .global-account-select-option {
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
     background-color: var(--color-background);
     border: 3px solid transparent;
     padding: 0;
@@ -373,6 +372,18 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
 
 .global-account-select-option:hover {
     border: 3px solid var(--color-grey);
+}
+
+.global-account-select-option-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 5px;
+}
+
+.global-account-select-option-header i {
+    font-size: 1.3rem;
 }
 
 .global-account-select-option-column-2 {
@@ -493,6 +504,9 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
 .placeholder-icon {
     display: inline-block;
     width: 1.3rem;
+}
+
+.placeholder-icon-right {
     margin-right: 15px;
 }
 
@@ -605,6 +619,11 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     background-color: var(--color-blue);
 }
 
+/* overridden by media queries*/
+.account-description {
+    max-width: 12ch;
+}
+
 .invisible {
     opacity: 0;
 }
@@ -631,6 +650,10 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     .fixed-action-btn {
         right: 53px;
     }
+
+    .account-description {
+        max-width: 40ch;
+    }
 }
 
 /* medium screens */
@@ -650,6 +673,10 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
 
     .template-header-name {
         max-width: 40% !important;
+    }
+
+    .account-description {
+        max-width: 20ch;
     }
 }
 
@@ -687,6 +714,10 @@ input[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + spa
     .notification-clear i,
     .hint-clear i {
         font-size: 4vmin;
+    }
+
+    .account-description {
+        max-width: 12ch;
     }
 }
 

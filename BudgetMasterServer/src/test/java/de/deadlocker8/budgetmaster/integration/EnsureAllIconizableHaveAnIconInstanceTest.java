@@ -68,7 +68,7 @@ class EnsureAllIconizableHaveAnIconInstanceTest
 	@BeforeEach
 	void beforeEach()
 	{
-		final Account accountWithoutIconReference = new Account("My Account", AccountType.CUSTOM);
+		final Account accountWithoutIconReference = new Account("My Account", "", AccountType.CUSTOM, null);
 		accountRepository.save(accountWithoutIconReference);
 
 		final Category categoryWithoutIconReference = new Category("Car", "#ffcc00", CategoryType.CUSTOM);

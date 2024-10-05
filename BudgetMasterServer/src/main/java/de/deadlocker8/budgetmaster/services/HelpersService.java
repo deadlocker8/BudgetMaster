@@ -30,10 +30,8 @@ import org.springframework.stereotype.Service;
 import java.text.DecimalFormatSymbols;
 import java.text.MessageFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -247,5 +245,29 @@ public class HelpersService
 	public char getGroupingSeparator()
 	{
 		return new DecimalFormatSymbols(settingsService.getSettings().getLanguage().getLocale()).getGroupingSeparator();
+	}
+
+	public AccountEndDateReminderData getAccountEndDateReminderData()
+	{
+		final Settings settings = settingsService.getSettings();
+		if(!settings.getAccountEndDateReminderActivated())
+		{
+			return new AccountEndDateReminderData(false, List.of());
+		}
+
+		if(!Objects.equals(settings.getLastAccountEndDateReminderDate(), DateHelper.getCurrentDate()))
+		{
+			final List<String> accountsWithEndDateSoon = accountRepository.findAll().stream()
+					.filter(account -> account.getEndDate() != null)
+					.filter(account -> account.getRemainingDays() > 0)
+					.filter(account -> account.getRemainingDays() <= 30)
+					.map(account -> MessageFormat.format("{0} ({1})", account.getName(), account.getEndDate().format(DateTimeFormatter.ofPattern("dd.MM.yy"))))
+					.sorted()
+					.toList();
+
+			return new AccountEndDateReminderData(true, accountsWithEndDateSoon);
+		}
+
+		return new AccountEndDateReminderData(false, List.of());
 	}
 }

@@ -2,6 +2,7 @@ package de.deadlocker8.budgetmaster.accounts;
 
 import de.deadlocker8.budgetmaster.controller.BaseController;
 import de.deadlocker8.budgetmaster.icon.IconService;
+import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.utils.FontAwesomeIcons;
 import de.deadlocker8.budgetmaster.utils.Mappings;
 import de.deadlocker8.budgetmaster.utils.ResourceNotFoundException;
@@ -19,7 +20,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
+
 import java.text.MessageFormat;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,6 +42,7 @@ public class AccountController extends BaseController
 		public static final String FONTAWESOME_ICONS = "fontawesomeIcons";
 		public static final String ERROR = "error";
 		public static final String NOTIFICATIONS = "notifications";
+		public static final String TODAY = "today";
 	}
 
 	private static class ReturnValues
@@ -55,12 +59,14 @@ public class AccountController extends BaseController
 
 	private final AccountService accountService;
 	private final IconService iconService;
+	private final SettingsService settingsService;
 
 	@Autowired
-	public AccountController(AccountService accountService, IconService iconService)
+	public AccountController(AccountService accountService, IconService iconService, SettingsService settingsService)
 	{
 		this.accountService = accountService;
 		this.iconService = iconService;
+		this.settingsService = settingsService;
 	}
 
 	@GetMapping(value = "/{ID}/select")
@@ -148,6 +154,7 @@ public class AccountController extends BaseController
 		model.addAttribute(ModelAttributes.ONE_ENTITY, emptyAccount);
 		model.addAttribute(ModelAttributes.AVAILABLE_ACCOUNT_STATES, AccountState.values());
 		model.addAttribute(ModelAttributes.FONTAWESOME_ICONS, FontAwesomeIcons.ICONS);
+		model.addAttribute(ModelAttributes.TODAY, LocalDate.now());
 		return ReturnValues.NEW_ENTITY;
 	}
 
@@ -163,6 +170,7 @@ public class AccountController extends BaseController
 		model.addAttribute(ModelAttributes.ONE_ENTITY, accountOptional.get());
 		model.addAttribute(ModelAttributes.AVAILABLE_ACCOUNT_STATES, AccountState.values());
 		model.addAttribute(ModelAttributes.FONTAWESOME_ICONS, FontAwesomeIcons.ICONS);
+		model.addAttribute(ModelAttributes.TODAY, LocalDate.now());
 		return ReturnValues.NEW_ENTITY;
 	}
 
@@ -211,6 +219,7 @@ public class AccountController extends BaseController
 			model.addAttribute(ModelAttributes.ONE_ENTITY, account);
 			model.addAttribute(ModelAttributes.AVAILABLE_ACCOUNT_STATES, AccountState.values());
 			model.addAttribute(ModelAttributes.FONTAWESOME_ICONS, FontAwesomeIcons.ICONS);
+			model.addAttribute(ModelAttributes.TODAY, LocalDate.now());
 			return ReturnValues.NEW_ENTITY;
 		}
 
@@ -255,5 +264,12 @@ public class AccountController extends BaseController
 		model.addAttribute(ModelAttributes.ALL_ENTITIES, accountService.getAllReadableAccounts());
 
 		return ReturnValues.GLOBAL_ACCOUNT_SELECT_MODAL;
+	}
+
+	@GetMapping("/cancelReminder")
+	public String cancelReminder(HttpServletRequest request)
+	{
+		settingsService.updateLastAccountEndDateReminderDate();
+		return "redirect:" + request.getHeader("Referer");
 	}
 }

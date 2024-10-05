@@ -13,6 +13,7 @@ $(document).ready(function()
         let elements = document.querySelectorAll('#transaction-name');
         let autoCompleteInstances = M.Autocomplete.init(elements, {
             data: transactionNameSuggestions,
+            sortFunction: function(a,b, inputString) {return false;}
         });
 
         // prevent tab traversal for dropdown (otherwise "tab" needs to be hit twice to jump from name input to amount input)

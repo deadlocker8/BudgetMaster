@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.annotation.PostConstruct;
+
 import java.lang.reflect.Field;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -112,6 +113,18 @@ public class SettingsService
 		{
 			settings.setMigrationDeclined(defaultSettings.getMigrationDeclined());
 		}
+		if(settings.getOrderTransactionNameSuggestionsAlphabetically() == null)
+		{
+			settings.setOrderTransactionNameSuggestionsAlphabetically(defaultSettings.getOrderTransactionNameSuggestionsAlphabetically());
+		}
+		if(settings.getAccountEndDateReminderActivated() == null)
+		{
+			settings.setAccountEndDateReminderActivated(defaultSettings.getAccountEndDateReminderActivated());
+		}
+		if(settings.getLastAccountEndDateReminderDate() == null)
+		{
+			settings.setLastAccountEndDateReminderDate(defaultSettings.getLastAccountEndDateReminderDate());
+		}
 
 		settingsRepository.save(settings);
 	}
@@ -133,6 +146,13 @@ public class SettingsService
 	{
 		Settings settings = getSettings();
 		settings.setMigrationDeclined(isDeclined);
+	}
+
+	@Transactional
+	public void updateLastAccountEndDateReminderDate()
+	{
+		Settings settings = getSettings();
+		settings.setLastAccountEndDateReminderDate(DateHelper.getCurrentDate());
 	}
 
 	@Transactional

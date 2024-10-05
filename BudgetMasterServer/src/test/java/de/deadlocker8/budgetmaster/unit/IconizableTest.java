@@ -33,7 +33,7 @@ class IconizableTest
 	@Test
 	void test_updateIcon_noExistingItem_newEmptyIcon()
 	{
-		final Account account = Mockito.spy(new Account("account with icon", AccountType.CUSTOM));
+		final Account account = Mockito.spy(new Account("account with icon", "", AccountType.CUSTOM, null));
 
 		final Icon icon = new Icon(null, null);
 
@@ -52,7 +52,7 @@ class IconizableTest
 	@Test
 	void test_updateIcon_noExistingItem_newBuiltinIcon()
 	{
-		final Account account = Mockito.spy(new Account("account with icon", AccountType.CUSTOM));
+		final Account account = Mockito.spy(new Account("account with icon", "", AccountType.CUSTOM, null));
 
 		final String builtinIdentifier = "fas fa-icons";
 		final Icon icon = new Icon(builtinIdentifier);
@@ -75,7 +75,7 @@ class IconizableTest
 		final String builtinIdentifier = "fas fa-icons";
 		final Icon icon = new Icon(builtinIdentifier);
 
-		final Account account = new Account("account with icon", AccountType.CUSTOM, icon);
+		final Account account = new Account("account with icon", "", AccountType.CUSTOM, icon, null);
 		account.setID(18);
 		final Account accountSpy = Mockito.spy(account);
 
@@ -95,7 +95,7 @@ class IconizableTest
 	void test_updateIcon_existingItem_newEmptyIcon()
 	{
 		final Icon icon = new Icon("fas fa-icons");
-		final Account account = new Account("account with icon", AccountType.CUSTOM, icon);
+		final Account account = new Account("account with icon", "", AccountType.CUSTOM, icon, null);
 		account.setID(18);
 		final Account accountSpy = Mockito.spy(account);
 

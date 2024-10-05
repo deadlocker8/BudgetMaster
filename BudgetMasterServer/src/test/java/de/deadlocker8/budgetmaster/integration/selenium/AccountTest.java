@@ -53,7 +53,7 @@ class AccountTest extends SeleniumTestBase
 			final String name = columns.get(2).getText();
 			if(name.equals("zzzz"))
 			{
-				columns.get(3).findElements(By.tagName("a")).get(1).click();
+				columns.get(4).findElements(By.tagName("a")).get(1).click();
 
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 				wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".modal-content h4"), "Delete Account"));
@@ -122,12 +122,12 @@ class AccountTest extends SeleniumTestBase
 		List<WebElement> accountRows = driver.findElements(By.cssSelector(".account-container tr"));
 		assertThat(accountRows).hasSize(6);
 
-		assertAccountColumns(accountRows.get(0).findElements(By.tagName("td")), true, true, AccountState.FULL_ACCESS, "Default Account");
-		assertAccountColumns(accountRows.get(1).findElements(By.tagName("td")), true, false, AccountState.FULL_ACCESS, "DefaultAccount0815");
-		assertAccountColumns(accountRows.get(2).findElements(By.tagName("td")), false, false, AccountState.HIDDEN, "hidden account");
-		assertAccountColumns(accountRows.get(3).findElements(By.tagName("td")), false, false, AccountState.READ_ONLY, "read only account");
-		assertAccountColumns(accountRows.get(4).findElements(By.tagName("td")), true, false, AccountState.FULL_ACCESS, "sfsdf");
-		assertAccountColumns(accountRows.get(5).findElements(By.tagName("td")), false, false, AccountState.READ_ONLY, name);
+		assertAccountColumns(accountRows.get(0).findElements(By.tagName("td")), true, true, AccountState.FULL_ACCESS, "Default Account", "");
+		assertAccountColumns(accountRows.get(1).findElements(By.tagName("td")), true, false, AccountState.FULL_ACCESS, "DefaultAccount0815", "");
+		assertAccountColumns(accountRows.get(2).findElements(By.tagName("td")), false, false, AccountState.HIDDEN, "hidden account", "");
+		assertAccountColumns(accountRows.get(3).findElements(By.tagName("td")), false, false, AccountState.READ_ONLY, "read only account", "");
+		assertAccountColumns(accountRows.get(4).findElements(By.tagName("td")), true, false, AccountState.FULL_ACCESS, "sfsdf", "");
+		assertAccountColumns(accountRows.get(5).findElements(By.tagName("td")), false, false, AccountState.READ_ONLY, name, "");
 	}
 
 	@Test
@@ -372,7 +372,7 @@ class AccountTest extends SeleniumTestBase
 		assertThat(driver.findElement(By.cssSelector(".notification.background-yellow")).isDisplayed()).isTrue();
 	}
 
-	public static void assertAccountColumns(List<WebElement> columns, boolean isDefaultIconVisible, boolean isDefaultIconSelected, AccountState expectedAccountState, String name)
+	public static void assertAccountColumns(List<WebElement> columns, boolean isDefaultIconVisible, boolean isDefaultIconSelected, AccountState expectedAccountState, String name, String description)
 	{
 		// icons
 		final List<WebElement> icons = columns.get(0).findElements(By.tagName("i"));
@@ -415,6 +415,9 @@ class AccountTest extends SeleniumTestBase
 
 		// name
 		assertThat(columns.get(2)).hasFieldOrPropertyWithValue("text", name);
+
+		// description
+		assertThat(columns.get(3)).hasFieldOrPropertyWithValue("text", description);
 	}
 
 	private void setAccountState(int accountID, AccountState accountState)

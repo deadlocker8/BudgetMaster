@@ -10,7 +10,7 @@ import de.deadlocker8.budgetmaster.charts.Chart;
 import de.deadlocker8.budgetmaster.charts.ChartService;
 import de.deadlocker8.budgetmaster.charts.ChartType;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
-import de.deadlocker8.budgetmaster.database.model.v10.BackupDatabase_v10;
+import de.deadlocker8.budgetmaster.database.model.v11.BackupDatabase_v11;
 import de.deadlocker8.budgetmaster.hints.HintService;
 import de.deadlocker8.budgetmaster.icon.Icon;
 import de.deadlocker8.budgetmaster.icon.IconService;
@@ -234,7 +234,7 @@ public class DatabaseService
 		InternalDatabase database = new InternalDatabase(categories, accounts, filteredTransactions, templateGroups, templates, charts, images, icons, transactionNameKeywords, List.of(csvImportSettings));
 		LOGGER.debug(MessageFormat.format("Created database for JSON with {0} transactions, {1} categories, {2} accounts, {3} templates groups, {4} templates, {5} charts {6} images {7} icons and {8} transaction name keywords", database.getTransactions().size(), database.getCategories().size(), database.getAccounts().size(), database.getTemplateGroups().size(), database.getTemplates().size(), database.getCharts().size(), database.getImages().size(), database.getIcons().size(), database.getTransactionNameKeywords().size()));
 
-		BackupDatabase_v10 databaseInExternalForm = BackupDatabase_v10.createFromInternalEntities(database);
+		BackupDatabase_v11 databaseInExternalForm = BackupDatabase_v11.createFromInternalEntities(database);
 		LOGGER.debug("Converted database to external form");
 		return databaseInExternalForm;
 	}

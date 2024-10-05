@@ -30,18 +30,29 @@
                                 <tr class="account-overview-row">
                                     <td>
                                         <#if account.getAccountState().name() == "READ_ONLY">
-                                            <div class="placeholder-icon"></div>
-                                            <i class="fas fa-lock"></i>
+                                            <div class="placeholder-icon placeholder-icon-right"></div>
+                                            <i class="fas fa-lock placeholder-icon-right"></i>
                                         <#elseif account.getAccountState().name() == "HIDDEN">
-                                            <div class="placeholder-icon"></div>
-                                            <i class="far fa-eye-slash"></i>
+                                            <div class="placeholder-icon placeholder-icon-right"></div>
+                                            <i class="far fa-eye-slash placeholder-icon-right"></i>
                                         <#else>
                                             <a href="<@s.url '/accounts/${account.getID()?c}/setAsDefault'/>" class="btn-flat no-padding text-default tooltipped" data-position="left" data-tooltip="${locale.getString("account.tooltip.default")}"><i class="material-icons left"><#if account.isDefault()>star<#else>star_border</#if></i></a>
-                                            <i class="fas fa-edit"></i>
+                                            <i class="fas fa-edit placeholder-icon-right"></i>
+                                        </#if>
+
+                                        <#if account.getEndDate()??>
+                                            <i class="fas fa-bell"></i>
+                                        <#else>
+                                            <div class="placeholder-icon"></div>
                                         </#if>
                                     </td>
                                     <td><@customSelectMacros.accountIcon account account.getName() "text-blue"/></td>
                                     <td>${account.getName()}</td>
+                                    <td>
+                                        <div class="truncate account-description">
+                                            ${account.getDescription()}
+                                        </div>
+                                    </td>
                                     <td>
                                         <a href="<@s.url '/accounts/${account.getID()?c}/edit'/>" class="btn-flat no-padding text-default"><i class="material-icons left">edit</i></a>
                                         <@header.buttonFlat url='/accounts/' + account.ID?c + '/requestDelete' icon='delete' localizationKey='' classes="no-padding text-default button-request-delete-account" isDataUrl=true/>

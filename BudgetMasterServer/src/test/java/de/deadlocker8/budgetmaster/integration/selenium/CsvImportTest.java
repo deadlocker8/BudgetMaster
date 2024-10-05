@@ -287,7 +287,7 @@ class CsvImportTest extends SeleniumTestBase
 	@Test
 	void test_upload_valid()
 	{
-		uploadAndSetColumnSettings();
+		uploadAndSetColumnSettings("three_entries.csv", 4);
 
 		assertThat(driver.findElements(By.className("transaction-import-row"))).hasSize(3);
 
@@ -328,7 +328,7 @@ class CsvImportTest extends SeleniumTestBase
 	@Test
 	void test_cancel()
 	{
-		uploadAndSetColumnSettings();
+		uploadAndSetColumnSettings("three_entries.csv", 4);
 
 		driver.findElement(By.id("button-cancel-csv-import")).click();
 		final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
@@ -340,7 +340,7 @@ class CsvImportTest extends SeleniumTestBase
 	@Test
 	void test_skipRow()
 	{
-		uploadAndSetColumnSettings();
+		uploadAndSetColumnSettings("three_entries.csv", 4);
 		final List<WebElement> rows = driver.findElements(By.className("transaction-import-row"));
 
 		rows.get(0).findElement(By.className("button-request-transaction-import-skip")).click();
@@ -354,7 +354,7 @@ class CsvImportTest extends SeleniumTestBase
 	@Test
 	void test_undoSkipRow()
 	{
-		uploadAndSetColumnSettings();
+		uploadAndSetColumnSettings("three_entries.csv", 4);
 		List<WebElement> rows = driver.findElements(By.className("transaction-import-row"));
 
 		// skip
@@ -384,7 +384,7 @@ class CsvImportTest extends SeleniumTestBase
 	@Test
 	void test_saveInPlace()
 	{
-		uploadAndSetColumnSettings();
+		uploadAndSetColumnSettings("three_entries.csv", 4);
 
 		final List<WebElement> rows = driver.findElements(By.className("transaction-import-row"));
 		final WebElement row = rows.get(0);
@@ -416,7 +416,7 @@ class CsvImportTest extends SeleniumTestBase
 	@Test
 	void test_editNewTransaction()
 	{
-		uploadAndSetColumnSettings();
+		uploadAndSetColumnSettings("three_entries.csv", 4);
 
 		// click new transaction button
 		final List<WebElement> rows = driver.findElements(By.className("transaction-import-row"));
@@ -452,7 +452,7 @@ class CsvImportTest extends SeleniumTestBase
 	@Test
 	void test_editNewTransfer()
 	{
-		uploadAndSetColumnSettings();
+		uploadAndSetColumnSettings("three_entries.csv", 4);
 
 		// click new transaction button
 		final List<WebElement> rows = driver.findElements(By.className("transaction-import-row"));
@@ -487,7 +487,7 @@ class CsvImportTest extends SeleniumTestBase
 	@Test
 	void test_editNewFromTemplate()
 	{
-		uploadAndSetColumnSettings();
+		uploadAndSetColumnSettings("three_entries.csv", 4);
 
 		// click new transaction button
 		final List<WebElement> rows = driver.findElements(By.className("transaction-import-row"));
@@ -530,7 +530,7 @@ class CsvImportTest extends SeleniumTestBase
 	@Test
 	void test_showTransactionNameSuggestions()
 	{
-		uploadAndSetColumnSettings();
+		uploadAndSetColumnSettings("three_entries.csv", 4);
 
 		final List<WebElement> rows = driver.findElements(By.className("transaction-import-row"));
 		final WebElement row = rows.get(0);
@@ -553,22 +553,35 @@ class CsvImportTest extends SeleniumTestBase
 		assertThat(driver.findElements(By.cssSelector(".autocomplete-content li"))).hasSizeGreaterThan(0);
 	}
 
-	private void uploadAndSetColumnSettings()
+	@Test
+	void test_upload_valid_fewer_rows_than_columns()
+	{
+		uploadAndSetColumnSettings("fewer_rows_than_columns.csv", 3);
+
+		assertThat(driver.findElements(By.className("transaction-import-row"))).hasSize(2);
+
+		final WebElement row1 = driver.findElements(By.className("transaction-import-row")).get(0);
+		assertRow(row1, "blue", "2023-01-05", "No category", "Ipsum", "Ipsum", "-8.37 €");
+		final WebElement row2 = driver.findElements(By.className("transaction-import-row")).get(1);
+		assertRow(row2, "blue", "2023-01-03", "No category", "Lorem", "Lorem", "50.00 €");
+	}
+
+	private void uploadAndSetColumnSettings(String csvFileName, Integer csvNumberOfRows)
 	{
 		driver.get(helper.getUrl() + "/transactionImport");
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Import from bank CSV"));
 
-		final String csvPath = new File(getClass().getClassLoader().getResource("csv/three_entries.csv").getFile()).getAbsolutePath();
+		final String csvPath = new File(getClass().getClassLoader().getResource("csv/" + csvFileName).getFile()).getAbsolutePath();
 
 		uploadCsv(csvPath, ";", "UTF-8", "1");
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("button-cancel-csv-import")));
 
-		assertThat(driver.findElement(By.id("csv-file-name")).getText()).isEqualTo("three_entries.csv");
+		assertThat(driver.findElement(By.id("csv-file-name")).getText()).isEqualTo(csvFileName);
 
 		final List<WebElement> overviewRows = driver.findElements(By.cssSelector("#transaction-import-overview tr"));
-		assertThat(overviewRows).hasSize(4);
+		assertThat(overviewRows).hasSize(csvNumberOfRows);
 		final List<WebElement> columns = overviewRows.get(1).findElements(By.tagName("td"));
 		assertThat(columns).hasSize(3);
 		assertThat(columns.get(0).getText()).isEqualTo("03.01.2023");

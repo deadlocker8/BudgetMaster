@@ -7,7 +7,7 @@
     <groupId>de.deadlocker8</groupId>
     <artifactId>BudgetMaster</artifactId>
     <packaging>pom</packaging>
-    <version>2.16.1</version>
+    <version>2.17.0</version>
     <name>BudgetMaster</name>
 
     <modules>
@@ -40,8 +40,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.0</version>
-        <relativePath/>
+        <version>3.3.4</version>
     </parent>
 
     <properties>
@@ -51,11 +50,11 @@
 
         <app.versionDate>${maven.build.timestamp}</app.versionDate>
         <maven.build.timestamp.format>dd.MM.yy</maven.build.timestamp.format>
-        <app.versionCode>46</app.versionCode>
+        <app.versionCode>47</app.versionCode>
         <app.author>Robert Goldmann</app.author>
 
-        <testcontainer.version>1.19.3</testcontainer.version>
-        <assertj-core.version>3.24.2</assertj-core.version>
+        <testcontainer.version>1.20.2</testcontainer.version>
+        <assertj-core.version>3.26.3</assertj-core.version>
     </properties>
 
     <dependencies>

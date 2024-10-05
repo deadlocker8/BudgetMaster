@@ -27,7 +27,7 @@ class TransactionSettingsContainerTest
 	@Test
 	void test_validate_valid()
 	{
-		final TransactionsSettingsContainer container = new TransactionsSettingsContainer(true, List.of());
+		final TransactionsSettingsContainer container = new TransactionsSettingsContainer(true, true, List.of());
 
 		final Errors errors = new BeanPropertyBindingResult(container, "container");
 		container.validate(errors);
@@ -39,12 +39,13 @@ class TransactionSettingsContainerTest
 	@Test
 	void test_fixBooleans()
 	{
-		final TransactionsSettingsContainer container = new TransactionsSettingsContainer(null, List.of());
+		final TransactionsSettingsContainer container = new TransactionsSettingsContainer(null, null, List.of());
 
 		container.fixBooleans();
 
 		assertThat(container)
-				.hasFieldOrPropertyWithValue("restActivated", false);
+				.hasFieldOrPropertyWithValue("restActivated", false)
+				.hasFieldOrPropertyWithValue("orderTransactionNameSuggestionsAlphabetically", false);
 	}
 
 	@Test
@@ -54,10 +55,11 @@ class TransactionSettingsContainerTest
 
 		Mockito.when(settingsService.getSettings()).thenReturn(defaultSettings);
 
-		final TransactionsSettingsContainer container = new TransactionsSettingsContainer(false, List.of());
+		final TransactionsSettingsContainer container = new TransactionsSettingsContainer(false, false, List.of());
 		final Settings updatedSettings = container.updateSettings(settingsService);
 
 		assertThat(updatedSettings)
-				.hasFieldOrPropertyWithValue("restActivated", false);
+				.hasFieldOrPropertyWithValue("restActivated", false)
+				.hasFieldOrPropertyWithValue("orderTransactionNameSuggestionsAlphabetically", false);
 	}
 }

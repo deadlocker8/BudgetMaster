@@ -156,6 +156,14 @@ public class SettingsController extends BaseController
 		return result.templatePath();
 	}
 
+	@PostMapping(value = "/save/accounts")
+	public String saveContainerAccounts(Model model,
+										@ModelAttribute("AccountsSettingsContainer") AccountsSettingsContainer accountsSettingsContainer,
+										BindingResult bindingResult)
+	{
+		return saveContainer(model, accountsSettingsContainer, bindingResult).templatePath();
+	}
+
 	@PostMapping(value = "/save/transactions")
 	public String saveContainerTransactions(Model model,
 											@ModelAttribute("TransactionsSettingsContainer") TransactionsSettingsContainer transactionsSettingsContainer,

@@ -20,6 +20,11 @@ $(document).ready(function()
         $('#modalBackupReminder').modal('open');
     }
 
+    if($("#modalAccountEndDateReminder").length)
+    {
+        $('#modalAccountEndDateReminder').modal('open');
+    }
+
     if($("#whatsNewModelContainer").length)
     {
         fetchAndShowModal(document.getElementById('whatsNewModelContainer'), 'whatsNewModelContainer', '#modalWhatsNew');
@@ -80,6 +85,7 @@ function fetchAndShowModal(item, containerID, modalID)
             $('#' + containerID).html(data);
             $(modalID).modal();
             $(modalID).modal('open');
+            $('.global-account-select-option').find('.tooltipped').tooltip();
         }
     });
 }

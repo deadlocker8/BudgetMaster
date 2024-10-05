@@ -58,6 +58,8 @@
                 </div>
             </div>
 
+            <#assign maxColumnCount=csvRows[0].getColumns()?size/>
+
             <div class="row">
                 <div class="col s6 m4 offset-m2 l3 offset-l3">
                     <div class="transaction-import-text-with-icon">
@@ -66,7 +68,7 @@
                     </div>
                 </div>
                 <div class="input-field col s6 m6 l4 no-margin-top no-margin-bottom">
-                    <input id="columnDate" type="number" min="1" max="${csvRows?size}" name="columnDate" <@validation.validation "columnDate"/> value="<#if csvImportSettings.getColumnDate()??>${csvImportSettings.getColumnDate()}</#if>">
+                    <input id="columnDate" type="number" min="1" max="${maxColumnCount}" name="columnDate" <@validation.validation "columnDate"/> value="<#if csvImportSettings.getColumnDate()??>${csvImportSettings.getColumnDate()}</#if>">
                     <label class="input-label" for="columnDate">${locale.getString("transactions.import.column")}</label>
                 </div>
             </div>
@@ -88,7 +90,7 @@
                     </div>
                 </div>
                 <div class="input-field col s6 m6 l4 no-margin-top no-margin-bottom">
-                    <input id="columnName" type="number" min="1" max="${csvRows?size}" name="columnName" <@validation.validation "columnName"/> value="<#if csvImportSettings.getColumnName()??>${csvImportSettings.getColumnName()}</#if>">
+                    <input id="columnName" type="number" min="1" max="${maxColumnCount}" name="columnName" <@validation.validation "columnName"/> value="<#if csvImportSettings.getColumnName()??>${csvImportSettings.getColumnName()}</#if>">
                     <label class="input-label" for="columnName">${locale.getString("transactions.import.column")}</label>
                 </div>
             </div>
@@ -100,7 +102,7 @@
                     </div>
                 </div>
                 <div class="input-field col s6 m6 l4 no-margin-top no-margin-bottom">
-                    <input id="columnAmount" type="number" min="1" max="${csvRows?size}" name="columnAmount" <@validation.validation "columnAmount"/> value="<#if csvImportSettings.getColumnAmount()??>${csvImportSettings.getColumnAmount()}</#if>">
+                    <input id="columnAmount" type="number" min="1" max="${maxColumnCount}" name="columnAmount" <@validation.validation "columnAmount"/> value="<#if csvImportSettings.getColumnAmount()??>${csvImportSettings.getColumnAmount()}</#if>">
                     <label class="input-label" for="columnAmount">${locale.getString("transactions.import.column")}</label>
                 </div>
             </div>
@@ -124,7 +126,7 @@
                     </div>
                 </div>
                 <div class="input-field col s6 m6 l4 no-margin-top no-margin-bottom">
-                    <input id="columnDescription" type="number" min="1" max="${csvRows?size}" name="columnDescription" <@validation.validation "columnDescription"/> value="<#if csvImportSettings.getColumnDescription()??>${csvImportSettings.getColumnDescription()}</#if>">
+                    <input id="columnDescription" type="number" min="1" max="${maxColumnCount}" name="columnDescription" <@validation.validation "columnDescription"/> value="<#if csvImportSettings.getColumnDescription()??>${csvImportSettings.getColumnDescription()}</#if>">
                     <label class="input-label" for="columnDescription">${locale.getString("transactions.import.column")}</label>
                 </div>
             </div>

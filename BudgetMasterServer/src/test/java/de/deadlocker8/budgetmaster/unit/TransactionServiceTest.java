@@ -4,6 +4,8 @@ import de.deadlocker8.budgetmaster.accounts.Account;
 import de.deadlocker8.budgetmaster.accounts.AccountType;
 import de.deadlocker8.budgetmaster.categories.Category;
 import de.deadlocker8.budgetmaster.categories.CategoryType;
+import de.deadlocker8.budgetmaster.settings.Settings;
+import de.deadlocker8.budgetmaster.settings.SettingsService;
 import de.deadlocker8.budgetmaster.transactions.Transaction;
 import de.deadlocker8.budgetmaster.transactions.TransactionRepository;
 import de.deadlocker8.budgetmaster.transactions.TransactionService;
@@ -15,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,10 +29,13 @@ class TransactionServiceTest
 	private static final Category CATEGORY_REST = new Category("Balance", "#FFFF00", CategoryType.REST);
 	private static final Category CATEGORY_CUSTOM = new Category("CustomCategory", "#0F0F0F", CategoryType.CUSTOM);
 
-	private static final Account ACCOUNT = new Account("MyAccount", AccountType.CUSTOM);
+	private static final Account ACCOUNT = new Account("MyAccount", "", AccountType.CUSTOM, null);
 
 	@Mock
 	private TransactionRepository transactionRepository;
+
+	@Mock
+	private SettingsService settingsService;
 
 	@InjectMocks
 	private TransactionService transactionService;
@@ -103,5 +109,86 @@ class TransactionServiceTest
 
 		assertThat(transaction).hasFieldOrPropertyWithValue("amount", 500)
 				.hasFieldOrPropertyWithValue("isExpenditure", false);
+	}
+
+	@Test
+	void test_getNameSuggestionsJson_sortAlphabetically()
+	{
+		final Settings settings = Settings.getDefault();
+
+		Mockito.when(settingsService.getSettings()).thenReturn(settings);
+
+		final Transaction transaction1 = new Transaction();
+		transaction1.setID(1);
+		transaction1.setName("ABC");
+		transaction1.setAmount(700);
+		transaction1.setCategory(CATEGORY_CUSTOM);
+		transaction1.setAccount(ACCOUNT);
+		transaction1.setIsExpenditure(false);
+
+		final Transaction transaction2 = new Transaction();
+		transaction2.setID(1);
+		transaction2.setName("XYZ");
+		transaction2.setAmount(700);
+		transaction2.setCategory(CATEGORY_CUSTOM);
+		transaction2.setAccount(ACCOUNT);
+		transaction2.setIsExpenditure(false);
+
+		final Transaction transaction3 = new Transaction();
+		transaction3.setID(1);
+		transaction3.setName("XYZ");
+		transaction3.setAmount(700);
+		transaction3.setCategory(CATEGORY_CUSTOM);
+		transaction3.setAccount(ACCOUNT);
+		transaction3.setIsExpenditure(false);
+
+		Mockito.when(transactionRepository.findAllByOrderByNameAsc()).thenReturn(List.of(transaction1, transaction2, transaction3));
+
+		assertThat(transactionService.getNameSuggestionsJson()).isEqualTo("[\"ABC\",\"XYZ\"]");
+	}
+
+	@Test
+	void test_getNameSuggestionsJson_sortByFrequencyOfUse()
+	{
+		final Settings settings = Settings.getDefault();
+		settings.setOrderTransactionNameSuggestionsAlphabetically(false);
+
+		Mockito.when(settingsService.getSettings()).thenReturn(settings);
+
+		final Transaction transaction1 = new Transaction();
+		transaction1.setID(1);
+		transaction1.setName("ABC");
+		transaction1.setAmount(700);
+		transaction1.setCategory(CATEGORY_CUSTOM);
+		transaction1.setAccount(ACCOUNT);
+		transaction1.setIsExpenditure(false);
+
+		final Transaction transaction2 = new Transaction();
+		transaction2.setID(1);
+		transaction2.setName("XYZ");
+		transaction2.setAmount(700);
+		transaction2.setCategory(CATEGORY_CUSTOM);
+		transaction2.setAccount(ACCOUNT);
+		transaction2.setIsExpenditure(false);
+
+		final Transaction transaction3 = new Transaction();
+		transaction3.setID(1);
+		transaction3.setName("XYZ");
+		transaction3.setAmount(700);
+		transaction3.setCategory(CATEGORY_CUSTOM);
+		transaction3.setAccount(ACCOUNT);
+		transaction3.setIsExpenditure(false);
+
+		final Transaction transaction4 = new Transaction();
+		transaction4.setID(1);
+		transaction4.setName("LOREM");
+		transaction4.setAmount(700);
+		transaction4.setCategory(CATEGORY_CUSTOM);
+		transaction4.setAccount(ACCOUNT);
+		transaction4.setIsExpenditure(false);
+
+		Mockito.when(transactionRepository.findAllByOrderByNameAsc()).thenReturn(List.of(transaction1, transaction2, transaction3, transaction4));
+
+		assertThat(transactionService.getNameSuggestionsJson()).isEqualTo("[\"XYZ\",\"ABC\",\"LOREM\"]");
 	}
 }

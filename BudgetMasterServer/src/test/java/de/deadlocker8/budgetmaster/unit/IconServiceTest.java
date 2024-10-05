@@ -47,7 +47,7 @@ class IconServiceTest
 	void test_deleteIcon_withReferringAccount()
 	{
 		final Icon icon = Mockito.spy(new Icon("fas fa-icons"));
-		final Account account = Mockito.spy(new Account("account with icon", AccountType.CUSTOM, icon));
+		final Account account = Mockito.spy(new Account("account with icon", "", AccountType.CUSTOM, icon, null));
 
 		Mockito.when(icon.getReferringAccount()).thenReturn(account);
 

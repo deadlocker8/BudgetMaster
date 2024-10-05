@@ -11,6 +11,7 @@
 
         <@header.header "BudgetMaster - ${title}"/>
         <@header.style "iconSelect"/>
+        <@header.style "datepicker"/>
         <#import "/spring.ftl" as s>
     </head>
     <@header.body>
@@ -47,6 +48,15 @@
                             </div>
                         </div>
 
+                        <#-- description -->
+                        <div class="row">
+                            <div class="input-field col s12 m12 l8 offset-l2">
+                                <i class="material-icons prefix">article</i>
+                                <textarea id="account-description" class="materialize-textarea" name="description" data-length="250" <@validation.validation "description"/>><#if account.getDescription()??>${account.getDescription()}</#if></textarea>
+                                <label class="input-label" for="account-description">${locale.getString("transaction.new.label.description")}</label>
+                            </div>
+                        </div>
+
                         <#-- icon -->
                         <#if account.getIconReference()?? && (account.getIconReference().isImageIcon() || account.getIconReference().isBuiltinIcon())>
                             <#assign initialBackgroundClasses='category-square'/>
@@ -67,6 +77,28 @@
                             <#assign selectedState=availableAccountStates[0]>
                         </#if>
                         <@customSelectMacros.customAccountStateSelect "account-state-select-wrapper" "accountState" availableAccountStates selectedState "col s12 m12 l8 offset-l2" locale.getString("account.new.label.state") "account-state"/>
+
+                        <#-- end date -->
+                        <div class="row">
+                            <div class="input-field col s12 m12 l8 offset-l2">
+                                <#if account.getEndDate()??>
+                                    <#assign startDate = dateService.getLongDateString(account.getEndDate())/>
+                                    <#assign accountEndDate = dateService.getLongDateString(account.getEndDate())/>
+                                <#else>
+                                    <#assign startDate = dateService.getLongDateString(today)/>
+                                    <#assign accountEndDate = ""/>
+                                </#if>
+
+                                <i class="material-icons prefix">notifications</i>
+                                <input id="account-datepicker" type="text" class="datepicker" name="endDate" value="${accountEndDate}">
+                                <label class="input-label" for="account-datepicker">${locale.getString("account.new.label.endDate")}</label>
+                            </div>
+                        </div>
+
+                        <script>
+                            startDate = "${startDate}".split(".");
+                            startDate = new Date(startDate[2], startDate[1]-1, startDate[0]);
+                        </script>
 
                         <br>
 
@@ -100,10 +132,13 @@
 
         <@iconSelectMacros.modalIconSelect idToFocusOnClose="account-name" item=account/>
 
+        <#import "../helpers/globalDatePicker.ftl" as datePicker>
+        <@datePicker.datePickerLocalization/>
+
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
-        <script src="<@s.url '/webjars/vanilla-picker/2.12.1/dist/vanilla-picker.min.js'/>"></script>
+        <script src="<@s.url '/webjars/vanilla-picker/2.12.3/dist/vanilla-picker.min.js'/>"></script>
         <script src="<@s.url '/js/accounts.js'/>"></script>
         <script src="<@s.url '/js/iconSelect.js'/>"></script>
         <script src="<@s.url '/js/fontColorPicker.js'/>"></script>

@@ -24,6 +24,7 @@ $(document).ready(function()
         let nameElements = document.querySelectorAll('.autocomplete');
         let autoCompleteInstances = M.Autocomplete.init(nameElements, {
             data: transactionNameSuggestions,
+            sortFunction: function(a,b, inputString) {return false;}
         });
 
         // prevent tab traversal for dropdown (otherwise "tab" needs to be hit twice to jump from name input to amount input)
@@ -56,9 +57,7 @@ function initCsvTransactionForms()
     for(let i = 0; i < forms.length; i++)
     {
         let form = forms[i];
-        console.log(i)
-        console.log(form)
-        // form.removeEventListener('submit', submitTransactionInPlaceForm);
+        form.removeEventListener('submit', submitTransactionInPlaceForm);
         form.addEventListener('submit', submitTransactionInPlaceForm);
     }
 }
@@ -66,9 +65,7 @@ function initCsvTransactionForms()
 function submitTransactionInPlaceForm(event)
 {
     const form = event.target;
-    console.log('form ' + form)
     const csvTransactionId = form.dataset.index;
-            console.log('go')
 
     $.ajax({
         type: 'POST',

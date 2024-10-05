@@ -16,6 +16,7 @@
 
         <#import "containers/settingsSecurity.ftl" as settingsSecurityMacros>
         <#import "containers/settingsPersonalization.ftl" as settingsPersonalizationMacros>
+        <#import "containers/settingsAccounts.ftl" as settingsAccountsMacros>
         <#import "containers/settingsTransactions.ftl" as settingsTransactionsMacros>
         <#import "containers/settingsBackup.ftl" as settingsBackupMacros>
         <#import "containers/settingsUpdate.ftl" as settingsUpdateMacros>
@@ -45,6 +46,10 @@
 
                                     <@settingsMacros.settingsCollapsibleItem "personalizationSettingsContainer" "format_paint" locale.getString("settings.personalization")>
                                         <@settingsPersonalizationMacros.personalizationSettingsContainer importScripts=false settings=settings showReloadWarning=false/>
+                                    </@settingsMacros.settingsCollapsibleItem>
+
+                                    <@settingsMacros.settingsCollapsibleItem "accountsSettingsContainer" "account_balance" locale.getString("settings.accounts")>
+                                        <@settingsAccountsMacros.accountsSettingsContainer importScripts=false settings=settings/>
                                     </@settingsMacros.settingsCollapsibleItem>
 
                                     <@settingsMacros.settingsCollapsibleItem "transactionsSettingsContainer" "list" locale.getString("settings.transactions")>
@@ -111,6 +116,7 @@
         <script>
             initSettingsContainer('SecuritySettingsContainer', 'securitySettingsContainer');
             initSettingsContainer('PersonalizationSettingsContainer', 'personalizationSettingsContainer');
+            initSettingsContainer('AccountsSettingsContainer', 'accountsSettingsContainer');
             initSettingsContainer('TransactionsSettingsContainer', 'transactionsSettingsContainer');
             initSettingsContainer('BackupSettingsContainer', 'backupSettingsContainer');
             initSettingsContainer('MiscSettingsContainer', 'miscSettingsContainer');

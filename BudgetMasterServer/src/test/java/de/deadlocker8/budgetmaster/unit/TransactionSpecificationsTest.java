@@ -94,9 +94,9 @@ class TransactionSpecificationsTest
 	@BeforeEach
 	public void init()
 	{
-		account = accountRepository.save(new Account("TestAccount", AccountType.CUSTOM));
-		account2 = accountRepository.save(new Account("TestAccount2", AccountType.CUSTOM));
-		accountHidden = accountRepository.save(new Account("Hidden Account", AccountType.CUSTOM));
+		account = accountRepository.save(new Account("TestAccount", "", AccountType.CUSTOM, null));
+		account2 = accountRepository.save(new Account("TestAccount2", "", AccountType.CUSTOM, null));
+		accountHidden = accountRepository.save(new Account("Hidden Account", "", AccountType.CUSTOM, null));
 		accountHidden.setAccountState(AccountState.HIDDEN);
 
 		categoryUnused = categoryRepository.save(new Category("CategoryUnused", "#00ff00", CategoryType.CUSTOM));

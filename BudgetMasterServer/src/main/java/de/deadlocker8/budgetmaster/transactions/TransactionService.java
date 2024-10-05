@@ -28,7 +28,9 @@ import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 
@@ -44,6 +46,7 @@ public class TransactionService implements Resettable
 	private final RepeatingOptionRepository repeatingOptionRepository;
 	private final CategoryService categoryService;
 	private final TagService tagService;
+	private final SettingsService settingsService;
 
 	@Autowired
 	public TransactionService(TransactionRepository transactionRepository, RepeatingOptionRepository repeatingOptionRepository, CategoryService categoryService, TagService tagService, SettingsService settingsService)
@@ -52,6 +55,7 @@ public class TransactionService implements Resettable
 		this.repeatingOptionRepository = repeatingOptionRepository;
 		this.categoryService = categoryService;
 		this.tagService = tagService;
+		this.settingsService = settingsService;
 	}
 
 	public TransactionRepository getRepository()
@@ -300,11 +304,24 @@ public class TransactionService implements Resettable
 
 	public String getNameSuggestionsJson()
 	{
-		final List<Transaction> allByOrderByDateDesc = getRepository().findAllByOrderByDateDesc();
-		final List<String> nameSuggestions = allByOrderByDateDesc.stream()
+		final List<Transaction> allOrderedByNameAsc = getRepository().findAllByOrderByNameAsc();
+		final List<String> names = allOrderedByNameAsc.stream()
 				.map(Transaction::getName)
-				.distinct()
 				.toList();
-		return  GSON.toJson(nameSuggestions);
+
+		List<String> nameSuggestions = names;
+
+		if(!settingsService.getSettings().getOrderTransactionNameSuggestionsAlphabetically())
+		{
+			nameSuggestions = names.stream()
+					.collect(Collectors.groupingBy(e -> e, Collectors.counting()))
+					.entrySet()
+					.stream()
+					.sorted(Map.Entry.<String, Long>comparingByValue().reversed().thenComparing(Map.Entry.comparingByKey()))
+					.map(Map.Entry::getKey)
+					.toList();
+		}
+
+		return GSON.toJson(nameSuggestions.stream().distinct().toList());
 	}
 }

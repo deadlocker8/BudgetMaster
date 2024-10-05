@@ -77,7 +77,7 @@ class TransactionServiceDatabaseTest
 	@BeforeEach
 	void beforeEach()
 	{
-		Account secondAccount = new Account("Second Account", AccountType.CUSTOM);
+		Account secondAccount = new Account("Second Account", "", AccountType.CUSTOM, null);
 		secondAccount = accountRepository.save(secondAccount);
 
 		Category category1 = new Category("Regen", "#ffcc00", CategoryType.CUSTOM);

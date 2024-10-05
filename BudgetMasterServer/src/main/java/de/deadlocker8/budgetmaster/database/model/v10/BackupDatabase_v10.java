@@ -7,6 +7,7 @@ import de.deadlocker8.budgetmaster.database.InternalDatabase;
 import de.deadlocker8.budgetmaster.database.JSONIdentifier;
 import de.deadlocker8.budgetmaster.database.model.BackupDatabase;
 import de.deadlocker8.budgetmaster.database.model.converter.*;
+import de.deadlocker8.budgetmaster.database.model.v11.BackupDatabase_v11;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupChart_v5;
 import de.deadlocker8.budgetmaster.database.model.v5.BackupImage_v5;
 import de.deadlocker8.budgetmaster.database.model.v6.BackupTransaction_v6;
@@ -171,18 +172,7 @@ public class BackupDatabase_v10 implements BackupDatabase
 
 	public InternalDatabase convertToInternal()
 	{
-		final List<Image> convertedImages = convertItemsToInternal(this.images, new ImageConverter());
-		final List<Icon> convertedIcons = convertItemsToInternal(this.icons, new IconConverter(convertedImages));
-		final List<Category> convertedCategories = convertItemsToInternal(categories, new CategoryConverter(convertedIcons));
-		final List<Account> convertedAccounts = convertItemsToInternal(accounts, new AccountConverter(convertedIcons));
-		final List<Transaction> convertedTransactions = convertItemsToInternal(this.transactions, new TransactionConverter(convertedCategories, convertedAccounts));
-		final List<TemplateGroup> convertedTemplateGroups = convertItemsToInternal(this.templateGroups, new TemplateGroupConverter());
-		final List<Template> convertedTemplates = convertItemsToInternal(this.templates, new TemplateConverter(convertedIcons, convertedCategories, convertedAccounts, convertedTemplateGroups));
-		final List<Chart> convertedCharts = convertItemsToInternal(this.charts, new ChartConverter());
-		final List<TransactionNameKeyword> convertedKeywords = convertItemsToInternal(this.transactionNameKeywords, new TransactionNameKeywordConverter());
-		final List<CsvImportSettings> convertedCsvImportSettings = convertItemsToInternal(this.csvImportSettings, new CsvImportSettingsConverter());
-
-		return new InternalDatabase(convertedCategories, convertedAccounts, convertedTransactions, convertedTemplateGroups, convertedTemplates, convertedCharts, convertedImages, convertedIcons, convertedKeywords, convertedCsvImportSettings);
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -194,24 +184,19 @@ public class BackupDatabase_v10 implements BackupDatabase
 	@Override
 	public BackupDatabase upgrade()
 	{
-		throw new UnsupportedOperationException();
-	}
+		final BackupDatabase_v11 upgradedDatabase = new BackupDatabase_v11();
 
-	public static BackupDatabase_v10 createFromInternalEntities(InternalDatabase database)
-	{
-		final BackupDatabase_v10 externalDatabase = new BackupDatabase_v10();
+		upgradedDatabase.setCategories(categories);
+		upgradedDatabase.setAccounts(upgradeItems(accounts, List.of()));
+		upgradedDatabase.setTransactions(transactions);
+		upgradedDatabase.setTemplateGroups(templateGroups);
+		upgradedDatabase.setTemplates(templates);
+		upgradedDatabase.setCharts(charts);
+		upgradedDatabase.setImages(images);
+		upgradedDatabase.setIcons(icons);
+		upgradedDatabase.setTransactionNameKeywords(transactionNameKeywords);
+		upgradedDatabase.setCsvImportSettings(csvImportSettings);
 
-		externalDatabase.setIcons(externalDatabase.convertItemsToExternal(database.getIcons(), new IconConverter(null)));
-		externalDatabase.setCategories(externalDatabase.convertItemsToExternal(database.getCategories(), new CategoryConverter(null)));
-		externalDatabase.setAccounts(externalDatabase.convertItemsToExternal(database.getAccounts(), new AccountConverter(null)));
-		externalDatabase.setTransactions(externalDatabase.convertItemsToExternal(database.getTransactions(), new TransactionConverter(null, null)));
-		externalDatabase.setTemplateGroups(externalDatabase.convertItemsToExternal(database.getTemplateGroups(), new TemplateGroupConverter()));
-		externalDatabase.setTemplates(externalDatabase.convertItemsToExternal(database.getTemplates(), new TemplateConverter(null, null, null, null)));
-		externalDatabase.setCharts(externalDatabase.convertItemsToExternal(database.getCharts(), new ChartConverter()));
-		externalDatabase.setImages(externalDatabase.convertItemsToExternal(database.getImages(), new ImageConverter()));
-		externalDatabase.setTransactionNameKeywords(externalDatabase.convertItemsToExternal(database.getTransactionNameKeywords(), new TransactionNameKeywordConverter()));
-		externalDatabase.setCsvImportSettings(externalDatabase.convertItemsToExternal(database.getCsvImportSettings(), new CsvImportSettingsConverter()));
-
-		return externalDatabase;
+		return upgradedDatabase;
 	}
 }
