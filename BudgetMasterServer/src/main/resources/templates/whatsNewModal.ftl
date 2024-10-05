@@ -13,8 +13,8 @@
         <#list newsEntries as entry>
             <div class="row">
                 <div class="col s12">
-                    <h5>${entry.getHeadline()}</h5>
-                    ${entry.getDescription()}
+                    <h5>${entry.headline()}</h5>
+                    ${entry.description()}
                 </div>
             </div>
         </#list>

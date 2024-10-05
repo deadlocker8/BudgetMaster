@@ -4,17 +4,8 @@ import de.thecodelabs.utils.util.Localization;
 
 import java.text.MessageFormat;
 
-public class NewsEntry
+public record NewsEntry(String headline, String description)
 {
-	private final String headline;
-	private final String description;
-
-	public NewsEntry(String headline, String description)
-	{
-		this.headline = headline;
-		this.description = description;
-	}
-
 	public static NewsEntry createWithLocalizationKey(String shortKey)
 	{
 		return createWithLocalizationKeys(MessageFormat.format("news.{0}.headline", shortKey),
@@ -26,15 +17,6 @@ public class NewsEntry
 		return new NewsEntry(Localization.getString(headlineKey), Localization.getString(descriptionKey));
 	}
 
-	public String getHeadline()
-	{
-		return headline;
-	}
-
-	public String getDescription()
-	{
-		return description;
-	}
 
 	@Override
 	public String toString()
