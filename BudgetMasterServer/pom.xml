@@ -26,7 +26,7 @@
     <properties>
         <jlibs.version>3.2.0</jlibs.version>
         <versionizer.version>3.0.1</versionizer.version>
-        <webjars-locator.version>0.50</webjars-locator.version>
+        <webjars-locator.version>0.52</webjars-locator.version>
         <jquery.version>3.7.1</jquery.version>
         <materializecss.version>1.0.0</materializecss.version>
         <fontawesome.version>6.5.2</fontawesome.version>
