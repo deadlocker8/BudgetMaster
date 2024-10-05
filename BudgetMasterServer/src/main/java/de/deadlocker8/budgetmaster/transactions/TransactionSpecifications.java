@@ -67,13 +67,6 @@ public class TransactionSpecifications
 
 			if(isTransfer)
 			{
-				// transactions in accounts that are destinations of transfers should be included in results
-				// transfers in origin accounts are already included by the general predicates
-
-				// allow transactions that have a transfer account set that matches the provided account-variable
-				final Predicate transferAccountNotEqualsAccount = builder.notEqual(transaction.get(Transaction_.transferAccount), transaction.get(Transaction_.account));
-				transferBackReference = builder.and(transferAccountNotEqualsAccount, builder.equal(transaction.get(Transaction_.transferAccount), account));
-
 				if(!isIncome && !isExpenditure)
 				{
 					// if only transfers should be included just check if a transfer account is set in normal predicates!
@@ -145,7 +138,22 @@ public class TransactionSpecifications
 			if(isTransfer)
 			{
 				final Predicate transferPredicatesCombined = combinePredicates(transferPredicates, builder);
-				final Predicate allTransferPredicates = builder.and(dateConstraint, transferPredicatesCombined, transferBackReference);
+				final Predicate transferAccountNotEqualsAccount = builder.notEqual(transaction.get(Transaction_.transferAccount), transaction.get(Transaction_.account));
+
+				Predicate allTransferPredicates;
+				if(account == null)
+				{
+					allTransferPredicates = builder.and(dateConstraint, transferPredicatesCombined, transferAccountNotEqualsAccount);
+				}
+				else
+				{
+					// transactions in accounts that are destinations of transfers should be included in results
+					// transfers in origin accounts are already included by the general predicates
+
+					// allow transactions that have a transfer account set that matches the provided account-variable
+					transferBackReference = builder.and(transferAccountNotEqualsAccount, builder.equal(transaction.get(Transaction_.transferAccount), account));
+					allTransferPredicates = builder.and(dateConstraint, transferPredicatesCombined, transferBackReference);
+				}
 
 				return builder.or(generalPredicates, allTransferPredicates);
 			}
