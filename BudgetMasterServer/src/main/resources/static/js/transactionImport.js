@@ -7,16 +7,25 @@ $(document).ready(function()
 
     $('.collapsible').collapsible();
 
+    DataTable.type('date', 'className', 'dt-center');
     $('#table-transaction-rows').DataTable({
         paging: false,
-        order: [[2, 'desc']],
+        order: [[1, 'desc']],
         info: false,
         scrollX: true,
         scrollY: false,
         columnDefs: [
-            { orderable: false, targets:  6}
+            {
+                className: "dt-head-center",
+                targets: [0, 1, 3, 4, 6]
+            },
+            {
+                // amount column
+                orderable: false,
+                targets: 5
+            }
         ],
-        language: { search: '' , searchPlaceholder: localizedSearch},
+        language: {search: '', searchPlaceholder: localizedSearch},
     });
 
     if(transactionNameSuggestions !== undefined)
@@ -24,7 +33,10 @@ $(document).ready(function()
         let nameElements = document.querySelectorAll('.autocomplete');
         let autoCompleteInstances = M.Autocomplete.init(nameElements, {
             data: transactionNameSuggestions,
-            sortFunction: function(a,b, inputString) {return false;}
+            sortFunction: function(a, b, inputString)
+            {
+                return false;
+            }
         });
 
         // prevent tab traversal for dropdown (otherwise "tab" needs to be hit twice to jump from name input to amount input)

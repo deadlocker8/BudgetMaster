@@ -167,10 +167,9 @@
 
 <#macro renderCsvTransactions>
     <div id="transaction-import-list">
-        <table class="bordered centered" id="table-transaction-rows" style="width:100%">
+        <table class="centered" id="table-transaction-rows" style="width:100%">
             <thead>
                 <tr>
-                    <td class="hidden"></td>
                     <td class="bold">${locale.getString("transactions.import.status")}</td>
                     <td class="bold">${locale.getString("transaction.new.label.date")}</td>
                     <td class="bold">${locale.getString("transaction.new.label.category")}</td>
@@ -187,6 +186,14 @@
                 </#list>
             </tbody>
         </table>
+
+        <div class="hidden">
+            <#list csvTransactions as csvTransaction>
+                <form name="NewTransactionInPlace" id="newTransactionInPlace_${csvTransaction?index}" method="POST" action="<@s.url '/transactionImport/' + csvTransaction?index + '/newTransactionInPlace'/>" data-index="${csvTransaction?index}">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                </form>
+            </#list>
+        </div>
     </div>
 
     <@newTransactionMacros.insertNameSuggestions/>
@@ -194,11 +201,6 @@
 
 <#macro renderCsvTransaction csvTransaction index>
     <tr class="transaction-import-row <#if csvTransaction.getStatus().name() == 'SKIPPED'>transaction-import-row-skipped</#if>" id="transaction-import-row-${index}">
-            <td class="hidden">
-                <form name="NewTransactionInPlace" id="newTransactionInPlace_${index}" method="POST" action="<@s.url '/transactionImport/' + index + '/newTransactionInPlace'/>" data-index="${index}">
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                </form>
-            </td>
             <td data-order="${locale.getString(csvTransaction.getStatus().getLocalizationKey())}" data-search="${locale.getString(csvTransaction.getStatus().getLocalizationKey())}"><@statusBanner csvTransaction.getStatus()/></td>
             <td data-order="${csvTransaction.getDate()}" data-search="${csvTransaction.getDate()}">${csvTransaction.getDate()}</td>
             <td data-order="${csvTransaction.getCategory().getName()}" data-search="${csvTransaction.getCategory().getName()}">
