@@ -655,23 +655,23 @@ class CsvImportTest extends SeleniumTestBase
 	{
 		final List<WebElement> columns = row.findElements(By.tagName("td"));
 
-		assertThat(columns.get(1).findElements(By.cssSelector(".banner.background-" + statusColor)))
+		assertThat(columns.get(0).findElements(By.cssSelector(".banner.background-" + statusColor)))
 				.hasSize(1);
 
-		assertThat(columns.get(2).getText())
+		assertThat(columns.get(1).getText())
 				.isEqualTo(date);
 
-		final WebElement categoryCircle = columns.get(3).findElement(By.className("category-circle"));
+		final WebElement categoryCircle = columns.get(2).findElement(By.className("category-circle"));
 		categoryName = categoryName.substring(0, 1).toUpperCase();
 		assertThat(categoryCircle.findElement(By.tagName("span"))).hasFieldOrPropertyWithValue("text", categoryName);
 
-		assertThat(columns.get(4).findElement(By.name("name")).getAttribute("value"))
+		assertThat(columns.get(3).findElement(By.name("name")).getAttribute("value"))
 				.isEqualTo(name);
 
-		assertThat(columns.get(5).findElement(By.name("description")).getAttribute("value"))
+		assertThat(columns.get(4).findElement(By.name("description")).getAttribute("value"))
 				.isEqualTo(description);
 
-		assertThat(columns.get(6).getText())
+		assertThat(columns.get(5).getText())
 				.isEqualTo(amount);
 	}
 }
