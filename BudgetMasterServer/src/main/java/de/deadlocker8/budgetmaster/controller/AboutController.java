@@ -51,6 +51,7 @@ public class AboutController extends BaseController
 		newsEntries.add(NewsEntry.createWithLocalizationKey("accountDescription"));
 		newsEntries.add(NewsEntry.createWithLocalizationKey("transactionNameSuggestionsSort"));
 		newsEntries.add(NewsEntry.createWithLocalizationKey("bugfixCsvImport"));
+		newsEntries.add(NewsEntry.createWithLocalizationKey("bugfixEndDateReminder"));
 
 		model.addAttribute(ModelAttributes.NEWS_ENTRIES, newsEntries);
 		return ReturnValues.WHATS_NEW;

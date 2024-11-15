@@ -265,6 +265,11 @@ public class HelpersService
 					.sorted()
 					.toList();
 
+			if(accountsWithEndDateSoon.isEmpty())
+			{
+				return new AccountEndDateReminderData(false, List.of());
+			}
+
 			return new AccountEndDateReminderData(true, accountsWithEndDateSoon);
 		}
 
