@@ -42,7 +42,7 @@
         <opencsv.version>5.9</opencsv.version>
         <datatables.version>2.1.0</datatables.version>
         <jakarta.xml.bind-api.version>4.0.2</jakarta.xml.bind-api.version>
-        <junit-jupiter-engine.version>5.11.2</junit-jupiter-engine.version>
+        <junit-jupiter-engine.version>5.11.3</junit-jupiter-engine.version>
 
         <project.outputDirectory>${project.build.directory}/../build/${project.version}</project.outputDirectory>
         <project.artifactName>${project.artifactId}-v${project.version}</project.artifactName>
