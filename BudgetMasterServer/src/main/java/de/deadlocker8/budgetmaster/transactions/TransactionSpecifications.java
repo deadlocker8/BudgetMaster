@@ -27,7 +27,8 @@ public class TransactionSpecifications
 															  final Boolean isRepeating,
 															  final List<Integer> categoryIDs,
 															  final List<Integer> tagIDs,
-															  final String name)
+															  final String name,
+															  final boolean isIncludeHidden)
 	{
 		return (transaction, query, builder) -> {
 			List<Predicate> predicates = new ArrayList<>();
@@ -126,7 +127,12 @@ public class TransactionSpecifications
 			Predicate generalPredicates = builder.and(dateConstraint, predicatesCombined);
 			if(account == null)
 			{
-				Predicate accountPredicate = transaction.get(Transaction_.account).get("accountState").in(List.of(AccountState.FULL_ACCESS, AccountState.READ_ONLY));
+				final List<AccountState> accountStates = new ArrayList<>(List.of(AccountState.FULL_ACCESS, AccountState.READ_ONLY));
+				if(isIncludeHidden)
+				{
+					accountStates.add(AccountState.HIDDEN);
+				}
+				Predicate accountPredicate = transaction.get(Transaction_.account).get("accountState").in(accountStates);
 				generalPredicates = builder.and(generalPredicates, accountPredicate);
 			}
 			else

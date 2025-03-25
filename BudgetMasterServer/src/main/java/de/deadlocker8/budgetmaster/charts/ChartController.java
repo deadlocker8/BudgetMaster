@@ -119,7 +119,7 @@ public class ChartController extends BaseController
 			throw new ResourceNotFoundException();
 		}
 
-		List<Transaction> transactions = transactionService.getTransactionsForAccount(helpers.getCurrentAccount(), chartSettings.getStartDate(), chartSettings.getEndDate(), chartSettings.getFilterConfiguration());
+		List<Transaction> transactions = transactionService.getTransactionsForAccount(helpers.getCurrentAccount(), chartSettings.getStartDate(), chartSettings.getEndDate(), chartSettings.getFilterConfiguration(), false);
 		List<Transaction> convertedTransactions = convertTransferAmounts(transactions);
 		String transactionJson = GSON.toJson(convertedTransactions);
 
@@ -298,7 +298,7 @@ public class ChartController extends BaseController
 			}
 		}
 
-		final List<Transaction> transactions = transactionService.getTransactionsForAccount(helpers.getCurrentAccount(), chartSettings.getStartDate(), chartSettings.getEndDate(), chartSettings.getFilterConfiguration());
+		final List<Transaction> transactions = transactionService.getTransactionsForAccount(helpers.getCurrentAccount(), chartSettings.getStartDate(), chartSettings.getEndDate(), chartSettings.getFilterConfiguration(), false);
 		final List<Transaction> convertedTransactions = convertTransferAmounts(transactions);
 		model.addAttribute(ModelAttributes.MATCHING_TRANSACTIONS, convertedTransactions);
 		model.addAttribute(ModelAttributes.MATCHING_TRANSACTIONS_TITLE, title);

@@ -96,16 +96,16 @@ public class TransactionService implements Resettable
 		final LocalDate startDate = LocalDate.of(year, month, 1);
 		final LocalDate endDate = LocalDate.of(year, month, 1).with(lastDayOfMonth());
 
-		return getTransactionsForAccount(account, startDate, endDate, filterConfiguration);
+		return getTransactionsForAccount(account, startDate, endDate, filterConfiguration, false);
 	}
 
-	public List<Transaction> getTransactionsForAccountUntilDate(Account account, LocalDate date, FilterConfiguration filterConfiguration)
+	public List<Transaction> getTransactionsForAccountUntilDate(Account account, LocalDate date, FilterConfiguration filterConfiguration, boolean includeHidden)
 	{
 		LocalDate startDate = LocalDate.of(1900, 1, 1);
-		return getTransactionsForAccount(account, startDate, date, filterConfiguration);
+		return getTransactionsForAccount(account, startDate, date, filterConfiguration, includeHidden);
 	}
 
-	public List<Transaction> getTransactionsForAccount(Account account, LocalDate startDate, LocalDate endDate, FilterConfiguration filterConfiguration)
+	public List<Transaction> getTransactionsForAccount(Account account, LocalDate startDate, LocalDate endDate, FilterConfiguration filterConfiguration, boolean includeHidden)
 	{
 		if(filterConfiguration == null)
 		{
@@ -114,11 +114,11 @@ public class TransactionService implements Resettable
 
 		if(account.getType().equals(AccountType.ALL))
 		{
-			Specification<Transaction> spec = TransactionSpecifications.withDynamicQuery(startDate, endDate, null, filterConfiguration.isIncludeIncome(), filterConfiguration.isIncludeExpenditure(), false, filterConfiguration.isIncludeRepeatingAndNotRepeating(), filterConfiguration.getIncludedCategoryIDs(), filterConfiguration.getIncludedTagIDs(), filterConfiguration.getName());
+			Specification<Transaction> spec = TransactionSpecifications.withDynamicQuery(startDate, endDate, null, filterConfiguration.isIncludeIncome(), filterConfiguration.isIncludeExpenditure(), false, filterConfiguration.isIncludeRepeatingAndNotRepeating(), filterConfiguration.getIncludedCategoryIDs(), filterConfiguration.getIncludedTagIDs(), filterConfiguration.getName(), includeHidden);
 			return transactionRepository.findAll(spec);
 		}
 
-		Specification<Transaction> spec = TransactionSpecifications.withDynamicQuery(startDate, endDate, account, filterConfiguration.isIncludeIncome(), filterConfiguration.isIncludeExpenditure(), filterConfiguration.isIncludeTransfer(), filterConfiguration.isIncludeRepeatingAndNotRepeating(), filterConfiguration.getIncludedCategoryIDs(), filterConfiguration.getIncludedTagIDs(), filterConfiguration.getName());
+		Specification<Transaction> spec = TransactionSpecifications.withDynamicQuery(startDate, endDate, account, filterConfiguration.isIncludeIncome(), filterConfiguration.isIncludeExpenditure(), filterConfiguration.isIncludeTransfer(), filterConfiguration.isIncludeRepeatingAndNotRepeating(), filterConfiguration.getIncludedCategoryIDs(), filterConfiguration.getIncludedTagIDs(), filterConfiguration.getName(), includeHidden);
 		return transactionRepository.findAll(spec);
 	}
 

@@ -194,7 +194,7 @@ public class HelpersService
 	private int getBudgetForAccount(Account account)
 	{
 		final LocalDate endDate = DateHelper.getCurrentDate();
-		List<Transaction> transactions = transactionService.getTransactionsForAccountUntilDate(account, endDate, FilterConfiguration.DEFAULT);
+		List<Transaction> transactions = transactionService.getTransactionsForAccountUntilDate(account, endDate, FilterConfiguration.DEFAULT, account.getType().equals(AccountType.ALL));
 
 		int sum = 0;
 		for(Transaction transaction : transactions)
