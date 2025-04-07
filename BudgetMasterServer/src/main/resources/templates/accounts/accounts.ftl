@@ -25,6 +25,17 @@
                     <br>
                     <div class="container account-container">
                     <table class="bordered">
+                        <thead>
+                            <tr>
+                                <th>${locale.getString("account.new.label.state")}</th>
+                                <th>${locale.getString("account.new.label.endDate")}</th>
+                                <th>${locale.getString("account.new.label.icon")}</th>
+                                <th>${locale.getString("account.new.label.name")}</th>
+                                <th>${locale.getString("transaction.new.label.description")}</th>
+                                <th>${locale.getString("categories.actions")}</th>
+                            </tr>
+                        </thead>
+
                         <#list accounts as account>
                             <#if (account.getType().name() == "CUSTOM")>
                                 <tr class="account-overview-row">
@@ -39,9 +50,10 @@
                                             <a href="<@s.url '/accounts/${account.getID()?c}/setAsDefault'/>" class="btn-flat no-padding text-default tooltipped" data-position="left" data-tooltip="${locale.getString("account.tooltip.default")}"><i class="material-icons left"><#if account.isDefault()>star<#else>star_border</#if></i></a>
                                             <i class="fas fa-edit placeholder-icon-right"></i>
                                         </#if>
-
+                                    </td>
+                                    <td>
                                         <#if account.getEndDate()??>
-                                            <i class="fas fa-bell"></i>
+                                            <i class="fas fa-bell placeholder-icon-right"></i> ${dateService.getDateStringNormal(account.getEndDate())}
                                         <#else>
                                             <div class="placeholder-icon"></div>
                                         </#if>
