@@ -11,15 +11,15 @@ import de.deadlocker8.budgetmaster.utils.notification.Notification;
 import de.deadlocker8.budgetmaster.utils.notification.NotificationLinkBuilder;
 import de.deadlocker8.budgetmaster.utils.notification.NotificationType;
 import de.thecodelabs.utils.util.Localization;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 import java.text.MessageFormat;
 import java.time.LocalDate;
@@ -43,6 +43,7 @@ public class AccountController extends BaseController
 		public static final String ERROR = "error";
 		public static final String NOTIFICATIONS = "notifications";
 		public static final String TODAY = "today";
+		public static final String FILTER_CONFIGURATION = "accountsFilterConfiguration";
 	}
 
 	private static class ReturnValues
@@ -115,22 +116,24 @@ public class AccountController extends BaseController
 	}
 
 	@GetMapping
-	public String accounts(Model model)
+	public String accounts(Model model, HttpServletRequest request)
 	{
-		model.addAttribute(ModelAttributes.ALL_ENTITIES, accountService.getAllEntitiesAsc());
+		final AccountsFilterConfiguration accountsFilterConfiguration = getAccountsFilterConfiguration(request);
+		model.addAttribute(ModelAttributes.ALL_ENTITIES, accountService.getFilteredEntitiesAsc(accountsFilterConfiguration));
 		return ReturnValues.SHOW_ALL;
 	}
 
 	@GetMapping("/{ID}/requestDelete")
-	public String requestDeleteAccount(Model model, @PathVariable("ID") Integer ID)
+	public String requestDeleteAccount(Model model, @PathVariable("ID") Integer ID, HttpServletRequest request)
 	{
-		model.addAttribute(ModelAttributes.ALL_ENTITIES, accountService.getAllEntitiesAsc());
+		final AccountsFilterConfiguration accountsFilterConfiguration = getAccountsFilterConfiguration(request);
+		model.addAttribute(ModelAttributes.ALL_ENTITIES, accountService.getFilteredEntitiesAsc(accountsFilterConfiguration));
 		model.addAttribute(ModelAttributes.ENTITY_TO_DELETE, accountService.getRepository().getReferenceById(ID));
 		return ReturnValues.DELETE_ENTITY;
 	}
 
 	@GetMapping("/{ID}/delete")
-	public String deleteAccountAndReferringTransactions(WebRequest request, Model model, @PathVariable("ID") Integer ID)
+	public String deleteAccountAndReferringTransactions(HttpServletRequest servletRequest, WebRequest request, Model model, @PathVariable("ID") Integer ID)
 	{
 		// at least one account is required (to delete a sole account another one has to be created first)
 		final Account accountToDelete = accountService.getRepository().getReferenceById(ID);
@@ -141,7 +144,8 @@ public class AccountController extends BaseController
 			return ReturnValues.REDIRECT_SHOW_ALL;
 		}
 
-		model.addAttribute(ModelAttributes.ALL_ENTITIES, accountService.getAllEntitiesAsc());
+		final AccountsFilterConfiguration accountsFilterConfiguration = getAccountsFilterConfiguration(servletRequest);
+		model.addAttribute(ModelAttributes.ALL_ENTITIES, accountService.getFilteredEntitiesAsc(accountsFilterConfiguration));
 		model.addAttribute(ModelAttributes.CURRENT_ACCOUNT, accountToDelete);
 		model.addAttribute(ModelAttributes.ACCOUNT_NOT_DELETABLE, true);
 		return ReturnValues.SHOW_ALL;
@@ -271,5 +275,24 @@ public class AccountController extends BaseController
 	{
 		settingsService.updateLastAccountEndDateReminderDate();
 		return "redirect:" + request.getHeader("Referer");
+	}
+
+	@PostMapping(value = "/applyFilter")
+	public String applyFilter(WebRequest request,
+							  @ModelAttribute("AccountsFilter") AccountsFilterConfiguration accountsFilterConfiguration)
+	{
+		request.setAttribute(ModelAttributes.FILTER_CONFIGURATION, accountsFilterConfiguration, RequestAttributes.SCOPE_SESSION);
+		return ReturnValues.REDIRECT_SHOW_ALL;
+	}
+
+	private AccountsFilterConfiguration getAccountsFilterConfiguration(HttpServletRequest request)
+	{
+		Object sessionAccountsFilterConfiguration = request.getSession().getAttribute(ModelAttributes.FILTER_CONFIGURATION);
+		if(sessionAccountsFilterConfiguration == null)
+		{
+			request.getSession().setAttribute(ModelAttributes.FILTER_CONFIGURATION, AccountsFilterConfiguration.DEFAULT);
+			return AccountsFilterConfiguration.DEFAULT;
+		}
+		return (AccountsFilterConfiguration) sessionAccountsFilterConfiguration;
 	}
 }
