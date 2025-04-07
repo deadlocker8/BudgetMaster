@@ -118,7 +118,7 @@
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
-        <script src="<@s.url '/webjars/vanilla-picker/2.12.3/dist/vanilla-picker.min.js'/>"></script>
+        <script src="<@s.url '/webjars/vanilla-picker/dist/vanilla-picker.min.js'/>"></script>
         <script src="<@s.url '/js/categories.js'/>"></script>
         <script src="<@s.url '/js/iconSelect.js'/>"></script>
         <script src="<@s.url '/js/fontColorPicker.js'/>"></script>
