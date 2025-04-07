@@ -53,7 +53,7 @@
         <app.versionCode>50</app.versionCode>
         <app.author>Robert Goldmann</app.author>
 
-        <testcontainer.version>1.20.3</testcontainer.version>
+        <testcontainer.version>1.20.6</testcontainer.version>
         <assertj-core.version>3.27.3</assertj-core.version>
     </properties>
 
