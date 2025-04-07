@@ -25,20 +25,69 @@
                     <br>
                     <div class="container account-container">
                     <table class="bordered">
-                        <thead>
+                        <thead class="hide-on-med-and-down">
                             <tr>
-                                <th>${locale.getString("account.new.label.state")}</th>
-                                <th>${locale.getString("account.new.label.endDate")}</th>
-                                <th>${locale.getString("account.new.label.icon")}</th>
-                                <th>${locale.getString("account.new.label.name")}</th>
-                                <th>${locale.getString("transaction.new.label.description")}</th>
-                                <th>${locale.getString("categories.actions")}</th>
+                                <th></th>
+                                <th>
+                                    <div>${locale.getString("account.new.label.state")}</div>
+                                    <div>
+                                        <label>
+                                            <input type="checkbox" />
+                                            <span><i class="fas fa-edit placeholder-icon-right"></i>${locale.getString("account.state.full.access")}</span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label>
+                                            <input type="checkbox" />
+                                            <span><i class="fas fa-lock placeholder-icon-right"></i>${locale.getString("account.state.read.only")}</span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label>
+                                            <input type="checkbox" />
+                                            <span><i class="far fa-eye-slash placeholder-icon-right"></i>${locale.getString("account.state.hidden")}</span>
+                                        </label>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div>${locale.getString("account.new.label.endDate")}</div>
+                                    <div>
+                                        <label>
+                                            <input type="checkbox" />
+                                            <span><i class="fas fa-bell placeholder-icon-right"></i>${locale.getString("account.label.endDate.with")}</span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label>
+                                            <input type="checkbox" />
+                                            <span><i class="fas fa-bell-slash placeholder-icon-right"></i>${locale.getString("account.label.endDate.without")}</span>
+                                        </label>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div>${locale.getString("account.new.label.name")}</div>
+                                    <div class="input-field">
+                                        <input type="text" id="accounts-filter-name">
+                                    </div>
+                                </th>
+                                <th>
+                                    <div>${locale.getString("transaction.new.label.description")}</div>
+                                    <div class="input-field">
+                                        <input type="text" id="accounts-filter-description">
+                                    </div>
+                                </th>
+                                <th class="vertical-align-middle">
+                                    <button class="btn waves-effect waves-light background-green" type="submit" id="accounts-filter-button">
+                                        <i class="fas fa-filter left"></i>${locale.getString("filter.apply")}
+                                    </button>
+                                </th>
                             </tr>
                         </thead>
 
                         <#list accounts as account>
                             <#if (account.getType().name() == "CUSTOM")>
                                 <tr class="account-overview-row">
+                                    <td><@customSelectMacros.accountIcon account account.getName() "text-blue"/></td>
                                     <td>
                                         <#if account.getAccountState().name() == "READ_ONLY">
                                             <div class="placeholder-icon placeholder-icon-right"></div>
@@ -58,7 +107,6 @@
                                             <div class="placeholder-icon"></div>
                                         </#if>
                                     </td>
-                                    <td><@customSelectMacros.accountIcon account account.getName() "text-blue"/></td>
                                     <td>${account.getName()}</td>
                                     <td>
                                         <div class="truncate account-description">
