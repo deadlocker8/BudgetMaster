@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -50,6 +51,8 @@ class AccountServiceTest
 	private Account ACCOUNT_DEFAULT;
 	private Account ACCOUNT_PLACEHOLDER;
 	private Account ACCOUNT_NORMAL;
+	private Account ACCOUNT_NORMAL_2;
+	private Account ACCOUNT_NORMAL_3;
 	private Account ACCOUNT_READONLY;
 	private Account ACCOUNT_HIDDEN;
 
@@ -65,6 +68,9 @@ class AccountServiceTest
 
 		ACCOUNT_NORMAL = new Account("Normal account", "awesome description", AccountType.CUSTOM, null);
 		ACCOUNT_NORMAL.setID(3);
+
+		ACCOUNT_NORMAL_2 = new Account("normal account", "", AccountType.CUSTOM, LocalDate.of(2025, 4, 7));
+		ACCOUNT_NORMAL_3 = new Account("123 account", "", AccountType.CUSTOM, null);
 
 		ACCOUNT_READONLY = new Account("Readonly account", "", AccountType.CUSTOM, null);
 		ACCOUNT_READONLY.setAccountState(AccountState.READ_ONLY);
@@ -96,17 +102,14 @@ class AccountServiceTest
 		accounts.add(ACCOUNT_NORMAL);
 		accounts.add(ACCOUNT_READONLY);
 		accounts.add(ACCOUNT_HIDDEN);
-
-		final Account accountNormal2 = new Account("normal account", "", AccountType.CUSTOM, null);
-		accounts.add(accountNormal2);
-		final Account accountNormal3 = new Account("123 account", "", AccountType.CUSTOM, null);
-		accounts.add(accountNormal3);
+		accounts.add(ACCOUNT_NORMAL_2);
+		accounts.add(ACCOUNT_NORMAL_3);
 
 		Mockito.when(accountRepository.findAllByType(AccountType.ALL)).thenReturn(List.of(ACCOUNT_PLACEHOLDER));
 		Mockito.when(accountRepository.findAllByTypeOrderByNameAsc(AccountType.CUSTOM)).thenReturn(accounts);
 
 		assertThat(accountService.getAllEntitiesAsc()).hasSize(6)
-				.containsExactly(ACCOUNT_PLACEHOLDER, accountNormal3, ACCOUNT_HIDDEN, ACCOUNT_NORMAL, accountNormal2, ACCOUNT_READONLY);
+				.containsExactly(ACCOUNT_PLACEHOLDER, ACCOUNT_NORMAL_3, ACCOUNT_HIDDEN, ACCOUNT_NORMAL, ACCOUNT_NORMAL_2, ACCOUNT_READONLY);
 	}
 
 	@Test
@@ -114,17 +117,14 @@ class AccountServiceTest
 	{
 		final List<Account> accounts = new ArrayList<>();
 		accounts.add(ACCOUNT_NORMAL);
-
-		final Account accountNormal2 = new Account("normal account", "", AccountType.CUSTOM, null);
-		accounts.add(accountNormal2);
-		final Account accountNormal3 = new Account("123 account", "", AccountType.CUSTOM, null);
-		accounts.add(accountNormal3);
+		accounts.add(ACCOUNT_NORMAL_2);
+		accounts.add(ACCOUNT_NORMAL_3);
 
 		Mockito.when(accountRepository.findAllByType(AccountType.ALL)).thenReturn(List.of(ACCOUNT_PLACEHOLDER));
 		Mockito.when(accountRepository.findAllByTypeAndAccountStateOrderByNameAsc(AccountType.CUSTOM, AccountState.FULL_ACCESS)).thenReturn(accounts);
 
 		assertThat(accountService.getAllActivatedAccountsAsc()).hasSize(4)
-				.containsExactly(ACCOUNT_PLACEHOLDER, accountNormal3, ACCOUNT_NORMAL, accountNormal2);
+				.containsExactly(ACCOUNT_PLACEHOLDER, ACCOUNT_NORMAL_3, ACCOUNT_NORMAL, ACCOUNT_NORMAL_2);
 	}
 
 	@Test
@@ -132,18 +132,15 @@ class AccountServiceTest
 	{
 		final List<Account> accounts = new ArrayList<>();
 		accounts.add(ACCOUNT_NORMAL);
-
-		final Account accountNormal2 = new Account("normal account", "", AccountType.CUSTOM, null);
-		accounts.add(accountNormal2);
-		final Account accountNormal3 = new Account("123 account", "", AccountType.CUSTOM, null);
-		accounts.add(accountNormal3);
+		accounts.add(ACCOUNT_NORMAL_2);
+		accounts.add(ACCOUNT_NORMAL_3);
 
 		Mockito.when(accountRepository.findAllByType(AccountType.ALL)).thenReturn(List.of(ACCOUNT_PLACEHOLDER));
 		Mockito.when(accountRepository.findAllByTypeAndAccountStateOrderByNameAsc(AccountType.CUSTOM, AccountState.FULL_ACCESS)).thenReturn(accounts);
 		Mockito.when(accountRepository.findAllByTypeAndAccountStateOrderByNameAsc(AccountType.CUSTOM, AccountState.READ_ONLY)).thenReturn(List.of(ACCOUNT_READONLY));
 
 		assertThat(accountService.getAllReadableAccounts()).hasSize(5)
-				.containsExactly(ACCOUNT_PLACEHOLDER, accountNormal3, ACCOUNT_NORMAL, accountNormal2, ACCOUNT_READONLY);
+				.containsExactly(ACCOUNT_PLACEHOLDER, ACCOUNT_NORMAL_3, ACCOUNT_NORMAL, ACCOUNT_NORMAL_2, ACCOUNT_READONLY);
 	}
 
 	@Test
@@ -325,5 +322,167 @@ class AccountServiceTest
 		Mockito.when(accountRepository.findByIsDefault(true)).thenReturn(ACCOUNT_DEFAULT);
 
 		assertThat(accountService.getSelectedAccountOrDefaultAsFallback()).isEqualTo(ACCOUNT_DEFAULT);
+	}
+
+	@Test
+	void test_getFilteredEntitiesAsc_noAccounts()
+	{
+		Mockito.when(accountRepository.findAllByTypeOrderByNameAsc(AccountType.CUSTOM)).thenReturn(List.of());
+
+		final AccountsFilterConfiguration filterConfiguration = new AccountsFilterConfiguration(true, true, true, true, true, "", "");
+		assertThat(accountService.getFilteredEntitiesAsc(filterConfiguration)).isEmpty();
+	}
+
+	@Test
+	void test_getFilteredEntitiesAsc_noFilter()
+	{
+		final List<Account> accounts = new ArrayList<>();
+		accounts.add(ACCOUNT_NORMAL);
+		accounts.add(ACCOUNT_READONLY);
+		accounts.add(ACCOUNT_HIDDEN);
+		accounts.add(ACCOUNT_NORMAL_2);
+		accounts.add(ACCOUNT_NORMAL_3);
+
+		Mockito.when(accountRepository.findAllByTypeOrderByNameAsc(AccountType.CUSTOM)).thenReturn(accounts);
+
+		final AccountsFilterConfiguration filterConfiguration = new AccountsFilterConfiguration(true, true, true, true, true, "", "");
+		assertThat(accountService.getFilteredEntitiesAsc(filterConfiguration))
+				.containsExactly(ACCOUNT_NORMAL_3, ACCOUNT_HIDDEN, ACCOUNT_NORMAL, ACCOUNT_NORMAL_2, ACCOUNT_READONLY);
+	}
+
+	@Test
+	void test_getFilteredEntitiesAsc_onlyFullAccess()
+	{
+		final List<Account> accounts = new ArrayList<>();
+		accounts.add(ACCOUNT_NORMAL);
+		accounts.add(ACCOUNT_READONLY);
+		accounts.add(ACCOUNT_HIDDEN);
+		accounts.add(ACCOUNT_NORMAL_2);
+		accounts.add(ACCOUNT_NORMAL_3);
+
+		Mockito.when(accountRepository.findAllByTypeOrderByNameAsc(AccountType.CUSTOM)).thenReturn(accounts);
+
+		final AccountsFilterConfiguration filterConfiguration = new AccountsFilterConfiguration(true, false, false, true, true, "", "");
+		assertThat(accountService.getFilteredEntitiesAsc(filterConfiguration))
+				.containsExactly(ACCOUNT_NORMAL_3, ACCOUNT_NORMAL, ACCOUNT_NORMAL_2);
+	}
+
+	@Test
+	void test_getFilteredEntitiesAsc_onlyReadOnly()
+	{
+		final List<Account> accounts = new ArrayList<>();
+		accounts.add(ACCOUNT_NORMAL);
+		accounts.add(ACCOUNT_READONLY);
+		accounts.add(ACCOUNT_HIDDEN);
+		accounts.add(ACCOUNT_NORMAL_2);
+		accounts.add(ACCOUNT_NORMAL_3);
+
+		Mockito.when(accountRepository.findAllByTypeOrderByNameAsc(AccountType.CUSTOM)).thenReturn(accounts);
+
+		final AccountsFilterConfiguration filterConfiguration = new AccountsFilterConfiguration(false, true, false, true, true, "", "");
+		assertThat(accountService.getFilteredEntitiesAsc(filterConfiguration))
+				.containsExactly(ACCOUNT_READONLY);
+	}
+
+	@Test
+	void test_getFilteredEntitiesAsc_onlyHidden()
+	{
+		final List<Account> accounts = new ArrayList<>();
+		accounts.add(ACCOUNT_NORMAL);
+		accounts.add(ACCOUNT_READONLY);
+		accounts.add(ACCOUNT_HIDDEN);
+		accounts.add(ACCOUNT_NORMAL_2);
+		accounts.add(ACCOUNT_NORMAL_3);
+
+		Mockito.when(accountRepository.findAllByTypeOrderByNameAsc(AccountType.CUSTOM)).thenReturn(accounts);
+
+		final AccountsFilterConfiguration filterConfiguration = new AccountsFilterConfiguration(false, false, true, true, true, "", "");
+		assertThat(accountService.getFilteredEntitiesAsc(filterConfiguration))
+				.containsExactly(ACCOUNT_HIDDEN);
+	}
+
+	@Test
+	void test_getFilteredEntitiesAsc_onlyWithEndDate()
+	{
+		final List<Account> accounts = new ArrayList<>();
+		accounts.add(ACCOUNT_NORMAL);
+		accounts.add(ACCOUNT_READONLY);
+		accounts.add(ACCOUNT_HIDDEN);
+		accounts.add(ACCOUNT_NORMAL_2);
+		accounts.add(ACCOUNT_NORMAL_3);
+
+		Mockito.when(accountRepository.findAllByTypeOrderByNameAsc(AccountType.CUSTOM)).thenReturn(accounts);
+
+		final AccountsFilterConfiguration filterConfiguration = new AccountsFilterConfiguration(true, true, true, true, false, "", "");
+		assertThat(accountService.getFilteredEntitiesAsc(filterConfiguration))
+				.containsExactly(ACCOUNT_NORMAL_2);
+	}
+
+	@Test
+	void test_getFilteredEntitiesAsc_onlyWithoutEndDate()
+	{
+		final List<Account> accounts = new ArrayList<>();
+		accounts.add(ACCOUNT_NORMAL);
+		accounts.add(ACCOUNT_READONLY);
+		accounts.add(ACCOUNT_HIDDEN);
+		accounts.add(ACCOUNT_NORMAL_2);
+		accounts.add(ACCOUNT_NORMAL_3);
+
+		Mockito.when(accountRepository.findAllByTypeOrderByNameAsc(AccountType.CUSTOM)).thenReturn(accounts);
+
+		final AccountsFilterConfiguration filterConfiguration = new AccountsFilterConfiguration(true, true, true, false, true, "", "");
+		assertThat(accountService.getFilteredEntitiesAsc(filterConfiguration))
+				.containsExactly(ACCOUNT_NORMAL_3, ACCOUNT_HIDDEN, ACCOUNT_NORMAL, ACCOUNT_READONLY);
+	}
+
+	@Test
+	void test_getFilteredEntitiesAsc_neitherWithNorWithoutEndDate()
+	{
+		final List<Account> accounts = new ArrayList<>();
+		accounts.add(ACCOUNT_NORMAL);
+		accounts.add(ACCOUNT_READONLY);
+		accounts.add(ACCOUNT_HIDDEN);
+		accounts.add(ACCOUNT_NORMAL_2);
+		accounts.add(ACCOUNT_NORMAL_3);
+
+		Mockito.when(accountRepository.findAllByTypeOrderByNameAsc(AccountType.CUSTOM)).thenReturn(accounts);
+
+		final AccountsFilterConfiguration filterConfiguration = new AccountsFilterConfiguration(true, true, true, false, false, "", "");
+		assertThat(accountService.getFilteredEntitiesAsc(filterConfiguration))
+				.isEmpty();
+	}
+
+	@Test
+	void test_getFilteredEntitiesAsc_byName()
+	{
+		final List<Account> accounts = new ArrayList<>();
+		accounts.add(ACCOUNT_NORMAL);
+		accounts.add(ACCOUNT_READONLY);
+		accounts.add(ACCOUNT_HIDDEN);
+		accounts.add(ACCOUNT_NORMAL_2);
+		accounts.add(ACCOUNT_NORMAL_3);
+
+		Mockito.when(accountRepository.findAllByTypeOrderByNameAsc(AccountType.CUSTOM)).thenReturn(accounts);
+
+		final AccountsFilterConfiguration filterConfiguration = new AccountsFilterConfiguration(true, true, true, true, true, "123", "");
+		assertThat(accountService.getFilteredEntitiesAsc(filterConfiguration))
+				.containsExactly(ACCOUNT_NORMAL_3);
+	}
+
+	@Test
+	void test_getFilteredEntitiesAsc_byDescription()
+	{
+		final List<Account> accounts = new ArrayList<>();
+		accounts.add(ACCOUNT_NORMAL);
+		accounts.add(ACCOUNT_READONLY);
+		accounts.add(ACCOUNT_HIDDEN);
+		accounts.add(ACCOUNT_NORMAL_2);
+		accounts.add(ACCOUNT_NORMAL_3);
+
+		Mockito.when(accountRepository.findAllByTypeOrderByNameAsc(AccountType.CUSTOM)).thenReturn(accounts);
+
+		final AccountsFilterConfiguration filterConfiguration = new AccountsFilterConfiguration(true, true, true, true, true, "", "awesome");
+		assertThat(accountService.getFilteredEntitiesAsc(filterConfiguration))
+				.containsExactly(ACCOUNT_NORMAL);
 	}
 }

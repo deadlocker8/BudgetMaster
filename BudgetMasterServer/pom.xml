@@ -192,7 +192,11 @@
             <artifactId>datatables</artifactId>
             <version>${datatables.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- selenium -->
         <dependency>
