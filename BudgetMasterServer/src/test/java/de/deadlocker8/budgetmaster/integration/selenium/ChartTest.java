@@ -236,11 +236,15 @@ class ChartTest extends SeleniumTestBase
 
 		driver.findElement(By.id("chart-filter-container")).click();
 		driver.findElement(By.id("section-type")).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#section-type .text-default")));
+
 		final WebElement checkBox = driver.findElement(By.cssSelector("#section-type .text-default"));
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", checkBox);
 		checkBox.click();
 
-		final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("filter-button-reset")));
 
 		assertThat(driver.findElement(By.id("filterActiveBadge")).isDisplayed()).isTrue();
@@ -253,10 +257,12 @@ class ChartTest extends SeleniumTestBase
 
 		driver.findElement(By.id("chart-filter-container")).click();
 		driver.findElement(By.id("section-type")).click();
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#section-type .text-default")));
 		final WebElement checkBox = driver.findElement(By.cssSelector("#section-type .text-default"));
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", checkBox);
 
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#section-type .text-default")));
 		checkBox.click();
 
@@ -280,6 +286,9 @@ class ChartTest extends SeleniumTestBase
 
 		driver.findElement(By.id("chart-filter-container")).click();
 		driver.findElement(By.id("section-type")).click();
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#section-type .text-default")));
+
 		final WebElement checkBox = driver.findElement(By.cssSelector("#section-type .text-default"));
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", checkBox);
 		checkBox.click();
