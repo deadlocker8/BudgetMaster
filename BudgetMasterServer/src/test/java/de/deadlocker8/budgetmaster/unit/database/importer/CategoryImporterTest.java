@@ -51,8 +51,8 @@ class CategoryImporterTest extends ImporterTestBase
 	void test_importCategories_skipExisting_defaultNone()
 	{
 		final Category category = new Category("No category", "#ff0000", CategoryType.NONE);
+		categoryRepository.save(category);
 		category.setID(1);
-
 		categoryRepository.save(category);
 
 		final CategoryImporter importer = new CategoryImporter(categoryRepository);
@@ -67,8 +67,8 @@ class CategoryImporterTest extends ImporterTestBase
 	void test_importCategories_skipExisting_defaultRest()
 	{
 		final Category category = new Category("Balance", "#ff0000", CategoryType.REST);
+		categoryRepository.save(category);
 		category.setID(1);
-
 		categoryRepository.save(category);
 
 		final CategoryImporter importer = new CategoryImporter(categoryRepository);

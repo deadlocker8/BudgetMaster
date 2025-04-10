@@ -47,7 +47,7 @@
                                             <div>
                                                 <label>
                                                     <input type="checkbox" name="includeHidden" <#if accountsFilterConfiguration?? && accountsFilterConfiguration.includeHidden>checked</#if>/>
-                                                    <span><i class="far fa-eye-slash placeholder-icon-right"></i>${locale.getString("account.state.hidden")}</span>
+                                                    <span id="includeHidden"><i class="far fa-eye-slash placeholder-icon-right"></i>${locale.getString("account.state.hidden")}</span>
                                                 </label>
                                             </div>
                                         </th>

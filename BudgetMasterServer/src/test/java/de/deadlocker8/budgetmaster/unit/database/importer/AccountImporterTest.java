@@ -8,6 +8,7 @@ import de.deadlocker8.budgetmaster.services.EntityType;
 import de.deadlocker8.budgetmaster.services.ImportResultItem;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -55,6 +56,7 @@ class AccountImporterTest extends ImporterTestBase
 		placeholderAccount.setID(12);
 
 		final Account existingPlaceholderAccount = new Account("Placeholder", "", AccountType.ALL, null);
+		accountRepository.save(existingPlaceholderAccount);
 		existingPlaceholderAccount.setID(1);
 		accountRepository.save(existingPlaceholderAccount);
 
@@ -73,6 +75,7 @@ class AccountImporterTest extends ImporterTestBase
 		account.setID(12);
 
 		final Account existingAccount = new Account("ABC", "", AccountType.CUSTOM, null);
+		accountRepository.save(existingAccount);
 		existingAccount.setID(1);
 		accountRepository.save(existingAccount);
 

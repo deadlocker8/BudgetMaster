@@ -49,7 +49,7 @@ class TransactionNameKeywordImporterTest extends ImporterTestBase
 	@Test
 	void test_importKeywords_skipAlreadyExisting()
 	{
-		final TransactionNameKeyword existingKeyword = new TransactionNameKeyword(12, "income");
+		final TransactionNameKeyword existingKeyword = new TransactionNameKeyword(null, "income");
 		keywordRepository.save(existingKeyword);
 
 		final TransactionNameKeywordImporter importer = new TransactionNameKeywordImporter(keywordRepository);

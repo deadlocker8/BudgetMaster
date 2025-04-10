@@ -43,18 +43,19 @@ class MediaTest extends SeleniumTestBase
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Accounts"));
 
 		List<WebElement> accountRows = driver.findElements(By.cssSelector(".account-container tr"));
-		assertThat(accountRows).hasSize(4);
+		assertThat(accountRows).hasSize(5);
 
-		checkImageLoaded(accountRows.get(0), "JPG");
-		checkImageLoaded(accountRows.get(1), "PNG");
-		checkImageLoaded(accountRows.get(2), "SVG");
+		// the first row is the table header
+		checkImageLoaded(accountRows.get(1), "JPG");
+		checkImageLoaded(accountRows.get(2), "PNG");
+		checkImageLoaded(accountRows.get(3), "SVG");
 		// the last account ist the default account created on database creation and has no image
 	}
 
 	private void checkImageLoaded(WebElement accountRow, String imageType)
 	{
 		final List<WebElement> columns = accountRow.findElements(By.tagName("td"));
-		final WebElement image = columns.get(1).findElement(By.className("account-select-icon"));
+		final WebElement image = columns.get(0).findElement(By.className("account-select-icon"));
 
 		Object result = ((JavascriptExecutor) driver).executeScript(
 				"return arguments[0].complete && " +
