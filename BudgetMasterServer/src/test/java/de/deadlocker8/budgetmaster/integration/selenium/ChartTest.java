@@ -235,9 +235,11 @@ class ChartTest extends SeleniumTestBase
 		assertThat(driver.findElement(By.id("filterActiveBadge")).isDisplayed()).isFalse();
 
 		driver.findElement(By.id("chart-filter-container")).click();
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("#chart-filter-container .collapsible-header")));
 		driver.findElement(By.id("section-type")).click();
 
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#section-type .text-default")));
 
 		final WebElement checkBox = driver.findElement(By.cssSelector("#section-type .text-default"));
@@ -256,8 +258,10 @@ class ChartTest extends SeleniumTestBase
 		driver.get(helper.getUrl() + "/charts");
 
 		driver.findElement(By.id("chart-filter-container")).click();
-		driver.findElement(By.id("section-type")).click();
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("#chart-filter-container .collapsible-header")));
+		driver.findElement(By.id("section-type")).click();
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#section-type .text-default")));
 		final WebElement checkBox = driver.findElement(By.cssSelector("#section-type .text-default"));
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", checkBox);
@@ -285,6 +289,8 @@ class ChartTest extends SeleniumTestBase
 		wait.until(ExpectedConditions.attributeContains(By.cssSelector(chartPreviewSelector + " .chart-preview"), "class", "active"));
 
 		driver.findElement(By.id("chart-filter-container")).click();
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("#chart-filter-container .collapsible-header")));
 		driver.findElement(By.id("section-type")).click();
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#section-type .text-default")));
