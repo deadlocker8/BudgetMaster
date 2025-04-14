@@ -79,6 +79,17 @@ public class AccountService implements Resettable, AccessAllEntities<Account>, A
 		return accounts;
 	}
 
+	public List<Account> getFilteredEntitiesAsc(AccountsFilterConfiguration accountsFilterConfiguration)
+	{
+		return accountRepository.findAllByTypeOrderByNameAsc(AccountType.CUSTOM).stream()
+				.filter(a -> accountsFilterConfiguration.getIncludedStates().contains(a.getAccountState()))
+				.filter(a -> (accountsFilterConfiguration.isIncludeWithEndDate() && a.getEndDate() != null) || (accountsFilterConfiguration.isIncludeWithoutEndDate() && a.getEndDate() == null))
+				.filter(a -> (!accountsFilterConfiguration.hasName() || (accountsFilterConfiguration.hasName() && a.getName().toLowerCase().contains(accountsFilterConfiguration.getName().toLowerCase()))))
+				.filter(a -> (!accountsFilterConfiguration.hasDescription() || (accountsFilterConfiguration.hasDescription() && a.getDescription().toLowerCase().contains(accountsFilterConfiguration.getDescription().toLowerCase()))))
+				.sorted((a1, a2) -> new NaturalOrderComparator().compare(a1.getName(), a2.getName()))
+				.toList();
+	}
+
 	@Override
 	public Optional<Account> findById(Integer ID)
 	{

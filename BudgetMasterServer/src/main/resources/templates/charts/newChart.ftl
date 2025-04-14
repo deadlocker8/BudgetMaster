@@ -11,7 +11,7 @@
 
         <@header.header "BudgetMaster - ${title}"/>
         <#import "/spring.ftl" as s>
-        <link rel="stylesheet" href="<@s.url "/webjars/codemirror/5.62.2/lib/codemirror.css"/>">
+        <link rel="stylesheet" href="<@s.url "/webjars/codemirror/lib/codemirror.css"/>">
         <@header.style "charts"/>
     </head>
     <@header.body>
@@ -102,8 +102,8 @@
         <!-- Scripts-->
         <#import "../helpers/scripts.ftl" as scripts>
         <@scripts.scripts/>
-        <script src="<@s.url '/webjars/codemirror/5.62.2/lib/codemirror.js'/>"></script>
-        <script src="<@s.url '/webjars/codemirror/5.62.2/mode/javascript/javascript.js'/>"></script>
+        <script src="<@s.url '/webjars/codemirror/lib/codemirror.js'/>"></script>
+        <script src="<@s.url '/webjars/codemirror/mode/javascript/javascript.js'/>"></script>
         <script src="<@s.url '/js/charts.js'/>"></script>
     </@header.body>
 </html>

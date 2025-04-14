@@ -54,6 +54,7 @@ class IconImporterTest extends ImporterTestBase
 	void test_importIcons_alreadyExisting()
 	{
 		final Icon icon = new Icon("fas fa-icons");
+		iconRepository.save(icon);
 		icon.setID(1);
 		iconRepository.save(icon);
 

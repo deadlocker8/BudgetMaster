@@ -153,7 +153,7 @@ class TransactionServiceDatabaseTest
 		LocalDate date1 = LocalDate.of(2020, 4, 30);
 		FilterConfiguration filterConfiguration = new FilterConfiguration(true, true, true, true, true, null, null, "");
 
-		List<Transaction> transactions = transactionService.getTransactionsForAccount(accountRepository.findByName("Second Account"), date1, LocalDate.now(), filterConfiguration);
+		List<Transaction> transactions = transactionService.getTransactionsForAccount(accountRepository.findByName("Second Account"), date1, LocalDate.now(), filterConfiguration, false);
 		assertThat(transactions)
 				.hasSize(2)
 				.containsExactly(transactionTransfer, transactionForSecondAccount);
@@ -165,7 +165,7 @@ class TransactionServiceDatabaseTest
 		LocalDate date1 = LocalDate.of(2020, 4, 30);
 		FilterConfiguration filterConfiguration = new FilterConfiguration(true, true, true, true, true, null, null, "");
 
-		List<Transaction> transactions = transactionService.getTransactionsForAccount(accountRepository.findAllByType(AccountType.ALL).get(0), date1, LocalDate.now(), filterConfiguration);
+		List<Transaction> transactions = transactionService.getTransactionsForAccount(accountRepository.findAllByType(AccountType.ALL).get(0), date1, LocalDate.now(), filterConfiguration, false);
 		assertThat(transactions).hasSize(8);
 	}
 
@@ -176,7 +176,7 @@ class TransactionServiceDatabaseTest
 		LocalDate date2 = LocalDate.of(2020, 5, 20);
 		FilterConfiguration filterConfiguration = new FilterConfiguration(true, true, true, true, true, null, null, "");
 
-		List<Transaction> transactions = transactionService.getTransactionsForAccount(accountRepository.findByName("Default Account"), date1, date2, filterConfiguration);
+		List<Transaction> transactions = transactionService.getTransactionsForAccount(accountRepository.findByName("Default Account"), date1, date2, filterConfiguration, false);
 		assertThat(transactions).hasSize(2);
 	}
 

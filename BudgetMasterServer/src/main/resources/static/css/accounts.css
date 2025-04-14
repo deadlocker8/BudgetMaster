@@ -31,3 +31,11 @@
     border: 3px solid var(--color-text);
     line-height: 32px !important;
 }
+
+.account-container th {
+    vertical-align: top;
+}
+
+.account-container th.vertical-align-middle {
+    vertical-align: middle;
+}

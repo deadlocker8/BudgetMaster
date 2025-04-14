@@ -45,15 +45,21 @@ class AccountTest extends SeleniumTestBase
 		// delete account "zzzz" if existing
 
 		driver.get(helper.getUrl() + "/accounts");
+		ensureHiddenAccountsAreIncludedInFilter();
 
 		List<WebElement> accountRows = driver.findElements(By.cssSelector(".account-container tr"));
 		for(WebElement row : accountRows)
 		{
 			final List<WebElement> columns = row.findElements(By.tagName("td"));
-			final String name = columns.get(2).getText();
+			if(columns.isEmpty())
+			{
+				continue;
+			}
+
+			final String name = columns.get(3).getText();
 			if(name.equals("zzzz"))
 			{
-				columns.get(4).findElements(By.tagName("a")).get(1).click();
+				columns.get(5).findElements(By.tagName("a")).get(1).click();
 
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 				wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".modal-content h4"), "Delete Account"));
@@ -90,6 +96,7 @@ class AccountTest extends SeleniumTestBase
 
 		// assert
 		assertThat(driver.getCurrentUrl()).endsWith("/accounts");
+		ensureHiddenAccountsAreIncludedInFilter();
 
 		accountRows = driver.findElements(By.cssSelector(".account-container tr"));
 		assertThat(accountRows).hasSize(numberOfAccountsBefore);
@@ -119,15 +126,17 @@ class AccountTest extends SeleniumTestBase
 		// assert
 		assertThat(driver.getCurrentUrl()).endsWith("/accounts");
 
-		List<WebElement> accountRows = driver.findElements(By.cssSelector(".account-container tr"));
-		assertThat(accountRows).hasSize(6);
+		ensureHiddenAccountsAreIncludedInFilter();
 
-		assertAccountColumns(accountRows.get(0).findElements(By.tagName("td")), true, true, AccountState.FULL_ACCESS, "Default Account", "");
-		assertAccountColumns(accountRows.get(1).findElements(By.tagName("td")), true, false, AccountState.FULL_ACCESS, "DefaultAccount0815", "");
-		assertAccountColumns(accountRows.get(2).findElements(By.tagName("td")), false, false, AccountState.HIDDEN, "hidden account", "");
-		assertAccountColumns(accountRows.get(3).findElements(By.tagName("td")), false, false, AccountState.READ_ONLY, "read only account", "");
-		assertAccountColumns(accountRows.get(4).findElements(By.tagName("td")), true, false, AccountState.FULL_ACCESS, "sfsdf", "");
-		assertAccountColumns(accountRows.get(5).findElements(By.tagName("td")), false, false, AccountState.READ_ONLY, name, "");
+		List<WebElement> accountRows = driver.findElements(By.cssSelector(".account-container tr"));
+		assertThat(accountRows).hasSize(7);
+
+		assertAccountColumns(accountRows.get(1).findElements(By.tagName("td")), true, true, AccountState.FULL_ACCESS, "Default Account", "");
+		assertAccountColumns(accountRows.get(2).findElements(By.tagName("td")), true, false, AccountState.FULL_ACCESS, "DefaultAccount0815", "");
+		assertAccountColumns(accountRows.get(3).findElements(By.tagName("td")), false, false, AccountState.HIDDEN, "hidden account", "");
+		assertAccountColumns(accountRows.get(4).findElements(By.tagName("td")), false, false, AccountState.READ_ONLY, "read only account", "");
+		assertAccountColumns(accountRows.get(5).findElements(By.tagName("td")), true, false, AccountState.FULL_ACCESS, "sfsdf", "");
+		assertAccountColumns(accountRows.get(6).findElements(By.tagName("td")), false, false, AccountState.READ_ONLY, name, "");
 	}
 
 	@Test
@@ -154,11 +163,12 @@ class AccountTest extends SeleniumTestBase
 
 		// assert
 		assertThat(driver.getCurrentUrl()).endsWith("/accounts");
+		ensureHiddenAccountsAreIncludedInFilter();
 
 		List<WebElement> accountRows = driver.findElements(By.cssSelector(".account-container tr"));
-		assertThat(accountRows).hasSize(6);
+		assertThat(accountRows).hasSize(7);
 
-		final WebElement icon = accountRows.get(5).findElements(By.tagName("td")).get(1);
+		final WebElement icon = accountRows.get(6).findElements(By.tagName("td")).get(0);
 		assertThat(icon).hasFieldOrPropertyWithValue("text", name.substring(0, 1).toUpperCase());
 		assertThat(icon.findElement(By.tagName("span")).getCssValue("color")).isEqualTo("rgb(255, 0, 0)");
 	}
@@ -189,11 +199,12 @@ class AccountTest extends SeleniumTestBase
 
 		// assert
 		assertThat(driver.getCurrentUrl()).endsWith("/accounts");
+		ensureHiddenAccountsAreIncludedInFilter();
 
 		List<WebElement> accountRows = driver.findElements(By.cssSelector(".account-container tr"));
-		assertThat(accountRows).hasSize(6);
+		assertThat(accountRows).hasSize(7);
 
-		final WebElement icon = accountRows.get(5).findElements(By.tagName("td")).get(1);
+		final WebElement icon = accountRows.get(6).findElements(By.tagName("td")).get(0);
 		assertThat(icon.findElement(By.cssSelector("span i")).getAttribute("class")).isEqualTo("fas fa-address-book account-select-icon");
 		assertThat(icon.findElement(By.tagName("span")).getCssValue("color")).isEqualTo("rgb(255, 0, 0)");
 	}
@@ -224,11 +235,12 @@ class AccountTest extends SeleniumTestBase
 
 		// assert
 		assertThat(driver.getCurrentUrl()).endsWith("/accounts");
+		ensureHiddenAccountsAreIncludedInFilter();
 
 		List<WebElement> accountRows = driver.findElements(By.cssSelector(".account-container tr"));
-		assertThat(accountRows).hasSize(6);
+		assertThat(accountRows).hasSize(7);
 
-		final WebElement icon = accountRows.get(5).findElements(By.tagName("td")).get(1);
+		final WebElement icon = accountRows.get(6).findElements(By.tagName("td")).get(0);
 		assertThat(icon.findElement(By.cssSelector("span img")).getAttribute("src")).startsWith(helper.getUrl() + "/media/getImageByIconID/");
 	}
 
@@ -375,7 +387,7 @@ class AccountTest extends SeleniumTestBase
 	public static void assertAccountColumns(List<WebElement> columns, boolean isDefaultIconVisible, boolean isDefaultIconSelected, AccountState expectedAccountState, String name, String description)
 	{
 		// icons
-		final List<WebElement> icons = columns.get(0).findElements(By.tagName("i"));
+		final List<WebElement> icons = columns.get(1).findElements(By.tagName("i"));
 		int numberOfVisibleIcons = 0;
 
 		if(isDefaultIconVisible)
@@ -414,10 +426,10 @@ class AccountTest extends SeleniumTestBase
 		assertThat(icons).hasSize(numberOfVisibleIcons);
 
 		// name
-		assertThat(columns.get(2)).hasFieldOrPropertyWithValue("text", name);
+		assertThat(columns.get(3)).hasFieldOrPropertyWithValue("text", name);
 
 		// description
-		assertThat(columns.get(3)).hasFieldOrPropertyWithValue("text", description);
+		assertThat(columns.get(4)).hasFieldOrPropertyWithValue("text", description);
 	}
 
 	private void setAccountState(int accountID, AccountState accountState)
@@ -430,5 +442,18 @@ class AccountTest extends SeleniumTestBase
 		helper.selectAccountStateByName(accountState);
 
 		driver.findElement(By.id("button-save-account")).click();
+	}
+
+	private void ensureHiddenAccountsAreIncludedInFilter()
+	{
+		WebDriverWait wait;
+		final WebElement checkboxIncludeHidden = driver.findElement(By.name("includeHidden"));
+		if(!checkboxIncludeHidden.isSelected())
+		{
+			driver.findElement(By.id("includeHidden")).click();
+			driver.findElement(By.id("accounts-filter-button")).click();
+			wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+			wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".headline"), "Accounts"));
+		}
 	}
 }

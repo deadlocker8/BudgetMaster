@@ -37,6 +37,7 @@ class MiscSettingsTest extends SeleniumTestBase
 
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("miscSettingsContainer")));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#miscSettingsContainer button")));
 
 		driver.findElement(By.cssSelector("#miscSettingsContainer button")).click();
 

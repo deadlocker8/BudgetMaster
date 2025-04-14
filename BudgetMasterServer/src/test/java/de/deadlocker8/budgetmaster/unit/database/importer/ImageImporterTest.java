@@ -46,6 +46,7 @@ class ImageImporterTest extends ImporterTestBase
 	void test_importImages_alreadyExisting()
 	{
 		final Image image = new Image(new Byte[0], "awesomeIcon.png", ImageFileExtension.PNG);
+		imageRepository.save(image);
 		image.setID(1);
 		imageRepository.save(image);
 

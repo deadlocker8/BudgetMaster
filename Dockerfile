@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:21-jre-alpine
 
 RUN apk update && apk upgrade && \
     rm -rf /var/cache/apk
@@ -8,7 +8,7 @@ ARG APP_DIR=/BudgetMaster
 RUN mkdir -p $APP_DIR
 RUN mkdir -p /root/.Deadlocker/BudgetMaster
 
-COPY BudgetMasterServer/build/2.17.2/BudgetMasterServer-v2.17.2.jar /BudgetMaster/BudgetMaster.jar
+COPY BudgetMasterServer/build/2.18.0/BudgetMasterServer-v2.18.0.jar /BudgetMaster/BudgetMaster.jar
 COPY BudgetMasterServer/src/main/resources/config/templates/settings-docker.properties /root/.Deadlocker/BudgetMaster/settings.properties
 RUN echo "server.port=9000" > ~/.Deadlocker/BudgetMaster/settings.properties
 

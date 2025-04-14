@@ -21,9 +21,9 @@
     <#import "/spring.ftl" as s>
     <title>${title}</title>
     <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="<@s.url '/webjars/font-awesome/6.5.2/css/all.min.css'/>">
+    <link rel="stylesheet" href="<@s.url '/webjars/font-awesome/css/all.min.css'/>">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="<@s.url "/webjars/materializecss/1.0.0/css/materialize.min.css"/>">
+    <link rel="stylesheet" href="<@s.url "/webjars/materializecss/css/materialize.min.css"/>">
     <@style "colors"/>
     <@style "style"/>
     <@style "navbar"/>
