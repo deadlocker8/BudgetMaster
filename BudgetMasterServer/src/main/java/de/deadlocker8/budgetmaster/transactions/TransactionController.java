@@ -177,8 +177,6 @@ public class TransactionController extends BaseController
 	{
 		LocalDate date = dateService.getDateTimeFromCookie(cookieDate);
 
-		handlePreviousType(transaction, isRepeating);
-
 		TransactionValidator transactionValidator = new TransactionValidator();
 		transactionValidator.validate(transaction, bindingResult);
 
@@ -187,6 +185,13 @@ public class TransactionController extends BaseController
 
 		if(isRepeating)
 		{
+			if(transaction.getID() != null)
+			{
+				// delete existing transaction to remove all repeating occurrences
+				transactionService.deleteTransaction(transaction.getID());
+				transaction.setID(null);
+			}
+
 			final RepeatingOption repeatingOption = createRepeatingOption(transaction.getDate(), repeatingModifierNumber, repeatingModifierType, repeatingEndType, repeatingEndValue);
 			transaction.setRepeatingOption(repeatingOption);
 		}
@@ -207,14 +212,6 @@ public class TransactionController extends BaseController
 
 		final boolean isContinueActivated = action.equals(CONTINUE);
 		return handleRedirect(servletRequest, request, model, transaction.getID() != null, transaction, bindingResult, date, redirectUrl, isContinueActivated);
-	}
-
-	private void handlePreviousType(Transaction transaction, boolean isRepeating)
-	{
-		if(transaction.getID() != null && isRepeating)
-		{
-			transactionService.deleteTransaction(transaction.getID());
-		}
 	}
 
 	@SuppressWarnings("ConstantConditions")
