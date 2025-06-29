@@ -7,9 +7,8 @@ function initSettingsContainer(formName, containerId)
         $.ajax({
             type: 'POST',
             url: $(this).attr('action'),
-            data: new FormData(form),
+            data: $(this).serialize(),
             processData: false,
-            contentType: false,
             success: function(response)
             {
                 M.Toast.dismissAll();

@@ -2,7 +2,7 @@
 Manage your monthly budget easily with BudgetMaster
 
 - __start:__ 17.12.16
-- __current release:__ v2.18.0 (50) from 14.04.25
+- __current release:__ v2.18.1 (51) from 29.06.25
 
 ## Key Features
 - Keep your data private - Host your own BudgetMaster server or use it in standalone mode. All data remains on your machines.
