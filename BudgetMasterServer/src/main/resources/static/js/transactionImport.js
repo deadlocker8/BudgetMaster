@@ -23,6 +23,18 @@ $(document).ready(function()
                 // amount column
                 orderable: false,
                 targets: 5
+            },
+            {
+                width: '8%',
+                targets: 5
+            },
+            {
+                width: '10%',
+                targets: [0, 1, 2, 6]
+            },
+            {
+                width: '25%',
+                targets: [3, 4]
             }
         ],
         language: {search: '', searchPlaceholder: localizedSearch},
