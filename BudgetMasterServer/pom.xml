@@ -29,7 +29,7 @@
         <webjars-locator.version>1.1.0</webjars-locator.version>
         <jquery.version>3.7.1</jquery.version>
         <materializecss.version>1.0.0</materializecss.version>
-        <fontawesome.version>6.7.2</fontawesome.version>
+        <fontawesome.version>7.1.0</fontawesome.version>
         <sortablejs.version>1.15.6</sortablejs.version>
         <mousetrap.version>1.6.5</mousetrap.version>
         <codemirror.version>5.62.2</codemirror.version>
