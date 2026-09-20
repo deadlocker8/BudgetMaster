@@ -23,8 +23,8 @@ Manage your monthly budget easily with BudgetMaster
 - Create transactions based on bank documents - Import CSV files from your bank and directly create a transaction for each entry.
 
 ## Available Languages
-- English [Roadmap](https://roadmaps.thecodelabs.de/roadmap/2)
-- German [Roadmap](https://roadmaps.thecodelabs.de/roadmap/1)
+- English
+- German
 
 ## In case of Errors
 - see corresponding error log `your_home_directory/Deadlocker/BudgetMaster/error.log`

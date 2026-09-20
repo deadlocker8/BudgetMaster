@@ -37,10 +37,6 @@
                         <div class="col s8 m5 l5">${build.getAuthor()}</div>
                     </div>
                     <div class="row">
-                        <@cellKey locale.getString("about.roadmap")/>
-                        <div class="col s8 m5 l5"><a target="_blank" href="${locale.getString("roadmap.url")}">${locale.getString("about.roadmap.link")}</a></div>
-                    </div>
-                    <div class="row">
                         <@cellKey locale.getString("about.sourcecode")/>
                         <div class="col s8 m5 l5 break-all"><a target="_blank" href="${locale.getString("github.url")}">${locale.getString("github.url")}</a></div>
                     </div>
